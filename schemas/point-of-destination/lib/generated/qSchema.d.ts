@@ -1,12 +1,12 @@
-import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema, EntityId } from '@airport/ground-control';
+import { QApplication as AirportQApplication } from '@airport/air-control';
+import { DbApplication, EntityId } from '@airport/ground-control';
 import { QDailyArchive } from './qdailyarchive';
-export interface LocalQSchema extends AirportQSchema {
-    db: DbSchema;
+export interface LocalQApplication extends AirportQApplication {
+    db: DbApplication;
     DailyArchive: QDailyArchive;
 }
-export declare const Q_SCHEMA: LocalQSchema;
-export declare const Q: LocalQSchema;
+export declare const Q_SCHEMA: LocalQApplication;
+export declare const Q: LocalQApplication;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;
 //# sourceMappingURL=qSchema.d.ts.map

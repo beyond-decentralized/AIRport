@@ -36,7 +36,7 @@ export class AgtRepositoryTransactionBlockDao extends BaseAgtRepositoryTransacti
     async insertValues(
     // values must be sorted by TerminalId [1]
     values) {
-        const dbEntity = Q.db.currentVersion[0].schemaVersion
+        const dbEntity = Q.db.currentVersion[0].applicationVersion
             .entityMapByName.RealtimeAgtRepositoryTransactionBlock;
         let rtb;
         const airDb = await container(this).get(AIRPORT_DATABASE);

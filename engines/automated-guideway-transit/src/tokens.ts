@@ -14,11 +14,11 @@ import {ISyncConnectionProcessor} from './server/sync/SyncConnectionProcessor'
 
 const automatedGuidewayTransit = system('airport').lib('automated-guideway-transit')
 
-export const TUNNING_SETTINGS          = automatedGuidewayTransit.token<ITuningSettings>('ITuningSettings')
-export const ERROR_LOGGER              = automatedGuidewayTransit.token<IErrorLogger>('IErrorLogger')
-export const SYNC_CONNECTION_PROCESSOR = automatedGuidewayTransit.token<ISyncConnectionProcessor>('ISyncConnectionProcessor')
-export const SYNC_CONNECTION_VERIFIER  = automatedGuidewayTransit.token<ISyncConnectionVerifier>('ISyncConnectionVerifier')
-export const BLACKLIST                 = automatedGuidewayTransit.token<IBlacklist<any>>('IBlacklist')
+export const TUNNING_SETTINGS          = automatedGuidewayTransit.token<ITuningSettings>('TUNNING_SETTINGS')
+export const ERROR_LOGGER              = automatedGuidewayTransit.token<IErrorLogger>('ERROR_LOGGER')
+export const SYNC_CONNECTION_PROCESSOR = automatedGuidewayTransit.token<ISyncConnectionProcessor>('SYNC_CONNECTION_PROCESSOR')
+export const SYNC_CONNECTION_VERIFIER  = automatedGuidewayTransit.token<ISyncConnectionVerifier>('SYNC_CONNECTION_VERIFIER')
+export const BLACKLIST                 = automatedGuidewayTransit.token<IBlacklist<any>>('BLACKLIST')
 
 export const AGTLogger: ILoggedPackage
 	             = new LoggedPackage('automated-guideway-transit', LogLevel.TRACE)

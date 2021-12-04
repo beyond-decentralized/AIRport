@@ -2,12 +2,12 @@ import { AgtRepositoryTransactionBlock } from "../synchronization/AgtRepositoryT
 import { Terminal } from "../terminal/Terminal";
 import { SecurityAnswer } from "./security/SecurityAnswer";
 import { UserRepository } from "./UserRepository";
-export declare type UserId = number;
+export declare type User_Id = number;
 export declare type UserHash = string;
 export declare type UserEmail = string;
 export declare type UserIsInvitation = boolean;
 export declare class User {
-    id: UserId;
+    id: User_Id;
     hash: UserHash;
     email: UserEmail;
     isInvitation: UserIsInvitation;

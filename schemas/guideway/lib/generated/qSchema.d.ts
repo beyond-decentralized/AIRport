@@ -1,5 +1,5 @@
-import { QSchema as AirportQSchema } from '@airport/air-control';
-import { DbSchema, EntityId } from '@airport/ground-control';
+import { QApplication as AirportQApplication } from '@airport/air-control';
+import { DbApplication, EntityId } from '@airport/ground-control';
 import { QAgtRepositoryTransactionBlock } from './synchronization/qagtrepositorytransactionblock';
 import { QAgtSharingMessage } from './synchronization/qagtsharingmessage';
 import { QArchive } from './repository/qarchive';
@@ -19,8 +19,8 @@ import { QTerminalRepository } from './terminal/qterminalrepository';
 import { QTuningParameters } from './tuning/qtuningparameters';
 import { QUser } from './user/quser';
 import { QUserRepository } from './user/quserrepository';
-export interface LocalQSchema extends AirportQSchema {
-    db: DbSchema;
+export interface LocalQApplication extends AirportQApplication {
+    db: DbApplication;
     AgtRepositoryTransactionBlock: QAgtRepositoryTransactionBlock;
     AgtSharingMessage: QAgtSharingMessage;
     Archive: QArchive;
@@ -41,8 +41,8 @@ export interface LocalQSchema extends AirportQSchema {
     User: QUser;
     UserRepository: QUserRepository;
 }
-export declare const Q_SCHEMA: LocalQSchema;
-export declare const Q: LocalQSchema;
+export declare const Q_SCHEMA: LocalQApplication;
+export declare const Q: LocalQApplication;
 export declare function diSet(dbEntityId: EntityId): boolean;
 export declare function duoDiSet(dbEntityId: EntityId): boolean;
 //# sourceMappingURL=qSchema.d.ts.map

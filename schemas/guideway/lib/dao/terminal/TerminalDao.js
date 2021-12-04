@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE, and, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { TERMINAL_DAO } from '../../tokens';
 import { BaseTerminalDao } from '../../generated/baseDaos';
-import { Q } from '../../generated/qSchema';
+import { Q } from '../../generated/qApplication';
 export class TerminalDao extends BaseTerminalDao {
     async findTerminalVerificationRecords(terminalIds) {
         const resultMapByTerminalId = new Map();

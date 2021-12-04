@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { BaseOperationHistoryDuo } from '../../generated/generated';
-import { OPER_HISTORY_DUO } from '../../tokens';
+import { OPERATION_HISTORY_DUO } from '../../tokens';
 export class OperationHistoryDuo extends BaseOperationHistoryDuo {
     getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId) {
         let operationHistory = {
@@ -34,5 +34,5 @@ export class OperationHistoryDuo extends BaseOperationHistoryDuo {
         return recordHistory;
     }
 }
-DI.set(OPER_HISTORY_DUO, OperationHistoryDuo);
+DI.set(OPERATION_HISTORY_DUO, OperationHistoryDuo);
 //# sourceMappingURL=OperationHistoryDuo.js.map

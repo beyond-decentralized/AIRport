@@ -6,7 +6,7 @@ import { IOperationContextLoader } from './lingo/OperationContextLoader';
 
 const groundControl = system('airport').lib('ground-control');
 
-export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('IEntityStateManager')
-export const OPERATION_CONTEXT_LOADER = groundControl.token<IOperationContextLoader>('IOperationContextLoader')
-export const STORE_DRIVER = groundControl.token<IStoreDriver>('IStoreDriver');
-export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnector>('ITransactionalConnector');
+export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>('ENTITY_STATE_MANAGER')
+export const OPERATION_CONTEXT_LOADER = groundControl.token<IOperationContextLoader>('OPERATION_CONTEXT_LOADER')
+export const STORE_DRIVER = groundControl.token<IStoreDriver>('STORE_DRIVER');
+export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnector>('TRANSACTIONAL_CONNECTOR');

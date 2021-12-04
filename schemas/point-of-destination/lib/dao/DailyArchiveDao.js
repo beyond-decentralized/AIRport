@@ -2,11 +2,11 @@ import { AIRPORT_DATABASE, and, or } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { DAILY_ARCHIVE_DAO } from '../tokens';
 import { BaseDailyArchiveDao } from '../generated/baseDaos';
-import { Q } from '../generated/qSchema';
+import { Q } from '../generated/qApplication';
 export class DailyArchiveDao extends BaseDailyArchiveDao {
     async addRecords(values) {
         const airDb = await container(this).get(AIRPORT_DATABASE);
-        const dbEntity = Q.db.currentVersion[0].schemaVersion
+        const dbEntity = Q.db.currentVersion[0].applicationVersion
             .entityMapByName.DailyArchive;
         let da;
         await airDb.insertValues({

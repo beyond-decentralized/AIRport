@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { REC_HIST_NEW_VALUE_DAO } from '../../tokens';
+import { RECORD_HISTORY_NEW_VALUE_DAO } from '../../tokens';
 import { BaseRecordHistoryNewValueDao, Q } from '../../generated/generated';
 export class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
     async findByRecordHistoryIdIn(recordHistoryIds) {
@@ -13,5 +13,5 @@ export class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
         });
     }
 }
-DI.set(REC_HIST_NEW_VALUE_DAO, RecordHistoryNewValueDao);
+DI.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao);
 //# sourceMappingURL=RecordHistoryNewValueDao.js.map

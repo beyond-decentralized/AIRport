@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { MONTHLY_SYNC_LOG_DAO } from '../tokens';
 import { BaseMonthlySyncLogDao } from '../generated/baseDaos';
-import { Q } from '../generated/qSchema';
+import { Q } from '../generated/qApplication';
 export class MonthlySyncLogDao extends BaseMonthlySyncLogDao {
     async findAllForDatabase(databaseId, synced, callback) {
         let dsl;

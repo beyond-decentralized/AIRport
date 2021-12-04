@@ -5,7 +5,7 @@ import {
 	RepositoryEntity_ActorRecordId
 } from '../../ddl/ddl'
 import {
-	REC_HISTORY_DUO
+	RECORD_HISTORY_DUO
 } from '../../tokens'
 import {
 	BaseRecordHistoryDuo,
@@ -91,4 +91,4 @@ export class RecordHistoryDuo
 
 }
 
-DI.set(REC_HISTORY_DUO, RecordHistoryDuo)
+DI.set(RECORD_HISTORY_DUO, RecordHistoryDuo)

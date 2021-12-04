@@ -5,8 +5,8 @@ import { IRecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
 
 const movingWalkway = system('airport').lib('moving-walkway')
 
-export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token<IRecordUpdateStageDao>('IRecordUpdateStageDao');
+export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token<IRecordUpdateStageDao>('RECORD_UPDATE_STAGE_DAO');
 export const SYNCHRONIZATION_CONFLICT_DAO
-	= movingWalkway.token<ISynchronizationConflictDao>('ISynchronizationConflictDao');
+	= movingWalkway.token<ISynchronizationConflictDao>('SYNCHRONIZATION_CONFLICT_DAO');
 export const SYNCHRONIZATION_CONFLICT_VALUES_DAO
-	= movingWalkway.token<ISynchronizationConflictValuesDao>('ISynchronizationConflictValuesDao');
+	= movingWalkway.token<ISynchronizationConflictValuesDao>('SYNCHRONIZATION_CONFLICT_VALUES_DAO');

@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { RecordHistoryNewValue } from '../../ddl/ddl';
-import { REC_HIST_NEW_VALUE_DUO } from '../../tokens';
+import { RECORD_HISTORY_NEW_VALUE_DUO } from '../../tokens';
 import { BaseRecordHistoryNewValueDuo } from '../../generated/generated';
 export class RecordHistoryNewValueDuo extends BaseRecordHistoryNewValueDuo {
     constructor() {
@@ -14,5 +14,5 @@ export class RecordHistoryNewValueDuo extends BaseRecordHistoryNewValueDuo {
         return recordHistoryNewValue;
     }
 }
-DI.set(REC_HIST_NEW_VALUE_DUO, RecordHistoryNewValueDuo);
+DI.set(RECORD_HISTORY_NEW_VALUE_DUO, RecordHistoryNewValueDuo);
 //# sourceMappingURL=RecordHistoryNewValueDuo.js.map

@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE, and } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { TERMINAL_REPOSITORY_DAO } from '../../tokens';
 import { BaseTerminalRepositoryDao } from '../../generated/generated';
-import { Q } from '../../generated/qSchema';
+import { Q } from '../../generated/qApplication';
 export class TerminalRepositoryDao extends BaseTerminalRepositoryDao {
     async findByTerminalIdInAndRepositoryIdIn(terminalIds, repositoryIds) {
         const resultMapByTerminalId = new Map();

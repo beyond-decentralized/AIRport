@@ -12,12 +12,10 @@ let Terminal = class Terminal {
 };
 __decorate([
     Id(),
-    DbNumber(),
     GeneratedValue()
 ], Terminal.prototype, "id", void 0);
 __decorate([
-    Column({ name: 'NAME', nullable: false }),
-    DbString()
+    Column({ name: 'NAME', nullable: false })
 ], Terminal.prototype, "name", void 0);
 __decorate([
     DbNumber(),

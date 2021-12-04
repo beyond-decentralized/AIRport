@@ -14,7 +14,7 @@ export declare const SCHEMA: {
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneSchemaIndex: number;
+                    oneApplicationIndex: number;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -61,7 +61,7 @@ export declare const SCHEMA: {
                     index: number;
                 };
                 relationTableIndex: number;
-                relationTableSchemaIndex: number;
+                relationTableApplicationIndex: number;
                 sinceVersion: number;
             }[];
             sinceVersion: number;
@@ -72,7 +72,7 @@ export declare const SCHEMA: {
             operations: {};
         }[];
         integerVersion: number;
-        referencedSchemas: {
+        referencedApplications: {
             domain: string;
             index: number;
             name: string;
@@ -81,7 +81,7 @@ export declare const SCHEMA: {
             versions: {
                 entities: any;
                 integerVersion: number;
-                referencedSchemas: any;
+                referencedApplications: any;
                 versionString: string;
             }[];
         }[];

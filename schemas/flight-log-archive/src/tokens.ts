@@ -6,5 +6,5 @@ import {
 
 const flightLogArchive = system('airport').lib('flight-log-archive')
 
-export const DAILY_SYNC_LOG_DAO   = flightLogArchive.token<IDailySyncLogDao>('IDailySyncLogDao')
-export const MONTHLY_SYNC_LOG_DAO = flightLogArchive.token<IMonthlySyncLogDao>('IMonthlySyncLogDao')
+export const DAILY_SYNC_LOG_DAO   = flightLogArchive.token<IDailySyncLogDao>('DAILY_SYNC_LOG_DAO')
+export const MONTHLY_SYNC_LOG_DAO = flightLogArchive.token<IMonthlySyncLogDao>('MONTHLY_SYNC_LOG_DAO')

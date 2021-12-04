@@ -102,7 +102,6 @@ export class SyncInApplicationChecker
                 let application: IApplication = {
                     domain,
                     index: null,
-                    jsonApplication: {} as any,
                     packageName: 'bogus',
                     name,
                     scope: 'private',

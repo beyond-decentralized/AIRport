@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE, and, distinct, or, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
-import { OPER_HISTORY_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
+import { OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
 export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
@@ -40,7 +40,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         };
     }
     async findWhere(whereClauseFunction) {
-        const [operHistoryDuo, recHistoryDuo] = await container(this).get(OPER_HISTORY_DUO, REC_HISTORY_DUO);
+        const [operHistoryDuo, recHistoryDuo] = await container(this).get(OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO);
         let rth, r, oh, rh;
         const id = Y;
         return await this.db.find.tree({

@@ -1,4 +1,3 @@
-import { TerminalId, TerminalName, TerminalPassword, TerminalSecondId } from '@airport/arrivals-n-departures';
 import { AgtSharingMessage } from '../synchronization/AgtSharingMessage';
 import { User } from '../user/User';
 import { TerminalRepository } from './TerminalRepository';
@@ -8,10 +7,10 @@ export declare type TerminalLastSseConnectionDatetime = number;
  * Represents the client-side terminal.
  */
 export declare class Terminal {
-    id: TerminalId;
-    name: TerminalName;
-    secondId: TerminalSecondId;
-    password: TerminalPassword;
+    id: number;
+    name: string;
+    secondId: number;
+    password: string;
     lastPollConnectionDatetime: TerminalLastPollConnectionDatetime;
     lastSseConnectionDatetime: TerminalLastSseConnectionDatetime;
     user: User;

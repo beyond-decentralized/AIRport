@@ -5,6 +5,6 @@ import { IUserDao } from './dao/UserDao'
 
 const travelDocumentCheckpoint = lib('travel-document-checkpoint')
 
-export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>('ITerminalDao')
-export const USER_API = travelDocumentCheckpoint.token<IUserApi>('IUserApi')
-export const USER_DAO = travelDocumentCheckpoint.token<IUserDao>('IUserDao')
+export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>('TERMINAL_DAO')
+export const USER_API = travelDocumentCheckpoint.token<IUserApi>('USER_API')
+export const USER_DAO = travelDocumentCheckpoint.token<IUserDao>('USER_DAO')

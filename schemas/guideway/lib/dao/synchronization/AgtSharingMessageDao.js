@@ -7,7 +7,7 @@ import { AGT_SHARING_MESSAGE_DAO } from '../../tokens';
 export class AgtSharingMessageDao extends BaseAgtSharingMessageDao {
     async insertValues(values) {
         const sharingMessageIdsByTerminalId = new Map();
-        const dbEntity = Q.db.currentVersion[0].schemaVersion
+        const dbEntity = Q.db.currentVersion[0].applicationVersion
             .entityMapByName.AgtSharingMessage;
         let asm;
         const airDb = await container(this)

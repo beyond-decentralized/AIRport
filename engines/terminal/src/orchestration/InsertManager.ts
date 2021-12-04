@@ -24,9 +24,9 @@ import {
 	IRecordHistoryNewValueDuo,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
-	OPER_HISTORY_DUO,
-	REC_HIST_NEW_VALUE_DUO,
-	REC_HISTORY_DUO,
+	OPERATION_HISTORY_DUO,
+	RECORD_HISTORY_NEW_VALUE_DUO,
+	RECORD_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	SystemWideOperationId
 } from '@airport/holding-pattern'
@@ -133,8 +133,8 @@ export class InsertManager
 			repoTransHistoryDuo
 		] = await container(this)
 			.get(AIRPORT_DATABASE,
-				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPER_HISTORY_DUO,
-				REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REPOSITORY_MANAGER,
+				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
+				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, REPOSITORY_MANAGER,
 				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
 		const dbEntity = airDb.applications[portableQuery.applicationIndex]

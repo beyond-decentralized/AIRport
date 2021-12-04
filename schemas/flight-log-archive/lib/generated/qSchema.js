@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { getSchemaName } from '@airport/ground-control';
+import { getApplicationName } from '@airport/ground-control';
 import { DailySyncLog, Log, MonthlySyncLog } from '../ddl/ddl';
 const __constructors__ = {
     DailySyncLog: DailySyncLog,
@@ -15,12 +15,12 @@ export const Q_SCHEMA = {
 };
 export const Q = Q_SCHEMA;
 export function diSet(dbEntityId) {
-    return dS(Q.__dbSchema__, dbEntityId);
+    return dS(Q.__dbApplication__, dbEntityId);
 }
 export function duoDiSet(dbEntityId) {
-    return ddS(Q.__dbSchema__, dbEntityId);
+    return ddS(Q.__dbApplication__, dbEntityId);
 }
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((airDb) => {
-    airDb.QM[getSchemaName(Q_SCHEMA)] = Q;
+    airDb.QM[getApplicationName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

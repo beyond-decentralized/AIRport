@@ -1,6 +1,6 @@
 import { DI } from '@airport/di';
 import { RecordHistory } from '../../ddl/ddl';
-import { REC_HISTORY_DUO } from '../../tokens';
+import { RECORD_HISTORY_DUO } from '../../tokens';
 import { BaseRecordHistoryDuo, } from '../../generated/generated';
 export class RecordHistoryDuo extends BaseRecordHistoryDuo {
     getNewRecord(actorRecordId) {
@@ -23,5 +23,5 @@ export class RecordHistoryDuo extends BaseRecordHistoryDuo {
         return recordHistoryOldValue;
     }
 }
-DI.set(REC_HISTORY_DUO, RecordHistoryDuo);
+DI.set(RECORD_HISTORY_DUO, RecordHistoryDuo);
 //# sourceMappingURL=RecordHistoryDuo.js.map

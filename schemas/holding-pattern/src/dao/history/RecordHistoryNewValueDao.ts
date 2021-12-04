@@ -1,6 +1,6 @@
 import {DI}                     from '@airport/di'
 import {RecordHistoryId}        from '../../ddl/ddl'
-import {REC_HIST_NEW_VALUE_DAO} from '../../tokens'
+import {RECORD_HISTORY_NEW_VALUE_DAO} from '../../tokens'
 import {
 	BaseRecordHistoryNewValueDao,
 	IBaseRecordHistoryNewValueDao,
@@ -39,4 +39,4 @@ export class RecordHistoryNewValueDao
 
 }
 
-DI.set(REC_HIST_NEW_VALUE_DAO, RecordHistoryNewValueDao)
+DI.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao)

@@ -1,5 +1,5 @@
 import {DI}                     from '@airport/di'
-import {REC_HIST_OLD_VALUE_DAO} from '../../tokens'
+import {RECORD_HISTORY_OLD_VALUE_DAO} from '../../tokens'
 import {
 	BaseRecordHistoryOldValueDao,
 	IBaseRecordHistoryOldValueDao
@@ -41,4 +41,4 @@ export class RecordHistoryOldValueDao
 
 }
 
-DI.set(REC_HIST_OLD_VALUE_DAO, RecordHistoryOldValueDao)
+DI.set(RECORD_HISTORY_OLD_VALUE_DAO, RecordHistoryOldValueDao)

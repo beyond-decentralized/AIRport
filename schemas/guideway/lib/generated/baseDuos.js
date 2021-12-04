@@ -1,6 +1,6 @@
 import { Duo, } from '@airport/check-in';
-import { Q, duoDiSet, } from './qSchema';
-// Schema Q object Dependency Injection readiness detection Duo
+import { Q, duoDiSet, } from './qApplication';
+// Application Q object Dependency Injection readiness detection Duo
 export class SQDIDuo extends Duo {
     constructor(dbEntityId) {
         super(dbEntityId, Q);

@@ -5,7 +5,7 @@ import { BaseSyncLogDao, Q } from '../../generated/generated';
 import { SYNC_LOG_DAO } from '../../tokens';
 export class SyncLogDao extends BaseSyncLogDao {
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion[0].schemaVersion
+        const dbEntity = Q.db.currentVersion[0].applicationVersion
             .entityMapByName.RealtimeSyncLog;
         let sl;
         const airDb = await container(this)

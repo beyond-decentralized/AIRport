@@ -61,7 +61,7 @@ export declare const SCHEMA: {
             operations?: undefined;
         })[];
         integerVersion: number;
-        referencedSchemas: any[];
+        referencedApplications: any[];
         versionString: string;
     }[];
 };

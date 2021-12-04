@@ -12,7 +12,7 @@ import {
 	IRecordHistory,
 	IRepositoryTransactionHistory
 }                                      from '../../generated/generated'
-import {OPER_HISTORY_DUO}              from '../../tokens'
+import {OPERATION_HISTORY_DUO}              from '../../tokens'
 import {IRecordHistoryDuo}             from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo
@@ -94,4 +94,4 @@ export class OperationHistoryDuo
 
 }
 
-DI.set(OPER_HISTORY_DUO, OperationHistoryDuo)
+DI.set(OPERATION_HISTORY_DUO, OperationHistoryDuo)

@@ -29,10 +29,10 @@ import {
 	IRecordHistoryNewValueDuo,
 	IRecordHistoryOldValueDuo,
 	IRepositoryTransactionHistoryDuo,
-	OPER_HISTORY_DUO,
-	REC_HIST_NEW_VALUE_DUO,
-	REC_HIST_OLD_VALUE_DUO,
-	REC_HISTORY_DUO,
+	OPERATION_HISTORY_DUO,
+	RECORD_HISTORY_NEW_VALUE_DUO,
+	RECORD_HISTORY_OLD_VALUE_DUO,
+	RECORD_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
@@ -69,8 +69,8 @@ export class UpdateManager
 			repoTransHistoryDuo,
 			sequenceGenerator] = await container(this)
 				.get(HISTORY_MANAGER,
-					OPER_HISTORY_DUO, REC_HISTORY_DUO,
-					REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
+					OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO,
+					RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO,
 					REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR)
 
 		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]

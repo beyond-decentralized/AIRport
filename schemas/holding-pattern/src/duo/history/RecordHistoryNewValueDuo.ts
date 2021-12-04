@@ -1,7 +1,7 @@
 import {DI}                     from '@airport/di'
 import {DbColumn}               from '@airport/ground-control'
 import {RecordHistoryNewValue}  from '../../ddl/ddl'
-import {REC_HIST_NEW_VALUE_DUO} from '../../tokens'
+import {RECORD_HISTORY_NEW_VALUE_DUO} from '../../tokens'
 import {
 	BaseRecordHistoryNewValueDuo,
 	IRecordHistory,
@@ -42,4 +42,4 @@ export class RecordHistoryNewValueDuo
 
 }
 
-DI.set(REC_HIST_NEW_VALUE_DUO, RecordHistoryNewValueDuo)
+DI.set(RECORD_HISTORY_NEW_VALUE_DUO, RecordHistoryNewValueDuo)

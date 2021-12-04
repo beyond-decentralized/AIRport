@@ -8,9 +8,9 @@ import {IValidator}                 from './validation/Validator'
 
 const fuelHydrantSystem = system('airport').lib('fuel-hydrant-system')
 
-export const ACTIVE_QUERIES              = fuelHydrantSystem.token<IActiveQueries>('IActiveQueries')
-export const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token<ISubStatementSqlGenerator>('ISubStatementSqlGenerator')
-export const ID_GENERATOR                = fuelHydrantSystem.token<IIdGenerator>('IIdGenerator')
-export const OBJECT_RESULT_PARSER_FACTORY = fuelHydrantSystem.token<IObjectResultParserFactory>('IObjectResultParserFactory')
-export const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token<ISQLQueryAdaptor>('ISQLQueryAdaptor')
-export const Q_VALIDATOR       = fuelHydrantSystem.token<IValidator>('IValidator')
+export const ACTIVE_QUERIES              = fuelHydrantSystem.token<IActiveQueries>('ACTIVE_QUERIES')
+export const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token<ISubStatementSqlGenerator>('SUB_STATEMENT_SQL_GENERATOR')
+export const ID_GENERATOR                = fuelHydrantSystem.token<IIdGenerator>('ID_GENERATOR')
+export const OBJECT_RESULT_PARSER_FACTORY = fuelHydrantSystem.token<IObjectResultParserFactory>('OBJECT_RESULT_PARSER_FACTORY')
+export const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token<ISQLQueryAdaptor>('SQL_QUERY_ADAPTOR')
+export const Q_VALIDATOR       = fuelHydrantSystem.token<IValidator>('Q_VALIDATOR')

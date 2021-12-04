@@ -4,7 +4,7 @@ import { BaseDailyArchiveLogDao, Q } from '../../generated/generated';
 import { DAILY_ARCHIVE_LOG_DAO } from '../../tokens';
 export class DailyArchiveLogDao extends BaseDailyArchiveLogDao {
     async insertValues(values) {
-        const dbEntity = Q.db.currentVersion[0].schemaVersion
+        const dbEntity = Q.db.currentVersion[0].applicationVersion
             .entityMapByName.DailyArchiveLog;
         let dal;
         const airDb = await container(this)

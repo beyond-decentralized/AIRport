@@ -27,8 +27,8 @@ import {
 	RepositoryTransactionHistory_Id
 } from '../../ddl/ddl'
 import {
-	OPER_HISTORY_DUO,
-	REC_HISTORY_DUO,
+	OPERATION_HISTORY_DUO,
+	RECORD_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DAO,
 } from '../../tokens'
 import { IOperationHistoryDuo } from '../../duo/history/OperationHistoryDuo'
@@ -147,7 +147,7 @@ export class RepositoryTransactionHistoryDao
 		}
 	): Promise<IRepositoryTransactionHistory[]> {
 		const [operHistoryDuo, recHistoryDuo] = await container(this).get(
-			OPER_HISTORY_DUO, REC_HISTORY_DUO)
+			OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO)
 
 		let rth: QRepositoryTransactionHistory,
 			r: QRepository,
