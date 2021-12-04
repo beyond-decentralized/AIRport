@@ -148,6 +148,11 @@ export declare const MAPPED_SUPERCLASS: {
                                         moduleImport: any;
                                         sourceName: string;
                                     };
+                                    Json: {
+                                        asName: string;
+                                        moduleImport: any;
+                                        sourceName: string;
+                                    };
                                     ManyToOne: {
                                         asName: string;
                                         moduleImport: any;
@@ -181,6 +186,7 @@ export declare const MAPPED_SUPERCLASS: {
                             Entity: any;
                             Id: any;
                             JoinColumn: any;
+                            Json: any;
                             ManyToOne: any;
                             OneToMany: any;
                             SequenceGenerator: any;
@@ -288,6 +294,18 @@ export declare const MAPPED_SUPERCLASS: {
                                 };
                                 path: string;
                             };
+                            JsonApplicationWithLastIds: {
+                                fileImports: any;
+                                isLocal: boolean;
+                                objectMapByAsName: {
+                                    JsonApplicationWithLastIds: {
+                                        asName: string;
+                                        moduleImport: any;
+                                        sourceName: string;
+                                    };
+                                };
+                                path: string;
+                            };
                         };
                         importMapByModulePath: {
                             "@airport/air-control": any;
@@ -297,6 +315,7 @@ export declare const MAPPED_SUPERCLASS: {
                             "./ApplicationReference": any;
                             "../../generated/application/applicationentity": any;
                             "../../generated/application/applicationreference": any;
+                            "@airport/security-check": any;
                         };
                     };
                     properties: ({

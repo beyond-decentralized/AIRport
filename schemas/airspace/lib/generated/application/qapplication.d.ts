@@ -1,5 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from './qdomain';
 import { ApplicationVersionGraph, ApplicationVersionESelect, QApplicationVersion } from './qapplicationversion';
 import { ApplicationVersion } from '../../ddl/application/ApplicationVersion';
@@ -15,7 +14,6 @@ export interface ApplicationESelect extends IEntitySelectProperties, Application
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
-    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     domain?: DomainESelect;
     versions?: ApplicationVersionESelect;
     currentVersion?: ApplicationCurrentVersionESelect;
@@ -41,7 +39,6 @@ export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
-    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     domain?: DomainEOptionalId;
 }
 /**
@@ -53,7 +50,6 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
-    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     domain?: DomainGraph;
     versions?: ApplicationVersionGraph[];
     currentVersion?: ApplicationCurrentVersionGraph[];
@@ -67,7 +63,6 @@ export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     PACKAGE_NAME?: string | IQStringField;
     STATUS?: string | IQStringField;
     SIGNATURE?: string | IQStringField;
-    JSON_APPLICATION?: string | IQStringField;
     DOMAIN_ID?: number | IQNumberField;
 }
 /**
@@ -90,7 +85,6 @@ export interface QApplication extends IQEntity<Application> {
     packageName: IQStringField;
     status: IQStringField;
     signature: IQStringField;
-    jsonApplication: IQStringField;
     domain: QDomainQRelation;
     versions: IQOneToManyRelation<ApplicationVersion, QApplicationVersion>;
     currentVersion: IQOneToManyRelation<ApplicationCurrentVersion, QApplicationCurrentVersion>;

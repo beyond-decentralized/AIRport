@@ -22,9 +22,6 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	JsonApplicationWithLastIds,
-} from '@airport/security-check';
-import {
 	DomainGraph,
 	DomainEId,
 	DomainEOptionalId,
@@ -86,7 +83,6 @@ export interface ApplicationESelect
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
-	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -131,7 +127,6 @@ export interface ApplicationEUpdateProperties
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
-	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	domain?: DomainEOptionalId;
@@ -151,7 +146,6 @@ export interface ApplicationGraph
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
-	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Relations
 	domain?: DomainGraph;
@@ -171,7 +165,6 @@ export interface ApplicationEUpdateColumns
 	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: string | IQStringField;
 	SIGNATURE?: string | IQStringField;
-	JSON_APPLICATION?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
 
 }
@@ -213,7 +206,6 @@ export interface QApplication extends IQEntity<Application>
 	packageName: IQStringField;
 	status: IQStringField;
 	signature: IQStringField;
-	jsonApplication: IQStringField;
 
 	// Non-Id Relations
 	domain: QDomainQRelation;

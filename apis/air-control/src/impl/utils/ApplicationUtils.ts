@@ -348,8 +348,6 @@ export class ApplicationUtils
 		const selectClause: IQFieldInternal<any>[] = []
 		let actorIdColumnIndex: number
 		let actorRecordIdColumnIndex: number
-		let draftColumnIndex: number
-		let draftColumnUpdated = false
 		let repositoryIdColumnIndex: number
 		let systemWideOperationIdColumn: DbColumn
 
@@ -385,14 +383,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 				case repositoryEntity.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
-				case repositoryEntity.IS_DRAFT:
-					if (!nonIdColumnSet) {
-						this.addColumnToSheetSelect(dbColumn, qEntity, selectClause)
-					} else {
-						draftColumnUpdated = true
-					}
-					draftColumnIndex = inQueryColumnIndex
-					break
 				case repositoryEntity.REPOSITORY_ID:
 					repositoryIdColumnIndex = inQueryColumnIndex
 					break
@@ -409,8 +399,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 		return {
 			actorIdColumnIndex,
 			actorRecordIdColumnIndex,
-			draftColumnIndex,
-			draftColumnUpdated,
 			repositoryIdColumnIndex,
 			selectClause,
 			systemWideOperationIdColumn

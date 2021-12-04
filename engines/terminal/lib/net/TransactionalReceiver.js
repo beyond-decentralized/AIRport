@@ -39,6 +39,12 @@ export class TransactionalReceiver {
                 case IsolateMessageType.APP_INITIALIZED:
                     this.initializedApps.add(message.applicationName);
                     return null;
+                case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
+                    const terminalStore = await container(this).get(TERMINAL_STORE);
+                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
+                        .get(message.applicationName);
+                    break;
+                }
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transactionalServer.addRepository(
@@ -125,12 +131,6 @@ export class TransactionalReceiver {
                     const updateValuesMessage = message;
                     result = await transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
                     break;
-                case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                    const terminalStore = await container(this).get(TERMINAL_STORE);
-                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
-                        .get(message.applicationName);
-                    break;
-                }
                 default:
                     // Unexpected IsolateMessageInType
                     return;

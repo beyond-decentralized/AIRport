@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
-import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, } from '@airport/ground-control';
+import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { DELETE_MANAGER, HISTORY_MANAGER, } from '../tokens';
 export class DeleteManager {
@@ -28,7 +28,6 @@ export class DeleteManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
-            // values: portableQuery.values,
         };
         const treesToDelete = await transaction
             .find(portableSelect, {}, context);
@@ -121,12 +120,16 @@ export class DeleteManager {
                     const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, operHistoryDuo);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
                         const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actorRecordId, recHistoryDuo);
+                        let actorId;
                         for (const dbProperty of dbEntity.properties) {
                             if (dbProperty.relation && dbProperty.relation.length) {
                                 const dbRelation = dbProperty.relation[0];
                                 switch (dbRelation.relationType) {
                                     case EntityRelationType.MANY_TO_ONE:
                                         applicationUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
+                                            if (dbColumn.name === repositoryEntity.ACTOR_ID) {
+                                                actorId;
+                                            }
                                             recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
                                         });
                                         break;
@@ -143,6 +146,11 @@ export class DeleteManager {
                                 recHistoryDuo
                                     .addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name], recHistoryOldValueDuo);
                             }
+                        }
+                        if (actorId !== repoTransHistory.actor.id) {
+                            recordHistory.actor = {
+                                id: actorId
+                            };
                         }
                     }
                 }

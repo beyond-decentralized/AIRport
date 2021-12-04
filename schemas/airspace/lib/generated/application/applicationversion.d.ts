@@ -1,3 +1,4 @@
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { IApplicationEntity } from './applicationentity';
 import { IApplicationReference } from './applicationreference';
 import { IApplication } from './application';
@@ -8,6 +9,7 @@ export interface IApplicationVersion {
     majorVersion?: number;
     minorVersion?: number;
     patchVersion?: number;
+    jsonApplication?: JsonApplicationWithLastIds;
     application?: IApplication;
     entities?: IApplicationEntity[];
     references?: IApplicationReference[];

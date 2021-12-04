@@ -93,9 +93,6 @@ ApplicationEntity = __decorate([
     Entity(),
     Table({
         name: 'APPLICATION_ENTITIES',
-        // indexes: (se: ApplicationEntity) => [{
-        // 	property: se.applicationVersion
-        // }]
     })
 ], ApplicationEntity);
 export { ApplicationEntity };

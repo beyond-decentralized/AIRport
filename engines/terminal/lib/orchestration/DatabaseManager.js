@@ -105,7 +105,7 @@ export class DatabaseManager {
     }
     async initFeatureApplications(context, jsonApplications) {
         const applicationDao = await container(this).get(APPLICATION_DAO);
-        const applications = await applicationDao.findAll();
+        const applications = await applicationDao.findAllWithJson();
         const existingApplicationMap = new Map();
         for (const application of applications) {
             existingApplicationMap.set(application.name, application);
@@ -134,13 +134,13 @@ export class DatabaseManager {
         // 	} else {
         // applicationNames.push(applicationName)
         // }
-        // }
+        // }	
         // }
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
             const existingApplication = existingApplicationMap.get(getApplicationName(jsonApplication));
             if (existingApplication) {
-                jsonApplication.lastIds = existingApplication.jsonApplication.lastIds;
+                jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
             else {
                 applicationsToCreate.push(jsonApplication);

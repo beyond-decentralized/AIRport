@@ -94,7 +94,6 @@ export declare namespace repositoryEntity {
     const ACTOR_RECORD_ID = "ACTOR_RECORD_ID";
     const ENTITY_NAME = "RepositoryEntity";
     const FOREIGN_KEY = "REPOSITORY_ID";
-    const IS_DRAFT = "IS_DRAFT";
     const LOCAL_ENTITY_NAME = "LocalRepositoryEntity";
     const REPOSITORY_ID = "REPOSITORY_ID";
     const ORIGINAL_ACTOR_ID = "ORIGINAL_ACTOR_ID";

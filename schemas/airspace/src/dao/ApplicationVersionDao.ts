@@ -188,7 +188,7 @@ export class ApplicationVersionDao
 				applicationVersion.id, applicationVersion.integerVersion,
 				applicationVersion.versionString, applicationVersion.majorVersion,
 				applicationVersion.minorVersion, applicationVersion.patchVersion,
-				applicationVersion.application.index
+				applicationVersion.application.index, applicationVersion.jsonApplication
 			])
 		}
 		await this.db.insertValuesGenerateIds({
@@ -201,6 +201,7 @@ export class ApplicationVersionDao
 				sv.minorVersion,
 				sv.patchVersion,
 				sv.application.index,
+				sv.jsonApplication
 			],
 			values
 		})

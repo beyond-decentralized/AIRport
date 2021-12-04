@@ -6,7 +6,8 @@ import {
 	IdColumnOnlyIndex,
 	JsonApplication,
 	ApplicationName,
-	ApplicationStatus
+	ApplicationStatus,
+	ensureChildJsSet
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
@@ -37,9 +38,15 @@ export interface IApplicationComposer {
 		jsonApplications: JsonApplicationWithLastIds[],
 		ddlObjectRetriever: IDdlObjectRetriever,
 		applicationLocator: IApplicationLocator,
-		terminalStore: ITerminalStore
+		context: IApplicationComposerContext
 	): Promise<AllDdlObjects>;
 
+}
+
+export interface IApplicationComposerContext {
+	terminalStore: ITerminalStore,
+	// is true inside AIRport apps to load all of the necessary Application Q objects
+	deepTraverseReferences?: boolean
 }
 
 export class ApplicationComposer
@@ -49,13 +56,14 @@ export class ApplicationComposer
 		jsonApplications: JsonApplicationWithLastIds[],
 		ddlObjectRetriever: IDdlObjectRetriever,
 		applicationLocator: IApplicationLocator,
-		terminalStore: ITerminalStore
+		context: IApplicationComposerContext
 	): Promise<AllDdlObjects> {
 		// FIXME: investigate if references here shoud be done by applicationSignatures and not DOMAIN_NAME___APPLICATION_NAME
 
 		// NOTE: application name contains domain name as a prefix
 		const jsonApplicationMapByName: Map<ApplicationName, JsonApplicationWithLastIds> = new Map();
 
+		const terminalStore = context.terminalStore
 		const allDomains = terminalStore.getDomains().slice()
 		const domainNameMapByName: Map<DomainName, IDomain> = new Map()
 		for (const domain of allDomains) {
@@ -128,7 +136,7 @@ export class ApplicationComposer
 			newApplicationReferences
 		} = await this.composeApplicationReferences(jsonApplicationMapByName,
 			newApplicationVersionMapByApplicationName, applicationLocator, terminalStore,
-			allDdlObjects)
+			allDdlObjects, context.deepTraverseReferences)
 
 		added.applicationReferences = newApplicationReferences
 
@@ -149,7 +157,6 @@ export class ApplicationComposer
 					...ddlObjectRetriever.lastIds
 				}
 				jsonApplication.lastIds = lastIds
-				application.jsonApplication = jsonApplication
 				application.index = ++ddlObjectRetriever.lastIds.applications
 			}
 			if (!domain.id) {
@@ -158,6 +165,7 @@ export class ApplicationComposer
 			const applicationVersion = newApplicationVersionMapByApplicationName.get(application.name)
 			if (!applicationVersion.id) {
 				applicationVersion.id = ++ddlObjectRetriever.lastIds.applicationVersions
+				applicationVersion.jsonApplication = jsonApplication
 			}
 
 			this.composeApplicationEntities(jsonApplication, applicationVersion,
@@ -331,7 +339,6 @@ export class ApplicationComposer
 			application = {
 				domain,
 				index: null,
-				jsonApplication: null,
 				name: applicationName,
 				packageName: jsonApplication.name,
 				scope: 'public',
@@ -365,6 +372,7 @@ export class ApplicationComposer
 				minorVersion: parseInt(versionParts[1]),
 				patchVersion: parseInt(versionParts[2]),
 				application,
+				jsonApplication,
 				entities: [],
 				references: [],
 				referencedBy: [],
@@ -397,12 +405,15 @@ export class ApplicationComposer
 		newApplicationVersionMapByApplicationName: Map<ApplicationName, IApplicationVersion>,
 		applicationLocator: IApplicationLocator,
 		terminalStore: ITerminalStore,
-		allDdlObjects: AllDdlObjects
+		allDdlObjects: AllDdlObjects,
+		deepTraverseReferences: boolean
 	): Promise<{
 		newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]>,
 		newApplicationReferences: IApplicationReference[]
 	}> {
 		const newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]> = new Map();
+
+		const newApplicationReferenceLookup: Map<ApplicationName, Set<number>> = new Map()
 
 		const newApplicationReferences: IApplicationReference[] = [];
 		for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByApplicationName) {
@@ -412,6 +423,8 @@ export class ApplicationComposer
 				= jsonApplication.versions[jsonApplication.versions.length - 1];
 			const applicationReferences: IApplicationReference[]
 				= ensureChildArray(newApplicationReferenceMap, applicationName);
+			const applicationReferenceLookup: Set<number>
+				= ensureChildJsSet(newApplicationReferenceLookup, applicationName);
 
 			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
 				const referencedApplicationName = getApplicationName(jsonReferencedApplication);
@@ -425,14 +438,22 @@ export class ApplicationComposer
 						in either existing applications or applications being currently processed`);
 					}
 					this.addApplicationVersionObjects(referencedApplicationVersion, allDdlObjects.all)
+					if (deepTraverseReferences) {
+						// This should cause another iteration over the outer loop to process newly added ApplicationVersion
+						jsonApplicationMapByName.set(referencedApplicationName, referencedApplicationVersion.jsonApplication)
+						newApplicationVersionMapByApplicationName.set(referencedApplicationName, referencedApplicationVersion);
+					}
 				}
 				const applicationReference: IApplicationReference = {
 					index: jsonReferencedApplication.index,
 					ownApplicationVersion,
 					referencedApplicationVersion
 				};
-				newApplicationReferences.push(applicationReference);
-				applicationReferences.push(applicationReference);
+				if (!applicationReferenceLookup.has(jsonReferencedApplication.index)) {
+					applicationReferenceLookup.add(jsonReferencedApplication.index)
+					newApplicationReferences.push(applicationReference);
+					applicationReferences.push(applicationReference);
+				}
 			}
 		}
 

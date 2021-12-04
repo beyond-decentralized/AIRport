@@ -27,6 +27,7 @@ import {
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
+	repositoryEntity,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -38,6 +39,7 @@ import {
 	REC_HIST_OLD_VALUE_DUO,
 	REC_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DUO,
+	Actor_Id,
 } from '@airport/holding-pattern'
 import {
 	IDeleteManager,
@@ -251,6 +253,7 @@ export class DeleteManager
 						const recordHistory = operHistoryDuo.startRecordHistory(
 							operationHistory, recordToDelete.actorRecordId,
 							recHistoryDuo)
+						let actorId: Actor_Id
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
 								const dbRelation = dbProperty.relation[0]
@@ -262,6 +265,9 @@ export class DeleteManager
 												value: any,
 												propertyNameChains: string[][]
 											) => {
+											if (dbColumn.name === repositoryEntity.ACTOR_ID) {
+												actorId
+											}
 											recHistoryDuo.addOldValue(recordHistory, dbColumn,
 												value, recHistoryOldValueDuo)
 										})
@@ -279,6 +285,11 @@ export class DeleteManager
 									.addOldValue(recordHistory, dbColumn,
 										recordToDelete[dbProperty.name],
 										recHistoryOldValueDuo)
+							}
+						}
+						if (actorId !== repoTransHistory.actor.id) {
+							recordHistory.actor = {
+								id: actorId
 							}
 						}
 					}

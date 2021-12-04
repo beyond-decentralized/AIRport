@@ -38,7 +38,9 @@ export class ApplicationInitializer {
         for (const jsonApplication of applicationsWithValidDependencies) {
             await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
         }
-        const allDdlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore);
+        const allDdlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+            terminalStore
+        });
         this.addNewApplicationVersionsToAll(allDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbApplications(airDb, allDdlObjects);
@@ -50,7 +52,10 @@ export class ApplicationInitializer {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationComposer, applicationLocator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, TERMINAL_STORE);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies([jsonApplication], false);
-        const ddlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore);
+        const ddlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+            deepTraverseReferences: true,
+            terminalStore
+        });
         this.addNewApplicationVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbApplications(airDb, ddlObjects);
@@ -58,7 +63,9 @@ export class ApplicationInitializer {
     async stage(jsonApplications, context) {
         const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
         // Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
-        const tempDdlObjects = await applicationComposer.compose(jsonApplications, ddlObjectRetriever, applicationLocator, terminalStore);
+        const tempDdlObjects = await applicationComposer.compose(jsonApplications, ddlObjectRetriever, applicationLocator, {
+            terminalStore
+        });
         this.addNewApplicationVersionsToAll(tempDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
         this.setAirDbApplications(airDb, tempDdlObjects);

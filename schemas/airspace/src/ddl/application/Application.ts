@@ -67,12 +67,4 @@ export class Application {
 	@OneToMany({ mappedBy: 'application' })
 	currentVersion: ApplicationCurrentVersion[] = [];
 
-	// FIXME: keep track of applications by signature also
-	// FIXME: revisit application tracking when versioning is implemented
-	// better to track everything by names
-	// FIXME: once versioned should be in application version (if still needed)
-	@Column({ name: 'JSON_APPLICATION', nullable: false })
-	@Json()
-	jsonApplication: JsonApplicationWithLastIds
-
 }

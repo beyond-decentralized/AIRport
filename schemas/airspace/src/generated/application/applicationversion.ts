@@ -1,4 +1,7 @@
 import {
+	JsonApplicationWithLastIds,
+} from '@airport/security-check';
+import {
 	IApplicationEntity,
 } from './applicationentity';
 import {
@@ -27,6 +30,7 @@ export interface IApplicationVersion {
 	majorVersion?: number;
 	minorVersion?: number;
 	patchVersion?: number;
+	jsonApplication?: JsonApplicationWithLastIds;
 
 	// Non-Id Relations
 	application?: IApplication;

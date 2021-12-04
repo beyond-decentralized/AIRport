@@ -184,8 +184,6 @@ export class ApplicationUtils {
         const selectClause = [];
         let actorIdColumnIndex;
         let actorRecordIdColumnIndex;
-        let draftColumnIndex;
-        let draftColumnUpdated = false;
         let repositoryIdColumnIndex;
         let systemWideOperationIdColumn;
         for (const columnIndex in dbEntity.columns) {
@@ -217,15 +215,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
                 case repositoryEntity.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.IS_DRAFT:
-                    if (!nonIdColumnSet) {
-                        this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
-                    }
-                    else {
-                        draftColumnUpdated = true;
-                    }
-                    draftColumnIndex = inQueryColumnIndex;
-                    break;
                 case repositoryEntity.REPOSITORY_ID:
                     repositoryIdColumnIndex = inQueryColumnIndex;
                     break;
@@ -241,8 +230,6 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         return {
             actorIdColumnIndex,
             actorRecordIdColumnIndex,
-            draftColumnIndex,
-            draftColumnUpdated,
             repositoryIdColumnIndex,
             selectClause,
             systemWideOperationIdColumn

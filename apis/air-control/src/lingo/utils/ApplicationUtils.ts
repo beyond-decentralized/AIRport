@@ -46,8 +46,6 @@ export interface IdKeysByIdColumnIndex {
 export interface RepositorySheetSelectInfo {
   actorIdColumnIndex: number;
   actorRecordIdColumnIndex: number;
-  draftColumnIndex: number;
-  draftColumnUpdated: boolean;
   repositoryIdColumnIndex: number;
   systemWideOperationIdColumn: DbColumn;
   selectClause?: IQFieldInternal<any>[];

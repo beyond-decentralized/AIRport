@@ -1,5 +1,6 @@
 import {
 	AIRPORT_DATABASE,
+	ALL_FIELDS,
 	and,
 	max,
 	tree,
@@ -9,7 +10,6 @@ import { container, DI } from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
-	JsonApplication,
 	ApplicationIndex,
 	ApplicationName,
 	ApplicationStatus,
@@ -23,6 +23,7 @@ import {
 	Q,
 	QDomain,
 	QApplication,
+	QApplicationCurrentVersion,
 	QApplicationVersion
 } from '../generated/generated'
 
@@ -32,7 +33,6 @@ export interface IApplicationLookupRecord {
 		id: number
 		name: string
 	},
-	jsonApplication: JsonApplication
 	name: string
 	majorVersion: number
 	minorVersion: number
@@ -43,6 +43,8 @@ export interface IApplicationDao
 	extends IBaseApplicationDao {
 
 	findAllActive(): Promise<IApplication[]>;
+
+	findAllWithJson(): Promise<IApplication[]>;
 
 	findMapByVersionIds(
 		applicationVersionIds: ApplicationVersionId[]
@@ -89,6 +91,36 @@ export class ApplicationDao
 			select: {},
 			from: [
 				s = Q.Application
+			]
+		})
+	}
+
+	async findAllWithJson()
+		: Promise<IApplication[]> {
+		let a: QApplication
+		let av: QApplicationVersion
+		// FIXME: this should be don through currentVersion - verify that it get's populated and switch
+		let cv: QApplicationCurrentVersion
+
+		return this.db.find.tree({
+			select: {
+				...ALL_FIELDS,
+				// currentVersion: {
+				// 	applicationVersion: {
+				// 		id: Y,
+				// 		jsonApplication: Y
+				// 	}
+				// }
+				versions: {
+					id: Y,
+					jsonApplication: Y
+				}
+			},
+			from: [
+				a = Q.Application,
+				// cv = a.currentVersion.innerJoin(),
+				// av = cv.applicationVersion.innerJoin()
+				av = a.versions.innerJoin()
 			]
 		})
 	}
@@ -174,7 +206,6 @@ export class ApplicationDao
 								domainId: d.id,
 								domainName: d.name,
 								name: s.name,
-								jsonApplication: s.jsonApplication,
 								majorVersion: max(sv.majorVersion),
 								minorVersion: sv.minorVersion,
 								patchVersion: sv.patchVersion,
@@ -196,7 +227,6 @@ export class ApplicationDao
 						index: sMaV.index,
 						domainId: sMaV.domainId,
 						domainName: sMaV.domainName,
-						jsonApplication: sMaV.jsonApplication,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
 						minorVersion: max(sMaV.minorVersion),
@@ -217,7 +247,6 @@ export class ApplicationDao
 					id: sMiV.domainId,
 					name: sMiV.domainName
 				},
-				jsonApplication: sMiV.jsonApplication,
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,
 				minorVersion: sMiV.minorVersion,
@@ -332,7 +361,7 @@ export class ApplicationDao
 			values.push([
 				application.index, application.domain.id, application.scope,
 				application.name, application.packageName, application.status,
-				application.signature, application.jsonApplication
+				application.signature
 			])
 		}
 		await this.db.insertValuesGenerateIds({
@@ -344,8 +373,7 @@ export class ApplicationDao
 				a.name,
 				a.packageName,
 				a.status,
-				a.signature,
-				a.jsonApplication
+				a.signature
 			],
 			values
 		})

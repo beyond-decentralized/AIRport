@@ -55,7 +55,7 @@ export const APPLICATION = {
 								}
 							],
 							"name": "ACTOR_ID",
-							"notNull": true,
+							"notNull": false,
 							"propertyRefs": [
 								{
 									"index": 2

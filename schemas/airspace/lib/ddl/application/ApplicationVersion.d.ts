@@ -4,6 +4,7 @@ import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationReference } from './ApplicationReference';
 import { IApplicationEntity } from '../../generated/application/applicationentity';
 import { IApplicationReference } from '../../generated/application/applicationreference';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 export declare class ApplicationVersion {
     id: ApplicationVersionId;
     integerVersion: ApplicationVersionInteger;
@@ -11,6 +12,7 @@ export declare class ApplicationVersion {
     majorVersion: ApplicationVersionMajor;
     minorVersion: ApplicationVersionMinor;
     patchVersion: ApplicationVersionPatch;
+    jsonApplication: JsonApplicationWithLastIds;
     application: Application;
     entities: ApplicationEntity[];
     references: ApplicationReference[];

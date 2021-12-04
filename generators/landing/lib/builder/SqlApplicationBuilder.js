@@ -77,7 +77,9 @@ export class SqlApplicationBuilder {
                 if (!relatedJsonApplication) {
                     const relatedApplication = existingApplicationMap.get(relatedApplicationName);
                     if (relatedApplication) {
-                        relatedJsonApplication = relatedApplication.jsonApplication;
+                        // FIXME: this should be looked up though currentVersion - make sure it's populated
+                        // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
+                        relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
                     }
                     else {
                         relatedJsonApplication = newJsonApplicationMap.get(relatedApplicationName);

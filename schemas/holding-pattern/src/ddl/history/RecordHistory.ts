@@ -44,17 +44,22 @@ export class RecordHistory {
 
 	@Id()
 	@GeneratedValue()
-	@SequenceGenerator({allocationSize: 2000})
+	@SequenceGenerator({ allocationSize: 2000 })
 	id: RecordHistoryId
 
-	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
+	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId
 
+	// Actor is populated only if the record's Actor_Id
+	// is different from RepositoryTransactionHistory Actor_Id
+	// OR if the Actor who created the record is different
+	// than than the Actor making the update/delete.
+	// Actor is never populated for inserts (since the
+	// record is guaranteed to be created by the same Actor)
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_ID', referencedColumnName: 'ID',
-		nullable: false
+		name: 'ACTOR_ID', referencedColumnName: 'ID'
 	})
 	actor: Actor
 
@@ -65,10 +70,10 @@ export class RecordHistory {
 	})
 	operationHistory: OperationHistory
 
-	@OneToMany({mappedBy: 'recordHistory'})
+	@OneToMany({ mappedBy: 'recordHistory' })
 	newValues: RecordHistoryNewValue[] = []
 
-	@OneToMany({mappedBy: 'recordHistory'})
+	@OneToMany({ mappedBy: 'recordHistory' })
 	oldValues: RecordHistoryOldValue[] = []
 
 	@Transient()

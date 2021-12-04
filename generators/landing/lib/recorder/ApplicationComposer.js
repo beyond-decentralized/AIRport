@@ -1,11 +1,12 @@
 import { DI } from '@airport/di';
-import { ensureChildArray, getApplicationName, ApplicationStatus } from '@airport/ground-control';
+import { ensureChildArray, getApplicationName, ApplicationStatus, ensureChildJsSet } from '@airport/ground-control';
 import { APPLICATION_COMPOSER } from '../tokens';
 export class ApplicationComposer {
-    async compose(jsonApplications, ddlObjectRetriever, applicationLocator, terminalStore) {
+    async compose(jsonApplications, ddlObjectRetriever, applicationLocator, context) {
         // FIXME: investigate if references here shoud be done by applicationSignatures and not DOMAIN_NAME___APPLICATION_NAME
         // NOTE: application name contains domain name as a prefix
         const jsonApplicationMapByName = new Map();
+        const terminalStore = context.terminalStore;
         const allDomains = terminalStore.getDomains().slice();
         const domainNameMapByName = new Map();
         for (const domain of allDomains) {
@@ -66,7 +67,7 @@ export class ApplicationComposer {
             const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByName);
             this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplicationName);
         }
-        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplicationName, applicationLocator, terminalStore, allDdlObjects);
+        const { newApplicationReferenceMap, newApplicationReferences } = await this.composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplicationName, applicationLocator, terminalStore, allDdlObjects, context.deepTraverseReferences);
         added.applicationReferences = newApplicationReferences;
         for (const applicationVersion of allApplicationVersionsByIds) {
             if (applicationVersion) {
@@ -83,7 +84,6 @@ export class ApplicationComposer {
                     ...ddlObjectRetriever.lastIds
                 };
                 jsonApplication.lastIds = lastIds;
-                application.jsonApplication = jsonApplication;
                 application.index = ++ddlObjectRetriever.lastIds.applications;
             }
             if (!domain.id) {
@@ -92,6 +92,7 @@ export class ApplicationComposer {
             const applicationVersion = newApplicationVersionMapByApplicationName.get(application.name);
             if (!applicationVersion.id) {
                 applicationVersion.id = ++ddlObjectRetriever.lastIds.applicationVersions;
+                applicationVersion.jsonApplication = jsonApplication;
             }
             this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplicationName, added.entities, ddlObjectRetriever);
             this.composeApplicationProperties(jsonApplication, added.properties, newPropertiesMap, newEntitiesMapByApplicationName, ddlObjectRetriever);
@@ -222,7 +223,6 @@ export class ApplicationComposer {
             application = {
                 domain,
                 index: null,
-                jsonApplication: null,
                 name: applicationName,
                 packageName: jsonApplication.name,
                 scope: 'public',
@@ -248,6 +248,7 @@ export class ApplicationComposer {
                 minorVersion: parseInt(versionParts[1]),
                 patchVersion: parseInt(versionParts[2]),
                 application,
+                jsonApplication,
                 entities: [],
                 references: [],
                 referencedBy: [],
@@ -273,14 +274,16 @@ export class ApplicationComposer {
         newApplicationVersionMapByApplicationName.set(application.name, newApplicationVersion);
         return newApplicationVersion;
     }
-    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplicationName, applicationLocator, terminalStore, allDdlObjects) {
+    async composeApplicationReferences(jsonApplicationMapByName, newApplicationVersionMapByApplicationName, applicationLocator, terminalStore, allDdlObjects, deepTraverseReferences) {
         const newApplicationReferenceMap = new Map();
+        const newApplicationReferenceLookup = new Map();
         const newApplicationReferences = [];
         for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByApplicationName) {
             const application = ownApplicationVersion.application;
             const jsonApplication = jsonApplicationMapByName.get(application.name);
             const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
             const applicationReferences = ensureChildArray(newApplicationReferenceMap, applicationName);
+            const applicationReferenceLookup = ensureChildJsSet(newApplicationReferenceLookup, applicationName);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
                 const referencedApplicationName = getApplicationName(jsonReferencedApplication);
                 let referencedApplicationVersion = newApplicationVersionMapByApplicationName.get(referencedApplicationName);
@@ -292,14 +295,22 @@ export class ApplicationComposer {
 						in either existing applications or applications being currently processed`);
                     }
                     this.addApplicationVersionObjects(referencedApplicationVersion, allDdlObjects.all);
+                    if (deepTraverseReferences) {
+                        // This should cause another iteration over the outer loop to process newly added ApplicationVersion
+                        jsonApplicationMapByName.set(referencedApplicationName, referencedApplicationVersion.jsonApplication);
+                        newApplicationVersionMapByApplicationName.set(referencedApplicationName, referencedApplicationVersion);
+                    }
                 }
                 const applicationReference = {
                     index: jsonReferencedApplication.index,
                     ownApplicationVersion,
                     referencedApplicationVersion
                 };
-                newApplicationReferences.push(applicationReference);
-                applicationReferences.push(applicationReference);
+                if (!applicationReferenceLookup.has(jsonReferencedApplication.index)) {
+                    applicationReferenceLookup.add(jsonReferencedApplication.index);
+                    newApplicationReferences.push(applicationReference);
+                    applicationReferences.push(applicationReference);
+                }
             }
         }
         return {
@@ -323,13 +334,6 @@ export class ApplicationComposer {
                 isRepositoryEntity: jsonEntity.isRepositoryEntity,
                 name: jsonEntity.name,
                 tableConfig: jsonEntity.tableConfig,
-                // columns: [],
-                // columnMap: {},
-                // idColumns: [],
-                // idColumnMap: {},
-                // relations: [],
-                // properties: [],
-                // propertyMap: {}
             };
             // applicationVersion.entities.push(entity)
             newApplicationEntities.push(entity);
@@ -357,7 +361,6 @@ export class ApplicationComposer {
                     entity,
                     name: jsonProperty.name,
                     isId: jsonProperty.isId,
-                    // propertyColumns: []
                 };
                 // entity.properties.push(property)
                 // entity.propertyMap[property.name] = property
@@ -409,8 +412,6 @@ export class ApplicationComposer {
                     oneToManyElems: jsonRelation.oneToManyElems,
                     relationEntity,
                     relationType: jsonRelation.relationType,
-                    // oneRelationColumns: [],
-                    // manyRelationColumns: []
                 };
                 // property.relation               = [relation]
                 // relationEntity.relations.push(relation)
@@ -455,9 +456,6 @@ export class ApplicationComposer {
                     propertyColumns: [],
                     scale: jsonColumn.scale,
                     type: jsonColumn.type,
-                    // propertyColumns: [],
-                    // oneRelationColumns: [],
-                    // manyRelationColumns: []
                 };
                 columnsForTable[index] = column;
                 newColumns.push(column);

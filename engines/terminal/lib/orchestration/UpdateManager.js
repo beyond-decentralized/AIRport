@@ -3,11 +3,11 @@ import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
 import { OPER_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REC_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { HISTORY_MANAGER, REPOSITORY_MANAGER, UPDATE_MANAGER } from '../tokens';
+import { HISTORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
     async updateValues(portableQuery, actor, transaction, context) {
-        const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, sequenceGenerator] = await container(this)
-            .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
+        const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repoTransHistoryDuo, sequenceGenerator] = await container(this)
+            .get(HISTORY_MANAGER, OPER_HISTORY_DUO, REC_HISTORY_DUO, REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
         const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
@@ -27,7 +27,7 @@ export class UpdateManager {
             // This eats up more disk space but saves on operations that need
             // to be performed (one less query)
             [recordHistoryMap, repositorySheetSelectInfo]
-                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryManager, repoTransHistoryDuo, transaction, context);
+                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, context);
             internalFragments.SET.push({
                 column: repositorySheetSelectInfo.systemWideOperationIdColumn,
                 value: systemWideOperationId
@@ -46,7 +46,7 @@ export class UpdateManager {
         }
         return numUpdatedRows;
     }
-    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoManager, repoTransHistoryDuo, transaction, context) {
+    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, context) {
         if (!context.dbEntity.isRepositoryEntity) {
             throw new Error(errorPrefix +
                 `Cannot add update history for a non-RepositoryEntity`);
@@ -68,7 +68,6 @@ export class UpdateManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.SHEET,
             parameterMap: portableQuery.parameterMap,
-            // values: portableQuery.values,
         };
         const recordsToUpdate = await transaction.find(portableSelect, {}, context);
         const { recordsByRepositoryId, repositoryIdSet } = this.groupRecordsByRepository(recordsToUpdate, getSheetSelectFromSetClauseResult);
@@ -86,6 +85,11 @@ export class UpdateManager {
                 const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
                 const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId, recHistoryDuo);
+                if (actorId !== repoTransHistory.actor.id) {
+                    recordHistory.actor = {
+                        id: actorId
+                    };
+                }
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
                 for (let i = 0; i < recordToUpdate.length; i++) {
                     switch (i) {
@@ -93,11 +97,6 @@ export class UpdateManager {
                         case getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex:
                         case getSheetSelectFromSetClauseResult.repositoryIdColumnIndex:
                             continue;
-                        case getSheetSelectFromSetClauseResult.draftColumnIndex:
-                            if (!getSheetSelectFromSetClauseResult.draftColumnUpdated) {
-                                continue;
-                            }
-                            break;
                     }
                     const dbColumn = getSheetSelectFromSetClauseResult
                         .selectClause[i].dbColumn;
@@ -132,12 +131,6 @@ export class UpdateManager {
                 const repositoryId = updatedRecord[repositorySheetSelectInfo.repositoryIdColumnIndex];
                 const actorId = updatedRecord[repositorySheetSelectInfo.actorIdColumnIndex];
                 const actorRecordId = updatedRecord[repositorySheetSelectInfo.actorRecordIdColumnIndex];
-                const isDraft = updatedRecord[repositorySheetSelectInfo.draftColumnIndex];
-                if (repositorySheetSelectInfo.draftColumnUpdated
-                    && isDraft) {
-                    throw new Error(errorPrefix + `Records cannot be updated to be draft. A record
-may only be created as a draft record.`);
-                }
                 const recordHistory = recordHistoryMapByRecordId[repositoryId][actorId][actorRecordId];
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = context.dbEntity.columnMap[columnName];
@@ -145,9 +138,9 @@ may only be created as a draft record.`);
                     if (value === undefined) {
                         throw new Error(errorPrefix + `Values cannot be 'undefined'.`);
                     }
-                    if (dbColumn.notNull && value === null && !isDraft) {
+                    if (dbColumn.notNull && value === null) {
                         throw new Error(errorPrefix + `Column '${dbColumn.entity.name}'.'${dbColumn.name}' is NOT NULL
-						and cannot have NULL values for non-draft records.`);
+						and cannot have NULL values.`);
                     }
                     recHistoryDuo.addNewValue(recordHistory, dbColumn, value, recHistoryNewValueDuo);
                 }

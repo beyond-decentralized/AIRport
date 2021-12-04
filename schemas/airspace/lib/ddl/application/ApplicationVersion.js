@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, Id, JoinColumn, ManyToOne, OneToMany, SequenceGenerator, Table, Transient } from '@airport/air-control';
+import { Column, DbNumber, DbString, Entity, Id, JoinColumn, Json, ManyToOne, OneToMany, SequenceGenerator, Table, Transient } from '@airport/air-control';
 let ApplicationVersion = class ApplicationVersion {
     constructor() {
         this.entities = [];
@@ -40,6 +40,10 @@ __decorate([
     Column({ name: 'PATCH_VERSION', nullable: false }),
     DbNumber()
 ], ApplicationVersion.prototype, "patchVersion", void 0);
+__decorate([
+    Column({ name: 'JSON_APPLICATION', nullable: false }),
+    Json()
+], ApplicationVersion.prototype, "jsonApplication", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({ name: 'APPLICATION_INDEX', nullable: false })

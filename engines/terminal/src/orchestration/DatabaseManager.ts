@@ -149,7 +149,7 @@ export class DatabaseManager
 	): Promise<void> {
 		const applicationDao = await container(this).get(APPLICATION_DAO);
 
-		const applications = await applicationDao.findAll()
+		const applications = await applicationDao.findAllWithJson()
 		const existingApplicationMap: Map<string, IApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.name, application)
@@ -181,14 +181,14 @@ export class DatabaseManager
 		// 	} else {
 		// applicationNames.push(applicationName)
 		// }
-		// }
+		// }	
 		// }
 
 		const applicationsToCreate: JsonApplicationWithLastIds[] = []
 		for (const jsonApplication of jsonApplications) {
 			const existingApplication = existingApplicationMap.get(getApplicationName(jsonApplication))
 			if (existingApplication) {
-				jsonApplication.lastIds = existingApplication.jsonApplication.lastIds
+				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {
 				applicationsToCreate.push(jsonApplication)
 			}

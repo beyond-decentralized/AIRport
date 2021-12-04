@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
+import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
 import { ApplicationEntityGraph, ApplicationEntityESelect, QApplicationEntity } from './qapplicationentity';
 import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
@@ -14,6 +15,7 @@ export interface ApplicationVersionESelect extends IEntitySelectProperties, Appl
     majorVersion?: number | IQNumberField;
     minorVersion?: number | IQNumberField;
     patchVersion?: number | IQNumberField;
+    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     application?: ApplicationESelect;
     entities?: ApplicationEntityESelect;
     references?: ApplicationReferenceESelect;
@@ -40,6 +42,7 @@ export interface ApplicationVersionEUpdateProperties extends IEntityUpdateProper
     majorVersion?: number | IQNumberField;
     minorVersion?: number | IQNumberField;
     patchVersion?: number | IQNumberField;
+    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     application?: ApplicationEOptionalId;
 }
 /**
@@ -51,6 +54,7 @@ export interface ApplicationVersionGraph extends ApplicationVersionEOptionalId, 
     majorVersion?: number | IQNumberField;
     minorVersion?: number | IQNumberField;
     patchVersion?: number | IQNumberField;
+    jsonApplication?: JsonApplicationWithLastIds | IQStringField;
     application?: ApplicationGraph;
     entities?: ApplicationEntityGraph[];
     references?: ApplicationReferenceGraph[];
@@ -65,6 +69,7 @@ export interface ApplicationVersionEUpdateColumns extends IEntityUpdateColumns {
     MAJOR_VERSION?: number | IQNumberField;
     MINOR_VERSION?: number | IQNumberField;
     PATCH_VERSION?: number | IQNumberField;
+    JSON_APPLICATION?: string | IQStringField;
     APPLICATION_INDEX?: number | IQNumberField;
 }
 /**
@@ -87,6 +92,7 @@ export interface QApplicationVersion extends IQEntity<ApplicationVersion> {
     majorVersion: IQNumberField;
     minorVersion: IQNumberField;
     patchVersion: IQNumberField;
+    jsonApplication: IQStringField;
     application: QApplicationQRelation;
     entities: IQOneToManyRelation<ApplicationEntity, QApplicationEntity>;
     references: IQOneToManyRelation<ApplicationReference, QApplicationReference>;

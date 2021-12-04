@@ -2968,6 +2968,20 @@ export const APPLICATION = {
 						{
 							"index": 6,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "JSON_APPLICATION",
+							"notNull": true,
+							"propertyRefs": [
+								{
+									"index": 6
+								}
+							],
+							"sinceVersion": 1,
+							"type": "JSON"
+						},
+						{
+							"index": 7,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
@@ -2982,7 +2996,7 @@ export const APPLICATION = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 6
+									"index": 7
 								}
 							],
 							"sinceVersion": 1,
@@ -3054,7 +3068,16 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
+							"columnRef": {
+								"index": 6
+							},
 							"index": 6,
+							"isId": false,
+							"name": "jsonApplication",
+							"sinceVersion": 1
+						},
+						{
+							"index": 7,
 							"isId": false,
 							"name": "application",
 							"relationRef": {
@@ -3063,7 +3086,7 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 7,
+							"index": 8,
 							"isId": false,
 							"name": "entities",
 							"relationRef": {
@@ -3072,7 +3095,7 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 8,
+							"index": 9,
 							"isId": false,
 							"name": "references",
 							"relationRef": {
@@ -3081,7 +3104,7 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
+							"index": 10,
 							"isId": false,
 							"name": "referencedBy",
 							"relationRef": {
@@ -3096,7 +3119,7 @@ export const APPLICATION = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 6
+								"index": 7
 							},
 							"relationTableIndex": 10,
 							"sinceVersion": 1
@@ -3109,7 +3132,7 @@ export const APPLICATION = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 8
 							},
 							"relationTableIndex": 6,
 							"sinceVersion": 1
@@ -3122,7 +3145,7 @@ export const APPLICATION = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
+								"index": 9
 							},
 							"relationTableIndex": 7,
 							"sinceVersion": 1
@@ -3135,7 +3158,7 @@ export const APPLICATION = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 9
+								"index": 10
 							},
 							"relationTableIndex": 7,
 							"sinceVersion": 1
@@ -3345,20 +3368,6 @@ export const APPLICATION = {
 						{
 							"index": 6,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "JSON_APPLICATION",
-							"notNull": true,
-							"propertyRefs": [
-								{
-									"index": 9
-								}
-							],
-							"sinceVersion": 1,
-							"type": "JSON"
-						},
-						{
-							"index": 7,
-							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
@@ -3469,15 +3478,6 @@ export const APPLICATION = {
 							"relationRef": {
 								"index": 2
 							},
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 6
-							},
-							"index": 9,
-							"isId": false,
-							"name": "jsonApplication",
 							"sinceVersion": 1
 						}
 					],

@@ -2,15 +2,15 @@ import {
 	QUERY_FACADE,
 	RepositorySheetSelectInfo,
 	SheetQuery
-}                           from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	getSysWideOpId,
 	SEQUENCE_GENERATOR
-}                           from '@airport/check-in'
+} from '@airport/check-in'
 import {
 	container,
 	DI
-}                           from '@airport/di'
+} from '@airport/di'
 import {
 	ChangeType,
 	ensureChildArray,
@@ -21,7 +21,7 @@ import {
 	PortableQuery,
 	QueryResultType,
 	repositoryEntity,
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistoryDuo,
@@ -36,7 +36,7 @@ import {
 	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
-}                           from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	IHistoryManager,
 	IOperationContext,
@@ -44,12 +44,12 @@ import {
 	ITransaction,
 	IUpdateManager,
 	RecordHistoryMap
-}                           from '@airport/terminal-map'
+} from '@airport/terminal-map'
 import {
 	HISTORY_MANAGER,
 	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
-}                           from '../tokens'
+} from '../tokens'
 
 export class UpdateManager
 	implements IUpdateManager {
@@ -61,19 +61,17 @@ export class UpdateManager
 		context: IOperationContext
 	): Promise<number> {
 		const [
-			      historyManager,
-			      operHistoryDuo,
-			      recHistoryDuo,
-			      recHistoryNewValueDuo,
-			      recHistoryOldValueDuo,
-			      repositoryManager,
-			      repoTransHistoryDuo,
-			      sequenceGenerator] = await container(this)
-			.get(HISTORY_MANAGER,
-				OPER_HISTORY_DUO, REC_HISTORY_DUO,
-				REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
-				REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO,
-				SEQUENCE_GENERATOR)
+			historyManager,
+			operHistoryDuo,
+			recHistoryDuo,
+			recHistoryNewValueDuo,
+			recHistoryOldValueDuo,
+			repoTransHistoryDuo,
+			sequenceGenerator] = await container(this)
+				.get(HISTORY_MANAGER,
+					OPER_HISTORY_DUO, REC_HISTORY_DUO,
+					REC_HIST_NEW_VALUE_DUO, REC_HIST_OLD_VALUE_DUO,
+					REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR)
 
 		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
@@ -100,9 +98,9 @@ export class UpdateManager
 			// to be performed (one less query)
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
-				portableQuery, actor, systemWideOperationId, errorPrefix,
-				historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
-				repositoryManager, repoTransHistoryDuo, transaction, context)
+					portableQuery, actor, systemWideOperationId, errorPrefix,
+					historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
+					repoTransHistoryDuo, transaction, context)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -115,7 +113,7 @@ export class UpdateManager
 
 		if (!dbEntity.isLocal && !transaction.isSync) {
 			const previousDbEntity = context.dbEntity
-			context.dbEntity       = dbEntity
+			context.dbEntity = dbEntity
 			// TODO: Entity based updates already have all of the new values being
 			// updated, detect the type of update and if entity just pull out
 			// the new values from them
@@ -140,7 +138,6 @@ export class UpdateManager
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
-		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
 		context: IOperationContext
@@ -153,9 +150,9 @@ export class UpdateManager
 				`Cannot add update history for a non-RepositoryEntity`)
 		}
 
-		const qEntity                           = context.ioc.airDb
+		const qEntity = context.ioc.airDb
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
-		const jsonUpdate: JsonUpdate<any>       = <JsonUpdate<any>>portableQuery.jsonQuery
+		const jsonUpdate: JsonUpdate<any> = <JsonUpdate<any>>portableQuery.jsonQuery
 		const getSheetSelectFromSetClauseResult = context.ioc.applicationUtils.getSheetSelectFromSetClause(
 			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
@@ -165,7 +162,7 @@ export class UpdateManager
 			getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils,
 			context.ioc.fieldUtils)
 
-		const jsonSelect: JsonSheetQuery    = {
+		const jsonSelect: JsonSheetQuery = {
 			S: jsonSelectClause,
 			F: [jsonUpdate.U],
 			W: jsonUpdate.W,
@@ -178,13 +175,13 @@ export class UpdateManager
 			parameterMap: portableQuery.parameterMap,
 			// values: portableQuery.values,
 		}
-		const recordsToUpdate               = await transaction.find<any, Array<any>>(
+		const recordsToUpdate = await transaction.find<any, Array<any>>(
 			portableSelect, {}, context)
 
 		const {
-			      recordsByRepositoryId,
-			      repositoryIdSet
-		      } = this.groupRecordsByRepository(
+			recordsByRepositoryId,
+			repositoryIdSet
+		} = this.groupRecordsByRepository(
 			recordsToUpdate, getSheetSelectFromSetClauseResult)
 
 		const repositoryIds: number[] = Array.from(repositoryIdSet)
@@ -193,26 +190,31 @@ export class UpdateManager
 
 		for (const repositoryId of repositoryIds) {
 			// const repository                         = repositories.get(repositoryId)
-			const recordHistoryMapForRepository      = {}
+			const recordHistoryMapForRepository = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repoTransHistory                   = await histManager.getNewRepositoryTransactionHistory(
+			const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(
 				transaction.transHistory, repositoryId, actor, context
 			)
-			const operationHistory                   = repoTransHistoryDuo.startOperation(
+			const operationHistory = repoTransHistoryDuo.startOperation(
 				repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
 				context.dbEntity, operHistoryDuo)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {
-				const actorId                  = recordToUpdate[
+				const actorId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorIdColumnIndex]
 				const recordHistoryMapForActor =
-					      ensureChildMap(recordHistoryMapForRepository, actorId)
+					ensureChildMap(recordHistoryMapForRepository, actorId)
 
-				const actorRecordId                     = recordToUpdate[
+				const actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
-				const recordHistory                     = operHistoryDuo.startRecordHistory(
+				const recordHistory = operHistoryDuo.startRecordHistory(
 					operationHistory, actorRecordId, recHistoryDuo)
+				if (actorId !== repoTransHistory.actor.id) {
+					recordHistory.actor = {
+						id: actorId
+					}
+				}
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (let i = 0; i < recordToUpdate.length; i++) {
@@ -221,15 +223,10 @@ export class UpdateManager
 						case getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex:
 						case getSheetSelectFromSetClauseResult.repositoryIdColumnIndex:
 							continue
-						case getSheetSelectFromSetClauseResult.draftColumnIndex:
-							if (!getSheetSelectFromSetClauseResult.draftColumnUpdated) {
-								continue
-							}
-							break
 					}
 					const dbColumn = getSheetSelectFromSetClauseResult
 						.selectClause[i].dbColumn
-					const value    = recordToUpdate[i]
+					const value = recordToUpdate[i]
 					recHistoryDuo.addOldValue(recordHistory, dbColumn, value,
 						recHistoryOldValueDuo)
 				}
@@ -251,7 +248,7 @@ export class UpdateManager
 		context: IOperationContext
 	): Promise<void> {
 		const qEntity = context.ioc.airDb.qApplications
-			[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
+		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		const sheetQuery = new SheetQuery({
 			from: [
@@ -262,7 +259,7 @@ export class UpdateManager
 				.equals(systemWideOperationId)
 		})
 
-		const queryFacade  = await container(this)
+		const queryFacade = await container(this)
 			.get(QUERY_FACADE)
 		let portableSelect = queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
@@ -276,39 +273,32 @@ export class UpdateManager
 			portableSelect, internalFragments, context)
 
 		const {
-			      recordsByRepositoryId,
-			      repositoryIdSet
-		      } = this.groupRecordsByRepository(
+			recordsByRepositoryId,
+			repositoryIdSet
+		} = this.groupRecordsByRepository(
 			updatedRecords, repositorySheetSelectInfo)
 
 		for (const repositoryId of repositoryIdSet) {
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const updatedRecord of recordsForRepositoryId) {
-				const repositoryId  = updatedRecord[
+				const repositoryId = updatedRecord[
 					repositorySheetSelectInfo.repositoryIdColumnIndex]
-				const actorId       = updatedRecord[
+				const actorId = updatedRecord[
 					repositorySheetSelectInfo.actorIdColumnIndex]
 				const actorRecordId = updatedRecord[
 					repositorySheetSelectInfo.actorRecordIdColumnIndex]
-				const isDraft       = updatedRecord[
-					repositorySheetSelectInfo.draftColumnIndex]
-				if (repositorySheetSelectInfo.draftColumnUpdated
-					&& isDraft) {
-					throw new Error(errorPrefix + `Records cannot be updated to be draft. A record
-may only be created as a draft record.`)
-				}
 				const recordHistory = recordHistoryMapByRecordId
-					[repositoryId][actorId][actorRecordId]
+				[repositoryId][actorId][actorRecordId]
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
-					const value    = updatedRecord[dbColumn.index]
+					const value = updatedRecord[dbColumn.index]
 
 					if (value === undefined) {
 						throw new Error(errorPrefix + `Values cannot be 'undefined'.`)
 					}
-					if (dbColumn.notNull && value === null && !isDraft) {
+					if (dbColumn.notNull && value === null) {
 						throw new Error(errorPrefix + `Column '${dbColumn.entity.name}'.'${dbColumn.name}' is NOT NULL
-						and cannot have NULL values for non-draft records.`)
+						and cannot have NULL values.`)
 					}
 					recHistoryDuo.addNewValue(recordHistory, dbColumn, value,
 						recHistoryNewValueDuo)
@@ -325,20 +315,20 @@ may only be created as a draft record.`)
 			[repositoryId
 				:
 				number
-				]:
-				any[]
+			]:
+			any[]
 		}
 		repositoryIdSet: Set<number>
 	} {
 
 		const recordsByRepositoryId: { [repositoryId: number]: any[] }
-			                    = {}
+			= {}
 		const repositoryIdSet = new Set<number>()
 		for (const recordToUpdate of records) {
 			const repositoryId = recordToUpdate[repositorySheetSelectInfo.repositoryIdColumnIndex]
 			repositoryIdSet.add(repositoryId)
 			const recordsForRepositoryId =
-				      ensureChildArray(recordsByRepositoryId, repositoryId)
+				ensureChildArray(recordsByRepositoryId, repositoryId)
 			recordsForRepositoryId.push(recordToUpdate)
 		}
 

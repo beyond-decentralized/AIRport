@@ -115,7 +115,7 @@ export class ApplicationInitializer
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
-		for(const jsonApplication of jsonApplications) {
+		for (const jsonApplication of jsonApplications) {
 			newJsonApplicationMap.set(getApplicationName(jsonApplication), jsonApplication);
 		}
 
@@ -124,7 +124,9 @@ export class ApplicationInitializer
 		}
 
 		const allDdlObjects = await applicationComposer.compose(
-			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore);
+			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+			terminalStore
+		});
 
 		this.addNewApplicationVersionsToAll(allDdlObjects);
 
@@ -154,7 +156,10 @@ export class ApplicationInitializer
 			getApplicationsWithValidDependencies([jsonApplication], false)
 
 		const ddlObjects = await applicationComposer.compose(
-			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, terminalStore)
+			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+			deepTraverseReferences: true,
+			terminalStore
+		})
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
@@ -178,7 +183,9 @@ export class ApplicationInitializer
 		// Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
 
 		const tempDdlObjects = await applicationComposer.compose(
-			jsonApplications, ddlObjectRetriever, applicationLocator, terminalStore);
+			jsonApplications, ddlObjectRetriever, applicationLocator, {
+			terminalStore
+		});
 
 		this.addNewApplicationVersionsToAll(tempDdlObjects);
 

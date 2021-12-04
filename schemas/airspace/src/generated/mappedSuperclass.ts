@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedApplicationObject",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
+		"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -90,7 +90,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "ApplicationVersion",
 					"entity": {
 						"type": "ApplicationVersion",
-						"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
+						"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -183,6 +183,11 @@ export const MAPPED_SUPERCLASS = [
 												"moduleImport": null,
 												"sourceName": "JoinColumn"
 											},
+											"Json": {
+												"asName": "Json",
+												"moduleImport": null,
+												"sourceName": "Json"
+											},
 											"ManyToOne": {
 												"asName": "ManyToOne",
 												"moduleImport": null,
@@ -216,6 +221,7 @@ export const MAPPED_SUPERCLASS = [
 									"Entity": null,
 									"Id": null,
 									"JoinColumn": null,
+									"Json": null,
 									"ManyToOne": null,
 									"OneToMany": null,
 									"SequenceGenerator": null,
@@ -322,6 +328,18 @@ export const MAPPED_SUPERCLASS = [
 											}
 										},
 										"path": "../../generated/application/applicationreference"
+									},
+									"JsonApplicationWithLastIds": {
+										"fileImports": null,
+										"isLocal": false,
+										"objectMapByAsName": {
+											"JsonApplicationWithLastIds": {
+												"asName": "JsonApplicationWithLastIds",
+												"moduleImport": null,
+												"sourceName": "JsonApplicationWithLastIds"
+											}
+										},
+										"path": "@airport/security-check"
 									}
 								},
 								"importMapByModulePath": {
@@ -331,7 +349,8 @@ export const MAPPED_SUPERCLASS = [
 									"./ApplicationEntity": null,
 									"./ApplicationReference": null,
 									"../../generated/application/applicationentity": null,
-									"../../generated/application/applicationreference": null
+									"../../generated/application/applicationreference": null,
+									"@airport/security-check": null
 								}
 							},
 							"properties": [
@@ -504,6 +523,33 @@ export const MAPPED_SUPERCLASS = [
 								{
 									"decorators": [
 										{
+											"name": "Column",
+											"values": [
+												{
+													"name": "JSON_APPLICATION",
+													"nullable": false
+												}
+											]
+										},
+										{
+											"name": "Json",
+											"values": []
+										}
+									],
+									"isGenerated": false,
+									"isId": false,
+									"isMappedSuperclass": false,
+									"isTransient": false,
+									"name": "jsonApplication",
+									"type": "JsonApplicationWithLastIds",
+									"ownerEntity": null,
+									"nonArrayType": "JsonApplicationWithLastIds",
+									"primitive": "Json",
+									"index": 6
+								},
+								{
+									"decorators": [
+										{
 											"name": "ManyToOne",
 											"values": []
 										},
@@ -527,7 +573,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Application",
 									"entity": {
 										"type": "Application",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
+										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -805,7 +851,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
+														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1191,7 +1237,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
 														"type": "ApplicationCurrentVersion",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
+														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1427,33 +1473,6 @@ export const MAPPED_SUPERCLASS = [
 														"implementedInterfaceNames": []
 													},
 													"index": 8
-												},
-												{
-													"decorators": [
-														{
-															"name": "Column",
-															"values": [
-																{
-																	"name": "JSON_APPLICATION",
-																	"nullable": false
-																}
-															]
-														},
-														{
-															"name": "Json",
-															"values": []
-														}
-													],
-													"isGenerated": false,
-													"isId": false,
-													"isMappedSuperclass": false,
-													"isTransient": false,
-													"name": "jsonApplication",
-													"type": "JsonApplicationWithLastIds",
-													"ownerEntity": null,
-													"nonArrayType": "JsonApplicationWithLastIds",
-													"primitive": "Json",
-													"index": 9
 												}
 											],
 											"methodSignatures": [],
@@ -1466,7 +1485,7 @@ export const MAPPED_SUPERCLASS = [
 										},
 										"implementedInterfaceNames": []
 									},
-									"index": 6
+									"index": 7
 								},
 								{
 									"decorators": [
@@ -1490,7 +1509,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationEntity",
 									"entity": {
 										"type": "ApplicationEntity",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
+										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -1979,7 +1998,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationColumn",
 													"entity": {
 														"type": "ApplicationColumn",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
+														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2532,7 +2551,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
 																		"type": "ApplicationPropertyColumn",
-																		"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
+																		"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
 																		"parentClassName": "VersionedApplicationObject",
 																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
@@ -2866,7 +2885,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationOperation",
 													"entity": {
 														"type": "ApplicationOperation",
-														"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
+														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -3360,7 +3379,7 @@ export const MAPPED_SUPERCLASS = [
 										"implementedInterfaceNames": [],
 										"parentEntity": null
 									},
-									"index": 7
+									"index": 8
 								},
 								{
 									"decorators": [
@@ -3384,7 +3403,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationReference",
 									"entity": {
 										"type": "ApplicationReference",
-										"path": "D:\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
+										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -3673,7 +3692,7 @@ export const MAPPED_SUPERCLASS = [
 										"implementedInterfaceNames": [],
 										"parentEntity": null
 									},
-									"index": 8
+									"index": 9
 								},
 								{
 									"decorators": [
@@ -3696,7 +3715,7 @@ export const MAPPED_SUPERCLASS = [
 									"isArray": true,
 									"nonArrayType": "ApplicationReference",
 									"entity": null,
-									"index": 9
+									"index": 10
 								},
 								{
 									"decorators": [

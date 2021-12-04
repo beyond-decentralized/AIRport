@@ -27,7 +27,6 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
         return await this.db.find.tree({
             from: [
                 sv = Q.ApplicationVersion,
-                // s = sv.application.innerJoin()
             ],
             select: {},
             orderBy: [
@@ -145,7 +144,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
                 applicationVersion.id, applicationVersion.integerVersion,
                 applicationVersion.versionString, applicationVersion.majorVersion,
                 applicationVersion.minorVersion, applicationVersion.patchVersion,
-                applicationVersion.application.index
+                applicationVersion.application.index, applicationVersion.jsonApplication
             ]);
         }
         await this.db.insertValuesGenerateIds({
@@ -158,6 +157,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
                 sv.minorVersion,
                 sv.patchVersion,
                 sv.application.index,
+                sv.jsonApplication
             ],
             values
         });

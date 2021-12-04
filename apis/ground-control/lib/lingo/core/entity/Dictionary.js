@@ -109,7 +109,6 @@ export var repositoryEntity;
     repositoryEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
     repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
     repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
-    repositoryEntity.IS_DRAFT = 'IS_DRAFT';
     repositoryEntity.LOCAL_ENTITY_NAME = 'LocalRepositoryEntity';
     repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
     repositoryEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';

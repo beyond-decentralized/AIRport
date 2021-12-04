@@ -22,6 +22,9 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
+	JsonApplicationWithLastIds,
+} from '@airport/security-check';
+import {
 	ApplicationGraph,
 	ApplicationEId,
 	ApplicationEOptionalId,
@@ -83,6 +86,7 @@ export interface ApplicationVersionESelect
 	majorVersion?: number | IQNumberField;
 	minorVersion?: number | IQNumberField;
 	patchVersion?: number | IQNumberField;
+	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -128,6 +132,7 @@ export interface ApplicationVersionEUpdateProperties
 	majorVersion?: number | IQNumberField;
 	minorVersion?: number | IQNumberField;
 	patchVersion?: number | IQNumberField;
+	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	application?: ApplicationEOptionalId;
@@ -147,6 +152,7 @@ export interface ApplicationVersionGraph
 	majorVersion?: number | IQNumberField;
 	minorVersion?: number | IQNumberField;
 	patchVersion?: number | IQNumberField;
+	jsonApplication?: JsonApplicationWithLastIds | IQStringField;
 
 	// Relations
 	application?: ApplicationGraph;
@@ -167,6 +173,7 @@ export interface ApplicationVersionEUpdateColumns
 	MAJOR_VERSION?: number | IQNumberField;
 	MINOR_VERSION?: number | IQNumberField;
 	PATCH_VERSION?: number | IQNumberField;
+	JSON_APPLICATION?: string | IQStringField;
 	APPLICATION_INDEX?: number | IQNumberField;
 
 }
@@ -208,6 +215,7 @@ export interface QApplicationVersion extends IQEntity<ApplicationVersion>
 	majorVersion: IQNumberField;
 	minorVersion: IQNumberField;
 	patchVersion: IQNumberField;
+	jsonApplication: IQStringField;
 
 	// Non-Id Relations
 	application: QApplicationQRelation;

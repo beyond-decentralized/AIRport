@@ -1,7 +1,4 @@
 import {
-	JsonApplicationWithLastIds,
-} from '@airport/security-check';
-import {
 	IDomain,
 } from './domain';
 import {
@@ -30,7 +27,6 @@ export interface IApplication {
 	packageName?: string;
 	status?: string;
 	signature?: string;
-	jsonApplication?: JsonApplicationWithLastIds;
 
 	// Non-Id Relations
 	domain?: IDomain;
