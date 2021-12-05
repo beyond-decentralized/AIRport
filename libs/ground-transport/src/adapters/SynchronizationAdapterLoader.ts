@@ -1,7 +1,11 @@
-import { container, DI } from "@airport/di";
-import { DEBUG_SYNCHRONIZATION_ADAPTER } from "..";
-import { SYNCHRONIZATION_ADAPTER_LOADER } from "../tokens";
-import { DebugSynchronizationAdapter } from "./DebugSynchronizationAdapter";
+import {
+    container,
+    DI
+} from "@airport/di";
+import {
+    DEBUG_SYNCHRONIZATION_ADAPTER,
+    SYNCHRONIZATION_ADAPTER_LOADER
+} from "../tokens";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 export interface ISynchronizationAdapterLoader {

@@ -1,1 +1,0 @@
-{"version":3,"file":"ScyllaDbVespaServer.d.ts","sourceRoot":"","sources":["../src/ScyllaDbVespaServer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,MAAM,IAAI,CAAA;AAGnB,OAAO,EAAE,cAAc,EAAE,MAAM,GAAG,CAAA;AAIlC,qBAAa,mBACT,SAAQ,cAAc;IAEtB,IAAI,EAAE,EAAE,CAAC,IAAI,CAAA;cAEG,gBAAgB;cAKhB,aAAa;IAK7B,SAAS,CAAC,SAAS;cAKH,2BAA2B;cAM3B,aAAa;cAIb,mBAAmB;CAItC"}

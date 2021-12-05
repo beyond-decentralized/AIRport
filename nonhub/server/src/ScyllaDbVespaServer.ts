@@ -1,8 +1,8 @@
-import { startDb } from '@airport/postgres'
+// import { startDb } from '@airport/postgres'
 import pg from 'pg'
 import { parse } from "pg-connection-string"
 import { v4 as uuidv4 } from 'uuid'
-import { ScyllaDbServer } from '.'
+import { ScyllaDbServer } from './ScyllaDbServer'
 
 const Pool = pg.Pool
 
@@ -18,7 +18,7 @@ export class ScyllaDbVespaServer
 
     protected async initFramework() {
         // TODO: implement startDb in postgreSQL driver
-        await startDb('votecube', 'postgres://root@localhost:26257/votecube?sslmode=disable')
+        // await startDb('votecube', 'postgres://root@localhost:26257/votecube?sslmode=disable')
     }
 
     protected initVespa() {

@@ -7,7 +7,7 @@ import type {
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
 } from 'fastify'
-import { ServerState } from '@airport/nonhub-types'
+import { ServerState } from './server-types'
 
 export class BasicServer<
     Server extends http.Server,
@@ -18,7 +18,6 @@ export class BasicServer<
 
     fastify: FastifyInstance<Server, Request, Reply, Logger> & PromiseLike<FastifyInstance<Server, Request, Reply, Logger>>
     serverState: ServerState = ServerState.RUNNING
-    private shutdownIntervalHandle
     private batchIntervalHandle
 
     constructor(
@@ -26,19 +25,21 @@ export class BasicServer<
     ) {
         this.fastify = Fastify(opts)
 
+        const _this = this
+
         process.on('SIGINT', () => {
             console.log('SIGINT signal received, shutting down.')
-            this.shutdown()
+            _this.shutdown()
         })
 
         process.on('SIGTERM', () => {
             console.info('SIGTERM signal received, shutting down.');
-            this.shutdown()
+            _this.shutdown()
         })
 
         process.on('uncaughtException', function (error) {
             console.log('received uncaught exception, shutting down.', error)
-            this.shutdown()
+            _this.shutdown()
         })
     }
 
@@ -51,11 +52,12 @@ export class BasicServer<
 
     shutdown() {
         this.serverState = ServerState.SHUTTING_DOWN_REQUESTS
-        this.shutdownIntervalHandle = setInterval(() => {
+        const shutdownIntervalHandle = setInterval(() => {
             console.log('Checking shutdown')
             if (this.serverState === ServerState.SHUTTING_DOWN_SERVER) {
+                console.log('Removing shutdown check')
+                clearInterval(shutdownIntervalHandle)
                 console.log('Shutting down')
-                clearInterval(this.shutdownIntervalHandle)
                 this.shutdownServer()
             } else {
                 console.log('NOT shutting down')
@@ -95,6 +97,7 @@ export class BasicServer<
     }
 
     protected shutdownServer() {
+        console.log('Shutting Down Fastify')
         this.fastify.close().then(() => {
             console.log('httpserver shutdown successfully')
             this.shutdownResources()

@@ -1,26 +1,22 @@
-import {
+import type {
     RepositorySynchronizationReadRequest,
     RepositorySynchronizationReadResponse,
     RepositorySynchronizationWriteRequest,
     RepositorySynchronizationWriteResponse
 } from '@airport/arrivals-n-departures';
-import {
+import type { Repository_UuId } from '@airport/holding-pattern';
+import type {
     SearchRequest,
-    ServerState,
     UserRequest,
 } from '@airport/nonhub-types'
 import {
-    BasicServer
+    BasicServer,
+    ServerState
 } from '@airport/processor-common'
 import * as http from 'http'
-import {
-    decryptString,
-    encryptStringSync
-} from "string-cipher";
-import { Repository_UuId } from '@airport/holding-pattern';
 
 // var encryptionKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
-var encryptionKey = process.env.ENCRYPTION_KEY
+var encryptionKey = process.env.ENCRYPTION_KEY as string
 
 const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0)
 
@@ -39,8 +35,8 @@ const transactionLogs: Map<Repository_UuId, RepositorySynchronizationReadRespons
 
 server.fastify.register(require('fastify-cors'), {
     origin: (
-        origin,
-        cb
+        origin: any,
+        cb: any
     ) => {
         if (!origin || /localhost/.test(origin)) {
             // Request from configured host or localhost (for testing) will pass
@@ -79,19 +75,23 @@ server.fastify.put('/search', (
 })
 
 async function serveReadRequest(
-    request,
-    reply,
+    request: any,
+    reply: any,
     serverState: ServerState,
     encryptionKey: string
 ) {
     if (serverState !== ServerState.RUNNING) {
-        reply.send('')
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }))
         return
     }
     const readRequest = await processRequest<RepositorySynchronizationReadRequest>(
-        request.body)
+        request)
     if (!readRequest) {
-        reply.send('')
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }))
         return
     }
 
@@ -111,41 +111,51 @@ async function serveReadRequest(
         }
     }
 
-    let packagedMessage
-    if (encryptionKey) {
-        packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
-    }
+    let packagedMessage = results.join('|')
+    // if (encryptionKey) {
+    //     packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
+    // }
     reply.send(packagedMessage)
 }
 
 async function processRequest<Req>(
-    request,
+    request: any,
 ): Promise<Req> {
     try {
-        let unpackagedMessage
-        if (encryptionKey) {
-            unpackagedMessage = await decryptString(request.body, encryptionKey)
-        }
-        return JSON.parse(unpackagedMessage)
+        let unpackagedMessage = request.body
+        // if (encryptionKey) {
+        //     unpackagedMessage = await decryptString(request.body, encryptionKey)
+        // }
+        // console.log('Is object: ' + (typeof unpackagedMessage === 'object'))
+        // return JSON.parse(unpackagedMessage)
+        return unpackagedMessage
     } catch (e) {
-        console.log(e)
-        return null
+        console.error(e)
+        console.log('Request:')
+        console.log(request.body)
+
+        return null as any
     }
 }
 
 async function serveWriteRequest(
-    request,
-    reply,
+    request: any,
+    reply: any,
     serverState: ServerState,
     encryptionKey: string
 ) {
     if (serverState !== ServerState.RUNNING) {
-        reply.send('')
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }))
         return
     }
-    const writeRequest = await processRequest<RepositorySynchronizationWriteRequest>(request.body)
+    const writeRequest = await processRequest<RepositorySynchronizationWriteRequest>(
+        request)
     if (!writeRequest) {
-        reply.send('')
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }))
         return
     }
 
@@ -165,16 +175,16 @@ async function serveWriteRequest(
     let packagedMessage = JSON.stringify({
         syncTimestamp
     } as RepositorySynchronizationWriteResponse)
-    if (encryptionKey) {
-        packagedMessage = encryptStringSync(
-            packagedMessage, encryptionKey)
-    }
+    // if (encryptionKey) {
+    //     packagedMessage = encryptStringSync(
+    //         packagedMessage, encryptionKey)
+    // }
     reply.send(packagedMessage)
 }
 
 export function processSearchRequest(
-    request,
-    reply,
+    request: any,
+    reply: any,
 ) {
     let searchRequest: SearchRequest = request.body as SearchRequest
     if (!searchRequest) {
@@ -196,9 +206,9 @@ export function processSearchRequest(
 }
 
 export function processUserRequest(
-    request,
-    reply,
-    encryptionKey
+    request: any,
+    reply: any,
+    encryptionKey?: string
 ) {
     const userRequest: UserRequest = request.body
     const email = userRequest.email

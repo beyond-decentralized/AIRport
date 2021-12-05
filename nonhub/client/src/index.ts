@@ -6,6 +6,9 @@ import {
     RepositorySynchronizationWriteRequest,
     RepositorySynchronizationWriteResponse
 } from '@airport/arrivals-n-departures';
+import type {
+    RepositoryTransactionHistory_SyncTimestamp
+} from '@airport/holding-pattern';
 import { DI, lib } from '@airport/di'
 // import {
 //     decryptString,
@@ -15,19 +18,25 @@ import { DI, lib } from '@airport/di'
 const nonhubClient = lib('nonhub-client')
 export const NONHUB_CLIENT = nonhubClient.token<INonhubClient>('INonhubClient')
 
+export interface GetRepositoryTransactionsResult {
+    messages: RepositorySynchronizationMessage[]
+    syncTimestamp: number
+}
+
+
 export interface INonhubClient {
 
     getRepositoryTransactions(
         location: string,
         repositoryUuid: string,
         sinceSyncTimestamp?: number
-    ): Promise<RepositorySynchronizationReadResponse>
+    ): Promise<GetRepositoryTransactionsResult>
 
     sendRepositoryTransactions(
         location: string,
         repositoryUuId: string,
         messages: RepositorySynchronizationMessage[]
-    ): Promise<RepositorySynchronizationWriteResponse>
+    ): Promise<RepositoryTransactionHistory_SyncTimestamp>
 
 }
 
@@ -41,31 +50,57 @@ export class NonhubClient
         location: string,
         repositoryUuId: string,
         sinceSyncTimestamp: number = null
-    ): Promise<RepositorySynchronizationReadResponse> {
-        const response = await this.sendMessage<
-            RepositorySynchronizationReadRequest,
-            RepositorySynchronizationReadResponse>(location, {
-                repositoryUuId,
-                syncTimestamp: sinceSyncTimestamp
-            })
-
-        return response
+    ): Promise<GetRepositoryTransactionsResult> {
+        try {
+            const response = await this.sendMessage<
+                RepositorySynchronizationReadRequest,
+                RepositorySynchronizationReadResponse>(location, {
+                    repositoryUuId,
+                    syncTimestamp: sinceSyncTimestamp
+                })
+            if (response.error) {
+                console.error(response.error)
+                return {
+                    messages: [],
+                    syncTimestamp: 0
+                }
+            }
+            return {
+                messages: response.messages,
+                syncTimestamp: response.syncTimestamp
+            }
+        } catch (e) {
+            console.error(e)
+            return {
+                messages: [],
+                syncTimestamp: 0
+            }
+        }
     }
 
     async sendRepositoryTransactions(
         location: string,
         repositoryUuId: string,
         messages: RepositorySynchronizationMessage[]
-    ): Promise<RepositorySynchronizationWriteResponse> {
-        const writeReply = await this.sendMessage<
-            RepositorySynchronizationWriteRequest,
-            RepositorySynchronizationWriteResponse
-        >(location, {
-            messages,
-            repositoryUuId
-        })
+    ): Promise<RepositoryTransactionHistory_SyncTimestamp> {
+        try {
+            const response = await this.sendMessage<
+                RepositorySynchronizationWriteRequest,
+                RepositorySynchronizationWriteResponse
+            >(location, {
+                messages,
+                repositoryUuId
+            })
+            if (response.error) {
+                console.error(response.error)
+                return 0
+            }
+            return response.syncTimestamp
+        } catch (e) {
+            console.error(e)
+            return 0
+        }
 
-        return writeReply
     }
 
     private async sendMessage<Req, Res>(

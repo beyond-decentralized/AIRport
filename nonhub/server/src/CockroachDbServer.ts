@@ -1,8 +1,8 @@
 import * as http from 'http'
-import { startDb } from '@airport/postgres'
+// import { startDb } from '@airport/postgres'
 import pg from 'pg'
 import pgConnectionString from "pg-connection-string"
-import { BasicServer } from '.'
+import { BasicServer } from '@airport/processor-common'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse
@@ -44,7 +44,7 @@ export class CockroachDbServer
         this.pool = new Pool(config as any);
         
         // TODO: implement startDb in postgreSQL driver
-        await startDb('votecube', 'postgres://root@localhost:26257/votecube?sslmode=disable')
+        // await startDb('votecube', 'postgres://root@localhost:26257/votecube?sslmode=disable')
     }
 
     protected async shutdownResources() {

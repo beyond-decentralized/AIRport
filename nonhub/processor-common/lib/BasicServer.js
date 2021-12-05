@@ -1,32 +1,37 @@
-import Fastify from 'fastify';
-import { ServerState } from '@airport/nonhub-types';
-export class BasicServer {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BasicServer = void 0;
+const fastify_1 = require("fastify");
+const server_types_1 = require("./server-types");
+class BasicServer {
     constructor(opts) {
-        this.serverState = ServerState.RUNNING;
-        this.fastify = Fastify(opts);
+        this.serverState = server_types_1.ServerState.RUNNING;
+        this.fastify = (0, fastify_1.default)(opts);
+        const _this = this;
         process.on('SIGINT', () => {
             console.log('SIGINT signal received, shutting down.');
-            this.shutdown();
+            _this.shutdown();
         });
         process.on('SIGTERM', () => {
             console.info('SIGTERM signal received, shutting down.');
-            this.shutdown();
+            _this.shutdown();
         });
         process.on('uncaughtException', function (error) {
             console.log('received uncaught exception, shutting down.', error);
-            this.shutdown();
+            _this.shutdown();
         });
     }
     start(port = 80, address = '0.0.0.0') {
         this.doStart(port, address).then();
     }
     shutdown() {
-        this.serverState = ServerState.SHUTTING_DOWN_REQUESTS;
-        this.shutdownIntervalHandle = setInterval(() => {
+        this.serverState = server_types_1.ServerState.SHUTTING_DOWN_REQUESTS;
+        const shutdownIntervalHandle = setInterval(() => {
             console.log('Checking shutdown');
-            if (this.serverState === ServerState.SHUTTING_DOWN_SERVER) {
+            if (this.serverState === server_types_1.ServerState.SHUTTING_DOWN_SERVER) {
+                console.log('Removing shutdown check');
+                clearInterval(shutdownIntervalHandle);
                 console.log('Shutting down');
-                clearInterval(this.shutdownIntervalHandle);
                 this.shutdownServer();
             }
             else {
@@ -59,6 +64,7 @@ export class BasicServer {
         // Overwrite if there are resources that must be started
     }
     shutdownServer() {
+        console.log('Shutting Down Fastify');
         this.fastify.close().then(() => {
             console.log('httpserver shutdown successfully');
             this.shutdownResources();
@@ -71,14 +77,15 @@ export class BasicServer {
         process.exit(0);
     }
     checkServerState() {
-        if (this.serverState === ServerState.SHUTTING_DOWN_REQUESTS
-            || this.serverState === ServerState.SHUTTING_DOWN_SERVER) {
+        if (this.serverState === server_types_1.ServerState.SHUTTING_DOWN_REQUESTS
+            || this.serverState === server_types_1.ServerState.SHUTTING_DOWN_SERVER) {
             if (this.batchIntervalHandle) {
                 clearInterval(this.batchIntervalHandle);
                 this.batchIntervalHandle = null;
             }
-            this.serverState = ServerState.SHUTTING_DOWN_SERVER;
+            this.serverState = server_types_1.ServerState.SHUTTING_DOWN_SERVER;
         }
     }
 }
+exports.BasicServer = BasicServer;
 //# sourceMappingURL=BasicServer.js.map

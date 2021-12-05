@@ -30,6 +30,7 @@ export interface RepositorySynchronizationWriteRequest {
 }
 
 export interface RepositorySynchronizationWriteResponse {
+	error?: string
 	syncTimestamp: number
 }
 
@@ -39,6 +40,7 @@ export interface RepositorySynchronizationReadRequest {
 }
 
 export interface RepositorySynchronizationReadResponse {
+	error?: string
 	messages: RepositorySynchronizationMessage[]
 	repositoryUuId: string
 	syncTimestamp: number

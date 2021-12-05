@@ -1,6 +1,5 @@
 import { container, DI } from "@airport/di";
-import { DEBUG_SYNCHRONIZATION_ADAPTER } from "..";
-import { SYNCHRONIZATION_ADAPTER_LOADER } from "../tokens";
+import { DEBUG_SYNCHRONIZATION_ADAPTER, SYNCHRONIZATION_ADAPTER_LOADER } from "../tokens";
 export class SynchronizationAdapterLoader {
     async load(synchronizationSource) {
         switch (synchronizationSource) {

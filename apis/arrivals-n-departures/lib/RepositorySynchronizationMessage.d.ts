@@ -16,6 +16,7 @@ export interface RepositorySynchronizationWriteRequest {
     repositoryUuId: string;
 }
 export interface RepositorySynchronizationWriteResponse {
+    error?: string;
     syncTimestamp: number;
 }
 export interface RepositorySynchronizationReadRequest {
@@ -23,6 +24,7 @@ export interface RepositorySynchronizationReadRequest {
     syncTimestamp?: number;
 }
 export interface RepositorySynchronizationReadResponse {
+    error?: string;
     messages: RepositorySynchronizationMessage[];
     repositoryUuId: string;
     syncTimestamp: number;

@@ -1,14 +1,15 @@
-import { ServerState, } from '@airport/nonhub-types';
-import { BasicServer } from '@airport/processor-common';
-import { decryptString, encryptStringSync } from "string-cipher";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.processUserRequest = exports.processSearchRequest = exports.server = void 0;
+const processor_common_1 = require("@airport/processor-common");
 // var encryptionKey = 'ciw7p02f70000ysjon7gztjn7c2x7GfJ'
 var encryptionKey = process.env.ENCRYPTION_KEY;
 const EARLIEST_BIRTH_MONTH = Date.UTC(1900, 0);
-export const server = new BasicServer({
+exports.server = new processor_common_1.BasicServer({
     logger: false,
 });
 const transactionLogs = new Map();
-server.fastify.register(require('fastify-cors'), {
+exports.server.fastify.register(require('fastify-cors'), {
     origin: (origin, cb) => {
         if (!origin || /localhost/.test(origin)) {
             // Request from configured host or localhost (for testing) will pass
@@ -18,23 +19,27 @@ server.fastify.register(require('fastify-cors'), {
         cb(new Error('Not allowed CORS host'), false);
     }
 });
-server.fastify.put('/read', (request, reply) => {
-    serveReadRequest(request, reply, server.serverState, encryptionKey);
+exports.server.fastify.put('/read', (request, reply) => {
+    serveReadRequest(request, reply, exports.server.serverState, encryptionKey);
 });
-server.fastify.put('/write', (request, reply) => {
-    serveWriteRequest(request, reply, server.serverState, encryptionKey);
+exports.server.fastify.put('/write', (request, reply) => {
+    serveWriteRequest(request, reply, exports.server.serverState, encryptionKey);
 });
-server.fastify.put('/search', (request, reply) => {
+exports.server.fastify.put('/search', (request, reply) => {
     // TODO: implement
 });
 async function serveReadRequest(request, reply, serverState, encryptionKey) {
-    if (serverState !== ServerState.RUNNING) {
-        reply.send('');
+    if (serverState !== processor_common_1.ServerState.RUNNING) {
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }));
         return;
     }
-    const readRequest = await processRequest(request.body);
+    const readRequest = await processRequest(request);
     if (!readRequest) {
-        reply.send('');
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }));
         return;
     }
     let transactionLog = transactionLogs.get(readRequest.repositoryUuId);
@@ -50,33 +55,41 @@ async function serveReadRequest(request, reply, serverState, encryptionKey) {
             }
         }
     }
-    let packagedMessage;
-    if (encryptionKey) {
-        packagedMessage = encryptStringSync(results.join('|'), encryptionKey);
-    }
+    let packagedMessage = results.join('|');
+    // if (encryptionKey) {
+    //     packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
+    // }
     reply.send(packagedMessage);
 }
 async function processRequest(request) {
     try {
-        let unpackagedMessage;
-        if (encryptionKey) {
-            unpackagedMessage = await decryptString(request.body, encryptionKey);
-        }
-        return JSON.parse(unpackagedMessage);
+        let unpackagedMessage = request.body;
+        // if (encryptionKey) {
+        //     unpackagedMessage = await decryptString(request.body, encryptionKey)
+        // }
+        // console.log('Is object: ' + (typeof unpackagedMessage === 'object'))
+        // return JSON.parse(unpackagedMessage)
+        return unpackagedMessage;
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
+        console.log('Request:');
+        console.log(request.body);
         return null;
     }
 }
 async function serveWriteRequest(request, reply, serverState, encryptionKey) {
-    if (serverState !== ServerState.RUNNING) {
-        reply.send('');
+    if (serverState !== processor_common_1.ServerState.RUNNING) {
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }));
         return;
     }
-    const writeRequest = await processRequest(request.body);
+    const writeRequest = await processRequest(request);
     if (!writeRequest) {
-        reply.send('');
+        reply.send(JSON.stringify({
+            error: 'Internal Error'
+        }));
         return;
     }
     const syncTimestamp = new Date().getTime();
@@ -93,12 +106,13 @@ async function serveWriteRequest(request, reply, serverState, encryptionKey) {
     let packagedMessage = JSON.stringify({
         syncTimestamp
     });
-    if (encryptionKey) {
-        packagedMessage = encryptStringSync(packagedMessage, encryptionKey);
-    }
+    // if (encryptionKey) {
+    //     packagedMessage = encryptStringSync(
+    //         packagedMessage, encryptionKey)
+    // }
     reply.send(packagedMessage);
 }
-export function processSearchRequest(request, reply) {
+function processSearchRequest(request, reply) {
     let searchRequest = request.body;
     if (!searchRequest) {
         reply.send({ received: false });
@@ -116,7 +130,8 @@ export function processSearchRequest(request, reply) {
     }
     // TODO: implement
 }
-export function processUserRequest(request, reply, encryptionKey) {
+exports.processSearchRequest = processSearchRequest;
+function processUserRequest(request, reply, encryptionKey) {
     const userRequest = request.body;
     const email = userRequest.email;
     const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -161,5 +176,6 @@ export function processUserRequest(request, reply, encryptionKey) {
     }
     // TODO: implement
 }
-server.start(9000);
+exports.processUserRequest = processUserRequest;
+exports.server.start(9000);
 //# sourceMappingURL=server.js.map

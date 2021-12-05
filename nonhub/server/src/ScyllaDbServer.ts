@@ -1,5 +1,5 @@
 import * as http from 'http'
-import { BasicServer } from '.';
+import { BasicServer } from '@airport/processor-common';
 
 export class ScyllaDbServer
     extends BasicServer<http.Server> {

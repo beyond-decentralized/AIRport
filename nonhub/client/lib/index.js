@@ -11,18 +11,47 @@ export class NonhubClient {
         this.serverLocationProtocol = 'http://';
     }
     async getRepositoryTransactions(location, repositoryUuId, sinceSyncTimestamp = null) {
-        const response = await this.sendMessage(location, {
-            repositoryUuId,
-            syncTimestamp: sinceSyncTimestamp
-        });
-        return response;
+        try {
+            const response = await this.sendMessage(location, {
+                repositoryUuId,
+                syncTimestamp: sinceSyncTimestamp
+            });
+            if (response.error) {
+                console.error(response.error);
+                return {
+                    messages: [],
+                    syncTimestamp: 0
+                };
+            }
+            return {
+                messages: response.messages,
+                syncTimestamp: response.syncTimestamp
+            };
+        }
+        catch (e) {
+            console.error(e);
+            return {
+                messages: [],
+                syncTimestamp: 0
+            };
+        }
     }
     async sendRepositoryTransactions(location, repositoryUuId, messages) {
-        const writeReply = await this.sendMessage(location, {
-            messages,
-            repositoryUuId
-        });
-        return writeReply;
+        try {
+            const response = await this.sendMessage(location, {
+                messages,
+                repositoryUuId
+            });
+            if (response.error) {
+                console.error(response.error);
+                return 0;
+            }
+            return response.syncTimestamp;
+        }
+        catch (e) {
+            console.error(e);
+            return 0;
+        }
     }
     async sendMessage(location, request) {
         let packagedMessage = JSON.stringify(request);

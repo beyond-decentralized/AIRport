@@ -1,1 +1,0 @@
-{"version":3,"file":"CockroachDbServer.d.ts","sourceRoot":"","sources":["../src/CockroachDbServer.ts"],"names":[],"mappings":";AAAA,OAAO,KAAK,IAAI,MAAM,MAAM,CAAA;AAE5B,OAAO,EAAE,MAAM,IAAI,CAAA;AAEnB,OAAO,EAAE,WAAW,EAAE,MAAM,GAAG,CAAA;AAK/B,qBAAa,iBACT,SAAQ,WAAW,CAAC,IAAI,CAAC,MAAM,CAAC;IAEhC,IAAI,EAAE,EAAE,CAAC,IAAI,CAAA;cAGG,gBAAgB;cAkChB,iBAAiB;CAKpC"}

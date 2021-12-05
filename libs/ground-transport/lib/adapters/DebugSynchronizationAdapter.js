@@ -8,7 +8,7 @@ export class DebugSynchronizationAdapter {
         const messages = response.messages;
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
-        for (const message of response.messages) {
+        for (const message of messages) {
             message.syncTimestamp = response.syncTimestamp;
         }
         return messages;
@@ -33,9 +33,12 @@ export class DebugSynchronizationAdapter {
             return false;
         }
         const nonhubClient = await container(this).get(NONHUB_CLIENT);
-        const response = await nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
+        const syncTimestamp = await nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
+        if (!syncTimestamp) {
+            return false;
+        }
         for (const message of messages) {
-            message.syncTimestamp = response.syncTimestamp;
+            message.syncTimestamp = syncTimestamp;
         }
         return true;
     }

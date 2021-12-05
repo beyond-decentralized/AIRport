@@ -20,10 +20,11 @@ export class DebugSynchronizationAdapter
         const response = await nonhubClient.getRepositoryTransactions(
             repositorySource, repositoryUuId, sinceSyncTimestamp)
 
+
         const messages = response.messages
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
-        for (const message of response.messages) {
+        for (const message of messages) {
             message.syncTimestamp = response.syncTimestamp
         }
 
@@ -60,10 +61,15 @@ export class DebugSynchronizationAdapter
         }
 
         const nonhubClient = await container(this).get(NONHUB_CLIENT)
-        const response = await nonhubClient.sendRepositoryTransactions(repositorySource,
+        const syncTimestamp = await nonhubClient.sendRepositoryTransactions(repositorySource,
             repositoryUuId, messages)
+
+        if (!syncTimestamp) {
+            return false
+        }
+
         for (const message of messages) {
-            message.syncTimestamp = response.syncTimestamp
+            message.syncTimestamp = syncTimestamp
         }
 
         return true
