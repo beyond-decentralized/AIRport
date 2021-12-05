@@ -10,9 +10,13 @@ export class RepositoryLoader {
     - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
     Immutable repositories are only loaded once
     */
-    async loadRepository(repositorySource, repositoryUuId) {
+    async loadRepository(repositorySource, repositoryUuId, context) {
+        if (context.repositoryExistenceChecked) {
+            return;
+        }
+        context.repositoryExistenceChecked = true;
         const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId);
+        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId, context);
         let loadRepository = false;
         let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {

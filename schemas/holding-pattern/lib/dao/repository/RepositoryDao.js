@@ -4,7 +4,7 @@ import { TransactionType } from '@airport/ground-control';
 import { REPOSITORY_DAO } from '../../tokens';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 export class RepositoryDao extends BaseRepositoryDao {
-    async getRepositoryLoadInfo(repositorySource, repositoryUuId) {
+    async getRepositoryLoadInfo(repositorySource, repositoryUuId, context) {
         let r;
         let rth;
         let th;
@@ -21,7 +21,7 @@ export class RepositoryDao extends BaseRepositoryDao {
                 th = rth.transactionHistory.innerJoin()
             ],
             where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), th.transactionType.equals(TransactionType.REMOTE_SYNC))
-        });
+        }, context);
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
         let r;

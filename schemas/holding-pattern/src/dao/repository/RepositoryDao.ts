@@ -3,7 +3,7 @@ import {
 	and,
 	Y
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DI, IContext } from '@airport/di'
 import { TransactionType } from '@airport/ground-control'
 import {
 	Terminal_UuId,
@@ -31,7 +31,8 @@ export interface IRepositoryDao
 
 	getRepositoryLoadInfo(
 		repositorySource: Repository_Source,
-		repositoryUuId: Repository_UuId
+		repositoryUuId: Repository_UuId,
+		context: IContext
 	): Promise<IRepository>
 
 	findByIds(
@@ -59,7 +60,8 @@ export class RepositoryDao
 
 	async getRepositoryLoadInfo(
 		repositorySource: Repository_Source,
-		repositoryUuId: Repository_UuId
+		repositoryUuId: Repository_UuId,
+		context: IContext
 	): Promise<IRepository> {
 
 		let r: QRepository
@@ -83,7 +85,7 @@ export class RepositoryDao
 				r.uuId.equals(repositoryUuId),
 				th.transactionType.equals(TransactionType.REMOTE_SYNC)
 			)
-		})
+		}, context)
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(

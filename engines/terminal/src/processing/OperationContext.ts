@@ -13,6 +13,8 @@ import {
 	QUERY_UTILS,
 	RELATION_MANAGER,
 	APPLICATION_UTILS,
+	IEntityUtils,
+	ENTITY_UTILS,
 } from '@airport/air-control'
 import {
 	DI
@@ -22,8 +24,10 @@ import {
 	IEntityStateManager,
 	IOperationContextLoader,
 	IStoreDriver,
+	ITransactionalConnector,
 	OPERATION_CONTEXT_LOADER,
-	STORE_DRIVER
+	STORE_DRIVER,
+	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
 	ICascadeGraphVerifier,
@@ -64,6 +68,7 @@ export class IocOperationContext
 	dependencyGraphResolver: IDependencyGraphResolver
 	entityGraphReconstructor: IEntityGraphReconstructor
 	entityStateManager: IEntityStateManager
+	entityUtils: IEntityUtils
 	fieldUtils: IFieldUtils
 	insertManager: IInsertManager
 	metadataUtils: IQMetadataUtils
@@ -76,6 +81,7 @@ export class IocOperationContext
 	applicationUtils: IApplicationUtils
 	storeDriver: IStoreDriver
 	structuralEntityValidator: IStructuralEntityValidator
+	transactionalConnector: ITransactionalConnector
 	transactionalServer: ITransactionalServer
 	updateManager: IUpdateManager
 
@@ -83,20 +89,21 @@ export class IocOperationContext
 		context: IIocOperationContext
 	): Promise<void> {
 		const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver,
-			entityGraphReconstructor, entityStateManager, fieldUtils,
+			entityGraphReconstructor, entityStateManager, entityUtils, fieldUtils,
 			insertManager, metadataUtils, operationManager, queryFacade,
 			queryManager, queryUtils, relationManager, repositoryManager,
-			applicationUtils, storeDriver, structuralEntityValidator, transactionalServer,
-			updateManager]
+			applicationUtils, storeDriver, structuralEntityValidator,
+			transactionalConnector, transactionalServer, updateManager]
 			= await DI.db()
 				.get(
 					AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER,
 					DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR,
-					ENTITY_STATE_MANAGER, FIELD_UTILS, INSERT_MANAGER,
+					ENTITY_STATE_MANAGER, ENTITY_UTILS, FIELD_UTILS, INSERT_MANAGER,
 					Q_METADATA_UTILS, OPERATION_MANAGER, QUERY_FACADE,
 					QUERY_MANAGER, QUERY_UTILS, RELATION_MANAGER,
-					REPOSITORY_MANAGER, APPLICATION_UTILS, STORE_DRIVER, 
-					STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_SERVER, UPDATE_MANAGER
+					REPOSITORY_MANAGER, APPLICATION_UTILS, STORE_DRIVER,
+					STRUCTURAL_ENTITY_VALIDATOR, TRANSACTIONAL_CONNECTOR,
+					TRANSACTIONAL_SERVER, UPDATE_MANAGER
 				)
 		context.airDb = airDb
 		context.cascadeGraphVerifier = cascadeGraphVerifier
@@ -104,6 +111,7 @@ export class IocOperationContext
 		context.dependencyGraphResolver = dependencyGraphResolver
 		context.entityGraphReconstructor = entityGraphReconstructor
 		context.entityStateManager = entityStateManager
+		context.entityUtils = entityUtils
 		context.fieldUtils = fieldUtils
 		context.insertManager = insertManager
 		context.metadataUtils = metadataUtils
@@ -116,6 +124,7 @@ export class IocOperationContext
 		context.applicationUtils = applicationUtils
 		context.storeDriver = storeDriver
 		context.structuralEntityValidator = structuralEntityValidator
+		context.transactionalConnector = transactionalConnector
 		context.transactionalServer = transactionalServer
 		context.updateManager = updateManager
 	}
@@ -124,19 +133,20 @@ export class IocOperationContext
 		context: IIocOperationContext
 	): void {
 		const [airDb, cascadeGraphVerifier, deleteManager, dependencyGraphResolver,
-			entityGraphReconstructor, entityStateManager, fieldUtils,
+			entityGraphReconstructor, entityStateManager, entityUtils, fieldUtils,
 			insertManager, metadataUtils, operationManager, queryFacade,
 			queryManager, queryUtils, relationManager, applicationUtils, storeDriver,
-			structuralEntityValidator, transactionalServer, updateManager]
+			structuralEntityValidator, transactionalConnector, transactionalServer,
+			updateManager]
 			= DI.db()
 				.getSync(
 					AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER,
 					DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR,
-					ENTITY_STATE_MANAGER, FIELD_UTILS, INSERT_MANAGER,
+					ENTITY_STATE_MANAGER, ENTITY_UTILS, FIELD_UTILS, INSERT_MANAGER,
 					OPERATION_MANAGER, Q_METADATA_UTILS, QUERY_FACADE,
 					QUERY_MANAGER, QUERY_UTILS, RELATION_MANAGER,
 					APPLICATION_UTILS, STORE_DRIVER, STRUCTURAL_ENTITY_VALIDATOR,
-					TRANSACTIONAL_SERVER, UPDATE_MANAGER
+					TRANSACTIONAL_CONNECTOR, TRANSACTIONAL_SERVER, UPDATE_MANAGER
 				)
 		context.airDb = airDb
 		context.cascadeGraphVerifier = cascadeGraphVerifier
@@ -144,6 +154,7 @@ export class IocOperationContext
 		context.dependencyGraphResolver = dependencyGraphResolver
 		context.entityGraphReconstructor = entityGraphReconstructor
 		context.entityStateManager = entityStateManager
+		context.entityUtils = entityUtils
 		context.fieldUtils = fieldUtils
 		context.insertManager = insertManager
 		context.metadataUtils = metadataUtils
@@ -155,6 +166,7 @@ export class IocOperationContext
 		context.applicationUtils = applicationUtils
 		context.storeDriver = storeDriver
 		context.structuralEntityValidator = structuralEntityValidator
+		context.transactionalConnector = transactionalConnector
 		context.transactionalServer = transactionalServer
 		context.updateManager = updateManager
 	}
@@ -164,12 +176,12 @@ export class IocOperationContext
 	): Promise<void> {
 		if (!context.airDb || !context.cascadeGraphVerifier || !context.deleteManager
 			|| !context.dependencyGraphResolver || !context.entityGraphReconstructor
-			|| !context.entityStateManager || !context.fieldUtils || !context.insertManager
-			|| !context.metadataUtils || !context.operationManager || !context.queryFacade
-			|| !context.queryManager || !context.queryUtils || !context.relationManager
-			|| !context.applicationUtils || !context.storeDriver
-			|| !context.structuralEntityValidator || !context.transactionalServer
-			|| !context.updateManager) {
+			|| !context.entityStateManager || !context.entityUtils || !context.fieldUtils
+			|| !context.insertManager || !context.metadataUtils || !context.operationManager
+			|| !context.queryFacade || !context.queryManager || !context.queryUtils
+			|| !context.relationManager || !context.applicationUtils || !context.storeDriver
+			|| !context.structuralEntityValidator || !context.transactionalConnector
+			|| !context.transactionalServer || !context.updateManager) {
 			await IocOperationContext.init(context)
 		}
 	}
@@ -179,12 +191,12 @@ export class IocOperationContext
 	): void {
 		if (!context.airDb || !context.cascadeGraphVerifier || !context.deleteManager
 			|| !context.dependencyGraphResolver || !context.entityGraphReconstructor
-			|| !context.entityStateManager || !context.fieldUtils || !context.insertManager
-			|| !context.metadataUtils || !context.operationManager || !context.queryFacade
-			|| !context.queryManager || !context.queryUtils || !context.relationManager
-			|| !context.applicationUtils || !context.storeDriver
-			|| !context.structuralEntityValidator || !context.transactionalServer
-			|| !context.updateManager) {
+			|| !context.entityStateManager || !context.entityUtils || !context.fieldUtils
+			|| !context.insertManager || !context.metadataUtils || !context.operationManager
+			|| !context.queryFacade || !context.queryManager || !context.queryUtils
+			|| !context.relationManager || !context.applicationUtils || !context.storeDriver
+			|| !context.structuralEntityValidator || !context.transactionalConnector
+			|| !context.transactionalServer || !context.updateManager) {
 			IocOperationContext.initSync(context)
 		}
 	}

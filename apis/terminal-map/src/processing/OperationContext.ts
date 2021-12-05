@@ -5,13 +5,15 @@ import {
     IQueryFacade,
     IQueryUtils,
     IRelationManager,
-    IApplicationUtils
+    IApplicationUtils,
+    IEntityUtils
 } from "@airport/air-control";
 import { IContext } from "@airport/di";
 import {
     DbEntity,
     IEntityStateManager,
-    IStoreDriver
+    IStoreDriver,
+    ITransactionalConnector
 } from "@airport/ground-control";
 import { IActor, IRepository } from "@airport/holding-pattern";
 import { IRepositoryManager } from "../repository/RepositoryManager";
@@ -51,6 +53,7 @@ export interface IIocOperationContext {
     dependencyGraphResolver: IDependencyGraphResolver
     entityGraphReconstructor: IEntityGraphReconstructor
     entityStateManager: IEntityStateManager
+    entityUtils: IEntityUtils
     fieldUtils: IFieldUtils
     insertManager: IInsertManager
     metadataUtils: IQMetadataUtils
@@ -63,6 +66,7 @@ export interface IIocOperationContext {
     applicationUtils: IApplicationUtils
     storeDriver: IStoreDriver
     structuralEntityValidator: IStructuralEntityValidator
+    transactionalConnector: ITransactionalConnector
     transactionalServer: ITransactionalServer
     updateManager: IUpdateManager
 

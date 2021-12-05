@@ -4,7 +4,8 @@ import {
 } from "@airport/air-control";
 import {
     container,
-    DI
+    DI,
+    IContext
 } from "@airport/di";
 import {
     SYNCHRONIZATION_ADAPTER_LOADER,
@@ -28,10 +29,17 @@ export class RepositoryLoader
     */
     async loadRepository(
         repositorySource: string,
-        repositoryUuId: string
+        repositoryUuId: string,
+        context: IContext
     ): Promise<void> {
+        if (context.repositoryExistenceChecked) {
+            return
+        }
+        context.repositoryExistenceChecked = true
+
         const repositoryDao = await container(this).get(REPOSITORY_DAO)
-        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId)
+        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(
+            repositorySource, repositoryUuId, context)
 
         let loadRepository = false
         let lastSyncTimestamp = 0

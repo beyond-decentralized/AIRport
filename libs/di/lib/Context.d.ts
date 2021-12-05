@@ -4,6 +4,7 @@ export interface IContext {
         source: string;
         uuId?: string;
     };
+    repositoryExistenceChecked?: boolean;
     startedAt?: Date;
     [propertyName: string]: any;
 }
