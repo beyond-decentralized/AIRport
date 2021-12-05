@@ -25,6 +25,9 @@ export class AliasCache {
         for (var i = 0; i < 3; i++) {
             aliasString += ALIASES[currentAlias[i]];
         }
+        if (aliasString === 'add') {
+            aliasString = this.getFollowingAlias();
+        }
         return aliasString;
     }
     reset() {

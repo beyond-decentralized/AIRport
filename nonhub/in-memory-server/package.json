@@ -5,7 +5,6 @@
         "@airport/nonhub-types": "0.0.1",
         "@airport/processor-common": "0.0.1",
         "async": "^3.2.1",
-        "axios": "~0.24.0",
         "fastify": "^3.22.0",
         "fastify-cors": "^6.0.2",
         "string-cipher": "^1.0.8",

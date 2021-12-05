@@ -3,7 +3,6 @@
         "@airport/arrivals-n-departures": "0.0.1",
         "@airport/di": "0.0.1",
         "@airport/nonhub-types": "0.0.1",
-        "axios": "~0.24.0",
         "fastify": "^3.22.0",
         "fastify-cors": "^6.0.2",
         "fastify-static": "^4.4.2",

@@ -1,4 +1,5 @@
-import { DI } from "@airport/di";
+import { container, DI } from "@airport/di";
+import { DEBUG_SYNCHRONIZATION_ADAPTER } from "..";
 import { SYNCHRONIZATION_ADAPTER_LOADER } from "../tokens";
 import { DebugSynchronizationAdapter } from "./DebugSynchronizationAdapter";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
@@ -22,7 +23,7 @@ export class SynchronizationAdapterLoader
                 throw new Error(`Not Implemented`)
             }
             case 'localhost:9000': {
-                return new DebugSynchronizationAdapter()
+                return await container(this).get(DEBUG_SYNCHRONIZATION_ADAPTER)
             }
             default:
                 throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)

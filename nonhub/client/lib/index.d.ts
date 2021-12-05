@@ -5,7 +5,6 @@ export interface INonhubClient {
     sendRepositoryTransactions(location: string, repositoryUuId: string, messages: RepositorySynchronizationMessage[]): Promise<RepositorySynchronizationWriteResponse>;
 }
 export declare class NonhubClient implements INonhubClient {
-    encryptionKey: string;
     serverLocationProtocol: string;
     getRepositoryTransactions(location: string, repositoryUuId: string, sinceSyncTimestamp?: number): Promise<RepositorySynchronizationReadResponse>;
     sendRepositoryTransactions(location: string, repositoryUuId: string, messages: RepositorySynchronizationMessage[]): Promise<RepositorySynchronizationWriteResponse>;

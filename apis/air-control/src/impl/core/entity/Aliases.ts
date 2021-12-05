@@ -45,6 +45,10 @@ export class AliasCache {
 			aliasString += ALIASES[currentAlias[i]];
 		}
 
+		if(aliasString === 'add') {
+			aliasString = this.getFollowingAlias()
+		}
+
 		return aliasString;
 	}
 
