@@ -265,11 +265,16 @@ export class DeleteManager
 												value: any,
 												propertyNameChains: string[][]
 											) => {
-											if (dbColumn.name === repositoryEntity.ACTOR_ID) {
-												actorId
+											switch (dbColumn.name) {
+												// Do not add Actor or Repository the are recorded
+												// at record history level
+												case repositoryEntity.ACTOR_ID:
+												case repositoryEntity.REPOSITORY_ID:
+													break;
+												default:
+													recHistoryDuo.addOldValue(recordHistory, dbColumn,
+														value, recHistoryOldValueDuo)
 											}
-											recHistoryDuo.addOldValue(recordHistory, dbColumn,
-												value, recHistoryOldValueDuo)
 										})
 										break
 									case EntityRelationType.ONE_TO_MANY:

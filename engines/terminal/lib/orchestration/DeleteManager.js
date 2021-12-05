@@ -28,6 +28,7 @@ export class DeleteManager {
             jsonQuery: jsonSelect,
             queryResultType: QueryResultType.ENTITY_TREE,
             parameterMap: portableQuery.parameterMap,
+            // values: portableQuery.values,
         };
         const treesToDelete = await transaction
             .find(portableSelect, {}, context);
@@ -127,10 +128,15 @@ export class DeleteManager {
                                 switch (dbRelation.relationType) {
                                     case EntityRelationType.MANY_TO_ONE:
                                         applicationUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
-                                            if (dbColumn.name === repositoryEntity.ACTOR_ID) {
-                                                actorId;
+                                            switch (dbColumn.name) {
+                                                // Do not add Actor or Repository the are recorded
+                                                // at record history level
+                                                case repositoryEntity.ACTOR_ID:
+                                                case repositoryEntity.REPOSITORY_ID:
+                                                    break;
+                                                default:
+                                                    recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
                                             }
-                                            recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
                                         });
                                         break;
                                     case EntityRelationType.ONE_TO_MANY:

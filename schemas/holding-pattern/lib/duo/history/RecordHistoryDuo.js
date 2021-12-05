@@ -9,6 +9,10 @@ export class RecordHistoryDuo extends BaseRecordHistoryDuo {
         return recordHistory;
     }
     addNewValue(recordHistory, dbColumn, newValue, recHistoryNewValueDuo) {
+        if (newValue === null) {
+            // No need to record a null value
+            return null;
+        }
         const recordHistoryNewValue = recHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue);
         recordHistory.newValues.push(recordHistoryNewValue);
         recordHistory.operationHistory.repositoryTransactionHistory
@@ -16,6 +20,10 @@ export class RecordHistoryDuo extends BaseRecordHistoryDuo {
         return recordHistoryNewValue;
     }
     addOldValue(recordHistory, dbColumn, oldValue, recHistoryOldValueDuo) {
+        if (oldValue === null) {
+            // No need to record a null value
+            return null;
+        }
         const recordHistoryOldValue = recHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
         recordHistory.oldValues.push(recordHistoryOldValue);
         recordHistory.operationHistory.repositoryTransactionHistory

@@ -61,6 +61,10 @@ export class RecordHistoryDuo
 		newValue: any,
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo
 	): IRecordHistoryNewValue {
+		if (newValue === null) {
+			// No need to record a null value
+			return null
+		}
 		const recordHistoryNewValue = recHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
 
 		recordHistory.newValues.push(recordHistoryNewValue)
@@ -78,6 +82,10 @@ export class RecordHistoryDuo
 		oldValue: any,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo
 	): IRecordHistoryOldValue {
+		if (oldValue === null) {
+			// No need to record a null value
+			return null
+		}
 		const recordHistoryOldValue = recHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)

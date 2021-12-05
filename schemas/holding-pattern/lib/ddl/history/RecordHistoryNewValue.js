@@ -34,6 +34,10 @@ RecordHistoryNewValue = __decorate([
     Entity(),
     Table({
         name: "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
+        // primaryKey: [
+        // 	"REPOSITORY_RECORD_HISTORY_ID",
+        // 	"COLUMN_INDEX"
+        // ]
     })
 ], RecordHistoryNewValue);
 export { RecordHistoryNewValue };
