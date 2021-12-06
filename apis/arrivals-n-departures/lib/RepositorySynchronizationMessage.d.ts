@@ -25,6 +25,9 @@ export interface RepositorySynchronizationReadRequest {
 }
 export interface RepositorySynchronizationReadResponse {
     error?: string;
+    fragments: RepositorySynchronizationReadResponseFragment[];
+}
+export interface RepositorySynchronizationReadResponseFragment {
     messages: RepositorySynchronizationMessage[];
     repositoryUuId: string;
     syncTimestamp: number;

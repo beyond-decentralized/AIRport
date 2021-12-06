@@ -1,4 +1,4 @@
-import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
+import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
 import { container, DI } from "@airport/di";
 import {
     Repository_Source,
@@ -17,15 +17,25 @@ export class DebugSynchronizationAdapter
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
         const nonhubClient = await container(this).get(NONHUB_CLIENT)
-        const response = await nonhubClient.getRepositoryTransactions(
-            repositorySource, repositoryUuId, sinceSyncTimestamp)
+        const response: RepositorySynchronizationReadResponseFragment[]
+            = await nonhubClient.getRepositoryTransactions(
+                repositorySource, repositoryUuId, sinceSyncTimestamp)
 
 
-        const messages = response.messages
+        const messages: RepositorySynchronizationMessage[] = []
+
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
-        for (const message of messages) {
-            message.syncTimestamp = response.syncTimestamp
+        for (const fragment of response) {
+            if (fragment.repositoryUuId !== repositoryUuId) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryUuId}.
+    Expecting message fragments for repository: ${repositoryUuId}`)
+                continue
+            }
+            for (const message of fragment.messages) {
+                message.syncTimestamp = fragment.syncTimestamp
+                messages.push(message)
+            }
         }
 
         return messages

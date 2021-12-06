@@ -185,6 +185,19 @@
             ],
             "cwd": "${workspaceFolder}\\schemas\\vasi",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "in-memory-server",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\nonhub\\in-memory-server\\lib\\server.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\nonhub\\in-memory-server"
         }
     ]
 }

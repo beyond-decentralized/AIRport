@@ -5,11 +5,19 @@ export class DebugSynchronizationAdapter {
     async getTransactionsForRepository(repositorySource, repositoryUuId, sinceSyncTimestamp) {
         const nonhubClient = await container(this).get(NONHUB_CLIENT);
         const response = await nonhubClient.getRepositoryTransactions(repositorySource, repositoryUuId, sinceSyncTimestamp);
-        const messages = response.messages;
+        const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
-        for (const message of messages) {
-            message.syncTimestamp = response.syncTimestamp;
+        for (const fragment of response) {
+            if (fragment.repositoryUuId !== repositoryUuId) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryUuId}.
+    Expecting message fragments for repository: ${repositoryUuId}`);
+                continue;
+            }
+            for (const message of fragment.messages) {
+                message.syncTimestamp = fragment.syncTimestamp;
+                messages.push(message);
+            }
         }
         return messages;
     }

@@ -1,4 +1,5 @@
 import type {
+    RepositorySynchronizationMessage,
     RepositorySynchronizationReadRequest,
     RepositorySynchronizationReadResponse,
     RepositorySynchronizationWriteRequest,
@@ -25,12 +26,11 @@ export const server: BasicServer<http.Server> = new BasicServer<http.Server>({
 })
 
 export interface ITransactionLogEntry {
-    data: string
-    repositoryUuId: string
-    transactionLogEntryTime: number
+    messages: RepositorySynchronizationMessage[]
+    syncTimestamp: number
 }
 
-const transactionLogs: Map<Repository_UuId, RepositorySynchronizationReadResponse[]>
+const transactionLogs: Map<Repository_UuId, ITransactionLogEntry[]>
     = new Map()
 
 server.fastify.register(require('fastify-cors'), {
@@ -98,24 +98,29 @@ async function serveReadRequest(
     let transactionLog = transactionLogs.get(readRequest.repositoryUuId)
 
     if (!transactionLog || !transactionLog.length) {
+        reply.send(packagedMessage)
         return []
     }
 
-    let results = transactionLog
+    let messages = transactionLog
     if (readRequest.syncTimestamp) {
-        results = []
+        messages = []
         for (let transactionLogEntry of transactionLog) {
             if (transactionLogEntry.syncTimestamp >= readRequest.syncTimestamp) {
-                results.push(transactionLogEntry)
+                messages.push(transactionLogEntry)
             }
         }
     }
 
-    let packagedMessage = results.join('|')
+    let packagedMessage = messages.join('|')
     // if (encryptionKey) {
     //     packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
     // }
-    reply.send(packagedMessage)
+    reply.send({
+        messages,
+        repositoryUiId: readRequest.repositoryUuId,
+        syncTimestamp
+    })
 }
 
 async function processRequest<Req>(
@@ -160,26 +165,28 @@ async function serveWriteRequest(
     }
 
     const syncTimestamp = new Date().getTime()
-    const readResponse: RepositorySynchronizationReadResponse = {
-        ...writeRequest,
-        syncTimestamp
-    }
 
     let transactionLog = transactionLogs.get(writeRequest.repositoryUuId)
     if (!transactionLog) {
         transactionLog = []
         transactionLogs.set(writeRequest.repositoryUuId, transactionLog)
     }
-    transactionLog.push(readResponse)
 
-    let packagedMessage = JSON.stringify({
+    transactionLog.push({
+        messages: writeRequest.messages,
         syncTimestamp
-    } as RepositorySynchronizationWriteResponse)
+    })
+
+    // let packagedMessage = JSON.stringify({
+    //     syncTimestamp
+    // } as RepositorySynchronizationWriteResponse)
     // if (encryptionKey) {
     //     packagedMessage = encryptStringSync(
     //         packagedMessage, encryptionKey)
     // }
-    reply.send(packagedMessage)
+    reply.send({
+        syncTimestamp
+    })
 }
 
 export function processSearchRequest(
