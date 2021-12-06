@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di';
+import { DI } from '@airport/di';
 import {
 	DomainName,
 	ensureChildArray,
@@ -30,7 +30,7 @@ import {
 	IApplicationVersion
 } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
-import { APPLICATION_COMPOSER, APPLICATION_LOCATOR } from '../tokens';
+import { APPLICATION_COMPOSER } from '../tokens';
 
 export interface IApplicationComposer {
 
