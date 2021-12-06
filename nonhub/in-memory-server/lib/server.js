@@ -30,36 +30,40 @@ exports.server.fastify.put('/search', (request, reply) => {
 });
 async function serveReadRequest(request, reply, serverState, encryptionKey) {
     if (serverState !== processor_common_1.ServerState.RUNNING) {
-        reply.send(JSON.stringify({
+        reply.send({
             error: 'Internal Error'
-        }));
+        });
         return;
     }
     const readRequest = await processRequest(request);
     if (!readRequest) {
-        reply.send(JSON.stringify({
+        reply.send({
             error: 'Internal Error'
-        }));
+        });
         return;
     }
     let transactionLog = transactionLogs.get(readRequest.repositoryUuId);
     if (!transactionLog || !transactionLog.length) {
-        return [];
+        reply.send({
+            fragments: []
+        });
+        return;
     }
-    let results = transactionLog;
+    let fragments = transactionLog;
     if (readRequest.syncTimestamp) {
-        results = [];
+        fragments = [];
         for (let transactionLogEntry of transactionLog) {
             if (transactionLogEntry.syncTimestamp >= readRequest.syncTimestamp) {
-                results.push(transactionLogEntry);
+                fragments.push(transactionLogEntry);
             }
         }
     }
-    let packagedMessage = results.join('|');
     // if (encryptionKey) {
     //     packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
     // }
-    reply.send(packagedMessage);
+    reply.send({
+        fragments
+    });
 }
 async function processRequest(request) {
     try {
@@ -93,24 +97,26 @@ async function serveWriteRequest(request, reply, serverState, encryptionKey) {
         return;
     }
     const syncTimestamp = new Date().getTime();
-    const readResponse = {
-        ...writeRequest,
-        syncTimestamp
-    };
     let transactionLog = transactionLogs.get(writeRequest.repositoryUuId);
     if (!transactionLog) {
         transactionLog = [];
         transactionLogs.set(writeRequest.repositoryUuId, transactionLog);
     }
-    transactionLog.push(readResponse);
-    let packagedMessage = JSON.stringify({
+    transactionLog.push({
+        messages: writeRequest.messages,
+        repositoryUuId: writeRequest.repositoryUuId,
         syncTimestamp
     });
+    // let packagedMessage = JSON.stringify({
+    //     syncTimestamp
+    // } as RepositorySynchronizationWriteResponse)
     // if (encryptionKey) {
     //     packagedMessage = encryptStringSync(
     //         packagedMessage, encryptionKey)
     // }
-    reply.send(packagedMessage);
+    reply.send({
+        syncTimestamp
+    });
 }
 function processSearchRequest(request, reply) {
     let searchRequest = request.body;

@@ -3,7 +3,6 @@ import type {
     RepositorySynchronizationReadRequest,
     RepositorySynchronizationReadResponse,
     RepositorySynchronizationWriteRequest,
-    RepositorySynchronizationWriteResponse
 } from '@airport/arrivals-n-departures';
 import type { Repository_UuId } from '@airport/holding-pattern';
 import type {
@@ -27,6 +26,7 @@ export const server: BasicServer<http.Server> = new BasicServer<http.Server>({
 
 export interface ITransactionLogEntry {
     messages: RepositorySynchronizationMessage[]
+    repositoryUuId: string
     syncTimestamp: number
 }
 
@@ -81,46 +81,45 @@ async function serveReadRequest(
     encryptionKey: string
 ) {
     if (serverState !== ServerState.RUNNING) {
-        reply.send(JSON.stringify({
+        reply.send({
             error: 'Internal Error'
-        }))
+        })
         return
     }
     const readRequest = await processRequest<RepositorySynchronizationReadRequest>(
         request)
     if (!readRequest) {
-        reply.send(JSON.stringify({
+        reply.send({
             error: 'Internal Error'
-        }))
+        })
         return
     }
 
     let transactionLog = transactionLogs.get(readRequest.repositoryUuId)
 
     if (!transactionLog || !transactionLog.length) {
-        reply.send(packagedMessage)
-        return []
+        reply.send({
+            fragments: []
+        })
+        return
     }
 
-    let messages = transactionLog
+    let fragments = transactionLog
     if (readRequest.syncTimestamp) {
-        messages = []
+        fragments = []
         for (let transactionLogEntry of transactionLog) {
             if (transactionLogEntry.syncTimestamp >= readRequest.syncTimestamp) {
-                messages.push(transactionLogEntry)
+                fragments.push(transactionLogEntry)
             }
         }
     }
 
-    let packagedMessage = messages.join('|')
     // if (encryptionKey) {
     //     packagedMessage = encryptStringSync(results.join('|'), encryptionKey)
     // }
     reply.send({
-        messages,
-        repositoryUiId: readRequest.repositoryUuId,
-        syncTimestamp
-    })
+        fragments
+    } as RepositorySynchronizationReadResponse)
 }
 
 async function processRequest<Req>(
@@ -174,6 +173,7 @@ async function serveWriteRequest(
 
     transactionLog.push({
         messages: writeRequest.messages,
+        repositoryUuId: writeRequest.repositoryUuId,
         syncTimestamp
     })
 
