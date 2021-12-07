@@ -23,7 +23,7 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
     performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
     private populateSystemWideOperationIds;
     ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntity_ActorRecordId): void;
-    private getDeletedRecordIds;
+    private getDeletedRecordIdsAndPopulateAllHistoryMap;
     private mergeArraysInMap;
     private processCreation;
     private processUpdate;

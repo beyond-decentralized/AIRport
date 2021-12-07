@@ -4,6 +4,7 @@ import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airpor
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
 import { IApplication } from '@airport/airspace';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
+import { IOperationContext } from '@airport/terminal-map';
 /**
  * Stage 2 data processor is used to optimize the number of required
  * I/O operations to do applyChangesToDb the terminal I/O (Creates, Updates, Deletes)
@@ -25,9 +26,9 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
      *  structure is passed in.
      */
-    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
-    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, recordUpdateStageDao: IRecordUpdateStageDao): Promise<void>;
-    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade): Promise<void>;
+    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
+    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, recordUpdateStageDao: IRecordUpdateStageDao, context: IOperationContext): Promise<void>;
+    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
      * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination

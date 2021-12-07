@@ -55,11 +55,11 @@ export class Stage1SyncedInDataProcessor {
             }
         }
         const allRepoTransHistoryMapByRepoId = new Map();
-        const allRemoteRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId, syncInUtils);
+        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId, syncInUtils);
         // find local history for the matching repositories and corresponding time period
         const localRepoTransHistoryMapByRepositoryId = await repoTransHistoryDao
             .findAllLocalChangesForRecordIds(changedRecordIds);
-        const allLocalRecordDeletions = this.getDeletedRecordIds(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, syncInUtils, true);
+        const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, syncInUtils, true);
         // Find all actors that modified the locally recorded history, which are not already
         // in the actorMapById collect actors not already in cache
         const newlyFoundActorSet = new Set();
@@ -138,7 +138,7 @@ export class Stage1SyncedInDataProcessor {
         ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
             .set(actorRecordId, recordHistory.id);
     }
-    getDeletedRecordIds(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, syncInUtils, isLocal = false) {
+    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, syncInUtils, isLocal = false) {
         const recordDeletions = new Map();
         for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
             this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories);
@@ -159,13 +159,14 @@ export class Stage1SyncedInDataProcessor {
         return recordDeletions;
     }
     mergeArraysInMap(map, key, array) {
-        let targetArray = map[key];
+        let targetArray = map.get(key);
         if (!targetArray) {
             targetArray = array;
         }
         else {
             targetArray = targetArray.concat(array);
         }
+        map.set(key, targetArray);
     }
     /*
     NOTE: local creates are not inputted into this processing.

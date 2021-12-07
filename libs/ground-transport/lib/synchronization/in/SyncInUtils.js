@@ -18,7 +18,7 @@ export var ApplicationComparisonResult;
 })(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
 export class SyncInUtils {
     ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordMapByApplicationTableAndRepository) {
-        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id), operationHistory.entity.id), repositoryId);
+        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id), operationHistory.entity.index), repositoryId);
     }
 }
 DI.set(SYNC_IN_UTILS, SyncInUtils);

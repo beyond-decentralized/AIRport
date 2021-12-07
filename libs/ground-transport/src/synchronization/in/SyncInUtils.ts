@@ -1,11 +1,11 @@
-import {DI}            from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
 	EntityId,
 	ApplicationIndex,
 	ApplicationVersionId
-}                      from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	Actor_Id,
 	IOperationHistory,
@@ -15,11 +15,11 @@ import {
 	RecordHistoryId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
-}                      from '@airport/holding-pattern'
+} from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict
-}                      from '@airport/moving-walkway'
-import {SYNC_IN_UTILS} from '../../tokens'
+} from '@airport/moving-walkway'
+import { SYNC_IN_UTILS } from '../../tokens'
 
 export type RemoteApplicationIndex = ApplicationIndex;
 export type RemoteApplicationVersionId = ApplicationVersionId;
@@ -31,10 +31,10 @@ export type RemoteActorId = Actor_Id;
 export enum ApplicationComparisonResult {
 	// Version specified in the message is lower than it's version in the receiving
 	// Terminal (TM)
-	MESSAGE_APPLICATION_VERSION_IS_LOWER  = -1,
+	MESSAGE_APPLICATION_VERSION_IS_LOWER = -1,
 	// Version of the application used i the message is the same as that in the receiving
 	// Terminal (TM)
-	MESSAGE_APPLICATION_VERSION_IS_EQUAL  = 0,
+	MESSAGE_APPLICATION_VERSION_IS_EQUAL = 0,
 	// Version specified in the message in higher than it's version in the receiving
 	// Terminal (TM)
 	MESSAGE_APPLICATION_VERSION_IS_HIGHER = 1,
@@ -104,7 +104,7 @@ export class SyncInUtils
 			ensureChildJsMap(
 				ensureChildJsMap(
 					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id),
-				operationHistory.entity.id), repositoryId)
+				operationHistory.entity.index), repositoryId)
 	}
 
 }

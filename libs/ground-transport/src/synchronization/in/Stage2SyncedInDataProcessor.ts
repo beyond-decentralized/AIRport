@@ -5,6 +5,7 @@ import {
 	DATABASE_FACADE,
 	IAirportDatabase,
 	IDatabaseFacade,
+	IQEntityInternal,
 	or
 } from '@airport/air-control'
 import { container, DI } from '@airport/di'
@@ -33,6 +34,7 @@ import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
 } from './SyncInUtils'
+import { IOperationContext } from '@airport/terminal-map'
 
 /**
  * Stage 2 data processor is used to optimize the number of required
@@ -72,13 +74,14 @@ export class Stage2SyncedInDataProcessor
 	): Promise<void> {
 		const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(
 			AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO)
+		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersionIdMap, airDb, dbFacade)
+			applicationsByApplicationVersionIdMap, airDb, dbFacade, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersionIdMap, recordUpdateStageDao)
+			applicationsByApplicationVersionIdMap, recordUpdateStageDao, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersionIdMap, airDb, dbFacade)
+			applicationsByApplicationVersionIdMap, airDb, dbFacade, context)
 	}
 
 	/**
@@ -100,11 +103,13 @@ export class Stage2SyncedInDataProcessor
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		airDb: IAirportDatabase,
-		dbFacade: IDatabaseFacade
+		dbFacade: IDatabaseFacade,
+		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
 			for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
-				const applicationIndex = applicationsByApplicationVersionIdMap[applicationVersionId]
+				const applicationIndex = applicationsByApplicationVersionIdMap
+					.get(applicationVersionId).index
 				const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
 				const qEntity = airDb.qApplications[applicationIndex][dbEntity.name]
@@ -152,11 +157,18 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numInserts) {
-					await dbFacade.insertValues({
-						insertInto: qEntity,
-						columns,
-						values
-					}, null)
+					const previousDbEntity = context.dbEntity
+					context.dbEntity = (qEntity as IQEntityInternal<any>)
+						.__driver__.dbEntity
+					try {
+						await dbFacade.insertValues({
+							insertInto: qEntity,
+							columns,
+							values
+						}, context)
+					} finally {
+						context.dbEntity = previousDbEntity
+					}
 				}
 			}
 		}
@@ -167,7 +179,8 @@ export class Stage2SyncedInDataProcessor
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
-		recordUpdateStageDao: IRecordUpdateStageDao
+		recordUpdateStageDao: IRecordUpdateStageDao,
+		context: IOperationContext
 	): Promise<void> {
 		const finalUpdateMap: Map<ApplicationVersionId, Map<TableIndex, ColumnUpdateKeyMap>> = new Map()
 
@@ -228,7 +241,8 @@ export class Stage2SyncedInDataProcessor
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		airDb: IAirportDatabase,
-		dbFacade: IDatabaseFacade
+		dbFacade: IDatabaseFacade,
+		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
 			const application = applicationsByApplicationVersionIdMap.get(applicationVersionId)
@@ -255,10 +269,18 @@ export class Stage2SyncedInDataProcessor
 				}
 
 				if (numClauses) {
-					await dbFacade.deleteWhere({
-						deleteFrom: qEntity,
-						where: or(...repositoryWhereFragments)
-					}, null)
+
+					const previousDbEntity = context.dbEntity
+					context.dbEntity = (qEntity as IQEntityInternal<any>)
+						.__driver__.dbEntity
+					try {
+						await dbFacade.deleteWhere({
+							deleteFrom: qEntity,
+							where: or(...repositoryWhereFragments)
+						}, context)
+					} finally {
+						context.dbEntity = previousDbEntity
+					}
 				}
 			}
 		}

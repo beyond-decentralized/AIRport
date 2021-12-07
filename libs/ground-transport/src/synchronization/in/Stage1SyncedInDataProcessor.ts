@@ -124,7 +124,7 @@ export class Stage1SyncedInDataProcessor
 		const allRepoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>
 			= new Map()
 
-		const allRemoteRecordDeletions = this.getDeletedRecordIds(
+		const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
 			allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId,
 			syncInUtils)
 
@@ -133,7 +133,7 @@ export class Stage1SyncedInDataProcessor
 			: Map<Repository_Id, ISyncRepoTransHistory[]>
 			= await repoTransHistoryDao
 				.findAllLocalChangesForRecordIds(changedRecordIds)
-		const allLocalRecordDeletions = this.getDeletedRecordIds(
+		const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
 			allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId,
 			syncInUtils, true)
 
@@ -251,7 +251,7 @@ export class Stage1SyncedInDataProcessor
 			.set(actorRecordId, recordHistory.id)
 	}
 
-	private getDeletedRecordIds(
+	private getDeletedRecordIdsAndPopulateAllHistoryMap(
 		allRepoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		repoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		syncInUtils: ISyncInUtils,
@@ -286,12 +286,13 @@ export class Stage1SyncedInDataProcessor
 		key: any,
 		array: any[]
 	): void {
-		let targetArray = map[key]
+		let targetArray = map.get(key)
 		if (!targetArray) {
 			targetArray = array
 		} else {
 			targetArray = targetArray.concat(array)
 		}
+		map.set(key, targetArray)
 	}
 
 	/*

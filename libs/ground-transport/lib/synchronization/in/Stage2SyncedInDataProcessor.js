@@ -6,9 +6,10 @@ import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
 export class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap) {
         const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO);
-        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade);
+        const context = {};
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade, context);
     }
     /**
      * Remote changes come in with ApplicationVersionIds not ApplicationIndexes, so it makes
@@ -22,10 +23,11 @@ export class Stage2SyncedInDataProcessor {
      *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade) {
+    async performCreates(recordCreations, applicationsByApplicationVersionIdMap, airDb, dbFacade, context) {
         for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
-                const applicationIndex = applicationsByApplicationVersionIdMap[applicationVersionId];
+                const applicationIndex = applicationsByApplicationVersionIdMap
+                    .get(applicationVersionId).index;
                 const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
                     .applicationVersion.entities[tableIndex];
                 const qEntity = airDb.qApplications[applicationIndex][dbEntity.name];
@@ -69,16 +71,24 @@ export class Stage2SyncedInDataProcessor {
                     }
                 }
                 if (numInserts) {
-                    await dbFacade.insertValues({
-                        insertInto: qEntity,
-                        columns,
-                        values
-                    }, null);
+                    const previousDbEntity = context.dbEntity;
+                    context.dbEntity = qEntity
+                        .__driver__.dbEntity;
+                    try {
+                        await dbFacade.insertValues({
+                            insertInto: qEntity,
+                            columns,
+                            values
+                        }, context);
+                    }
+                    finally {
+                        context.dbEntity = previousDbEntity;
+                    }
                 }
             }
         }
     }
-    async performUpdates(recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao) {
+    async performUpdates(recordUpdates, applicationsByApplicationVersionIdMap, recordUpdateStageDao, context) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
@@ -121,7 +131,7 @@ export class Stage2SyncedInDataProcessor {
         }
         await recordUpdateStageDao.delete();
     }
-    async performDeletes(recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade) {
+    async performDeletes(recordDeletions, applicationsByApplicationVersionIdMap, airDb, dbFacade, context) {
         for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
             const application = applicationsByApplicationVersionIdMap.get(applicationVersionId);
             for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
@@ -139,10 +149,18 @@ export class Stage2SyncedInDataProcessor {
                     repositoryWhereFragments.push(and(qEntity.repository.id.equals(repositoryId), or(...actorWhereFragments)));
                 }
                 if (numClauses) {
-                    await dbFacade.deleteWhere({
-                        deleteFrom: qEntity,
-                        where: or(...repositoryWhereFragments)
-                    }, null);
+                    const previousDbEntity = context.dbEntity;
+                    context.dbEntity = qEntity
+                        .__driver__.dbEntity;
+                    try {
+                        await dbFacade.deleteWhere({
+                            deleteFrom: qEntity,
+                            where: or(...repositoryWhereFragments)
+                        }, context);
+                    }
+                    finally {
+                        context.dbEntity = previousDbEntity;
+                    }
                 }
             }
         }
