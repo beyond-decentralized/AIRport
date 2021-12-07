@@ -70,7 +70,7 @@ export class InsertManager
 		return <RecordId[][]>await this.internalInsertValues(
 			portableQuery, actor, transaction, context, true)
 	}
-	
+
 	verifyNoGeneratedColumns(
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
@@ -378,22 +378,38 @@ appears more than once in the Columns clause`)
 
 		let repositoryIdColumnQueryIndex
 
+		let foundActorIdColumn = false
+		let foundActorRecordIdColumn = false
+		let foundSystemWideOperationIdColumn = false
+
 		for (let i = 0; i < jsonInsertValues.C.length; i++) {
 			const columnIndex = jsonInsertValues.C[i]
 			switch (columnIndex) {
 				case actorIdColumn.index:
+					foundActorIdColumn = true
 					if (context.isSaveOperation) {
 						// Save operations validate Actor ealier and set it on the entity objects
 						break;
 					}
-					throw new Error(errorPrefix +
-						`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
+					if (!context.isSync) {
+						throw new Error(errorPrefix +
+							`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
+					}
+					break
 				case actorRecordIdColumn.index:
-					throw new Error(errorPrefix +
-						`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
+					foundActorRecordIdColumn = true
+					if (!context.isSync) {
+						throw new Error(errorPrefix +
+							`You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`)
+					}
+					break
 				case sysWideOperationIdColumn.index:
-					throw new Error(`Error inserting into '${dbEntity.name}'.
+					foundSystemWideOperationIdColumn = true
+					if (!context.isSync) {
+						throw new Error(`Error inserting into '${dbEntity.name}'.
 You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`)
+					}
+					break
 				case repositoryIdColumn.index:
 					repositoryIdColumnQueryIndex = i
 					break
@@ -406,6 +422,21 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`
 
 		if (repositoryIdColumnQueryIndex === undefined) {
 			throw new Error(missingRepositoryIdErrorMsg)
+		}
+
+		if (context.isSync) {
+			if (!foundActorIdColumn) {
+				throw new Error(errorPrefix +
+					`ACTOR_ID must be provided for sync operations.`)
+			}
+			if (!foundActorRecordIdColumn) {
+				throw new Error(errorPrefix +
+					`ACTOR_RECORD_ID must be provided for sync operations.`)
+			}
+			if (!foundSystemWideOperationIdColumn) {
+				throw new Error(errorPrefix +
+					`SYSTEM_WIDE_OPERATION_ID must be provided for sync operations.`)
+			}
 		}
 
 		for (const entityValues of jsonInsertValues.V) {
