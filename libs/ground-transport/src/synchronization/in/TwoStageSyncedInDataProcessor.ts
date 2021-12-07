@@ -86,10 +86,14 @@ export class TwoStageSyncedInDataProcessor
 				operationHistory.recordHistory.forEach((
 					recordHistory
 				) => {
-					transactionHistory.allRecordHistoryNewValues = transactionHistory
-						.allRecordHistoryNewValues.concat(recordHistory.newValues)
-					transactionHistory.allRecordHistoryOldValues = transactionHistory
-						.allRecordHistoryOldValues.concat(recordHistory.oldValues)
+					if (recordHistory.newValues && recordHistory.newValues.length) {
+						transactionHistory.allRecordHistoryNewValues = transactionHistory
+							.allRecordHistoryNewValues.concat(recordHistory.newValues)
+					}
+					if (recordHistory.oldValues && recordHistory.oldValues.length) {
+						transactionHistory.allRecordHistoryOldValues = transactionHistory
+							.allRecordHistoryOldValues.concat(recordHistory.oldValues)
+					}
 				})
 			})
 

@@ -30,7 +30,7 @@ export class UserDao extends BaseUserDao {
                 user.uuId, user.username
             ]);
         }
-        await this.db.insertValuesGenerateIds({
+        const ids = await this.db.insertValuesGenerateIds({
             insertInto: u = Q.User,
             columns: [
                 u.uuId,
@@ -38,6 +38,10 @@ export class UserDao extends BaseUserDao {
             ],
             values
         });
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
+            user.id = ids[i][0];
+        }
     }
 }
 DI.set(USER_DAO, UserDao);

@@ -1,11 +1,9 @@
-import { IContext } from '@airport/di';
 import { DbColumn, DbEntity, JsonInsertValues, PortableQuery } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IInsertManager, IOperationContext, ITransaction, RecordId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
     insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<RecordId[][]>;
-    addRepository(actor: IActor, context: IContext): Promise<number>;
     verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
     private internalInsertValues;
     private ensureGeneratedValues;

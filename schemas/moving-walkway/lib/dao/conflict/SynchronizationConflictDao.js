@@ -2,19 +2,19 @@ import { DI } from '@airport/di';
 import { BaseSynchronizationConflictDao, Q } from '../../generated/generated';
 import { SYNCHRONIZATION_CONFLICT_DAO } from '../../tokens';
 export class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
-    async insert(terminals) {
+    async insert(synchronizationConflicts) {
         let sc;
         const values = [];
-        for (const user of terminals) {
+        for (const synchronizationConflict of synchronizationConflicts) {
             values.push([
-                user.type,
-                user.acknowledged,
-                user.repository.id,
-                user.overwrittenRecordHistory.id,
-                user.overwritingRecordHistory.id
+                synchronizationConflict.type,
+                synchronizationConflict.acknowledged,
+                synchronizationConflict.repository.id,
+                synchronizationConflict.overwrittenRecordHistory.id,
+                synchronizationConflict.overwritingRecordHistory.id
             ]);
         }
-        await this.db.insertValuesGenerateIds({
+        const ids = await this.db.insertValuesGenerateIds({
             insertInto: sc = Q.SynchronizationConflict,
             columns: [
                 sc.type,
@@ -25,6 +25,10 @@ export class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
             ],
             values
         });
+        for (let i = 0; i < synchronizationConflicts.length; i++) {
+            let synchronizationConflict = synchronizationConflicts[i];
+            synchronizationConflict.id = ids[i][0];
+        }
     }
 }
 DI.set(SYNCHRONIZATION_CONFLICT_DAO, SynchronizationConflictDao);

@@ -68,7 +68,7 @@ export class InternalRecordManager
             actors = await actorDao.findByApplicationSignature(signature)
             let anApplication: IApplication = await applicationDao.findByIndex(
                 application.lastIds.applications + 1);
-            if (!actors || ! actors.length) {
+            if (!actors || !actors.length) {
                 const frameworkActor = terminalStore.getFrameworkActor()
                 const actor = {
                     id: null,
@@ -104,7 +104,8 @@ export class InternalRecordManager
             _transaction
         ) => {
             const user = new User();
-            user.uuId = domainName;
+            user.uuId = 'AIRportA-demo-demo-demo-functionalty';
+            user.username = "internalUser";
             // const userDao = await container(this).get(USER_DAO);
             // await userDao.save(user, context);
 

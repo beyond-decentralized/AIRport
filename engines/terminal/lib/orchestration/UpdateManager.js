@@ -85,12 +85,7 @@ export class UpdateManager {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];
                 const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
-                const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId, recHistoryDuo);
-                if (actorId !== repoTransHistory.actor.id) {
-                    recordHistory.actor = {
-                        id: actorId
-                    };
-                }
+                const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId, recHistoryDuo);
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
                 for (let i = 0; i < recordToUpdate.length; i++) {
                     switch (i) {

@@ -112,7 +112,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             case JSONRelationType.ENTITY_JOIN_ON:
                 throw new Error(`Entity queries cannot use JOIN ON`);
             default:
-                throw new Error(`First table in FROM clause cannot be joined`);
+                throw new Error(`First table in FROM clause cannot be result of a join`);
         }
         // if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
         // 	throw new Error(`First table in FROM clause cannot be joined`)

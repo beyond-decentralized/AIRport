@@ -61,7 +61,7 @@ export class RepositoryLoader {
             for (const message of messages) {
                 messageMapByUuId.set(message.history.uuId, message);
             }
-            await synchronizationInManager.receiveMessages(messageMapByUuId);
+            await synchronizationInManager.receiveMessages(messageMapByUuId, context);
         }
         catch (e) {
             console.error(e);

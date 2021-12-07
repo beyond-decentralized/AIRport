@@ -160,8 +160,8 @@ export class ActorDao
 				actor.uuId, actor.user.id, actor.terminal.id,
 			])
 		}
-		await this.db.insertValuesGenerateIds({
-			insertInto: t = Q.Terminal,
+		const ids = await this.db.insertValuesGenerateIds({
+			insertInto: t = Q.Actor,
 			columns: [
 				t.uuId,
 				t.user.id,
@@ -169,6 +169,10 @@ export class ActorDao
 			],
 			values
 		})
+		for (let i = 0; i < actors.length; i++) {
+			let actor = actors[i]
+			actor.id = ids[i][0]
+		}
 	}
 
 	private async findWithDetailsAndGlobalIdsByWhereClause(
@@ -180,6 +184,7 @@ export class ActorDao
 		let ap: QApplication
 		let t: QTerminal
 		const id = Y
+		const username = Y
 		const uuId = Y
 		return await this.db.find.tree({
 			select: {
@@ -196,12 +201,14 @@ export class ActorDao
 					uuId,
 					owner: {
 						id,
+						username,
 						uuId,
 					}
 				},
 				user: {
 					id,
-					uuId
+					username,
+					uuId,
 				}
 			},
 			from: [

@@ -1,1 +1,1 @@
-{"version":3,"file":"ChangeType.d.ts","sourceRoot":"","sources":["../../../src/lingo/data/ChangeType.ts"],"names":[],"mappings":"AAAA,oBAAY,UAAU;IACrB,WAAW,gBAAgB;IAC3B,uBAAuB,4BAA4B;IACnD,aAAa,kBAAkB;IAC/B,WAAW,gBAAgB;CAC3B"}
+{"version":3,"file":"ChangeType.d.ts","sourceRoot":"","sources":["../../../src/lingo/data/ChangeType.ts"],"names":[],"mappings":"AAAA,oBAAY,UAAU;IACrB,WAAW,gBAAgB;IAC3B,aAAa,kBAAkB;IAC/B,WAAW,gBAAgB;CAC3B"}

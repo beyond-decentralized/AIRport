@@ -28,13 +28,4 @@ export interface IInsertManager {
         context: IOperationContext,
     ): Promise<RecordHistoryId[] | RecordId[][]>;
 
-    addRepository(
-        // url: string,
-        // platform: PlatformType,
-        // platformConfig: string,
-        // distributionStrategy: DistributionStrategy,
-        actor: IActor,
-        context: IOperationContext,
-    ): Promise<number>;
-
 }

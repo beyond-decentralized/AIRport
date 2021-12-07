@@ -70,12 +70,12 @@ export class TerminalDao
 	): Promise<void> {
 		let t: QTerminal;
 		const values = []
-		for (const user of terminals) {
+		for (const terminal of terminals) {
 			values.push([
-				user.uuId, user.owner.id, false,
+				terminal.uuId, terminal.owner.id, false,
 			])
 		}
-		await this.db.insertValuesGenerateIds({
+		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: t = Q.Terminal,
 			columns: [
 				t.uuId,
@@ -83,7 +83,11 @@ export class TerminalDao
 				t.isLocal
 			],
 			values
-		})
+		}) as number[][]
+		for (let i = 0; i < terminals.length; i++) {
+			const terminal = terminals[i]
+			terminal.id = ids[i][0]
+		}
 	}
 
 }

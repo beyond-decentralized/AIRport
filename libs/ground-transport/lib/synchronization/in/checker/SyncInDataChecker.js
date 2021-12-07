@@ -104,7 +104,6 @@ export class SyncInDataChecker {
                 case ChangeType.DELETE_ROWS:
                 case ChangeType.INSERT_VALUES:
                 case ChangeType.UPDATE_ROWS:
-                case ChangeType.INSERT_REFERENCE_VALUES:
                     break;
                 default:
                     throw new Error(`Invalid operationHistory.changeType: ${operationHistory.changeType}`);
@@ -167,11 +166,14 @@ export class SyncInDataChecker {
 for ChangeType.INSERT_VALUES`);
                     }
                     recordHistory.actor = operationHistory.repositoryTransactionHistory.actor;
+                    break;
                 case ChangeType.DELETE_ROWS:
-                case ChangeType.UPDATE_ROWS:
-                case ChangeType.INSERT_REFERENCE_VALUES: {
+                case ChangeType.UPDATE_ROWS: {
                     // If no actor is present on record level its the same actor that created the repositoryTransactionHistory
-                    if (recordHistory.actor !== undefined) {
+                    if (recordHistory.actor === undefined) {
+                        recordHistory.actor = operationHistory.repositoryTransactionHistory.actor;
+                    }
+                    else {
                         const actor = message.actors[recordHistory.actor];
                         if (!actor) {
                             throw new Error(`Did find Actor for "in-message id" in RepositorySynchronizationMessage.history -> operationHistory.actor`);
@@ -200,10 +202,9 @@ for ChangeType.DELETE_ROWS`);
                 return;
             case ChangeType.INSERT_VALUES:
             case ChangeType.UPDATE_ROWS:
-            case ChangeType.INSERT_REFERENCE_VALUES:
                 if (!(recordHistory.newValues instanceof Array) || !recordHistory.newValues.length) {
                     throw new Error(`Must specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues
-for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`);
+for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
                 }
                 break;
         }
@@ -255,11 +256,10 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS|INSERT_REFERENCE_VALUES`);
     checkOldValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
-            case ChangeType.INSERT_REFERENCE_VALUES:
             case ChangeType.INSERT_VALUES:
                 if (recordHistory.oldValues) {
                     throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues
-for ChangeType.DELETE_ROWS|INSERT_REFERENCE_VALUES|INSERT_VALUES`);
+for ChangeType.DELETE_ROWS|INSERT_VALUES`);
                 }
                 return;
             case ChangeType.UPDATE_ROWS:

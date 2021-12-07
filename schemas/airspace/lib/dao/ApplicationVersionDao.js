@@ -27,6 +27,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
         return await this.db.find.tree({
             from: [
                 sv = Q.ApplicationVersion,
+                // s = sv.application.innerJoin()
             ],
             select: {},
             orderBy: [
@@ -55,12 +56,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
                 s = sv.application.innerJoin(),
                 d = s.domain.innerJoin()
             ],
-            where: and(d.name.in(domainNames), s.name.in(applicationNames)),
-            orderBy: [
-                d.name.asc(),
-                s.index.asc(),
-                sv.integerVersion.desc()
-            ]
+            where: and(d.name.in(domainNames), s.name.in(applicationNames))
         });
     }
     /*

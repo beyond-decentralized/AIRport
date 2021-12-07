@@ -14,6 +14,7 @@ import {
 	STORE_DRIVER,
 	StoreType
 } from '@airport/ground-control';
+import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
 	OperationHistory,
 	Q,
@@ -91,10 +92,10 @@ export class TransactionManager
 			if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {
 				await transactionalCallback(this.transactionInProgress, context);
 				return
-			} else if(this.transactionIndexQueue.filter(
-					transIndex =>
-						transIndex === credentials.applicationSignature,
-				).length) {
+			} else if (this.transactionIndexQueue.filter(
+				transIndex =>
+					transIndex === credentials.applicationSignature,
+			).length) {
 				// Either just continue using the current transaction
 				// or return (domain shouldn't be initiating multiple transactions
 				// at the same time
@@ -119,7 +120,7 @@ export class TransactionManager
 		await storeDriver.transact(async (
 			transaction: ITransaction,
 		) => {
-			this.transactionInProgress = transaction 
+			this.transactionInProgress = transaction
 			context.transaction = transaction
 			transaction.transHistory = transHistoryDuo.getNewRecord();
 			transaction.credentials = credentials;
@@ -182,7 +183,6 @@ export class TransactionManager
 		try {
 			await this.saveRepositoryHistory(transaction, idGenerator, context);
 
-			// TODO: what else needs to be saved (if anything)?
 			await transaction.saveTransaction(transaction.transHistory);
 
 			activeQueries.rerunQueries();
@@ -191,6 +191,16 @@ export class TransactionManager
 			this.clearTransaction();
 		}
 
+		let transactionHistory = transaction.transHistory;
+		if (!transactionHistory.allRecordHistory.length) {
+			return;
+		}
+
+		const synchronizationOutManager = await container(this)
+			.get(SYNCHRONIZATION_OUT_MANAGER)
+
+		await synchronizationOutManager.synchronizeOut(
+			transactionHistory.repositoryTransactionHistories)
 	}
 
 	// @Transactional()
@@ -247,6 +257,7 @@ export class TransactionManager
 			index,
 		) => {
 			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
+			repositoryTransactionHistory.transactionHistory = transactionHistory
 		});
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
 			transactionHistory.repositoryTransactionHistories, context);

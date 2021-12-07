@@ -26,10 +26,14 @@ export class TwoStageSyncedInDataProcessor {
                 transactionHistory.allRecordHistory = transactionHistory
                     .allRecordHistory.concat(operationHistory.recordHistory);
                 operationHistory.recordHistory.forEach((recordHistory) => {
-                    transactionHistory.allRecordHistoryNewValues = transactionHistory
-                        .allRecordHistoryNewValues.concat(recordHistory.newValues);
-                    transactionHistory.allRecordHistoryOldValues = transactionHistory
-                        .allRecordHistoryOldValues.concat(recordHistory.oldValues);
+                    if (recordHistory.newValues && recordHistory.newValues.length) {
+                        transactionHistory.allRecordHistoryNewValues = transactionHistory
+                            .allRecordHistoryNewValues.concat(recordHistory.newValues);
+                    }
+                    if (recordHistory.oldValues && recordHistory.oldValues.length) {
+                        transactionHistory.allRecordHistoryOldValues = transactionHistory
+                            .allRecordHistoryOldValues.concat(recordHistory.oldValues);
+                    }
                 });
             });
         }

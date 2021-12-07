@@ -6,6 +6,6 @@ import { startDb } from '@airport/sqljs'
 injectTransactionalReceiver()
 
 export async function initFramework() {
-    await startDb('functionality_demo')
+    await startDb('AIRportA-demo-demo-demo-functionalty')
     await IOC.get(TRANSACTIONAL_RECEIVER)
 }

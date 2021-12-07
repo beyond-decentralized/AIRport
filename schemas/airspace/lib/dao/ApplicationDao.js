@@ -205,11 +205,7 @@ export class ApplicationDao extends BaseApplicationDao {
                 s = Q.Application,
                 d = s.domain.innerJoin()
             ],
-            where: and(d.name.in(domainNames), s.name.in(applicationNames)),
-            orderBy: [
-                d.name.asc(),
-                s.index.asc()
-            ]
+            where: and(d.name.in(domainNames), s.name.in(applicationNames))
         });
     }
     async findByIndex(index) {

@@ -23,7 +23,7 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'ACTOR_ID', referencedColumnName: 'ID'
+        name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false
     })
 ], RecordHistory.prototype, "actor", void 0);
 __decorate([

@@ -1,19 +1,22 @@
-import {DI}                            from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	ChangeType,
 	DbEntity
-}                                      from '@airport/ground-control'
-import {SystemWideOperationId}         from '../../ddl/common'
-import {RepositoryEntity_ActorRecordId} from '../../ddl/ddl'
+} from '@airport/ground-control'
+import { SystemWideOperationId } from '../../ddl/common'
+import {
+	Actor_Id,
+	RepositoryEntity_ActorRecordId
+} from '../../ddl/ddl'
 import {
 	BaseOperationHistoryDuo,
 	IBaseOperationHistoryDuo,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory
-}                                      from '../../generated/generated'
-import {OPERATION_HISTORY_DUO}              from '../../tokens'
-import {IRecordHistoryDuo}             from './RecordHistoryDuo'
+} from '../../generated/generated'
+import { OPERATION_HISTORY_DUO } from '../../tokens'
+import { IRecordHistoryDuo } from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo
 	extends IBaseOperationHistoryDuo {
@@ -32,6 +35,7 @@ export interface IOperationHistoryDuo
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
+		actorId: Actor_Id,
 		actorRecordId: RepositoryEntity_ActorRecordId,
 		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory;
@@ -77,10 +81,11 @@ export class OperationHistoryDuo
 
 	startRecordHistory(
 		operationHistory: IOperationHistory,
+		actorId: Actor_Id,
 		actorRecordId: RepositoryEntity_ActorRecordId,
 		recHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory {
-		const recordHistory = recHistoryDuo.getNewRecord(actorRecordId)
+		const recordHistory = recHistoryDuo.getNewRecord(actorId, actorRecordId)
 
 		recordHistory.operationHistory = operationHistory
 

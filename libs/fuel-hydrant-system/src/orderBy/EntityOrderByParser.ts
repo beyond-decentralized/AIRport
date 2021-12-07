@@ -100,12 +100,15 @@ export class EntityOrderByParser
 				return false
 			})
 
+			// NOTE: Order by Ids is necessary to correctly reconstruct 
+			// the entity graph
+
 			const allColumnsToSortBy: string[] = []
 			const idColumnsToSortBy: string[] = []
 			// By now the select clause is guaranteed to have:
 			// Either all ID columns defined on the entity (if @Id columns are defined)
 			// Or ALL of the columns on the entity (if no @Id columns are defined)
-			for (const propertyName in this.rootSelectClauseFragment) {
+			for (const propertyName in currentSelectFragment) {
 				const dbProperty = dbEntity.propertyMap[propertyName]
 				if (dbProperty.relation && dbProperty.relation.length) {
 					for (const dbPropertyColumn of dbProperty.propertyColumns) {

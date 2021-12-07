@@ -3,9 +3,12 @@ import { RecordHistory } from '../../ddl/ddl';
 import { RECORD_HISTORY_DUO } from '../../tokens';
 import { BaseRecordHistoryDuo, } from '../../generated/generated';
 export class RecordHistoryDuo extends BaseRecordHistoryDuo {
-    getNewRecord(actorRecordId) {
+    getNewRecord(actorId, actorRecordId) {
         const recordHistory = new RecordHistory();
         recordHistory.actorRecordId = actorRecordId;
+        recordHistory.actor = {
+            id: actorId
+        };
         return recordHistory;
     }
     addNewValue(recordHistory, dbColumn, newValue, recHistoryNewValueDuo) {

@@ -7,7 +7,7 @@ export class NonhubClient {
     }
     async getRepositoryTransactions(location, repositoryUuId, sinceSyncTimestamp = null) {
         try {
-            const response = await this.sendMessage(location, {
+            const response = await this.sendMessage(location + '/read', {
                 repositoryUuId,
                 syncTimestamp: sinceSyncTimestamp
             });
@@ -24,7 +24,7 @@ export class NonhubClient {
     }
     async sendRepositoryTransactions(location, repositoryUuId, messages) {
         try {
-            const response = await this.sendMessage(location, {
+            const response = await this.sendMessage(location + '/write', {
                 messages,
                 repositoryUuId
             });
@@ -45,7 +45,7 @@ export class NonhubClient {
         //     packagedMessage = await encryptString(
         //         packagedMessage, this.encryptionKey)
         // }
-        const response = await fetch(this.serverLocationProtocol + location + '/read', {
+        const response = await fetch(this.serverLocationProtocol + location, {
             method: 'PUT',
             mode: 'cors',
             // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

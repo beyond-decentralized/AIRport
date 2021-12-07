@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { container } from "@airport/di";
+import { container, DI } from "@airport/di";
 import { ApplicationStatus } from '@airport/ground-control';
 import {
     DOMAIN_DAO,
@@ -7,6 +7,7 @@ import {
     IApplication,
     APPLICATION_DAO
 } from "@airport/airspace";
+import { SYNC_IN_APPLICATION_CHECKER } from "../../../tokens";
 
 export interface IDomainCheckRecord {
     domain?: IDomain
@@ -185,3 +186,4 @@ export class SyncInApplicationChecker
     }
 
 }
+DI.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker)

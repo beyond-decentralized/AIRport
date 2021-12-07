@@ -251,9 +251,8 @@ export class DeleteManager
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
 						const recordHistory = operHistoryDuo.startRecordHistory(
-							operationHistory, recordToDelete.actorRecordId,
-							recHistoryDuo)
-						let actorId: Actor_Id
+							operationHistory, recordToDelete.actor.id,
+							recordToDelete.actorRecordId, recHistoryDuo)
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
 								const dbRelation = dbProperty.relation[0]
@@ -290,11 +289,6 @@ export class DeleteManager
 									.addOldValue(recordHistory, dbColumn,
 										recordToDelete[dbProperty.name],
 										recHistoryOldValueDuo)
-							}
-						}
-						if (actorId !== repoTransHistory.actor.id) {
-							recordHistory.actor = {
-								id: actorId
 							}
 						}
 					}

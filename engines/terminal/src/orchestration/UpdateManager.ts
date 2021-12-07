@@ -209,12 +209,7 @@ export class UpdateManager
 				const actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
 				const recordHistory = operHistoryDuo.startRecordHistory(
-					operationHistory, actorRecordId, recHistoryDuo)
-				if (actorId !== repoTransHistory.actor.id) {
-					recordHistory.actor = {
-						id: actorId
-					}
-				}
+					operationHistory, actorId, actorRecordId, recHistoryDuo)
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (let i = 0; i < recordToUpdate.length; i++) {

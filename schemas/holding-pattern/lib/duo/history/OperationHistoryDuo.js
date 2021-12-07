@@ -25,8 +25,8 @@ export class OperationHistoryDuo extends BaseOperationHistoryDuo {
         }
         return 0;
     }
-    startRecordHistory(operationHistory, actorRecordId, recHistoryDuo) {
-        const recordHistory = recHistoryDuo.getNewRecord(actorRecordId);
+    startRecordHistory(operationHistory, actorId, actorRecordId, recHistoryDuo) {
+        const recordHistory = recHistoryDuo.getNewRecord(actorId, actorRecordId);
         recordHistory.operationHistory = operationHistory;
         operationHistory.recordHistory.push(recordHistory);
         operationHistory.repositoryTransactionHistory

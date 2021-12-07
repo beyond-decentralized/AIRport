@@ -3,28 +3,13 @@ import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI, } from '@airport/di';
 import { ChangeType, repositoryEntity, } from '@airport/ground-control';
 import { OPERATION_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { HISTORY_MANAGER, INSERT_MANAGER, REPOSITORY_MANAGER } from '../tokens';
+import { HISTORY_MANAGER, INSERT_MANAGER, } from '../tokens';
 export class InsertManager {
     async insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, context, false, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, actor, transaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, context, true);
-    }
-    async addRepository(
-    // url: string = null,
-    // platform: PlatformType = PlatformType.GOOGLE_DOCS,
-    // platformConfig: string = null,
-    // distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-    actor, context) {
-        const [repoManager, transManager] = await container(this)
-            .get(REPOSITORY_MANAGER, TRANSACTION_MANAGER);
-        const repository = await repoManager.createRepository(
-        // distributionStrategy, transManager.storeType,
-        // platform, platformConfig, 
-        actor);
-        return repository.id;
     }
     verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
         for (let i = 0; i < jsonInsertValues.C.length; i++) {
@@ -38,8 +23,8 @@ export class InsertManager {
         return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     async internalInsertValues(portableQuery, actor, transaction, context, getIds = false, ensureGeneratedValues = true) {
-        const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo] = await container(this)
-            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DUO);
+        const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoTransHistoryDuo] = await container(this)
+            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO);
         const dbEntity = airDb.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
@@ -85,7 +70,7 @@ appears more than once in the Columns clause`);
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryManager, repoTransHistoryDuo, transaction, context);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoTransHistoryDuo, transaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
         return getIds ? ids : numberOfInsertedRecords;
@@ -312,7 +297,7 @@ and cannot have NULL values.`);
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoManager, repoTransHistoryDuo, transaction, context) {
+    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, histManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoTransHistoryDuo, transaction, context) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -351,7 +336,8 @@ and cannot have NULL values.`);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
-            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorRecordId, recHistoryDuo);
+            const actorId = row[actorIdColumnNumber];
+            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId, recHistoryDuo);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber

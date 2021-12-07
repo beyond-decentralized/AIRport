@@ -120,8 +120,7 @@ export class DeleteManager {
                     const repoTransHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
                     const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, operHistoryDuo);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
-                        const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actorRecordId, recHistoryDuo);
-                        let actorId;
+                        const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor.id, recordToDelete.actorRecordId, recHistoryDuo);
                         for (const dbProperty of dbEntity.properties) {
                             if (dbProperty.relation && dbProperty.relation.length) {
                                 const dbRelation = dbProperty.relation[0];
@@ -152,11 +151,6 @@ export class DeleteManager {
                                 recHistoryDuo
                                     .addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name], recHistoryOldValueDuo);
                             }
-                        }
-                        if (actorId !== repoTransHistory.actor.id) {
-                            recordHistory.actor = {
-                                id: actorId
-                            };
                         }
                     }
                 }

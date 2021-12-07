@@ -14,19 +14,12 @@ import { UpdateState } from '../core/UpdateState'
 
 export interface IRepositoryManager {
 
-	repositories: IRepository[];
-	repositoriesById: { [repositoryId: string]: IRepository };
-
 	initialize(): Promise<void>;
 
 	createRepository(
 		actor: IActor,
-		context?: IContext
+		context: IContext
 	): Promise<IRepository>;
-
-	getRepository(repositoryId: number): Promise<IRepository>;
-
-	getActor(actorId: number): Promise<IActor>;
 
 	goOffline(): void;
 
@@ -49,8 +42,6 @@ export interface IRepositoryManager {
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
 	): RawUpdate<IEUP, IQE>;
-
-	getOnlyRepositoryInDatabase(): IRepository;
 
 	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(
 		qEntity: IQE,

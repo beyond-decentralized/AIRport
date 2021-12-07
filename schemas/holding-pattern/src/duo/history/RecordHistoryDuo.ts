@@ -1,6 +1,7 @@
 import { DI } from '@airport/di'
 import { DbColumn } from '@airport/ground-control'
 import {
+	Actor_Id,
 	RecordHistory,
 	RepositoryEntity_ActorRecordId
 } from '../../ddl/ddl'
@@ -22,6 +23,7 @@ export interface IRecordHistoryDuo
 	extends IBaseRecordHistoryDuo {
 
 	getNewRecord(
+		actorId: Actor_Id,
 		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory;
 
@@ -46,11 +48,15 @@ export class RecordHistoryDuo
 	implements IRecordHistoryDuo {
 
 	getNewRecord(
+		actorId: Actor_Id,
 		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()
 
 		recordHistory.actorRecordId = actorRecordId
+		recordHistory.actor = {
+			id: actorId
+		} as any
 
 		return recordHistory as IRecordHistory
 	}

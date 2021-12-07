@@ -277,6 +277,82 @@ export declare const BLUEPRINT: ({
             };
             operations: {};
         } | {
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplicationIndex: number;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            } | {
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            })[];
+            relations: ({
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                relationTableApplicationIndex: number;
+                sinceVersion: number;
+                oneToManyElems?: undefined;
+            } | {
+                index: number;
+                isId: boolean;
+                oneToManyElems: {
+                    mappedBy: string;
+                };
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+                relationTableApplicationIndex?: undefined;
+            })[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                columnIndexes: any[];
+            };
+            operations: {};
+        } | {
             columns: ({
                 allocationSize: number;
                 index: number;
@@ -819,83 +895,21 @@ export declare const BLUEPRINT: ({
             columns: {
                 index: number;
                 isGenerated: boolean;
-                manyRelationColumnRefs: {
+                manyRelationColumnRefs: ({
+                    manyRelationIndex: number;
+                    oneApplicationIndex: any;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                    oneRelationIndex?: undefined;
+                } | {
                     manyRelationIndex: number;
                     oneApplicationIndex: any;
                     oneTableIndex: number;
                     oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
-                }[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-            }[];
-            idColumnRefs: {
-                index: number;
-            }[];
-            index: number;
-            isLocal: boolean;
-            isRepositoryEntity: boolean;
-            name: string;
-            properties: ({
-                columnRef: {
-                    index: number;
-                };
-                index: number;
-                isId: boolean;
-                name: string;
-                sinceVersion: number;
-                relationRef?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                name: string;
-                relationRef: {
-                    index: number;
-                };
-                sinceVersion: number;
-                columnRef?: undefined;
-            })[];
-            relations: ({
-                index: number;
-                isId: boolean;
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-                oneToManyElems?: undefined;
-            } | {
-                index: number;
-                isId: boolean;
-                oneToManyElems: {
-                    mappedBy: string;
-                };
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-            })[];
-            sinceVersion: number;
-            tableConfig: {
-                name: string;
-                columnIndexes: any[];
-                propertyIndexes?: undefined;
-            };
-            operations?: undefined;
-        } | {
-            columns: {
-                index: number;
-                isGenerated: boolean;
-                manyRelationColumnRefs: any[];
+                })[];
                 name: string;
                 notNull: boolean;
                 propertyRefs: {
@@ -933,9 +947,6 @@ export declare const BLUEPRINT: ({
             relations: {
                 index: number;
                 isId: boolean;
-                oneToManyElems: {
-                    mappedBy: string;
-                };
                 relationType: string;
                 propertyRef: {
                     index: number;
@@ -943,6 +954,43 @@ export declare const BLUEPRINT: ({
                 relationTableIndex: number;
                 sinceVersion: number;
             }[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                columnIndexes: any[];
+                propertyIndexes?: undefined;
+            };
+            operations?: undefined;
+        } | {
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: any[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+            }[];
+            relations: any[];
             sinceVersion: number;
             tableConfig: {
                 columnIndexes: any[];
@@ -995,6 +1043,89 @@ export declare const BLUEPRINT: ({
                 sinceVersion: number;
                 columnRef?: undefined;
             })[];
+            relations: {
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+            }[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                propertyIndexes: {
+                    propertyIndex: number;
+                    unique: boolean;
+                }[];
+                columnIndexes?: undefined;
+            };
+            operations: {};
+        } | {
+            columns: ({
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplicationIndex: any;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            } | {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplicationIndex: any;
+                    oneTableIndex: number;
+                    oneRelationIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            })[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            } | {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            })[];
             relations: ({
                 index: number;
                 isId: boolean;
@@ -1021,13 +1152,10 @@ export declare const BLUEPRINT: ({
             sinceVersion: number;
             tableConfig: {
                 name: string;
-                propertyIndexes: {
-                    propertyIndex: number;
-                    unique: boolean;
-                }[];
-                columnIndexes?: undefined;
+                columnIndexes: any[];
+                propertyIndexes?: undefined;
             };
-            operations: {};
+            operations?: undefined;
         } | {
             columns: {
                 index: number;
@@ -1090,6 +1218,170 @@ export declare const BLUEPRINT: ({
         })[];
         integerVersion: number;
         referencedApplications: any[];
+        versionString: string;
+    }[];
+} | {
+    domain: string;
+    index: any;
+    name: string;
+    packageName: string;
+    sinceVersion: number;
+    versions: {
+        api: {
+            apiObjectMap: {};
+        };
+        entities: ({
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplicationIndex: any;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            } | {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            })[];
+            relations: {
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+            }[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                columnIndexes: any[];
+            };
+            operations: {};
+        } | {
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplicationIndex: number;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isRepositoryEntity: boolean;
+            name: string;
+            properties: ({
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+                relationRef?: undefined;
+            } | {
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+                columnRef?: undefined;
+            })[];
+            relations: ({
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                relationTableApplicationIndex: number;
+                sinceVersion: number;
+                oneToManyElems?: undefined;
+            } | {
+                index: number;
+                isId: boolean;
+                oneToManyElems: {
+                    mappedBy: string;
+                };
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+                relationTableApplicationIndex?: undefined;
+            })[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                columnIndexes: any[];
+            };
+            operations: {};
+        })[];
+        integerVersion: number;
+        referencedApplications: {
+            domain: string;
+            index: number;
+            name: string;
+            packageName: string;
+            sinceVersion: number;
+            versions: {
+                entities: any;
+                integerVersion: number;
+                referencedApplications: any;
+                versionString: string;
+            }[];
+        }[];
         versionString: string;
     }[];
 })[];

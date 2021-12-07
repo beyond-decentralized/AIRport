@@ -100,7 +100,7 @@ export class SyncInRepositoryChecker
 		if (typeof repository.ageSuitability !== 'number') {
 			throw new Error(`Invalid 'repository.ageSuitability'`)
 		}
-		if (!repository.createdAt || typeof repository.createdAt !== 'number') {
+		if (!repository.createdAt || typeof repository.createdAt !== 'string') {
 			throw new Error(`Invalid 'repository.createdAt'`)
 		}
 		repository.createdAt = new Date(repository.createdAt as any)

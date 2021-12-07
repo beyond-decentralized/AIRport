@@ -186,7 +186,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			case JSONRelationType.ENTITY_JOIN_ON:
 				throw new Error(`Entity queries cannot use JOIN ON`)
 			default:
-				throw new Error(`First table in FROM clause cannot be joined`)
+				throw new Error(`First table in FROM clause cannot be result of a join`)
 		}
 
 		// if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
@@ -463,7 +463,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 						break
 					case EntityRelationType.MANY_TO_ONE:
 						// If select fragment for the child entity is already defined, do not overwrite it
-						if(selectFragment[dbProperty.name]) {
+						if (selectFragment[dbProperty.name]) {
 							break
 						}
 						const manyToOneRelation = {}

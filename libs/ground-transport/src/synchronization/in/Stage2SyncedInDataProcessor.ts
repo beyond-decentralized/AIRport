@@ -204,6 +204,10 @@ export class Stage2SyncedInDataProcessor
 			}
 		}
 
+		if (!recordUpdateStage.length) {
+			return
+		}
+
 		await recordUpdateStageDao.insertValues(recordUpdateStage)
 
 		// Perform the updates

@@ -12,7 +12,7 @@ export class SyncInUserChecker {
                 if (typeof user.uuId !== 'string' || user.uuId.length !== 36) {
                     throw new Error(`Invalid 'user.uuid'`);
                 }
-                if (typeof user.username !== 'string' || user.uuId.length < 3) {
+                if (typeof user.username !== 'string' || user.username.length < 3) {
                     throw new Error(`Invalid 'user.username'`);
                 }
                 userUuids.push(user.uuId);

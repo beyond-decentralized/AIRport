@@ -1,5 +1,6 @@
 import {
 	AIRPORT_DATABASE,
+	ALL_FIELDS,
 	and,
 	distinct,
 	IQNumberField,
@@ -47,6 +48,7 @@ import {
 	QTransactionHistory,
 	RepositoryTransactionHistoryESelect
 } from '../../generated/generated'
+import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -240,6 +242,8 @@ export class RepositoryTransactionHistoryDao
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
 		const th: QTransactionHistory = rth.transactionHistory.innerJoin()
 		const oh: QOperationHistory = rth.operationHistory.leftJoin()
+		const ae: QApplicationEntity = oh.entity.leftJoin()
+		const av: QApplicationVersion = ae.applicationVersion.leftJoin()
 		const rh: QRecordHistory = oh.recordHistory.leftJoin()
 		const nv: QRecordHistoryNewValue = rh.newValues.leftJoin()
 		let id = Y
@@ -270,26 +274,23 @@ export class RepositoryTransactionHistoryDao
 
 		const repoTransHistories = await this.db.find.tree({
 			select: {
-				actor: {
-					id
-				},
-				repository: {
-					id
-				},
-				saveTimestamp: Y,
+				...ALL_FIELDS,
 				operationHistory: {
 					orderNumber: Y,
 					changeType: Y,
 					entity: {
-						index: Y,
+						id,
+						// index: Y,
 						applicationVersion: {
-							integerVersion: Y,
-							application: {
-								index: Y
-							}
+							id: Y,
+							// integerVersion: Y,
+							// application: {
+							// 	index: Y
+							// }
 						}
 					},
 					recordHistory: {
+						id,
 						newValues: {
 							columnIndex: Y,
 							newValue: Y
@@ -298,9 +299,11 @@ export class RepositoryTransactionHistoryDao
 				}
 			},
 			from: [
-				th,
 				rth,
+				th,
 				oh,
+				ae,
+				av,
 				rh,
 				nv
 
@@ -309,10 +312,9 @@ export class RepositoryTransactionHistoryDao
 				th.transactionType.equals(TransactionType.LOCAL),
 				or(...repositoryEquals)
 			),
-			orderBy: [
-				rth.repository.id.asc(),
-				oh.orderNumber.desc()
-			]
+			// orderBy: [
+			// 	rth.repository.id.asc()
+			// ]
 		})
 
 		for (const repoTransHistory of repoTransHistories) {

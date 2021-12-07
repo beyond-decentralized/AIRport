@@ -22,20 +22,20 @@ export class SynchronizationConflictDao
 	implements ISynchronizationConflictDao {
 
 	async insert(
-		terminals: ISynchronizationConflict[]
+		synchronizationConflicts: ISynchronizationConflict[]
 	): Promise<void> {
 		let sc: QSynchronizationConflict;
 		const values = []
-		for (const user of terminals) {
+		for (const synchronizationConflict of synchronizationConflicts) {
 			values.push([
-				user.type,
-				user.acknowledged,
-				user.repository.id,
-				user.overwrittenRecordHistory.id,
-				user.overwritingRecordHistory.id
+				synchronizationConflict.type,
+				synchronizationConflict.acknowledged,
+				synchronizationConflict.repository.id,
+				synchronizationConflict.overwrittenRecordHistory.id,
+				synchronizationConflict.overwritingRecordHistory.id
 			])
 		}
-		await this.db.insertValuesGenerateIds({
+		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: sc = Q.SynchronizationConflict,
 			columns: [
 				sc.type,
@@ -46,6 +46,10 @@ export class SynchronizationConflictDao
 			],
 			values
 		})
+		for (let i = 0; i < synchronizationConflicts.length; i++) {
+			let synchronizationConflict = synchronizationConflicts[i]
+			synchronizationConflict.id = ids[i][0]
+		}
 	}
 }
 

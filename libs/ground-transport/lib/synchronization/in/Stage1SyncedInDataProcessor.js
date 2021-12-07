@@ -1,3 +1,5 @@
+import { AIRPORT_DATABASE } from '@airport/air-control';
+import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
@@ -15,12 +17,13 @@ export class Stage1SyncedInDataProcessor {
      * @returns {Promise<void>}
      */
     async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
+        await this.populateSystemWideOperationIds(repoTransHistoryMapByRepositoryId);
         const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS);
+        const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
         // changes by repository ids or by the actual tables and records in those tables
         // that will be updated or deleted.
-        const changedRecordIds = new Map();
         for (const [repositoryId, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
             const changedRecordsForRepo = {
                 ids: new Map(),
@@ -110,6 +113,26 @@ export class Stage1SyncedInDataProcessor {
             recordUpdates,
             syncConflictMapByRepoId
         };
+    }
+    async populateSystemWideOperationIds(repoTransHistoryMapByRepositoryId) {
+        const [airportDatabase, sequenceGenerator] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
+        let numSystemWideOperationIds = 0;
+        for (const [_, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
+                numSystemWideOperationIds += repositoryTransactionHistory
+                    .operationHistory.length;
+            }
+        }
+        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, airportDatabase, sequenceGenerator);
+        let i = 0;
+        for (const [_, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+            for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
+                for (const operationHistory of repositoryTransactionHistory.operationHistory) {
+                    operationHistory.systemWideOperationId = systemWideOperationIds[i];
+                    i++;
+                }
+            }
+        }
     }
     ensureRecordHistoryId(recordHistory, actorRecordIdSetByActor, actorRecordId = recordHistory.actorRecordId) {
         ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)

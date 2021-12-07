@@ -1,6 +1,7 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { STORE_DRIVER } from '@airport/ground-control';
+import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -107,7 +108,6 @@ export class TransactionManager extends AbstractMutationManager {
         }
         try {
             await this.saveRepositoryHistory(transaction, idGenerator, context);
-            // TODO: what else needs to be saved (if anything)?
             await transaction.saveTransaction(transaction.transHistory);
             activeQueries.rerunQueries();
             await transaction.commit();
@@ -115,6 +115,13 @@ export class TransactionManager extends AbstractMutationManager {
         finally {
             this.clearTransaction();
         }
+        let transactionHistory = transaction.transHistory;
+        if (!transactionHistory.allRecordHistory.length) {
+            return;
+        }
+        const synchronizationOutManager = await container(this)
+            .get(SYNCHRONIZATION_OUT_MANAGER);
+        await synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
     }
     // @Transactional()
     // private async recordRepositoryTransactionBlock(
@@ -153,6 +160,7 @@ export class TransactionManager extends AbstractMutationManager {
         applicationMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
+            repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
         await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
         applicationMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);

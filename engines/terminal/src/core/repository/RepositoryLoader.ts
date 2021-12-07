@@ -95,7 +95,7 @@ export class RepositoryLoader
                 messageMapByUuId.set(message.history.uuId, message)
             }
 
-            await synchronizationInManager.receiveMessages(messageMapByUuId)
+            await synchronizationInManager.receiveMessages(messageMapByUuId, context)
         } catch (e) {
             console.error(e)
             return

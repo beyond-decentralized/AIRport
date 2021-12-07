@@ -69,14 +69,18 @@ export class UserDao
 				user.uuId, user.username
 			])
 		}
-		await this.db.insertValuesGenerateIds({
+		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: u = Q.User,
 			columns: [
 				u.uuId,
 				u.username
 			],
 			values
-		})
+		}) as number[][]
+		for (let i = 0; i < users.length; i++) {
+			const user = users[i]
+			user.id = ids[i][0]
+		}
 	}
 
 }

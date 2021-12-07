@@ -331,11 +331,7 @@ export class ApplicationDao
 			where: and(
 				d.name.in(domainNames),
 				s.name.in(applicationNames)
-			),
-			orderBy: [
-				d.name.asc(),
-				s.index.asc()
-			]
+			)
 		})
 	}
 

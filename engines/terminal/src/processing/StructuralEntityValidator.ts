@@ -91,10 +91,7 @@ export class StructuralEntityValidator
 								}, false)
 								if (isMissingRepositoryProperty) {
 									if (!context.newRepository) {
-										context.newRepository =
-											await context.ioc.repositoryManager.createRepository(context.actor, {
-												lastOUID: context.lastOUID
-											})
+										await context.ioc.repositoryManager.createRepository(context.actor, context)
 										newRepositoryNeeded = true
 									}
 									record[dbProperty.name] = context.newRepository

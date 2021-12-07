@@ -20,8 +20,8 @@ export interface RepositorySynchronizationMessage {
 	// Repositories may reference records in other repositories
 	referencedRepositories: IRepository[]
 	syncTimestamp?: number
-	users: IUser[]
 	terminals: ITerminal[]
+	users: IUser[]
 }
 
 export interface RepositorySynchronizationWriteRequest {

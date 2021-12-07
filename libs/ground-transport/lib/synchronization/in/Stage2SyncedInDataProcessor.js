@@ -108,6 +108,9 @@ export class Stage2SyncedInDataProcessor {
                 }
             }
         }
+        if (!recordUpdateStage.length) {
+            return;
+        }
         await recordUpdateStageDao.insertValues(recordUpdateStage);
         // Perform the updates
         for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {

@@ -6,7 +6,7 @@ import {
 } from '@airport/check-in'
 import {
 	container,
-	DI, IContext,
+	DI,
 } from '@airport/di';
 import {
 	ChangeType,
@@ -34,15 +34,12 @@ import {
 	IHistoryManager,
 	IInsertManager,
 	IOperationContext,
-	IRepositoryManager,
 	ITransaction,
 	RecordId,
-	TRANSACTION_MANAGER
 } from '@airport/terminal-map'
 import {
 	HISTORY_MANAGER,
 	INSERT_MANAGER,
-	REPOSITORY_MANAGER
 } from '../tokens'
 
 interface ColumnsToPopulate {
@@ -73,27 +70,7 @@ export class InsertManager
 		return <RecordId[][]>await this.internalInsertValues(
 			portableQuery, actor, transaction, context, true)
 	}
-
-	async addRepository(
-		// url: string = null,
-		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
-		// platformConfig: string = null,
-		// distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-		actor: IActor,
-		context: IContext,
-	): Promise<number> {
-		const [repoManager, transManager] = await container(this)
-			.get(
-				REPOSITORY_MANAGER, TRANSACTION_MANAGER)
-
-		const repository = await repoManager.createRepository(
-			// distributionStrategy, transManager.storeType,
-			// platform, platformConfig, 
-			actor)
-
-		return repository.id
-	}
-
+	
 	verifyNoGeneratedColumns(
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
@@ -129,12 +106,11 @@ export class InsertManager
 			operHistoryDuo,
 			recHistoryDuo,
 			recHistoryNewValueDuo,
-			repositoryManager,
 			repoTransHistoryDuo
 		] = await container(this)
 			.get(AIRPORT_DATABASE,
 				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
-				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, REPOSITORY_MANAGER,
+				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO,
 				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
 		const dbEntity = airDb.applications[portableQuery.applicationIndex]
@@ -202,8 +178,7 @@ appears more than once in the Columns clause`)
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,
-				recHistoryNewValueDuo, repositoryManager,
-				repoTransHistoryDuo, transaction, context)
+				recHistoryNewValueDuo, repoTransHistoryDuo, transaction, context)
 		}
 
 		const numberOfInsertedRecords = await transaction.insertValues(
@@ -495,7 +470,6 @@ and cannot have NULL values.`)
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
-		repoManager: IRepositoryManager,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
 		context: IOperationContext
@@ -547,8 +521,9 @@ and cannot have NULL values.`)
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
+			const actorId = row[actorIdColumnNumber]
 			const recordHistory = operHistoryDuo.startRecordHistory(
-				operationHistory, actorRecordId, recHistoryDuo)
+				operationHistory, actorId, actorRecordId, recHistoryDuo)
 
 			for (const columnNumber in jsonInsertValues.C) {
 				if (columnNumber === repositoryIdColumnNumber

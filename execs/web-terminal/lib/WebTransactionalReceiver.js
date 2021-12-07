@@ -1,4 +1,7 @@
 import { DI, } from '@airport/di';
+// import {
+// 	injectMovingWalkway
+// } from '@airport/moving-walkway'
 import { IsolateMessageType, } from '@airport/security-check';
 import { TransactionalReceiver } from '@airport/terminal';
 import { TRANSACTIONAL_RECEIVER } from '@airport/terminal-map';
@@ -278,6 +281,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
 DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
 export function injectTransactionalReceiver() {
     console.log('Injecting TransactionalReceiver');
+    // injectMovingWalkway()
     injectTransactionalConnector();
     injectAirportDatabase();
     injectTransactionalServer();

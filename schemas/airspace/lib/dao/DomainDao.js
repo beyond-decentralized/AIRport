@@ -85,13 +85,17 @@ export class DomainDao extends BaseDomainDao {
                 domain.name
             ]);
         }
-        await this.db.insertValuesGenerateIds({
+        const ids = await this.db.insertValuesGenerateIds({
             insertInto: d = Q.Domain,
             columns: [
                 d.name
             ],
             values
         });
+        for (let i = 0; i < domains.length; i++) {
+            let domain = domains[i];
+            domain.id = ids[i][0];
+        }
     }
 }
 DI.set(DOMAIN_DAO, DomainDao);

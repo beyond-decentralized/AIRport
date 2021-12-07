@@ -3,6 +3,6 @@ export interface ISynchronizationConflictValuesDao extends IBaseSynchronizationC
     insert(terminals: ISynchronizationConflictValues[]): Promise<void>;
 }
 export declare class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao implements ISynchronizationConflictValuesDao {
-    insert(terminals: ISynchronizationConflictValues[]): Promise<void>;
+    insert(synchronizationConflictValues: ISynchronizationConflictValues[]): Promise<void>;
 }
 //# sourceMappingURL=SynchronizationConflictValuesDao.d.ts.map

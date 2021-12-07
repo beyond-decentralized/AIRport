@@ -5,6 +5,9 @@ import {
 import {
 	DI,
 } from '@airport/di'
+// import {
+// 	injectMovingWalkway
+// } from '@airport/moving-walkway'
 import {
 	IIsolateMessage,
 	IObservableDataIMO,
@@ -384,6 +387,7 @@ DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
 
 export function injectTransactionalReceiver(): void {
 	console.log('Injecting TransactionalReceiver')
+	// injectMovingWalkway()
 	injectTransactionalConnector()
 	injectAirportDatabase()
 	injectTransactionalServer()

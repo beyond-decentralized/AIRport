@@ -51,15 +51,9 @@ export class RecordHistory {
 	@DbNumber()
 	actorRecordId: RecordHistoryActorRecordId
 
-	// Actor is populated only if the record's Actor_Id
-	// is different from RepositoryTransactionHistory Actor_Id
-	// OR if the Actor who created the record is different
-	// than than the Actor making the update/delete.
-	// Actor is never populated for inserts (since the
-	// record is guaranteed to be created by the same Actor)
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_ID', referencedColumnName: 'ID'
+		name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false
 	})
 	actor: Actor
 

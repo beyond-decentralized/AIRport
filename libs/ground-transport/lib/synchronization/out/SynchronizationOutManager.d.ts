@@ -4,6 +4,8 @@ export interface ISynchronizationOutManager {
 }
 export declare class SynchronizationOutManager implements ISynchronizationOutManager {
     synchronizeOut(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<void>;
+    private loadHistoryRepositories;
+    private ensureGlobalRepositoryIdentifiers;
     private groupMessagesBySourceAndRepository;
     private updateRepositoryTransactionHistories;
 }

@@ -1,7 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
+	DI,
+	IContext
 } from '@airport/di'
 import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
 import { transactional } from '@airport/tower'
@@ -18,7 +19,8 @@ import {
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
+		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
+		context: IContext
 	): Promise<void>;
 
 }
@@ -30,7 +32,8 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	async receiveMessages(
-		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
+		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
+		context: IContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
@@ -82,7 +85,7 @@ export class SynchronizationInManager
 		await transactional(async (transaction) => {
 			transaction.isSync = true
 			await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
-		})
+		}, context)
 	}
 
 	private timeOrderMessages(

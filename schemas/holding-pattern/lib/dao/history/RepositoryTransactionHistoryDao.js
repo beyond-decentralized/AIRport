@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, and, distinct, or, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, ALL_FIELDS, and, distinct, or, Y } from '@airport/air-control';
 import { container, DI } from '@airport/di';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
 import { OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
@@ -99,6 +99,8 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         const rth = Q.RepositoryTransactionHistory;
         const th = rth.transactionHistory.innerJoin();
         const oh = rth.operationHistory.leftJoin();
+        const ae = oh.entity.leftJoin();
+        const av = ae.applicationVersion.leftJoin();
         const rh = oh.recordHistory.leftJoin();
         const nv = rh.newValues.leftJoin();
         let id = Y;
@@ -117,26 +119,23 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         }
         const repoTransHistories = await this.db.find.tree({
             select: {
-                actor: {
-                    id
-                },
-                repository: {
-                    id
-                },
-                saveTimestamp: Y,
+                ...ALL_FIELDS,
                 operationHistory: {
                     orderNumber: Y,
                     changeType: Y,
                     entity: {
-                        index: Y,
+                        id,
+                        // index: Y,
                         applicationVersion: {
-                            integerVersion: Y,
-                            application: {
-                                index: Y
-                            }
+                            id: Y,
+                            // integerVersion: Y,
+                            // application: {
+                            // 	index: Y
+                            // }
                         }
                     },
                     recordHistory: {
+                        id,
                         newValues: {
                             columnIndex: Y,
                             newValue: Y
@@ -145,17 +144,18 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                 }
             },
             from: [
-                th,
                 rth,
+                th,
                 oh,
+                ae,
+                av,
                 rh,
                 nv
             ],
             where: and(th.transactionType.equals(TransactionType.LOCAL), or(...repositoryEquals)),
-            orderBy: [
-                rth.repository.id.asc(),
-                oh.orderNumber.desc()
-            ]
+            // orderBy: [
+            // 	rth.repository.id.asc()
+            // ]
         });
         for (const repoTransHistory of repoTransHistories) {
             ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)

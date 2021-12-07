@@ -22,17 +22,17 @@ export class SynchronizationConflictValuesDao
 	implements ISynchronizationConflictValuesDao {
 
 	async insert(
-		terminals: ISynchronizationConflictValues[]
+		synchronizationConflictValues: ISynchronizationConflictValues[]
 	): Promise<void> {
 		let scv: QSynchronizationConflictValues;
 		const values = []
-		for (const user of terminals) {
+		for (const synchronizationConflictValue of synchronizationConflictValues) {
 			values.push([
-				user.synchronizationConflict.id,
-				user.columnIndex
+				synchronizationConflictValue.synchronizationConflict.id,
+				synchronizationConflictValue.columnIndex
 			])
 		}
-		await this.db.insertValuesGenerateIds({
+		await this.db.insertValues({
 			insertInto: scv = Q.SynchronizationConflictValues,
 			columns: [
 				scv.synchronizationConflict.id,

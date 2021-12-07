@@ -8,8 +8,8 @@ export interface RepositorySynchronizationMessage {
     history: IRepositoryTransactionHistory;
     referencedRepositories: IRepository[];
     syncTimestamp?: number;
-    users: IUser[];
     terminals: ITerminal[];
+    users: IUser[];
 }
 export interface RepositorySynchronizationWriteRequest {
     messages: RepositorySynchronizationMessage[];

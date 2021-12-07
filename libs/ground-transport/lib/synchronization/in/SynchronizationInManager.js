@@ -6,7 +6,7 @@ import { SYNC_IN_CHECKER, SYNCHRONIZATION_IN_MANAGER, TWO_STAGE_SYNCED_IN_DATA_P
  * Synchronization in Manager implementation.
  */
 export class SynchronizationInManager {
-    async receiveMessages(messageMapByUuId) {
+    async receiveMessages(messageMapByUuId, context) {
         const syncTimestamp = new Date().getTime();
         const [repositoryTransactionHistoryDao, syncInChecker, twoStageSyncedInDataProcessor] = await container(this)
             .get(REPOSITORY_TRANSACTION_HISTORY_DAO, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
@@ -43,7 +43,7 @@ export class SynchronizationInManager {
         await transactional(async (transaction) => {
             transaction.isSync = true;
             await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
-        });
+        }, context);
     }
     timeOrderMessages(messageMapByUuId) {
         const messages = [...messageMapByUuId.values()];

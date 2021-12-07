@@ -1,6 +1,7 @@
-import { container } from "@airport/di";
+import { container, DI } from "@airport/di";
 import { ApplicationStatus } from '@airport/ground-control';
 import { DOMAIN_DAO, APPLICATION_DAO } from "@airport/airspace";
+import { SYNC_IN_APPLICATION_CHECKER } from "../../../tokens";
 export class SyncInApplicationChecker {
     async ensureApplications(message) {
         try {
@@ -129,4 +130,5 @@ export class SyncInApplicationChecker {
         };
     }
 }
+DI.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker);
 //# sourceMappingURL=SyncInApplicationChecker.js.map

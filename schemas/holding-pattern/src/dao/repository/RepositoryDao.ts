@@ -116,13 +116,13 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			select: {
 				...ALL_FIELDS,
-				owner: {
-					id: Y
-				}
+				// owner: {
+				// 	id: Y
+				// }
 			},
 			from: [
 				r = Q.Repository,
-				r.owner.innerJoin()
+				// r.owner.innerJoin()
 			],
 			where:
 				r.id.in(repositoryIds)
@@ -136,7 +136,7 @@ export class RepositoryDao
 		return await this.db.find.tree({
 			select: {},
 			from: [
-				r = Q.QRepository
+				r = Q.Repository
 			],
 			where: r.uuId.in(uuIds)
 		})
@@ -153,7 +153,7 @@ export class RepositoryDao
 				repository.source, repository.immutable, repository.owner.id,
 			])
 		}
-		await this.db.insertValuesGenerateIds({
+		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: r = Q.Repository,
 			columns: [
 				r.createdAt,
@@ -165,6 +165,10 @@ export class RepositoryDao
 			],
 			values
 		})
+		for (let i = 0; i < repositories.length; i++) {
+			let repository = repositories[i]
+			repository.id = ids[i][0]
+		}
 	}
 
 }

@@ -16,6 +16,7 @@ import {
 	REPOSITORY_DAO
 } from '@airport/holding-pattern'
 import {
+	IOperationContext,
 	IRepositoryManager,
 	REPOSITORY_FIELD,
 	UpdateState,
@@ -40,31 +41,23 @@ export interface EntityRepoQueryData {
 export class RepositoryManager
 	implements IRepositoryManager {
 
-	repositories: IRepository[] = []
-	repositoriesById: { [repositoryId: string]: IRepository } = {}
-	terminal: ITerminal
-	userUuId: string
-
 	async initialize(): Promise<void> {
-		await this.ensureRepositoryRecords()
-		await this.ensureAndCacheRepositories()
 	}
 
 	async createRepository(
 		actor: IActor,
-		context?: IContext
+		context: IOperationContext
 	): Promise<IRepository> {
+		if (context.newRepository) {
+			throw new Error(`Cannot create more than one repository per transaction:
+Attempting to create a new repository and Operation Context
+already contains a new repository.`)
+		}
 		let repository = await this.createRepositoryRecord(actor, context)
 
+		context.newRepository = repository
+
 		return repository
-	}
-
-	async getRepository(repositoryId: number): Promise<IRepository> {
-		throw new Error(`not implemented`)
-	}
-
-	getActor(actorId: number): Promise<IActor> {
-		throw new Error(`not implemented`)
 	}
 
 	goOffline(): void {
@@ -86,26 +79,6 @@ export class RepositoryManager
 		throw new Error(`not implemented`)
 	}
 
-	private async ensureRepositoryRecords(): Promise<void> {
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		// TODO: verify that we want to get ALL of the repositories
-		this.repositories = await repositoryDao.db.find.tree({
-			select: {}
-		})
-
-		/*
-						if (!this.repositories.length) {
-								let deltaStoreConfig = config.deltaStoreConfig;
-								if (!deltaStoreConfig) {
-										throw new Error(`Delta store is not configured`);
-								}
-								let repository = await this.createRepositoryRecord(config.appName,
-										deltaStoreConfig.changeListConfig.distributionStrategy,
-										deltaStoreConfig.offlineDeltaStore.type,
-										deltaStoreConfig.setupInfo.platformType);
-						}
-						*/
-	}
 
 	private getRepositoryRecord(
 		actor: IActor
@@ -134,33 +107,8 @@ export class RepositoryManager
 
 		const repositoryDao = await container(this).get(REPOSITORY_DAO)
 		await repositoryDao.save(repository, context)
-		this.repositories.push(repository)
 
 		return repository
-	}
-
-	private async ensureAndCacheRepositories(): Promise<void> {
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-
-		this.repositories = await repositoryDao.db.find.tree({
-			select: {}
-		})
-		this.repositories.forEach((repository) => {
-			this.repositoriesById[repository.id] = repository
-		})
-	}
-
-	startEnsureGraphInSingleRepository(transaction: IRepositoryTransactionHistory): void {
-		// TODO: add to transaction for remote execution
-		// (EntityChangeType.QUERY_UNIQUE_RECORD) transaction.addNewFindOneVerify();
-	}
-
-	getOnlyRepositoryInDatabase(): IRepository {
-		if (this.repositories.length !== 1) {
-			throw new Error(
-				`Do not have "Only" repository - more than one repository found.`)
-		}
-		return this.repositories[0]
 	}
 
 	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
