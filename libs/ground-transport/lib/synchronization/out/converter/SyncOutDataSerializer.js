@@ -25,22 +25,24 @@ export class SyncOutDataSerializer {
             lastInMessageActorIndex: -1,
             lastInMessageApplicationVersionIndex: -1,
             lastInMessageRepositoryIndex: -1,
+            messageRepository: repositoryTransactionHistory.repository,
             repositoryInMessageIndexesById: new Map()
-        };
-        const message = {
-            actors: [],
-            applicationVersions: [],
-            applications: [],
-            history: this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, lookups),
-            // Repositories may reference records in other repositories
-            referencedRepositories: [],
-            users: [],
-            terminals: []
         };
         const inMessageUserLookup = {
             inMessageIndexesById: new Map(),
             lastInMessageIndex: -1
         };
+        const message = {
+            actors: [],
+            applicationVersions: [],
+            applications: [],
+            history: null,
+            // Repositories may reference records in other repositories
+            referencedRepositories: [],
+            users: [],
+            terminals: []
+        };
+        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
         // TODO: replace db lookups with TerminalState lookups where possible
         await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
         const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup);
@@ -104,6 +106,7 @@ export class SyncOutDataSerializer {
             username: user.username,
             uuId: user.uuId
         };
+        return userInMessageIndex;
     }
     getUserInMessageIndex(user, inMessageUserLookup) {
         if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
@@ -166,7 +169,7 @@ export class SyncOutDataSerializer {
         }
         return applicationInMessageIndex;
     }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, lookups) {
+    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
         repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
             if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
                 return -1;
@@ -184,15 +187,17 @@ export class SyncOutDataSerializer {
             ...WITH_ID,
             actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory),
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
             uuId: repositoryTransactionHistory.uuId
         };
     }
-    serializeHistoryRepository(repositoryTransactionHistory) {
+    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup) {
         if (repositoryTransactionHistory.isRepositoryCreation) {
-            return this.serializeRepository(repositoryTransactionHistory.repository);
+            const repository = repositoryTransactionHistory.repository;
+            let userInMessageIndex = this.addUserToMessage(repository.owner, message, inMessageUserLookup);
+            return this.serializeRepository(repository, userInMessageIndex);
         }
         else {
             // When this repositoryTransactionHistory processed at sync-in 
@@ -313,20 +318,35 @@ export class SyncOutDataSerializer {
                 break;
             }
             case repositoryEntity.ORIGINAL_REPOSITORY_ID: {
-                serailizedValue = lookups.repositoryInMessageIndexesById.get(value);
-                if (serailizedValue === undefined) {
-                    lookups.lastInMessageRepositoryIndex++;
-                    serailizedValue = lookups.lastInMessageRepositoryIndex;
-                    lookups.repositoryInMessageIndexesById.set(value, serailizedValue);
-                }
+                serailizedValue = this.getSerializedRepositoryId(value, lookups);
                 break;
             }
+        }
+        if (/.*_AID_[\d]+$/.test(dbColumn.name)
+            && dbColumn.manyRelationColumns.length) {
+            serailizedValue = this.getActorInMessageIndexById(value, lookups);
+        }
+        if (/.*_RID_[\d]+$/.test(dbColumn.name)
+            && dbColumn.manyRelationColumns.length) {
+            serailizedValue = this.getSerializedRepositoryId(value, lookups);
         }
         return {
             ...WITH_RECORD_HISTORY,
             columnIndex: valueRecord.columnIndex,
             [valueFieldName]: serailizedValue
         };
+    }
+    getSerializedRepositoryId(value, lookups) {
+        if (value === lookups.messageRepository.id) {
+            return -1;
+        }
+        let serailizedValue = lookups.repositoryInMessageIndexesById.get(value);
+        if (serailizedValue === undefined) {
+            lookups.lastInMessageRepositoryIndex++;
+            serailizedValue = lookups.lastInMessageRepositoryIndex;
+            lookups.repositoryInMessageIndexesById.set(value, serailizedValue);
+        }
+        return serailizedValue;
     }
     serializeRepository(repository, owner) {
         return {

@@ -38,7 +38,7 @@ export class SyncInRepositoryChecker {
                 }
             }
             const missingRepositories = message.referencedRepositories
-                .filter(messageActor => !messageActor.id);
+                .filter(messageRepository => !messageRepository.id);
             if (typeof history.repository !== 'object') {
                 throw new Error(`Repository with UuId ${history.repository} is not
 					present and cannot be synced

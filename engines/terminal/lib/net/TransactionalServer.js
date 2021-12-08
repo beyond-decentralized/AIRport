@@ -100,20 +100,6 @@ export class TransactionalServer {
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {
-        const values = portableQuery.jsonQuery.V;
-        if (!values.length) {
-            return 0;
-        }
-        const firstValuesRow = values[0];
-        if (!firstValuesRow || !firstValuesRow.length) {
-            return 0;
-        }
-        const numValuesInRow = firstValuesRow.length;
-        for (let valuesRow of values) {
-            if (valuesRow.length !== numValuesInRow) {
-                return 0;
-            }
-        }
         await this.ensureIocContext(context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;

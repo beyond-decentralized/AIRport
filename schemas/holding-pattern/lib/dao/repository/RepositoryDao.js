@@ -46,13 +46,11 @@ export class RepositoryDao extends BaseRepositoryDao {
         return await this.db.find.tree({
             select: {
                 ...ALL_FIELDS,
-                // owner: {
-                // 	id: Y
-                // }
+                owner: {}
             },
             from: [
                 r = Q.Repository,
-                // r.owner.innerJoin()
+                r.owner.innerJoin()
             ],
             where: r.id.in(repositoryIds)
         });

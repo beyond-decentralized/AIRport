@@ -56,6 +56,7 @@ export interface InMessageLookupStructures {
 	lastInMessageActorIndex: number
 	lastInMessageApplicationVersionIndex: number
 	lastInMessageRepositoryIndex: number
+	messageRepository: IRepository
 	repositoryInMessageIndexesById: Map<Repository_Id, number>
 }
 
@@ -97,25 +98,27 @@ export class SyncOutDataSerializer
 			lastInMessageActorIndex: -1,
 			lastInMessageApplicationVersionIndex: -1,
 			lastInMessageRepositoryIndex: -1,
+			messageRepository: repositoryTransactionHistory.repository,
 			repositoryInMessageIndexesById: new Map()
+		}
+		const inMessageUserLookup: InMessageUserLookup = {
+			inMessageIndexesById: new Map(),
+			lastInMessageIndex: -1
 		}
 
 		const message: RepositorySynchronizationMessage = {
 			actors: [],
 			applicationVersions: [],
 			applications: [],
-			history: this.serializeRepositoryTransactionHistory(
-				repositoryTransactionHistory, lookups),
+			history: null,
 			// Repositories may reference records in other repositories
 			referencedRepositories: [],
 			users: [],
 			terminals: []
 		}
+		message.history = this.serializeRepositoryTransactionHistory(
+			repositoryTransactionHistory, message, lookups, inMessageUserLookup)
 
-		const inMessageUserLookup: InMessageUserLookup = {
-			inMessageIndexesById: new Map(),
-			lastInMessageIndex: -1
-		}
 		// TODO: replace db lookups with TerminalState lookups where possible
 		await this.serializeRepositories(repositoryTransactionHistory, message,
 			lookups, inMessageUserLookup)
@@ -203,7 +206,7 @@ export class SyncOutDataSerializer
 		user: IUser,
 		message: RepositorySynchronizationMessage,
 		inMessageUserLookup: InMessageUserLookup
-	): void {
+	): number {
 		let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup)
 
 		message.users[userInMessageIndex] = {
@@ -211,6 +214,8 @@ export class SyncOutDataSerializer
 			username: user.username,
 			uuId: user.uuId
 		}
+
+		return userInMessageIndex
 	}
 
 	private getUserInMessageIndex(
@@ -299,7 +304,9 @@ export class SyncOutDataSerializer
 
 	private serializeRepositoryTransactionHistory(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		lookups: InMessageLookupStructures
+		message: RepositorySynchronizationMessage,
+		lookups: InMessageLookupStructures,
+		inMessageUserLookup: InMessageUserLookup
 	): IRepositoryTransactionHistory {
 		repositoryTransactionHistory.operationHistory.sort((
 			operationHistory1,
@@ -324,7 +331,8 @@ export class SyncOutDataSerializer
 			...WITH_ID,
 			actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-			repository: this.serializeHistoryRepository(repositoryTransactionHistory),
+			repository: this.serializeHistoryRepository(
+				repositoryTransactionHistory, message, inMessageUserLookup),
 			operationHistory: serializedOperationHistory,
 			saveTimestamp: repositoryTransactionHistory.saveTimestamp,
 			uuId: repositoryTransactionHistory.uuId
@@ -332,12 +340,16 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeHistoryRepository(
-		repositoryTransactionHistory: IRepositoryTransactionHistory
+		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		message: RepositorySynchronizationMessage,
+		inMessageUserLookup: InMessageUserLookup
 	): IRepository {
 		if (repositoryTransactionHistory.isRepositoryCreation) {
-			return this.serializeRepository(
-				repositoryTransactionHistory.repository
-			)
+			const repository = repositoryTransactionHistory.repository
+			let userInMessageIndex = this.addUserToMessage(
+				repository.owner, message, inMessageUserLookup)
+
+			return this.serializeRepository(repository, userInMessageIndex as any)
 		} else {
 			// When this repositoryTransactionHistory processed at sync-in 
 			// the repository should already be loaded in the target database
@@ -502,15 +514,19 @@ export class SyncOutDataSerializer
 				break
 			}
 			case repositoryEntity.ORIGINAL_REPOSITORY_ID: {
-				serailizedValue = lookups.repositoryInMessageIndexesById.get(value)
-				if (serailizedValue === undefined) {
-					lookups.lastInMessageRepositoryIndex++
-					serailizedValue = lookups.lastInMessageRepositoryIndex
-					lookups.repositoryInMessageIndexesById.set(value, serailizedValue)
-				}
+				serailizedValue = this.getSerializedRepositoryId(value, lookups)
 				break
 			}
 		}
+		if (/.*_AID_[\d]+$/.test(dbColumn.name)
+			&& dbColumn.manyRelationColumns.length) {
+			serailizedValue = this.getActorInMessageIndexById(value, lookups)
+		}
+		if (/.*_RID_[\d]+$/.test(dbColumn.name)
+			&& dbColumn.manyRelationColumns.length) {
+			serailizedValue = this.getSerializedRepositoryId(value, lookups)
+		}
+
 		return {
 			...WITH_RECORD_HISTORY,
 			columnIndex: valueRecord.columnIndex,
@@ -518,9 +534,26 @@ export class SyncOutDataSerializer
 		}
 	}
 
+	private getSerializedRepositoryId(
+		value: number,
+		lookups: InMessageLookupStructures
+	) {
+		if (value === lookups.messageRepository.id) {
+			return -1
+		}
+
+		let serailizedValue = lookups.repositoryInMessageIndexesById.get(value)
+		if (serailizedValue === undefined) {
+			lookups.lastInMessageRepositoryIndex++
+			serailizedValue = lookups.lastInMessageRepositoryIndex
+			lookups.repositoryInMessageIndexesById.set(value, serailizedValue)
+		}
+		return serailizedValue
+	}
+
 	private serializeRepository(
 		repository: IRepository,
-		owner?: IUser
+		owner: IUser
 	): IRepository {
 		return {
 			...WITH_ID,

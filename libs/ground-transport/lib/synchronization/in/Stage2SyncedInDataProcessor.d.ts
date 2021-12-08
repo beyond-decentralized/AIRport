@@ -1,5 +1,5 @@
 import { IAirportDatabase, IDatabaseFacade } from '@airport/air-control';
-import { ColumnIndex, ApplicationVersionId, TableIndex } from '@airport/ground-control';
+import { ColumnIndex, ApplicationVersionId, TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
 import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
 import { IApplication } from '@airport/airspace';
@@ -27,6 +27,7 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  structure is passed in.
      */
     performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
+    getNonIdColumnsInIndexOrder(dbEntity: DbEntity): DbColumn[];
     performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, recordUpdateStageDao: IRecordUpdateStageDao, context: IOperationContext): Promise<void>;
     performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
     /**

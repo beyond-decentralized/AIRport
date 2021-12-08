@@ -91,7 +91,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             where: whereClauseFunction(rth, a, r)
         });
     }
-    async findWithActorAndRepositoryWherIdsIn(idsInClause) {
+    async findWithActorAndRepositoryWhereIdsIn(idsInClause) {
         return await this.findWithActorAndRepositoryWhere((rth) => rth.id.in(idsInClause));
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {

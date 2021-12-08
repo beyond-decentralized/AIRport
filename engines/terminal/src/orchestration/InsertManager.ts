@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { AIRPORT_DATABASE, IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
@@ -119,6 +119,8 @@ export class InsertManager
 		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `
 
+		this.validateValueRowLength(portableQuery, errorPrefix)
+
 		const jsonInsertValues = portableQuery.jsonQuery as JsonInsertValues
 
 		const columnIndexSet = {}
@@ -188,6 +190,31 @@ appears more than once in the Columns clause`)
 			portableQuery, context)
 
 		return getIds ? ids : numberOfInsertedRecords
+	}
+
+	private async validateValueRowLength(
+		portableQuery: PortableQuery,
+		errorPrefix: string
+	) {
+		const values = (portableQuery.jsonQuery as JsonInsertValues).V;
+		if (!values.length) {
+			throw new Error(errorPrefix + `no colum values provided`)
+		}
+		const firstValuesRow = values[0];
+
+		if (!firstValuesRow || !firstValuesRow.length) {
+			throw new Error(errorPrefix + `First row has no values`)
+		}
+
+		const numValuesInRow = firstValuesRow.length;
+
+		for (let i = 0; i < values.length; i++) {
+			const valuesRow = values[i]
+			if (valuesRow.length !== numValuesInRow) {
+				throw new Error(errorPrefix + `First row has ${numValuesInRow} values,
+	while row ${i + 1} has ${valuesRow.length} values`)
+			}
+		}
 	}
 
 	private async ensureGeneratedValues(

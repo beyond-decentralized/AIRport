@@ -1,10 +1,10 @@
 import { container, DI } from '@airport/di';
 import { ChangeType, repositoryEntity } from '@airport/ground-control';
-import { APPLICATION_ENTITY_DAO } from '@airport/airspace';
 import { SYNC_IN_DATA_CHECKER } from '../../../tokens';
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
+import { TERMINAL_STORE } from '@airport/terminal-map';
 export class SyncInDataChecker {
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
@@ -56,28 +56,26 @@ export class SyncInDataChecker {
         return true;
     }
     async populateApplicationEntityMap(message) {
-        let applicationVersionsById = new Map();
-        let applicationVersionIds = [];
-        for (const applicationVersion of message.applicationVersions) {
-            applicationVersionIds.push(applicationVersion.id);
-            applicationVersionsById.set(applicationVersion.id, applicationVersion);
-        }
-        const applicationEntityDao = await container(this).get(APPLICATION_ENTITY_DAO);
-        const applicationEntities = await applicationEntityDao.findAllForApplicationVersions(applicationVersionIds);
+        // let applicationVersionsById: Map<number, IApplicationVersion> = new Map()
+        // let applicationVersionIds: number[] = []
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        const applicationVersionsByIds = terminalStore.getAllApplicationVersionsByIds();
         const applicationEntityMap = new Map();
-        for (let applicationEntity of applicationEntities) {
-            const applicationVersion = applicationVersionsById.get(applicationEntity.applicationVersion.id);
-            let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
-            if (!entitiesForDomain) {
-                entitiesForDomain = new Map();
-                applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
+        for (const messageApplicationVersion of message.applicationVersions) {
+            const applicationVersion = applicationVersionsByIds[messageApplicationVersion.id];
+            for (const applicationEntity of applicationVersion.entities) {
+                let entitiesForDomain = applicationEntityMap.get(applicationVersion.application.domain.name);
+                if (!entitiesForDomain) {
+                    entitiesForDomain = new Map();
+                    applicationEntityMap.set(applicationVersion.application.domain.name, entitiesForDomain);
+                }
+                let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
+                if (!entitiesForApplication) {
+                    entitiesForApplication = new Map();
+                    entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
+                }
+                entitiesForApplication.set(applicationEntity.index, applicationEntity);
             }
-            let entitiesForApplication = entitiesForDomain.get(applicationVersion.application.name);
-            if (!entitiesForApplication) {
-                entitiesForApplication = new Map();
-                entitiesForDomain.set(applicationVersion.application.name, entitiesForApplication);
-            }
-            entitiesForApplication.set(applicationEntity.index, applicationEntity);
         }
         return applicationEntityMap;
     }
@@ -137,20 +135,32 @@ export class SyncInDataChecker {
             delete operationHistory.id;
             let originalRepositoryColumnIndex;
             let originalActorColumnIndex;
+            let actorIdColumnMapByIndex = new Map();
+            let repositoryIdColumnMapByIndex = new Map();
             for (const column of operationHistory.entity.columns) {
                 switch (column.name) {
                     case repositoryEntity.ORIGINAL_ACTOR_ID:
+                        actorIdColumnMapByIndex.set(column.index, column);
                         originalActorColumnIndex = column.index;
                         break;
                     case repositoryEntity.ORIGINAL_REPOSITORY_ID:
+                        repositoryIdColumnMapByIndex.set(column.index, column);
                         originalRepositoryColumnIndex = column.index;
                         break;
                 }
+                if (/.*_AID_[\d]+$/.test(column.name)
+                    && column.manyRelationColumns.length) {
+                    actorIdColumnMapByIndex.set(column.index, column);
+                }
+                if (/.*_RID_[\d]+$/.test(column.name)
+                    && column.manyRelationColumns.length) {
+                    repositoryIdColumnMapByIndex.set(column.index, column);
+                }
             }
-            await this.checkRecordHistories(operationHistory, originalRepositoryColumnIndex, originalActorColumnIndex, message);
+            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message);
         }
     }
-    async checkRecordHistories(operationHistory, originalRepositoryColumnIndex, originalActorColumnIndex, message) {
+    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
@@ -186,13 +196,13 @@ for ChangeType.INSERT_VALUES`);
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message);
-            this.checkOldValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message);
+            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
+            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory.id;
         }
     }
-    checkNewValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message) {
+    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -221,39 +231,32 @@ for ChangeType.INSERT_VALUES|UPDATE_ROWS`);
             }
         }
         for (const newValue of recordHistory.newValues) {
-            if (newValue.columnIndex === originalRepositoryColumnIndex) {
-                const originalRepository = message.referencedRepositories[newValue.newValue];
-                if (!originalRepository) {
+            const actorIdColumn = actorIdColumnMapByIndex.get(newValue.columnIndex);
+            if (actorIdColumn) {
+                const originalActor = message.actors[newValue.newValue];
+                if (!originalActor) {
                     throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-	Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
+Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
                 }
-                newValue.newValue = originalRepository.id;
+                newValue.newValue = originalActor.id;
             }
-        }
-        for (const newValue of recordHistory.newValues) {
-            switch (newValue.columnIndex) {
-                case originalRepositoryColumnIndex: {
+            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex);
+            if (repositoryIdColumn) {
+                if (newValue.newValue === -1) {
+                    newValue.newValue = message.history.repository.id;
+                }
+                else {
                     const originalRepository = message.referencedRepositories[newValue.newValue];
                     if (!originalRepository) {
                         throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-		Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
+	Value is for ${repositoryIdColumn.name} and could find RepositorySynchronizationMessage.referencedRepositories[${newValue.newValue}]`);
                     }
                     newValue.newValue = originalRepository.id;
-                    break;
-                }
-                case originalActorColumnIndex: {
-                    const originalActor = message.actors[newValue.newValue];
-                    if (!originalActor) {
-                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.newValues.newValue
-	Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${newValue.newValue}]`);
-                    }
-                    newValue.newValue = originalActor.id;
-                    break;
                 }
             }
         }
     }
-    checkOldValues(recordHistory, originalRepositoryColumnIndex, originalActorColumnIndex, operationHistory, message) {
+    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
@@ -282,25 +285,23 @@ for ChangeType.UPDATE_ROWS`);
             }
         }
         for (const oldValue of recordHistory.oldValues) {
-            switch (oldValue.columnIndex) {
-                case originalRepositoryColumnIndex: {
-                    const originalRepository = message.referencedRepositories[oldValue.oldValue];
-                    if (!originalRepository) {
-                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-	Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
-                    }
-                    oldValue.oldValue = originalRepository.id;
-                    break;
+            const actorIdColumn = actorIdColumnMapByIndex.get(oldValue.columnIndex);
+            if (actorIdColumn) {
+                const originalActor = message.actors[oldValue.oldValue];
+                if (!originalActor) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
                 }
-                case originalActorColumnIndex: {
-                    const originalActor = message.actors[oldValue.oldValue];
-                    if (!originalActor) {
-                        throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
-	Value is for ORIGINAL_ACTOR_ID and could find RepositorySynchronizationMessage.actors[${oldValue.oldValue}]`);
-                    }
-                    oldValue.oldValue = originalActor.id;
-                    break;
+                oldValue.oldValue = originalActor.id;
+            }
+            const repositoryIdColumn = repositoryIdColumnMapByIndex.get(oldValue.columnIndex);
+            if (repositoryIdColumn) {
+                const originalRepository = message.referencedRepositories[oldValue.oldValue];
+                if (!originalRepository) {
+                    throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.oldValues.oldValue
+Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMessage.referencedRepositories[${oldValue.oldValue}]`);
                 }
+                oldValue.oldValue = originalRepository.id;
             }
         }
     }

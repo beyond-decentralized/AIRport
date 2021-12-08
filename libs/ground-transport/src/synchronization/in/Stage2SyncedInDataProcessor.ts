@@ -16,7 +16,10 @@ import {
 	JSONBaseOperation,
 	ApplicationIndex,
 	ApplicationVersionId,
-	TableIndex
+	TableIndex,
+	repositoryEntity,
+	DbColumn,
+	DbEntity
 } from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -118,6 +121,7 @@ export class Stage2SyncedInDataProcessor
 					qEntity.actor.id,
 					qEntity.actorRecordId
 				]
+				const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity)
 				let creatingColumns = true
 				let numInserts = 0
 				const values: any[][] = []
@@ -142,11 +146,22 @@ export class Stage2SyncedInDataProcessor
 							) => {
 								return compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0])
 							})
+							let currentNonIdColumnArrayIndex = 0
 							for (const [columnIndex, columnValue] of columnIndexedValues) {
+								let nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex]
+								while (nonIdColumn.index < columnIndex) {
+									if (creatingColumns) {
+										columns.push(qEntity.__driver__.allColumns[nonIdColumn.index])
+									}
+									rowValues.push(null)
+									currentNonIdColumnArrayIndex++
+									nonIdColumn = nonIdColumns[currentNonIdColumnArrayIndex]
+								}
 								if (creatingColumns) {
 									columns.push(qEntity.__driver__.allColumns[columnIndex])
 								}
 								rowValues.push(columnValue)
+								currentNonIdColumnArrayIndex++
 							}
 							if (columnIndexedValues.length) {
 								values.push(rowValues)
@@ -172,6 +187,29 @@ export class Stage2SyncedInDataProcessor
 				}
 			}
 		}
+	}
+
+	getNonIdColumnsInIndexOrder(
+		dbEntity: DbEntity
+	): DbColumn[] {
+		const nonIdColumns = []
+		for (const column of dbEntity.columns) {
+			switch (column.name) {
+				case repositoryEntity.ACTOR_ID:
+				case repositoryEntity.ACTOR_RECORD_ID:
+				case repositoryEntity.REPOSITORY_ID:
+					continue
+			}
+			nonIdColumns.push(column)
+		}
+		nonIdColumns.sort((
+			column1: DbColumn,
+			column2: DbColumn
+		) => {
+			return compareNumbers(column1.index, column2.index)
+		})
+
+		return nonIdColumns
 	}
 
 	async performUpdates(

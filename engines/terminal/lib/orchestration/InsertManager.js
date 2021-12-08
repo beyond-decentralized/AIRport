@@ -29,6 +29,7 @@ export class InsertManager {
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `;
+        this.validateValueRowLength(portableQuery, errorPrefix);
         const jsonInsertValues = portableQuery.jsonQuery;
         const columnIndexSet = {};
         let inStatementIndex = 0;
@@ -77,6 +78,24 @@ appears more than once in the Columns clause`);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
         return getIds ? ids : numberOfInsertedRecords;
+    }
+    async validateValueRowLength(portableQuery, errorPrefix) {
+        const values = portableQuery.jsonQuery.V;
+        if (!values.length) {
+            throw new Error(errorPrefix + `no colum values provided`);
+        }
+        const firstValuesRow = values[0];
+        if (!firstValuesRow || !firstValuesRow.length) {
+            throw new Error(errorPrefix + `First row has no values`);
+        }
+        const numValuesInRow = firstValuesRow.length;
+        for (let i = 0; i < values.length; i++) {
+            const valuesRow = values[i];
+            if (valuesRow.length !== numValuesInRow) {
+                throw new Error(errorPrefix + `First row has ${numValuesInRow} values,
+	while row ${i + 1} has ${valuesRow.length} values`);
+            }
+        }
     }
     async ensureGeneratedValues(dbEntity, jsonInsertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator) {
         const values = jsonInsertValues.V;

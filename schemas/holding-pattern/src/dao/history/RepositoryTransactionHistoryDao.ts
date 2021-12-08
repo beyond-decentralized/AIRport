@@ -221,7 +221,7 @@ export class RepositoryTransactionHistoryDao
 		})
 	}
 
-	async findWithActorAndRepositoryWherIdsIn(
+	async findWithActorAndRepositoryWhereIdsIn(
 		idsInClause: RepositoryTransactionHistory_Id[]
 			| RawFieldQuery<IQNumberField>
 			| {

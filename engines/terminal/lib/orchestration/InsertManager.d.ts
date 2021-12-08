@@ -6,6 +6,7 @@ export declare class InsertManager implements IInsertManager {
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<RecordId[][]>;
     verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
     private internalInsertValues;
+    private validateValueRowLength;
     private ensureGeneratedValues;
     private ensureRepositoryEntityIdValues;
     /**

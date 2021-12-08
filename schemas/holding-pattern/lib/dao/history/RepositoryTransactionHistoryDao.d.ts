@@ -27,7 +27,7 @@ export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTrans
     findWithActorAndRepositoryWhere(whereClauseFunction: {
         (rth: QRepositoryTransactionHistory, a: QActor, r: QRepository): JSONBaseOperation;
     }): Promise<IRepositoryTransactionHistory[]>;
-    findWithActorAndRepositoryWherIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
+    findWithActorAndRepositoryWhereIdsIn(idsInClause: RepositoryTransactionHistory_Id[] | RawFieldQuery<IQNumberField> | {
         (...args: any[]): RawFieldQuery<IQNumberField>;
     }): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
