@@ -58,15 +58,18 @@ appears more than once in the Columns clause`);
         let columnsToPopulate;
         const insertValues = portableQuery.jsonQuery;
         if (dbEntity.isRepositoryEntity) {
-            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix, context);
+            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
-        let generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
+        let generatedColumns;
+        if (!transaction.isSync) {
+            generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
+        }
         let ids;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
             systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
         }
-        if (ensureGeneratedValues) {
+        if (!transaction.isSync && ensureGeneratedValues) {
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
@@ -217,7 +220,7 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, context) {
+    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
         const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID];
         const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID];
         const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID];
@@ -235,21 +238,21 @@ appears more than once in the Columns clause`);
                         // Save operations validate Actor ealier and set it on the entity objects
                         break;
                     }
-                    if (!context.isSync) {
+                    if (!transaction.isSync) {
                         throw new Error(errorPrefix +
                             `You cannot explicitly provide an ACTOR_ID value for Repository entities.`);
                     }
                     break;
                 case actorRecordIdColumn.index:
                     foundActorRecordIdColumn = true;
-                    if (!context.isSync) {
+                    if (!transaction.isSync) {
                         throw new Error(errorPrefix +
                             `You cannot explicitly provide an ACTOR_RECORD_ID value for Repository entities.`);
                     }
                     break;
                 case sysWideOperationIdColumn.index:
                     foundSystemWideOperationIdColumn = true;
-                    if (!context.isSync) {
+                    if (!transaction.isSync) {
                         throw new Error(`Error inserting into '${dbEntity.name}'.
 You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository entities.`);
                     }
@@ -265,7 +268,7 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`;
         if (repositoryIdColumnQueryIndex === undefined) {
             throw new Error(missingRepositoryIdErrorMsg);
         }
-        if (context.isSync) {
+        if (transaction.isSync) {
             if (!foundActorIdColumn) {
                 throw new Error(errorPrefix +
                     `ACTOR_ID must be provided for sync operations.`);
@@ -305,7 +308,7 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`;
 and cannot have NULL values.`);
                 }
             }
-            if (!context.isSaveOperation) {
+            if (!context.isSaveOperation && !transaction.isSync) {
                 // Save operation set Actor ealier (at the entity level, to be returned back to client)
                 entityValues[actorIdColumn.index] = actor.id;
             }
