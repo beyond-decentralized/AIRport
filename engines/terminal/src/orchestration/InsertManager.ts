@@ -159,7 +159,7 @@ appears more than once in the Columns clause`)
 		}
 
 		let generatedColumns
-		if (!transaction.isSync) {
+		if (!transaction.isSync || context.generateOnSync) {
 			generatedColumns = this.verifyNoGeneratedColumns(dbEntity,
 				<JsonInsertValues>portableQuery.jsonQuery, errorPrefix)
 		}
@@ -171,7 +171,7 @@ appears more than once in the Columns clause`)
 			systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)
 		}
 
-		if (!transaction.isSync && ensureGeneratedValues) {
+		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
 			ids = await this.ensureGeneratedValues(
 				dbEntity, insertValues, actor,
 				columnsToPopulate, generatedColumns,

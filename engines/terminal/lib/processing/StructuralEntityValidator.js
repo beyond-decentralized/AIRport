@@ -23,7 +23,7 @@ export class StructuralEntityValidator {
             let newRepositoryNeeded = false;
             for (const dbProperty of dbEntity.properties) {
                 let propertyValue = record[dbProperty.name];
-                if (propertyValue === undefined) {
+                if (propertyValue === undefined && !isStub) {
                     propertyValue = null;
                     record[dbProperty.name] = propertyValue;
                 }

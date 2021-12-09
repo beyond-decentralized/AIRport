@@ -12,12 +12,12 @@ export declare type RecordUpdateStageValues = [
     RecordUpdateStageValue
 ];
 export interface IRecordUpdateStageDao extends IBaseRecordUpdateStageDao {
-    insertValues(values: RecordUpdateStageValues[]): Promise<number>;
+    insertValues(values: RecordUpdateStageValues[]): Promise<number[][]>;
     updateEntityWhereIds(applicationIndex: ApplicationIndex, applicationVersionId: ApplicationVersionId, tableIndex: TableIndex, idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>, updatedColumnIndexes: ColumnIndex[]): Promise<void>;
     delete(): Promise<number>;
 }
 export declare class RecordUpdateStageDao extends BaseRecordUpdateStageDao implements IRecordUpdateStageDao {
-    insertValues(values: RecordUpdateStageValues[]): Promise<number>;
+    insertValues(values: RecordUpdateStageValues[]): Promise<number[][]>;
     updateEntityWhereIds(applicationIndex: ApplicationIndex, applicationVersionId: ApplicationVersionId, tableIndex: TableIndex, idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>, updatedColumnIndexes: ColumnIndex[]): Promise<void>;
     delete(): Promise<number>;
 }

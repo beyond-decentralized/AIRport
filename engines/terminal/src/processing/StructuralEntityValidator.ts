@@ -56,7 +56,7 @@ export class StructuralEntityValidator
 
 			for (const dbProperty of dbEntity.properties) {
 				let propertyValue: any = record[dbProperty.name]
-				if (propertyValue === undefined) {
+				if (propertyValue === undefined && !isStub) {
 					propertyValue = null
 					record[dbProperty.name] = propertyValue
 				}

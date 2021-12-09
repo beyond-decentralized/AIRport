@@ -5,7 +5,8 @@ import {
 } from '@airport/di'
 import {
 	ensureChildArray,
-	ensureChildJsMap
+	ensureChildJsMap,
+	repositoryEntity
 } from '@airport/ground-control'
 import {
 	IRepository,
@@ -41,16 +42,20 @@ export class SynchronizationOutManager
 			synchronizationAdapterLoader
 		] = await container(this).get(SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER)
 		await this.loadHistoryRepositories(repositoryTransactionHistories)
-		const messages = await syncOutDataSerializer.serialize(repositoryTransactionHistories)
+		const {
+			historiesToSend,
+			messages
+		} = await syncOutDataSerializer.serialize(repositoryTransactionHistories)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
-		const groupMessageMap = this.groupMessagesBySourceAndRepository(messages)
+		const groupMessageMap = this.groupMessagesBySourceAndRepository(
+			messages, historiesToSend)
 
 		for (const [repositorySource, messageMapForSource] of groupMessageMap) {
 			const synchronizationAdapter = await synchronizationAdapterLoader.load(repositorySource)
 			await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource)
 		}
 
-		await this.updateRepositoryTransactionHistories(messages, repositoryTransactionHistories)
+		await this.updateRepositoryTransactionHistories(messages, historiesToSend)
 	}
 
 	private async loadHistoryRepositories(
@@ -115,16 +120,17 @@ export class SynchronizationOutManager
 	}
 
 	private groupMessagesBySourceAndRepository(
-		messages: RepositorySynchronizationMessage[]
+		messages: RepositorySynchronizationMessage[],
+		historiesToSend: IRepositoryTransactionHistory[]
 	): Map<Repository_Source, Map<Repository_UuId, RepositorySynchronizationMessage[]>> {
 		const groupMessageMap: Map<Repository_Source, Map<Repository_UuId, RepositorySynchronizationMessage[]>>
 			= new Map()
 
-		for (const message of messages) {
-			const repository = message.history.repository
+		for (let i = 0; i < messages.length; i++) {
+			const repository = historiesToSend[i].repository
 			ensureChildArray(
 				ensureChildJsMap(groupMessageMap, repository.source),
-				repository.uuId).push(message)
+				repository.uuId).push(messages[i])
 		}
 
 		return groupMessageMap

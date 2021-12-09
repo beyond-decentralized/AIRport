@@ -8,9 +8,6 @@ import {IFieldUtils}      from '../../lingo/utils/FieldUtils'
 import {IQueryUtils}      from '../../lingo/utils/QueryUtils'
 import {FieldQuery}       from '../query/facade/FieldQuery'
 
-
-declare function require(moduleName: string): any;
-
 export class FieldUtils
 	implements IFieldUtils {
 
@@ -21,10 +18,7 @@ export class FieldUtils
 		entityAliases: IEntityAliases,
 		queryUtils: IQueryUtils
 	): JsonFieldQuery {
-		if (!this.FieldQuery) {
-			this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery
-		}
-		let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases)
+		let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases)
 
 		return subSelectQuery.toJSON(queryUtils, this)
 	}

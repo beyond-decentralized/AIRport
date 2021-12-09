@@ -13,6 +13,8 @@ import {
 } from '@airport/di'
 import {
 	ChangeType,
+	ColumnIndex,
+	DbColumn,
 	ensureChildArray,
 	ensureChildMap,
 	InternalFragments,
@@ -259,9 +261,19 @@ export class UpdateManager
 		let portableSelect = queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
 
+		const resultSetIndexByColumnIndex: Map<ColumnIndex, number> = new Map()
+
+		const selectDbColumns: DbColumn[] = []
+		let i = 0
+		for (const qField of repositorySheetSelectInfo.selectClause) {
+			const dbColumn = qField.dbColumn
+			selectDbColumns.push(dbColumn)
+			resultSetIndexByColumnIndex.set(dbColumn.index, i)
+			i++
+		}
+
 		const internalFragments: InternalFragments = {
-			SELECT: repositorySheetSelectInfo.selectClause.map(
-				field => field.dbColumn)
+			SELECT: selectDbColumns
 		}
 
 		const updatedRecords = await transaction.find<any, Array<any>>(
@@ -276,17 +288,17 @@ export class UpdateManager
 		for (const repositoryId of repositoryIdSet) {
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const updatedRecord of recordsForRepositoryId) {
-				const repositoryId = updatedRecord[
-					repositorySheetSelectInfo.repositoryIdColumnIndex]
-				const actorId = updatedRecord[
-					repositorySheetSelectInfo.actorIdColumnIndex]
-				const actorRecordId = updatedRecord[
-					repositorySheetSelectInfo.actorRecordIdColumnIndex]
+				const repositoryId = updatedRecord[resultSetIndexByColumnIndex.get(
+					repositorySheetSelectInfo.repositoryIdColumnIndex)]
+				const actorId = updatedRecord[resultSetIndexByColumnIndex.get(
+					repositorySheetSelectInfo.actorIdColumnIndex)]
+				const actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(
+					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
 				[repositoryId][actorId][actorRecordId]
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
-					const value = updatedRecord[dbColumn.index]
+					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]
 
 					if (value === undefined) {
 						throw new Error(errorPrefix + `Values cannot be 'undefined'.`)

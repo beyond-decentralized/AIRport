@@ -46,12 +46,10 @@ export class Repository {
 	@DbNumber()
 	ageSuitability: Repository_AgeSuitability
 
-	// TODO: Does not have to be provided for repositoryReference, make nullable and adjust sync logic
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
 	createdAt: Repository_CreatedAt;
 
-	// TODO: Does not have to be provided for repositoryReference, make nullable and adjust sync logic
 	@Column({ name: "IMMUTABLE", nullable: false })
 	immutable: Repository_Immutable
 
@@ -63,7 +61,6 @@ export class Repository {
 	@DbString()
 	uuId: Repository_UuId;
 
-	// TODO: Does not have to be provided for repositoryReference, make nullable and adjust sync logic
 	@ManyToOne()
 	@JoinColumn({
 		name: "OWNER_USER_ID", referencedColumnName: "ID",

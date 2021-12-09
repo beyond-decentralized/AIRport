@@ -88,8 +88,8 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 			return SQLDataType.NUMBER
 		} else if (selectField instanceof QStringField) {
 			return SQLDataType.STRING
-		// } else if (selectField instanceof QUntypedField) {
-		// 	return SQLDataType.ANY
+		} else if (selectField instanceof QUntypedField) {
+			return SQLDataType.ANY
 		} else {
 			throw new Error(`Unsupported type of select field in Field Query`)
 		}

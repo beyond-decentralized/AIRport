@@ -1,21 +1,21 @@
 import {
 	IEntityUpdateProperties,
 	ManyToOneColumnMapping
-}                          from '@airport/air-control'
-import {DI}                from '@airport/di'
+} from '@airport/air-control'
+import { DI } from '@airport/di'
 import {
 	InternalFragments,
 	JSONClauseObjectType,
 	JsonUpdate
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                          from '../../tokens'
-import {SQLNoJoinQuery}    from './SQLNoJoinQuery'
-import {SQLDialect}        from './SQLQuery'
-import {ClauseType}        from './SQLWhereBase'
+} from '../../tokens'
+import { SQLNoJoinQuery } from './SQLNoJoinQuery'
+import { SQLDialect } from './SQLQuery'
+import { ClauseType } from './SQLWhereBase'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -41,19 +41,19 @@ export class SQLUpdate
 			throw new Error(`Expecting exactly one table in UPDATE clause`)
 		}
 		let updateFragment = this.getTableFragment(this.jsonUpdate.U, context)
-		let setFragment    = this.getSetFragment(this.jsonUpdate.S, context)
-		if (internalFragments.SET) {
-			setFragment += internalFragments.SET.map(
+		let setFragment = this.getSetFragment(this.jsonUpdate.S, context)
+		if (internalFragments.SET && internalFragments.SET.length) {
+			setFragment += ',' + internalFragments.SET.map(
 				internalSetFragment => `
 	${internalSetFragment.column.name} = ${internalSetFragment.value}`)
-				.join('')
+				.join(',')
 		}
 		let whereFragment = ''
-		let jsonQuery     = this.jsonUpdate
+		let jsonQuery = this.jsonUpdate
 		if (jsonQuery.W) {
-			whereFragment  = this.getWHEREFragment(jsonQuery.W, '',
+			whereFragment = this.getWHEREFragment(jsonQuery.W, '',
 				context)
-			whereFragment  = `WHERE
+			whereFragment = `WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
@@ -122,7 +122,7 @@ ${whereFragment}`
 		parentMapping: ManyToOneColumnMapping
 	): ManyToOneColumnMapping[] {
 		let mappings: ManyToOneColumnMapping[] = []
-		const value                            = parentMapping.value
+		const value = parentMapping.value
 		if (typeof value === 'object' &&
 			(!value.ot
 				|| value.ot === JSONClauseObjectType.MANY_TO_ONE_RELATION)) {
@@ -136,8 +136,8 @@ ${whereFragment}`
 					propertyChain: parentMapping.propertyChain.concat([key]),
 					value: value[key]
 				}
-				const childMappings                   = this.addManyToOneMappings(mapping)
-				mappings                              = mappings.concat(childMappings)
+				const childMappings = this.addManyToOneMappings(mapping)
+				mappings = mappings.concat(childMappings)
 			}
 		} else {
 			mappings.push(parentMapping)

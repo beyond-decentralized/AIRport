@@ -3,6 +3,7 @@ import { OperationCategory, SqlOperator } from '@airport/ground-control';
 import { QUERY_UTILS } from '../../tokens';
 import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
+import { TreeQuery } from '../query/facade/TreeQuery';
 export class QueryUtils {
     whereClauseToJSON(whereClause, columnAliases, fieldUtils) {
         if (!whereClause) {
@@ -33,8 +34,7 @@ export class QueryUtils {
                 // TODO: verify that cast of Q object is valid
                 let functionOperation = operation;
                 let query = functionOperation.getQuery();
-                const TreeQueryClass = require('../query/facade/TreeQuery').TreeQuery;
-                let jsonQuery = new TreeQueryClass(query, columnAliases.entityAliases).toJSON(this, fieldUtils);
+                let jsonQuery = new TreeQuery(query, columnAliases.entityAliases).toJSON(this, fieldUtils);
                 jsonOperation = functionOperation.toJSON(jsonQuery);
                 break;
             case OperationCategory.BOOLEAN:

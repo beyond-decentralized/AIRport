@@ -4,7 +4,10 @@ import { Application_Id } from "@airport/ground-control";
 import { Actor_Id, IRecordHistory, IRepository, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern";
 import { User_Id } from "@airport/travel-document-checkpoint";
 export interface ISyncOutDataSerializer {
-    serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<RepositorySynchronizationMessage[]>;
+    serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
+        historiesToSend: IRepositoryTransactionHistory[];
+        messages: RepositorySynchronizationMessage[];
+    }>;
 }
 export interface IWithId {
     id: number;
@@ -37,7 +40,10 @@ export interface InMessageUserLookup {
     lastInMessageIndex: number;
 }
 export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
-    serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<RepositorySynchronizationMessage[]>;
+    serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
+        historiesToSend: IRepositoryTransactionHistory[];
+        messages: RepositorySynchronizationMessage[];
+    }>;
     serializeMessage(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<RepositorySynchronizationMessage>;
     private serializeActorsUsersAndTerminals;
     private serializeTerminals;

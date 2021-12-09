@@ -28,19 +28,19 @@ export class NonEntitySQLQuery extends SQLQuery {
         if (jsonQuery.W) {
             whereFragment = `
 WHERE
-${this.getWHEREFragment(jsonQuery.W, '', context)}`;
+	${this.getWHEREFragment(jsonQuery.W, '', context)}`;
         }
         let groupByFragment = '';
         if (jsonQuery.GB && jsonQuery.GB.length) {
             groupByFragment = `
 GROUP BY
-${this.getGroupByFragment(jsonQuery.GB)}`;
+	${this.getGroupByFragment(jsonQuery.GB)}`;
         }
         let havingFragment = '';
         if (jsonQuery.H) {
             havingFragment = `
 HAVING
-${this.getWHEREFragment(jsonQuery.H, '', context)}`;
+	${this.getWHEREFragment(jsonQuery.H, '', context)}`;
         }
         let orderByFragment = '';
         if (jsonQuery.OB && jsonQuery.OB.length) {
@@ -56,7 +56,8 @@ ORDER BY
         if (jsonQuery.L) {
             offsetFragment = sqlAdaptor.getLimitFragment(jsonQuery.L);
         }
-        return `SELECT${selectFragment}
+        return `SELECT
+	${selectFragment}
 FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}`;
     }
@@ -252,7 +253,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             return `\n\t${columnSelectSqlFragment}`;
         }
         else {
-            return `\n\t, ${columnSelectSqlFragment}`;
+            return `,\n\t${columnSelectSqlFragment}`;
         }
     }
     getFROMFragments(joinTrees, context) {

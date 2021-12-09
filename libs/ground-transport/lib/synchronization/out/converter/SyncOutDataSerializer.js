@@ -7,15 +7,20 @@ export const WITH_RECORD_HISTORY = {};
 export const WITH_INDEX = {};
 export class SyncOutDataSerializer {
     async serialize(repositoryTransactionHistories) {
-        const repositorySynchronizationMessages = [];
+        let historiesToSend = [];
+        const messages = [];
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
             if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
                 continue;
             }
             const message = await this.serializeMessage(repositoryTransactionHistory);
-            repositorySynchronizationMessages.push(message);
+            historiesToSend.push(repositoryTransactionHistory);
+            messages.push(message);
         }
-        return repositorySynchronizationMessages;
+        return {
+            historiesToSend,
+            messages
+        };
     }
     async serializeMessage(repositoryTransactionHistory) {
         const lookups = {

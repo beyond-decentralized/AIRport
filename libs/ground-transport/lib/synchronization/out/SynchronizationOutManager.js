@@ -6,14 +6,14 @@ export class SynchronizationOutManager {
     async synchronizeOut(repositoryTransactionHistories) {
         const [syncOutDataSerializer, synchronizationAdapterLoader] = await container(this).get(SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER);
         await this.loadHistoryRepositories(repositoryTransactionHistories);
-        const messages = await syncOutDataSerializer.serialize(repositoryTransactionHistories);
+        const { historiesToSend, messages } = await syncOutDataSerializer.serialize(repositoryTransactionHistories);
         // await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
-        const groupMessageMap = this.groupMessagesBySourceAndRepository(messages);
+        const groupMessageMap = this.groupMessagesBySourceAndRepository(messages, historiesToSend);
         for (const [repositorySource, messageMapForSource] of groupMessageMap) {
             const synchronizationAdapter = await synchronizationAdapterLoader.load(repositorySource);
             await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource);
         }
-        await this.updateRepositoryTransactionHistories(messages, repositoryTransactionHistories);
+        await this.updateRepositoryTransactionHistories(messages, historiesToSend);
     }
     async loadHistoryRepositories(repositoryTransactionHistories) {
         const repositoryIdsToLookup = new Set();
@@ -64,11 +64,11 @@ export class SynchronizationOutManager {
             }
         }
     }
-    groupMessagesBySourceAndRepository(messages) {
+    groupMessagesBySourceAndRepository(messages, historiesToSend) {
         const groupMessageMap = new Map();
-        for (const message of messages) {
-            const repository = message.history.repository;
-            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.uuId).push(message);
+        for (let i = 0; i < messages.length; i++) {
+            const repository = historiesToSend[i].repository;
+            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.uuId).push(messages[i]);
         }
         return groupMessageMap;
     }

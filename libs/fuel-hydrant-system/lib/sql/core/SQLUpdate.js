@@ -18,10 +18,10 @@ export class SQLUpdate extends SQLNoJoinQuery {
         }
         let updateFragment = this.getTableFragment(this.jsonUpdate.U, context);
         let setFragment = this.getSetFragment(this.jsonUpdate.S, context);
-        if (internalFragments.SET) {
-            setFragment += internalFragments.SET.map(internalSetFragment => `
+        if (internalFragments.SET && internalFragments.SET.length) {
+            setFragment += ',' + internalFragments.SET.map(internalSetFragment => `
 	${internalSetFragment.column.name} = ${internalSetFragment.value}`)
-                .join('');
+                .join(',');
         }
         let whereFragment = '';
         let jsonQuery = this.jsonUpdate;

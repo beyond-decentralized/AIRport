@@ -1,23 +1,21 @@
-import {DI}                    from '@airport/di'
+import { DI } from '@airport/di'
 import {
 	JSONBaseOperation,
 	JSONValueOperation,
 	OperationCategory,
 	SqlOperator
-}                              from '@airport/ground-control'
-import {QUERY_UTILS}           from '../../tokens'
-import {IFieldColumnAliases}   from '../../lingo/core/entity/Aliases'
-import {JSONLogicalOperation}  from '../../lingo/core/operation/LogicalOperation'
-import {JSONRawValueOperation} from '../../lingo/core/operation/Operation'
-import {RawFieldQuery}         from '../../lingo/query/facade/FieldQuery'
-import {IFieldUtils}           from '../../lingo/utils/FieldUtils'
-import {IQueryUtils}           from '../../lingo/utils/QueryUtils'
-import {QExistsFunction}       from '../core/field/Functions'
-import {QOperableField}        from '../core/field/OperableField'
-import {wrapPrimitive}         from '../core/field/WrapperFunctions'
-import {TreeQuery}             from '../query/facade/TreeQuery'
-
-declare function require(moduleName: string): any;
+} from '@airport/ground-control'
+import { QUERY_UTILS } from '../../tokens'
+import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
+import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
+import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
+import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
+import { IFieldUtils } from '../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../lingo/utils/QueryUtils'
+import { QExistsFunction } from '../core/field/Functions'
+import { QOperableField } from '../core/field/OperableField'
+import { wrapPrimitive } from '../core/field/WrapperFunctions'
+import { TreeQuery } from '../query/facade/TreeQuery'
 
 export class QueryUtils
 	implements IQueryUtils {
@@ -30,14 +28,14 @@ export class QueryUtils
 		if (!whereClause) {
 			return null
 		}
-		let operation: JSONBaseOperation     = whereClause
+		let operation: JSONBaseOperation = whereClause
 		let jsonOperation: JSONBaseOperation = {
 			c: operation.c,
 			o: operation.o
 		}
 		switch (operation.c) {
 			case OperationCategory.LOGICAL:
-				let logicalOperation     = <JSONLogicalOperation>operation
+				let logicalOperation = <JSONLogicalOperation>operation
 				let jsonLogicalOperation = <JSONLogicalOperation>jsonOperation
 				switch (operation.o) {
 					case SqlOperator.NOT:
@@ -56,11 +54,10 @@ export class QueryUtils
 			case OperationCategory.FUNCTION:
 				// TODO: verify that cast of Q object is valid
 				let functionOperation: QExistsFunction<any> = <QExistsFunction<any>><any>operation
-				let query                                   = functionOperation.getQuery()
-				const TreeQueryClass: typeof TreeQuery      = require('../query/facade/TreeQuery').TreeQuery
-				let jsonQuery                               = new TreeQueryClass(
+				let query = functionOperation.getQuery()
+				let jsonQuery = new TreeQuery(
 					query, columnAliases.entityAliases).toJSON(this, fieldUtils)
-				jsonOperation                               = functionOperation.toJSON(jsonQuery)
+				jsonOperation = functionOperation.toJSON(jsonQuery)
 				break
 			case OperationCategory.BOOLEAN:
 			case OperationCategory.DATE:
@@ -71,9 +68,9 @@ export class QueryUtils
 				// All Non logical or exists operations are value operations (eq, isNull, like,
 				// etc.)
 				let jsonValueOperation: JSONValueOperation = <JSONValueOperation>jsonOperation
-				jsonValueOperation.l                       = this.convertLRValue(
+				jsonValueOperation.l = this.convertLRValue(
 					valueOperation.l, columnAliases, fieldUtils)
-				let rValue                                 = valueOperation.r
+				let rValue = valueOperation.r
 				if (rValue instanceof Array) {
 					jsonValueOperation.r = rValue.map((anRValue) => {
 						return this.convertLRValue(anRValue, columnAliases, fieldUtils)

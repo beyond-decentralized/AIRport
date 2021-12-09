@@ -153,18 +153,27 @@ export class UpdateCacheManager
                         continue
                     }
                     const dbRelation = dbProperty.relation[0];
+                    const propertyOriginalValuesObject = entityStateManager
+                        .getOriginalValues(property)
                     applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
                         _dbColumn: DbColumn,
                         propertyNameChains: string[][],
                     ) => {
+                        const propertyOriginalValuesObject = entityStateManager
+                            .getOriginalValues(property)
                         // const firstPropertyNameChain = propertyNameChains[0];
                         for (const propertyNameChain of propertyNameChains) {
                             let value = entityCopy
-                            let originalValue = originalValuesObject
+                            let originalValue = propertyOriginalValuesObject
                             for (let i = 0; i < propertyNameChain.length; i++) {
                                 const propertyName = propertyNameChain[i]
                                 value = value[propertyName]
-                                originalValue = originalValue[propertyName]
+                                // Skip the property itself since the original values object
+                                // belongs to the property and not the checked object
+                                // (in the case of relations only)
+                                if (i !== 0) {
+                                    originalValue = originalValue[propertyName]
+                                }
                                 let noValue = value === null || value === undefined
                                 let noOriginalValue = originalValue === null
                                     || originalValue === undefined
@@ -216,13 +225,17 @@ export class UpdateCacheManager
                             if (originalValue) {
                                 originalValue = (originalValue as Date).getTime()
                             }
-                            propertyValue = (property as Date).getTime()
+                            if (property) {
+                                propertyValue = (property as Date).getTime()
+                            }
                             break;
                         case SQLDataType.JSON:
                             if (originalValue) {
                                 originalValue = JSON.stringify(originalValue)
                             }
-                            propertyValue = JSON.stringify(property)
+                            if (property) {
+                                propertyValue = JSON.stringify(property)
+                            }
                             break;
                         default:
                             propertyValue = property

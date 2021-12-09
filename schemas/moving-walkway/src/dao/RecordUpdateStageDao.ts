@@ -43,7 +43,7 @@ export interface IRecordUpdateStageDao
 
 	insertValues(
 		values: RecordUpdateStageValues[]
-	): Promise<number>;
+	): Promise<number[][]>;
 
 	updateEntityWhereIds(
 		applicationIndex: ApplicationIndex,
@@ -64,7 +64,7 @@ export class RecordUpdateStageDao
 
 	async insertValues(
 		values: RecordUpdateStageValues[]
-	): Promise<number> {
+	): Promise<number[][]> {
 
 		const rus: QRecordUpdateStage = Q.RecordUpdateStage
 
@@ -78,15 +78,13 @@ export class RecordUpdateStageDao
 			rus.updatedValue
 		]
 
-		for (let i = 1; i <= 50; i++) {
-			columns.push(rus[`updatedColumn${i}Value`])
-		}
-
-		return await this.db.insertValues({
+		return await this.db.insertValuesGenerateIds({
 			insertInto: rus,
 			columns,
 			values
-		})
+		}, {
+			generateOnSync: true
+		}) as number[][]
 
 	}
 
@@ -137,9 +135,7 @@ export class RecordUpdateStageDao
 						columnRus.column.id.equals(column.id)
 					)
 			})
-			const propertyName = column
-				.propertyColumns[0].property.name
-			setClause[propertyName] = columnSetClause
+			setClause[column.name] = columnSetClause
 		}
 
 		await this.db.updateColumnsWhere({

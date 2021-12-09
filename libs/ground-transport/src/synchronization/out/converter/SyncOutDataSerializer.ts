@@ -31,7 +31,10 @@ export interface ISyncOutDataSerializer {
 
 	serialize(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
-	): Promise<RepositorySynchronizationMessage[]>
+	): Promise<{
+		historiesToSend: IRepositoryTransactionHistory[]
+		messages: RepositorySynchronizationMessage[]
+	}>
 }
 
 export interface IWithId {
@@ -74,18 +77,26 @@ export class SyncOutDataSerializer
 
 	async serialize(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
-	): Promise<RepositorySynchronizationMessage[]> {
-		const repositorySynchronizationMessages: RepositorySynchronizationMessage[] = []
+	): Promise<{
+		historiesToSend: IRepositoryTransactionHistory[]
+		messages: RepositorySynchronizationMessage[]
+	}> {
+		let historiesToSend: IRepositoryTransactionHistory[] = []
+		const messages: RepositorySynchronizationMessage[] = []
 		for (const repositoryTransactionHistory of repositoryTransactionHistories) {
 			if (repositoryTransactionHistory.repositoryTransactionType !== RepositoryTransactionType.LOCAL) {
 				continue
 			}
 			const message = await this.serializeMessage(repositoryTransactionHistory)
 
-			repositorySynchronizationMessages.push(message)
+			historiesToSend.push(repositoryTransactionHistory)
+			messages.push(message)
 		}
 
-		return repositorySynchronizationMessages
+		return {
+			historiesToSend,
+			messages
+		}
 	}
 
 	async serializeMessage(

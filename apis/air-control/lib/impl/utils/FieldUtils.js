@@ -1,11 +1,9 @@
 import { DI } from '@airport/di';
 import { FIELD_UTILS } from '../../tokens';
+import { FieldQuery } from '../query/facade/FieldQuery';
 export class FieldUtils {
     getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
-        if (!this.FieldQuery) {
-            this.FieldQuery = require('../query/facade/FieldQuery').FieldQuery;
-        }
-        let subSelectQuery = new this.FieldQuery(fieldSubQuery, entityAliases);
+        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases);
         return subSelectQuery.toJSON(queryUtils, this);
     }
 }

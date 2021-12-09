@@ -6,6 +6,7 @@ import { QField } from '../../core/field/Field';
 import { QDistinctFunction } from '../../core/field/Functions';
 import { QNumberField } from '../../core/field/NumberField';
 import { QStringField } from '../../core/field/StringField';
+import { QUntypedField } from '../../core/field/UntypedField';
 import { DistinguishableQuery, NON_ENTITY_SELECT_ERROR_MESSAGE, } from './NonEntityQuery';
 /**
  * Created by Papa on 10/24/2016.
@@ -52,8 +53,9 @@ export class FieldQuery extends DistinguishableQuery {
         }
         else if (selectField instanceof QStringField) {
             return SQLDataType.STRING;
-            // } else if (selectField instanceof QUntypedField) {
-            // 	return SQLDataType.ANY
+        }
+        else if (selectField instanceof QUntypedField) {
+            return SQLDataType.ANY;
         }
         else {
             throw new Error(`Unsupported type of select field in Field Query`);

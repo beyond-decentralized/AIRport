@@ -62,7 +62,7 @@ appears more than once in the Columns clause`);
             columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
-        if (!transaction.isSync) {
+        if (!transaction.isSync || context.generateOnSync) {
             generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
         }
         let ids;
@@ -70,7 +70,7 @@ appears more than once in the Columns clause`);
         if (!dbEntity.isLocal) {
             systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
         }
-        if (!transaction.isSync && ensureGeneratedValues) {
+        if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
             ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {

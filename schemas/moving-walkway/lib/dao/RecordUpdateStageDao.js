@@ -14,13 +14,12 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
             rus.column.id,
             rus.updatedValue
         ];
-        for (let i = 1; i <= 50; i++) {
-            columns.push(rus[`updatedColumn${i}Value`]);
-        }
-        return await this.db.insertValues({
+        return await this.db.insertValuesGenerateIds({
             insertInto: rus,
             columns,
             values
+        }, {
+            generateOnSync: true
         });
     }
     async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes) {
@@ -47,9 +46,7 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
                 select: columnRus.updatedValue,
                 where: and(columnRus.applicationVersion.id.equals(applicationVersionId), columnRus.entity.id.equals(dbEntity.id), columnRus.repository.id.equals(qEntity.repository.id), columnRus.actor.id.equals(qEntity.actor.id), columnRus.actorRecordId.equals(qEntity.actorRecordId), columnRus.column.id.equals(column.id))
             });
-            const propertyName = column
-                .propertyColumns[0].property.name;
-            setClause[propertyName] = columnSetClause;
+            setClause[column.name] = columnSetClause;
         }
         await this.db.updateColumnsWhere({
             update: qEntity,
