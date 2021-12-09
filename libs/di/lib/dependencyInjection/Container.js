@@ -189,8 +189,11 @@ export class RootContainer extends Container {
         return this.dbContainer;
     }
     remove(container) {
+        if (!container) {
+            return;
+        }
         this.childContainers.delete(container);
-        if (container.context.name) {
+        if (container.context && container.context.name) {
             this.uiContainerMap.get(container.context.name)
                 .delete(container);
         }

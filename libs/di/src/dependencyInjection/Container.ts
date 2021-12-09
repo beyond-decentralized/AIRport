@@ -972,9 +972,13 @@ export class RootContainer
 	remove(
 		container: IChildContainer
 	): void {
+		if (!container) {
+			return
+		}
+
 		this.childContainers.delete(container);
 
-		if (container.context.name) {
+		if (container.context && container.context.name) {
 			this.uiContainerMap.get(container.context.name)
 				.delete(container);
 		}
