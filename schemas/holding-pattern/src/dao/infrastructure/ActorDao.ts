@@ -157,13 +157,14 @@ export class ActorDao
 		const values = []
 		for (const actor of actors) {
 			values.push([
-				actor.uuId, actor.user.id, actor.terminal.id,
+				actor.uuId, actor.application.index, actor.user.id, actor.terminal.id,
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: t = Q.Actor,
 			columns: [
 				t.uuId,
+				t.application.index,
 				t.user.id,
 				t.terminal.id
 			],
@@ -213,11 +214,11 @@ export class ActorDao
 			},
 			from: [
 				a = Q.Actor,
-				ap = a.application.innerJoin(),
-				ap.domain.innerJoin(),
-				t = a.terminal.innerJoin(),
-				t.owner.innerJoin(),
-				a.user.innerJoin()
+				ap = a.application.leftJoin(),
+				ap.domain.leftJoin(),
+				t = a.terminal.leftJoin(),
+				t.owner.leftJoin(),
+				a.user.leftJoin()
 			],
 			where: getWhereClause(a)
 		})
