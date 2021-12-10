@@ -128,11 +128,11 @@ export class RecordUpdateStageDao
 				where:
 					and(
 						columnRus.applicationVersion.id.equals(applicationVersionId),
-						columnRus.entity.id.equals(dbEntity.id),
+						columnRus.entity.id.equals(dbEntity.index),
 						columnRus.repository.id.equals(qEntity.repository.id),
 						columnRus.actor.id.equals(qEntity.actor.id),
 						columnRus.actorRecordId.equals(qEntity.actorRecordId),
-						columnRus.column.id.equals(column.id)
+						columnRus.column.id.equals(column.index)
 					)
 			})
 			setClause[column.name] = columnSetClause
