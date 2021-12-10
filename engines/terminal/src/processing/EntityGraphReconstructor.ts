@@ -47,19 +47,25 @@ export class EntityGraphReconstructor
 		const results: T[] = []
 		for (const entity of currentEntities) {
 			if (!entity) {
-				throw `Null root entities and @OneToMany arrays with null entities are not allowed`
+				throw new Error(`Null root entities and @OneToMany arrays with null entities are not allowed`)
 			}
-			if (processedEntitySet.has(entity)) {
-				continue;
-			}
-			processedEntitySet.add(entity)
 
 			const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity)
 			if (!operationUniqueId || typeof operationUniqueId !== 'number'
 				|| operationUniqueId < 1) {
-				throw `Invalid entity Unique Id Field
-"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}.`
+				throw new Error(`Invalid entity Unique Id Field
+"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}.`)
 			}
+
+			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
+			if (processedEntitySet.has(entity)) {
+				if (!previouslyFoundEntity) {
+					throw new Error(`Entity has been processed but is not found by operationUniqueId`)
+				}
+				results.push(previouslyFoundEntity)
+				continue;
+			}
+			processedEntitySet.add(entity)
 
 			/*
 			 * A passed in graph has either entities to be saved or
@@ -71,8 +77,6 @@ export class EntityGraphReconstructor
 				isStub
 			} = context.ioc.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
-
-			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
 
 			let entityCopy
 			if (previouslyFoundEntity) {
