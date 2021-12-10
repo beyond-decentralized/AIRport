@@ -16,6 +16,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
     protected context: IFuelHydrantContext;
+    parameterReferences: (string | number)[];
     protected fieldMap: ApplicationMap;
     protected qEntityMapByAlias: {
         [entityAlias: string]: IQEntityInternal<any>;
@@ -23,7 +24,6 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
     };
-    protected parameterReferences: (string | number)[];
     constructor(dbEntity: DbEntity, dialect: SQLDialect, context: IFuelHydrantContext);
     getParameters(parameterMap: {
         [alias: string]: Parameter;

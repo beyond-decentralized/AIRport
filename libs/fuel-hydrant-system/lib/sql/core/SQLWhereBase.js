@@ -16,10 +16,10 @@ export class SQLWhereBase {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.context = context;
+        this.parameterReferences = [];
         this.fieldMap = new ApplicationMap();
         this.qEntityMapByAlias = {};
         this.jsonRelationMapByAlias = {};
-        this.parameterReferences = [];
     }
     getParameters(parameterMap, //,
     context) {
@@ -89,7 +89,7 @@ export class SQLWhereBase {
         }
         const aField = clauseField;
         let qEntity;
-        let subQuery;
+        let subQuerySql;
         switch (clauseField.ot) {
             case JSONClauseObjectType.FIELD_FUNCTION:
                 return this.getFieldFunctionValue(aField, defaultCallback, context);
@@ -99,8 +99,13 @@ export class SQLWhereBase {
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
-                subQuery = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
-                return `EXISTS(${subQuery})`;
+                const treeQueryResults = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
+                subQuerySql = treeQueryResults.subQuerySql;
+                if (treeQueryResults.parameterReferences.length) {
+                    this.parameterReferences = this.parameterReferences.concat(treeQueryResults.parameterReferences);
+                }
+                this.parameterReferences;
+                return `EXISTS(${subQuerySql})`;
             case JSONClauseObjectType.FIELD:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
@@ -112,9 +117,13 @@ export class SQLWhereBase {
                 if (aField.S) {
                     jsonFieldSqlSubQuery = aField;
                 }
-                subQuery = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                const fieldQueryResults = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                subQuerySql = fieldQueryResults.subQuerySql;
+                if (fieldQueryResults.parameterReferences.length) {
+                    this.parameterReferences = this.parameterReferences.concat(fieldQueryResults.parameterReferences);
+                }
                 validator.addSubQueryAlias(aField.fa);
-                return `(${subQuery})`;
+                return `(${subQuerySql})`;
             case JSONClauseObjectType.MANY_TO_ONE_RELATION:
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);

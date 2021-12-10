@@ -274,7 +274,10 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     break;
                 case JSONRelationType.SUB_QUERY_ROOT:
                     let viewRelation = currentRelation;
-                    let subQuerySql = subStatementSqlGenerator.getTreeQuerySql(viewRelation.subQuery, this.dialect, context);
+                    const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getTreeQuerySql(viewRelation.subQuery, this.dialect, context);
+                    if (parameterReferences.length) {
+                        this.parameterReferences = this.parameterReferences.concat(parameterReferences);
+                    }
                     fromFragment += `(${subQuerySql}) ${currentAlias}`;
                     break;
                 default:
@@ -315,9 +318,12 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
                     break;
                 case JSONRelationType.SUB_QUERY_JOIN_ON:
                     let viewJoinRelation = currentRelation;
-                    const mappedSql = subStatementSqlGenerator.getTreeQuerySql(viewJoinRelation.subQuery, this.dialect, context);
+                    const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getTreeQuerySql(viewJoinRelation.subQuery, this.dialect, context);
+                    if (parameterReferences.length) {
+                        this.parameterReferences = this.parameterReferences.concat(parameterReferences);
+                    }
                     joinOnClause = this.getWHEREFragment(viewJoinRelation.joinWhereClause, '\t', context);
-                    fromFragment += `${joinTypeString} (${mappedSql}) ${currentAlias} ON\n${joinOnClause}`;
+                    fromFragment += `${joinTypeString} (${subQuerySql}) ${currentAlias} ON\n${joinOnClause}`;
                     break;
                 default:
                     throw new Error(`Nested FROM entries must be Entity JOIN ON

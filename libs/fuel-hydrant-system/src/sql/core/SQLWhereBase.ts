@@ -2,8 +2,8 @@ import {
 	IQEntityInternal,
 	JSONLogicalOperation,
 	Parameter,
-}                          from '@airport/air-control'
-import {DI}                from '@airport/di'
+} from '@airport/air-control'
+import { DI } from '@airport/di'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -20,18 +20,17 @@ import {
 	OperationCategory,
 	ApplicationIndex,
 	ApplicationMap,
-	ApplicationVersionId,
 	SqlOperator,
 	TableIndex
-}                          from '@airport/ground-control'
-import {ISqlValueProvider} from '../../adaptor/SQLQueryAdaptor'
+} from '@airport/ground-control'
+import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR,
 	SUB_STATEMENT_SQL_GENERATOR
-}                          from '../../tokens'
-import {SQLDialect}        from './SQLQuery'
+} from '../../tokens'
+import { SQLDialect } from './SQLQuery'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -47,10 +46,10 @@ export enum ClauseType {
 export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
-	protected fieldMap: ApplicationMap                                                   = new ApplicationMap()
-	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> }        = {}
+	public parameterReferences: (string | number)[] = []
+	protected fieldMap: ApplicationMap = new ApplicationMap()
+	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> } = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
-	protected parameterReferences: (string | number)[]                              = []
 
 	constructor(
 		protected dbEntity: DbEntity,
@@ -130,7 +129,7 @@ export abstract class SQLWhereBase
 	}
 
 	getFieldValue(
-		clauseField: JSONClauseObject | JSONClauseField [] | JsonFieldQuery,
+		clauseField: JSONClauseObject | JSONClauseField[] | JsonFieldQuery,
 		clauseType: ClauseType,
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
@@ -154,20 +153,26 @@ export abstract class SQLWhereBase
 
 		const aField = <JSONClauseField>clauseField
 		let qEntity: IQEntityInternal<any>
-		let subQuery: string
 		switch (clauseField.ot) {
 			case JSONClauseObjectType.FIELD_FUNCTION:
 				return this.getFieldFunctionValue(aField, defaultCallback, context)
 			case JSONClauseObjectType.DISTINCT_FUNCTION:
 				throw new Error(`Distinct function cannot be nested.`)
-			case JSONClauseObjectType.EXISTS_FUNCTION:
+			case JSONClauseObjectType.EXISTS_FUNCTION: {
 				if (clauseType !== ClauseType.WHERE_CLAUSE) {
 					throw new Error(
 						`Exists can only be used as a top function in a WHERE clause.`)
 				}
-				subQuery = subStatementSqlGenerator.getTreeQuerySql(<JsonTreeQuery>aField.v, this.dialect, context)
-				return `EXISTS(${subQuery})`
-			case <any>JSONClauseObjectType.FIELD:
+				const {
+					parameterReferences,
+					subQuerySql
+				} = subStatementSqlGenerator.getTreeQuerySql(<JsonTreeQuery>aField.v, this.dialect, context)
+				if (parameterReferences.length) {
+					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
+				}
+				return `EXISTS(${subQuerySql})`
+			}
+			case <any>JSONClauseObjectType.FIELD: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				validator.validateReadQEntityProperty(
 					aField.si, aField.ti, aField.ci)
@@ -176,28 +181,38 @@ export abstract class SQLWhereBase
 				this.addField(aField.si, aField.ti, aField.ci)
 				return this.getComplexColumnFragment(aField, columnName,
 					context)
-			case JSONClauseObjectType.FIELD_QUERY:
+			}
+			case JSONClauseObjectType.FIELD_QUERY: {
 				let jsonFieldSqlSubQuery: JsonFieldQuery = aField.fieldSubQuery
 				if ((<JsonFieldQuery><any>aField).S) {
 					jsonFieldSqlSubQuery = <any>aField
 				}
-				subQuery = subStatementSqlGenerator.getFieldQuerySql(
+				const {
+					parameterReferences,
+					subQuerySql
+				} = subStatementSqlGenerator.getFieldQuerySql(
 					jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context)
+				if (parameterReferences.length) {
+					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
+				}
 				validator.addSubQueryAlias(aField.fa)
-				return `(${subQuery})`
-			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+				return `(${subQuerySql})`
+			}
+			case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
 				validator.validateReadQEntityManyToOneRelation(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context)
 				this.addField(aField.si, aField.ti, aField.ci)
 				return this.getComplexColumnFragment(aField, columnName, context)
+			}
 			// must be a nested object
-			default:
+			default: {
 				if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) {
 					`Nested objects only allowed in the mapped SELECT clause.`
 				}
 				return defaultCallback()
+			}
 		}
 	}
 
@@ -253,17 +268,17 @@ export abstract class SQLWhereBase
 			case OperationCategory.NUMBER:
 			case OperationCategory.STRING:
 			case OperationCategory.UNTYPED:
-				let valueOperation     = <JSONValueOperation>operation
-				let lValueSql          = this.getFieldValue(
+				let valueOperation = <JSONValueOperation>operation
+				let lValueSql = this.getFieldValue(
 					valueOperation.l, ClauseType.WHERE_CLAUSE, null, context)
-				let rValueSql          = this.getFieldValue(
+				let rValueSql = this.getFieldValue(
 					valueOperation.r, ClauseType.WHERE_CLAUSE, null, context)
 				let rValueWithOperator = this.applyOperator(valueOperation.o, rValueSql)
 				whereFragment += `${lValueSql}${rValueWithOperator}`
 				break
 			case OperationCategory.FUNCTION:
 				let functionOperation = <JSONFunctionOperation><any>operation
-				whereFragment         = this.getFieldValue(
+				whereFragment = this.getFieldValue(
 					functionOperation.ob, ClauseType.WHERE_CLAUSE, null, context)
 				// exists function and maybe others
 				break
@@ -318,7 +333,7 @@ export abstract class SQLWhereBase
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		let selectSqlFragment = `${value.ta}.${columnName}`
-		selectSqlFragment     = sqlAdaptor.getFunctionAdaptor()
+		selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
 			.getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias,
 				this, context)
 
