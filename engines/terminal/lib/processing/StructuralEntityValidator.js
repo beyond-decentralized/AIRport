@@ -2,13 +2,17 @@ import { DI } from '@airport/di';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
 import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
 export class StructuralEntityValidator {
-    async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, parentRelationRecord = null) {
+    async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
 					Please use non-entity operations (like 'insert' or 'updateWhere') instead.`);
         }
+        let haveRootRelationRecord = !!rootRelationRecord;
         for (const record of records) {
+            if (!haveRootRelationRecord) {
+                rootRelationRecord = record;
+            }
             const { isCreate, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
             if (isParentId) {
                 // No processing is needed (already covered by id check)
@@ -97,7 +101,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     if (relatedEntities && relatedEntities.length) {
                         const previousDbEntity = context.dbEntity;
                         context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, record);
+                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, rootRelationRecord, record);
                         context.dbEntity = previousDbEntity;
                     }
                 } // if (dbProperty.relation // If is a relation property
@@ -118,11 +122,25 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
                     this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue);
                 } // else (dbProperty.relation  // If not a relation property
             } // for (const dbProperty of dbEntity.properties)
-            this.ensureRepositoryValidity(record, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
+            this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
         } // for (const record of entities)
     }
-    ensureRepositoryValidity(record, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
-        if (!dbEntity.isRepositoryEntity || !parentRelationRecord) {
+    ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
+        if (!dbEntity.isRepositoryEntity) {
+            return;
+        }
+        if (!parentRelationRecord) {
+            const entityStateManager = context.ioc.entityStateManager;
+            const originalValues = entityStateManager.getOriginalValues(record);
+            if (newRepositoryNeeded && originalValues && originalValues.repository
+                && originalValues.actor && originalValues.actorRecordId) {
+                const repositoryEntity = record;
+                repositoryEntity.originalRepository = originalValues.repository;
+                entityStateManager.markAsStub(repositoryEntity.originalRepository);
+                repositoryEntity.originalActor = originalValues.actor;
+                entityStateManager.markAsStub(repositoryEntity.originalActor);
+                repositoryEntity.originalActorRecordId = originalValues.actorRecordId;
+            }
             return;
         }
         if (newRepositoryNeeded) {
@@ -133,13 +151,15 @@ That is a child of ${parentRelationProperty.entity.name} via ${parentRelationPro
 When creating a new repository the top level record should be of the newly created repository.
 `);
         }
-        if (fromOneToMany) {
-            return;
-        }
+        // One to many get traversed as well, if it's in the input graph/tree
+        // it is assumed to be part of the same repository
+        // if (fromOneToMany) {
+        // 	return
+        // }
         let repositoryEntity = record;
-        // If coming from @ManyToOne() the repositories of parent record and child record should match
-        if (parentRelationRecord.repository.id === repositoryEntity.repository.id) {
-            // If they do this is a valid scenario, no further checks needed
+        // If the repositories of parent record and child record match
+        if (rootRelationRecord.repository.id === repositoryEntity.repository.id) {
+            // no further checks needed
             return;
         }
         if (isCreate) {
@@ -156,23 +176,11 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         }
         // If it doesn't then it is a reference to another repository - switch
         // the record to the parent repository and set the originalRepositoryValue
-        let alreadyCopiedRecord = false;
-        if (repositoryEntity.originalActor && repositoryEntity.originalActorRecordId
-            && repositoryEntity.originalRepository) {
-            // Record is already copied from another repository, keep the orignal
-            //reference 
-            alreadyCopiedRecord = true;
-        }
-        // This is done so that the repository always has all of the records it needs
-        if (!alreadyCopiedRecord) {
-            repositoryEntity.originalRepository = repositoryEntity.repository;
-        }
-        repositoryEntity.repository = parentRelationRecord.repository;
+        repositoryEntity.originalRepository = repositoryEntity.repository;
+        repositoryEntity.repository = rootRelationRecord.repository;
         // Aslo set originalActor and originalActorRecordId to look up the original record
-        if (!alreadyCopiedRecord) {
-            repositoryEntity.originalActor = repositoryEntity.actor;
-            repositoryEntity.originalActorRecordId = repositoryEntity.actorRecordId;
-        }
+        repositoryEntity.originalActor = repositoryEntity.actor;
+        repositoryEntity.originalActorRecordId = repositoryEntity.actorRecordId;
         // reset 'actor' and clear 'actorRecordId' to prevents unique constraint
         // violation if multiple databases flip to the same exact record (independently)
         repositoryEntity.actor = context.actor;
