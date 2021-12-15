@@ -41,7 +41,7 @@ export class ApiRegistry
             throw new Error(`Could not find API object for 
         Application signature:
             ${applicationSignature}
-        Object name:
+        Token:
             ${apiObjectName}`)
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName]
@@ -49,7 +49,7 @@ export class ApiRegistry
             throw new Error(`Could not find API object method for 
         Application signature:
             ${applicationSignature}
-        Object name:
+        Token:
             ${apiObjectName}
         Method name:
             ${methodName}`)
