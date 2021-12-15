@@ -98,6 +98,9 @@ ${addEntityCommand}`;
             let qEntityRelativePath;
             if (property.fromProject) {
                 qEntityRelativePath = property.fromProject;
+                if (property.fromProject.indexOf('@airport/') !== 0) {
+                    qEntityRelativePath += '/lib/server';
+                }
                 type = property.otherApplicationDbEntity.name;
             }
             else {
@@ -111,6 +114,9 @@ ${addEntityCommand}`;
             let relationEntityPath;
             if (property.fromProject) {
                 relationEntityPath = property.fromProject;
+                if (property.fromProject.indexOf('@airport/') !== 0) {
+                    relationEntityPath += '/lib/server';
+                }
             }
             else {
                 relationEntityPath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path);

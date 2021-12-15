@@ -316,12 +316,48 @@ export class SApplicationBuilder {
         else {
             switch (relationType) {
                 case EntityRelationType.MANY_TO_ONE: {
-                    const [extendsEntity, isLocal] = entityExtendsRepositoryEntity(aProperty.entity);
+                    let extendsEntity, isLocal;
+                    if (aProperty.entity) {
+                        const extendsRepoEntityResult = entityExtendsRepositoryEntity(aProperty.entity);
+                        extendsEntity = extendsRepoEntityResult[0];
+                        isLocal = extendsRepoEntityResult[1];
+                    }
+                    else if (aProperty.otherApplicationDbEntity) {
+                        const otherAppDbEntity = aProperty.otherApplicationDbEntity;
+                        if (otherAppDbEntity.isRepositoryEntity) {
+                            extendsEntity = true;
+                            isLocal = false;
+                        }
+                        else if (isLocal) {
+                            extendsEntity = true;
+                            isLocal = true;
+                        }
+                        else {
+                            extendsEntity = false;
+                            isLocal = false;
+                        }
+                    }
+                    else {
+                        throw new Error(`Relation must either point to an entity in this Application
+	or to an entity in another application.`);
+                    }
                     if (!extendsEntity || isLocal) {
                         throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
 					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
                     }
-                    const relatedTableName = this.getTableNameFromEntity(aProperty.entity);
+                    let relatedTableName;
+                    if (aProperty.entity) {
+                        relatedTableName = this.getTableNameFromEntity(aProperty.entity);
+                    }
+                    else {
+                        const otherAppDbEntity = aProperty.otherApplicationDbEntity;
+                        if (otherAppDbEntity.tableConfig && otherAppDbEntity.tableConfig.name) {
+                            relatedTableName = otherAppDbEntity.tableConfig.name;
+                        }
+                        else {
+                            relatedTableName = otherAppDbEntity.name.toUpperCase();
+                        }
+                    }
                     const notNull = isManyToOnePropertyNotNull(aProperty);
                     const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
                     let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);

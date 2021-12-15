@@ -48,24 +48,24 @@ export class QEntityFileBuilder
     this.qEntityInterfaceBuilder = new IQEntityInterfaceBuilder(entity, this.qEntityBuilder);
 
     this.addImport([
-        'IQEntityInternal',
-        'IEntityIdProperties',
-        'IEntityCascadeGraph',
-        'IEntityUpdateColumns',
-        'IEntityUpdateProperties',
-        'IEntitySelectProperties',
-        'IEntityDatabaseFacade',
-        'IEntityFind',
-        'IEntityFindOne',
-        'IEntitySearch',
-        'IEntitySearchOne',
-        'IQBooleanField',
-        'IQDateField',
-        'IQNumberField',
-        'IQOneToManyRelation', 'IQStringField',
-        'IQUntypedField',
-        'IQEntity', 'IQRelation',
-        'RawDelete', 'RawUpdate'],
+      'IQEntityInternal',
+      'IEntityIdProperties',
+      'IEntityCascadeGraph',
+      'IEntityUpdateColumns',
+      'IEntityUpdateProperties',
+      'IEntitySelectProperties',
+      'IEntityDatabaseFacade',
+      'IEntityFind',
+      'IEntityFindOne',
+      'IEntitySearch',
+      'IEntitySearchOne',
+      'IQBooleanField',
+      'IQDateField',
+      'IQNumberField',
+      'IQOneToManyRelation', 'IQStringField',
+      'IQUntypedField',
+      'IQEntity', 'IQRelation',
+      'RawDelete', 'RawUpdate'],
       '@airport/air-control');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
     if (entity.parentEntity) {
@@ -78,15 +78,15 @@ export class QEntityFileBuilder
       }
       let parentEntityType = entity.parentEntity.type;
       this.addImport([
-          // `I${parentEntityType}`,
-          `${parentEntityType}Graph`,
-          `${parentEntityType}EId`,
-          `${parentEntityType}EUpdateColumns`,
-          `${parentEntityType}EUpdateProperties`,
-          `${parentEntityType}ESelect`,
-          `Q${parentEntityType}QId`,
-          `Q${parentEntityType}QRelation`,
-          `Q${parentEntityType}`],
+        // `I${parentEntityType}`,
+        `${parentEntityType}Graph`,
+        `${parentEntityType}EId`,
+        `${parentEntityType}EUpdateColumns`,
+        `${parentEntityType}EUpdateProperties`,
+        `${parentEntityType}ESelect`,
+        `Q${parentEntityType}QId`,
+        `Q${parentEntityType}QRelation`,
+        `Q${parentEntityType}`],
         parentQEntityRelativePath);
     }
 
@@ -138,6 +138,9 @@ ${addEntityCommand}`;
       let qEntityRelativePath;
       if (property.fromProject) {
         qEntityRelativePath = property.fromProject;
+        if (property.fromProject.indexOf('@airport/') !== 0) {
+          qEntityRelativePath += '/lib/server'
+        }
         type = property.otherApplicationDbEntity.name;
       } else {
         type = property.entity.type;
@@ -150,19 +153,22 @@ ${addEntityCommand}`;
       let relationEntityPath;
       if (property.fromProject) {
         relationEntityPath = property.fromProject;
+        if (property.fromProject.indexOf('@airport/') !== 0) {
+          relationEntityPath += '/lib/server'
+        }
       } else {
         relationEntityPath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path);
       }
       this.addImport([
-          // 'I' + type,
-          type + 'Graph',
-          type + 'EId',
-          type + 'EOptionalId',
-          type + 'EUpdateProperties',
-          type + 'ESelect',
-          qType,
-          qType + 'QId',
-          qType + 'QRelation'],
+        // 'I' + type,
+        type + 'Graph',
+        type + 'EId',
+        type + 'EOptionalId',
+        type + 'EUpdateProperties',
+        type + 'ESelect',
+        qType,
+        qType + 'QId',
+        qType + 'QRelation'],
         qEntityRelativePath);
       this.addImport([type], relationEntityPath, false);
     });
