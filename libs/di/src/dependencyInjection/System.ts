@@ -94,7 +94,7 @@ const SYSTEM_MAP: {
 } = {}
 
 export function system(
-	systemName
+	systemName: string
 ): ISystem {
 	if (SYSTEM_MAP[systemName]) {
 		return SYSTEM_MAP[systemName]
