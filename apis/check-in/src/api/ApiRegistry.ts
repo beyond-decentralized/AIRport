@@ -10,7 +10,7 @@ export interface IApiRegistry {
 
     findApiObjectAndOperation(
         domainName: string,
-        applicationSignature: string,
+        applicationName: string,
         apiObjectName: string,
         methodName: string
     ): Promise<{

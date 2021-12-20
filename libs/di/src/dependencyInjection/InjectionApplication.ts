@@ -9,7 +9,6 @@ export interface IInjectionApplication {
 
 	autopilot: boolean
 	name: string
-	signature: string
 	domain: IInjectionDomain
 	tokenMap: Map<string, IDiToken<any>>
 
@@ -23,7 +22,6 @@ export interface IInjectionApplication {
 export class InjectionApplication
 	implements IInjectionApplication {
 
-	public signature: string
 	public tokenMap: Map<string, IDiToken<any>> = new Map()
 	public autopilot = false
 
@@ -31,14 +29,6 @@ export class InjectionApplication
 		public name: string,
 		public domain: IInjectionDomain
 	) {
-	}
-
-	setSignature(
-		signature: string
-	): IInjectionApplication {
-		this.signature = signature
-		this.autopilot = true
-		return this
 	}
 
 	token<T = GenericDependencyInjectionError>(

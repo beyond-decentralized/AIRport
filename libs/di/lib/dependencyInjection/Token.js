@@ -1,10 +1,10 @@
 export class DiToken {
-    constructor(library, name) {
-        this.library = library;
+    constructor(application, name) {
+        this.application = application;
         this.name = name;
     }
     getPath() {
-        return this.library.domain.name + ':' + this.library.name + ':' + this.name;
+        return this.application.domain.name + ':' + this.application.name + ':' + this.name;
     }
 }
 //# sourceMappingURL=Token.js.map

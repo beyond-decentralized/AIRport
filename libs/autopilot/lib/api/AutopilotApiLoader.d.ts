@@ -1,5 +1,5 @@
-import { IAutopilotApiLoader } from '@airport/di';
+import { IAutopilotApiLoader, IDiToken } from '@airport/di';
 export declare class AutopilotApiLoader implements IAutopilotApiLoader {
-    loadApiAutopilot<T>(applicationSignature: string, daoName: string): T;
+    loadApiAutopilot<T>(token: IDiToken<T>): T;
 }
 //# sourceMappingURL=AutopilotApiLoader.d.ts.map

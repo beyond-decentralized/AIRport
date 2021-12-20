@@ -1,12 +1,13 @@
 export interface ILocalAPIResponse {
     __received__?: boolean;
     __receivedTime__?: number;
+    application: string;
     category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected';
+    domain: string;
     errorMessage: string;
     id: string;
     host: string;
     payload: any;
     protocol: string;
-    applicationSignature: string;
 }
 //# sourceMappingURL=LocalAPIResponse.d.ts.map

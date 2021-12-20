@@ -7,11 +7,6 @@ export class InjectionApplication {
         this.tokenMap = new Map();
         this.autopilot = false;
     }
-    setSignature(signature) {
-        this.signature = signature;
-        this.autopilot = true;
-        return this;
-    }
     token(name) {
         const existingToken = this.tokenMap.get(name);
         if (existingToken) {

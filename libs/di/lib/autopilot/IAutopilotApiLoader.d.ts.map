@@ -1,1 +1,1 @@
-{"version":3,"file":"IAutopilotApiLoader.d.ts","sourceRoot":"","sources":["../../src/autopilot/IAutopilotApiLoader.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,mBAAmB;IAEhC,gBAAgB,CACZ,oBAAoB,EAAE,MAAM,EAC5B,OAAO,EAAE,MAAM,GAChB,GAAG,CAAC;CAEV"}
+{"version":3,"file":"IAutopilotApiLoader.d.ts","sourceRoot":"","sources":["../../src/autopilot/IAutopilotApiLoader.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAC;AAExD,MAAM,WAAW,mBAAmB;IAEhC,gBAAgB,CAAC,UAAU,GAAG,GAAG,EAC7B,KAAK,EAAE,QAAQ,CAAC,UAAU,CAAC,GAC5B,GAAG,CAAC;CAEV"}

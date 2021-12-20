@@ -86,7 +86,7 @@ export class WebTransactionalReceiver
 
 			// All requests need to have a application signature
 			// to know what application is being communicated to/from
-			if (!this.hasValidApplicationSignature(message)) {
+			if (!this.hasValidApplicationInfo(message)) {
 				return
 			}
 
@@ -138,7 +138,7 @@ export class WebTransactionalReceiver
 		this.messageCallback = callback
 	}
 
-	private hasValidApplicationSignature(
+	private hasValidApplicationInfo(
 		message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse
 	) {
 		return message.applicationSignature && message.applicationSignature.indexOf('.') === -1

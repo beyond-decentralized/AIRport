@@ -1,4 +1,4 @@
-import { container, DI } from "@airport/di";
+import { container, DI, IDiToken } from "@airport/di";
 import {
     OPERATION_SERIALIZER,
     QUERY_RESULTS_DESERIALIZER,
@@ -11,18 +11,11 @@ import { ILocalAPIResponse } from "./LocalAPIResponse";
 
 export interface ILocalAPIClient {
 
-    invokeApiMethod(
-        applicationSignature: string,
-        daoName: string,
+    invokeApiMethod<T = any>(
+        token: IDiToken<T>,
         methodName: string,
         args: any[]
     ): Promise<void>
-
-    sendMessageToAIRport(
-        objectName: string,
-        methodName: string,
-        args: any[]
-    ): Promise<any>
 
     onMessage(callback: (
         message: any
@@ -75,7 +68,7 @@ export class LocalAPIClient
                     case 'ToClientRedirected':
                         // All requests need to have a application signature
                         // to know what application is being communicated to/from
-                        if (!this.hasValidApplicationSignature(message)) {
+                        if (!this.hasValidApplicationInfo(message)) {
                             return
                         }
                         let requestDemoMessage = this.pendingDemoMessageMap.get(message.id)
@@ -96,27 +89,19 @@ export class LocalAPIClient
         this.messageCallback = callback
     }
 
-    private hasValidApplicationSignature(
+    private hasValidApplicationInfo(
         message: ILocalAPIResponse
     ) {
-        return message.applicationSignature && message.applicationSignature.indexOf('.') === -1
+        return typeof message.domain === 'string' && message.domain.length >= 3
+            && typeof message.application === 'string' && message.application.length >= 3
     }
 
-    async sendMessageToAIRport(
-        objectName: string,
+    async invokeApiMethod<T>(
+        token: IDiToken<T>,
         methodName: string,
         args: any[]
     ): Promise<any> {
-        return await this.invokeApiMethod('AIRport', objectName, methodName, args)
-    }
-
-    async invokeApiMethod(
-        applicationSignature: string,
-        objectName: string,
-        methodName: string,
-        args: any[]
-    ): Promise<any> {
-        while (!await this.isConnectionReady(applicationSignature)) {
+        while (!await this.isConnectionReady(token)) {
             await this.wait(100)
         }
 
@@ -141,14 +126,15 @@ export class LocalAPIClient
         }
 
         const request: ILocalAPIRequest = {
-            category: 'FromClient',
+            application: token.application.name,
             args: serializedParams,
+            category: 'FromClient',
+            domain: token.application.domain.name,
             host: window.location.host,
             id: uuidv4(),
             methodName,
-            objectName,
+            objectName: token.name,
             protocol: window.location.protocol,
-            applicationSignature
         }
 
         let response: ILocalAPIResponse
@@ -181,21 +167,22 @@ export class LocalAPIClient
         })
     }
 
-    private async isConnectionReady(
-        applicationSignature: string
+    private async isConnectionReady<T>(
+        token: IDiToken<T>
     ): Promise<boolean> {
         if (this.connectionReady) {
             return true
         }
         let request: ILocalAPIRequest = {
-            category: 'IsConnectionReady',
+            application: token.application.name,
             args: [],
+            category: 'IsConnectionReady',
+            domain: token.application.domain.name,
             host: window.location.host,
             id: null,
             methodName: null,
             objectName: null,
             protocol: window.location.protocol,
-            applicationSignature
         }
 
         if (_inDemoMode) {

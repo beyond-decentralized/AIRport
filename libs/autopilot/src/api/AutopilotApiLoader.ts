@@ -2,6 +2,7 @@ import {
     AUTOPILOT_API_LOADER,
     DI,
     IAutopilotApiLoader,
+    IDiToken,
     IOC
 } from '@airport/di'
 import { LOCAL_API_CLIENT } from '../tokens';
@@ -10,8 +11,7 @@ export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     loadApiAutopilot<T>(
-        applicationSignature: string,
-        daoName: string
+        token: IDiToken<T>
     ): T {
         return new Proxy({}, {
             get(target, methodName: string) {
@@ -23,7 +23,7 @@ export class AutopilotApiLoader
                 }
                 return function (...args) {
                     return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeApiMethod(applicationSignature, daoName, methodName, args);
+                        .invokeApiMethod(token, methodName, args);
                 };
             }
         }) as T;

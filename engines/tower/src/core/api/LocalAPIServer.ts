@@ -16,8 +16,6 @@ import {
 export class LocalAPIServer
     implements ILocalAPIServer {
 
-    domainName: string = 'Not_Specified'
-
     async handleRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
@@ -30,7 +28,7 @@ export class LocalAPIServer
                 apiObject,
                 apiOperation
             } = await apiRegistry.findApiObjectAndOperation(
-                this.domainName, request.applicationSignature, request.objectName, request.methodName)
+                request.domain, request.application, request.objectName, request.methodName)
             const result = apiObject[request.methodName].apply(apiObject, request.args)
             if (apiOperation.isAsync) {
                 payload = await result

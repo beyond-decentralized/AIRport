@@ -85,9 +85,9 @@ export class ChildContainer extends Container {
             }
             let object = objectMap.get(token.name);
             if (!object) {
-                if (!this.context.inAIRportApp && token.library.autopilot) {
+                if (!this.context.inAIRportApp && token.application.autopilot) {
                     object = this.getSync(AUTOPILOT_API_LOADER)
-                        .loadApiAutopilot(token.library.signature, token.name);
+                        .loadApiAutopilot(token);
                 }
                 else {
                     const clazz = classMap.get(token.name);
@@ -104,7 +104,7 @@ export class ChildContainer extends Container {
                 }
                 object.__container__ = this;
                 objectMap.set(token.name, object);
-                if (!token.library.autopilot && object.init) {
+                if (!token.application.autopilot && object.init) {
                     const result = object.init();
                     if (result instanceof Promise) {
                         result.then(_ => {
@@ -129,20 +129,20 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    async getByApplicationSignatureAndName(domainName, librarySignature, tokenName) {
-        const library = domain(domainName).getAppBySignature(librarySignature);
-        if (!library) {
-            throw new Error(`Could not find library with signature:
-			${librarySignature}
+    async getByApplicationSignatureAndName(domainName, applicationSignature, tokenName) {
+        const application = domain(domainName).getAppBySignature(applicationSignature);
+        if (!application) {
+            throw new Error(`Could not find application with signature:
+			${applicationSignature}
 			in domain: '${domainName}'`);
         }
-        const token = library.tokenMap.get(tokenName);
+        const token = application.tokenMap.get(tokenName);
         if (!token) {
             throw new Error(`Could not find token: ${tokenName}
-in library:
-			${library.name}
+in application:
+			${application.name}
 with signature:
-			${librarySignature}
+			${applicationSignature}
 of domain:
 			${AIRPORT_DOMAIN.name}`);
         }

@@ -1,7 +1,7 @@
+import { IDiToken } from "@airport/di";
 import { ILocalAPIRequest } from "./LocalAPIRequest";
 export interface ILocalAPIClient {
-    invokeApiMethod(applicationSignature: string, daoName: string, methodName: string, args: any[]): Promise<void>;
-    sendMessageToAIRport(objectName: string, methodName: string, args: any[]): Promise<any>;
+    invokeApiMethod<T = any>(token: IDiToken<T>, methodName: string, args: any[]): Promise<void>;
     onMessage(callback: (message: any) => void): any;
 }
 export interface IRequestRecord {
@@ -17,8 +17,7 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     constructor();
     onMessage(callback: (message: any) => void): void;
     private hasValidApplicationSignature;
-    sendMessageToAIRport(objectName: string, methodName: string, args: any[]): Promise<any>;
-    invokeApiMethod(applicationSignature: string, objectName: string, methodName: string, args: any[]): Promise<any>;
+    invokeApiMethod<T>(token: IDiToken<T>, methodName: string, args: any[]): Promise<any>;
     private wait;
     private isConnectionReady;
     private sendLocalRequest;

@@ -525,7 +525,7 @@ export class ChildContainer
 				if (!object) {
 					if (!this.context.inAIRportApp && token.application.autopilot) {
 						object = this.getSync(AUTOPILOT_API_LOADER)
-							.loadApiAutopilot(token.application.signature, token.name);
+							.loadApiAutopilot(token);
 					} else {
 						const clazz = classMap.get(token.name);
 						if (!clazz) {

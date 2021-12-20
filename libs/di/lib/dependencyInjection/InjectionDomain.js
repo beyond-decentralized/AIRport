@@ -5,34 +5,34 @@ export class InjectionDomain {
         this.applicationMap = {};
         this.applicationMapBySignature = {};
     }
-    app(libraryName) {
-        if (this.applicationMap[libraryName]) {
+    app(applicationName) {
+        if (this.applicationMap[applicationName]) {
             throw new Error(`
 			Application already defined.
 			Domain:      ${this.name}
-			Application: ${libraryName}
+			Application: ${applicationName}
 			`);
         }
-        const library = new InjectionApplication(libraryName, this);
-        this.applicationMap[libraryName] = library;
-        return library;
+        const application = new InjectionApplication(applicationName, this);
+        this.applicationMap[applicationName] = application;
+        return application;
     }
-    getApp(libraryName) {
-        return this.applicationMap[libraryName];
+    getApp(applicationName) {
+        return this.applicationMap[applicationName];
     }
     getAppBySignature(signature) {
         return this.applicationMapBySignature[signature];
     }
-    mapApplicationBySignature(libraryName, signature) {
-        const library = this.applicationMap[libraryName];
-        if (!library) {
-            throw new Error(`Could not find library: '${libraryName}', in domain: '${this.name}'`);
+    mapApplicationBySignature(applicationName, signature) {
+        const application = this.applicationMap[applicationName];
+        if (!application) {
+            throw new Error(`Could not find Application: '${applicationName}', in domain: '${this.name}'`);
         }
         if (this.applicationMapBySignature[signature]) {
-            throw new Error(`System '${this.name}' already has a library '${libraryName}'
+            throw new Error(`Domain '${this.name}' already has an Application '${applicationName}'
 			for signature: ${signature}`);
         }
-        this.applicationMapBySignature[signature] = library;
+        this.applicationMapBySignature[signature] = application;
     }
 }
 const DOMAIN_MAP = {};

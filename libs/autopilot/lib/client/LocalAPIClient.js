@@ -49,11 +49,8 @@ export class LocalAPIClient {
     hasValidApplicationSignature(message) {
         return message.applicationSignature && message.applicationSignature.indexOf('.') === -1;
     }
-    async sendMessageToAIRport(objectName, methodName, args) {
-        return await this.invokeApiMethod('AIRport', objectName, methodName, args);
-    }
-    async invokeApiMethod(applicationSignature, objectName, methodName, args) {
-        while (!await this.isConnectionReady(applicationSignature)) {
+    async invokeApiMethod(token, methodName, args) {
+        while (!await this.isConnectionReady(token)) {
             await this.wait(100);
         }
         const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
@@ -76,14 +73,15 @@ export class LocalAPIClient {
             }
         }
         const request = {
-            category: 'FromClient',
+            application: token.application.name,
             args: serializedParams,
+            category: 'FromClient',
+            domain: token.application.domain.name,
             host: window.location.host,
             id: uuidv4(),
             methodName,
-            objectName,
+            objectName: token.name,
             protocol: window.location.protocol,
-            applicationSignature
         };
         let response;
         if (_inDemoMode) {
@@ -110,19 +108,20 @@ export class LocalAPIClient {
             }, milliseconds);
         });
     }
-    async isConnectionReady(applicationSignature) {
+    async isConnectionReady(token) {
         if (this.connectionReady) {
             return true;
         }
         let request = {
-            category: 'IsConnectionReady',
+            application: token.application.name,
             args: [],
+            category: 'IsConnectionReady',
+            domain: token.application.domain.name,
             host: window.location.host,
             id: null,
             methodName: null,
             objectName: null,
             protocol: window.location.protocol,
-            applicationSignature
         };
         if (_inDemoMode) {
             window.parent.postMessage(request, _demoServer);
