@@ -1,4 +1,4 @@
-import { system } from '@airport/di'
+import { lib } from '@airport/di'
 import {
     ICascadeGraphVerifier,
     IDatabaseManager,
@@ -16,7 +16,7 @@ import {
 import { IInternalRecordManager } from './data/InternalRecordManager'
 import { IOnlineManager } from './net/OnlineManager'
 
-const terminal = system('airport').lib('terminal')
+const terminal = lib('terminal')
 
 export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>('CASCADE_GRAPH_VERIFIER')
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>('DATABASE_MANAGER')

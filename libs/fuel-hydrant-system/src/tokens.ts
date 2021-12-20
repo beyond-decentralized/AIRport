@@ -1,4 +1,4 @@
-import {system}                     from '@airport/di'
+import {lib}                     from '@airport/di'
 import {ISubStatementSqlGenerator}         from './sql/core/SubStatementSqlGenerator'
 import {IObjectResultParserFactory} from './result/entity/ObjectResultParserFactory'
 import {ISQLQueryAdaptor}           from './adaptor/SQLQueryAdaptor'
@@ -6,7 +6,7 @@ import {IActiveQueries}             from './store/ActiveQueries'
 import {IIdGenerator}               from './store/IdGenerator'
 import {IValidator}                 from './validation/Validator'
 
-const fuelHydrantSystem = system('airport').lib('fuel-hydrant-system')
+const fuelHydrantSystem = lib('fuel-hydrant-system')
 
 export const ACTIVE_QUERIES              = fuelHydrantSystem.token<IActiveQueries>('ACTIVE_QUERIES')
 export const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token<ISubStatementSqlGenerator>('SUB_STATEMENT_SQL_GENERATOR')

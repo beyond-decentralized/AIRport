@@ -1,7 +1,7 @@
 import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { SYSTEM, system } from './System';
-import { lib } from './Library';
+import { AIRPORT_DOMAIN, domain } from './InjectionDomain';
+import { lib } from './InjectionApplication';
 const classMap = new Map();
 let numPendingInits = 0;
 const objectMap = new Map();
@@ -129,12 +129,12 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    async getByApplicationSignatureAndName(systemName, librarySignature, tokenName) {
-        const library = system(systemName).getLibBySignature(librarySignature);
+    async getByApplicationSignatureAndName(domainName, librarySignature, tokenName) {
+        const library = domain(domainName).getAppBySignature(librarySignature);
         if (!library) {
             throw new Error(`Could not find library with signature:
 			${librarySignature}
-			in system: '${systemName}'`);
+			in domain: '${domainName}'`);
         }
         const token = library.tokenMap.get(tokenName);
         if (!token) {
@@ -143,8 +143,8 @@ in library:
 			${library.name}
 with signature:
 			${librarySignature}
-of system:
-			${SYSTEM.name}`);
+of domain:
+			${AIRPORT_DOMAIN.name}`);
         }
         return await this.get(token);
     }
@@ -230,7 +230,7 @@ export const DI = new RootContainer();
 if (typeof window !== 'undefined') {
     window.DI = DI;
     window.lib = lib;
-    window.system = system;
+    window.domain = domain;
 }
 export const IOC = new InversionOfControl();
 //# sourceMappingURL=Container.js.map

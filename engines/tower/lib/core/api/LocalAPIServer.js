@@ -3,14 +3,14 @@ import { container, DI } from "@airport/di";
 import { LOCAL_API_SERVER } from "@airport/security-check";
 export class LocalAPIServer {
     constructor() {
-        this.systemName = 'Not_Specified';
+        this.domainName = 'Not_Specified';
     }
     async handleRequest(request) {
         const apiRegistry = await container(this).get(API_REGISTRY);
         let payload;
         let errorMessage;
         try {
-            const { apiObject, apiOperation } = await apiRegistry.findApiObjectAndOperation(this.systemName, request.applicationSignature, request.objectName, request.methodName);
+            const { apiObject, apiOperation } = await apiRegistry.findApiObjectAndOperation(this.domainName, request.applicationSignature, request.objectName, request.methodName);
             const result = apiObject[request.methodName].apply(apiObject, request.args);
             if (apiOperation.isAsync) {
                 payload = await result;

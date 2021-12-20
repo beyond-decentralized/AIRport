@@ -1,9 +1,9 @@
-import { system } from '@airport/di'
+import { lib } from '@airport/di'
 import { IQueryResultsDeserializer } from './QueryResultsDeserializer'
 import { IOperationSerializer } from './OperationSerializer'
 import { ISerializationStateManager } from './SerializationStateManager'
 
-const pressurization = system('airport').lib('pressurization')
+const pressurization = lib('pressurization')
 
 export const OPERATION_SERIALIZER = pressurization.token<IOperationSerializer>('OPERATION_SERIALIZER')
 export const QUERY_RESULTS_DESERIALIZER = pressurization.token<IQueryResultsDeserializer>('QUERY_RESULTS_DESERIALIZER')

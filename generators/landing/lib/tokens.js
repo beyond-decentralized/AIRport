@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const landing = system('airport').lib('landing');
+import { lib } from '@airport/di';
+const landing = lib('landing');
 export const APPLICATION_BUILDER = landing.token('APPLICATION_BUILDER');
 export const APPLICATION_CHECKER = landing.token('APPLICATION_CHECKER');
 export const APPLICATION_COMPOSER = landing.token('APPLICATION_COMPOSER');

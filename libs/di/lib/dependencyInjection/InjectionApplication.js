@@ -1,6 +1,6 @@
-import { AIRPORT_DOMAIN } from './System';
+import { AIRPORT_DOMAIN } from './InjectionDomain';
 import { DiToken } from './Token';
-export class Library {
+export class InjectionApplication {
     constructor(name, domain) {
         this.name = name;
         this.domain = domain;
@@ -25,4 +25,4 @@ export class Library {
 export function lib(libraryName) {
     return AIRPORT_DOMAIN.app(libraryName);
 }
-//# sourceMappingURL=Library.js.map
+//# sourceMappingURL=InjectionApplication.js.map

@@ -1,4 +1,4 @@
-import { Library } from './Library';
+import { InjectionApplication } from './InjectionApplication';
 export class InjectionDomain {
     constructor(name) {
         this.name = name;
@@ -13,7 +13,7 @@ export class InjectionDomain {
 			Application: ${libraryName}
 			`);
         }
-        const library = new Library(libraryName, this);
+        const library = new InjectionApplication(libraryName, this);
         this.applicationMap[libraryName] = library;
         return library;
     }
@@ -45,4 +45,4 @@ export function domain(domainName) {
     return domain;
 }
 export const AIRPORT_DOMAIN = domain('turbase.app');
-//# sourceMappingURL=System.js.map
+//# sourceMappingURL=InjectionDomain.js.map

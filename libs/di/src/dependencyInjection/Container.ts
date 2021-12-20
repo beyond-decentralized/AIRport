@@ -5,8 +5,8 @@ import {
 } from '../Context';
 import { IDiToken } from './Token';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { SYSTEM, system } from './System';
-import { lib } from './Library';
+import { AIRPORT_DOMAIN, domain } from './InjectionDomain';
+import { lib } from './InjectionApplication';
 
 export interface IChildContainer
 	extends IContainer {
@@ -360,8 +360,8 @@ export interface IChildContainer
 	): any
 
 	getByApplicationSignatureAndName(
-		systemName: string,
-		librarySignature: string,
+		domainName: string,
+		applicationSignature: string,
 		tokenName: string
 	): Promise<any>
 
@@ -523,9 +523,9 @@ export class ChildContainer
 				}
 				let object = objectMap.get(token.name)
 				if (!object) {
-					if (!this.context.inAIRportApp && token.library.autopilot) {
+					if (!this.context.inAIRportApp && token.application.autopilot) {
 						object = this.getSync(AUTOPILOT_API_LOADER)
-							.loadApiAutopilot(token.library.signature, token.name);
+							.loadApiAutopilot(token.application.signature, token.name);
 					} else {
 						const clazz = classMap.get(token.name);
 						if (!clazz) {
@@ -542,7 +542,7 @@ export class ChildContainer
 					object.__container__ = this
 					objectMap.set(token.name, object)
 
-					if (!token.library.autopilot && object.init) {
+					if (!token.application.autopilot && object.init) {
 						const result = object.init()
 						if (result instanceof Promise) {
 							result.then(_ => {
@@ -568,26 +568,26 @@ export class ChildContainer
 	}
 
 	async getByApplicationSignatureAndName(
-		systemName: string,
-		librarySignature: string,
+		domainName: string,
+		applicationSignature: string,
 		tokenName: string
 	): Promise<any> {
-		const library = system(systemName).getLibBySignature(librarySignature)
-		if (!library) {
-			throw new Error(`Could not find library with signature:
-			${librarySignature}
-			in system: '${systemName}'`)
+		const application = domain(domainName).getAppBySignature(applicationSignature)
+		if (!application) {
+			throw new Error(`Could not find application with signature:
+			${applicationSignature}
+			in domain: '${domainName}'`)
 		}
-		const token = library.tokenMap.get(tokenName)
+		const token = application.tokenMap.get(tokenName)
 
 		if (!token) {
 			throw new Error(`Could not find token: ${tokenName}
-in library:
-			${library.name}
+in application:
+			${application.name}
 with signature:
-			${librarySignature}
-of system:
-			${SYSTEM.name}`)
+			${applicationSignature}
+of domain:
+			${AIRPORT_DOMAIN.name}`)
 		}
 		return await this.get(token)
 	}
@@ -1347,7 +1347,7 @@ export const DI: IRootContainer = new RootContainer();
 if (typeof window !== 'undefined') {
 	(window as any).DI = DI;
 	(window as any).lib = lib;
-	(window as any).system = system
+	(window as any).domain = domain
 }
 
 export const IOC: InversionOfControl = new InversionOfControl();

@@ -1,10 +1,10 @@
-import {ILibrary} from './Library'
+import {IInjectionApplication} from './InjectionApplication'
 
 export type IDiTokenName = string
 
 export interface IDiToken<Injectable> {
 	
-	library: ILibrary
+	application: IInjectionApplication
 	name: string
 
 	getPath(): string
@@ -15,13 +15,13 @@ export class DiToken<Injectable>
 	implements IDiToken<Injectable> {
 
 	constructor(
-		public library: ILibrary,
+		public application: IInjectionApplication,
 		public name: string
 	) {
 	}
 
 	getPath(): string {
-		return this.library.system.name + ':' + this.library.name + ':' + this.name
+		return this.application.domain.name + ':' + this.application.name + ':' + this.name
 	}
 
 }

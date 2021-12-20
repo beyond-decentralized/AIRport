@@ -7,7 +7,7 @@ export class ApiRegistry {
         // this.installedApi = installedApi
         this.applicationApi = applicationApi;
     }
-    async findApiObjectAndOperation(systemName, applicationSignature, apiObjectName, methodName) {
+    async findApiObjectAndOperation(domainName, applicationSignature, apiObjectName, methodName) {
         // const applicationApi = this.installedApi.applicationApiMap[applicationSignature]
         // if (!applicationApi) {
         //     throw new Error(`Could not find ApplicationAPI for signature:
@@ -33,7 +33,7 @@ export class ApiRegistry {
             ${methodName}`);
         }
         const apiObject = await container(this)
-            .getByApplicationSignatureAndName(systemName, applicationSignature, apiObjectName);
+            .getByApplicationSignatureAndName(domainName, applicationSignature, apiObjectName);
         return {
             apiObject,
             apiOperation

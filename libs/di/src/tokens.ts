@@ -1,5 +1,5 @@
 import { IAutopilotApiLoader } from "./autopilot/IAutopilotApiLoader";
-import { lib } from "./dependencyInjection/Library";
+import { lib } from "./dependencyInjection/InjectionApplication";
 
 const directionIndicator = lib('di');
 

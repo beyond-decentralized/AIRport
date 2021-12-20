@@ -6,7 +6,7 @@ import {
 
 export interface ILocalAPIServer {
 
-    systemName: string
+    domainName: string
 
     handleRequest(
         request: ILocalAPIRequest

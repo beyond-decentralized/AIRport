@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const trafficPattern = system('airport').lib('traffic-pattern');
+import { lib } from '@airport/di';
+const trafficPattern = lib('traffic-pattern');
 export const DOMAIN_DAO = trafficPattern.token('DOMAIN_DAO');
 export const APPLICATION_COLUMN_DAO = trafficPattern.token('APPLICATION_COLUMN_DAO');
 export const APPLICATION_DAO = trafficPattern.token('APPLICATION_DAO');

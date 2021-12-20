@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const fuelHydrantSystem = system('airport').lib('fuel-hydrant-system');
+import { lib } from '@airport/di';
+const fuelHydrantSystem = lib('fuel-hydrant-system');
 export const ACTIVE_QUERIES = fuelHydrantSystem.token('ACTIVE_QUERIES');
 export const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token('SUB_STATEMENT_SQL_GENERATOR');
 export const ID_GENERATOR = fuelHydrantSystem.token('ID_GENERATOR');

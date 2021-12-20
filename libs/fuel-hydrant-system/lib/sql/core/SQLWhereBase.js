@@ -89,53 +89,54 @@ export class SQLWhereBase {
         }
         const aField = clauseField;
         let qEntity;
-        let subQuerySql;
         switch (clauseField.ot) {
             case JSONClauseObjectType.FIELD_FUNCTION:
                 return this.getFieldFunctionValue(aField, defaultCallback, context);
             case JSONClauseObjectType.DISTINCT_FUNCTION:
                 throw new Error(`Distinct function cannot be nested.`);
-            case JSONClauseObjectType.EXISTS_FUNCTION:
+            case JSONClauseObjectType.EXISTS_FUNCTION: {
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
-                const treeQueryResults = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
-                subQuerySql = treeQueryResults.subQuerySql;
-                if (treeQueryResults.parameterReferences.length) {
-                    this.parameterReferences = this.parameterReferences.concat(treeQueryResults.parameterReferences);
+                const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
+                if (parameterReferences.length) {
+                    this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
-                this.parameterReferences;
                 return `EXISTS(${subQuerySql})`;
-            case JSONClauseObjectType.FIELD:
+            }
+            case JSONClauseObjectType.FIELD: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
-            case JSONClauseObjectType.FIELD_QUERY:
+            }
+            case JSONClauseObjectType.FIELD_QUERY: {
                 let jsonFieldSqlSubQuery = aField.fieldSubQuery;
                 if (aField.S) {
                     jsonFieldSqlSubQuery = aField;
                 }
-                const fieldQueryResults = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
-                subQuerySql = fieldQueryResults.subQuerySql;
-                if (fieldQueryResults.parameterReferences.length) {
-                    this.parameterReferences = this.parameterReferences.concat(fieldQueryResults.parameterReferences);
+                const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                if (parameterReferences.length) {
+                    this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
                 validator.addSubQueryAlias(aField.fa);
                 return `(${subQuerySql})`;
-            case JSONClauseObjectType.MANY_TO_ONE_RELATION:
+            }
+            case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
                 validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
+            }
             // must be a nested object
-            default:
+            default: {
                 if (clauseType !== ClauseType.MAPPED_SELECT_CLAUSE) {
                     `Nested objects only allowed in the mapped SELECT clause.`;
                 }
                 return defaultCallback();
+            }
         }
     }
     applyOperator(operator, rValue) {

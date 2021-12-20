@@ -6,13 +6,13 @@ import {
 	IBlacklist,
 	ISyncConnectionVerifier
 }                                 from '@airport/arrivals-n-departures'
-import {system}                  from '@airport/di'
+import {lib}                  from '@airport/di'
 import {LogLevel}                 from '@airport/runway-edge-lighting'
 import {ITuningSettings}          from './model/TuningSettings'
 import {IErrorLogger}             from './server/common/ErrorLogger'
 import {ISyncConnectionProcessor} from './server/sync/SyncConnectionProcessor'
 
-const automatedGuidewayTransit = system('airport').lib('automated-guideway-transit')
+const automatedGuidewayTransit = lib('automated-guideway-transit')
 
 export const TUNNING_SETTINGS          = automatedGuidewayTransit.token<ITuningSettings>('TUNNING_SETTINGS')
 export const ERROR_LOGGER              = automatedGuidewayTransit.token<IErrorLogger>('ERROR_LOGGER')

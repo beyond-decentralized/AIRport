@@ -5,7 +5,7 @@ export interface IApplicationLoader {
 
     load(
         lastIds: LastIds,
-        librarySignature?: string,
+        applicationSignature?: string,
     ): Promise<void>
 
     getApplication(): JsonApplicationWithLastIds

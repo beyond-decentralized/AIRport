@@ -1,16 +1,16 @@
-import { ISystem, SYSTEM } from './System'
+import { IInjectionDomain, AIRPORT_DOMAIN } from './InjectionDomain'
 import {
 	DiToken,
 	GenericDependencyInjectionError,
 	IDiToken
 } from './Token'
 
-export interface ILibrary {
+export interface IInjectionApplication {
 
 	autopilot: boolean
 	name: string
 	signature: string
-	system: ISystem
+	domain: IInjectionDomain
 	tokenMap: Map<string, IDiToken<any>>
 
 	token<T = GenericDependencyInjectionError>(
@@ -20,8 +20,8 @@ export interface ILibrary {
 
 }
 
-export class Library
-	implements ILibrary {
+export class InjectionApplication
+	implements IInjectionApplication {
 
 	public signature: string
 	public tokenMap: Map<string, IDiToken<any>> = new Map()
@@ -29,13 +29,13 @@ export class Library
 
 	constructor(
 		public name: string,
-		public system: ISystem
+		public domain: IInjectionDomain
 	) {
 	}
 
 	setSignature(
 		signature: string
-	): ILibrary {
+	): IInjectionApplication {
 		this.signature = signature
 		this.autopilot = true
 		return this
@@ -64,6 +64,6 @@ export class Library
 
 export function lib(
 	libraryName: string
-): ILibrary {
-	return SYSTEM.lib(libraryName)
+): IInjectionApplication {
+	return AIRPORT_DOMAIN.app(libraryName)
 }

@@ -1,4 +1,4 @@
-import { system } from '@airport/di';
+import { lib } from '@airport/di';
 import { IDomainDao } from './dao/DomainDao'
 import { IApplicationColumnDao } from './dao/ApplicationColumnDao';
 import { IApplicationDao } from './dao/ApplicationDao';
@@ -11,7 +11,7 @@ import { IApplicationRelationDao } from './dao/ApplicationRelationDao';
 import { IApplicationVersionDao } from './dao/ApplicationVersionDao';
 import { IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
 
-const trafficPattern = system('airport').lib('traffic-pattern');
+const trafficPattern = lib('traffic-pattern');
 
 export const DOMAIN_DAO = trafficPattern.token<IDomainDao>('DOMAIN_DAO')
 export const APPLICATION_COLUMN_DAO = trafficPattern.token<IApplicationColumnDao>('APPLICATION_COLUMN_DAO');

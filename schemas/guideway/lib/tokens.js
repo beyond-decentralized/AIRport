@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const guideway = system('airport').lib('guideway');
+import { lib } from '@airport/di';
+const guideway = lib('guideway');
 export const DAILY_ARCHIVE_LOG_DAO = guideway.token('DAILY_ARCHIVE_LOG_DAO');
 export const TERMINAL_DAO = guideway.token('TERMINAL_DAO');
 export const TERMINAL_REPOSITORY_DAO = guideway.token('TERMINAL_REPOSITORY_DAO');

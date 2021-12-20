@@ -334,6 +334,13 @@ export class ApplicationComposer {
                 isRepositoryEntity: jsonEntity.isRepositoryEntity,
                 name: jsonEntity.name,
                 tableConfig: jsonEntity.tableConfig,
+                // columns: [],
+                // columnMap: {},
+                // idColumns: [],
+                // idColumnMap: {},
+                // relations: [],
+                // properties: [],
+                // propertyMap: {}
             };
             // applicationVersion.entities.push(entity)
             newApplicationEntities.push(entity);
@@ -361,6 +368,7 @@ export class ApplicationComposer {
                     entity,
                     name: jsonProperty.name,
                     isId: jsonProperty.isId,
+                    // propertyColumns: []
                 };
                 // entity.properties.push(property)
                 // entity.propertyMap[property.name] = property
@@ -412,6 +420,8 @@ export class ApplicationComposer {
                     oneToManyElems: jsonRelation.oneToManyElems,
                     relationEntity,
                     relationType: jsonRelation.relationType,
+                    // oneRelationColumns: [],
+                    // manyRelationColumns: []
                 };
                 // property.relation               = [relation]
                 // relationEntity.relations.push(relation)
@@ -456,6 +466,9 @@ export class ApplicationComposer {
                     propertyColumns: [],
                     scale: jsonColumn.scale,
                     type: jsonColumn.type,
+                    // propertyColumns: [],
+                    // oneRelationColumns: [],
+                    // manyRelationColumns: []
                 };
                 columnsForTable[index] = column;
                 newColumns.push(column);

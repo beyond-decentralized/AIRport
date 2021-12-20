@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const terminal = system('airport').lib('terminal');
+import { lib } from '@airport/di';
+const terminal = lib('terminal');
 export const CASCADE_GRAPH_VERIFIER = terminal.token('CASCADE_GRAPH_VERIFIER');
 export const DATABASE_MANAGER = terminal.token('DATABASE_MANAGER');
 export const DELETE_MANAGER = terminal.token('DELETE_MANAGER');

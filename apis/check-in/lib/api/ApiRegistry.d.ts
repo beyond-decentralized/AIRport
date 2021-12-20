@@ -1,7 +1,7 @@
 import { IApiOperation } from "./ApiOperation";
 export interface IApiRegistry {
     initialize(applicationApi: IApplicationApi): void;
-    findApiObjectAndOperation(systemName: string, applicationSignature: string, apiObjectName: string, methodName: string): Promise<{
+    findApiObjectAndOperation(domainName: string, applicationSignature: string, apiObjectName: string, methodName: string): Promise<{
         apiObject: any;
         apiOperation: IApiOperation;
     }>;

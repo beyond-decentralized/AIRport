@@ -1,6 +1,6 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/autopilot";
 export interface ILocalAPIServer {
-    systemName: string;
+    domainName: string;
     handleRequest(request: ILocalAPIRequest): Promise<ILocalAPIResponse>;
 }
 //# sourceMappingURL=LocalApiServer.d.ts.map

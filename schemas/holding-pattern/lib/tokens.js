@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-export const holdingPattern = system('airport').lib('holding-pattern');
+import { lib } from '@airport/di';
+export const holdingPattern = lib('holding-pattern');
 export const ACTOR_DAO = holdingPattern.token('ACTOR_DAO');
 export const OPERATION_HISTORY_DUO = holdingPattern.token('OPERATION_HISTORY_DUO');
 export const RECORD_HISTORY_DUO = holdingPattern.token('RECORD_HISTORY_DUO');

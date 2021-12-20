@@ -1,6 +1,6 @@
-import { IInjectionDomain } from './System';
+import { IInjectionDomain } from './InjectionDomain';
 import { GenericDependencyInjectionError, IDiToken } from './Token';
-export interface ILibrary {
+export interface IInjectionApplication {
     autopilot: boolean;
     name: string;
     signature: string;
@@ -8,15 +8,15 @@ export interface ILibrary {
     tokenMap: Map<string, IDiToken<any>>;
     token<T = GenericDependencyInjectionError>(name: string, autopilot?: boolean): IDiToken<T>;
 }
-export declare class Library implements ILibrary {
+export declare class InjectionApplication implements IInjectionApplication {
     name: string;
     domain: IInjectionDomain;
     signature: string;
     tokenMap: Map<string, IDiToken<any>>;
     autopilot: boolean;
     constructor(name: string, domain: IInjectionDomain);
-    setSignature(signature: string): ILibrary;
+    setSignature(signature: string): IInjectionApplication;
     token<T = GenericDependencyInjectionError>(name: string): IDiToken<T>;
 }
-export declare function lib(libraryName: string): ILibrary;
-//# sourceMappingURL=Library.d.ts.map
+export declare function lib(libraryName: string): IInjectionApplication;
+//# sourceMappingURL=InjectionApplication.d.ts.map

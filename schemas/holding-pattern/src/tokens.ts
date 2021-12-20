@@ -1,4 +1,4 @@
-import { system } from '@airport/di'
+import { lib } from '@airport/di'
 import { IRecordHistoryNewValueDao } from './dao/history/RecordHistoryNewValueDao'
 import { IRecordHistoryOldValueDao } from './dao/history/RecordHistoryOldValueDao'
 import { IRepositoryTransactionHistoryDao } from './dao/history/RepositoryTransactionHistoryDao'
@@ -11,7 +11,7 @@ import { IRecordHistoryOldValueDuo } from './duo/history/RecordHistoryOldValueDu
 import { IRepositoryTransactionHistoryDuo } from './duo/history/RepositoryTransactionHistoryDuo'
 import { ITransactionHistoryDuo } from './duo/history/TransactionHistoryDuo'
 
-export const holdingPattern = system('airport').lib('holding-pattern')
+export const holdingPattern = lib('holding-pattern')
 
 export const ACTOR_DAO = holdingPattern.token<IActorDao>('ACTOR_DAO')
 export const OPERATION_HISTORY_DUO = holdingPattern.token<IOperationHistoryDuo>('OPERATION_HISTORY_DUO')

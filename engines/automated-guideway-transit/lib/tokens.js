@@ -1,7 +1,7 @@
 import { LoggedPackage } from '@airport/approach-lighting-system';
-import { system } from '@airport/di';
+import { lib } from '@airport/di';
 import { LogLevel } from '@airport/runway-edge-lighting';
-const automatedGuidewayTransit = system('airport').lib('automated-guideway-transit');
+const automatedGuidewayTransit = lib('automated-guideway-transit');
 export const TUNNING_SETTINGS = automatedGuidewayTransit.token('TUNNING_SETTINGS');
 export const ERROR_LOGGER = automatedGuidewayTransit.token('ERROR_LOGGER');
 export const SYNC_CONNECTION_PROCESSOR = automatedGuidewayTransit.token('SYNC_CONNECTION_PROCESSOR');

@@ -1,5 +1,5 @@
-import { system } from '@airport/di';
-const terminalMap = system('airport').lib('terminal-map');
+import { lib } from '@airport/di';
+const terminalMap = lib('terminal-map');
 export const TERMINAL_STORE = terminalMap.token('TERMINAL_STORE');
 export const TRANSACTION_MANAGER = terminalMap.token('TRANSACTION_MANAGER');
 export const TRANSACTIONAL_RECEIVER = terminalMap.token('TRANSACTIONAL_RECEIVER');

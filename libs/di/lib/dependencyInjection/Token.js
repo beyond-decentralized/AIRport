@@ -4,7 +4,7 @@ export class DiToken {
         this.name = name;
     }
     getPath() {
-        return this.library.system.name + ':' + this.library.name + ':' + this.name;
+        return this.library.domain.name + ':' + this.library.name + ':' + this.name;
     }
 }
 //# sourceMappingURL=Token.js.map

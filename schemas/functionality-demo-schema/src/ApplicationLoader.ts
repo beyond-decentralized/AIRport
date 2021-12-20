@@ -1,7 +1,7 @@
 import {
     API_REGISTRY,
 } from '@airport/check-in'
-import { container, DI, SYSTEM } from '@airport/di'
+import { container, DI, AIRPORT_DOMAIN } from '@airport/di'
 import { APPLICATION_INITIALIZER } from '@airport/landing'
 import {
     APPLICATION_LOADER,
@@ -19,7 +19,7 @@ export class ApplicationLoader
 
     async load(
         lastIds: LastIds,
-        librarySignature: string = 'functionality-demo-schema',
+        applicationSignature: string = 'functionality-demo-schema',
     ): Promise<void> {
         if (this.initializing) {
             return
@@ -36,7 +36,7 @@ export class ApplicationLoader
 
         apiRegistry.initialize(APPLICATION.versions[0].api)
 
-        SYSTEM.mapLibraryBySignature('functionality-demo-schema', librarySignature)
+        AIRPORT_DOMAIN.mapApplicationBySignature('functionality-demo-schema', applicationSignature)
     }
 
     getApplication(): JsonApplicationWithLastIds {

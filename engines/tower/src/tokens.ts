@@ -1,6 +1,6 @@
-import { system } from '@airport/di'
+import { lib } from '@airport/di'
 import { IEntityCopier } from './core/data/EntityCopier'
 
-const tower = system('airport').lib('tower')
+const tower = lib('tower')
 
 export const ENTITY_COPIER = tower.token<IEntityCopier>('ENTITY_COPIER')

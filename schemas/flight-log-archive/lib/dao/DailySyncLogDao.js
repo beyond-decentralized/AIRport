@@ -35,6 +35,8 @@ export class DailySyncLogDao extends BaseDailySyncLogDao {
             ],
             where: // and(
             dsl.databaseId.equals(databaseId),
+            // dsl.synced.equals(synced)
+            // )
         }, 1000, (syncSyncLogRows) => {
             callback(syncSyncLogRows);
         });
@@ -59,6 +61,7 @@ export class DailySyncLogDao extends BaseDailySyncLogDao {
             select: distinct([
                 dsl.databaseId,
                 dsl.repositoryId,
+                // dsl.synced
             ]),
             where: and(dsl.databaseId.in(databaseIds), dsl.date.greaterThanOrEquals(fromDateInclusive), dsl.date.lessThan(toDateExclusive)),
             orderBy: [
