@@ -58,8 +58,6 @@ export class ApplicationComposer
 		applicationLocator: IApplicationLocator,
 		context: IApplicationComposerContext
 	): Promise<AllDdlObjects> {
-		// FIXME: investigate if references here shoud be done by applicationSignatures and not DOMAIN_NAME___APPLICATION_NAME
-
 		// NOTE: application name contains domain name as a prefix
 		const jsonApplicationMapByFullName: Map<FullApplicationName, JsonApplicationWithLastIds> = new Map();
 

@@ -3,7 +3,6 @@ import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicati
 import { APPLICATION_COMPOSER } from '../tokens';
 export class ApplicationComposer {
     async compose(jsonApplications, ddlObjectRetriever, applicationLocator, context) {
-        // FIXME: investigate if references here shoud be done by applicationSignatures and not DOMAIN_NAME___APPLICATION_NAME
         // NOTE: application name contains domain name as a prefix
         const jsonApplicationMapByFullName = new Map();
         const terminalStore = context.terminalStore;
