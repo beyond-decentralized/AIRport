@@ -3,7 +3,10 @@ import {
     container,
     IContext,
 } from '@airport/di';
-import { getApplicationName } from '@airport/ground-control';
+import {
+    getFullApplicationName,
+    getFullApplicationNameFromDomainAndName
+} from '@airport/ground-control';
 import {
     IConnectionInitializedIMI,
     IGetLatestApplicationVersionByApplicationNameIMI,
@@ -37,12 +40,12 @@ export abstract class TransactionalReceiver {
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
     ): Promise<ReturnType> {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER);
+        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER)
         let result: any
         let errorMessage
         let credentials: ICredentials = {
-            applicationSignature: message.applicationSignature
+            application: message.application,
+            domain: message.domain
         }
         let context: IContext = {}
         context.startedAt = new Date()
@@ -50,13 +53,18 @@ export abstract class TransactionalReceiver {
             switch (message.type) {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage: IInitConnectionIMI = message as any
-                    const application: JsonApplicationWithLastIds = initConnectionMessage.application
-                    const applicationName = getApplicationName(application)
+                    const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
+                    const fullApplicationName = getFullApplicationName(application)
+                    const messageFullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application)
+                    if (fullApplicationName !== messageFullApplicationName) {
+                        result = null
+                        break
+                    }
 
-                    if (this.initializingApps.has(applicationName)) {
+                    if (this.initializingApps.has(fullApplicationName)) {
                         return null
                     }
-                    this.initializingApps.add(applicationName)
+                    this.initializingApps.add(fullApplicationName)
 
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
@@ -64,17 +72,17 @@ export abstract class TransactionalReceiver {
                     await databaseManager.initFeatureApplications({}, [application])
 
                     await internalRecordManager.ensureApplicationRecords(
-                        application, message.applicationSignature, {})
+                        application, {})
 
                     result = application.lastIds
-                    break;
+                    break
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add((message as IConnectionInitializedIMI).applicationName)
+                    this.initializedApps.add((message as IConnectionInitializedIMI).fullApplicationName)
                     return null
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
-                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
-                        .get((message as IGetLatestApplicationVersionByApplicationNameIMI).applicationName)
+                    result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+                        .get((message as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
                     break
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
@@ -225,10 +233,11 @@ export abstract class TransactionalReceiver {
             errorMessage = error.message
         }
         return {
+            application: message.application,
             category: 'FromDb',
+            domain: message.domain,
             errorMessage,
             id: message.id,
-            applicationSignature: message.applicationSignature,
             type: message.type,
             result
         } as any

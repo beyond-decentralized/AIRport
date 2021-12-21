@@ -1,4 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
+import { ApplicationName } from '@airport/ground-control';
 import { IDomain, IApplication } from "@airport/airspace";
 export interface IDomainCheckRecord {
     domain?: IDomain;
@@ -7,7 +8,7 @@ export interface IDomainCheckRecord {
 }
 export interface IApplicationCheckRecord {
     found?: boolean;
-    applicationName: string;
+    applicationName: ApplicationName;
     application?: IApplication;
 }
 export interface ISyncInApplicationChecker {

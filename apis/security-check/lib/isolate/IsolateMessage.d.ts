@@ -25,11 +25,12 @@ export declare enum IsolateMessageType {
 export interface IIsolateMessage {
     __received__?: boolean;
     __receivedTime__?: number;
+    application: string;
     category: 'FromDb' | 'ToDb';
+    domain: string;
     id: number;
     repositoryDestination?: string;
     repositorySource?: string;
-    applicationSignature: string;
     type: IsolateMessageType;
 }
 export interface IIsolateMessageOut<T> extends IIsolateMessage {
@@ -38,10 +39,10 @@ export interface IIsolateMessageOut<T> extends IIsolateMessage {
     result: T;
 }
 export interface IInitConnectionIMI extends IIsolateMessage {
-    application: JsonApplicationWithLastIds;
+    jsonApplication: JsonApplicationWithLastIds;
 }
 export interface IConnectionInitializedIMI extends IIsolateMessage {
-    applicationName: string;
+    fullApplicationName: string;
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
@@ -80,6 +81,6 @@ export interface ISaveToDestinationIMI<E, T = E | E[]> extends IIsolateMessage {
     repositoryDestination: string;
 }
 export interface IGetLatestApplicationVersionByApplicationNameIMI extends IIsolateMessage {
-    applicationName: string;
+    fullApplicationName: string;
 }
 //# sourceMappingURL=IsolateMessage.d.ts.map

@@ -5,6 +5,7 @@ export interface IApplication {
     index: number;
     scope?: string;
     name?: string;
+    fullName?: string;
     packageName?: string;
     status?: string;
     signature?: string;

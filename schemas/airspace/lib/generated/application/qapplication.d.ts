@@ -11,6 +11,7 @@ import { Application } from '../../ddl/application/Application';
 export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    fullName?: string | IQStringField;
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
@@ -36,6 +37,7 @@ export interface ApplicationEOptionalId {
 export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    fullName?: string | IQStringField;
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
@@ -47,6 +49,7 @@ export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
 export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascadeGraph {
     scope?: string | IQStringField;
     name?: string | IQStringField;
+    fullName?: string | IQStringField;
     packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
@@ -60,6 +63,7 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
 export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     SCOPE?: string | IQStringField;
     APPLICATION_NAME?: string | IQStringField;
+    FULL_APPLICATION_NAME?: string | IQStringField;
     PACKAGE_NAME?: string | IQStringField;
     STATUS?: string | IQStringField;
     SIGNATURE?: string | IQStringField;
@@ -82,6 +86,7 @@ export interface QApplication extends IQEntity<Application> {
     index: IQNumberField;
     scope: IQStringField;
     name: IQStringField;
+    fullName: IQStringField;
     packageName: IQStringField;
     status: IQStringField;
     signature: IQStringField;

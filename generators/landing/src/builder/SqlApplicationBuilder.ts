@@ -3,7 +3,7 @@ import { ISequence } from '@airport/airport-code';
 import { container, IContext } from '@airport/di';
 import {
   EntityRelationType,
-  getApplicationNameFromDomainAndName,
+  getFullApplicationNameFromDomainAndName,
   IStoreDriver,
   JsonApplication,
   JsonApplicationColumn,
@@ -142,24 +142,24 @@ export abstract class SqlApplicationBuilder
         || jsonRelation.relationTableApplicationIndex === 0) {
         const referencedApplication = applicationVersion
           .referencedApplications[jsonRelation.relationTableApplicationIndex]
-        let relatedApplicationName = getApplicationNameFromDomainAndName(
+        let relatedFullApplicationName = getFullApplicationNameFromDomainAndName(
           referencedApplication.domain, referencedApplication.name
         )
-        relatedJsonApplication = relatedJsonApplicationMap.get(relatedApplicationName)
+        relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplicationName)
         if (!relatedJsonApplication) {
-          const relatedApplication = existingApplicationMap.get(relatedApplicationName)
+          const relatedApplication = existingApplicationMap.get(relatedFullApplicationName)
           if (relatedApplication) {
             // FIXME: this should be looked up though currentVersion - make sure it's populated
             // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
             relatedJsonApplication = relatedApplication.versions[0].jsonApplication
           } else {
-            relatedJsonApplication = newJsonApplicationMap.get(relatedApplicationName)
+            relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplicationName)
           }
           if (!relatedJsonApplication) {
-            throw new Error(`Could not find related application ${relatedApplicationName}
+            throw new Error(`Could not find related application ${relatedFullApplicationName}
             in either existing applications or newly installing applications.`)
           }
-          relatedJsonApplicationMap.set(relatedApplicationName, relatedJsonApplication)
+          relatedJsonApplicationMap.set(relatedFullApplicationName, relatedJsonApplication)
         }
         const relatedApplicationVersion: JsonApplicationVersion = relatedJsonApplication
           .versions[relatedJsonApplication.versions.length - 1]

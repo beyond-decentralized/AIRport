@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { getApplicationName, STORE_DRIVER, } from '@airport/ground-control';
+import { getFullApplicationName, STORE_DRIVER, } from '@airport/ground-control';
 import { Actor, } from '@airport/holding-pattern';
 import { APPLICATION_INITIALIZER } from '@airport/landing';
 import { APPLICATION_DAO } from '@airport/airspace';
@@ -90,7 +90,7 @@ export class DatabaseManager {
         */
         const server = await container(this).get(TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        const hydrate = await storeDriver.doesTableExist(getApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
+        const hydrate = await storeDriver.doesTableExist(getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
         await this.installStarterApplication(false, hydrate, context);
         if (!hydrate) {
             const internalRecordManager = await container(this)
@@ -114,7 +114,7 @@ export class DatabaseManager {
         // const candidateApplicationNames: ApplicationName[] = []
         // for (const jsonApplication of jsonApplications) {
         // 	 candidateApplicationDomainNames.push(jsonApplication.domain)
-        // 	 candidateApplicationNames.push(getApplicationName(jsonApplication))
+        // 	 candidateApplicationNames.push(getFullApplicationName(jsonApplication))
         // }
         // FIXME: this search should be done by application signature
         // const maxVersionedMapByApplicationAndDomainNames = await applicationDao.findMaxVersionedMapByApplicationAndDomainNames(
@@ -122,23 +122,23 @@ export class DatabaseManager {
         // const lastIdsByDomainAndApplicationNames = new Map()
         // const applicationNames: ApplicationName[] = [];
         // for (const jsonApplication of jsonApplications) {
-        // 	const applicationName = getApplicationName(jsonApplication)
+        // 	const fullApplicationName = getFullApplicationName(jsonApplication)
         // FIXME: right now Non-Entity Tree queries don't work, fix them and figure out
         // what needs to be done here
         // const applicationMapForDomain = maxVersionedMapByApplicationAndDomainNames.get(jsonApplication.domain)
         // if (!applicationMapForDomain) {
-        // 	applicationNames.push(applicationName)
+        // 	applicationNames.push(fullApplicationName)
         // } else {
-        // 	const applicationLookupRecord = applicationMapForDomain.get(applicationName)
+        // 	const applicationLookupRecord = applicationMapForDomain.get(fullApplicationName)
         // 	if (applicationLookupRecord) {
         // 	} else {
-        // applicationNames.push(applicationName)
+        // applicationNames.push(fullApplicationName)
         // }
         // }	
         // }
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
-            const existingApplication = existingApplicationMap.get(getApplicationName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
@@ -202,7 +202,7 @@ export class DatabaseManager {
             // const applications = await applicationDao.findAll()
             // const jsonApplicationNameSet: Set<string> = new Set()
             // blueprintFile.BLUEPRINT
-            // 	.map(jsonApplication => getApplicationName(jsonApplication))
+            // 	.map(jsonApplication => getFullApplicationName(jsonApplication))
             // 	// schemname contains both domain and application's actual name
             // 	.forEach(applicationName => {
             // 		jsonApplicationNameSet.add(applicationName)

@@ -7,7 +7,7 @@ export class ApiRegistry {
         // this.installedApi = installedApi
         this.applicationApi = applicationApi;
     }
-    async findApiObjectAndOperation(domainName, applicationSignature, apiObjectName, methodName) {
+    async findApiObjectAndOperation(domainName, applicationName, apiObjectName, methodName) {
         // const applicationApi = this.installedApi.applicationApiMap[applicationSignature]
         // if (!applicationApi) {
         //     throw new Error(`Could not find ApplicationAPI for signature:
@@ -16,24 +16,28 @@ export class ApiRegistry {
         // const apiObjectDefinition = applicationApi.apiObjectMap[apiObjectName]
         const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName];
         if (!apiObjectDefinition) {
-            throw new Error(`Could not find API object for 
-        Application signature:
-            ${applicationSignature}
+            throw new Error(`Could not find API object for
+        Domain:
+            ${domainName}
+        Application:
+            ${applicationName}
         Token:
             ${apiObjectName}`);
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName];
         if (!apiOperation) {
             throw new Error(`Could not find API object method for 
-        Application signature:
-            ${applicationSignature}
+        Domain:
+            ${domainName}
+        Application:
+            ${applicationName}
         Token:
             ${apiObjectName}
         Method name:
             ${methodName}`);
         }
         const apiObject = await container(this)
-            .getByApplicationSignatureAndName(domainName, applicationSignature, apiObjectName);
+            .getByNames(domainName, applicationName, apiObjectName);
         return {
             apiObject,
             apiOperation

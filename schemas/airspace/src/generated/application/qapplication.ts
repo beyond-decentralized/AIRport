@@ -80,6 +80,7 @@ export interface ApplicationESelect
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	fullName?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
@@ -124,6 +125,7 @@ export interface ApplicationEUpdateProperties
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	fullName?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
@@ -143,6 +145,7 @@ export interface ApplicationGraph
 	// Non-Id Properties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
+	fullName?: string | IQStringField;
 	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
@@ -162,6 +165,7 @@ export interface ApplicationEUpdateColumns
 	// Non-Id Columns
 	SCOPE?: string | IQStringField;
 	APPLICATION_NAME?: string | IQStringField;
+	FULL_APPLICATION_NAME?: string | IQStringField;
 	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: string | IQStringField;
 	SIGNATURE?: string | IQStringField;
@@ -203,6 +207,7 @@ export interface QApplication extends IQEntity<Application>
 	// Non-Id Fields
 	scope: IQStringField;
 	name: IQStringField;
+	fullName: IQStringField;
 	packageName: IQStringField;
 	status: IQStringField;
 	signature: IQStringField;

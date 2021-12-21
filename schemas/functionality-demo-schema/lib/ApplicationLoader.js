@@ -1,5 +1,5 @@
 import { API_REGISTRY, } from '@airport/check-in';
-import { container, DI, AIRPORT_DOMAIN } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { APPLICATION_INITIALIZER } from '@airport/landing';
 import { APPLICATION_LOADER } from '@airport/security-check';
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff';
@@ -8,7 +8,7 @@ export class ApplicationLoader {
     constructor() {
         this.initializing = false;
     }
-    async load(lastIds, applicationSignature = 'functionality-demo-schema') {
+    async load(lastIds) {
         if (this.initializing) {
             return;
         }
@@ -19,7 +19,6 @@ export class ApplicationLoader {
         ddlObjectRetriever.lastIds = lastIds;
         await applicationInitializer.initializeForAIRportApp(APPLICATION);
         apiRegistry.initialize(APPLICATION.versions[0].api);
-        AIRPORT_DOMAIN.mapApplicationBySignature('functionality-demo-schema', applicationSignature);
     }
     getApplication() {
         return APPLICATION;

@@ -41,13 +41,14 @@ export class LocalAPIServer
         }
 
         const response: ILocalAPIResponse = {
+            application: request.application,
             category: 'ToClient',
+            domain: request.domain,
             errorMessage,
             id: request.id,
             host: request.host,
             protocol: request.protocol,
             payload,
-            applicationSignature: request.applicationSignature
         }
 
         return response

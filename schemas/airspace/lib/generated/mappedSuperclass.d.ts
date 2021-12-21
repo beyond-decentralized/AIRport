@@ -507,7 +507,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                ApplicationName: {
+                                                FullApplicationName: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -522,18 +522,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                            };
-                                            path: string;
-                                        };
-                                        ApplicationIndex: any;
-                                        ApplicationName: any;
-                                        ApplicationScope: any;
-                                        ApplicationStatus: any;
-                                        JsonApplicationWithLastIds: {
-                                            fileImports: any;
-                                            isLocal: boolean;
-                                            objectMapByAsName: {
-                                                JsonApplicationWithLastIds: {
+                                                ApplicationName: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -541,6 +530,11 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
+                                        ApplicationIndex: any;
+                                        FullApplicationName: any;
+                                        ApplicationScope: any;
+                                        ApplicationStatus: any;
+                                        ApplicationName: any;
                                         Domain: {
                                             fileImports: any;
                                             isLocal: boolean;
@@ -597,7 +591,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     importMapByModulePath: {
                                         "@airport/air-control": any;
                                         "@airport/ground-control": any;
-                                        "@airport/security-check": any;
                                         "./Domain": any;
                                         "./ApplicationCurrentVersion": any;
                                         "./ApplicationVersion": any;
@@ -1264,10 +1257,10 @@ export declare const MAPPED_SUPERCLASS: {
                                         };
                                         PackageName?: undefined;
                                         ApplicationIndex?: undefined;
-                                        ApplicationName?: undefined;
+                                        FullApplicationName?: undefined;
                                         ApplicationScope?: undefined;
                                         ApplicationStatus?: undefined;
-                                        JsonApplicationWithLastIds?: undefined;
+                                        ApplicationName?: undefined;
                                         Domain?: undefined;
                                         ApplicationCurrentVersion?: undefined;
                                         ApplicationReferenceIndex?: undefined;
@@ -1283,7 +1276,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "./VersionedApplicationObject": any;
                                         "../../generated/application/applicationcolumn": any;
                                         "../../generated/application/applicationproperty": any;
-                                        "@airport/security-check"?: undefined;
                                         "./Domain"?: undefined;
                                         "./ApplicationCurrentVersion"?: undefined;
                                     };
@@ -2304,10 +2296,10 @@ export declare const MAPPED_SUPERCLASS: {
                                         OneToMany?: undefined;
                                         PackageName?: undefined;
                                         ApplicationIndex?: undefined;
-                                        ApplicationName?: undefined;
+                                        FullApplicationName?: undefined;
                                         ApplicationScope?: undefined;
                                         ApplicationStatus?: undefined;
-                                        JsonApplicationWithLastIds?: undefined;
+                                        ApplicationName?: undefined;
                                         Domain?: undefined;
                                         ApplicationCurrentVersion?: undefined;
                                         DbBoolean?: undefined;
@@ -2330,7 +2322,6 @@ export declare const MAPPED_SUPERCLASS: {
                                         "@airport/ground-control": any;
                                         "./ApplicationVersion": any;
                                         "./VersionedApplicationObject": any;
-                                        "@airport/security-check"?: undefined;
                                         "./Domain"?: undefined;
                                         "./ApplicationCurrentVersion"?: undefined;
                                         "./ApplicationColumn"?: undefined;

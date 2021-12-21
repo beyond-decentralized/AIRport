@@ -1,6 +1,6 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { container, DI } from "@airport/di";
-import { ApplicationStatus } from '@airport/ground-control';
+import { ApplicationName, ApplicationStatus } from '@airport/ground-control';
 import {
     DOMAIN_DAO,
     IDomain,
@@ -17,7 +17,7 @@ export interface IDomainCheckRecord {
 
 export interface IApplicationCheckRecord {
     found?: boolean
-    applicationName: string
+    applicationName: ApplicationName
     application?: IApplication;
 }
 

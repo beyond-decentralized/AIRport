@@ -2,8 +2,7 @@ import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
 import { PortableQuery } from '../query/PortableQuery';
 import { DbEntity } from '../application/Entity';
-import { DomainName, ApplicationName } from '../application/Application';
-import { ApplicationStatus } from '../application/ApplicationStatus';
+import { ApplicationName, DomainName, FullApplicationName } from '../application/Application';
 import { InternalFragments, IStoreOperator } from './IStoreOperator';
 import { StoreType } from './storeInfo';
 /**
@@ -20,7 +19,7 @@ export interface IStoreDriver extends IStoreOperator {
             name: DomainName;
         };
         name: ApplicationName;
-        status?: ApplicationStatus;
+        fullName?: FullApplicationName;
     }, table: {
         name: string;
         tableConfig?: {

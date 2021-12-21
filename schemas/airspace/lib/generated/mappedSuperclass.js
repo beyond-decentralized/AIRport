@@ -712,10 +712,10 @@ export const MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "ApplicationIndex"
                                                             },
-                                                            "ApplicationName": {
-                                                                "asName": "ApplicationName",
+                                                            "FullApplicationName": {
+                                                                "asName": "FullApplicationName",
                                                                 "moduleImport": null,
-                                                                "sourceName": "ApplicationName"
+                                                                "sourceName": "FullApplicationName"
                                                             },
                                                             "ApplicationScope": {
                                                                 "asName": "ApplicationScope",
@@ -726,26 +726,20 @@ export const MAPPED_SUPERCLASS = [
                                                                 "asName": "ApplicationStatus",
                                                                 "moduleImport": null,
                                                                 "sourceName": "ApplicationStatus"
+                                                            },
+                                                            "ApplicationName": {
+                                                                "asName": "ApplicationName",
+                                                                "moduleImport": null,
+                                                                "sourceName": "ApplicationName"
                                                             }
                                                         },
                                                         "path": "@airport/ground-control"
                                                     },
                                                     "ApplicationIndex": null,
-                                                    "ApplicationName": null,
+                                                    "FullApplicationName": null,
                                                     "ApplicationScope": null,
                                                     "ApplicationStatus": null,
-                                                    "JsonApplicationWithLastIds": {
-                                                        "fileImports": null,
-                                                        "isLocal": false,
-                                                        "objectMapByAsName": {
-                                                            "JsonApplicationWithLastIds": {
-                                                                "asName": "JsonApplicationWithLastIds",
-                                                                "moduleImport": null,
-                                                                "sourceName": "JsonApplicationWithLastIds"
-                                                            }
-                                                        },
-                                                        "path": "@airport/security-check"
-                                                    },
+                                                    "ApplicationName": null,
                                                     "Domain": {
                                                         "fileImports": null,
                                                         "isLocal": true,
@@ -786,7 +780,6 @@ export const MAPPED_SUPERCLASS = [
                                                 "importMapByModulePath": {
                                                     "@airport/air-control": null,
                                                     "@airport/ground-control": null,
-                                                    "@airport/security-check": null,
                                                     "./Domain": null,
                                                     "./ApplicationCurrentVersion": null,
                                                     "./ApplicationVersion": null
@@ -1117,6 +1110,33 @@ export const MAPPED_SUPERCLASS = [
                                                             "name": "Column",
                                                             "values": [
                                                                 {
+                                                                    "name": "FULL_APPLICATION_NAME",
+                                                                    "nullable": false
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "name": "DbString",
+                                                            "values": []
+                                                        }
+                                                    ],
+                                                    "isGenerated": false,
+                                                    "isId": false,
+                                                    "isMappedSuperclass": false,
+                                                    "isTransient": false,
+                                                    "name": "fullName",
+                                                    "type": "FullApplicationName",
+                                                    "ownerEntity": null,
+                                                    "nonArrayType": "FullApplicationName",
+                                                    "primitive": "string",
+                                                    "index": 4
+                                                },
+                                                {
+                                                    "decorators": [
+                                                        {
+                                                            "name": "Column",
+                                                            "values": [
+                                                                {
                                                                     "name": "PACKAGE_NAME",
                                                                     "nullable": false
                                                                 }
@@ -1136,7 +1156,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "ownerEntity": null,
                                                     "nonArrayType": "PackageName",
                                                     "primitive": "string",
-                                                    "index": 4
+                                                    "index": 5
                                                 },
                                                 {
                                                     "decorators": [
@@ -1163,7 +1183,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "ownerEntity": null,
                                                     "nonArrayType": "ApplicationStatus",
                                                     "primitive": "string",
-                                                    "index": 5
+                                                    "index": 6
                                                 },
                                                 {
                                                     "decorators": [
@@ -1190,7 +1210,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "ownerEntity": null,
                                                     "nonArrayType": "string",
                                                     "primitive": "string",
-                                                    "index": 6
+                                                    "index": 7
                                                 },
                                                 {
                                                     "decorators": [
@@ -1213,7 +1233,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "isArray": true,
                                                     "nonArrayType": "ApplicationVersion",
                                                     "entity": null,
-                                                    "index": 7
+                                                    "index": 8
                                                 },
                                                 {
                                                     "decorators": [
@@ -1472,7 +1492,7 @@ export const MAPPED_SUPERCLASS = [
                                                         },
                                                         "implementedInterfaceNames": []
                                                     },
-                                                    "index": 8
+                                                    "index": 9
                                                 }
                                             ],
                                             "methodSignatures": [],

@@ -1,3 +1,4 @@
 export interface ICredentials {
-	applicationSignature: string
+	application: string
+	domain: string
 }

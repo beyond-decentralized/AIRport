@@ -5,12 +5,14 @@ import {
 } from '@airport/air-control'
 import { DI } from '@airport/di'
 import {
-	ApplicationSignature,
+	ApplicationName,
+	DomainName,
 	ensureChildJsMap,
 	JSONBaseOperation
 } from '@airport/ground-control'
 import {
-	QApplication
+	QApplication,
+	QDomain
 } from '@airport/airspace'
 import {
 	QTerminal,
@@ -52,8 +54,9 @@ export interface IActorDao
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void>;
 
-	findByApplicationSignature(
-		applicationSignature: ApplicationSignature
+	findByDomainAndApplicationNames(
+		domainName: DomainName,
+		applicationName: ApplicationName
 	): Promise<IActor[]>
 
 	findByUuIds(
@@ -112,17 +115,22 @@ export class ActorDao
 		))
 	}
 
-	async findByApplicationSignature(
-		applicationSignature: ApplicationSignature
+	async findByDomainAndApplicationNames(
+		domainName: DomainName,
+		applicationName: ApplicationName
 	): Promise<IActor[]> {
 		let act: QActor
 		let application: QApplication
+		let domain: QDomain
 		let terminal: QTerminal
 		let user: QUser
 		return await this.db.find.tree({
 			select: {
 				id: Y,
-				application: {},
+				application: {
+					...ALL_FIELDS,
+					domain: {}
+				},
 				terminal: {},
 				user: {},
 				uuId: Y
@@ -130,10 +138,14 @@ export class ActorDao
 			from: [
 				act = Q.Actor,
 				application = act.application.innerJoin(),
+				domain = application.domain.innerJoin(),
 				terminal = act.terminal.leftJoin(),
 				user = act.user.leftJoin()
 			],
-			where: application.signature.equals(applicationSignature)
+			where: and(
+				domain.name.equals(domainName),
+				application.name.equals(applicationName)
+			)
 		})
 	}
 

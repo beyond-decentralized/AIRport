@@ -18,15 +18,19 @@ export class ActorDao extends BaseActorDao {
     async findWithDetailsByGlobalIds(uuIds, userIds, terminalIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.uuId.in(uuIds), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
     }
-    async findByApplicationSignature(applicationSignature) {
+    async findByDomainAndApplicationNames(domainName, applicationName) {
         let act;
         let application;
+        let domain;
         let terminal;
         let user;
         return await this.db.find.tree({
             select: {
                 id: Y,
-                application: {},
+                application: {
+                    ...ALL_FIELDS,
+                    domain: {}
+                },
                 terminal: {},
                 user: {},
                 uuId: Y
@@ -34,10 +38,11 @@ export class ActorDao extends BaseActorDao {
             from: [
                 act = Q.Actor,
                 application = act.application.innerJoin(),
+                domain = application.domain.innerJoin(),
                 terminal = act.terminal.leftJoin(),
                 user = act.user.leftJoin()
             ],
-            where: application.signature.equals(applicationSignature)
+            where: and(domain.name.equals(domainName), application.name.equals(applicationName))
         });
     }
     async findByUuIds(uuIds) {

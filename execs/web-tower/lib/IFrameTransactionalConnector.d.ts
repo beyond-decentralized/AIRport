@@ -21,7 +21,7 @@ export declare enum AppState {
     INITIALIZED = "INITIALIZED"
 }
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
-    getLatestApplicationVersionMapByApplicationName(applicationName: string): Promise<IApplicationVersion>;
+    getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     dbName: string;
@@ -48,7 +48,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     startTransaction(context: IContext): Promise<boolean>;
     commit(context: IContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
-    getLatestApplicationVersionMapByApplicationName(applicationName: string): Promise<IApplicationVersion>;
+    getLatestApplicationVersionMapByFullApplicationName(fullApplicationName: string): Promise<IApplicationVersion>;
     private initializeConnection;
     private handleLocalApiRequest;
     private handleDbToIsolateMessage;

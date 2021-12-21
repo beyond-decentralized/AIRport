@@ -78,11 +78,6 @@
       "projectFolder": "db/sqljs",
       "shouldPublish": true
     },
-    {
-      "packageName": "@airport/websql",
-      "projectFolder": "db/websql",
-      "shouldPublish": true
-    },
     // "engines" folder (alphabetical order)
     {
       "packageName": "@airport/automated-guideway-transit",

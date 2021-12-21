@@ -41,9 +41,9 @@ export class DdlObjectLinker {
             const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion.id];
             const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion.id];
             ownApplicationVersion.references[applicationReference.index] = applicationReference;
-            ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.name] = applicationReference;
+            ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.fullName] = applicationReference;
             referencedApplicationVersion.referencedBy.push(applicationReference);
-            referencedApplicationVersion.referencedByMapByName[ownApplicationVersion.application.name] = applicationReference;
+            referencedApplicationVersion.referencedByMapByName[ownApplicationVersion.application.fullName] = applicationReference;
             applicationReference.ownApplicationVersion = ownApplicationVersion;
             applicationReference.referencedApplicationVersion = referencedApplicationVersion;
         });

@@ -1,13 +1,13 @@
 import { DI } from '@airport/di';
 import {
+	ApplicationStatus,
 	DomainName,
 	ensureChildArray,
-	getApplicationName,
+	ensureChildJsSet,
+	FullApplicationName,
+	getFullApplicationName,
 	IdColumnOnlyIndex,
 	JsonApplication,
-	ApplicationName,
-	ApplicationStatus,
-	ensureChildJsSet
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
@@ -61,7 +61,7 @@ export class ApplicationComposer
 		// FIXME: investigate if references here shoud be done by applicationSignatures and not DOMAIN_NAME___APPLICATION_NAME
 
 		// NOTE: application name contains domain name as a prefix
-		const jsonApplicationMapByName: Map<ApplicationName, JsonApplicationWithLastIds> = new Map();
+		const jsonApplicationMapByFullName: Map<FullApplicationName, JsonApplicationWithLastIds> = new Map();
 
 		const terminalStore = context.terminalStore
 		const allDomains = terminalStore.getDomains().slice()
@@ -71,23 +71,18 @@ export class ApplicationComposer
 		}
 
 		const allApplications: IApplication[] = terminalStore.getApplications().slice()
-		// NOTE: application name contains domain name as a prefix
-		const applicationMapByName: Map<ApplicationName, IApplication> = new Map()
+		// NOTE: application fullName contains domain name as a prefix
+		const applicationMapByFullName: Map<FullApplicationName, IApplication> = new Map()
 		for (const application of allApplications) {
-			applicationMapByName.set(application.name, application)
+			applicationMapByFullName.set(application.fullName, application)
 		}
 
 		const newLatestApplicationVersions: IApplicationVersion[] = []
-		// NOTE: application name contains domain name as a prefix
-		const newApplicationVersionMapByApplicationName: Map<ApplicationName, IApplicationVersion> = new Map()
-		// NOTE: application name contains domain name as a prefix
-		const newEntitiesMapByApplicationName: Map<ApplicationName, IApplicationEntity[]> = new Map()
-		// NOTE: application name contains domain name as a prefix
-		const newPropertiesMap: Map<ApplicationName, IApplicationProperty[][]> = new Map()
-		// NOTE: application name contains domain name as a prefix
-		const newRelationsMap: Map<ApplicationName, IApplicationRelation[][]> = new Map()
-		// NOTE: application name contains domain name as a prefix
-		const newColumnsMap: Map<ApplicationName, IApplicationColumn[][]> = new Map()
+		const newApplicationVersionMapByApplicationName: Map<FullApplicationName, IApplicationVersion> = new Map()
+		const newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]> = new Map()
+		const newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]> = new Map()
+		const newRelationsMap: Map<FullApplicationName, IApplicationRelation[][]> = new Map()
+		const newColumnsMap: Map<FullApplicationName, IApplicationColumn[][]> = new Map()
 
 		const added: DdlObjects = {
 			columns: [],
@@ -123,10 +118,10 @@ export class ApplicationComposer
 		}
 
 		for (const jsonApplication of jsonApplications) {
-			jsonApplicationMapByName.set(getApplicationName(jsonApplication), jsonApplication);
+			jsonApplicationMapByFullName.set(getFullApplicationName(jsonApplication), jsonApplication);
 			const domain = this.composeDomain(jsonApplication.domain,
 				allDomains, added.domains, domainNameMapByName)
-			const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByName)
+			const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName)
 			this.composeApplicationVersion(jsonApplication, application,
 				newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplicationName)
 		}
@@ -134,7 +129,7 @@ export class ApplicationComposer
 		const {
 			newApplicationReferenceMap,
 			newApplicationReferences
-		} = await this.composeApplicationReferences(jsonApplicationMapByName,
+		} = await this.composeApplicationReferences(jsonApplicationMapByFullName,
 			newApplicationVersionMapByApplicationName, applicationLocator, terminalStore,
 			allDdlObjects, context.deepTraverseReferences)
 
@@ -147,11 +142,11 @@ export class ApplicationComposer
 		}
 
 		for (const jsonApplication of jsonApplications) {
-			const applicationNameWithDomainNamePrefix = getApplicationName(jsonApplication)
-			jsonApplicationMapByName.set(applicationNameWithDomainNamePrefix, jsonApplication);
+			const fullApplicationName = getFullApplicationName(jsonApplication)
+			jsonApplicationMapByFullName.set(fullApplicationName, jsonApplication);
 
 			const domain = domainNameMapByName.get(jsonApplication.domain)
-			const application = applicationMapByName.get(getApplicationName(jsonApplication))
+			const application = applicationMapByFullName.get(getFullApplicationName(jsonApplication))
 			if (!application.index) {
 				const lastIds = {
 					...ddlObjectRetriever.lastIds
@@ -162,7 +157,7 @@ export class ApplicationComposer
 			if (!domain.id) {
 				domain.id = ++ddlObjectRetriever.lastIds.domains
 			}
-			const applicationVersion = newApplicationVersionMapByApplicationName.get(application.name)
+			const applicationVersion = newApplicationVersionMapByApplicationName.get(application.fullName)
 			if (!applicationVersion.id) {
 				applicationVersion.id = ++ddlObjectRetriever.lastIds.applicationVersions
 				applicationVersion.jsonApplication = jsonApplication
@@ -194,11 +189,11 @@ export class ApplicationComposer
 	}
 
 	async getExistingLatestApplicationVersion(
-		referencedApplicationName: ApplicationName,
+		referencedApplicationName: FullApplicationName,
 		allDdlObjects: AllDdlObjects
 	): Promise<IApplicationVersion> {
 		for (const latestApplicationVersion of allDdlObjects.all.latestApplicationVersions) {
-			if (latestApplicationVersion.application.name == referencedApplicationName) {
+			if (latestApplicationVersion.application.fullName == referencedApplicationName) {
 				return latestApplicationVersion;
 			}
 		}
@@ -331,23 +326,23 @@ export class ApplicationComposer
 		jsonApplication: JsonApplicationWithLastIds,
 		allApplications: IApplication[],
 		newApplications: IApplication[],
-		applicationMapByName: Map<ApplicationName, IApplication>
+		applicationMapByName: Map<FullApplicationName, IApplication>
 	): IApplication {
-		const applicationName = getApplicationName(jsonApplication)
-		let application = applicationMapByName.get(applicationName)
+		const fullApplicationName = getFullApplicationName(jsonApplication)
+		let application = applicationMapByName.get(fullApplicationName)
 		if (!application) {
 			application = {
 				domain,
 				index: null,
-				name: applicationName,
-				packageName: jsonApplication.name,
+				fullName: fullApplicationName,
+				name: jsonApplication.name,
 				scope: 'public',
 				signature: 'localhost',
 				status: ApplicationStatus.CURRENT,
 			};
 			allApplications.push(application);
 			newApplications.push(application);
-			applicationMapByName.set(applicationName, application)
+			applicationMapByName.set(fullApplicationName, application)
 		}
 
 		return application
@@ -358,7 +353,7 @@ export class ApplicationComposer
 		application: IApplication,
 		newLatestApplicationVersions: IApplicationVersion[],
 		newApplicationVersions: IApplicationVersion[],
-		newApplicationVersionMapByApplicationName: Map<ApplicationName, IApplicationVersion>
+		newApplicationVersionMapByApplicationName: Map<FullApplicationName, IApplicationVersion>
 	): IApplicationVersion {
 		// Application versions are guaranteed to be new
 		let newApplicationVersion: IApplicationVersion;
@@ -395,30 +390,30 @@ export class ApplicationComposer
 		application.currentVersion = [newApplicationCurrentVersion];
 
 		newLatestApplicationVersions.push(newApplicationVersion);
-		newApplicationVersionMapByApplicationName.set(application.name, newApplicationVersion);
+		newApplicationVersionMapByApplicationName.set(application.fullName, newApplicationVersion);
 
 		return newApplicationVersion;
 	}
 
 	private async composeApplicationReferences(
-		jsonApplicationMapByName: Map<ApplicationName, JsonApplication>,
-		newApplicationVersionMapByApplicationName: Map<ApplicationName, IApplicationVersion>,
+		jsonApplicationMapByName: Map<FullApplicationName, JsonApplication>,
+		newApplicationVersionMapByApplicationName: Map<FullApplicationName, IApplicationVersion>,
 		applicationLocator: IApplicationLocator,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects,
 		deepTraverseReferences: boolean
 	): Promise<{
-		newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]>,
+		newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]>,
 		newApplicationReferences: IApplicationReference[]
 	}> {
-		const newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]> = new Map();
+		const newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]> = new Map();
 
-		const newApplicationReferenceLookup: Map<ApplicationName, Set<number>> = new Map()
+		const newApplicationReferenceLookup: Map<FullApplicationName, Set<number>> = new Map()
 
 		const newApplicationReferences: IApplicationReference[] = [];
 		for (const [applicationName, ownApplicationVersion] of newApplicationVersionMapByApplicationName) {
 			const application = ownApplicationVersion.application;
-			const jsonApplication = jsonApplicationMapByName.get(application.name);
+			const jsonApplication = jsonApplicationMapByName.get(application.fullName);
 			const lastJsonApplicationVersion
 				= jsonApplication.versions[jsonApplication.versions.length - 1];
 			const applicationReferences: IApplicationReference[]
@@ -427,21 +422,21 @@ export class ApplicationComposer
 				= ensureChildJsSet(newApplicationReferenceLookup, applicationName);
 
 			for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-				const referencedApplicationName = getApplicationName(jsonReferencedApplication);
-				let referencedApplicationVersion = newApplicationVersionMapByApplicationName.get(referencedApplicationName);
+				const referencedFullApplicationName = getFullApplicationName(jsonReferencedApplication);
+				let referencedApplicationVersion = newApplicationVersionMapByApplicationName.get(referencedFullApplicationName);
 				if (!referencedApplicationVersion) {
 					referencedApplicationVersion = await applicationLocator.locateLatestApplicationVersionByApplicationName(
-						referencedApplicationName, terminalStore);
+						referencedFullApplicationName, terminalStore);
 					if (!referencedApplicationVersion) {
 						throw new Error(`Could not locate application:
-						${referencedApplicationName}
+						${referencedFullApplicationName}
 						in either existing applications or applications being currently processed`);
 					}
 					this.addApplicationVersionObjects(referencedApplicationVersion, allDdlObjects.all)
 					if (deepTraverseReferences) {
 						// This should cause another iteration over the outer loop to process newly added ApplicationVersion
-						jsonApplicationMapByName.set(referencedApplicationName, referencedApplicationVersion.jsonApplication)
-						newApplicationVersionMapByApplicationName.set(referencedApplicationName, referencedApplicationVersion);
+						jsonApplicationMapByName.set(referencedFullApplicationName, referencedApplicationVersion.jsonApplication)
+						newApplicationVersionMapByApplicationName.set(referencedFullApplicationName, referencedApplicationVersion);
 					}
 				}
 				const applicationReference: IApplicationReference = {
@@ -466,11 +461,11 @@ export class ApplicationComposer
 	private composeApplicationEntities(
 		jsonApplication: JsonApplicationWithLastIds,
 		applicationVersion: IApplicationVersion,
-		newEntitiesMapByApplicationName: Map<ApplicationName, IApplicationEntity[]>,
+		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
 		newEntities: IApplicationEntity[],
 		ddlObjectRetriever: IDdlObjectRetriever
 	): void {
-		const applicationName = getApplicationName(jsonApplication)
+		const applicationName = getFullApplicationName(jsonApplication)
 		let index = 0;
 		// TODO: verify that jsonApplication.versions is always ordered ascending
 		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -504,11 +499,11 @@ export class ApplicationComposer
 	private composeApplicationProperties(
 		jsonApplication: JsonApplication,
 		newProperties: IApplicationProperty[],
-		newPropertiesMap: Map<ApplicationName, IApplicationProperty[][]>,
-		newEntitiesMapByApplicationName: Map<ApplicationName, IApplicationEntity[]>,
+		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
+		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
 		ddlObjectRetriever: IDdlObjectRetriever
 	): void {
-		const applicationName = getApplicationName(jsonApplication)
+		const applicationName = getFullApplicationName(jsonApplication)
 		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
 		const jsonEntities = currentApplicationVersion.entities;
 		const entities = newEntitiesMapByApplicationName.get(applicationName);
@@ -532,10 +527,7 @@ export class ApplicationComposer
 					entity,
 					name: jsonProperty.name,
 					isId: jsonProperty.isId,
-					// propertyColumns: []
 				};
-				// entity.properties.push(property)
-				// entity.propertyMap[property.name] = property
 				propertiesForEntity[index] = property;
 				index++;
 				newProperties.push(property);
@@ -546,15 +538,15 @@ export class ApplicationComposer
 	private async composeApplicationRelations(
 		jsonApplication: JsonApplication,
 		newRelations: IApplicationRelation[],
-		newRelationsMap: Map<ApplicationName, IApplicationRelation[][]>,
-		newEntitiesMapByApplicationName: Map<ApplicationName, IApplicationEntity[]>,
-		newPropertiesMap: Map<ApplicationName, IApplicationProperty[][]>,
-		newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]>,
+		newRelationsMap: Map<FullApplicationName, IApplicationRelation[][]>,
+		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
+		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
+		newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]>,
 		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects
 	): Promise<void> {
-		const applicationName = getApplicationName(jsonApplication)
+		const applicationName = getFullApplicationName(jsonApplication)
 		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
 		const jsonEntities = currentApplicationVersion.entities;
 		const entitiesForApplication = newEntitiesMapByApplicationName.get(applicationName);
@@ -583,7 +575,7 @@ export class ApplicationComposer
 				if (jsonRelation.relationTableApplicationIndex
 					|| jsonRelation.relationTableApplicationIndex === 0) {
 					const applicationReference = referencesForApplication[jsonRelation.relationTableApplicationIndex];
-					referencedApplicationName = applicationReference.referencedApplicationVersion.application.name;
+					referencedApplicationName = applicationReference.referencedApplicationVersion.application.fullName;
 				}
 
 				let entitiesArray = newEntitiesMapByApplicationName.get(referencedApplicationName);
@@ -623,13 +615,13 @@ export class ApplicationComposer
 	private composeApplicationColumns(
 		jsonApplication: JsonApplication,
 		newColumns: IApplicationColumn[],
-		newColumnsMap: Map<ApplicationName, IApplicationColumn[][]>,
+		newColumnsMap: Map<FullApplicationName, IApplicationColumn[][]>,
 		newPropertyColumns: IApplicationPropertyColumn[],
-		newEntitiesMapByApplicationName: Map<ApplicationName, IApplicationEntity[]>,
-		newPropertiesMap: Map<ApplicationName, IApplicationProperty[][]>,
+		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
+		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
 		ddlObjectRetriever: IDdlObjectRetriever
 	): void {
-		const applicationName = getApplicationName(jsonApplication)
+		const applicationName = getFullApplicationName(jsonApplication)
 		const columnsByTable: IApplicationColumn[][] = [];
 		newColumnsMap.set(applicationName, columnsByTable);
 		const entitiesForApplication = newEntitiesMapByApplicationName.get(applicationName);
@@ -673,19 +665,9 @@ export class ApplicationComposer
 					propertyColumns: [],
 					scale: jsonColumn.scale,
 					type: jsonColumn.type,
-					// propertyColumns: [],
-					// oneRelationColumns: [],
-					// manyRelationColumns: []
 				};
 				columnsForTable[index] = column;
 				newColumns.push(column);
-				// entity.columns.push(column)
-				// entity.columnMap[column.name] = column
-
-				// if (idColumndIndex || idColumndIndex === 0) {
-				// 	entity.idColumns[idColumndIndex] = column
-				// 	entity.idColumnMap[column.name]  = column
-				// }
 
 				jsonColumn.propertyRefs.forEach((
 					propertyReference
@@ -696,8 +678,6 @@ export class ApplicationComposer
 						property
 					};
 					newPropertyColumns.push(propertyColumn);
-					// column.propertyColumns.push(propertyColumn)
-					// property.propertyColumns.push(propertyColumn)
 				});
 			});
 		});
@@ -706,15 +686,15 @@ export class ApplicationComposer
 	private async composeApplicationRelationColumns(
 		jsonApplication: JsonApplication,
 		newRelationColumns: IApplicationRelationColumn[],
-		newApplicationVersionMapByApplicationName: Map<ApplicationName, IApplicationVersion>,
-		newApplicationReferenceMap: Map<ApplicationName, IApplicationReference[]>,
-		newRelationsMap: Map<ApplicationName, IApplicationRelation[][]>,
-		newColumnsMap: Map<ApplicationName, IApplicationColumn[][]>,
+		newApplicationVersionMapByApplicationName: Map<FullApplicationName, IApplicationVersion>,
+		newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]>,
+		newRelationsMap: Map<FullApplicationName, IApplicationRelation[][]>,
+		newColumnsMap: Map<FullApplicationName, IApplicationColumn[][]>,
 		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects
 	): Promise<void> {
-		const applicationName = getApplicationName(jsonApplication)
+		const applicationName = getFullApplicationName(jsonApplication)
 		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
 		const jsonEntities = currentApplicationVersion.entities;
 		const columnsForApplication = newColumnsMap.get(applicationName);
@@ -745,7 +725,7 @@ export class ApplicationComposer
 					} else {
 						oneRelationApplicationVersion = newApplicationVersionMapByApplicationName.get(applicationName);
 					}
-					const referencedApplicationName = oneRelationApplicationVersion.application.name;
+					const referencedApplicationName = oneRelationApplicationVersion.application.fullName;
 					const oneTableColumnsMapForApplication =
 						newColumnsMap.get(referencedApplicationName);
 
@@ -753,7 +733,7 @@ export class ApplicationComposer
 					let oneTableRelations;
 					if (oneTableColumnsMapForApplication) {
 						oneTableColumns = oneTableColumnsMapForApplication[jsonRelationColumn.oneTableIndex];
-						oneTableRelations = newRelationsMap.get(oneRelationApplicationVersion.application.name)
+						oneTableRelations = newRelationsMap.get(oneRelationApplicationVersion.application.fullName)
 						[jsonRelationColumn.oneTableIndex];
 					} else {
 						const applicationVersion = await this.getExistingLatestApplicationVersion(

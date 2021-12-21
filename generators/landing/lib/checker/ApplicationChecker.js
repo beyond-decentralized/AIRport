@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { ensureChildJsMap, getApplicationName, } from '@airport/ground-control';
+import { ensureChildJsMap, getFullApplicationName, } from '@airport/ground-control';
 import { APPLICATION_DAO } from '@airport/airspace';
 import { APPLICATION_CHECKER } from '../tokens';
 export class ApplicationChecker {
@@ -92,25 +92,25 @@ export class ApplicationChecker {
         }
     }
     async findExistingApplications(allReferencedApplicationMap) {
-        const applicationNames = [];
+        const fullApplicationNames = [];
         const coreDomainAndApplicationNamesByApplicationName = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
             for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
-                const applicationName = getApplicationName(referencedApplication);
-                applicationNames.push(applicationName);
-                coreDomainAndApplicationNamesByApplicationName.set(applicationName, {
+                const fullApplicationName = getFullApplicationName(referencedApplication);
+                fullApplicationNames.push(fullApplicationName);
+                coreDomainAndApplicationNamesByApplicationName.set(fullApplicationName, {
                     domain: domainName,
                     application: coreApplicationName
                 });
             }
         }
         let existingApplicationMapByName;
-        if (!applicationNames.length) {
+        if (!fullApplicationNames.length) {
             existingApplicationMapByName = new Map();
         }
         else {
             const applicationDao = await container(this).get(APPLICATION_DAO);
-            existingApplicationMapByName = await applicationDao.findMapByNames(applicationNames);
+            existingApplicationMapByName = await applicationDao.findMapByFullNames(fullApplicationNames);
         }
         return {
             coreDomainAndApplicationNamesByApplicationName,

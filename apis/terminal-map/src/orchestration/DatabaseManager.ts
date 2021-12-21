@@ -2,11 +2,6 @@ import {
     IContext
 } from "@airport/di"
 import {
-	DomainName,
-    JsonApplication,
-	ApplicationName
-} from "@airport/ground-control"
-import {
 	JsonApplicationWithLastIds
 } from "@airport/security-check"
 

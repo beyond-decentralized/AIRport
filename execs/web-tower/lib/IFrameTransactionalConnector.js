@@ -97,6 +97,7 @@ export class IframeTransactionalConnector {
             // platform,
             // platformConfig,
             type: IsolateMessageType.ADD_REPOSITORY,
+            // url
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {
@@ -196,10 +197,10 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.ROLLBACK
         });
     }
-    async getLatestApplicationVersionMapByApplicationName(applicationName) {
+    async getLatestApplicationVersionMapByFullApplicationName(fullApplicationName) {
         return await this.sendMessageNoWait({
             ...this.getCoreFields(),
-            applicationName,
+            fullApplicationName: fullApplicationName,
             type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
         });
     }
@@ -337,7 +338,7 @@ export class IframeTransactionalConnector {
         const applicationLoader = await DI.db().get(APPLICATION_LOADER);
         let message = {
             ...this.getCoreFields(),
-            application: applicationLoader.getApplication(),
+            jsonApplication: applicationLoader.getApplication(),
             type: IsolateMessageType.APP_INITIALIZING
         };
         window.parent.postMessage(message, hostServer);

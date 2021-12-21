@@ -7,12 +7,13 @@ export interface IApiRegistry {
     }>;
 }
 export interface InstalledApi {
-    /**
-     * TODO: Can a given application be keyed by multiple hashes?  For example,
-     * a hash can be generated of each version of the same application.
-     */
+    domainApiMap: {
+        [domainName: string]: IDomainApi;
+    };
+}
+export interface IDomainApi {
     applicationApiMap: {
-        [applicationApplicationApi: string]: IApplicationApi;
+        [applicationName: string]: IApplicationApi;
     };
 }
 export interface IApplicationApi {

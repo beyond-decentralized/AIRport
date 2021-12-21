@@ -15,15 +15,6 @@ export interface IInjectionDomain {
 		applicationName: string
 	): IInjectionApplication
 
-	getAppBySignature(
-		signature: string
-	): IInjectionApplication
-
-	mapApplicationBySignature(
-		applicationName: string,
-		signature: string
-	): void
-
 }
 
 export class InjectionDomain
@@ -31,10 +22,6 @@ export class InjectionDomain
 
 	private applicationMap: {
 		[applicationName: string]: IInjectionApplication
-	} = {}
-
-	private applicationMapBySignature: {
-		[applicationSignature: string]: IInjectionApplication
 	} = {}
 
 	constructor(
@@ -64,27 +51,6 @@ export class InjectionDomain
 		applicationName: string
 	): IInjectionApplication {
 		return this.applicationMap[applicationName]
-	}
-
-	getAppBySignature(
-		signature: string
-	): IInjectionApplication {
-		return this.applicationMapBySignature[signature]
-	}
-
-	mapApplicationBySignature(
-		applicationName: string,
-		signature: string
-	): void {
-		const application = this.applicationMap[applicationName]
-		if (!application) {
-			throw new Error(`Could not find Application: '${applicationName}', in domain: '${this.name}'`)
-		}
-		if (this.applicationMapBySignature[signature]) {
-			throw new Error(`Domain '${this.name}' already has an Application '${applicationName}'
-			for signature: ${signature}`)
-		}
-		this.applicationMapBySignature[signature] = application
 	}
 
 }

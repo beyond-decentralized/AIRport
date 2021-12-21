@@ -13,11 +13,11 @@ import {
 import {
 	PackageName,
 	ApplicationIndex,
-	ApplicationName,
+	FullApplicationName,
 	ApplicationScope,
-	ApplicationStatus
+	ApplicationStatus,
+	ApplicationName
 } from '@airport/ground-control';
-import type { JsonApplicationWithLastIds } from '@airport/security-check';
 import { Domain } from './Domain';
 import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
 import { ApplicationVersion } from './ApplicationVersion';
@@ -44,6 +44,10 @@ export class Application {
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()
 	name: ApplicationName;
+
+	@Column({ name: 'FULL_APPLICATION_NAME', nullable: false })
+	@DbString()
+	fullName: FullApplicationName;
 
 	// @ManyToOne()
 	// @JoinColumn({ name: 'PACKAGE_ID', referencedColumnName: 'ID', nullable: false })

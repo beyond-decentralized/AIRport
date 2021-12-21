@@ -1,16 +1,16 @@
 import { ColumnName } from '../../lingo/application/Property';
 
-export function getApplicationName({
+export function getFullApplicationName({
 	                              domain, name,
                               }): string {
 	if (domain.name) {
 		domain = domain.name;
 	}
 
-	return getApplicationNameFromDomainAndName(domain, name);
+	return getFullApplicationNameFromDomainAndName(domain, name);
 }
 
-export function getApplicationNameFromDomainAndName(
+export function getFullApplicationNameFromDomainAndName(
 	domainName,
 	applicationName,
 ): string {

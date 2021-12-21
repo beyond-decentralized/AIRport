@@ -31,11 +31,12 @@ export enum IsolateMessageType {
 export interface IIsolateMessage {
     __received__?: boolean
     __receivedTime__?: number
+    application: string
     category: 'FromDb' | 'ToDb'
+    domain: string
     id: number
     repositoryDestination?: string
     repositorySource?: string
-    applicationSignature: string
     type: IsolateMessageType
 }
 
@@ -53,12 +54,12 @@ export interface IIsolateMessageOut<T>
 // and initial connection should probably not play a role in that
 export interface IInitConnectionIMI
     extends IIsolateMessage {
-    application: JsonApplicationWithLastIds
+    jsonApplication: JsonApplicationWithLastIds
 }
 
 export interface IConnectionInitializedIMI
     extends IIsolateMessage {
-    applicationName: string
+    fullApplicationName: string
 }
 
 export interface IInitConnectionIMO
@@ -122,5 +123,5 @@ export interface ISaveToDestinationIMI<E, T = E | E[]>
 
 export interface IGetLatestApplicationVersionByApplicationNameIMI
     extends IIsolateMessage {
-    applicationName: string
+    fullApplicationName: string
 }

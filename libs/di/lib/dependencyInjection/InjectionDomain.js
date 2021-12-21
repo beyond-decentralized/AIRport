@@ -3,7 +3,6 @@ export class InjectionDomain {
     constructor(name) {
         this.name = name;
         this.applicationMap = {};
-        this.applicationMapBySignature = {};
     }
     app(applicationName) {
         if (this.applicationMap[applicationName]) {
@@ -19,20 +18,6 @@ export class InjectionDomain {
     }
     getApp(applicationName) {
         return this.applicationMap[applicationName];
-    }
-    getAppBySignature(signature) {
-        return this.applicationMapBySignature[signature];
-    }
-    mapApplicationBySignature(applicationName, signature) {
-        const application = this.applicationMap[applicationName];
-        if (!application) {
-            throw new Error(`Could not find Application: '${applicationName}', in domain: '${this.name}'`);
-        }
-        if (this.applicationMapBySignature[signature]) {
-            throw new Error(`Domain '${this.name}' already has an Application '${applicationName}'
-			for signature: ${signature}`);
-        }
-        this.applicationMapBySignature[signature] = application;
     }
 }
 const DOMAIN_MAP = {};

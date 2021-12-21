@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { INTERNAL_DOMAIN, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class TransactionalConnector {
     async addRepository(
@@ -15,7 +15,8 @@ export class TransactionalConnector {
         // platformConfig,
         // distributionStrategy,
         {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -24,7 +25,8 @@ export class TransactionalConnector {
     async find(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.find(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -33,7 +35,8 @@ export class TransactionalConnector {
     async findOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.findOne(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -42,7 +45,8 @@ export class TransactionalConnector {
     search(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.search(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -51,7 +55,8 @@ export class TransactionalConnector {
     searchOne(portableQuery, context, cachedSqlQueryId) {
         const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
         return transServer.searchOne(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -60,7 +65,8 @@ export class TransactionalConnector {
     async save(entity, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.save(entity, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -69,7 +75,8 @@ export class TransactionalConnector {
     async saveToDestination(repositoryDestination, entity, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.saveToDestination(repositoryDestination, entity, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -79,7 +86,8 @@ export class TransactionalConnector {
     ) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.insertValues(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -88,7 +96,8 @@ export class TransactionalConnector {
     async insertValuesGetIds(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.insertValuesGetIds(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -97,7 +106,8 @@ export class TransactionalConnector {
     async updateValues(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.updateValues(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -106,7 +116,8 @@ export class TransactionalConnector {
     async deleteWhere(portableQuery, context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.deleteWhere(portableQuery, {
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -115,7 +126,8 @@ export class TransactionalConnector {
     async startTransaction(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.startTransaction({
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -124,7 +136,8 @@ export class TransactionalConnector {
     async commit(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.commit({
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context
@@ -133,7 +146,8 @@ export class TransactionalConnector {
     async rollback(context) {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
         return await transServer.rollback({
-            applicationSignature: 'internal'
+            application: null,
+            domain: INTERNAL_DOMAIN
         }, {
             internal: true,
             ...context

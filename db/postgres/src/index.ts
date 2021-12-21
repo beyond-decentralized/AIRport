@@ -3,11 +3,10 @@ import { DI } from '@airport/di';
 import { STORE_DRIVER } from '@airport/ground-control';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
-export * from './DDLManager'
 export * from './PostgreQueryAdaptor'
-export * from './PostgreApplicationBuilder'
+export * from './PostgreSchemaBuilder'
 export * from './PostgreSqlDriver'
-export * from './PostgreSqlApplicationBuilder'
+export * from './PostgreSqlSchemaBuilder'
 export * from './PostgreTransaction'
 
 export async function startDb(

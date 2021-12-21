@@ -1,5 +1,5 @@
 import { DI } from '@airport/di';
-import { getApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { APPLICATION_LOCATOR } from '../tokens';
 export class ApplicationLocator {
     // private terminalStore: ITerminalStore
@@ -9,8 +9,8 @@ export class ApplicationLocator {
         if (!applicationVersionsForDomainName) {
             return null;
         }
-        const applicationName = getApplicationNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
-        const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(applicationName);
+        const fullApplicationName = getFullApplicationNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+        const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(fullApplicationName);
         const jsonApplicationVersion = jsonApplication.versions[0];
         if (latestApplicationVersionForApplication
             && latestApplicationVersionForApplication.integerVersion !== jsonApplicationVersion.integerVersion) {
@@ -18,9 +18,9 @@ export class ApplicationLocator {
         }
         return latestApplicationVersionForApplication;
     }
-    async locateLatestApplicationVersionByApplicationName(applicationName, terminalStore) {
-        return terminalStore.getLatestApplicationVersionMapByApplicationName()
-            .get(applicationName);
+    async locateLatestApplicationVersionByApplicationName(fullApplicationName, terminalStore) {
+        return terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+            .get(fullApplicationName);
     }
 }
 DI.set(APPLICATION_LOCATOR, ApplicationLocator);

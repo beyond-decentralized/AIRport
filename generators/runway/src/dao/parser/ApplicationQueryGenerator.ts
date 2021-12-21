@@ -19,7 +19,7 @@ import {
 }                                           from '@airport/air-control';
 import { DI }                               from '@airport/di';
 import {
-	getApplicationName,
+	getFullApplicationName,
 	IApplicationQuery,
 	JsonFormattedQuery,
 	JsonOperation,
@@ -160,7 +160,7 @@ export class ApplicationQueryGenerator {
 
 		const [lookup, queryFacade]    = await DI.db().get(LOOKUP, QUERY_FACADE);
 		const context                  = lookup.ensureContext(null);
-		const qApplication: QApplicationInternal = airDb.QM[getApplicationName(jsonApplication)];
+		const qApplication: QApplicationInternal = airDb.QM[getFullApplicationName(jsonApplication)];
 		const dbApplicationVersion          = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
 		context.dbEntity               = dbApplicationVersion.entityMapByName[entityName];
@@ -251,7 +251,7 @@ export class ApplicationQueryGenerator {
 					}
 					break;
 				case QueryInputKind.Q:
-					Q = airDb.QM[getApplicationName(jsonApplication)];
+					Q = airDb.QM[getFullApplicationName(jsonApplication)];
 					queryFunctionParameters.push(Q);
 					break;
 				case QueryInputKind.QENTITY:

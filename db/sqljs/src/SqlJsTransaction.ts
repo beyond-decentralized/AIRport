@@ -3,14 +3,14 @@ import {
     IInjectable
 } from '@airport/di'
 import {
+    ApplicationName,
     DbEntity,
     DomainName,
+    FullApplicationName,
     InternalFragments,
     IStoreDriver,
     PortableQuery,
     QueryType,
-    ApplicationName,
-    ApplicationStatus,
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
@@ -88,7 +88,7 @@ export class SqlJsTransaction
                 name: DomainName
             };
             name: ApplicationName;
-            status?: ApplicationStatus;
+            fullName?: FullApplicationName;
         },
         table: {
             name: string, tableConfig?: {

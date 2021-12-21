@@ -29,6 +29,10 @@ __decorate([
     DbString()
 ], Application.prototype, "name", void 0);
 __decorate([
+    Column({ name: 'FULL_APPLICATION_NAME', nullable: false }),
+    DbString()
+], Application.prototype, "fullName", void 0);
+__decorate([
     Column({ name: 'PACKAGE_NAME', nullable: false }),
     DbString()
 ], Application.prototype, "packageName", void 0);

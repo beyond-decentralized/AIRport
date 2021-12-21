@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { getApplicationName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
+import { getFullApplicationName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
 import { TempDatabase } from '@airport/taxiway';
 import tsc from 'typescript';
 export class ApplicationQueryGenerator {
@@ -88,7 +88,7 @@ export class ApplicationQueryGenerator {
         const rawQuery = queryFunction(...queryFunctionParameters);
         const [lookup, queryFacade] = await DI.db().get(LOOKUP, QUERY_FACADE);
         const context = lookup.ensureContext(null);
-        const qApplication = airDb.QM[getApplicationName(jsonApplication)];
+        const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
         const dbApplicationVersion = qApplication.__dbApplication__
             .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
@@ -173,7 +173,7 @@ export class ApplicationQueryGenerator {
                     }
                     break;
                 case QueryInputKind.Q:
-                    Q = airDb.QM[getApplicationName(jsonApplication)];
+                    Q = airDb.QM[getFullApplicationName(jsonApplication)];
                     queryFunctionParameters.push(Q);
                     break;
                 case QueryInputKind.QENTITY:

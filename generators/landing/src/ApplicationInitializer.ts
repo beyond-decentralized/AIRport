@@ -13,7 +13,7 @@ import {
 } from '@airport/di';
 import {
 	DbApplication,
-	getApplicationName,
+	getFullApplicationName,
 	JsonApplication
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
@@ -116,7 +116,7 @@ export class ApplicationInitializer
 
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
 		for (const jsonApplication of jsonApplications) {
-			newJsonApplicationMap.set(getApplicationName(jsonApplication), jsonApplication);
+			newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
 		}
 
 		for (const jsonApplication of applicationsWithValidDependencies) {

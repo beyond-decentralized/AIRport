@@ -3,9 +3,12 @@ import {
 	container
 }                          from '@airport/di';
 import {
+	ApplicationName,
+	DbApplication,
 	DbEntity,
 	DomainName,
-	getApplicationName,
+	FullApplicationName,
+	getFullApplicationName,
 	InternalFragments,
 	IStoreDriver,
 	JsonDelete,
@@ -17,11 +20,9 @@ import {
 	PortableQuery,
 	QueryResultType,
 	QueryType,
-	ApplicationName,
-	ApplicationStatus,
 	SQLDataType,
 	StoreType,
-	SyncApplicationMap
+	SyncApplicationMap,
 }                          from '@airport/ground-control';
 import {
 	Observable,
@@ -75,10 +76,12 @@ export abstract class SqlDriver
 
 	getTableName(
 		application: {
-			domain: DomainName | {
-				name: DomainName
-			}; name: ApplicationName; status?: ApplicationStatus;
-		},
+            domain: DomainName | {
+                name: DomainName
+            };
+            name: ApplicationName;
+            fullName?: FullApplicationName;
+        },
 		table: {
 			name: string, tableConfig?: {
 				name?: string
@@ -90,13 +93,13 @@ export abstract class SqlDriver
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;
 		}
-		let applicationName;
-		if (application.status) {
-			applicationName = application.name;
+		let fullApplicationName;
+		if ((application as DbApplication).fullName) {
+			fullApplicationName = (application as DbApplication).fullName;
 		} else {
-			applicationName = getApplicationName(application);
+			fullApplicationName = getFullApplicationName(application);
 		}
-		return this.composeTableName(applicationName, theTableName, context);
+		return this.composeTableName(fullApplicationName, theTableName, context);
 	}
 
 	abstract composeTableName(

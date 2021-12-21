@@ -3,7 +3,7 @@ import { ISequence, SEQUENCE_DAO } from '@airport/airport-code'
 import { container, DI, IContext } from '@airport/di'
 import {
 	DbApplication,
-	getApplicationName,
+	getFullApplicationName,
 	getSequenceName,
 	IStoreDriver,
 	JsonApplication,
@@ -23,8 +23,8 @@ export class PostgreSqlApplicationBuilder
 		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const applicationName = getApplicationName(jsonApplication)
-		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`
+		const fullApplicationName = getFullApplicationName(jsonApplication)
+		const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`
 
 		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
@@ -77,7 +77,7 @@ export class PostgreSqlApplicationBuilder
 
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -97,7 +97,7 @@ export class PostgreSqlApplicationBuilder
 
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}

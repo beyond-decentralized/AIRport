@@ -8,17 +8,21 @@ import { Terminal, User } from "@airport/travel-document-checkpoint";
 import { v4 as uuidv4 } from "uuid";
 import { INTERNAL_RECORD_MANAGER } from "../tokens";
 export class InternalRecordManager {
-    async ensureApplicationRecords(application, signature, context) {
+    async ensureApplicationRecords(application, context) {
         await transactional(async (_transaction) => {
             const [actorDao, applicationDao, terminalStore] = await container(this)
                 .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE);
             await this.updateDomain(application);
-            let actors = terminalStore
-                .getApplicationActorMapBySignature().get(signature);
-            if (actors && actors.length) {
-                return;
+            let actorMapForDomain = terminalStore
+                .getApplicationActorMapByDomainAndApplicationNames().get(application.domain);
+            let actors;
+            if (actorMapForDomain) {
+                actors = actorMapForDomain.get(application.name);
+                if (actors && actors.length) {
+                    return;
+                }
             }
-            actors = await actorDao.findByApplicationSignature(signature);
+            actors = await actorDao.findByDomainAndApplicationNames(application.domain, application.name);
             let anApplication = await applicationDao.findByIndex(application.lastIds.applications + 1);
             if (!actors || !actors.length) {
                 const frameworkActor = terminalStore.getFrameworkActor();

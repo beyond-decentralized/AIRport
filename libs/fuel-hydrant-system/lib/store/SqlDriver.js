@@ -1,6 +1,6 @@
 import { doEnsureContext } from '@airport/air-control';
 import { container } from '@airport/di';
-import { getApplicationName, QueryResultType, SyncApplicationMap } from '@airport/ground-control';
+import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { SQLDelete } from '../sql/core/SQLDelete';
@@ -26,14 +26,14 @@ export class SqlDriver {
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
         }
-        let applicationName;
-        if (application.status) {
-            applicationName = application.name;
+        let fullApplicationName;
+        if (application.fullName) {
+            fullApplicationName = application.fullName;
         }
         else {
-            applicationName = getApplicationName(application);
+            fullApplicationName = getFullApplicationName(application);
         }
-        return this.composeTableName(applicationName, theTableName, context);
+        return this.composeTableName(fullApplicationName, theTableName, context);
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V, context);

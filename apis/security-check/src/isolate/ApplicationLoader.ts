@@ -4,8 +4,7 @@ import { LastIds } from "../LastIds";
 export interface IApplicationLoader {
 
     load(
-        lastIds: LastIds,
-        applicationSignature?: string,
+        lastIds: LastIds
     ): Promise<void>
 
     getApplication(): JsonApplicationWithLastIds

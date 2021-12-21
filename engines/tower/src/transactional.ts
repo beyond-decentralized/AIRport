@@ -1,4 +1,5 @@
 import { DI, IContext } from '@airport/di';
+import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import {
 	ITransaction,
 	TRANSACTION_MANAGER
@@ -51,6 +52,7 @@ export async function transactional<T>(
 	const transactionManager = await DI.db()
 		.get(TRANSACTION_MANAGER)
 	await transactionManager.transact({
-		applicationSignature: 'internal'
+		application: null,
+		domain: INTERNAL_DOMAIN
 	}, callback, context)
 }

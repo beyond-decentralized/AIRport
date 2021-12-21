@@ -13,7 +13,8 @@ import {
 	ApplicationIndex,
 	ApplicationName,
 	ApplicationStatus,
-	ApplicationVersionId
+	ApplicationVersionId,
+	FullApplicationName
 } from '@airport/ground-control'
 import { APPLICATION_DAO } from '../tokens'
 import {
@@ -60,9 +61,9 @@ export interface IApplicationDao
 		status: ApplicationStatus
 	): Promise<void>;
 
-	findMapByNames(
-		applicationNames: ApplicationName[]
-	): Promise<Map<ApplicationName, IApplication>>
+	findMapByFullNames(
+		fullApplicationNames: FullApplicationName[]
+	): Promise<Map<FullApplicationName, IApplication>>
 
 	findByDomainNamesAndApplicationNames(
 		domainNames: string[],
@@ -141,6 +142,7 @@ export class ApplicationDao
 					name: Y
 				},
 				name: Y,
+				fullName: Y,
 				versions: {
 					id: Y,
 					majorVersion: Y,
@@ -286,10 +288,10 @@ export class ApplicationDao
 		})
 	}
 
-	async findMapByNames(
-		applicationNames: ApplicationName[]
-	): Promise<Map<ApplicationName, IApplication>> {
-		const mapByName: Map<ApplicationName, IApplication> = new Map()
+	async findMapByFullNames(
+		fullApplicationNames: FullApplicationName[]
+	): Promise<Map<FullApplicationName, IApplication>> {
+		const mapByFullName: Map<FullApplicationName, IApplication> = new Map()
 
 		let s: QApplication
 
@@ -298,14 +300,14 @@ export class ApplicationDao
 			from: [
 				s = Q.Application
 			],
-			where: s.name.in(applicationNames)
+			where: s.fullName.in(fullApplicationNames)
 		})
 
 		for (const record of records) {
-			mapByName.set(record.name, record)
+			mapByFullName.set(record.fullName, record)
 		}
 
-		return mapByName
+		return mapByFullName
 	}
 
 	async findByDomainNamesAndApplicationNames(
@@ -322,6 +324,7 @@ export class ApplicationDao
 					id: Y,
 					name: Y
 				},
+				fullName: Y,
 				name: Y
 			},
 			from: [
@@ -356,8 +359,8 @@ export class ApplicationDao
 		for (const application of applications) {
 			values.push([
 				application.index, application.domain.id, application.scope,
-				application.name, application.packageName, application.status,
-				application.signature
+				application.fullName, application.name, application.packageName,
+				application.status, application.signature
 			])
 		}
 		await this.db.insertValuesGenerateIds({
@@ -366,6 +369,7 @@ export class ApplicationDao
 				a.index,
 				a.domain.id,
 				a.scope,
+				a.fullName,
 				a.name,
 				a.packageName,
 				a.status,

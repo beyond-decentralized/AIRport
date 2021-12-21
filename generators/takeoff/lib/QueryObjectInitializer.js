@@ -19,10 +19,10 @@ export class QueryObjectInitializer {
         }
         const existingApplicationMap = {};
         for (const application of lastTerminalState.applications) {
-            existingApplicationMap[application.name] = application;
+            existingApplicationMap[application.fullName] = application;
         }
         for (const application of allDdlObjects.added.applications) {
-            delete existingApplicationMap[application.name];
+            delete existingApplicationMap[application.fullName];
         }
         const unmodifiedApplications = [];
         for (const applicationName in existingApplicationMap) {

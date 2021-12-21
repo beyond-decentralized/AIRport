@@ -12,7 +12,8 @@ import {
 import {
 	IStoreDriver,
 	STORE_DRIVER,
-	StoreType
+	StoreType,
+	getFullApplicationNameFromDomainAndName
 } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
@@ -41,7 +42,7 @@ export class TransactionManager
 	// Keyed by repository index
 	storeType: StoreType;
 	transactionIndexQueue: string[] = [];
-	signatureOfTransactionInProgress: string = null;
+	sourceOfTransactionInProgress: string = null;
 	transactionInProgress: ITransaction = null;
 	yieldToRunningTransaction: number = 200;
 
@@ -87,34 +88,41 @@ export class TransactionManager
 			);
 
 		const isServer = storeDriver.isServer(context)
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			credentials.domain, credentials.application)
 
 		if (!isServer) {
-			if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {
+			if (fullApplicationName === this.sourceOfTransactionInProgress) {
 				await transactionalCallback(this.transactionInProgress, context);
 				return
 			} else if (this.transactionIndexQueue.filter(
 				transIndex =>
-					transIndex === credentials.applicationSignature,
+					transIndex === fullApplicationName,
 			).length) {
 				// Either just continue using the current transaction
 				// or return (domain shouldn't be initiating multiple transactions
 				// at the same time
-				throw new Error(`'${credentials.applicationSignature}' initialized multiple transactions
-				at the same time. Only one concurrent transaction is allowed per application.`)
+				throw new Error(`
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+initialized multiple transactions at the same time.
+Only one concurrent transaction is allowed per application.`)
 				// return;
 			}
-			this.transactionIndexQueue.push(credentials.applicationSignature);
+			this.transactionIndexQueue.push(fullApplicationName);
 		}
 
-		while (!this.canRunTransaction(credentials.applicationSignature, storeDriver, context)) {
+		while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
 			await this.wait(this.yieldToRunningTransaction);
 		}
 		if (!isServer) {
 			this.transactionIndexQueue = this.transactionIndexQueue.filter(
 				transIndex =>
-					transIndex !== credentials.applicationSignature,
+					transIndex !== fullApplicationName,
 			);
-			this.signatureOfTransactionInProgress = credentials.applicationSignature;
+			this.sourceOfTransactionInProgress = fullApplicationName;
 		}
 
 		await storeDriver.transact(async (
@@ -142,11 +150,14 @@ export class TransactionManager
 	): Promise<void> {
 		const storeDriver = await container(this)
 			.get(STORE_DRIVER);
-		if (!storeDriver.isServer(context) && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			transaction.credentials.domain, transaction.credentials.application)
+		if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
+			!== fullApplicationName) {
 			let foundTransactionInQueue = false;
 			this.transactionIndexQueue.filter(
 				transIndex => {
-					if (transIndex === transaction.credentials.applicationSignature) {
+					if (transIndex === fullApplicationName) {
 						foundTransactionInQueue = true;
 						return false;
 					}
@@ -154,7 +165,7 @@ export class TransactionManager
 				});
 			if (!foundTransactionInQueue) {
 				throw new Error(
-					`Could not find transaction '${transaction.credentials.applicationSignature}' is not found`);
+					`Could not find transaction '${fullApplicationName}' is not found`);
 			}
 			return;
 		}
@@ -174,10 +185,12 @@ export class TransactionManager
 				ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER,
 			);
 
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			transaction.credentials.domain, transaction.credentials.application)
 		if (!storeDriver.isServer(context)
-			&& this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
+			&& this.sourceOfTransactionInProgress !== fullApplicationName) {
 			throw new Error(
-				`Cannot commit inactive transaction '${transaction.credentials.applicationSignature}'.`);
+				`Cannot commit inactive transaction '${fullApplicationName}'.`);
 		}
 
 		try {
@@ -222,10 +235,10 @@ export class TransactionManager
 	// this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
 
 	private clearTransaction() {
-		this.signatureOfTransactionInProgress = null;
+		this.sourceOfTransactionInProgress = null;
 		this.transactionInProgress = null;
 		if (this.transactionIndexQueue.length) {
-			this.signatureOfTransactionInProgress = this.transactionIndexQueue.shift();
+			this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();
 		}
 	}
 
@@ -325,7 +338,7 @@ export class TransactionManager
 		if (storeDriver.isServer(context)) {
 			return true;
 		}
-		if (this.signatureOfTransactionInProgress) {
+		if (this.sourceOfTransactionInProgress) {
 			return false;
 		}
 

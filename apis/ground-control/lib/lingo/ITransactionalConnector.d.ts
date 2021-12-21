@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { IAbstractQueryContext } from './query/AbstractQueryContext';
 import { PortableQuery } from './query/PortableQuery';
 import { ISaveResult } from './query/SaveResult';
+export declare const INTERNAL_DOMAIN = "internal://domain";
 export interface ITransactionalConnector {
     addRepository(context?: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<EntityArray>;

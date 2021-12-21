@@ -3,10 +3,10 @@ import {Observable}   from 'rxjs'
 import {PortableQuery} from '../query/PortableQuery'
 import {DbEntity}      from '../application/Entity'
 import {
+	ApplicationName,
 	DomainName,
-	ApplicationName
+	FullApplicationName
 }                      from '../application/Application'
-import {ApplicationStatus}  from '../application/ApplicationStatus'
 import {
 	InternalFragments,
 	IStoreOperator
@@ -45,7 +45,7 @@ export interface IStoreDriver
 		application: {
 			domain: DomainName | {
 				name: DomainName
-			}; name: ApplicationName; status?: ApplicationStatus;
+			}; name: ApplicationName; fullName?: FullApplicationName;
 		},
 		table: {
 			name: string, tableConfig?: {

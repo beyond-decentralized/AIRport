@@ -1,5 +1,5 @@
 import { container, } from '@airport/di';
-import { getApplicationName } from '@airport/ground-control';
+import { getFullApplicationName, getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
@@ -10,12 +10,12 @@ export class TransactionalReceiver {
         this.initializedApps = new Set();
     }
     async processMessage(message) {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER);
+        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER);
         let result;
         let errorMessage;
         let credentials = {
-            applicationSignature: message.applicationSignature
+            application: message.application,
+            domain: message.domain
         };
         let context = {};
         context.startedAt = new Date();
@@ -23,26 +23,31 @@ export class TransactionalReceiver {
             switch (message.type) {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage = message;
-                    const application = initConnectionMessage.application;
-                    const applicationName = getApplicationName(application);
-                    if (this.initializingApps.has(applicationName)) {
+                    const application = initConnectionMessage.jsonApplication;
+                    const fullApplicationName = getFullApplicationName(application);
+                    const messageFullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+                    if (fullApplicationName !== messageFullApplicationName) {
+                        result = null;
+                        break;
+                    }
+                    if (this.initializingApps.has(fullApplicationName)) {
                         return null;
                     }
-                    this.initializingApps.add(applicationName);
+                    this.initializingApps.add(fullApplicationName);
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
                     // FIXME: initalize ahead of time, at Isolate Loading
                     await databaseManager.initFeatureApplications({}, [application]);
-                    await internalRecordManager.ensureApplicationRecords(application, message.applicationSignature, {});
+                    await internalRecordManager.ensureApplicationRecords(application, {});
                     result = application.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add(message.applicationName);
+                    this.initializedApps.add(message.fullApplicationName);
                     return null;
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE);
-                    result = terminalStore.getLatestApplicationVersionMapByApplicationName()
-                        .get(message.applicationName);
+                    result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+                        .get(message.fullApplicationName);
                     break;
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
@@ -142,10 +147,11 @@ export class TransactionalReceiver {
             errorMessage = error.message;
         }
         return {
+            application: message.application,
             category: 'FromDb',
+            domain: message.domain,
             errorMessage,
             id: message.id,
-            applicationSignature: message.applicationSignature,
             type: message.type,
             result
         };

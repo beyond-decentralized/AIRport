@@ -2,10 +2,11 @@ import {container, DI}             from '@airport/di'
 import {
 	DomainName,
 	ensureChildJsMap,
-	getApplicationName,
+	getFullApplicationName,
 	JsonApplication,
 	JsonApplicationName,
 	ApplicationName,
+	FullApplicationName,
 }                       from '@airport/ground-control'
 import {
 	IApplication,
@@ -186,26 +187,26 @@ export class ApplicationChecker
 	private async findExistingApplications(
 		allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>
 	): Promise<ExistingApplicationInfo> {
-		const applicationNames: ApplicationName[]                                                       = []
-		const coreDomainAndApplicationNamesByApplicationName: Map<ApplicationName, CoreDomainAndApplicationNames> = new Map()
+		const fullApplicationNames: FullApplicationName[]                                                       = []
+		const coreDomainAndApplicationNamesByApplicationName: Map<FullApplicationName, CoreDomainAndApplicationNames> = new Map()
 
 		for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
 			for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
-				const applicationName = getApplicationName(referencedApplication)
-				applicationNames.push(applicationName)
-				coreDomainAndApplicationNamesByApplicationName.set(applicationName, {
+				const fullApplicationName = getFullApplicationName(referencedApplication)
+				fullApplicationNames.push(fullApplicationName)
+				coreDomainAndApplicationNamesByApplicationName.set(fullApplicationName, {
 					domain: domainName,
 					application: coreApplicationName
 				})
 			}
 		}
 
-		let existingApplicationMapByName: Map<string, IApplication>
-		if (!applicationNames.length) {
+		let existingApplicationMapByName: Map<FullApplicationName, IApplication>
+		if (!fullApplicationNames.length) {
 			existingApplicationMapByName = new Map()
 		} else {
 			const applicationDao         = await container(this).get(APPLICATION_DAO)
-			existingApplicationMapByName = await applicationDao.findMapByNames(applicationNames)
+			existingApplicationMapByName = await applicationDao.findMapByFullNames(fullApplicationNames)
 		}
 
 		return {

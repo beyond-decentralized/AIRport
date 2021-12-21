@@ -1,5 +1,5 @@
 import { DI } from '@airport/di'
-import { getApplicationNameFromDomainAndName, JsonApplication } from '@airport/ground-control'
+import { getFullApplicationNameFromDomainAndName, JsonApplication } from '@airport/ground-control'
 import { AllDdlObjects } from '@airport/takeoff'
 import {
 	ITerminalStore,
@@ -16,7 +16,7 @@ export interface IApplicationLocator {
 	): IApplicationVersion
 
 	locateLatestApplicationVersionByApplicationName(
-		applicationName: string,
+		fullApplicationName: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion>
 
@@ -36,11 +36,11 @@ export class ApplicationLocator
 		if (!applicationVersionsForDomainName) {
 			return null
 		}
-		const applicationName = getApplicationNameFromDomainAndName(
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			jsonApplication.domain,
 			jsonApplication.name
 		)
-		const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(applicationName)
+		const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(fullApplicationName)
 
 		const jsonApplicationVersion = jsonApplication.versions[0]
 
@@ -53,11 +53,11 @@ export class ApplicationLocator
 	}
 
 	async locateLatestApplicationVersionByApplicationName(
-		applicationName: string,
+		fullApplicationName: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion> {
-		return terminalStore.getLatestApplicationVersionMapByApplicationName()
-			.get(applicationName)
+		return terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+			.get(fullApplicationName)
 	}
 
 }

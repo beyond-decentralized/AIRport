@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { STORE_DRIVER } from '@airport/ground-control';
+import { STORE_DRIVER, getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER } from '@airport/terminal-map';
@@ -9,7 +9,7 @@ export class TransactionManager extends AbstractMutationManager {
     constructor() {
         super(...arguments);
         this.transactionIndexQueue = [];
-        this.signatureOfTransactionInProgress = null;
+        this.sourceOfTransactionInProgress = null;
         this.transactionInProgress = null;
         this.yieldToRunningTransaction = 200;
     }
@@ -35,27 +35,33 @@ export class TransactionManager extends AbstractMutationManager {
         const [storeDriver, transHistoryDuo] = await container(this)
             .get(STORE_DRIVER, TRANSACTION_HISTORY_DUO);
         const isServer = storeDriver.isServer(context);
+        const fullApplicationName = getFullApplicationNameFromDomainAndName(credentials.domain, credentials.application);
         if (!isServer) {
-            if (credentials.applicationSignature === this.signatureOfTransactionInProgress) {
+            if (fullApplicationName === this.sourceOfTransactionInProgress) {
                 await transactionalCallback(this.transactionInProgress, context);
                 return;
             }
-            else if (this.transactionIndexQueue.filter(transIndex => transIndex === credentials.applicationSignature).length) {
+            else if (this.transactionIndexQueue.filter(transIndex => transIndex === fullApplicationName).length) {
                 // Either just continue using the current transaction
                 // or return (domain shouldn't be initiating multiple transactions
                 // at the same time
-                throw new Error(`'${credentials.applicationSignature}' initialized multiple transactions
-				at the same time. Only one concurrent transaction is allowed per application.`);
+                throw new Error(`
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+initialized multiple transactions at the same time.
+Only one concurrent transaction is allowed per application.`);
                 // return;
             }
-            this.transactionIndexQueue.push(credentials.applicationSignature);
+            this.transactionIndexQueue.push(fullApplicationName);
         }
-        while (!this.canRunTransaction(credentials.applicationSignature, storeDriver, context)) {
+        while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
             await this.wait(this.yieldToRunningTransaction);
         }
         if (!isServer) {
-            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== credentials.applicationSignature);
-            this.signatureOfTransactionInProgress = credentials.applicationSignature;
+            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== fullApplicationName);
+            this.sourceOfTransactionInProgress = fullApplicationName;
         }
         await storeDriver.transact(async (transaction) => {
             this.transactionInProgress = transaction;
@@ -78,17 +84,19 @@ export class TransactionManager extends AbstractMutationManager {
     async rollback(transaction, context) {
         const storeDriver = await container(this)
             .get(STORE_DRIVER);
-        if (!storeDriver.isServer(context) && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
+        const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
+        if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
+            !== fullApplicationName) {
             let foundTransactionInQueue = false;
             this.transactionIndexQueue.filter(transIndex => {
-                if (transIndex === transaction.credentials.applicationSignature) {
+                if (transIndex === fullApplicationName) {
                     foundTransactionInQueue = true;
                     return false;
                 }
                 return true;
             });
             if (!foundTransactionInQueue) {
-                throw new Error(`Could not find transaction '${transaction.credentials.applicationSignature}' is not found`);
+                throw new Error(`Could not find transaction '${fullApplicationName}' is not found`);
             }
             return;
         }
@@ -102,9 +110,10 @@ export class TransactionManager extends AbstractMutationManager {
     async commit(transaction, context) {
         const [activeQueries, idGenerator, storeDriver] = await container(this)
             .get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
+        const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
         if (!storeDriver.isServer(context)
-            && this.signatureOfTransactionInProgress !== transaction.credentials.applicationSignature) {
-            throw new Error(`Cannot commit inactive transaction '${transaction.credentials.applicationSignature}'.`);
+            && this.sourceOfTransactionInProgress !== fullApplicationName) {
+            throw new Error(`Cannot commit inactive transaction '${fullApplicationName}'.`);
         }
         try {
             await this.saveRepositoryHistory(transaction, idGenerator, context);
@@ -141,10 +150,10 @@ export class TransactionManager extends AbstractMutationManager {
     // [transaction]);
     // this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
     clearTransaction() {
-        this.signatureOfTransactionInProgress = null;
+        this.sourceOfTransactionInProgress = null;
         this.transactionInProgress = null;
         if (this.transactionIndexQueue.length) {
-            this.signatureOfTransactionInProgress = this.transactionIndexQueue.shift();
+            this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();
         }
     }
     async saveRepositoryHistory(transaction, idGenerator, context) {
@@ -200,7 +209,7 @@ export class TransactionManager extends AbstractMutationManager {
         if (storeDriver.isServer(context)) {
             return true;
         }
-        if (this.signatureOfTransactionInProgress) {
+        if (this.sourceOfTransactionInProgress) {
             return false;
         }
         return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]

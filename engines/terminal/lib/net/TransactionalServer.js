@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { INTERNAL_DOMAIN, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
 import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER, TERMINAL_STORE } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
@@ -139,12 +139,29 @@ export class TransactionalServer {
         if (this.tempActor) {
             return this.tempActor;
         }
-        if (credentials.applicationSignature === 'internal') {
+        if (credentials.domain === INTERNAL_DOMAIN) {
             return new Actor();
         }
         const terminalStore = await container(this).get(TERMINAL_STORE);
-        const actors = terminalStore.getApplicationActorMapBySignature()
-            .get(credentials.applicationSignature);
+        let actors;
+        const actorMapForDomain = terminalStore.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain);
+        if (actorMapForDomain) {
+            actors = actorMapForDomain.get(credentials.application);
+        }
+        else {
+            throw new Error(`No Actors found for
+	Domain:
+		${credentials.domain}
+			`);
+        }
+        if (!actors) {
+            throw new Error(`No Actors found for
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+			`);
+        }
         const localTerminal = terminalStore.getFrameworkActor().terminal;
         if (!localTerminal.isLocal) {
             throw new Error(`Expecting terminal of the TerminalStore.frameworkActor to be .isLocal`);
@@ -157,8 +174,12 @@ export class TransactionalServer {
             }
         }
         if (!actor) {
-            throw new Error(`Could not find actor for Application Signature:
-	${credentials.applicationSignature}`);
+            throw new Error(`Could not find actor for
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+			`);
         }
         return actor;
     }

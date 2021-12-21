@@ -1,10 +1,10 @@
-export function getApplicationName({ domain, name, }) {
+export function getFullApplicationName({ domain, name, }) {
     if (domain.name) {
         domain = domain.name;
     }
-    return getApplicationNameFromDomainAndName(domain, name);
+    return getFullApplicationNameFromDomainAndName(domain, name);
 }
-export function getApplicationNameFromDomainAndName(domainName, applicationName) {
+export function getFullApplicationNameFromDomainAndName(domainName, applicationName) {
     if (domainName.indexOf('_') > -1) {
         throw new Error('Domain Name cannot contain "_" in it.');
     }

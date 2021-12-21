@@ -7,7 +7,7 @@ export class QueryEntityClassCreator {
         applicationsToCreate.map(dbApplication => this.create(dbApplication, airDb));
     }
     create(dbApplication, airDb) {
-        let qApplication = airDb.QM[dbApplication.name];
+        let qApplication = airDb.QM[dbApplication.fullName];
         // If the Application API source has already been loaded
         if (qApplication) {
             qApplication.__dbApplication__ = dbApplication;
@@ -20,7 +20,7 @@ export class QueryEntityClassCreator {
                 name: dbApplication.name,
                 domain: dbApplication.domain.name
             };
-            airDb.QM[dbApplication.name] = qApplication;
+            airDb.QM[dbApplication.fullName] = qApplication;
         }
         airDb.Q[dbApplication.index] = qApplication;
         setQApplicationEntities(dbApplication, qApplication, airDb.qApplications);

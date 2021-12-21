@@ -20,6 +20,7 @@ import {
 	JsonApplication,
 } from '../../../lingo/application/Application';
 import { ApplicationStatus } from '../../../lingo/application/ApplicationStatus';
+import { getFullApplicationNameFromDomainAndName } from '../../query/DbApplicationUtils';
 import { ensureChildMap } from '../../utils/DatastructureUtils';
 
 export class DbApplicationBuilder
@@ -66,12 +67,15 @@ export class DbApplicationBuilder
 			name: jsonApplication.domain,
 		};
 		const dbApplication: DbApplication = {
+			applicationPackages: [],
 			currentVersion: [dbApplicationCurrentVersion],
 			domain: dbDomain,
+			fullName: getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+			id: null,
 			index: allApplications.length,
 			name: jsonApplication.name,
-			packageName: jsonApplication.packageName,
 			scope: null,
+			signature: null,
 			sinceVersion: dbApplicationVersion,
 			status: ApplicationStatus.CURRENT,
 			versions: [dbApplicationVersion]
@@ -158,8 +162,8 @@ export class DbApplicationBuilder
 					};
 					ownApplicationVersion.references[index] = dbApplicationReference;
 					referencedApplicationVersion.referencedBy.push(dbApplicationReference);
-					ownApplicationVersion.referencesMapByName[referencedApplication.name] = dbApplicationReference;
-					referencedApplicationVersion.referencedByMapByName[ownApplication.name] = dbApplicationReference;
+					ownApplicationVersion.referencesMapByName[referencedApplication.fullName] = dbApplicationReference;
+					referencedApplicationVersion.referencedByMapByName[ownApplication.fullName] = dbApplicationReference;
 				}
 			}
 		}
@@ -466,10 +470,10 @@ export class DbApplicationBuilder
 					ensureChildMap(
 						ensureChildMap(
 							ensureChildMap(dictionary.dbColumnRelationMapByManySide,
-								manyApplication.name),
-							manyTableIndex),
-						manyRelationIndex),
-					manyApplication.domain);
+								manyApplication.domain),
+							manyApplication.name),
+						manyTableIndex),
+					manyRelationIndex);
 
 				manyRelationColumnMap[manyColumnIndex] = {
 					domain: oneApplication.domain,

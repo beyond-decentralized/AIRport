@@ -24,6 +24,7 @@ export interface IApplication {
 	// Non-Id Properties
 	scope?: string;
 	name?: string;
+	fullName?: string;
 	packageName?: string;
 	status?: string;
 	signature?: string;

@@ -2,15 +2,15 @@ import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { APPLICATION_LOCATOR, ApplicationLocator } from '@airport/landing';
 export class IFrameApplicationLocator extends ApplicationLocator {
-    async locateLatestApplicationVersionByApplicationName(applicationName, terminalStore) {
-        let applicationVersion = terminalStore.getLatestApplicationVersionMapByApplicationName()
-            .get(applicationName);
+    async locateLatestApplicationVersionByApplicationName(fullApplicationName, terminalStore) {
+        let applicationVersion = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+            .get(fullApplicationName);
         if (applicationVersion) {
             return applicationVersion;
         }
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR);
-        return await transactionalConnector.getLatestApplicationVersionMapByApplicationName(applicationName);
+        return await transactionalConnector.getLatestApplicationVersionMapByFullApplicationName(fullApplicationName);
     }
 }
 DI.set(APPLICATION_LOCATOR, IFrameApplicationLocator);

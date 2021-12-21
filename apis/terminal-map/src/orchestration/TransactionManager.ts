@@ -14,7 +14,7 @@ export interface ITransactionManager {
 
 	storeType: StoreType;
 
-	signatureOfTransactionInProgress: string
+	sourceOfTransactionInProgress: string
 	transactionInProgress: ITransaction
 
 	initialize(

@@ -10,11 +10,11 @@ export class IFrameApplicationLocator
     extends ApplicationLocator {
 
     async locateLatestApplicationVersionByApplicationName(
-        applicationName: string,
+        fullApplicationName: string,
         terminalStore: ITerminalStore,
     ): Promise<IApplicationVersion> {
-        let applicationVersion = terminalStore.getLatestApplicationVersionMapByApplicationName()
-            .get(applicationName)
+        let applicationVersion = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+            .get(fullApplicationName)
 
         if (applicationVersion) {
             return applicationVersion
@@ -23,7 +23,7 @@ export class IFrameApplicationLocator
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
 
-        return await transactionalConnector.getLatestApplicationVersionMapByApplicationName(applicationName)
+        return await transactionalConnector.getLatestApplicationVersionMapByFullApplicationName(fullApplicationName)
     }
 }
 DI.set(APPLICATION_LOCATOR, IFrameApplicationLocator)

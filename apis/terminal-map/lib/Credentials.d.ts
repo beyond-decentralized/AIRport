@@ -1,4 +1,5 @@
 export interface ICredentials {
-    applicationSignature: string;
+    application: string;
+    domain: string;
 }
 //# sourceMappingURL=Credentials.d.ts.map

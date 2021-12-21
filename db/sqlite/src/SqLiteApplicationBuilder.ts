@@ -14,7 +14,7 @@ import {
 } from '@airport/di';
 import {
   DbApplication,
-  getApplicationName,
+  getFullApplicationName,
   IStoreDriver,
   JsonApplication,
   JsonApplicationColumn,
@@ -44,14 +44,6 @@ export class SqLiteApplicationBuilder
       || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
       primaryKeySuffix = ' NOT NULL';
     }
-
-    // SEQUENCES no longer have a generated id (for simplicity of code)
-    // let autoincrementSuffix = ''
-    // if (jsonColumn.isGenerated
-    // 	&& jsonApplication.name === '@airport/airport-code'
-    // 	&& jsonEntity.name === 'SEQUENCES') {
-    // 	autoincrementSuffix = ' AUTOINCREMENT'
-    // }
 
     const suffix = primaryKeySuffix; // + autoincrementSuffix
 
@@ -92,7 +84,7 @@ export class SqLiteApplicationBuilder
 
     let allSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -111,7 +103,7 @@ export class SqLiteApplicationBuilder
 
     let stagedSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = airDb.QM[getApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }

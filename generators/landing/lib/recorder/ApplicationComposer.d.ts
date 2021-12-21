@@ -1,4 +1,4 @@
-import { ApplicationName } from '@airport/ground-control';
+import { FullApplicationName } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { AllDdlObjects, IDdlObjectRetriever } from '@airport/takeoff';
 import { ITerminalStore } from '@airport/terminal-map';
@@ -13,7 +13,7 @@ export interface IApplicationComposerContext {
 }
 export declare class ApplicationComposer implements IApplicationComposer {
     compose(jsonApplications: JsonApplicationWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, applicationLocator: IApplicationLocator, context: IApplicationComposerContext): Promise<AllDdlObjects>;
-    getExistingLatestApplicationVersion(referencedApplicationName: ApplicationName, allDdlObjects: AllDdlObjects): Promise<IApplicationVersion>;
+    getExistingLatestApplicationVersion(referencedApplicationName: FullApplicationName, allDdlObjects: AllDdlObjects): Promise<IApplicationVersion>;
     private addApplicationVersionObjects;
     private addObjects;
     private composeDomain;

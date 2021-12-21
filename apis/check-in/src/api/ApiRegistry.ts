@@ -4,7 +4,6 @@ export interface IApiRegistry {
 
     initialize(
         // installedApi: InstalledApi
-        // applicationSignature: string,
         applicationApi: IApplicationApi
     ): void
 
@@ -21,12 +20,13 @@ export interface IApiRegistry {
 }
 
 export interface InstalledApi {
-    /**
-     * TODO: Can a given application be keyed by multiple hashes?  For example,
-     * a hash can be generated of each version of the same application.
-     */
-    applicationApiMap: { [applicationApplicationApi: string]: IApplicationApi }
+    domainApiMap: { [domainName: string]: IDomainApi }
 }
+
+export interface IDomainApi {
+    applicationApiMap: { [applicationName: string]: IApplicationApi }
+}
+
 
 export interface IApplicationApi {
     apiObjectMap: { [tokenName: string]: IApiObject }

@@ -10,7 +10,7 @@ import {DI}            from '@airport/di'
 import {
 	DbApplication,
 	EntityId,
-	getApplicationName
+	getFullApplicationName
 }                      from '@airport/ground-control';
 import { QDailyArchive } from './qdailyarchive';
 import {
@@ -51,5 +51,5 @@ export function duoDiSet(
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
-	airDb.QM[getApplicationName(Q_SCHEMA)] = Q
+	airDb.QM[getFullApplicationName(Q_SCHEMA)] = Q
 })

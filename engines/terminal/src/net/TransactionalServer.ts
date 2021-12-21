@@ -1,12 +1,11 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
 import {
 	container,
 	DI,
 	IContext
 } from '@airport/di';
 import {
+	INTERNAL_DOMAIN,
 	ISaveResult,
-	JsonInsertValues,
 	OPERATION_CONTEXT_LOADER,
 	PortableQuery
 } from '@airport/ground-control';
@@ -292,12 +291,31 @@ export class TransactionalServer
 		if (this.tempActor) {
 			return this.tempActor;
 		}
-		if (credentials.applicationSignature === 'internal') {
+		if (credentials.domain === INTERNAL_DOMAIN) {
 			return new Actor()
 		}
 		const terminalStore = await container(this).get(TERMINAL_STORE)
-		const actors = terminalStore.getApplicationActorMapBySignature()
-			.get(credentials.applicationSignature)
+		let actors: IActor[]
+		const actorMapForDomain = terminalStore.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain)
+		if (actorMapForDomain) {
+			actors = actorMapForDomain.get(credentials.application)
+		} else {
+			throw new Error(
+				`No Actors found for
+	Domain:
+		${credentials.domain}
+			`)
+		}
+		if (!actors) {
+			throw new Error(
+				`No Actors found for
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+			`)
+		}
+
 		const localTerminal = terminalStore.getFrameworkActor().terminal
 		if (!localTerminal.isLocal) {
 			throw new Error(
@@ -312,8 +330,12 @@ export class TransactionalServer
 			}
 		}
 		if (!actor) {
-			throw new Error(`Could not find actor for Application Signature:
-	${credentials.applicationSignature}`);
+			throw new Error(`Could not find actor for
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+			`);
 		}
 
 		return actor

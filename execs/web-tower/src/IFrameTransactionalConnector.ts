@@ -9,7 +9,7 @@ import {
 	IContext
 } from '@airport/di';
 import {
-	getApplicationName,
+	getFullApplicationName,
 	ISaveResult,
 	ITransactionalConnector,
 	PortableQuery,
@@ -62,7 +62,7 @@ export enum AppState {
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
-	getLatestApplicationVersionMapByApplicationName(
+	getLatestApplicationVersionMapByFullApplicationName(
 		applicationName: string
 	): Promise<IApplicationVersion>
 }
@@ -336,12 +336,12 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getLatestApplicationVersionMapByApplicationName(
-		applicationName: string
+	async getLatestApplicationVersionMapByFullApplicationName(
+		fullApplicationName: string
 	): Promise<IApplicationVersion> {
 		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplicationNameIMI, IApplicationVersion>({
 			...this.getCoreFields(),
-			applicationName,
+			fullApplicationName: fullApplicationName,
 			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
@@ -413,9 +413,10 @@ export class IframeTransactionalConnector
 	}
 
 	private getCoreFields(): {
+		application: string,
 		category: 'ToDb',
+		domain: string,
 		id: number,
-		applicationSignature: string
 	} {
 		return {
 			category: 'ToDb',
@@ -501,7 +502,7 @@ export class IframeTransactionalConnector
 				this.appState = AppState.INITIALIZED
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					applicationName: getApplicationName(applicationLoader.getApplication()),
+					fullApplicationName: getFullApplicationName(applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, hostServer)
 				return true
@@ -513,7 +514,7 @@ export class IframeTransactionalConnector
 
 		let message: IInitConnectionIMI = {
 			...this.getCoreFields(),
-			application: applicationLoader.getApplication(),
+			jsonApplication: applicationLoader.getApplication(),
 			type: IsolateMessageType.APP_INITIALIZING
 		}
 

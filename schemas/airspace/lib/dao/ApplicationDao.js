@@ -51,6 +51,7 @@ export class ApplicationDao extends BaseApplicationDao {
                     name: Y
                 },
                 name: Y,
+                fullName: Y,
                 versions: {
                     id: Y,
                     majorVersion: Y,
@@ -174,20 +175,20 @@ export class ApplicationDao extends BaseApplicationDao {
             where: s.index.in(indexes)
         });
     }
-    async findMapByNames(applicationNames) {
-        const mapByName = new Map();
+    async findMapByFullNames(fullApplicationNames) {
+        const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
             select: {},
             from: [
                 s = Q.Application
             ],
-            where: s.name.in(applicationNames)
+            where: s.fullName.in(fullApplicationNames)
         });
         for (const record of records) {
-            mapByName.set(record.name, record);
+            mapByFullName.set(record.fullName, record);
         }
-        return mapByName;
+        return mapByFullName;
     }
     async findByDomainNamesAndApplicationNames(domainNames, applicationNames) {
         let s;
@@ -199,6 +200,7 @@ export class ApplicationDao extends BaseApplicationDao {
                     id: Y,
                     name: Y
                 },
+                fullName: Y,
                 name: Y
             },
             from: [
@@ -224,8 +226,8 @@ export class ApplicationDao extends BaseApplicationDao {
         for (const application of applications) {
             values.push([
                 application.index, application.domain.id, application.scope,
-                application.name, application.packageName, application.status,
-                application.signature
+                application.fullName, application.name, application.packageName,
+                application.status, application.signature
             ]);
         }
         await this.db.insertValuesGenerateIds({
@@ -234,6 +236,7 @@ export class ApplicationDao extends BaseApplicationDao {
                 a.index,
                 a.domain.id,
                 a.scope,
+                a.fullName,
                 a.name,
                 a.packageName,
                 a.status,

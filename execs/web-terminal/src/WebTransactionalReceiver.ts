@@ -5,33 +5,31 @@ import {
 import {
 	DI,
 } from '@airport/di'
-// import {
-// 	injectMovingWalkway
-// } from '@airport/moving-walkway'
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IIsolateMessage,
 	IObservableDataIMO,
 	IsolateMessageType,
 } from '@airport/security-check'
-import { TransactionalReceiver } from '@airport/terminal'
+import {
+	injectTransactionalConnector,
+	injectTransactionalServer,
+	TransactionalReceiver
+} from '@airport/terminal'
 import {
 	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver
 } from '@airport/terminal-map'
+import {
+	injectAirportDatabase,
+	injectEntityStateManager
+} from '@airport/tower'
 import {
 	Subscription
 } from 'rxjs'
 import {
 	map
 } from 'rxjs/operators'
-import {
-	injectTransactionalConnector,
-	injectTransactionalServer
-} from '@airport/terminal'
-import {
-	injectAirportDatabase,
-	injectEntityStateManager
-} from '@airport/tower'
 
 let _mainDomain = 'localhost:31717'
 
@@ -107,13 +105,14 @@ export class WebTransactionalReceiver
 					break
 				case 'IsConnectionReady':
 					const connectionIsReadyMessage: ILocalAPIResponse = {
+						application: (message as ILocalAPIRequest).application,
 						category: 'ConnectionIsReady',
+						domain: (message as ILocalAPIRequest).domain,
 						errorMessage: null,
 						id: (message as ILocalAPIRequest).id,
 						host: document.domain,
 						protocol: window.location.protocol,
 						payload: null,
-						applicationSignature: (message as ILocalAPIRequest).applicationSignature
 					};
 					(event.source as Window).postMessage(connectionIsReadyMessage, messageOrigin)
 					break
@@ -141,7 +140,8 @@ export class WebTransactionalReceiver
 	private hasValidApplicationInfo(
 		message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse
 	) {
-		return message.applicationSignature && message.applicationSignature.indexOf('.') === -1
+		return typeof message.domain === 'string' && message.domain.length >= 3
+			&& typeof message.application === 'string' && message.application.length >= 3
 	}
 
 	private async handleFromClientRequest(
@@ -154,11 +154,6 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		if (message.applicationSignature === 'AIRport') {
-			this.handleToAIRportMessage(message, messageOrigin, sourceWindow)
-			return
-		}
-
 		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host)
 		if (!numPendingMessagesFromHost) {
 			numPendingMessagesFromHost = 0
@@ -168,7 +163,10 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let numPendingMessagesForApplication = this.pendingApplicationCounts.get(message.applicationSignature)
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			message.domain, message.application)
+
+		let numPendingMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
 		if (!numPendingMessagesForApplication) {
 			numPendingMessagesForApplication = 0
 		}
@@ -178,10 +176,10 @@ export class WebTransactionalReceiver
 		}
 
 		this.pendingHostCounts.set(message.host, numPendingMessagesFromHost + 1)
-		this.pendingApplicationCounts.set(message.applicationSignature, numPendingMessagesForApplication + 1)
+		this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
 
-		if (!await this.ensureApplicationIsInstalled(message.applicationSignature, numPendingMessagesForApplication)) {
-			this.pendingApplicationCounts.set(message.applicationSignature, -1)
+		if (!await this.ensureApplicationIsInstalled(fullApplicationName, numPendingMessagesForApplication)) {
+			this.pendingApplicationCounts.set(fullApplicationName, -1)
 			return
 		}
 
@@ -190,35 +188,20 @@ export class WebTransactionalReceiver
 			pendingMessageIdsFromHost = new Map()
 			this.pendingFromClientMessageIds.set(message.host, pendingMessageIdsFromHost)
 		}
-		let pendingMessageIdsFromHostForApplication = pendingMessageIdsFromHost.get(message.applicationSignature)
+		let pendingMessageIdsFromHostForApplication = pendingMessageIdsFromHost.get(fullApplicationName)
 		if (!pendingMessageIdsFromHostForApplication) {
 			pendingMessageIdsFromHostForApplication = new Map()
-			pendingMessageIdsFromHost.set(message.applicationSignature, pendingMessageIdsFromHostForApplication)
+			pendingMessageIdsFromHost.set(fullApplicationName, pendingMessageIdsFromHostForApplication)
 		}
 		pendingMessageIdsFromHostForApplication.set(message.id, sourceWindow)
 
-		const frameWindow = this.getFrameWindow(message.applicationSignature)
+		const frameWindow = this.getFrameWindow(fullApplicationName)
 
 		if (frameWindow) {
 			// Forward the request to the correct application iframe
 			frameWindow.postMessage(message, '*')
 		} else {
-			throw new Error(`No Application IFrame found for signature: ${message.applicationSignature}`)
-		}
-	}
-
-	private handleToAIRportMessage(
-		message: ILocalAPIRequest,
-		messageOrigin: string,
-		sourceWindow: Window
-	): void {
-		if (message.objectName == 'UrlManager' && message.methodName == 'changeUrl') {
-			try {
-				const appPath = (message.args[0] as string).split('//')[1]
-				window.location.hash = '#/' + appPath
-			} catch (e) {
-				console.error(e)
-			}
+			throw new Error(`No Application IFrame found for signature: ${fullApplicationName}`)
 		}
 	}
 
@@ -247,7 +230,9 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let pendingMessagesFromHostForApplication = pendingMessagesFromHost.get(message.applicationSignature)
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			message.domain, message.application)
+		let pendingMessagesFromHostForApplication = pendingMessagesFromHost.get(fullApplicationName)
 		if (!pendingMessagesFromHostForApplication) {
 			return
 		}
@@ -264,7 +249,7 @@ export class WebTransactionalReceiver
 		if (numMessagesFromHost > 0) {
 			this.pendingHostCounts.set(message.host, numMessagesFromHost - 1)
 		}
-		let numMessagesForApplication = this.pendingApplicationCounts.get(message.applicationSignature)
+		let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
 		if (numMessagesForApplication > 0) {
 			this.pendingHostCounts.set(message.host, numMessagesForApplication - 1)
 		}
@@ -306,10 +291,12 @@ export class WebTransactionalReceiver
 			return true
 		}
 
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from application domains that match the applicationSignature
-			|| applicationDomain !== message.applicationSignature + this.domainPrefix) {
+			|| applicationDomain !== fullApplicationName + this.domainPrefix) {
 			return false
 		}
 		// Only accept requests from '${applicationName}.${mainDomainName}'
@@ -323,7 +310,7 @@ export class WebTransactionalReceiver
 		const applicationDomainSignature = applicationDomainFragments[0]
 		// check application domain-embedded signature and applicationSignature in message
 		// and make sure they result in a match
-		if (applicationDomainSignature !== message.applicationSignature) {
+		if (applicationDomainSignature !== fullApplicationName) {
 			return false
 		}
 
@@ -339,9 +326,11 @@ export class WebTransactionalReceiver
 		if (!this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = this.subsriptionMap.get(message.applicationSignature)
+				let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName)
 				if (!isolateSubscriptionMap) {
 					return
 				}
@@ -358,7 +347,7 @@ export class WebTransactionalReceiver
 			if (!response) {
 				return
 			}
-			let shemaDomainName = message.applicationSignature + '.' + _mainDomain
+			let shemaDomainName = fullApplicationName + '.' + _mainDomain
 			switch (message.type) {
 				case IsolateMessageType.SEARCH:
 				case IsolateMessageType.SEARCH_ONE:
@@ -369,10 +358,10 @@ export class WebTransactionalReceiver
 						})
 					)
 					const subscription = observableDataResult.result.subscribe()
-					let isolateSubscriptionMap = this.subsriptionMap.get(message.applicationSignature)
+					let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName)
 					if (!isolateSubscriptionMap) {
 						isolateSubscriptionMap = new Map()
-						this.subsriptionMap.set(message.applicationSignature, isolateSubscriptionMap)
+						this.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
 					}
 					isolateSubscriptionMap.set(message.id, subscription)
 					return

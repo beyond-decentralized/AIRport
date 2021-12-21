@@ -15,18 +15,19 @@ export class TerminalStore {
         });
         this.getTerminalState = selectorManager.createRootSelector(this.state);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
-        this.getApplicationActorMapBySignature = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsBySignature = new Map();
+        this.getApplicationActorMapByDomainAndApplicationNames = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsByDomainAndApplicationNames = new Map();
             for (const applicationActor of applicationActors) {
-                let actorsForSignature = applicationActorsBySignature
-                    .get(applicationActor.application.signature);
-                if (!actorsForSignature) {
-                    actorsForSignature = [];
-                    applicationActorsBySignature.set(applicationActor.application.signature, actorsForSignature);
+                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplicationNames, applicationActor.application.domain.name);
+                let actorsForApplication = applicationActorMapForDomain
+                    .get(applicationActor.application.name);
+                if (!actorsForApplication) {
+                    actorsForApplication = [];
+                    applicationActorMapForDomain.set(applicationActor.application.name, actorsForApplication);
                 }
-                actorsForSignature.push(applicationActor);
+                actorsForApplication.push(applicationActor);
             }
-            return applicationActorsBySignature;
+            return applicationActorsByDomainAndApplicationNames;
         });
         this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
         this.getDomainMapByName = selectorManager.createSelector(this.getDomains, domains => {
@@ -47,7 +48,7 @@ export class TerminalStore {
             }
             return latestApplicationVersionMapByNames;
         });
-        this.getLatestApplicationVersionMapByApplicationName = selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+        this.getLatestApplicationVersionMapByFullApplicationName = selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
             const latestApplicationVersionMapByApplicationName = new Map();
             for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
                 for (const applicationVersion of applicationVersionsForDomainName.values()) {

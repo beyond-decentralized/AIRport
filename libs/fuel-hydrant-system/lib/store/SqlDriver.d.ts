@@ -1,4 +1,4 @@
-import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, ApplicationName, ApplicationStatus, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { ITransaction } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -16,7 +16,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
             name: DomainName;
         };
         name: ApplicationName;
-        status?: ApplicationStatus;
+        fullName?: FullApplicationName;
     }, table: {
         name: string;
         tableConfig?: {

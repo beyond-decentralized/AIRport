@@ -94,8 +94,8 @@ export interface IAirportDatabase
     db: IDatabaseFacade*/
 
   getAccumulator(
-    applicationDomain: string,
-    applicationName: string,
+    domain: string,
+    application: string,
   ): IEntityAccumulator
 
   addRepository(

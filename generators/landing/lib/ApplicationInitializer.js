@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container, DI } from '@airport/di';
-import { getApplicationName } from '@airport/ground-control';
+import { getFullApplicationName } from '@airport/ground-control';
 import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
 import { APPLICATION_BUILDER, APPLICATION_CHECKER, APPLICATION_COMPOSER, APPLICATION_INITIALIZER, APPLICATION_LOCATOR, APPLICATION_RECORDER } from './tokens';
@@ -33,7 +33,7 @@ export class ApplicationInitializer {
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
-            newJsonApplicationMap.set(getApplicationName(jsonApplication), jsonApplication);
+            newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
         }
         for (const jsonApplication of applicationsWithValidDependencies) {
             await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);

@@ -10,6 +10,7 @@ import {
 import {
     Actor,
     ACTOR_DAO,
+    IActor,
 } from "@airport/holding-pattern";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
 import { TERMINAL_STORE } from "@airport/terminal-map";
@@ -31,7 +32,6 @@ export interface IInternalRecordManager {
 
     ensureApplicationRecords(
         application: JsonApplicationWithLastIds,
-        applicationSignature: string,
         context: IContext
     ): Promise<void>
 
@@ -47,7 +47,6 @@ export class InternalRecordManager
 
     async ensureApplicationRecords(
         application: JsonApplicationWithLastIds,
-        signature: string,
         context: IContext
     ): Promise<void> {
         await transactional(async (
@@ -59,13 +58,17 @@ export class InternalRecordManager
 
             await this.updateDomain(application)
 
-            let actors = terminalStore
-                .getApplicationActorMapBySignature().get(signature)
-            if (actors && actors.length) {
-                return
+            let actorMapForDomain = terminalStore
+                .getApplicationActorMapByDomainAndApplicationNames().get(application.domain)
+            let actors: IActor[]
+            if (actorMapForDomain) {
+                actors = actorMapForDomain.get(application.name)
+                if (actors && actors.length) {
+                    return
+                }
             }
 
-            actors = await actorDao.findByApplicationSignature(signature)
+            actors = await actorDao.findByDomainAndApplicationNames(application.domain, application.name)
             let anApplication: IApplication = await applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {

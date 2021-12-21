@@ -35,7 +35,7 @@ export class QueryEntityClassCreator
 		dbApplication: DbApplication,
 		airDb: IAirportDatabase
 	): QApplication {
-		let qApplication: QApplicationInternal = airDb.QM[dbApplication.name] as QApplicationInternal
+		let qApplication: QApplicationInternal = airDb.QM[dbApplication.fullName] as QApplicationInternal
 		// If the Application API source has already been loaded
 		if (qApplication) {
 			qApplication.__dbApplication__ = dbApplication
@@ -47,7 +47,7 @@ export class QueryEntityClassCreator
 				name: dbApplication.name,
 				domain: dbApplication.domain.name
 			}
-			airDb.QM[dbApplication.name] = qApplication
+			airDb.QM[dbApplication.fullName] = qApplication
 		}
 		airDb.Q[dbApplication.index] = qApplication
 		setQApplicationEntities(dbApplication, qApplication, airDb.qApplications)

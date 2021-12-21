@@ -191,8 +191,8 @@ export class AirportDatabase
 			qApplications: QApplication[]
 		) {
 			for (const qApplication of qApplications) {
-				const applicationName    = getApplicationName(qApplication)
-				this.QM[applicationName] = qApplication
+				const fullApplicationName    = getFullApplicationName(qApplication)
+				this.QM[fullApplicationName] = qApplication
 			}
 		}
 

@@ -158,7 +158,6 @@ export class JsonApplicationBuilder {
 			domain,
 			index: null,
 			name: sIndexedApplication.application.name,
-			packageName: sIndexedApplication.application.name,
 			sinceVersion: 1,
 			versions: [{
 				api: currentApplicationApi,

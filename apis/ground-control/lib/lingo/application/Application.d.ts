@@ -8,6 +8,7 @@ export declare type ApplicationPackageId = number;
 export declare type DatabaseIndex = number;
 export declare type DomainId = number;
 export declare type DomainName = string;
+export declare type FullApplicationName = string;
 export declare type JsonApplicationName = string;
 export declare type PackageId = number;
 export declare type PackageName = string;
@@ -51,13 +52,9 @@ export interface JsonApplication extends ApplicationReferenceByIndex<Application
      */
     domain: DomainName;
     /**
-     * Name of the application (npm package name).
+     * Name of the application
      */
     name: JsonApplicationName;
-    /**
-     * Name of the npm package for this application
-     */
-    packageName: PackageName;
     /**
      * Versions by integer version
      */
@@ -73,7 +70,7 @@ export interface DbApplication extends ApplicationReferenceByIndex<ApplicationIn
      */
     domain: DbDomain;
     name: ApplicationName;
-    packageName: PackageName;
+    fullName: FullApplicationName;
     scope: ApplicationScope;
     status: ApplicationStatus;
     /**

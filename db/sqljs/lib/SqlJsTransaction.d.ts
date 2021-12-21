@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { DbEntity, DomainName, InternalFragments, IStoreDriver, PortableQuery, QueryType, ApplicationName, ApplicationStatus, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { ICredentials, IOperationContext, ITransaction } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
@@ -23,7 +23,7 @@ export declare class SqlJsTransaction implements ITransaction {
             name: DomainName;
         };
         name: ApplicationName;
-        status?: ApplicationStatus;
+        fullName?: FullApplicationName;
     }, table: {
         name: string;
         tableConfig?: {

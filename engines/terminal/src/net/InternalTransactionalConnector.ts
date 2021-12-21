@@ -5,6 +5,7 @@ import {
     IContext
 } from '@airport/di';
 import {
+    INTERNAL_DOMAIN,
     ISaveResult,
     ITransactionalConnector,
     PortableQuery,
@@ -33,7 +34,8 @@ export class TransactionalConnector
             // platformConfig,
             // distributionStrategy,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             },
             {
                 internal: true,
@@ -52,7 +54,8 @@ export class TransactionalConnector
         return await transServer.find(
             portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             },
             {
                 internal: true,
@@ -72,7 +75,8 @@ export class TransactionalConnector
         return await transServer.findOne(
             portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             },
             {
                 internal: true,
@@ -92,7 +96,8 @@ export class TransactionalConnector
         return transServer.search(
             portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             },
             {
                 internal: true,
@@ -112,7 +117,8 @@ export class TransactionalConnector
         return transServer.searchOne(
             portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             },
             {
                 internal: true,
@@ -130,7 +136,8 @@ export class TransactionalConnector
 
         return await transServer.save(entity,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -146,7 +153,8 @@ export class TransactionalConnector
 
         return await transServer.saveToDestination(repositoryDestination, entity,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -163,7 +171,8 @@ export class TransactionalConnector
         return await transServer.insertValues(
             portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -178,7 +187,8 @@ export class TransactionalConnector
 
         return await transServer.insertValuesGetIds(portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -193,7 +203,8 @@ export class TransactionalConnector
 
         return await transServer.updateValues(portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -208,7 +219,8 @@ export class TransactionalConnector
 
         return await transServer.deleteWhere(portableQuery,
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -222,7 +234,8 @@ export class TransactionalConnector
 
         return await transServer.startTransaction(
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -236,7 +249,8 @@ export class TransactionalConnector
 
         return await transServer.commit(
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context
@@ -250,7 +264,8 @@ export class TransactionalConnector
 
         return await transServer.rollback(
             {
-                applicationSignature: 'internal'
+                application: null,
+                domain: INTERNAL_DOMAIN
             }, {
             internal: true,
             ...context

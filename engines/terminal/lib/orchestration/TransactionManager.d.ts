@@ -5,7 +5,7 @@ import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     storeType: StoreType;
     transactionIndexQueue: string[];
-    signatureOfTransactionInProgress: string;
+    sourceOfTransactionInProgress: string;
     transactionInProgress: ITransaction;
     yieldToRunningTransaction: number;
     /**

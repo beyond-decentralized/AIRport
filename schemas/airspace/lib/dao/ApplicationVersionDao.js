@@ -48,6 +48,7 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
                     domain: {
                         name: Y
                     },
+                    fullName: Y,
                     name: Y
                 }
             },

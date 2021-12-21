@@ -359,9 +359,9 @@ export interface IChildContainer
 		...tokens: Array<IDiToken<any>>
 	): any
 
-	getByApplicationSignatureAndName(
+	getByNames(
 		domainName: string,
-		applicationSignature: string,
+		applicationName: string,
 		tokenName: string
 	): Promise<any>
 
@@ -567,27 +567,36 @@ export class ChildContainer
 		};
 	}
 
-	async getByApplicationSignatureAndName(
+	async getByNames(
 		domainName: string,
-		applicationSignature: string,
+		applicationName: string,
 		tokenName: string
 	): Promise<any> {
-		const application = domain(domainName).getAppBySignature(applicationSignature)
+		const injectionDomain = domain(domainName)
+		if (!injectionDomain) {
+			throw new Error(`Could nof find
+	Domain:
+		${domainName}
+		`)
+		}
+		const application = domain(domainName).getApp(applicationName)
 		if (!application) {
-			throw new Error(`Could not find application with signature:
-			${applicationSignature}
-			in domain: '${domainName}'`)
+			throw new Error(`Could not find
+	Domain:
+		${domainName}
+	Application:
+		${applicationName}
+		`)
 		}
 		const token = application.tokenMap.get(tokenName)
 
 		if (!token) {
 			throw new Error(`Could not find token: ${tokenName}
-in application:
-			${application.name}
-with signature:
-			${applicationSignature}
-of domain:
-			${AIRPORT_DOMAIN.name}`)
+	in Domain:
+		${domainName}
+ 	Application:
+			${applicationName}
+		`)
 		}
 		return await this.get(token)
 	}

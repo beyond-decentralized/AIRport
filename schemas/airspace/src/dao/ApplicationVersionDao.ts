@@ -85,6 +85,7 @@ export class ApplicationVersionDao
 					domain: {
 						name: Y
 					},
+					fullName: Y,
 					name: Y
 				}
 			},

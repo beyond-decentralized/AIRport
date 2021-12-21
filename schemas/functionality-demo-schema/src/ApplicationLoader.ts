@@ -18,8 +18,7 @@ export class ApplicationLoader
     private initializing = false
 
     async load(
-        lastIds: LastIds,
-        applicationSignature: string = 'functionality-demo-schema',
+        lastIds: LastIds
     ): Promise<void> {
         if (this.initializing) {
             return
@@ -35,8 +34,6 @@ export class ApplicationLoader
         await applicationInitializer.initializeForAIRportApp(APPLICATION as any)
 
         apiRegistry.initialize(APPLICATION.versions[0].api)
-
-        AIRPORT_DOMAIN.mapApplicationBySignature('functionality-demo-schema', applicationSignature)
     }
 
     getApplication(): JsonApplicationWithLastIds {

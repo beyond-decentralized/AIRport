@@ -1,6 +1,6 @@
 import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { AIRPORT_DOMAIN, domain } from './InjectionDomain';
+import { domain } from './InjectionDomain';
 import { lib } from './InjectionApplication';
 const classMap = new Map();
 let numPendingInits = 0;
@@ -129,22 +129,31 @@ export class ChildContainer extends Container {
             objects
         };
     }
-    async getByApplicationSignatureAndName(domainName, applicationSignature, tokenName) {
-        const application = domain(domainName).getAppBySignature(applicationSignature);
+    async getByNames(domainName, applicationName, tokenName) {
+        const injectionDomain = domain(domainName);
+        if (!injectionDomain) {
+            throw new Error(`Could nof find
+	Domain:
+		${domainName}
+		`);
+        }
+        const application = domain(domainName).getApp(applicationName);
         if (!application) {
-            throw new Error(`Could not find application with signature:
-			${applicationSignature}
-			in domain: '${domainName}'`);
+            throw new Error(`Could not find
+	Domain:
+		${domainName}
+	Application:
+		${applicationName}
+		`);
         }
         const token = application.tokenMap.get(tokenName);
         if (!token) {
             throw new Error(`Could not find token: ${tokenName}
-in application:
-			${application.name}
-with signature:
-			${applicationSignature}
-of domain:
-			${AIRPORT_DOMAIN.name}`);
+	in Domain:
+		${domainName}
+ 	Application:
+			${applicationName}
+		`);
         }
         return await this.get(token);
     }

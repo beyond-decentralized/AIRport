@@ -81,9 +81,9 @@ export class ApplicationVersion {
 	entityMapByName?: { [entityName: string]: IApplicationEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [applicationName: string]: IApplicationReference } = {}
+	referencesMapByName?: { [fullApplicationName: string]: IApplicationReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [applicationName: string]: IApplicationReference } = {}
+	referencedByMapByName?: { [fullApplicationName: string]: IApplicationReference } = {}
 
 }

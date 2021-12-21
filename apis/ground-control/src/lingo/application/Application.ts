@@ -1,17 +1,18 @@
 import {
 	DbEntity,
 	JsonApplicationEntity
-}                                 from './Entity';
+} from './Entity';
 import { ApplicationReferenceByIndex } from './Property';
-import { ApplicationStatus }           from './ApplicationStatus';
+import { ApplicationStatus } from './ApplicationStatus';
 
 export type Application_Id = number;
-export type ApplicationName = string;
+export type ApplicationName = string; // Just the name of the application, without the Domain Name
 export type ApplicationSignature = string;
 export type ApplicationPackageId = number;
 export type DatabaseIndex = number;
 export type DomainId = number;
 export type DomainName = string;
+export type FullApplicationName = string; // Domain & Application Names
 export type JsonApplicationName = string;
 export type PackageId = number;
 export type PackageName = string;
@@ -74,7 +75,7 @@ export interface DbDomain {
  */
 export interface JsonApplication
 	extends ApplicationReferenceByIndex<ApplicationIndex>,
-	        JsonDatabaseObject {
+	JsonDatabaseObject {
 
 	/**
 	 * Domain of the application ('public' if published).
@@ -82,14 +83,9 @@ export interface JsonApplication
 	domain: DomainName;
 
 	/**
-	 * Name of the application (npm package name).
+	 * Name of the application
 	 */
 	name: JsonApplicationName;
-
-	/**
-	 * Name of the npm package for this application
-	 */
-	packageName: PackageName;
 
 	/**
 	 * Versions by integer version
@@ -103,7 +99,7 @@ export interface JsonApplication
  */
 export interface DbApplication
 	extends ApplicationReferenceByIndex<ApplicationIndex>,
-	        DatabaseObject {
+	DatabaseObject {
 
 	currentVersion: DbApplicationCurrentVersion[];
 
@@ -114,7 +110,7 @@ export interface DbApplication
 
 	name: ApplicationName;
 
-	packageName: PackageName;
+	fullName: FullApplicationName
 
 	scope: ApplicationScope;
 
@@ -183,9 +179,9 @@ export interface DbApplicationVersionReference {
  */
 export interface DbApplicationCurrentVersion {
 
-		application: DbApplication
+	application: DbApplication
 
-		applicationVersion: DbApplicationVersion
+	applicationVersion: DbApplicationVersion
 
 }
 
