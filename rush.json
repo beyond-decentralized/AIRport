@@ -101,6 +101,11 @@
     },
     // "execs" folder (alphabetical order)
     {
+      "packageName": "@airport/app-frame",
+      "projectFolder": "execs/app-frame",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/go-terminal",
       "projectFolder": "execs/go-terminal",
       "shouldPublish": true

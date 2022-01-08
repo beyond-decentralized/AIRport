@@ -3,7 +3,6 @@ export const APPLICATION = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/travel-document-checkpoint",
-	"packageName": "@airport/travel-document-checkpoint",
 	"sinceVersion": 1,
 	"versions": [
 		{

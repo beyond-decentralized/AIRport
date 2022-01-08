@@ -147,20 +147,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "territory",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\territory\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\territory",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "travel-document-checkpoint",
             "skipFiles": [
                 "<node_internals>/**"

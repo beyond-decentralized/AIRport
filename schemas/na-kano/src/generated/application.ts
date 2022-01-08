@@ -3,7 +3,6 @@ export const APPLICATION = {
 	"domain": "air",
 	"index": null,
 	"name": "@airport/na-kano",
-	"packageName": "@airport/na-kano",
 	"sinceVersion": 1,
 	"versions": [
 		{
@@ -102,6 +101,20 @@ export const APPLICATION = {
 						{
 							"index": 5,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "ORIGINAL_ACTOR_RECORD_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 7
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 6,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 2,
@@ -122,14 +135,36 @@ export const APPLICATION = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 6,
+							"index": 7,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 3,
+									"oneApplicationIndex": 0,
+									"oneTableIndex": 1,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "ORIGINAL_ACTOR_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 6
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 8,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "NAME",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 6
+									"index": 8
 								}
 							],
 							"sinceVersion": 1,
@@ -207,20 +242,38 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
-								"index": 6
-							},
 							"index": 6,
+							"isId": false,
+							"name": "originalActor",
+							"relationRef": {
+								"index": 3
+							},
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 5
+							},
+							"index": 7,
+							"isId": false,
+							"name": "originalActorRecordId",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 8
+							},
+							"index": 8,
 							"isId": false,
 							"name": "name",
 							"sinceVersion": 1
 						},
 						{
-							"index": 7,
+							"index": 9,
 							"isId": false,
 							"name": "items",
 							"relationRef": {
-								"index": 3
+								"index": 4
 							},
 							"sinceVersion": 1
 						}
@@ -262,12 +315,23 @@ export const APPLICATION = {
 						{
 							"index": 3,
 							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 6
+							},
+							"relationTableIndex": 1,
+							"relationTableApplicationIndex": 0,
+							"sinceVersion": 1
+						},
+						{
+							"index": 4,
+							"isId": false,
 							"oneToManyElems": {
 								"mappedBy": "todoList"
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 9
 							},
 							"relationTableIndex": 1,
 							"sinceVersion": 1
@@ -370,6 +434,20 @@ export const APPLICATION = {
 						{
 							"index": 5,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "ORIGINAL_ACTOR_RECORD_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 7
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 6,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 2,
@@ -390,10 +468,18 @@ export const APPLICATION = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 6,
+							"index": 7,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "ASSIGNED_TO",
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 3,
+									"oneApplicationIndex": 0,
+									"oneTableIndex": 1,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "ORIGINAL_ACTOR_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -401,27 +487,13 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 7,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "COMPLETED",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 7
-								}
-							],
-							"sinceVersion": 1,
-							"type": "BOOLEAN"
+							"type": "NUMBER"
 						},
 						{
 							"index": 8,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "NAME",
+							"name": "ASSIGNED_TO",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -434,12 +506,40 @@ export const APPLICATION = {
 						{
 							"index": 9,
 							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "COMPLETED",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 9
+								}
+							],
+							"sinceVersion": 1,
+							"type": "BOOLEAN"
+						},
+						{
+							"index": 10,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 10
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 11,
+							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 3,
+									"manyRelationIndex": 4,
 									"oneApplicationIndex": null,
 									"oneTableIndex": 0,
-									"oneRelationIndex": 3,
+									"oneRelationIndex": 4,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -448,21 +548,21 @@ export const APPLICATION = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 11
 								}
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
 						},
 						{
-							"index": 10,
+							"index": 12,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 3,
+									"manyRelationIndex": 4,
 									"oneApplicationIndex": null,
 									"oneTableIndex": 0,
-									"oneRelationIndex": 3,
+									"oneRelationIndex": 4,
 									"oneColumnIndex": 1,
 									"sinceVersion": 1
 								}
@@ -471,21 +571,21 @@ export const APPLICATION = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 11
 								}
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
 						},
 						{
-							"index": 11,
+							"index": 13,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 3,
+									"manyRelationIndex": 4,
 									"oneApplicationIndex": null,
 									"oneTableIndex": 0,
-									"oneRelationIndex": 3,
+									"oneRelationIndex": 4,
 									"oneColumnIndex": 2,
 									"sinceVersion": 1
 								}
@@ -494,7 +594,7 @@ export const APPLICATION = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 9
+									"index": 11
 								}
 							],
 							"sinceVersion": 1,
@@ -572,21 +672,21 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
-								"index": 6
-							},
 							"index": 6,
 							"isId": false,
-							"name": "assignedTo",
+							"name": "originalActor",
+							"relationRef": {
+								"index": 3
+							},
 							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
-								"index": 7
+								"index": 5
 							},
 							"index": 7,
 							"isId": false,
-							"name": "completed",
+							"name": "originalActorRecordId",
 							"sinceVersion": 1
 						},
 						{
@@ -595,15 +695,33 @@ export const APPLICATION = {
 							},
 							"index": 8,
 							"isId": false,
+							"name": "assignedTo",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 9
+							},
+							"index": 9,
+							"isId": false,
+							"name": "completed",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 10
+							},
+							"index": 10,
+							"isId": false,
 							"name": "name",
 							"sinceVersion": 1
 						},
 						{
-							"index": 9,
+							"index": 11,
 							"isId": false,
 							"name": "todoList",
 							"relationRef": {
-								"index": 3
+								"index": 4
 							},
 							"sinceVersion": 1
 						}
@@ -647,7 +765,18 @@ export const APPLICATION = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 9
+								"index": 6
+							},
+							"relationTableIndex": 1,
+							"relationTableApplicationIndex": 0,
+							"sinceVersion": 1
+						},
+						{
+							"index": 4,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 11
 							},
 							"relationTableIndex": 0,
 							"sinceVersion": 1
@@ -666,7 +795,6 @@ export const APPLICATION = {
 					"domain": "air",
 					"index": 0,
 					"name": "@airport/holding-pattern",
-					"packageName": "@airport/holding-pattern",
 					"sinceVersion": 1,
 					"versions": [
 						{

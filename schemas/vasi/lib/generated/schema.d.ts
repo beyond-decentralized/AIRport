@@ -45,7 +45,7 @@ export declare const SCHEMA: {
             };
         }[];
         integerVersion: number;
-        referencedSchemas: {
+        referencedApplications: {
             domain: string;
             index: number;
             name: string;
@@ -54,7 +54,7 @@ export declare const SCHEMA: {
             versions: {
                 entities: any;
                 integerVersion: number;
-                referencedSchemas: any;
+                referencedApplications: any;
                 versionString: string;
             }[];
         }[];

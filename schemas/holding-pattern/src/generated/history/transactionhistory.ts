@@ -31,7 +31,7 @@ export interface ITransactionHistory {
 	repositoryTransactionHistories?: IRepositoryTransactionHistory[];
 
 	// Transient Properties
-	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory};
+	repoTransHistoryMap?: { [repositoryId: number]: IRepositoryTransactionHistory; };
 	applicationMap?: SyncApplicationMap;
 	allOperationHistory?: IOperationHistory[];
 	allRecordHistory?: IRecordHistory[];

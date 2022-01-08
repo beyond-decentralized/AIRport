@@ -2,7 +2,6 @@ export declare const APPLICATION: {
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -487,7 +486,6 @@ export declare const APPLICATION: {
             domain: string;
             index: number;
             name: string;
-            packageName: string;
             sinceVersion: number;
             versions: {
                 entities: any;

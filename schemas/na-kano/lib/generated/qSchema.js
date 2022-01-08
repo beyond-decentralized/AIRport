@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { getSchemaName } from '@airport/ground-control';
+import { getFullApplicationName } from '@airport/ground-control';
 import { TodoItem, TodoList } from '../ddl/ddl';
 const __constructors__ = {
     TodoItem: TodoItem,
@@ -14,12 +14,12 @@ export const Q_SCHEMA = {
 };
 export const Q = Q_SCHEMA;
 export function diSet(dbEntityId) {
-    return dS(Q.__dbSchema__, dbEntityId);
+    return dS(Q.__dbApplication__, dbEntityId);
 }
 export function duoDiSet(dbEntityId) {
-    return ddS(Q.__dbSchema__, dbEntityId);
+    return ddS(Q.__dbApplication__, dbEntityId);
 }
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((airDb) => {
-    airDb.QM[getSchemaName(Q_SCHEMA)] = Q;
+    airDb.QM[getFullApplicationName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

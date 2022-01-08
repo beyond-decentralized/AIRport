@@ -3770,13 +3770,13 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencesMapByName",
-									"type": "{ [applicationName: string]: IApplicationReference; }",
+									"type": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [applicationName: string]: IApplicationReference; }",
+									"nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"isMap": true,
 									"mapValueType": "IApplicationReference",
 									"mapValueIsPrimitive": false,
-									"mapKeyName": "applicationName",
+									"mapKeyName": "fullApplicationName",
 									"mapKeyType": "string"
 								},
 								{
@@ -3791,13 +3791,13 @@ export const MAPPED_SUPERCLASS = [
 									"isMappedSuperclass": false,
 									"isTransient": true,
 									"name": "referencedByMapByName",
-									"type": "{ [applicationName: string]: IApplicationReference; }",
+									"type": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
-									"nonArrayType": "{ [applicationName: string]: IApplicationReference; }",
+									"nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"isMap": true,
 									"mapValueType": "IApplicationReference",
 									"mapValueIsPrimitive": false,
-									"mapKeyName": "applicationName",
+									"mapKeyName": "fullApplicationName",
 									"mapKeyType": "string"
 								}
 							],

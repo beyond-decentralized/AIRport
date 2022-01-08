@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { getApplicationName } from '@airport/ground-control';
+import { getFullApplicationName } from '@airport/ground-control';
 import { Level1, Level2 } from '../ddl/ddl';
 const __constructors__ = {
     Level1: Level1,
@@ -20,6 +20,6 @@ export function duoDiSet(dbEntityId) {
     return ddS(Q.__dbApplication__, dbEntityId);
 }
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((airDb) => {
-    airDb.QM[getApplicationName(Q_APPLICATION)] = Q;
+    airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q;
 });
 //# sourceMappingURL=qApplication.js.map

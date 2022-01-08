@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "Immutable",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -81,7 +81,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "SystemGenerated",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\SystemGenerated.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\SystemGenerated.ts",
         "parentClassName": "Immutable",
         "location": "./Immutable",
         "isSuperclass": true,
@@ -143,7 +143,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Immutable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -224,7 +224,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableWithActor",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
         "parentClassName": "Immutable",
         "location": "./Immutable",
         "isSuperclass": true,
@@ -324,7 +324,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "Actor",
                     "fromProject": "@airport/holding-pattern",
-                    "otherSchemaDbEntity": {
+                    "otherApplicationDbEntity": {
                         "columnMap": null,
                         "columns": [
                             {
@@ -354,7 +354,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 1,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "RANDOM_ID",
+                                "name": "UU_ID",
                                 "notNull": true,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -366,7 +366,7 @@ export const MAPPED_SUPERCLASS = [
                                     }
                                 ],
                                 "sinceVersion": null,
-                                "type": "NUMBER"
+                                "type": "STRING"
                             },
                             {
                                 "entity": null,
@@ -407,6 +407,26 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "sinceVersion": null,
                                 "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 4,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "APPLICATION_INDEX",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
                             }
                         ],
                         "idColumns": [
@@ -434,7 +454,7 @@ export const MAPPED_SUPERCLASS = [
                         ],
                         "idColumnMap": null,
                         "id": null,
-                        "index": 6,
+                        "index": 1,
                         "isLocal": true,
                         "isRepositoryEntity": false,
                         "name": "Actor",
@@ -468,6 +488,22 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 1,
                                 "isId": false,
+                                "name": "uuId",
+                                "relation": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 2,
+                                "isId": false,
                                 "name": "user",
                                 "relation": [
                                     {
@@ -494,7 +530,7 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "id": null,
-                                "index": 2,
+                                "index": 3,
                                 "isId": false,
                                 "name": "terminal",
                                 "relation": [
@@ -522,49 +558,15 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "id": null,
-                                "index": 3,
-                                "isId": false,
-                                "name": "randomId",
-                                "relation": null,
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [],
-                                "entity": null,
-                                "id": null,
                                 "index": 4,
                                 "isId": false,
-                                "name": "actorApplications",
+                                "name": "application",
                                 "relation": [
                                     {
                                         "isId": false,
-                                        "oneToManyElems": null,
-                                        "relationType": "ONE_TO_MANY",
+                                        "relationType": "MANY_TO_ONE",
                                         "id": null,
                                         "index": 2,
-                                        "property": null,
-                                        "manyRelationColumns": [],
-                                        "oneRelationColumns": [],
-                                        "relationEntity": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [],
-                                "entity": null,
-                                "id": null,
-                                "index": 5,
-                                "isId": false,
-                                "name": "repositoryActor",
-                                "relation": [
-                                    {
-                                        "isId": false,
-                                        "oneToManyElems": null,
-                                        "relationType": "ONE_TO_MANY",
-                                        "id": null,
-                                        "index": 3,
                                         "property": null,
                                         "manyRelationColumns": [],
                                         "oneRelationColumns": [],
@@ -601,8 +603,7 @@ export const MAPPED_SUPERCLASS = [
                             },
                             {
                                 "isId": false,
-                                "oneToManyElems": null,
-                                "relationType": "ONE_TO_MANY",
+                                "relationType": "MANY_TO_ONE",
                                 "id": null,
                                 "index": 2,
                                 "property": null,
@@ -610,21 +611,9 @@ export const MAPPED_SUPERCLASS = [
                                 "oneRelationColumns": [],
                                 "relationEntity": null,
                                 "sinceVersion": null
-                            },
-                            {
-                                "isId": false,
-                                "oneToManyElems": null,
-                                "relationType": "ONE_TO_MANY",
-                                "id": null,
-                                "index": 3,
-                                "property": null,
-                                "manyRelationColumns": [],
-                                "oneRelationColumns": [],
-                                "relationEntity": null,
-                                "sinceVersion": null
                             }
                         ],
-                        "schemaVersion": null,
+                        "applicationVersion": null,
                         "sinceVersion": null,
                         "tableConfig": null
                     },
@@ -642,7 +631,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Immutable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -723,7 +712,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "AgeSuitable",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\AgeSuitable.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\AgeSuitable.ts",
         "parentClassName": "ImmutableWithActor",
         "location": "./ImmutableWithActor",
         "isSuperclass": true,
@@ -815,7 +804,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableWithActor",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\ImmutableWithActor.ts",
             "parentClassName": "Immutable",
             "location": "./Immutable",
             "isSuperclass": true,
@@ -915,7 +904,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "Actor",
                         "fromProject": "@airport/holding-pattern",
-                        "otherSchemaDbEntity": {
+                        "otherApplicationDbEntity": {
                             "columnMap": null,
                             "columns": [
                                 {
@@ -945,7 +934,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 1,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "RANDOM_ID",
+                                    "name": "UU_ID",
                                     "notNull": true,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -957,7 +946,7 @@ export const MAPPED_SUPERCLASS = [
                                         }
                                     ],
                                     "sinceVersion": null,
-                                    "type": "NUMBER"
+                                    "type": "STRING"
                                 },
                                 {
                                     "entity": null,
@@ -998,6 +987,26 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "sinceVersion": null,
                                     "type": "NUMBER"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 4,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "APPLICATION_INDEX",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
                                 }
                             ],
                             "idColumns": [
@@ -1025,7 +1034,7 @@ export const MAPPED_SUPERCLASS = [
                             ],
                             "idColumnMap": null,
                             "id": null,
-                            "index": 6,
+                            "index": 1,
                             "isLocal": true,
                             "isRepositoryEntity": false,
                             "name": "Actor",
@@ -1059,6 +1068,22 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 1,
                                     "isId": false,
+                                    "name": "uuId",
+                                    "relation": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 2,
+                                    "isId": false,
                                     "name": "user",
                                     "relation": [
                                         {
@@ -1085,7 +1110,7 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "entity": null,
                                     "id": null,
-                                    "index": 2,
+                                    "index": 3,
                                     "isId": false,
                                     "name": "terminal",
                                     "relation": [
@@ -1113,49 +1138,15 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "entity": null,
                                     "id": null,
-                                    "index": 3,
-                                    "isId": false,
-                                    "name": "randomId",
-                                    "relation": null,
-                                    "sinceVersion": null
-                                },
-                                {
-                                    "propertyColumns": [],
-                                    "entity": null,
-                                    "id": null,
                                     "index": 4,
                                     "isId": false,
-                                    "name": "actorApplications",
+                                    "name": "application",
                                     "relation": [
                                         {
                                             "isId": false,
-                                            "oneToManyElems": null,
-                                            "relationType": "ONE_TO_MANY",
+                                            "relationType": "MANY_TO_ONE",
                                             "id": null,
                                             "index": 2,
-                                            "property": null,
-                                            "manyRelationColumns": [],
-                                            "oneRelationColumns": [],
-                                            "relationEntity": null,
-                                            "sinceVersion": null
-                                        }
-                                    ],
-                                    "sinceVersion": null
-                                },
-                                {
-                                    "propertyColumns": [],
-                                    "entity": null,
-                                    "id": null,
-                                    "index": 5,
-                                    "isId": false,
-                                    "name": "repositoryActor",
-                                    "relation": [
-                                        {
-                                            "isId": false,
-                                            "oneToManyElems": null,
-                                            "relationType": "ONE_TO_MANY",
-                                            "id": null,
-                                            "index": 3,
                                             "property": null,
                                             "manyRelationColumns": [],
                                             "oneRelationColumns": [],
@@ -1192,8 +1183,7 @@ export const MAPPED_SUPERCLASS = [
                                 },
                                 {
                                     "isId": false,
-                                    "oneToManyElems": null,
-                                    "relationType": "ONE_TO_MANY",
+                                    "relationType": "MANY_TO_ONE",
                                     "id": null,
                                     "index": 2,
                                     "property": null,
@@ -1201,21 +1191,9 @@ export const MAPPED_SUPERCLASS = [
                                     "oneRelationColumns": [],
                                     "relationEntity": null,
                                     "sinceVersion": null
-                                },
-                                {
-                                    "isId": false,
-                                    "oneToManyElems": null,
-                                    "relationType": "ONE_TO_MANY",
-                                    "id": null,
-                                    "index": 3,
-                                    "property": null,
-                                    "manyRelationColumns": [],
-                                    "oneRelationColumns": [],
-                                    "relationEntity": null,
-                                    "sinceVersion": null
                                 }
                             ],
-                            "schemaVersion": null,
+                            "applicationVersion": null,
                             "sinceVersion": null,
                             "tableConfig": null
                         },
@@ -1233,7 +1211,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Immutable",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+                "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],
@@ -1316,7 +1294,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "Mutable",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
         "parentClassName": "Immutable",
         "location": "./Immutable",
         "isSuperclass": true,
@@ -1407,7 +1385,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Immutable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -1488,7 +1466,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableWithActor",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\MutableWithActor.ts",
+        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\MutableWithActor.ts",
         "parentClassName": "Mutable",
         "location": null,
         "isSuperclass": true,
@@ -1588,7 +1566,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "Actor",
                     "fromProject": "@airport/holding-pattern",
-                    "otherSchemaDbEntity": {
+                    "otherApplicationDbEntity": {
                         "columnMap": null,
                         "columns": [
                             {
@@ -1618,7 +1596,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 1,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "RANDOM_ID",
+                                "name": "UU_ID",
                                 "notNull": true,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1630,7 +1608,7 @@ export const MAPPED_SUPERCLASS = [
                                     }
                                 ],
                                 "sinceVersion": null,
-                                "type": "NUMBER"
+                                "type": "STRING"
                             },
                             {
                                 "entity": null,
@@ -1671,6 +1649,26 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "sinceVersion": null,
                                 "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 4,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "APPLICATION_INDEX",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
                             }
                         ],
                         "idColumns": [
@@ -1698,7 +1696,7 @@ export const MAPPED_SUPERCLASS = [
                         ],
                         "idColumnMap": null,
                         "id": null,
-                        "index": 6,
+                        "index": 1,
                         "isLocal": true,
                         "isRepositoryEntity": false,
                         "name": "Actor",
@@ -1732,6 +1730,22 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 1,
                                 "isId": false,
+                                "name": "uuId",
+                                "relation": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 2,
+                                "isId": false,
                                 "name": "user",
                                 "relation": [
                                     {
@@ -1758,7 +1772,7 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "id": null,
-                                "index": 2,
+                                "index": 3,
                                 "isId": false,
                                 "name": "terminal",
                                 "relation": [
@@ -1786,49 +1800,15 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "id": null,
-                                "index": 3,
-                                "isId": false,
-                                "name": "randomId",
-                                "relation": null,
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [],
-                                "entity": null,
-                                "id": null,
                                 "index": 4,
                                 "isId": false,
-                                "name": "actorApplications",
+                                "name": "application",
                                 "relation": [
                                     {
                                         "isId": false,
-                                        "oneToManyElems": null,
-                                        "relationType": "ONE_TO_MANY",
+                                        "relationType": "MANY_TO_ONE",
                                         "id": null,
                                         "index": 2,
-                                        "property": null,
-                                        "manyRelationColumns": [],
-                                        "oneRelationColumns": [],
-                                        "relationEntity": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [],
-                                "entity": null,
-                                "id": null,
-                                "index": 5,
-                                "isId": false,
-                                "name": "repositoryActor",
-                                "relation": [
-                                    {
-                                        "isId": false,
-                                        "oneToManyElems": null,
-                                        "relationType": "ONE_TO_MANY",
-                                        "id": null,
-                                        "index": 3,
                                         "property": null,
                                         "manyRelationColumns": [],
                                         "oneRelationColumns": [],
@@ -1865,8 +1845,7 @@ export const MAPPED_SUPERCLASS = [
                             },
                             {
                                 "isId": false,
-                                "oneToManyElems": null,
-                                "relationType": "ONE_TO_MANY",
+                                "relationType": "MANY_TO_ONE",
                                 "id": null,
                                 "index": 2,
                                 "property": null,
@@ -1874,21 +1853,9 @@ export const MAPPED_SUPERCLASS = [
                                 "oneRelationColumns": [],
                                 "relationEntity": null,
                                 "sinceVersion": null
-                            },
-                            {
-                                "isId": false,
-                                "oneToManyElems": null,
-                                "relationType": "ONE_TO_MANY",
-                                "id": null,
-                                "index": 3,
-                                "property": null,
-                                "manyRelationColumns": [],
-                                "oneRelationColumns": [],
-                                "relationEntity": null,
-                                "sinceVersion": null
                             }
                         ],
-                        "schemaVersion": null,
+                        "applicationVersion": null,
                         "sinceVersion": null,
                         "tableConfig": null
                     },
@@ -1906,7 +1873,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "Mutable",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
+            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Mutable.ts",
             "parentClassName": "Immutable",
             "location": "./Immutable",
             "isSuperclass": true,
@@ -1997,7 +1964,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "Immutable",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
+                "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\vasi\\src\\ddl\\attributes\\Immutable.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [],

@@ -3,7 +3,6 @@ export const APPLICATION = {
     "domain": "air",
     "index": null,
     "name": "@airport/functionality-demo-schema",
-    "packageName": "@airport/functionality-demo-schema",
     "sinceVersion": 1,
     "versions": [
         {

@@ -3,7 +3,6 @@ export const APPLICATION = {
     "domain": "air",
     "index": null,
     "name": "@airport/holding-pattern",
-    "packageName": "@airport/holding-pattern",
     "sinceVersion": 1,
     "versions": [
         {
@@ -55,7 +54,7 @@ export const APPLICATION = {
                                 }
                             ],
                             "name": "ACTOR_ID",
-                            "notNull": false,
+                            "notNull": true,
                             "propertyRefs": [
                                 {
                                     "index": 2
@@ -1602,7 +1601,6 @@ export const APPLICATION = {
                     "domain": "air",
                     "index": 0,
                     "name": "@airport/travel-document-checkpoint",
-                    "packageName": "@airport/travel-document-checkpoint",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -1617,7 +1615,6 @@ export const APPLICATION = {
                     "domain": "air",
                     "index": 1,
                     "name": "@airport/airspace",
-                    "packageName": "@airport/airspace",
                     "sinceVersion": 1,
                     "versions": [
                         {

@@ -1,6 +1,6 @@
 import { Dao, DaoQueryDecorators, } from '@airport/check-in';
-import { Q, duoDiSet, } from './qSchema';
-// Schema Q object Dependency Injection readiness detection Dao
+import { Q, duoDiSet, } from './qApplication';
+// Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
         super(dbEntityId, Q);

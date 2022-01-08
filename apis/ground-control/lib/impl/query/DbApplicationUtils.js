@@ -5,18 +5,17 @@ export function getFullApplicationName({ domain, name, }) {
     return getFullApplicationNameFromDomainAndName(domain, name);
 }
 export function getFullApplicationNameFromDomainAndName(domainName, applicationName) {
-    if (domainName.indexOf('_') > -1) {
-        throw new Error('Domain Name cannot contain "_" in it.');
+    if (domainName.indexOf('___') > -1) {
+        throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
+    }
+    if (domainName.endsWith('.')
+        || domainName.endsWith('-')
+        || domainName.endsWith('__')) {
+        throw new Error('Domain Name cannot end with ".", "-" or "__"');
     }
     const domainPrefix = domainName
-        .replace(/\./g, '_')
-        .replace(/-/g, '_');
-    if (domainPrefix.endsWith('_')) {
-        throw new Error('Domain Name cannot end with "." or "-"');
-    }
-    if (domainPrefix.indexOf('__') > -1) {
-        throw new Error('Domain Name cannot have combination of two "." or "-" right next to each other.');
-    }
+        .replace(/\./g, '_dot_')
+        .replace(/-/g, '_dash_');
     if (applicationName.indexOf('_') > -1) {
         throw new Error('Application Name cannot contain "_" in it.');
     }
@@ -30,21 +29,13 @@ export function getFullApplicationNameFromDomainAndName(domainName, applicationN
         throw new Error('Application Name cannot have more than one "/" in it.');
     }
     const applicationPrefix = applicationName
-        .replace(/@/g, '__at__')
-        .replace(/\//g, '__slash__')
-        .replace(/-/g, '__dash__');
+        .replace(/@/g, '_at_')
+        .replace(/\//g, '_slash_')
+        .replace(/-/g, '_dash_');
     if (applicationPrefix.endsWith('_')) {
-        throw new Error('Application Name cannot end with "/" or "."');
-    }
-    if ((applicationName.indexOf('/') > -1
-        && applicationPrefix.indexOf('__') !== applicationPrefix.lastIndexOf('__'))
-        || (applicationName.indexOf('/') == -1
-            && applicationPrefix.indexOf('__') > -1)) {
-        throw new Error('Application Name cannot have combination of two "@", "/" or "-" right next to each other.');
+        throw new Error('Application Name cannot end with "@", "/" or "."');
     }
     return `${domainPrefix}___${applicationPrefix}`;
-}
-export function getApplicationAndDomainFromFullName(fullApplicationName) {
 }
 export function getSequenceName(prefixedTableName, columnName) {
     return `${prefixedTableName}_${columnName}__SEQUENCE`;

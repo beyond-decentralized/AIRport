@@ -45,6 +45,9 @@ export interface TodoItemGraph extends TodoItemEOptionalId, RepositoryEntityGrap
 export interface TodoItemEUpdateColumns extends RepositoryEntityEUpdateColumns {
     AGE_SUITABILITY?: number | IQNumberField;
     SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
+    ORIGINAL_ACTOR_RECORD_ID?: number | IQNumberField;
+    ORIGINAL_REPOSITORY_ID?: number | IQNumberField;
+    ORIGINAL_ACTOR_ID?: number | IQNumberField;
     ASSIGNED_TO?: string | IQStringField;
     COMPLETED?: boolean | IQBooleanField;
     NAME?: string | IQStringField;

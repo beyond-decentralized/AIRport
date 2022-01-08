@@ -3,7 +3,6 @@ export const APPLICATION = {
     "domain": "air",
     "index": null,
     "name": "@airport/moving-walkway",
-    "packageName": "@airport/moving-walkway",
     "sinceVersion": 1,
     "versions": [
         {
@@ -650,7 +649,6 @@ export const APPLICATION = {
                     "domain": "air",
                     "index": 0,
                     "name": "@airport/holding-pattern",
-                    "packageName": "@airport/holding-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -665,7 +663,6 @@ export const APPLICATION = {
                     "domain": "air",
                     "index": 1,
                     "name": "@airport/airspace",
-                    "packageName": "@airport/airspace",
                     "sinceVersion": 1,
                     "versions": [
                         {

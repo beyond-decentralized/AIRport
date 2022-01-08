@@ -12,6 +12,7 @@ dependencies:
   '@rush-temp/air-control': 'file:projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:projects/airspace.tgz'
+  '@rush-temp/app-frame': 'file:projects/app-frame.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz_typescript@4.5.2'
@@ -10684,6 +10685,28 @@ packages:
       integrity: sha512-VY6S8Z1Fz54U4s4NF9U+/tGIm+0jsyIjL8JlwgRuQ1kg4OyxUGfZnqWq3js/tukrzih8LgjHYjbPTk/ieeEFWA==
       tarball: 'file:projects/airspace.tgz'
     version: 0.0.0
+  'file:projects/app-frame.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_0aef9eaffd3058455ea9e083065aa03d
+      '@tsconfig/svelte': 2.0.1
+      rollup: 2.56.3
+      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      svelte: 3.42.4
+      svelte-check: 2.2.5_svelte@3.42.4
+      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.5.2
+      tslib: 2.1.0
+      typescript: 4.5.2
+    dev: false
+    name: '@rush-temp/app-frame'
+    resolution:
+      integrity: sha512-l64YRJSC3unX9oMBGivOq72+LmVB0pYXi6MH0Vspa+A6NZWvpPuyYtKjVAVfXUlAa2zSBFDDEOFpViGX1UNH0A==
+      tarball: 'file:projects/app-frame.tgz'
+    version: 0.0.0
   'file:projects/arrivals-n-departures.tgz':
     dev: false
     name: '@rush-temp/arrivals-n-departures'
@@ -11376,6 +11399,7 @@ specifiers:
   '@rush-temp/air-control': 'file:./projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:./projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:./projects/airspace.tgz'
+  '@rush-temp/app-frame': 'file:./projects/app-frame.tgz'
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'

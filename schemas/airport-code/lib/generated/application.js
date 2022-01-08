@@ -3,7 +3,6 @@ export const APPLICATION = {
     "domain": "air",
     "index": null,
     "name": "@airport/airport-code",
-    "packageName": "@airport/airport-code",
     "sinceVersion": 1,
     "versions": [
         {

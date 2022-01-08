@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { getApplicationName } from '@airport/ground-control';
+import { getFullApplicationName } from '@airport/ground-control';
 import { AgtRepositoryTransactionBlock, AgtSharingMessage, Archive, DailyArchiveLog, DailyTerminalSyncLog, MonthlyArchiveLog, MonthlyTerminalSyncLog, Repository, RepositoryArchive, SecurityAnswer, SecurityQuestion, Server, ServerSyncLog, SyncLog, Terminal, TerminalRepository, TuningParameters, User, UserRepository } from '../ddl/ddl';
 const __constructors__ = {
     AgtRepositoryTransactionBlock: AgtRepositoryTransactionBlock,
@@ -37,6 +37,6 @@ export function duoDiSet(dbEntityId) {
     return ddS(Q.__dbApplication__, dbEntityId);
 }
 DI.db().eventuallyGet(AIRPORT_DATABASE).then((airDb) => {
-    airDb.QM[getApplicationName(Q_SCHEMA)] = Q;
+    airDb.QM[getFullApplicationName(Q_SCHEMA)] = Q;
 });
 //# sourceMappingURL=qSchema.js.map

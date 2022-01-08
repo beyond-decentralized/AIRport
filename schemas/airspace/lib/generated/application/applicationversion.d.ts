@@ -18,10 +18,10 @@ export interface IApplicationVersion {
         [entityName: string]: IApplicationEntity;
     };
     referencesMapByName?: {
-        [applicationName: string]: IApplicationReference;
+        [fullApplicationName: string]: IApplicationReference;
     };
     referencedByMapByName?: {
-        [applicationName: string]: IApplicationReference;
+        [fullApplicationName: string]: IApplicationReference;
     };
 }
 //# sourceMappingURL=applicationversion.d.ts.map

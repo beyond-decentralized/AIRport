@@ -21,10 +21,10 @@ export declare class ApplicationVersion {
         [entityName: string]: IApplicationEntity;
     };
     referencesMapByName?: {
-        [applicationName: string]: IApplicationReference;
+        [fullApplicationName: string]: IApplicationReference;
     };
     referencedByMapByName?: {
-        [applicationName: string]: IApplicationReference;
+        [fullApplicationName: string]: IApplicationReference;
     };
 }
 //# sourceMappingURL=ApplicationVersion.d.ts.map
