@@ -114,7 +114,7 @@ export var repositoryEntity;
     repositoryEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';
     repositoryEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
     repositoryEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID';
-    repositoryEntity.SYS_WIDE_OP_ID_APPLICATION = 'air___airport__airport_code';
+    repositoryEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____airport___airport_code';
     repositoryEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     repositoryEntity.systemWideOperationId = 'systemWideOperationId';
     repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';

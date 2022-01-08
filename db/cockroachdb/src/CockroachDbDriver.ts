@@ -35,7 +35,7 @@ from
 	sqlite_master
 WHERE
 	type = 'table'
-	AND tbl_name = '${applicationName}__${tableName}'`,
+	AND tbl_name = '${applicationName}___${tableName}'`,
 			[], context
 		)
 

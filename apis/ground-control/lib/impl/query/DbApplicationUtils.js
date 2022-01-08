@@ -16,6 +16,9 @@ export function getFullApplicationNameFromDomainAndName(domainName, applicationN
     const domainPrefix = domainName
         .replace(/\./g, '_dot_')
         .replace(/-/g, '_dash_');
+    if (domainPrefix.indexOf('___') > -1) {
+        throw new Error('Domain Name cannot have with ".", "-" or "_" right next to each other.');
+    }
     if (applicationName.indexOf('_') > -1) {
         throw new Error('Application Name cannot contain "_" in it.');
     }
@@ -34,6 +37,9 @@ export function getFullApplicationNameFromDomainAndName(domainName, applicationN
         .replace(/-/g, '_dash_');
     if (applicationPrefix.endsWith('_')) {
         throw new Error('Application Name cannot end with "@", "/" or "."');
+    }
+    if (applicationPrefix.indexOf('___') > -1) {
+        throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
     }
     return `${domainPrefix}___${applicationPrefix}`;
 }
