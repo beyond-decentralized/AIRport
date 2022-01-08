@@ -100,7 +100,6 @@ export class JsonApplicationBuilder {
                         domain: sApplicationReference.dbApplication.domain.name,
                         index: sApplicationReference.index,
                         name: sApplicationReference.dbApplication.name,
-                        packageName: sApplicationReference.dbApplication.packageName,
                         sinceVersion: 1,
                         versions: [{
                                 entities: null,

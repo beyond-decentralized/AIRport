@@ -78,7 +78,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
     }
     function emitFiles(entityMapByName, configuration, applicationMapByProjectName) {
         const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-        const applicationPath = generatedDirPath + '/application.json';
+        const applicationPath = generatedDirPath + '/application-spec.json';
         const applicationSourcePath = generatedDirPath + '/application.ts';
         const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
         if (!fs.existsSync(generatedDirPath)) {

@@ -3,7 +3,7 @@ import {
 	DbApplicationBuilder,
 	IDbApplicationBuilder,
 	JsonApplication
-}         from '@airport/ground-control';
+} from '@airport/ground-control';
 import fs from 'fs';
 
 export interface IApplicationLoader {
@@ -19,16 +19,16 @@ export interface IApplicationLoader {
 export class ApplicationLoader
 	implements IApplicationLoader {
 
-	allApplications: DbApplication[]            = [];
+	allApplications: DbApplication[] = [];
 	dbApplicationBuilder: IDbApplicationBuilder = new DbApplicationBuilder();
-	dictionary                        = {
+	dictionary = {
 		dbColumnRelationMapByManySide: {},
 		dbColumnRelationMapByOneSide: {}
 	};
 
 	findAllReferencedJsonApplications(): JsonApplication[] {
 		const jsonApplications: JsonApplication[] = [];
-		const fileNames                 = fs.readdirSync(process.cwd() + '/node_modules/');
+		const fileNames = fs.readdirSync(process.cwd() + '/node_modules/');
 		for (let fileName of fileNames) {
 			if (fileName.startsWith('@')) {
 				const subDirFileNames = fs.readdirSync(process.cwd() + '/node_modules/' + fileName + '/');
@@ -81,8 +81,10 @@ export class ApplicationLoader
 		let relatedApplicationJson;
 		try {
 			relatedApplicationJson = fs.readFileSync(process.cwd() + '/node_modules/'
-				+ projectName + '/src/generated/application.json');
+				+ projectName + '/src/generated/application-spec.json');
 		} catch (e) {
+			console.error(`Unable to load Application Spec from:
+${process.cwd()}/node_modules/${projectName}/src/generated/application-spec.json`)
 			return null;
 		}
 		// if (!relatedApplicationProject) {

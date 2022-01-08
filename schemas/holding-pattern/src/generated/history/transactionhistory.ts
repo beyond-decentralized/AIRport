@@ -1,4 +1,5 @@
 import {
+	IRepositoryTransactionHistory,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,

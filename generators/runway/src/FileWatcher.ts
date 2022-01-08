@@ -116,7 +116,7 @@ export async function watchFiles(
 		applicationMapByProjectName: { [projectName: string]: DbApplication },
 	): void {
 		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-		const applicationPath = generatedDirPath + '/application.json';
+		const applicationPath = generatedDirPath + '/application-spec.json';
 		const applicationSourcePath = generatedDirPath + '/application.ts';
 		const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
 
