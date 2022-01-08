@@ -30,12 +30,6 @@ export class ApiRegistry
         apiObject: any,
         apiOperation: IApiOperation
     }> {
-        // const applicationApi = this.installedApi.applicationApiMap[applicationSignature]
-        // if (!applicationApi) {
-        //     throw new Error(`Could not find ApplicationAPI for signature:
-        //     ${applicationSignature}`)
-        // }
-        // const apiObjectDefinition = applicationApi.apiObjectMap[apiObjectName]
         const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName]
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for

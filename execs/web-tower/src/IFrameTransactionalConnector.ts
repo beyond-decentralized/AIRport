@@ -70,6 +70,9 @@ export interface IIframeTransactionalConnector
 export class IframeTransactionalConnector
 	implements IIframeTransactionalConnector {
 
+	application: string
+	domain: string
+
 	dbName: string;
 	serverUrl: string;
 
@@ -104,8 +107,12 @@ export class IframeTransactionalConnector
 			}
 
 			const origin = event.origin;
-			if (message.applicationSignature.indexOf('.') > -1) {
-				// Invalid application signature - cannot have periods that would point to invalid subdomains
+			if (message.domain.indexOf('.') > -1) {
+				// Invalid Domain name - cannot have periods that would point to invalid subdomains
+				return
+			}
+			if (message.application.indexOf('.') > -1) {
+				// Invalid Application name - cannot have periods that would point to invalid subdomains
 				return
 			}
 			const mainDomain = origin.split('//')[1]
@@ -120,10 +127,14 @@ export class IframeTransactionalConnector
 			if (ownDomain !== 'localhost') {
 				// Only accept requests from https protocol
 				if (!origin.startsWith("https")
-					// And only if message has the application signature 
-					|| !message.applicationSignature
+					// And only if message has Domain and Application names 
+					|| !message.domain
+					|| !message.application
 					// And if own domain is a direct sub-domain of the message's domain
-					|| ownDomain !== message.applicationSignature + domainSuffix) {
+					|| ownDomain !== getFullApplicationName({
+						domain: message.domain,
+						name: message.application,
+					}) + domainSuffix) {
 					return
 				}
 				const ownDomainFragments = ownDomain.split('.')
@@ -140,6 +151,8 @@ export class IframeTransactionalConnector
 					this.handleLocalApiRequest(message as ILocalAPIRequest, origin).then()
 					return
 				case 'FromDb':
+					this.domain = message.domain
+					this.application = message.application
 					if (message.type === IsolateMessageType.APP_INITIALIZING) {
 						if (this.appState === AppState.NOT_INITIALIED) {
 							let initConnectionIMO: IInitConnectionIMO = message
@@ -419,9 +432,10 @@ export class IframeTransactionalConnector
 		id: number,
 	} {
 		return {
+			application: this.application,
 			category: 'ToDb',
+			domain: this.domain,
 			id: ++this.messageId,
-			applicationSignature: window.location.hostname.split('.')[0],
 		}
 	}
 

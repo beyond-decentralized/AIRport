@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { getApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { getFullApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { APPLICATION_LOADER, LOCAL_API_SERVER } from '@airport/security-check';
 import { Observable } from 'rxjs';
@@ -33,8 +33,12 @@ export class IframeTransactionalConnector {
                 this.messageCallback(message);
             }
             const origin = event.origin;
-            if (message.applicationSignature.indexOf('.') > -1) {
-                // Invalid application signature - cannot have periods that would point to invalid subdomains
+            if (message.domain.indexOf('.') > -1) {
+                // Invalid Domain name - cannot have periods that would point to invalid subdomains
+                return;
+            }
+            if (message.application.indexOf('.') > -1) {
+                // Invalid Application name - cannot have periods that would point to invalid subdomains
                 return;
             }
             const mainDomain = origin.split('//')[1];
@@ -49,10 +53,14 @@ export class IframeTransactionalConnector {
             if (ownDomain !== 'localhost') {
                 // Only accept requests from https protocol
                 if (!origin.startsWith("https")
-                    // And only if message has the application signature 
-                    || !message.applicationSignature
+                    // And only if message has Domain and Application names 
+                    || !message.domain
+                    || !message.application
                     // And if own domain is a direct sub-domain of the message's domain
-                    || ownDomain !== message.applicationSignature + domainSuffix) {
+                    || ownDomain !== getFullApplicationName({
+                        domain: message.domain,
+                        name: message.application,
+                    }) + domainSuffix) {
                     return;
                 }
                 const ownDomainFragments = ownDomain.split('.');
@@ -69,6 +77,8 @@ export class IframeTransactionalConnector {
                     this.handleLocalApiRequest(message, origin).then();
                     return;
                 case 'FromDb':
+                    this.domain = message.domain;
+                    this.application = message.application;
                     if (message.type === IsolateMessageType.APP_INITIALIZING) {
                         if (this.appState === AppState.NOT_INITIALIED) {
                             let initConnectionIMO = message;
@@ -262,9 +272,10 @@ export class IframeTransactionalConnector {
     }
     getCoreFields() {
         return {
+            application: this.application,
             category: 'ToDb',
+            domain: this.domain,
             id: ++this.messageId,
-            applicationSignature: window.location.hostname.split('.')[0],
         };
     }
     async sendMessage(message) {
@@ -328,7 +339,7 @@ export class IframeTransactionalConnector {
                 this.appState = AppState.INITIALIZED;
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    applicationName: getApplicationName(applicationLoader.getApplication()),
+                    fullApplicationName: getFullApplicationName(applicationLoader.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, hostServer);
                 return true;

@@ -24,6 +24,8 @@ export interface IIframeTransactionalConnector extends ITransactionalConnector {
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
+    application: string;
+    domain: string;
     dbName: string;
     serverUrl: string;
     pendingMessageMap: Map<number, IMessageInRecord>;

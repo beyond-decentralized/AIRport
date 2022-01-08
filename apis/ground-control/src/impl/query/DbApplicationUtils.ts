@@ -1,3 +1,4 @@
+import { FullApplicationName } from '../..';
 import { ColumnName } from '../../lingo/application/Property';
 
 export function getFullApplicationName({
@@ -47,9 +48,9 @@ export function getFullApplicationNameFromDomainAndName(
 	}
 
 	const applicationPrefix = applicationName
-		.replace(/@/g, '_')
-		.replace(/\//g, '__')
-		.replace(/-/g, '_');
+		.replace(/@/g, '__at__')
+		.replace(/\//g, '__slash__')
+		.replace(/-/g, '__dash__');
 
 	if (applicationPrefix.endsWith('_')) {
 		throw new Error('Application Name cannot end with "/" or "."');
@@ -62,7 +63,13 @@ export function getFullApplicationNameFromDomainAndName(
 		throw new Error('Application Name cannot have combination of two "@", "/" or "-" right next to each other.');
 	}
 
-	return `${domainPrefix}__${applicationPrefix}`;
+	return `${domainPrefix}___${applicationPrefix}`;
+}
+
+export function getApplicationAndDomainFromFullName(
+	fullApplicationName: FullApplicationName
+) {
+	
 }
 
 export function getSequenceName(

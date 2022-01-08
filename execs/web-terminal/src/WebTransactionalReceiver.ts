@@ -206,12 +206,12 @@ export class WebTransactionalReceiver
 	}
 
 	private getFrameWindow(
-		applicationSignature: string
+		fullApplicationName: string
 	) {
 		const iframes = document.getElementsByTagName("iframe")
 		for (var i = 0; i < iframes.length; i++) {
 			let iframe = iframes[i]
-			if (iframe.name === applicationSignature) {
+			if (iframe.name === fullApplicationName) {
 				return iframe.contentWindow
 			}
 		}
@@ -259,13 +259,13 @@ export class WebTransactionalReceiver
 	}
 
 	private async ensureApplicationIsInstalled(
-		applicationSignature: string,
+		fullApplicationName: string,
 		numPendingMessagesForApplication: number
 	): Promise<boolean> {
-		if (!applicationSignature) {
+		if (!fullApplicationName) {
 			return false
 		}
-		if (this.installedApplicationFrames.has(applicationSignature)) {
+		if (this.installedApplicationFrames.has(fullApplicationName)) {
 			return true
 		}
 
@@ -295,7 +295,7 @@ export class WebTransactionalReceiver
 			message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
-			// and from application domains that match the applicationSignature
+			// and from application domains that match the fullApplicationName
 			|| applicationDomain !== fullApplicationName + this.domainPrefix) {
 			return false
 		}
@@ -307,15 +307,15 @@ export class WebTransactionalReceiver
 		if (applicationDomainFragments[0] === 'www') {
 			return false
 		}
-		const applicationDomainSignature = applicationDomainFragments[0]
-		// check application domain-embedded signature and applicationSignature in message
+		const applicationDomainFirstFragment = applicationDomainFragments[0]
+		// check application domain-embedded signature and fullApplicationName in message
 		// and make sure they result in a match
-		if (applicationDomainSignature !== fullApplicationName) {
+		if (applicationDomainFirstFragment !== fullApplicationName) {
 			return false
 		}
 
 		// Make sure the application is installed
-		return this.installedApplicationFrames.has(applicationDomainSignature)
+		return this.installedApplicationFrames.has(applicationDomainFirstFragment)
 	}
 
 	private handleIsolateMessage(
