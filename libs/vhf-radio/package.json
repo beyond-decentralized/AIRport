@@ -3,8 +3,7 @@
     "@airport/aviation-communication": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/pressurization": "0.0.1",
-    "broadcast-channel": "^4.9.0",
-    "uuid": "^8.3.2"
+    "broadcast-channel": "^4.9.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -16,11 +15,9 @@
     "tslint": "^5.14.0",
     "typescript": "^4.5.2"
   },
-  "main": "lib/index.js",
   "name": "@airport/vhf-radio",
   "scripts": {
-    "build": "rollup -c",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "build": "rollup -c"
   },
   "type": "module",
   "typings": "lib/index",
