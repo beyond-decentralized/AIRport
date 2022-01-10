@@ -2,7 +2,7 @@
 import {
     ILocalAPIRequest,
     ILocalAPIResponse
-} from "@airport/autopilot";
+} from "@airport/aviation-communication";
 
 export interface ILocalAPIServer {
 

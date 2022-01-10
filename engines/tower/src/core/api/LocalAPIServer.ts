@@ -1,7 +1,7 @@
 import {
     ILocalAPIRequest,
     ILocalAPIResponse
-} from "@airport/autopilot";
+} from "@airport/aviation-communication";
 import { API_REGISTRY } from "@airport/check-in";
 import {
     container,

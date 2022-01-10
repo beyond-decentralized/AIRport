@@ -12,6 +12,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/aviation-communication",
+      "projectFolder": "apis/aviation-communication",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/arrivals-n-departures",
       "projectFolder": "apis/arrivals-n-departures",
       "shouldPublish": true
@@ -101,11 +106,6 @@
     },
     // "execs" folder (alphabetical order)
     {
-      "packageName": "@airport/app-frame",
-      "projectFolder": "execs/app-frame",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/go-terminal",
       "projectFolder": "execs/go-terminal",
       "shouldPublish": true
@@ -113,6 +113,11 @@
     {
       "packageName": "@airport/go-tower",
       "projectFolder": "execs/go-tower",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-airport",
+      "projectFolder": "execs/web-airport",
       "shouldPublish": true
     },
     {
@@ -216,6 +221,11 @@
     {
       "packageName": "@airport/ramp",
       "projectFolder": "libs/ramp",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/vhf-radio",
+      "projectFolder": "libs/vhf-radio",
       "shouldPublish": true
     },
     // "nonhub" folder (alphabetical order)

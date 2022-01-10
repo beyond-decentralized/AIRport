@@ -3,7 +3,6 @@ import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { APPLICATION_LOCATOR, ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
-import { AllDdlObjects } from '@airport/takeoff'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
 export class IFrameApplicationLocator

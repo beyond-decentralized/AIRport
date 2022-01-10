@@ -1,4 +1,4 @@
-import { ILocalAPIRequest } from "@airport/autopilot";
+import { ILocalAPIRequest } from "@airport/aviation-communication";
 
 export interface IAIRportMessageReceiver {
 

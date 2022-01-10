@@ -1,5 +1,5 @@
 import { lib } from "@airport/di";
-import { ILocalAPIClient } from "./client/LocalAPIClient";
+import { ILocalAPIClient } from "./LocalAPIClient";
 import { IUiStateManager } from "./UiStateManager";
 
 const autopilot = lib('autopilot');

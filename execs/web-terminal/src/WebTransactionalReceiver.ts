@@ -1,7 +1,7 @@
 import {
 	ILocalAPIRequest,
 	ILocalAPIResponse
-} from '@airport/autopilot'
+} from '@airport/aviation-communication'
 import {
 	DI,
 } from '@airport/di'

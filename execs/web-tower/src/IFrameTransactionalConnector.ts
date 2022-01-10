@@ -2,7 +2,7 @@ import {
 	IEntityContext,
 	IQueryContext
 } from '@airport/air-control';
-import { ILocalAPIRequest } from '@airport/autopilot';
+import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
 	container,
 	DI,

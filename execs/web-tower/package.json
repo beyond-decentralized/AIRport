@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@airport/air-control": "0.0.1",
-    "@airport/autopilot": "0.0.1",
+    "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
@@ -11,6 +11,7 @@
     "@airport/terminal-map": "0.0.1",
     "@airport/airspace": "0.0.1",
     "@airport/tower": "0.0.1",
+    "broadcast-channel": "^4.9.0",
     "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",

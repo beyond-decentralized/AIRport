@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@airport/aviation-communication": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/pressurization": "0.0.1",
     "uuid": "^8.3.2"

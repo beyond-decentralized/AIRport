@@ -12,7 +12,6 @@ dependencies:
   '@rush-temp/air-control': 'file:projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:projects/airspace.tgz'
-  '@rush-temp/app-frame': 'file:projects/app-frame.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz_typescript@4.5.2'
@@ -69,6 +68,8 @@ dependencies:
   '@rush-temp/tower': 'file:projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
   '@rush-temp/vasi': 'file:projects/vasi.tgz'
+  '@rush-temp/vhf-radio': 'file:projects/vhf-radio.tgz'
+  '@rush-temp/web-airport': 'file:projects/web-airport.tgz'
   '@rush-temp/web-terminal': 'file:projects/web-terminal.tgz'
   '@rush-temp/web-tower': 'file:projects/web-tower.tgz'
   '@tsconfig/node16': 1.0.2
@@ -77,6 +78,7 @@ dependencies:
   '@types/sql.js': 1.4.3
   '@types/uuid': 8.3.0
   async: 3.2.1
+  broadcast-channel: 4.9.0
   cassandra-driver: 4.6.3
   cross-env: 7.0.3
   css-loader: 3.5.3_webpack@4.43.0
@@ -1261,6 +1263,14 @@ packages:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
+  /@babel/runtime/7.16.7:
+    dependencies:
+      regenerator-runtime: 0.13.9
+    dev: false
+    engines:
+      node: '>=6.9.0'
+    resolution:
+      integrity: sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==
   /@babel/template/7.15.4:
     dependencies:
       '@babel/code-frame': 7.14.5
@@ -2531,6 +2541,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
+  /big-integer/1.6.51:
+    dev: false
+    engines:
+      node: '>=0.6'
+    resolution:
+      integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
   /big.js/5.2.2:
     dev: false
     resolution:
@@ -2665,6 +2681,19 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
+  /broadcast-channel/4.9.0:
+    dependencies:
+      '@babel/runtime': 7.16.7
+      detect-node: 2.1.0
+      microseconds: 0.2.0
+      nano-time: 1.0.0
+      oblivious-set: 1.0.0
+      p-queue: 6.6.2
+      rimraf: 3.0.2
+      unload: 2.3.1
+    dev: false
+    resolution:
+      integrity: sha512-xWzFb3wrOZGJF2kOSs2D3KvHXdLDMVb+WypEIoNvwblcHgUBydVy65pDJ9RS4WN9Kyvs0UVQuCCzfKme0G6Qjw==
   /brorand/1.1.0:
     dev: false
     resolution:
@@ -3852,6 +3881,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
+  /detect-node/2.1.0:
+    dev: false
+    resolution:
+      integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
   /diff/4.0.2:
     dev: false
     engines:
@@ -4193,6 +4226,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-qerSRB0p+UDEssxTtm6EDKcE7W4OaoisfIMl4CngyEhjpYglocpNg6UEqCvemdGhosAsg4sO2dXJOdyBifPGCg==
+  /eventemitter3/4.0.7:
+    dev: false
+    resolution:
+      integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
   /events/3.3.0:
     dev: false
     engines:
@@ -6227,6 +6264,10 @@ packages:
       node: '>=8.6'
     resolution:
       integrity: sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==
+  /microseconds/0.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-n7DHHMjR1avBbSpsTBj6fmMGh2AGrifVV4e+WYc3Q9lO+xnSZ3NyhcBND3vzzatt05LFhoKFRxrIyklmLlUtyA==
   /miller-rabin/4.0.1:
     dependencies:
       bn.js: 4.11.8
@@ -6463,6 +6504,12 @@ packages:
     optional: true
     resolution:
       integrity: sha512-isWHgVjnFjh2x2yuJ/tj3JbwoHu3UC2dX5G/88Cm24yB6YopVgxvBObDY7n5xW6ExmFhJpSEQqFPvq9zaXc8Jw==
+  /nano-time/1.0.0:
+    dependencies:
+      big-integer: 1.6.51
+    dev: false
+    resolution:
+      integrity: sha1-sFVPaa2J4i0JB/ehKwmTpdlhN+8=
   /nanoid/3.1.25:
     dev: false
     engines:
@@ -6698,6 +6745,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-h6EKxMFpS9Lhy/U1kaZhQftd10c=
+  /oblivious-set/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==
   /obuf/1.1.2:
     dev: false
     resolution:
@@ -6856,6 +6907,15 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==
+  /p-queue/6.6.2:
+    dependencies:
+      eventemitter3: 4.0.7
+      p-timeout: 3.2.0
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==
   /p-retry/3.0.1:
     dependencies:
       retry: 0.12.0
@@ -9955,6 +10015,13 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==
+  /unload/2.3.1:
+    dependencies:
+      '@babel/runtime': 7.16.7
+      detect-node: 2.1.0
+    dev: false
+    resolution:
+      integrity: sha512-MUZEiDqvAN9AIDRbbBnVYVvfcR6DrjCqeU2YQMmliFZl9uaBUjTkhuDQkBiyAy8ad5bx1TXVbqZ3gg7namsWjA==
   /unpipe/1.0.0:
     dev: false
     engines:
@@ -10685,28 +10752,6 @@ packages:
       integrity: sha512-VY6S8Z1Fz54U4s4NF9U+/tGIm+0jsyIjL8JlwgRuQ1kg4OyxUGfZnqWq3js/tukrzih8LgjHYjbPTk/ieeEFWA==
       tarball: 'file:projects/airspace.tgz'
     version: 0.0.0
-  'file:projects/app-frame.tgz':
-    dependencies:
-      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
-      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
-      '@rollup/plugin-typescript': 8.2.5_0aef9eaffd3058455ea9e083065aa03d
-      '@tsconfig/svelte': 2.0.1
-      rollup: 2.56.3
-      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
-      rollup-plugin-livereload: 2.0.5
-      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
-      rollup-plugin-terser: 7.0.2_rollup@2.56.3
-      svelte: 3.42.4
-      svelte-check: 2.2.5_svelte@3.42.4
-      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.5.2
-      tslib: 2.1.0
-      typescript: 4.5.2
-    dev: false
-    name: '@rush-temp/app-frame'
-    resolution:
-      integrity: sha512-l64YRJSC3unX9oMBGivOq72+LmVB0pYXi6MH0Vspa+A6NZWvpPuyYtKjVAVfXUlAa2zSBFDDEOFpViGX1UNH0A==
-      tarball: 'file:projects/app-frame.tgz'
-    version: 0.0.0
   'file:projects/arrivals-n-departures.tgz':
     dev: false
     name: '@rush-temp/arrivals-n-departures'
@@ -10725,6 +10770,7 @@ packages:
     version: 0.0.0
   'file:projects/autopilot.tgz_typescript@4.5.2':
     dependencies:
+      broadcast-channel: 4.9.0
       tslint: 5.20.1_typescript@4.5.2
       uuid: 8.3.2
     dev: false
@@ -11365,6 +11411,48 @@ packages:
       integrity: sha512-xonl9qqYggc/ONGP0X2AYxM792xd5WmvJ6Dl2EpksXWgqk46j+NFcBx9CPpNdjjKjDURyyzDygacmDGUi+C87Q==
       tarball: 'file:projects/vasi.tgz'
     version: 0.0.0
+  'file:projects/vhf-radio.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_0aef9eaffd3058455ea9e083065aa03d
+      broadcast-channel: 4.9.0
+      rollup: 2.56.3
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      tslib: 2.1.0
+      tslint: 5.20.1_typescript@4.5.2
+      typescript: 4.5.2
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/vhf-radio'
+    resolution:
+      integrity: sha512-7m+LQx73oZLFHtJMzqRsSokkl9K7OJkKK5Fr0lazIrvFuSXlNoYsoJ7ikkCXnTyFj1JU8v4+t9vssP1FM/d9sg==
+      tarball: 'file:projects/vhf-radio.tgz'
+    version: 0.0.0
+  'file:projects/web-airport.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 17.1.0_rollup@2.56.3
+      '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
+      '@rollup/plugin-typescript': 8.2.5_0aef9eaffd3058455ea9e083065aa03d
+      '@tsconfig/svelte': 2.0.1
+      page: 1.11.6
+      rollup: 2.56.3
+      rollup-plugin-css-only: 3.1.0_rollup@2.56.3
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.56.3+svelte@3.42.4
+      rollup-plugin-terser: 7.0.2_rollup@2.56.3
+      sirv-cli: 1.0.14
+      svelte: 3.42.4
+      svelte-check: 2.2.5_svelte@3.42.4
+      svelte-preprocess: 4.9.2_svelte@3.42.4+typescript@4.5.2
+      tslib: 2.1.0
+      typescript: 4.5.2
+    dev: false
+    name: '@rush-temp/web-airport'
+    resolution:
+      integrity: sha512-0IhSRCwzuvkEEsPeMue7pz/7xoqd/RXdD1ZvuWFRp2gs9LdnkgHcwFBMfOypGAbS5Nqbp/PRiJ3D0NeoWNqXrQ==
+      tarball: 'file:projects/web-airport.tgz'
+    version: 0.0.0
   'file:projects/web-terminal.tgz':
     dependencies:
       rxjs: 7.4.0
@@ -11377,11 +11465,12 @@ packages:
     version: 0.0.0
   'file:projects/web-tower.tgz':
     dependencies:
+      broadcast-channel: 4.9.0
       rxjs: 7.4.0
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-R33wzu4OLZUGKRBBQ/0Kx4JoAoqCeTqXr9j2zXt5SYhvnUK9qo4MQK2RtDWeu58O30vejqK7hCKK8HoOJJYTWA==
+      integrity: sha512-xgJAWH0NkVW9KEv5PMZjyQ+7cTeTipbUPy3j8jJKCvX+Nc2NZbpGqmI21rQ6uIygWG89Bj+oF1bwrBJX62pw2Q==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
 registry: ''
@@ -11399,7 +11488,6 @@ specifiers:
   '@rush-temp/air-control': 'file:./projects/air-control.tgz'
   '@rush-temp/airport-code': 'file:./projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:./projects/airspace.tgz'
-  '@rush-temp/app-frame': 'file:./projects/app-frame.tgz'
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
@@ -11456,6 +11544,8 @@ specifiers:
   '@rush-temp/tower': 'file:./projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
   '@rush-temp/vasi': 'file:./projects/vasi.tgz'
+  '@rush-temp/vhf-radio': 'file:./projects/vhf-radio.tgz'
+  '@rush-temp/web-airport': 'file:./projects/web-airport.tgz'
   '@rush-temp/web-terminal': 'file:./projects/web-terminal.tgz'
   '@rush-temp/web-tower': 'file:./projects/web-tower.tgz'
   '@tsconfig/node16': 1.0.2
@@ -11464,6 +11554,7 @@ specifiers:
   '@types/sql.js': ^1.4.3
   '@types/uuid': ^8.3.0
   async: ^3.2.1
+  broadcast-channel: ^4.9.0
   cassandra-driver: ^4.6.3
   cross-env: ^7.0.2
   css-loader: ^3.5.3
