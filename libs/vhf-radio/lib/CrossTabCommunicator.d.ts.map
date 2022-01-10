@@ -1,0 +1,1 @@
+{"version":3,"file":"CrossTabCommunicator.d.ts","sourceRoot":"","sources":["../src/CrossTabCommunicator.ts"],"names":[],"mappings":"AAUA,OAAO,EAAE,gBAAgB,IAAI,oBAAoB,EAAE,MAAM,mBAAmB,CAAC;AAG7E,MAAM,WAAW,qBAAqB;CAErC;AAED,qBAAa,oBACT,YAAW,qBAAqB;IAEhC,mBAAmB,UAAS;IAE5B,UAAU,EAAE,MAAM,CAAA;IAElB,wBAAwB,EAAE,OAAO,CAAA;IAEjC,oBAAoB,EAAE,oBAAoB,CAAA;;CAkD7C"}

@@ -1,4 +1,4 @@
 import { lib } from "@airport/di";
-const autopilot = lib('vhf-radio');
-export const LOCAL_API_CLIENT = autopilot.token('LOCAL_API_CLIENT');
+const vhfRadio = lib('vhf-radio');
+export const CROSS_TAB_COMMUNCATOR = vhfRadio.token('CROSS_TAB_COMMUNCATOR');
 //# sourceMappingURL=tokens.js.map

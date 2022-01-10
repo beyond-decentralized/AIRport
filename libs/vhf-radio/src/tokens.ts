@@ -1,6 +1,6 @@
 import { lib } from "@airport/di";
-import { ILocalAPIClient } from "./LocalAPIClient";
+import { ICrossTabCommunicator } from "./CrossTabCommunicator";
 
-const autopilot = lib('vhf-radio');
+const vhfRadio = lib('vhf-radio');
 
-export const LOCAL_API_CLIENT = autopilot.token<ILocalAPIClient>('LOCAL_API_CLIENT')
+export const CROSS_TAB_COMMUNCATOR = vhfRadio.token<ICrossTabCommunicator>('CROSS_TAB_COMMUNCATOR')
