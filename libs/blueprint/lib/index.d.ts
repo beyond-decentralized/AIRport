@@ -2,7 +2,6 @@ export declare const BLUEPRINT: ({
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -98,7 +97,6 @@ export declare const BLUEPRINT: ({
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -583,7 +581,6 @@ export declare const BLUEPRINT: ({
             domain: string;
             index: number;
             name: string;
-            packageName: string;
             sinceVersion: number;
             versions: {
                 entities: any;
@@ -598,7 +595,6 @@ export declare const BLUEPRINT: ({
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -872,7 +868,6 @@ export declare const BLUEPRINT: ({
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -1224,7 +1219,6 @@ export declare const BLUEPRINT: ({
     domain: string;
     index: any;
     name: string;
-    packageName: string;
     sinceVersion: number;
     versions: {
         api: {
@@ -1373,7 +1367,6 @@ export declare const BLUEPRINT: ({
             domain: string;
             index: number;
             name: string;
-            packageName: string;
             sinceVersion: number;
             versions: {
                 entities: any;
