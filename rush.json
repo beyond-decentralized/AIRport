@@ -32,6 +32,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/cross-terminal-transfer",
+      "projectFolder": "apis/cross-terminal-transfer",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/ground-control",
       "projectFolder": "apis/ground-control",
       "shouldPublish": true
