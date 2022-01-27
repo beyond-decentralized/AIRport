@@ -1,9 +1,8 @@
 import { lib } from '@airport/di'
+import { IQueryEntityClassCreator, IQueryObjectInitializer } from '@airport/terminal-map'
 import { IAirportDatabasePopulator } from './AirportDatabasePopulator'
 import { IDdlObjectLinker } from './DdlObjectLinker'
 import { IDdlObjectRetriever } from './DdlObjectRetriever'
-import { IQueryEntityClassCreator } from './QueryEntityClassCreator'
-import { IQueryObjectInitializer } from './QueryObjectInitializer'
 
 const takeoff = lib('takeoff')
 

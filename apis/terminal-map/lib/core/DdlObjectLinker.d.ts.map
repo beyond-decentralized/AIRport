@@ -1,0 +1,1 @@
+{"version":3,"file":"DdlObjectLinker.d.ts","sourceRoot":"","sources":["../../src/core/DdlObjectLinker.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,cAAc,CAAC;AAC7C,OAAO,EAAE,cAAc,EAAE,MAAM,wBAAwB,CAAC;AAExD,MAAM,WAAW,gBAAgB;IAE7B,IAAI,CACA,UAAU,EAAE,aAAa,EACzB,aAAa,EAAE,cAAc,GAC9B,IAAI,CAAA;CAEV"}

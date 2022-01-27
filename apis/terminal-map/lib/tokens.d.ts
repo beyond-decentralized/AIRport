@@ -2,6 +2,8 @@ import { ITransactionManager } from './orchestration/TransactionManager';
 import { ITerminalStore } from './store/TerminalStore';
 import { ITransactionalServer } from './transaction/ITransactionalServer';
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver';
+import { IApplicationInitializer } from '.';
+export declare const APPLICATION_INITIALIZER: import("@airport/di").IDiToken<IApplicationInitializer>;
 export declare const TERMINAL_STORE: import("@airport/di").IDiToken<ITerminalStore>;
 export declare const TRANSACTION_MANAGER: import("@airport/di").IDiToken<ITransactionManager>;
 export declare const TRANSACTIONAL_RECEIVER: import("@airport/di").IDiToken<ITransactionalReceiver>;

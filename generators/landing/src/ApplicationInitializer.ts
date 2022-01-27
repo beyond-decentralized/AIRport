@@ -8,7 +8,6 @@ import {
 } from '@airport/check-in';
 import {
 	container,
-	DI,
 	IContext
 } from '@airport/di';
 import {
@@ -18,51 +17,27 @@ import {
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
-	AllDdlObjects,
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
-	DdlObjects,
-	IQueryObjectInitializer,
 	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
-import { TERMINAL_STORE } from '@airport/terminal-map';
+import {
+	AllDdlObjects,
+	IApplicationInitializer,
+	IQueryObjectInitializer,
+	TERMINAL_STORE
+} from '@airport/terminal-map';
 import { IApplication } from '@airport/airspace';
 import {
 	APPLICATION_BUILDER,
 	APPLICATION_CHECKER,
 	APPLICATION_COMPOSER,
-	APPLICATION_INITIALIZER,
 	APPLICATION_LOCATOR,
 	APPLICATION_RECORDER
 } from './tokens';
 
-export interface IApplicationInitializer {
-
-	initialize(
-		jsonApplications: JsonApplicationWithLastIds[],
-		existingApplicationMap: Map<string, IApplication>,
-		context: IContext,
-		checkDependencies: boolean
-	): Promise<void>
-
-	initializeForAIRportApp(
-		jsonApplication: JsonApplicationWithLastIds
-	): Promise<void>
-
-	hydrate(
-		jsonApplications: JsonApplicationWithLastIds[],
-		context: IContext,
-	): Promise<void>
-
-	stage(
-		jsonApplications: JsonApplicationWithLastIds[],
-		context: IContext,
-	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]>
-
-}
-
-export class ApplicationInitializer
+export abstract class ApplicationInitializer
 	implements IApplicationInitializer {
 
 	addNewApplicationVersionsToAll(ddlObjects: AllDdlObjects) {
@@ -202,6 +177,22 @@ export class ApplicationInitializer
 		return [airDb, queryObjectInitializer, sequenceGenerator];
 	}
 
+	abstract nativeInitializeApplication(
+		domain: string,
+		application: string,
+		fullApplicationName: string,
+	): Promise<void>
+
+	protected async wait(
+		milliseconds: number
+	): Promise<void> {
+		return new Promise((resolve, _reject) => {
+			setTimeout(() => {
+				resolve()
+			}, milliseconds)
+		})
+	}
+
 	private async getApplicationsWithValidDependencies(
 		jsonApplications: JsonApplicationWithLastIds[],
 		checkDependencies: boolean
@@ -228,10 +219,15 @@ export class ApplicationInitializer
 			const applicationReferenceCheckResults = await applicationChecker
 				.checkDependencies(jsonApplicationsToInstall);
 
-			if (applicationReferenceCheckResults.neededDependencies.length
-				|| applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
-				throw new Error(`Installing applications with external dependencies
-			is not currently supported.`);
+			if (applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
+				// const
+				for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
+					const neededDependency = applicationReferenceCheckResults.neededDependencies[i]
+					const fullApplicationName = getFullApplicationName(neededDependency)
+
+					await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name,
+						fullApplicationName)
+				}
 			}
 			applicationsWithValidDependencies = applicationReferenceCheckResults.applicationsWithValidDependencies;
 		} else {
@@ -251,5 +247,3 @@ export class ApplicationInitializer
 	}
 
 }
-
-DI.set(APPLICATION_INITIALIZER, ApplicationInitializer);

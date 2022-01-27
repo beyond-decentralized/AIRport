@@ -4,6 +4,9 @@ import {
 	DI
 }                                   from '@airport/di';
 import {
+	AllDdlObjects,
+	IQueryEntityClassCreator,
+	IQueryObjectInitializer,
 	ITerminalStore,
 	TERMINAL_STORE
 }                                   from '@airport/terminal-map';
@@ -20,50 +23,12 @@ import {
 	IApplicationVersion
 }                                   from '@airport/airspace';
 import { IDdlObjectLinker }         from './DdlObjectLinker';
-import { IQueryEntityClassCreator } from './QueryEntityClassCreator';
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
 	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
 }                                   from './tokens';
-
-export interface IQueryObjectInitializer {
-
-	initialize(
-		airDb: IAirportDatabase
-	): Promise<AllDdlObjects>
-
-	generateQObjectsAndPopulateStore(
-		allDdlObjects: AllDdlObjects,
-		airDb: IAirportDatabase,
-		ddlObjectLinker: IDdlObjectLinker,
-		queryEntityClassCreator: IQueryEntityClassCreator,
-		terminalStore: ITerminalStore
-	): void
-
-}
-
-export interface AllDdlObjects {
-	all: DdlObjects
-	allApplicationVersionsByIds: IApplicationVersion[]
-	added: DdlObjects
-}
-
-export interface DdlObjects {
-	columns: IApplicationColumn[]
-	domains: IDomain[]
-	entities: IApplicationEntity[]
-	latestApplicationVersions: IApplicationVersion[]
-	properties: IApplicationProperty[]
-	propertyColumns: IApplicationPropertyColumn[]
-	relationColumns: IApplicationRelationColumn[]
-	relations: IApplicationRelation[]
-	applications: IApplication[]
-	applicationReferences: IApplicationReference[]
-	applicationVersions: IApplicationVersion[]
-
-}
 
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {

@@ -3,6 +3,7 @@ import {
 	ILocalAPIResponse
 } from '@airport/aviation-communication'
 import {
+	container,
 	DI,
 } from '@airport/di'
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
@@ -18,18 +19,23 @@ import {
 } from '@airport/terminal'
 import {
 	TRANSACTIONAL_RECEIVER,
-	ITransactionalReceiver
+	ITransactionalReceiver,
+	APPLICATION_INITIALIZER
 } from '@airport/terminal-map'
 import {
 	injectAirportDatabase,
 	injectEntityStateManager
 } from '@airport/tower'
 import {
+	BroadcastChannel as SoftBroadcastChannel
+} from 'broadcast-channel';
+import {
 	Subscription
 } from 'rxjs'
 import {
 	map
 } from 'rxjs/operators'
+import { IWebApplicationInitializer } from './WebApplicationInitializer'
 
 let _mainDomain = 'localhost:31717'
 
@@ -37,13 +43,14 @@ export class WebTransactionalReceiver
 	extends TransactionalReceiver
 	implements ITransactionalReceiver {
 
+	communicationChannel: SoftBroadcastChannel
 	dbName: string
 	domainPrefix: string
+	isNativeBroadcastChannel: boolean
 	mainDomainFragments: string[]
 	serverUrl: string;
 	subsriptionMap: Map<string, Map<number, Subscription>> = new Map()
 
-	pendingFromClientMessageIds: Map<string, Map<string, Map<string, Window>>> = new Map()
 	pendingHostCounts: Map<string, number> = new Map()
 	pendingApplicationCounts: Map<string, number> = new Map()
 
@@ -69,8 +76,61 @@ export class WebTransactionalReceiver
 			document.domain = Math.random() + '.' + Math.random() + this.domainPrefix
 		}
 
+		this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
+		const createChannel = () => {
+			this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
+				idb: {
+					onclose: () => {
+						// the onclose event is just the IndexedDB closing.
+						// you should also close the channel before creating
+						// a new one.
+						this.communicationChannel.close();
+						createChannel();
+					},
+				},
+			});
+
+			this.communicationChannel.onmessage = (
+				message: ILocalAPIRequest
+			) => {
+				// FIXME: deserialize message if !this.isNativeBroadcastChannel
+
+				if (message.__received__) {
+					return
+				}
+				message.__received__ = true
+
+				if (this.messageCallback) {
+					const receivedDate = new Date()
+					message.__receivedTime__ = receivedDate.getTime()
+					this.messageCallback(message)
+				}
+
+				// All requests need to have a application signature
+				// to know what application is being communicated to/from
+				if (!this.hasValidApplicationInfo(message)) {
+					return
+				}
+
+				switch (message.category) {
+					case 'FromClient':
+						const fromClientRedirectedMessage: ILocalAPIRequest = {
+							...message,
+							__received__: false,
+							__receivedTime__: null,
+							category: 'FromClientRedirected'
+						}
+						this.handleFromClientRequest(fromClientRedirectedMessage).then()
+						break
+					case 'IsConnectionReady':
+						this.ensureConnectionIsReady(message).then()
+						break
+				}
+			};
+		}
+
 		window.addEventListener("message", event => {
-			const message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse = event.data
+			const message: IIsolateMessage | ILocalAPIResponse = event.data
 			if (message.__received__) {
 				return
 			}
@@ -94,28 +154,6 @@ export class WebTransactionalReceiver
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
 						event.source as Window)
 					break
-				case 'FromClient':
-					const fromClientRedirectedMessage: ILocalAPIRequest = {
-						...message,
-						__received__: false,
-						__receivedTime__: null,
-						category: 'FromClientRedirected'
-					}
-					this.handleFromClientRequest(fromClientRedirectedMessage, messageOrigin, (event.source as Window)).then()
-					break
-				case 'IsConnectionReady':
-					const connectionIsReadyMessage: ILocalAPIResponse = {
-						application: (message as ILocalAPIRequest).application,
-						category: 'ConnectionIsReady',
-						domain: (message as ILocalAPIRequest).domain,
-						errorMessage: null,
-						id: (message as ILocalAPIRequest).id,
-						host: document.domain,
-						protocol: window.location.protocol,
-						payload: null,
-					};
-					(event.source as Window).postMessage(connectionIsReadyMessage, messageOrigin)
-					break
 				case 'ToClient':
 					const toClientRedirectedMessage: ILocalAPIResponse = {
 						...message,
@@ -137,6 +175,34 @@ export class WebTransactionalReceiver
 		this.messageCallback = callback
 	}
 
+	private async ensureConnectionIsReady(
+		message: ILocalAPIRequest
+	): Promise<void> {
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			message.domain, message.application)
+
+		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
+			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
+
+		const applicationWindow = webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
+		if (!applicationWindow) {
+			await webApplicationInitializer.nativeInitializeApplication(message.domain,
+				message.application, fullApplicationName)
+		}
+
+		const connectionIsReadyMessage: ILocalAPIResponse = {
+			application: message.application,
+			category: 'ConnectionIsReady',
+			domain: message.domain,
+			errorMessage: null,
+			id: message.id,
+			protocol: window.location.protocol,
+			payload: null,
+		};
+		// FIXME: serialize message if !this.isNativeBroadcastChannel
+		this.communicationChannel.postMessage(connectionIsReadyMessage)
+	}
+
 	private hasValidApplicationInfo(
 		message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse
 	) {
@@ -146,15 +212,9 @@ export class WebTransactionalReceiver
 
 	private async handleFromClientRequest(
 		message: ILocalAPIRequest,
-		messageOrigin: string,
-		sourceWindow: Window
 	): Promise<void> {
-		const appDomainAndPort = messageOrigin.split('//')[1]
-		if (message.host !== appDomainAndPort) {
-			return
-		}
 
-		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.host)
+		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.domain)
 		if (!numPendingMessagesFromHost) {
 			numPendingMessagesFromHost = 0
 		}
@@ -175,7 +235,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		this.pendingHostCounts.set(message.host, numPendingMessagesFromHost + 1)
+		this.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
 		this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
 
 		if (!await this.ensureApplicationIsInstalled(fullApplicationName, numPendingMessagesForApplication)) {
@@ -183,39 +243,25 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let pendingMessageIdsFromHost = this.pendingFromClientMessageIds.get(message.host)
-		if (!pendingMessageIdsFromHost) {
-			pendingMessageIdsFromHost = new Map()
-			this.pendingFromClientMessageIds.set(message.host, pendingMessageIdsFromHost)
-		}
-		let pendingMessageIdsFromHostForApplication = pendingMessageIdsFromHost.get(fullApplicationName)
-		if (!pendingMessageIdsFromHostForApplication) {
-			pendingMessageIdsFromHostForApplication = new Map()
-			pendingMessageIdsFromHost.set(fullApplicationName, pendingMessageIdsFromHostForApplication)
-		}
-		pendingMessageIdsFromHostForApplication.set(message.id, sourceWindow)
-
 		const frameWindow = this.getFrameWindow(fullApplicationName)
 
 		if (frameWindow) {
 			// Forward the request to the correct application iframe
 			frameWindow.postMessage(message, '*')
 		} else {
-			throw new Error(`No Application IFrame found for signature: ${fullApplicationName}`)
+			throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
 		}
 	}
 
 	private getFrameWindow(
 		fullApplicationName: string
 	) {
-		const iframes = document.getElementsByTagName("iframe")
-		for (var i = 0; i < iframes.length; i++) {
-			let iframe = iframes[i]
-			if (iframe.name === fullApplicationName) {
-				return iframe.contentWindow
-			}
+		const iframe: HTMLIFrameElement = document
+			.getElementsByName(fullApplicationName) as any
+		if (!iframe) {
+			return null
 		}
-		return null
+		return iframe.contentWindow
 	}
 
 	private async handleToClientRequest(
@@ -225,37 +271,22 @@ export class WebTransactionalReceiver
 		if (!this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
-		let pendingMessagesFromHost = this.pendingFromClientMessageIds.get(message.host)
-		if (!pendingMessagesFromHost) {
-			return
-		}
 
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
-		let pendingMessagesFromHostForApplication = pendingMessagesFromHost.get(fullApplicationName)
-		if (!pendingMessagesFromHostForApplication) {
-			return
-		}
 
-		let sourceWindow = pendingMessagesFromHostForApplication.get(message.id)
-
-		if (!sourceWindow) {
-			return
-		}
-
-		pendingMessagesFromHostForApplication.delete(message.id)
-
-		let numMessagesFromHost = this.pendingHostCounts.get(message.host)
+		let numMessagesFromHost = this.pendingHostCounts.get(message.domain)
 		if (numMessagesFromHost > 0) {
-			this.pendingHostCounts.set(message.host, numMessagesFromHost - 1)
+			this.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
 		}
 		let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
 		if (numMessagesForApplication > 0) {
-			this.pendingHostCounts.set(message.host, numMessagesForApplication - 1)
+			this.pendingHostCounts.set(message.domain, numMessagesForApplication - 1)
 		}
 
 		// Forward the request to the source client
-		sourceWindow.postMessage(message, message.protocol + '//' + message.host)
+		// FIXME: serialize message if !this.isNativeBroadcastChannel
+		this.communicationChannel.postMessage(message)
 	}
 
 	private async ensureApplicationIsInstalled(

@@ -1,7 +1,7 @@
 import { FullApplicationName } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
-import { AllDdlObjects, IDdlObjectRetriever } from '@airport/takeoff';
-import { ITerminalStore } from '@airport/terminal-map';
+import { IDdlObjectRetriever } from '@airport/takeoff';
+import { AllDdlObjects, ITerminalStore } from '@airport/terminal-map';
 import { IApplicationVersion } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
 export interface IApplicationComposer {

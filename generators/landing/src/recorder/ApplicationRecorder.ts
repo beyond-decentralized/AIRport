@@ -1,6 +1,5 @@
 import {
 	AIRPORT_DATABASE,
-	IAirportDatabase,
 	IDao
 } from '@airport/air-control'
 import {
@@ -8,7 +7,6 @@ import {
 	DI,
 	IContext
 } from '@airport/di'
-import { DdlObjects } from '@airport/takeoff'
 import { transactional } from '@airport/tower'
 import {
 	DOMAIN_DAO,
@@ -23,6 +21,7 @@ import {
 	APPLICATION_VERSION_DAO,
 } from '@airport/airspace'
 import { APPLICATION_RECORDER } from '../tokens'
+import { DdlObjects } from '@airport/terminal-map'
 
 export interface IApplicationRecorder {
 
@@ -60,7 +59,7 @@ export class ApplicationRecorder
 			await domainDao.checkAndInsertIfNeeded(ddlObjects.domains)
 
 			await applicationDao.insert(ddlObjects.applications)
-			
+
 			await applicationVersionDao.insert(ddlObjects.applicationVersions)
 			await applicationReferenceDao.insert(ddlObjects.applicationReferences)
 			await applicationEntityDao.insert(ddlObjects.entities)

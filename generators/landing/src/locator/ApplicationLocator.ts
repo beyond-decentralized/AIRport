@@ -1,9 +1,10 @@
 import { DI } from '@airport/di'
-import { getFullApplicationNameFromDomainAndName, JsonApplication } from '@airport/ground-control'
-import { AllDdlObjects } from '@airport/takeoff'
 import {
-	ITerminalStore,
-	TERMINAL_STORE
+	getFullApplicationNameFromDomainAndName,
+	JsonApplication
+} from '@airport/ground-control'
+import {
+	ITerminalStore
 } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
 import { APPLICATION_LOCATOR } from '../tokens'

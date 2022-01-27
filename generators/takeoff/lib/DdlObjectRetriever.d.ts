@@ -1,5 +1,5 @@
 import type { LastIds } from '@airport/security-check';
-import { DdlObjects } from './QueryObjectInitializer';
+import { DdlObjects } from '@airport/terminal-map';
 export interface IDdlObjectRetriever {
     lastIds: LastIds;
     retrieveDdlObjects(): Promise<DdlObjects>;

@@ -1,12 +1,3 @@
-import { DI } from '@airport/di'
-import type {
-	ColumnId,
-	DomainId,
-	PropertyId,
-	RelationId,
-	ApplicationIndex
-} from '@airport/ground-control'
-import type { ITerminalStore } from '@airport/terminal-map'
 import type {
 	IDomain,
 	IApplication,
@@ -20,8 +11,16 @@ import type {
 	IApplicationRelationColumn,
 	IApplicationVersion
 } from '@airport/airspace'
+import { DI } from '@airport/di'
+import type {
+	ColumnId,
+	DomainId,
+	PropertyId,
+	RelationId,
+	ApplicationIndex
+} from '@airport/ground-control'
+import type { AllDdlObjects, ITerminalStore } from '@airport/terminal-map'
 import { DDL_OBJECT_LINKER } from './tokens'
-import { AllDdlObjects } from './QueryObjectInitializer'
 
 export interface IDdlObjectLinker {
 

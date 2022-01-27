@@ -6,14 +6,14 @@ import {
 	STORE_DRIVER
 } from '@airport/ground-control';
 import {
-	APPLICATION_BUILDER,
-	APPLICATION_INITIALIZER
+	APPLICATION_BUILDER
 } from '@airport/landing';
 import {
 	DATABASE_MANAGER,
 	injectTransactionalConnector,
 	injectTransactionalServer
 } from '@airport/terminal';
+import { APPLICATION_INITIALIZER } from '@airport/terminal-map';
 import { injectAirportDatabase } from '@airport/tower';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';

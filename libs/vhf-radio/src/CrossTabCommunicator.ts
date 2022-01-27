@@ -28,7 +28,7 @@ export class CrossTabCommunicator
 
     constructor() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
-        
+
 
         window.addEventListener("message", event => {
             const message: ILocalAPIRequest = event.data
@@ -39,8 +39,15 @@ export class CrossTabCommunicator
                 ...message
             }
             message.__received__ = true
+
+            const messageOrigin = event.origin;
+            const appDomainAndPort = messageOrigin.split('//')[1]
+            if (message.domain !== appDomainAndPort) {
+                return
+            }
+
             if (message.category === 'IsConnectionReady') {
-                this.clientHost = message.host
+                this.clientHost = message.domain
             }
             // FIXME: serialize message if !this.isNativeBroadcastChannel
             this.communicationChannel.postMessage(messageCopy)
@@ -60,7 +67,7 @@ export class CrossTabCommunicator
             });
 
             this.communicationChannel.onmessage = (message: ILocalAPIResponse) => {
-                if (!this.clientHost || message.host !== this.clientHost) {
+                if (!this.clientHost || message.domain !== this.clientHost) {
                     return
                 }
                 if (message.__received__) {
@@ -69,7 +76,7 @@ export class CrossTabCommunicator
                 const messageCopy: ILocalAPIResponse = { ...message }
                 message.__received__ = true
 
-            // FIXME: deserialize message if !this.isNativeBroadcastChannel
+                // FIXME: deserialize message if !this.isNativeBroadcastChannel
                 window.parent.postMessage(messageCopy, this.clientHost)
             };
         }

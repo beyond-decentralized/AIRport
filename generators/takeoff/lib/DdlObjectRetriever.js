@@ -1,5 +1,5 @@
-import { container, DI } from '@airport/di';
 import { DOMAIN_DAO, APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO } from '@airport/airspace';
+import { container, DI } from '@airport/di';
 import { DDL_OBJECT_RETRIEVER } from './tokens';
 export class DdlObjectRetriever {
     constructor() {

@@ -1,10 +1,10 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { container } from '@airport/di';
 import { getFullApplicationName } from '@airport/ground-control';
 import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
-import { APPLICATION_BUILDER, APPLICATION_CHECKER, APPLICATION_COMPOSER, APPLICATION_INITIALIZER, APPLICATION_LOCATOR, APPLICATION_RECORDER } from './tokens';
+import { APPLICATION_BUILDER, APPLICATION_CHECKER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER } from './tokens';
 export class ApplicationInitializer {
     addNewApplicationVersionsToAll(ddlObjects) {
         for (const applicationVersion of ddlObjects.added.applicationVersions) {
@@ -73,6 +73,13 @@ export class ApplicationInitializer {
         await sequenceGenerator.tempInitialize(newSequences);
         return [airDb, queryObjectInitializer, sequenceGenerator];
     }
+    async wait(milliseconds) {
+        return new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, milliseconds);
+        });
+    }
     async getApplicationsWithValidDependencies(jsonApplications, checkDependencies) {
         const [applicationChecker, applicationLocator, terminalStore] = await container(this).get(APPLICATION_CHECKER, APPLICATION_LOCATOR, TERMINAL_STORE);
         const jsonApplicationsToInstall = [];
@@ -89,10 +96,13 @@ export class ApplicationInitializer {
         if (checkDependencies) {
             const applicationReferenceCheckResults = await applicationChecker
                 .checkDependencies(jsonApplicationsToInstall);
-            if (applicationReferenceCheckResults.neededDependencies.length
-                || applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
-                throw new Error(`Installing applications with external dependencies
-			is not currently supported.`);
+            if (applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {
+                // const
+                for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
+                    const neededDependency = applicationReferenceCheckResults.neededDependencies[i];
+                    const fullApplicationName = getFullApplicationName(neededDependency);
+                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplicationName);
+                }
             }
             applicationsWithValidDependencies = applicationReferenceCheckResults.applicationsWithValidDependencies;
         }
@@ -107,5 +117,4 @@ export class ApplicationInitializer {
         }
     }
 }
-DI.set(APPLICATION_INITIALIZER, ApplicationInitializer);
 //# sourceMappingURL=ApplicationInitializer.js.map

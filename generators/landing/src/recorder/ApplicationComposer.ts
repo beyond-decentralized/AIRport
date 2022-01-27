@@ -11,11 +11,13 @@ import {
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
-	AllDdlObjects,
-	DdlObjects,
 	IDdlObjectRetriever
 } from '@airport/takeoff';
-import { ITerminalStore } from '@airport/terminal-map';
+import {
+	AllDdlObjects,
+	DdlObjects,
+	ITerminalStore
+} from '@airport/terminal-map';
 import {
 	IDomain,
 	IApplication,

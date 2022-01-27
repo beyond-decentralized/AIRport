@@ -5,7 +5,6 @@ export interface ILocalAPIRequest {
     args: Array<boolean | number | string>;
     category: 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
     domain: string;
-    host: string;
     id: string;
     methodName: string;
     objectName: string;

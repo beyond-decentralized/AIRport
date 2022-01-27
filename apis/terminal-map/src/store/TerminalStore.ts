@@ -20,13 +20,14 @@ import {
 	IApplicationRelation,
 	IApplicationVersion
 } from '@airport/airspace';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';
+import { TERMINAL_STATE } from './theState';
 
 export interface ITerminalStore {
 
-	state: BehaviorSubject<ITerminalState>
+	state: Subject<ITerminalState>
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
@@ -57,13 +58,17 @@ export interface ITerminalStore {
 
 	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>
 
+	getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+
+	getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+
 	tearDown()
 }
 
 export class TerminalStore
 	implements ITerminalStore {
 
-	state: BehaviorSubject<ITerminalState>;
+	state: Subject<ITerminalState>;
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
@@ -93,15 +98,13 @@ export class TerminalStore
 
 	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
 
+	getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+
+	getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+
 	async init(): Promise<void> {
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
-		this.state = new BehaviorSubject<ITerminalState>({
-			applicationActors: [],
-			domains: [],
-			frameworkActor: null,
-			applications: [],
-			terminal: null,
-		});
+		this.state = TERMINAL_STATE;
 
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
@@ -135,6 +138,10 @@ export class TerminalStore
 			})
 		this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.frameworkActor)
+		this.getInitializedApps = selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.initializedApps)
+		this.getInitializingApps = selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.initializingApps)
 		this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestApplicationVersionMapByNames: Map<DomainName, Map<ApplicationName, IApplicationVersion>> = new Map();

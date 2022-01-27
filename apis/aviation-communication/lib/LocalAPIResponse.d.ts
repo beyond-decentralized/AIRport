@@ -6,7 +6,6 @@ export interface ILocalAPIResponse {
     domain: string;
     errorMessage: string;
     id: string;
-    host: string;
     payload: any;
     protocol: string;
 }

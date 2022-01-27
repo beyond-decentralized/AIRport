@@ -1,18 +1,12 @@
 import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { BehaviorSubject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
+import { TERMINAL_STATE } from './theState';
 export class TerminalStore {
     async init() {
         const selectorManager = await DI.db().get(SELECTOR_MANAGER);
-        this.state = new BehaviorSubject({
-            applicationActors: [],
-            domains: [],
-            frameworkActor: null,
-            applications: [],
-            terminal: null,
-        });
+        this.state = TERMINAL_STATE;
         this.getTerminalState = selectorManager.createRootSelector(this.state);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationActorMapByDomainAndApplicationNames = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
@@ -38,6 +32,8 @@ export class TerminalStore {
             return domainsByName;
         });
         this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
+        this.getInitializedApps = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.initializedApps);
+        this.getInitializingApps = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.initializingApps);
         this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
             for (const domain of domains) {
@@ -49,13 +45,13 @@ export class TerminalStore {
             return latestApplicationVersionMapByNames;
         });
         this.getLatestApplicationVersionMapByFullApplicationName = selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
-            const latestApplicationVersionMapByApplicationName = new Map();
+            const latestApplicationVersionMapByFullApplicationName = new Map();
             for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
                 for (const applicationVersion of applicationVersionsForDomainName.values()) {
-                    latestApplicationVersionMapByApplicationName.set(applicationVersion.application.name, applicationVersion);
+                    latestApplicationVersionMapByFullApplicationName.set(applicationVersion.application.fullName, applicationVersion);
                 }
             }
-            return latestApplicationVersionMapByApplicationName;
+            return latestApplicationVersionMapByFullApplicationName;
         });
         this.getAllApplicationVersionsByIds = selectorManager.createSelector(this.getDomains, domains => {
             const allApplicationVersionsByIds = [];

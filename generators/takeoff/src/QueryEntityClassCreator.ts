@@ -4,20 +4,12 @@ import {
 	QApplication,
 	QApplicationInternal,
 	setQApplicationEntities
-}                                   from '@airport/air-control'
-import {DI}                         from '@airport/di'
-import {DbApplication}                   from '@airport/ground-control'
-import {IApplication}                    from '@airport/airspace'
-import {QUERY_ENTITY_CLASS_CREATOR} from './tokens'
-
-export interface IQueryEntityClassCreator {
-
-	createAll(
-		applications: IApplication[],
-		airDb: IAirportDatabase
-	): void
-
-}
+} from '@airport/air-control'
+import { IApplication } from '@airport/airspace'
+import { DI } from '@airport/di'
+import { DbApplication } from '@airport/ground-control'
+import { IQueryEntityClassCreator } from '@airport/terminal-map'
+import { QUERY_ENTITY_CLASS_CREATOR } from './tokens'
 
 export class QueryEntityClassCreator
 	implements IQueryEntityClassCreator {
@@ -40,7 +32,7 @@ export class QueryEntityClassCreator
 		if (qApplication) {
 			qApplication.__dbApplication__ = dbApplication
 		} else {
-			qApplication                 = {
+			qApplication = {
 				__constructors__: {},
 				__qConstructors__: {},
 				__dbApplication__: dbApplication,

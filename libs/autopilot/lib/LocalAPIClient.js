@@ -31,12 +31,6 @@ export class LocalAPIClient {
                     this.messageCallback(message);
                 }
                 switch (message.category) {
-                    case 'AIRportClientLoaded':
-                        this.clientIframe.contentWindow.postMessage({
-                            category: 'AIRportAppHost',
-                            host: window.location.hostname,
-                        }, _demoServer);
-                        break;
                     case 'ConnectionIsReady':
                         this.connectionReady = true;
                         break;
@@ -92,7 +86,6 @@ export class LocalAPIClient {
             args: serializedParams,
             category: 'FromClient',
             domain: token.application.domain.name,
-            host: window.location.host,
             id: uuidv4(),
             methodName,
             objectName: token.name,
@@ -132,7 +125,6 @@ export class LocalAPIClient {
             args: [],
             category: 'IsConnectionReady',
             domain: token.application.domain.name,
-            host: window.location.host,
             id: null,
             methodName: null,
             objectName: null,
@@ -186,7 +178,7 @@ export class LocalAPIClient {
         });
     }
     handleDemoResponse(response) {
-        if (response.host !== window.location.host) {
+        if (response.domain !== window.location.host) {
             return;
         }
         if (response.category !== 'ToClientRedirected') {

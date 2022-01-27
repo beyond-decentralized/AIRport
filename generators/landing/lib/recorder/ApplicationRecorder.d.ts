@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { DdlObjects } from '@airport/takeoff';
+import { DdlObjects } from '@airport/terminal-map';
 export interface IApplicationRecorder {
     record(ddlObjects: DdlObjects, context: IContext): Promise<void>;
 }

@@ -1,9 +1,3 @@
-import { container, DI } from '@airport/di'
-import {
-	DomainId,
-	ApplicationIndex,
-} from '@airport/ground-control'
-import type { LastIds } from '@airport/security-check'
 import {
 	DOMAIN_DAO,
 	IApplication,
@@ -18,8 +12,14 @@ import {
 	APPLICATION_RELATION_DAO,
 	APPLICATION_VERSION_DAO
 } from '@airport/airspace'
+import { container, DI } from '@airport/di'
+import {
+	DomainId,
+	ApplicationIndex,
+} from '@airport/ground-control'
+import type { LastIds } from '@airport/security-check'
+import { DdlObjects } from '@airport/terminal-map'
 import { DDL_OBJECT_RETRIEVER } from './tokens'
-import { DdlObjects } from './QueryObjectInitializer'
 
 export interface IDdlObjectRetriever {
 

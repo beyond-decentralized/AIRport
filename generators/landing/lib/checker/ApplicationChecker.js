@@ -58,8 +58,8 @@ export class ApplicationChecker {
     pruneInGroupReferences(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication) {
         for (const jsonApplication of jsonApplications) {
             // Remove every in-group reference for this application
-            for (const [domainName, referenceMapForApplicationsOfDomain] of referencedApplicationMapByApplication) {
-                for (const [applicationName, applicationsReferencedByAGivenApplication] of referenceMapForApplicationsOfDomain) {
+            for (const [_domainName, referenceMapForApplicationsOfDomain] of referencedApplicationMapByApplication) {
+                for (const [_applicationName, applicationsReferencedByAGivenApplication] of referenceMapForApplicationsOfDomain) {
                     const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(jsonApplication.domain);
                     if (applicationReferencesForDomain) {
                         applicationReferencesForDomain.delete(jsonApplication.name);

@@ -1,0 +1,1 @@
+{"version":3,"file":"theState.d.ts","sourceRoot":"","sources":["../../src/store/theState.ts"],"names":[],"mappings":"AAAA;;;GAGG;AAEH,OAAO,EAEH,OAAO,EACV,MAAM,MAAM,CAAC;AACd,OAAO,EAAE,cAAc,EAAE,MAAM,iBAAiB,CAAC;AAEjD,eAAO,MAAM,cAAc,EAAE,OAAO,CAAC,cAAc,CAQjD,CAAA"}

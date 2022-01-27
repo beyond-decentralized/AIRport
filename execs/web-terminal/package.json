@@ -4,11 +4,13 @@
     "@airport/aviation-communication": "0.0.1",
     "@airport/di": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/landing": "0.0.1",
     "@airport/moving-walkway": "0.0.1",
     "@airport/security-check": "0.0.1",
     "@airport/terminal": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
+    "broadcast-channel": "^4.9.0",
     "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",

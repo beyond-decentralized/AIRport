@@ -5,7 +5,6 @@ export interface ILocalAPIRequest {
     args: Array<boolean | number | string>
     category: 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady'
     domain: string // network DNS domain name (or alike) where applcation is hosted
-    host: string
     id: string // UUID
     methodName: string
     objectName: string
