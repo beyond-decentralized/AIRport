@@ -226,7 +226,8 @@ export class ApplicationDao extends BaseApplicationDao {
         for (const application of applications) {
             values.push([
                 application.index, application.domain.id, application.scope,
-                application.fullName, application.name, application.packageName,
+                application.fullName, application.name,
+                // application.packageName,
                 application.status, application.signature
             ]);
         }
@@ -238,7 +239,7 @@ export class ApplicationDao extends BaseApplicationDao {
                 a.scope,
                 a.fullName,
                 a.name,
-                a.packageName,
+                // a.packageName,
                 a.status,
                 a.signature
             ],

@@ -3340,7 +3340,7 @@ export const APPLICATION = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PACKAGE_NAME",
+                            "name": "STATUS",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -3354,7 +3354,7 @@ export const APPLICATION = {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "STATUS",
+                            "name": "SIGNATURE",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -3366,20 +3366,6 @@ export const APPLICATION = {
                         },
                         {
                             "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "SIGNATURE",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "STRING"
-                        },
-                        {
-                            "index": 7,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [
                                 {
@@ -3463,7 +3449,7 @@ export const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "packageName",
+                            "name": "status",
                             "sinceVersion": 1
                         },
                         {
@@ -3472,20 +3458,11 @@ export const APPLICATION = {
                             },
                             "index": 6,
                             "isId": false,
-                            "name": "status",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 6
-                            },
-                            "index": 7,
-                            "isId": false,
                             "name": "signature",
                             "sinceVersion": 1
                         },
                         {
-                            "index": 8,
+                            "index": 7,
                             "isId": false,
                             "name": "versions",
                             "relationRef": {
@@ -3494,7 +3471,7 @@ export const APPLICATION = {
                             "sinceVersion": 1
                         },
                         {
-                            "index": 9,
+                            "index": 8,
                             "isId": false,
                             "name": "currentVersion",
                             "relationRef": {
@@ -3522,7 +3499,7 @@ export const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 8
+                                "index": 7
                             },
                             "relationTableIndex": 8,
                             "sinceVersion": 1
@@ -3535,7 +3512,7 @@ export const APPLICATION = {
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 9
+                                "index": 8
                             },
                             "relationTableIndex": 9,
                             "sinceVersion": 1

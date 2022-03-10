@@ -33,10 +33,6 @@ __decorate([
     DbString()
 ], Application.prototype, "fullName", void 0);
 __decorate([
-    Column({ name: 'PACKAGE_NAME', nullable: false }),
-    DbString()
-], Application.prototype, "packageName", void 0);
-__decorate([
     Column({ name: 'STATUS', nullable: false }),
     DbString()
 ], Application.prototype, "status", void 0);

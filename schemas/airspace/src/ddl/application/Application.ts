@@ -53,9 +53,9 @@ export class Application {
 	// @JoinColumn({ name: 'PACKAGE_ID', referencedColumnName: 'ID', nullable: false })
 	// package: Package;
 
-	@Column({ name: 'PACKAGE_NAME', nullable: false })
-	@DbString()
-	packageName: PackageName;
+	// @Column({ name: 'PACKAGE_NAME', nullable: false })
+	// @DbString()
+	// packageName: PackageName;
 
 	@Column({ name: 'STATUS', nullable: false })
 	@DbString()

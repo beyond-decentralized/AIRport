@@ -25,7 +25,6 @@ export interface IApplication {
 	scope?: string;
 	name?: string;
 	fullName?: string;
-	packageName?: string;
 	status?: string;
 	signature?: string;
 

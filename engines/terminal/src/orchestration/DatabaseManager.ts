@@ -14,9 +14,9 @@ import {
 import {
 	Actor,
 } from '@airport/holding-pattern';
-import { APPLICATION_INITIALIZER } from '@airport/landing';
 import { IApplication, APPLICATION_DAO } from '@airport/airspace';
 import {
+	APPLICATION_INITIALIZER,
 	IDatabaseManager,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';

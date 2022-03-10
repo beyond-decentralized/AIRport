@@ -4,7 +4,7 @@ import { IsolateMessageType, } from '@airport/security-check';
 import { injectTransactionalConnector, injectTransactionalServer, TransactionalReceiver } from '@airport/terminal';
 import { TRANSACTIONAL_RECEIVER, APPLICATION_INITIALIZER } from '@airport/terminal-map';
 import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower';
-import { BroadcastChannel as SoftBroadcastChannel } from 'broadcast-channel';
+import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { map } from 'rxjs/operators';
 let _mainDomain = 'localhost:31717';
 export class WebTransactionalReceiver extends TransactionalReceiver {
@@ -70,6 +70,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                 }
             };
         };
+        createChannel();
         window.addEventListener("message", event => {
             const message = event.data;
             if (message.__received__) {

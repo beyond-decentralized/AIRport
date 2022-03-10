@@ -1,6 +1,6 @@
 import { TransactionalReceiver } from '@airport/terminal';
 import { ITransactionalReceiver } from '@airport/terminal-map';
-import { BroadcastChannel as SoftBroadcastChannel } from 'broadcast-channel';
+import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { Subscription } from 'rxjs';
 export declare class WebTransactionalReceiver extends TransactionalReceiver implements ITransactionalReceiver {
     communicationChannel: SoftBroadcastChannel;

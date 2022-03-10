@@ -4,6 +4,7 @@ import { IAbstractQueryContext } from './query/AbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'
 import { ISaveResult } from './query/SaveResult'
 
+export const INTERNAL_APP = '@airport/terminal'
 export const INTERNAL_DOMAIN = 'internal://domain'
 
 export interface ITransactionalConnector {

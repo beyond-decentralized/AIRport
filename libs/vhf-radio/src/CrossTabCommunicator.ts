@@ -8,7 +8,7 @@ import {
     QUERY_RESULTS_DESERIALIZER,
     SERIALIZATION_STATE_MANAGER
 } from "@airport/pressurization";
-import { BroadcastChannel as SoftBroadcastChannel } from 'broadcast-channel';
+import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { CROSS_TAB_COMMUNCATOR } from "./tokens";
 
 export interface ICrossTabCommunicator {
@@ -80,6 +80,7 @@ export class CrossTabCommunicator
                 window.parent.postMessage(messageCopy, this.clientHost)
             };
         }
+        createChannel();
     }
 }
 DI.set(CROSS_TAB_COMMUNCATOR, CrossTabCommunicator)

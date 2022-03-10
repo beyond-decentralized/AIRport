@@ -1137,33 +1137,6 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "PACKAGE_NAME",
-																	"nullable": false
-																}
-															]
-														},
-														{
-															"name": "DbString",
-															"values": []
-														}
-													],
-													"isGenerated": false,
-													"isId": false,
-													"isMappedSuperclass": false,
-													"isTransient": false,
-													"name": "packageName",
-													"type": "PackageName",
-													"ownerEntity": null,
-													"nonArrayType": "PackageName",
-													"primitive": "string",
-													"index": 5
-												},
-												{
-													"decorators": [
-														{
-															"name": "Column",
-															"values": [
-																{
 																	"name": "STATUS",
 																	"nullable": false
 																}
@@ -1183,7 +1156,7 @@ export const MAPPED_SUPERCLASS = [
 													"ownerEntity": null,
 													"nonArrayType": "ApplicationStatus",
 													"primitive": "string",
-													"index": 6
+													"index": 5
 												},
 												{
 													"decorators": [
@@ -1210,7 +1183,7 @@ export const MAPPED_SUPERCLASS = [
 													"ownerEntity": null,
 													"nonArrayType": "string",
 													"primitive": "string",
-													"index": 7
+													"index": 6
 												},
 												{
 													"decorators": [
@@ -1233,7 +1206,7 @@ export const MAPPED_SUPERCLASS = [
 													"isArray": true,
 													"nonArrayType": "ApplicationVersion",
 													"entity": null,
-													"index": 8
+													"index": 7
 												},
 												{
 													"decorators": [
@@ -1492,7 +1465,7 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"implementedInterfaceNames": []
 													},
-													"index": 9
+													"index": 8
 												}
 											],
 											"methodSignatures": [],

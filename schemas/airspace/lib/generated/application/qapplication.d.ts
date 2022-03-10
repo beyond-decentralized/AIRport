@@ -12,7 +12,6 @@ export interface ApplicationESelect extends IEntitySelectProperties, Application
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
-    packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
     domain?: DomainESelect;
@@ -38,7 +37,6 @@ export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
-    packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
     domain?: DomainEOptionalId;
@@ -50,7 +48,6 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
-    packageName?: string | IQStringField;
     status?: string | IQStringField;
     signature?: string | IQStringField;
     domain?: DomainGraph;
@@ -64,7 +61,6 @@ export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     SCOPE?: string | IQStringField;
     APPLICATION_NAME?: string | IQStringField;
     FULL_APPLICATION_NAME?: string | IQStringField;
-    PACKAGE_NAME?: string | IQStringField;
     STATUS?: string | IQStringField;
     SIGNATURE?: string | IQStringField;
     DOMAIN_ID?: number | IQNumberField;
@@ -87,7 +83,6 @@ export interface QApplication extends IQEntity<Application> {
     scope: IQStringField;
     name: IQStringField;
     fullName: IQStringField;
-    packageName: IQStringField;
     status: IQStringField;
     signature: IQStringField;
     domain: QDomainQRelation;

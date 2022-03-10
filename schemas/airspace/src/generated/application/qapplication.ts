@@ -81,7 +81,6 @@ export interface ApplicationESelect
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
-	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
 
@@ -126,7 +125,6 @@ export interface ApplicationEUpdateProperties
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
-	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
 
@@ -146,7 +144,6 @@ export interface ApplicationGraph
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
-	packageName?: string | IQStringField;
 	status?: string | IQStringField;
 	signature?: string | IQStringField;
 
@@ -166,7 +163,6 @@ export interface ApplicationEUpdateColumns
 	SCOPE?: string | IQStringField;
 	APPLICATION_NAME?: string | IQStringField;
 	FULL_APPLICATION_NAME?: string | IQStringField;
-	PACKAGE_NAME?: string | IQStringField;
 	STATUS?: string | IQStringField;
 	SIGNATURE?: string | IQStringField;
 	DOMAIN_ID?: number | IQNumberField;
@@ -208,7 +204,6 @@ export interface QApplication extends IQEntity<Application>
 	scope: IQStringField;
 	name: IQStringField;
 	fullName: IQStringField;
-	packageName: IQStringField;
 	status: IQStringField;
 	signature: IQStringField;
 

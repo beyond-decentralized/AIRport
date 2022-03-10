@@ -359,7 +359,8 @@ export class ApplicationDao
 		for (const application of applications) {
 			values.push([
 				application.index, application.domain.id, application.scope,
-				application.fullName, application.name, application.packageName,
+				application.fullName, application.name, 
+				// application.packageName,
 				application.status, application.signature
 			])
 		}
@@ -371,7 +372,7 @@ export class ApplicationDao
 				a.scope,
 				a.fullName,
 				a.name,
-				a.packageName,
+				// a.packageName,
 				a.status,
 				a.signature
 			],

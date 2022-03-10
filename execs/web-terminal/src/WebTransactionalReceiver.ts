@@ -28,7 +28,7 @@ import {
 } from '@airport/tower'
 import {
 	BroadcastChannel as SoftBroadcastChannel
-} from 'broadcast-channel';
+} from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import {
 	Subscription
 } from 'rxjs'
@@ -128,6 +128,8 @@ export class WebTransactionalReceiver
 				}
 			};
 		}
+
+		createChannel()
 
 		window.addEventListener("message", event => {
 			const message: IIsolateMessage | ILocalAPIResponse = event.data
