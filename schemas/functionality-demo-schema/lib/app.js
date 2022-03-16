@@ -5,5 +5,7 @@ export * from './generated/generated';
 export * from './ApplicationLoader';
 export * from './server-tokens';
 export * from './tokens';
-export declare function markerFunction(): void;
-//# sourceMappingURL=server.d.ts.map
+export function markerFunction() {
+    console.log('marker function called');
+}
+//# sourceMappingURL=app.js.map

@@ -99,7 +99,7 @@ ${addEntityCommand}`;
             if (property.fromProject) {
                 qEntityRelativePath = property.fromProject;
                 if (property.fromProject.indexOf('@airport/') !== 0) {
-                    qEntityRelativePath += '/lib/server';
+                    qEntityRelativePath += '/lib/app';
                 }
                 type = property.otherApplicationDbEntity.name;
             }
@@ -115,7 +115,7 @@ ${addEntityCommand}`;
             if (property.fromProject) {
                 relationEntityPath = property.fromProject;
                 if (property.fromProject.indexOf('@airport/') !== 0) {
-                    relationEntityPath += '/lib/server';
+                    relationEntityPath += '/lib/app';
                 }
             }
             else {

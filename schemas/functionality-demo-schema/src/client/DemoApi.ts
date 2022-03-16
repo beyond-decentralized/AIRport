@@ -14,12 +14,6 @@ export class DemoApi {
         return await demoApi.addRepository(repositoryName)
     }
 
-    async getRepositoryListings(): Promise<IRepository[]> {
-        const demoApi = await IOC.get(DEMO_API)
-
-        return await demoApi.getRepositoryListings()
-    }
-
     async getAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]> {
         const demoApi = await IOC.get(DEMO_API)
 

@@ -17,8 +17,6 @@ export interface IDemoApi {
 
     findAllLevel1WithLevel2(): Promise<DeepPartial<Level1>[]>
 
-    getRepositoryListings(): Promise<IRepository[]>
-
     saveChanges(
         records: DeepPartial<Level1>[]
     ): Promise<void>
@@ -45,7 +43,7 @@ export class DemoApi implements IDemoApi {
     ): Promise<void> {
         const databaseFacade = await container(this).get(DATABASE_FACADE)
 
-        await databaseFacade.addRepository(repositoryName)
+        await databaseFacade.addRepository()
     }
 
 

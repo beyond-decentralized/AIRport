@@ -1,8 +1,7 @@
 import {
     API_REGISTRY,
 } from '@airport/check-in'
-import { container, DI, AIRPORT_DOMAIN } from '@airport/di'
-import { APPLICATION_INITIALIZER } from '@airport/landing'
+import { container, DI } from '@airport/di'
 import {
     APPLICATION_LOADER,
     IApplicationLoader,
@@ -10,6 +9,7 @@ import {
     LastIds
 } from '@airport/security-check'
 import { DDL_OBJECT_RETRIEVER } from '@airport/takeoff'
+import { APPLICATION_INITIALIZER } from '@airport/terminal-map'
 import { APPLICATION } from './generated/application'
 
 export class ApplicationLoader

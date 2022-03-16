@@ -12,7 +12,7 @@ import { LEVEL_1_DAO as LEVEL_1_DAO } from "../server-tokens";
 export class DemoApi {
     async addRepository(repositoryName) {
         const databaseFacade = await container(this).get(DATABASE_FACADE);
-        await databaseFacade.addRepository(repositoryName);
+        await databaseFacade.addRepository();
     }
     async findAllLevel1WithLevel2() {
         const level1Dao = await container(this).get(LEVEL_1_DAO);

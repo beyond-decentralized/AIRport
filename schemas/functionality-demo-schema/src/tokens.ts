@@ -1,5 +1,5 @@
 import { lib } from "@airport/di";
-import { IDemoApi } from "./server";
+import { IDemoApi } from "./app";
 
 export const functionalityDemoApplication = lib('functionality-demo-schema')
 

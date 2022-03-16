@@ -1,7 +1,7 @@
 import {
     ILevel1Dao,
     ILevel2Dao
-} from "./server"
+} from "./app"
 import { functionalityDemoApplication } from "./tokens"
 
 export const LEVEL_1_DAO = functionalityDemoApplication.token<ILevel1Dao>('ILevel1Dao')
