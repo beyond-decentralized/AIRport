@@ -1,6 +1,5 @@
 import { IOC } from "@airport/di"
 import { DeepPartial } from "@airport/pressurization";
-import { IRepository } from "@airport/holding-pattern";
 import { Level1 } from "../ddl/Level1";
 import { DEMO_API } from "../tokens";
 
