@@ -4,8 +4,10 @@ import { User } from '../ddl/User';
  * SELECT - All fields and relations (optional).
  */
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
-    uuId?: string | IQStringField;
+    email?: string | IQStringField;
+    passwordHash?: string | IQStringField;
     username?: string | IQStringField;
+    uuId?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -23,22 +25,28 @@ export interface UserEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserEUpdateProperties extends IEntityUpdateProperties {
-    uuId?: string | IQStringField;
+    email?: string | IQStringField;
+    passwordHash?: string | IQStringField;
     username?: string | IQStringField;
+    uuId?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
-    uuId?: string | IQStringField;
+    email?: string | IQStringField;
+    passwordHash?: string | IQStringField;
     username?: string | IQStringField;
+    uuId?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
-    UUID?: string | IQStringField;
+    EMAIL?: string | IQStringField;
+    PASSWORD_HASH?: string | IQStringField;
     USERNAME?: string | IQStringField;
+    UUID?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -55,8 +63,10 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
  */
 export interface QUser extends IQEntity<User> {
     id: IQNumberField;
-    uuId: IQStringField;
+    email: IQStringField;
+    passwordHash: IQStringField;
     username: IQStringField;
+    uuId: IQStringField;
 }
 export interface QUserQId {
     id: IQNumberField;

@@ -13,13 +13,21 @@ __decorate([
     DbNumber()
 ], User.prototype, "id", void 0);
 __decorate([
-    Column({ name: "UUID", nullable: false }),
+    Column({ name: "EMAIL" }),
     DbString()
-], User.prototype, "uuId", void 0);
+], User.prototype, "email", void 0);
+__decorate([
+    Column({ name: "PASSWORD_HASH" }),
+    DbString()
+], User.prototype, "passwordHash", void 0);
 __decorate([
     Column({ name: "USERNAME" }),
     DbString()
 ], User.prototype, "username", void 0);
+__decorate([
+    Column({ name: "UUID", nullable: false }),
+    DbString()
+], User.prototype, "uuId", void 0);
 User = __decorate([
     Entity()
 ], User);

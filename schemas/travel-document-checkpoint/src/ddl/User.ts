@@ -15,6 +15,8 @@ import { UserTerminalAgt } from './UserTerminalAgt'
 
 export type User_Id = number;
 export type User_UuId = string;
+export type User_Email = string;
+export type User_PasswordHash = string;
 export type User_Username = string;
 
 @Entity()
@@ -25,13 +27,21 @@ export class User {
 	@DbNumber()
 	id: User_Id;
 
-	@Column({ name: "UUID", nullable: false })
+	@Column({ name: "EMAIL" })
 	@DbString()
-	uuId: User_UuId;
+	email: User_Email
+
+	@Column({ name: "PASSWORD_HASH" })
+	@DbString()
+	passwordHash: User_PasswordHash
 
 	@Column({ name: "USERNAME" })
 	@DbString()
 	username: User_Username;
+
+	@Column({ name: "UUID", nullable: false })
+	@DbString()
+	uuId: User_UuId;
 
 	// @OneToMany({ mappedBy: 'user' })
 	// userTerminal: UserTerminal[]

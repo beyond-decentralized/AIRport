@@ -13,8 +13,10 @@ export interface IUser {
 	// Id Relations
 
 	// Non-Id Properties
-	uuId?: string;
+	email?: string;
+	passwordHash?: string;
 	username?: string;
+	uuId?: string;
 
 	// Non-Id Relations
 
