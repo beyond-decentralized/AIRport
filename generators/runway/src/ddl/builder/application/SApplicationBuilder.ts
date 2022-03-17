@@ -488,7 +488,7 @@ export class SApplicationBuilder {
 					}
 					if (!extendsEntity || isLocal) {
 						throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
-					in ${entity.name}.${aProperty.name} (if the related entity does not extend RepositoryEntity).`);
+					in ${entity.name}.${aProperty.name} for non-repository entities.  Did you forget 'extends RepositoryEntity'?`);
 					}
 					let relatedTableName
 					if (aProperty.entity) {
