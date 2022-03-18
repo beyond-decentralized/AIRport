@@ -48,5 +48,4 @@ export class QueryEntityClassCreator
 	}
 
 }
-
 DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator)

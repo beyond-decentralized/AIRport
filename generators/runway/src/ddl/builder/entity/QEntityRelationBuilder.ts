@@ -1,6 +1,7 @@
-import {EntityCandidate}    from '../../parser/EntityCandidate'
-import {QCoreEntityBuilder} from '../Builder'
-import {QEntityFileBuilder} from './QEntityFileBuilder'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { entityExtendsOrIsRepositoryEntity, entityExtendsRepositoryEntity } from '../application/SApplicationBuilder'
+import { QCoreEntityBuilder } from '../Builder'
+import { QEntityFileBuilder } from './QEntityFileBuilder'
 
 export class QEntityRelationBuilder
 	extends QCoreEntityBuilder {
@@ -22,12 +23,17 @@ export class QEntityRelationBuilder
 			return decorator.name === 'MappedSuperclass'
 		})
 
-		let genericType       = ''
+		let genericType = ''
 		let entity = this.entity.docEntry.name
-		let parentEntityQType = `IQRelation<${entity}, ${qName}>`
+		const [isRepositoryEntity, _] = entityExtendsOrIsRepositoryEntity(this.entity)
+		let parentInterfaceType = 'IQRelation'
+		if (isRepositoryEntity) {
+			parentInterfaceType = 'IQRepositoryEntityRelation'
+		}
+		let parentEntityQType = `${parentInterfaceType}<${entity}, ${qName}>`
 		if (isMappedSuperclass) {
-			genericType       = '<SubType, SubQType extends IQEntity<SubType>>'
-			parentEntityQType = `IQRelation<SubType, SubQType>`
+			genericType = '<SubType, SubQType extends IQEntity<SubType>>'
+			parentEntityQType = `${parentInterfaceType}<SubType, SubQType>`
 		}
 
 		if (this.entity.parentEntity) {

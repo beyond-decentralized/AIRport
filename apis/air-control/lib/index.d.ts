@@ -120,5 +120,6 @@ export * from './lingo/utils/QMetadataUtils';
 export * from './lingo/utils/QueryUtils';
 export * from './lingo/utils/ApplicationUtils';
 export * from './lingo/AirportDatabase';
+export * from './lingo/DeepPartial';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

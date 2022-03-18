@@ -45,6 +45,8 @@ export declare class SApplicationBuilder {
 }
 export declare function entityExtendsRepositoryEntity(//
 entityCandidate: EntityCandidate): [boolean, boolean];
+export declare function entityExtendsOrIsRepositoryEntity(//
+entityCandidate: EntityCandidate): [boolean, boolean];
 export declare function isManyToOnePropertyNotNull(aProperty: PropertyDocEntry): boolean;
 export declare function getManyToOneDecorator(aProperty: PropertyDocEntry): Decorator;
 //# sourceMappingURL=SApplicationBuilder.d.ts.map

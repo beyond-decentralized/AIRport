@@ -1,7 +1,7 @@
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
 import { QEntity } from '../core/entity/Entity';
-import { QOneToManyRelation } from '../core/entity/OneToManyRelation';
-import { QRelation } from '../core/entity/Relation';
+import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation';
+import { QRelation, QRepositoryEntityRelation } from '../core/entity/Relation';
 import { QBooleanField } from '../core/field/BooleanField';
 import { QDateField } from '../core/field/DateField';
 import { QNumberField } from '../core/field/NumberField';
@@ -52,7 +52,12 @@ export function getQRelation(entity, property, q, allQApplications) {
             // return new qIdRelationConstructor(relationEntity, property, q)
             return new qIdRelationConstructor(relation.relationEntity, relation, q);
         case EntityRelationType.ONE_TO_MANY:
-            return new QOneToManyRelation(relation, q);
+            if (entity.isRepositoryEntity) {
+                return new QRepositoryEntityOneToManyRelation(relation, q);
+            }
+            else {
+                return new QOneToManyRelation(relation, q);
+            }
         default:
             throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
     }
@@ -89,13 +94,18 @@ export function addColumnQField(entity, property, q, column) {
     }
     return qFieldOrRelation;
 }
-export function getQEntityIdRelationConstructor() {
+export function getQEntityIdRelationConstructor(dbEntity) {
     function QEntityIdRelation(entity, relation, qEntity) {
         QEntityIdRelation.base.constructor.call(this, relation, qEntity);
         getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
-    extend(QRelation, QEntityIdRelation, {});
+    if (dbEntity.isRepositoryEntity) {
+        extend(QRepositoryEntityRelation, QEntityIdRelation, {});
+    }
+    else {
+        extend(QRelation, QEntityIdRelation, {});
+    }
     return QEntityIdRelation;
 }
 /**
@@ -194,7 +204,7 @@ export function setQApplicationEntities(application, qApplication, allQApplicati
                 // ${entity.name}.${manyColumn.name} `) haveMissingDependencies = true }
             }
         }
-        const qIdRelationConstructor = getQEntityIdRelationConstructor();
+        const qIdRelationConstructor = getQEntityIdRelationConstructor(entity);
         qApplication.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor;
         // TODO: compute many-to-many relations
         const qConstructor = getQEntityConstructor(allQApplications);

@@ -18,6 +18,8 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
+	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';

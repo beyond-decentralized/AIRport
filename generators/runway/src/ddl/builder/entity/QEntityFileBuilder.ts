@@ -64,7 +64,8 @@ export class QEntityFileBuilder
       'IQNumberField',
       'IQOneToManyRelation', 'IQStringField',
       'IQUntypedField',
-      'IQEntity', 'IQRelation',
+      'IQEntity', 'IQRelation', 
+      'IQRepositoryEntityOneToManyRelation', 'IQRepositoryEntityRelation',
       'RawDelete', 'RawUpdate'],
       '@airport/air-control');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);

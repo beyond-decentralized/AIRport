@@ -1,4 +1,4 @@
-import { IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/air-control';
+import { IQNumberField, IQStringField, IQRepositoryEntityOneToManyRelation } from '@airport/air-control';
 import { RepositoryEntityGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '@airport/holding-pattern';
 import { TodoItemGraph, TodoItemESelect, QTodoItem } from './qtodoitem';
 import { TodoItem } from '../ddl/TodoItem';
@@ -59,7 +59,7 @@ export interface TodoListECreateColumns extends TodoListEId, TodoListEUpdateColu
  */
 export interface QTodoList extends QRepositoryEntity<TodoList> {
     name: IQStringField;
-    items: IQOneToManyRelation<TodoItem, QTodoItem>;
+    items: IQRepositoryEntityOneToManyRelation<TodoItem, QTodoItem>;
 }
 export interface QTodoListQId extends QRepositoryEntityQId {
 }

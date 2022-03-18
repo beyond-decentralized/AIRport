@@ -1,5 +1,5 @@
 import { EntityAliases } from '../../core/entity/Aliases';
-import { QOneToManyRelation } from '../../core/entity/OneToManyRelation';
+import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../../core/entity/OneToManyRelation';
 import { QField } from '../../core/field/Field';
 import { DistinguishableQuery, NON_ENTITY_SELECT_ERROR_MESSAGE } from './NonEntityQuery';
 /**
@@ -24,7 +24,8 @@ export class MappableQuery extends DistinguishableQuery {
                 // that is OK.
                 select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
             }
-            else if (value instanceof QOneToManyRelation) {
+            else if (value instanceof QOneToManyRelation
+                || value instanceof QRepositoryEntityOneToManyRelation) {
                 throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`);
             } // Must be a primitive
             else {

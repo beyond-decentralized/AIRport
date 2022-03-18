@@ -26,8 +26,8 @@ import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
 import { IQStringField } from '../../lingo/core/field/StringField'
 import { IQUntypedField } from '../../lingo/core/field/UntypedField'
 import { QEntity } from '../core/entity/Entity'
-import { QOneToManyRelation } from '../core/entity/OneToManyRelation'
-import { QRelation } from '../core/entity/Relation'
+import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
+import { QRelation, QRepositoryEntityRelation } from '../core/entity/Relation'
 import { QBooleanField } from '../core/field/BooleanField'
 import { QDateField } from '../core/field/DateField'
 import { QNumberField } from '../core/field/NumberField'
@@ -97,7 +97,11 @@ export function getQRelation(
 			// return new qIdRelationConstructor(relationEntity, property, q)
 			return new qIdRelationConstructor(relation.relationEntity, relation, q)
 		case EntityRelationType.ONE_TO_MANY:
-			return new QOneToManyRelation(relation, q)
+			if (entity.isRepositoryEntity) {
+				return new QRepositoryEntityOneToManyRelation(relation, q)
+			} else {
+				return new QOneToManyRelation(relation, q)
+			}
 		default:
 			throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`)
 	}
@@ -160,12 +164,14 @@ export function addColumnQField(
 	return qFieldOrRelation
 }
 
-export function getQEntityIdRelationConstructor(): typeof QRelation {
+export function getQEntityIdRelationConstructor(
+	dbEntity: DbEntity
+): typeof QRelation {
 
 	function QEntityIdRelation(
 		entity: DbEntity,
 		relation: DbRelation,
-		qEntity: IQEntityInternal<any>
+		qEntity: IQEntityInternal<any>,
 	) {
 		(<any>QEntityIdRelation).base.constructor.call(this, relation, qEntity)
 
@@ -174,7 +180,11 @@ export function getQEntityIdRelationConstructor(): typeof QRelation {
 		// (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
 	}
 
-	extend(QRelation, QEntityIdRelation, {})
+	if (dbEntity.isRepositoryEntity) {
+		extend(QRepositoryEntityRelation, QEntityIdRelation, {})
+	} else {
+		extend(QRelation, QEntityIdRelation, {})
+	}
 
 	return <any>QEntityIdRelation
 }
@@ -303,7 +313,7 @@ export function setQApplicationEntities(
 			}
 		}
 
-		const qIdRelationConstructor = <any>getQEntityIdRelationConstructor()
+		const qIdRelationConstructor = <any>getQEntityIdRelationConstructor(entity)
 		qApplication.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor
 
 		// TODO: compute many-to-many relations

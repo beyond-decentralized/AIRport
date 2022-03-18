@@ -18,6 +18,8 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
+	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -168,7 +170,7 @@ export interface QTodoList extends QRepositoryEntity<TodoList>
 	name: IQStringField;
 
 	// Non-Id Relations
-	items: IQOneToManyRelation<TodoItem, QTodoItem>;
+	items: IQRepositoryEntityOneToManyRelation<TodoItem, QTodoItem>;
 
 }
 

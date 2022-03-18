@@ -1,9 +1,10 @@
-import {PropertyDocEntry} from '../../parser/DocEntry'
-import {EntityCandidate}  from '../../parser/EntityCandidate'
+import { PropertyDocEntry } from '../../parser/DocEntry'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { entityExtendsOrIsRepositoryEntity } from '../application/SApplicationBuilder';
 import {
 	IBuilder,
 	IQCoreEntityBuilder
-}                         from '../Builder'
+} from '../Builder'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -48,10 +49,14 @@ export class QRelationBuilder
 			entityType = this.entityProperty.otherApplicationDbEntity.name
 		}
 		entityType = entityType.replace('[]', '')
-		type       = `Q${entityType}`
+		type = `Q${entityType}`
 			+ (this.buildRelationInstance ? 'QRelation' : 'QId')
 		if (this.entityProperty.isArray) {
-			type = `IQOneToManyRelation<${entityType}, Q${entityType}>`
+			let interfaceName = 'IQOneToManyRelation';
+			if (entityExtendsOrIsRepositoryEntity(this.parentBuilder.entity)[0]) {
+				interfaceName = 'IQRepositoryEntityOneToManyRelation'
+			}
+			type = `${interfaceName}<${entityType}, Q${entityType}>`
 		}
 		return `${this.entityProperty.name}: ${type};`
 
@@ -63,9 +68,9 @@ export class QRelationBuilder
 
 	buildInterfaceDefinition(
 		idOnly: boolean,
-		optional: boolean              = true,
+		optional: boolean = true,
 		forInternalInterfaces: boolean = true,
-		forCascadeGraph: boolean       = false
+		forCascadeGraph: boolean = false
 	): string {
 		if (idOnly && this.entityProperty.decorators.filter(
 			decorator => decorator.name === 'OneToMany').length) {
@@ -94,7 +99,7 @@ export class QRelationBuilder
 				type += '[]'
 			}
 		}
-		const iType      = type + typeSuffix
+		const iType = type + typeSuffix
 		const definition = `${this.entityProperty.name}${optional ? '?' : ''}: ${iType};`
 
 		return definition

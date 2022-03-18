@@ -1,17 +1,31 @@
-import {DbRelation}       from '@airport/ground-control'
-import {IQEntityInternal} from '../../../lingo/core/entity/Entity'
-import {extend}           from '../../utils/qApplicationBuilderUtils'
-import {QRelation}        from './Relation'
+import { DbRelation } from '@airport/ground-control'
+import { IQEntity, IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { QRelation, QRepositoryEntityRelation } from './Relation'
 
 /**
  * Created by Papa on 10/25/2016.
  */
 
-export function QOneToManyRelation(
-	dbRelation: DbRelation,
-	parentQ: IQEntityInternal<any>,
-) {
-	(<any>QOneToManyRelation).base.constructor.call(this, dbRelation, parentQ)
+export class QOneToManyRelation<Entity, IQ extends IQEntity<Entity>>
+	extends QRelation<Entity, IQ> {
+
+	constructor(
+		dbRelation: DbRelation,
+		parentQ: IQEntityInternal<any>,
+	) {
+		super(dbRelation, parentQ)
+	}
+
 }
 
-extend(QRelation, QOneToManyRelation, {})
+export class QRepositoryEntityOneToManyRelation<Entity, IQ extends IQEntity<Entity>>
+	extends QRepositoryEntityRelation<Entity, IQ> {
+
+	constructor(
+		dbRelation: DbRelation,
+		parentQ: IQEntityInternal<any>,
+	) {
+		super(dbRelation, parentQ)
+	}
+
+}

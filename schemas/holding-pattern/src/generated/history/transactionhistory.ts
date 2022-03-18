@@ -1,5 +1,4 @@
 import {
-	IRepositoryTransactionHistory,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
@@ -19,7 +18,7 @@ import {
 //////////////////////////////
 
 export interface ITransactionHistory {
-	
+
 	// Id Properties
 	id: number;
 
@@ -41,7 +40,7 @@ export interface ITransactionHistory {
 	numberOfOperations?: number;
 
 	// Public Methods
-	
+
 }
 
 

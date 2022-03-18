@@ -1,8 +1,10 @@
-import {DbRelation} from "@airport/ground-control";
+import { DbRelation } from "@airport/ground-control";
+import { DeepPartial } from "../../DeepPartial";
+import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
 	IQEntity,
 	IQEntityInternal
-}                   from './Entity';
+} from './Entity';
 
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since
@@ -21,6 +23,17 @@ export interface IQRelation<Entity, IQ extends IQEntity<Entity>> {
 	where a.cId =
 	 */
 }
+/**
+ * A concrete ORM relation on a Repository Entity
+ */
+export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity<Entity>>
+	extends IQRelation<Entity, IQ> {
+
+	equals(
+		entity: DeepPartial<Entity> | IQRepositoryEntityRelation<Entity, IQ>
+	): JSONLogicalOperation
+
+}
 
 export interface IQInternalRelation<Entity, IQ extends IQEntity<Entity>>
 	extends IQRelation<Entity, IQ> {
@@ -29,4 +42,3 @@ export interface IQInternalRelation<Entity, IQ extends IQEntity<Entity>>
 	parentQ: IQEntityInternal<any>;
 
 }
-

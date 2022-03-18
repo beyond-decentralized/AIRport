@@ -658,17 +658,21 @@ export class SApplicationBuilder {
 export function entityExtendsRepositoryEntity(//
 entityCandidate //
 ) {
-    const parentEntity = entityCandidate.parentEntity;
-    if (!parentEntity) {
+    return entityExtendsOrIsRepositoryEntity(entityCandidate.parentEntity);
+}
+export function entityExtendsOrIsRepositoryEntity(//
+entityCandidate //
+) {
+    if (!entityCandidate) {
         return [false, true];
     }
-    if (parentEntity.docEntry.name === repositoryEntity.ENTITY_NAME) {
+    if (entityCandidate.docEntry.name === repositoryEntity.ENTITY_NAME) {
         return [true, false];
     }
-    if (parentEntity.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
+    if (entityCandidate.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
         return [true, true];
     }
-    return entityExtendsRepositoryEntity(entityCandidate.parentEntity);
+    return entityExtendsOrIsRepositoryEntity(entityCandidate.parentEntity);
 }
 export function isManyToOnePropertyNotNull(aProperty) {
     const manyToOneProperty = getManyToOneDecorator(aProperty);

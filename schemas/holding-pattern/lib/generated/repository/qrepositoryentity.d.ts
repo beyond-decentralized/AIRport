@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRepositoryEntityRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { ActorGraph, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '../infrastructure/qactor';
 /**
@@ -84,6 +84,6 @@ export interface QRepositoryEntityQId {
     repository: QRepositoryQId;
     actor: QActorQId;
 }
-export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
+export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRepositoryEntityRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 //# sourceMappingURL=qrepositoryentity.d.ts.map

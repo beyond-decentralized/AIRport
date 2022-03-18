@@ -1,10 +1,15 @@
-import { extend } from '../../utils/qApplicationBuilderUtils';
-import { QRelation } from './Relation';
+import { QRelation, QRepositoryEntityRelation } from './Relation';
 /**
  * Created by Papa on 10/25/2016.
  */
-export function QOneToManyRelation(dbRelation, parentQ) {
-    QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ);
+export class QOneToManyRelation extends QRelation {
+    constructor(dbRelation, parentQ) {
+        super(dbRelation, parentQ);
+    }
 }
-extend(QRelation, QOneToManyRelation, {});
+export class QRepositoryEntityOneToManyRelation extends QRepositoryEntityRelation {
+    constructor(dbRelation, parentQ) {
+        super(dbRelation, parentQ);
+    }
+}
 //# sourceMappingURL=OneToManyRelation.js.map

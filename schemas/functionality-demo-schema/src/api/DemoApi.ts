@@ -1,7 +1,6 @@
 import { DATABASE_FACADE } from "@airport/air-control";
 import { Api } from "@airport/check-in";
 import { container, DI } from "@airport/di";
-import { IRepository } from "@airport/holding-pattern";
 import { DeepPartial } from "@airport/pressurization";
 import {
     DEMO_API,

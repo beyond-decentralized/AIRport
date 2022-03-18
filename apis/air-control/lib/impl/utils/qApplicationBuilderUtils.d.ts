@@ -20,7 +20,7 @@ export declare function getColumnQField(entity: DbEntity, property: DbProperty, 
 export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, allQApplications: QApplication[]): IQRelation<any, typeof q>;
 export declare function getQEntityConstructor(allQApplications: QApplication[]): typeof QEntity;
 export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
-export declare function getQEntityIdRelationConstructor(): typeof QRelation;
+export declare function getQEntityIdRelationConstructor(dbEntity: DbEntity): typeof QRelation;
 /**
  * Set all fields behind an id relation.  For example
  *

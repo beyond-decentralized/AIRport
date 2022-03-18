@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 	TableConfiguration,

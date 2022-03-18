@@ -72,8 +72,8 @@ export class IEntityInterfaceBuilder
 			}
 		})
 
-		const [isRepositoryEntity, isLocal]
-			                           = entityExtendsRepositoryEntity(this.entity)
+		// const [isRepositoryEntity, isLocal]
+		// 	                           = entityExtendsRepositoryEntity(this.entity)
 
 		let transientProperties = ``
 		this.transientPropertyBuilders.forEach((

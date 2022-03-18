@@ -1,5 +1,4 @@
 import { addImportForType } from '../../../resolve/pathResolver';
-import { entityExtendsRepositoryEntity } from '../application/SApplicationBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */
@@ -37,7 +36,8 @@ export class IEntityInterfaceBuilder {
                 nonIdRelations += `\t${nonIdRelation}\n`;
             }
         });
-        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(this.entity);
+        // const [isRepositoryEntity, isLocal]
+        // 	                           = entityExtendsRepositoryEntity(this.entity)
         let transientProperties = ``;
         this.transientPropertyBuilders.forEach((builder) => {
             transientProperties += `\t${builder.buildInterfaceDefinition()}\n`;

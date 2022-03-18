@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
@@ -212,6 +213,6 @@ export interface QRepositoryEntityQId
 
 // Entity Relation Interface
 export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends IQRelation<SubType, SubQType>, QRepositoryEntityQId {
+	extends IQRepositoryEntityRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 

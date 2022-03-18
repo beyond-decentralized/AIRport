@@ -1685,8 +1685,8 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 1,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "UUID",
-                                "notNull": true,
+                                "name": "EMAIL",
+                                "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
                                 "propertyColumns": [
@@ -1705,8 +1705,48 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 2,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
+                                "name": "PASSWORD_HASH",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "STRING"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 3,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
                                 "name": "USERNAME",
                                 "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "STRING"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 4,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "UUID",
+                                "notNull": true,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
                                 "propertyColumns": [
@@ -1779,7 +1819,7 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 1,
                                 "isId": false,
-                                "name": "uuId",
+                                "name": "email",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -1795,7 +1835,39 @@ export const MAPPED_SUPERCLASS = [
                                 "id": null,
                                 "index": 2,
                                 "isId": false,
+                                "name": "passwordHash",
+                                "relation": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 3,
+                                "isId": false,
                                 "name": "username",
+                                "relation": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 4,
+                                "isId": false,
+                                "name": "uuId",
                                 "relation": null,
                                 "sinceVersion": null
                             }
@@ -2711,8 +2783,8 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 1,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "UUID",
-                                    "notNull": true,
+                                    "name": "EMAIL",
+                                    "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
                                     "propertyColumns": [
@@ -2731,8 +2803,48 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 2,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
+                                    "name": "PASSWORD_HASH",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "STRING"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 3,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
                                     "name": "USERNAME",
                                     "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "STRING"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 4,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "UUID",
+                                    "notNull": true,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
                                     "propertyColumns": [
@@ -2805,7 +2917,7 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 1,
                                     "isId": false,
-                                    "name": "uuId",
+                                    "name": "email",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -2821,7 +2933,39 @@ export const MAPPED_SUPERCLASS = [
                                     "id": null,
                                     "index": 2,
                                     "isId": false,
+                                    "name": "passwordHash",
+                                    "relation": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 3,
+                                    "isId": false,
                                     "name": "username",
+                                    "relation": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 4,
+                                    "isId": false,
+                                    "name": "uuId",
                                     "relation": null,
                                     "sinceVersion": null
                                 }

@@ -1,22 +1,22 @@
 import {
 	JsonNonEntityQuery,
 	JsonTreeQuery
-}                           from '@airport/ground-control'
-import {IEntityAliases}     from '../../../lingo/core/entity/Aliases'
-import {IQuery}             from '../../../lingo/query/facade/Query'
+} from '@airport/ground-control'
+import { IEntityAliases } from '../../../lingo/core/entity/Aliases'
+import { IQuery } from '../../../lingo/query/facade/Query'
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                           from '../../../lingo/query/facade/TreeQuery'
-import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
-import {EntityAliases}      from '../../core/entity/Aliases'
-import {QOneToManyRelation} from '../../core/entity/OneToManyRelation'
-import {QField}             from '../../core/field/Field'
+} from '../../../lingo/query/facade/TreeQuery'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { EntityAliases } from '../../core/entity/Aliases'
+import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
+import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE
-}                           from './NonEntityQuery'
+} from './NonEntityQuery'
 
 /**
  * Created by Papa on 10/24/2016.
@@ -50,7 +50,8 @@ export abstract class MappableQuery
 				// that is OK.
 				select[property] = value.toJSON(
 					this.columnAliases, true, queryUtils, fieldUtils)
-			} else if (value instanceof QOneToManyRelation) {
+			} else if (value instanceof QOneToManyRelation
+				|| value instanceof QRepositoryEntityOneToManyRelation) {
 				throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`)
 			} // Must be a primitive
 			else {
@@ -69,7 +70,7 @@ export abstract class MappableQuery
 							} else if (value === null) {
 
 							} else {
-								isChildObject    = true
+								isChildObject = true
 								select[property] = this.nonDistinctSelectClauseToJSON(
 									value, queryUtils, fieldUtils)
 							}
@@ -102,13 +103,13 @@ export class TreeQuery<ITE extends ITreeEntity>
 		fieldUtils: IFieldUtils
 	): JsonTreeQuery {
 		let jsonMappedQuery: JsonTreeQuery
-			    = <JsonTreeQuery>this.getNonEntityQuery(this.rawQuery, <any>{}, (
-			jsonQuery: JsonNonEntityQuery
-		) => {
-			jsonQuery.S = this.selectClauseToJSON(
-				this.rawQuery.select, queryUtils, fieldUtils)
+			= <JsonTreeQuery>this.getNonEntityQuery(this.rawQuery, <any>{}, (
+				jsonQuery: JsonNonEntityQuery
+			) => {
+				jsonQuery.S = this.selectClauseToJSON(
+					this.rawQuery.select, queryUtils, fieldUtils)
 
-		}, queryUtils, fieldUtils)
+			}, queryUtils, fieldUtils)
 
 		return jsonMappedQuery
 	}
