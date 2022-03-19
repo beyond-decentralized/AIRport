@@ -3,7 +3,7 @@ import { DbEntity, ISaveResult } from '@airport/ground-control';
 /**
  * Created by Papa on 12/11/2016.
  */
-export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity<Entity>> implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ> {
+export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> implements IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ> {
     dbEntity: DbEntity;
     private Q;
     duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
@@ -11,16 +11,16 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     findOne: IEntityFindOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QApplication);
     get from(): IQ;
-    insertColumnValues<IQE extends IQEntity<Entity>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertValues<IQE extends IQEntity<Entity>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity<Entity>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity<Entity>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     updateColumnsWhere(rawUpdateColumns: RawUpdate<EntityUpdateColumns, IQ> | {

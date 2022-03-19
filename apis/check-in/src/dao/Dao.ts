@@ -36,7 +36,7 @@ export abstract class Dao<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	QE extends IQEntity<Entity>>
+	QE extends IQEntity>
 	implements IDao<Entity, EntitySelect, EntityCreate,
 	EntityUpdateColumns, EntityUpdateProperties, EntityId,
 	EntityCascadeGraph, QE> {

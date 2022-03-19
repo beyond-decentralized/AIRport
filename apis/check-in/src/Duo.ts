@@ -92,7 +92,7 @@ export class Duo<Entity,
   EntityUpdate extends IEntityUpdateProperties,
   EntityId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
-  IQE extends IQEntity<Entity>>
+  IQE extends IQEntity>
   implements IDuo<Entity, EntitySelect, EntityCreate,
   EntityUpdateColumns, EntityUpdate, EntityId,
   EntityCascadeGraph, IQE> {

@@ -56,7 +56,7 @@ export class QRelationBuilder
 			if (entityExtendsOrIsRepositoryEntity(this.parentBuilder.entity)[0]) {
 				interfaceName = 'IQRepositoryEntityOneToManyRelation'
 			}
-			type = `${interfaceName}<${entityType}, Q${entityType}>`
+			type = `${interfaceName}<I${entityType}, Q${entityType}>`
 		}
 		return `${this.entityProperty.name}: ${type};`
 

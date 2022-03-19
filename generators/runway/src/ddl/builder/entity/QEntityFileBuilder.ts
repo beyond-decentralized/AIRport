@@ -64,7 +64,7 @@ export class QEntityFileBuilder
       'IQNumberField',
       'IQOneToManyRelation', 'IQStringField',
       'IQUntypedField',
-      'IQEntity', 'IQRelation', 
+      'IQEntity', 'IQRelation',
       'IQRepositoryEntityOneToManyRelation', 'IQRepositoryEntityRelation',
       'RawDelete', 'RawUpdate'],
       '@airport/air-control');
@@ -180,8 +180,14 @@ ${addEntityCommand}`;
     this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
     const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
       this.entityPath).replace('.ts', '');
-    this.addImport([this.entity.docEntry.name],
-      entityImportRelativePath, false);
+    this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
+
+    const qFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
+    let entityInterfaceRelativePath = resolveRelativePath(qFilePath, this.fullGenerationPath)
+    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
+    this.addImport([
+      'I' + this.entity.docEntry.name],
+      entityInterfaceRelativePath)
   }
 
 }

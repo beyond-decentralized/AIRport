@@ -2,7 +2,6 @@ import {
   DATABASE_FACADE,
   EntityFind,
   EntityFindOne,
-  EntityLookup,
   IDatabaseFacade,
   IDuo,
   IEntityCascadeGraph,
@@ -40,7 +39,7 @@ export class EntityDatabaseFacade<Entity,
   EntityUpdateProperties extends IEntityUpdateProperties,
   EntityId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
-  IQ extends IQEntity<Entity>>
+  IQ extends IQEntity>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
   EntityCreate, EntityUpdateColumns,
   EntityUpdateProperties, EntityId,
@@ -75,7 +74,7 @@ export class EntityDatabaseFacade<Entity,
     return this.Q[this.dbEntity.name];
   }
 
-  async insertColumnValues<IQE extends IQEntity<Entity>>(
+  async insertColumnValues<IQE extends IQEntity>(
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
@@ -89,7 +88,7 @@ export class EntityDatabaseFacade<Entity,
     });
   }
 
-  async insertValues<IQE extends IQEntity<Entity>>(
+  async insertValues<IQE extends IQEntity>(
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },
@@ -103,7 +102,7 @@ export class EntityDatabaseFacade<Entity,
     });
   }
 
-  async insertColumnValuesGenerateIds<IQE extends IQEntity<Entity>>(
+  async insertColumnValuesGenerateIds<IQE extends IQEntity>(
     rawInsertColumnValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;
     },
@@ -117,7 +116,7 @@ export class EntityDatabaseFacade<Entity,
     });
   }
 
-  async insertValuesGenerateIds<IQE extends IQEntity<Entity>>(
+  async insertValuesGenerateIds<IQE extends IQEntity>(
     rawInsertValues: RawInsertValues<IQE> | {
       (...args: any[]): RawInsertValues<IQE>;
     },

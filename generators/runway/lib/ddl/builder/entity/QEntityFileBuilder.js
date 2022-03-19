@@ -141,6 +141,12 @@ ${addEntityCommand}`;
         this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
         const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath, this.entityPath).replace('.ts', '');
         this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
+        const qFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
+        let entityInterfaceRelativePath = resolveRelativePath(qFilePath, this.fullGenerationPath);
+        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase();
+        this.addImport([
+            'I' + this.entity.docEntry.name
+        ], entityInterfaceRelativePath);
     }
 }
 //# sourceMappingURL=QEntityFileBuilder.js.map
