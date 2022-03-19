@@ -137,7 +137,7 @@ export interface IEntityRelationFrom {
 /**
  * A concrete Generated Query Entity.
  */
-export interface IQEntity<IEntity> {
+export interface IQEntity {
 
 	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
@@ -149,32 +149,32 @@ export interface IQEntity<IEntity> {
 
 }
 
-export interface IQTree<IEntity>
-	extends IQEntity<IEntity> {
+export interface IQTree
+	extends IQEntity {
 
 }
 
-export interface IQEntityInternal<IEntity>
-	extends IQEntity<IEntity> {
+export interface IQEntityInternal
+	extends IQEntity {
 
-	__driver__: IQEntityDriver<IEntity>;
+	__driver__: IQEntityDriver;
 
 }
 
-export interface IQEntityDriver<IEntity> {
+export interface IQEntityDriver {
 
 	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
 	currentChildIndex: number;
 	dbEntity: DbEntity;
 	dbRelation: DbRelation;
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> };
-	entityRelations: IQInternalRelation<any, any>[];
+	entityRelations: IQInternalRelation<any>[];
 	fromClausePosition: number[];
 	idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
 	joinType: JoinType;
 	joinWhereClause: JSONBaseOperation;
-	parentJoinEntity: IQEntityInternal<IEntity>;
-	relations: IQInternalRelation<any, any>[];
+	parentJoinEntity: IQEntityInternal;
+	relations: IQInternalRelation<any>[];
 
 	/*
 	addEntityField<IQF extends IQOperableFieldInternal<any, JSONBaseOperation, any, any>>(
@@ -189,7 +189,7 @@ export interface IQEntityDriver<IEntity> {
 	getInstance(
 		airDb: IAirportDatabase,
 		applicationUtils: IApplicationUtils
-	): IQEntityInternal<IEntity>;
+	): IQEntityInternal;
 
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
@@ -199,7 +199,7 @@ export interface IQEntityDriver<IEntity> {
 
 	// getRelationPropertyName(): string;
 
-	getRootJoinEntity(): IQEntityInternal<any>;
+	getRootJoinEntity(): IQEntityInternal;
 
 	isRootEntity(): boolean;
 

@@ -94,18 +94,18 @@ export interface IEntityRelationFrom {
 /**
  * A concrete Generated Query Entity.
  */
-export interface IQEntity<IEntity> {
+export interface IQEntity {
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
-export interface IQTree<IEntity> extends IQEntity<IEntity> {
+export interface IQTree extends IQEntity {
 }
-export interface IQEntityInternal<IEntity> extends IQEntity<IEntity> {
-    __driver__: IQEntityDriver<IEntity>;
+export interface IQEntityInternal extends IQEntity {
+    __driver__: IQEntityDriver;
 }
-export interface IQEntityDriver<IEntity> {
+export interface IQEntityDriver {
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     currentChildIndex: number;
     dbEntity: DbEntity;
@@ -113,16 +113,16 @@ export interface IQEntityDriver<IEntity> {
     entityFieldMap: {
         [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any>;
     };
-    entityRelations: IQInternalRelation<any, any>[];
+    entityRelations: IQInternalRelation<any>[];
     fromClausePosition: number[];
     idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     joinType: JoinType;
     joinWhereClause: JSONBaseOperation;
-    parentJoinEntity: IQEntityInternal<IEntity>;
-    relations: IQInternalRelation<any, any>[];
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal<IEntity>;
+    parentJoinEntity: IQEntityInternal;
+    relations: IQInternalRelation<any>[];
+    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
-    getRootJoinEntity(): IQEntityInternal<any>;
+    getRootJoinEntity(): IQEntityInternal;
     isRootEntity(): boolean;
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
 }

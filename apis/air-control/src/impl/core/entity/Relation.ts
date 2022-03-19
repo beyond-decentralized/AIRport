@@ -16,12 +16,12 @@ import { and } from '../operation/LogicalOperation'
 /**
  * Created by Papa on 4/26/2016.
  */
-export class QRelation<Entity, IQ extends IQEntity<Entity>>
-	implements IQRelation<Entity, IQ> {
+export class QRelation<IQ extends IQEntity>
+	implements IQRelation<IQ> {
 
 	constructor(
 		private dbRelation: DbRelation,
-		private parentQ: IQEntityInternal<any>
+		private parentQ: IQEntityInternal
 	) {
 	}
 
@@ -41,7 +41,7 @@ export class QRelation<Entity, IQ extends IQEntity<Entity>>
 		const qEntityConstructor = applicationUtils.getQEntityConstructor(
 			this.dbRelation.relationEntity, airDb)
 
-		let newQEntity: IQEntityInternal<any> = new qEntityConstructor(
+		let newQEntity: IQEntityInternal = new qEntityConstructor(
 			dbEntity,
 			relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 			this.dbRelation,
@@ -53,8 +53,8 @@ export class QRelation<Entity, IQ extends IQEntity<Entity>>
 
 }
 
-export class QRepositoryEntityRelation<Entity, IQ extends IQEntity<Entity>>
-	extends QRelation<Entity, IQ>
+export class QRepositoryEntityRelation<Entity, IQ extends IQEntity>
+	extends QRelation<IQ>
 	implements IQRepositoryEntityRelation<Entity, IQ> {
 
 	equals(

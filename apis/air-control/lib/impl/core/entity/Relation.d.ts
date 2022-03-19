@@ -5,15 +5,15 @@ import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOpera
 /**
  * Created by Papa on 4/26/2016.
  */
-export declare class QRelation<Entity, IQ extends IQEntity<Entity>> implements IQRelation<Entity, IQ> {
+export declare class QRelation<IQ extends IQEntity> implements IQRelation<IQ> {
     private dbRelation;
     private parentQ;
-    constructor(dbRelation: DbRelation, parentQ: IQEntityInternal<any>);
+    constructor(dbRelation: DbRelation, parentQ: IQEntityInternal);
     innerJoin(): IQ;
     leftJoin(): IQ;
     getNewQEntity(joinType: JoinType): IQ;
 }
-export declare class QRepositoryEntityRelation<Entity, IQ extends IQEntity<Entity>> extends QRelation<Entity, IQ> implements IQRepositoryEntityRelation<Entity, IQ> {
+export declare class QRepositoryEntityRelation<Entity, IQ extends IQEntity> extends QRelation<IQ> implements IQRepositoryEntityRelation<Entity, IQ> {
     equals(entity: Entity | IQRepositoryEntityRelation<Entity, IQ>): JSONLogicalOperation;
 }
 //# sourceMappingURL=Relation.d.ts.map

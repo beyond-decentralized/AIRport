@@ -11,7 +11,7 @@ export interface IFieldsSelect<EntitySelect extends IEntitySelectProperties> {
 /**
  * Data Utility Object.
  */
-export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdate extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity<Entity>> {
+export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdate extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     select: IFieldsSelect<EntitySelect>;
     getIdStub(ids: number | string | number[] | string[]): EntityId;
     getIdStubs(ids: number[] | string[] | number[][] | string[][]): EntityId[];

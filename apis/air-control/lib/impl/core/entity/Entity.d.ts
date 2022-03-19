@@ -20,20 +20,20 @@ export interface IQEntityInternalConstructor<T> {
     };
     applicationHash: string;
     entityIndex: number;
-    new <IQE extends IQEntityInternal<T>>(...args: any[]): IQE;
+    new <IQE extends IQEntityInternal>(...args: any[]): IQE;
 }
 export declare namespace QEntity {
-    function db<IEntity>(databaseName?: string): IEntityDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IEntityCascadeGraph, IQEntity<IEntity>>;
+    function db<IEntity>(databaseName?: string): IEntityDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IEntityCascadeGraph, IQEntity>;
 }
-export interface QEntityConstructor<IEntity> {
-    new <IQE extends IQEntityInternal<IEntity>>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
-        new (...args: any[]): IQEntityDriver<IEntity>;
+export interface QEntityConstructor {
+    new <IQE extends IQEntityInternal>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
+        new (...args: any[]): IQEntityDriver;
     }): IQE;
 }
 export declare function QEntity<IEntity>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
-    new (...args: any[]): IQEntityDriver<IEntity>;
+    new (...args: any[]): IQEntityDriver;
 }): void;
-export declare class QEntityDriver<IEntity> implements IQEntityDriver<IEntity> {
+export declare class QEntityDriver implements IQEntityDriver {
     dbEntity: DbEntity;
     fromClausePosition: number[];
     dbRelation: DbRelation;
@@ -42,36 +42,36 @@ export declare class QEntityDriver<IEntity> implements IQEntityDriver<IEntity> {
     entityFieldMap: {
         [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any>;
     };
-    entityRelations: IQInternalRelation<any, any>[];
+    entityRelations: IQInternalRelation<any>[];
     entityRelationMapByIndex: {
-        [relationPropertyIndex: number]: IQInternalRelation<any, any>;
+        [relationPropertyIndex: number]: IQInternalRelation<any>;
     };
     idColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
-    relations: IQInternalRelation<any, any>[];
+    relations: IQInternalRelation<any>[];
     currentChildIndex: number;
     joinWhereClause: JSONBaseOperation;
-    parentJoinEntity: IQEntityInternal<any>;
+    parentJoinEntity: IQEntityInternal;
     private entityRelationMap;
     private oneToManyConfigMap;
-    constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal<IEntity>);
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal<IEntity>;
+    constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
+    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
     getRootRelationJson(jsonRelation: JSONRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
-    getQ(): IQEntityInternal<IEntity>;
+    getQ(): IQEntityInternal;
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
     isRootEntity(): boolean;
-    getRootJoinEntity(): IQEntityInternal<any>;
+    getRootJoinEntity(): IQEntityInternal;
 }
 export declare function QTree(fromClausePosition: number[], subQuery: RawTreeQuery<any>): void;
-export interface IQTreeDriver<T> extends IQEntityDriver<T> {
+export interface IQTreeDriver extends IQEntityDriver {
     subQuery: RawTreeQuery<any>;
 }
-export declare class QTreeDriver<IEntity> extends QEntityDriver<IEntity> implements IQTreeDriver<IEntity> {
+export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     subQuery: RawTreeQuery<any>;
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal<IEntity>;
+    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
     getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
     getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
 }

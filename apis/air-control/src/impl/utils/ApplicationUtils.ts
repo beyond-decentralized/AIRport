@@ -97,7 +97,7 @@ export class ApplicationUtils
 	getQEntityConstructor(
 		dbEntity: DbEntity,
 		airDb: IAirportDatabase
-	): QEntityConstructor<any> {
+	): QEntityConstructor {
 		return (<QApplicationInternal>airDb.qApplications[dbEntity.applicationVersion.application.index])
 			.__qConstructors__[dbEntity.index]
 	}
@@ -341,7 +341,7 @@ export class ApplicationUtils
 
 	getSheetSelectFromSetClause(
 		dbEntity: DbEntity,
-		qEntity: IQEntity<any>,
+		qEntity: IQEntity,
 		setClause: any,
 		errorPrefix: string
 	): RepositorySheetSelectInfo {
@@ -506,7 +506,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 	private addColumnToSheetSelect(
 		dbColumn: DbColumn,
-		qEntity: IQEntity<any>,
+		qEntity: IQEntity,
 		entitySelectClause: IQFieldInternal<any>[],
 	) {
 		if (this.isManyRelationColumn(dbColumn)) {

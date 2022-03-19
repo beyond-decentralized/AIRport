@@ -23,7 +23,7 @@ export interface IDao<Entity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity<Entity>> {
+	IQE extends IQEntity> {
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>

@@ -46,16 +46,16 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
     searchOne: INonEntitySearchOne;
     getAccumulator(domain: string, application: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
-    insertColumnValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context?: IEntityContext): Promise<number>;
-    insertValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context?: IEntityContext): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     /**
@@ -64,7 +64,7 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
      *
      * @return Number of records deleted
      */
-    deleteWhere<IQE extends IQEntity<any>>(rawDelete: RawDelete<IQE> | {
+    deleteWhere<IQE extends IQEntity>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, context?: IEntityContext): Promise<number>;
     /**
@@ -80,7 +80,7 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
      *
      * @return Number of records updated
      */
-    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(rawUpdateColumns: RawUpdateColumns<IEUC, IQE> | {
+    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(rawUpdateColumns: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
     }, context?: IEntityContext): Promise<number>;
     /**
@@ -89,7 +89,7 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
      *
      * @return Number of records updated
      */
-    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
+    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context?: IEntityContext): Promise<number>;
 }
@@ -103,7 +103,7 @@ export interface QApplicationInternal extends QApplication {
         [name: string]: EntityConstructor;
     };
     __qConstructors__?: {
-        [name: string]: QEntityConstructor<EntityConstructor>;
+        [name: string]: QEntityConstructor;
     };
     __qIdRelationConstructors__?: typeof QRelation[];
     __dbApplication__?: DbApplication;

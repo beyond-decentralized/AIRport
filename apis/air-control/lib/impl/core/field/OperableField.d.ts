@@ -9,7 +9,7 @@ import { QField } from "./Field";
  */
 export declare abstract class QOperableField<T, JO extends JSONRawValueOperation<IQF>, IO extends IValueOperation<T, JO, IQF>, IQF extends IQOperableField<T, JO, IO, IQF>> extends QField<IQF> implements IQOperableFieldInternal<T, JO, IO, IQF> {
     operation: IO;
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType: JSONClauseObjectType, operation: IO);
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType, operation: IO);
     equals(value: T | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     }): JO;

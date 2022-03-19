@@ -6,10 +6,10 @@ export interface IAliasMap<T, A> {
     getExistingAlias(object: T): A;
     hasAliasFor(object: T): boolean;
 }
-export interface IEntityAliases extends IAliasMap<IQEntityInternal<any>, string> {
+export interface IEntityAliases extends IAliasMap<IQEntityInternal, string> {
     getParams(): IParameterAliases;
     getNewFieldColumnAliases(): IFieldColumnAliases<any>;
-    getExistingAlias(entity: IQEntityInternal<any>): string;
+    getExistingAlias(entity: IQEntityInternal): string;
     getOnlyAlias(): string;
 }
 export interface Parameter {

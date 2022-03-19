@@ -63,7 +63,7 @@ export interface IApplicationUtils {
   getQEntityConstructor(
     dbEntity: DbEntity,
     airDb: IAirportDatabase,
-  ): QEntityConstructor<any>;
+  ): QEntityConstructor;
 
   getEntityConstructor(
     dbEntity: DbEntity,
@@ -171,7 +171,7 @@ export interface IApplicationUtils {
 
   getSheetSelectFromSetClause(
     dbEntity: DbEntity,
-    qEntity: IQEntity<any>,
+    qEntity: IQEntity,
     setClause: any,
     errorPrefix: string,
   ): RepositorySheetSelectInfo;

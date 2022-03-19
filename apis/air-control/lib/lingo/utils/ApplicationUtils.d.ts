@@ -38,7 +38,7 @@ export interface RepositorySheetSelectInfo {
 }
 export interface IApplicationUtils {
     getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
-    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor<any>;
+    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
     getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     isIdEmpty(idValue: any): boolean;
@@ -62,6 +62,6 @@ export interface IApplicationUtils {
     forEachColumnTypeOfRelation(dbRelation: DbRelation, callback: {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
-    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity<any>, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
+    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
 }
 //# sourceMappingURL=ApplicationUtils.d.ts.map

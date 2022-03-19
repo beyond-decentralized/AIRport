@@ -15,7 +15,7 @@ import {AbstractQuery}           from './AbstractQuery'
  */
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
-export abstract class AbstractInsertValues<IQE extends IQEntity<any>, ARIV extends AbstractRawInsertValues<IQE>>
+export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends AbstractRawInsertValues<IQE>>
 	extends AbstractQuery {
 
 	constructor(

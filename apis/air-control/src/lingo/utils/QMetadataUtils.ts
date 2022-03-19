@@ -8,18 +8,18 @@ import {IQOperableFieldInternal} from '../core/field/OperableField'
 export interface IQMetadataUtils {
 
 	getAllColumns(
-		qEntity: IQEntityInternal<any>
+		qEntity: IQEntityInternal
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]
 
 	getAllNonGeneratedColumns(
-		qEntity: IQEntityInternal<any>
+		qEntity: IQEntityInternal
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]
 
 	getAllInsertableColumns(
-		qEntity: IQEntityInternal<any>
+		qEntity: IQEntityInternal
 	): IQOperableFieldInternal<any, JSONBaseOperation, any, any>[]
 
-	getDbEntity<IQE extends IQEntityInternal<any>>(
+	getDbEntity<IQE extends IQEntityInternal>(
 		qEntity: IQE
 	): DbEntity
 

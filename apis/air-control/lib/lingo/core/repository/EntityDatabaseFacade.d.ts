@@ -11,7 +11,7 @@ import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEnt
 /**
  * Facade for all DB operations related to a particular Entity.
  */
-export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity<IEntity>> {
+export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
     dbEntity: DbEntity;
     duo: IDuo<IEntity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     /**
@@ -32,16 +32,16 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
      * Creates a new instance of the Query Entity for this entity type.
      */
     from: IQ;
-    insertColumnValues<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertValues<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity<IEntity>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, ctx?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     /**

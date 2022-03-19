@@ -26,13 +26,13 @@ export interface IRelationManager {
 		jsonRelation: JSONRelation
 	): string
 
-	createRelatedQEntity<IQ extends IQEntityInternal<any>>(
+	createRelatedQEntity<IQ extends IQEntityInternal>(
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ
 
 	getNextChildJoinPosition(
-		joinParentDriver: IQEntityDriver<any>
+		joinParentDriver: IQEntityDriver
 	): number[]
 
 }
@@ -70,7 +70,7 @@ export class RelationManager
 		return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1))
 	}
 
-	createRelatedQEntity<IQ extends IQEntityInternal<any>>(
+	createRelatedQEntity<IQ extends IQEntityInternal>(
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ {
@@ -78,7 +78,7 @@ export class RelationManager
 			joinRelation.si, joinRelation.ti, context.ioc.airDb)
 		let QEntityConstructor = context.ioc.applicationUtils.getQEntityConstructor(
 			dbEntity, context.ioc.airDb)
-		return new QEntityConstructor<IQ>(
+		return new QEntityConstructor(
 			dbEntity,
 			joinRelation.fromClausePosition,
 			dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],
@@ -86,7 +86,7 @@ export class RelationManager
 	}
 
 	getNextChildJoinPosition(
-		joinParentDriver: IQEntityDriver<any>
+		joinParentDriver: IQEntityDriver
 	): number[] {
 		let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice()
 		nextChildJoinPosition.push(++joinParentDriver.currentChildIndex)

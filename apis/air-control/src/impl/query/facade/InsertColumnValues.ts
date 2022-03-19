@@ -13,14 +13,14 @@ import {IQueryUtils}           from '../../../lingo/utils/QueryUtils'
 import {AbstractInsertValues}  from './AbstractInsertValues'
 
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
-export class InsertColumnValues<IQE extends IQEntity<any>>
+export class InsertColumnValues<IQE extends IQEntity>
 	extends AbstractInsertValues<IQE, RawInsertColumnValues<IQE>> {
 
 	toJSON(
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JsonInsertValues {
-		const entityDriver = (<IQEntityInternal<any>><any>this.rawInsertValues.insertInto).__driver__
+		const entityDriver = (<IQEntityInternal><any>this.rawInsertValues.insertInto).__driver__
 		const insertInto   = <JSONEntityRelation>entityDriver.getRelationJson(
 			this.columnAliases, queryUtils, fieldUtils)
 

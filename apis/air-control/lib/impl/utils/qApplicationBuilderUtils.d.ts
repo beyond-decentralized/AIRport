@@ -16,10 +16,10 @@ import { QRelation } from '../core/entity/Relation';
  * https://stackoverflow.com/questions/6617780/how-to-call-parent-constructor
  */
 export declare function extend(base: any, sub: any, methods: any): any;
-export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
-export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, allQApplications: QApplication[]): IQRelation<any, typeof q>;
+export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
+export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal, allQApplications: QApplication[]): IQRelation<typeof q>;
 export declare function getQEntityConstructor(allQApplications: QApplication[]): typeof QEntity;
-export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal<any>, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
+export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
 export declare function getQEntityIdRelationConstructor(dbEntity: DbEntity): typeof QRelation;
 /**
  * Set all fields behind an id relation.  For example
@@ -43,7 +43,7 @@ export declare function getQEntityIdRelationConstructor(dbEntity: DbEntity): typ
  * @param relationColumnMap  DbColumn map for the current path of properties
  *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
  */
-export declare function getQEntityIdFields(addToObject: any, relationEntity: DbEntity, qEntity: IQEntity<any>, parentProperty: DbProperty, relationColumnMap?: Map<DbColumn, DbColumn>): any;
+export declare function getQEntityIdFields(addToObject: any, relationEntity: DbEntity, qEntity: IQEntity, parentProperty: DbProperty, relationColumnMap?: Map<DbColumn, DbColumn>): any;
 export declare function setQApplicationEntities(application: DbApplication, qApplication: QApplicationInternal, allQApplications: QApplication[]): void;
 export interface DbApplicationWithDependencies {
     application: DbApplication;

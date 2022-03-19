@@ -29,6 +29,6 @@ export interface IQFieldInternal<IQF extends IQOrderableField<IQF>>
 	dbColumn: DbColumn;
 	dbProperty: DbProperty;
 	objectType: JSONClauseObjectType;
-	q: IQEntityInternal<any>;
+	q: IQEntityInternal;
 
 }

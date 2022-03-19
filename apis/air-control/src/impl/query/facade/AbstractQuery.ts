@@ -104,7 +104,7 @@ export abstract class AbstractQuery
 					throw new Error(`Entity FROM clauses can contain only Entities.`)
 				}
 			}
-			return (fromEntity as IQEntityInternal<any>).__driver__
+			return (fromEntity as IQEntityInternal).__driver__
 				.getRelationJson(this.columnAliases, queryUtils, fieldUtils)
 		})
 	}

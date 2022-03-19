@@ -29,7 +29,7 @@ export abstract class QOperableField<T,
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal<any>,
+		q: IQEntityInternal,
 		objectType: JSONClauseObjectType,
 		public operation: IO,
 	) {

@@ -86,7 +86,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	constructor(
 		public dbColumn: DbColumn,
 		public dbProperty: DbProperty,
-		public q: IQEntityInternal<any>,
+		public q: IQEntityInternal,
 		public objectType: JSONClauseObjectType,
 	) {
 	}
@@ -108,7 +108,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		return new FieldInOrderBy<IQF>(this, SortOrder.DESCENDING);
 	}
 
-	abstract getInstance(qEntity?: IQEntityInternal<any>): QField<IQF>;
+	abstract getInstance(qEntity?: IQEntityInternal): QField<IQF>;
 
 	addSubQuery(
 		subQuery: RawFieldQuery<IQF>

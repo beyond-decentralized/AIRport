@@ -1,5 +1,4 @@
 import {OperationCategory} from "@airport/ground-control";
-import {IQEntityInternal}  from "../../../lingo/core/entity/Entity";
 import {IQNumberField}     from "../../../lingo/core/field/NumberField";
 import {
 	INumberOperation,
@@ -11,7 +10,7 @@ import {ValueOperation}    from "./Operation";
  * Created by Papa on 6/20/2016.
  */
 
-export class NumberOperation<IQ extends IQEntityInternal<any>>
+export class NumberOperation
 	extends ValueOperation<number, JSONRawNumberOperation, IQNumberField> implements INumberOperation {
 
 	constructor() {

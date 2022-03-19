@@ -34,13 +34,13 @@ export class QStringField
 	constructor(
 		dbColumn: DbColumn,
 		dbProperty: DbProperty,
-		q: IQEntityInternal<any>,
+		q: IQEntityInternal,
 		objectType: JSONClauseObjectType = JSONClauseObjectType.FIELD
 	) {
 		super(dbColumn, dbProperty, q, objectType, new StringOperation());
 	}
 
-	getInstance(qEntity: IQEntityInternal<any> = this.q): QStringField {
+	getInstance(qEntity: IQEntityInternal = this.q): QStringField {
 		return this.copyFunctions(
 			new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
 	}

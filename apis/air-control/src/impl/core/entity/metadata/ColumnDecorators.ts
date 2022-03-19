@@ -78,7 +78,7 @@ export const JoinColumns: JoinColumnsDecorator = function (joinColumnConfigurati
 // How to add the function to the join ) { return function ( targetObject: any, propertyKey:
 // string ) { // No runtime logic required. } };
 
-export const SubQuery: SubQueryDecorator<any, any> = function <QOtm extends IQEntityInternal<any>, QMto extends IQEntityInternal<any>>(
+export const SubQuery: SubQueryDecorator<any, any> = function <QOtm extends IQEntityInternal, QMto extends IQEntityInternal>(
 	addToJoinFunction: AddToJoinFunction<QOtm, QMto>, // Function to add to the join
 ) {
 	return function (

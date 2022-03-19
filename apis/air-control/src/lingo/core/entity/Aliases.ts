@@ -19,7 +19,7 @@ export interface IAliasMap<T, A> {
 }
 
 export interface IEntityAliases
-	extends IAliasMap<IQEntityInternal<any>, string> {
+	extends IAliasMap<IQEntityInternal, string> {
 
 	getParams( //
 	): IParameterAliases;
@@ -28,7 +28,7 @@ export interface IEntityAliases
 	): IFieldColumnAliases<any>;
 
 	getExistingAlias(
-		entity: IQEntityInternal<any>
+		entity: IQEntityInternal
 	): string;
 
 	getOnlyAlias( //

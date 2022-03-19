@@ -33,7 +33,7 @@ export interface IDuo<Entity,
 	EntityUpdate extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity<Entity>> {
+	IQE extends IQEntity> {
 
 	select: IFieldsSelect<EntitySelect>
 

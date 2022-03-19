@@ -38,7 +38,7 @@ export interface IEntityDatabaseFacade<IEntity,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQ extends IQEntity<IEntity>> {
+	IQ extends IQEntity> {
 
 	dbEntity: DbEntity;
 
@@ -71,28 +71,28 @@ export interface IEntityDatabaseFacade<IEntity,
 	 */
 	from: IQ;
 
-	insertColumnValues<IQE extends IQEntity<IEntity>>(
+	insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
 		ctx?: IEntityContext
 	): Promise<number>;
 
-	insertValues<IQE extends IQEntity<IEntity>>(
+	insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
 		ctx?: IEntityContext
 	): Promise<number>;
 
-	insertColumnValuesGenerateIds<IQE extends IQEntity<IEntity>>(
+	insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
 		ctx?: IEntityContext
 	): Promise<number[] | string[] | number[][] | string[][]>;
 
-	insertValuesGenerateIds<IQE extends IQEntity<IEntity>>(
+	insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},

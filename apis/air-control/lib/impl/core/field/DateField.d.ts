@@ -14,8 +14,8 @@ import { QOperableField } from './OperableField';
 export interface IQDateEntityField extends IQDateField {
 }
 export declare class QDateField extends QOperableField<Date, JSONRawDateOperation, IDateOperation, IQDateField> implements IQDateField {
-    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal<any>, objectType?: JSONClauseObjectType);
-    getInstance(qEntity?: IQEntityInternal<any>): QDateField;
+    constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType?: JSONClauseObjectType);
+    getInstance(qEntity?: IQEntityInternal): QDateField;
 }
 export declare class QDateFunction<T extends Date | Date[] = Date> extends QDateField implements IQFunction<T | RawFieldQuery<any>> {
     value: T | RawFieldQuery<QDateField>;

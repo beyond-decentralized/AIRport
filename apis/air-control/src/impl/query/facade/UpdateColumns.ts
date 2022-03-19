@@ -10,7 +10,7 @@ import {QField}           from '../../core/field/Field'
 import {wrapPrimitive}    from '../../core/field/WrapperFunctions'
 import {AbstractUpdate}   from './AbstractUpdate'
 
-export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>
+export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>
 	extends AbstractUpdate<IQE, RawUpdateColumns<IEUC, IQE>> {
 
 	constructor(
@@ -25,7 +25,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 		fieldUtils: IFieldUtils
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
-		const dbEntity        = (<IQEntityInternal<any>><any>this.rawUpdate.update)
+		const dbEntity        = (<IQEntityInternal><any>this.rawUpdate.update)
 			.__driver__.dbEntity
 		const dbColumnMap     = dbEntity.columnMap
 		const idDbColumnMap   = dbEntity.idColumnMap
@@ -50,7 +50,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 			}
 			value = wrapPrimitive(value)
 			if (!value.toJSON) {
-				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${(<IQEntityInternal<any>><any>this.rawUpdate.update).__driver__.dbEntity.name}`
+				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${(<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity.name}`
 			}
 			setClause[columnName] = (<QField<any>>value).toJSON(
 				this.columnAliases, false, queryUtils, fieldUtils)

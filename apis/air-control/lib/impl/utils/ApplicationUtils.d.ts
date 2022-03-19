@@ -10,7 +10,7 @@ export declare class ApplicationUtils implements IApplicationUtils {
     isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
-    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor<any>;
+    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
     getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;
     isIdEmpty(idValue: any): boolean;
@@ -32,7 +32,7 @@ export declare class ApplicationUtils implements IApplicationUtils {
     forEachColumnTypeOfRelation(dbRelation: DbRelation, callback: {
         (dbColumn: DbColumn, propertyNameChains: string[][]): void | boolean;
     }): void;
-    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity<any>, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
+    getSheetSelectFromSetClause(dbEntity: DbEntity, qEntity: IQEntity, setClause: any, errorPrefix: string): RepositorySheetSelectInfo;
     private getColumnValuesAndPaths;
     private getColumnPaths;
     private addColumnToSheetSelect;
