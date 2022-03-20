@@ -29,18 +29,18 @@ export interface ISqlValueProvider {
 }
 export interface ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
-        [alias: string]: IQEntityInternal<any>;
+        [alias: string]: IQEntityInternal;
     }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
     getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
-        [entityName: string]: IQEntityInternal<any>;
+        [entityName: string]: IQEntityInternal;
     }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
 }
 export declare abstract class AbstractFunctionAdaptor implements ISQLFunctionAdaptor {
     getFunctionCalls(clause: JSONClauseObject, innerValue: string, qEntityMapByAlias: {
-        [alias: string]: IQEntityInternal<any>;
+        [alias: string]: IQEntityInternal;
     }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
     abstract getFunctionCall(jsonFunctionCall: JSONSqlFunctionCall, value: string, qEntityMapByAlias: {
-        [entityName: string]: IQEntityInternal<any>;
+        [entityName: string]: IQEntityInternal;
     }, sqlValueProvider: ISqlValueProvider, context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLQueryAdaptor.d.ts.map

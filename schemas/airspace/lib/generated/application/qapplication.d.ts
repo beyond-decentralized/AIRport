@@ -1,10 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from './qdomain';
 import { ApplicationVersionGraph, ApplicationVersionESelect, QApplicationVersion } from './qapplicationversion';
-import { ApplicationVersion } from '../../ddl/application/ApplicationVersion';
 import { ApplicationCurrentVersionGraph, ApplicationCurrentVersionESelect, QApplicationCurrentVersion } from './qapplicationcurrentversion';
-import { ApplicationCurrentVersion } from '../../ddl/application/ApplicationCurrentVersion';
-import { Application } from '../../ddl/application/Application';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -78,7 +75,7 @@ export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEU
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplication extends IQEntity<Application> {
+export interface QApplication extends IQEntity {
     index: IQNumberField;
     scope: IQStringField;
     name: IQStringField;
@@ -86,12 +83,12 @@ export interface QApplication extends IQEntity<Application> {
     status: IQStringField;
     signature: IQStringField;
     domain: QDomainQRelation;
-    versions: IQOneToManyRelation<ApplicationVersion, QApplicationVersion>;
-    currentVersion: IQOneToManyRelation<ApplicationCurrentVersion, QApplicationCurrentVersion>;
+    versions: IQOneToManyRelation<QApplicationVersion>;
+    currentVersion: IQOneToManyRelation<QApplicationCurrentVersion>;
 }
 export interface QApplicationQId {
     index: IQNumberField;
 }
-export interface QApplicationQRelation extends IQRelation<Application, QApplication>, QApplicationQId {
+export interface QApplicationQRelation extends IQRelation<QApplication>, QApplicationQId {
 }
 //# sourceMappingURL=qapplication.d.ts.map

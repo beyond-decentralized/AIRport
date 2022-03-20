@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QApplicationVersionQRelation,
 } from './qapplicationversion';
 import {
-	ApplicationVersion,
-} from '../../ddl/application/ApplicationVersion';
+	IApplicationVersion,
+} from './applicationversion';
 import {
-	VersionedApplicationObject,
-} from '../../ddl/application/VersionedApplicationObject';
+	IVersionedApplicationObject,
+} from './versionedapplicationobject';
 
 
 declare function require(moduleName: string): any;
@@ -147,7 +148,7 @@ extends VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns 
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QVersionedApplicationObject<T> extends IQEntity<T>
+export interface QVersionedApplicationObject extends IQEntity
 {
 	// Id Fields
 
@@ -175,7 +176,7 @@ export interface QVersionedApplicationObjectQId
 }
 
 // Entity Relation Interface
-export interface QVersionedApplicationObjectQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends IQRelation<SubType, SubQType>, QVersionedApplicationObjectQId {
+export interface QVersionedApplicationObjectQRelation<SubQType extends IQEntity>
+	extends IQRelation<SubQType>, QVersionedApplicationObjectQId {
 }
 

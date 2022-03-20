@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
-	RepositoryTransactionHistory,
-} from '../../ddl/history/RepositoryTransactionHistory';
+	IRepositoryTransactionHistory,
+} from './repositorytransactionhistory';
 import {
-	TransactionHistory,
-} from '../../ddl/history/TransactionHistory';
+	ITransactionHistory,
+} from './transactionhistory';
 
 
 declare function require(moduleName: string): any;
@@ -146,7 +147,7 @@ extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTransactionHistory extends IQEntity<TransactionHistory>
+export interface QTransactionHistory extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -157,7 +158,7 @@ export interface QTransactionHistory extends IQEntity<TransactionHistory>
 	transactionType: IQStringField;
 
 	// Non-Id Relations
-	repositoryTransactionHistories: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
+	repositoryTransactionHistories: IQOneToManyRelation<QRepositoryTransactionHistory>;
 
 }
 
@@ -176,6 +177,6 @@ export interface QTransactionHistoryQId
 
 // Entity Relation Interface
 export interface QTransactionHistoryQRelation
-	extends IQRelation<TransactionHistory, QTransactionHistory>, QTransactionHistoryQId {
+	extends IQRelation<QTransactionHistory>, QTransactionHistoryQId {
 }
 

@@ -1,5 +1,4 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
-import { User } from '../ddl/User';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -61,7 +60,7 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends IQEntity<User> {
+export interface QUser extends IQEntity {
     id: IQNumberField;
     email: IQStringField;
     passwordHash: IQStringField;
@@ -71,6 +70,6 @@ export interface QUser extends IQEntity<User> {
 export interface QUserQId {
     id: IQNumberField;
 }
-export interface QUserQRelation extends IQRelation<User, QUser>, QUserQId {
+export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
 }
 //# sourceMappingURL=quser.d.ts.map

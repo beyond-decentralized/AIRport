@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -31,11 +32,11 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-	User,
+	IUser,
 } from '@airport/travel-document-checkpoint';
 import {
-	ImmutableRow,
-} from '../../ddl/traditional/ImmutableRow';
+	IImmutableRow,
+} from './immutablerow';
 
 
 declare function require(moduleName: string): any;
@@ -142,7 +143,7 @@ extends ImmutableRowEId, ImmutableRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QImmutableRow<T> extends IQEntity<T>
+export interface QImmutableRow extends IQEntity
 {
 	// Id Fields
 
@@ -169,7 +170,7 @@ export interface QImmutableRowQId
 }
 
 // Entity Relation Interface
-export interface QImmutableRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends IQRelation<SubType, SubQType>, QImmutableRowQId {
+export interface QImmutableRowQRelation<SubQType extends IQEntity>
+	extends IQRelation<SubQType>, QImmutableRowQId {
 }
 

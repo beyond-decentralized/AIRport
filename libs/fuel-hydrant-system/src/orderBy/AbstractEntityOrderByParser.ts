@@ -17,7 +17,7 @@ export interface IEntityOrderByParser {
 
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
 	): string;
 

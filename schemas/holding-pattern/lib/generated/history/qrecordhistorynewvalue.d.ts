@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQUntypedField, IQEntity, IQRelation } from '@airport/air-control';
 import { RecordHistoryGraph, RecordHistoryEId, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQId, QRecordHistoryQRelation } from './qrecordhistory';
-import { RecordHistoryNewValue } from '../../ddl/history/RecordHistoryNewValue';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -54,7 +53,7 @@ export interface RecordHistoryNewValueECreateColumns extends RecordHistoryNewVal
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistoryNewValue extends IQEntity<RecordHistoryNewValue> {
+export interface QRecordHistoryNewValue extends IQEntity {
     columnIndex: IQNumberField;
     recordHistory: QRecordHistoryQRelation;
     newValue: IQUntypedField;
@@ -63,6 +62,6 @@ export interface QRecordHistoryNewValueQId {
     columnIndex: IQNumberField;
     recordHistory: QRecordHistoryQId;
 }
-export interface QRecordHistoryNewValueQRelation extends IQRelation<RecordHistoryNewValue, QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
+export interface QRecordHistoryNewValueQRelation extends IQRelation<QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
 }
 //# sourceMappingURL=qrecordhistorynewvalue.d.ts.map

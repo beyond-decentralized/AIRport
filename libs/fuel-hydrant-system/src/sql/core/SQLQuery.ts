@@ -102,8 +102,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 	): JoinTreeNode | JoinTreeNode[];
 
 	protected getEntityApplicationRelationFromJoin(
-		leftQEntity: IQEntityInternal<any>,
-		rightQEntity: IQEntityInternal<any>,
+		leftQEntity: IQEntityInternal,
+		rightQEntity: IQEntityInternal,
 		entityRelation: JSONEntityRelation,
 		parentRelation: JSONRelation,
 		currentAlias: string,

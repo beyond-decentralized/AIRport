@@ -62,7 +62,6 @@ export class SyncInApplicationChecker {
                 let application = {
                     domain,
                     index: null,
-                    packageName: 'bogus',
                     name,
                     scope: 'private',
                     status: ApplicationStatus.STUB,

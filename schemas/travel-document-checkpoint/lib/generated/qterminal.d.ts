@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
-import { Terminal } from '../ddl/Terminal';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -58,7 +57,7 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminal extends IQEntity<Terminal> {
+export interface QTerminal extends IQEntity {
     id: IQNumberField;
     uuId: IQStringField;
     isLocal: IQBooleanField;
@@ -67,6 +66,6 @@ export interface QTerminal extends IQEntity<Terminal> {
 export interface QTerminalQId {
     id: IQNumberField;
 }
-export interface QTerminalQRelation extends IQRelation<Terminal, QTerminal>, QTerminalQId {
+export interface QTerminalQRelation extends IQRelation<QTerminal>, QTerminalQId {
 }
 //# sourceMappingURL=qterminal.d.ts.map

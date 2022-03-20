@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -31,7 +32,7 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-	User,
+	IUser,
 } from '@airport/travel-document-checkpoint';
 import {
 	RepositoryTransactionHistoryGraph,
@@ -44,11 +45,11 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from '../history/qrepositorytransactionhistory';
 import {
-	RepositoryTransactionHistory,
-} from '../../ddl/history/RepositoryTransactionHistory';
+	IRepositoryTransactionHistory,
+} from '../history/repositorytransactionhistory';
 import {
-	Repository,
-} from '../../ddl/repository/Repository';
+	IRepository,
+} from './repository';
 
 
 declare function require(moduleName: string): any;
@@ -177,7 +178,7 @@ extends RepositoryEId, RepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity<Repository>
+export interface QRepository extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -193,7 +194,7 @@ export interface QRepository extends IQEntity<Repository>
 
 	// Non-Id Relations
 	owner: QUserQRelation;
-	repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
+	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
 
 }
 
@@ -212,6 +213,6 @@ export interface QRepositoryQId
 
 // Entity Relation Interface
 export interface QRepositoryQRelation
-	extends IQRelation<Repository, QRepository>, QRepositoryQId {
+	extends IQRelation<QRepository>, QRepositoryQId {
 }
 

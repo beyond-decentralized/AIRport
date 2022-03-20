@@ -1,8 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from './qcontinent';
 import { UserGraph, UserESelect, QUser } from './quser';
-import { User } from '../ddl/User';
-import { Country } from '../ddl/Country';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -58,15 +56,15 @@ export interface CountryECreateColumns extends CountryEId, CountryEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QCountry extends IQEntity<Country> {
+export interface QCountry extends IQEntity {
     id: IQNumberField;
     name: IQStringField;
     continent: QContinentQRelation;
-    users: IQOneToManyRelation<User, QUser>;
+    users: IQOneToManyRelation<QUser>;
 }
 export interface QCountryQId {
     id: IQNumberField;
 }
-export interface QCountryQRelation extends IQRelation<Country, QCountry>, QCountryQId {
+export interface QCountryQRelation extends IQRelation<QCountry>, QCountryQId {
 }
 //# sourceMappingURL=qcountry.d.ts.map

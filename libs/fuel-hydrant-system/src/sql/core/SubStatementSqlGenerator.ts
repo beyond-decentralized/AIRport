@@ -24,7 +24,7 @@ export interface ISubStatementSqlGenerator {
 	getFieldQuerySql(
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
 	): {
 		parameterReferences: (number | string)[],
@@ -59,7 +59,7 @@ export class SubStatementSqlGenerator
 	getFieldQuerySql(
 		jsonFieldSqlSubQuery: JsonFieldQuery,
 		dialect: SQLDialect,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
 	): {
 		parameterReferences: (number | string)[],

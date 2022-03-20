@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -31,7 +32,7 @@ import {
 	QApplicationEntity,
 	QApplicationEntityQId,
 	QApplicationEntityQRelation,
-	ApplicationEntity,
+	IApplicationEntity,
 } from '@airport/airspace';
 import {
 	RepositoryTransactionHistoryGraph,
@@ -44,8 +45,8 @@ import {
 	QRepositoryTransactionHistoryQRelation,
 } from './qrepositorytransactionhistory';
 import {
-	RepositoryTransactionHistory,
-} from '../../ddl/history/RepositoryTransactionHistory';
+	IRepositoryTransactionHistory,
+} from './repositorytransactionhistory';
 import {
 	RecordHistoryGraph,
 	RecordHistoryEId,
@@ -57,11 +58,11 @@ import {
 	QRecordHistoryQRelation,
 } from './qrecordhistory';
 import {
-	RecordHistory,
-} from '../../ddl/history/RecordHistory';
+	IRecordHistory,
+} from './recordhistory';
 import {
-	OperationHistory,
-} from '../../ddl/history/OperationHistory';
+	IOperationHistory,
+} from './operationhistory';
 
 
 declare function require(moduleName: string): any;
@@ -186,7 +187,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QOperationHistory extends IQEntity<OperationHistory>
+export interface QOperationHistory extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -201,7 +202,7 @@ export interface QOperationHistory extends IQEntity<OperationHistory>
 	// Non-Id Relations
 	entity: QApplicationEntityQRelation;
 	repositoryTransactionHistory: QRepositoryTransactionHistoryQRelation;
-	recordHistory: IQOneToManyRelation<RecordHistory, QRecordHistory>;
+	recordHistory: IQOneToManyRelation<QRecordHistory>;
 
 }
 
@@ -220,6 +221,6 @@ export interface QOperationHistoryQId
 
 // Entity Relation Interface
 export interface QOperationHistoryQRelation
-	extends IQRelation<OperationHistory, QOperationHistory>, QOperationHistoryQId {
+	extends IQRelation<QOperationHistory>, QOperationHistoryQId {
 }
 

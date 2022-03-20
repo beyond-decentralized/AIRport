@@ -1,8 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation, RecordHistoryGraph, RecordHistoryEOptionalId, RecordHistoryESelect, QRecordHistoryQRelation } from '@airport/holding-pattern';
 import { SynchronizationConflictValuesGraph, SynchronizationConflictValuesESelect, QSynchronizationConflictValues } from './qsynchronizationconflictvalues';
-import { SynchronizationConflictValues } from '../../ddl/conflict/SynchronizationConflictValues';
-import { SynchronizationConflict } from '../../ddl/conflict/SynchronizationConflict';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -70,18 +68,18 @@ export interface SynchronizationConflictECreateColumns extends SynchronizationCo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflict extends IQEntity<SynchronizationConflict> {
+export interface QSynchronizationConflict extends IQEntity {
     id: IQNumberField;
     type: IQStringField;
     acknowledged: IQBooleanField;
     repository: QRepositoryQRelation;
     overwrittenRecordHistory: QRecordHistoryQRelation;
     overwritingRecordHistory: QRecordHistoryQRelation;
-    values: IQOneToManyRelation<SynchronizationConflictValues, QSynchronizationConflictValues>;
+    values: IQOneToManyRelation<QSynchronizationConflictValues>;
 }
 export interface QSynchronizationConflictQId {
     id: IQNumberField;
 }
-export interface QSynchronizationConflictQRelation extends IQRelation<SynchronizationConflict, QSynchronizationConflict>, QSynchronizationConflictQId {
+export interface QSynchronizationConflictQRelation extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
 }
 //# sourceMappingURL=qsynchronizationconflict.d.ts.map

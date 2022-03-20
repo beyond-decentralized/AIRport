@@ -7,7 +7,7 @@ import { IValidator } from '../validation/Validator';
  */
 export interface IEntityOrderByParser {
     getOrderByFragment(joinTree: JoinTreeNode, qEntityMapByAlias: {
-        [entityAlias: string]: IQEntityInternal<any>;
+        [entityAlias: string]: IQEntityInternal;
     }, context: IFuelHydrantContext): string;
 }
 export interface INonEntityOrderByParser {

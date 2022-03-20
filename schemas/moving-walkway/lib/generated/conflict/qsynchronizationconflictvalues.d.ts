@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-control';
 import { SynchronizationConflictGraph, SynchronizationConflictEId, SynchronizationConflictEOptionalId, SynchronizationConflictESelect, QSynchronizationConflictQId, QSynchronizationConflictQRelation } from './qsynchronizationconflict';
-import { SynchronizationConflictValues } from '../../ddl/conflict/SynchronizationConflictValues';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -50,7 +49,7 @@ export interface SynchronizationConflictValuesECreateColumns extends Synchroniza
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflictValues extends IQEntity<SynchronizationConflictValues> {
+export interface QSynchronizationConflictValues extends IQEntity {
     columnIndex: IQNumberField;
     synchronizationConflict: QSynchronizationConflictQRelation;
 }
@@ -58,6 +57,6 @@ export interface QSynchronizationConflictValuesQId {
     columnIndex: IQNumberField;
     synchronizationConflict: QSynchronizationConflictQId;
 }
-export interface QSynchronizationConflictValuesQRelation extends IQRelation<SynchronizationConflictValues, QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
+export interface QSynchronizationConflictValuesQRelation extends IQRelation<QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
 }
 //# sourceMappingURL=qsynchronizationconflictvalues.d.ts.map

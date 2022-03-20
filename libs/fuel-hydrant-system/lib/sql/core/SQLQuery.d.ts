@@ -46,6 +46,6 @@ export declare abstract class SQLQuery<JQ extends JsonQuery> extends SQLWhereBas
     protected abstract buildFromJoinTree(joinRelations: (JSONEntityRelation | JSONRelation)[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, context: IFuelHydrantContext, applicationIndex?: number, tableIndex?: number): JoinTreeNode | JoinTreeNode[];
-    protected getEntityApplicationRelationFromJoin(leftQEntity: IQEntityInternal<any>, rightQEntity: IQEntityInternal<any>, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IFuelHydrantContext): string;
+    protected getEntityApplicationRelationFromJoin(leftQEntity: IQEntityInternal, rightQEntity: IQEntityInternal, entityRelation: JSONEntityRelation, parentRelation: JSONRelation, currentAlias: string, parentAlias: string, joinTypeString: string, errorPrefix: string, context: IFuelHydrantContext): string;
 }
 //# sourceMappingURL=SQLQuery.d.ts.map

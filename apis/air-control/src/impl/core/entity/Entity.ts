@@ -47,7 +47,7 @@ import { FieldColumnAliases } from './Aliases'
  * Created by Papa on 4/21/2016.
  */
 
-export interface IQEntityInternalConstructor<T> {
+export interface IQEntityInternalConstructor {
 
 	entityConstructor: { new(...args: any[]): any };
 	applicationHash: string;

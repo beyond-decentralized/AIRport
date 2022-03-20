@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,8 +34,8 @@ import {
 	QImmutableRow,
 } from './qimmutablerow';
 import {
-	MutableRow,
-} from '../../ddl/traditional/MutableRow';
+	IMutableRow,
+} from './mutablerow';
 
 
 declare function require(moduleName: string): any;
@@ -138,7 +139,7 @@ extends MutableRowEId, MutableRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QMutableRow<T> extends QImmutableRow<T>
+export interface QMutableRow extends QImmutableRow
 {
 	// Id Fields
 
@@ -164,7 +165,7 @@ export interface QMutableRowQId extends QImmutableRowQId
 }
 
 // Entity Relation Interface
-export interface QMutableRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends QImmutableRowQRelation<SubType, SubQType>, QMutableRowQId {
+export interface QMutableRowQRelation<SubQType extends IQEntity>
+	extends QImmutableRowQRelation<SubQType>, QMutableRowQId {
 }
 

@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,8 +34,8 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	Repository,
-} from '../../ddl/repository/Repository';
+	IRepository,
+} from './repository';
 import {
 	ActorGraph,
 	ActorEId,
@@ -46,11 +47,11 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	Actor,
-} from '../../ddl/infrastructure/Actor';
+	IActor,
+} from '../infrastructure/actor';
 import {
-	RepositoryEntity,
-} from '../../ddl/repository/RepositoryEntity';
+	IRepositoryEntity,
+} from './repositoryentity';
 
 
 declare function require(moduleName: string): any;
@@ -176,7 +177,7 @@ extends RepositoryEntityEId, RepositoryEntityEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryEntity<T> extends IQEntity<T>
+export interface QRepositoryEntity extends IQEntity
 {
 	// Id Fields
 	actorRecordId: IQNumberField;
@@ -212,7 +213,7 @@ export interface QRepositoryEntityQId
 }
 
 // Entity Relation Interface
-export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity<SubType>>
+export interface QRepositoryEntityQRelation<SubType, SubQType extends IQEntity>
 	extends IQRepositoryEntityRelation<SubType, SubQType>, QRepositoryEntityQId {
 }
 

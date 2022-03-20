@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { DailyArchiveLogGraph, DailyArchiveLogEId, DailyArchiveLogEOptionalId, DailyArchiveLogESelect, QDailyArchiveLogQId, QDailyArchiveLogQRelation, RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '@airport/guideway';
-import { DailyArchive } from '../ddl/DailyArchive';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -55,7 +54,7 @@ export interface DailyArchiveECreateColumns extends DailyArchiveEId, DailyArchiv
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDailyArchive extends IQEntity<DailyArchive> {
+export interface QDailyArchive extends IQEntity {
     dailyArchiveLog: QDailyArchiveLogQRelation;
     repositoryData: IQStringField;
     repository: QRepositoryQRelation;
@@ -63,6 +62,6 @@ export interface QDailyArchive extends IQEntity<DailyArchive> {
 export interface QDailyArchiveQId {
     dailyArchiveLog: QDailyArchiveLogQId;
 }
-export interface QDailyArchiveQRelation extends IQRelation<DailyArchive, QDailyArchive>, QDailyArchiveQId {
+export interface QDailyArchiveQRelation extends IQRelation<QDailyArchive>, QDailyArchiveQId {
 }
 //# sourceMappingURL=qdailyarchive.d.ts.map

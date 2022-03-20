@@ -8,7 +8,7 @@ export interface RepoQueryData {
     [entityName: string]: EntityRepoQueryData;
 }
 export interface EntityRepoQueryData {
-    qEntity: IQEntityInternal<any>;
+    qEntity: IQEntityInternal;
     idProperty: string;
 }
 export declare class RepositoryManager implements IRepositoryManager {
@@ -20,8 +20,8 @@ export declare class RepositoryManager implements IRepositoryManager {
     setUpdateState(repository: IRepository, updateState: UpdateState): void;
     private getRepositoryRecord;
     private createRepositoryRecord;
-    ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(repository: IRepository, rawInsertValues: RawInsertValues<IQE>): RawInsertValues<IQE>;
-    ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(qEntity: IQEntityInternal<any>, repository: IRepository, rawUpdate: RawUpdate<IEUP, IQE>): RawUpdate<IEUP, IQE>;
-    ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(qEntity: IQE, repository: IRepository, rawDelete: RawDelete<IQE>): RawDelete<IQE>;
+    ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal>(repository: IRepository, rawInsertValues: RawInsertValues<IQE>): RawInsertValues<IQE>;
+    ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(qEntity: IQEntityInternal, repository: IRepository, rawUpdate: RawUpdate<IEUP, IQE>): RawUpdate<IEUP, IQE>;
+    ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal>(qEntity: IQE, repository: IRepository, rawDelete: RawDelete<IQE>): RawDelete<IQE>;
 }
 //# sourceMappingURL=RepositoryManager.d.ts.map

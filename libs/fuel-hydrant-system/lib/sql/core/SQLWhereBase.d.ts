@@ -19,7 +19,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     parameterReferences: (string | number)[];
     protected fieldMap: ApplicationMap;
     protected qEntityMapByAlias: {
-        [entityAlias: string]: IQEntityInternal<any>;
+        [entityAlias: string]: IQEntityInternal;
     };
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
@@ -34,13 +34,13 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     getFieldValue(clauseField: JSONClauseObject | JSONClauseField[] | JsonFieldQuery, clauseType: ClauseType, defaultCallback: () => string, context: IFuelHydrantContext): string;
     applyOperator(operator: SqlOperator, rValue: string): string;
     protected getWHEREFragment(operation: JSONBaseOperation, nestingPrefix: string, context: IFuelHydrantContext): string;
-    protected getEntityPropertyColumnName(qEntity: IQEntityInternal<any>, columnIndex: number, context: IFuelHydrantContext): string;
+    protected getEntityPropertyColumnName(qEntity: IQEntityInternal, columnIndex: number, context: IFuelHydrantContext): string;
     protected addFieldFromColumn(dbColumn: DbColumn): void;
     protected addField(applicationIndex: ApplicationIndex, tableIndex: TableIndex, columnIndex: ColumnIndex): void;
     protected warn(warning: string): void;
     protected getSimpleColumnFragment(tableAlias: string, columnName: string): string;
     protected getComplexColumnFragment(value: JSONClauseField, columnName: string, context: IFuelHydrantContext): string;
-    protected getEntityManyToOneColumnName(qEntity: IQEntityInternal<any>, columnIndex: number, context: IFuelHydrantContext): string;
+    protected getEntityManyToOneColumnName(qEntity: IQEntityInternal, columnIndex: number, context: IFuelHydrantContext): string;
     protected getLogicalWhereFragment(operation: JSONLogicalOperation, nestingPrefix: string, context: IFuelHydrantContext): string;
     protected isParameterReference(value: any): boolean;
 }

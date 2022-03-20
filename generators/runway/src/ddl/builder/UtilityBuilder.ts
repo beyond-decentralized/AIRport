@@ -29,11 +29,11 @@ ${imports}
 export class SQDI${this.classSuffix}<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-  EntityUpdateColumns extends IEntityUpdateColumns,
+	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity<Entity>>
+	IQE extends IQEntity>
 	extends ${this.classSuffix}<Entity,
 		EntitySelect,
 		EntityCreate,

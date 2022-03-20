@@ -2,14 +2,9 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, Tabl
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
 import { ApplicationVersionGraph, ApplicationVersionEOptionalId, ApplicationVersionESelect, QApplicationVersionQRelation } from './qapplicationversion';
 import { ApplicationColumnGraph, ApplicationColumnESelect, QApplicationColumn } from './qapplicationcolumn';
-import { ApplicationColumn } from '../../ddl/application/ApplicationColumn';
 import { ApplicationOperationGraph, ApplicationOperationESelect, QApplicationOperation } from './qapplicationoperation';
-import { ApplicationOperation } from '../../ddl/application/ApplicationOperation';
 import { ApplicationPropertyGraph, ApplicationPropertyESelect, QApplicationProperty } from './qapplicationproperty';
-import { ApplicationProperty } from '../../ddl/application/ApplicationProperty';
 import { ApplicationRelationGraph, ApplicationRelationESelect, QApplicationRelation } from './qapplicationrelation';
-import { ApplicationRelation } from '../../ddl/application/ApplicationRelation';
-import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -92,7 +87,7 @@ export interface ApplicationEntityECreateColumns extends ApplicationEntityEId, A
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationEntity extends QVersionedApplicationObject<ApplicationEntity> {
+export interface QApplicationEntity extends QVersionedApplicationObject {
     id: IQNumberField;
     index: IQNumberField;
     isLocal: IQBooleanField;
@@ -100,15 +95,15 @@ export interface QApplicationEntity extends QVersionedApplicationObject<Applicat
     name: IQStringField;
     tableConfig: IQStringField;
     applicationVersion: QApplicationVersionQRelation;
-    columns: IQOneToManyRelation<ApplicationColumn, QApplicationColumn>;
-    operations: IQOneToManyRelation<ApplicationOperation, QApplicationOperation>;
-    properties: IQOneToManyRelation<ApplicationProperty, QApplicationProperty>;
-    relations: IQOneToManyRelation<ApplicationRelation, QApplicationRelation>;
-    relationReferences: IQOneToManyRelation<ApplicationRelation, QApplicationRelation>;
+    columns: IQOneToManyRelation<QApplicationColumn>;
+    operations: IQOneToManyRelation<QApplicationOperation>;
+    properties: IQOneToManyRelation<QApplicationProperty>;
+    relations: IQOneToManyRelation<QApplicationRelation>;
+    relationReferences: IQOneToManyRelation<QApplicationRelation>;
 }
 export interface QApplicationEntityQId extends QVersionedApplicationObjectQId {
     id: IQNumberField;
 }
-export interface QApplicationEntityQRelation extends QVersionedApplicationObjectQRelation<ApplicationEntity, QApplicationEntity>, QApplicationEntityQId {
+export interface QApplicationEntityQRelation extends QVersionedApplicationObjectQRelation<QApplicationEntity>, QApplicationEntityQId {
 }
 //# sourceMappingURL=qapplicationentity.d.ts.map

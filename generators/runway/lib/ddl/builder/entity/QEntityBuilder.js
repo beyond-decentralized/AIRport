@@ -41,10 +41,10 @@ export class QEntityBuilder extends QCoreEntityBuilder {
         let qName = `Q${this.entity.docEntry.name}`;
         let interfaceGenericAndExtends;
         if (this.entity.docEntry.isMappedSuperclass) {
-            interfaceGenericAndExtends = `<T> extends ${parentEntityQType}<T>`;
+            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
         }
         else {
-            interfaceGenericAndExtends = ` extends ${parentEntityQType}<${this.entity.docEntry.name}>`;
+            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
         }
         let classSource = `/**
  * Query Entity Query Definition (used for Q.EntityName).

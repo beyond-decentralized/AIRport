@@ -7,19 +7,19 @@ import { ISaveResult } from '@airport/ground-control';
 export declare class DatabaseFacade implements IDatabaseFacade {
     name: string;
     addRepository(context?: IContext): Promise<number>;
-    insertColumnValues<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IContext): Promise<number>;
-    insertValues<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValues<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context: IContext): Promise<number>;
-    insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
+    insertColumnValuesGenerateIds<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IContext): Promise<number[][] | string[][]>;
-    insertValuesGenerateIds<IQE extends IQEntity<any>>(rawInsertValues: RawInsertValues<IQE> | {
+    insertValuesGenerateIds<IQE extends IQEntity>(rawInsertValues: RawInsertValues<IQE> | {
         (...args: any[]): RawInsertValues<IQE>;
     }, context: IContext): Promise<number[][] | string[][]>;
-    deleteWhere<IQE extends IQEntity<any>>(rawDelete: RawDelete<IQE> | {
+    deleteWhere<IQE extends IQEntity>(rawDelete: RawDelete<IQE> | {
         (...args: any[]): RawDelete<IQE>;
     }, context: IContext): Promise<number>;
     save<E>(entity: E, context: IEntityContext): Promise<ISaveResult>;
@@ -31,10 +31,10 @@ export declare class DatabaseFacade implements IDatabaseFacade {
      *
      * @return Number of records updated
      */
-    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(rawUpdate: RawUpdateColumns<IEUC, IQE> | {
+    updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(rawUpdate: RawUpdateColumns<IEUC, IQE> | {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
     }, context: IContext): Promise<number>;
-    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(rawUpdate: RawUpdate<IEUP, IQE> | {
+    updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEUP, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context: IContext): Promise<number>;
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;

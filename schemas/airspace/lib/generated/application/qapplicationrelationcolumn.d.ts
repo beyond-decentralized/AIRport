@@ -2,7 +2,6 @@ import { IQNumberField } from '@airport/air-control';
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
 import { ApplicationColumnGraph, ApplicationColumnEOptionalId, ApplicationColumnESelect, QApplicationColumnQRelation } from './qapplicationcolumn';
 import { ApplicationRelationGraph, ApplicationRelationEOptionalId, ApplicationRelationESelect, QApplicationRelationQRelation } from './qapplicationrelation';
-import { ApplicationRelationColumn } from '../../ddl/application/ApplicationRelationColumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -71,7 +70,7 @@ export interface ApplicationRelationColumnECreateColumns extends ApplicationRela
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationRelationColumn extends QVersionedApplicationObject<ApplicationRelationColumn> {
+export interface QApplicationRelationColumn extends QVersionedApplicationObject {
     id: IQNumberField;
     manyColumn: QApplicationColumnQRelation;
     oneColumn: QApplicationColumnQRelation;
@@ -82,6 +81,6 @@ export interface QApplicationRelationColumn extends QVersionedApplicationObject<
 export interface QApplicationRelationColumnQId extends QVersionedApplicationObjectQId {
     id: IQNumberField;
 }
-export interface QApplicationRelationColumnQRelation extends QVersionedApplicationObjectQRelation<ApplicationRelationColumn, QApplicationRelationColumn>, QApplicationRelationColumnQId {
+export interface QApplicationRelationColumnQRelation extends QVersionedApplicationObjectQRelation<QApplicationRelationColumn>, QApplicationRelationColumnQId {
 }
 //# sourceMappingURL=qapplicationrelationcolumn.d.ts.map

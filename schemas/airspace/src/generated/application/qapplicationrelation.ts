@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -46,8 +47,8 @@ import {
 	QApplicationPropertyQRelation,
 } from './qapplicationproperty';
 import {
-	ApplicationProperty,
-} from '../../ddl/application/ApplicationProperty';
+	IApplicationProperty,
+} from './applicationproperty';
 import {
 	ApplicationEntityGraph,
 	ApplicationEntityEId,
@@ -59,8 +60,8 @@ import {
 	QApplicationEntityQRelation,
 } from './qapplicationentity';
 import {
-	ApplicationEntity,
-} from '../../ddl/application/ApplicationEntity';
+	IApplicationEntity,
+} from './applicationentity';
 import {
 	ApplicationRelationColumnGraph,
 	ApplicationRelationColumnEId,
@@ -72,11 +73,11 @@ import {
 	QApplicationRelationColumnQRelation,
 } from './qapplicationrelationcolumn';
 import {
-	ApplicationRelationColumn,
-} from '../../ddl/application/ApplicationRelationColumn';
+	IApplicationRelationColumn,
+} from './applicationrelationcolumn';
 import {
-	ApplicationRelation,
-} from '../../ddl/application/ApplicationRelation';
+	IApplicationRelation,
+} from './applicationrelation';
 
 
 declare function require(moduleName: string): any;
@@ -222,7 +223,7 @@ extends ApplicationRelationEId, ApplicationRelationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationRelation extends QVersionedApplicationObject<ApplicationRelation>
+export interface QApplicationRelation extends QVersionedApplicationObject
 {
 	// Id Fields
 	id: IQNumberField;
@@ -241,8 +242,8 @@ export interface QApplicationRelation extends QVersionedApplicationObject<Applic
 	property: QApplicationPropertyQRelation;
 	entity: QApplicationEntityQRelation;
 	relationEntity: QApplicationEntityQRelation;
-	manyRelationColumns: IQOneToManyRelation<ApplicationRelationColumn, QApplicationRelationColumn>;
-	oneRelationColumns: IQOneToManyRelation<ApplicationRelationColumn, QApplicationRelationColumn>;
+	manyRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
+	oneRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
 
 }
 
@@ -261,6 +262,6 @@ export interface QApplicationRelationQId extends QVersionedApplicationObjectQId
 
 // Entity Relation Interface
 export interface QApplicationRelationQRelation
-	extends QVersionedApplicationObjectQRelation<ApplicationRelation, QApplicationRelation>, QApplicationRelationQId {
+	extends QVersionedApplicationObjectQRelation<QApplicationRelation>, QApplicationRelationQId {
 }
 

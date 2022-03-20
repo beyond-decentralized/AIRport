@@ -18,13 +18,14 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	Log,
-} from '../../ddl/log/Log';
+	ILog,
+} from './log';
 
 
 declare function require(moduleName: string): any;
@@ -125,7 +126,7 @@ extends LogEId, LogEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLog extends IQEntity<Log>
+export interface QLog extends IQEntity
 {
 	// Id Fields
 
@@ -151,6 +152,6 @@ export interface QLogQId
 
 // Entity Relation Interface
 export interface QLogQRelation
-	extends IQRelation<Log, QLog>, QLogQId {
+	extends IQRelation<QLog>, QLogQId {
 }
 

@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,8 +34,8 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	Actor,
-} from '../../ddl/infrastructure/Actor';
+	IActor,
+} from '../infrastructure/actor';
 import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
@@ -46,8 +47,8 @@ import {
 	QOperationHistoryQRelation,
 } from './qoperationhistory';
 import {
-	OperationHistory,
-} from '../../ddl/history/OperationHistory';
+	IOperationHistory,
+} from './operationhistory';
 import {
 	RecordHistoryNewValueGraph,
 	RecordHistoryNewValueEId,
@@ -59,8 +60,8 @@ import {
 	QRecordHistoryNewValueQRelation,
 } from './qrecordhistorynewvalue';
 import {
-	RecordHistoryNewValue,
-} from '../../ddl/history/RecordHistoryNewValue';
+	IRecordHistoryNewValue,
+} from './recordhistorynewvalue';
 import {
 	RecordHistoryOldValueGraph,
 	RecordHistoryOldValueEId,
@@ -72,11 +73,11 @@ import {
 	QRecordHistoryOldValueQRelation,
 } from './qrecordhistoryoldvalue';
 import {
-	RecordHistoryOldValue,
-} from '../../ddl/history/RecordHistoryOldValue';
+	IRecordHistoryOldValue,
+} from './recordhistoryoldvalue';
 import {
-	RecordHistory,
-} from '../../ddl/history/RecordHistory';
+	IRecordHistory,
+} from './recordhistory';
 
 
 declare function require(moduleName: string): any;
@@ -195,7 +196,7 @@ extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistory extends IQEntity<RecordHistory>
+export interface QRecordHistory extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -208,8 +209,8 @@ export interface QRecordHistory extends IQEntity<RecordHistory>
 	// Non-Id Relations
 	actor: QActorQRelation;
 	operationHistory: QOperationHistoryQRelation;
-	newValues: IQOneToManyRelation<RecordHistoryNewValue, QRecordHistoryNewValue>;
-	oldValues: IQOneToManyRelation<RecordHistoryOldValue, QRecordHistoryOldValue>;
+	newValues: IQOneToManyRelation<QRecordHistoryNewValue>;
+	oldValues: IQOneToManyRelation<QRecordHistoryOldValue>;
 
 }
 
@@ -228,6 +229,6 @@ export interface QRecordHistoryQId
 
 // Entity Relation Interface
 export interface QRecordHistoryQRelation
-	extends IQRelation<RecordHistory, QRecordHistory>, QRecordHistoryQId {
+	extends IQRelation<QRecordHistory>, QRecordHistoryQId {
 }
 

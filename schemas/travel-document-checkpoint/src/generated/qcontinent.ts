@@ -34,11 +34,11 @@ import {
 	QCountryQRelation,
 } from './qcountry';
 import {
-	Country,
-} from '../ddl/Country';
+	ICountry,
+} from './country';
 import {
-	Continent,
-} from '../ddl/Continent';
+	IContinent,
+} from './continent';
 
 
 declare function require(moduleName: string): any;
@@ -147,7 +147,7 @@ extends ContinentEId, ContinentEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QContinent extends IQEntity<Continent>
+export interface QContinent extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -158,7 +158,7 @@ export interface QContinent extends IQEntity<Continent>
 	name: IQStringField;
 
 	// Non-Id Relations
-	countries: IQOneToManyRelation<Country, QCountry>;
+	countries: IQOneToManyRelation<QCountry>;
 
 }
 
@@ -177,6 +177,6 @@ export interface QContinentQId
 
 // Entity Relation Interface
 export interface QContinentQRelation
-	extends IQRelation<Continent, QContinent>, QContinentQId {
+	extends IQRelation<QContinent>, QContinentQId {
 }
 

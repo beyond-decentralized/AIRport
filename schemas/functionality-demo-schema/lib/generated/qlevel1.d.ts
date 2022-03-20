@@ -1,7 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { Level2Graph, Level2ESelect, QLevel2 } from './qlevel2';
-import { Level2 } from '../ddl/Level2';
-import { Level1 } from '../ddl/Level1';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -61,16 +59,16 @@ export interface Level1ECreateColumns extends Level1EId, Level1EUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLevel1 extends IQEntity<Level1> {
+export interface QLevel1 extends IQEntity {
     id: IQNumberField;
     bool: IQBooleanField;
     num: IQNumberField;
     str: IQStringField;
-    contained: IQOneToManyRelation<Level2, QLevel2>;
+    contained: IQOneToManyRelation<QLevel2>;
 }
 export interface QLevel1QId {
     id: IQNumberField;
 }
-export interface QLevel1QRelation extends IQRelation<Level1, QLevel1>, QLevel1QId {
+export interface QLevel1QRelation extends IQRelation<QLevel1>, QLevel1QId {
 }
 //# sourceMappingURL=qlevel1.d.ts.map

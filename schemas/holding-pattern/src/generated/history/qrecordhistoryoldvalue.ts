@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QRecordHistoryQRelation,
 } from './qrecordhistory';
 import {
-	RecordHistory,
-} from '../../ddl/history/RecordHistory';
+	IRecordHistory,
+} from './recordhistory';
 import {
-	RecordHistoryOldValue,
-} from '../../ddl/history/RecordHistoryOldValue';
+	IRecordHistoryOldValue,
+} from './recordhistoryoldvalue';
 
 
 declare function require(moduleName: string): any;
@@ -148,7 +149,7 @@ extends RecordHistoryOldValueEId, RecordHistoryOldValueEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRecordHistoryOldValue extends IQEntity<RecordHistoryOldValue>
+export interface QRecordHistoryOldValue extends IQEntity
 {
 	// Id Fields
 	columnIndex: IQNumberField;
@@ -179,6 +180,6 @@ export interface QRecordHistoryOldValueQId
 
 // Entity Relation Interface
 export interface QRecordHistoryOldValueQRelation
-	extends IQRelation<RecordHistoryOldValue, QRecordHistoryOldValue>, QRecordHistoryOldValueQId {
+	extends IQRelation<QRecordHistoryOldValue>, QRecordHistoryOldValueQId {
 }
 

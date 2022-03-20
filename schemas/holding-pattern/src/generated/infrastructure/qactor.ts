@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -31,7 +32,7 @@ import {
 	QUser,
 	QUserQId,
 	QUserQRelation,
-	User,
+	IUser,
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -40,7 +41,7 @@ import {
 	QTerminal,
 	QTerminalQId,
 	QTerminalQRelation,
-	Terminal,
+	ITerminal,
 } from '@airport/travel-document-checkpoint';
 import {
 	ApplicationGraph,
@@ -51,11 +52,11 @@ import {
 	QApplication,
 	QApplicationQId,
 	QApplicationQRelation,
-	Application,
+	IApplication,
 } from '@airport/airspace';
 import {
-	Actor,
-} from '../../ddl/infrastructure/Actor';
+	IActor,
+} from './actor';
 
 
 declare function require(moduleName: string): any;
@@ -174,7 +175,7 @@ extends ActorEId, ActorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QActor extends IQEntity<Actor>
+export interface QActor extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -206,6 +207,6 @@ export interface QActorQId
 
 // Entity Relation Interface
 export interface QActorQRelation
-	extends IQRelation<Actor, QActor>, QActorQId {
+	extends IQRelation<QActor>, QActorQId {
 }
 

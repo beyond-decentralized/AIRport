@@ -43,10 +43,10 @@ export interface ChildRepoRowECreateColumns extends ChildRepoRowEId, ChildRepoRo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRepoRow<T> extends QRepositoryEntity<T> {
+export interface QChildRepoRow extends QRepositoryEntity {
 }
 export interface QChildRepoRowQId extends QRepositoryEntityQId {
 }
-export interface QChildRepoRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends QRepositoryEntityQRelation<SubType, SubQType>, QChildRepoRowQId {
+export interface QChildRepoRowQRelation<SubType, SubQType extends IQEntity> extends QRepositoryEntityQRelation<SubType, SubQType>, QChildRepoRowQId {
 }
 //# sourceMappingURL=qchildreporow.d.ts.map

@@ -48,7 +48,7 @@ export abstract class SQLWhereBase
 
 	public parameterReferences: (string | number)[] = []
 	protected fieldMap: ApplicationMap = new ApplicationMap()
-	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> } = {}
+	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
 	protected jsonRelationMapByAlias: { [entityAlias: string]: JSONEntityRelation } = {}
 
 	constructor(
@@ -152,7 +152,7 @@ export abstract class SQLWhereBase
 		}
 
 		const aField = <JSONClauseField>clauseField
-		let qEntity: IQEntityInternal<any>
+		let qEntity: IQEntityInternal
 		switch (clauseField.ot) {
 			case JSONClauseObjectType.FIELD_FUNCTION:
 				return this.getFieldFunctionValue(aField, defaultCallback, context)
@@ -288,7 +288,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getEntityPropertyColumnName(
-		qEntity: IQEntityInternal<any>,
+		qEntity: IQEntityInternal,
 		columnIndex: number,
 		context: IFuelHydrantContext,
 	): string {
@@ -341,7 +341,7 @@ export abstract class SQLWhereBase
 	}
 
 	protected getEntityManyToOneColumnName(
-		qEntity: IQEntityInternal<any>,
+		qEntity: IQEntityInternal,
 		columnIndex: number,
 		context: IFuelHydrantContext,
 	): string {

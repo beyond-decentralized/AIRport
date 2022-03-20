@@ -34,10 +34,10 @@ export declare class EntityOrderByParser extends AbstractEntityOrderByParser imp
      * @returns {string}
      */
     getOrderByFragment(joinTree: JoinTreeNode, qEntityMapByAlias: {
-        [entityAlias: string]: IQEntityInternal<any>;
+        [entityAlias: string]: IQEntityInternal;
     }, context: IFuelHydrantContext): string;
     buildOrderByFragmentForEntity(tableAlias: string, allColumnsToSortBy: string[], idColumnsToSortBy: string[], currentEntityOrderBy: JSONEntityFieldInOrderBy[], qEntityMapByAlias: {
-        [entityAlias: string]: IQEntityInternal<any>;
+        [entityAlias: string]: IQEntityInternal;
     }): string;
     isForParentNode(joinTreeNode: JoinTreeNode, orderByField: JSONEntityFieldInOrderBy): boolean;
 }

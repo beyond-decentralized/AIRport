@@ -12,21 +12,21 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     protected orderByParser: INonEntityOrderByParser;
     constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext);
     addQEntityMapByAlias(sourceMap: {
-        [entityAlias: string]: IQEntityInternal<any>;
+        [entityAlias: string]: IQEntityInternal;
     }): void;
     toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     buildFromJoinTree(joinRelations: JSONRelation[], joinNodeMap: {
         [alias: string]: JoinTreeNode;
     }, context: IFuelHydrantContext): JoinTreeNode[];
-    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string, context: IFuelHydrantContext): IQTree<any>;
+    addFieldsToView(viewJoinRelation: JSONViewJoinRelation, viewAlias: string, context: IFuelHydrantContext): IQTree;
     /**
      * Just build the shell fields for the external API of the view, don't do anything else.
      * @param view
      * @param select
      * @param fieldPrefix
      */
-    addFieldsToViewForSelect(view: IQTree<any>, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias: string, context: IFuelHydrantContext): void;
-    addFieldToViewForSelect(view: IQTree<any>, viewAlias: string, fieldPrefix: string, fieldJson: JSONClauseField, alias: string, forFieldQueryAlias: string, context: IFuelHydrantContext): boolean;
+    addFieldsToViewForSelect(view: IQTree, viewAlias: string, select: any, fieldPrefix: string, forFieldQueryAlias: string, context: IFuelHydrantContext): void;
+    addFieldToViewForSelect(view: IQTree, viewAlias: string, fieldPrefix: string, fieldJson: JSONClauseField, alias: string, forFieldQueryAlias: string, context: IFuelHydrantContext): boolean;
     protected abstract getSELECTFragment(nested: boolean, selectClauseFragment: any, internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     protected getFieldSelectFragment(value: JSONClauseField, clauseType: ClauseType, nestedObjectCallBack: {
         (): string;

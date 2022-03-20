@@ -139,7 +139,7 @@ export class MySqlFunctionAdaptor
 	getFunctionCall(
 		jsonFunctionCall: JSONSqlFunctionCall,
 		value: string,
-		qEntityMapByAlias: { [entityName: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityName: string]: IQEntityInternal },
 		sqlValueProvider: ISqlValueProvider,
 		context: IOperationContext,
 	): string {

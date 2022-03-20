@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QLevel1QRelation,
 } from './qlevel1';
 import {
-	Level1,
-} from '../ddl/Level1';
+	ILevel1,
+} from './level1';
 import {
-	Level2,
-} from '../ddl/Level2';
+	ILevel2,
+} from './level2';
 
 
 declare function require(moduleName: string): any;
@@ -156,7 +157,7 @@ extends Level2EId, Level2EUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QLevel2 extends IQEntity<Level2>
+export interface QLevel2 extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -188,6 +189,6 @@ export interface QLevel2QId
 
 // Entity Relation Interface
 export interface QLevel2QRelation
-	extends IQRelation<Level2, QLevel2>, QLevel2QId {
+	extends IQRelation<QLevel2>, QLevel2QId {
 }
 

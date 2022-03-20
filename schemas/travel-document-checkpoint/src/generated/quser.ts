@@ -24,8 +24,8 @@ import {
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	User,
-} from '../ddl/User';
+	IUser,
+} from './user';
 
 
 declare function require(moduleName: string): any;
@@ -144,7 +144,7 @@ extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUser extends IQEntity<User>
+export interface QUser extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -176,6 +176,6 @@ export interface QUserQId
 
 // Entity Relation Interface
 export interface QUserQRelation
-	extends IQRelation<User, QUser>, QUserQId {
+	extends IQRelation<QUser>, QUserQId {
 }
 

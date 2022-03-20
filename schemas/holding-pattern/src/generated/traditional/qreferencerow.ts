@@ -18,13 +18,14 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ReferenceRow,
-} from '../../ddl/traditional/ReferenceRow';
+	IReferenceRow,
+} from './referencerow';
 
 
 declare function require(moduleName: string): any;
@@ -125,7 +126,7 @@ extends ReferenceRowEId, ReferenceRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QReferenceRow<T> extends IQEntity<T>
+export interface QReferenceRow extends IQEntity
 {
 	// Id Fields
 
@@ -150,7 +151,7 @@ export interface QReferenceRowQId
 }
 
 // Entity Relation Interface
-export interface QReferenceRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends IQRelation<SubType, SubQType>, QReferenceRowQId {
+export interface QReferenceRowQRelation<SubQType extends IQEntity>
+	extends IQRelation<SubQType>, QReferenceRowQId {
 }
 

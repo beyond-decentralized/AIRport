@@ -259,12 +259,12 @@ Only one concurrent transaction is allowed per application.`)
 			transactionHistory.allRecordHistory.length
 		);
 
-		applicationMap.ensureEntity((<IQEntityInternal<TransactionHistory>><any>Q.TransactionHistory).__driver__.dbEntity, true);
+		applicationMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
 		transactionHistory.id = transHistoryIds.transactionHistoryId;
 		await this.doInsertValues(transaction, Q.TransactionHistory,
 			[transactionHistory], context);
 
-		applicationMap.ensureEntity((<IQEntityInternal<RepositoryTransactionHistory>><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
+		applicationMap.ensureEntity((<IQEntityInternal><any>Q.RepositoryTransactionHistory).__driver__.dbEntity, true);
 		transactionHistory.repositoryTransactionHistories.forEach((
 			repositoryTransactionHistory,
 			index,
@@ -275,7 +275,7 @@ Only one concurrent transaction is allowed per application.`)
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
 			transactionHistory.repositoryTransactionHistories, context);
 
-		applicationMap.ensureEntity((<IQEntityInternal<OperationHistory>><any>Q.OperationHistory).__driver__.dbEntity, true);
+		applicationMap.ensureEntity((<IQEntityInternal><any>Q.OperationHistory).__driver__.dbEntity, true);
 		transactionHistory.allOperationHistory.forEach((
 			operationHistory,
 			index,
@@ -285,7 +285,7 @@ Only one concurrent transaction is allowed per application.`)
 		await this.doInsertValues(transaction, Q.OperationHistory,
 			transactionHistory.allOperationHistory, context);
 
-		applicationMap.ensureEntity((<IQEntityInternal<RecordHistory>><any>Q.RecordHistory).__driver__.dbEntity, true);
+		applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistory).__driver__.dbEntity, true);
 		transactionHistory.allRecordHistory.forEach((
 			recordHistory,
 			index,
@@ -293,18 +293,18 @@ Only one concurrent transaction is allowed per application.`)
 			recordHistory.id = transHistoryIds.recordHistoryIds[index];
 		});
 		await this.doInsertValues(transaction,
-			(<IQEntityInternal<RecordHistory>><any>Q.RecordHistory),
+			(<IQEntityInternal><any>Q.RecordHistory),
 			transactionHistory.allRecordHistory, context);
 
 		if (transactionHistory.allRecordHistoryNewValues.length) {
-			applicationMap.ensureEntity((<IQEntityInternal<RecordHistoryNewValue>><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true);
+			applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryNewValue).__driver__.dbEntity, true);
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues,
 				context);
 		}
 
 		if (transactionHistory.allRecordHistoryOldValues.length) {
-			applicationMap.ensureEntity((<IQEntityInternal<RecordHistoryOldValue>><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true);
+			applicationMap.ensureEntity((<IQEntityInternal><any>Q.RecordHistoryOldValue).__driver__.dbEntity, true);
 			await this.doInsertValues(transaction,
 				Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues,
 				context);

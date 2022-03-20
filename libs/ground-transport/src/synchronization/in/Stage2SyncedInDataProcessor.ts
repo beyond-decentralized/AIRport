@@ -173,7 +173,7 @@ export class Stage2SyncedInDataProcessor
 
 				if (numInserts) {
 					const previousDbEntity = context.dbEntity
-					context.dbEntity = (qEntity as IQEntityInternal<any>)
+					context.dbEntity = (qEntity as IQEntityInternal)
 						.__driver__.dbEntity
 					try {
 						await dbFacade.insertValues({
@@ -309,7 +309,7 @@ export class Stage2SyncedInDataProcessor
 				if (numClauses) {
 
 					const previousDbEntity = context.dbEntity
-					context.dbEntity = (qEntity as IQEntityInternal<any>)
+					context.dbEntity = (qEntity as IQEntityInternal)
 						.__driver__.dbEntity
 					try {
 						await dbFacade.deleteWhere({

@@ -241,7 +241,7 @@ export class AirportDatabase
 			context);
 	}
 
-	async insertColumnValues<IQE extends IQEntity<any>>(
+	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
@@ -253,7 +253,7 @@ export class AirportDatabase
 		return await dbFacade.insertColumnValues(rawInsertValues, context);
 	}
 
-	async insertValues<IQE extends IQEntity<any>>(
+	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
@@ -265,7 +265,7 @@ export class AirportDatabase
 		return await dbFacade.insertValues(rawInsertValues, context);
 	}
 
-	async insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
+	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>
 		},
@@ -277,7 +277,7 @@ export class AirportDatabase
 		return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
 	}
 
-	async insertValuesGenerateIds<IQE extends IQEntity<any>>(
+	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>
 		},
@@ -295,7 +295,7 @@ export class AirportDatabase
 	 *
 	 * @return Number of records deleted
 	 */
-	async deleteWhere<IQE extends IQEntity<any>>(
+	async deleteWhere<IQE extends IQEntity>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
@@ -330,7 +330,7 @@ export class AirportDatabase
 	 *
 	 * @return Number of records updated
 	 */
-	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
+	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
 			(...args: any[]): RawUpdateColumns<IEUC, IQE>
@@ -349,7 +349,7 @@ export class AirportDatabase
 	 *
 	 * @return Number of records updated
 	 */
-	async updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity<any>>(
+	async updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(
 		rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
 			(...args: any[]): RawUpdate<IEUP, IQE>
 		},

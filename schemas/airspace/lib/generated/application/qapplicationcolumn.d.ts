@@ -2,10 +2,7 @@ import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } fro
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
 import { ApplicationEntityGraph, ApplicationEntityEOptionalId, ApplicationEntityESelect, QApplicationEntityQRelation } from './qapplicationentity';
 import { ApplicationPropertyColumnGraph, ApplicationPropertyColumnESelect, QApplicationPropertyColumn } from './qapplicationpropertycolumn';
-import { ApplicationPropertyColumn } from '../../ddl/application/ApplicationPropertyColumn';
 import { ApplicationRelationColumnGraph, ApplicationRelationColumnESelect, QApplicationRelationColumn } from './qapplicationrelationcolumn';
-import { ApplicationRelationColumn } from '../../ddl/application/ApplicationRelationColumn';
-import { ApplicationColumn } from '../../ddl/application/ApplicationColumn';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -100,7 +97,7 @@ export interface ApplicationColumnECreateColumns extends ApplicationColumnEId, A
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationColumn extends QVersionedApplicationObject<ApplicationColumn> {
+export interface QApplicationColumn extends QVersionedApplicationObject {
     id: IQNumberField;
     index: IQNumberField;
     idIndex: IQNumberField;
@@ -112,13 +109,13 @@ export interface QApplicationColumn extends QVersionedApplicationObject<Applicat
     scale: IQNumberField;
     type: IQStringField;
     entity: QApplicationEntityQRelation;
-    propertyColumns: IQOneToManyRelation<ApplicationPropertyColumn, QApplicationPropertyColumn>;
-    manyRelationColumns: IQOneToManyRelation<ApplicationRelationColumn, QApplicationRelationColumn>;
-    oneRelationColumns: IQOneToManyRelation<ApplicationRelationColumn, QApplicationRelationColumn>;
+    propertyColumns: IQOneToManyRelation<QApplicationPropertyColumn>;
+    manyRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
+    oneRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
 }
 export interface QApplicationColumnQId extends QVersionedApplicationObjectQId {
     id: IQNumberField;
 }
-export interface QApplicationColumnQRelation extends QVersionedApplicationObjectQRelation<ApplicationColumn, QApplicationColumn>, QApplicationColumnQId {
+export interface QApplicationColumnQRelation extends QVersionedApplicationObjectQRelation<QApplicationColumn>, QApplicationColumnQId {
 }
 //# sourceMappingURL=qapplicationcolumn.d.ts.map

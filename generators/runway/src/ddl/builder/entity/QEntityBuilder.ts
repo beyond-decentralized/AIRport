@@ -1,16 +1,16 @@
-import {EntityCandidate} from "../../parser/EntityCandidate";
+import { EntityCandidate } from "../../parser/EntityCandidate";
 import {
 	MemberData,
 	QCoreEntityBuilder
-}                        from "../Builder";
-import {SIndexedEntity}     from "../application/SEntity";
-import {SColumn}            from "../application/SProperty";
-import {FileBuilder}        from './FileBuilder'
-import {QColumnBuilder}     from "./QColumnBuilder";
-import {QEntityFileBuilder} from "./QEntityFileBuilder";
-import {QPropertyBuilder}   from "./QPropertyBuilder";
-import {QRelationBuilder}   from "./QRelationBuilder";
-import {QTransientBuilder}  from "./QTransientBuilder";
+} from "../Builder";
+import { SIndexedEntity } from "../application/SEntity";
+import { SColumn } from "../application/SProperty";
+import { FileBuilder } from './FileBuilder'
+import { QColumnBuilder } from "./QColumnBuilder";
+import { QEntityFileBuilder } from "./QEntityFileBuilder";
+import { QPropertyBuilder } from "./QPropertyBuilder";
+import { QRelationBuilder } from "./QRelationBuilder";
+import { QTransientBuilder } from "./QTransientBuilder";
 
 /**
  * Created by Papa on 4/25/2016.
@@ -39,8 +39,8 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		if (sIndexedEntity) {
 			idColumns = sIndexedEntity.idColumns;
 		}
-		this.idColumnBuilders   = this.getColumnBuilders(idColumns);
-		const idProperties      = entity.getIdProperties();
+		this.idColumnBuilders = this.getColumnBuilders(idColumns);
+		const idProperties = entity.getIdProperties();
 		this.idPropertyBuilders = this.getPropertyBuilders(idProperties);
 		this.idRelationBuilders = this.getRelationBuilders(idProperties, true);
 
@@ -58,21 +58,21 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		}
 		this.nonIdColumnBuilders = this.getColumnBuilders(nonIdColumns);
 
-		const nonIdProperties          = entity.getNonIdProperties();
-		this.nonIdPropertyBuilders     = this.getPropertyBuilders(nonIdProperties);
-		this.nonIdRelationBuilders     = this.getRelationBuilders(nonIdProperties, true);
+		const nonIdProperties = entity.getNonIdProperties();
+		this.nonIdPropertyBuilders = this.getPropertyBuilders(nonIdProperties);
+		this.nonIdRelationBuilders = this.getRelationBuilders(nonIdProperties, true);
 		this.transientPropertyBuilders = this.getTransientPropertyBuilders(entity.getTransientProperties());
 	}
 
 	build(): string {
 		const idPropertyData: MemberData
-			      = this.buildPropertyData(this.idPropertyBuilders);
+			= this.buildPropertyData(this.idPropertyBuilders);
 		const nonIdPropertyData: MemberData
-			      = this.buildPropertyData(this.nonIdPropertyBuilders);
+			= this.buildPropertyData(this.nonIdPropertyBuilders);
 		const nonIdRelationData: MemberData
-			      = this.buildRelationData(this.nonIdRelationBuilders);
+			= this.buildRelationData(this.nonIdRelationBuilders);
 		const idRelationData: MemberData
-			      = this.buildRelationData(this.idRelationBuilders);
+			= this.buildRelationData(this.idRelationBuilders);
 
 		let parentEntityQType = 'IQEntity';
 		if (this.entity.parentEntity) {
@@ -82,10 +82,10 @@ export class QEntityBuilder extends QCoreEntityBuilder {
 		let qName = `Q${this.entity.docEntry.name}`;
 
 		let interfaceGenericAndExtends;
-		if(this.entity.docEntry.isMappedSuperclass) {
-			interfaceGenericAndExtends = `<T> extends ${parentEntityQType}<T>`
+		if (this.entity.docEntry.isMappedSuperclass) {
+			interfaceGenericAndExtends = ` extends ${parentEntityQType}`
 		} else {
-			interfaceGenericAndExtends = ` extends ${parentEntityQType}<${this.entity.docEntry.name}>`
+			interfaceGenericAndExtends = ` extends ${parentEntityQType}`
 		}
 
 		let classSource = `/**

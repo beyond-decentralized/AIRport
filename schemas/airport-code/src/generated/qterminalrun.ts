@@ -18,13 +18,14 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	TerminalRun,
-} from '../ddl/TerminalRun';
+	ITerminalRun,
+} from './terminalrun';
 
 
 declare function require(moduleName: string): any;
@@ -135,7 +136,7 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QTerminalRun extends IQEntity<TerminalRun>
+export interface QTerminalRun extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -165,6 +166,6 @@ export interface QTerminalRunQId
 
 // Entity Relation Interface
 export interface QTerminalRunQRelation
-	extends IQRelation<TerminalRun, QTerminalRun>, QTerminalRunQId {
+	extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }
 

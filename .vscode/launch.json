@@ -133,20 +133,6 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "runway-edge-lighting",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\runway-edge-lighting\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\runway-edge-lighting",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "travel-document-checkpoint",
             "skipFiles": [
                 "<node_internals>/**"

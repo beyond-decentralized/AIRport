@@ -2,10 +2,7 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from './qapplication';
 import { ApplicationEntityGraph, ApplicationEntityESelect, QApplicationEntity } from './qapplicationentity';
-import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
 import { ApplicationReferenceGraph, ApplicationReferenceESelect, QApplicationReference } from './qapplicationreference';
-import { ApplicationReference } from '../../ddl/application/ApplicationReference';
-import { ApplicationVersion } from '../../ddl/application/ApplicationVersion';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -85,7 +82,7 @@ export interface ApplicationVersionECreateColumns extends ApplicationVersionEId,
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationVersion extends IQEntity<ApplicationVersion> {
+export interface QApplicationVersion extends IQEntity {
     id: IQNumberField;
     integerVersion: IQNumberField;
     versionString: IQStringField;
@@ -94,13 +91,13 @@ export interface QApplicationVersion extends IQEntity<ApplicationVersion> {
     patchVersion: IQNumberField;
     jsonApplication: IQStringField;
     application: QApplicationQRelation;
-    entities: IQOneToManyRelation<ApplicationEntity, QApplicationEntity>;
-    references: IQOneToManyRelation<ApplicationReference, QApplicationReference>;
-    referencedBy: IQOneToManyRelation<ApplicationReference, QApplicationReference>;
+    entities: IQOneToManyRelation<QApplicationEntity>;
+    references: IQOneToManyRelation<QApplicationReference>;
+    referencedBy: IQOneToManyRelation<QApplicationReference>;
 }
 export interface QApplicationVersionQId {
     id: IQNumberField;
 }
-export interface QApplicationVersionQRelation extends IQRelation<ApplicationVersion, QApplicationVersion>, QApplicationVersionQId {
+export interface QApplicationVersionQRelation extends IQRelation<QApplicationVersion>, QApplicationVersionQId {
 }
 //# sourceMappingURL=qapplicationversion.d.ts.map

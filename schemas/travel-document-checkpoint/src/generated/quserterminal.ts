@@ -34,8 +34,8 @@ import {
 	QUserQRelation,
 } from './quser';
 import {
-	User,
-} from '../ddl/User';
+	IUser,
+} from './user';
 import {
 	TerminalGraph,
 	TerminalEId,
@@ -47,11 +47,11 @@ import {
 	QTerminalQRelation,
 } from './qterminal';
 import {
-	Terminal,
-} from '../ddl/Terminal';
+	ITerminal,
+} from './terminal';
 import {
-	UserTerminal,
-} from '../ddl/UserTerminal';
+	IUserTerminal,
+} from './userterminal';
 
 
 declare function require(moduleName: string): any;
@@ -160,7 +160,7 @@ extends UserTerminalEId, UserTerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUserTerminal extends IQEntity<UserTerminal>
+export interface QUserTerminal extends IQEntity
 {
 	// Id Fields
 
@@ -190,6 +190,6 @@ export interface QUserTerminalQId
 
 // Entity Relation Interface
 export interface QUserTerminalQRelation
-	extends IQRelation<UserTerminal, QUserTerminal>, QUserTerminalQId {
+	extends IQRelation<QUserTerminal>, QUserTerminalQId {
 }
 

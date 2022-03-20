@@ -151,15 +151,6 @@ ${addEntityCommand}`;
       }
       type = type.replace('[]', '');
       let qType = 'Q' + type;
-      let relationEntityPath;
-      if (property.fromProject) {
-        relationEntityPath = property.fromProject;
-        if (property.fromProject.indexOf('@airport/') !== 0) {
-          relationEntityPath += '/lib/app'
-        }
-      } else {
-        relationEntityPath = resolveRelativePath(this.fullGenerationPath, this.entityMapByName[type].path);
-      }
       this.addImport([
         // 'I' + type,
         type + 'Graph',
@@ -171,16 +162,28 @@ ${addEntityCommand}`;
         qType + 'QId',
         qType + 'QRelation'],
         qEntityRelativePath);
-      this.addImport([type], relationEntityPath, false);
+
+      if (property.fromProject) {
+        let relationEntityPath = property.fromProject;
+        if (property.fromProject.indexOf('@airport/') !== 0) {
+          relationEntityPath += '/lib/app'
+        }
+        this.addImport(['I' + type], relationEntityPath, false);
+      } else {
+        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, false);
+        let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
+        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
+        this.addImport(['I' + type], entityInterfaceRelativePath, false);
+      }
     });
   }
 
   protected addImports(): void {
     this.addRelationImports(this.qEntityBuilder.idRelationBuilders);
     this.addRelationImports(this.qEntityBuilder.nonIdRelationBuilders);
-    const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
-      this.entityPath).replace('.ts', '');
-    this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
+    // const entityImportRelativePath = resolveRelativePath(this.fullGenerationPath,
+    //   this.entityPath).replace('.ts', '');
+    // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
 
     const qFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
     let entityInterfaceRelativePath = resolveRelativePath(qFilePath, this.fullGenerationPath)

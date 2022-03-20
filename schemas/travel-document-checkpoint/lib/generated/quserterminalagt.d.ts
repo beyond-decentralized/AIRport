@@ -3,7 +3,6 @@ import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser
 import { TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from './qterminal';
 import { AgtGraph, AgtEOptionalId, AgtESelect, QAgtQRelation } from './qagt';
 import { TerminalAgtGraph, TerminalAgtEOptionalId, TerminalAgtESelect, QTerminalAgtQRelation } from './qterminalagt';
-import { UserTerminalAgt } from '../ddl/UserTerminalAgt';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -69,7 +68,7 @@ export interface UserTerminalAgtECreateColumns extends UserTerminalAgtEId, UserT
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QUserTerminalAgt extends IQEntity<UserTerminalAgt> {
+export interface QUserTerminalAgt extends IQEntity {
     id: IQNumberField;
     agtId: IQNumberField;
     password: IQNumberField;
@@ -82,6 +81,6 @@ export interface QUserTerminalAgtQId {
     id: IQNumberField;
     agtId: IQNumberField;
 }
-export interface QUserTerminalAgtQRelation extends IQRelation<UserTerminalAgt, QUserTerminalAgt>, QUserTerminalAgtQId {
+export interface QUserTerminalAgtQRelation extends IQRelation<QUserTerminalAgt>, QUserTerminalAgtQId {
 }
 //# sourceMappingURL=quserterminalagt.d.ts.map

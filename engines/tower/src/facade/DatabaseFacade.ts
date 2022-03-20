@@ -58,7 +58,7 @@ export class DatabaseFacade
 		)
 	}
 
-	async insertColumnValues<IQE extends IQEntity<any>>(
+	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
@@ -79,7 +79,7 @@ export class DatabaseFacade
 		return await transactionalConnector.insertValues(portableQuery, context)
 	}
 
-	async insertValues<IQE extends IQEntity<any>>(
+	async insertValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | { (...args: any[]): RawInsertValues<IQE> },
 		context: IContext
 	): Promise<number> {
@@ -98,7 +98,7 @@ export class DatabaseFacade
 		return await transactionalConnector.insertValues(portableQuery, context)
 	}
 
-	async insertColumnValuesGenerateIds<IQE extends IQEntity<any>>(
+	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;
 		},
@@ -119,7 +119,7 @@ export class DatabaseFacade
 		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
-	async insertValuesGenerateIds<IQE extends IQEntity<any>>(
+	async insertValuesGenerateIds<IQE extends IQEntity>(
 		rawInsertValues: RawInsertValues<IQE> | {
 			(...args: any[]): RawInsertValues<IQE>;
 		},
@@ -140,7 +140,7 @@ export class DatabaseFacade
 		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
-	async deleteWhere<IQE extends IQEntity<any>>(
+	async deleteWhere<IQE extends IQEntity>(
 		rawDelete: RawDelete<IQE> | {
 			(...args: any[]): RawDelete<IQE>
 		},
@@ -231,7 +231,7 @@ export class DatabaseFacade
 	 *
 	 * @return Number of records updated
 	 */
-	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity<any>>(
+	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
 		rawUpdate: RawUpdateColumns<IEUC, IQE>
 			| {
 				(...args: any[]): RawUpdateColumns<IEUC, IQE>
@@ -255,7 +255,7 @@ export class DatabaseFacade
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
-		IQE extends IQEntity<any>>(
+		IQE extends IQEntity>(
 			rawUpdate: RawUpdate<IEUP, IQE> | {
 				(...args: any[]): RawUpdate<IEUP, IQE>
 			},

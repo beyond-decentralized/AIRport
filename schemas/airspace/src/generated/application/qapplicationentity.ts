@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -44,8 +45,8 @@ import {
 	QApplicationVersionQRelation,
 } from './qapplicationversion';
 import {
-	ApplicationVersion,
-} from '../../ddl/application/ApplicationVersion';
+	IApplicationVersion,
+} from './applicationversion';
 import {
 	ApplicationColumnGraph,
 	ApplicationColumnEId,
@@ -57,8 +58,8 @@ import {
 	QApplicationColumnQRelation,
 } from './qapplicationcolumn';
 import {
-	ApplicationColumn,
-} from '../../ddl/application/ApplicationColumn';
+	IApplicationColumn,
+} from './applicationcolumn';
 import {
 	ApplicationOperationGraph,
 	ApplicationOperationEId,
@@ -70,8 +71,8 @@ import {
 	QApplicationOperationQRelation,
 } from './qapplicationoperation';
 import {
-	ApplicationOperation,
-} from '../../ddl/application/ApplicationOperation';
+	IApplicationOperation,
+} from './applicationoperation';
 import {
 	ApplicationPropertyGraph,
 	ApplicationPropertyEId,
@@ -83,8 +84,8 @@ import {
 	QApplicationPropertyQRelation,
 } from './qapplicationproperty';
 import {
-	ApplicationProperty,
-} from '../../ddl/application/ApplicationProperty';
+	IApplicationProperty,
+} from './applicationproperty';
 import {
 	ApplicationRelationGraph,
 	ApplicationRelationEId,
@@ -96,11 +97,11 @@ import {
 	QApplicationRelationQRelation,
 } from './qapplicationrelation';
 import {
-	ApplicationRelation,
-} from '../../ddl/application/ApplicationRelation';
+	IApplicationRelation,
+} from './applicationrelation';
 import {
-	ApplicationEntity,
-} from '../../ddl/application/ApplicationEntity';
+	IApplicationEntity,
+} from './applicationentity';
 
 
 declare function require(moduleName: string): any;
@@ -240,7 +241,7 @@ extends ApplicationEntityEId, ApplicationEntityEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplicationEntity extends QVersionedApplicationObject<ApplicationEntity>
+export interface QApplicationEntity extends QVersionedApplicationObject
 {
 	// Id Fields
 	id: IQNumberField;
@@ -256,11 +257,11 @@ export interface QApplicationEntity extends QVersionedApplicationObject<Applicat
 
 	// Non-Id Relations
 	applicationVersion: QApplicationVersionQRelation;
-	columns: IQOneToManyRelation<ApplicationColumn, QApplicationColumn>;
-	operations: IQOneToManyRelation<ApplicationOperation, QApplicationOperation>;
-	properties: IQOneToManyRelation<ApplicationProperty, QApplicationProperty>;
-	relations: IQOneToManyRelation<ApplicationRelation, QApplicationRelation>;
-	relationReferences: IQOneToManyRelation<ApplicationRelation, QApplicationRelation>;
+	columns: IQOneToManyRelation<QApplicationColumn>;
+	operations: IQOneToManyRelation<QApplicationOperation>;
+	properties: IQOneToManyRelation<QApplicationProperty>;
+	relations: IQOneToManyRelation<QApplicationRelation>;
+	relationReferences: IQOneToManyRelation<QApplicationRelation>;
 
 }
 
@@ -279,6 +280,6 @@ export interface QApplicationEntityQId extends QVersionedApplicationObjectQId
 
 // Entity Relation Interface
 export interface QApplicationEntityQRelation
-	extends QVersionedApplicationObjectQRelation<ApplicationEntity, QApplicationEntity>, QApplicationEntityQId {
+	extends QVersionedApplicationObjectQRelation<QApplicationEntity>, QApplicationEntityQId {
 }
 

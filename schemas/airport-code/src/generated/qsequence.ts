@@ -18,13 +18,14 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	Sequence,
-} from '../ddl/Sequence';
+	ISequence,
+} from './sequence';
 
 
 declare function require(moduleName: string): any;
@@ -139,7 +140,7 @@ extends SequenceEId, SequenceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSequence extends IQEntity<Sequence>
+export interface QSequence extends IQEntity
 {
 	// Id Fields
 	applicationIndex: IQNumberField;
@@ -173,6 +174,6 @@ export interface QSequenceQId
 
 // Entity Relation Interface
 export interface QSequenceQRelation
-	extends IQRelation<Sequence, QSequence>, QSequenceQId {
+	extends IQRelation<QSequence>, QSequenceQId {
 }
 

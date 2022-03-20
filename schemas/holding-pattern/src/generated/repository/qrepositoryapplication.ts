@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QRepositoryQRelation,
 } from './qrepository';
 import {
-	Repository,
-} from '../../ddl/repository/Repository';
+	IRepository,
+} from './repository';
 import {
-	RepositoryApplication,
-} from '../../ddl/repository/RepositoryApplication';
+	IRepositoryApplication,
+} from './repositoryapplication';
 
 
 declare function require(moduleName: string): any;
@@ -148,7 +149,7 @@ extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryApplication extends IQEntity<RepositoryApplication>
+export interface QRepositoryApplication extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -179,6 +180,6 @@ export interface QRepositoryApplicationQId
 
 // Entity Relation Interface
 export interface QRepositoryApplicationQRelation
-	extends IQRelation<RepositoryApplication, QRepositoryApplication>, QRepositoryApplicationQId {
+	extends IQRelation<QRepositoryApplication>, QRepositoryApplicationQId {
 }
 

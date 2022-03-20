@@ -37,9 +37,9 @@ export class AbstractMutationManager {
     };
   }
 
-  protected async doInsertValues<IQE extends IQEntity<any>>(
+  protected async doInsertValues(
     transaction: ITransaction,
-    q: IQEntity<any>,
+    q: IQEntity,
     entities: any[],
     context: IContext,
   ): Promise<number> {
@@ -47,7 +47,7 @@ export class AbstractMutationManager {
     ] = await container(this).get(
       FIELD_UTILS, QUERY_UTILS, APPLICATION_UTILS);
 
-    const dbEntity = (q as IQEntityInternal<any>).__driver__.dbEntity;
+    const dbEntity = (q as IQEntityInternal).__driver__.dbEntity;
     const columnIndexes: number[] = [];
     const columnValueLookups: IColumnValueLookup[] = [];
     for (const dbProperty of dbEntity.properties) {

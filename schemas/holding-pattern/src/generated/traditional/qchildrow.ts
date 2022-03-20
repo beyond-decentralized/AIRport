@@ -18,13 +18,14 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-control';
 import {
-	ChildRow,
-} from '../../ddl/traditional/ChildRow';
+	IChildRow,
+} from './childrow';
 
 
 declare function require(moduleName: string): any;
@@ -125,7 +126,7 @@ extends ChildRowEId, ChildRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRow<T> extends IQEntity<T>
+export interface QChildRow extends IQEntity
 {
 	// Id Fields
 
@@ -150,7 +151,7 @@ export interface QChildRowQId
 }
 
 // Entity Relation Interface
-export interface QChildRowQRelation<SubType, SubQType extends IQEntity<SubType>>
-	extends IQRelation<SubType, SubQType>, QChildRowQId {
+export interface QChildRowQRelation<SubQType extends IQEntity>
+	extends IQRelation<SubQType>, QChildRowQId {
 }
 

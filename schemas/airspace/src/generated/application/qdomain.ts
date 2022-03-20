@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,11 +34,11 @@ import {
 	QApplicationQRelation,
 } from './qapplication';
 import {
-	Application,
-} from '../../ddl/application/Application';
+	IApplication,
+} from './application';
 import {
-	Domain,
-} from '../../ddl/application/Domain';
+	IDomain,
+} from './domain';
 
 
 declare function require(moduleName: string): any;
@@ -146,7 +147,7 @@ extends DomainEId, DomainEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QDomain extends IQEntity<Domain>
+export interface QDomain extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -157,7 +158,7 @@ export interface QDomain extends IQEntity<Domain>
 	name: IQStringField;
 
 	// Non-Id Relations
-	applications: IQOneToManyRelation<Application, QApplication>;
+	applications: IQOneToManyRelation<QApplication>;
 
 }
 
@@ -176,6 +177,6 @@ export interface QDomainQId
 
 // Entity Relation Interface
 export interface QDomainQRelation
-	extends IQRelation<Domain, QDomain>, QDomainQId {
+	extends IQRelation<QDomain>, QDomainQId {
 }
 

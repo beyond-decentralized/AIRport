@@ -42,10 +42,10 @@ export interface ChildRowECreateColumns extends ChildRowEId, ChildRowEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRow<T> extends IQEntity<T> {
+export interface QChildRow extends IQEntity {
 }
 export interface QChildRowQId {
 }
-export interface QChildRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QChildRowQId {
+export interface QChildRowQRelation<SubQType extends IQEntity> extends IQRelation<SubQType>, QChildRowQId {
 }
 //# sourceMappingURL=qchildrow.d.ts.map

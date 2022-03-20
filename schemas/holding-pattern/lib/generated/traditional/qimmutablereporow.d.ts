@@ -46,11 +46,11 @@ export interface ImmutableRepoRowECreateColumns extends ImmutableRepoRowEId, Imm
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QImmutableRepoRow<T> extends QRepositoryEntity<T> {
+export interface QImmutableRepoRow extends QRepositoryEntity {
     createdAt: IQDateField;
 }
 export interface QImmutableRepoRowQId extends QRepositoryEntityQId {
 }
-export interface QImmutableRepoRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends QRepositoryEntityQRelation<SubType, SubQType>, QImmutableRepoRowQId {
+export interface QImmutableRepoRowQRelation<SubType, SubQType extends IQEntity> extends QRepositoryEntityQRelation<SubType, SubQType>, QImmutableRepoRowQId {
 }
 //# sourceMappingURL=qimmutablereporow.d.ts.map

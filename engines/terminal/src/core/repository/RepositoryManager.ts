@@ -34,7 +34,7 @@ export interface RepoQueryData {
 }
 
 export interface EntityRepoQueryData {
-	qEntity: IQEntityInternal<any>,
+	qEntity: IQEntityInternal,
 	idProperty: string;
 }
 
@@ -111,7 +111,7 @@ already contains a new repository.`)
 		return repository
 	}
 
-	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal<any>>(
+	ensureRepositoryScopeOnInsertValues<IQE extends IQEntityInternal>(
 		repository: IRepository,
 		rawInsertValues: RawInsertValues<IQE>
 	): RawInsertValues<IQE> {
@@ -144,8 +144,8 @@ already contains a new repository.`)
 		}
 	}
 
-	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal<any>>(
-		qEntity: IQEntityInternal<any>,
+	ensureRepositoryLinkOnUpdateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntityInternal>(
+		qEntity: IQEntityInternal,
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
 	): RawUpdate<IEUP, IQE> {
@@ -155,11 +155,11 @@ already contains a new repository.`)
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QRepositoryEntity<any>><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawUpdate.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
-	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal<any>>(
+	ensureRepositoryScopeOnDeleteWhere<IQE extends IQEntityInternal>(
 		qEntity: IQE,
 		repository: IRepository,
 		rawDelete: RawDelete<IQE>
@@ -169,7 +169,7 @@ already contains a new repository.`)
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QRepositoryEntity<any>><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawDelete.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 

@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,8 +34,8 @@ import {
 	QRepositoryQRelation,
 } from '../repository/qrepository';
 import {
-	Repository,
-} from '../../ddl/repository/Repository';
+	IRepository,
+} from '../repository/repository';
 import {
 	ActorGraph,
 	ActorEId,
@@ -46,8 +47,8 @@ import {
 	QActorQRelation,
 } from '../infrastructure/qactor';
 import {
-	Actor,
-} from '../../ddl/infrastructure/Actor';
+	IActor,
+} from '../infrastructure/actor';
 import {
 	TransactionHistoryGraph,
 	TransactionHistoryEId,
@@ -59,8 +60,8 @@ import {
 	QTransactionHistoryQRelation,
 } from './qtransactionhistory';
 import {
-	TransactionHistory,
-} from '../../ddl/history/TransactionHistory';
+	ITransactionHistory,
+} from './transactionhistory';
 import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
@@ -72,11 +73,11 @@ import {
 	QOperationHistoryQRelation,
 } from './qoperationhistory';
 import {
-	OperationHistory,
-} from '../../ddl/history/OperationHistory';
+	IOperationHistory,
+} from './operationhistory';
 import {
-	RepositoryTransactionHistory,
-} from '../../ddl/history/RepositoryTransactionHistory';
+	IRepositoryTransactionHistory,
+} from './repositorytransactionhistory';
 
 
 declare function require(moduleName: string): any;
@@ -213,7 +214,7 @@ extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransactionHistory>
+export interface QRepositoryTransactionHistory extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -231,7 +232,7 @@ export interface QRepositoryTransactionHistory extends IQEntity<RepositoryTransa
 	repository: QRepositoryQRelation;
 	actor: QActorQRelation;
 	transactionHistory: QTransactionHistoryQRelation;
-	operationHistory: IQOneToManyRelation<OperationHistory, QOperationHistory>;
+	operationHistory: IQOneToManyRelation<QOperationHistory>;
 
 }
 
@@ -250,6 +251,6 @@ export interface QRepositoryTransactionHistoryQId
 
 // Entity Relation Interface
 export interface QRepositoryTransactionHistoryQRelation
-	extends IQRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
+	extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }
 

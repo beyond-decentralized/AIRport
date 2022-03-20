@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -33,8 +34,8 @@ import {
 	QDomainQRelation,
 } from './qdomain';
 import {
-	Domain,
-} from '../../ddl/application/Domain';
+	IDomain,
+} from './domain';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,
@@ -46,8 +47,8 @@ import {
 	QApplicationVersionQRelation,
 } from './qapplicationversion';
 import {
-	ApplicationVersion,
-} from '../../ddl/application/ApplicationVersion';
+	IApplicationVersion,
+} from './applicationversion';
 import {
 	ApplicationCurrentVersionGraph,
 	ApplicationCurrentVersionEId,
@@ -59,11 +60,11 @@ import {
 	QApplicationCurrentVersionQRelation,
 } from './qapplicationcurrentversion';
 import {
-	ApplicationCurrentVersion,
-} from '../../ddl/application/ApplicationCurrentVersion';
+	IApplicationCurrentVersion,
+} from './applicationcurrentversion';
 import {
-	Application,
-} from '../../ddl/application/Application';
+	IApplication,
+} from './application';
 
 
 declare function require(moduleName: string): any;
@@ -194,7 +195,7 @@ extends ApplicationEId, ApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QApplication extends IQEntity<Application>
+export interface QApplication extends IQEntity
 {
 	// Id Fields
 	index: IQNumberField;
@@ -210,8 +211,8 @@ export interface QApplication extends IQEntity<Application>
 
 	// Non-Id Relations
 	domain: QDomainQRelation;
-	versions: IQOneToManyRelation<ApplicationVersion, QApplicationVersion>;
-	currentVersion: IQOneToManyRelation<ApplicationCurrentVersion, QApplicationCurrentVersion>;
+	versions: IQOneToManyRelation<QApplicationVersion>;
+	currentVersion: IQOneToManyRelation<QApplicationCurrentVersion>;
 
 }
 
@@ -230,6 +231,6 @@ export interface QApplicationQId
 
 // Entity Relation Interface
 export interface QApplicationQRelation
-	extends IQRelation<Application, QApplication>, QApplicationQId {
+	extends IQRelation<QApplication>, QApplicationQId {
 }
 

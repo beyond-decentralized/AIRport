@@ -42,10 +42,10 @@ export interface ReferenceRowECreateColumns extends ReferenceRowEId, ReferenceRo
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QReferenceRow<T> extends IQEntity<T> {
+export interface QReferenceRow extends IQEntity {
 }
 export interface QReferenceRowQId {
 }
-export interface QReferenceRowQRelation<SubType, SubQType extends IQEntity<SubType>> extends IQRelation<SubType, SubQType>, QReferenceRowQId {
+export interface QReferenceRowQRelation<SubQType extends IQEntity> extends IQRelation<SubQType>, QReferenceRowQId {
 }
 //# sourceMappingURL=qreferencerow.d.ts.map

@@ -18,6 +18,7 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
+	IQRepositoryEntityOneToManyRelation,
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
@@ -31,7 +32,7 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-	Repository,
+	IRepository,
 	RecordHistoryGraph,
 	RecordHistoryEId,
 	RecordHistoryEOptionalId,
@@ -40,7 +41,7 @@ import {
 	QRecordHistory,
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
-	RecordHistory,
+	IRecordHistory,
 } from '@airport/holding-pattern';
 import {
 	SynchronizationConflictValuesGraph,
@@ -53,11 +54,11 @@ import {
 	QSynchronizationConflictValuesQRelation,
 } from './qsynchronizationconflictvalues';
 import {
-	SynchronizationConflictValues,
-} from '../../ddl/conflict/SynchronizationConflictValues';
+	ISynchronizationConflictValues,
+} from './synchronizationconflictvalues';
 import {
-	SynchronizationConflict,
-} from '../../ddl/conflict/SynchronizationConflict';
+	ISynchronizationConflict,
+} from './synchronizationconflict';
 
 
 declare function require(moduleName: string): any;
@@ -182,7 +183,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QSynchronizationConflict extends IQEntity<SynchronizationConflict>
+export interface QSynchronizationConflict extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -197,7 +198,7 @@ export interface QSynchronizationConflict extends IQEntity<SynchronizationConfli
 	repository: QRepositoryQRelation;
 	overwrittenRecordHistory: QRecordHistoryQRelation;
 	overwritingRecordHistory: QRecordHistoryQRelation;
-	values: IQOneToManyRelation<SynchronizationConflictValues, QSynchronizationConflictValues>;
+	values: IQOneToManyRelation<QSynchronizationConflictValues>;
 
 }
 
@@ -216,6 +217,6 @@ export interface QSynchronizationConflictQId
 
 // Entity Relation Interface
 export interface QSynchronizationConflictQRelation
-	extends IQRelation<SynchronizationConflict, QSynchronizationConflict>, QSynchronizationConflictQId {
+	extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
 }
 

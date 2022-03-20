@@ -129,11 +129,11 @@ import {
 export class SQDIDuo<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
-  EntityUpdateColumns extends IEntityUpdateColumns,
+	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
-	IQE extends IQEntity<Entity>>
+	IQE extends IQEntity>
 	extends Duo<Entity,
 		EntitySelect,
 		EntityCreate,

@@ -51,7 +51,7 @@ export class EntityOrderByParser
 	 */
 	getOrderByFragment(
 		joinTree: JoinTreeNode,
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 		context: IFuelHydrantContext,
 	): string {
 		let orderByFragments: string[] = []
@@ -167,7 +167,7 @@ export class EntityOrderByParser
 		allColumnsToSortBy: string[],
 		idColumnsToSortBy: string[],
 		currentEntityOrderBy: JSONEntityFieldInOrderBy[],
-		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal<any> },
+		qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal },
 	) {
 		const finalOrderByColumnsFragments: JSONFieldInOrderBy[] = []
 		const inputOrderByPropertyNameSet: { [propertyName: string]: boolean } = {}

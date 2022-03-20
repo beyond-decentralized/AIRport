@@ -30,10 +30,15 @@ export class QEntityRelationBuilder
 		if (isRepositoryEntity) {
 			parentInterfaceType = 'IQRepositoryEntityRelation'
 		}
-		let parentEntityQType = `${parentInterfaceType}<${entity}, ${qName}>`
+		let parentEntityQType = `${parentInterfaceType}<${qName}>`
 		if (isMappedSuperclass) {
-			genericType = '<SubType, SubQType extends IQEntity<SubType>>'
-			parentEntityQType = `${parentInterfaceType}<SubType, SubQType>`
+			if (isRepositoryEntity) {
+				genericType = '<SubType, SubQType extends IQEntity>'
+				parentEntityQType = `${parentInterfaceType}<SubType, SubQType>`
+			} else {
+				genericType = '<SubQType extends IQEntity>'
+				parentEntityQType = `${parentInterfaceType}<SubQType>`
+			}
 		}
 
 		if (this.entity.parentEntity) {
@@ -42,7 +47,15 @@ export class QEntityRelationBuilder
 				iqEntity = 'SubQType'
 				entity = 'SubType'
 			}
-			parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${entity}, ${iqEntity}>`
+			if (isRepositoryEntity) {
+				let entityType = entity
+				if(!isMappedSuperclass) {
+					entityType = 'I' + entityType
+				}
+				parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${entityType}, ${iqEntity}>`
+			} else {
+				parentEntityQType = `Q${this.entity.parentEntity.type}QRelation<${iqEntity}>`
+			}
 		}
 
 		const classSource = `// Entity Relation Interface

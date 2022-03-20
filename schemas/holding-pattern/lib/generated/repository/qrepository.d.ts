@@ -1,8 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
-import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
-import { Repository } from '../../ddl/repository/Repository';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -74,7 +72,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QRepository extends IQEntity<Repository> {
+export interface QRepository extends IQEntity {
     id: IQNumberField;
     ageSuitability: IQNumberField;
     createdAt: IQDateField;
@@ -82,11 +80,11 @@ export interface QRepository extends IQEntity<Repository> {
     source: IQStringField;
     uuId: IQStringField;
     owner: QUserQRelation;
-    repositoryTransactionHistory: IQOneToManyRelation<RepositoryTransactionHistory, QRepositoryTransactionHistory>;
+    repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
 }
 export interface QRepositoryQId {
     id: IQNumberField;
 }
-export interface QRepositoryQRelation extends IQRelation<Repository, QRepository>, QRepositoryQId {
+export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
 }
 //# sourceMappingURL=qrepository.d.ts.map
