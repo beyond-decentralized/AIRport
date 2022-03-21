@@ -32,10 +32,10 @@ export class WebApplicationInitializer
             return
         }
 
-        let appIframe: HTMLIFrameElement = document
-            .getElementsByName(fullApplicationName) as any as HTMLIFrameElement;
+        let appIframes = document.getElementsByName(fullApplicationName);
+        let appIframe: HTMLIFrameElement
 
-        if (!appIframe) {
+        if (!appIframes.length) {
             appIframe = document.createElement('iframe') as HTMLIFrameElement
             appIframe.src = 'http://' + domain + '/AIRport/apps/'
                 + application + '/index.html'

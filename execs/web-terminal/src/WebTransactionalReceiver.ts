@@ -100,16 +100,16 @@ export class WebTransactionalReceiver
 				}
 				message.__received__ = true
 
-				if (this.messageCallback) {
-					const receivedDate = new Date()
-					message.__receivedTime__ = receivedDate.getTime()
-					this.messageCallback(message)
-				}
-
 				// All requests need to have a application signature
 				// to know what application is being communicated to/from
 				if (!this.hasValidApplicationInfo(message)) {
 					return
+				}
+
+				if (this.messageCallback) {
+					const receivedDate = new Date()
+					message.__receivedTime__ = receivedDate.getTime()
+					this.messageCallback(message)
 				}
 
 				switch (message.category) {
@@ -138,16 +138,16 @@ export class WebTransactionalReceiver
 			}
 			message.__received__ = true
 
-			if (this.messageCallback) {
-				const receivedDate = new Date()
-				message.__receivedTime__ = receivedDate.getTime()
-				this.messageCallback(message)
-			}
-
 			// All requests need to have a application signature
 			// to know what application is being communicated to/from
 			if (!this.hasValidApplicationInfo(message)) {
 				return
+			}
+
+			if (this.messageCallback) {
+				const receivedDate = new Date()
+				message.__receivedTime__ = receivedDate.getTime()
+				this.messageCallback(message)
 			}
 
 			const messageOrigin = event.origin;

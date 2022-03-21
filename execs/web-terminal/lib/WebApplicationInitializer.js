@@ -11,9 +11,9 @@ export class WebApplicationInitializer extends ApplicationInitializer {
         if (terminalStore.getInitializedApps().has(fullApplicationName)) {
             return;
         }
-        let appIframe = document
-            .getElementsByName(fullApplicationName);
-        if (!appIframe) {
+        let appIframes = document.getElementsByName(fullApplicationName);
+        let appIframe;
+        if (!appIframes.length) {
             appIframe = document.createElement('iframe');
             appIframe.src = 'http://' + domain + '/AIRport/apps/'
                 + application + '/index.html';
