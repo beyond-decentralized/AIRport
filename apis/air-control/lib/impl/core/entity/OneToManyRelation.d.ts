@@ -1,13 +1,8 @@
 import { DbRelation } from '@airport/ground-control';
-import { IQEntity, IQEntityInternal } from '../../../lingo/core/entity/Entity';
-import { QRelation, QRepositoryEntityRelation } from './Relation';
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity';
 /**
  * Created by Papa on 10/25/2016.
  */
-export declare class QOneToManyRelation<IQ extends IQEntity> extends QRelation<IQ> {
-    constructor(dbRelation: DbRelation, parentQ: IQEntityInternal);
-}
-export declare class QRepositoryEntityOneToManyRelation<Entity, IQ extends IQEntity> extends QRepositoryEntityRelation<Entity, IQ> {
-    constructor(dbRelation: DbRelation, parentQ: IQEntityInternal);
-}
+export declare function QOneToManyRelation(dbRelation: DbRelation, parentQ: IQEntityInternal): void;
+export declare function QRepositoryEntityOneToManyRelation(dbRelation: DbRelation, parentQ: IQEntityInternal): void;
 //# sourceMappingURL=OneToManyRelation.d.ts.map

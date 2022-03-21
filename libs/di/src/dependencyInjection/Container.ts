@@ -947,7 +947,7 @@ export class ChildContainer
 
 		if (firstMissingClassToken) {
 			throw new Error('Dependency Injection could not find class for token: '
-				+ firstMissingClassToken);
+				+ firstMissingClassToken.getPath());
 		} else if (firstDiNotSetClass) {
 			throw new Error('Dependency Injection is not ready for class: '
 				+ firstDiNotSetClass.name);

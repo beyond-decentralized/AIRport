@@ -1,19 +1,8 @@
-import { DbRelation, JoinType } from '@airport/ground-control';
-import { IQEntity, IQEntityInternal } from '../../../lingo/core/entity/Entity';
-import { IQRelation, IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation';
-import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation';
+import { DbRelation } from '@airport/ground-control';
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity';
 /**
  * Created by Papa on 4/26/2016.
  */
-export declare class QRelation<IQ extends IQEntity> implements IQRelation<IQ> {
-    private dbRelation;
-    private parentQ;
-    constructor(dbRelation: DbRelation, parentQ: IQEntityInternal);
-    innerJoin(): IQ;
-    leftJoin(): IQ;
-    getNewQEntity(joinType: JoinType): IQ;
-}
-export declare class QRepositoryEntityRelation<Entity, IQ extends IQEntity> extends QRelation<IQ> implements IQRepositoryEntityRelation<Entity, IQ> {
-    equals(entity: Entity | IQRepositoryEntityRelation<Entity, IQ>): JSONLogicalOperation;
-}
+export declare function QRelation(dbRelation: DbRelation, parentQ: IQEntityInternal): void;
+export declare function QRepositoryEntityRelation(dbRelation: DbRelation, parentQ: IQEntityInternal): void;
 //# sourceMappingURL=Relation.d.ts.map
