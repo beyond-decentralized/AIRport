@@ -11,7 +11,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: '../../execs/web-airport/public/client/build/bundle.js'
 	},
 	plugins: [
 		// If you have external dependencies installed from
