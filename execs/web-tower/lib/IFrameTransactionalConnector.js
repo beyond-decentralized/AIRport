@@ -347,9 +347,12 @@ export class IframeTransactionalConnector {
                 return true;
         }
         const applicationLoader = await DI.db().get(APPLICATION_LOADER);
+        let jsonApplication = applicationLoader.getApplication();
+        this.domain = jsonApplication.domain;
+        this.application = jsonApplication.name;
         let message = {
             ...this.getCoreFields(),
-            jsonApplication: applicationLoader.getApplication(),
+            jsonApplication,
             type: IsolateMessageType.APP_INITIALIZING
         };
         window.parent.postMessage(message, hostServer);
