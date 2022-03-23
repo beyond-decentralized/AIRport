@@ -29,11 +29,12 @@ export class ApplicationInitializer {
      * Reload exiting App - nothing to do
      */
     async initialize(jsonApplications, context, checkDependencies, loadExistingApplications) {
-        const [airDb, applicationDao, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, APPLICATION_DAO, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
+        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const existingApplicationMap = new Map();
         if (loadExistingApplications) {
+            const applicationDao = await container(this).get(APPLICATION_DAO);
             const applications = await applicationDao.findAllWithJson();
             for (const application of applications) {
                 existingApplicationMap.set(application.fullName, application);
