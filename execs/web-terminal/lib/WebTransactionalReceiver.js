@@ -113,8 +113,13 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         const webApplicationInitializer = await container(this)
             .get(APPLICATION_INITIALIZER);
+        const applicationInitializing = webApplicationInitializer.initializingApplicationMap.get(fullApplicationName);
+        if (applicationInitializing) {
+            return;
+        }
         const applicationWindow = webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
         if (!applicationWindow) {
+            webApplicationInitializer.initializingApplicationMap.set(fullApplicationName, true);
             await webApplicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
         }
         const connectionIsReadyMessage = {
@@ -169,10 +174,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     getFrameWindow(fullApplicationName) {
         const iframe = document
             .getElementsByName(fullApplicationName);
-        if (!iframe) {
+        if (!iframe || !iframe[0]) {
             return null;
         }
-        return iframe.contentWindow;
+        return iframe[0].contentWindow;
     }
     async handleToClientRequest(message, messageOrigin) {
         if (!this.messageIsFromValidApp(message, messageOrigin)) {

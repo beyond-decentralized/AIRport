@@ -7,10 +7,10 @@ export class TransactionalReceiver {
     constructor() {
         // FIXME: move this state to Terminal.state
         this.initializingApps = new Set();
-        this.initializedApps = new Set();
     }
     async processMessage(message) {
-        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER);
+        const [transactionalServer, terminalStore] = await container(this)
+            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
         let result;
         let errorMessage;
         let credentials = {
@@ -42,7 +42,13 @@ export class TransactionalReceiver {
                     result = application.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add(message.fullApplicationName);
+                    const lastTerminalState = terminalStore.getTerminalState();
+                    const initializedApps = lastTerminalState.initializedApps;
+                    initializedApps.add(message.fullApplicationName);
+                    terminalStore.state.next({
+                        ...lastTerminalState,
+                        initializedApps
+                    });
                     return null;
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE);

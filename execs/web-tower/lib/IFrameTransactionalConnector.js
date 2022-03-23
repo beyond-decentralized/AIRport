@@ -337,6 +337,7 @@ export class IframeTransactionalConnector {
                 const applicationLoader = await container(this).get(APPLICATION_LOADER);
                 await applicationLoader.load(this.lastIds);
                 this.appState = AppState.INITIALIZED;
+                await applicationLoader.initialize();
                 window.parent.postMessage({
                     ...this.getCoreFields(),
                     fullApplicationName: getFullApplicationName(applicationLoader.getApplication()),
@@ -363,7 +364,4 @@ export class IframeTransactionalConnector {
     }
 }
 DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
-export function loadIframeTransactionalConnector() {
-    console.log('IframeTransactionalConnector loaded');
-}
 //# sourceMappingURL=IFrameTransactionalConnector.js.map

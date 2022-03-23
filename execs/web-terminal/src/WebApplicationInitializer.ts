@@ -15,12 +15,16 @@ export interface IWebApplicationInitializer
 
     applicationWindowMap: Map<FullApplicationName, Window>
 
+    initializingApplicationMap: Map<FullApplicationName, boolean>
+
 }
 
 export class WebApplicationInitializer
     extends ApplicationInitializer {
 
     applicationWindowMap: Map<FullApplicationName, Window> = new Map()
+
+    initializingApplicationMap: Map<FullApplicationName, boolean> = new Map()
 
     async nativeInitializeApplication(
         domain: string,
@@ -50,6 +54,7 @@ export class WebApplicationInitializer
         }
 
         this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow)
+        this.initializingApplicationMap.set(fullApplicationName, false)
     }
 }
 

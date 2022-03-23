@@ -5,6 +5,7 @@ export class WebApplicationInitializer extends ApplicationInitializer {
     constructor() {
         super(...arguments);
         this.applicationWindowMap = new Map();
+        this.initializingApplicationMap = new Map();
     }
     async nativeInitializeApplication(domain, application, fullApplicationName) {
         const terminalStore = await container(this).get(TERMINAL_STORE);
@@ -25,6 +26,7 @@ export class WebApplicationInitializer extends ApplicationInitializer {
             await this.wait(100);
         }
         this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);
+        this.initializingApplicationMap.set(fullApplicationName, false);
     }
 }
 DI.set(APPLICATION_INITIALIZER, WebApplicationInitializer);

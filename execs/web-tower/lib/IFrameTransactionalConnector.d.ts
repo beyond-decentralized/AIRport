@@ -62,5 +62,4 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     private isConnectionInitialized;
     onMessage(callback: (message: any) => void): void;
 }
-export declare function loadIframeTransactionalConnector(): void;
 //# sourceMappingURL=IFrameTransactionalConnector.d.ts.map

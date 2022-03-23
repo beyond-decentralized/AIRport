@@ -35,12 +35,12 @@ export abstract class TransactionalReceiver {
 
     // FIXME: move this state to Terminal.state
     initializingApps: Set<string> = new Set()
-    initializedApps: Set<string> = new Set()
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
     ): Promise<ReturnType> {
-        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER)
+        const [transactionalServer, terminalStore] = await container(this)
+            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
         let result: any
         let errorMessage
         let credentials: ICredentials = {
@@ -77,7 +77,13 @@ export abstract class TransactionalReceiver {
                     result = application.lastIds
                     break
                 case IsolateMessageType.APP_INITIALIZED:
-                    this.initializedApps.add((message as IConnectionInitializedIMI).fullApplicationName)
+                    const lastTerminalState = terminalStore.getTerminalState()
+                    const initializedApps = lastTerminalState.initializedApps
+                    initializedApps.add((message as IConnectionInitializedIMI).fullApplicationName)
+                    terminalStore.state.next({
+                        ...lastTerminalState,
+                        initializedApps
+                    })
                     return null
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)

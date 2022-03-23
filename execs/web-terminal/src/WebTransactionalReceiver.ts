@@ -186,8 +186,15 @@ export class WebTransactionalReceiver
 		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
 			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
 
+		const applicationInitializing = webApplicationInitializer.initializingApplicationMap.get(fullApplicationName)
+		if (applicationInitializing) {
+			return
+		}
+
 		const applicationWindow = webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
+
 		if (!applicationWindow) {
+			webApplicationInitializer.initializingApplicationMap.set(fullApplicationName, true)
 			await webApplicationInitializer.nativeInitializeApplication(message.domain,
 				message.application, fullApplicationName)
 		}
@@ -260,10 +267,10 @@ export class WebTransactionalReceiver
 	) {
 		const iframe: HTMLIFrameElement = document
 			.getElementsByName(fullApplicationName) as any
-		if (!iframe) {
+		if (!iframe || !iframe[0]) {
 			return null
 		}
-		return iframe.contentWindow
+		return iframe[0].contentWindow
 	}
 
 	private async handleToClientRequest(

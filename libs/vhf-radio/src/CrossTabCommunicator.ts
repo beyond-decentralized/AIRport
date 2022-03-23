@@ -16,6 +16,7 @@ export class CrossTabCommunicator
     demoListenerStarted = false;
 
     clientHost: string
+    clientProtocol: string
 
     isNativeBroadcastChannel: boolean
 
@@ -35,14 +36,15 @@ export class CrossTabCommunicator
             }
             message.__received__ = true
 
-            const messageOrigin = event.origin;
-            const appDomainAndPort = messageOrigin.split('//')[1]
+            const messageOriginFragments = event.origin.split('//')
+            const appDomainAndPort = messageOriginFragments[1]
             if (message.domain !== appDomainAndPort) {
                 return
             }
 
             if (message.category === 'IsConnectionReady') {
                 this.clientHost = message.domain
+                this.clientProtocol = messageOriginFragments[0]
             }
             // FIXME: serialize message if !this.isNativeBroadcastChannel
             this.communicationChannel.postMessage(messageCopy)
@@ -72,7 +74,7 @@ export class CrossTabCommunicator
                 message.__received__ = true
 
                 // FIXME: deserialize message if !this.isNativeBroadcastChannel
-                window.parent.postMessage(messageCopy, this.clientHost)
+                window.parent.postMessage(messageCopy, this.clientProtocol + '//' + this.clientHost)
             };
         }
         createChannel();

@@ -7,6 +7,8 @@ export interface IApplicationLoader {
         lastIds: LastIds
     ): Promise<void>
 
+    initialize(): Promise<void>
+
     getApplication(): JsonApplicationWithLastIds
 
 }

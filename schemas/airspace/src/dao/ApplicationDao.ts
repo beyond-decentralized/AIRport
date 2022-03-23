@@ -342,10 +342,15 @@ export class ApplicationDao
 		index: ApplicationIndex
 	): Promise<IApplication> {
 		let a: QApplication;
+		let d: QDomain;
 		return await this.db.findOne.tree({
-			select: {},
+			select: {
+				...ALL_FIELDS,
+				domain: {}
+			},
 			from: [
-				a = Q.Application
+				a = Q.Application,
+				d = a.domain.innerJoin()
 			],
 			where: a.index.equals(index)
 		})
@@ -359,7 +364,7 @@ export class ApplicationDao
 		for (const application of applications) {
 			values.push([
 				application.index, application.domain.id, application.scope,
-				application.fullName, application.name, 
+				application.fullName, application.name,
 				// application.packageName,
 				application.status, application.signature
 			])

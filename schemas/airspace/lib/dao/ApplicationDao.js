@@ -212,10 +212,15 @@ export class ApplicationDao extends BaseApplicationDao {
     }
     async findByIndex(index) {
         let a;
+        let d;
         return await this.db.findOne.tree({
-            select: {},
+            select: {
+                ...ALL_FIELDS,
+                domain: {}
+            },
             from: [
-                a = Q.Application
+                a = Q.Application,
+                d = a.domain.innerJoin()
             ],
             where: a.index.equals(index)
         });
