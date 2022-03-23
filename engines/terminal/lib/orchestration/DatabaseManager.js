@@ -55,13 +55,10 @@ export class DatabaseManager {
                 applicationsToCreate.push(jsonApplication);
             }
         }
-        // if (applicationsToCreate.length) {
         const [applicationInitializer, server] = await container(this)
             .get(APPLICATION_INITIALIZER, TRANSACTIONAL_SERVER);
         server.tempActor = new Actor();
-        // await applicationInitializer.initialize(applicationsToCreate, context, existingApplicationsAreHydrated);
-        await applicationInitializer.initialize(applicationsToCreate, existingApplicationMap, context, true);
-        // }
+        await applicationInitializer.initialize(applicationsToCreate, context, true, true);
         server.tempActor = null;
     }
     /*
@@ -121,7 +118,7 @@ export class DatabaseManager {
             // await applicationInitializer.hydrate(jsonApplications as any, context);
         }
         else {
-            await applicationInitializer.initialize(blueprintFile.BLUEPRINT, new Map(), context, false);
+            await applicationInitializer.initialize(blueprintFile.BLUEPRINT, context, false, false);
         }
     }
 }

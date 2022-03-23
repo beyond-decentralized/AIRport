@@ -12,6 +12,7 @@ import {
 } from '@airport/di';
 import {
 	DbApplication,
+	FullApplicationName,
 	getFullApplicationName,
 	JsonApplication
 } from '@airport/ground-control';
@@ -28,7 +29,10 @@ import {
 	IQueryObjectInitializer,
 	TERMINAL_STORE
 } from '@airport/terminal-map';
-import { IApplication } from '@airport/airspace';
+import {
+	APPLICATION_DAO,
+	IApplication
+} from '@airport/airspace';
 import {
 	APPLICATION_BUILDER,
 	APPLICATION_CHECKER,
@@ -74,14 +78,14 @@ export abstract class ApplicationInitializer
 
 	async initialize(
 		jsonApplications: JsonApplicationWithLastIds[],
-		existingApplicationMap: Map<string, IApplication>,
 		context: IContext,
-		checkDependencies: boolean
+		checkDependencies: boolean,
+		loadExistingApplications: boolean
 	): Promise<void> {
-		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
+		const [airDb, applicationDao, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, applicationBuilder, applicationComposer,
 			applicationLocator, applicationRecorder, sequenceGenerator, terminalStore]
-			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			= await container(this).get(AIRPORT_DATABASE, APPLICATION_DAO, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER,
 				SEQUENCE_GENERATOR, TERMINAL_STORE);
@@ -89,17 +93,35 @@ export abstract class ApplicationInitializer
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
-		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
-		for (const jsonApplication of jsonApplications) {
-			newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+		const existingApplicationMap: Map<FullApplicationName, IApplication> = new Map()
+		if (loadExistingApplications) {
+			const applications = await applicationDao.findAllWithJson()
+			for (const application of applications) {
+				existingApplicationMap.set(application.fullName, application)
+			}
 		}
 
+		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
+		for (const jsonApplication of jsonApplications) {
+			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
+			if (existingApplication) {
+				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
+			} else {
+				newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+			}
+		}
+
+		let checkedApplicationsWithValidDependencies = []
 		for (const jsonApplication of applicationsWithValidDependencies) {
-			await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
+			if (!existingApplication) {
+				checkedApplicationsWithValidDependencies.push(jsonApplication)
+				await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+			}
 		}
 
 		const allDdlObjects = await applicationComposer.compose(
-			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+			checkedApplicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
 			terminalStore
 		});
 
@@ -229,7 +251,10 @@ export abstract class ApplicationInitializer
 						fullApplicationName)
 				}
 			}
-			applicationsWithValidDependencies = applicationReferenceCheckResults.applicationsWithValidDependencies;
+			applicationsWithValidDependencies = [
+				...applicationReferenceCheckResults.applicationsWithValidDependencies,
+				...applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies
+			];
 		} else {
 			applicationsWithValidDependencies = jsonApplicationsToInstall;
 		}

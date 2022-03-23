@@ -4,6 +4,7 @@ import { container } from '@airport/di';
 import { getFullApplicationName } from '@airport/ground-control';
 import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { TERMINAL_STORE } from '@airport/terminal-map';
+import { APPLICATION_DAO } from '@airport/airspace';
 import { APPLICATION_BUILDER, APPLICATION_CHECKER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER } from './tokens';
 export class ApplicationInitializer {
     addNewApplicationVersionsToAll(ddlObjects) {
@@ -27,18 +28,36 @@ export class ApplicationInitializer {
      * Reload existing install - hydrate all applications
      * Reload exiting App - nothing to do
      */
-    async initialize(jsonApplications, existingApplicationMap, context, checkDependencies) {
-        const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
+    async initialize(jsonApplications, context, checkDependencies, loadExistingApplications) {
+        const [airDb, applicationDao, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, sequenceGenerator, terminalStore] = await container(this).get(AIRPORT_DATABASE, APPLICATION_DAO, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
+        const existingApplicationMap = new Map();
+        if (loadExistingApplications) {
+            const applications = await applicationDao.findAllWithJson();
+            for (const application of applications) {
+                existingApplicationMap.set(application.fullName, application);
+            }
+        }
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
-            newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
+            if (existingApplication) {
+                jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
+            }
+            else {
+                newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+            }
         }
+        let checkedApplicationsWithValidDependencies = [];
         for (const jsonApplication of applicationsWithValidDependencies) {
-            await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
+            if (!existingApplication) {
+                checkedApplicationsWithValidDependencies.push(jsonApplication);
+                await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+            }
         }
-        const allDdlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+        const allDdlObjects = await applicationComposer.compose(checkedApplicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
             terminalStore
         });
         this.addNewApplicationVersionsToAll(allDdlObjects);
@@ -104,7 +123,10 @@ export class ApplicationInitializer {
                     await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplicationName);
                 }
             }
-            applicationsWithValidDependencies = applicationReferenceCheckResults.applicationsWithValidDependencies;
+            applicationsWithValidDependencies = [
+                ...applicationReferenceCheckResults.applicationsWithValidDependencies,
+                ...applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies
+            ];
         }
         else {
             applicationsWithValidDependencies = jsonApplicationsToInstall;

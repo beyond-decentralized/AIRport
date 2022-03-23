@@ -129,7 +129,14 @@ export class EntityCandidateRegistry {
 				} else if (startsWith(type, 'Array<')) {
 					type = type.substr(6, type.length - 1);
 				}
+
 				property.nonArrayType = type;
+
+				if (property.isTransient
+					&& startsWith(type, '{') && endsWith(type, '}')) {
+					property.primitive = 'Json';
+					return
+				}
 
 				property.decorators.filter(
 					decorator =>

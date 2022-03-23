@@ -92,6 +92,11 @@ export class EntityCandidateRegistry {
                     type = type.substr(6, type.length - 1);
                 }
                 property.nonArrayType = type;
+                if (property.isTransient
+                    && startsWith(type, '{') && endsWith(type, '}')) {
+                    property.primitive = 'Json';
+                    return;
+                }
                 property.decorators.filter(decorator => decorator.name === 'Column').forEach(decorator => {
                     decorator.values.filter(value => value.columnDefinition).forEach(value => {
                         property.columnDefinition = value.columnDefinition;

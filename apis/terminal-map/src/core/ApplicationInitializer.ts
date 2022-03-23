@@ -9,9 +9,9 @@ export interface IApplicationInitializer {
 
     initialize(
         jsonApplications: JsonApplicationWithLastIds[],
-        existingApplicationMap: Map<string, IApplication>,
         context: IContext,
-        checkDependencies: boolean
+        checkDependencies: boolean,
+        loadExistingApplications: boolean
     ): Promise<void>
 
     initializeForAIRportApp(

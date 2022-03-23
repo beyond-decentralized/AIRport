@@ -61,6 +61,9 @@ export class DomainDao extends BaseDomainDao {
                 newDomains.push(domain);
             }
         }
+        if (!newDomains.length) {
+            return;
+        }
         let d;
         const values = [];
         for (const domain of newDomains) {

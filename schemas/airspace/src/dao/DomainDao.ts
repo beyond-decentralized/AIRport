@@ -129,6 +129,9 @@ export class DomainDao
 				newDomains.push(domain)
 			}
 		}
+		if (!newDomains.length) {
+			return
+		}
 		let d: QDomain;
 		const values = []
 		for (const domain of newDomains) {
