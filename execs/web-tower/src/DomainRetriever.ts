@@ -15,7 +15,9 @@ export class DomainRetriever
 
     async retrieveDomain(
         domainName: DomainName,
-        domainNameMapByName: Map<string, DbDomain>
+        domainNameMapByName: Map<string, DbDomain>,
+		allDomains: DbDomain[],
+		newDomains: DbDomain[]
     ): Promise<DbDomain> {
         let domain = domainNameMapByName.get(domainName)
 
@@ -30,6 +32,8 @@ export class DomainRetriever
 
         if (domain) {
             domainNameMapByName.set(domainName, domain)
+            allDomains.push(domain)
+            newDomains.push(domain)
         }
 
         return domain

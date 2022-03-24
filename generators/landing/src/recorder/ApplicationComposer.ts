@@ -309,7 +309,7 @@ export class ApplicationComposer
 		domainMapByName: Map<DomainName, IDomain>,
 	): Promise<IDomain> {
 		let domainRetriever = await container(this).get(DOMAIN_RETRIEVER)
-		let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName as any) as IDomain
+		let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName as any, allDomains as any, newDomains as any) as IDomain
 		if (!domain) {
 			domain = {
 				id: null,

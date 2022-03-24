@@ -2,7 +2,7 @@ import { container, DI } from '@airport/di';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { DOMAIN_RETRIEVER } from '@airport/terminal-map';
 export class DomainRetriever {
-    async retrieveDomain(domainName, domainNameMapByName) {
+    async retrieveDomain(domainName, domainNameMapByName, allDomains, newDomains) {
         let domain = domainNameMapByName.get(domainName);
         if (domain) {
             return domain;
@@ -12,6 +12,8 @@ export class DomainRetriever {
         domain = await transactionalConnector.retrieveDomain(domainName);
         if (domain) {
             domainNameMapByName.set(domainName, domain);
+            allDomains.push(domain);
+            newDomains.push(domain);
         }
         return domain;
     }

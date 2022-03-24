@@ -199,7 +199,7 @@ export class ApplicationComposer {
     }
     async composeDomain(domainName, allDomains, newDomains, domainMapByName) {
         let domainRetriever = await container(this).get(DOMAIN_RETRIEVER);
-        let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName);
+        let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName, allDomains, newDomains);
         if (!domain) {
             domain = {
                 id: null,

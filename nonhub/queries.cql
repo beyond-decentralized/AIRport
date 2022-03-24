@@ -23,7 +23,10 @@ FROM
 WHERE
     repository_id = '123e4567-e89b-12d3-a456-426655440b23'
 
--- This query won't work since there is no guarante when one node gets data vs another node
+/**
+ This query will work with rolling time back (by say a minute)
+ to make sure that all recent records are retrieved.
+*/
 SELECT
     *
 FROM

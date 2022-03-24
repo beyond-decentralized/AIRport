@@ -7,7 +7,9 @@ export interface IDomainRetriever {
 
     retrieveDomain(
         domainName: DomainName,
-        domainNameMapByName: Map<string, DbDomain>
+        domainNameMapByName: Map<string, DbDomain>,
+		allDomains: DbDomain[],
+		newDomains: DbDomain[]
     ): Promise<DbDomain>
 
 }
