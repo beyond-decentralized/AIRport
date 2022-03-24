@@ -15,6 +15,7 @@ import {
     IIsolateMessageOut,
     IPortableQueryIMI,
     IReadQueryIMI,
+    IRetrieveDomainIMI,
     ISaveIMI,
     ISaveToDestinationIMI,
     IsolateMessageType,
@@ -89,6 +90,12 @@ export abstract class TransactionalReceiver {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                         .get((message as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
+                    break
+                }
+                case IsolateMessageType.RETRIEVE_DOMAIN: {
+                    const terminalStore = await container(this).get(TERMINAL_STORE)
+                    result = terminalStore.getDomainMapByName()
+                        .get((message as IRetrieveDomainIMI).domainName)
                     break
                 }
                 case IsolateMessageType.ADD_REPOSITORY:

@@ -1,5 +1,6 @@
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicationName, } from '@airport/ground-control';
+import { DOMAIN_RETRIEVER } from '@airport/terminal-map';
 import { APPLICATION_COMPOSER } from '../tokens';
 export class ApplicationComposer {
     async compose(jsonApplications, ddlObjectRetriever, applicationLocator, context) {
@@ -7,9 +8,9 @@ export class ApplicationComposer {
         const jsonApplicationMapByFullName = new Map();
         const terminalStore = context.terminalStore;
         const allDomains = terminalStore.getDomains().slice();
-        const domainNameMapByName = new Map();
+        const domainMapByName = new Map();
         for (const domain of allDomains) {
-            domainNameMapByName.set(domain.name, domain);
+            domainMapByName.set(domain.name, domain);
         }
         const allApplications = terminalStore.getApplications().slice();
         // NOTE: application fullName contains domain name as a prefix
@@ -57,7 +58,7 @@ export class ApplicationComposer {
         };
         for (const jsonApplication of jsonApplications) {
             jsonApplicationMapByFullName.set(getFullApplicationName(jsonApplication), jsonApplication);
-            const domain = this.composeDomain(jsonApplication.domain, allDomains, added.domains, domainNameMapByName);
+            const domain = await this.composeDomain(jsonApplication.domain, allDomains, added.domains, domainMapByName);
             const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName);
             this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplicationName);
         }
@@ -71,7 +72,7 @@ export class ApplicationComposer {
         for (const jsonApplication of jsonApplications) {
             const fullApplicationName = getFullApplicationName(jsonApplication);
             jsonApplicationMapByFullName.set(fullApplicationName, jsonApplication);
-            const domain = domainNameMapByName.get(jsonApplication.domain);
+            const domain = domainMapByName.get(jsonApplication.domain);
             const application = applicationMapByFullName.get(getFullApplicationName(jsonApplication));
             if (!application.index) {
                 const lastIds = {
@@ -196,8 +197,9 @@ export class ApplicationComposer {
         toObjects.applicationVersions = toObjects.applicationVersions
             .concat(fromObjects.applicationVersions);
     }
-    composeDomain(domainName, allDomains, newDomains, domainNameMapByName) {
-        let domain = domainNameMapByName.get(domainName);
+    async composeDomain(domainName, allDomains, newDomains, domainMapByName) {
+        let domainRetriever = await container(this).get(DOMAIN_RETRIEVER);
+        let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName);
         if (!domain) {
             domain = {
                 id: null,
@@ -206,13 +208,13 @@ export class ApplicationComposer {
             };
             allDomains.push(domain);
             newDomains.push(domain);
-            domainNameMapByName.set(domainName, domain);
+            domainMapByName.set(domainName, domain);
         }
         return domain;
     }
-    composeApplication(domain, jsonApplication, allApplications, newApplications, applicationMapByName) {
+    composeApplication(domain, jsonApplication, allApplications, newApplications, applicationMapByFullName) {
         const fullApplicationName = getFullApplicationName(jsonApplication);
-        let application = applicationMapByName.get(fullApplicationName);
+        let application = applicationMapByFullName.get(fullApplicationName);
         if (!application) {
             application = {
                 domain,
@@ -225,7 +227,7 @@ export class ApplicationComposer {
             };
             allApplications.push(application);
             newApplications.push(application);
-            applicationMapByName.set(fullApplicationName, application);
+            applicationMapByFullName.set(fullApplicationName, application);
         }
         return application;
     }

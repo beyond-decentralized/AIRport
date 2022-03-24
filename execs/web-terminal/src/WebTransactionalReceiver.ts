@@ -13,8 +13,6 @@ import {
 	IsolateMessageType,
 } from '@airport/security-check'
 import {
-	injectTransactionalConnector,
-	injectTransactionalServer,
 	TransactionalReceiver
 } from '@airport/terminal'
 import {
@@ -22,10 +20,6 @@ import {
 	ITransactionalReceiver,
 	APPLICATION_INITIALIZER
 } from '@airport/terminal-map'
-import {
-	injectAirportDatabase,
-	injectEntityStateManager
-} from '@airport/tower'
 import {
 	BroadcastChannel as SoftBroadcastChannel
 } from '../node_modules/broadcast-channel/dist/lib/index.es5';
@@ -411,14 +405,4 @@ export class WebTransactionalReceiver
 	}
 
 }
-
 DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
-
-export function injectTransactionalReceiver(): void {
-	console.log('Injecting TransactionalReceiver')
-	// injectMovingWalkway()
-	injectTransactionalConnector()
-	injectAirportDatabase()
-	injectTransactionalServer()
-	injectEntityStateManager()
-}

@@ -1,9 +1,8 @@
 import { container, DI, } from '@airport/di';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { IsolateMessageType, } from '@airport/security-check';
-import { injectTransactionalConnector, injectTransactionalServer, TransactionalReceiver } from '@airport/terminal';
+import { TransactionalReceiver } from '@airport/terminal';
 import { TRANSACTIONAL_RECEIVER, APPLICATION_INITIALIZER } from '@airport/terminal-map';
-import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower';
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { map } from 'rxjs/operators';
 let _mainDomain = 'localhost:31717';
@@ -287,12 +286,4 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     }
 }
 DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
-export function injectTransactionalReceiver() {
-    console.log('Injecting TransactionalReceiver');
-    // injectMovingWalkway()
-    injectTransactionalConnector();
-    injectAirportDatabase();
-    injectTransactionalServer();
-    injectEntityStateManager();
-}
 //# sourceMappingURL=WebTransactionalReceiver.js.map

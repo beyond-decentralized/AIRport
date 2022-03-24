@@ -359,6 +359,13 @@ export class IframeTransactionalConnector {
         window.parent.postMessage(message, hostServer);
         return false;
     }
+    async retrieveDomain(domainName) {
+        return await this.sendMessageNoWait({
+            ...this.getCoreFields(),
+            domainName,
+            type: IsolateMessageType.RETRIEVE_DOMAIN
+        });
+    }
     onMessage(callback) {
         this.messageCallback = callback;
     }

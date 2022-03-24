@@ -56,6 +56,12 @@ export class TransactionalReceiver {
                         .get(message.fullApplicationName);
                     break;
                 }
+                case IsolateMessageType.RETRIEVE_DOMAIN: {
+                    const terminalStore = await container(this).get(TERMINAL_STORE);
+                    result = terminalStore.getDomainMapByName()
+                        .get(message.domainName);
+                    break;
+                }
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
                     result = await transactionalServer.addRepository(

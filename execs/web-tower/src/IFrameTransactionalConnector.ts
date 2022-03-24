@@ -9,6 +9,8 @@ import {
 	IContext
 } from '@airport/di';
 import {
+	DbDomain,
+	DomainName,
 	getFullApplicationName,
 	ISaveResult,
 	ITransactionalConnector,
@@ -24,6 +26,7 @@ import {
 	IsolateMessageType,
 	IPortableQueryIMI,
 	IReadQueryIMI,
+	IRetrieveDomainIMI,
 	ISaveIMI,
 	LastIds,
 	IInitConnectionIMO
@@ -65,6 +68,10 @@ export interface IIframeTransactionalConnector
 	getLatestApplicationVersionMapByFullApplicationName(
 		applicationName: string
 	): Promise<IApplicationVersion>
+
+	retrieveDomain(
+		domainName: DomainName
+	): Promise<DbDomain>
 }
 
 export class IframeTransactionalConnector
@@ -539,6 +546,16 @@ export class IframeTransactionalConnector
 
 		window.parent.postMessage(message, hostServer)
 		return false
+	}
+
+	async retrieveDomain(
+		domainName: DomainName
+	): Promise<DbDomain> {
+		return await this.sendMessageNoWait<IRetrieveDomainIMI, DbDomain>({
+			...this.getCoreFields(),
+			domainName,
+			type: IsolateMessageType.RETRIEVE_DOMAIN
+		})
 	}
 
 	onMessage(callback: (

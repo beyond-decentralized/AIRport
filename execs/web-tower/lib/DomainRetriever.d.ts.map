@@ -1,0 +1,1 @@
+{"version":3,"file":"DomainRetriever.d.ts","sourceRoot":"","sources":["../src/DomainRetriever.ts"],"names":[],"mappings":"AACA,OAAO,EACH,QAAQ,EACR,UAAU,EAEb,MAAM,yBAAyB,CAAA;AAChC,OAAO,EAEH,gBAAgB,EACnB,MAAM,uBAAuB,CAAA;AAG9B,qBAAa,eACT,YAAW,gBAAgB;IAErB,cAAc,CAChB,UAAU,EAAE,UAAU,EACtB,mBAAmB,EAAE,GAAG,CAAC,MAAM,EAAE,QAAQ,CAAC,GAC3C,OAAO,CAAC,QAAQ,CAAC;CAmBvB"}

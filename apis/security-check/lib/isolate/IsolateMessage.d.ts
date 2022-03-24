@@ -13,6 +13,7 @@ export declare enum IsolateMessageType {
     GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME",
     INSERT_VALUES = "INSERT_VALUES",
     INSERT_VALUES_GET_IDS = "INSERT_VALUES_GET_IDS",
+    RETRIEVE_DOMAIN = "RETRIEVE_DOMAIN",
     ROLLBACK = "ROLLBACK",
     SEARCH = "SEARCH",
     SEARCH_ONE = "SEARCH_ONE",
@@ -82,5 +83,8 @@ export interface ISaveToDestinationIMI<E, T = E | E[]> extends IIsolateMessage {
 }
 export interface IGetLatestApplicationVersionByApplicationNameIMI extends IIsolateMessage {
     fullApplicationName: string;
+}
+export interface IRetrieveDomainIMI extends IIsolateMessage {
+    domainName: string;
 }
 //# sourceMappingURL=IsolateMessage.d.ts.map

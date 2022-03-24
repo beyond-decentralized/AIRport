@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import {
 	ApplicationStatus,
 	DomainName,
@@ -16,6 +16,8 @@ import {
 import {
 	AllDdlObjects,
 	DdlObjects,
+	DOMAIN_RETRIEVER,
+	IDomainRetriever,
 	ITerminalStore
 } from '@airport/terminal-map';
 import {
@@ -65,9 +67,9 @@ export class ApplicationComposer
 
 		const terminalStore = context.terminalStore
 		const allDomains = terminalStore.getDomains().slice()
-		const domainNameMapByName: Map<DomainName, IDomain> = new Map()
+		const domainMapByName: Map<DomainName, IDomain> = new Map()
 		for (const domain of allDomains) {
-			domainNameMapByName.set(domain.name, domain)
+			domainMapByName.set(domain.name, domain)
 		}
 
 		const allApplications: IApplication[] = terminalStore.getApplications().slice()
@@ -119,8 +121,8 @@ export class ApplicationComposer
 
 		for (const jsonApplication of jsonApplications) {
 			jsonApplicationMapByFullName.set(getFullApplicationName(jsonApplication), jsonApplication);
-			const domain = this.composeDomain(jsonApplication.domain,
-				allDomains, added.domains, domainNameMapByName)
+			const domain = await this.composeDomain(jsonApplication.domain,
+				allDomains, added.domains, domainMapByName)
 			const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName)
 			this.composeApplicationVersion(jsonApplication, application,
 				newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplicationName)
@@ -145,7 +147,7 @@ export class ApplicationComposer
 			const fullApplicationName = getFullApplicationName(jsonApplication)
 			jsonApplicationMapByFullName.set(fullApplicationName, jsonApplication);
 
-			const domain = domainNameMapByName.get(jsonApplication.domain)
+			const domain = domainMapByName.get(jsonApplication.domain)
 			const application = applicationMapByFullName.get(getFullApplicationName(jsonApplication))
 			if (!application.index) {
 				const lastIds = {
@@ -300,13 +302,14 @@ export class ApplicationComposer
 			.concat(fromObjects.applicationVersions)
 	}
 
-	private composeDomain(
+	private async composeDomain(
 		domainName: DomainName,
 		allDomains: IDomain[],
 		newDomains: IDomain[],
-		domainNameMapByName: Map<DomainName, IDomain>,
-	): IDomain {
-		let domain = domainNameMapByName.get(domainName)
+		domainMapByName: Map<DomainName, IDomain>,
+	): Promise<IDomain> {
+		let domainRetriever = await container(this).get(DOMAIN_RETRIEVER)
+		let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName as any) as IDomain
 		if (!domain) {
 			domain = {
 				id: null,
@@ -315,7 +318,7 @@ export class ApplicationComposer
 			}
 			allDomains.push(domain)
 			newDomains.push(domain)
-			domainNameMapByName.set(domainName, domain)
+			domainMapByName.set(domainName, domain)
 		}
 
 		return domain
@@ -326,10 +329,10 @@ export class ApplicationComposer
 		jsonApplication: JsonApplicationWithLastIds,
 		allApplications: IApplication[],
 		newApplications: IApplication[],
-		applicationMapByName: Map<FullApplicationName, IApplication>
+		applicationMapByFullName: Map<FullApplicationName, IApplication>
 	): IApplication {
 		const fullApplicationName = getFullApplicationName(jsonApplication)
-		let application = applicationMapByName.get(fullApplicationName)
+		let application = applicationMapByFullName.get(fullApplicationName)
 		if (!application) {
 			application = {
 				domain,
@@ -342,7 +345,7 @@ export class ApplicationComposer
 			};
 			allApplications.push(application);
 			newApplications.push(application);
-			applicationMapByName.set(fullApplicationName, application)
+			applicationMapByFullName.set(fullApplicationName, application)
 		}
 
 		return application

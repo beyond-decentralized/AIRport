@@ -10,6 +10,7 @@ export var IsolateMessageType;
     IsolateMessageType["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
     IsolateMessageType["INSERT_VALUES"] = "INSERT_VALUES";
     IsolateMessageType["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
+    IsolateMessageType["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
     IsolateMessageType["ROLLBACK"] = "ROLLBACK";
     IsolateMessageType["SEARCH"] = "SEARCH";
     IsolateMessageType["SEARCH_ONE"] = "SEARCH_ONE";

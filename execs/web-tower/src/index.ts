@@ -1,3 +1,4 @@
+export * from './DomainRetriever'
 export * from './IFrameApplicationInitializer'
 export * from './IFrameApplicationLocator'
 export * from './IFrameTransactionalConnector'

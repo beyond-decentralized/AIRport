@@ -1,6 +1,6 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { DbDomain, DomainName, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessage, LastIds } from '@airport/security-check';
 import { IApplicationVersion } from '@airport/airspace';
 import { Observable, Observer } from 'rxjs';
@@ -22,6 +22,7 @@ export declare enum AppState {
 }
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
+    retrieveDomain(domainName: DomainName): Promise<DbDomain>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     application: string;
@@ -60,6 +61,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     private sendObservableMessage;
     private wait;
     private isConnectionInitialized;
+    retrieveDomain(domainName: DomainName): Promise<DbDomain>;
     onMessage(callback: (message: any) => void): void;
 }
 //# sourceMappingURL=IFrameTransactionalConnector.d.ts.map

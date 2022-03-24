@@ -25,5 +25,4 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     private messageIsFromValidApp;
     private handleIsolateMessage;
 }
-export declare function injectTransactionalReceiver(): void;
 //# sourceMappingURL=WebTransactionalReceiver.d.ts.map
