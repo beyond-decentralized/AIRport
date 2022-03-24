@@ -1,6 +1,6 @@
 import { REPOSITORY_LOADER } from '@airport/air-control';
 import { container, DI } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
+import { STORE_DRIVER } from '@airport/terminal-map';
 import { QUERY_MANAGER } from '../tokens';
 export class QueryManager {
     async find(portableQuery, context, cachedSqlQueryId) {

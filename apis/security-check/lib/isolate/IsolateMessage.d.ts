@@ -47,6 +47,9 @@ export interface IConnectionInitializedIMI extends IIsolateMessage {
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
+export interface ITransactionEndIMI extends IIsolateMessage {
+    transactionId: string;
+}
 export interface IAddRepositoryIMI extends IIsolateMessage {
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {

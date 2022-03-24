@@ -21,6 +21,7 @@ import {
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplicationNameIMI,
 	IInitConnectionIMI,
+	IInitConnectionIMO,
 	IIsolateMessage,
 	IIsolateMessageOut,
 	IsolateMessageType,
@@ -28,8 +29,8 @@ import {
 	IReadQueryIMI,
 	IRetrieveDomainIMI,
 	ISaveIMI,
+	ITransactionEndIMI,
 	LastIds,
-	IInitConnectionIMO
 } from '@airport/security-check';
 import {
 	APPLICATION_LOADER,
@@ -65,6 +66,11 @@ export enum AppState {
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
+
+	commit(
+		context?: IContext
+	): Promise<boolean>
+
 	getLatestApplicationVersionMapByFullApplicationName(
 		applicationName: string
 	): Promise<IApplicationVersion>
@@ -72,6 +78,15 @@ export interface IIframeTransactionalConnector
 	retrieveDomain(
 		domainName: DomainName
 	): Promise<DbDomain>
+
+	rollback(
+		context?: IContext
+	): Promise<boolean>
+
+	startTransaction(
+		context?: IContext
+	): Promise<boolean>
+
 }
 
 export class IframeTransactionalConnector
@@ -341,8 +356,9 @@ export class IframeTransactionalConnector
 	async commit(
 		context: IContext
 	): Promise<boolean> {
-		return await this.sendMessage<IIsolateMessage, boolean>({
+		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
+			transactionId: null,
 			type: IsolateMessageType.COMMIT
 		})
 	}
@@ -350,8 +366,9 @@ export class IframeTransactionalConnector
 	async rollback(
 		context: IContext
 	): Promise<boolean> {
-		return await this.sendMessage<IIsolateMessage, boolean>({
+		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
+			transactionId: null,
 			type: IsolateMessageType.ROLLBACK
 		})
 	}

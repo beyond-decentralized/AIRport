@@ -1,11 +1,11 @@
 import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
-import { PortableQuery } from '@airport/ground-control/lib/lingo/query/PortableQuery';
-import { DbEntity } from '@airport/ground-control/lib/lingo/application/Entity';
-import { ApplicationName, DomainName, FullApplicationName } from '@airport/ground-control/lib/lingo/application/Application';
-import { InternalFragments, IStoreOperator } from '@airport/ground-control/lib/lingo/data/IStoreOperator';
-import { StoreType } from '@airport/ground-control/lib/lingo/data/storeInfo';
-import { ITransactionalConnector } from '@airport/ground-control/lib/lingo/ITransactionalConnector';
+import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery';
+import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity';
+import { ApplicationName, DomainName, FullApplicationName } from '@airport/ground-control/src/lingo/application/Application';
+import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/lingo/data/IStoreOperator';
+import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
+import { ITransaction } from '../../transaction/ITransaction';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -33,7 +33,7 @@ export interface IStoreDriver extends IStoreOperator {
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void> | void;
     }, context: IContext): Promise<void>;
-    startTransaction(): Promise<ITransactionalConnector>;
+    startTransaction(): Promise<ITransaction>;
     isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

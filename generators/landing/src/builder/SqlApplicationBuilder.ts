@@ -4,16 +4,18 @@ import { container, IContext } from '@airport/di';
 import {
   EntityRelationType,
   getFullApplicationNameFromDomainAndName,
-  IStoreDriver,
   JsonApplication,
   JsonApplicationColumn,
   JsonApplicationEntity,
   JsonApplicationVersion,
   PropertyReference,
   QueryType,
-  STORE_DRIVER,
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
+import {
+  IStoreDriver,
+  STORE_DRIVER
+} from '@airport/terminal-map'
 import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';
 

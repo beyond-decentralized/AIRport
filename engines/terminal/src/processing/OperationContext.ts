@@ -23,10 +23,8 @@ import {
 	ENTITY_STATE_MANAGER,
 	IEntityStateManager,
 	IOperationContextLoader,
-	IStoreDriver,
 	ITransactionalConnector,
 	OPERATION_CONTEXT_LOADER,
-	STORE_DRIVER,
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control'
 import {
@@ -40,9 +38,11 @@ import {
 	IOperationManager,
 	IQueryManager,
 	IRepositoryManager,
+	IStoreDriver,
 	IStructuralEntityValidator,
 	ITransactionalServer,
 	IUpdateManager,
+	STORE_DRIVER,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map'
 import {

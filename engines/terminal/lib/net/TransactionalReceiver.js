@@ -71,6 +71,17 @@ export class TransactionalReceiver {
                     // addRepositoryMessage.distributionStrategy,
                     credentials, context);
                     break;
+                case IsolateMessageType.START_TRANSACTION:
+                    if (await transactionalServer.startTransaction(credentials, context)) {
+                        result = credentials.transactionId;
+                    }
+                    else {
+                        result = null;
+                    }
+                    break;
+                case IsolateMessageType.ROLLBACK:
+                    result = await transactionalServer.rollback(credentials, {});
+                    break;
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(credentials, {});
                     break;
@@ -99,9 +110,6 @@ export class TransactionalReceiver {
                 case IsolateMessageType.INSERT_VALUES_GET_IDS:
                     const insertValuesGetIdsMessage = message;
                     result = await transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
-                    break;
-                case IsolateMessageType.ROLLBACK:
-                    result = await transactionalServer.rollback(credentials, {});
                     break;
                 case IsolateMessageType.SAVE:
                 case IsolateMessageType.SAVE_TO_DESTINATION: {
@@ -140,9 +148,6 @@ export class TransactionalReceiver {
                         ...context,
                         repository: findMessage.repository,
                     });
-                    break;
-                case IsolateMessageType.START_TRANSACTION:
-                    result = await transactionalServer.startTransaction(credentials, context);
                     break;
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage = message;

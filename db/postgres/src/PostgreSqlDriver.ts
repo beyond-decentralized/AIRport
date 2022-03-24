@@ -1,11 +1,11 @@
-import { QueryType, SQLDataType, STORE_DRIVER } from '@airport/ground-control'
+import { QueryType, SQLDataType,  } from '@airport/ground-control'
 import { transactional } from '@airport/tower'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
 import { DI } from '@airport/di'
-import { IOperationContext, ITransaction } from '@airport/terminal-map'
+import { IOperationContext, ITransaction, STORE_DRIVER } from '@airport/terminal-map'
 import { PostgreTransaction } from './PostgreTransaction'
 
 const Pool = pg.Pool

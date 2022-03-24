@@ -9,7 +9,6 @@ import {
 import {
 	FullApplicationName,
 	getFullApplicationName,
-	STORE_DRIVER,
 } from '@airport/ground-control';
 import {
 	Actor,
@@ -18,6 +17,7 @@ import { IApplication, APPLICATION_DAO } from '@airport/airspace';
 import {
 	APPLICATION_INITIALIZER,
 	IDatabaseManager,
+	STORE_DRIVER,
 	TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
 import {

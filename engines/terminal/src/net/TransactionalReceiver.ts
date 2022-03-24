@@ -109,6 +109,22 @@ export abstract class TransactionalReceiver {
                         context
                     );
                     break
+                case IsolateMessageType.START_TRANSACTION:
+                    if (await transactionalServer.startTransaction(
+                        credentials,
+                        context
+                    )) {
+                        result = credentials.transactionId
+                    } else {
+                        result = null
+                    }
+                    break
+                case IsolateMessageType.ROLLBACK:
+                    result = await transactionalServer.rollback(
+                        credentials,
+                        {}
+                    )
+                    break
                 case IsolateMessageType.COMMIT:
                     result = await transactionalServer.commit(
                         credentials,
@@ -159,12 +175,6 @@ export abstract class TransactionalReceiver {
                         insertValuesGetIdsMessage.portableQuery,
                         credentials,
                         context
-                    )
-                    break
-                case IsolateMessageType.ROLLBACK:
-                    result = await transactionalServer.rollback(
-                        credentials,
-                        {}
                     )
                     break
                 case IsolateMessageType.SAVE:
@@ -220,12 +230,6 @@ export abstract class TransactionalReceiver {
                             ...context as any,
                             repository: findMessage.repository,
                         } as IQueryOperationContext
-                    )
-                    break
-                case IsolateMessageType.START_TRANSACTION:
-                    result = await transactionalServer.startTransaction(
-                        credentials,
-                        context
                     )
                     break
                 case IsolateMessageType.UPDATE_VALUES:

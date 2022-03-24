@@ -5,15 +5,14 @@ import {
 	DbApplication,
 	getFullApplicationName,
 	getSequenceName,
-	IStoreDriver,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
 	QueryType,
-	SQLDataType,
-	STORE_DRIVER
+	SQLDataType
 } from '@airport/ground-control'
 import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing'
+import { IStoreDriver, STORE_DRIVER } from '@airport/terminal-map'
 
 export class PostgreSqlApplicationBuilder
 	extends SqlApplicationBuilder {

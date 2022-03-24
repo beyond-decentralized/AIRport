@@ -67,6 +67,11 @@ export interface IInitConnectionIMO
     extends IIsolateMessageOut<LastIds> {
 }
 
+export interface ITransactionEndIMI
+    extends IIsolateMessage {
+    transactionId: string
+}
+
 export interface IAddRepositoryIMI
     extends IIsolateMessage {
     // distributionStrategy: DistributionStrategy

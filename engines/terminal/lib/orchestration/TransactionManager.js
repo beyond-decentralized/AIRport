@@ -1,9 +1,9 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { STORE_DRIVER, getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
     constructor() {
@@ -32,42 +32,10 @@ export class TransactionManager extends AbstractMutationManager {
             await transactionalCallback(context.transaction, context);
             return;
         }
-        const [storeDriver, transHistoryDuo] = await container(this)
-            .get(STORE_DRIVER, TRANSACTION_HISTORY_DUO);
-        const isServer = storeDriver.isServer(context);
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(credentials.domain, credentials.application);
-        if (!isServer) {
-            if (fullApplicationName === this.sourceOfTransactionInProgress) {
-                await transactionalCallback(this.transactionInProgress, context);
-                return;
-            }
-            else if (this.transactionIndexQueue.filter(transIndex => transIndex === fullApplicationName).length) {
-                // Either just continue using the current transaction
-                // or return (domain shouldn't be initiating multiple transactions
-                // at the same time
-                throw new Error(`
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
-initialized multiple transactions at the same time.
-Only one concurrent transaction is allowed per application.`);
-                // return;
-            }
-            this.transactionIndexQueue.push(fullApplicationName);
-        }
-        while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
-            await this.wait(this.yieldToRunningTransaction);
-        }
-        if (!isServer) {
-            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== fullApplicationName);
-            this.sourceOfTransactionInProgress = fullApplicationName;
-        }
+        const storeDriver = await container(this).get(STORE_DRIVER);
+        await this.startTransactionPrep(credentials, context, transactionalCallback);
         await storeDriver.transact(async (transaction) => {
-            this.transactionInProgress = transaction;
-            context.transaction = transaction;
-            transaction.transHistory = transHistoryDuo.getNewRecord();
-            transaction.credentials = credentials;
+            await this.setupTransaction(credentials, transaction, context);
             try {
                 await transactionalCallback(transaction, context);
                 await this.commit(transaction, context);
@@ -81,9 +49,14 @@ Only one concurrent transaction is allowed per application.`);
             }
         }, context);
     }
+    async startTransaction(credentials, context) {
+        const storeDriver = await container(this).get(STORE_DRIVER);
+        await this.startTransactionPrep(credentials, context);
+        const transaction = await storeDriver.startTransaction();
+        await this.setupTransaction(credentials, transaction, context);
+    }
     async rollback(transaction, context) {
-        const storeDriver = await container(this)
-            .get(STORE_DRIVER);
+        const storeDriver = await container(this).get(STORE_DRIVER);
         const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
         if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
             !== fullApplicationName) {
@@ -131,6 +104,51 @@ Only one concurrent transaction is allowed per application.`);
         const synchronizationOutManager = await container(this)
             .get(SYNCHRONIZATION_OUT_MANAGER);
         await synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
+    }
+    async startTransactionPrep(credentials, context, transactionalCallback) {
+        if (context.transaction) {
+            return;
+        }
+        const storeDriver = await container(this).get(STORE_DRIVER);
+        const isServer = storeDriver.isServer(context);
+        const fullApplicationName = getFullApplicationNameFromDomainAndName(credentials.domain, credentials.application);
+        if (!isServer) {
+            if (fullApplicationName === this.sourceOfTransactionInProgress) {
+                if (transactionalCallback) {
+                    await transactionalCallback(this.transactionInProgress, context);
+                }
+                return;
+            }
+            else if (this.transactionIndexQueue.filter(transIndex => transIndex === fullApplicationName).length) {
+                // Either just continue using the current transaction
+                // or return (domain shouldn't be initiating multiple transactions
+                // at the same time
+                throw new Error(`
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+initialized multiple transactions at the same time.
+Only one concurrent transaction is allowed per application.`);
+                // return;
+            }
+            this.transactionIndexQueue.push(fullApplicationName);
+        }
+        while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
+            await this.wait(this.yieldToRunningTransaction);
+        }
+        if (!isServer) {
+            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== fullApplicationName);
+            this.sourceOfTransactionInProgress = fullApplicationName;
+        }
+    }
+    async setupTransaction(credentials, transaction, context) {
+        const transHistoryDuo = await container(this)
+            .get(TRANSACTION_HISTORY_DUO);
+        this.transactionInProgress = transaction;
+        context.transaction = transaction;
+        transaction.transHistory = transHistoryDuo.getNewRecord();
+        transaction.credentials = credentials;
     }
     // @Transactional()
     // private async recordRepositoryTransactionBlock(

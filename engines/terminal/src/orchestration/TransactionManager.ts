@@ -10,8 +10,6 @@ import {
 	IIdGenerator
 } from '@airport/fuel-hydrant-system';
 import {
-	IStoreDriver,
-	STORE_DRIVER,
 	StoreType,
 	getFullApplicationNameFromDomainAndName
 } from '@airport/ground-control';
@@ -28,9 +26,11 @@ import {
 } from '@airport/holding-pattern';
 import {
 	ICredentials,
+	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
 	ITransactionManager,
+	STORE_DRIVER,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -82,56 +82,14 @@ export class TransactionManager
 			await transactionalCallback(context.transaction, context)
 			return
 		}
-		const [storeDriver, transHistoryDuo] = await container(this)
-			.get(
-				STORE_DRIVER, TRANSACTION_HISTORY_DUO,
-			);
+		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		const isServer = storeDriver.isServer(context)
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			credentials.domain, credentials.application)
-
-		if (!isServer) {
-			if (fullApplicationName === this.sourceOfTransactionInProgress) {
-				await transactionalCallback(this.transactionInProgress, context);
-				return
-			} else if (this.transactionIndexQueue.filter(
-				transIndex =>
-					transIndex === fullApplicationName,
-			).length) {
-				// Either just continue using the current transaction
-				// or return (domain shouldn't be initiating multiple transactions
-				// at the same time
-				throw new Error(`
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
-initialized multiple transactions at the same time.
-Only one concurrent transaction is allowed per application.`)
-				// return;
-			}
-			this.transactionIndexQueue.push(fullApplicationName);
-		}
-
-		while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
-			await this.wait(this.yieldToRunningTransaction);
-		}
-		if (!isServer) {
-			this.transactionIndexQueue = this.transactionIndexQueue.filter(
-				transIndex =>
-					transIndex !== fullApplicationName,
-			);
-			this.sourceOfTransactionInProgress = fullApplicationName;
-		}
+		await this.startTransactionPrep(credentials, context, transactionalCallback)
 
 		await storeDriver.transact(async (
 			transaction: ITransaction,
 		) => {
-			this.transactionInProgress = transaction
-			context.transaction = transaction
-			transaction.transHistory = transHistoryDuo.getNewRecord();
-			transaction.credentials = credentials;
+			await this.setupTransaction(credentials, transaction, context)
 			try {
 				await transactionalCallback(transaction, context);
 				await this.commit(transaction, context);
@@ -144,12 +102,24 @@ Only one concurrent transaction is allowed per application.`)
 		}, context);
 	}
 
-	private async rollback(
+	async startTransaction(
+		credentials: ICredentials,
+		context: ITransactionContext,
+	): Promise<void> {
+		const storeDriver = await container(this).get(STORE_DRIVER);
+
+		await this.startTransactionPrep(credentials, context)
+
+		const transaction = await storeDriver.startTransaction()
+
+		await this.setupTransaction(credentials, transaction, context)
+	}
+
+	async rollback(
 		transaction: ITransaction,
 		context: IContext,
 	): Promise<void> {
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER);
+		const storeDriver = await container(this).get(STORE_DRIVER);
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			transaction.credentials.domain, transaction.credentials.application)
 		if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
@@ -176,7 +146,7 @@ Only one concurrent transaction is allowed per application.`)
 		}
 	}
 
-	private async commit(
+	async commit(
 		transaction: ITransaction,
 		context: IContext,
 	): Promise<void> {
@@ -214,6 +184,75 @@ Only one concurrent transaction is allowed per application.`)
 
 		await synchronizationOutManager.synchronizeOut(
 			transactionHistory.repositoryTransactionHistories)
+	}
+
+	async startTransactionPrep(
+		credentials: ICredentials,
+		context: ITransactionContext,
+		transactionalCallback?: {
+			(
+				transaction: IStoreDriver,
+				context: IContext
+			): Promise<void> | void
+		},
+	): Promise<void> {
+		if (context.transaction) {
+			return
+		}
+		const storeDriver = await container(this).get(STORE_DRIVER);
+
+		const isServer = storeDriver.isServer(context)
+		const fullApplicationName = getFullApplicationNameFromDomainAndName(
+			credentials.domain, credentials.application)
+
+		if (!isServer) {
+			if (fullApplicationName === this.sourceOfTransactionInProgress) {
+				if (transactionalCallback) {
+					await transactionalCallback(this.transactionInProgress, context);
+				}
+				return
+			} else if (this.transactionIndexQueue.filter(
+				transIndex =>
+					transIndex === fullApplicationName,
+			).length) {
+				// Either just continue using the current transaction
+				// or return (domain shouldn't be initiating multiple transactions
+				// at the same time
+				throw new Error(`
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+initialized multiple transactions at the same time.
+Only one concurrent transaction is allowed per application.`)
+				// return;
+			}
+			this.transactionIndexQueue.push(fullApplicationName);
+		}
+
+		while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
+			await this.wait(this.yieldToRunningTransaction);
+		}
+		if (!isServer) {
+			this.transactionIndexQueue = this.transactionIndexQueue.filter(
+				transIndex =>
+					transIndex !== fullApplicationName,
+			);
+			this.sourceOfTransactionInProgress = fullApplicationName;
+		}
+	}
+
+	private async setupTransaction(
+		credentials: ICredentials,
+		transaction: ITransaction,
+		context: IContext,
+	): Promise<void> {
+		const transHistoryDuo = await container(this)
+			.get(TRANSACTION_HISTORY_DUO);
+		this.transactionInProgress = transaction
+		context.transaction = transaction
+		transaction.transHistory = transHistoryDuo.getNewRecord();
+		transaction.credentials = credentials;
 	}
 
 	// @Transactional()
@@ -347,5 +386,4 @@ Only one concurrent transaction is allowed per application.`)
 	}
 
 }
-
 DI.set(TRANSACTION_MANAGER, TransactionManager);

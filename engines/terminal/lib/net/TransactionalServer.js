@@ -1,8 +1,9 @@
 import { container, DI } from '@airport/di';
 import { INTERNAL_DOMAIN, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER, TRANSACTIONAL_SERVER, TERMINAL_STORE } from '@airport/terminal-map';
+import { TERMINAL_STORE, TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
+import { v4 as uuidv4 } from "uuid";
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -63,13 +64,62 @@ export class TransactionalServer {
         return context.ioc.queryManager.searchOne(portableQuery, context);
     }
     async startTransaction(credentials, context) {
-        throw new Error('FIXME: implement');
+        if (this.currentTransactionContext) {
+            return false;
+        }
+        try {
+            await this.ensureIocContext(context);
+            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+            await transactionManager.startTransaction(credentials, context);
+            this.currentTransactionContext = context;
+            this.currentTransactionContext.transactionId = uuidv4();
+            credentials.transactionId =
+                this.currentTransactionContext.transactionId;
+            return true;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
     }
     async commit(credentials, context) {
-        throw new Error('FIXME: implement');
+        if (!this.currentTransactionContext
+            || this.currentTransactionContext.transactionId !== credentials.transactionId) {
+            return false;
+        }
+        uuidv4;
+        try {
+            await this.ensureIocContext(context);
+            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+            await transactionManager.commit(this.currentTransactionContext.transaction, context);
+            return true;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        finally {
+            this.currentTransactionContext = null;
+        }
     }
     async rollback(credentials, context) {
-        throw new Error('FIXME: implement');
+        if (!this.currentTransactionContext
+            || this.currentTransactionContext.transactionId !== credentials.transactionId) {
+            return false;
+        }
+        try {
+            await this.ensureIocContext(context);
+            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+            await transactionManager.rollback(this.currentTransactionContext.transaction, context);
+            return true;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+        finally {
+            this.currentTransactionContext = null;
+        }
     }
     async save(entity, credentials, context) {
         if (!entity) {

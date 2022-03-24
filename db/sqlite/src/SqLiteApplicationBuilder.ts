@@ -15,13 +15,15 @@ import {
 import {
   DbApplication,
   getFullApplicationName,
-  IStoreDriver,
   JsonApplication,
   JsonApplicationColumn,
   JsonApplicationEntity,
   SQLDataType,
 } from '@airport/ground-control';
 import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing';
+import {
+  IStoreDriver
+} from '@airport/terminal-map'
 
 export class SqLiteApplicationBuilder
   extends SqlApplicationBuilder {

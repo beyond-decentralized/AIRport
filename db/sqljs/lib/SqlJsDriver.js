@@ -1,6 +1,7 @@
 import { SQLDialect } from '@airport/fuel-hydrant-system';
-import { QueryType, StoreType, STORE_DRIVER } from '@airport/ground-control';
+import { QueryType, StoreType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
+import { STORE_DRIVER } from '@airport/terminal-map';
 import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
 /**
@@ -20,8 +21,12 @@ export class SqlJsDriver extends SqLiteDriver {
         this._db = new SQL.Database();
     }
     async transact(transactionalCallback, context) {
-        this._db.exec('BEGIN TRANSACTION;');
+        this.startTransaction();
         await transactionalCallback(new SqlJsTransaction(this));
+    }
+    async startTransaction() {
+        this._db.exec('BEGIN TRANSACTION;');
+        return new SqlJsTransaction(this);
     }
     async commit() {
         this._db.exec('COMMIT;');

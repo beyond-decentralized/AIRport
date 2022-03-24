@@ -2,13 +2,13 @@ import type * as SQL from 'sql.js'
 import { SQLDialect } from '@airport/fuel-hydrant-system'
 import {
 	QueryType,
-	StoreType,
-	STORE_DRIVER
+	StoreType
 } from '@airport/ground-control'
 import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
-	ITransaction
+	ITransaction,
+	STORE_DRIVER
 } from '@airport/terminal-map';
 import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
@@ -46,9 +46,15 @@ export class SqlJsDriver
 		},
 		context: IOperationContext,
 	): Promise<void> {
-		this._db.exec('BEGIN TRANSACTION;')
+		this.startTransaction()
 
 		await transactionalCallback(new SqlJsTransaction(this))
+	}
+
+	async startTransaction(): Promise<ITransaction> {
+		this._db.exec('BEGIN TRANSACTION;')
+
+		return new SqlJsTransaction(this)
 	}
 
 	async commit(): Promise<void> {

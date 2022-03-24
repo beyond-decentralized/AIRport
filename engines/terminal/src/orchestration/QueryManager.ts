@@ -5,11 +5,12 @@ import {
 	IContext
 } from '@airport/di'
 import {
-	PortableQuery,
-	STORE_DRIVER
+	PortableQuery
 } from '@airport/ground-control'
 import {
-	IQueryManager, IQueryOperationContext
+	IQueryManager, 
+	IQueryOperationContext,
+	STORE_DRIVER
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 import { QUERY_MANAGER } from '../tokens'

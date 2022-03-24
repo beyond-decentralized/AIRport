@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { DI } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
+import { STORE_DRIVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
 export * from './PostgreQueryAdaptor'

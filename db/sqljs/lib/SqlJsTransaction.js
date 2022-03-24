@@ -40,6 +40,9 @@ export class SqlJsTransaction {
     async transact(transactionalCallback, context) {
         await transactionalCallback(this);
     }
+    async startTransaction() {
+        throw new Error(`Nested transactions are not supported`);
+    }
     isServer(context) {
         return false;
     }

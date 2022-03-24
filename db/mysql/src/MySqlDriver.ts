@@ -5,13 +5,13 @@ import {
 } from '@airport/fuel-hydrant-system';
 import {
   QueryType,
-  SQLDataType,
-  STORE_DRIVER
+  SQLDataType
 } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import {
   IOperationContext,
-  ITransaction
+  ITransaction,
+  STORE_DRIVER
 } from '@airport/terminal-map';
 import {
   FieldPacket,

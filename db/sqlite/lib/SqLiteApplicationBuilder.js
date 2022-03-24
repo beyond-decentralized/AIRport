@@ -13,13 +13,6 @@ export class SqLiteApplicationBuilder extends SqlApplicationBuilder {
             || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
-        // SEQUENCES no longer have a generated id (for simplicity of code)
-        // let autoincrementSuffix = ''
-        // if (jsonColumn.isGenerated
-        // 	&& jsonApplication.name === '@airport/airport-code'
-        // 	&& jsonEntity.name === 'SEQUENCES') {
-        // 	autoincrementSuffix = ' AUTOINCREMENT'
-        // }
         const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
             case SQLDataType.ANY:

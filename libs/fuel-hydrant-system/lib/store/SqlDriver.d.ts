@@ -1,6 +1,6 @@
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, IStoreDriver, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { ITransaction } from '@airport/terminal-map';
+import { IStoreDriver, ITransaction } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**
@@ -28,6 +28,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract transact(callback: {
         (transaction: ITransaction): Promise<void>;
     }, context: IFuelHydrantContext): Promise<void>;
+    abstract startTransaction(): Promise<ITransaction>;
     insertValues(portableQuery: PortableQuery, context: IFuelHydrantContext, cachedSqlQueryId?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IFuelHydrantContext): Promise<number>;
     updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext): Promise<number>;

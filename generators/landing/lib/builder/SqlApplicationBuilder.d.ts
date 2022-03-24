@@ -1,8 +1,9 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
 import { IContext } from '@airport/di';
-import { IStoreDriver, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
+import { JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { IStoreDriver } from '@airport/terminal-map';
 import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';
 export declare abstract class SqlApplicationBuilder implements IApplicationBuilder {

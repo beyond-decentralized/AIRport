@@ -11,7 +11,6 @@ import { container, DI, IContext } from '@airport/di'
 import {
 	IActor,
 	IRepository,
-	IRepositoryTransactionHistory,
 	QRepositoryEntity,
 	REPOSITORY_DAO
 } from '@airport/holding-pattern'
@@ -21,7 +20,6 @@ import {
 	REPOSITORY_FIELD,
 	UpdateState,
 } from '@airport/terminal-map'
-import { ITerminal } from '@airport/travel-document-checkpoint'
 import { v4 as uuidv4 } from "uuid";
 import { REPOSITORY_MANAGER } from '../../tokens'
 

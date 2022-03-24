@@ -1,5 +1,6 @@
 import { container } from '@airport/di';
-import { EntityRelationType, getFullApplicationNameFromDomainAndName, QueryType, STORE_DRIVER, } from '@airport/ground-control';
+import { EntityRelationType, getFullApplicationNameFromDomainAndName, QueryType, } from '@airport/ground-control';
+import { STORE_DRIVER } from '@airport/terminal-map';
 export class SqlApplicationBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context) {
         const storeDriver = await container(this).get(STORE_DRIVER);

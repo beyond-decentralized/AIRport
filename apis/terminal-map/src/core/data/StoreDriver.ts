@@ -1,17 +1,18 @@
 import {IContext}      from '@airport/di'
 import {Observable}   from 'rxjs'
-import {PortableQuery} from '../query/PortableQuery'
-import {DbEntity}      from '../application/Entity'
+import {PortableQuery} from '@airport/ground-control/src/lingo/query/PortableQuery'
+import {DbEntity}      from '@airport/ground-control/src/lingo/application/Entity'
 import {
 	ApplicationName,
 	DomainName,
 	FullApplicationName
-}                      from '../application/Application'
+}                      from '@airport/ground-control/src/lingo/application/Application'
 import {
 	InternalFragments,
 	IStoreOperator
-}                      from './IStoreOperator'
-import {StoreType}     from './storeInfo'
+}                      from '@airport/ground-control/src/lingo/data/IStoreOperator'
+import {StoreType}     from '@airport/ground-control/src/lingo/data/storeInfo'
+import { ITransaction } from '../../transaction/ITransaction'
 
 /**
  * Created by Papa on 6/10/2016.
@@ -82,6 +83,8 @@ export interface IStoreDriver
 		},
 		context: IContext,
 	): Promise<void>
+
+	startTransaction(): Promise<ITransaction>
 
 	isServer(
 		context?: IContext,

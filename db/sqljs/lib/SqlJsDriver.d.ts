@@ -13,6 +13,7 @@ export declare class SqlJsDriver extends SqLiteDriver {
     transact(transactionalCallback: {
         (transaction: ITransaction): Promise<void>;
     }, context: IOperationContext): Promise<void>;
+    startTransaction(): Promise<ITransaction>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;

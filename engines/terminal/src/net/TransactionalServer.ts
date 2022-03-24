@@ -13,15 +13,17 @@ import { Actor, IActor, Repository_Id } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
+	IQueryOperationContext,
 	ITransaction,
 	ITransactionalServer,
+	TERMINAL_STORE,
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER,
-	TERMINAL_STORE,
-	IQueryOperationContext
+	ITransactionContext
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from "uuid";
 
 export interface InternalPortableQuery
 	extends PortableQuery {
@@ -56,6 +58,8 @@ export class TransactionalServer
 	implements ITransactionalServer {
 
 	tempActor: IActor;
+
+	private currentTransactionContext: ITransactionContext
 
 	async init(
 		context: IContext = {}
@@ -138,23 +142,70 @@ export class TransactionalServer
 
 	async startTransaction(
 		credentials: ICredentials,
-		context: IContext
+		context: IOperationContext & ITransactionContext
 	): Promise<boolean> {
-		throw new Error('FIXME: implement')
+		if (this.currentTransactionContext) {
+			return false
+		}
+		try {
+			await this.ensureIocContext(context)
+			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+			await transactionManager.startTransaction(credentials, context)
+			this.currentTransactionContext = context
+			this.currentTransactionContext.transactionId = uuidv4()
+			credentials.transactionId =
+				this.currentTransactionContext.transactionId
+			return true
+		} catch (e) {
+			console.error(e)
+			return false
+		}
 	}
 
 	async commit(
 		credentials: ICredentials,
-		context: IContext
+		context: IOperationContext & ITransactionContext
 	): Promise<boolean> {
-		throw new Error('FIXME: implement')
+		if (!this.currentTransactionContext
+			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
+			return false
+		}
+
+		uuidv4
+		try {
+			await this.ensureIocContext(context)
+			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+			await transactionManager.commit(
+				this.currentTransactionContext.transaction, context)
+			return true
+		} catch (e) {
+			console.error(e)
+			return false
+		} finally {
+			this.currentTransactionContext = null
+		}
 	}
 
 	async rollback(
 		credentials: ICredentials,
-		context: IContext
+		context: IOperationContext & ITransactionContext
 	): Promise<boolean> {
-		throw new Error('FIXME: implement')
+		if (!this.currentTransactionContext
+			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
+			return false
+		}
+		try {
+			await this.ensureIocContext(context)
+			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+			await transactionManager.rollback(
+				this.currentTransactionContext.transaction, context)
+			return true
+		} catch (e) {
+			console.error(e)
+			return false
+		} finally {
+			this.currentTransactionContext = null
+		}
 	}
 
 	async save<E>(

@@ -8,7 +8,6 @@ import {
     DomainName,
     FullApplicationName,
     InternalFragments,
-    IStoreDriver,
     PortableQuery,
     QueryType,
     SQLDataType,
@@ -18,9 +17,10 @@ import { ITransactionHistory } from '@airport/holding-pattern'
 import {
     ICredentials,
     IOperationContext,
+    IStoreDriver,
     ITransaction
 } from '@airport/terminal-map'
-import {Observable}   from 'rxjs'
+import { Observable } from 'rxjs'
 import type { SqlJsDriver } from "./SqlJsDriver";
 
 export class SqlJsTransaction
@@ -134,6 +134,10 @@ export class SqlJsTransaction
         context: IContext,
     ): Promise<void> {
         await transactionalCallback(this);
+    }
+
+    async startTransaction(): Promise<ITransaction> {
+        throw new Error(`Nested transactions are not supported`)
     }
 
     isServer(

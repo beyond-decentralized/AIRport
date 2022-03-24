@@ -10,7 +10,6 @@ import {
 	FullApplicationName,
 	getFullApplicationName,
 	InternalFragments,
-	IStoreDriver,
 	JsonDelete,
 	JsonEntityQuery,
 	JsonFieldQuery,
@@ -32,6 +31,7 @@ import {
 	OPERATION_CONTEXT_LOADER
 }                          from '@airport/ground-control';
 import {
+	IStoreDriver,
 	ITransaction
 }                          from '@airport/terminal-map';
 import { SQLDelete }       from '../sql/core/SQLDelete';
@@ -121,6 +121,8 @@ export abstract class SqlDriver
 		},
 		context: IFuelHydrantContext,
 	): Promise<void>;
+
+	abstract startTransaction(): Promise<ITransaction>;
 
 	async insertValues(
 		portableQuery: PortableQuery,
