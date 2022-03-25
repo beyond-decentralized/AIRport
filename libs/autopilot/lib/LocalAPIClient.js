@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { LOCAL_API_CLIENT } from "./tokens";
 let _inDemoMode = true;
 // let _demoServer = 'https://turbase.app'
-let _demoServer = 'http://localhost:7000';
+let _demoServer = 'http://localhost:7500';
 export class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();

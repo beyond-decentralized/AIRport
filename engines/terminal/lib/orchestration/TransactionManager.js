@@ -33,7 +33,9 @@ export class TransactionManager extends AbstractMutationManager {
             return;
         }
         const storeDriver = await container(this).get(STORE_DRIVER);
-        await this.startTransactionPrep(credentials, context, transactionalCallback);
+        if (!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
+            return;
+        }
         await storeDriver.transact(async (transaction) => {
             await this.setupTransaction(credentials, transaction, context);
             try {
@@ -51,7 +53,9 @@ export class TransactionManager extends AbstractMutationManager {
     }
     async startTransaction(credentials, context) {
         const storeDriver = await container(this).get(STORE_DRIVER);
-        await this.startTransactionPrep(credentials, context);
+        if (!await this.startTransactionPrep(credentials, context)) {
+            return;
+        }
         const transaction = await storeDriver.startTransaction();
         await this.setupTransaction(credentials, transaction, context);
     }
@@ -107,7 +111,7 @@ export class TransactionManager extends AbstractMutationManager {
     }
     async startTransactionPrep(credentials, context, transactionalCallback) {
         if (context.transaction) {
-            return;
+            return false;
         }
         const storeDriver = await container(this).get(STORE_DRIVER);
         const isServer = storeDriver.isServer(context);
@@ -117,7 +121,7 @@ export class TransactionManager extends AbstractMutationManager {
                 if (transactionalCallback) {
                     await transactionalCallback(this.transactionInProgress, context);
                 }
-                return;
+                return false;
             }
             else if (this.transactionIndexQueue.filter(transIndex => transIndex === fullApplicationName).length) {
                 // Either just continue using the current transaction
@@ -141,6 +145,7 @@ Only one concurrent transaction is allowed per application.`);
             this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== fullApplicationName);
             this.sourceOfTransactionInProgress = fullApplicationName;
         }
+        return true;
     }
     async setupTransaction(credentials, transaction, context) {
         const transHistoryDuo = await container(this)

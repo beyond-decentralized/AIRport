@@ -22,7 +22,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     commit(transaction: ITransaction, context: IContext): Promise<void>;
     startTransactionPrep(credentials: ICredentials, context: ITransactionContext, transactionalCallback?: {
         (transaction: IStoreDriver, context: IContext): Promise<void> | void;
-    }): Promise<void>;
+    }): Promise<boolean>;
     private setupTransaction;
     private clearTransaction;
     private saveRepositoryHistory;

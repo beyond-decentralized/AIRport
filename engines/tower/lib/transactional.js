@@ -34,6 +34,9 @@ import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 //  * transactional context is required.  Zone.js can be used as a thread local context for
 //  * that.
 export async function transactional(callback, context = {}) {
+    if (!context) {
+        context = {};
+    }
     const transactionManager = await DI.db()
         .get(TRANSACTION_MANAGER);
     await transactionManager.transact({

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --port 7000",
+    "start": "sirv public --no-clear --port 7500",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
@@ -14,8 +14,7 @@
     "@airport/web-terminal": "0.0.1",
     "@airport/sqljs": "0.0.1",
     "broadcast-channel": "^4.9.0",
-    "page": "^1.11.6",
-    "sirv-cli": "^1.0.0"
+    "page": "^1.11.6"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -27,6 +26,7 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
+    "sirv-cli": "^1.0.0",
     "svelte": "^3.0.0",
     "svelte-check": "^2.0.0",
     "svelte-preprocess": "^4.0.0",

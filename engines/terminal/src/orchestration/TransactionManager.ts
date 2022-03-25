@@ -84,7 +84,9 @@ export class TransactionManager
 		}
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		await this.startTransactionPrep(credentials, context, transactionalCallback)
+		if(!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
+			return
+		}
 
 		await storeDriver.transact(async (
 			transaction: ITransaction,
@@ -108,7 +110,9 @@ export class TransactionManager
 	): Promise<void> {
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		await this.startTransactionPrep(credentials, context)
+		if(!await this.startTransactionPrep(credentials, context)) {
+			return
+		}
 
 		const transaction = await storeDriver.startTransaction()
 
@@ -195,9 +199,9 @@ export class TransactionManager
 				context: IContext
 			): Promise<void> | void
 		},
-	): Promise<void> {
+	): Promise<boolean> {
 		if (context.transaction) {
-			return
+			return false
 		}
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
@@ -210,7 +214,7 @@ export class TransactionManager
 				if (transactionalCallback) {
 					await transactionalCallback(this.transactionInProgress, context);
 				}
-				return
+				return false
 			} else if (this.transactionIndexQueue.filter(
 				transIndex =>
 					transIndex === fullApplicationName,
@@ -240,6 +244,8 @@ Only one concurrent transaction is allowed per application.`)
 			);
 			this.sourceOfTransactionInProgress = fullApplicationName;
 		}
+
+		return true
 	}
 
 	private async setupTransaction(

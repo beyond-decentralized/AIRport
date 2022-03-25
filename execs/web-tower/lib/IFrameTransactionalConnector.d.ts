@@ -4,6 +4,7 @@ import { DbDomain, DomainName, ISaveResult, ITransactionalConnector, PortableQue
 import { IIsolateMessage, LastIds } from '@airport/security-check';
 import { IApplicationVersion } from '@airport/airspace';
 import { Observable, Observer } from 'rxjs';
+import { ITransactionContext } from '@airport/terminal-map';
 export interface IMessageInRecord {
     message: IIsolateMessage;
     reject: any;
@@ -13,7 +14,7 @@ export interface IObservableMessageInRecord<T> {
     id: number;
     observer?: Observer<T>;
 }
-export declare const hostServer = "http://localhost:7000";
+export declare const hostServer = "http://localhost:7500";
 export declare enum AppState {
     NOT_INITIALIED = "NOT_INITIALIED",
     START_INITIALIZING = "START_INITIALIZING",
@@ -21,8 +22,11 @@ export declare enum AppState {
     INITIALIZED = "INITIALIZED"
 }
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
+    commit(context?: IContext): Promise<boolean>;
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
     retrieveDomain(domainName: DomainName): Promise<DbDomain>;
+    rollback(context?: IContext): Promise<boolean>;
+    startTransaction(context?: IContext): Promise<boolean>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     application: string;
@@ -48,8 +52,8 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
-    startTransaction(context: IContext): Promise<boolean>;
-    commit(context: IContext): Promise<boolean>;
+    startTransaction(context: ITransactionContext): Promise<boolean>;
+    commit(context: ITransactionContext): Promise<boolean>;
     rollback(context: IContext): Promise<boolean>;
     getLatestApplicationVersionMapByFullApplicationName(fullApplicationName: string): Promise<IApplicationVersion>;
     private initializeConnection;

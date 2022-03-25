@@ -52,6 +52,9 @@ export async function transactional<T>(
 	},
 	context: IContext = {},
 ): Promise<void> {
+	if(!context) {
+		context = {}
+	}
 	const transactionManager = await DI.db()
 		.get(TRANSACTION_MANAGER)
 	await transactionManager.transact({
