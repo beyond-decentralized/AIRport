@@ -101,6 +101,15 @@ for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqu
 for ${dbEntity.name}.${dbProperty.name}`);
                     } // switch dbRelation.relationType
                     const previousDbEntity = context.dbEntity;
+                    const previousDbApplication = previousDbEntity.applicationVersion.application;
+                    const propertyDbApplication = dbRelation.relationEntity.applicationVersion.application;
+                    if (propertyDbApplication.domain.name !== 'air'
+                        && previousDbApplication.fullName !== propertyDbApplication.fullName) {
+                        // If a child entity is in a different application it won't be processed
+                        // the calling application should call the API of the other application
+                        // explicitly so that the application logic may be run
+                        continue;
+                    }
                     context.dbEntity = dbRelation.relationEntity;
                     let propertyCopyValue;
                     if (propertyValue) {

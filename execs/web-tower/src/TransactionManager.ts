@@ -39,25 +39,25 @@ export class TransactionManager
             await transactionalCallback(new Transaction(this), context)
             return
         }
-
-        const transactionalConnector = await container(this)
-            .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
-
         await this.startTransaction(_, context)
         try {
             await transactionalCallback(new Transaction(this), context)
             await this.commit(null, context)
-        } catch(e) {
+        } catch (e) {
             await this.rollback(null, context)
         }
 
     }
 
+    /*
+     * If exposed externally a stack of nested transactions will have to be kept in terminal window
+     * to keep track if nested transactions are not closed
+     */
     async startTransaction(
         _: ICredentials,
         context: ITransactionContext,
     ): Promise<void> {
-        if (!this.currentTransactionId) {
+        if (this.currentTransactionId) {
             throw new Error(`Cannot explictly start a nested transaction, please use the 'transactional' function`)
         }
         const transactionalConnector = await container(this)
@@ -70,6 +70,10 @@ export class TransactionManager
         this.currentTransactionId = transactionId as any
     }
 
+    /*
+     * If exposed externally a stack of nested transactions will have to be kept in terminal window
+     * to keep track if nested transactions are not closed
+     */
     async rollback(
         _: ITransaction,
         context: IContext,
@@ -79,17 +83,26 @@ export class TransactionManager
         }
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
-        const success = await transactionalConnector.rollback({
-            ...context,
-            transactionId: this.currentTransactionId
-        })
-        this.currentTransactionId = null
-        if (!success) {
-            throw new Error(`Could not rollback transaction, check AIRport terminal tab/app logs.`)
-        } else {
+        try {
+            const success = await transactionalConnector.rollback({
+                ...context,
+                transactionId: this.currentTransactionId
+            })
+            if (!success) {
+                throw new Error(`Could not rollback transaction, check AIRport terminal tab/app logs.`)
+            }
+        } catch (e) {
+            console.error(e)
+            throw e
+        } finally {
+            this.currentTransactionId = null
         }
     }
 
+    /*
+     * If exposed externally a stack of nested transactions will have to be kept in terminal window
+     * to keep track if nested transactions are not closed
+     */
     async commit(
         _: ITransaction,
         context: IContext,
@@ -99,13 +112,19 @@ export class TransactionManager
         }
         const transactionalConnector = await container(this)
             .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
-        const success = await transactionalConnector.commit({
-            ...context,
-            transactionId: this.currentTransactionId
-        })
-        this.currentTransactionId = null
-        if (!success) {
-            throw new Error(`Could not commit˜ transaction, check AIRport terminal tab/app logs.`)
+        try {
+            const success = await transactionalConnector.commit({
+                ...context,
+                transactionId: this.currentTransactionId
+            })
+            if (!success) {
+                throw new Error(`Could not commit˜ transaction, check AIRport terminal tab/app logs.`)
+            }
+        } catch (e) {
+            console.error(e)
+            throw e
+        } finally {
+            this.currentTransactionId = null
         }
     }
 
