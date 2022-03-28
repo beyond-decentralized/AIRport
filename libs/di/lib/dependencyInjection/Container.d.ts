@@ -55,6 +55,7 @@ export declare class ChildContainer extends Container implements IChildContainer
     private doEventuallyGet;
     private doGet;
     private doGetCore;
+    setDependencyGetters(object: any, token: IDiToken<any>): void;
     getByNames(domainName: string, applicationName: string, tokenName: string): Promise<any>;
     get<A>(tokenA: IDiToken<A>): Promise<A>;
     get<A, B>(tokenA: IDiToken<A>, tokenB: IDiToken<B>): Promise<[A, B]>;

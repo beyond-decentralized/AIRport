@@ -6,5 +6,8 @@ export class DiToken {
     getPath() {
         return this.application.domain.name + ':' + this.application.name + ':' + this.name;
     }
+    setDependencies(dependencyConfiguration) {
+        this.dependencyConfiguration = dependencyConfiguration;
+    }
 }
 //# sourceMappingURL=Token.js.map

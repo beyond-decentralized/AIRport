@@ -101,6 +101,7 @@ export class ChildContainer extends Container {
                         return;
                     }
                     object = new clazz();
+                    this.setDependencyGetters(object, token);
                 }
                 object.__container__ = this;
                 objectMap.set(token.name, object);
@@ -128,6 +129,25 @@ export class ChildContainer extends Container {
             firstMissingClassToken,
             objects
         };
+    }
+    setDependencyGetters(object, token) {
+        if (!token.dependencyConfiguration) {
+            return;
+        }
+        let thisContainer = this;
+        for (let propertyName in token.dependencyConfiguration) {
+            delete object[propertyName];
+            let dependencyToken = token
+                .dependencyConfiguration[propertyName];
+            Object.defineProperty(object, propertyName, {
+                get() {
+                    return thisContainer.getSync(dependencyToken);
+                }
+            });
+            object['get' + propertyName + 'Async'] = async function () {
+                await this.get(dependencyToken);
+            };
+        }
     }
     async getByNames(domainName, applicationName, tokenName) {
         const injectionDomain = domain(domainName);

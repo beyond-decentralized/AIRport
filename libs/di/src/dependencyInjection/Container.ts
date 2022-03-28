@@ -5,7 +5,7 @@ import {
 } from '../Context';
 import { IDiToken } from './Token';
 import { AUTOPILOT_API_LOADER } from '../tokens';
-import { AIRPORT_DOMAIN, domain } from './InjectionDomain';
+import { domain } from './InjectionDomain';
 import { lib } from './InjectionApplication';
 
 export interface IChildContainer
@@ -538,6 +538,7 @@ export class ChildContainer
 							return;
 						}
 						object = new clazz();
+						this.setDependencyGetters(object, token)
 					}
 					object.__container__ = this
 					objectMap.set(token.name, object)
@@ -565,6 +566,34 @@ export class ChildContainer
 			firstMissingClassToken,
 			objects
 		};
+	}
+
+	setDependencyGetters(
+		object,
+		token: IDiToken<any>
+	) {
+		if (!token.dependencyConfiguration) {
+			return
+		}
+
+		let thisContainer = this
+		for (let propertyName in token.dependencyConfiguration) {
+			delete object[propertyName]
+			
+			let dependencyToken = token
+				.dependencyConfiguration[propertyName]
+
+			Object.defineProperty(object, propertyName, {
+				get() {
+					return thisContainer.getSync(dependencyToken)
+				}
+			});
+
+			object['get' + propertyName + 'Async'] = async function() {
+				await this.get(dependencyToken)
+			}
+		}
+
 	}
 
 	async getByNames(
