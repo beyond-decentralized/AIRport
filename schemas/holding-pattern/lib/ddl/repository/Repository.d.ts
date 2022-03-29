@@ -1,5 +1,5 @@
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
-import { User } from "@airport/travel-document-checkpoint";
+import { User } from "@airport/travel-document-checkpoint/lib/to_be_generated";
 /**
  * Created by Papa on 2/9/2017.
  */

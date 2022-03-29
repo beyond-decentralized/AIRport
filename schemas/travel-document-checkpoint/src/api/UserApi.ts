@@ -3,6 +3,7 @@ import { container, DI } from "@airport/di";
 import { v4 as uuidv4 } from "uuid";
 import { USER_API, USER_DAO } from "../tokens";
 import { IUser } from "../generated/generated";
+import { UserDao } from "../dao/UserDao";
 
 export enum AddUserErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
@@ -29,13 +30,14 @@ export interface IUserApi {
 
 export class UserApi {
 
+    userDao: UserDao
+
     @Api()
     async addUser(
         username: string,
         email: string,
     ): Promise<IAddUserResponse> {
-        const userDao = await container(this).get(USER_DAO)
-        const existingUsers = await userDao.findByUserNames([username])
+        const existingUsers = await this.userDao.findByUserNames([username])
         for (const existingUser of existingUsers) {
             if (existingUser.username === username) {
                 return {
@@ -48,7 +50,7 @@ export class UserApi {
             uuId: uuidv4(),
             username
         }
-        await userDao.save(user)
+        await this.userDao.save(user)
 
         return {
             user
@@ -59,8 +61,7 @@ export class UserApi {
     async findUser(
         privateId: string
     ): Promise<IUser> {
-        const userDao = await container(this).get(USER_DAO)
-        const users = await userDao.findByUuIds([privateId])
+        const users = await this.userDao.findByUuIds([privateId])
 
         if (users.length) {
             return users[0]

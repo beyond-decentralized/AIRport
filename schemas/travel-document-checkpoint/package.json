@@ -16,9 +16,9 @@
   "devDependencies": {
     "@airport/runway": "0.0.1"
   },
-  "main": "lib/index.js",
+  "main": "lib/to_be_generated/api-index.js",
   "name": "@airport/travel-document-checkpoint",
   "type": "module",
-  "typings": "lib/index",
+  "typings": "lib/to_be_generated/api-index",
   "version": "0.0.1"
 }

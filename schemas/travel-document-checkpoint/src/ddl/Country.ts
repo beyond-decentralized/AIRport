@@ -9,7 +9,7 @@ import {
     OneToMany,
     Table
 } from "@airport/air-control";
-import { User } from "..";
+import { User } from "../to_be_generated/runtime-index";
 import { Continent } from "./Continent";
 
 export type Country_Id = number;
