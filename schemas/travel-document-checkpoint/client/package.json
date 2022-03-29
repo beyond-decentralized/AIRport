@@ -1,7 +1,7 @@
 {
-  "main": "lib/client.js",
+  "main": "lib/generated/client.js",
   "name": "@airport/travel-document-checkpoint-client",
   "type": "module",
-  "typings": "lib/client",
+  "typings": "lib/generated/client",
   "version": "0.0.1"
 }

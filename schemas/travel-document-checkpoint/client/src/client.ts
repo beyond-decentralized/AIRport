@@ -1,1 +1,1 @@
-export * from './interfaces/ddl/User'
+export * from './generated/interfaces/ddl/User'

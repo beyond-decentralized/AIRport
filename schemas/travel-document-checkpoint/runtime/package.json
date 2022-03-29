@@ -1,7 +1,7 @@
 {
-  "main": "lib/runtime.js",
+  "main": "lib/generated/runtime.js",
   "name": "@airport/travel-document-checkpoint-runtime",
   "type": "module",
-  "typings": "lib/runtime",
+  "typings": "lib/generated/runtime",
   "version": "0.0.1"
 }
