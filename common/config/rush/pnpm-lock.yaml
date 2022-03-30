@@ -15,10 +15,12 @@ dependencies:
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz_typescript@4.5.2'
+  '@rush-temp/aviation-communication': 'file:projects/aviation-communication.tgz'
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz_typescript@4.5.2'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
   '@rush-temp/config': 'file:projects/config.tgz'
+  '@rush-temp/cross-terminal-transfer': 'file:projects/cross-terminal-transfer.tgz'
   '@rush-temp/di': 'file:projects/di.tgz_typescript@4.5.2'
   '@rush-temp/flight-log-archive': 'file:projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
@@ -67,6 +69,8 @@ dependencies:
   '@rush-temp/tools': 'file:projects/tools.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
+  '@rush-temp/travel-document-checkpoint-client': 'file:projects/travel-document-checkpoint-client.tgz'
+  '@rush-temp/travel-document-checkpoint-runtime': 'file:projects/travel-document-checkpoint-runtime.tgz'
   '@rush-temp/vasi': 'file:projects/vasi.tgz'
   '@rush-temp/vhf-radio': 'file:projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:projects/web-airport.tgz'
@@ -10779,8 +10783,15 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-ebXuo60jm+UlLF+ZHdNp07hXRxdkk18RE6r+loJ8kC5kjmwhAMSJ1dnw6XrFfHd3Y6EaaYMj2hzpwan282h57g==
+      integrity: sha512-tTxz0rezrxqlp67BLgcsR13MQS8t2AFc6mWR6IzOCKFaWlC90/f9HXpZAn7R/5IOfUG9E73pL7qkjurnfVSIAw==
       tarball: 'file:projects/autopilot.tgz'
+    version: 0.0.0
+  'file:projects/aviation-communication.tgz':
+    dev: false
+    name: '@rush-temp/aviation-communication'
+    resolution:
+      integrity: sha512-0+0A2t68NCiO8/F86An4XjxQ7dWujTyrBjtu8rGXHBryhKBs1IUvEq06MaBDaARDbE4nLN4vNdSeZQ/eEcm4Tg==
+      tarball: 'file:projects/aviation-communication.tgz'
     version: 0.0.0
   'file:projects/blueprint.tgz_typescript@4.5.2':
     dependencies:
@@ -10816,6 +10827,13 @@ packages:
     resolution:
       integrity: sha512-8So3LgeYHF0UcgpG4swUlZich4ha6otKiMi4MrZVqoGMfrypZSoaDdhJPqi4Wxb6eFBW04qMBVdtQyA6Y4LUHw==
       tarball: 'file:projects/config.tgz'
+    version: 0.0.0
+  'file:projects/cross-terminal-transfer.tgz':
+    dev: false
+    name: '@rush-temp/cross-terminal-transfer'
+    resolution:
+      integrity: sha512-/yO5dQ4esJSfKzO9fH025TjCgTwksOoKOO80Za28MlOWXAYOBIUFB7HSYXx7Rv72ClU+fEfAJGh6xIASj+FH4A==
+      tarball: 'file:projects/cross-terminal-transfer.tgz'
     version: 0.0.0
   'file:projects/di.tgz_typescript@4.5.2':
     dependencies:
@@ -10897,7 +10915,7 @@ packages:
     dev: false
     name: '@rush-temp/functionality-demo-schema'
     resolution:
-      integrity: sha512-a10P1WS4Bt5dtygqFR6XC1Op69zkMIPfKttE6v71mOULp4eWFln0gELI9gSmrl9hCK1K2ThJqCIs0nBNcioi6w==
+      integrity: sha512-mSnxlSsXcp13IzLQiQA14AKzYmGYn8M6yaoVmQCjDlCC8kRw9bycEfRzJSPI2hfkUKdT7tf0bqNYv3DR7EMvrw==
       tarball: 'file:projects/functionality-demo-schema.tgz'
     version: 0.0.0
   'file:projects/functionality-demo.tgz':
@@ -11294,7 +11312,7 @@ packages:
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-0aPtZ82mMmDbHzg3hG2QHSyoJdnclA2ppOT7/1WLkffWRehR3iSxPrwHeQqdulU7wgQdf9IJqawk6MCAX3D5Vg==
+      integrity: sha512-Jb+bMkZ2vbyjnCkJHYT1onzuxOGm+UtkL0RIXH4f4Bgc8UvUrARcP0E+LoUF/DHTL2I8+6z5dS7YnGqRf/wd4g==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
@@ -11365,7 +11383,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-4Fk61FAj90SHC9iPoTblEkY9dVpH+UKrhhtlcUE1QowXnz96egIr1OTPK7hZXM8C/GXpeKrA5KQ/zOJRdaGqwQ==
+      integrity: sha512-iE2wY4zLHR8ob8VhZAg3De7l5MKyZ4BcZHWlk8Tj9MfaDEJK7DI/3Kp6K10eOhP0lK1S5eJmofYoQmQGG4DH/g==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/todo.tgz':
@@ -11392,8 +11410,24 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-lk2XFLeu3nLAhXy4wNdL92qPQsLa4AnbUmonBuelF3+DqISGzqCFizbzkTjAO3eHYhvV9O+V845StdTIv8kcbA==
+      integrity: sha512-C7YL2dn2fvO0t+zp2sod4EL0p5IX3sLLYzQYERvSADGA3XOS1aB+/Hh6iyahOfywvlumH2GUlaNqi/GD61sLzg==
       tarball: 'file:projects/tower.tgz'
+    version: 0.0.0
+  'file:projects/travel-document-checkpoint-client.tgz':
+    dev: false
+    name: '@rush-temp/travel-document-checkpoint-client'
+    resolution:
+      integrity: sha512-ZS1OTQcN6B8nbTVkwxQQhwAH7mM9b/bZNKe+hJyllurrKvUEFrI4ZJEvIb5aHIitMNCn6iHppeNTrtzlEHpOUw==
+      tarball: 'file:projects/travel-document-checkpoint-client.tgz'
+    version: 0.0.0
+  'file:projects/travel-document-checkpoint-runtime.tgz':
+    dependencies:
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/travel-document-checkpoint-runtime'
+    resolution:
+      integrity: sha512-D8T2ix/gfiVLm7wZRqzkIDLFt0PURK4VVAE1c7PBFky2V0djtSeeVXynIgPQY/aAeXmMq923ET89nFKzZ0Dyqg==
+      tarball: 'file:projects/travel-document-checkpoint-runtime.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
     dependencies:
@@ -11426,7 +11460,7 @@ packages:
     dev: false
     name: '@rush-temp/vhf-radio'
     resolution:
-      integrity: sha512-7m+LQx73oZLFHtJMzqRsSokkl9K7OJkKK5Fr0lazIrvFuSXlNoYsoJ7ikkCXnTyFj1JU8v4+t9vssP1FM/d9sg==
+      integrity: sha512-L2+yU+kQw0YMFYhM08vachUgAyxd4mJIXwJABY2Va3KVXnm9B9bOdzRc81igMriuHmXgdBK1lRgMrU96meCQzg==
       tarball: 'file:projects/vhf-radio.tgz'
     version: 0.0.0
   'file:projects/web-airport.tgz':
@@ -11435,6 +11469,7 @@ packages:
       '@rollup/plugin-node-resolve': 11.2.1_rollup@2.56.3
       '@rollup/plugin-typescript': 8.2.5_0aef9eaffd3058455ea9e083065aa03d
       '@tsconfig/svelte': 2.0.1
+      broadcast-channel: 4.9.0
       page: 1.11.6
       rollup: 2.56.3
       rollup-plugin-css-only: 3.1.0_rollup@2.56.3
@@ -11450,17 +11485,18 @@ packages:
     dev: false
     name: '@rush-temp/web-airport'
     resolution:
-      integrity: sha512-0IhSRCwzuvkEEsPeMue7pz/7xoqd/RXdD1ZvuWFRp2gs9LdnkgHcwFBMfOypGAbS5Nqbp/PRiJ3D0NeoWNqXrQ==
+      integrity: sha512-Hj3yrRLob3A1uzvKFjqgRhXGdlmS3VC/F+i07n4MnYFViOOkGr7sqy8y+yUl1RYAHT/byjrsAuELJAcd1pkVXA==
       tarball: 'file:projects/web-airport.tgz'
     version: 0.0.0
   'file:projects/web-terminal.tgz':
     dependencies:
+      broadcast-channel: 4.9.0
       rxjs: 7.4.0
       sql.js: 1.6.2
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-A/vQLXQ8FNs4CtFUH9JCDRy2ug35ULq1g9A/aLRHZtaCanN0qLwCK7lCogU3eWVazfC3jh+KmmGiLndqKkifTw==
+      integrity: sha512-sJVZZy8LPOZ0pur1hpALNn1ndPRIivs7j8RM+w/8J0e0HO3aQRqkkUzZUDMsO7vMnsdIj4yz4574pYT7k1pfvQ==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -11470,7 +11506,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-xgJAWH0NkVW9KEv5PMZjyQ+7cTeTipbUPy3j8jJKCvX+Nc2NZbpGqmI21rQ6uIygWG89Bj+oF1bwrBJX62pw2Q==
+      integrity: sha512-tDwUA6zaDYwyePqx7ftsFVAfxeQGfDuXLTPJEdGNxz2t/3WSXyucH8sq/R49Z4VPxjB/cNOpMwJSLuw8OlCGfg==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
 registry: ''
@@ -11491,10 +11527,12 @@ specifiers:
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/automated-guideway-transit': 'file:./projects/automated-guideway-transit.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
+  '@rush-temp/aviation-communication': 'file:./projects/aviation-communication.tgz'
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
   '@rush-temp/config': 'file:./projects/config.tgz'
+  '@rush-temp/cross-terminal-transfer': 'file:./projects/cross-terminal-transfer.tgz'
   '@rush-temp/di': 'file:./projects/di.tgz'
   '@rush-temp/flight-log-archive': 'file:./projects/flight-log-archive.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
@@ -11543,6 +11581,8 @@ specifiers:
   '@rush-temp/tools': 'file:./projects/tools.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
+  '@rush-temp/travel-document-checkpoint-client': 'file:./projects/travel-document-checkpoint-client.tgz'
+  '@rush-temp/travel-document-checkpoint-runtime': 'file:./projects/travel-document-checkpoint-runtime.tgz'
   '@rush-temp/vasi': 'file:./projects/vasi.tgz'
   '@rush-temp/vhf-radio': 'file:./projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:./projects/web-airport.tgz'

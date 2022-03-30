@@ -1,4 +1,4 @@
-import { User } from "../to_be_generated";
+import { User } from "../to_be_generated/runtime-index";
 import { Continent } from "./Continent";
 export declare type Country_Id = number;
 export declare type Country_Name = string;

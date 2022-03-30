@@ -5,9 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Api } from "@airport/check-in";
-import { container, DI } from "@airport/di";
+import { DI } from "@airport/di";
 import { v4 as uuidv4 } from "uuid";
-import { USER_API, USER_DAO } from "../tokens";
+import { USER_API } from "../tokens";
 export var AddUserErrorCodes;
 (function (AddUserErrorCodes) {
     AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
@@ -19,8 +19,7 @@ export var AddUserErrorCodes;
 })(AddUserErrorCodes || (AddUserErrorCodes = {}));
 export class UserApi {
     async addUser(username, email) {
-        const userDao = await container(this).get(USER_DAO);
-        const existingUsers = await userDao.findByUserNames([username]);
+        const existingUsers = await this.userDao.findByUserNames([username]);
         for (const existingUser of existingUsers) {
             if (existingUser.username === username) {
                 return {
@@ -33,14 +32,13 @@ export class UserApi {
             uuId: uuidv4(),
             username
         };
-        await userDao.save(user);
+        await this.userDao.save(user);
         return {
             user
         };
     }
     async findUser(privateId) {
-        const userDao = await container(this).get(USER_DAO);
-        const users = await userDao.findByUuIds([privateId]);
+        const users = await this.userDao.findByUuIds([privateId]);
         if (users.length) {
             return users[0];
         }

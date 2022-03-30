@@ -1,4 +1,5 @@
 import { IUser } from "../generated/generated";
+import { UserDao } from "../dao/UserDao";
 export declare enum AddUserErrorCodes {
     EMAIL_TAKEN = "EMAIL_TAKEN",
     INVALID_BIRTH_MONTH = "INVALID_BIRTH_MONTH",
@@ -15,6 +16,7 @@ export interface IUserApi {
     addUser(username: string, email: string): Promise<IAddUserResponse>;
 }
 export declare class UserApi {
+    userDao: UserDao;
     addUser(username: string, email: string): Promise<IAddUserResponse>;
     findUser(privateId: string): Promise<IUser>;
 }

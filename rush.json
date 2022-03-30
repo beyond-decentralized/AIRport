@@ -4,6 +4,7 @@
   "pnpmVersion": "5.9.3",
   "nodeSupportedVersionRange": ">=16.0.0 <17.0.0",
   "projectFolderMinDepth": 1,
+  "projectFolderMaxDepth": 9,
   "projects": [
     // "apis" folder (alphabetical order)
     {
@@ -312,7 +313,12 @@
     },
     {
       "packageName": "@airport/travel-document-checkpoint-client",
-      "projectFolder": "schemas/travel-document-checkpoint-client",
+      "projectFolder": "schemas/travel-document-checkpoint/client",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/travel-document-checkpoint-runtime",
+      "projectFolder": "schemas/travel-document-checkpoint/runtime",
       "shouldPublish": true
     },
     {
