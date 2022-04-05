@@ -70,7 +70,6 @@ dependencies:
   '@rush-temp/tower': 'file:projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:projects/travel-document-checkpoint.tgz'
   '@rush-temp/travel-document-checkpoint-client': 'file:projects/travel-document-checkpoint-client.tgz'
-  '@rush-temp/travel-document-checkpoint-runtime': 'file:projects/travel-document-checkpoint-runtime.tgz'
   '@rush-temp/vasi': 'file:projects/vasi.tgz'
   '@rush-temp/vhf-radio': 'file:projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:projects/web-airport.tgz'
@@ -11420,15 +11419,6 @@ packages:
       integrity: sha512-ZS1OTQcN6B8nbTVkwxQQhwAH7mM9b/bZNKe+hJyllurrKvUEFrI4ZJEvIb5aHIitMNCn6iHppeNTrtzlEHpOUw==
       tarball: 'file:projects/travel-document-checkpoint-client.tgz'
     version: 0.0.0
-  'file:projects/travel-document-checkpoint-runtime.tgz':
-    dependencies:
-      uuid: 8.3.2
-    dev: false
-    name: '@rush-temp/travel-document-checkpoint-runtime'
-    resolution:
-      integrity: sha512-D8T2ix/gfiVLm7wZRqzkIDLFt0PURK4VVAE1c7PBFky2V0djtSeeVXynIgPQY/aAeXmMq923ET89nFKzZ0Dyqg==
-      tarball: 'file:projects/travel-document-checkpoint-runtime.tgz'
-    version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
     dependencies:
       uuid: 8.3.2
@@ -11582,7 +11572,6 @@ specifiers:
   '@rush-temp/tower': 'file:./projects/tower.tgz'
   '@rush-temp/travel-document-checkpoint': 'file:./projects/travel-document-checkpoint.tgz'
   '@rush-temp/travel-document-checkpoint-client': 'file:./projects/travel-document-checkpoint-client.tgz'
-  '@rush-temp/travel-document-checkpoint-runtime': 'file:./projects/travel-document-checkpoint-runtime.tgz'
   '@rush-temp/vasi': 'file:./projects/vasi.tgz'
   '@rush-temp/vhf-radio': 'file:./projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:./projects/web-airport.tgz'

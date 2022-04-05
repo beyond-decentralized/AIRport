@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "lib/",
+    "outDir": "lib/generated",
     "typeRoots": [
       "node_modules/@types"
     ]

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@airport/travel-document-checkpoint": "0.0.1"
+  },
+  "main": "lib/internal.js",
+  "name": "@airport/travel-document-checkpoint-internal",
+  "type": "module",
+  "typings": "lib/internal",
+  "version": "0.0.1"
+}

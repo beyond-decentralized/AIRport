@@ -1,0 +1,1 @@
+export * from '@airport/travel-document-checkpoint/lib/dao/dao'
