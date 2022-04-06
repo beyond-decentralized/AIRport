@@ -4,6 +4,7 @@ import { IActor } from '@airport/holding-pattern';
 import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
 import { Subject } from 'rxjs';
 import { ITerminalState } from './TerminalState';
+import { ITransaction } from '../transaction/ITransaction';
 export interface ITerminalStore {
     state: Subject<ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
@@ -16,6 +17,7 @@ export interface ITerminalStore {
     getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
+    getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
     getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
@@ -42,6 +44,7 @@ export declare class TerminalStore implements ITerminalStore {
     getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
     getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
     getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
+    getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>;
     init(): Promise<void>;
     tearDown(): void;
 }

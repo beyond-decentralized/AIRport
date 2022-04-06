@@ -1,15 +1,15 @@
+import { v4 as uuidv4 } from "uuid";
 export class SqlJsTransaction {
-    constructor(driver) {
+    constructor(driver, parentTransaction) {
         this.driver = driver;
+        this.parentTransaction = parentTransaction;
         this.isSync = false;
         this.__container__ = driver.__container__;
+        this.id = uuidv4();
         this.type = driver.type;
-    }
-    async commit() {
-        this.driver.commit();
-    }
-    async rollback() {
-        this.driver.rollback();
+        if (parentTransaction) {
+            parentTransaction.childTransaction = this;
+        }
     }
     async saveTransaction(transaction) {
     }
@@ -37,11 +37,17 @@ export class SqlJsTransaction {
     searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
         return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId);
     }
-    async transact(transactionalCallback, context) {
+    async transact(transactionalCallback, context, parentTransaction) {
         await transactionalCallback(this);
     }
-    async startTransaction() {
+    async startTransaction(transaction) {
         throw new Error(`Nested transactions are not supported`);
+    }
+    async commit(transaction) {
+        this.driver.commit(this);
+    }
+    async rollback(transaction) {
+        this.driver.rollback(this);
     }
     isServer(context) {
         return false;

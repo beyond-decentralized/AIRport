@@ -3,7 +3,7 @@
  * in one non-reloadable BehaviorSubject.
  */
 import { BehaviorSubject } from "rxjs";
-export const TERMINAL_STATE = new BehaviorSubject({
+export const internalTerminalState = new BehaviorSubject({
     applicationActors: [],
     applications: [],
     domains: [],
@@ -11,5 +11,6 @@ export const TERMINAL_STATE = new BehaviorSubject({
     initializedApps: new Set(),
     initializingApps: new Set(),
     terminal: null,
+    transactionMapById: new Map()
 });
 //# sourceMappingURL=theState.js.map

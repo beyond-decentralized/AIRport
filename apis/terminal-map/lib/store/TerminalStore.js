@@ -2,11 +2,11 @@ import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { TERMINAL_STORE } from '../tokens';
-import { TERMINAL_STATE } from './theState';
+import { internalTerminalState } from './theState';
 export class TerminalStore {
     async init() {
         const selectorManager = await DI.db().get(SELECTOR_MANAGER);
-        this.state = TERMINAL_STATE;
+        this.state = internalTerminalState;
         this.getTerminalState = selectorManager.createRootSelector(this.state);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationActorMapByDomainAndApplicationNames = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
@@ -111,6 +111,7 @@ export class TerminalStore {
             }
             return allRelations;
         });
+        this.getTransactionMapById = selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionMapById);
     }
     tearDown() {
     }

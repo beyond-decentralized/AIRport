@@ -23,7 +23,8 @@ import {
 import { Subject } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';
-import { TERMINAL_STATE } from './theState';
+import { internalTerminalState } from './theState';
+import { ITransaction } from '../transaction/ITransaction';
 
 export interface ITerminalStore {
 
@@ -49,6 +50,8 @@ export interface ITerminalStore {
 	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
+
+	getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
@@ -102,9 +105,11 @@ export class TerminalStore
 
 	getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
 
+	getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>
+
 	async init(): Promise<void> {
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
-		this.state = TERMINAL_STATE;
+		this.state = internalTerminalState;
 
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
@@ -249,6 +254,9 @@ export class TerminalStore
 
 				return allRelations;
 			});
+
+		this.getTransactionMapById = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.transactionMapById)
 	}
 
 	tearDown() {

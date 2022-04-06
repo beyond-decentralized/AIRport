@@ -1,18 +1,19 @@
-import {IContext}      from '@airport/di'
-import {Observable}   from 'rxjs'
-import {PortableQuery} from '@airport/ground-control/src/lingo/query/PortableQuery'
-import {DbEntity}      from '@airport/ground-control/src/lingo/application/Entity'
+import { IContext } from '@airport/di'
+import { Observable } from 'rxjs'
+import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery'
+import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity'
 import {
 	ApplicationName,
 	DomainName,
 	FullApplicationName
-}                      from '@airport/ground-control/src/lingo/application/Application'
+} from '@airport/ground-control/src/lingo/application/Application'
 import {
 	InternalFragments,
 	IStoreOperator
-}                      from '@airport/ground-control/src/lingo/data/IStoreOperator'
-import {StoreType}     from '@airport/ground-control/src/lingo/data/storeInfo'
+} from '@airport/ground-control/src/lingo/data/IStoreOperator'
+import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo'
 import { ITransaction } from '../../transaction/ITransaction'
+import { IOperationContext } from '../../processing/OperationContext'
 
 /**
  * Created by Papa on 6/10/2016.
@@ -82,9 +83,25 @@ export interface IStoreDriver
 			): Promise<void> | void
 		},
 		context: IContext,
+		parentTransaction?: ITransaction
 	): Promise<void>
 
-	startTransaction(): Promise<ITransaction>
+	tearDownTransaction(
+		transaction: ITransaction,
+		context: IOperationContext,
+	): Promise<void>
+
+	startTransaction(
+		transaction: ITransaction,
+	): Promise<void>
+
+	commit(
+		transaction: ITransaction,
+	): Promise<void>
+
+	rollback(
+		transaction: ITransaction,
+	): Promise<void>
 
 	isServer(
 		context?: IContext,

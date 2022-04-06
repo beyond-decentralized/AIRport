@@ -1,7 +1,7 @@
 import { doEnsureContext } from '@airport/air-control';
 import {
 	container
-}                          from '@airport/di';
+} from '@airport/di';
 import {
 	ApplicationName,
 	DbApplication,
@@ -22,31 +22,33 @@ import {
 	SQLDataType,
 	StoreType,
 	SyncApplicationMap,
-}                          from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	Observable,
 	Subject
-}                          from 'rxjs';
+} from 'rxjs';
 import {
 	OPERATION_CONTEXT_LOADER
-}                          from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
+	IOperationContext,
 	IStoreDriver,
-	ITransaction
-}                          from '@airport/terminal-map';
-import { SQLDelete }       from '../sql/core/SQLDelete';
+	ITransaction,
+	TERMINAL_STORE
+} from '@airport/terminal-map';
+import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import {
 	SQLDialect,
 	SQLQuery
-}                          from '../sql/core/SQLQuery';
-import { SQLUpdate }       from '../sql/core/SQLUpdate';
-import { EntitySQLQuery }  from '../sql/EntitySQLQuery';
-import { FieldSQLQuery }   from '../sql/FieldSQLQuery';
-import { SheetSQLQuery }   from '../sql/SheetSQLQuery';
-import { TreeSQLQuery }    from '../sql/TreeSQLQuery';
-import { ACTIVE_QUERIES }  from '../tokens';
-import { CachedSQLQuery }  from './ActiveQueries';
+} from '../sql/core/SQLQuery';
+import { SQLUpdate } from '../sql/core/SQLUpdate';
+import { EntitySQLQuery } from '../sql/EntitySQLQuery';
+import { FieldSQLQuery } from '../sql/FieldSQLQuery';
+import { SheetSQLQuery } from '../sql/SheetSQLQuery';
+import { TreeSQLQuery } from '../sql/TreeSQLQuery';
+import { ACTIVE_QUERIES } from '../tokens';
+import { CachedSQLQuery } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 
 /**
@@ -76,12 +78,12 @@ export abstract class SqlDriver
 
 	getTableName(
 		application: {
-            domain: DomainName | {
-                name: DomainName
-            };
-            name: ApplicationName;
-            fullName?: FullApplicationName;
-        },
+			domain: DomainName | {
+				name: DomainName
+			};
+			name: ApplicationName;
+			fullName?: FullApplicationName;
+		},
 		table: {
 			name: string, tableConfig?: {
 				name?: string
@@ -120,9 +122,41 @@ export abstract class SqlDriver
 			): Promise<void>
 		},
 		context: IFuelHydrantContext,
+		parentTransaction?: ITransaction,
 	): Promise<void>;
 
-	abstract startTransaction(): Promise<ITransaction>;
+	async internalSetupTransaction(
+		transaction: ITransaction,
+		context: IOperationContext,
+	): Promise<void> {
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+		terminalStore.getTransactionMapById().set(transaction.id, transaction)
+	}
+
+	async tearDownTransaction(
+		transaction: ITransaction,
+		context: IOperationContext,
+	): Promise<void> {
+		if (transaction.parentTransaction) {
+			transaction.parentTransaction.childTransaction = null
+			transaction.parentTransaction = null
+		}
+
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+		terminalStore.getTransactionMapById().delete(transaction.id)
+	}
+
+	abstract startTransaction(
+		transaction: ITransaction,
+	): Promise<void>;
+
+	abstract commit(
+		transaction: ITransaction,
+	): Promise<void>
+
+	abstract rollback(
+		transaction: ITransaction,
+	): Promise<void>
 
 	async insertValues(
 		portableQuery: PortableQuery,
@@ -139,8 +173,8 @@ export abstract class SqlDriver
 				...portableQuery.jsonQuery,
 				V
 			}, this.getDialect(context), context);
-			let sql             = sqlInsertValues.toSQL(context);
-			let parameters      = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
+			let sql = sqlInsertValues.toSQL(context);
+			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
 
 			numVals += await this.executeNative(sql, parameters, context);
 		}
@@ -155,11 +189,11 @@ export abstract class SqlDriver
 		const activeQueries = await container(this)
 			.get(ACTIVE_QUERIES);
 
-		let fieldMap                = new SyncApplicationMap();
-		let sqlDelete               = new SQLDelete(
+		let fieldMap = new SyncApplicationMap();
+		let sqlDelete = new SQLDelete(
 			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), context);
-		let sql                     = sqlDelete.toSQL(context);
-		let parameters              = sqlDelete.getParameters(portableQuery.parameterMap, context);
+		let sql = sqlDelete.toSQL(context);
+		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
 		activeQueries.markQueriesToRerun(fieldMap);
 
@@ -171,9 +205,9 @@ export abstract class SqlDriver
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): Promise<number> {
-		let sqlUpdate  = new SQLUpdate(
+		let sqlUpdate = new SQLUpdate(
 			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), context);
-		let sql        = sqlUpdate.toSQL(internalFragments, context);
+		let sql = sqlUpdate.toSQL(internalFragments, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
 
 		return await this.executeNative(sql, parameters, context);
@@ -185,13 +219,13 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		context          = await this.ensureContext(context);
-		const sqlQuery   = this.getSQLQuery(portableQuery, context);
-		const sql        = sqlQuery.toSQL(internalFragments, context);
+		context = await this.ensureContext(context);
+		const sqlQuery = this.getSQLQuery(portableQuery, context);
+		const sql = sqlQuery.toSQL(internalFragments, context);
 		const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
 
 		let results = await this.findNative(sql, parameters, context);
-		results     = await sqlQuery.parseQueryResults(
+		results = await sqlQuery.parseQueryResults(
 			results, internalFragments, portableQuery.queryResultType, context);
 
 		// FIXME: convert to MappedEntityArray if needed
@@ -202,9 +236,9 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): SQLQuery<any> {
-		let jsonQuery      = portableQuery.jsonQuery;
-		let dialect        = this.getDialect(context);
-		let resultType     = portableQuery.queryResultType;
+		let jsonQuery = portableQuery.jsonQuery;
+		let dialect = this.getDialect(context);
+		let resultType = portableQuery.queryResultType;
 		const QueryResType = QueryResultType;
 		switch (resultType) {
 			case QueryResType.ENTITY_GRAPH:
@@ -374,7 +408,7 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 	): any[][][] {
 		const valuesInRow = values[0].length;
-		const numValues   = values.length * valuesInRow;
+		const numValues = values.length * valuesInRow;
 
 		if (numValues <= this.maxValues) {
 			return [values];

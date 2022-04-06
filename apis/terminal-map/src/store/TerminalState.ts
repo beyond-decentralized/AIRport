@@ -3,8 +3,9 @@ import type {
 	IDomain,
 	IApplication
 } from '@airport/airspace'
-import type { ITerminal } from '@airport/travel-document-checkpoint'
+import type { ITerminal } from '@airport/travel-document-checkpoint-internal'
 import { FullApplicationName } from '@airport/ground-control'
+import { ITransaction } from '../transaction/ITransaction'
 
 export interface ITerminalState {
 
@@ -15,5 +16,6 @@ export interface ITerminalState {
 	initializedApps: Set<FullApplicationName>
 	initializingApps: Set<FullApplicationName>
 	terminal: ITerminal
+	transactionMapById: Map<string, ITransaction>
 
 }

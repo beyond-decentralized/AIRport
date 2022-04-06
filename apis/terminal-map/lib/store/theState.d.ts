@@ -4,5 +4,5 @@
  */
 import { Subject } from "rxjs";
 import { ITerminalState } from "./TerminalState";
-export declare const TERMINAL_STATE: Subject<ITerminalState>;
+export declare const internalTerminalState: Subject<ITerminalState>;
 //# sourceMappingURL=theState.d.ts.map

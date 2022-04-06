@@ -32,8 +32,10 @@ export interface IStoreDriver extends IStoreOperator {
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void> | void;
-    }, context: IContext): Promise<void>;
-    startTransaction(): Promise<ITransaction>;
+    }, context: IContext, parentTransaction?: ITransaction): Promise<void>;
+    startTransaction(transaction: ITransaction): Promise<void>;
+    commit(transaction: ITransaction): Promise<void>;
+    rollback(transaction: ITransaction): Promise<void>;
     isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

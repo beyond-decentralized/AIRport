@@ -8,9 +8,10 @@ import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction,
-	STORE_DRIVER
+	STORE_DRIVER,
+	TERMINAL_STORE
 } from '@airport/terminal-map';
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
 
 declare function initSqlJs(config: any): any;
@@ -45,24 +46,69 @@ export class SqlJsDriver
 			): Promise<void>
 		},
 		context: IOperationContext,
+		parentTransaction?: ITransaction,
 	): Promise<void> {
-		this.startTransaction()
+		const transaction = await this.setupTransaction(context, parentTransaction)
 
-		await transactionalCallback(new SqlJsTransaction(this))
+		try {
+			this.startTransaction(transaction)
+		} catch (e) {
+			this.tearDownTransaction(transaction, context)
+			console.error(e)
+			throw e
+		}
+
+		try {
+			await transactionalCallback(transaction)
+			await this.commit(transaction)
+		} catch (e) {
+			await this.rollback(transaction)
+		} finally {
+			this.tearDownTransaction(transaction, context)
+		}
 	}
 
-	async startTransaction(): Promise<ITransaction> {
-		this._db.exec('BEGIN TRANSACTION;')
+	async setupTransaction(
+		context: IOperationContext,
+		parentTransaction?: ITransaction,
+	): Promise<ITransaction> {
+		const transaction = new SqlJsTransaction(this, parentTransaction)
 
-		return new SqlJsTransaction(this)
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+		terminalStore.getTransactionMapById().set(transaction.id, transaction)
+
+		return transaction
 	}
 
-	async commit(): Promise<void> {
-		this._db.exec('COMMIT;')
+	async tearDownTransaction(
+		transaction: ITransaction,
+		context: IOperationContext,
+	): Promise<void> {
+		if (transaction.parentTransaction) {
+			transaction.parentTransaction.childTransaction = null
+			transaction.parentTransaction = null
+		}
+
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+		terminalStore.getTransactionMapById().delete(transaction.id)
 	}
 
-	async rollback(): Promise<void> {
-		this._db.exec('ROLLBACK;')
+	async startTransaction(
+		transaction: ITransaction,
+	): Promise<void> {
+		this._db.exec(`SAVEPOINT ${transaction.id}`)
+	}
+
+	async commit(
+		transaction: ITransaction,
+	): Promise<void> {
+		this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`)
+	}
+
+	async rollback(
+		transaction: ITransaction,
+	): Promise<void> {
+		this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`)
 	}
 
 	async query(

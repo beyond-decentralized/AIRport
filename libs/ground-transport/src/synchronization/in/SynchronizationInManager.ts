@@ -71,7 +71,7 @@ export class SynchronizationInManager
 			let processMessage = true
 			await transactional(async (transaction) => {
 				if (!await syncInChecker.checkMessage(message)) {
-					transaction.rollback()
+					transaction.rollback(null)
 					processMessage = false
 					return
 				}

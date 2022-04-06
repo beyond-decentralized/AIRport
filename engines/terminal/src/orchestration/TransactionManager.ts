@@ -144,7 +144,7 @@ export class TransactionManager
 			return;
 		}
 		try {
-			await transaction.rollback();
+			await transaction.rollback(null);
 		} finally {
 			this.clearTransaction();
 		}
@@ -173,7 +173,7 @@ export class TransactionManager
 			await transaction.saveTransaction(transaction.transHistory);
 
 			activeQueries.rerunQueries();
-			await transaction.commit();
+			await transaction.commit(null);
 		} finally {
 			this.clearTransaction();
 		}

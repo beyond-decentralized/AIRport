@@ -72,7 +72,8 @@ export class NoOpSqlDriver
 
 	transact(
 		callback: { (transaction: ITransaction): Promise<void> },
-		context: IOperationContext
+		context: IOperationContext,
+        parentTransaction?: ITransaction,
 	): Promise<void> {
 		return Promise.resolve(undefined);
 	}

@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
 import type { SqlJsDriver } from "./SqlJsDriver";
 export declare class SqlJsTransaction implements ITransaction {
     private driver;
+    parentTransaction: ITransaction;
+    childTransaction: ITransaction;
     credentials: ICredentials;
+    id: string;
     isSync: boolean;
     transHistory: ITransactionHistory;
     type: StoreType;
-    constructor(driver: SqlJsDriver);
-    commit(): Promise<void>;
-    rollback(): Promise<void>;
+    constructor(driver: SqlJsDriver, parentTransaction: ITransaction);
     saveTransaction(transaction: ITransactionHistory): Promise<any>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
@@ -35,8 +36,10 @@ export declare class SqlJsTransaction implements ITransaction {
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void> | void;
-    }, context: IContext): Promise<void>;
-    startTransaction(): Promise<ITransaction>;
+    }, context: IContext, parentTransaction?: ITransaction): Promise<void>;
+    startTransaction(transaction: ITransaction): Promise<void>;
+    commit(transaction: ITransaction): Promise<void>;
+    rollback(transaction: ITransaction): Promise<void>;
     isServer(context?: IContext): boolean;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;

@@ -9,7 +9,7 @@ import {
 } from "rxjs";
 import { ITerminalState } from "./TerminalState";
 
-export const TERMINAL_STATE: Subject<ITerminalState> = new BehaviorSubject({
+export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubject({
     applicationActors: [],
     applications: [],
     domains: [],
@@ -17,4 +17,5 @@ export const TERMINAL_STATE: Subject<ITerminalState> = new BehaviorSubject({
     initializedApps: new Set(),
     initializingApps: new Set(),
     terminal: null,
+    transactionMapById: new Map()
 })

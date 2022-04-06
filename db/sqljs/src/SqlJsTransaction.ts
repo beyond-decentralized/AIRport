@@ -21,29 +21,30 @@ import {
     ITransaction
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
+import { v4 as uuidv4 } from "uuid";
 import type { SqlJsDriver } from "./SqlJsDriver";
 
 export class SqlJsTransaction
     implements ITransaction {
 
+    childTransaction: ITransaction
     credentials: ICredentials
+    id: string
     isSync = false
+
     transHistory: ITransactionHistory
     type: StoreType;
 
     constructor(
-        private driver: SqlJsDriver
+        private driver: SqlJsDriver,
+        public parentTransaction: ITransaction
     ) {
         (<IInjectable>this).__container__ = (<IInjectable>driver).__container__
+        this.id = uuidv4()
         this.type = driver.type
-    }
-
-    async commit(): Promise<void> {
-        this.driver.commit();
-    }
-
-    async rollback(): Promise<void> {
-        this.driver.rollback();
+        if (parentTransaction) {
+            parentTransaction.childTransaction = this
+        }
     }
 
     async saveTransaction(transaction: ITransactionHistory): Promise<any> {
@@ -132,11 +133,14 @@ export class SqlJsTransaction
             ): Promise<void> | void
         },
         context: IContext,
+        parentTransaction?: ITransaction,
     ): Promise<void> {
         await transactionalCallback(this);
     }
 
-    async startTransaction(): Promise<ITransaction> {
+    async startTransaction(
+		transaction: ITransaction,
+	): Promise<void> {
         throw new Error(`Nested transactions are not supported`)
     }
 
