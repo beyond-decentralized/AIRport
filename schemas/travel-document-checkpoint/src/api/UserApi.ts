@@ -1,7 +1,7 @@
 import { Api } from "@airport/check-in";
-import { container, DI } from "@airport/di";
+import { DI } from "@airport/di";
 import { v4 as uuidv4 } from "uuid";
-import { USER_API, USER_DAO } from "../tokens";
+import { USER_API } from "../to_be_generated/api-tokens";
 import { IUser } from "../generated/generated";
 import { UserDao } from "../dao/UserDao";
 

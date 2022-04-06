@@ -1,4 +1,4 @@
-import { IUser } from '@airport/travel-document-checkpoint/lib/to_be_generated';
+import { IUser } from '@airport/travel-document-checkpoint-internal';
 import { IRepositoryTransactionHistory } from '../history/repositorytransactionhistory';
 export interface IRepository {
     id: number;

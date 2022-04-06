@@ -24,7 +24,7 @@ import { transactional } from "@airport/tower";
 import {
     Terminal,
     User
-} from "@airport/travel-document-checkpoint";
+} from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
 import { INTERNAL_RECORD_MANAGER } from "../tokens";
 

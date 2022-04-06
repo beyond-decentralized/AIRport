@@ -4,7 +4,7 @@ import {
 	IUser,
 	IUserDao,
 	USER_DAO
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint-internal'
 import { SYNC_IN_USER_CHECKER } from '../../../tokens'
 
 export interface ISyncInUserChecker {

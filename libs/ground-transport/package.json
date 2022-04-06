@@ -11,7 +11,7 @@
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
     "@airport/airspace": "0.0.1",
-    "@airport/travel-document-checkpoint": "0.0.1",
+    "@airport/travel-document-checkpoint-internal": "0.0.1",
     "rxjs": "~7.4.0"
   },
   "main": "lib/index.js",

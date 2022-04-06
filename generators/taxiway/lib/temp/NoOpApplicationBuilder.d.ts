@@ -1,7 +1,8 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { IContext } from '@airport/di';
-import { DbApplication, IStoreDriver, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
+import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
+import { IStoreDriver } from '@airport/terminal-map';
 export declare class NoOpApplicationBuilder extends SqlApplicationBuilder {
     createApplication(jsonApplication: JsonApplication, storeDriver: IStoreDriver, context: IContext): Promise<void>;
     getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;

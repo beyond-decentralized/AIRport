@@ -42,7 +42,7 @@ import {
 	QTerminalQId,
 	QTerminalQRelation,
 	ITerminal,
-} from '@airport/travel-document-checkpoint';
+} from '@airport/travel-document-checkpoint-internal';
 import {
 	ApplicationGraph,
 	ApplicationEId,

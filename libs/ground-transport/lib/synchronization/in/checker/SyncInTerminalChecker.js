@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { TERMINAL_DAO, } from '@airport/travel-document-checkpoint';
+import { TERMINAL_DAO, } from '@airport/travel-document-checkpoint-internal';
 import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens';
 export class SyncInTerminalChecker {
     async ensureTerminals(message) {

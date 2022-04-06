@@ -1,10 +1,9 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
 import { APPLICATION_BUILDER } from '@airport/landing';
 import { DATABASE_MANAGER, injectTransactionalConnector, injectTransactionalServer } from '@airport/terminal';
-import { APPLICATION_INITIALIZER } from '@airport/terminal-map';
+import { APPLICATION_INITIALIZER, STORE_DRIVER } from '@airport/terminal-map';
 import { injectAirportDatabase } from '@airport/tower';
 import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';
 import { NoOpSequenceGenerator } from './NoOpSequenceGenerator';

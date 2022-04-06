@@ -12,6 +12,7 @@ export declare class NoOpSqlDriver extends SqlDriver {
     transact(callback: {
         (transaction: ITransaction): Promise<void>;
     }, context: IOperationContext): Promise<void>;
+    startTransaction(): Promise<ITransaction>;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected getDialect(context: IOperationContext): SQLDialect;
 }

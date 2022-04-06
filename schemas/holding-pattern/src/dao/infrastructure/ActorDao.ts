@@ -19,7 +19,7 @@ import {
 	QUser,
 	TmTerminal_Id,
 	User_Id
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint-internal'
 import {
 	Actor_Id,
 	Actor_UuId,

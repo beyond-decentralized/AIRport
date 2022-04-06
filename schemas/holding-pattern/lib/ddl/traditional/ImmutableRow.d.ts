@@ -1,4 +1,4 @@
-import { IUser } from '@airport/travel-document-checkpoint/lib/to_be_generated';
+import { IUser } from '@airport/travel-document-checkpoint-internal';
 export declare abstract class ImmutableRow {
     user: IUser;
     createdAt: Date;

@@ -9,7 +9,7 @@ import {
 	ITerminal,
 	ITerminalDao,
 	TERMINAL_DAO,
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint-internal'
 import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens'
 
 export interface ISyncInTerminalChecker {

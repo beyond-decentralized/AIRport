@@ -4,7 +4,7 @@ import {
 	User_Id,
 	Terminal_UuId
 } from '../ddl/ddl'
-import { TERMINAL_DAO } from '../tokens'
+import { TERMINAL_DAO } from '../to_be_generated/internal-tokens'
 import {
 	BaseTerminalDao,
 	IBaseTerminalDao,

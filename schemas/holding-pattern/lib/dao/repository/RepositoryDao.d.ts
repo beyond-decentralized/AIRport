@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { Terminal_UuId, User_UuId } from '@airport/travel-document-checkpoint/lib/to_be_generated';
+import { Terminal_UuId, User_UuId } from '@airport/travel-document-checkpoint-internal';
 import { Actor_UuId, Repository_Id, Repository_Source, Repository_UuId } from '../../ddl/ddl';
 import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../generated/generated';
 export interface IRepositoryDao extends IBaseRepositoryDao {

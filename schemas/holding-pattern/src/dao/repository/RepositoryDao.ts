@@ -8,7 +8,7 @@ import { TransactionType } from '@airport/ground-control'
 import {
 	Terminal_UuId,
 	User_UuId
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint-internal'
 import {
 	Actor_UuId,
 	Repository_Id,

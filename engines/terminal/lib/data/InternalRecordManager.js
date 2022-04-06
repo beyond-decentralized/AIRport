@@ -4,7 +4,7 @@ import { Actor, ACTOR_DAO, } from "@airport/holding-pattern";
 import { TERMINAL_STORE } from "@airport/terminal-map";
 import { DOMAIN_DAO, APPLICATION_DAO } from "@airport/airspace";
 import { transactional } from "@airport/tower";
-import { Terminal, User } from "@airport/travel-document-checkpoint";
+import { Terminal, User } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
 import { INTERNAL_RECORD_MANAGER } from "../tokens";
 export class InternalRecordManager {

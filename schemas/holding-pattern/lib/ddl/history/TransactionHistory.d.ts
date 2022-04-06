@@ -1,5 +1,5 @@
 import { ATransactionHistory, SyncApplicationMap, TransactionType } from '@airport/ground-control';
-import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..';
+import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../../generated/generated';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
 export declare type TransactionHistoryNumberOfOperations = number;
 /**

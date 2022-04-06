@@ -1,0 +1,1 @@
+{"version":3,"file":"Continent.d.ts","sourceRoot":"","sources":["../../../src/ddl/Continent.ts"],"names":[],"mappings":"AASA,OAAO,EAAE,OAAO,EAAE,MAAM,WAAW,CAAC;AAEpC,oBAAY,YAAY,GAAG,MAAM,CAAC;AAClC,oBAAY,cAAc,GAAG,MAAM,CAAC;AAEpC,qBAEa,SAAS;IAKlB,EAAE,EAAE,YAAY,CAAC;IAGjB,IAAI,EAAE,cAAc,CAAA;IAGpB,SAAS,EAAE,OAAO,EAAE,CAAA;CAEvB"}

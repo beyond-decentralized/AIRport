@@ -3,7 +3,7 @@ import {
 	User_UuId,
 	User_Username
 } from '../ddl/ddl'
-import { USER_DAO } from '../tokens'
+import { USER_DAO } from '../to_be_generated/internal-tokens'
 import {
 	BaseUserDao,
 	IBaseUserDao,

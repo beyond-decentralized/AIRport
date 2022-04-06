@@ -24,7 +24,7 @@ import {
 	REPOSITORY_DAO,
 	Repository_Id
 } from "@airport/holding-pattern";
-import { IUser, TmTerminal_Id, User_Id, User_UuId } from "@airport/travel-document-checkpoint";
+import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-internal";
 import { SYNC_OUT_DATA_SERIALIZER } from "../../../tokens";
 
 export interface ISyncOutDataSerializer {

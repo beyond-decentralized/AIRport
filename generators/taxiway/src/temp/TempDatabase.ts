@@ -2,8 +2,7 @@ import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DI } from '@airport/di';
 import {
-	JsonApplication,
-	STORE_DRIVER
+	JsonApplication
 } from '@airport/ground-control';
 import {
 	APPLICATION_BUILDER
@@ -13,7 +12,10 @@ import {
 	injectTransactionalConnector,
 	injectTransactionalServer
 } from '@airport/terminal';
-import { APPLICATION_INITIALIZER } from '@airport/terminal-map';
+import {
+	APPLICATION_INITIALIZER,
+	STORE_DRIVER
+} from '@airport/terminal-map';
 import { injectAirportDatabase } from '@airport/tower';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { NoOpApplicationBuilder } from './NoOpApplicationBuilder';

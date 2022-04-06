@@ -17,12 +17,13 @@ import {
 	SyncApplicationMap,
 	TransactionType
 } from '@airport/ground-control'
-import { Terminal } from '@airport/travel-document-checkpoint'
-import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue, IRepositoryTransactionHistory } from '../..'
-import { OperationHistory } from './OperationHistory'
-import { RecordHistory } from './RecordHistory'
-import { RecordHistoryNewValue } from './RecordHistoryNewValue'
-import { RecordHistoryOldValue } from './RecordHistoryOldValue'
+import {
+	IOperationHistory,
+	IRecordHistory,
+	IRecordHistoryNewValue,
+	IRecordHistoryOldValue,
+	IRepositoryTransactionHistory
+} from '../../generated/generated'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 
 export type TransactionHistoryNumberOfOperations = number;

@@ -10,13 +10,15 @@ import {
 import {
 	DbApplication,
 	getFullApplicationName,
-	IStoreDriver,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
 	QueryType
 }                           from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
+import {
+	IStoreDriver
+}                           from '@airport/terminal-map';
 
 export class NoOpApplicationBuilder
 	extends SqlApplicationBuilder {

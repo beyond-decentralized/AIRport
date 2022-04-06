@@ -77,6 +77,10 @@ export class NoOpSqlDriver
 		return Promise.resolve(undefined);
 	}
 
+    async startTransaction(): Promise<ITransaction> {
+        throw Promise.resolve(undefined)
+    }
+
 	protected executeNative(
 		sql: string,
 		parameters: any[],

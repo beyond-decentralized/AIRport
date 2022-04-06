@@ -1,1 +1,1 @@
-{"version":3,"file":"ImmutableRepoRow.d.ts","sourceRoot":"","sources":["../../../src/ddl/traditional/ImmutableRepoRow.ts"],"names":[],"mappings":"AAOA,OAAO,EAAC,gBAAgB,EAAC,MAAM,gCAAgC,CAAA;AAE/D,8BACsB,gBACrB,SAAQ,gBAAgB;IAGxB,SAAS,EAAE,IAAI,CAAA;CAEf"}
+{"version":3,"file":"ImmutableRepoRow.d.ts","sourceRoot":"","sources":["../../../src/ddl/traditional/ImmutableRepoRow.ts"],"names":[],"mappings":"AAIA,OAAO,EAAC,gBAAgB,EAAC,MAAM,gCAAgC,CAAA;AAE/D,8BACsB,gBACrB,SAAQ,gBAAgB;IAGxB,SAAS,EAAE,IAAI,CAAA;CAEf"}
