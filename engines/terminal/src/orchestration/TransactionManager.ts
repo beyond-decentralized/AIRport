@@ -84,7 +84,7 @@ export class TransactionManager
 		}
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		if(!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
+		if (!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
 			return
 		}
 
@@ -110,11 +110,13 @@ export class TransactionManager
 	): Promise<void> {
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		if(!await this.startTransactionPrep(credentials, context)) {
+		if (!await this.startTransactionPrep(credentials, context)) {
 			return
 		}
 
-		const transaction = await storeDriver.startTransaction()
+		const transaction = await storeDriver.setupTransaction(context as any)
+
+		await storeDriver.startTransaction(transaction)
 
 		await this.setupTransaction(credentials, transaction, context)
 	}

@@ -31,6 +31,7 @@ export * from './store/ActiveQueries';
 export * from './store/IdGenerator';
 export * from './store/RecordState';
 export * from './store/SqlDriver';
+export * from './store/SqlTransaction';
 export * from './validation/Validator';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

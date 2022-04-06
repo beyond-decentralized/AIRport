@@ -3,6 +3,7 @@ import { container } from '@airport/di';
 import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { TERMINAL_STORE } from '@airport/terminal-map';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -34,6 +35,74 @@ export class SqlDriver {
             fullApplicationName = getFullApplicationName(application);
         }
         return this.composeTableName(fullApplicationName, theTableName, context);
+    }
+    async transact(transactionalCallback, context, parentTransaction) {
+        const transaction = await this.setupTransaction(context, parentTransaction);
+        try {
+            await this.startTransaction(transaction);
+        }
+        catch (e) {
+            await this.tearDownTransaction(transaction, context);
+            console.error(e);
+            throw e;
+        }
+        try {
+            await transactionalCallback(transaction, context);
+            await this.commit(transaction);
+        }
+        catch (e) {
+            await this.rollback(transaction);
+            console.error(e);
+            throw e;
+        }
+        finally {
+            await this.tearDownTransaction(transaction, context);
+        }
+    }
+    async internalSetupTransaction(transaction, context) {
+        await this.ensureContext(context);
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        terminalStore.getTransactionMapById().set(transaction.id, transaction);
+    }
+    async tearDownTransaction(transaction, context) {
+        if (transaction.childTransaction) {
+            this.tearDownTransaction(transaction.childTransaction, context);
+        }
+        if (transaction.parentTransaction) {
+            transaction.parentTransaction.childTransaction = null;
+            transaction.parentTransaction = null;
+        }
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        terminalStore.getTransactionMapById().delete(transaction.id);
+    }
+    async startTransaction(transaction, context) {
+        await this.ensureContext(context);
+        try {
+            await this.internalStartTransaction(transaction);
+        }
+        catch (e) {
+            await this.tearDownTransaction(transaction, context);
+            console.error(e);
+            throw e;
+        }
+    }
+    async commit(transaction, context) {
+        await this.ensureContext(context);
+        try {
+            await this.internalCommit(transaction);
+        }
+        finally {
+            await this.tearDownTransaction(transaction, context);
+        }
+    }
+    async rollback(transaction, context) {
+        await this.ensureContext(context);
+        try {
+            await this.internalCommit(transaction);
+        }
+        finally {
+            await this.tearDownTransaction(transaction, context);
+        }
     }
     async insertValues(portableQuery, context, cachedSqlQueryId) {
         const splitValues = this.splitValues(portableQuery.jsonQuery.V, context);

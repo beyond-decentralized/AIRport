@@ -1,8 +1,8 @@
 import { SQLDialect } from '@airport/fuel-hydrant-system';
 import { QueryType, StoreType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
-import { STORE_DRIVER, TERMINAL_STORE } from '@airport/terminal-map';
-import { container, DI } from '@airport/di';
+import { STORE_DRIVER } from '@airport/terminal-map';
+import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
 /**
  * Created by Papa on 11/27/2016.
@@ -20,27 +20,18 @@ export class SqlJsDriver extends SqLiteDriver {
         });
         this._db = new SQL.Database();
     }
-    async transact(transactionalCallback, context, parentTransaction) {
+    async setupTransaction(context, parentTransaction) {
         const transaction = new SqlJsTransaction(this, parentTransaction);
-        try {
-            this.startTransaction(transaction);
-        }
-        catch (e) {
-            if (parentTransaction) {
-                parentTransaction.childTransaction = null;
-            }
-        }
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        terminalStore.getTransactionMapById().set(transaction.id, transaction);
-        await transactionalCallback(transaction);
+        await this.internalSetupTransaction(transaction, context);
+        return transaction;
     }
-    async startTransaction(transaction) {
+    async internalStartTransaction(transaction, context) {
         this._db.exec(`SAVEPOINT ${transaction.id}`);
     }
-    async commit(transaction) {
+    async internalCommit(transaction, context) {
         this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`);
     }
-    async rollback(transaction) {
+    async internalRollback(transaction, context) {
         this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`);
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {

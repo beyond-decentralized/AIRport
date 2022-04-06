@@ -39,74 +39,34 @@ export class SqlJsDriver
 		this._db = new SQL.Database()
 	}
 
-	async transact(
-		transactionalCallback: {
-			(
-				transaction: ITransaction
-			): Promise<void>
-		},
-		context: IOperationContext,
-		parentTransaction?: ITransaction,
-	): Promise<void> {
-		const transaction = await this.setupTransaction(context, parentTransaction)
-
-		try {
-			this.startTransaction(transaction)
-		} catch (e) {
-			this.tearDownTransaction(transaction, context)
-			console.error(e)
-			throw e
-		}
-
-		try {
-			await transactionalCallback(transaction)
-			await this.commit(transaction)
-		} catch (e) {
-			await this.rollback(transaction)
-		} finally {
-			this.tearDownTransaction(transaction, context)
-		}
-	}
-
 	async setupTransaction(
 		context: IOperationContext,
 		parentTransaction?: ITransaction,
 	): Promise<ITransaction> {
 		const transaction = new SqlJsTransaction(this, parentTransaction)
 
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		terminalStore.getTransactionMapById().set(transaction.id, transaction)
+		await this.internalSetupTransaction(transaction, context)
 
 		return transaction
 	}
 
-	async tearDownTransaction(
+	async internalStartTransaction(
 		transaction: ITransaction,
-		context: IOperationContext,
-	): Promise<void> {
-		if (transaction.parentTransaction) {
-			transaction.parentTransaction.childTransaction = null
-			transaction.parentTransaction = null
-		}
-
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		terminalStore.getTransactionMapById().delete(transaction.id)
-	}
-
-	async startTransaction(
-		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void> {
 		this._db.exec(`SAVEPOINT ${transaction.id}`)
 	}
 
-	async commit(
+	async internalCommit(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void> {
 		this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`)
 	}
 
-	async rollback(
+	async internalRollback(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void> {
 		this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`)
 	}

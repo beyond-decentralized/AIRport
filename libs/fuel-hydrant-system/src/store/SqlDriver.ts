@@ -115,20 +115,48 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 	): Promise<any>;
 
-	abstract transact(
-		callback: {
+	async transact(
+		transactionalCallback: {
 			(
-				transaction: ITransaction
+				transaction: ITransaction,
+				context: IOperationContext
 			): Promise<void>
 		},
-		context: IFuelHydrantContext,
+		context: IOperationContext,
 		parentTransaction?: ITransaction,
-	): Promise<void>;
+	): Promise<void> {
+		const transaction = await this.setupTransaction(context, parentTransaction)
 
-	async internalSetupTransaction(
+		try {
+			await this.startTransaction(transaction)
+		} catch (e) {
+			await this.tearDownTransaction(transaction, context)
+			console.error(e)
+			throw e
+		}
+
+		try {
+			await transactionalCallback(transaction, context)
+			await this.commit(transaction)
+		} catch (e) {
+			await this.rollback(transaction)
+			console.error(e)
+			throw e
+		} finally {
+			await this.tearDownTransaction(transaction, context)
+		}
+	}
+
+	abstract setupTransaction(
+		context: IOperationContext,
+		parentTransaction?: ITransaction,
+	): Promise<ITransaction>
+
+	protected async internalSetupTransaction(
 		transaction: ITransaction,
 		context: IOperationContext,
 	): Promise<void> {
+		await this.ensureContext(context)
 		const terminalStore = await container(this).get(TERMINAL_STORE)
 		terminalStore.getTransactionMapById().set(transaction.id, transaction)
 	}
@@ -137,6 +165,9 @@ export abstract class SqlDriver
 		transaction: ITransaction,
 		context: IOperationContext,
 	): Promise<void> {
+		if (transaction.childTransaction) {
+			this.tearDownTransaction(transaction.childTransaction, context)
+		}
 		if (transaction.parentTransaction) {
 			transaction.parentTransaction.childTransaction = null
 			transaction.parentTransaction = null
@@ -146,16 +177,57 @@ export abstract class SqlDriver
 		terminalStore.getTransactionMapById().delete(transaction.id)
 	}
 
-	abstract startTransaction(
+	async startTransaction(
 		transaction: ITransaction,
-	): Promise<void>;
+		context?: IOperationContext,
+	): Promise<void> {
+		await this.ensureContext(context)
+		try {
+			await this.internalStartTransaction(transaction)
+		} catch (e) {
+			await this.tearDownTransaction(transaction, context)
+			console.error(e)
+			throw e
+		}
+	}
 
-	abstract commit(
+	abstract internalStartTransaction(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void>
 
-	abstract rollback(
+	async commit(
 		transaction: ITransaction,
+		context?: IOperationContext,
+	): Promise<void> {
+		await this.ensureContext(context)
+		try {
+			await this.internalCommit(transaction)
+		} finally {
+			await this.tearDownTransaction(transaction, context)
+		}
+	}
+
+	abstract internalCommit(
+		transaction: ITransaction,
+		context?: IOperationContext,
+	): Promise<void>
+
+	async rollback(
+		transaction: ITransaction,
+		context?: IOperationContext,
+	): Promise<void> {
+		await this.ensureContext(context)
+		try {
+			await this.internalCommit(transaction)
+		} finally {
+			await this.tearDownTransaction(transaction, context)
+		}
+	}
+
+	abstract internalRollback(
+		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void>
 
 	async insertValues(

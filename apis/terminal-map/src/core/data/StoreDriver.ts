@@ -86,6 +86,11 @@ export interface IStoreDriver
 		parentTransaction?: ITransaction
 	): Promise<void>
 
+	setupTransaction(
+		context: IOperationContext,
+		parentTransaction?: ITransaction,
+	): Promise<ITransaction>
+
 	tearDownTransaction(
 		transaction: ITransaction,
 		context: IOperationContext,
@@ -93,14 +98,17 @@ export interface IStoreDriver
 
 	startTransaction(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void>
 
 	commit(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void>
 
 	rollback(
 		transaction: ITransaction,
+		context?: IOperationContext,
 	): Promise<void>
 
 	isServer(

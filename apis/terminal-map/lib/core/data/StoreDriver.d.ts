@@ -6,6 +6,7 @@ import { ApplicationName, DomainName, FullApplicationName } from '@airport/groun
 import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/lingo/data/IStoreOperator';
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
 import { ITransaction } from '../../transaction/ITransaction';
+import { IOperationContext } from '../../processing/OperationContext';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -33,9 +34,11 @@ export interface IStoreDriver extends IStoreOperator {
     transact(transactionalCallback: {
         (transaction: IStoreDriver): Promise<void> | void;
     }, context: IContext, parentTransaction?: ITransaction): Promise<void>;
-    startTransaction(transaction: ITransaction): Promise<void>;
-    commit(transaction: ITransaction): Promise<void>;
-    rollback(transaction: ITransaction): Promise<void>;
+    setupTransaction(context: IOperationContext, parentTransaction?: ITransaction): Promise<ITransaction>;
+    tearDownTransaction(transaction: ITransaction, context: IOperationContext): Promise<void>;
+    startTransaction(transaction: ITransaction, context?: IOperationContext): Promise<void>;
+    commit(transaction: ITransaction, context?: IOperationContext): Promise<void>;
+    rollback(transaction: ITransaction, context?: IOperationContext): Promise<void>;
     isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map
