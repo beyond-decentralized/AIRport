@@ -38,26 +38,21 @@ export class SqlDriver {
     }
     async transact(transactionalCallback, context, parentTransaction) {
         const transaction = await this.setupTransaction(context, parentTransaction);
-        try {
-            await this.startTransaction(transaction);
-        }
-        catch (e) {
-            await this.tearDownTransaction(transaction, context);
-            console.error(e);
-            throw e;
-        }
+        await this.startTransaction(transaction);
         try {
             await transactionalCallback(transaction, context);
-            await this.commit(transaction);
         }
         catch (e) {
-            await this.rollback(transaction);
             console.error(e);
+            try {
+                await this.rollback(transaction);
+            }
+            catch (e) {
+                console.error(e);
+            }
             throw e;
         }
-        finally {
-            await this.tearDownTransaction(transaction, context);
-        }
+        await this.commit(transaction);
     }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);
@@ -91,6 +86,16 @@ export class SqlDriver {
         try {
             await this.internalCommit(transaction);
         }
+        catch (e) {
+            console.error(e);
+            try {
+                await this.internalRollback(transaction);
+            }
+            catch (e) {
+                console.error(e);
+            }
+            throw e;
+        }
         finally {
             await this.tearDownTransaction(transaction, context);
         }
@@ -98,7 +103,11 @@ export class SqlDriver {
     async rollback(transaction, context) {
         await this.ensureContext(context);
         try {
-            await this.internalCommit(transaction);
+            await this.internalRollback(transaction);
+        }
+        catch (e) {
+            console.error(e);
+            throw e;
         }
         finally {
             await this.tearDownTransaction(transaction, context);

@@ -9,6 +9,10 @@ export const INTERNAL_DOMAIN = 'internal://domain'
 
 export interface ITransactionalConnector {
 
+	callApi<Request, Response>(
+		apiInput: ILocalAPIRequest
+	): Promise<ILocalAPIResponse> 
+
 	addRepository(
 		// url: string,
 		// platform: PlatformType,

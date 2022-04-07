@@ -370,7 +370,7 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
 			transactionId: context.transactionId,
-			type: IsolateMessageType.ROLLBACK
+ 			type: IsolateMessageType.ROLLBACK
 		})
 	}
 

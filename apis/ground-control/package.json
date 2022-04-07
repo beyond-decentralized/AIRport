@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@airport/aviation-communication": "0.0.1",
     "@airport/config": "0.0.1",
     "@airport/di": "0.0.1",
     "rxjs": "~7.4.0"

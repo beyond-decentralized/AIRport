@@ -127,24 +127,21 @@ export abstract class SqlDriver
 	): Promise<void> {
 		const transaction = await this.setupTransaction(context, parentTransaction)
 
-		try {
-			await this.startTransaction(transaction)
-		} catch (e) {
-			await this.tearDownTransaction(transaction, context)
-			console.error(e)
-			throw e
-		}
+		await this.startTransaction(transaction)
 
 		try {
 			await transactionalCallback(transaction, context)
-			await this.commit(transaction)
 		} catch (e) {
-			await this.rollback(transaction)
 			console.error(e)
+			try {
+				await this.rollback(transaction)
+			} catch (e) {
+				console.error(e)
+			}
 			throw e
-		} finally {
-			await this.tearDownTransaction(transaction, context)
 		}
+
+		await this.commit(transaction)
 	}
 
 	abstract setupTransaction(
@@ -203,6 +200,14 @@ export abstract class SqlDriver
 		await this.ensureContext(context)
 		try {
 			await this.internalCommit(transaction)
+		} catch (e) {
+			console.error(e)
+			try {
+				await this.internalRollback(transaction)
+			} catch (e) {
+				console.error(e)
+			}
+			throw e
 		} finally {
 			await this.tearDownTransaction(transaction, context)
 		}
@@ -219,7 +224,10 @@ export abstract class SqlDriver
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
-			await this.internalCommit(transaction)
+			await this.internalRollback(transaction)
+		} catch (e) {
+			console.error(e)
+			throw e
 		} finally {
 			await this.tearDownTransaction(transaction, context)
 		}

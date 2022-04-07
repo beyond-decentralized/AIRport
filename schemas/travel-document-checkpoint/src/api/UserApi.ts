@@ -26,6 +26,10 @@ export interface IUserApi {
         email: string,
     ): Promise<IAddUserResponse>
 
+    findUser(
+        privateId: string
+    ): Promise<IUser>
+
 }
 
 export class UserApi {
