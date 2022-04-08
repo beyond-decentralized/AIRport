@@ -1,3 +1,4 @@
+import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/di';
 import { Observable } from 'rxjs';
 import { IAbstractQueryContext } from './query/AbstractQueryContext';
@@ -6,6 +7,7 @@ import { ISaveResult } from './query/SaveResult';
 export declare const INTERNAL_APP = "@airport/terminal";
 export declare const INTERNAL_DOMAIN = "internal://domain";
 export interface ITransactionalConnector {
+    callApi<Request, Response>(apiInput: ILocalAPIRequest): Promise<ILocalAPIResponse>;
     addRepository(context?: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<E>;

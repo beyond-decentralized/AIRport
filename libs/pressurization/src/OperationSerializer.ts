@@ -1,6 +1,6 @@
-import { DI } from '@airport/di'
-import { ISerializationStateManager, SerializationState } from './SerializationStateManager'
-import { OPERATION_SERIALIZER } from './tokens'
+import { container, DI } from '@airport/di'
+import { ISerializationStateManager } from './SerializationStateManager'
+import { OPERATION_SERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens'
 
 /**
  * A simple operation serializer. Ids are assumed to always
@@ -8,10 +8,13 @@ import { OPERATION_SERIALIZER } from './tokens'
  */
 export interface IOperationSerializer {
 
-	serialize<E, T = E | E[]>(
-		entity: T,
-		serializationStateManager: ISerializationStateManager,
-	): T
+	serializeAsArray<E>(
+		entity: E | E[]
+	): E[]
+
+	serialize<E>(
+		entity: E | E[]
+	): E | E[]
 
 }
 
@@ -25,10 +28,39 @@ interface ISerializableOperation {
 export class OperationSerializer
 	implements IOperationSerializer {
 
-	serialize<E, T = E | E[]>(
-		entity: T,
-		serializationStateManager: ISerializationStateManager,
-	): T {
+	serializeAsArray<E>(
+		entity: E | E[]
+	): E[] {
+		let serializedEntity: E[] = []
+
+		if (!entity) {
+			return serializedEntity
+		}
+
+        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
+
+		if (entity instanceof Array) {
+			serializedEntity = entity
+				.map(anEntity => this.serializeWithManager(anEntity, serializationStateManager) as E)
+		} else {
+			serializedEntity = [this.serializeWithManager(entity, serializationStateManager)as E]
+		}
+
+		return serializedEntity
+	}
+
+	serialize<E>(
+		entity: E | E[]
+	): E | E[] {
+        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
+
+		return this.serializeWithManager(entity, serializationStateManager)
+	}
+
+	private serializeWithManager<E>(
+		entity: E | E[],
+		serializationStateManager: ISerializationStateManager
+	): E | E[] {
 		const operation: ISerializableOperation = {
 			namePath: ['root'],
 			processedEntityMap: new Map(),
@@ -39,15 +71,15 @@ export class OperationSerializer
 		return this.doSerialize(entity, operation, serializationStateManager)
 	}
 
-	doSerialize<E>(
-		entity: E,
+	doSerialize<T>(
+		entity: T,
 		operation: ISerializableOperation,
 		serializationStateManager: ISerializationStateManager,
-	): E {
+	): T {
 		if (entity instanceof Object) {
 			if (entity instanceof Array) {
-				return <any><E[]>entity.map(anEntity => this.doSerialize(
-					anEntity, operation, serializationStateManager))
+				return entity.map(anEntity => this.doSerialize(
+					anEntity, operation, serializationStateManager)) as any as T
 			} else if (entity instanceof Date) {
 				return serializationStateManager.serializeAsDate(entity) as any
 			}
@@ -89,8 +121,8 @@ export class OperationSerializer
 					// 	}
 					// 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					// } else {
-						propertyCopy = property.map(aProperty => this.doSerialize(
-							aProperty, operation, serializationStateManager))
+					propertyCopy = property.map(aProperty => this.doSerialize(
+						aProperty, operation, serializationStateManager))
 					// }
 				} else if (property instanceof Date) {
 					propertyCopy = serializationStateManager.serializeAsDate(property)
@@ -101,7 +133,7 @@ export class OperationSerializer
 					// 	}
 					// 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					// } else {
-						propertyCopy = this.doSerialize(property, operation, serializationStateManager)
+					propertyCopy = this.doSerialize(property, operation, serializationStateManager)
 					// }
 				}
 			} else {
@@ -122,8 +154,8 @@ export class OperationSerializer
 				// 		}
 				// 		break
 				// 	default:
-						propertyCopy = property
-						// break
+				propertyCopy = property
+				// break
 				// }
 			}
 			serializedEntity[propertyName] = propertyCopy

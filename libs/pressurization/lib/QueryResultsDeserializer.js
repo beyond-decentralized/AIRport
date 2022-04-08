@@ -1,8 +1,9 @@
-import { DI } from '@airport/di';
+import { container, DI } from '@airport/di';
 import { SerializationState } from './SerializationStateManager';
-import { QUERY_RESULTS_DESERIALIZER } from './tokens';
+import { QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens';
 export class QueryResultsDeserializer {
-    deserialize(entity, serializationStateManager) {
+    deserialize(entity) {
+        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
         const operation = {
             lookupTable: [],
         };

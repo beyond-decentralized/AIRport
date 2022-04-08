@@ -1,7 +1,26 @@
-import { DI } from '@airport/di';
-import { OPERATION_SERIALIZER } from './tokens';
+import { container, DI } from '@airport/di';
+import { OPERATION_SERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens';
 export class OperationSerializer {
-    serialize(entity, serializationStateManager) {
+    serializeAsArray(entity) {
+        let serializedEntity = [];
+        if (!entity) {
+            return serializedEntity;
+        }
+        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
+        if (entity instanceof Array) {
+            serializedEntity = entity
+                .map(anEntity => this.serializeWithManager(anEntity, serializationStateManager));
+        }
+        else {
+            serializedEntity = [this.serializeWithManager(entity, serializationStateManager)];
+        }
+        return serializedEntity;
+    }
+    serialize(entity) {
+        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
+        return this.serializeWithManager(entity, serializationStateManager);
+    }
+    serializeWithManager(entity, serializationStateManager) {
         const operation = {
             namePath: ['root'],
             processedEntityMap: new Map(),

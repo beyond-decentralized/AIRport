@@ -1,9 +1,9 @@
-import { DI } from '@airport/di'
+import { container, DI } from '@airport/di'
 import {
 	ISerializationStateManager,
 	SerializationState
 } from './SerializationStateManager'
-import { QUERY_RESULTS_DESERIALIZER } from './tokens'
+import { QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens'
 
 /**
  * Deserializer for query results coming back from the server
@@ -11,8 +11,7 @@ import { QUERY_RESULTS_DESERIALIZER } from './tokens'
 export interface IQueryResultsDeserializer {
 
 	deserialize<E, T = E | E[]>(
-		entity: T,
-		serializationStateManager: ISerializationStateManager
+		entity: T
 	): T
 
 }
@@ -26,8 +25,8 @@ export class QueryResultsDeserializer
 
 	deserialize<E, T = E | E[]>(
 		entity: T,
-		serializationStateManager: ISerializationStateManager
 	): T {
+		const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
 		const operation: IDeserializableOperation = {
 			lookupTable: [],
 		}

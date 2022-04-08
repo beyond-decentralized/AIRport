@@ -4,7 +4,8 @@ import { ISerializationStateManager } from './SerializationStateManager';
  * be represented by the "id" property.
  */
 export interface IOperationSerializer {
-    serialize<E, T = E | E[]>(entity: T, serializationStateManager: ISerializationStateManager): T;
+    serializeAsArray<E>(entity: E | E[]): E[];
+    serialize<E>(entity: E | E[]): E | E[];
 }
 interface ISerializableOperation {
     namePath: string[];
@@ -13,8 +14,10 @@ interface ISerializableOperation {
     stubLookupTable: any[];
 }
 export declare class OperationSerializer implements IOperationSerializer {
-    serialize<E, T = E | E[]>(entity: T, serializationStateManager: ISerializationStateManager): T;
-    doSerialize<E>(entity: E, operation: ISerializableOperation, serializationStateManager: ISerializationStateManager): E;
+    serializeAsArray<E>(entity: E | E[]): E[];
+    serialize<E>(entity: E | E[]): E | E[];
+    private serializeWithManager;
+    doSerialize<T>(entity: T, operation: ISerializableOperation, serializationStateManager: ISerializationStateManager): T;
 }
 export {};
 //# sourceMappingURL=OperationSerializer.d.ts.map
