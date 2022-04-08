@@ -1,6 +1,7 @@
-import { DI } from "@airport/di";
+import { container, DI } from "@airport/di";
 import { USER_API } from "../api-tokens";
 import { IUser } from "../api-index";
+import { INTER_APP_API_CLIENT } from "@airport/ground-control";
 
 export enum AddUserErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
@@ -22,14 +23,20 @@ export class UserApi {
         username: string,
         email: string,
     ): Promise<IAddUserResponse> {
+        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT)
 
-        return null
+        return await interAppApiClient.invokeApiMethod(
+            USER_API, 'addUser', [username, email])
     }
 
     async findUser(
         privateId: string
     ): Promise<IUser> {
-        return null
+        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT)
+
+        return await interAppApiClient.invokeApiMethod(
+            USER_API, 'findUser', [privateId])
     }
+
 }
 DI.set(USER_API, UserApi)

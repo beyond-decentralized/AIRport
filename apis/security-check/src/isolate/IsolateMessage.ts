@@ -81,6 +81,15 @@ export interface IAddRepositoryIMI
     // url: string
 }
 
+export interface ICallApiIMI
+    extends IIsolateMessage {
+    // distributionStrategy: DistributionStrategy
+    // name: string
+    // platform: PlatformType
+    // platformConfig: string
+    // url: string
+}
+
 export interface INumberIMO
     extends IIsolateMessageOut<number> {
 }

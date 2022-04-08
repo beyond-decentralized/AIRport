@@ -3,16 +3,15 @@ import {
     ILocalAPIResponse
 } from "@airport/aviation-communication";
 import { container, DI, IDiToken } from "@airport/di";
-import { TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
+import {
+    IInterAppAPIClient,
+    INTER_APP_API_CLIENT,
+    TRANSACTIONAL_CONNECTOR
+} from "@airport/ground-control";
 import {
     OPERATION_SERIALIZER,
     QUERY_RESULTS_DESERIALIZER
 } from "@airport/pressurization";
-import {
-    IInterAppAPIClient,
-    INTER_APP_API_CLIENT
-} from "@airport/tower"
-import { v4 as uuidv4 } from "uuid";
 
 
 export interface IRequestRecord {
@@ -21,34 +20,25 @@ export interface IRequestRecord {
     resolve
 }
 
+const _inDemoMode = true
+
 export class IFrameInterAppPIClient
     implements IInterAppAPIClient {
 
-    pendingMessageMap: Map<string, IRequestRecord> = new Map();
-
-    async invokeApiMethod<T>(
-        token: IDiToken<T>,
+    async invokeApiMethod<ApiInterface, ReturnValue>(
+        token: IDiToken<ApiInterface>,
         methodName: string,
         args: any[]
-    ): Promise<any> {
-        const [operationSerializer, queryResultsDeserializer]
-            = await container(this).get(OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
+    ): Promise<ReturnValue> {
+        const [operationSerializer, queryResultsDeserializer, transactionalConnector]
+            = await container(this).get(OPERATION_SERIALIZER,
+                QUERY_RESULTS_DESERIALIZER, TRANSACTIONAL_CONNECTOR)
 
         let serializedParams
         if (_inDemoMode) {
             serializedParams = args
         } else {
             serializedParams = operationSerializer.serializeAsArray(args)
-            if (args) {
-                if (args.length) {
-                    serializedParams = args
-                        .map(arg => operationSerializer.serialize(arg))
-                } else {
-                    serializedParams = [operationSerializer.serialize(args)]
-                }
-            } else {
-                serializedParams = []
-            }
         }
 
         const request: ILocalAPIRequest = {
@@ -62,9 +52,7 @@ export class IFrameInterAppPIClient
             protocol: window.location.protocol,
         }
 
-        let response: ILocalAPIResponse
-
-        response = await this.sendApiRequest(request)
+        let response = await transactionalConnector.callApi(request)
 
         if (response.errorMessage) {
             throw new Error(response.errorMessage)
@@ -76,30 +64,6 @@ export class IFrameInterAppPIClient
             return queryResultsDeserializer
                 .deserialize(response.payload)
         }
-    }
-
-    returnApiMethodCall(
-        id: string,
-        result: any
-    ): void {
-
-    }
-
-    private async sendApiRequest(
-        request: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse> {
-        const returnValue = new Promise<ILocalAPIResponse>((resolve, reject) => {
-            this.pendingMessageMap.set(request.id, {
-                request,
-                resolve,
-                reject
-            })
-        })
-        const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
-
-        transactionalConnector.sendApiRequest(request)
-
-        return returnValue
     }
 
 }

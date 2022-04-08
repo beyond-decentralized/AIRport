@@ -1,5 +1,5 @@
 import { container, DI } from "@airport/di";
-import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from "@airport/pressurization";
+import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
 import { v4 as uuidv4 } from "uuid";
 import { LOCAL_API_CLIENT } from "./tokens";
 let _inDemoMode = true;
@@ -62,24 +62,13 @@ export class LocalAPIClient {
         while (!await this.isConnectionReady(token)) {
             await this.wait(100);
         }
-        const [serializationStateManager, operationSerializer, queryResultsDeserializer] = await container(this).get(SERIALIZATION_STATE_MANAGER, OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
+        const [operationSerializer, queryResultsDeserializer] = await container(this).get(OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
         if (_inDemoMode) {
             serializedParams = args;
         }
         else {
-            if (args) {
-                if (args.length) {
-                    serializedParams = args
-                        .map(arg => operationSerializer.serialize(arg, serializationStateManager));
-                }
-                else {
-                    serializedParams = [operationSerializer.serialize(args, serializationStateManager)];
-                }
-            }
-            else {
-                serializedParams = [];
-            }
+            serializedParams = operationSerializer.serializeAsArray(args);
         }
         const request = {
             application: token.application.name,
@@ -106,7 +95,7 @@ export class LocalAPIClient {
         }
         else {
             return queryResultsDeserializer
-                .deserialize(response.payload, serializationStateManager);
+                .deserialize(response.payload);
         }
     }
     wait(milliseconds) {

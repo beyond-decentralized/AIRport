@@ -1,4 +1,11 @@
-import { IEntityContext, IQueryContext } from '@airport/air-control';
+import {
+    IEntityContext,
+    IQueryContext
+} from '@airport/air-control';
+import {
+    ILocalAPIRequest,
+    ILocalAPIResponse
+} from '@airport/aviation-communication';
 import {
     container,
     DI,
@@ -13,11 +20,19 @@ import {
 } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
-export class TransactionalConnector
+export class InternalTransactionalConnector
     implements ITransactionalConnector {
 
     dbName: string;
     serverUrl: string;
+
+    callApi<Request, Response>(
+        _: ILocalAPIRequest
+    ): Promise<ILocalAPIResponse> {
+        throw new Error(`InternalTransactionalConnector.callApi should never be called.
+Interal Application API requests should be made directly (since
+they are internal to the AIRport framework).`)
+    }
 
     async addRepository(
         // url: string,
@@ -144,11 +159,11 @@ export class TransactionalConnector
         });
     }
 
-	async saveToDestination<E, T = E | E[]>(
-		repositoryDestination: string,
-		entity: T,
-		context?: IContext,
-	): Promise<ISaveResult> {
+    async saveToDestination<E, T = E | E[]>(
+        repositoryDestination: string,
+        entity: T,
+        context?: IContext,
+    ): Promise<ISaveResult> {
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
         return await transServer.saveToDestination(repositoryDestination, entity,
@@ -156,9 +171,9 @@ export class TransactionalConnector
                 application: null,
                 domain: INTERNAL_DOMAIN
             }, {
-            internal: true,
-            ...context
-        } as any);
+                internal: true,
+                ...context
+            } as any);
     }
 
     async insertValues(
@@ -280,7 +295,7 @@ export class TransactionalConnector
 
 }
 
-DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);
+DI.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
 
 export function injectTransactionalConnector(): void {
     console.log('Injecting TransactionalConnector')

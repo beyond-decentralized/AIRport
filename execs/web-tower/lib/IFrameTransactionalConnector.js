@@ -95,6 +95,17 @@ export class IframeTransactionalConnector {
         });
         this.initializeConnection().then();
     }
+    callApi(apiInput) {
+        return null;
+        // return await this.sendMessage<IAddRepositoryIMI, number>({
+        // 	...this.getCoreFields(),
+        // 	// distributionStrategy,
+        // 	// platform,
+        // 	// platformConfig,
+        // 	type: IsolateMessageType.ADD_REPOSITORY,
+        // 	// url
+        // })
+    }
     async addRepository(
     // url: string,
     // platform: PlatformType,

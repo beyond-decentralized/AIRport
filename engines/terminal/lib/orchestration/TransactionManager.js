@@ -56,7 +56,8 @@ export class TransactionManager extends AbstractMutationManager {
         if (!await this.startTransactionPrep(credentials, context)) {
             return;
         }
-        const transaction = await storeDriver.startTransaction();
+        const transaction = await storeDriver.setupTransaction(context);
+        await storeDriver.startTransaction(transaction);
         await this.setupTransaction(credentials, transaction, context);
     }
     async rollback(transaction, context) {

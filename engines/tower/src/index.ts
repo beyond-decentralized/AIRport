@@ -1,6 +1,5 @@
 export * from './core/api/ApiRegistry'
 export * from './core/api/ApiValidator'
-export * from './core/api/InterAppAPIClient'
 export * from './core/api/LocalApiServer'
 export * from './core/api/OperationDeserializer'
 export * from './core/data/EntityCopier'

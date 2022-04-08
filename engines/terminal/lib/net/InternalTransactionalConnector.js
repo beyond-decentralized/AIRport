@@ -1,7 +1,12 @@
 import { container, DI } from '@airport/di';
 import { INTERNAL_DOMAIN, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-export class TransactionalConnector {
+export class InternalTransactionalConnector {
+    callApi(_) {
+        throw new Error(`InternalTransactionalConnector.callApi should never be called.
+Interal Application API requests should be made directly (since
+they are internal to the AIRport framework).`);
+    }
     async addRepository(
     // url: string,
     // platform: PlatformType,
@@ -157,7 +162,7 @@ export class TransactionalConnector {
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 }
-DI.set(TRANSACTIONAL_CONNECTOR, TransactionalConnector);
+DI.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
 export function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }

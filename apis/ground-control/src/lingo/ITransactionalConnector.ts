@@ -12,7 +12,7 @@ export interface ITransactionalConnector {
 
 	callApi<Request, Response>(
 		apiInput: ILocalAPIRequest
-	): Promise<ILocalAPIResponse> 
+	): Promise<ILocalAPIResponse>
 
 	addRepository(
 		// url: string,

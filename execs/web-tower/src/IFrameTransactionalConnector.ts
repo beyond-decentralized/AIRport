@@ -2,7 +2,8 @@ import {
 	IEntityContext,
 	IQueryContext
 } from '@airport/air-control';
-import { ILocalAPIRequest } from '@airport/aviation-communication';
+import { IApplicationVersion } from '@airport/airspace'
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {
 	container,
 	DI,
@@ -18,6 +19,7 @@ import {
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
 import {
+	APPLICATION_LOADER,
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplicationNameIMI,
 	IInitConnectionIMI,
@@ -31,17 +33,14 @@ import {
 	ISaveIMI,
 	ITransactionEndIMI,
 	LastIds,
-} from '@airport/security-check';
-import {
-	APPLICATION_LOADER,
 	LOCAL_API_SERVER
-} from '@airport/security-check'
-import { IApplicationVersion } from '@airport/airspace'
+} from '@airport/security-check';
+import { ITransactionContext } from '@airport/terminal-map';
 import {
 	Observable,
 	Observer
 } from 'rxjs';
-import { ITransactionContext } from '@airport/terminal-map';
+import { v4 as uuidv4 } from "uuid";
 
 export interface IMessageInRecord {
 	message: IIsolateMessage
@@ -192,6 +191,20 @@ export class IframeTransactionalConnector
 
 		})
 		this.initializeConnection().then()
+	}
+
+	callApi<Request, Response>(
+		apiInput: ICoreLocalApiRequest
+	): Promise<ILocalAPIResponse> {
+		return null
+		// return await this.sendMessage<IAddRepositoryIMI, number>({
+		// 	...this.getCoreFields(),
+		// 	// distributionStrategy,
+		// 	// platform,
+		// 	// platformConfig,
+		// 	type: IsolateMessageType.ADD_REPOSITORY,
+		// 	// url
+		// })
 	}
 
 	async addRepository(
@@ -370,7 +383,7 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
 			transactionId: context.transactionId,
- 			type: IsolateMessageType.ROLLBACK
+			type: IsolateMessageType.ROLLBACK
 		})
 	}
 
@@ -460,7 +473,7 @@ export class IframeTransactionalConnector
 			application: this.application,
 			category: 'ToDb',
 			domain: this.domain,
-			id: ++this.messageId,
+			id: uuidv4(),
 		}
 	}
 
