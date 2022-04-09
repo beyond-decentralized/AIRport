@@ -8,14 +8,20 @@ export class TransactionalReceiver {
         // FIXME: move this state to Terminal.state
         this.initializingApps = new Set();
     }
-    async handleApiCall(message, fromClient, context, nativeHandleCallback) {
+    async handleApiCall(message, fullApplicationName, fromClient, context, nativeHandleCallback) {
         const [transactionalServer, terminalStore] = await container(this)
             .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         if (!await transactionalServer.startTransaction({
             domain: message.domain,
             application: message.application
         }, context)) {
+            return false;
+        }
+        try {
+            nativeHandleCallback();
+        }
+        catch (e) {
+            context.errorMessage = e.message;
             return false;
         }
         return true;
@@ -34,6 +40,11 @@ export class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
+                    const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+                    const context = {};
+                    if (!await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+                        errorMessage = context.errorMessage;
+                    }
                     result = null;
                     break;
                 }

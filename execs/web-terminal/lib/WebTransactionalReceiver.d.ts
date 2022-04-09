@@ -12,15 +12,17 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     subsriptionMap: Map<string, Map<number, Subscription>>;
     pendingHostCounts: Map<string, number>;
     pendingApplicationCounts: Map<string, number>;
-    installedApplicationFrames: Set<string>;
     messageCallback: (message: any) => void;
     constructor();
     onMessage(callback: (message: any) => void): void;
     private ensureConnectionIsReady;
     private hasValidApplicationInfo;
     private handleFromClientRequest;
+    private nativeHandleApiCall;
+    private relyToClientWithError;
     private getFrameWindow;
     private handleToClientRequest;
+    private replyToClientRequest;
     private ensureApplicationIsInstalled;
     private messageIsFromValidApp;
     private handleIsolateMessage;

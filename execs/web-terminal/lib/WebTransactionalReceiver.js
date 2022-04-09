@@ -12,14 +12,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         this.subsriptionMap = new Map();
         this.pendingHostCounts = new Map();
         this.pendingApplicationCounts = new Map();
-        this.installedApplicationFrames = new Set();
         const ownDomain = window.location.hostname;
         this.mainDomainFragments = ownDomain.split('.');
         if (this.mainDomainFragments[0] === 'www') {
             this.mainDomainFragments.splice(0, 1);
         }
         this.domainPrefix = '.' + this.mainDomainFragments.join('.');
-        this.installedApplicationFrames.add("featureDemo");
         // set domain to a random value so that an iframe cannot directly invoke logic in this domain
         if (document.domain !== 'localhost') {
             document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
@@ -89,7 +87,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             const messageOrigin = event.origin;
             switch (message.category) {
                 case 'ToDb':
-                    this.handleIsolateMessage(message, messageOrigin, event.source);
+                    this.handleIsolateMessage(message, messageOrigin, event.source).then();
                     break;
                 case 'ToClient':
                     const toClientRedirectedMessage = {
@@ -98,7 +96,8 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         __receivedTime__: null,
                         category: 'ToClientRedirected'
                     };
-                    this.handleToClientRequest(toClientRedirectedMessage, messageOrigin);
+                    this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+                        .then();
                     break;
                 default:
                     break;
@@ -157,18 +156,40 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         this.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1);
         this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1);
-        if (!await this.ensureApplicationIsInstalled(fullApplicationName, numPendingMessagesForApplication)) {
-            this.pendingApplicationCounts.set(fullApplicationName, -1);
+        if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
+            this.relyToClientWithError(message, `Application is not installed`);
             return;
         }
-        const frameWindow = this.getFrameWindow(fullApplicationName);
-        if (frameWindow) {
-            // Forward the request to the correct application iframe
-            frameWindow.postMessage(message, '*');
+        const context = {};
+        if (!await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+            this.relyToClientWithError(message, context.errorMessage);
         }
-        else {
-            throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
-        }
+    }
+    async nativeHandleApiCall(message, fullApplicationName, fromClient, context) {
+        return await this.handleApiCall(message, fullApplicationName, fromClient, context, () => {
+            const frameWindow = this.getFrameWindow(fullApplicationName);
+            if (frameWindow) {
+                // Forward the request to the correct application iframe
+                frameWindow.postMessage(message, '*');
+            }
+            else {
+                throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
+            }
+        });
+    }
+    relyToClientWithError(message, errorMessage) {
+        const toClientRedirectedMessage = {
+            __received__: false,
+            __receivedTime__: null,
+            application: message.application,
+            category: 'ToClientRedirected',
+            domain: message.domain,
+            errorMessage,
+            id: message.id,
+            payload: null,
+            protocol: message.protocol,
+        };
+        this.replyToClientRequest(toClientRedirectedMessage);
     }
     getFrameWindow(fullApplicationName) {
         const iframe = document
@@ -179,9 +200,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         return iframe[0].contentWindow;
     }
     async handleToClientRequest(message, messageOrigin) {
-        if (!this.messageIsFromValidApp(message, messageOrigin)) {
+        if (!await this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
+        this.replyToClientRequest(message);
+    }
+    replyToClientRequest(message) {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         let numMessagesFromHost = this.pendingHostCounts.get(message.domain);
         if (numMessagesFromHost > 0) {
@@ -189,28 +213,21 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
         let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName);
         if (numMessagesForApplication > 0) {
-            this.pendingHostCounts.set(message.domain, numMessagesForApplication - 1);
+            this.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1);
         }
         // Forward the request to the source client
         // FIXME: serialize message if !this.isNativeBroadcastChannel
         this.communicationChannel.postMessage(message);
     }
-    async ensureApplicationIsInstalled(fullApplicationName, numPendingMessagesForApplication) {
+    async ensureApplicationIsInstalled(fullApplicationName) {
         if (!fullApplicationName) {
             return false;
         }
-        if (this.installedApplicationFrames.has(fullApplicationName)) {
-            return true;
-        }
-        // TODO: ensure that the application is installed
-        if (numPendingMessagesForApplication == 0) {
-        }
-        else {
-            // TODO: wait for application initialization
-        }
-        return true;
+        const webApplicationInitializer = await container(this)
+            .get(APPLICATION_INITIALIZER);
+        return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
     }
-    messageIsFromValidApp(message, messageOrigin) {
+    async messageIsFromValidApp(message, messageOrigin) {
         const applicationDomain = messageOrigin.split('//')[1];
         const applicationDomainFragments = applicationDomain.split('.');
         // Allow local debugging
@@ -239,10 +256,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             return false;
         }
         // Make sure the application is installed
-        return this.installedApplicationFrames.has(applicationDomainFirstFragment);
+        const webApplicationInitializer = await container(this)
+            .get(APPLICATION_INITIALIZER);
+        return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
     }
-    handleIsolateMessage(message, messageOrigin, source) {
-        if (!this.messageIsFromValidApp(message, messageOrigin)) {
+    async handleIsolateMessage(message, messageOrigin, source) {
+        if (!await this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
