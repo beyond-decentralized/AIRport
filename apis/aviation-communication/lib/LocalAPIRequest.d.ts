@@ -3,11 +3,12 @@ export interface ICoreLocalApiRequest {
     methodName: string;
     objectName: string;
 }
-export interface ILocalAPIRequest extends ICoreLocalApiRequest {
+export declare type LocalApiRequestCategoryType = 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
+export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType> extends ICoreLocalApiRequest {
     __received__?: boolean;
     __receivedTime__?: number;
     application: string;
-    category: 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
+    category: CategoryType;
     domain: string;
     id: string;
     protocol: string;

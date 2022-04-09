@@ -12,7 +12,7 @@ export interface IMessageInRecord {
     resolve: any;
 }
 export interface IObservableMessageInRecord<T> {
-    id: number;
+    id: string;
     observer?: Observer<T>;
 }
 export declare const hostServer = "http://localhost:7500";
@@ -31,15 +31,15 @@ export interface IIframeTransactionalConnector extends ITransactionalConnector {
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     application: string;
-    domain: string;
-    dbName: string;
-    serverUrl: string;
-    pendingMessageMap: Map<number, IMessageInRecord>;
-    observableMessageMap: Map<number, IObservableMessageInRecord<any>>;
-    messageId: number;
-    mainDomain: string;
     appState: AppState;
+    dbName: string;
+    domain: string;
     lastIds: LastIds;
+    mainDomain: string;
+    messageId: number;
+    observableMessageMap: Map<string, IObservableMessageInRecord<any>>;
+    pendingMessageMap: Map<string, IMessageInRecord>;
+    serverUrl: string;
     messageCallback: (message: any) => void;
     init(): Promise<void>;
     callApi<Request, Response>(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;

@@ -1,3 +1,4 @@
+import { ILocalAPIRequest } from "@airport/aviation-communication";
 import {
     DistributionStrategy,
     PlatformType,
@@ -30,13 +31,15 @@ export enum IsolateMessageType {
     UPDATE_VALUES = 'UPDATE_VALUES'
 }
 
-export interface IIsolateMessage {
+export type IsolateMessageCategoryType = 'FromDb' | 'ToDb'
+
+export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     __received__?: boolean
     __receivedTime__?: number
     application: string
-    category: 'FromDb' | 'ToDb'
+    category: CategoryType
     domain: string
-    id: number
+    id: string
     repositoryDestination?: string
     repositorySource?: string
     type: IsolateMessageType
@@ -68,6 +71,10 @@ export interface IInitConnectionIMO
     extends IIsolateMessageOut<LastIds> {
 }
 
+export interface ILocalAPIRequestIMI
+    extends ILocalAPIRequest<'FromClientRedirected'>, IIsolateMessage<'FromClientRedirected'> {
+}
+
 export interface ITransactionEndIMI
     extends IIsolateMessage {
     transactionId: string
@@ -75,18 +82,18 @@ export interface ITransactionEndIMI
 
 export interface IAddRepositoryIMI
     extends IIsolateMessage {
-        // distributionStrategy: DistributionStrategy
-        // name: string
-        // platform: PlatformType
-        // platformConfig: string
-        // url: string
+    // distributionStrategy: DistributionStrategy
+    // name: string
+    // platform: PlatformType
+    // platformConfig: string
+    // url: string
 }
 
 export interface ICallApiIMI
     extends IIsolateMessage {
-        args: Array<boolean | number | string>
-        methodName: string
-        objectName: string
+    args: Array<boolean | number | string>
+    methodName: string
+    objectName: string
 }
 
 export interface INumberIMO

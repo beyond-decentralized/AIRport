@@ -15,6 +15,7 @@ import {
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
+    ILocalAPIRequestIMI,
     IPortableQueryIMI,
     IReadQueryIMI,
     IRetrieveDomainIMI,
@@ -40,42 +41,6 @@ export abstract class TransactionalReceiver {
     // FIXME: move this state to Terminal.state
     initializingApps: Set<string> = new Set()
 
-    async handleApiCall(
-        message: ILocalAPIRequest,
-        fullApplicationName: FullApplicationName,
-        fromClient: boolean,
-        context: IApiCallContext,
-        nativeHandleCallback: () => void
-    ): Promise<boolean> {
-        const [transactionalServer, terminalStore] = await container(this)
-            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
-
-        if (!await transactionalServer.startTransaction(
-            {
-                domain: message.domain,
-                application: message.application
-            },
-            context
-        )) {
-            return false
-        }
-
-        try {
-            nativeHandleCallback()
-        } catch (e) {
-            context.errorMessage = e.message
-            return false
-        }
-
-        return true
-    }
-
-    abstract nativeHandleApiCall(
-        message: ILocalAPIRequest,
-        fromClient: boolean,
-        context: IApiCallContext
-    ): Promise<boolean>
-
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
     ): Promise<ReturnType> {
@@ -95,8 +60,11 @@ export abstract class TransactionalReceiver {
                     const fullApplicationName = getFullApplicationNameFromDomainAndName(
                         message.domain, message.application)
                     const context: IApiCallContext = {}
-                    if (! await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+                    try {
+                    result = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, fullApplicationName, false, context)) {
                         errorMessage = context.errorMessage
+                    } catch(e) {
+                        
                     }
                     result = null
                     break
@@ -307,6 +275,43 @@ export abstract class TransactionalReceiver {
             type: message.type,
             result
         } as any
+    }
+
+    protected abstract nativeHandleApiCall(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+		fullApplicationName: FullApplicationName,
+        fromClient: boolean,
+        context: IApiCallContext
+    ): Promise<boolean>
+
+    protected async handleApiCall(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        fullApplicationName: FullApplicationName,
+        fromClient: boolean,
+        context: IApiCallContext,
+        nativeHandleCallback: () => void
+    ): Promise<boolean> {
+        const [transactionalServer, terminalStore] = await container(this)
+            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
+
+        if (!await transactionalServer.startTransaction(
+            {
+                domain: message.domain,
+                application: message.application
+            },
+            context
+        )) {
+            return false
+        }
+
+        try {
+            nativeHandleCallback()
+        } catch (e) {
+            context.errorMessage = e.message
+            return false
+        }
+
+        return true
     }
 
 }

@@ -5,7 +5,7 @@ import { IApiCallContext } from '@airport/terminal-map';
 export declare abstract class TransactionalReceiver {
     initializingApps: Set<string>;
     handleApiCall(message: ILocalAPIRequest, fullApplicationName: FullApplicationName, fromClient: boolean, context: IApiCallContext, nativeHandleCallback: () => void): Promise<boolean>;
-    abstract nativeHandleApiCall(message: ILocalAPIRequest, fromClient: boolean, context: IApiCallContext): Promise<boolean>;
+    abstract nativeHandleApiCall(message: ILocalAPIRequest, fullApplicationName: FullApplicationName, fromClient: boolean, context: IApiCallContext): Promise<boolean>;
     processMessage<ReturnType extends IIsolateMessageOut<any>>(message: IIsolateMessage): Promise<ReturnType>;
 }
 //# sourceMappingURL=TransactionalReceiver.d.ts.map

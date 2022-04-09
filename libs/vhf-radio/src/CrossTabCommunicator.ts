@@ -22,6 +22,8 @@ export class CrossTabCommunicator
 
     communicationChannel: SoftBroadcastChannel
 
+    pendingMessageIdSet: Set<string> = new Set()
+
     constructor() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
 
@@ -46,6 +48,8 @@ export class CrossTabCommunicator
                 this.clientHost = message.domain
                 this.clientProtocol = messageOriginFragments[0]
             }
+            this.pendingMessageIdSet.add(message.id)
+
             // FIXME: serialize message if !this.isNativeBroadcastChannel
             this.communicationChannel.postMessage(messageCopy)
         })
@@ -70,6 +74,12 @@ export class CrossTabCommunicator
                 if (message.__received__) {
                     return
                 }
+                if(!this.pendingMessageIdSet.has(message.id)) {
+                    return
+                }
+
+                this.pendingMessageIdSet.delete(message.id)
+
                 const messageCopy: ILocalAPIResponse = { ...message }
                 message.__received__ = true
 

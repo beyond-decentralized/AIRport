@@ -50,7 +50,7 @@ export interface IMessageInRecord {
 }
 
 export interface IObservableMessageInRecord<T> {
-	id: number
+	id: string
 	observer?: Observer<T>
 }
 
@@ -94,22 +94,16 @@ export class IframeTransactionalConnector
 	implements IIframeTransactionalConnector {
 
 	application: string
-	domain: string
-
+	appState = AppState.NOT_INITIALIED
 	dbName: string;
-	serverUrl: string;
-
-	pendingMessageMap: Map<number, IMessageInRecord> = new Map();
-
-	observableMessageMap: Map<number, IObservableMessageInRecord<any>> = new Map()
-
-	messageId = 0;
-
+	domain: string
+	lastIds: LastIds
 	// FIXME: tie this in to the hostServer variable
 	mainDomain: string
-
-	appState = AppState.NOT_INITIALIED
-	lastIds: LastIds
+	messageId = 0;
+	observableMessageMap: Map<string, IObservableMessageInRecord<any>> = new Map()
+	pendingMessageMap: Map<string, IMessageInRecord> = new Map();
+	serverUrl: string;
 
 	messageCallback: (
 		message: any
@@ -466,7 +460,7 @@ export class IframeTransactionalConnector
 		application: string,
 		category: 'ToDb',
 		domain: string,
-		id: number,
+		id: string,
 	} {
 		return {
 			application: this.application,

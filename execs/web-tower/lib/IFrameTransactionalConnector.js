@@ -15,10 +15,10 @@ export var AppState;
 })(AppState || (AppState = {}));
 export class IframeTransactionalConnector {
     constructor() {
-        this.pendingMessageMap = new Map();
-        this.observableMessageMap = new Map();
-        this.messageId = 0;
         this.appState = AppState.NOT_INITIALIED;
+        this.messageId = 0;
+        this.observableMessageMap = new Map();
+        this.pendingMessageMap = new Map();
     }
     async init() {
         window.addEventListener("message", event => {
@@ -95,16 +95,14 @@ export class IframeTransactionalConnector {
         });
         this.initializeConnection().then();
     }
-    callApi(apiInput) {
-        return null;
-        // return await this.sendMessage<IAddRepositoryIMI, number>({
-        // 	...this.getCoreFields(),
-        // 	// distributionStrategy,
-        // 	// platform,
-        // 	// platformConfig,
-        // 	type: IsolateMessageType.ADD_REPOSITORY,
-        // 	// url
-        // })
+    async callApi(apiInput) {
+        return await this.sendMessage({
+            ...this.getCoreFields(),
+            args: apiInput.args,
+            methodName: apiInput.methodName,
+            objectName: apiInput.objectName,
+            type: IsolateMessageType.CALL_API
+        });
     }
     async addRepository(
     // url: string,

@@ -1,3 +1,4 @@
+import { ILocalAPIRequest } from "@airport/aviation-communication";
 import { PortableQuery } from "@airport/ground-control";
 import { Observable } from "rxjs";
 import { JsonApplicationWithLastIds } from '..';
@@ -24,13 +25,14 @@ export declare enum IsolateMessageType {
     SAVE_TO_DESTINATION = "SAVE_TO_DESTINATION",
     UPDATE_VALUES = "UPDATE_VALUES"
 }
-export interface IIsolateMessage {
+export declare type IsolateMessageCategoryType = 'FromDb' | 'ToDb';
+export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     __received__?: boolean;
     __receivedTime__?: number;
     application: string;
-    category: 'FromDb' | 'ToDb';
+    category: CategoryType;
     domain: string;
-    id: number;
+    id: string;
     repositoryDestination?: string;
     repositorySource?: string;
     type: IsolateMessageType;
@@ -47,6 +49,8 @@ export interface IConnectionInitializedIMI extends IIsolateMessage {
     fullApplicationName: string;
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
+}
+export interface ILocalAPIRequestIMI extends ILocalAPIRequest<'FromClientRedirected'>, IIsolateMessage<'FromClientRedirected'> {
 }
 export interface ITransactionEndIMI extends IIsolateMessage {
     transactionId: string;
