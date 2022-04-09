@@ -154,23 +154,36 @@ export class WebTransactionalReceiver
 						event.source as Window).then()
 					break
 				case 'ToClient':
-					const interlAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id)
-					if (interlAppApiCallRequest) {
-						if(message.errorMessage) {
-							interlAppApiCallRequest.reject(message.errorMessage)
+					const interAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id)
+
+					const context: IApiCallContext = {}
+					this.endApiCall({
+						domain: message.domain,
+						application: message.application
+					}, message.errorMessage, context).then((success) => {
+						if (interAppApiCallRequest) {
+							if (!success) {
+								interAppApiCallRequest.reject(message.errorMessage)
+							} else if (message.errorMessage) {
+								interAppApiCallRequest.reject(message.errorMessage)
+							} else {
+								interAppApiCallRequest.resolve(message.payload)
+							}
 						} else {
-							interlAppApiCallRequest.resolve(message.payload)
+							const toClientRedirectedMessage: ILocalAPIResponse = {
+								...message,
+								__received__: false,
+								__receivedTime__: null,
+								category: 'ToClientRedirected'
+							}
+							if (!success) {
+								toClientRedirectedMessage.errorMessage = context.errorMessage
+								toClientRedirectedMessage.payload = null
+							}
+							this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+								.then()
 						}
-					} else {
-						const toClientRedirectedMessage: ILocalAPIResponse = {
-							...message,
-							__received__: false,
-							__receivedTime__: null,
-							category: 'ToClientRedirected'
-						}
-						this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-							.then()
-					}
+					})
 					break
 				default:
 					break
@@ -260,7 +273,7 @@ export class WebTransactionalReceiver
 		}
 
 		const context: IApiCallContext = {}
-		if (! await this.nativeStartApiCall(message as ILocalAPIRequest<'FromClientRedirected'>,
+		if (!await this.nativeStartApiCall(message as ILocalAPIRequest<'FromClientRedirected'>,
 			context)) {
 			this.relyToClientWithError(message, context.errorMessage)
 		}
@@ -287,7 +300,9 @@ export class WebTransactionalReceiver
 		message: ILocalAPIRequest<'FromClientRedirected'>,
 		context: IApiCallContext
 	): Promise<Result> {
-		await this.nativeStartApiCall(message, context)
+		if (!await this.nativeStartApiCall(message, context)) {
+			throw new Error(context.errorMessage)
+		}
 		return new Promise((resolve, reject) => {
 			this.pendingInterAppApiCallMessageMap.set(message.id, {
 				message,

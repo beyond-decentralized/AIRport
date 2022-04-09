@@ -91,13 +91,44 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     this.handleIsolateMessage(message, messageOrigin, event.source).then();
                     break;
                 case 'ToClient':
-                    const interlAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id);
-                    if (interlAppApiCallRequest) {
-                        if (message.errorMessage) {
-                            interlAppApiCallRequest.reject(message.errorMessage);
+                    const interAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id);
+                    const context = {};
+                    this.endApiCall({
+                        domain: message.domain,
+                        application: message.application
+                    }, message.errorMessage, context).then((success) => {
+                        if (interAppApiCallRequest) {
+                            if (!success) {
+                                interAppApiCallRequest.reject(message.errorMessage);
+                            }
+                            else if (message.errorMessage) {
+                                interAppApiCallRequest.reject(message.errorMessage);
+                            }
+                            else {
+                                interAppApiCallRequest.resolve(message.payload);
+                            }
                         }
                         else {
-                            interlAppApiCallRequest.resolve(message.payload);
+                            const toClientRedirectedMessage = {
+                                ...message,
+                                __received__: false,
+                                __receivedTime__: null,
+                                category: 'ToClientRedirected'
+                            };
+                            if (!success) {
+                                toClientRedirectedMessage.errorMessage = context.errorMessage;
+                                toClientRedirectedMessage.payload = null;
+                            }
+                            this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+                                .then();
+                        }
+                    });
+                    if (interAppApiCallRequest) {
+                        if (message.errorMessage) {
+                            interAppApiCallRequest.reject(message.errorMessage);
+                        }
+                        else {
+                            interAppApiCallRequest.resolve(message.payload);
                         }
                     }
                     else {
@@ -191,7 +222,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         });
     }
     async nativeHandleApiCall(message, context) {
-        await this.nativeStartApiCall(message, context);
+        if (await this.nativeStartApiCall(message, context)) {
+            throw new Error(context.errorMessage);
+        }
         return new Promise((resolve, reject) => {
             this.pendingInterAppApiCallMessageMap.set(message.id, {
                 message,

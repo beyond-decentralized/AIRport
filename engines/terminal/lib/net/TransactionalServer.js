@@ -88,7 +88,6 @@ export class TransactionalServer {
             || this.currentTransactionContext.transactionId !== credentials.transactionId) {
             return false;
         }
-        uuidv4;
         try {
             await this.ensureIocContext(context);
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);
@@ -97,6 +96,7 @@ export class TransactionalServer {
         }
         catch (e) {
             console.error(e);
+            context.errorMessage = e.message;
             return false;
         }
         finally {
@@ -116,6 +116,7 @@ export class TransactionalServer {
         }
         catch (e) {
             console.error(e);
+            context.errorMessage = e.message;
             return false;
         }
         finally {

@@ -40,8 +40,8 @@ export declare class TransactionalServer implements ITransactionalServer {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
     startTransaction(credentials: ICredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
-    commit(credentials: ICredentials, context: IOperationContext & ITransactionContext): Promise<boolean>;
-    rollback(credentials: ICredentials, context: IOperationContext & ITransactionContext): Promise<boolean>;
+    commit(credentials: ICredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
+    rollback(credentials: ICredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     save<E>(entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;
     saveToDestination<E>(repositoryDestination: string, entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ICredentials, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;

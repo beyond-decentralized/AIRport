@@ -166,14 +166,13 @@ export class TransactionalServer
 
 	async commit(
 		credentials: ICredentials,
-		context: IOperationContext & ITransactionContext
+		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (!this.currentTransactionContext
 			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
 			return false
 		}
 
-		uuidv4
 		try {
 			await this.ensureIocContext(context)
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
@@ -182,6 +181,7 @@ export class TransactionalServer
 			return true
 		} catch (e) {
 			console.error(e)
+			context.errorMessage = e.message
 			return false
 		} finally {
 			this.currentTransactionContext = null
@@ -190,7 +190,7 @@ export class TransactionalServer
 
 	async rollback(
 		credentials: ICredentials,
-		context: IOperationContext & ITransactionContext
+		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (!this.currentTransactionContext
 			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
@@ -204,6 +204,7 @@ export class TransactionalServer
 			return true
 		} catch (e) {
 			console.error(e)
+			context.errorMessage = e.message
 			return false
 		} finally {
 			this.currentTransactionContext = null

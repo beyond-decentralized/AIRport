@@ -274,14 +274,14 @@ export abstract class TransactionalReceiver {
     }
 
     protected abstract nativeStartApiCall(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext
-	): Promise<boolean>
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        context: IApiCallContext
+    ): Promise<boolean>
 
-	protected abstract nativeHandleApiCall<Result>(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext
-	): Promise<Result>
+    protected abstract nativeHandleApiCall<Result>(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        context: IApiCallContext
+    ): Promise<Result>
 
     protected async startApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
@@ -291,13 +291,10 @@ export abstract class TransactionalReceiver {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER)
 
-        if (!await transactionalServer.startTransaction(
-            {
-                domain: message.domain,
-                application: message.application
-            },
-            context
-        )) {
+        if (!await transactionalServer.startTransaction({
+            domain: message.domain,
+            application: message.application
+        }, context)) {
             return false
         }
 
@@ -309,6 +306,19 @@ export abstract class TransactionalReceiver {
         }
 
         return true
+    }
+
+    protected async endApiCall(
+        credentials: ICredentials,
+        errorMessage: string,
+        context: IApiCallContext
+    ): Promise<boolean> {
+        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER)
+        if (errorMessage) {
+            return await transactionalServer.rollback(credentials, context)
+        } else {
+            return await transactionalServer.commit(credentials, context)
+        }
     }
 
     protected async handleApiCall(

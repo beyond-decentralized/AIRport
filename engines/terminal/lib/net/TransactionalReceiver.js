@@ -201,6 +201,15 @@ export class TransactionalReceiver {
         }
         return true;
     }
+    async endApiCall(credentials, errorMessage, context) {
+        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER);
+        if (errorMessage) {
+            return await transactionalServer.rollback(credentials, context);
+        }
+        else {
+            return await transactionalServer.commit(credentials, context);
+        }
+    }
     async handleApiCall(message, context, nativeHandleCallback) {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER);
