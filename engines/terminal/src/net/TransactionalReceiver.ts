@@ -57,16 +57,12 @@ export abstract class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
-                    const fullApplicationName = getFullApplicationNameFromDomainAndName(
-                        message.domain, message.application)
                     const context: IApiCallContext = {}
                     try {
-                    result = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, fullApplicationName, false, context)) {
-                        errorMessage = context.errorMessage
-                    } catch(e) {
-                        
+                        result = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, context)
+                    } catch (e) {
+                        errorMessage = e.message
                     }
-                    result = null
                     break
                 }
                 case IsolateMessageType.APP_INITIALIZING:
@@ -277,22 +273,23 @@ export abstract class TransactionalReceiver {
         } as any
     }
 
-    protected abstract nativeHandleApiCall(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
-		fullApplicationName: FullApplicationName,
-        fromClient: boolean,
-        context: IApiCallContext
-    ): Promise<boolean>
+    protected abstract nativeStartApiCall(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext
+	): Promise<boolean>
 
-    protected async handleApiCall(
+	protected abstract nativeHandleApiCall<Result>(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext
+	): Promise<Result>
+
+    protected async startApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
-        fullApplicationName: FullApplicationName,
-        fromClient: boolean,
         context: IApiCallContext,
         nativeHandleCallback: () => void
     ): Promise<boolean> {
-        const [transactionalServer, terminalStore] = await container(this)
-            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER)
 
         if (!await transactionalServer.startTransaction(
             {
@@ -305,7 +302,35 @@ export abstract class TransactionalReceiver {
         }
 
         try {
-            nativeHandleCallback()
+            await nativeHandleCallback()
+        } catch (e) {
+            context.errorMessage = e.message
+            return false
+        }
+
+        return true
+    }
+
+    protected async handleApiCall(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        context: IApiCallContext,
+        nativeHandleCallback: () => void
+    ): Promise<boolean> {
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER)
+
+        if (!await transactionalServer.startTransaction(
+            {
+                domain: message.domain,
+                application: message.application
+            },
+            context
+        )) {
+            return false
+        }
+
+        try {
+            await nativeHandleCallback()
         } catch (e) {
             context.errorMessage = e.message
             return false

@@ -8,24 +8,6 @@ export class TransactionalReceiver {
         // FIXME: move this state to Terminal.state
         this.initializingApps = new Set();
     }
-    async handleApiCall(message, fullApplicationName, fromClient, context, nativeHandleCallback) {
-        const [transactionalServer, terminalStore] = await container(this)
-            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
-        if (!await transactionalServer.startTransaction({
-            domain: message.domain,
-            application: message.application
-        }, context)) {
-            return false;
-        }
-        try {
-            nativeHandleCallback();
-        }
-        catch (e) {
-            context.errorMessage = e.message;
-            return false;
-        }
-        return true;
-    }
     async processMessage(message) {
         const [transactionalServer, terminalStore] = await container(this)
             .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
@@ -40,12 +22,13 @@ export class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
-                    const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
                     const context = {};
-                    if (!await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
-                        errorMessage = context.errorMessage;
+                    try {
+                        result = await this.nativeHandleApiCall(message, context);
                     }
-                    result = null;
+                    catch (e) {
+                        errorMessage = e.message;
+                    }
                     break;
                 }
                 case IsolateMessageType.APP_INITIALIZING:
@@ -199,6 +182,42 @@ export class TransactionalReceiver {
             type: message.type,
             result
         };
+    }
+    async startApiCall(message, context, nativeHandleCallback) {
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER);
+        if (!await transactionalServer.startTransaction({
+            domain: message.domain,
+            application: message.application
+        }, context)) {
+            return false;
+        }
+        try {
+            await nativeHandleCallback();
+        }
+        catch (e) {
+            context.errorMessage = e.message;
+            return false;
+        }
+        return true;
+    }
+    async handleApiCall(message, context, nativeHandleCallback) {
+        const transactionalServer = await container(this)
+            .get(TRANSACTIONAL_SERVER);
+        if (!await transactionalServer.startTransaction({
+            domain: message.domain,
+            application: message.application
+        }, context)) {
+            return false;
+        }
+        try {
+            await nativeHandleCallback();
+        }
+        catch (e) {
+            context.errorMessage = e.message;
+            return false;
+        }
+        return true;
     }
 }
 //# sourceMappingURL=TransactionalReceiver.js.map

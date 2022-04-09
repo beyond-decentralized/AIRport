@@ -9,9 +9,10 @@ let _mainDomain = 'localhost:31717';
 export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
         super();
-        this.subsriptionMap = new Map();
-        this.pendingHostCounts = new Map();
         this.pendingApplicationCounts = new Map();
+        this.pendingHostCounts = new Map();
+        this.pendingInterAppApiCallMessageMap = new Map();
+        this.subsriptionMap = new Map();
         const ownDomain = window.location.hostname;
         this.mainDomainFragments = ownDomain.split('.');
         if (this.mainDomainFragments[0] === 'www') {
@@ -90,14 +91,25 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                     this.handleIsolateMessage(message, messageOrigin, event.source).then();
                     break;
                 case 'ToClient':
-                    const toClientRedirectedMessage = {
-                        ...message,
-                        __received__: false,
-                        __receivedTime__: null,
-                        category: 'ToClientRedirected'
-                    };
-                    this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-                        .then();
+                    const interlAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id);
+                    if (interlAppApiCallRequest) {
+                        if (message.errorMessage) {
+                            interlAppApiCallRequest.reject(message.errorMessage);
+                        }
+                        else {
+                            interlAppApiCallRequest.resolve(message.payload);
+                        }
+                    }
+                    else {
+                        const toClientRedirectedMessage = {
+                            ...message,
+                            __received__: false,
+                            __receivedTime__: null,
+                            category: 'ToClientRedirected'
+                        };
+                        this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+                            .then();
+                    }
                     break;
                 default:
                     break;
@@ -161,12 +173,13 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             return;
         }
         const context = {};
-        if (!await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+        if (!await this.nativeStartApiCall(message, context)) {
             this.relyToClientWithError(message, context.errorMessage);
         }
     }
-    async nativeHandleApiCall(message, fullApplicationName, fromClient, context) {
-        return await this.handleApiCall(message, fullApplicationName, fromClient, context, () => {
+    async nativeStartApiCall(message, context) {
+        return await this.startApiCall(message, context, async () => {
+            const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
             const frameWindow = this.getFrameWindow(fullApplicationName);
             if (frameWindow) {
                 // Forward the request to the correct application iframe
@@ -175,6 +188,16 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             else {
                 throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
             }
+        });
+    }
+    async nativeHandleApiCall(message, context) {
+        await this.nativeStartApiCall(message, context);
+        return new Promise((resolve, reject) => {
+            this.pendingInterAppApiCallMessageMap.set(message.id, {
+                message,
+                reject,
+                resolve
+            });
         });
     }
     relyToClientWithError(message, errorMessage) {

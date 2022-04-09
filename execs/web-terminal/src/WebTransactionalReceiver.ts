@@ -35,7 +35,7 @@ import { IWebApplicationInitializer } from './WebApplicationInitializer'
 let _mainDomain = 'localhost:31717'
 
 export interface IMessageInRecord {
-	message: IIsolateMessage
+	message: ILocalAPIRequest<'FromClientRedirected'>
 	reject
 	resolve
 }
@@ -53,7 +53,7 @@ export class WebTransactionalReceiver
 	pendingHostCounts: Map<string, number> = new Map()
 	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord> = new Map();
 	serverUrl: string;
-	subsriptionMap: Map<string, Map<number, Subscription>> = new Map()
+	subsriptionMap: Map<string, Map<string, Subscription>> = new Map()
 
 	messageCallback: (
 		message: any
@@ -155,9 +155,12 @@ export class WebTransactionalReceiver
 					break
 				case 'ToClient':
 					const interlAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id)
-					if(interlAppApiCallRequest) {
-
-						TODO: work here next
+					if (interlAppApiCallRequest) {
+						if(message.errorMessage) {
+							interlAppApiCallRequest.reject(message.errorMessage)
+						} else {
+							interlAppApiCallRequest.resolve(message.payload)
+						}
 					} else {
 						const toClientRedirectedMessage: ILocalAPIResponse = {
 							...message,
@@ -257,29 +260,40 @@ export class WebTransactionalReceiver
 		}
 
 		const context: IApiCallContext = {}
-		if (! await this.nativeHandleApiCall(message as ILocalAPIRequest<'FromClientRedirected'>, fullApplicationName, true, context)) {
+		if (! await this.nativeStartApiCall(message as ILocalAPIRequest<'FromClientRedirected'>,
+			context)) {
 			this.relyToClientWithError(message, context.errorMessage)
 		}
 	}
 
-	private async nativeHandleApiCall(
+	protected async nativeStartApiCall(
 		message: ILocalAPIRequest<'FromClientRedirected'>,
-		fullApplicationName: FullApplicationName,
-		fromClient: boolean,
 		context: IApiCallContext
 	): Promise<boolean> {
-		return new Promise((reply, reject) => {
-
-		})
-		return await this.handleApiCall(message, fullApplicationName, fromClient, context, () => {
+		return await this.startApiCall(message, context, async () => {
+			const fullApplicationName = getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplicationName)
-
 			if (frameWindow) {
 				// Forward the request to the correct application iframe
 				frameWindow.postMessage(message, '*')
 			} else {
 				throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
 			}
+		})
+	}
+
+	protected async nativeHandleApiCall<Result>(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext
+	): Promise<Result> {
+		await this.nativeStartApiCall(message, context)
+		return new Promise((resolve, reject) => {
+			this.pendingInterAppApiCallMessageMap.set(message.id, {
+				message,
+				reject,
+				resolve
+			})
 		})
 	}
 

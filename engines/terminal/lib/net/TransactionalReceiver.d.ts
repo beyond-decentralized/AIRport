@@ -1,11 +1,12 @@
 import { ILocalAPIRequest } from '@airport/aviation-communication';
-import { FullApplicationName } from '@airport/ground-control';
 import { IIsolateMessage, IIsolateMessageOut } from '@airport/security-check';
 import { IApiCallContext } from '@airport/terminal-map';
 export declare abstract class TransactionalReceiver {
     initializingApps: Set<string>;
-    handleApiCall(message: ILocalAPIRequest, fullApplicationName: FullApplicationName, fromClient: boolean, context: IApiCallContext, nativeHandleCallback: () => void): Promise<boolean>;
-    abstract nativeHandleApiCall(message: ILocalAPIRequest, fullApplicationName: FullApplicationName, fromClient: boolean, context: IApiCallContext): Promise<boolean>;
     processMessage<ReturnType extends IIsolateMessageOut<any>>(message: IIsolateMessage): Promise<ReturnType>;
+    protected abstract nativeStartApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<boolean>;
+    protected abstract nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<Result>;
+    protected startApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext, nativeHandleCallback: () => void): Promise<boolean>;
+    protected handleApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext, nativeHandleCallback: () => void): Promise<boolean>;
 }
 //# sourceMappingURL=TransactionalReceiver.d.ts.map
