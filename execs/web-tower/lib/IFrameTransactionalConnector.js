@@ -1,8 +1,8 @@
 import { container, DI } from '@airport/di';
 import { getFullApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { IsolateMessageType, } from '@airport/security-check';
-import { APPLICATION_LOADER, LOCAL_API_SERVER } from '@airport/security-check';
+import { APPLICATION_LOADER, IsolateMessageType, LOCAL_API_SERVER } from '@airport/security-check';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from "uuid";
 // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
 // and debugging (http://localhost:7500)
 export const hostServer = 'http://localhost:7500';
@@ -288,7 +288,7 @@ export class IframeTransactionalConnector {
             application: this.application,
             category: 'ToDb',
             domain: this.domain,
-            id: ++this.messageId,
+            id: uuidv4(),
         };
     }
     async sendMessage(message) {

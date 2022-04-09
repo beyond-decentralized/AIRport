@@ -1,7 +1,6 @@
 import { container, DI } from "@airport/di";
 import { INTER_APP_API_CLIENT, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
-import { v4 as uuidv4 } from "uuid";
 const _inDemoMode = true;
 export class IFrameInterAppPIClient {
     async invokeApiMethod(token, methodName, args) {
@@ -14,14 +13,9 @@ export class IFrameInterAppPIClient {
             serializedParams = operationSerializer.serializeAsArray(args);
         }
         const request = {
-            application: token.application.name,
             args: serializedParams,
-            category: 'FromClient',
-            domain: token.application.domain.name,
-            id: uuidv4(),
             methodName,
-            objectName: token.name,
-            protocol: window.location.protocol,
+            objectName: token.name
         };
         let response = await transactionalConnector.callApi(request);
         if (response.errorMessage) {

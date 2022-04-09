@@ -33,7 +33,8 @@ import {
 	ISaveIMI,
 	ITransactionEndIMI,
 	LastIds,
-	LOCAL_API_SERVER
+	LOCAL_API_SERVER,
+	ICallApiIMI
 } from '@airport/security-check';
 import { ITransactionContext } from '@airport/terminal-map';
 import {
@@ -193,18 +194,16 @@ export class IframeTransactionalConnector
 		this.initializeConnection().then()
 	}
 
-	callApi<Request, Response>(
+	async callApi<Request, Response>(
 		apiInput: ICoreLocalApiRequest
 	): Promise<ILocalAPIResponse> {
-		return null
-		// return await this.sendMessage<IAddRepositoryIMI, number>({
-		// 	...this.getCoreFields(),
-		// 	// distributionStrategy,
-		// 	// platform,
-		// 	// platformConfig,
-		// 	type: IsolateMessageType.ADD_REPOSITORY,
-		// 	// url
-		// })
+		return await this.sendMessage<ICallApiIMI, ILocalAPIResponse>({
+			...this.getCoreFields(),
+			args: apiInput.args,
+			methodName: apiInput.methodName,
+			objectName: apiInput.objectName,
+			type: IsolateMessageType.CALL_API
+		})
 	}
 
 	async addRepository(

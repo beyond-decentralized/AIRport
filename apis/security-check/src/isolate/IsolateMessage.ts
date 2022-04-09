@@ -11,6 +11,7 @@ export enum IsolateMessageType {
     ADD_REPOSITORY = 'ADD_REPOSITORY',
     APP_INITIALIZING = 'APP_INITIALIZING',
     APP_INITIALIZED = 'APP_INITIALIZED',
+    CALL_API = 'CALL_API',
     COMMIT = 'COMMIT',
     DELETE_WHERE = 'DELETE_WHERE',
     FIND = 'FIND',
@@ -74,20 +75,18 @@ export interface ITransactionEndIMI
 
 export interface IAddRepositoryIMI
     extends IIsolateMessage {
-    // distributionStrategy: DistributionStrategy
-    // name: string
-    // platform: PlatformType
-    // platformConfig: string
-    // url: string
+        // distributionStrategy: DistributionStrategy
+        // name: string
+        // platform: PlatformType
+        // platformConfig: string
+        // url: string
 }
 
 export interface ICallApiIMI
     extends IIsolateMessage {
-    // distributionStrategy: DistributionStrategy
-    // name: string
-    // platform: PlatformType
-    // platformConfig: string
-    // url: string
+        args: Array<boolean | number | string>
+        methodName: string
+        objectName: string
 }
 
 export interface INumberIMO

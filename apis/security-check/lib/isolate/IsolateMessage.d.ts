@@ -6,6 +6,7 @@ export declare enum IsolateMessageType {
     ADD_REPOSITORY = "ADD_REPOSITORY",
     APP_INITIALIZING = "APP_INITIALIZING",
     APP_INITIALIZED = "APP_INITIALIZED",
+    CALL_API = "CALL_API",
     COMMIT = "COMMIT",
     DELETE_WHERE = "DELETE_WHERE",
     FIND = "FIND",
@@ -51,6 +52,11 @@ export interface ITransactionEndIMI extends IIsolateMessage {
     transactionId: string;
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {
+}
+export interface ICallApiIMI extends IIsolateMessage {
+    args: Array<boolean | number | string>;
+    methodName: string;
+    objectName: string;
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {
 }

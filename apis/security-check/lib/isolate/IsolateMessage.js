@@ -3,6 +3,7 @@ export var IsolateMessageType;
     IsolateMessageType["ADD_REPOSITORY"] = "ADD_REPOSITORY";
     IsolateMessageType["APP_INITIALIZING"] = "APP_INITIALIZING";
     IsolateMessageType["APP_INITIALIZED"] = "APP_INITIALIZED";
+    IsolateMessageType["CALL_API"] = "CALL_API";
     IsolateMessageType["COMMIT"] = "COMMIT";
     IsolateMessageType["DELETE_WHERE"] = "DELETE_WHERE";
     IsolateMessageType["FIND"] = "FIND";

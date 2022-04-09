@@ -1,4 +1,5 @@
 import {
+    ICoreLocalApiRequest,
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
@@ -41,15 +42,10 @@ export class IFrameInterAppPIClient
             serializedParams = operationSerializer.serializeAsArray(args)
         }
 
-        const request: ILocalAPIRequest = {
-            application: token.application.name,
+        const request: ICoreLocalApiRequest = {
             args: serializedParams,
-            category: 'FromClient',
-            domain: token.application.domain.name,
-            id: uuidv4(),
             methodName,
-            objectName: token.name,
-            protocol: window.location.protocol,
+            objectName: token.name
         }
 
         let response = await transactionalConnector.callApi(request)

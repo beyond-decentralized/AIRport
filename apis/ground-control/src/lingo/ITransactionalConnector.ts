@@ -1,4 +1,4 @@
-import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication'
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication'
 import { IContext } from '@airport/di'
 import { Observable } from 'rxjs'
 import { IAbstractQueryContext } from './query/AbstractQueryContext'
@@ -11,7 +11,7 @@ export const INTERNAL_DOMAIN = 'internal://domain'
 export interface ITransactionalConnector {
 
 	callApi<Request, Response>(
-		apiInput: ILocalAPIRequest
+		apiInput: ICoreLocalApiRequest
 	): Promise<ILocalAPIResponse>
 
 	addRepository(

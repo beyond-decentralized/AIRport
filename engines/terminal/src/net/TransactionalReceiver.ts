@@ -52,6 +52,10 @@ export abstract class TransactionalReceiver {
         context.startedAt = new Date()
         try {
             switch (message.type) {
+                case IsolateMessageType.CALL_API: {
+                    result = null
+                    break
+                }
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
