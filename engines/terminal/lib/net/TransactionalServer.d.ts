@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor, Repository_Id } from '@airport/holding-pattern';
-import { ICredentials, IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext } from '@airport/terminal-map';
+import { ICredentials, IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
@@ -39,7 +39,7 @@ export declare class TransactionalServer implements ITransactionalServer {
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
-    startTransaction(credentials: ICredentials, context: IOperationContext & ITransactionContext): Promise<boolean>;
+    startTransaction(credentials: ICredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     commit(credentials: ICredentials, context: IOperationContext & ITransactionContext): Promise<boolean>;
     rollback(credentials: ICredentials, context: IOperationContext & ITransactionContext): Promise<boolean>;
     save<E>(entity: E, credentials: ICredentials, context: IOperationContext): Promise<ISaveResult>;

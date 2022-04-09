@@ -6,7 +6,10 @@ import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials } from '../Credentials';
 import { IStoreDriver } from '../core/data/StoreDriver';
 
-
+export interface IApiCallContext
+	extends IContext {
+	errorMessage?: string
+}
 export interface ITransactionContext {
 	transaction: ITransaction
 	transactionId?: string

@@ -6,7 +6,7 @@ import {
 	container,
 	DI,
 } from '@airport/di'
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
+import { FullApplicationName, getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IIsolateMessage,
 	IObservableDataIMO,
@@ -18,7 +18,8 @@ import {
 import {
 	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver,
-	APPLICATION_INITIALIZER
+	APPLICATION_INITIALIZER,
+	IApiCallContext
 } from '@airport/terminal-map'
 import {
 	BroadcastChannel as SoftBroadcastChannel
@@ -48,8 +49,6 @@ export class WebTransactionalReceiver
 	pendingHostCounts: Map<string, number> = new Map()
 	pendingApplicationCounts: Map<string, number> = new Map()
 
-	installedApplicationFrames: Set<string> = new Set()
-
 	messageCallback: (
 		message: any
 	) => void
@@ -62,8 +61,6 @@ export class WebTransactionalReceiver
 			this.mainDomainFragments.splice(0, 1)
 		}
 		this.domainPrefix = '.' + this.mainDomainFragments.join('.')
-
-		this.installedApplicationFrames.add("featureDemo")
 
 		// set domain to a random value so that an iframe cannot directly invoke logic in this domain
 		if (document.domain !== 'localhost') {
@@ -148,7 +145,7 @@ export class WebTransactionalReceiver
 			switch (message.category) {
 				case 'ToDb':
 					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
-						event.source as Window)
+						event.source as Window).then()
 					break
 				case 'ToClient':
 					const toClientRedirectedMessage: ILocalAPIResponse = {
@@ -158,6 +155,7 @@ export class WebTransactionalReceiver
 						category: 'ToClientRedirected'
 					}
 					this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+						.then()
 					break
 				default:
 					break
@@ -241,19 +239,52 @@ export class WebTransactionalReceiver
 		this.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
 		this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
 
-		if (!await this.ensureApplicationIsInstalled(fullApplicationName, numPendingMessagesForApplication)) {
-			this.pendingApplicationCounts.set(fullApplicationName, -1)
+		if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
+			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
 
-		const frameWindow = this.getFrameWindow(fullApplicationName)
-
-		if (frameWindow) {
-			// Forward the request to the correct application iframe
-			frameWindow.postMessage(message, '*')
-		} else {
-			throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
+		const context: IApiCallContext = {}
+		if (! await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+			this.relyToClientWithError(message, context.errorMessage)
 		}
+	}
+
+	private async nativeHandleApiCall(
+		message: ILocalAPIRequest,
+		fullApplicationName: FullApplicationName,
+		fromClient: boolean,
+		context: IApiCallContext
+	): Promise<boolean> {
+		return await this.handleApiCall(message, fullApplicationName, fromClient, context, () => {
+			const frameWindow = this.getFrameWindow(fullApplicationName)
+
+			if (frameWindow) {
+				// Forward the request to the correct application iframe
+				frameWindow.postMessage(message, '*')
+			} else {
+				throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
+			}
+		})
+	}
+
+	private relyToClientWithError(
+		message: ILocalAPIRequest,
+		errorMessage: string
+	) {
+		const toClientRedirectedMessage: ILocalAPIResponse = {
+			__received__: false,
+			__receivedTime__: null,
+			application: message.application,
+			category: 'ToClientRedirected',
+			domain: message.domain,
+			errorMessage,
+			id: message.id,
+			payload: null,
+			protocol: message.protocol,
+		}
+
+		this.replyToClientRequest(toClientRedirectedMessage)
 	}
 
 	private getFrameWindow(
@@ -271,10 +302,15 @@ export class WebTransactionalReceiver
 		message: ILocalAPIResponse,
 		messageOrigin: string
 	): Promise<void> {
-		if (!this.messageIsFromValidApp(message, messageOrigin)) {
+		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
+		this.replyToClientRequest(message)
+	}
 
+	private replyToClientRequest(
+		message: ILocalAPIResponse
+	) {
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
 
@@ -284,7 +320,7 @@ export class WebTransactionalReceiver
 		}
 		let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
 		if (numMessagesForApplication > 0) {
-			this.pendingHostCounts.set(message.domain, numMessagesForApplication - 1)
+			this.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
 		}
 
 		// Forward the request to the source client
@@ -293,30 +329,22 @@ export class WebTransactionalReceiver
 	}
 
 	private async ensureApplicationIsInstalled(
-		fullApplicationName: string,
-		numPendingMessagesForApplication: number
+		fullApplicationName: string
 	): Promise<boolean> {
 		if (!fullApplicationName) {
 			return false
 		}
-		if (this.installedApplicationFrames.has(fullApplicationName)) {
-			return true
-		}
 
-		// TODO: ensure that the application is installed
-		if (numPendingMessagesForApplication == 0) {
+		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
+			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
 
-		} else {
-			// TODO: wait for application initialization
-		}
-
-		return true
+		return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
 	}
 
-	private messageIsFromValidApp(
+	private async messageIsFromValidApp(
 		message: IIsolateMessage | ILocalAPIResponse,
 		messageOrigin: string
-	): boolean {
+	): Promise<boolean> {
 		const applicationDomain = messageOrigin.split('//')[1]
 		const applicationDomainFragments = applicationDomain.split('.')
 
@@ -349,15 +377,18 @@ export class WebTransactionalReceiver
 		}
 
 		// Make sure the application is installed
-		return this.installedApplicationFrames.has(applicationDomainFirstFragment)
+		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
+			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
+
+		return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
 	}
 
-	private handleIsolateMessage(
+	private async handleIsolateMessage(
 		message: IIsolateMessage,
 		messageOrigin: string,
 		source: Window
-	): void {
-		if (!this.messageIsFromValidApp(message, messageOrigin)) {
+	): Promise<void> {
+		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(

@@ -19,7 +19,8 @@ import {
 	TERMINAL_STORE,
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER,
-	ITransactionContext
+	ITransactionContext,
+	IApiCallContext
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -142,7 +143,7 @@ export class TransactionalServer
 
 	async startTransaction(
 		credentials: ICredentials,
-		context: IOperationContext & ITransactionContext
+		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (this.currentTransactionContext) {
 			return false
@@ -157,6 +158,7 @@ export class TransactionalServer
 				this.currentTransactionContext.transactionId
 			return true
 		} catch (e) {
+			context.errorMessage = e.message
 			console.error(e)
 			return false
 		}

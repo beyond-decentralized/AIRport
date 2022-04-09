@@ -1,9 +1,11 @@
 import { IEntityContext } from '@airport/air-control';
+import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
     container,
     IContext,
 } from '@airport/di';
 import {
+    FullApplicationName,
     getFullApplicationName,
     getFullApplicationNameFromDomainAndName
 } from '@airport/ground-control';
@@ -22,6 +24,7 @@ import {
     JsonApplicationWithLastIds
 } from '@airport/security-check';
 import {
+    IApiCallContext,
     ICredentials,
     IQueryOperationContext,
     TERMINAL_STORE,
@@ -36,6 +39,42 @@ export abstract class TransactionalReceiver {
 
     // FIXME: move this state to Terminal.state
     initializingApps: Set<string> = new Set()
+
+    async handleApiCall(
+        message: ILocalAPIRequest,
+        fullApplicationName: FullApplicationName,
+        fromClient: boolean,
+        context: IApiCallContext,
+        nativeHandleCallback: () => void
+    ): Promise<boolean> {
+        const [transactionalServer, terminalStore] = await container(this)
+            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
+
+        if (!await transactionalServer.startTransaction(
+            {
+                domain: message.domain,
+                application: message.application
+            },
+            context
+        )) {
+            return false
+        }
+
+        try {
+            nativeHandleCallback()
+        } catch (e) {
+            context.errorMessage = e.message
+            return false
+        }
+
+        return true
+    }
+
+    abstract nativeHandleApiCall(
+        message: ILocalAPIRequest,
+        fromClient: boolean,
+        context: IApiCallContext
+    ): Promise<boolean>
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage
@@ -53,6 +92,12 @@ export abstract class TransactionalReceiver {
         try {
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
+                    const fullApplicationName = getFullApplicationNameFromDomainAndName(
+                        message.domain, message.application)
+                    const context: IApiCallContext = {}
+                    if (! await this.nativeHandleApiCall(message, fullApplicationName, true, context)) {
+                        errorMessage = context.errorMessage
+                    }
                     result = null
                     break
                 }

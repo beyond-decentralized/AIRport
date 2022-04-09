@@ -78,6 +78,7 @@ export class TransactionalServer {
             return true;
         }
         catch (e) {
+            context.errorMessage = e.message;
             console.error(e);
             return false;
         }
