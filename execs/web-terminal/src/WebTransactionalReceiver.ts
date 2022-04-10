@@ -19,7 +19,8 @@ import {
 	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver,
 	APPLICATION_INITIALIZER,
-	IApiCallContext
+	IApiCallContext,
+	ITransactionContext
 } from '@airport/terminal-map'
 import {
 	BroadcastChannel as SoftBroadcastChannel
@@ -281,15 +282,13 @@ export class WebTransactionalReceiver
 
 	protected async nativeStartApiCall(
 		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext
+		context: IApiCallContext & ITransactionContext
 	): Promise<boolean> {
 		return await this.startApiCall(message, context, async () => {
 			const fullApplicationName = getFullApplicationNameFromDomainAndName(
 				message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplicationName)
 			if (frameWindow) {
-				TODO: work here next
-				message.transactionId = 
 				// Forward the request to the correct application iframe
 				frameWindow.postMessage(message, '*')
 			} else {
@@ -300,7 +299,7 @@ export class WebTransactionalReceiver
 
 	protected async nativeHandleApiCall<Result>(
 		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext
+		context: IApiCallContext & ITransactionContext
 	): Promise<Result> {
 		if (!await this.nativeStartApiCall(message, context)) {
 			throw new Error(context.errorMessage)

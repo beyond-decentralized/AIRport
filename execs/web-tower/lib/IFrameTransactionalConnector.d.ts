@@ -56,7 +56,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
     startTransaction(context: ITransactionContext): Promise<boolean>;
     commit(context: ITransactionContext): Promise<boolean>;
-    rollback(context: IContext): Promise<boolean>;
+    rollback(context: ITransactionContext): Promise<boolean>;
     getLatestApplicationVersionMapByFullApplicationName(fullApplicationName: string): Promise<IApplicationVersion>;
     private initializeConnection;
     private handleLocalApiRequest;

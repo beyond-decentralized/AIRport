@@ -11,14 +11,12 @@ export interface IApiCallContext
 	errorMessage?: string
 }
 export interface ITransactionContext {
-	transaction: ITransaction
-	transactionId?: string
+	transaction?: ITransaction
 }
 export interface ITransactionManager {
 
 	storeType: StoreType;
 
-	sourceOfTransactionInProgress: string
 	transactionInProgress: ITransaction
 
 	initialize(
@@ -44,7 +42,7 @@ export interface ITransactionManager {
 	startTransaction(
 		credentials: ICredentials,
 		context: ITransactionContext,
-	): Promise<void>
+	): Promise<ITransaction>
 
 	rollback(
 		transaction: ITransaction,

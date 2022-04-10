@@ -3,7 +3,6 @@ import { INTERNAL_DOMAIN, OPERATION_CONTEXT_LOADER } from '@airport/ground-contr
 import { Actor } from '@airport/holding-pattern';
 import { TERMINAL_STORE, TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
-import { v4 as uuidv4 } from "uuid";
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -72,9 +71,6 @@ export class TransactionalServer {
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);
             await transactionManager.startTransaction(credentials, context);
             this.currentTransactionContext = context;
-            this.currentTransactionContext.transactionId = uuidv4();
-            credentials.transactionId =
-                this.currentTransactionContext.transactionId;
             return true;
         }
         catch (e) {
@@ -85,7 +81,7 @@ export class TransactionalServer {
     }
     async commit(credentials, context) {
         if (!this.currentTransactionContext
-            || this.currentTransactionContext.transactionId !== credentials.transactionId) {
+            || this.currentTransactionContext.transaction.id !== credentials.transactionId) {
             return false;
         }
         try {
@@ -105,7 +101,7 @@ export class TransactionalServer {
     }
     async rollback(credentials, context) {
         if (!this.currentTransactionContext
-            || this.currentTransactionContext.transactionId !== credentials.transactionId) {
+            || this.currentTransactionContext.transaction.id !== credentials.transactionId) {
             return false;
         }
         try {

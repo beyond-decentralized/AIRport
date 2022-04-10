@@ -365,17 +365,17 @@ export class IframeTransactionalConnector
 	): Promise<boolean> {
 		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
-			transactionId: context.transactionId,
+			transactionId: context.transaction.id,
 			type: IsolateMessageType.COMMIT
 		})
 	}
 
 	async rollback(
-		context: IContext
+		context: ITransactionContext
 	): Promise<boolean> {
 		return await this.sendMessage<ITransactionEndIMI, boolean>({
 			...this.getCoreFields(),
-			transactionId: context.transactionId,
+			transactionId: context.transaction.id,
 			type: IsolateMessageType.ROLLBACK
 		})
 	}

@@ -12,6 +12,12 @@ export declare abstract class SqlTransaction implements ITransaction {
     isSync: boolean;
     transHistory: ITransactionHistory;
     type: StoreType;
+    initiator: {
+        application: string;
+        domain: string;
+        methodName: string;
+        objectName: string;
+    };
     constructor(driver: IStoreDriver, parentTransaction: ITransaction);
     saveTransaction(transaction: ITransactionHistory): Promise<any>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;

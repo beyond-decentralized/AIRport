@@ -18,13 +18,20 @@ import {
     PortableQuery,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
-import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { ITransactionCredentials, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export class InternalTransactionalConnector
     implements ITransactionalConnector {
 
     dbName: string;
     serverUrl: string;
+
+    internalCredentials: ITransactionCredentials = {
+        application: null,
+        domain: INTERNAL_DOMAIN,
+        methodName: null,
+        objectName: null
+    }
 
     callApi<Request, Response>(
         _: ILocalAPIRequest
@@ -48,10 +55,7 @@ they are internal to the AIRport framework).`)
             // platform,
             // platformConfig,
             // distributionStrategy,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            },
+            this.internalCredentials,
             {
                 internal: true,
                 ...context
@@ -68,10 +72,7 @@ they are internal to the AIRport framework).`)
 
         return await transServer.find(
             portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            },
+            this.internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -89,10 +90,7 @@ they are internal to the AIRport framework).`)
 
         return await transServer.findOne(
             portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            },
+            this.internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -110,10 +108,7 @@ they are internal to the AIRport framework).`)
 
         return transServer.search(
             portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            },
+            this.internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -131,10 +126,7 @@ they are internal to the AIRport framework).`)
 
         return transServer.searchOne(
             portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            },
+            this.internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -150,10 +142,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
         return await transServer.save(entity,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         });
@@ -167,10 +156,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER);
 
         return await transServer.saveToDestination(repositoryDestination, entity,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
                 internal: true,
                 ...context
             } as any);
@@ -185,10 +171,7 @@ they are internal to the AIRport framework).`)
 
         return await transServer.insertValues(
             portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         }, ensureGeneratedValues)
@@ -201,10 +184,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.insertValuesGetIds(portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })
@@ -217,10 +197,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.updateValues(portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })
@@ -233,10 +210,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.deleteWhere(portableQuery,
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })
@@ -248,10 +222,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.startTransaction(
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })
@@ -263,10 +234,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.commit(
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })
@@ -278,10 +246,7 @@ they are internal to the AIRport framework).`)
         const transServer = await container(this).get(TRANSACTIONAL_SERVER)
 
         return await transServer.rollback(
-            {
-                application: null,
-                domain: INTERNAL_DOMAIN
-            }, {
+            this.internalCredentials, {
             internal: true,
             ...context
         })

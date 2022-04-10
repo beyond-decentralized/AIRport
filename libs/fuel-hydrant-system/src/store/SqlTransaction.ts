@@ -34,6 +34,13 @@ export abstract class SqlTransaction
     transHistory: ITransactionHistory
     type: StoreType;
 
+    initiator = {
+        application: '',
+        domain: '',
+        methodName: '',
+        objectName: ''
+    }
+
     constructor(
         protected driver: IStoreDriver,
         public parentTransaction: ITransaction

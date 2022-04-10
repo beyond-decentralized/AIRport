@@ -4,6 +4,12 @@ export class SqlTransaction {
         this.driver = driver;
         this.parentTransaction = parentTransaction;
         this.isSync = false;
+        this.initiator = {
+            application: '',
+            domain: '',
+            methodName: '',
+            objectName: ''
+        };
         this.__container__ = driver.__container__;
         this.id = uuidv4();
         this.type = driver.type;

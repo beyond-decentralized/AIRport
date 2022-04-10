@@ -50,21 +50,23 @@ export interface IConnectionInitializedIMI extends IIsolateMessage {
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
-export interface ILocalAPIRequestIMI extends ILocalAPIRequest<'FromClientRedirected'>, IIsolateMessage<'FromClientRedirected'> {
+export interface ILocalAPIRequestIMI extends IApiIMI, ILocalAPIRequest<'FromClientRedirected'>, IIsolateMessage<'FromClientRedirected'> {
 }
-export interface ITransactionEndIMI extends IIsolateMessage {
+export interface ITransactionEndIMI extends IApiIMI, IIsolateMessage {
     transactionId: string;
 }
 export interface IAddRepositoryIMI extends IIsolateMessage {
 }
-export interface ICallApiIMI extends IIsolateMessage {
-    args: Array<boolean | number | string>;
+export interface IApiIMI {
     methodName: string;
     objectName: string;
 }
+export interface ICallApiIMI extends IApiIMI, IIsolateMessage {
+    args: Array<boolean | number | string>;
+}
 export interface INumberIMO extends IIsolateMessageOut<number> {
 }
-export interface IPortableQueryIMI extends IIsolateMessage {
+export interface IPortableQueryIMI extends IApiIMI, IIsolateMessage {
     portableQuery: PortableQuery;
 }
 export interface IReadQueryIMI extends IPortableQueryIMI {
@@ -79,14 +81,14 @@ export interface IDataIMO<T> extends IIsolateMessageOut<T> {
 }
 export interface IObservableDataIMO<T> extends IIsolateMessageOut<Observable<T>> {
 }
-export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessage {
+export interface ISaveIMI<E, T = E | E[]> extends IApiIMI, IIsolateMessage {
     dbEntity: {
         id: number;
         applicationVersionId: number;
     };
     entity: T;
 }
-export interface ISaveToDestinationIMI<E, T = E | E[]> extends IIsolateMessage {
+export interface ISaveToDestinationIMI<E, T = E | E[]> extends IApiIMI, IIsolateMessage {
     dbEntity: {
         id: number;
         applicationVersionId: number;

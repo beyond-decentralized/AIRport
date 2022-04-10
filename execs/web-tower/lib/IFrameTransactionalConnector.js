@@ -207,14 +207,14 @@ export class IframeTransactionalConnector {
     async commit(context) {
         return await this.sendMessage({
             ...this.getCoreFields(),
-            transactionId: context.transactionId,
+            transactionId: context.transaction.id,
             type: IsolateMessageType.COMMIT
         });
     }
     async rollback(context) {
         return await this.sendMessage({
             ...this.getCoreFields(),
-            transactionId: context.transactionId,
+            transactionId: context.transaction.id,
             type: IsolateMessageType.ROLLBACK
         });
     }

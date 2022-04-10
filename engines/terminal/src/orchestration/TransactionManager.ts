@@ -29,6 +29,8 @@ import {
 	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
+	ITransactionCredentials,
+	ITransactionInitiator,
 	ITransactionManager,
 	STORE_DRIVER,
 	TRANSACTION_MANAGER
@@ -42,7 +44,6 @@ export class TransactionManager
 	// Keyed by repository index
 	storeType: StoreType;
 	transactionIndexQueue: string[] = [];
-	sourceOfTransactionInProgress: string = null;
 	transactionInProgress: ITransaction = null;
 	yieldToRunningTransaction: number = 200;
 
@@ -69,7 +70,7 @@ export class TransactionManager
 	}
 
 	async transact(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		transactionalCallback: {
 			(
 				transaction: IStoreDriver,
@@ -105,9 +106,9 @@ export class TransactionManager
 	}
 
 	async startTransaction(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: ITransactionContext,
-	): Promise<void> {
+	): Promise<ITransaction> {
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
 		if (!await this.startTransactionPrep(credentials, context)) {
@@ -119,6 +120,10 @@ export class TransactionManager
 		await storeDriver.startTransaction(transaction)
 
 		await this.setupTransaction(credentials, transaction, context)
+
+		context.transaction = transaction
+
+		return transaction
 	}
 
 	async rollback(
@@ -193,7 +198,7 @@ export class TransactionManager
 	}
 
 	async startTransactionPrep(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 		transactionalCallback?: {
 			(
@@ -212,6 +217,23 @@ export class TransactionManager
 			credentials.domain, credentials.application)
 
 		if (!isServer) {
+			let transaction = this.transactionInProgress
+			do {
+				if (this.isSameSource(transaction, credentials)) {
+					let callHerarchy = this.getApiName(credentials)
+					let hierarchyTransaction = this.transactionInProgress
+					do {
+						callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
+${callHerarchy}`
+					} while (hierarchyTransaction = hierarchyTransaction.parentTransaction)
+					throw new Error(`Circular API call detected:
+					
+${callHerarchy}
+
+					`)
+				}
+
+			} while (transaction = transaction.parentTransaction)
 			if (fullApplicationName === this.sourceOfTransactionInProgress) {
 				if (transactionalCallback) {
 					await transactionalCallback(this.transactionInProgress, context);
@@ -251,7 +273,7 @@ Only one concurrent transaction is allowed per application.`)
 	}
 
 	private async setupTransaction(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		transaction: ITransaction,
 		context: IContext,
 	): Promise<void> {
@@ -280,6 +302,23 @@ Only one concurrent transaction is allowed per application.`)
 	// 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
 	// [transaction]);
 	// this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
+
+	private isSameSource(
+		transaction: ITransaction,
+		credentials: ITransactionCredentials
+	): boolean {
+		const initiator = transaction.initiator
+		return initiator.domain === credentials.domain
+			&& initiator.application === credentials.application
+			&& initiator.objectName === credentials.objectName
+			&& initiator.methodName === credentials.methodName
+	}
+
+	private getApiName(
+		nameContainer: ITransactionInitiator | ITransactionCredentials
+	) {
+		return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`
+	}
 
 	private clearTransaction() {
 		this.sourceOfTransactionInProgress = null;

@@ -123,24 +123,6 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                                 .then();
                         }
                     });
-                    if (interAppApiCallRequest) {
-                        if (message.errorMessage) {
-                            interAppApiCallRequest.reject(message.errorMessage);
-                        }
-                        else {
-                            interAppApiCallRequest.resolve(message.payload);
-                        }
-                    }
-                    else {
-                        const toClientRedirectedMessage = {
-                            ...message,
-                            __received__: false,
-                            __receivedTime__: null,
-                            category: 'ToClientRedirected'
-                        };
-                        this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-                            .then();
-                    }
                     break;
                 default:
                     break;
@@ -222,7 +204,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         });
     }
     async nativeHandleApiCall(message, context) {
-        if (await this.nativeStartApiCall(message, context)) {
+        if (!await this.nativeStartApiCall(message, context)) {
             throw new Error(context.errorMessage);
         }
         return new Promise((resolve, reject) => {

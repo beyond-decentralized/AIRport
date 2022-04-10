@@ -1,7 +1,5 @@
 import { ILocalAPIRequest } from "@airport/aviation-communication";
 import {
-    DistributionStrategy,
-    PlatformType,
     PortableQuery
 } from "@airport/ground-control";
 import { Observable } from "rxjs";
@@ -72,11 +70,12 @@ export interface IInitConnectionIMO
 }
 
 export interface ILocalAPIRequestIMI
-    extends ILocalAPIRequest<'FromClientRedirected'>, IIsolateMessage<'FromClientRedirected'> {
+    extends IApiIMI, ILocalAPIRequest<'FromClientRedirected'>,
+    IIsolateMessage<'FromClientRedirected'> {
 }
 
 export interface ITransactionEndIMI
-    extends IIsolateMessage {
+    extends IApiIMI, IIsolateMessage {
     transactionId: string
 }
 
@@ -89,11 +88,14 @@ export interface IAddRepositoryIMI
     // url: string
 }
 
-export interface ICallApiIMI
-    extends IIsolateMessage {
-    args: Array<boolean | number | string>
+export interface IApiIMI {
     methodName: string
     objectName: string
+}
+
+export interface ICallApiIMI
+    extends IApiIMI, IIsolateMessage {
+    args: Array<boolean | number | string>
 }
 
 export interface INumberIMO
@@ -101,7 +103,7 @@ export interface INumberIMO
 }
 
 export interface IPortableQueryIMI
-    extends IIsolateMessage {
+    extends IApiIMI, IIsolateMessage {
     portableQuery: PortableQuery
 }
 
@@ -124,7 +126,7 @@ export interface IObservableDataIMO<T>
 }
 
 export interface ISaveIMI<E, T = E | E[]>
-    extends IIsolateMessage {
+    extends IApiIMI, IIsolateMessage {
     dbEntity: {
         id: number,
         applicationVersionId: number
@@ -133,7 +135,7 @@ export interface ISaveIMI<E, T = E | E[]>
 }
 
 export interface ISaveToDestinationIMI<E, T = E | E[]>
-    extends IIsolateMessage {
+    extends IApiIMI, IIsolateMessage {
     dbEntity: {
         id: number,
         applicationVersionId: number

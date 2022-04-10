@@ -5,11 +5,11 @@ import {
     IContext,
 } from '@airport/di';
 import {
-    FullApplicationName,
     getFullApplicationName,
     getFullApplicationNameFromDomainAndName
 } from '@airport/ground-control';
 import {
+    IApiIMI,
     IConnectionInitializedIMI,
     IGetLatestApplicationVersionByApplicationNameIMI,
     IInitConnectionIMI,
@@ -28,6 +28,8 @@ import {
     IApiCallContext,
     ICredentials,
     IQueryOperationContext,
+    ITransactionContext,
+    ITransactionCredentials,
     TERMINAL_STORE,
     TRANSACTIONAL_SERVER
 } from '@airport/terminal-map';
@@ -42,15 +44,17 @@ export abstract class TransactionalReceiver {
     initializingApps: Set<string> = new Set()
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
-        message: IIsolateMessage
+        message: IIsolateMessage & IApiIMI
     ): Promise<ReturnType> {
         const [transactionalServer, terminalStore] = await container(this)
             .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
         let result: any
         let errorMessage
-        let credentials: ICredentials = {
+        let credentials: ITransactionCredentials = {
             application: message.application,
-            domain: message.domain
+            domain: message.domain,
+            methodName: message.methodName,
+            objectName: message.objectName
         }
         let context: IContext = {}
         context.startedAt = new Date()
@@ -93,7 +97,7 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.APP_INITIALIZED:
                     const lastTerminalState = terminalStore.getTerminalState()
                     const initializedApps = lastTerminalState.initializedApps
-                    initializedApps.add((message as IConnectionInitializedIMI).fullApplicationName)
+                    initializedApps.add((message as any as IConnectionInitializedIMI).fullApplicationName)
                     terminalStore.state.next({
                         ...lastTerminalState,
                         initializedApps
@@ -102,13 +106,13 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
-                        .get((message as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
+                        .get((message as any as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
                     break
                 }
                 case IsolateMessageType.RETRIEVE_DOMAIN: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)
                     result = terminalStore.getDomainMapByName()
-                        .get((message as IRetrieveDomainIMI).domainName)
+                        .get(message.domain)
                     break
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
@@ -127,7 +131,7 @@ export abstract class TransactionalReceiver {
                         credentials,
                         context
                     )) {
-                        result = credentials.transactionId
+                        result = context.transactionId
                     } else {
                         result = null
                     }
@@ -285,18 +289,28 @@ export abstract class TransactionalReceiver {
 
     protected async startApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
-        context: IApiCallContext,
+        context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<boolean> {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER)
 
         if (!await transactionalServer.startTransaction({
+            application: message.application,
             domain: message.domain,
-            application: message.application
+            methodName: message.methodName,
+            objectName: message.objectName
         }, context)) {
             return false
         }
+
+        const initiator = context.transaction.initiator
+        initiator.application = message.application
+        initiator.domain = message.domain
+        initiator.methodName = message.methodName
+        initiator.objectName = message.objectName
+
+        message.transactionId = context.transaction.id
 
         try {
             await nativeHandleCallback()
@@ -309,7 +323,7 @@ export abstract class TransactionalReceiver {
     }
 
     protected async endApiCall(
-        credentials: ICredentials,
+        credentials: ITransactionCredentials,
         errorMessage: string,
         context: IApiCallContext
     ): Promise<boolean> {
@@ -331,8 +345,10 @@ export abstract class TransactionalReceiver {
 
         if (!await transactionalServer.startTransaction(
             {
+                application: message.application,
                 domain: message.domain,
-                application: message.application
+                methodName: message.methodName,
+                objectName: message.objectName
             },
             context
         )) {

@@ -15,7 +15,9 @@ export class TransactionalReceiver {
         let errorMessage;
         let credentials = {
             application: message.application,
-            domain: message.domain
+            domain: message.domain,
+            methodName: message.methodName,
+            objectName: message.objectName
         };
         let context = {};
         context.startedAt = new Date();
@@ -69,7 +71,7 @@ export class TransactionalReceiver {
                 case IsolateMessageType.RETRIEVE_DOMAIN: {
                     const terminalStore = await container(this).get(TERMINAL_STORE);
                     result = terminalStore.getDomainMapByName()
-                        .get(message.domainName);
+                        .get(message.domain);
                     break;
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
@@ -83,7 +85,7 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.START_TRANSACTION:
                     if (await transactionalServer.startTransaction(credentials, context)) {
-                        result = credentials.transactionId;
+                        result = context.transactionId;
                     }
                     else {
                         result = null;
@@ -187,11 +189,19 @@ export class TransactionalReceiver {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER);
         if (!await transactionalServer.startTransaction({
+            application: message.application,
             domain: message.domain,
-            application: message.application
+            methodName: message.methodName,
+            objectName: message.objectName
         }, context)) {
             return false;
         }
+        const initiator = context.transaction.initiator;
+        initiator.application = message.application;
+        initiator.domain = message.domain;
+        initiator.methodName = message.methodName;
+        initiator.objectName = message.objectName;
+        message.transactionId = context.transaction.id;
         try {
             await nativeHandleCallback();
         }

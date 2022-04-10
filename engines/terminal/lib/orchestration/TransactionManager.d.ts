@@ -17,7 +17,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     transact(credentials: ICredentials, transactionalCallback: {
         (transaction: IStoreDriver, context: IContext): Promise<void> | void;
     }, context: ITransactionContext): Promise<void>;
-    startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<void>;
+    startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<ITransaction>;
     rollback(transaction: ITransaction, context: IContext): Promise<void>;
     commit(transaction: ITransaction, context: IContext): Promise<void>;
     startTransactionPrep(credentials: ICredentials, context: ITransactionContext, transactionalCallback?: {

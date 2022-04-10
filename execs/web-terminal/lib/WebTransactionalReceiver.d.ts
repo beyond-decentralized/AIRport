@@ -1,6 +1,6 @@
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { TransactionalReceiver } from '@airport/terminal';
-import { ITransactionalReceiver, IApiCallContext } from '@airport/terminal-map';
+import { ITransactionalReceiver, IApiCallContext, ITransactionContext } from '@airport/terminal-map';
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { Subscription } from 'rxjs';
 export interface IMessageInRecord {
@@ -25,8 +25,8 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     private ensureConnectionIsReady;
     private hasValidApplicationInfo;
     private handleFromClientRequest;
-    protected nativeStartApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<boolean>;
-    protected nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<Result>;
+    protected nativeStartApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext): Promise<boolean>;
+    protected nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext): Promise<Result>;
     private relyToClientWithError;
     private getFrameWindow;
     private handleToClientRequest;

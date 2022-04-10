@@ -6,7 +6,10 @@ import {
 } from '@airport/ground-control'
 import { Observable } from 'rxjs'
 import { IQueryOperationContext } from '..'
-import { ICredentials } from '../Credentials'
+import {
+	ICredentials,
+	ITransactionCredentials
+} from '../Credentials'
 
 export interface ITransactionalServer {
 
@@ -19,7 +22,7 @@ export interface ITransactionalServer {
 		// platform: PlatformType,
 		// platformConfig: string,
 		// distributionStrategy: DistributionStrategy,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<number>
 
@@ -52,55 +55,55 @@ export interface ITransactionalServer {
 	): Observable<E>
 
 	startTransaction(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	commit(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	rollback(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<boolean>
 
 	save<E>(
 		entity: E,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IEntityContext,
 	): Promise<ISaveResult>
 
 	saveToDestination<E>(
 		repositoryDestination: string,
 		entity: E,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IEntityContext,
 	): Promise<ISaveResult>
 
 	insertValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext,
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
 	insertValuesGetIds(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<number[][]>
 
 	updateValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<number>
 
 	deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IContext
 	): Promise<number>
 

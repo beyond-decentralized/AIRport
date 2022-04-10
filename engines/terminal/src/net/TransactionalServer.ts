@@ -20,7 +20,8 @@ import {
 	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER,
 	ITransactionContext,
-	IApiCallContext
+	IApiCallContext,
+	ITransactionCredentials
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -72,7 +73,7 @@ export class TransactionalServer
 	}
 
 	async addRepository(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext
 	): Promise<Repository_Id> {
 		await this.ensureIocContext(context)
@@ -142,7 +143,7 @@ export class TransactionalServer
 	}
 
 	async startTransaction(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (this.currentTransactionContext) {
@@ -153,9 +154,6 @@ export class TransactionalServer
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
 			await transactionManager.startTransaction(credentials, context)
 			this.currentTransactionContext = context
-			this.currentTransactionContext.transactionId = uuidv4()
-			credentials.transactionId =
-				this.currentTransactionContext.transactionId
 			return true
 		} catch (e) {
 			context.errorMessage = e.message
@@ -165,11 +163,11 @@ export class TransactionalServer
 	}
 
 	async commit(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (!this.currentTransactionContext
-			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
+			|| this.currentTransactionContext.transaction.id !== credentials.transactionId) {
 			return false
 		}
 
@@ -189,11 +187,11 @@ export class TransactionalServer
 	}
 
 	async rollback(
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (!this.currentTransactionContext
-			|| this.currentTransactionContext.transactionId !== credentials.transactionId) {
+			|| this.currentTransactionContext.transaction.id !== credentials.transactionId) {
 			return false
 		}
 		try {
@@ -213,7 +211,7 @@ export class TransactionalServer
 
 	async save<E>(
 		entity: E,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
@@ -238,7 +236,7 @@ export class TransactionalServer
 	async saveToDestination<E>(
 		repositoryDestination: string,
 		entity: E,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
@@ -264,7 +262,7 @@ export class TransactionalServer
 
 	async insertValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
@@ -284,7 +282,7 @@ export class TransactionalServer
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext
 	): Promise<number[][]> {
 		await this.ensureIocContext(context)
@@ -303,7 +301,7 @@ export class TransactionalServer
 
 	async updateValues(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext
 	): Promise<number> {
 		await this.ensureIocContext(context)
@@ -322,7 +320,7 @@ export class TransactionalServer
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
+		credentials: ITransactionCredentials,
 		context: IOperationContext
 	): Promise<number> {
 		await this.ensureIocContext(context)
