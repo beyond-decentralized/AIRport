@@ -12,5 +12,6 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType> ex
     domain: string;
     id: string;
     protocol: string;
+    transactionId?: string;
 }
 //# sourceMappingURL=LocalAPIRequest.d.ts.map

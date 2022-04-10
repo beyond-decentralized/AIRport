@@ -288,6 +288,8 @@ export class WebTransactionalReceiver
 				message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplicationName)
 			if (frameWindow) {
+				TODO: work here next
+				message.transactionId = 
 				// Forward the request to the correct application iframe
 				frameWindow.postMessage(message, '*')
 			} else {

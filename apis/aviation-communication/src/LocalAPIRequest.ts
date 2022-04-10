@@ -16,4 +16,5 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType>
     domain: string // network DNS domain name (or alike) where applcation is hosted
     id: string // UUID
     protocol: string
+    transactionId?: string
 }
