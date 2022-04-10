@@ -8,6 +8,7 @@ import {
 } from '@airport/di'
 import { FullApplicationName, getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
+	IApiIMI,
 	IIsolateMessage,
 	IObservableDataIMO,
 	IsolateMessageType,
@@ -130,7 +131,7 @@ export class WebTransactionalReceiver
 		createChannel()
 
 		window.addEventListener("message", event => {
-			const message: IIsolateMessage | ILocalAPIResponse = event.data
+			const message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse = event.data
 			if (message.__received__) {
 				return
 			}
@@ -151,7 +152,7 @@ export class WebTransactionalReceiver
 			const messageOrigin = event.origin;
 			switch (message.category) {
 				case 'ToDb':
-					this.handleIsolateMessage(message as IIsolateMessage, messageOrigin,
+					this.handleIsolateMessage(message as (IIsolateMessage & IApiIMI), messageOrigin,
 						event.source as Window).then()
 					break
 				case 'ToClient':
@@ -429,7 +430,7 @@ export class WebTransactionalReceiver
 	}
 
 	private async handleIsolateMessage(
-		message: IIsolateMessage,
+		message: IIsolateMessage & IApiIMI,
 		messageOrigin: string,
 		source: Window
 	): Promise<void> {

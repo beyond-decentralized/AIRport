@@ -18,7 +18,8 @@ import {
     ICredentials,
     IOperationContext,
     IStoreDriver,
-    ITransaction
+    ITransaction,
+    ITransactionContext
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 import { v4 as uuidv4 } from "uuid";
@@ -135,23 +136,25 @@ export abstract class SqlTransaction
     async transact(
         transactionalCallback: {
             (
-                transaction: IStoreDriver
+                transaction: ITransaction,
+                context: ITransactionContext
             ): Promise<void> | void
         },
-        context: IContext,
+        context: ITransactionContext,
         parentTransaction?: ITransaction,
     ): Promise<void> {
-        await transactionalCallback(this);
+        await transactionalCallback(this, context);
     }
 
     async startTransaction(
         transaction: ITransaction,
+        context: ITransactionContext
     ): Promise<void> {
         throw new Error(`Nested transactions are not supported`)
     }
 
     async setupTransaction(
-        context: IOperationContext,
+        context: ITransactionContext,
         parentTransaction?: ITransaction,
     ): Promise<ITransaction> {
         throw new Error(`Nested transactions are not supported`)
@@ -159,21 +162,23 @@ export abstract class SqlTransaction
 
     async tearDownTransaction(
         transaction: ITransaction,
-        context: IOperationContext,
+        context: ITransactionContext
     ): Promise<void> {
         throw new Error(`Nested transactions are not supported`)
     }
 
     async commit(
         transaction: ITransaction,
+        context: ITransactionContext
     ): Promise<void> {
-        await this.driver.commit(this)
+        await this.driver.commit(this, context)
     }
 
     async rollback(
         transaction: ITransaction,
+        context: ITransactionContext
     ): Promise<void> {
-        await this.driver.rollback(this)
+        await this.driver.rollback(this, context)
     }
 
     abstract isServer(

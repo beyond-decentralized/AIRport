@@ -8,6 +8,7 @@ import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction,
+	ITransactionContext,
 	STORE_DRIVER,
 	TERMINAL_STORE
 } from '@airport/terminal-map';
@@ -40,7 +41,7 @@ export class SqlJsDriver
 	}
 
 	async setupTransaction(
-		context: IOperationContext,
+		context: ITransactionContext,
 		parentTransaction?: ITransaction,
 	): Promise<ITransaction> {
 		const transaction = new SqlJsTransaction(this, parentTransaction)
@@ -52,21 +53,21 @@ export class SqlJsDriver
 
 	async internalStartTransaction(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		this._db.exec(`SAVEPOINT ${transaction.id}`)
 	}
 
 	async internalCommit(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`)
 	}
 
 	async internalRollback(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`)
 	}

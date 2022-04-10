@@ -11,7 +11,8 @@ import {
 } from '@airport/fuel-hydrant-system';
 import {
 	StoreType,
-	getFullApplicationNameFromDomainAndName
+	getFullApplicationNameFromDomainAndName,
+	INTERNAL_DOMAIN
 } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
@@ -151,7 +152,7 @@ export class TransactionManager
 			return;
 		}
 		try {
-			await transaction.rollback(null);
+			await transaction.rollback(null, context);
 		} finally {
 			this.clearTransaction();
 		}
@@ -218,22 +219,7 @@ export class TransactionManager
 
 		if (!isServer) {
 			let transaction = this.transactionInProgress
-			do {
-				if (this.isSameSource(transaction, credentials)) {
-					let callHerarchy = this.getApiName(credentials)
-					let hierarchyTransaction = this.transactionInProgress
-					do {
-						callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
-${callHerarchy}`
-					} while (hierarchyTransaction = hierarchyTransaction.parentTransaction)
-					throw new Error(`Circular API call detected:
-					
-${callHerarchy}
-
-					`)
-				}
-
-			} while (transaction = transaction.parentTransaction)
+			this.checkForCircularDependencies(transaction, credentials)
 			if (fullApplicationName === this.sourceOfTransactionInProgress) {
 				if (transactionalCallback) {
 					await transactionalCallback(this.transactionInProgress, context);
@@ -266,10 +252,34 @@ Only one concurrent transaction is allowed per application.`)
 				transIndex =>
 					transIndex !== fullApplicationName,
 			);
-			this.sourceOfTransactionInProgress = fullApplicationName;
 		}
 
 		return true
+	}
+
+	private checkForCircularDependencies(
+		transaction: ITransaction,
+		credentials: ITransactionCredentials
+	): void {
+		if (credentials.domain === INTERNAL_DOMAIN) {
+			return
+		}
+		do {
+			if (this.isSameSource(transaction, credentials)) {
+				let callHerarchy = this.getApiName(credentials)
+				let hierarchyTransaction = this.transactionInProgress
+				do {
+					callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
+${callHerarchy}`
+				} while (hierarchyTransaction = hierarchyTransaction.parentTransaction)
+				throw new Error(`Circular API call detected:
+				
+${callHerarchy}
+
+				`)
+			}
+
+		} while (transaction = transaction.parentTransaction)
 	}
 
 	private async setupTransaction(
@@ -322,6 +332,9 @@ Only one concurrent transaction is allowed per application.`)
 
 	private clearTransaction() {
 		this.sourceOfTransactionInProgress = null;
+		if(this.transactionInProgress.parentTransaction) {
+
+		}
 		this.transactionInProgress = null;
 		if (this.transactionIndexQueue.length) {
 			this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();

@@ -34,6 +34,7 @@ import {
 	IOperationContext,
 	IStoreDriver,
 	ITransaction,
+	ITransactionContext,
 	TERMINAL_STORE
 } from '@airport/terminal-map';
 import { SQLDelete } from '../sql/core/SQLDelete';
@@ -119,10 +120,10 @@ export abstract class SqlDriver
 		transactionalCallback: {
 			(
 				transaction: ITransaction,
-				context: IOperationContext
+				context: ITransactionContext
 			): Promise<void>
 		},
-		context: IOperationContext,
+		context: ITransactionContext,
 		parentTransaction?: ITransaction,
 	): Promise<void> {
 		const transaction = await this.setupTransaction(context, parentTransaction)
@@ -145,13 +146,13 @@ export abstract class SqlDriver
 	}
 
 	abstract setupTransaction(
-		context: IOperationContext,
+		context: ITransactionContext,
 		parentTransaction?: ITransaction,
 	): Promise<ITransaction>
 
 	protected async internalSetupTransaction(
 		transaction: ITransaction,
-		context: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		const terminalStore = await container(this).get(TERMINAL_STORE)
@@ -160,7 +161,7 @@ export abstract class SqlDriver
 
 	async tearDownTransaction(
 		transaction: ITransaction,
-		context: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void> {
 		if (transaction.childTransaction) {
 			this.tearDownTransaction(transaction.childTransaction, context)
@@ -168,6 +169,7 @@ export abstract class SqlDriver
 		if (transaction.parentTransaction) {
 			transaction.parentTransaction.childTransaction = null
 			transaction.parentTransaction = null
+			context.transaction = transaction.parentTransaction
 		}
 
 		const terminalStore = await container(this).get(TERMINAL_STORE)
@@ -176,7 +178,7 @@ export abstract class SqlDriver
 
 	async startTransaction(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -190,12 +192,12 @@ export abstract class SqlDriver
 
 	abstract internalStartTransaction(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void>
 
 	async commit(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -215,12 +217,12 @@ export abstract class SqlDriver
 
 	abstract internalCommit(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void>
 
 	async rollback(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -235,7 +237,7 @@ export abstract class SqlDriver
 
 	abstract internalRollback(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context?: ITransactionContext,
 	): Promise<void>
 
 	async insertValues(

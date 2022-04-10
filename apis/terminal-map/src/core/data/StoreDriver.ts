@@ -14,6 +14,7 @@ import {
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo'
 import { ITransaction } from '../../transaction/ITransaction'
 import { IOperationContext } from '../../processing/OperationContext'
+import { ITransactionContext } from '../../orchestration/TransactionManager'
 
 /**
  * Created by Papa on 6/10/2016.
@@ -79,36 +80,37 @@ export interface IStoreDriver
 	transact(
 		transactionalCallback: {
 			(
-				transaction: IStoreDriver
+				transaction: ITransaction,
+				context: ITransactionContext
 			): Promise<void> | void
 		},
-		context: IContext,
+		context: ITransactionContext,
 		parentTransaction?: ITransaction
 	): Promise<void>
 
 	setupTransaction(
-		context: IOperationContext,
+		context: ITransactionContext,
 		parentTransaction?: ITransaction,
 	): Promise<ITransaction>
 
 	tearDownTransaction(
 		transaction: ITransaction,
-		context: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void>
 
 	startTransaction(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void>
 
 	commit(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void>
 
 	rollback(
 		transaction: ITransaction,
-		context?: IOperationContext,
+		context: ITransactionContext,
 	): Promise<void>
 
 	isServer(

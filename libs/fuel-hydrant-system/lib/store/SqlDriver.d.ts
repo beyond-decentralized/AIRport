@@ -1,6 +1,6 @@
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { IOperationContext, IStoreDriver, ITransaction } from '@airport/terminal-map';
+import { IStoreDriver, ITransaction, ITransactionContext } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**
@@ -26,17 +26,17 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract composeTableName(applicationName: string, tableName: string, context: IFuelHydrantContext): string;
     abstract initialize(dbName: string, context: IFuelHydrantContext): Promise<any>;
     transact(transactionalCallback: {
-        (transaction: ITransaction, context: IOperationContext): Promise<void>;
-    }, context: IOperationContext, parentTransaction?: ITransaction): Promise<void>;
-    abstract setupTransaction(context: IOperationContext, parentTransaction?: ITransaction): Promise<ITransaction>;
-    protected internalSetupTransaction(transaction: ITransaction, context: IOperationContext): Promise<void>;
-    tearDownTransaction(transaction: ITransaction, context: IOperationContext): Promise<void>;
-    startTransaction(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    abstract internalStartTransaction(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    commit(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    abstract internalCommit(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    rollback(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    abstract internalRollback(transaction: ITransaction, context?: IOperationContext): Promise<void>;
+        (transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    }, context: ITransactionContext, parentTransaction?: ITransaction): Promise<void>;
+    abstract setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
+    protected internalSetupTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    startTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    abstract internalStartTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    commit(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    abstract internalCommit(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    rollback(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    abstract internalRollback(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
     insertValues(portableQuery: PortableQuery, context: IFuelHydrantContext, cachedSqlQueryId?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IFuelHydrantContext): Promise<number>;
     updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext): Promise<number>;

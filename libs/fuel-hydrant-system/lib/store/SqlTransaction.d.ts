@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
-import { ICredentials, IOperationContext, IStoreDriver, ITransaction } from '@airport/terminal-map';
+import { ICredentials, IOperationContext, IStoreDriver, ITransaction, ITransactionContext } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare abstract class SqlTransaction implements ITransaction {
     protected driver: IStoreDriver;
@@ -40,13 +40,13 @@ export declare abstract class SqlTransaction implements ITransaction {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     transact(transactionalCallback: {
-        (transaction: IStoreDriver): Promise<void> | void;
-    }, context: IContext, parentTransaction?: ITransaction): Promise<void>;
-    startTransaction(transaction: ITransaction): Promise<void>;
-    setupTransaction(context: IOperationContext, parentTransaction?: ITransaction): Promise<ITransaction>;
-    tearDownTransaction(transaction: ITransaction, context: IOperationContext): Promise<void>;
-    commit(transaction: ITransaction): Promise<void>;
-    rollback(transaction: ITransaction): Promise<void>;
+        (transaction: ITransaction, context: ITransactionContext): Promise<void> | void;
+    }, context: ITransactionContext, parentTransaction?: ITransaction): Promise<void>;
+    startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
+    tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     abstract isServer(context?: IContext): boolean;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;

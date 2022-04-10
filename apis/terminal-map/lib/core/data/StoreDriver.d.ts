@@ -6,7 +6,7 @@ import { ApplicationName, DomainName, FullApplicationName } from '@airport/groun
 import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/lingo/data/IStoreOperator';
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
 import { ITransaction } from '../../transaction/ITransaction';
-import { IOperationContext } from '../../processing/OperationContext';
+import { ITransactionContext } from '../../orchestration/TransactionManager';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -32,13 +32,13 @@ export interface IStoreDriver extends IStoreOperator {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     transact(transactionalCallback: {
-        (transaction: IStoreDriver): Promise<void> | void;
-    }, context: IContext, parentTransaction?: ITransaction): Promise<void>;
-    setupTransaction(context: IOperationContext, parentTransaction?: ITransaction): Promise<ITransaction>;
-    tearDownTransaction(transaction: ITransaction, context: IOperationContext): Promise<void>;
-    startTransaction(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    commit(transaction: ITransaction, context?: IOperationContext): Promise<void>;
-    rollback(transaction: ITransaction, context?: IOperationContext): Promise<void>;
+        (transaction: ITransaction, context: ITransactionContext): Promise<void> | void;
+    }, context: ITransactionContext, parentTransaction?: ITransaction): Promise<void>;
+    setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
+    tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

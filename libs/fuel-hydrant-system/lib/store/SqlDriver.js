@@ -66,6 +66,7 @@ export class SqlDriver {
         if (transaction.parentTransaction) {
             transaction.parentTransaction.childTransaction = null;
             transaction.parentTransaction = null;
+            context.transaction = transaction.parentTransaction;
         }
         const terminalStore = await container(this).get(TERMINAL_STORE);
         terminalStore.getTransactionMapById().delete(transaction.id);

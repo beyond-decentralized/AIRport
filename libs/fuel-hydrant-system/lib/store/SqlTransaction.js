@@ -44,9 +44,9 @@ export class SqlTransaction {
         return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId);
     }
     async transact(transactionalCallback, context, parentTransaction) {
-        await transactionalCallback(this);
+        await transactionalCallback(this, context);
     }
-    async startTransaction(transaction) {
+    async startTransaction(transaction, context) {
         throw new Error(`Nested transactions are not supported`);
     }
     async setupTransaction(context, parentTransaction) {
@@ -55,11 +55,11 @@ export class SqlTransaction {
     async tearDownTransaction(transaction, context) {
         throw new Error(`Nested transactions are not supported`);
     }
-    async commit(transaction) {
-        await this.driver.commit(this);
+    async commit(transaction, context) {
+        await this.driver.commit(this, context);
     }
-    async rollback(transaction) {
-        await this.driver.rollback(this);
+    async rollback(transaction, context) {
+        await this.driver.rollback(this, context);
     }
     async deleteWhere(portableQuery, context) {
         return await this.driver.deleteWhere(portableQuery, context);
