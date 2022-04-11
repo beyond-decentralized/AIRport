@@ -11,7 +11,6 @@ export enum IsolateMessageType {
     APP_INITIALIZING = 'APP_INITIALIZING',
     APP_INITIALIZED = 'APP_INITIALIZED',
     CALL_API = 'CALL_API',
-    COMMIT = 'COMMIT',
     DELETE_WHERE = 'DELETE_WHERE',
     FIND = 'FIND',
     FIND_ONE = 'FIND_ONE',
@@ -19,11 +18,9 @@ export enum IsolateMessageType {
     INSERT_VALUES = 'INSERT_VALUES',
     INSERT_VALUES_GET_IDS = 'INSERT_VALUES_GET_IDS',
     RETRIEVE_DOMAIN = 'RETRIEVE_DOMAIN',
-    ROLLBACK = 'ROLLBACK',
     SEARCH = 'SEARCH',
     SEARCH_ONE = 'SEARCH_ONE',
     SEARCH_UNSUBSCRIBE = 'UNSUBSCRIBE',
-    START_TRANSACTION = 'START_TRANSACTION',
     SAVE = 'SAVE',
     SAVE_TO_DESTINATION = 'SAVE_TO_DESTINATION',
     UPDATE_VALUES = 'UPDATE_VALUES'
@@ -91,6 +88,7 @@ export interface IAddRepositoryIMI
 export interface IApiIMI {
     methodName: string
     objectName: string
+    transactionId?: string
 }
 
 export interface ICallApiIMI

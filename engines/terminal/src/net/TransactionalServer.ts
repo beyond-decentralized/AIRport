@@ -25,11 +25,16 @@ import {
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
-import { v4 as uuidv4 } from "uuid";
 
 export interface InternalPortableQuery
 	extends PortableQuery {
 	domainAndPort: string
+}
+
+export interface IPendingTransaction {
+	credentials: ITransactionCredentials
+	reject
+	resolve
 }
 
 /**
@@ -62,6 +67,7 @@ export class TransactionalServer
 	tempActor: IActor;
 
 	private currentTransactionContext: ITransactionContext
+	private pendingTransactionQueue: IPendingTransaction[] = []
 
 	async init(
 		context: IContext = {}
@@ -142,13 +148,52 @@ export class TransactionalServer
 		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
 	}
 
+	private checkCurrentTransaction(
+		credentials: ICredentials
+	): void {
+	}
+
 	async startTransaction(
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
-		if (this.currentTransactionContext) {
+		try {
+			if (credentials.transactionId) {
+				if (!this.currentTransactionContext) {
+					throw new Error(`
+Recieved a startTransaction call (@Api call) id: ${credentials.transactionId}
+with no current transaction in progress.  Nested @Api calls should always
+be attached to a parent transaction.`)
+				}
+				if (this.currentTransactionContext.transaction.id !==
+					credentials.transactionId) {
+					throw new Error(`
+Current transaction id does not match the passed in transaction id:
+${credentials.transactionId}`)
+				}
+			} else {
+				if (this.currentTransactionContext) {
+					return new Promise((resolve, reject) => {
+						this.pendingTransactionQueue.push({
+							credentials,
+							reject,
+							resolve,
+						})
+					})
+				}
+			}
+		} catch (e) {
+			context.errorMessage = e.message
+			console.error(e)
 			return false
 		}
+		return await this.internalStartTransaction(credentials, context)
+	}
+
+	private async internalStartTransaction(
+		credentials: ITransactionCredentials,
+		context: IOperationContext & ITransactionContext & IApiCallContext
+	): Promise<boolean> {
 		try {
 			await this.ensureIocContext(context)
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)

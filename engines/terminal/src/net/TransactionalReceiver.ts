@@ -6,7 +6,8 @@ import {
 } from '@airport/di';
 import {
     getFullApplicationName,
-    getFullApplicationNameFromDomainAndName
+    getFullApplicationNameFromDomainAndName,
+    INTERNAL_DOMAIN
 } from '@airport/ground-control';
 import {
     IApiIMI,
@@ -46,19 +47,22 @@ export abstract class TransactionalReceiver {
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage & IApiIMI
     ): Promise<ReturnType> {
-        const [transactionalServer, terminalStore] = await container(this)
-            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
         let result: any
         let errorMessage
-        let credentials: ITransactionCredentials = {
-            application: message.application,
-            domain: message.domain,
-            methodName: message.methodName,
-            objectName: message.objectName
-        }
-        let context: IContext = {}
-        context.startedAt = new Date()
         try {
+            if (message.domain === INTERNAL_DOMAIN) {
+                throw new Error(`Internal domain cannot be used in external calls`)
+            }
+            const [transactionalServer, terminalStore] = await container(this)
+                .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
+            let credentials: ITransactionCredentials = {
+                application: message.application,
+                domain: message.domain,
+                methodName: message.methodName,
+                objectName: message.objectName
+            }
+            let context: IContext = {}
+            context.startedAt = new Date()
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
                     const context: IApiCallContext = {}
@@ -125,28 +129,6 @@ export abstract class TransactionalReceiver {
                         credentials,
                         context
                     );
-                    break
-                case IsolateMessageType.START_TRANSACTION:
-                    if (await transactionalServer.startTransaction(
-                        credentials,
-                        context
-                    )) {
-                        result = context.transactionId
-                    } else {
-                        result = null
-                    }
-                    break
-                case IsolateMessageType.ROLLBACK:
-                    result = await transactionalServer.rollback(
-                        credentials,
-                        {}
-                    )
-                    break
-                case IsolateMessageType.COMMIT:
-                    result = await transactionalServer.commit(
-                        credentials,
-                        {}
-                    )
                     break
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage: IPortableQueryIMI = <IPortableQueryIMI>message
@@ -299,7 +281,8 @@ export abstract class TransactionalReceiver {
             application: message.application,
             domain: message.domain,
             methodName: message.methodName,
-            objectName: message.objectName
+            objectName: message.objectName,
+            transactionId: message.transactionId
         }, context)) {
             return false
         }
