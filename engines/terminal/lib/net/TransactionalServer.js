@@ -62,10 +62,44 @@ export class TransactionalServer {
         this.ensureIocContextSync(context);
         return context.ioc.queryManager.searchOne(portableQuery, context);
     }
+    checkCurrentTransaction(credentials) {
+    }
     async startTransaction(credentials, context) {
-        if (this.currentTransactionContext) {
+        try {
+            if (credentials.transactionId) {
+                if (!this.currentTransactionContext) {
+                    throw new Error(`
+Recieved a startTransaction call (@Api call) id: ${credentials.transactionId}
+with no current transaction in progress.  Nested @Api calls should always
+be attached to a parent transaction.`);
+                }
+                if (this.currentTransactionContext.transaction.id !==
+                    credentials.transactionId) {
+                    throw new Error(`
+Current transaction id does not match the passed in transaction id:
+${credentials.transactionId}`);
+                }
+            }
+            else {
+                if (this.currentTransactionContext) {
+                    return new Promise((resolve, reject) => {
+                        this.pendingTransactionQueue.push({
+                            credentials,
+                            reject,
+                            resolve,
+                        });
+                    });
+                }
+            }
+        }
+        catch (e) {
+            context.errorMessage = e.message;
+            console.error(e);
             return false;
         }
+        return await this.internalStartTransaction(credentials, context);
+    }
+    async internalStartTransaction(credentials, context) {
         try {
             await this.ensureIocContext(context);
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);

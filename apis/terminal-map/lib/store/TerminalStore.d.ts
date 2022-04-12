@@ -1,50 +1,88 @@
+import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
+import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { IMemoizedSelector } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';
+import { ITransactionCredentials } from '../Credentials';
+export interface InternalConnectorStore {
+    dbName: string;
+    internalCredentials: ITransactionCredentials;
+    serverUrl: string;
+}
+export interface IMessageInRecord {
+    message: ILocalAPIRequest<'FromClientRedirected'>;
+    reject: any;
+    resolve: any;
+}
+export interface IPendingTransaction {
+    credentials: ITransactionCredentials;
+    reject: any;
+    resolve: any;
+}
+export interface IReceiverStore {
+    initializingApps: Set<FullApplicationName>;
+    initializedApps: Set<FullApplicationName>;
+}
+export interface ITransactionManagerStore {
+    pendingTransactionQueue: IPendingTransaction[];
+    transactionInProgressMap: Map<string, ITransaction>;
+    rootTransactionInProgressMap: Map<string, ITransaction>;
+}
+export interface IWebReceiverStore {
+    domainPrefix: string;
+    localDomain: string;
+    mainDomainFragments: string[];
+    onClientMessageCallback: (message: any) => void;
+    pendingApplicationCounts: Map<string, number>;
+    pendingHostCounts: Map<string, number>;
+    pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>;
+    subsriptionMap: Map<string, Map<string, Subscription>>;
+}
 export interface ITerminalStore {
     state: Subject<ITerminalState>;
+    getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+    getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
+    getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
+    getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
+    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
     getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
+    getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>;
     getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
     getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
-    getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+    getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-    getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>;
-    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
-    getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
-    getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
-    getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
-    getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
-    getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
+    getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>;
+    getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>;
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
     state: Subject<ITerminalState>;
-    getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
-    getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>;
-    getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
-    getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
-    getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
-    getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
-    getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
     getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
-    getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
-    getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
     getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
     getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
-    getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
-    getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>;
-    getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>;
+    getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
+    getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>;
+    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
+    getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+    getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
+    getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
+    getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>;
+    getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
+    getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
+    getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+    getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>;
+    getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
+    getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>;
+    getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>;
     init(): Promise<void>;
     tearDown(): void;
 }

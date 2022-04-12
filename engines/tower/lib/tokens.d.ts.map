@@ -1,1 +1,1 @@
-{"version":3,"file":"tokens.d.ts","sourceRoot":"","sources":["../src/tokens.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,kBAAkB,EAAE,MAAM,qDAAqD,CAAA;AACxF,OAAO,EAAE,aAAa,EAAE,MAAM,0BAA0B,CAAA;AAIxD,eAAO,MAAM,aAAa,+CAA8C,CAAA;AACxE,eAAO,MAAM,oBAAoB,oDAA0D,CAAA"}
+{"version":3,"file":"tokens.d.ts","sourceRoot":"","sources":["../src/tokens.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,aAAa,EAAE,MAAM,0BAA0B,CAAA;AAIxD,eAAO,MAAM,aAAa,+CAA8C,CAAA"}

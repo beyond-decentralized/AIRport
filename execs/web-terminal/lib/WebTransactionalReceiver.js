@@ -2,135 +2,163 @@ import { container, DI, } from '@airport/di';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { IsolateMessageType, } from '@airport/security-check';
 import { TransactionalReceiver } from '@airport/terminal';
-import { TRANSACTIONAL_RECEIVER, APPLICATION_INITIALIZER } from '@airport/terminal-map';
-import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
+import { TRANSACTIONAL_RECEIVER, APPLICATION_INITIALIZER, TERMINAL_STORE } from '@airport/terminal-map';
 import { map } from 'rxjs/operators';
-let _mainDomain = 'localhost:31717';
+import { WEB_MESSAGE_RECEIVER } from './tokens';
 export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
         super();
-        this.pendingApplicationCounts = new Map();
-        this.pendingHostCounts = new Map();
-        this.pendingInterAppApiCallMessageMap = new Map();
-        this.subsriptionMap = new Map();
         const ownDomain = window.location.hostname;
-        this.mainDomainFragments = ownDomain.split('.');
-        if (this.mainDomainFragments[0] === 'www') {
-            this.mainDomainFragments.splice(0, 1);
+        const mainDomainFragments = ownDomain.split('.');
+        if (mainDomainFragments[0] === 'www'
+            || mainDomainFragments[0].startsWith('random_')) {
+            mainDomainFragments.splice(0, 1);
         }
-        this.domainPrefix = '.' + this.mainDomainFragments.join('.');
+        const domainPrefix = '.' + mainDomainFragments.join('.');
         // set domain to a random value so that an iframe cannot directly invoke logic in this domain
         if (document.domain !== 'localhost') {
-            document.domain = Math.random() + '.' + Math.random() + this.domainPrefix;
+            document.domain = 'random_' + Math.random() + '_' + Math.random() + domainPrefix;
         }
-        this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function';
-        const createChannel = () => {
-            this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
-                idb: {
-                    onclose: () => {
-                        // the onclose event is just the IndexedDB closing.
-                        // you should also close the channel before creating
-                        // a new one.
-                        this.communicationChannel.close();
-                        createChannel();
-                    },
-                },
-            });
-            this.communicationChannel.onmessage = (message) => {
-                // FIXME: deserialize message if !this.isNativeBroadcastChannel
-                if (message.__received__) {
-                    return;
-                }
-                message.__received__ = true;
-                // All requests need to have a application signature
-                // to know what application is being communicated to/from
-                if (!this.hasValidApplicationInfo(message)) {
-                    return;
-                }
-                if (this.messageCallback) {
-                    const receivedDate = new Date();
-                    message.__receivedTime__ = receivedDate.getTime();
-                    this.messageCallback(message);
-                }
-                switch (message.category) {
-                    case 'FromClient':
-                        const fromClientRedirectedMessage = {
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        webReciever.domainPrefix = domainPrefix;
+        webReciever.mainDomainFragments = mainDomainFragments;
+    }
+    handleClientRequest(message) {
+        if (message.__received__) {
+            return;
+        }
+        message.__received__ = true;
+        // All requests need to have a application signature
+        // to know what application is being communicated to/from
+        if (!this.hasValidApplicationInfo(message)) {
+            return;
+        }
+        const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER);
+        if (webMessageReciever.needMessageSerialization()) {
+            // FIXME: deserialize message
+        }
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        if (webReciever.onClientMessageCallback) {
+            const receivedDate = new Date();
+            message.__receivedTime__ = receivedDate.getTime();
+            webReciever.onClientMessageCallback(message);
+        }
+        switch (message.category) {
+            case 'FromClient':
+                const fromClientRedirectedMessage = {
+                    ...message,
+                    __received__: false,
+                    __receivedTime__: null,
+                    category: 'FromClientRedirected'
+                };
+                this.handleFromClientRequest(fromClientRedirectedMessage).then();
+                break;
+            case 'IsConnectionReady':
+                this.ensureConnectionIsReady(message).then();
+                break;
+        }
+    }
+    handleAppRequest(message, messageOrigin, source) {
+        if (message.__received__) {
+            return;
+        }
+        message.__received__ = true;
+        // All requests need to have a application signature
+        // to know what application is being communicated to/from
+        if (!this.hasValidApplicationInfo(message)) {
+            return;
+        }
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        if (webReciever.onClientMessageCallback) {
+            const receivedDate = new Date();
+            message.__receivedTime__ = receivedDate.getTime();
+            webReciever.onClientMessageCallback(message);
+        }
+        switch (message.category) {
+            case 'ToDb':
+                this.handleIsolateMessage(message, messageOrigin, source).then();
+                break;
+            case 'ToClient':
+                const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap.get(message.id);
+                const context = {};
+                this.endApiCall({
+                    application: message.application,
+                    domain: message.domain,
+                    methodName: message.methodName,
+                    objectName: message.objectName,
+                }, message.errorMessage, context).then((success) => {
+                    if (interAppApiCallRequest) {
+                        if (!success) {
+                            interAppApiCallRequest.reject(message.errorMessage);
+                        }
+                        else if (message.errorMessage) {
+                            interAppApiCallRequest.reject(message.errorMessage);
+                        }
+                        else {
+                            interAppApiCallRequest.resolve(message.payload);
+                        }
+                    }
+                    else {
+                        const toClientRedirectedMessage = {
                             ...message,
                             __received__: false,
                             __receivedTime__: null,
-                            category: 'FromClientRedirected'
+                            application: message.application,
+                            category: 'ToClientRedirected',
+                            domain: message.domain,
+                            errorMessage: null,
+                            methodName: message.methodName,
+                            objectName: message.objectName,
+                            payload: null,
+                            protocol: null,
                         };
-                        this.handleFromClientRequest(fromClientRedirectedMessage).then();
-                        break;
-                    case 'IsConnectionReady':
-                        this.ensureConnectionIsReady(message).then();
-                        break;
-                }
-            };
-        };
-        createChannel();
-        window.addEventListener("message", event => {
-            const message = event.data;
-            if (message.__received__) {
-                return;
-            }
-            message.__received__ = true;
-            // All requests need to have a application signature
-            // to know what application is being communicated to/from
-            if (!this.hasValidApplicationInfo(message)) {
-                return;
-            }
-            if (this.messageCallback) {
-                const receivedDate = new Date();
-                message.__receivedTime__ = receivedDate.getTime();
-                this.messageCallback(message);
-            }
-            const messageOrigin = event.origin;
-            switch (message.category) {
-                case 'ToDb':
-                    this.handleIsolateMessage(message, messageOrigin, event.source).then();
-                    break;
-                case 'ToClient':
-                    const interAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id);
-                    const context = {};
-                    this.endApiCall({
-                        domain: message.domain,
-                        application: message.application
-                    }, message.errorMessage, context).then((success) => {
-                        if (interAppApiCallRequest) {
-                            if (!success) {
-                                interAppApiCallRequest.reject(message.errorMessage);
-                            }
-                            else if (message.errorMessage) {
-                                interAppApiCallRequest.reject(message.errorMessage);
-                            }
-                            else {
-                                interAppApiCallRequest.resolve(message.payload);
-                            }
+                        if (!success) {
+                            toClientRedirectedMessage.errorMessage = context.errorMessage;
+                            toClientRedirectedMessage.payload = null;
                         }
-                        else {
-                            const toClientRedirectedMessage = {
-                                ...message,
-                                __received__: false,
-                                __receivedTime__: null,
-                                category: 'ToClientRedirected'
-                            };
-                            if (!success) {
-                                toClientRedirectedMessage.errorMessage = context.errorMessage;
-                                toClientRedirectedMessage.payload = null;
-                            }
-                            this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-                                .then();
-                        }
-                    });
-                    break;
-                default:
-                    break;
-            }
-        }, false);
+                        this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+                            .then();
+                    }
+                });
+                break;
+            default:
+                break;
+        }
     }
     onMessage(callback) {
-        this.messageCallback = callback;
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        webReciever.onClientMessageCallback = callback;
+    }
+    async nativeStartApiCall(message, context) {
+        return await this.startApiCall(message, context, async () => {
+            const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+            const frameWindow = this.getFrameWindow(fullApplicationName);
+            if (frameWindow) {
+                // Forward the request to the correct application iframe
+                frameWindow.postMessage(message, '*');
+            }
+            else {
+                throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
+            }
+        });
+    }
+    async nativeHandleApiCall(message, context) {
+        if (!await this.nativeStartApiCall(message, context)) {
+            throw new Error(context.errorMessage);
+        }
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        return new Promise((resolve, reject) => {
+            webReciever.pendingInterAppApiCallMessageMap.set(message.id, {
+                message,
+                reject,
+                resolve
+            });
+        });
     }
     async ensureConnectionIsReady(message) {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
@@ -151,18 +179,25 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             domain: message.domain,
             errorMessage: null,
             id: message.id,
+            methodName: message.methodName,
+            objectName: message.objectName,
             protocol: window.location.protocol,
             payload: null,
         };
-        // FIXME: serialize message if !this.isNativeBroadcastChannel
-        this.communicationChannel.postMessage(connectionIsReadyMessage);
+        const webMessageReciever = await container(this).get(WEB_MESSAGE_RECEIVER);
+        if (webMessageReciever.needMessageSerialization()) {
+            // FIXME: serialize message
+        }
+        webMessageReciever.sendMessageToClient(connectionIsReadyMessage);
     }
     hasValidApplicationInfo(message) {
         return typeof message.domain === 'string' && message.domain.length >= 3
             && typeof message.application === 'string' && message.application.length >= 3;
     }
     async handleFromClientRequest(message) {
-        let numPendingMessagesFromHost = this.pendingHostCounts.get(message.domain);
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        let numPendingMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (!numPendingMessagesFromHost) {
             numPendingMessagesFromHost = 0;
         }
@@ -171,7 +206,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             return;
         }
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        let numPendingMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName);
+        let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName);
         if (!numPendingMessagesForApplication) {
             numPendingMessagesForApplication = 0;
         }
@@ -179,8 +214,8 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             // Already could not install the application, may be a DOS attack, return right away
             return;
         }
-        this.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1);
-        this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1);
+        webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1);
+        webReciever.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1);
         if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
             this.relyToClientWithError(message, `Application is not installed`);
             return;
@@ -189,31 +224,6 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!await this.nativeStartApiCall(message, context)) {
             this.relyToClientWithError(message, context.errorMessage);
         }
-    }
-    async nativeStartApiCall(message, context) {
-        return await this.startApiCall(message, context, async () => {
-            const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
-            const frameWindow = this.getFrameWindow(fullApplicationName);
-            if (frameWindow) {
-                // Forward the request to the correct application iframe
-                frameWindow.postMessage(message, '*');
-            }
-            else {
-                throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
-            }
-        });
-    }
-    async nativeHandleApiCall(message, context) {
-        if (!await this.nativeStartApiCall(message, context)) {
-            throw new Error(context.errorMessage);
-        }
-        return new Promise((resolve, reject) => {
-            this.pendingInterAppApiCallMessageMap.set(message.id, {
-                message,
-                reject,
-                resolve
-            });
-        });
     }
     relyToClientWithError(message, errorMessage) {
         const toClientRedirectedMessage = {
@@ -224,6 +234,8 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             domain: message.domain,
             errorMessage,
             id: message.id,
+            methodName: message.methodName,
+            objectName: message.objectName,
             payload: null,
             protocol: message.protocol,
         };
@@ -245,17 +257,22 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     }
     replyToClientRequest(message) {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        let numMessagesFromHost = this.pendingHostCounts.get(message.domain);
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
+        let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (numMessagesFromHost > 0) {
-            this.pendingHostCounts.set(message.domain, numMessagesFromHost - 1);
+            webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1);
         }
-        let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName);
+        let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName);
         if (numMessagesForApplication > 0) {
-            this.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1);
+            webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1);
         }
         // Forward the request to the source client
-        // FIXME: serialize message if !this.isNativeBroadcastChannel
-        this.communicationChannel.postMessage(message);
+        const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER);
+        if (webMessageReciever.needMessageSerialization()) {
+            // FIXME: serialize message
+        }
+        webMessageReciever.sendMessageToClient(message);
     }
     async ensureApplicationIsInstalled(fullApplicationName) {
         if (!fullApplicationName) {
@@ -272,15 +289,17 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (applicationDomain.split(':')[0] === 'localhost') {
             return true;
         }
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         // Only accept requests from https protocol
         if (!messageOrigin.startsWith("https")
             // and from application domains that match the fullApplicationName
-            || applicationDomain !== fullApplicationName + this.domainPrefix) {
+            || applicationDomain !== fullApplicationName + webReciever.domainPrefix) {
             return false;
         }
         // Only accept requests from '${applicationName}.${mainDomainName}'
-        if (applicationDomainFragments.length !== this.mainDomainFragments.length + 1) {
+        if (applicationDomainFragments.length !== webReciever.mainDomainFragments.length + 1) {
             return false;
         }
         // Only accept requests from non-'www' domain (don't accept requests from self)
@@ -302,10 +321,12 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!await this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        const webReciever = terminalStore.getWebReceiver();
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         switch (message.type) {
             case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-                let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName);
+                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
                 if (!isolateSubscriptionMap) {
                     return;
                 }
@@ -321,7 +342,9 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             if (!response) {
                 return;
             }
-            let shemaDomainName = fullApplicationName + '.' + _mainDomain;
+            const terminalStore = container(this).getSync(TERMINAL_STORE);
+            const webReciever = terminalStore.getWebReceiver();
+            let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain;
             switch (message.type) {
                 case IsolateMessageType.SEARCH:
                 case IsolateMessageType.SEARCH_ONE:
@@ -330,10 +353,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
                         window.postMessage(value, shemaDomainName);
                     }));
                     const subscription = observableDataResult.result.subscribe();
-                    let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName);
+                    let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
                     if (!isolateSubscriptionMap) {
                         isolateSubscriptionMap = new Map();
-                        this.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap);
+                        webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap);
                     }
                     isolateSubscriptionMap.set(message.id, subscription);
                     return;

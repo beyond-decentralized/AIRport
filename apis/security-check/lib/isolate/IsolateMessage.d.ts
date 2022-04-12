@@ -29,6 +29,7 @@ export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     application: string;
     category: CategoryType;
     domain: string;
+    errorMessage: string;
     id: string;
     repositoryDestination?: string;
     repositorySource?: string;

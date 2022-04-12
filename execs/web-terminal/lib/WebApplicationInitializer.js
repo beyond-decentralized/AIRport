@@ -9,7 +9,7 @@ export class WebApplicationInitializer extends ApplicationInitializer {
     }
     async nativeInitializeApplication(domain, application, fullApplicationName) {
         const terminalStore = await container(this).get(TERMINAL_STORE);
-        if (terminalStore.getInitializedApps().has(fullApplicationName)) {
+        if (terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
             return;
         }
         let appIframes = document.getElementsByName(fullApplicationName);
@@ -22,7 +22,7 @@ export class WebApplicationInitializer extends ApplicationInitializer {
             appIframe.style.display = 'none';
             document.body.appendChild(appIframe);
         }
-        while (!terminalStore.getInitializedApps().has(fullApplicationName)) {
+        while (!terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
             await this.wait(100);
         }
         this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);

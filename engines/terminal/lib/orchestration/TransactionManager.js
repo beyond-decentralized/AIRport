@@ -1,63 +1,58 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
-import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
-    constructor() {
-        super(...arguments);
-        this.transactionIndexQueue = [];
-        this.sourceOfTransactionInProgress = null;
-        this.transactionInProgress = null;
-        this.yieldToRunningTransaction = 200;
-    }
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
     async initialize(dbName, context) {
-        const storeDriver = await container(this)
-            .get(STORE_DRIVER);
+        const storeDriver = await container(this).get(STORE_DRIVER);
         return await storeDriver.initialize(dbName, context);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
+    }
+    getInProgressTransactionById(transactionId) {
+        const terminalStore = container(this).getSync(TERMINAL_STORE);
+        return terminalStore.getTransactionManager().transactionInProgressMap.get(transactionId);
     }
     isServer(context) {
         return container(this).getSync(STORE_DRIVER).isServer(context);
     }
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {
+            // Nested transactal() calls in internal operations
+            // do not create nested transactions 
             await transactionalCallback(context.transaction, context);
             return;
         }
-        const storeDriver = await container(this).get(STORE_DRIVER);
-        if (!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
-            return;
+        const transaction = await this.startTransaction(credentials, context);
+        try {
+            await transactionalCallback(transaction, context);
+            await this.commit(transaction, context);
         }
-        await storeDriver.transact(async (transaction) => {
-            await this.setupTransaction(credentials, transaction, context);
-            try {
-                await transactionalCallback(transaction, context);
-                await this.commit(transaction, context);
-            }
-            catch (e) {
-                console.error(e);
-                await this.rollback(transaction, context);
-            }
-            finally {
-                context.transaction = null;
-            }
-        }, context);
+        catch (e) {
+            await this.rollback(transaction, context);
+            throw e;
+        }
     }
     async startTransaction(credentials, context) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
+        const [storeDriver, terminalStore] = await container(this)
+            .get(STORE_DRIVER, TERMINAL_STORE);
         if (!await this.startTransactionPrep(credentials, context)) {
             return;
         }
         const transaction = await storeDriver.setupTransaction(context);
-        await storeDriver.startTransaction(transaction);
+        const transactionManagerStore = terminalStore.getTransactionManager();
+        transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction);
+        if (!transaction.parentTransaction) {
+            transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction);
+        }
+        await storeDriver.startTransaction(transaction, context);
         await this.setupTransaction(credentials, transaction, context);
         context.transaction = transaction;
         return transaction;
@@ -65,6 +60,13 @@ export class TransactionManager extends AbstractMutationManager {
     async rollback(transaction, context) {
         const storeDriver = await container(this).get(STORE_DRIVER);
         const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
+        const isServer = storeDriver.isServer(context);
+        if (isServer) {
+            // multiple parallel top level transactions are supported
+        }
+        else {
+            // a single top level transaction is supported
+        }
         if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
             !== fullApplicationName) {
             let foundTransactionInQueue = false;
@@ -81,10 +83,10 @@ export class TransactionManager extends AbstractMutationManager {
             return;
         }
         try {
-            await transaction.rollback(null);
+            await transaction.rollback(null, context);
         }
         finally {
-            this.clearTransaction();
+            await this.clearTransaction(context);
         }
     }
     async commit(transaction, context) {
@@ -102,7 +104,7 @@ export class TransactionManager extends AbstractMutationManager {
             await transaction.commit(null);
         }
         finally {
-            this.clearTransaction();
+            await this.clearTransaction(context);
         }
         let transactionHistory = transaction.transHistory;
         if (!transactionHistory.allRecordHistory.length) {
@@ -117,9 +119,11 @@ export class TransactionManager extends AbstractMutationManager {
             return false;
         }
         const storeDriver = await container(this).get(STORE_DRIVER);
-        const isServer = storeDriver.isServer(context);
+        const isServer = this.isServer(context);
         const fullApplicationName = getFullApplicationNameFromDomainAndName(credentials.domain, credentials.application);
         if (!isServer) {
+            let transaction = this.transactionInProgress;
+            this.checkForCircularDependencies(transaction, credentials);
             if (fullApplicationName === this.sourceOfTransactionInProgress) {
                 if (transactionalCallback) {
                     await transactionalCallback(this.transactionInProgress, context);
@@ -141,14 +145,27 @@ Only one concurrent transaction is allowed per application.`);
             }
             this.transactionIndexQueue.push(fullApplicationName);
         }
-        while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
-            await this.wait(this.yieldToRunningTransaction);
-        }
-        if (!isServer) {
-            this.transactionIndexQueue = this.transactionIndexQueue.filter(transIndex => transIndex !== fullApplicationName);
-            this.sourceOfTransactionInProgress = fullApplicationName;
-        }
         return true;
+    }
+    checkForCircularDependencies(transaction, credentials) {
+        if (credentials.domain === INTERNAL_DOMAIN) {
+            return;
+        }
+        do {
+            if (this.isSameSource(transaction, credentials)) {
+                let callHerarchy = this.getApiName(credentials);
+                let hierarchyTransaction = this.transactionInProgress;
+                do {
+                    callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
+${callHerarchy}`;
+                } while (hierarchyTransaction = hierarchyTransaction.parentTransaction);
+                throw new Error(`Circular API call detected:
+				
+${callHerarchy}
+
+				`);
+            }
+        } while (transaction = transaction.parentTransaction);
     }
     async setupTransaction(credentials, transaction, context) {
         const transHistoryDuo = await container(this)
@@ -175,8 +192,28 @@ Only one concurrent transaction is allowed per application.`);
     // 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
     // [transaction]);
     // this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
-    clearTransaction() {
+    isSameSource(transaction, credentials) {
+        const initiator = transaction.initiator;
+        return initiator.domain === credentials.domain
+            && initiator.application === credentials.application
+            && initiator.objectName === credentials.objectName
+            && initiator.methodName === credentials.methodName;
+    }
+    getApiName(nameContainer) {
+        return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`;
+    }
+    async clearTransaction(context) {
+        const transaction = context.transaction;
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        const transactionManagerStore = terminalStore.getTransactionManager();
+        transactionManagerStore.transactionInProgressMap.delete(transaction.id);
+        if (!transaction.parentTransaction) {
+            transactionManagerStore.rootTransactionInProgressMap.delete(transaction.id);
+        }
+        context.transaction = null;
         this.sourceOfTransactionInProgress = null;
+        if (this.transactionInProgress.parentTransaction) {
+        }
         this.transactionInProgress = null;
         if (this.transactionIndexQueue.length) {
             this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();

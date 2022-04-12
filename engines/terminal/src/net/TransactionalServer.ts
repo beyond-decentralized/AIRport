@@ -31,12 +31,6 @@ export interface InternalPortableQuery
 	domainAndPort: string
 }
 
-export interface IPendingTransaction {
-	credentials: ITransactionCredentials
-	reject
-	resolve
-}
-
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -67,7 +61,6 @@ export class TransactionalServer
 	tempActor: IActor;
 
 	private currentTransactionContext: ITransactionContext
-	private pendingTransactionQueue: IPendingTransaction[] = []
 
 	async init(
 		context: IContext = {}

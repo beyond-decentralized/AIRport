@@ -6,10 +6,12 @@ import {
     injectAirportDatabase,
     injectEntityStateManager
 } from '@airport/tower'
+import { injectWebReceiver } from './WebMessageReceiver'
 
 export * from './DomainRetriever'
 export * from './WebApplicationInitializer'
 export * from './WebTransactionalReceiver'
+export * from './WebMessageReceiver'
 
 export function injectTransactionalReceiver(): void {
     console.log('Injecting TransactionalReceiver')
@@ -18,4 +20,5 @@ export function injectTransactionalReceiver(): void {
     injectAirportDatabase()
     injectTransactionalServer()
     injectEntityStateManager()
+    injectWebReceiver()
 }

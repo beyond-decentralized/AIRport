@@ -19,7 +19,6 @@ import {
     ILocalAPIRequestIMI,
     IPortableQueryIMI,
     IReadQueryIMI,
-    IRetrieveDomainIMI,
     ISaveIMI,
     ISaveToDestinationIMI,
     IsolateMessageType,
@@ -27,7 +26,6 @@ import {
 } from '@airport/security-check';
 import {
     IApiCallContext,
-    ICredentials,
     IQueryOperationContext,
     ITransactionContext,
     ITransactionCredentials,
@@ -40,9 +38,6 @@ import {
 } from '../tokens';
 
 export abstract class TransactionalReceiver {
-
-    // FIXME: move this state to Terminal.state
-    initializingApps: Set<string> = new Set()
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage & IApiIMI
@@ -83,10 +78,10 @@ export abstract class TransactionalReceiver {
                         break
                     }
 
-                    if (this.initializingApps.has(fullApplicationName)) {
+                    if (terminalStore.getReceiver().initializingApps.has(fullApplicationName)) {
                         return null
                     }
-                    this.initializingApps.add(fullApplicationName)
+                    terminalStore.getReceiver().initializingApps.add(fullApplicationName)
 
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
@@ -99,13 +94,8 @@ export abstract class TransactionalReceiver {
                     result = application.lastIds
                     break
                 case IsolateMessageType.APP_INITIALIZED:
-                    const lastTerminalState = terminalStore.getTerminalState()
-                    const initializedApps = lastTerminalState.initializedApps
+                    const initializedApps = terminalStore.getReceiver().initializedApps
                     initializedApps.add((message as any as IConnectionInitializedIMI).fullApplicationName)
-                    terminalStore.state.next({
-                        ...lastTerminalState,
-                        initializedApps
-                    })
                     return null
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE)

@@ -1,27 +1,26 @@
 import { container, } from '@airport/di';
-import { getFullApplicationName, getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { getFullApplicationName, getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 export class TransactionalReceiver {
-    constructor() {
-        // FIXME: move this state to Terminal.state
-        this.initializingApps = new Set();
-    }
     async processMessage(message) {
-        const [transactionalServer, terminalStore] = await container(this)
-            .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
         let result;
         let errorMessage;
-        let credentials = {
-            application: message.application,
-            domain: message.domain,
-            methodName: message.methodName,
-            objectName: message.objectName
-        };
-        let context = {};
-        context.startedAt = new Date();
         try {
+            if (message.domain === INTERNAL_DOMAIN) {
+                throw new Error(`Internal domain cannot be used in external calls`);
+            }
+            const [transactionalServer, terminalStore] = await container(this)
+                .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
+            let credentials = {
+                application: message.application,
+                domain: message.domain,
+                methodName: message.methodName,
+                objectName: message.objectName
+            };
+            let context = {};
+            context.startedAt = new Date();
             switch (message.type) {
                 case IsolateMessageType.CALL_API: {
                     const context = {};
@@ -42,10 +41,10 @@ export class TransactionalReceiver {
                         result = null;
                         break;
                     }
-                    if (this.initializingApps.has(fullApplicationName)) {
+                    if (terminalStore.getReceiver().initializingApps.has(fullApplicationName)) {
                         return null;
                     }
-                    this.initializingApps.add(fullApplicationName);
+                    terminalStore.getReceiver().initializingApps.add(fullApplicationName);
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
                     // FIXME: initalize ahead of time, at Isolate Loading
@@ -54,13 +53,8 @@ export class TransactionalReceiver {
                     result = application.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    const lastTerminalState = terminalStore.getTerminalState();
-                    const initializedApps = lastTerminalState.initializedApps;
+                    const initializedApps = terminalStore.getReceiver().initializedApps;
                     initializedApps.add(message.fullApplicationName);
-                    terminalStore.state.next({
-                        ...lastTerminalState,
-                        initializedApps
-                    });
                     return null;
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                     const terminalStore = await container(this).get(TERMINAL_STORE);
@@ -82,20 +76,6 @@ export class TransactionalReceiver {
                     // addRepositoryMessage.platformConfig,
                     // addRepositoryMessage.distributionStrategy,
                     credentials, context);
-                    break;
-                case IsolateMessageType.START_TRANSACTION:
-                    if (await transactionalServer.startTransaction(credentials, context)) {
-                        result = context.transactionId;
-                    }
-                    else {
-                        result = null;
-                    }
-                    break;
-                case IsolateMessageType.ROLLBACK:
-                    result = await transactionalServer.rollback(credentials, {});
-                    break;
-                case IsolateMessageType.COMMIT:
-                    result = await transactionalServer.commit(credentials, {});
                     break;
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage = message;
@@ -192,7 +172,8 @@ export class TransactionalReceiver {
             application: message.application,
             domain: message.domain,
             methodName: message.methodName,
-            objectName: message.objectName
+            objectName: message.objectName,
+            transactionId: message.transactionId
         }, context)) {
             return false;
         }
@@ -224,8 +205,10 @@ export class TransactionalReceiver {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER);
         if (!await transactionalServer.startTransaction({
+            application: message.application,
             domain: message.domain,
-            application: message.application
+            methodName: message.methodName,
+            objectName: message.objectName
         }, context)) {
             return false;
         }

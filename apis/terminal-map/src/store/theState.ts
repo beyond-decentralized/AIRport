@@ -3,6 +3,7 @@
  * in one non-reloadable BehaviorSubject.
  */
 
+import { INTERNAL_DOMAIN } from "@airport/ground-control";
 import {
     BehaviorSubject,
     Subject
@@ -14,8 +15,34 @@ export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubjec
     applications: [],
     domains: [],
     frameworkActor: null,
-    initializedApps: new Set(),
-    initializingApps: new Set(),
+    internalConnector: {
+        dbName: '',
+        internalCredentials: {
+            application: null,
+            domain: INTERNAL_DOMAIN,
+            methodName: null,
+            objectName: null
+        },
+        serverUrl: ''
+    },
+    receiver: {
+        initializedApps: new Set(),
+        initializingApps: new Set(),
+    },
     terminal: null,
-    transactionMapById: new Map()
+    transactionManager: {
+        pendingTransactionQueue: [],
+        rootTransactionInProgressMap: new Map(),
+        transactionInProgressMap: new Map()
+    },
+    webReceiver: {
+        domainPrefix: '',
+        localDomain: '',
+        mainDomainFragments: [],
+        onClientMessageCallback: null,
+        pendingApplicationCounts: new Map(),
+        pendingHostCounts: new Map(),
+        pendingInterAppApiCallMessageMap: new Map(),
+        subsriptionMap: new Map()
+    }
 })

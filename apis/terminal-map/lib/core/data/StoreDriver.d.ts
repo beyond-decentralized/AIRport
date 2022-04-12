@@ -31,9 +31,6 @@ export interface IStoreDriver extends IStoreOperator {
     initialize(dbName: string, context: IContext): Promise<any>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
-    transact(transactionalCallback: {
-        (transaction: ITransaction, context: ITransactionContext): Promise<void> | void;
-    }, context: ITransactionContext, parentTransaction?: ITransaction): Promise<void>;
     setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;

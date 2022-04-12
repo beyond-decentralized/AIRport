@@ -6,7 +6,7 @@ import {
 	container,
 	DI,
 } from '@airport/di'
-import { FullApplicationName, getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IApiIMI,
 	IIsolateMessage,
@@ -21,182 +21,203 @@ import {
 	ITransactionalReceiver,
 	APPLICATION_INITIALIZER,
 	IApiCallContext,
-	ITransactionContext
+	ITransactionContext,
+	TERMINAL_STORE
 } from '@airport/terminal-map'
-import {
-	BroadcastChannel as SoftBroadcastChannel
-} from '../node_modules/broadcast-channel/dist/lib/index.es5';
-import {
-	Subscription
-} from 'rxjs'
 import {
 	map
 } from 'rxjs/operators'
+import { WEB_MESSAGE_RECEIVER } from './tokens'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
-
-let _mainDomain = 'localhost:31717'
-
-export interface IMessageInRecord {
-	message: ILocalAPIRequest<'FromClientRedirected'>
-	reject
-	resolve
-}
 
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
 	implements ITransactionalReceiver {
 
-	communicationChannel: SoftBroadcastChannel
-	dbName: string
-	domainPrefix: string
-	isNativeBroadcastChannel: boolean
-	mainDomainFragments: string[]
-	pendingApplicationCounts: Map<string, number> = new Map()
-	pendingHostCounts: Map<string, number> = new Map()
-	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord> = new Map();
-	serverUrl: string;
-	subsriptionMap: Map<string, Map<string, Subscription>> = new Map()
-
-	messageCallback: (
-		message: any
-	) => void
-
 	constructor() {
 		super()
 		const ownDomain = window.location.hostname
-		this.mainDomainFragments = ownDomain.split('.')
-		if (this.mainDomainFragments[0] === 'www') {
-			this.mainDomainFragments.splice(0, 1)
+		const mainDomainFragments = ownDomain.split('.')
+		if (mainDomainFragments[0] === 'www'
+			|| mainDomainFragments[0].startsWith('random_')) {
+			mainDomainFragments.splice(0, 1)
 		}
-		this.domainPrefix = '.' + this.mainDomainFragments.join('.')
-
+		const domainPrefix = '.' + mainDomainFragments.join('.')
 		// set domain to a random value so that an iframe cannot directly invoke logic in this domain
 		if (document.domain !== 'localhost') {
-			document.domain = Math.random() + '.' + Math.random() + this.domainPrefix
+			document.domain = 'random_' + Math.random() + '_' + Math.random() + domainPrefix
 		}
 
-		this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
-		const createChannel = () => {
-			this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
-				idb: {
-					onclose: () => {
-						// the onclose event is just the IndexedDB closing.
-						// you should also close the channel before creating
-						// a new one.
-						this.communicationChannel.close();
-						createChannel();
-					},
-				},
-			});
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+		webReciever.domainPrefix = domainPrefix
+		webReciever.mainDomainFragments = mainDomainFragments
+	}
 
-			this.communicationChannel.onmessage = (
-				message: ILocalAPIRequest
-			) => {
-				// FIXME: deserialize message if !this.isNativeBroadcastChannel
+	handleClientRequest(
+		message: ILocalAPIRequest
+	): void {
 
-				if (message.__received__) {
-					return
+		if (message.__received__) {
+			return
+		}
+		message.__received__ = true
+
+		// All requests need to have a application signature
+		// to know what application is being communicated to/from
+		if (!this.hasValidApplicationInfo(message)) {
+			return
+		}
+
+		const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER)
+		if (webMessageReciever.needMessageSerialization()) {
+			// FIXME: deserialize message
+		}
+
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+
+		if (webReciever.onClientMessageCallback) {
+			const receivedDate = new Date()
+			message.__receivedTime__ = receivedDate.getTime()
+			webReciever.onClientMessageCallback(message)
+		}
+
+		switch (message.category) {
+			case 'FromClient':
+				const fromClientRedirectedMessage: ILocalAPIRequest = {
+					...message,
+					__received__: false,
+					__receivedTime__: null,
+					category: 'FromClientRedirected'
 				}
-				message.__received__ = true
+				this.handleFromClientRequest(fromClientRedirectedMessage).then()
+				break
+			case 'IsConnectionReady':
+				this.ensureConnectionIsReady(message).then()
+				break
+		}
+	}
 
-				// All requests need to have a application signature
-				// to know what application is being communicated to/from
-				if (!this.hasValidApplicationInfo(message)) {
-					return
-				}
+	handleAppRequest(
+		message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse,
+		messageOrigin: string,
+		source: any
+	): void {
+		if (message.__received__) {
+			return
+		}
+		message.__received__ = true
 
-				if (this.messageCallback) {
-					const receivedDate = new Date()
-					message.__receivedTime__ = receivedDate.getTime()
-					this.messageCallback(message)
-				}
+		// All requests need to have a application signature
+		// to know what application is being communicated to/from
+		if (!this.hasValidApplicationInfo(message)) {
+			return
+		}
 
-				switch (message.category) {
-					case 'FromClient':
-						const fromClientRedirectedMessage: ILocalAPIRequest = {
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+
+		if (webReciever.onClientMessageCallback) {
+			const receivedDate = new Date()
+			message.__receivedTime__ = receivedDate.getTime()
+			webReciever.onClientMessageCallback(message)
+		}
+
+		switch (message.category) {
+			case 'ToDb':
+				this.handleIsolateMessage(message as (IIsolateMessage & IApiIMI), messageOrigin,
+					source as Window).then()
+				break
+			case 'ToClient':
+				const interAppApiCallRequest = webReciever.pendingInterAppApiCallMessageMap.get(message.id)
+
+				const context: IApiCallContext = {}
+				this.endApiCall({
+					application: message.application,
+					domain: message.domain,
+					methodName: (message as ILocalAPIResponse).methodName,
+					objectName: (message as ILocalAPIResponse).objectName,
+				}, message.errorMessage, context).then((success) => {
+					if (interAppApiCallRequest) {
+						if (!success) {
+							interAppApiCallRequest.reject(message.errorMessage)
+						} else if (message.errorMessage) {
+							interAppApiCallRequest.reject(message.errorMessage)
+						} else {
+							interAppApiCallRequest.resolve(message.payload)
+						}
+					} else {
+						const toClientRedirectedMessage: ILocalAPIResponse = {
 							...message,
 							__received__: false,
 							__receivedTime__: null,
-							category: 'FromClientRedirected'
+							application: message.application,
+							category: 'ToClientRedirected',
+							domain: message.domain,
+							errorMessage: null,
+							methodName: (message as ILocalAPIResponse).methodName,
+							objectName: (message as ILocalAPIResponse).objectName,
+							payload: null,
+							protocol: null,
 						}
-						this.handleFromClientRequest(fromClientRedirectedMessage).then()
-						break
-					case 'IsConnectionReady':
-						this.ensureConnectionIsReady(message).then()
-						break
-				}
-			};
+						if (!success) {
+							toClientRedirectedMessage.errorMessage = context.errorMessage
+							toClientRedirectedMessage.payload = null
+						}
+						this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
+							.then()
+					}
+				})
+				break
+			default:
+				break
 		}
-
-		createChannel()
-
-		window.addEventListener("message", event => {
-			const message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse = event.data
-			if (message.__received__) {
-				return
-			}
-			message.__received__ = true
-
-			// All requests need to have a application signature
-			// to know what application is being communicated to/from
-			if (!this.hasValidApplicationInfo(message)) {
-				return
-			}
-
-			if (this.messageCallback) {
-				const receivedDate = new Date()
-				message.__receivedTime__ = receivedDate.getTime()
-				this.messageCallback(message)
-			}
-
-			const messageOrigin = event.origin;
-			switch (message.category) {
-				case 'ToDb':
-					this.handleIsolateMessage(message as (IIsolateMessage & IApiIMI), messageOrigin,
-						event.source as Window).then()
-					break
-				case 'ToClient':
-					const interAppApiCallRequest = this.pendingInterAppApiCallMessageMap.get(message.id)
-
-					const context: IApiCallContext = {}
-					this.endApiCall({
-						domain: message.domain,
-						application: message.application
-					}, message.errorMessage, context).then((success) => {
-						if (interAppApiCallRequest) {
-							if (!success) {
-								interAppApiCallRequest.reject(message.errorMessage)
-							} else if (message.errorMessage) {
-								interAppApiCallRequest.reject(message.errorMessage)
-							} else {
-								interAppApiCallRequest.resolve(message.payload)
-							}
-						} else {
-							const toClientRedirectedMessage: ILocalAPIResponse = {
-								...message,
-								__received__: false,
-								__receivedTime__: null,
-								category: 'ToClientRedirected'
-							}
-							if (!success) {
-								toClientRedirectedMessage.errorMessage = context.errorMessage
-								toClientRedirectedMessage.payload = null
-							}
-							this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-								.then()
-						}
-					})
-					break
-				default:
-					break
-			}
-		}, false)
 	}
 
 	onMessage(callback: (
 		message: any
 	) => void) {
-		this.messageCallback = callback
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+		webReciever.onClientMessageCallback = callback
+	}
+
+	protected async nativeStartApiCall(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext & ITransactionContext
+	): Promise<boolean> {
+		return await this.startApiCall(message, context, async () => {
+			const fullApplicationName = getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
+			const frameWindow = this.getFrameWindow(fullApplicationName)
+			if (frameWindow) {
+				// Forward the request to the correct application iframe
+				frameWindow.postMessage(message, '*')
+			} else {
+				throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
+			}
+		})
+	}
+
+	protected async nativeHandleApiCall<Result>(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext & ITransactionContext
+	): Promise<Result> {
+		if (!await this.nativeStartApiCall(message, context)) {
+			throw new Error(context.errorMessage)
+		}
+
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+
+		return new Promise((resolve, reject) => {
+			webReciever.pendingInterAppApiCallMessageMap.set(message.id, {
+				message,
+				reject,
+				resolve
+			})
+		})
 	}
 
 	private async ensureConnectionIsReady(
@@ -227,15 +248,21 @@ export class WebTransactionalReceiver
 			domain: message.domain,
 			errorMessage: null,
 			id: message.id,
+			methodName: message.methodName,
+			objectName: message.objectName,
 			protocol: window.location.protocol,
 			payload: null,
 		};
-		// FIXME: serialize message if !this.isNativeBroadcastChannel
-		this.communicationChannel.postMessage(connectionIsReadyMessage)
+
+		const webMessageReciever = await container(this).get(WEB_MESSAGE_RECEIVER)
+		if (webMessageReciever.needMessageSerialization()) {
+			// FIXME: serialize message
+		}
+		webMessageReciever.sendMessageToClient(connectionIsReadyMessage)
 	}
 
 	private hasValidApplicationInfo(
-		message: IIsolateMessage | ILocalAPIRequest | ILocalAPIResponse
+		message: (IIsolateMessage & IApiIMI) | ILocalAPIRequest | ILocalAPIResponse
 	) {
 		return typeof message.domain === 'string' && message.domain.length >= 3
 			&& typeof message.application === 'string' && message.application.length >= 3
@@ -244,8 +271,10 @@ export class WebTransactionalReceiver
 	private async handleFromClientRequest(
 		message: ILocalAPIRequest,
 	): Promise<void> {
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
 
-		let numPendingMessagesFromHost = this.pendingHostCounts.get(message.domain)
+		let numPendingMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
 		if (!numPendingMessagesFromHost) {
 			numPendingMessagesFromHost = 0
 		}
@@ -257,7 +286,7 @@ export class WebTransactionalReceiver
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
 
-		let numPendingMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
+		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName)
 		if (!numPendingMessagesForApplication) {
 			numPendingMessagesForApplication = 0
 		}
@@ -266,8 +295,8 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		this.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
-		this.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
+		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
+		webReciever.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
 
 		if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
 			this.relyToClientWithError(message, `Application is not installed`)
@@ -279,39 +308,6 @@ export class WebTransactionalReceiver
 			context)) {
 			this.relyToClientWithError(message, context.errorMessage)
 		}
-	}
-
-	protected async nativeStartApiCall(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext & ITransactionContext
-	): Promise<boolean> {
-		return await this.startApiCall(message, context, async () => {
-			const fullApplicationName = getFullApplicationNameFromDomainAndName(
-				message.domain, message.application)
-			const frameWindow = this.getFrameWindow(fullApplicationName)
-			if (frameWindow) {
-				// Forward the request to the correct application iframe
-				frameWindow.postMessage(message, '*')
-			} else {
-				throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
-			}
-		})
-	}
-
-	protected async nativeHandleApiCall<Result>(
-		message: ILocalAPIRequest<'FromClientRedirected'>,
-		context: IApiCallContext & ITransactionContext
-	): Promise<Result> {
-		if (!await this.nativeStartApiCall(message, context)) {
-			throw new Error(context.errorMessage)
-		}
-		return new Promise((resolve, reject) => {
-			this.pendingInterAppApiCallMessageMap.set(message.id, {
-				message,
-				reject,
-				resolve
-			})
-		})
 	}
 
 	private relyToClientWithError(
@@ -326,6 +322,8 @@ export class WebTransactionalReceiver
 			domain: message.domain,
 			errorMessage,
 			id: message.id,
+			methodName: message.methodName,
+			objectName: message.objectName,
 			payload: null,
 			protocol: message.protocol,
 		}
@@ -359,19 +357,24 @@ export class WebTransactionalReceiver
 	) {
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
 
-		let numMessagesFromHost = this.pendingHostCounts.get(message.domain)
+		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
 		if (numMessagesFromHost > 0) {
-			this.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
+			webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
 		}
-		let numMessagesForApplication = this.pendingApplicationCounts.get(fullApplicationName)
+		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName)
 		if (numMessagesForApplication > 0) {
-			this.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
+			webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
 		}
 
 		// Forward the request to the source client
-		// FIXME: serialize message if !this.isNativeBroadcastChannel
-		this.communicationChannel.postMessage(message)
+		const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER)
+		if (webMessageReciever.needMessageSerialization()) {
+			// FIXME: serialize message
+		}
+		webMessageReciever.sendMessageToClient(message)
 	}
 
 	private async ensureApplicationIsInstalled(
@@ -399,16 +402,19 @@ export class WebTransactionalReceiver
 			return true
 		}
 
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from application domains that match the fullApplicationName
-			|| applicationDomain !== fullApplicationName + this.domainPrefix) {
+			|| applicationDomain !== fullApplicationName + webReciever.domainPrefix) {
 			return false
 		}
 		// Only accept requests from '${applicationName}.${mainDomainName}'
-		if (applicationDomainFragments.length !== this.mainDomainFragments.length + 1) {
+		if (applicationDomainFragments.length !== webReciever.mainDomainFragments.length + 1) {
 			return false
 		}
 		// Only accept requests from non-'www' domain (don't accept requests from self)
@@ -437,11 +443,15 @@ export class WebTransactionalReceiver
 		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
 			return
 		}
+
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+		const webReciever = terminalStore.getWebReceiver()
+
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName)
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
 				if (!isolateSubscriptionMap) {
 					return
 				}
@@ -458,7 +468,11 @@ export class WebTransactionalReceiver
 			if (!response) {
 				return
 			}
-			let shemaDomainName = fullApplicationName + '.' + _mainDomain
+
+			const terminalStore = container(this).getSync(TERMINAL_STORE)
+			const webReciever = terminalStore.getWebReceiver()
+
+			let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain
 			switch (message.type) {
 				case IsolateMessageType.SEARCH:
 				case IsolateMessageType.SEARCH_ONE:
@@ -469,10 +483,10 @@ export class WebTransactionalReceiver
 						})
 					)
 					const subscription = observableDataResult.result.subscribe()
-					let isolateSubscriptionMap = this.subsriptionMap.get(fullApplicationName)
+					let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
 					if (!isolateSubscriptionMap) {
 						isolateSubscriptionMap = new Map()
-						this.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
+						webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
 					}
 					isolateSubscriptionMap.set(message.id, subscription)
 					return

@@ -9,10 +9,9 @@ import {
 	IOperationContext,
 	ITransaction,
 	ITransactionContext,
-	STORE_DRIVER,
-	TERMINAL_STORE
+	STORE_DRIVER
 } from '@airport/terminal-map';
-import { container, DI } from '@airport/di';
+import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
 
 declare function initSqlJs(config: any): any;

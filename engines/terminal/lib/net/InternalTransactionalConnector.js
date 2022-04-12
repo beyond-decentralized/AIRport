@@ -1,15 +1,7 @@
 import { container, DI } from '@airport/di';
-import { INTERNAL_DOMAIN, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class InternalTransactionalConnector {
-    constructor() {
-        this.internalCredentials = {
-            application: null,
-            domain: INTERNAL_DOMAIN,
-            methodName: null,
-            objectName: null
-        };
-    }
     callApi(_) {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
 Interal Application API requests should be made directly (since
@@ -21,105 +13,119 @@ they are internal to the AIRport framework).`);
     // platformConfig: string,
     // distributionStrategy: DistributionStrategy,
     context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
         return await transServer.addRepository(
         // url,
         // platform,
         // platformConfig,
         // distributionStrategy,
-        this.internalCredentials, {
+        terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.find(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.find(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.findOne(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.findOne(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     search(portableQuery, context, cachedSqlQueryId) {
-        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
-        return transServer.search(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = container(this)
+            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return transServer.search(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     searchOne(portableQuery, context, cachedSqlQueryId) {
-        const transServer = container(this).getSync(TRANSACTIONAL_SERVER);
-        return transServer.searchOne(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = container(this)
+            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return transServer.searchOne(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     async save(entity, context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.save(entity, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.save(entity, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async saveToDestination(repositoryDestination, entity, context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.saveToDestination(repositoryDestination, entity, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.saveToDestination(repositoryDestination, entity, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.insertValues(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.insertValues(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.insertValuesGetIds(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.insertValuesGetIds(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async updateValues(portableQuery, context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.updateValues(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.updateValues(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async deleteWhere(portableQuery, context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.deleteWhere(portableQuery, this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.deleteWhere(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async startTransaction(context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.startTransaction(this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.startTransaction(terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async commit(context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.commit(this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.commit(terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async rollback(context) {
-        const transServer = await container(this).get(TRANSACTIONAL_SERVER);
-        return await transServer.rollback(this.internalCredentials, {
+        const [terminalStore, transServer] = await container(this)
+            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
+        return await transServer.rollback(terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });

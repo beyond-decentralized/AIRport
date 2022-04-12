@@ -6,6 +6,12 @@ import type {
 import type { ITerminal } from '@airport/travel-document-checkpoint-internal'
 import { FullApplicationName } from '@airport/ground-control'
 import { ITransaction } from '../transaction/ITransaction'
+import {
+	InternalConnectorStore,
+	IReceiverStore,
+	ITransactionManagerStore,
+	IWebReceiverStore
+} from './TerminalStore'
 
 export interface ITerminalState {
 
@@ -13,9 +19,10 @@ export interface ITerminalState {
 	applications: IApplication[]
 	domains: IDomain[]
 	frameworkActor: IActor
-	initializedApps: Set<FullApplicationName>
-	initializingApps: Set<FullApplicationName>
+	internalConnector: InternalConnectorStore
+	receiver: IReceiverStore
 	terminal: ITerminal
-	transactionMapById: Map<string, ITransaction>
+	transactionManager: ITransactionManagerStore
+	webReceiver: IWebReceiverStore
 
 }

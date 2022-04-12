@@ -32,8 +32,7 @@ export class TerminalStore {
             return domainsByName;
         });
         this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
-        this.getInitializedApps = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.initializedApps);
-        this.getInitializingApps = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.initializingApps);
+        this.getInternalConnector = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
         this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
             for (const domain of domains) {
@@ -111,7 +110,9 @@ export class TerminalStore {
             }
             return allRelations;
         });
-        this.getTransactionMapById = selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionMapById);
+        this.getReceiver = selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
+        this.getTransactionManager = selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
+        this.getWebReceiver = selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
     }
     tearDown() {
     }

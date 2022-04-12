@@ -77,17 +77,6 @@ export interface IStoreDriver
 		cachedSqlQueryId?: number,
 	): Observable<E>;
 
-	transact(
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-				context: ITransactionContext
-			): Promise<void> | void
-		},
-		context: ITransactionContext,
-		parentTransaction?: ITransaction
-	): Promise<void>
-
 	setupTransaction(
 		context: ITransactionContext,
 		parentTransaction?: ITransaction,

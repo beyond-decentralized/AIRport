@@ -26,6 +26,8 @@ export class LocalAPIServer {
             domain: request.domain,
             errorMessage,
             id: request.id,
+            methodName: request.methodName,
+            objectName: request.objectName,
             protocol: request.protocol,
             payload,
         };

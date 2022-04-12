@@ -32,7 +32,7 @@ export class WebApplicationInitializer
         fullApplicationName: string,
     ): Promise<void> {
         const terminalStore = await container(this).get(TERMINAL_STORE)
-        if (terminalStore.getInitializedApps().has(fullApplicationName)) {
+        if (terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
             return
         }
 
@@ -49,7 +49,7 @@ export class WebApplicationInitializer
 
         }
 
-        while (!terminalStore.getInitializedApps().has(fullApplicationName)) {
+        while (!terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
             await this.wait(100)
         }
 

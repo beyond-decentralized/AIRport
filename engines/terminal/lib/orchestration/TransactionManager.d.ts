@@ -1,29 +1,27 @@
 import { IContext } from '@airport/di';
-import { StoreType } from '@airport/ground-control';
-import { ICredentials, IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
+import { IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
-    storeType: StoreType;
-    transactionIndexQueue: string[];
-    sourceOfTransactionInProgress: string;
-    transactionInProgress: ITransaction;
-    yieldToRunningTransaction: number;
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
      */
     initialize(dbName: string, context: IContext): Promise<void>;
-    isServer(context?: IContext): boolean;
-    transact(credentials: ICredentials, transactionalCallback: {
+    getInProgressTransactionById(transactionId: string): ITransaction;
+    isServer(context?: ITransactionContext): boolean;
+    transact(credentials: ITransactionCredentials, transactionalCallback: {
         (transaction: IStoreDriver, context: IContext): Promise<void> | void;
     }, context: ITransactionContext): Promise<void>;
-    startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<ITransaction>;
-    rollback(transaction: ITransaction, context: IContext): Promise<void>;
-    commit(transaction: ITransaction, context: IContext): Promise<void>;
-    startTransactionPrep(credentials: ICredentials, context: ITransactionContext, transactionalCallback?: {
+    startTransaction(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
+    rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    startTransactionPrep(credentials: ITransactionCredentials, context: ITransactionContext, transactionalCallback?: {
         (transaction: IStoreDriver, context: IContext): Promise<void> | void;
     }): Promise<boolean>;
+    private checkForCircularDependencies;
     private setupTransaction;
+    private isSameSource;
+    private getApiName;
     private clearTransaction;
     private saveRepositoryHistory;
     private wait;

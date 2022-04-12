@@ -1,4 +1,13 @@
 import {
+	IDomain,
+	IApplication,
+	IApplicationColumn,
+	IApplicationEntity,
+	IApplicationRelation,
+	IApplicationVersion
+} from '@airport/airspace';
+import { ILocalAPIRequest } from '@airport/aviation-communication';
+import {
 	IMemoizedSelector,
 	SELECTOR_MANAGER
 } from '@airport/check-in';
@@ -12,23 +21,67 @@ import {
 	FullApplicationName
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
-import {
-	IDomain,
-	IApplication,
-	IApplicationColumn,
-	IApplicationEntity,
-	IApplicationRelation,
-	IApplicationVersion
-} from '@airport/airspace';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';
 import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
+import { ITransactionCredentials } from '../Credentials';
+
+
+export interface InternalConnectorStore {
+	dbName: string
+	internalCredentials: ITransactionCredentials
+	serverUrl: string
+}
+export interface IMessageInRecord {
+	message: ILocalAPIRequest<'FromClientRedirected'>
+	reject
+	resolve
+}
+export interface IPendingTransaction {
+	credentials: ITransactionCredentials
+	reject
+	resolve
+}
+
+export interface IReceiverStore {
+	initializingApps: Set<FullApplicationName>
+	initializedApps: Set<FullApplicationName>
+}
+
+export interface ITransactionManagerStore {
+	pendingTransactionQueue: IPendingTransaction[]
+	transactionInProgressMap: Map<string, ITransaction>
+	rootTransactionInProgressMap: Map<string, ITransaction>
+}
+
+export interface IWebReceiverStore {
+	domainPrefix: string
+	localDomain: string
+	mainDomainFragments: string[]
+	onClientMessageCallback: (
+		message: any
+	) => void
+	pendingApplicationCounts: Map<string, number>
+	pendingHostCounts: Map<string, number>
+	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
+	subsriptionMap: Map<string, Map<string, Subscription>>
+}
 
 export interface ITerminalStore {
 
 	state: Subject<ITerminalState>
+
+	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>
+
+	getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>
+
+	getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>
+
+	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>
+
+	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
@@ -40,30 +93,22 @@ export interface ITerminalStore {
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
+	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
+
 	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>
 
 	// Application name contains the domain name as a prefix + '___'
 	getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>
 
-	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>
-
 	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
+
+	getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
-	getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>
+	getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>
 
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
-
-	getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>
-
-	getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>
-
-	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>
-
-	getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
-
-	getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
 
 	tearDown()
 }
@@ -73,27 +118,7 @@ export class TerminalStore
 
 	state: Subject<ITerminalState>;
 
-	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
-
-	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
-
-	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
-
-	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
-
-	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
-
-	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
-
-	getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
-
 	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
-
-	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
-
-	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
-
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
 
 	getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
 
@@ -101,11 +126,33 @@ export class TerminalStore
 
 	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
 
-	getInitializingApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
-	getInitializedApps: IMemoizedSelector<Set<FullApplicationName>, ITerminalState>
+	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
 
-	getTransactionMapById: IMemoizedSelector<Map<string, ITransaction>, ITerminalState>
+	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
+
+	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
+
+	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+
+	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
+
+	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
+
+	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
+
+	getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
+
+	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+
+	getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>
+
+	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
+
+	getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>
+
+	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
 
 	async init(): Promise<void> {
 		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
@@ -143,10 +190,8 @@ export class TerminalStore
 			})
 		this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.frameworkActor)
-		this.getInitializedApps = selectorManager.createSelector(this.getTerminalState,
-			terminalState => terminalState.initializedApps)
-		this.getInitializingApps = selectorManager.createSelector(this.getTerminalState,
-			terminalState => terminalState.initializingApps)
+		this.getInternalConnector = selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.internalConnector)
 		this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestApplicationVersionMapByNames: Map<DomainName, Map<ApplicationName, IApplicationVersion>> = new Map();
@@ -255,8 +300,14 @@ export class TerminalStore
 				return allRelations;
 			});
 
-		this.getTransactionMapById = selectorManager.createSelector(this.getTerminalState,
-			terminal => terminal.transactionMapById)
+		this.getReceiver = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.receiver)
+
+		this.getTransactionManager = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.transactionManager)
+
+		this.getWebReceiver = selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.webReceiver)
 	}
 
 	tearDown() {

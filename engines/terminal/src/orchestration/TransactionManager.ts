@@ -34,6 +34,7 @@ import {
 	ITransactionInitiator,
 	ITransactionManager,
 	STORE_DRIVER,
+	TERMINAL_STORE,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -41,12 +42,6 @@ import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
-
-	// Keyed by repository index
-	storeType: StoreType;
-	transactionIndexQueue: string[] = [];
-	transactionInProgress: ITransaction = null;
-	yieldToRunningTransaction: number = 200;
 
 	/**
 	 * Initializes the EntityManager at server load time.
@@ -56,16 +51,23 @@ export class TransactionManager
 		dbName: string,
 		context: IContext,
 	): Promise<void> {
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER);
+		const storeDriver = await container(this).get(STORE_DRIVER);
 
 		return await storeDriver.initialize(dbName, context);
 		// await this.dataStore.initialize(dbName)
 		// await this.repositoryManager.initialize();
 	}
 
+	getInProgressTransactionById(
+		transactionId: string
+	): ITransaction {
+		const terminalStore = container(this).getSync(TERMINAL_STORE)
+
+		return terminalStore.getTransactionManager().transactionInProgressMap.get(transactionId)
+	}
+
 	isServer(
-		context?: IContext
+		context?: ITransactionContext
 	) {
 		return container(this).getSync(STORE_DRIVER).isServer(context);
 	}
@@ -81,36 +83,28 @@ export class TransactionManager
 		context: ITransactionContext,
 	): Promise<void> {
 		if (context.transaction) {
+			// Nested transactal() calls in internal operations
+			// do not create nested transactions 
 			await transactionalCallback(context.transaction, context)
 			return
 		}
-		const storeDriver = await container(this).get(STORE_DRIVER);
+		const transaction = await this.startTransaction(credentials, context)
 
-		if (!await this.startTransactionPrep(credentials, context, transactionalCallback)) {
-			return
+		try {
+			await transactionalCallback(transaction, context);
+			await this.commit(transaction, context);
+		} catch (e) {
+			await this.rollback(transaction, context);
+			throw e
 		}
-
-		await storeDriver.transact(async (
-			transaction: ITransaction,
-		) => {
-			await this.setupTransaction(credentials, transaction, context)
-			try {
-				await transactionalCallback(transaction, context);
-				await this.commit(transaction, context);
-			} catch (e) {
-				console.error(e);
-				await this.rollback(transaction, context);
-			} finally {
-				context.transaction = null
-			}
-		}, context);
 	}
 
 	async startTransaction(
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
-		const storeDriver = await container(this).get(STORE_DRIVER);
+		const [storeDriver, terminalStore] = await container(this)
+			.get(STORE_DRIVER, TERMINAL_STORE);
 
 		if (!await this.startTransactionPrep(credentials, context)) {
 			return
@@ -118,7 +112,14 @@ export class TransactionManager
 
 		const transaction = await storeDriver.setupTransaction(context as any)
 
-		await storeDriver.startTransaction(transaction)
+		const transactionManagerStore = terminalStore.getTransactionManager()
+
+		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
+		if (!transaction.parentTransaction) {
+			transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction)
+		}
+
+		await storeDriver.startTransaction(transaction, context)
 
 		await this.setupTransaction(credentials, transaction, context)
 
@@ -129,11 +130,18 @@ export class TransactionManager
 
 	async rollback(
 		transaction: ITransaction,
-		context: IContext,
+		context: ITransactionContext,
 	): Promise<void> {
 		const storeDriver = await container(this).get(STORE_DRIVER);
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			transaction.credentials.domain, transaction.credentials.application)
+
+		const isServer = storeDriver.isServer(context)
+		if (isServer) {
+			// multiple parallel top level transactions are supported
+		} else {
+			// a single top level transaction is supported
+		}
 		if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
 			!== fullApplicationName) {
 			let foundTransactionInQueue = false;
@@ -154,18 +162,16 @@ export class TransactionManager
 		try {
 			await transaction.rollback(null, context);
 		} finally {
-			this.clearTransaction();
+			await this.clearTransaction(context);
 		}
 	}
 
 	async commit(
 		transaction: ITransaction,
-		context: IContext,
+		context: ITransactionContext,
 	): Promise<void> {
 		const [activeQueries, idGenerator, storeDriver] = await container(this)
-			.get(
-				ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER,
-			);
+			.get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
 
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			transaction.credentials.domain, transaction.credentials.application)
@@ -183,7 +189,7 @@ export class TransactionManager
 			activeQueries.rerunQueries();
 			await transaction.commit(null);
 		} finally {
-			this.clearTransaction();
+			await this.clearTransaction(context);
 		}
 
 		let transactionHistory = transaction.transHistory;
@@ -213,7 +219,7 @@ export class TransactionManager
 		}
 		const storeDriver = await container(this).get(STORE_DRIVER);
 
-		const isServer = storeDriver.isServer(context)
+		const isServer = this.isServer(context)
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			credentials.domain, credentials.application)
 
@@ -242,16 +248,6 @@ Only one concurrent transaction is allowed per application.`)
 				// return;
 			}
 			this.transactionIndexQueue.push(fullApplicationName);
-		}
-
-		while (!this.canRunTransaction(fullApplicationName, storeDriver, context)) {
-			await this.wait(this.yieldToRunningTransaction);
-		}
-		if (!isServer) {
-			this.transactionIndexQueue = this.transactionIndexQueue.filter(
-				transIndex =>
-					transIndex !== fullApplicationName,
-			);
 		}
 
 		return true
@@ -285,7 +281,7 @@ ${callHerarchy}
 	private async setupTransaction(
 		credentials: ITransactionCredentials,
 		transaction: ITransaction,
-		context: IContext,
+		context: ITransactionContext,
 	): Promise<void> {
 		const transHistoryDuo = await container(this)
 			.get(TRANSACTION_HISTORY_DUO);
@@ -330,9 +326,24 @@ ${callHerarchy}
 		return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`
 	}
 
-	private clearTransaction() {
+	private async clearTransaction(
+		context: ITransactionContext
+	): Promise<void> {
+		const transaction = context.transaction
+
+		const terminalStore = await container(this).get(TERMINAL_STORE)
+
+		const transactionManagerStore = terminalStore.getTransactionManager()
+
+		transactionManagerStore.transactionInProgressMap.delete(transaction.id)
+		if (!transaction.parentTransaction) {
+			transactionManagerStore.rootTransactionInProgressMap.delete(transaction.id)
+		}
+		context.transaction = null
+
+
 		this.sourceOfTransactionInProgress = null;
-		if(this.transactionInProgress.parentTransaction) {
+		if (this.transactionInProgress.parentTransaction) {
 
 		}
 		this.transactionInProgress = null;
@@ -344,7 +355,7 @@ ${callHerarchy}
 	private async saveRepositoryHistory(
 		transaction: ITransaction,
 		idGenerator: IIdGenerator,
-		context: IContext,
+		context: ITransactionContext,
 	): Promise<boolean> {
 		let transactionHistory = transaction.transHistory;
 		if (!transactionHistory.allRecordHistory.length) {
@@ -432,7 +443,7 @@ ${callHerarchy}
 	private canRunTransaction(
 		domainAndPort: string,
 		storeDriver: IStoreDriver,
-		context: IContext,
+		context: ITransactionContext,
 	): boolean {
 		if (storeDriver.isServer(context)) {
 			return true;
