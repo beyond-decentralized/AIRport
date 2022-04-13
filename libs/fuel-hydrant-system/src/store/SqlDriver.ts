@@ -155,8 +155,6 @@ export abstract class SqlDriver
 		context: ITransactionContext,
 	): Promise<void> {
 		await this.ensureContext(context)
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		terminalStore.getTransactionMapById().set(transaction.id, transaction)
 	}
 
 	async tearDownTransaction(
@@ -171,9 +169,6 @@ export abstract class SqlDriver
 			transaction.parentTransaction = null
 			context.transaction = transaction.parentTransaction
 		}
-
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		terminalStore.getTransactionMapById().delete(transaction.id)
 	}
 
 	async startTransaction(

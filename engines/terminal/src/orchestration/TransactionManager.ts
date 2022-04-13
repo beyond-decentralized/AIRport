@@ -33,6 +33,7 @@ import {
 	ITransactionCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
+	ITransactionManagerStore,
 	STORE_DRIVER,
 	TERMINAL_STORE,
 	TRANSACTION_MANAGER
@@ -92,9 +93,9 @@ export class TransactionManager
 
 		try {
 			await transactionalCallback(transaction, context);
-			await this.commit(transaction, context);
+			await this.commit(credentials, context);
 		} catch (e) {
-			await this.rollback(transaction, context);
+			await this.rollback(credentials, context);
 			throw e
 		}
 	}
@@ -106,32 +107,75 @@ export class TransactionManager
 		const [storeDriver, terminalStore] = await container(this)
 			.get(STORE_DRIVER, TERMINAL_STORE);
 
-		if (!await this.startTransactionPrep(credentials, context)) {
-			return
-		}
-
-		const transaction = await storeDriver.setupTransaction(context as any)
-
 		const transactionManagerStore = terminalStore.getTransactionManager()
-
-		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
-		if (!transaction.parentTransaction) {
-			transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction)
+		let parentTransaction: ITransaction
+		if (credentials.transactionId) {
+			parentTransaction = transactionManagerStore
+				.transactionInProgressMap.get(credentials.transactionId)
+			if (!parentTransaction) {
+				throw new Error(`
+Recieved a startTransaction call (@Api call) with parent transaction id:
+	${credentials.transactionId}
+But, there is no such transaction in progress.`)
+			}
+			if (parentTransaction.id !==
+				credentials.transactionId) {
+				throw new Error(`
+In-progress transaction id does not match the passed in transaction id:
+${credentials.transactionId}`)
+			}
+			this.checkForCircularDependencies(parentTransaction, credentials)
+		} else {
+			/*
+			 * NOTE: Current policy is to NOT limit the number of transactions
+			 * a domain can initiate.  In the future, specifically for the
+			 * client-side Turbase, it may make sence to limit the number
+			 * of transactions to 1 per tab.  This can be accomplished by
+			 * generating a unique id on the nested client iframe of an
+			 * application. 
+			 */
+			/*
+throw new Error(`
+	Domain:
+		${credentials.domain}
+	Application:
+		${credentials.application}
+initialized multiple transactions at the same time.
+Only one concurrent transaction is allowed per application.`)
+			*/
+			if (!this.isServer(context)
+				&& transactionManagerStore.transactionInProgressMap.size > 0) {
+				// Delay the start of the transaction
+				return new Promise((resolve, reject) => {
+					// Add the transaction to the queue of pending transactions
+					transactionManagerStore.pendingTransactionQueue.unshift({
+						credentials,
+						reject,
+						resolve
+					})
+				})
+			}
 		}
 
+		const transaction = await storeDriver.setupTransaction(context, parentTransaction)
 		await storeDriver.startTransaction(transaction, context)
-
-		await this.setupTransaction(credentials, transaction, context)
-
-		context.transaction = transaction
+		
+		await this.setupTransaction(credentials, transaction, parentTransaction,
+			transactionManagerStore, context)
 
 		return transaction
 	}
 
 	async rollback(
-		transaction: ITransaction,
+		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
+		let transaction = context.transaction
+		if(!transaction) {
+			if(!credentials.transactionId) {
+				throw new Error(``)
+			}
+		}
 		const storeDriver = await container(this).get(STORE_DRIVER);
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			transaction.credentials.domain, transaction.credentials.application)
@@ -167,7 +211,7 @@ export class TransactionManager
 	}
 
 	async commit(
-		transaction: ITransaction,
+		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
 		const [activeQueries, idGenerator, storeDriver] = await container(this)
@@ -204,55 +248,6 @@ export class TransactionManager
 			transactionHistory.repositoryTransactionHistories)
 	}
 
-	async startTransactionPrep(
-		credentials: ITransactionCredentials,
-		context: ITransactionContext,
-		transactionalCallback?: {
-			(
-				transaction: IStoreDriver,
-				context: IContext
-			): Promise<void> | void
-		},
-	): Promise<boolean> {
-		if (context.transaction) {
-			return false
-		}
-		const storeDriver = await container(this).get(STORE_DRIVER);
-
-		const isServer = this.isServer(context)
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			credentials.domain, credentials.application)
-
-		if (!isServer) {
-			let transaction = this.transactionInProgress
-			this.checkForCircularDependencies(transaction, credentials)
-			if (fullApplicationName === this.sourceOfTransactionInProgress) {
-				if (transactionalCallback) {
-					await transactionalCallback(this.transactionInProgress, context);
-				}
-				return false
-			} else if (this.transactionIndexQueue.filter(
-				transIndex =>
-					transIndex === fullApplicationName,
-			).length) {
-				// Either just continue using the current transaction
-				// or return (domain shouldn't be initiating multiple transactions
-				// at the same time
-				throw new Error(`
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
-initialized multiple transactions at the same time.
-Only one concurrent transaction is allowed per application.`)
-				// return;
-			}
-			this.transactionIndexQueue.push(fullApplicationName);
-		}
-
-		return true
-	}
-
 	private checkForCircularDependencies(
 		transaction: ITransaction,
 		credentials: ITransactionCredentials
@@ -281,14 +276,22 @@ ${callHerarchy}
 	private async setupTransaction(
 		credentials: ITransactionCredentials,
 		transaction: ITransaction,
+		parentTransaction: ITransaction,
+		transactionManagerStore: ITransactionManagerStore,
 		context: ITransactionContext,
 	): Promise<void> {
 		const transHistoryDuo = await container(this)
 			.get(TRANSACTION_HISTORY_DUO);
-		this.transactionInProgress = transaction
 		context.transaction = transaction
 		transaction.transHistory = transHistoryDuo.getNewRecord();
 		transaction.credentials = credentials;
+
+		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
+		if (parentTransaction) {
+			transactionManagerStore.transactionInProgressMap.delete(parentTransaction.id)
+		} else {
+			transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction)
+		}
 	}
 
 	// @Transactional()

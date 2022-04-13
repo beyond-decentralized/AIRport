@@ -3,7 +3,7 @@ import {
 	StoreType
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
-import { ICredentials } from '../Credentials';
+import { ICredentials, ITransactionCredentials } from '../Credentials';
 import { IStoreDriver } from '../core/data/StoreDriver';
 
 export interface IApiCallContext
@@ -45,12 +45,12 @@ export interface ITransactionManager {
 	): Promise<ITransaction>
 
 	rollback(
-		transaction: ITransaction,
+		credentials: ITransactionCredentials,
 		context: IContext,
 	): Promise<void>
 
 	commit(
-		transaction: ITransaction,
+		credentials: ITransactionCredentials,
 		context: IContext,
 	): Promise<void>
 
