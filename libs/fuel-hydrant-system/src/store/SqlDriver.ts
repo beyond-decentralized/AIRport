@@ -167,7 +167,6 @@ export abstract class SqlDriver
 		if (transaction.parentTransaction) {
 			transaction.parentTransaction.childTransaction = null
 			transaction.parentTransaction = null
-			context.transaction = transaction.parentTransaction
 		}
 	}
 
@@ -201,8 +200,8 @@ export abstract class SqlDriver
 			console.error(e)
 			try {
 				await this.internalRollback(transaction)
-			} catch (e) {
-				console.error(e)
+			} catch (rollbackError) {
+				console.error(rollbackError)
 			}
 			throw e
 		} finally {
@@ -224,7 +223,7 @@ export abstract class SqlDriver
 			await this.internalRollback(transaction)
 		} catch (e) {
 			console.error(e)
-			throw e
+			// Do not re-throw the exception, rollback is final (at least for now)
 		} finally {
 			await this.tearDownTransaction(transaction, context)
 		}

@@ -72,4 +72,7 @@ export class TransactionHistory
 	@Transient()
 	numberOfOperations: TransactionHistoryNumberOfOperations = 0
 
+	@Transient()
+	childTransactionRepositoryTransactionHistories: RepositoryTransactionHistory[][] = []
+
 }

@@ -1,6 +1,6 @@
 import { ITransactionHistory } from '@airport/holding-pattern'
 import { IStoreDriver } from '../core/data/StoreDriver'
-import { ICredentials } from '../Credentials'
+import { ITransactionCredentials } from '../Credentials'
 
 export interface ITransactionInitiator {
 	application: string
@@ -13,7 +13,7 @@ export interface ITransaction
 	extends IStoreDriver {
 
 	childTransaction: ITransaction
-	credentials: ICredentials
+	credentials: ITransactionCredentials
 	id: string
 	initiator: ITransactionInitiator
 	isSync: boolean

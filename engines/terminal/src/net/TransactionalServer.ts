@@ -148,27 +148,10 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		const transactionManagerStore = terminalStore.getTransactionManager()
-		try {
-			
-		} catch (e) {
-			context.errorMessage = e.message
-			console.error(e)
-			return false
-		}
-		return await this.internalStartTransaction(credentials, context)
-	}
-
-	private async internalStartTransaction(
-		credentials: ITransactionCredentials,
-		context: IOperationContext & ITransactionContext & IApiCallContext
-	): Promise<boolean> {
 		try {
 			await this.ensureIocContext(context)
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
 			await transactionManager.startTransaction(credentials, context)
-			this.currentTransactionContext = context
 			return true
 		} catch (e) {
 			context.errorMessage = e.message

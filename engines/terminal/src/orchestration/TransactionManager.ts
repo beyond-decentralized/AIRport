@@ -24,6 +24,8 @@ import {
 	RepositoryTransactionHistory,
 	TRANSACTION_HISTORY_DUO,
 	TransactionHistory,
+	ITransactionHistory,
+	IRepositoryTransactionHistory,
 } from '@airport/holding-pattern';
 import {
 	ICredentials,
@@ -157,9 +159,23 @@ Only one concurrent transaction is allowed per application.`)
 			}
 		}
 
+		return await this.internalStartTransaction(credentials,
+			parentTransaction, context)
+	}
+
+	private async internalStartTransaction(
+		credentials: ITransactionCredentials,
+		parentTransaction: ITransaction,
+		context: ITransactionContext,
+	): Promise<ITransaction> {
+		const [storeDriver, terminalStore] = await container(this)
+			.get(STORE_DRIVER, TERMINAL_STORE);
+
+		const transactionManagerStore = terminalStore.getTransactionManager()
 		const transaction = await storeDriver.setupTransaction(context, parentTransaction)
 		await storeDriver.startTransaction(transaction, context)
-		
+
+		transaction.credentials = credentials
 		await this.setupTransaction(credentials, transaction, parentTransaction,
 			transactionManagerStore, context)
 
@@ -170,43 +186,57 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
-		let transaction = context.transaction
-		if(!transaction) {
-			if(!credentials.transactionId) {
-				throw new Error(``)
-			}
-		}
-		const storeDriver = await container(this).get(STORE_DRIVER);
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			transaction.credentials.domain, transaction.credentials.application)
+		const transaction = await this.getTransactionFromContextOrCredentials(
+			credentials, context)
 
-		const isServer = storeDriver.isServer(context)
-		if (isServer) {
-			// multiple parallel top level transactions are supported
-		} else {
-			// a single top level transaction is supported
-		}
-		if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
-			!== fullApplicationName) {
-			let foundTransactionInQueue = false;
-			this.transactionIndexQueue.filter(
-				transIndex => {
-					if (transIndex === fullApplicationName) {
-						foundTransactionInQueue = true;
-						return false;
-					}
-					return true;
-				});
-			if (!foundTransactionInQueue) {
-				throw new Error(
-					`Could not find transaction '${fullApplicationName}' is not found`);
+		let parentTransaction = transaction.parentTransaction
+		await transaction.rollback(null, context);
+		await this.clearTransaction(transaction, parentTransaction, credentials, context);
+
+		await this.resumeParentOrPendingTransaction(parentTransaction, context)
+	}
+
+	private async getTransactionFromContextOrCredentials(
+		credentials: ITransactionCredentials,
+		context: ITransactionContext,
+	): Promise<ITransaction> {
+		let transaction = context.transaction
+		if (!transaction) {
+			if (!credentials.transactionId) {
+				throw new Error(`
+No Transaction Id is passed in Credentials for a Rollback operation.
+				`)
 			}
-			return;
+			const terminalStore = await container(this).get(TERMINAL_STORE)
+			const transactionManagerStore = terminalStore.getTransactionManager()
+			transaction = transactionManagerStore.transactionInProgressMap.get(credentials.transactionId)
+			if (!transaction) {
+				throw new Error(`
+Could not find Transaction: ${credentials.transactionId} in Transactons in-progress.
+NOTE: nested/child transactions must be commited or rolled back before their
+parent transactions.
+				`)
+			}
 		}
-		try {
-			await transaction.rollback(null, context);
-		} finally {
-			await this.clearTransaction(context);
+
+		return transaction
+	}
+
+	private async resumeParentOrPendingTransaction(
+		parentTransaction: ITransaction,
+		context: ITransactionContext,
+	): Promise<void> {
+		const terminalStore = await container(this).get(TERMINAL_STORE);
+		const transactionManagerStore = terminalStore.getTransactionManager()
+		if (parentTransaction) {
+			await this.setupTransaction(parentTransaction.credentials, parentTransaction,
+				parentTransaction.parentTransaction, transactionManagerStore,
+				context)
+		} else if (transactionManagerStore.pendingTransactionQueue.length) {
+			const pendingTransaction = transactionManagerStore.pendingTransactionQueue.pop()
+			const transaction = await this.internalStartTransaction(pendingTransaction.credentials,
+				null, context)
+			pendingTransaction.resolve(transaction)
 		}
 	}
 
@@ -214,39 +244,56 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
-		const [activeQueries, idGenerator, storeDriver] = await container(this)
-			.get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
+		const transaction = await this.getTransactionFromContextOrCredentials(
+			credentials, context)
 
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			transaction.credentials.domain, transaction.credentials.application)
-		if (!storeDriver.isServer(context)
-			&& this.sourceOfTransactionInProgress !== fullApplicationName) {
-			throw new Error(
-				`Cannot commit inactive transaction '${fullApplicationName}'.`);
-		}
+		let parentTransaction = transaction.parentTransaction
 
 		try {
-			await this.saveRepositoryHistory(transaction, idGenerator, context);
+			await this.saveRepositoryHistory(transaction, context);
 
 			await transaction.saveTransaction(transaction.transHistory);
 
+			const activeQueries = await container(this).get(ACTIVE_QUERIES);
 			activeQueries.rerunQueries();
-			await transaction.commit(null);
+			await transaction.commit(null, context);
+
+			let transactionHistory = transaction.transHistory;
+			if (transactionHistory.allRecordHistory.length) {
+				if (parentTransaction) {
+					transactionHistory.childTransactionRepositoryTransactionHistories
+						.push(transactionHistory.repositoryTransactionHistories)
+				} else {
+					const synchronizationOutManager = await container(this)
+						.get(SYNCHRONIZATION_OUT_MANAGER)
+
+					const compositeRepositoryTransactionHistories =
+						this.composeRepositoryTransactionHistories(transactionHistory)
+
+					await synchronizationOutManager.synchronizeOut(
+						compositeRepositoryTransactionHistories)
+				}
+			}
+
 		} finally {
-			await this.clearTransaction(context);
+			await this.clearTransaction(transaction, parentTransaction, credentials, context);
+			// Right now transactions are tied to @Api() calls,
+			// If an @Api() fails to commit the parent @Api() call should resume
+			// it's transaction or the next 
+			await this.resumeParentOrPendingTransaction(parentTransaction, context)
 		}
-
-		let transactionHistory = transaction.transHistory;
-		if (!transactionHistory.allRecordHistory.length) {
-			return;
-		}
-
-		const synchronizationOutManager = await container(this)
-			.get(SYNCHRONIZATION_OUT_MANAGER)
-
-		await synchronizationOutManager.synchronizeOut(
-			transactionHistory.repositoryTransactionHistories)
 	}
+
+	private composeRepositoryTransactionHistories(
+		transactionHistory: ITransactionHistory
+	): IRepositoryTransactionHistory[] {
+		// TODO: work here next
+		// Need to differenciate between already saved transaction histories
+		// form child transactions and new ones (from this transaction)
+
+		// merge transactionHistory.childTransactionRepositoryTransactionHistories
+	}
+
 
 	private checkForCircularDependencies(
 		transaction: ITransaction,
@@ -280,11 +327,11 @@ ${callHerarchy}
 		transactionManagerStore: ITransactionManagerStore,
 		context: ITransactionContext,
 	): Promise<void> {
-		const transHistoryDuo = await container(this)
-			.get(TRANSACTION_HISTORY_DUO);
 		context.transaction = transaction
+		credentials.transactionId = transaction.id
+
+		const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
 		transaction.transHistory = transHistoryDuo.getNewRecord();
-		transaction.credentials = credentials;
 
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
 		if (parentTransaction) {
@@ -330,34 +377,25 @@ ${callHerarchy}
 	}
 
 	private async clearTransaction(
+		transaction: ITransaction,
+		parentTransaction: ITransaction,
+		credentials: ITransactionCredentials,
 		context: ITransactionContext
 	): Promise<void> {
-		const transaction = context.transaction
-
 		const terminalStore = await container(this).get(TERMINAL_STORE)
 
 		const transactionManagerStore = terminalStore.getTransactionManager()
-
 		transactionManagerStore.transactionInProgressMap.delete(transaction.id)
-		if (!transaction.parentTransaction) {
+
+		if (!parentTransaction) {
 			transactionManagerStore.rootTransactionInProgressMap.delete(transaction.id)
 		}
 		context.transaction = null
-
-
-		this.sourceOfTransactionInProgress = null;
-		if (this.transactionInProgress.parentTransaction) {
-
-		}
-		this.transactionInProgress = null;
-		if (this.transactionIndexQueue.length) {
-			this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();
-		}
+		credentials.transactionId = null
 	}
 
 	private async saveRepositoryHistory(
 		transaction: ITransaction,
-		idGenerator: IIdGenerator,
 		context: ITransactionContext,
 	): Promise<boolean> {
 		let transactionHistory = transaction.transHistory;
@@ -365,6 +403,8 @@ ${callHerarchy}
 			return false;
 		}
 		let applicationMap = transactionHistory.applicationMap;
+
+		const idGenerator = await container(this).get(ID_GENERATOR)
 
 		const transHistoryIds = await idGenerator.generateTransactionHistoryIds(
 			transactionHistory.repositoryTransactionHistories.length,
