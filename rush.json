@@ -42,12 +42,6 @@
       "projectFolder": "apis/terminal-map",
       "shouldPublish": true
     },
-    // "common" folder (alphabetical order)
-    {
-      "packageName": "@airport/tools",
-      "projectFolder": "common/tools",
-      "shouldPublish": true
-    },
     // "db" folder (alphabetical order)
     {
       "packageName": "@airport/cockroachdb",
@@ -232,11 +226,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/flight-log-archive",
-      "projectFolder": "schemas/flight-log-archive",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/holding-pattern",
       "projectFolder": "schemas/holding-pattern",
       "shouldPublish": true
@@ -244,11 +233,6 @@
     {
       "packageName": "@airport/moving-walkway",
       "projectFolder": "schemas/moving-walkway",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/na-kano",
-      "projectFolder": "schemas/na-kano",
       "shouldPublish": true
     },
     {
