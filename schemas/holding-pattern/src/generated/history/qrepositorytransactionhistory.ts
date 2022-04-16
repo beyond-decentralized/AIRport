@@ -37,19 +37,6 @@ import {
 	IRepository,
 } from '../repository/repository';
 import {
-	ActorGraph,
-	ActorEId,
-	ActorEOptionalId,
-	ActorEUpdateProperties,
-	ActorESelect,
-	QActor,
-	QActorQId,
-	QActorQRelation,
-} from '../infrastructure/qactor';
-import {
-	IActor,
-} from '../infrastructure/actor';
-import {
 	TransactionHistoryGraph,
 	TransactionHistoryEId,
 	TransactionHistoryEOptionalId,
@@ -103,7 +90,6 @@ export interface RepositoryTransactionHistoryESelect
 
   // Non-Id relations (including OneToMany's)
 	repository?: RepositoryESelect;
-	actor?: ActorESelect;
 	transactionHistory?: TransactionHistoryESelect;
 	operationHistory?: OperationHistoryESelect;
 
@@ -146,7 +132,6 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	repository?: RepositoryEOptionalId;
-	actor?: ActorEOptionalId;
 	transactionHistory?: TransactionHistoryEOptionalId;
 
 }
@@ -167,7 +152,6 @@ export interface RepositoryTransactionHistoryGraph
 
 	// Relations
 	repository?: RepositoryGraph;
-	actor?: ActorGraph;
 	transactionHistory?: TransactionHistoryGraph;
 	operationHistory?: OperationHistoryGraph[];
 
@@ -185,7 +169,6 @@ export interface RepositoryTransactionHistoryEUpdateColumns
 	UUID?: string | IQStringField;
 	IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
 	REPOSITORY_ID?: number | IQNumberField;
-	ACTOR_ID?: number | IQNumberField;
 	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
@@ -230,7 +213,6 @@ export interface QRepositoryTransactionHistory extends IQEntity
 
 	// Non-Id Relations
 	repository: QRepositoryQRelation;
-	actor: QActorQRelation;
 	transactionHistory: QTransactionHistoryQRelation;
 	operationHistory: IQOneToManyRelation<QOperationHistory>;
 

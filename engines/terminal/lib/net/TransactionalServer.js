@@ -66,45 +66,9 @@ export class TransactionalServer {
     }
     async startTransaction(credentials, context) {
         try {
-            if (credentials.transactionId) {
-                if (!this.currentTransactionContext) {
-                    throw new Error(`
-Recieved a startTransaction call (@Api call) id: ${credentials.transactionId}
-with no current transaction in progress.  Nested @Api calls should always
-be attached to a parent transaction.`);
-                }
-                if (this.currentTransactionContext.transaction.id !==
-                    credentials.transactionId) {
-                    throw new Error(`
-Current transaction id does not match the passed in transaction id:
-${credentials.transactionId}`);
-                }
-            }
-            else {
-                if (this.currentTransactionContext) {
-                    return new Promise((resolve, reject) => {
-                        this.pendingTransactionQueue.push({
-                            credentials,
-                            reject,
-                            resolve,
-                        });
-                    });
-                }
-            }
-        }
-        catch (e) {
-            context.errorMessage = e.message;
-            console.error(e);
-            return false;
-        }
-        return await this.internalStartTransaction(credentials, context);
-    }
-    async internalStartTransaction(credentials, context) {
-        try {
             await this.ensureIocContext(context);
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);
             await transactionManager.startTransaction(credentials, context);
-            this.currentTransactionContext = context;
             return true;
         }
         catch (e) {
@@ -134,9 +98,7 @@ ${credentials.transactionId}`);
         }
     }
     async rollback(credentials, context) {
-        if (!this.currentTransactionContext
-            || this.currentTransactionContext.transaction.id !== credentials.transactionId) {
-            return false;
+        if (context.transaction) {
         }
         try {
             await this.ensureIocContext(context);

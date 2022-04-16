@@ -3,7 +3,6 @@ import { container } from '@airport/di';
 import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
-import { TERMINAL_STORE } from '@airport/terminal-map';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -56,8 +55,6 @@ export class SqlDriver {
     }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        terminalStore.getTransactionMapById().set(transaction.id, transaction);
     }
     async tearDownTransaction(transaction, context) {
         if (transaction.childTransaction) {
@@ -66,10 +63,7 @@ export class SqlDriver {
         if (transaction.parentTransaction) {
             transaction.parentTransaction.childTransaction = null;
             transaction.parentTransaction = null;
-            context.transaction = transaction.parentTransaction;
         }
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        terminalStore.getTransactionMapById().delete(transaction.id);
     }
     async startTransaction(transaction, context) {
         await this.ensureContext(context);
@@ -92,8 +86,8 @@ export class SqlDriver {
             try {
                 await this.internalRollback(transaction);
             }
-            catch (e) {
-                console.error(e);
+            catch (rollbackError) {
+                console.error(rollbackError);
             }
             throw e;
         }
@@ -108,7 +102,7 @@ export class SqlDriver {
         }
         catch (e) {
             console.error(e);
-            throw e;
+            // Do not re-throw the exception, rollback is final (at least for now)
         }
         finally {
             await this.tearDownTransaction(transaction, context);

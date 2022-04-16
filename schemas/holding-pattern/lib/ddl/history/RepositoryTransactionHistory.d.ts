@@ -1,4 +1,3 @@
-import { Actor } from '../infrastructure/Actor';
 import { Repository } from '../repository/Repository';
 import { OperationHistory } from './OperationHistory';
 import { RepositoryTransactionType } from './RepositoryTransactionType';
@@ -20,7 +19,6 @@ export declare class RepositoryTransactionHistory {
     uuId: RepositoryTransactionHistory_UuId;
     isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation;
     repository: Repository;
-    actor: Actor;
     transactionHistory: TransactionHistory;
     operationHistory: OperationHistory[];
     constructor(data?: RepositoryTransactionHistory);

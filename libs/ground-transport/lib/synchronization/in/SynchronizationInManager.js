@@ -31,7 +31,7 @@ export class SynchronizationInManager {
             let processMessage = true;
             await transactional(async (transaction) => {
                 if (!await syncInChecker.checkMessage(message)) {
-                    transaction.rollback(null);
+                    transaction.rollback(null, context);
                     processMessage = false;
                     return;
                 }
@@ -60,12 +60,6 @@ export class SynchronizationInManager {
                 return -1;
             }
             if (history1.saveTimestamp > history2.saveTimestamp) {
-                return 1;
-            }
-            if (history1.actor.uuId < history2.actor.uuId) {
-                return -1;
-            }
-            if (history1.actor.uuId > history2.actor.uuId) {
                 return 1;
             }
             return 0;

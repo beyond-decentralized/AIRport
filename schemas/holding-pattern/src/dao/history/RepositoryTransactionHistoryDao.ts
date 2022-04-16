@@ -52,32 +52,9 @@ import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
 
 export interface IRepositoryTransactionHistoryDao {
 
-	getSelectClauseWithRecordHistory(
-		operHistoryDuo: IOperationHistoryDuo,
-		recHistoryDuo: IRecordHistoryDuo
-	): RepositoryTransactionHistoryESelect;
-
-	findWhere(
-		whereClauseFunction: {
-			(
-				rth: QRepositoryTransactionHistory,
-				r: QRepository,
-				oh?: QOperationHistory,
-				rh?: QRecordHistory,
-				rhnv?: QRecordHistoryNewValue
-			): JSONLogicalOperation
-		}
-	): Promise<IRepositoryTransactionHistory[]>;
-
 	findWhereUuIdsIn(
 		uuIds: string[]
 	): Promise<IRepositoryTransactionHistory[]>
-
-	findExistingRecordIdMap(
-		recordIdMap: Map<Repository_Id, Map<Actor_Id,
-			Map<EntityId, Set<RepositoryEntity_ActorRecordId>>>>
-	): Promise<Map<Repository_Id,
-		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>;
 
 	findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
@@ -112,62 +89,6 @@ export class RepositoryTransactionHistoryDao
 	}
 	*/
 
-	getSelectClauseWithRecordHistory(
-		operHistoryDuo: IOperationHistoryDuo,
-		recHistoryDuo: IRecordHistoryDuo
-	):
-		RepositoryTransactionHistoryESelect {
-		const id = Y
-		return {
-			id,
-			actor: {
-				id
-			},
-			repository: {
-				id
-			},
-			operationHistory: {
-				...operHistoryDuo.select.fields,
-				entity: {
-					id: Y
-				},
-				recordHistory: {
-					...recHistoryDuo.select.fields
-				}
-			},
-		}
-	}
-
-	async findWhere(
-		whereClauseFunction: {
-			(
-				rth: QRepositoryTransactionHistory,
-				r: QRepository,
-				oh?: QOperationHistory,
-				rh?: QRecordHistory,
-			): JSONBaseOperation
-		}
-	): Promise<IRepositoryTransactionHistory[]> {
-		const [operHistoryDuo, recHistoryDuo] = await container(this).get(
-			OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO)
-
-		let rth: QRepositoryTransactionHistory,
-			r: QRepository,
-			oh: QOperationHistory,
-			rh: QRecordHistory
-		const id = Y
-		return await this.db.find.tree({
-			select: this.getSelectClauseWithRecordHistory(
-				operHistoryDuo, recHistoryDuo),
-			from: [
-				rth = Q.RepositoryTransactionHistory,
-				oh = rth.operationHistory.innerJoin(),
-				rh = oh.recordHistory.innerJoin(),
-			],
-			where: whereClauseFunction(rth, r, oh, rh)
-		})
-	}
-
 	async findWhereUuIdsIn(
 		uuIds: string[]
 	): Promise<IRepositoryTransactionHistory[]> {
@@ -181,56 +102,6 @@ export class RepositoryTransactionHistoryDao
 			],
 			where: rth.uuId.in(uuIds)
 		})
-	}
-
-
-	async findWithActorAndRepositoryWhere(
-		whereClauseFunction: {
-			(
-				rth: QRepositoryTransactionHistory,
-				a: QActor,
-				r: QRepository,
-			): JSONBaseOperation
-		}
-	): Promise<IRepositoryTransactionHistory[]> {
-		let rth: QRepositoryTransactionHistory,
-			a: QActor,
-			r: QRepository
-		return await this.db.find.graph({
-			select: {
-				...this.db.duo.select.fields,
-				actor: {
-					uuId: Y,
-					user: {}
-				},
-				repository: {
-					createdAt: Y,
-					uuId: Y,
-					owner: {}
-				},
-				transactionHistory: {
-					id: Y
-				}
-			},
-			from: [
-				rth = Q.RepositoryTransactionHistory,
-				a = rth.actor.innerJoin(),
-				r = rth.repository.innerJoin(),
-			],
-			where: whereClauseFunction(rth, a, r)
-		})
-	}
-
-	async findWithActorAndRepositoryWhereIdsIn(
-		idsInClause: RepositoryTransactionHistory_Id[]
-			| RawFieldQuery<IQNumberField>
-			| {
-				(...args: any[]): RawFieldQuery<IQNumberField>
-			}
-	): Promise<IRepositoryTransactionHistory[]> {
-		return await this.findWithActorAndRepositoryWhere((
-			rth
-		) => rth.id.in(idsInClause))
 	}
 
 	async findAllLocalChangesForRecordIds(
@@ -256,7 +127,7 @@ export class RepositoryTransactionHistoryDao
 				const actorEquals: JSONBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(and(
-						rth.actor.id.equals(actorId),
+						oh.actor.id.equals(actorId),
 						rh.actorRecordId.in(Array.from(recordsForActor))
 					))
 				}
@@ -336,72 +207,6 @@ export class RepositoryTransactionHistoryDao
 		}
 
 		return repoTransHistoryMapByRepositoryId
-	}
-
-	async findExistingRecordIdMap(
-		recordIdMap: Map<Repository_Id,
-			Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>
-	): Promise<Map<Repository_Id,
-		Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>> {
-		const existingRecordIdMap: Map<Repository_Id,
-			Map<EntityId, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>
-			= new Map()
-
-		const rth = Q.RepositoryTransactionHistory,
-			oh = rth.operationHistory.innerJoin(),
-			rh = oh.recordHistory.innerJoin()
-
-		const idsFragments: JSONBaseOperation[] = []
-		for (const [repositoryId, recordIdMapForRepository] of recordIdMap) {
-			let tableFragments: JSONBaseOperation[] = []
-			for (const [entityId, recordIdMapForTableInRepository]
-				of recordIdMapForRepository) {
-
-				let actorIdsFragments: JSONBaseOperation[] = []
-				for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
-					actorIdsFragments.push(and(
-						rth.actor.id.equals(actorId),
-						rh.actorRecordId.in(Array.from(recordIdSetForActor))
-					))
-				}
-				tableFragments.push(and(
-					oh.entity.id.equals(entityId),
-					or(...actorIdsFragments)
-				))
-			}
-			idsFragments.push(and(
-				rth.repository.id.equals(repositoryId),
-				oh.changeType.equals(ChangeType.INSERT_VALUES),
-				or(...tableFragments)
-			))
-		}
-
-		const airDb = await container(this).get(AIRPORT_DATABASE)
-
-		const records = await airDb.find.sheet({
-			from: [
-				rth,
-				oh,
-				rh
-			],
-			select: distinct([
-				rth.repository.id,
-				oh.entity.id,
-				rth.actor.id,
-				rh.actorRecordId
-			]),
-			where: or(...idsFragments)
-		})
-
-		for (const record of records) {
-			ensureChildJsSet(
-				ensureChildJsMap(
-					ensureChildJsMap(existingRecordIdMap, record[0]),
-					record[1]), record[2]
-			).add(record[3])
-		}
-
-		return existingRecordIdMap
 	}
 
 	async updateSyncTimestamp(

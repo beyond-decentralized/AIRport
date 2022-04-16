@@ -335,12 +335,11 @@ export class SyncOutDataSerializer
 		const serializedOperationHistory: IOperationHistory[] = []
 		for (const operationHistory of repositoryTransactionHistory.operationHistory) {
 			serializedOperationHistory.push(this.serializeOperationHistory(
-				repositoryTransactionHistory, operationHistory, lookups))
+				operationHistory, lookups))
 		}
 
 		return {
 			...WITH_ID,
-			actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
 			repository: this.serializeHistoryRepository(
 				repositoryTransactionHistory, message, inMessageUserLookup),
@@ -371,7 +370,6 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeOperationHistory(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		operationHistory: IOperationHistory,
 		lookups: InMessageLookupStructures
 	): IOperationHistory {
@@ -379,7 +377,7 @@ export class SyncOutDataSerializer
 		const serializedRecordHistory: IRecordHistory[] = []
 		for (const recordHistory of operationHistory.recordHistory) {
 			serializedRecordHistory.push(this.serializeRecordHistory(
-				repositoryTransactionHistory, recordHistory, dbEntity, lookups))
+				operationHistory, recordHistory, dbEntity, lookups))
 		}
 
 		const entity = operationHistory.entity
@@ -410,6 +408,7 @@ export class SyncOutDataSerializer
 
 		return {
 			...WITH_ID,
+			actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
 			changeType: operationHistory.changeType,
 			entity: {
 				...WITH_ID,
@@ -421,7 +420,7 @@ export class SyncOutDataSerializer
 	}
 
 	private serializeRecordHistory(
-		repositoryTransactionHistory: IRepositoryTransactionHistory,
+		operationHistory: IOperationHistory,
 		recordHistory: IRecordHistory,
 		dbEntity: IApplicationEntity,
 		lookups: InMessageLookupStructures
@@ -454,7 +453,7 @@ export class SyncOutDataSerializer
 		} = {
 			...WITH_ID,
 		}
-		if (actor.id !== repositoryTransactionHistory.actor.id) {
+		if (actor.id !== operationHistory.actor.id) {
 			baseObject.actor = this.getActorInMessageIndex(actor, lookups)
 		}
 		if (newValues.length) {

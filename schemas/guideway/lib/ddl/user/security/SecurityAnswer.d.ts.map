@@ -1,1 +1,0 @@
-{"version":3,"file":"SecurityAnswer.d.ts","sourceRoot":"","sources":["../../../../src/ddl/user/security/SecurityAnswer.ts"],"names":[],"mappings":"AAQA,OAAO,EAAC,IAAI,EAAC,MAAM,SAAS,CAAC;AAC7B,OAAO,EAAC,gBAAgB,EAAC,MAAM,oBAAoB,CAAC;AAEpD,qBAEa,cAAc;IAO1B,IAAI,EAAE,IAAI,CAAC;IAOX,gBAAgB,EAAE,gBAAgB,CAAC;IAGnC,MAAM,EAAE,MAAM,CAAC;CAEf"}

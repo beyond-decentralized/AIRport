@@ -23,7 +23,6 @@ export interface ITransactionHistoryDuo {
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
 		repositoryId: Repository_Id,
-		actor: IActor,
 		isRepositoryCreation: boolean,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory
@@ -47,7 +46,6 @@ export class TransactionHistoryDuo
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
 		repositoryId: Repository_Id,
-		actor: IActor,
 		isRepositoryCreation: boolean,
 		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
@@ -55,7 +53,7 @@ export class TransactionHistoryDuo
 
 		if (!repoTransHistory) {
 			repoTransHistory = repoTransHistoryDuo.getNewRecord(
-				repositoryId, actor, isRepositoryCreation)
+				repositoryId, isRepositoryCreation)
 
 			transactionHistory.repositoryTransactionHistories.push(repoTransHistory)
 			transactionHistory.repoTransHistoryMap[repositoryId] = <any>repoTransHistory

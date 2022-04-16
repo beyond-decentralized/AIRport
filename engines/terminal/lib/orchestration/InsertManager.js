@@ -383,7 +383,7 @@ and cannot have NULL values.`);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, operHistoryDuo);
+                operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, actor, operHistoryDuo);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];

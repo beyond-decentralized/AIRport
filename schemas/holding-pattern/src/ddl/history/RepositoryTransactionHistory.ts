@@ -67,13 +67,6 @@ export class RepositoryTransactionHistory {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_ID', referencedColumnName: 'ID',
-		nullable: false
-	})
-	actor: Actor
-
-	@ManyToOne()
-	@JoinColumn({
 		name: 'TRANSACTION_HISTORY_ID',
 		referencedColumnName: 'ID', nullable: false
 	})
@@ -92,7 +85,6 @@ export class RepositoryTransactionHistory {
 		this.id = data.id
 		this.transactionHistory = data.transactionHistory
 		this.repository = data.repository
-		this.actor = data.actor
 		this.saveTimestamp = data.saveTimestamp
 		this.operationHistory = data.operationHistory
 	}

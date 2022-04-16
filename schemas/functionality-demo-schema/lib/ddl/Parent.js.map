@@ -1,1 +1,0 @@
-{"version":3,"file":"Parent.js","sourceRoot":"","sources":["../../src/ddl/Parent.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EAGH,MAAM,EACN,cAAc,EACd,EAAE,EAGF,SAAS,EAEZ,MAAM,sBAAsB,CAAA;AAI7B,IAAa,MAAM,GAAnB,MAAa,MAAM;CAelB,CAAA;AAXG;IAFC,EAAE,EAAE;IACP,cAAc,EAAE;kCACJ;AASV;IADC,SAAS,EAAE;wCACK;AAbR,MAAM;IADlB,MAAM,EAAE;GACI,MAAM,CAelB;SAfY,MAAM"}

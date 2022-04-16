@@ -5,6 +5,7 @@ import {
 	IContext
 } from '@airport/di'
 import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
+import { ITransactionContext } from '@airport/terminal-map'
 import { transactional } from '@airport/tower'
 import {
 	SYNC_IN_CHECKER,
@@ -20,7 +21,7 @@ export interface ISynchronizationInManager {
 
 	receiveMessages(
 		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
-		context: IContext
+		context: ITransactionContext
 	): Promise<void>;
 
 }
@@ -33,7 +34,7 @@ export class SynchronizationInManager
 
 	async receiveMessages(
 		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
-		context: IContext
+		context: ITransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
@@ -71,7 +72,7 @@ export class SynchronizationInManager
 			let processMessage = true
 			await transactional(async (transaction) => {
 				if (!await syncInChecker.checkMessage(message)) {
-					transaction.rollback(null)
+					transaction.rollback(null, context)
 					processMessage = false
 					return
 				}
@@ -106,12 +107,6 @@ export class SynchronizationInManager
 				return -1
 			}
 			if (history1.saveTimestamp > history2.saveTimestamp) {
-				return 1
-			}
-			if (history1.actor.uuId < history2.actor.uuId) {
-				return -1
-			}
-			if (history1.actor.uuId > history2.actor.uuId) {
 				return 1
 			}
 

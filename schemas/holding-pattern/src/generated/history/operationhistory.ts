@@ -2,6 +2,9 @@ import {
 	IApplicationEntity,
 } from '@airport/airspace';
 import {
+	IActor,
+} from '../infrastructure/actor';
+import {
 	IRepositoryTransactionHistory,
 } from './repositorytransactionhistory';
 import {
@@ -28,6 +31,7 @@ export interface IOperationHistory {
 
 	// Non-Id Relations
 	entity?: IApplicationEntity;
+	actor?: IActor;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory;
 	recordHistory?: IRecordHistory[];
 

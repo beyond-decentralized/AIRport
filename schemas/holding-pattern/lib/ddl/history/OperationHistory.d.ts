@@ -3,6 +3,7 @@ import { IApplicationEntity } from '@airport/airspace';
 import { SystemWideOperationId } from '../common';
 import { RecordHistory } from './RecordHistory';
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory';
+import { Actor } from '../ddl';
 /**
  * Created by Papa on 4/17/2017.
  */
@@ -18,6 +19,7 @@ export declare class OperationHistory {
     changeType: ChangeType;
     systemWideOperationId: OperationHistory_SystemWideOperationId;
     entity: IApplicationEntity;
+    actor: Actor;
     repositoryTransactionHistory: RepositoryTransactionHistory;
     recordHistory: RecordHistory[];
 }

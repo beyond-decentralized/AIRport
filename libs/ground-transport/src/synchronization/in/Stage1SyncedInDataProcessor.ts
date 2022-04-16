@@ -140,12 +140,14 @@ export class Stage1SyncedInDataProcessor
 		// Find all actors that modified the locally recorded history, which are not already
 		// in the actorMapById collect actors not already in cache
 		const newlyFoundActorSet: Set<Actor_Id> = new Set()
-		for (const [repositoryId, repoTransHistoriesForRepository]
+		for (const [repositoryId, repositoryTransactionHistoriesForRepository]
 			of localRepoTransHistoryMapByRepositoryId) {
-			for (const repoTransHistory of repoTransHistoriesForRepository) {
-				const actorId = repoTransHistory.actor.id
-				if (actorMayById.get(actorId) === undefined) {
-					newlyFoundActorSet.add(actorId)
+			for (const repositoryTransactionHistory of repositoryTransactionHistoriesForRepository) {
+				for (const operationHistory of repositoryTransactionHistory.operationHistory) {
+					const actorId = operationHistory.actor.id
+					if (actorMayById.get(actorId) === undefined) {
+						newlyFoundActorSet.add(actorId)
+					}
 				}
 			}
 		}

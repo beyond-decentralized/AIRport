@@ -1,5 +1,8 @@
-import { IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRecordHistoryOldValue } from '../../';
 import { SyncApplicationMap } from '@airport/ground-control';
+import { IOperationHistory } from './operationhistory';
+import { IRecordHistory } from './recordhistory';
+import { IRecordHistoryNewValue } from './recordhistorynewvalue';
+import { IRecordHistoryOldValue } from './recordhistoryoldvalue';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 export interface ITransactionHistory {
     id: number;
@@ -7,6 +10,9 @@ export interface ITransactionHistory {
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
     repoTransHistoryMap?: {
         [repositoryId: number]: IRepositoryTransactionHistory;
+    };
+    allRepoTransHistoriesMap?: {
+        [repositoryId: number]: IRepositoryTransactionHistory[];
     };
     applicationMap?: SyncApplicationMap;
     allOperationHistory?: IOperationHistory[];

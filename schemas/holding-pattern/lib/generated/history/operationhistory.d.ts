@@ -1,4 +1,5 @@
 import { IApplicationEntity } from '@airport/airspace';
+import { IActor } from '../infrastructure/actor';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 import { IRecordHistory } from './recordhistory';
 export interface IOperationHistory {
@@ -7,6 +8,7 @@ export interface IOperationHistory {
     changeType?: string;
     systemWideOperationId?: number;
     entity?: IApplicationEntity;
+    actor?: IActor;
     repositoryTransactionHistory?: IRepositoryTransactionHistory;
     recordHistory?: IRecordHistory[];
 }

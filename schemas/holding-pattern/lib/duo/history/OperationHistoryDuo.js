@@ -2,8 +2,9 @@ import { DI } from '@airport/di';
 import { BaseOperationHistoryDuo } from '../../generated/generated';
 import { OPERATION_HISTORY_DUO } from '../../tokens';
 export class OperationHistoryDuo extends BaseOperationHistoryDuo {
-    getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId) {
+    getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId) {
         let operationHistory = {
+            actor,
             changeType: entityChangeType,
             entity: dbEntity,
             id: undefined,

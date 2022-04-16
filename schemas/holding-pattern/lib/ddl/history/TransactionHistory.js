@@ -10,6 +10,7 @@ let TransactionHistory = class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
         this.repoTransHistoryMap = {};
+        this.allRepoTransHistoriesMap = {};
         this.applicationMap = new SyncApplicationMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
@@ -33,6 +34,9 @@ __decorate([
 __decorate([
     Transient()
 ], TransactionHistory.prototype, "repoTransHistoryMap", void 0);
+__decorate([
+    Transient()
+], TransactionHistory.prototype, "allRepoTransHistoriesMap", void 0);
 __decorate([
     Transient()
 ], TransactionHistory.prototype, "applicationMap", void 0);

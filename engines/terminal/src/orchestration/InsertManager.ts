@@ -571,14 +571,14 @@ and cannot have NULL values.`)
 			if (!repoTransHistory) {
 				repoTransHistory = await histManager
 					.getNewRepositoryTransactionHistory(transaction.transHistory,
-						repositoryId, actor, context)
+						repositoryId, context)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
 				operationHistory = repoTransHistoryDuo.startOperation(
 					repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
-					dbEntity, operHistoryDuo)
+					dbEntity, actor, operHistoryDuo)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 

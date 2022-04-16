@@ -35,58 +35,16 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "flight-log-archive",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\flight-log-archive\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\flight-log-archive",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "functionality-demo-schema",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\functionality-demo-schema\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\functionality-demo-schema",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "guideway",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\guideway\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\guideway",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "holding-pattern",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}/schemas/holding-pattern/node_modules/@airport/runway/lib/index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+            "cwd": "${workspaceFolder}/schemas/holding-pattern",
+            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
         },
         {
             "type": "pwa-node",
@@ -105,57 +63,15 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "na-kano",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\na-kano\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\na-kano",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "point-of-destination",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\point-of-destination\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\point-of-destination",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
             "name": "travel-document-checkpoint",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/node_modules/@airport/runway/lib/index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "vasi",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\vasi\\node_modules\\@airport\\runway\\lib\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\vasi",
+            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {

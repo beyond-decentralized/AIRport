@@ -1,1 +1,0 @@
-{"version":3,"file":"ApplicationLoader.d.ts","sourceRoot":"","sources":["../src/ApplicationLoader.ts"],"names":[],"mappings":"AAIA,OAAO,EAEH,kBAAkB,EAClB,0BAA0B,EAC1B,OAAO,EACV,MAAM,yBAAyB,CAAA;AAKhC,qBAAa,iBACT,YAAW,kBAAkB;IAE7B,OAAO,CAAC,YAAY,CAAQ;IAEtB,IAAI,CACN,OAAO,EAAE,OAAO,GACjB,OAAO,CAAC,IAAI,CAAC;IAiBhB,cAAc,IAAI,0BAA0B;CAG/C;AAGD,wBAAgB,0BAA0B,SAEzC"}

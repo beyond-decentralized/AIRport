@@ -16,10 +16,10 @@ export class BaseActorDuo extends SQDIDuo {
 }
 export class BaseOperationHistoryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(7);
+        return duoDiSet(5);
     }
     constructor() {
-        super(7);
+        super(5);
     }
 }
 export class BaseRecordHistoryDuo extends SQDIDuo {
@@ -32,18 +32,18 @@ export class BaseRecordHistoryDuo extends SQDIDuo {
 }
 export class BaseRecordHistoryNewValueDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(6);
     }
     constructor() {
-        super(3);
+        super(6);
     }
 }
 export class BaseRecordHistoryOldValueDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(4);
+        return duoDiSet(7);
     }
     constructor() {
-        super(4);
+        super(7);
     }
 }
 export class BaseRepositoryDuo extends SQDIDuo {
@@ -64,18 +64,18 @@ export class BaseRepositoryApplicationDuo extends SQDIDuo {
 }
 export class BaseRepositoryTransactionHistoryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(6);
+        return duoDiSet(4);
     }
     constructor() {
-        super(6);
+        super(4);
     }
 }
 export class BaseTransactionHistoryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(3);
     }
     constructor() {
-        super(5);
+        super(3);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

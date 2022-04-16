@@ -13,13 +13,14 @@ import {
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
-import { ITransactionHistory } from '@airport/holding-pattern'
+import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern'
 import {
     ICredentials,
     IOperationContext,
     IStoreDriver,
     ITransaction,
-    ITransactionContext
+    ITransactionContext,
+    ITransactionCredentials
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 import { v4 as uuidv4 } from "uuid";
@@ -28,7 +29,7 @@ export abstract class SqlTransaction
     implements ITransaction {
 
     childTransaction: ITransaction
-    credentials: ICredentials
+    credentials: ITransactionCredentials
     id: string
     isSync = false
 
@@ -41,6 +42,8 @@ export abstract class SqlTransaction
         methodName: '',
         objectName: ''
     }
+    
+    priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][] = [];
 
     constructor(
         protected driver: IStoreDriver,

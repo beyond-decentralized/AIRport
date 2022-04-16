@@ -1,1 +1,0 @@
-{"version":3,"file":"Parent.d.ts","sourceRoot":"","sources":["../../src/ddl/Parent.ts"],"names":[],"mappings":"AAWA,OAAO,EAAE,KAAK,EAAE,MAAM,SAAS,CAAA;AAE/B,qBACa,MAAM;IAIf,EAAE,EAAE,MAAM,CAAA;IAEV,IAAI,EAAE,OAAO,CAAA;IAEb,GAAG,EAAE,MAAM,CAAA;IAEX,GAAG,EAAE,MAAM,CAAA;IAGX,QAAQ,EAAE,KAAK,EAAE,CAAA;CAEpB"}

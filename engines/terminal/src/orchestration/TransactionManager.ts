@@ -106,10 +106,9 @@ export class TransactionManager
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
-		const [storeDriver, terminalStore] = await container(this)
-			.get(STORE_DRIVER, TERMINAL_STORE);
-
+		const terminalStore = await container(this).get(TERMINAL_STORE);
 		const transactionManagerStore = terminalStore.getTransactionManager()
+
 		let parentTransaction: ITransaction
 		if (credentials.transactionId) {
 			parentTransaction = transactionManagerStore
@@ -259,10 +258,17 @@ parent transactions.
 			await transaction.commit(null, context);
 
 			let transactionHistory = transaction.transHistory;
+
+			transaction.priorRepositoryTransactionHistories
+				= transaction.priorRepositoryTransactionHistories.concat(
+					transactionHistory.repositoryTransactionHistories
+				)
 			if (transactionHistory.allRecordHistory.length) {
 				if (parentTransaction) {
-					transactionHistory.childTransactionRepositoryTransactionHistories
-						.push(transactionHistory.repositoryTransactionHistories)
+					parentTransaction.priorRepositoryTransactionHistories
+						= parentTransaction.priorRepositoryTransactionHistories.concat(
+							transaction.priorRepositoryTransactionHistories
+						)
 				} else {
 					const synchronizationOutManager = await container(this)
 						.get(SYNCHRONIZATION_OUT_MANAGER)

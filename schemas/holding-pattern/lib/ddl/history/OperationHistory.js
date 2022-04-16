@@ -37,6 +37,13 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
+        name: 'ACTOR_ID', referencedColumnName: 'ID',
+        nullable: false
+    })
+], OperationHistory.prototype, "actor", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
         name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
         nullable: false
     })

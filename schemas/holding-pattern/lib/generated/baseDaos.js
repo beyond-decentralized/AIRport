@@ -23,13 +23,13 @@ BaseActorDao.Search = new DaoQueryDecorators();
 BaseActorDao.SearchOne = new DaoQueryDecorators();
 export class BaseOperationHistoryDao extends SQDIDao {
     constructor() {
-        super(7);
+        super(5);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(7);
+        return duoDiSet(5);
     }
 }
 BaseOperationHistoryDao.Find = new DaoQueryDecorators();
@@ -53,13 +53,13 @@ BaseRecordHistoryDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
 export class BaseRecordHistoryNewValueDao extends SQDIDao {
     constructor() {
-        super(3);
+        super(6);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(6);
     }
 }
 BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
@@ -68,13 +68,13 @@ BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
 BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
 export class BaseRecordHistoryOldValueDao extends SQDIDao {
     constructor() {
-        super(4);
+        super(7);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(4);
+        return duoDiSet(7);
     }
 }
 BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
@@ -113,13 +113,13 @@ BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
 BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
 export class BaseRepositoryTransactionHistoryDao extends SQDIDao {
     constructor() {
-        super(6);
+        super(4);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(6);
+        return duoDiSet(4);
     }
 }
 BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
@@ -128,13 +128,13 @@ BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
 BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
 export class BaseTransactionHistoryDao extends SQDIDao {
     constructor() {
-        super(5);
+        super(3);
     }
     static Save(config) {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(3);
     }
 }
 BaseTransactionHistoryDao.Find = new DaoQueryDecorators();

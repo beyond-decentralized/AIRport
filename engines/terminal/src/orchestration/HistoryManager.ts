@@ -29,14 +29,13 @@ export class HistoryManager
 	async getNewRepositoryTransactionHistory(
 		transactionHistory: ITransactionHistory,
 		repositoryId: Repository_Id,
-		actor: IActor,
 		context: IOperationContext
 	): Promise<IRepositoryTransactionHistory> {
 		const [repositoryTransactionHistoryDuo, transactionHistoryDuo] = await container(this).get(
 			REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO)
 
 		return await transactionHistoryDuo.getRepositoryTransaction(
-			transactionHistory, repositoryId, actor, !!context.newRepository, repositoryTransactionHistoryDuo)
+			transactionHistory, repositoryId, !!context.newRepository, repositoryTransactionHistoryDuo)
 	}
 
 }

@@ -1,6 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-control';
 import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQRelation } from '../repository/qrepository';
-import { ActorGraph, ActorEOptionalId, ActorESelect, QActorQRelation } from '../infrastructure/qactor';
 import { TransactionHistoryGraph, TransactionHistoryEOptionalId, TransactionHistoryESelect, QTransactionHistoryQRelation } from './qtransactionhistory';
 import { OperationHistoryGraph, OperationHistoryESelect, QOperationHistory } from './qoperationhistory';
 /**
@@ -13,7 +12,6 @@ export interface RepositoryTransactionHistoryESelect extends IEntitySelectProper
     uuId?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryESelect;
-    actor?: ActorESelect;
     transactionHistory?: TransactionHistoryESelect;
     operationHistory?: OperationHistoryESelect;
 }
@@ -39,7 +37,6 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
     uuId?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryEOptionalId;
-    actor?: ActorEOptionalId;
     transactionHistory?: TransactionHistoryEOptionalId;
 }
 /**
@@ -52,7 +49,6 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
     uuId?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryGraph;
-    actor?: ActorGraph;
     transactionHistory?: TransactionHistoryGraph;
     operationHistory?: OperationHistoryGraph[];
 }
@@ -66,7 +62,6 @@ export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdat
     UUID?: string | IQStringField;
     IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
     REPOSITORY_ID?: number | IQNumberField;
-    ACTOR_ID?: number | IQNumberField;
     TRANSACTION_HISTORY_ID?: number | IQNumberField;
 }
 /**
@@ -90,7 +85,6 @@ export interface QRepositoryTransactionHistory extends IQEntity {
     uuId: IQStringField;
     isRepositoryCreation: IQBooleanField;
     repository: QRepositoryQRelation;
-    actor: QActorQRelation;
     transactionHistory: QTransactionHistoryQRelation;
     operationHistory: IQOneToManyRelation<QOperationHistory>;
 }

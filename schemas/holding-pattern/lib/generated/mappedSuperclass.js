@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "RepositoryEntity",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [
@@ -445,7 +445,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRepoRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -507,7 +507,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -952,7 +952,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -1002,7 +1002,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRepoRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
         "parentClassName": "RepositoryEntity",
         "location": "../repository/RepositoryEntity",
         "isSuperclass": true,
@@ -1031,16 +1031,6 @@ export const MAPPED_SUPERCLASS = [
                                 "moduleImport": null,
                                 "sourceName": "Column"
                             },
-                            "JoinColumn": {
-                                "asName": "JoinColumn",
-                                "moduleImport": null,
-                                "sourceName": "JoinColumn"
-                            },
-                            "ManyToOne": {
-                                "asName": "ManyToOne",
-                                "moduleImport": null,
-                                "sourceName": "ManyToOne"
-                            },
                             "MappedSuperclass": {
                                 "asName": "MappedSuperclass",
                                 "moduleImport": null,
@@ -1049,21 +1039,7 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "path": "@airport/air-control"
                     },
-                    "JoinColumn": null,
-                    "ManyToOne": null,
                     "MappedSuperclass": null,
-                    "IUser": {
-                        "fileImports": null,
-                        "isLocal": false,
-                        "objectMapByAsName": {
-                            "IUser": {
-                                "asName": "IUser",
-                                "moduleImport": null,
-                                "sourceName": "IUser"
-                            }
-                        },
-                        "path": "@airport/travel-document-checkpoint"
-                    },
                     "RepositoryEntity": {
                         "fileImports": null,
                         "isLocal": true,
@@ -1079,7 +1055,6 @@ export const MAPPED_SUPERCLASS = [
                 },
                 "importMapByModulePath": {
                     "@airport/air-control": null,
-                    "@airport/travel-document-checkpoint": null,
                     "../repository/RepositoryEntity": null
                 }
             },
@@ -1118,7 +1093,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "RepositoryEntity",
-            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -1563,7 +1538,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -1622,12 +1597,12 @@ export const MAPPED_SUPERCLASS = [
                                 "sourceName": "IUser"
                             }
                         },
-                        "path": "@airport/travel-document-checkpoint"
+                        "path": "@airport/travel-document-checkpoint-internal"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-control": null,
-                    "@airport/travel-document-checkpoint": null
+                    "@airport/travel-document-checkpoint-internal": null
                 }
             },
             "properties": [
@@ -1654,7 +1629,7 @@ export const MAPPED_SUPERCLASS = [
                     "type": "IUser",
                     "ownerEntity": null,
                     "nonArrayType": "IUser",
-                    "fromProject": "@airport/travel-document-checkpoint",
+                    "fromProject": "@airport/travel-document-checkpoint-internal",
                     "otherApplicationDbEntity": {
                         "columnMap": null,
                         "columns": [
@@ -1916,7 +1891,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRepoRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
         "parentClassName": "ImmutableRepoRow",
         "location": "./ImmutableRepoRow",
         "isSuperclass": true,
@@ -2007,7 +1982,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRepoRow",
-            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+            "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
             "parentClassName": "RepositoryEntity",
             "location": "../repository/RepositoryEntity",
             "isSuperclass": true,
@@ -2036,16 +2011,6 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "Column"
                                 },
-                                "JoinColumn": {
-                                    "asName": "JoinColumn",
-                                    "moduleImport": null,
-                                    "sourceName": "JoinColumn"
-                                },
-                                "ManyToOne": {
-                                    "asName": "ManyToOne",
-                                    "moduleImport": null,
-                                    "sourceName": "ManyToOne"
-                                },
                                 "MappedSuperclass": {
                                     "asName": "MappedSuperclass",
                                     "moduleImport": null,
@@ -2054,21 +2019,7 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "path": "@airport/air-control"
                         },
-                        "JoinColumn": null,
-                        "ManyToOne": null,
                         "MappedSuperclass": null,
-                        "IUser": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "IUser": {
-                                    "asName": "IUser",
-                                    "moduleImport": null,
-                                    "sourceName": "IUser"
-                                }
-                            },
-                            "path": "@airport/travel-document-checkpoint"
-                        },
                         "RepositoryEntity": {
                             "fileImports": null,
                             "isLocal": true,
@@ -2084,7 +2035,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     "importMapByModulePath": {
                         "@airport/air-control": null,
-                        "@airport/travel-document-checkpoint": null,
                         "../repository/RepositoryEntity": null
                     }
                 },
@@ -2123,7 +2073,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "RepositoryEntity",
-                "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+                "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [
@@ -2570,7 +2520,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
         "parentClassName": "ImmutableRow",
         "location": "./ImmutableRow",
         "isSuperclass": true,
@@ -2661,7 +2611,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRow",
-            "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+            "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -2720,12 +2670,12 @@ export const MAPPED_SUPERCLASS = [
                                     "sourceName": "IUser"
                                 }
                             },
-                            "path": "@airport/travel-document-checkpoint"
+                            "path": "@airport/travel-document-checkpoint-internal"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-control": null,
-                        "@airport/travel-document-checkpoint": null
+                        "@airport/travel-document-checkpoint-internal": null
                     }
                 },
                 "properties": [
@@ -2752,7 +2702,7 @@ export const MAPPED_SUPERCLASS = [
                         "type": "IUser",
                         "ownerEntity": null,
                         "nonArrayType": "IUser",
-                        "fromProject": "@airport/travel-document-checkpoint",
+                        "fromProject": "@airport/travel-document-checkpoint-internal",
                         "otherApplicationDbEntity": {
                             "columnMap": null,
                             "columns": [
@@ -3016,7 +2966,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ReferenceRow",
-        "path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
+        "path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],

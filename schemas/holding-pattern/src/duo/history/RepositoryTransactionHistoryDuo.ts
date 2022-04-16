@@ -25,7 +25,6 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
 		repositoryId: Repository_Id,
-		actor: IActor,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory;
 
@@ -43,6 +42,7 @@ export interface IRepositoryTransactionHistoryDuo {
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		operHistoryDuo: IOperationHistoryDuo
 	): IOperationHistory;
 
@@ -54,7 +54,6 @@ export class RepositoryTransactionHistoryDuo
 
 	getNewRecord(
 		repositoryId: Repository_Id,
-		actor: IActor,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
@@ -66,7 +65,6 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository.id = repositoryId
-		repositoryTransactionHistory.actor = actor
 
 		return repositoryTransactionHistory
 	}
@@ -100,14 +98,6 @@ export class RepositoryTransactionHistoryDuo
 				return saveTimeComparison
 			}
 
-			const actor1 = actorMapById.get(repoTransHistory1.actor.id)
-			const actor2 = actorMapById.get(repoTransHistory2.actor.id)
-
-			const actorUuIdComparison = actor1.uuId.localeCompare(actor2.uuId)
-			if (actorUuIdComparison) {
-				return actorUuIdComparison
-			}
-
 			return 0
 		})
 	}
@@ -117,10 +107,11 @@ export class RepositoryTransactionHistoryDuo
 		systemWideOperationId: SystemWideOperationId,
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		operHistoryDuo: IOperationHistoryDuo
 	): IOperationHistory {
 		let operationHistory = operHistoryDuo.getNewRecord(
-			entityChangeType, dbEntity, repositoryTransactionHistory,
+			entityChangeType, dbEntity, actor, repositoryTransactionHistory,
 			systemWideOperationId)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 

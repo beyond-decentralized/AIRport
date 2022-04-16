@@ -16,7 +16,6 @@ export interface IHistoryManager {
     getNewRepositoryTransactionHistory(
         transactionHistory: ITransactionHistory,
         repositoryId: Repository_Id,
-        actor: IActor,
         context: IOperationContext
     ): Promise<IRepositoryTransactionHistory>;
 

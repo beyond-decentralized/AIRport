@@ -186,11 +186,10 @@ export class SyncOutDataSerializer {
         });
         const serializedOperationHistory = [];
         for (const operationHistory of repositoryTransactionHistory.operationHistory) {
-            serializedOperationHistory.push(this.serializeOperationHistory(repositoryTransactionHistory, operationHistory, lookups));
+            serializedOperationHistory.push(this.serializeOperationHistory(operationHistory, lookups));
         }
         return {
             ...WITH_ID,
-            actor: this.getActorInMessageIndex(repositoryTransactionHistory.actor, lookups),
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
             repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup),
             operationHistory: serializedOperationHistory,
@@ -212,11 +211,11 @@ export class SyncOutDataSerializer {
             return repositoryTransactionHistory.repository.uuId;
         }
     }
-    serializeOperationHistory(repositoryTransactionHistory, operationHistory, lookups) {
+    serializeOperationHistory(operationHistory, lookups) {
         const dbEntity = operationHistory.entity;
         const serializedRecordHistory = [];
         for (const recordHistory of operationHistory.recordHistory) {
-            serializedRecordHistory.push(this.serializeRecordHistory(repositoryTransactionHistory, recordHistory, dbEntity, lookups));
+            serializedRecordHistory.push(this.serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups));
         }
         const entity = operationHistory.entity;
         // Should be populated - coming from TerminalStore
@@ -245,6 +244,7 @@ export class SyncOutDataSerializer {
         lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion;
         return {
             ...WITH_ID,
+            actor: this.getActorInMessageIndex(operationHistory.actor, lookups),
             changeType: operationHistory.changeType,
             entity: {
                 ...WITH_ID,
@@ -254,7 +254,7 @@ export class SyncOutDataSerializer {
             recordHistory: serializedRecordHistory
         };
     }
-    serializeRecordHistory(repositoryTransactionHistory, recordHistory, dbEntity, lookups) {
+    serializeRecordHistory(operationHistory, recordHistory, dbEntity, lookups) {
         const dbColumMapByIndex = new Map();
         for (const dbColumn of dbEntity.columns) {
             dbColumMapByIndex.set(dbColumn.index, dbColumn);
@@ -277,7 +277,7 @@ export class SyncOutDataSerializer {
         const baseObject = {
             ...WITH_ID,
         };
-        if (actor.id !== repositoryTransactionHistory.actor.id) {
+        if (actor.id !== operationHistory.actor.id) {
             baseObject.actor = this.getActorInMessageIndex(actor, lookups);
         }
         if (newValues.length) {

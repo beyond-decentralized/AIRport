@@ -75,13 +75,8 @@ export class SyncInDataChecker
 			if (history.syncTimestamp) {
 				throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`)
 			}
-			const actor = message.actors[history.actor as any]
-			if (!actor) {
-				throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`)
-			}
+			
 			// Repository is already set in SyncInRepositoryChecker
-
-			history.actor = actor
 			history.repositoryTransactionType = RepositoryTransactionType.REMOTE
 			history.syncTimestamp = message.syncTimestamp
 			delete history.id
@@ -169,6 +164,12 @@ export class SyncInDataChecker
 				throw new Error(`Expecting "in-message index" (number)
 					in 'operationHistory.entity.applicationVersion'`)
 			}
+			const actor = message.actors[operationHistory.actor as any]
+			if (!actor) {
+				throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`)
+			}
+			
+			operationHistory.actor = actor
 			const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion as any]
 			if (!applicationVersion) {
 				throw new Error(`Invalid index into message.applicationVersions [${operationHistory.entity.applicationVersion}],
@@ -244,13 +245,13 @@ export class SyncInDataChecker
 						throw new Error(`Cannot specify RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actor
 for ChangeType.INSERT_VALUES`)
 					}
-					recordHistory.actor = operationHistory.repositoryTransactionHistory.actor
+					recordHistory.actor = operationHistory.actor
 					break
 				case ChangeType.DELETE_ROWS:
 				case ChangeType.UPDATE_ROWS: {
 					// If no actor is present on record level its the same actor that created the repositoryTransactionHistory
 					if (recordHistory.actor === undefined) {
-						recordHistory.actor = operationHistory.repositoryTransactionHistory.actor
+						recordHistory.actor = operationHistory.actor
 					} else {
 						const actor = message.actors[recordHistory.actor as any]
 						if (!actor) {

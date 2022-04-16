@@ -10,6 +10,7 @@ import {
 } from '../../ddl/ddl'
 import {
 	BaseOperationHistoryDuo,
+	IActor,
 	IBaseOperationHistoryDuo,
 	IOperationHistory,
 	IRecordHistory,
@@ -24,6 +25,7 @@ export interface IOperationHistoryDuo
 	getNewRecord(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId
 	): IOperationHistory;
@@ -49,10 +51,12 @@ export class OperationHistoryDuo
 	getNewRecord(
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
+		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		systemWideOperationId: SystemWideOperationId
 	): IOperationHistory {
 		let operationHistory: IOperationHistory = {
+			actor,
 			changeType: entityChangeType,
 			entity: dbEntity,
 			id: undefined,

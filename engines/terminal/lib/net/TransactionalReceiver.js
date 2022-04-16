@@ -168,13 +168,22 @@ export class TransactionalReceiver {
     async startApiCall(message, context, nativeHandleCallback) {
         const transactionalServer = await container(this)
             .get(TRANSACTIONAL_SERVER);
-        if (!await transactionalServer.startTransaction({
+        const transactionCredentials = {
             application: message.application,
             domain: message.domain,
             methodName: message.methodName,
             objectName: message.objectName,
             transactionId: message.transactionId
-        }, context)) {
+        };
+        if (!await transactionalServer.startTransaction(transactionCredentials, context)) {
+            return false;
+        }
+        try {
+            await nativeHandleCallback();
+        }
+        catch (e) {
+            context.errorMessage = e.message;
+            transactionalServer.rollback(transactionCredentials, context);
             return false;
         }
         const initiator = context.transaction.initiator;
@@ -183,13 +192,6 @@ export class TransactionalReceiver {
         initiator.methodName = message.methodName;
         initiator.objectName = message.objectName;
         message.transactionId = context.transaction.id;
-        try {
-            await nativeHandleCallback();
-        }
-        catch (e) {
-            context.errorMessage = e.message;
-            return false;
-        }
         return true;
     }
     async endApiCall(credentials, errorMessage, context) {

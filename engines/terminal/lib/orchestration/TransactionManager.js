@@ -1,6 +1,6 @@
 import { container, DI } from '@airport/di';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
-import { getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
+import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
@@ -33,119 +33,155 @@ export class TransactionManager extends AbstractMutationManager {
         const transaction = await this.startTransaction(credentials, context);
         try {
             await transactionalCallback(transaction, context);
-            await this.commit(transaction, context);
+            await this.commit(credentials, context);
         }
         catch (e) {
-            await this.rollback(transaction, context);
+            await this.rollback(credentials, context);
             throw e;
         }
     }
     async startTransaction(credentials, context) {
-        const [storeDriver, terminalStore] = await container(this)
-            .get(STORE_DRIVER, TERMINAL_STORE);
-        if (!await this.startTransactionPrep(credentials, context)) {
-            return;
-        }
-        const transaction = await storeDriver.setupTransaction(context);
+        const terminalStore = await container(this).get(TERMINAL_STORE);
         const transactionManagerStore = terminalStore.getTransactionManager();
-        transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction);
-        if (!transaction.parentTransaction) {
-            transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction);
-        }
-        await storeDriver.startTransaction(transaction, context);
-        await this.setupTransaction(credentials, transaction, context);
-        context.transaction = transaction;
-        return transaction;
-    }
-    async rollback(transaction, context) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
-        const isServer = storeDriver.isServer(context);
-        if (isServer) {
-            // multiple parallel top level transactions are supported
+        let parentTransaction;
+        if (credentials.transactionId) {
+            parentTransaction = transactionManagerStore
+                .transactionInProgressMap.get(credentials.transactionId);
+            if (!parentTransaction) {
+                throw new Error(`
+Recieved a startTransaction call (@Api call) with parent transaction id:
+	${credentials.transactionId}
+But, there is no such transaction in progress.`);
+            }
+            if (parentTransaction.id !==
+                credentials.transactionId) {
+                throw new Error(`
+In-progress transaction id does not match the passed in transaction id:
+${credentials.transactionId}`);
+            }
+            this.checkForCircularDependencies(parentTransaction, credentials);
         }
         else {
-            // a single top level transaction is supported
-        }
-        if (!storeDriver.isServer(context) && this.sourceOfTransactionInProgress
-            !== fullApplicationName) {
-            let foundTransactionInQueue = false;
-            this.transactionIndexQueue.filter(transIndex => {
-                if (transIndex === fullApplicationName) {
-                    foundTransactionInQueue = true;
-                    return false;
-                }
-                return true;
-            });
-            if (!foundTransactionInQueue) {
-                throw new Error(`Could not find transaction '${fullApplicationName}' is not found`);
-            }
-            return;
-        }
-        try {
-            await transaction.rollback(null, context);
-        }
-        finally {
-            await this.clearTransaction(context);
-        }
-    }
-    async commit(transaction, context) {
-        const [activeQueries, idGenerator, storeDriver] = await container(this)
-            .get(ACTIVE_QUERIES, ID_GENERATOR, STORE_DRIVER);
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(transaction.credentials.domain, transaction.credentials.application);
-        if (!storeDriver.isServer(context)
-            && this.sourceOfTransactionInProgress !== fullApplicationName) {
-            throw new Error(`Cannot commit inactive transaction '${fullApplicationName}'.`);
-        }
-        try {
-            await this.saveRepositoryHistory(transaction, idGenerator, context);
-            await transaction.saveTransaction(transaction.transHistory);
-            activeQueries.rerunQueries();
-            await transaction.commit(null);
-        }
-        finally {
-            await this.clearTransaction(context);
-        }
-        let transactionHistory = transaction.transHistory;
-        if (!transactionHistory.allRecordHistory.length) {
-            return;
-        }
-        const synchronizationOutManager = await container(this)
-            .get(SYNCHRONIZATION_OUT_MANAGER);
-        await synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
-    }
-    async startTransactionPrep(credentials, context, transactionalCallback) {
-        if (context.transaction) {
-            return false;
-        }
-        const storeDriver = await container(this).get(STORE_DRIVER);
-        const isServer = this.isServer(context);
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(credentials.domain, credentials.application);
-        if (!isServer) {
-            let transaction = this.transactionInProgress;
-            this.checkForCircularDependencies(transaction, credentials);
-            if (fullApplicationName === this.sourceOfTransactionInProgress) {
-                if (transactionalCallback) {
-                    await transactionalCallback(this.transactionInProgress, context);
-                }
-                return false;
-            }
-            else if (this.transactionIndexQueue.filter(transIndex => transIndex === fullApplicationName).length) {
-                // Either just continue using the current transaction
-                // or return (domain shouldn't be initiating multiple transactions
-                // at the same time
-                throw new Error(`
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
+            /*
+             * NOTE: Current policy is to NOT limit the number of transactions
+             * a domain can initiate.  In the future, specifically for the
+             * client-side Turbase, it may make sence to limit the number
+             * of transactions to 1 per tab.  This can be accomplished by
+             * generating a unique id on the nested client iframe of an
+             * application.
+             */
+            /*
+throw new Error(`
+    Domain:
+        ${credentials.domain}
+    Application:
+        ${credentials.application}
 initialized multiple transactions at the same time.
-Only one concurrent transaction is allowed per application.`);
-                // return;
+Only one concurrent transaction is allowed per application.`)
+            */
+            if (!this.isServer(context)
+                && transactionManagerStore.transactionInProgressMap.size > 0) {
+                // Delay the start of the transaction
+                return new Promise((resolve, reject) => {
+                    // Add the transaction to the queue of pending transactions
+                    transactionManagerStore.pendingTransactionQueue.unshift({
+                        credentials,
+                        reject,
+                        resolve
+                    });
+                });
             }
-            this.transactionIndexQueue.push(fullApplicationName);
         }
-        return true;
+        return await this.internalStartTransaction(credentials, parentTransaction, context);
+    }
+    async internalStartTransaction(credentials, parentTransaction, context) {
+        const [storeDriver, terminalStore] = await container(this)
+            .get(STORE_DRIVER, TERMINAL_STORE);
+        const transactionManagerStore = terminalStore.getTransactionManager();
+        const transaction = await storeDriver.setupTransaction(context, parentTransaction);
+        await storeDriver.startTransaction(transaction, context);
+        transaction.credentials = credentials;
+        await this.setupTransaction(credentials, transaction, parentTransaction, transactionManagerStore, context);
+        return transaction;
+    }
+    async rollback(credentials, context) {
+        const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
+        let parentTransaction = transaction.parentTransaction;
+        await transaction.rollback(null, context);
+        await this.clearTransaction(transaction, parentTransaction, credentials, context);
+        await this.resumeParentOrPendingTransaction(parentTransaction, context);
+    }
+    async getTransactionFromContextOrCredentials(credentials, context) {
+        let transaction = context.transaction;
+        if (!transaction) {
+            if (!credentials.transactionId) {
+                throw new Error(`
+No Transaction Id is passed in Credentials for a Rollback operation.
+				`);
+            }
+            const terminalStore = await container(this).get(TERMINAL_STORE);
+            const transactionManagerStore = terminalStore.getTransactionManager();
+            transaction = transactionManagerStore.transactionInProgressMap.get(credentials.transactionId);
+            if (!transaction) {
+                throw new Error(`
+Could not find Transaction: ${credentials.transactionId} in Transactons in-progress.
+NOTE: nested/child transactions must be commited or rolled back before their
+parent transactions.
+				`);
+            }
+        }
+        return transaction;
+    }
+    async resumeParentOrPendingTransaction(parentTransaction, context) {
+        const terminalStore = await container(this).get(TERMINAL_STORE);
+        const transactionManagerStore = terminalStore.getTransactionManager();
+        if (parentTransaction) {
+            await this.setupTransaction(parentTransaction.credentials, parentTransaction, parentTransaction.parentTransaction, transactionManagerStore, context);
+        }
+        else if (transactionManagerStore.pendingTransactionQueue.length) {
+            const pendingTransaction = transactionManagerStore.pendingTransactionQueue.pop();
+            const transaction = await this.internalStartTransaction(pendingTransaction.credentials, null, context);
+            pendingTransaction.resolve(transaction);
+        }
+    }
+    async commit(credentials, context) {
+        const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
+        let parentTransaction = transaction.parentTransaction;
+        try {
+            await this.saveRepositoryHistory(transaction, context);
+            await transaction.saveTransaction(transaction.transHistory);
+            const activeQueries = await container(this).get(ACTIVE_QUERIES);
+            activeQueries.rerunQueries();
+            await transaction.commit(null, context);
+            let transactionHistory = transaction.transHistory;
+            transaction.priorRepositoryTransactionHistories
+                = transaction.priorRepositoryTransactionHistories.concat(transactionHistory.repositoryTransactionHistories);
+            if (transactionHistory.allRecordHistory.length) {
+                if (parentTransaction) {
+                    parentTransaction.priorRepositoryTransactionHistories
+                        = parentTransaction.priorRepositoryTransactionHistories.concat(transaction.priorRepositoryTransactionHistories);
+                }
+                else {
+                    const synchronizationOutManager = await container(this)
+                        .get(SYNCHRONIZATION_OUT_MANAGER);
+                    const compositeRepositoryTransactionHistories = this.composeRepositoryTransactionHistories(transactionHistory);
+                    await synchronizationOutManager.synchronizeOut(compositeRepositoryTransactionHistories);
+                }
+            }
+        }
+        finally {
+            await this.clearTransaction(transaction, parentTransaction, credentials, context);
+            // Right now transactions are tied to @Api() calls,
+            // If an @Api() fails to commit the parent @Api() call should resume
+            // it's transaction or the next 
+            await this.resumeParentOrPendingTransaction(parentTransaction, context);
+        }
+    }
+    composeRepositoryTransactionHistories(transactionHistory) {
+        // TODO: work here next
+        // Need to differenciate between already saved transaction histories
+        // form child transactions and new ones (from this transaction)
+        // merge transactionHistory.childTransactionRepositoryTransactionHistories
     }
     checkForCircularDependencies(transaction, credentials) {
         if (credentials.domain === INTERNAL_DOMAIN) {
@@ -167,13 +203,18 @@ ${callHerarchy}
             }
         } while (transaction = transaction.parentTransaction);
     }
-    async setupTransaction(credentials, transaction, context) {
-        const transHistoryDuo = await container(this)
-            .get(TRANSACTION_HISTORY_DUO);
-        this.transactionInProgress = transaction;
+    async setupTransaction(credentials, transaction, parentTransaction, transactionManagerStore, context) {
         context.transaction = transaction;
+        credentials.transactionId = transaction.id;
+        const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
         transaction.transHistory = transHistoryDuo.getNewRecord();
-        transaction.credentials = credentials;
+        transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction);
+        if (parentTransaction) {
+            transactionManagerStore.transactionInProgressMap.delete(parentTransaction.id);
+        }
+        else {
+            transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction);
+        }
     }
     // @Transactional()
     // private async recordRepositoryTransactionBlock(
@@ -202,29 +243,23 @@ ${callHerarchy}
     getApiName(nameContainer) {
         return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`;
     }
-    async clearTransaction(context) {
-        const transaction = context.transaction;
+    async clearTransaction(transaction, parentTransaction, credentials, context) {
         const terminalStore = await container(this).get(TERMINAL_STORE);
         const transactionManagerStore = terminalStore.getTransactionManager();
         transactionManagerStore.transactionInProgressMap.delete(transaction.id);
-        if (!transaction.parentTransaction) {
+        if (!parentTransaction) {
             transactionManagerStore.rootTransactionInProgressMap.delete(transaction.id);
         }
         context.transaction = null;
-        this.sourceOfTransactionInProgress = null;
-        if (this.transactionInProgress.parentTransaction) {
-        }
-        this.transactionInProgress = null;
-        if (this.transactionIndexQueue.length) {
-            this.sourceOfTransactionInProgress = this.transactionIndexQueue.shift();
-        }
+        credentials.transactionId = null;
     }
-    async saveRepositoryHistory(transaction, idGenerator, context) {
+    async saveRepositoryHistory(transaction, context) {
         let transactionHistory = transaction.transHistory;
         if (!transactionHistory.allRecordHistory.length) {
             return false;
         }
         let applicationMap = transactionHistory.applicationMap;
+        const idGenerator = await container(this).get(ID_GENERATOR);
         const transHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         applicationMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory.id = transHistoryIds.transactionHistoryId;

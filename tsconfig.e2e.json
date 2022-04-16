@@ -39,14 +39,8 @@
       "@airport/ground-transport": [
         "libs/ground-transport/src"
       ],
-      "@airport/hangar": [
-        "libs/hangar/src"
-      ],
       "@airport/tower": [
         "libs/tower/src"
-      ],
-      "@airport/guideway": [
-        "applications/guideway/src"
       ],
       "@airport/holding-pattern": [
         "applications/holding-pattern/src"

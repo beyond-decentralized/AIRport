@@ -1,1 +1,0 @@
-{"version":3,"file":"monthlyarchivelog.d.ts","sourceRoot":"","sources":["../../../src/generated/archive/monthlyarchivelog.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,WAAW,EACX,MAAM,0BAA0B,CAAC;AAQlC,MAAM,WAAW,kBAAkB;IAGlC,WAAW,EAAE,MAAM,CAAC;IAGpB,UAAU,EAAE,WAAW,CAAC;IAGxB,eAAe,CAAC,EAAE,MAAM,CAAC;IACzB,eAAe,CAAC,EAAE,GAAG,CAAC;CAQtB"}

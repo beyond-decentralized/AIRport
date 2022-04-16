@@ -1,5 +1,0 @@
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-export {};
-//# sourceMappingURL=dailysynclog.js.map

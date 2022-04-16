@@ -28,16 +28,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/config",
-      "projectFolder": "apis/config",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/cross-terminal-transfer",
-      "projectFolder": "apis/cross-terminal-transfer",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/ground-control",
       "projectFolder": "apis/ground-control",
       "shouldPublish": true
@@ -90,16 +80,6 @@
       "shouldPublish": true
     },
     // "engines" folder (alphabetical order)
-    {
-      "packageName": "@airport/automated-guideway-transit",
-      "projectFolder": "engines/automated-guideway-transit",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/tarmaq",
-      "projectFolder": "engines/tarmaq",
-      "shouldPublish": true
-    },
     {
       "packageName": "@airport/terminal",
       "projectFolder": "engines/terminal",
@@ -210,23 +190,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/jet-bridge",
-      "projectFolder": "libs/jet-bridge",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/mono-rail",
-      "projectFolder": "libs/mono-rail",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/pressurization",
       "projectFolder": "libs/pressurization",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/ramp",
-      "projectFolder": "libs/ramp",
       "shouldPublish": true
     },
     {
@@ -272,16 +237,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/functionality-demo-schema",
-      "projectFolder": "schemas/functionality-demo-schema",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/guideway",
-      "projectFolder": "schemas/guideway",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/holding-pattern",
       "projectFolder": "schemas/holding-pattern",
       "shouldPublish": true
@@ -294,11 +249,6 @@
     {
       "packageName": "@airport/na-kano",
       "projectFolder": "schemas/na-kano",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/point-of-destination",
-      "projectFolder": "schemas/point-of-destination",
       "shouldPublish": true
     },
     {
@@ -319,38 +269,6 @@
     {
       "packageName": "@airport/travel-document-checkpoint-internal",
       "projectFolder": "schemas/travel-document-checkpoint/internal",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/vasi",
-      "projectFolder": "schemas/vasi",
-      "shouldPublish": true
-    },
-    // "test" folder (alphabetical order)
-    {
-      "packageName": "@airport/functionality-demo-frame",
-      "projectFolder": "test/functionality-demo-frame",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/functionality-demo-framework",
-      "projectFolder": "test/functionality-demo-framework",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/repository-demo-framework",
-      "projectFolder": "test/repository-demo-framework",
-      "shouldPublish": true
-    },
-    // "ui" folder (alphabetical order)
-    {
-      "packageName": "@airport/functionality-demo",
-      "projectFolder": "ui/functionality-demo",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/todo",
-      "projectFolder": "ui/todo",
       "shouldPublish": true
     }
   ]

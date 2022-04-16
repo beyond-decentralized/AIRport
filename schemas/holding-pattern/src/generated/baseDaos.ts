@@ -212,11 +212,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(7)
+		super(5)
 	}
 }
 
@@ -268,11 +268,11 @@ export class BaseRecordHistoryNewValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(3)
+		super(6)
 	}
 }
 
@@ -296,11 +296,11 @@ export class BaseRecordHistoryOldValueDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(4)
+		super(7)
 	}
 }
 
@@ -380,11 +380,11 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(6)
+		super(4)
 	}
 }
 
@@ -408,10 +408,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(5)
+		super(3)
 	}
 }

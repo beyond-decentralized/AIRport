@@ -16,7 +16,6 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.id = data.id;
         this.transactionHistory = data.transactionHistory;
         this.repository = data.repository;
-        this.actor = data.actor;
         this.saveTimestamp = data.saveTimestamp;
         this.operationHistory = data.operationHistory;
     }
@@ -53,13 +52,6 @@ __decorate([
         referencedColumnName: 'ID', nullable: false
     })
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate([
-    ManyToOne(),
-    JoinColumn({
-        name: 'ACTOR_ID', referencedColumnName: 'ID',
-        nullable: false
-    })
-], RepositoryTransactionHistory.prototype, "actor", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

@@ -1,7 +1,7 @@
-import { AIRPORT_DATABASE, ALL_FIELDS, and, distinct, or, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet, TransactionType } from '@airport/ground-control';
-import { OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
+import { ALL_FIELDS, and, or, Y } from '@airport/air-control';
+import { DI } from '@airport/di';
+import { ensureChildArray, TransactionType } from '@airport/ground-control';
+import { REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
 export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
@@ -18,41 +18,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         })
     }
     */
-    getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo) {
-        const id = Y;
-        return {
-            id,
-            actor: {
-                id
-            },
-            repository: {
-                id
-            },
-            operationHistory: {
-                ...operHistoryDuo.select.fields,
-                entity: {
-                    id: Y
-                },
-                recordHistory: {
-                    ...recHistoryDuo.select.fields
-                }
-            },
-        };
-    }
-    async findWhere(whereClauseFunction) {
-        const [operHistoryDuo, recHistoryDuo] = await container(this).get(OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO);
-        let rth, r, oh, rh;
-        const id = Y;
-        return await this.db.find.tree({
-            select: this.getSelectClauseWithRecordHistory(operHistoryDuo, recHistoryDuo),
-            from: [
-                rth = Q.RepositoryTransactionHistory,
-                oh = rth.operationHistory.innerJoin(),
-                rh = oh.recordHistory.innerJoin(),
-            ],
-            where: whereClauseFunction(rth, r, oh, rh)
-        });
-    }
     async findWhereUuIdsIn(uuIds) {
         let rth;
         return await this.db.find.tree({
@@ -64,35 +29,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             ],
             where: rth.uuId.in(uuIds)
         });
-    }
-    async findWithActorAndRepositoryWhere(whereClauseFunction) {
-        let rth, a, r;
-        return await this.db.find.graph({
-            select: {
-                ...this.db.duo.select.fields,
-                actor: {
-                    uuId: Y,
-                    user: {}
-                },
-                repository: {
-                    createdAt: Y,
-                    uuId: Y,
-                    owner: {}
-                },
-                transactionHistory: {
-                    id: Y
-                }
-            },
-            from: [
-                rth = Q.RepositoryTransactionHistory,
-                a = rth.actor.innerJoin(),
-                r = rth.repository.innerJoin(),
-            ],
-            where: whereClauseFunction(rth, a, r)
-        });
-    }
-    async findWithActorAndRepositoryWhereIdsIn(idsInClause) {
-        return await this.findWithActorAndRepositoryWhere((rth) => rth.id.in(idsInClause));
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repoTransHistoryMapByRepositoryId = new Map();
@@ -111,7 +47,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             for (const [entityId, recordMapForEntity] of recordMapForRepository) {
                 const actorEquals = [];
                 for (const [actorId, recordsForActor] of recordMapForEntity) {
-                    actorEquals.push(and(rth.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
+                    actorEquals.push(and(oh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
                 }
                 entityEquals.push(and(oh.entity.id.equals(entityId), or(...actorEquals)));
             }
@@ -171,41 +107,6 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             });
         }
         return repoTransHistoryMapByRepositoryId;
-    }
-    async findExistingRecordIdMap(recordIdMap) {
-        const existingRecordIdMap = new Map();
-        const rth = Q.RepositoryTransactionHistory, oh = rth.operationHistory.innerJoin(), rh = oh.recordHistory.innerJoin();
-        const idsFragments = [];
-        for (const [repositoryId, recordIdMapForRepository] of recordIdMap) {
-            let tableFragments = [];
-            for (const [entityId, recordIdMapForTableInRepository] of recordIdMapForRepository) {
-                let actorIdsFragments = [];
-                for (const [actorId, recordIdSetForActor] of recordIdMapForTableInRepository) {
-                    actorIdsFragments.push(and(rth.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordIdSetForActor))));
-                }
-                tableFragments.push(and(oh.entity.id.equals(entityId), or(...actorIdsFragments)));
-            }
-            idsFragments.push(and(rth.repository.id.equals(repositoryId), oh.changeType.equals(ChangeType.INSERT_VALUES), or(...tableFragments)));
-        }
-        const airDb = await container(this).get(AIRPORT_DATABASE);
-        const records = await airDb.find.sheet({
-            from: [
-                rth,
-                oh,
-                rh
-            ],
-            select: distinct([
-                rth.repository.id,
-                oh.entity.id,
-                rth.actor.id,
-                rh.actorRecordId
-            ]),
-            where: or(...idsFragments)
-        });
-        for (const record of records) {
-            ensureChildJsSet(ensureChildJsMap(ensureChildJsMap(existingRecordIdMap, record[0]), record[1]), record[2]).add(record[3]);
-        }
-        return existingRecordIdMap;
     }
     async updateSyncTimestamp(repositoryTransactionHistory) {
         let rth;

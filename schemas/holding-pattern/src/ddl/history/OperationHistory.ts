@@ -16,6 +16,7 @@ import {IApplicationEntity}                from '@airport/airspace'
 import {SystemWideOperationId}        from '../common'
 import {RecordHistory}                from './RecordHistory'
 import {RepositoryTransactionHistory} from './RepositoryTransactionHistory'
+import { Actor } from '../ddl'
 
 /**
  * Created by Papa on 4/17/2017.
@@ -53,6 +54,13 @@ export class OperationHistory {
 	@ManyToOne()
 	@JoinColumn({name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false})
 	entity: IApplicationEntity
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'ACTOR_ID', referencedColumnName: 'ID',
+		nullable: false
+	})
+	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({

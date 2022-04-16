@@ -70,8 +70,8 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 7,
-                                    "oneRelationIndex": 2,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -170,7 +170,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -183,7 +183,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 4
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         },
                         {
@@ -196,7 +196,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
@@ -622,241 +622,13 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMN_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "NEW_VALUE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "ANY"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 2,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_RECORD_HISTORY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 3,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "RecordHistoryNewValue",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "recordHistory",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "newValue",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "COLUMN_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "OLD_VALUE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "ANY"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 0,
-                                    "oneRelationIndex": 3,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_RECORD_HISTORY_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 4,
-                    "isLocal": true,
-                    "isRepositoryEntity": false,
-                    "name": "RecordHistoryOldValue",
-                    "properties": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "name": "recordHistory",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 1,
-                            "isId": true,
-                            "name": "columnIndex",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "oldValue",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 0
-                            },
-                            "relationTableIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_RECORD_HISTORY_OLD_VALUES",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -898,7 +670,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 5,
+                    "index": 3,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "TransactionHistory",
@@ -942,7 +714,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
@@ -1069,29 +841,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 1,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_ID",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 8,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 3,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1101,7 +851,7 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 8
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -1113,7 +863,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 6,
+                    "index": 4,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "RepositoryTransactionHistory",
@@ -1184,7 +934,7 @@ export const APPLICATION = {
                         {
                             "index": 7,
                             "isId": false,
-                            "name": "actor",
+                            "name": "transactionHistory",
                             "relationRef": {
                                 "index": 1
                             },
@@ -1193,18 +943,9 @@ export const APPLICATION = {
                         {
                             "index": 8,
                             "isId": false,
-                            "name": "transactionHistory",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 9,
-                            "isId": false,
                             "name": "operationHistory",
                             "relationRef": {
-                                "index": 3
+                                "index": 2
                             },
                             "sinceVersion": 1
                         }
@@ -1227,30 +968,20 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
                             "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 8
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
                             "isId": false,
                             "oneToManyElems": {
                                 "mappedBy": "repositoryTransactionHistory"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 9
+                                "index": 8
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         }
                     ],
@@ -1349,8 +1080,30 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 6,
-                                    "oneRelationIndex": 3,
+                                    "oneTableIndex": 1,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 4,
+                                    "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -1359,7 +1112,7 @@ export const APPLICATION = {
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 5
+                                    "index": 6
                                 }
                             ],
                             "sinceVersion": 1,
@@ -1371,7 +1124,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 7,
+                    "index": 5,
                     "isLocal": true,
                     "isRepositoryEntity": false,
                     "name": "OperationHistory",
@@ -1424,7 +1177,7 @@ export const APPLICATION = {
                         {
                             "index": 5,
                             "isId": false,
-                            "name": "repositoryTransactionHistory",
+                            "name": "actor",
                             "relationRef": {
                                 "index": 1
                             },
@@ -1433,9 +1186,18 @@ export const APPLICATION = {
                         {
                             "index": 6,
                             "isId": false,
-                            "name": "recordHistory",
+                            "name": "repositoryTransactionHistory",
                             "relationRef": {
                                 "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "name": "recordHistory",
+                            "relationRef": {
+                                "index": 3
                             },
                             "sinceVersion": 1
                         }
@@ -1459,18 +1221,28 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
                             "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 4,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
                             "isId": false,
                             "oneToManyElems": {
                                 "mappedBy": "operationHistory"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
-                                "index": 6
+                                "index": 7
                             },
                             "relationTableIndex": 0,
                             "sinceVersion": 1
@@ -1481,6 +1253,234 @@ export const APPLICATION = {
                         "name": "REPOSITORY_OPERATION_HISTORY",
                         "columnIndexes": []
                     }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMN_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "NEW_VALUE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "ANY"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 0,
+                                    "oneRelationIndex": 2,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_RECORD_HISTORY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 6,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "RecordHistoryNewValue",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "recordHistory",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "newValue",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_RECORD_HISTORY_NEW_VALUES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "COLUMN_INDEX",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "OLD_VALUE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "ANY"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 0,
+                                    "oneRelationIndex": 3,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_RECORD_HISTORY_ID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 2
+                        }
+                    ],
+                    "index": 7,
+                    "isLocal": true,
+                    "isRepositoryEntity": false,
+                    "name": "RecordHistoryOldValue",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "recordHistory",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 1,
+                            "isId": true,
+                            "name": "columnIndex",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "oldValue",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_RECORD_HISTORY_OLD_VALUES",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
                 },
                 {
                     "columns": [

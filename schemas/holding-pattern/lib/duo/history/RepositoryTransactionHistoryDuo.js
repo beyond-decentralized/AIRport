@@ -4,7 +4,7 @@ import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
 import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
 export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
-    getNewRecord(repositoryId, actor, isRepositoryCreation) {
+    getNewRecord(repositoryId, isRepositoryCreation) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
@@ -12,7 +12,6 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository.id = repositoryId;
-        repositoryTransactionHistory.actor = actor;
         return repositoryTransactionHistory;
     }
     newRecord(data) {
@@ -31,17 +30,11 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             if (saveTimeComparison) {
                 return saveTimeComparison;
             }
-            const actor1 = actorMapById.get(repoTransHistory1.actor.id);
-            const actor2 = actorMapById.get(repoTransHistory2.actor.id);
-            const actorUuIdComparison = actor1.uuId.localeCompare(actor2.uuId);
-            if (actorUuIdComparison) {
-                return actorUuIdComparison;
-            }
             return 0;
         });
     }
-    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, operHistoryDuo) {
-        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, repositoryTransactionHistory, systemWideOperationId);
+    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, operHistoryDuo) {
+        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);

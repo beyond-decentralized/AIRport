@@ -10,9 +10,9 @@ export class HistoryManager {
         const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
         return await transHistoryDuo.getNewRecord(transactionType);
     }
-    async getNewRepositoryTransactionHistory(transactionHistory, repositoryId, actor, context) {
+    async getNewRepositoryTransactionHistory(transactionHistory, repositoryId, context) {
         const [repositoryTransactionHistoryDuo, transactionHistoryDuo] = await container(this).get(REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO);
-        return await transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, actor, !!context.newRepository, repositoryTransactionHistoryDuo);
+        return await transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.newRepository, repositoryTransactionHistoryDuo);
     }
 }
 DI.set(HISTORY_MANAGER, HistoryManager);

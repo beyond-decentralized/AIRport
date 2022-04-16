@@ -32,7 +32,6 @@ export interface InternalPortableQuery extends PortableQuery {
  */
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
-    private currentTransactionContext;
     init(context?: IContext): Promise<void>;
     addRepository(credentials: ITransactionCredentials, context: IOperationContext): Promise<Repository_Id>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
@@ -41,7 +40,6 @@ export declare class TransactionalServer implements ITransactionalServer {
     searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
     private checkCurrentTransaction;
     startTransaction(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
-    private internalStartTransaction;
     commit(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     rollback(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     save<E>(entity: E, credentials: ITransactionCredentials, context: IOperationContext): Promise<ISaveResult>;

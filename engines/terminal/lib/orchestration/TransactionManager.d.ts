@@ -13,11 +13,12 @@ export declare class TransactionManager extends AbstractMutationManager implemen
         (transaction: IStoreDriver, context: IContext): Promise<void> | void;
     }, context: ITransactionContext): Promise<void>;
     startTransaction(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
-    rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    startTransactionPrep(credentials: ITransactionCredentials, context: ITransactionContext, transactionalCallback?: {
-        (transaction: IStoreDriver, context: IContext): Promise<void> | void;
-    }): Promise<boolean>;
+    private internalStartTransaction;
+    rollback(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
+    private getTransactionFromContextOrCredentials;
+    private resumeParentOrPendingTransaction;
+    commit(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
+    private composeRepositoryTransactionHistories;
     private checkForCircularDependencies;
     private setupTransaction;
     private isSameSource;

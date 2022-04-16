@@ -1,1 +1,0 @@
-{"version":3,"file":"dailyarchivelog.d.ts","sourceRoot":"","sources":["../../../src/generated/archive/dailyarchivelog.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,WAAW,EACX,MAAM,0BAA0B,CAAC;AAQlC,MAAM,WAAW,gBAAgB;IAGhC,UAAU,EAAE,MAAM,CAAC;IAGnB,UAAU,EAAE,WAAW,CAAC;IAGxB,eAAe,CAAC,EAAE,MAAM,CAAC;CAQzB"}

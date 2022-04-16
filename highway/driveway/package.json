@@ -8,7 +8,6 @@
     "@airport/landing": "0.0.1",
     "@airport/sequence": "0.0.1",
     "@airport/takeoff": "0.0.1",
-    "@airport/tarmaq": "0.0.1",
     "@airport/terminal": "0.0.1",
     "@airport/tower": "0.0.1",
     "@types/node": "^14.11.10",

@@ -1,1 +1,0 @@
-{"version":3,"file":"dailyarchive.d.ts","sourceRoot":"","sources":["../../src/generated/dailyarchive.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,gBAAgB,EAChB,WAAW,EACX,MAAM,mBAAmB,CAAC;AAQ3B,MAAM,WAAW,aAAa;IAK7B,eAAe,EAAE,gBAAgB,CAAC;IAGlC,cAAc,CAAC,EAAE,MAAM,CAAC;IAGxB,UAAU,CAAC,EAAE,WAAW,CAAC;CAMzB"}

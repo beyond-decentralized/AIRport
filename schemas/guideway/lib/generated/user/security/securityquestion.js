@@ -1,5 +1,0 @@
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
-export {};
-//# sourceMappingURL=securityquestion.js.map
