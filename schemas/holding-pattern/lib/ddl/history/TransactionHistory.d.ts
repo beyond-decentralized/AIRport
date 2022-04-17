@@ -14,11 +14,8 @@ export declare class TransactionHistory implements ATransactionHistory {
     id: TransactionHistoryId;
     transactionType: TransactionType;
     repositoryTransactionHistories: RepositoryTransactionHistory[];
-    repoTransHistoryMap: {
+    repositoryTransactionHistoryMap: {
         [repositoryId: number]: IRepositoryTransactionHistory;
-    };
-    allRepoTransHistoriesMap: {
-        [repositoryId: number]: IRepositoryTransactionHistory[];
     };
     applicationMap: SyncApplicationMap;
     allOperationHistory: IOperationHistory[];

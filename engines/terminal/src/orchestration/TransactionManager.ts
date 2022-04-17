@@ -255,38 +255,50 @@ parent transactions.
 		let parentTransaction = transaction.parentTransaction
 
 		try {
-			await this.saveRepositoryHistory(transaction, context);
+			if (parentTransaction) {
+				// Copy transaction history to the parent transaction
+				let childTransactionHistory = transaction.transactionHistory
+				let parentTransactionHistory = parentTransaction.transactionHistory
+				for (const operationHistory of childTransactionHistory.allOperationHistory) {
+					const repositoryId = operationHistory.repositoryTransactionHistory.repository.id
+					const parentRepositoryTransactionRecord = parentTransactionHistory
+						.repositoryTransactionHistoryMap[repositoryId]
+					if (parentRepositoryTransactionRecord) {
+						operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
+					} else {
+						parentTransactionHistory.repositoryTransactionHistoryMap[repositoryId]
+							= operationHistory.repositoryTransactionHistory
+						parentTransactionHistory.repositoryTransactionHistories
+							.push(operationHistory.repositoryTransactionHistory)
+					}
+				}
+				parentTransactionHistory.allOperationHistory = parentTransactionHistory
+					.allOperationHistory.concat(childTransactionHistory.allOperationHistory)
+				parentTransactionHistory.allRecordHistory = parentTransactionHistory
+					.allRecordHistory.concat(childTransactionHistory.allRecordHistory)
+				parentTransactionHistory.allRecordHistoryNewValues = parentTransactionHistory
+					.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
+				parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
+					.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
 
-			await transaction.saveTransaction(transaction.transactionHistory);
+			} else {
+				// This is the root transaction, save it's history, along with any nested transactions
+				await this.saveRepositoryHistory(transaction, context);
+				await transaction.saveTransaction(transaction.transactionHistory);
+			}
 
 			const activeQueries = await container(this).get(ACTIVE_QUERIES);
 			activeQueries.rerunQueries();
 			await transaction.commit(null, context);
 
 			let transactionHistory = transaction.transactionHistory;
+			if (!parentTransaction && transactionHistory.allRecordHistory.length) {
+				const synchronizationOutManager = await container(this)
+					.get(SYNCHRONIZATION_OUT_MANAGER)
 
-			transaction.priorRepositoryTransactionHistories
-				= transaction.priorRepositoryTransactionHistories.concat(
-					transactionHistory.repositoryTransactionHistories
-				)
-			if (transactionHistory.allRecordHistory.length) {
-				if (parentTransaction) {
-					parentTransaction.priorRepositoryTransactionHistories
-						= parentTransaction.priorRepositoryTransactionHistories.concat(
-							transaction.priorRepositoryTransactionHistories
-						)
-				} else {
-					const synchronizationOutManager = await container(this)
-						.get(SYNCHRONIZATION_OUT_MANAGER)
-
-					const compositeRepositoryTransactionHistories =
-						this.composeRepositoryTransactionHistories(transactionHistory)
-
-					await synchronizationOutManager.synchronizeOut(
-						compositeRepositoryTransactionHistories)
-				}
+				await synchronizationOutManager.synchronizeOut(
+					transactionHistory.repositoryTransactionHistories)
 			}
-
 		} finally {
 			await this.clearTransaction(transaction, parentTransaction, credentials, context);
 			// Right now transactions are tied to @Api() calls,
@@ -295,17 +307,6 @@ parent transactions.
 			await this.resumeParentOrPendingTransaction(parentTransaction, context)
 		}
 	}
-
-	private composeRepositoryTransactionHistories(
-		transactionHistory: ITransactionHistory
-	): IRepositoryTransactionHistory[] {
-		// TODO: work here next
-		// Need to differenciate between already saved transaction histories
-		// form child transactions and new ones (from this transaction)
-
-		// merge transactionHistory.childTransactionRepositoryTransactionHistories
-	}
-
 
 	private checkForCircularDependencies(
 		transaction: ITransaction,

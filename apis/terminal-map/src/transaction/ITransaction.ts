@@ -20,8 +20,6 @@ export interface ITransaction
 	parentTransaction: ITransaction
 	transactionHistory: ITransactionHistory
 
-	priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][];
-
 	saveTransaction(transaction: ITransactionHistory): Promise<void>;
 
 }

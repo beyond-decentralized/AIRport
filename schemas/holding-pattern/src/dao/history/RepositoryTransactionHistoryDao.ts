@@ -107,7 +107,7 @@ export class RepositoryTransactionHistoryDao
 	async findAllLocalChangesForRecordIds(
 		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
 	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>> {
-		const repoTransHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
+		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 			= new Map()
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
@@ -190,7 +190,7 @@ export class RepositoryTransactionHistoryDao
 
 		for (const repoTransHistory of repoTransHistories) {
 			ensureChildArray(
-				repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
+				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository.id)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((
 				rth1: IOperationHistory,
@@ -206,7 +206,7 @@ export class RepositoryTransactionHistoryDao
 			})
 		}
 
-		return repoTransHistoryMapByRepositoryId
+		return repositoryTransactionHistoryMapByRepositoryId
 	}
 
 	async updateSyncTimestamp(

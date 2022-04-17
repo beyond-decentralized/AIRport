@@ -50,10 +50,7 @@ export class TransactionHistory
 	repositoryTransactionHistories: RepositoryTransactionHistory[] = []
 
 	@Transient()
-	repoTransHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
-
-	@Transient()
-	allRepoTransHistoriesMap: { [repositoryId: number]: IRepositoryTransactionHistory[] } = {}
+	repositoryTransactionHistoryMap: { [repositoryId: number]: IRepositoryTransactionHistory } = {}
 
 	@Transient()
 	applicationMap: SyncApplicationMap = new SyncApplicationMap()

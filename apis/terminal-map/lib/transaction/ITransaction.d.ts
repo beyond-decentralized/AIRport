@@ -1,4 +1,4 @@
-import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern';
+import { ITransactionHistory } from '@airport/holding-pattern';
 import { IStoreDriver } from '../core/data/StoreDriver';
 import { ITransactionCredentials } from '../Credentials';
 export interface ITransactionInitiator {
@@ -15,7 +15,6 @@ export interface ITransaction extends IStoreDriver {
     isSync: boolean;
     parentTransaction: ITransaction;
     transactionHistory: ITransactionHistory;
-    priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][];
     saveTransaction(transaction: ITransactionHistory): Promise<void>;
 }
 //# sourceMappingURL=ITransaction.d.ts.map

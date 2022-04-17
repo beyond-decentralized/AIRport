@@ -7,7 +7,7 @@ import { ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './Syn
  *  2)  Generate synchronization conflict datastructure
  */
 export interface IStage1SyncedInDataProcessor {
-    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
 }
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
     /**
@@ -16,11 +16,11 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
      *  1)  Unique create/update/delete statement datastructures are generated
      *  2)  Synchronization conflict datastructure is generated
      *
-     * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repoTransHistoryMapByRepositoryId
+     * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByRepositoryId
      * @param {Map<Actor_Id, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    performStage1DataProcessing(repoTransHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
     private populateSystemWideOperationIds;
     ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntity_ActorRecordId): void;
     private getDeletedRecordIdsAndPopulateAllHistoryMap;

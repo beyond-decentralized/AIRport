@@ -1,6 +1,6 @@
 import { IContext } from '@airport/di';
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern';
+import { ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare abstract class SqlTransaction implements ITransaction {
@@ -18,7 +18,6 @@ export declare abstract class SqlTransaction implements ITransaction {
         methodName: string;
         objectName: string;
     };
-    priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][];
     constructor(driver: IStoreDriver, parentTransaction: ITransaction);
     saveTransaction(transaction: ITransactionHistory): Promise<any>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;

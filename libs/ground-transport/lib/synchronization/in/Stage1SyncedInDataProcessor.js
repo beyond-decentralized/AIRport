@@ -12,19 +12,19 @@ export class Stage1SyncedInDataProcessor {
      *  1)  Unique create/update/delete statement datastructures are generated
      *  2)  Synchronization conflict datastructure is generated
      *
-     * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repoTransHistoryMapByRepositoryId
+     * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByRepositoryId
      * @param {Map<Actor_Id, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    async performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById) {
-        await this.populateSystemWideOperationIds(repoTransHistoryMapByRepositoryId);
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById) {
+        await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId);
         const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
         // changes by repository ids or by the actual tables and records in those tables
         // that will be updated or deleted.
-        for (const [repositoryId, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+        for (const [repositoryId, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
             const changedRecordsForRepo = {
                 ids: new Map(),
                 firstChangeTime: new Date().getTime() + 10000000000
@@ -55,7 +55,7 @@ export class Stage1SyncedInDataProcessor {
             }
         }
         const allRepoTransHistoryMapByRepoId = new Map();
-        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepositoryId, syncInUtils);
+        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryId, syncInUtils);
         // find local history for the matching repositories and corresponding time period
         const localRepoTransHistoryMapByRepositoryId = await repoTransHistoryDao
             .findAllLocalChangesForRecordIds(changedRecordIds);
@@ -116,10 +116,10 @@ export class Stage1SyncedInDataProcessor {
             syncConflictMapByRepoId
         };
     }
-    async populateSystemWideOperationIds(repoTransHistoryMapByRepositoryId) {
+    async populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId) {
         const [airportDatabase, sequenceGenerator] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
         let numSystemWideOperationIds = 0;
-        for (const [_, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
                 numSystemWideOperationIds += repositoryTransactionHistory
                     .operationHistory.length;
@@ -127,7 +127,7 @@ export class Stage1SyncedInDataProcessor {
         }
         const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, airportDatabase, sequenceGenerator);
         let i = 0;
-        for (const [_, repoTransHistoriesForRepo] of repoTransHistoryMapByRepositoryId) {
+        for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
                 for (const operationHistory of repositoryTransactionHistory.operationHistory) {
                     operationHistory.systemWideOperationId = systemWideOperationIds[i];
@@ -140,9 +140,9 @@ export class Stage1SyncedInDataProcessor {
         ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
             .set(actorRecordId, recordHistory.id);
     }
-    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repoTransHistoryMapByRepoId, syncInUtils, isLocal = false) {
+    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, syncInUtils, isLocal = false) {
         const recordDeletions = new Map();
-        for (const [repositoryId, repoTransHistories] of repoTransHistoryMapByRepoId) {
+        for (const [repositoryId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
             this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories);
             for (const repoTransHistory of repoTransHistories) {
                 repoTransHistory.isLocal = isLocal;

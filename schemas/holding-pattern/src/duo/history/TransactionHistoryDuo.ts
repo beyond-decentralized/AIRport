@@ -49,14 +49,14 @@ export class TransactionHistoryDuo
 		isRepositoryCreation: boolean,
 		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	): IRepositoryTransactionHistory {
-		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repoTransHistoryMap[repositoryId]
+		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId]
 
 		if (!repositoryTransactionHistory) {
 			repositoryTransactionHistory = repositoryTransactionHistoryDuo.getNewRecord(
 				repositoryId, isRepositoryCreation)
 
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)
-			transactionHistory.repoTransHistoryMap[repositoryId] = <any>repositoryTransactionHistory
+			transactionHistory.repositoryTransactionHistoryMap[repositoryId] = <any>repositoryTransactionHistory
 			repositoryTransactionHistory.transactionHistory = transactionHistory
 		}
 

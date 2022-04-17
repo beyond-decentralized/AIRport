@@ -8,11 +8,8 @@ export interface ITransactionHistory {
     id: number;
     transactionType?: string;
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
-    repoTransHistoryMap?: {
+    repositoryTransactionHistoryMap?: {
         [repositoryId: number]: IRepositoryTransactionHistory;
-    };
-    allRepoTransHistoriesMap?: {
-        [repositoryId: number]: IRepositoryTransactionHistory[];
     };
     applicationMap?: SyncApplicationMap;
     allOperationHistory?: IOperationHistory[];

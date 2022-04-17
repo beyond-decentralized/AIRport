@@ -9,8 +9,7 @@ import { SyncApplicationMap } from '@airport/ground-control';
 let TransactionHistory = class TransactionHistory {
     constructor() {
         this.repositoryTransactionHistories = [];
-        this.repoTransHistoryMap = {};
-        this.allRepoTransHistoriesMap = {};
+        this.repositoryTransactionHistoryMap = {};
         this.applicationMap = new SyncApplicationMap();
         this.allOperationHistory = [];
         this.allRecordHistory = [];
@@ -32,10 +31,7 @@ __decorate([
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
 __decorate([
     Transient()
-], TransactionHistory.prototype, "repoTransHistoryMap", void 0);
-__decorate([
-    Transient()
-], TransactionHistory.prototype, "allRepoTransHistoriesMap", void 0);
+], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
 __decorate([
     Transient()
 ], TransactionHistory.prototype, "applicationMap", void 0);

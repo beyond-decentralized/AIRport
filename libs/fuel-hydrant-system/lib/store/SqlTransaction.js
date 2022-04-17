@@ -10,7 +10,6 @@ export class SqlTransaction {
             methodName: '',
             objectName: ''
         };
-        this.priorRepositoryTransactionHistories = [];
         this.__container__ = driver.__container__;
         this.id = uuidv4();
         this.type = driver.type;

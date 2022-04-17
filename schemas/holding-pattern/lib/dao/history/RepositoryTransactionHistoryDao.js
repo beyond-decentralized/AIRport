@@ -31,7 +31,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         });
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
-        const repoTransHistoryMapByRepositoryId = new Map();
+        const repositoryTransactionHistoryMapByRepositoryId = new Map();
         const rth = Q.RepositoryTransactionHistory;
         const th = rth.transactionHistory.innerJoin();
         const oh = rth.operationHistory.leftJoin();
@@ -94,7 +94,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             // ]
         });
         for (const repoTransHistory of repoTransHistories) {
-            ensureChildArray(repoTransHistoryMapByRepositoryId, repoTransHistory.repository.id)
+            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository.id)
                 .push(repoTransHistory);
             repoTransHistory.operationHistory.sort((rth1, rth2) => {
                 if (rth1.orderNumber < rth2.orderNumber) {
@@ -106,7 +106,7 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
                 return 0;
             });
         }
-        return repoTransHistoryMapByRepositoryId;
+        return repositoryTransactionHistoryMapByRepositoryId;
     }
     async updateSyncTimestamp(repositoryTransactionHistory) {
         let rth;

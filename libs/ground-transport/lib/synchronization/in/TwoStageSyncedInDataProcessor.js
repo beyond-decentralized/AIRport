@@ -9,11 +9,11 @@ export class TwoStageSyncedInDataProcessor {
      */
     async syncMessages(messages, transaction) {
         this.aggregateHistoryRecords(messages, transaction);
-        const { actorMapById, repoTransHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap } = await this.getDataStructures(messages);
-        await this.updateLocalData(repoTransHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap);
+        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap } = await this.getDataStructures(messages);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap);
     }
     aggregateHistoryRecords(messages, transaction) {
-        const transactionHistory = transaction.transHistory;
+        const transactionHistory = transaction.transactionHistory;
         transactionHistory.transactionType = TransactionType.REMOTE_SYNC;
         // split messages by repository and record actor information
         for (const message of messages) {
@@ -40,13 +40,13 @@ export class TwoStageSyncedInDataProcessor {
     }
     async getDataStructures(messages) {
         const repositoryTransactionHistoryDuo = await container(this).get(REPOSITORY_TRANSACTION_HISTORY_DUO);
-        const repoTransHistoryMapByRepositoryId = new Map();
+        const repositoryTransactionHistoryMapByRepositoryId = new Map();
         const applicationsByApplicationVersionIdMap = new Map();
         const actorMapById = new Map();
         const repoTransHistories = [];
         for (const message of messages) {
             repoTransHistories.push(message.history);
-            repoTransHistoryMapByRepositoryId.set(message.history.repository.id, repoTransHistories);
+            repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository.id, repoTransHistories);
             for (const actor of message.actors) {
                 actorMapById.set(actor.id, actor);
             }
@@ -54,19 +54,19 @@ export class TwoStageSyncedInDataProcessor {
                 applicationsByApplicationVersionIdMap.set(applicationVersion.id, applicationVersion.application);
             }
         }
-        for (const [_, repoTransHistories] of repoTransHistoryMapByRepositoryId) {
+        for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
             repositoryTransactionHistoryDuo
                 .sortRepoTransHistories(repoTransHistories, actorMapById);
         }
         return {
             actorMapById,
-            repoTransHistoryMapByRepositoryId,
+            repositoryTransactionHistoryMapByRepositoryId,
             applicationsByApplicationVersionIdMap
         };
     }
-    async updateLocalData(repoTransHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap) {
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap) {
         const [stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictValuesDao] = await container(this).get(STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO);
-        const stage1Result = await stage1SyncedInDataProcessor.performStage1DataProcessing(repoTransHistoryMapByRepositoryId, actorMayById);
+        const stage1Result = await stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {

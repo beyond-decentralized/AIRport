@@ -43,8 +43,6 @@ export abstract class SqlTransaction
         objectName: ''
     }
     
-    priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][] = [];
-
     constructor(
         protected driver: IStoreDriver,
         public parentTransaction: ITransaction
