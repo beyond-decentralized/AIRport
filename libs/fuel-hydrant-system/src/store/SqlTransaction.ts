@@ -33,7 +33,7 @@ export abstract class SqlTransaction
     id: string
     isSync = false
 
-    transHistory: ITransactionHistory
+    transactionHistory: ITransactionHistory
     type: StoreType;
 
     initiator = {

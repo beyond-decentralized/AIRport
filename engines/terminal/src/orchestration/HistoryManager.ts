@@ -18,12 +18,12 @@ export class HistoryManager
 	// private recHistoryDuo: Promise<IRecordHistoryDuo>
 	// private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
 
-	async getNewTransHistory(
+	async getNewTransactionHistory(
 		transactionType: TransactionType = TransactionType.LOCAL
 	): Promise<ITransactionHistory> {
-		const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO)
+		const transactionHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO)
 
-		return await transHistoryDuo.getNewRecord(transactionType)
+		return await transactionHistoryDuo.getNewRecord(transactionType)
 	}
 
 	async getNewRepositoryTransactionHistory(

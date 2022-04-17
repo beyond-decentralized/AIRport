@@ -379,7 +379,7 @@ and cannot have NULL values.`);
             let repoTransHistory = repoTransHistories[repositoryId];
             if (!repoTransHistory) {
                 repoTransHistory = await histManager
-                    .getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
+                    .getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {

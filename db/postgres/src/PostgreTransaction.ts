@@ -24,7 +24,7 @@ export class PostgreTransaction
 	credentials: ICredentials
 	isSync = false
 	pool: pg.Pool
-	transHistory: ITransactionHistory
+	transactionHistory: ITransactionHistory
 
 	constructor(
 		private driver: PostgreSqlDriver,

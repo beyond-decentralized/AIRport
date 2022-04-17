@@ -25,6 +25,5 @@ export declare class TransactionHistory implements ATransactionHistory {
     allRecordHistory: IRecordHistory[];
     allRecordHistoryNewValues: IRecordHistoryNewValue[];
     allRecordHistoryOldValues: IRecordHistoryOldValue[];
-    numberOfOperations: TransactionHistoryNumberOfOperations;
 }
 //# sourceMappingURL=TransactionHistory.d.ts.map

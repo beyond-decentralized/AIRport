@@ -1,7 +1,8 @@
 import { DI } from '@airport/di'
 import {
 	ChangeType,
-	DbEntity
+	DbEntity,
+	IRootTransaction
 } from '@airport/ground-control'
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -43,7 +44,8 @@ export interface IRepositoryTransactionHistoryDuo {
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		actor: IActor,
-		operHistoryDuo: IOperationHistoryDuo
+		operHistoryDuo: IOperationHistoryDuo,
+		rootTransaction: IRootTransaction
 	): IOperationHistory;
 
 }
@@ -108,11 +110,12 @@ export class RepositoryTransactionHistoryDuo
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		actor: IActor,
-		operHistoryDuo: IOperationHistoryDuo
+		operationHistoryDuo: IOperationHistoryDuo,
+		rootTransaction: IRootTransaction
 	): IOperationHistory {
-		let operationHistory = operHistoryDuo.getNewRecord(
+		let operationHistory = operationHistoryDuo.getNewRecord(
 			entityChangeType, dbEntity, actor, repositoryTransactionHistory,
-			systemWideOperationId)
+			systemWideOperationId, rootTransaction)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
 
 		repositoryTransactionHistory

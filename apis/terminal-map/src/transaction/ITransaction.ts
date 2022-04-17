@@ -18,7 +18,7 @@ export interface ITransaction
 	initiator: ITransactionInitiator
 	isSync: boolean
 	parentTransaction: ITransaction
-	transHistory: ITransactionHistory
+	transactionHistory: ITransactionHistory
 
 	priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][];
 

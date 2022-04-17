@@ -16,7 +16,6 @@ let TransactionHistory = class TransactionHistory {
         this.allRecordHistory = [];
         this.allRecordHistoryNewValues = [];
         this.allRecordHistoryOldValues = [];
-        this.numberOfOperations = 0;
     }
 };
 __decorate([
@@ -52,9 +51,6 @@ __decorate([
 __decorate([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-__decorate([
-    Transient()
-], TransactionHistory.prototype, "numberOfOperations", void 0);
 TransactionHistory = __decorate([
     Entity(),
     Table({ name: 'TRANSACTION_HISTORY' })

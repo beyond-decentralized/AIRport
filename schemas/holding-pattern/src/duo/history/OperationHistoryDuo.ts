@@ -1,7 +1,8 @@
 import { DI } from '@airport/di'
 import {
 	ChangeType,
-	DbEntity
+	DbEntity,
+	IRootTransaction
 } from '@airport/ground-control'
 import { SystemWideOperationId } from '../../ddl/common'
 import {
@@ -27,7 +28,8 @@ export interface IOperationHistoryDuo
 		dbEntity: DbEntity,
 		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		systemWideOperationId: SystemWideOperationId
+		systemWideOperationId: SystemWideOperationId,
+		rootTransaction: IRootTransaction
 	): IOperationHistory;
 
 	sort(
@@ -53,14 +55,15 @@ export class OperationHistoryDuo
 		dbEntity: DbEntity,
 		actor: IActor,
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
-		systemWideOperationId: SystemWideOperationId
+		systemWideOperationId: SystemWideOperationId,
+		rootTransaction: IRootTransaction
 	): IOperationHistory {
 		let operationHistory: IOperationHistory = {
 			actor,
 			changeType: entityChangeType,
 			entity: dbEntity,
 			id: undefined,
-			orderNumber: ++repositoryTransactionHistory.transactionHistory.numberOfOperations,
+			orderNumber: ++rootTransaction.numberOfOperations,
 			recordHistory: [],
 			repositoryTransactionHistory: repositoryTransactionHistory,
 			systemWideOperationId
@@ -87,9 +90,9 @@ export class OperationHistoryDuo
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
 		actorRecordId: RepositoryEntity_ActorRecordId,
-		recHistoryDuo: IRecordHistoryDuo
+		recordHistoryDuo: IRecordHistoryDuo
 	): IRecordHistory {
-		const recordHistory = recHistoryDuo.getNewRecord(actorId, actorRecordId)
+		const recordHistory = recordHistoryDuo.getNewRecord(actorId, actorRecordId)
 
 		recordHistory.operationHistory = operationHistory
 

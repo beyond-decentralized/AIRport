@@ -23,6 +23,7 @@ import {
 	ensureChildArray,
 	ensureChildJsMap,
 	EntityRelationType,
+	IRootTransaction,
 	JsonDelete,
 	JsonEntityQuery,
 	PortableQuery,
@@ -60,6 +61,7 @@ export class DeleteManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context?: IOperationContext,
 	): Promise<number> {
 		const [
@@ -114,7 +116,7 @@ export class DeleteManager
 		await this.recordTreeToDelete(recordsToDelete, actor,
 			airDb, historyManager, operHistoryDuo, recHistoryDuo,
 			recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils,
-			sequenceGenerator, transaction, context)
+			sequenceGenerator, transaction, rootTransaction, context)
 
 		return await deleteCommand
 	}
@@ -223,10 +225,11 @@ export class DeleteManager
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
-		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
+		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		applicationUtils: IApplicationUtils,
 		sequenceGenerator: ISequenceGenerator,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<void> {
 		let systemWideOperationId
@@ -240,14 +243,14 @@ export class DeleteManager
 				}
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-					const repoTransHistory = await historyManager.getNewRepositoryTransactionHistory(
-						transaction.transHistory, repositoryId, context
+					const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(
+						transaction.transactionHistory, repositoryId, context
 					)
 
-					const operationHistory = repoTransHistoryDuo.startOperation(
-						repoTransHistory, systemWideOperationId,
+					const operationHistory = repositoryTransactionHistoryDuo.startOperation(
+						repositoryTransactionHistory, systemWideOperationId,
 						ChangeType.DELETE_ROWS, dbEntity, actor,
-						operHistoryDuo)
+						operHistoryDuo, rootTransaction)
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
 						const recordHistory = operHistoryDuo.startRecordHistory(

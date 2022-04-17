@@ -1,5 +1,6 @@
 import { IContext } from "@airport/di";
 import type {
+    IRootTransaction,
     PortableQuery
 } from "@airport/ground-control";
 import type {
@@ -17,6 +18,7 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
+		rootTransaction: IRootTransaction,
         context: IOperationContext,
         ensureGeneratedValues?: boolean
     ): Promise<number>;
@@ -25,6 +27,7 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
+		rootTransaction: IRootTransaction,
         context: IOperationContext,
     ): Promise<RecordHistoryId[] | RecordId[][]>;
 

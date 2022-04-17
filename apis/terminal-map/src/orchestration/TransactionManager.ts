@@ -1,5 +1,6 @@
 import { IContext } from '@airport/di';
 import {
+	IRootTransaction,
 	StoreType
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
@@ -12,6 +13,7 @@ export interface IApiCallContext
 }
 export interface ITransactionContext {
 	transaction?: ITransaction
+	rootTransaction?: IRootTransaction
 }
 export interface ITransactionManager {
 

@@ -14,6 +14,7 @@ import {
 	DbColumn,
 	EntityRelationType,
 	ENTITY_STATE_MANAGER,
+	IRootTransaction,
 	ISaveActor,
 	ISaveRepository,
 	ISaveResult,
@@ -44,6 +45,7 @@ export class OperationManager
 		entities: E | E[],
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext,
 	): Promise<ISaveResult> {
 		let entityGraph
@@ -70,10 +72,10 @@ export class OperationManager
 			uuId: actor.uuId,
 			user: actor.user ? {
 				id: actor.user.id
-			}: null
+			} : null
 		}
 		let newRepository: ISaveRepository
-		if(context.newRepository) {
+		if (context.newRepository) {
 			newRepository = {
 				id: context.newRepository.id,
 				createdAt: context.newRepository.createdAt,
@@ -85,7 +87,7 @@ export class OperationManager
 					uuId: actor.uuId,
 					user: actor.user ? {
 						id: actor.user.id
-					}: null
+					} : null
 				}
 			}
 		}
@@ -100,13 +102,13 @@ export class OperationManager
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
 				await this.internalCreate(
-					operation.entities, actor, transaction, saveResult, context, true)
+					operation.entities, actor, transaction, rootTransaction, saveResult, context, true)
 			} else if (operation.isDelete) {
 				await this.internalDelete(
-					operation.entities, actor, transaction, saveResult, context)
+					operation.entities, actor, transaction, rootTransaction, saveResult, context)
 			} else {
 				await this.internalUpdate(
-					operation.entities, actor, transaction, saveResult, context)
+					operation.entities, actor, transaction, rootTransaction, saveResult, context)
 			}
 		}
 		context.dbEntity = rootDbEntity
@@ -118,6 +120,7 @@ export class OperationManager
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		saveResult: ISaveResult,
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean
@@ -189,7 +192,7 @@ export class OperationManager
 				const portableQuery: PortableQuery = context.ioc.queryFacade
 					.getPortableQuery(insertValues, null, context)
 				const idsAndGeneratedValues = await context.ioc.insertManager
-					.insertValuesGetIds(portableQuery, actor, transaction, context)
+					.insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					const entitySaveResult = {}
@@ -208,7 +211,7 @@ export class OperationManager
 				const portableQuery: PortableQuery = context.ioc.queryFacade
 					.getPortableQuery(insertValues, null, context)
 				await context.ioc.insertManager.insertValues(
-					portableQuery, actor, transaction, context, ensureGeneratedValues)
+					portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					saveResult.created[
@@ -231,6 +234,7 @@ export class OperationManager
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		saveResult: ISaveResult,
 		context: IOperationContext
 	): Promise<void> {
@@ -342,7 +346,7 @@ export class OperationManager
 					update, null, context)
 
 				await context.ioc.updateManager.updateValues(
-					portableQuery, actor, transaction, context);
+					portableQuery, actor, transaction, rootTransaction, context);
 
 			}
 		}
@@ -352,6 +356,7 @@ export class OperationManager
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		saveResult: ISaveResult,
 		context: IOperationContext
 	): Promise<void> {
@@ -439,7 +444,7 @@ export class OperationManager
 		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
 			deleteWhere, null, context)
 		await context.ioc.deleteManager.deleteWhere(portableQuery, actor,
-			transaction, context)
+			transaction, rootTransaction, context)
 	}
 
 }

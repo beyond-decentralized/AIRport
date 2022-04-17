@@ -35,7 +35,21 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "holding-pattern",
+            "name": "holding-pattern-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
+            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "holding-pattern-sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -63,7 +77,21 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "travel-document-checkpoint",
+            "name": "travel-document-checkpoint-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\lib\\index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],

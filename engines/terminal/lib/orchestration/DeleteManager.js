@@ -117,7 +117,7 @@ export class DeleteManager {
                     systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
                 }
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-                    const repoTransHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
+                    const repoTransHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
                     const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, actor, operHistoryDuo);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
                         const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor.id, recordToDelete.actorRecordId, recHistoryDuo);

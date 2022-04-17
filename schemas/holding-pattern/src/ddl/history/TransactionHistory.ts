@@ -70,7 +70,4 @@ export class TransactionHistory
 	@Transient()
 	allRecordHistoryOldValues: IRecordHistoryOldValue[] = []
 
-	@Transient()
-	numberOfOperations: TransactionHistoryNumberOfOperations = 0
-
 }

@@ -78,7 +78,7 @@ export class UpdateManager {
             // const repository                         = repositories.get(repositoryId)
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(transaction.transHistory, repositoryId, actor, context);
+            const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
             const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, actor, operHistoryDuo);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {

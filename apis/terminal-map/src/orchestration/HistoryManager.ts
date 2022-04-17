@@ -9,7 +9,7 @@ import { IOperationContext } from "../processing/OperationContext";
 
 export interface IHistoryManager {
 
-    getNewTransHistory(
+    getNewTransactionHistory(
         transactionType: TransactionType
     ): Promise<ITransactionHistory>;
 

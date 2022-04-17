@@ -18,6 +18,7 @@ import {
 	ensureChildArray,
 	ensureChildMap,
 	InternalFragments,
+	IRootTransaction,
 	JsonSheetQuery,
 	JsonUpdate,
 	PortableQuery,
@@ -60,6 +61,7 @@ export class UpdateManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<number> {
 		const [
@@ -102,7 +104,7 @@ export class UpdateManager
 				= await this.addUpdateHistory(
 					portableQuery, actor, systemWideOperationId, errorPrefix,
 					historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
-					repoTransHistoryDuo, transaction, context)
+					repoTransHistoryDuo, transaction, rootTransaction, context)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -136,12 +138,13 @@ export class UpdateManager
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string,
-		histManager: IHistoryManager,
+		historyManager: IHistoryManager,
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
-		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
+		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<[
 		RecordHistoryMap,
@@ -194,12 +197,12 @@ export class UpdateManager
 			// const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(
-				transaction.transHistory, repositoryId, context
+			const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(
+				transaction.transactionHistory, repositoryId, context
 			)
-			const operationHistory = repoTransHistoryDuo.startOperation(
-				repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
-				context.dbEntity, actor, operHistoryDuo)
+			const operationHistory = repositoryTransactionHistoryDuo.startOperation(
+				repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
+				context.dbEntity, actor, operHistoryDuo, rootTransaction)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {

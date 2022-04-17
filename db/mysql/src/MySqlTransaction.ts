@@ -16,7 +16,7 @@ export class MySqlTransaction
 
 	credentials: ICredentials
 	isSync = false
-	transHistory: ITransactionHistory
+	transactionHistory: ITransactionHistory
 
 	constructor(
 		private driver: MySqlDriver,

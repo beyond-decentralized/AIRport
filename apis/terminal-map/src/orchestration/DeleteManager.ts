@@ -1,7 +1,8 @@
 import {
     EntityId,
     PortableQuery,
-    ApplicationIndex
+    ApplicationIndex,
+    IRootTransaction
 } from "@airport/ground-control";
 import { IContext } from "@airport/di";
 import type {
@@ -17,6 +18,7 @@ export interface IDeleteManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
+        rootTransaction: IRootTransaction,
         context?: IContext,
     ): Promise<number>
 

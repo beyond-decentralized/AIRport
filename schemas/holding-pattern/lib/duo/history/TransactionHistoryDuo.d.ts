@@ -8,6 +8,6 @@ export interface ITransactionHistoryDuo {
 }
 export declare class TransactionHistoryDuo extends BaseTransactionHistoryDuo implements ITransactionHistoryDuo {
     getNewRecord(transactionType?: TransactionType): ITransactionHistory;
-    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, isRepositoryCreation: boolean, repoTransHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
+    getRepositoryTransaction(transactionHistory: ITransactionHistory, repositoryId: Repository_Id, isRepositoryCreation: boolean, repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo): IRepositoryTransactionHistory;
 }
 //# sourceMappingURL=TransactionHistoryDuo.d.ts.map

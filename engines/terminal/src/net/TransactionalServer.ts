@@ -189,7 +189,7 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		if (context.transaction) {
-			
+
 		}
 		try {
 			await this.ensureIocContext(context)
@@ -221,10 +221,11 @@ export class TransactionalServer
 
 		let saveResult: ISaveResult
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			saveResult = await context.ioc.operationManager.performSave(
-				entity, actor, transaction, context)
+				entity, actor, transaction, context.rootTransaction, context)
 		}, context)
 
 		return saveResult
@@ -246,11 +247,12 @@ export class TransactionalServer
 
 		let saveResult: ISaveResult
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			// TODO: save to serialized repository to the specified destination
 			saveResult = await context.ioc.operationManager.performSave(
-				entity, actor, transaction, context)
+				entity, actor, transaction, context.rootTransaction, context)
 		}, context)
 
 		return saveResult
@@ -268,10 +270,12 @@ export class TransactionalServer
 
 		let numInsertedRecords
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			numInsertedRecords = await context.ioc.insertManager.insertValues(
-				portableQuery, actor, transaction, context, ensureGeneratedValues);
+				portableQuery, actor, transaction, context.rootTransaction,
+				context, ensureGeneratedValues);
 		}, context)
 
 		return numInsertedRecords
@@ -287,10 +291,11 @@ export class TransactionalServer
 
 		let ids
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			ids = await context.ioc.insertManager.insertValuesGetIds(
-				portableQuery, actor, transaction, context);
+				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
 		return ids
@@ -306,10 +311,11 @@ export class TransactionalServer
 
 		let numUpdatedRecords
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			numUpdatedRecords = await context.ioc.updateManager.updateValues(
-				portableQuery, actor, transaction, context);
+				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
 		return numUpdatedRecords
@@ -325,10 +331,11 @@ export class TransactionalServer
 
 		let numDeletedRecords
 		await transactional(async (
-			transaction: ITransaction
+			transaction: ITransaction,
+			context: IOperationContext & ITransactionContext
 		) => {
 			numDeletedRecords = await context.ioc.deleteManager.deleteWhere(
-				portableQuery, actor, transaction, context);
+				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
 		return numDeletedRecords

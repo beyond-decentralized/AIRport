@@ -14,7 +14,7 @@ export interface ITransaction extends IStoreDriver {
     initiator: ITransactionInitiator;
     isSync: boolean;
     parentTransaction: ITransaction;
-    transHistory: ITransactionHistory;
+    transactionHistory: ITransactionHistory;
     priorRepositoryTransactionHistories: IRepositoryTransactionHistory[][];
     saveTransaction(transaction: ITransactionHistory): Promise<void>;
 }

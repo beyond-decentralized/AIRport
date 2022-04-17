@@ -19,6 +19,5 @@ export interface ITransactionHistory {
     allRecordHistory?: IRecordHistory[];
     allRecordHistoryNewValues?: IRecordHistoryNewValue[];
     allRecordHistoryOldValues?: IRecordHistoryOldValue[];
-    numberOfOperations?: number;
 }
 //# sourceMappingURL=transactionhistory.d.ts.map

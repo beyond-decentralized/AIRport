@@ -12,6 +12,7 @@ import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
+	IRootTransaction,
 	JsonInsertValues,
 	PortableQuery,
 	repositoryEntity,
@@ -54,21 +55,23 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean
 	): Promise<number> {
 		return <number>await this.internalInsertValues(
-			portableQuery, actor, transaction, context, false, ensureGeneratedValues)
+			portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues)
 	}
 
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext,
 	): Promise<RecordId[][]> {
 		return <RecordId[][]>await this.internalInsertValues(
-			portableQuery, actor, transaction, context, true)
+			portableQuery, actor, transaction, rootTransaction, context, true)
 	}
 
 	verifyNoGeneratedColumns(
@@ -95,6 +98,7 @@ export class InsertManager
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext,
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
@@ -183,7 +187,8 @@ appears more than once in the Columns clause`)
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
 				historyManager, operHistoryDuo, recHistoryDuo,
-				recHistoryNewValueDuo, repoTransHistoryDuo, transaction, context)
+				recHistoryNewValueDuo, repoTransHistoryDuo, transaction,
+				rootTransaction, context)
 		}
 
 		const numberOfInsertedRecords = await transaction.insertValues(
@@ -528,12 +533,13 @@ and cannot have NULL values.`)
 		portableQuery: PortableQuery,
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
-		histManager: IHistoryManager,
+		historyManager: IHistoryManager,
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
-		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo,
+		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
+		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<void> {
 		const jsonInsertValues = <JsonInsertValues>portableQuery.jsonQuery
@@ -567,18 +573,18 @@ and cannot have NULL values.`)
 		for (const row of jsonInsertValues.V) {
 			const repositoryId = row[repositoryIdColumnNumber]
 			// const repo           = await repoManager.getRepository(repositoryId)
-			let repoTransHistory = repoTransHistories[repositoryId]
-			if (!repoTransHistory) {
-				repoTransHistory = await histManager
-					.getNewRepositoryTransactionHistory(transaction.transHistory,
+			let repositoryTransactionHistory = repoTransHistories[repositoryId]
+			if (!repositoryTransactionHistory) {
+				repositoryTransactionHistory = await historyManager
+					.getNewRepositoryTransactionHistory(transaction.transactionHistory,
 						repositoryId, context)
 			}
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory = repoTransHistoryDuo.startOperation(
-					repoTransHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
-					dbEntity, actor, operHistoryDuo)
+				operationHistory = repositoryTransactionHistoryDuo.startOperation(
+					repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
+					dbEntity, actor, operHistoryDuo, rootTransaction)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 

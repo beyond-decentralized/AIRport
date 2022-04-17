@@ -67,7 +67,7 @@ export class TwoStageSyncedInDataProcessor
 		transaction: ITransaction
 	): void {
 
-		const transactionHistory = transaction.transHistory;
+		const transactionHistory = transaction.transactionHistory;
 		transactionHistory.transactionType = TransactionType.REMOTE_SYNC
 
 		// split messages by repository and record actor information

@@ -6,6 +6,9 @@ import { PortableQuery } from './query/PortableQuery';
 import { ISaveResult } from './query/SaveResult';
 export declare const INTERNAL_APP = "@airport/terminal";
 export declare const INTERNAL_DOMAIN = "internal://domain";
+export interface IRootTransaction {
+    numberOfOperations: number;
+}
 export interface ITransactionalConnector {
     callApi<Request, Response>(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context?: IContext): Promise<number>;

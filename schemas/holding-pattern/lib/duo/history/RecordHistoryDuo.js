@@ -22,12 +22,12 @@ export class RecordHistoryDuo extends BaseRecordHistoryDuo {
             .transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
         return recordHistoryNewValue;
     }
-    addOldValue(recordHistory, dbColumn, oldValue, recHistoryOldValueDuo) {
+    addOldValue(recordHistory, dbColumn, oldValue, recordHistoryOldValueDuo) {
         if (oldValue === null) {
             // No need to record a null value
             return null;
         }
-        const recordHistoryOldValue = recHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
+        const recordHistoryOldValue = recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
         recordHistory.oldValues.push(recordHistoryOldValue);
         recordHistory.operationHistory.repositoryTransactionHistory
             .transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);

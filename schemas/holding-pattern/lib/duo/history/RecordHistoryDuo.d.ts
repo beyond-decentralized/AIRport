@@ -11,6 +11,6 @@ export interface IRecordHistoryDuo extends IBaseRecordHistoryDuo {
 export declare class RecordHistoryDuo extends BaseRecordHistoryDuo implements IRecordHistoryDuo {
     getNewRecord(actorId: Actor_Id, actorRecordId: RepositoryEntity_ActorRecordId): IRecordHistory;
     addNewValue(recordHistory: IRecordHistory, dbColumn: DbColumn, newValue: any, recHistoryNewValueDuo: IRecordHistoryNewValueDuo): IRecordHistoryNewValue;
-    addOldValue(recordHistory: IRecordHistory, dbColumn: DbColumn, oldValue: any, recHistoryOldValueDuo: IRecordHistoryOldValueDuo): IRecordHistoryOldValue;
+    addOldValue(recordHistory: IRecordHistory, dbColumn: DbColumn, oldValue: any, recordHistoryOldValueDuo: IRecordHistoryOldValueDuo): IRecordHistoryOldValue;
 }
 //# sourceMappingURL=RecordHistoryDuo.d.ts.map

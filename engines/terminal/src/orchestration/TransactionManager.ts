@@ -12,7 +12,8 @@ import {
 import {
 	StoreType,
 	getFullApplicationNameFromDomainAndName,
-	INTERNAL_DOMAIN
+	INTERNAL_DOMAIN,
+	IRootTransaction
 } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
@@ -80,7 +81,7 @@ export class TransactionManager
 		transactionalCallback: {
 			(
 				transaction: IStoreDriver,
-				context: IContext
+				context: ITransactionContext
 			): Promise<void> | void
 		},
 		context: ITransactionContext,
@@ -158,8 +159,13 @@ Only one concurrent transaction is allowed per application.`)
 			}
 		}
 
-		return await this.internalStartTransaction(credentials,
+		const transaction = await this.internalStartTransaction(credentials,
 			parentTransaction, context)
+		if (!parentTransaction) {
+			(transaction as any as IRootTransaction).numberOfOperations = 0
+		}
+
+		return transaction
 	}
 
 	private async internalStartTransaction(
@@ -251,13 +257,13 @@ parent transactions.
 		try {
 			await this.saveRepositoryHistory(transaction, context);
 
-			await transaction.saveTransaction(transaction.transHistory);
+			await transaction.saveTransaction(transaction.transactionHistory);
 
 			const activeQueries = await container(this).get(ACTIVE_QUERIES);
 			activeQueries.rerunQueries();
 			await transaction.commit(null, context);
 
-			let transactionHistory = transaction.transHistory;
+			let transactionHistory = transaction.transactionHistory;
 
 			transaction.priorRepositoryTransactionHistories
 				= transaction.priorRepositoryTransactionHistories.concat(
@@ -336,8 +342,8 @@ ${callHerarchy}
 		context.transaction = transaction
 		credentials.transactionId = transaction.id
 
-		const transHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
-		transaction.transHistory = transHistoryDuo.getNewRecord();
+		const transactionHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
+		transaction.transactionHistory = transactionHistoryDuo.getNewRecord();
 
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
 		if (parentTransaction) {
@@ -404,7 +410,7 @@ ${callHerarchy}
 		transaction: ITransaction,
 		context: ITransactionContext,
 	): Promise<boolean> {
-		let transactionHistory = transaction.transHistory;
+		let transactionHistory = transaction.transactionHistory;
 		if (!transactionHistory.allRecordHistory.length) {
 			return false;
 		}
@@ -412,14 +418,14 @@ ${callHerarchy}
 
 		const idGenerator = await container(this).get(ID_GENERATOR)
 
-		const transHistoryIds = await idGenerator.generateTransactionHistoryIds(
+		const transactionHistoryIds = await idGenerator.generateTransactionHistoryIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
 			transactionHistory.allRecordHistory.length
 		);
 
 		applicationMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
-		transactionHistory.id = transHistoryIds.transactionHistoryId;
+		transactionHistory.id = transactionHistoryIds.transactionHistoryId;
 		await this.doInsertValues(transaction, Q.TransactionHistory,
 			[transactionHistory], context);
 
@@ -428,7 +434,7 @@ ${callHerarchy}
 			repositoryTransactionHistory,
 			index,
 		) => {
-			repositoryTransactionHistory.id = transHistoryIds.repositoryHistoryIds[index];
+			repositoryTransactionHistory.id = transactionHistoryIds.repositoryHistoryIds[index];
 			repositoryTransactionHistory.transactionHistory = transactionHistory
 		});
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
@@ -439,7 +445,7 @@ ${callHerarchy}
 			operationHistory,
 			index,
 		) => {
-			operationHistory.id = transHistoryIds.operationHistoryIds[index];
+			operationHistory.id = transactionHistoryIds.operationHistoryIds[index];
 		});
 		await this.doInsertValues(transaction, Q.OperationHistory,
 			transactionHistory.allOperationHistory, context);
@@ -449,7 +455,7 @@ ${callHerarchy}
 			recordHistory,
 			index,
 		) => {
-			recordHistory.id = transHistoryIds.recordHistoryIds[index];
+			recordHistory.id = transactionHistoryIds.recordHistoryIds[index];
 		});
 		await this.doInsertValues(transaction,
 			(<IQEntityInternal><any>Q.RecordHistory),

@@ -19,11 +19,11 @@ export class IdGenerator {
     }
     doPopulateTransactionHistoryIdColumns(resolve) {
         if (Q.__dbApplication__ && Q.__dbApplication__.currentVersion) {
-            const transHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
+            const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
             const recordHistoryDbEntity = this.getHoldingPatternDbEntity('RecordHistory');
-            this.transactionHistoryIdColumns.push(transHistoryDbEntity.idColumns[0]);
+            this.transactionHistoryIdColumns.push(transactionHistoryDbEntity.idColumns[0]);
             this.transactionHistoryIdColumns.push(repoTransHistoryDbEntity.idColumns[0]);
             this.transactionHistoryIdColumns.push(operationHistoryDbEntity.idColumns[0]);
             this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);

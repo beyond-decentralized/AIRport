@@ -1,4 +1,4 @@
-import { PortableQuery } from "@airport/ground-control";
+import { IRootTransaction, PortableQuery } from "@airport/ground-control";
 import {
     IActor,
     IRecordHistory
@@ -12,6 +12,7 @@ export interface IUpdateManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
+        rootTransaction: IRootTransaction,
         ctx: IOperationContext
     ): Promise<number>;
 

@@ -10,7 +10,7 @@ export declare abstract class SqlTransaction implements ITransaction {
     credentials: ITransactionCredentials;
     id: string;
     isSync: boolean;
-    transHistory: ITransactionHistory;
+    transactionHistory: ITransactionHistory;
     type: StoreType;
     initiator: {
         application: string;

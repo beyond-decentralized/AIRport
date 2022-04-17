@@ -1,5 +1,5 @@
 import { IContext } from '@airport/di';
-import { StoreType } from '@airport/ground-control';
+import { IRootTransaction, StoreType } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
 import { IStoreDriver } from '../core/data/StoreDriver';
@@ -8,6 +8,7 @@ export interface IApiCallContext extends IContext {
 }
 export interface ITransactionContext {
     transaction?: ITransaction;
+    rootTransaction?: IRootTransaction;
 }
 export interface ITransactionManager {
     storeType: StoreType;

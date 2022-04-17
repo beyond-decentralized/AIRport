@@ -33,8 +33,8 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             return 0;
         });
     }
-    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, operHistoryDuo) {
-        let operationHistory = operHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId);
+    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, operationHistoryDuo, rootTransaction) {
+        let operationHistory = operationHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);
