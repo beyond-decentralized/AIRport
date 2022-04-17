@@ -17,10 +17,6 @@ export interface ITransactionContext {
 }
 export interface ITransactionManager {
 
-	storeType: StoreType;
-
-	transactionInProgress: ITransaction
-
 	initialize(
 		dbName: string,
 		context: IContext,
@@ -50,6 +46,11 @@ export interface ITransactionManager {
 		credentials: ITransactionCredentials,
 		context: IContext,
 	): Promise<void>
+
+	getTransactionFromContextOrCredentials(
+		credentials: ITransactionCredentials,
+		context: ITransactionContext,
+	): Promise<ITransaction>
 
 	commit(
 		credentials: ITransactionCredentials,

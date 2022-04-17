@@ -7,26 +7,15 @@ import {
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
-	IIdGenerator
 } from '@airport/fuel-hydrant-system';
 import {
-	StoreType,
-	getFullApplicationNameFromDomainAndName,
 	INTERNAL_DOMAIN,
 	IRootTransaction
 } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
-	OperationHistory,
 	Q,
-	RecordHistory,
-	RecordHistoryNewValue,
-	RecordHistoryOldValue,
-	RepositoryTransactionHistory,
 	TRANSACTION_HISTORY_DUO,
-	TransactionHistory,
-	ITransactionHistory,
-	IRepositoryTransactionHistory,
 } from '@airport/holding-pattern';
 import {
 	ICredentials,
@@ -201,7 +190,7 @@ Only one concurrent transaction is allowed per application.`)
 		await this.resumeParentOrPendingTransaction(parentTransaction, context)
 	}
 
-	private async getTransactionFromContextOrCredentials(
+	async getTransactionFromContextOrCredentials(
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
@@ -222,7 +211,11 @@ NOTE: nested/child transactions must be commited or rolled back before their
 parent transactions.
 				`)
 			}
+			context.transaction = transaction
 		}
+		let ancestorTransaction = transaction
+		while (ancestorTransaction = ancestorTransaction.parentTransaction);
+		context.rootTransaction = ancestorTransaction as any as IRootTransaction
 
 		return transaction
 	}
@@ -318,7 +311,7 @@ parent transactions.
 		do {
 			if (this.isSameSource(transaction, credentials)) {
 				let callHerarchy = this.getApiName(credentials)
-				let hierarchyTransaction = this.transactionInProgress
+				let hierarchyTransaction = transaction
 				do {
 					callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
 ${callHerarchy}`
@@ -477,39 +470,6 @@ ${callHerarchy}
 		}
 
 		return true;
-	}
-
-	private async wait(timeoutMillis: number,
-	) {
-		return new Promise<void>((
-			resolve,
-			reject,
-		) => {
-			try {
-				setTimeout(() => {
-					resolve();
-				}, timeoutMillis);
-			} catch (error) {
-				console.error(error);
-				reject(error);
-			}
-		});
-	}
-
-	private canRunTransaction(
-		domainAndPort: string,
-		storeDriver: IStoreDriver,
-		context: ITransactionContext,
-	): boolean {
-		if (storeDriver.isServer(context)) {
-			return true;
-		}
-		if (this.sourceOfTransactionInProgress) {
-			return false;
-		}
-
-		return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
-			=== domainAndPort;
 	}
 
 }

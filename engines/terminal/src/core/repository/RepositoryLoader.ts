@@ -16,6 +16,7 @@ import {
     REPOSITORY_DAO
 } from "@airport/holding-pattern";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
+import { ITransactionContext } from "@airport/terminal-map";
 
 export class RepositoryLoader
     implements IRepositoryLoader {
@@ -30,7 +31,7 @@ export class RepositoryLoader
     async loadRepository(
         repositorySource: string,
         repositoryUuId: string,
-        context: IContext
+        context: IContext & ITransactionContext
     ): Promise<void> {
         if (context.repositoryExistenceChecked) {
             return

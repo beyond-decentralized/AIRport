@@ -1,4 +1,4 @@
-import { ISaveResult } from '@airport/ground-control';
+import { IRootTransaction, ISaveResult } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { IOperationContext, IOperationManager, ITransaction } from '@airport/terminal-map';
 /**
@@ -11,8 +11,8 @@ export declare class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    performSave<E>(entities: E | E[], actor: IActor, transaction: ITransaction, context: IOperationContext): Promise<ISaveResult>;
-    protected internalCreate<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
+    performSave<E>(entities: E | E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<ISaveResult>;
+    protected internalCreate<E>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
     /**
      * On an update operation, can a nested create contain an update?
      * Via:
@@ -21,7 +21,7 @@ export declare class OperationManager implements IOperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    protected internalUpdate<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
-    protected internalDelete<E>(entities: E[], actor: IActor, transaction: ITransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalUpdate<E>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalDelete<E>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
 }
 //# sourceMappingURL=OperationManager.d.ts.map

@@ -1,5 +1,5 @@
 import { container, DI } from '@airport/di';
-import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
+import { ACTIVE_QUERIES, ID_GENERATOR, } from '@airport/fuel-hydrant-system';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
@@ -92,7 +92,11 @@ Only one concurrent transaction is allowed per application.`)
                 });
             }
         }
-        return await this.internalStartTransaction(credentials, parentTransaction, context);
+        const transaction = await this.internalStartTransaction(credentials, parentTransaction, context);
+        if (!parentTransaction) {
+            transaction.numberOfOperations = 0;
+        }
+        return transaction;
     }
     async internalStartTransaction(credentials, parentTransaction, context) {
         const [storeDriver, terminalStore] = await container(this)
@@ -129,7 +133,12 @@ NOTE: nested/child transactions must be commited or rolled back before their
 parent transactions.
 				`);
             }
+            context.transaction = transaction;
         }
+        let ancestorTransaction = transaction;
+        while (ancestorTransaction = ancestorTransaction.parentTransaction)
+            ;
+        context.rootTransaction = ancestorTransaction;
         return transaction;
     }
     async resumeParentOrPendingTransaction(parentTransaction, context) {
@@ -148,25 +157,46 @@ parent transactions.
         const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
         let parentTransaction = transaction.parentTransaction;
         try {
-            await this.saveRepositoryHistory(transaction, context);
-            await transaction.saveTransaction(transaction.transactionHistory);
+            if (parentTransaction) {
+                // Copy transaction history to the parent transaction
+                let childTransactionHistory = transaction.transactionHistory;
+                let parentTransactionHistory = parentTransaction.transactionHistory;
+                for (const operationHistory of childTransactionHistory.allOperationHistory) {
+                    const repositoryId = operationHistory.repositoryTransactionHistory.repository.id;
+                    const parentRepositoryTransactionRecord = parentTransactionHistory
+                        .repositoryTransactionHistoryMap[repositoryId];
+                    if (parentRepositoryTransactionRecord) {
+                        operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord;
+                    }
+                    else {
+                        parentTransactionHistory.repositoryTransactionHistoryMap[repositoryId]
+                            = operationHistory.repositoryTransactionHistory;
+                        parentTransactionHistory.repositoryTransactionHistories
+                            .push(operationHistory.repositoryTransactionHistory);
+                    }
+                }
+                parentTransactionHistory.allOperationHistory = parentTransactionHistory
+                    .allOperationHistory.concat(childTransactionHistory.allOperationHistory);
+                parentTransactionHistory.allRecordHistory = parentTransactionHistory
+                    .allRecordHistory.concat(childTransactionHistory.allRecordHistory);
+                parentTransactionHistory.allRecordHistoryNewValues = parentTransactionHistory
+                    .allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues);
+                parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
+                    .allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues);
+            }
+            else {
+                // This is the root transaction, save it's history, along with any nested transactions
+                await this.saveRepositoryHistory(transaction, context);
+                await transaction.saveTransaction(transaction.transactionHistory);
+            }
             const activeQueries = await container(this).get(ACTIVE_QUERIES);
             activeQueries.rerunQueries();
             await transaction.commit(null, context);
             let transactionHistory = transaction.transactionHistory;
-            transaction.priorRepositoryTransactionHistories
-                = transaction.priorRepositoryTransactionHistories.concat(transactionHistory.repositoryTransactionHistories);
-            if (transactionHistory.allRecordHistory.length) {
-                if (parentTransaction) {
-                    parentTransaction.priorRepositoryTransactionHistories
-                        = parentTransaction.priorRepositoryTransactionHistories.concat(transaction.priorRepositoryTransactionHistories);
-                }
-                else {
-                    const synchronizationOutManager = await container(this)
-                        .get(SYNCHRONIZATION_OUT_MANAGER);
-                    const compositeRepositoryTransactionHistories = this.composeRepositoryTransactionHistories(transactionHistory);
-                    await synchronizationOutManager.synchronizeOut(compositeRepositoryTransactionHistories);
-                }
+            if (!parentTransaction && transactionHistory.allRecordHistory.length) {
+                const synchronizationOutManager = await container(this)
+                    .get(SYNCHRONIZATION_OUT_MANAGER);
+                await synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
             }
         }
         finally {
@@ -177,12 +207,6 @@ parent transactions.
             await this.resumeParentOrPendingTransaction(parentTransaction, context);
         }
     }
-    composeRepositoryTransactionHistories(transactionHistory) {
-        // TODO: work here next
-        // Need to differenciate between already saved transaction histories
-        // form child transactions and new ones (from this transaction)
-        // merge transactionHistory.childTransactionRepositoryTransactionHistories
-    }
     checkForCircularDependencies(transaction, credentials) {
         if (credentials.domain === INTERNAL_DOMAIN) {
             return;
@@ -190,7 +214,7 @@ parent transactions.
         do {
             if (this.isSameSource(transaction, credentials)) {
                 let callHerarchy = this.getApiName(credentials);
-                let hierarchyTransaction = this.transactionInProgress;
+                let hierarchyTransaction = transaction;
                 do {
                     callHerarchy = `${this.getApiName(hierarchyTransaction.initiator)} ->
 ${callHerarchy}`;
@@ -289,29 +313,6 @@ ${callHerarchy}
             await this.doInsertValues(transaction, Q.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         return true;
-    }
-    async wait(timeoutMillis) {
-        return new Promise((resolve, reject) => {
-            try {
-                setTimeout(() => {
-                    resolve();
-                }, timeoutMillis);
-            }
-            catch (error) {
-                console.error(error);
-                reject(error);
-            }
-        });
-    }
-    canRunTransaction(domainAndPort, storeDriver, context) {
-        if (storeDriver.isServer(context)) {
-            return true;
-        }
-        if (this.sourceOfTransactionInProgress) {
-            return false;
-        }
-        return this.transactionIndexQueue[this.transactionIndexQueue.length - 1]
-            === domainAndPort;
     }
 }
 DI.set(TRANSACTION_MANAGER, TransactionManager);

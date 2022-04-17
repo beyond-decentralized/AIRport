@@ -35,6 +35,8 @@ export class TransactionalServer {
     }
     async addRepository(credentials, context) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         // FIXME: check actor
         let repositoryId = 0;
@@ -48,21 +50,35 @@ export class TransactionalServer {
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        if (credentials.transactionId) {
+            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         return await context.ioc.queryManager.find(portableQuery, context, cachedSqlQueryId);
     }
     async findOne(portableQuery, credentials, context, cachedSqlQueryId) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        if (credentials.transactionId) {
+            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         return await context.ioc.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
     }
     search(portableQuery, credentials, context, cachedSqlQueryId) {
         this.ensureIocContextSync(context);
+        const transactionManager = container(this).getSync(TRANSACTION_MANAGER);
+        if (credentials.transactionId) {
+            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         return context.ioc.queryManager.search(portableQuery, context);
     }
     searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
         this.ensureIocContextSync(context);
+        const transactionManager = container(this).getSync(TRANSACTION_MANAGER);
+        if (credentials.transactionId) {
+            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         return context.ioc.queryManager.searchOne(portableQuery, context);
-    }
-    checkCurrentTransaction(credentials) {
     }
     async startTransaction(credentials, context) {
         try {
@@ -78,23 +94,16 @@ export class TransactionalServer {
         }
     }
     async commit(credentials, context) {
-        if (!this.currentTransactionContext
-            || this.currentTransactionContext.transaction.id !== credentials.transactionId) {
-            return false;
-        }
         try {
             await this.ensureIocContext(context);
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-            await transactionManager.commit(this.currentTransactionContext.transaction, context);
+            await transactionManager.commit(credentials, context);
             return true;
         }
         catch (e) {
             console.error(e);
             context.errorMessage = e.message;
             return false;
-        }
-        finally {
-            this.currentTransactionContext = null;
         }
     }
     async rollback(credentials, context) {
@@ -103,7 +112,7 @@ export class TransactionalServer {
         try {
             await this.ensureIocContext(context);
             const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-            await transactionManager.rollback(this.currentTransactionContext.transaction, context);
+            await transactionManager.rollback(credentials, context);
             return true;
         }
         catch (e) {
@@ -111,20 +120,19 @@ export class TransactionalServer {
             context.errorMessage = e.message;
             return false;
         }
-        finally {
-            this.currentTransactionContext = null;
-        }
     }
     async save(entity, credentials, context) {
         if (!entity) {
             return null;
         }
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
-        await transactional(async (transaction) => {
-            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
+        await transactional(async (transaction, context) => {
+            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
         return saveResult;
     }
@@ -133,49 +141,59 @@ export class TransactionalServer {
             return null;
         }
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
-        await transactional(async (transaction) => {
+        await transactional(async (transaction, context) => {
             // TODO: save to serialized repository to the specified destination
-            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context);
+            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
         return saveResult;
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
-        await transactional(async (transaction) => {
-            numInsertedRecords = await context.ioc.insertManager.insertValues(portableQuery, actor, transaction, context, ensureGeneratedValues);
+        await transactional(async (transaction, context) => {
+            numInsertedRecords = await context.ioc.insertManager.insertValues(portableQuery, actor, transaction, context.rootTransaction, context, ensureGeneratedValues);
         }, context);
         return numInsertedRecords;
     }
     async insertValuesGetIds(portableQuery, credentials, context) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let ids;
-        await transactional(async (transaction) => {
-            ids = await context.ioc.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context);
+        await transactional(async (transaction, context) => {
+            ids = await context.ioc.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return ids;
     }
     async updateValues(portableQuery, credentials, context) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numUpdatedRecords;
-        await transactional(async (transaction) => {
-            numUpdatedRecords = await context.ioc.updateManager.updateValues(portableQuery, actor, transaction, context);
+        await transactional(async (transaction, context) => {
+            numUpdatedRecords = await context.ioc.updateManager.updateValues(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numUpdatedRecords;
     }
     async deleteWhere(portableQuery, credentials, context) {
         await this.ensureIocContext(context);
+        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numDeletedRecords;
-        await transactional(async (transaction) => {
-            numDeletedRecords = await context.ioc.deleteManager.deleteWhere(portableQuery, actor, transaction, context);
+        await transactional(async (transaction, context) => {
+            numDeletedRecords = await context.ioc.deleteManager.deleteWhere(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numDeletedRecords;
     }

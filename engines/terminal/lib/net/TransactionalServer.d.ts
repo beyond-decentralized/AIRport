@@ -1,7 +1,7 @@
 import { IContext } from '@airport/di';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor, Repository_Id } from '@airport/holding-pattern';
-import { ICredentials, IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials } from '@airport/terminal-map';
+import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
@@ -33,21 +33,20 @@ export interface InternalPortableQuery extends PortableQuery {
 export declare class TransactionalServer implements ITransactionalServer {
     tempActor: IActor;
     init(context?: IContext): Promise<void>;
-    addRepository(credentials: ITransactionCredentials, context: IOperationContext): Promise<Repository_Id>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
-    private checkCurrentTransaction;
+    addRepository(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<Repository_Id>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Observable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Observable<E>;
     startTransaction(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     commit(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     rollback(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
-    save<E>(entity: E, credentials: ITransactionCredentials, context: IOperationContext): Promise<ISaveResult>;
-    saveToDestination<E>(repositoryDestination: string, entity: E, credentials: ITransactionCredentials, context: IOperationContext): Promise<ISaveResult>;
-    insertValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext): Promise<number[][]>;
-    updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext): Promise<number>;
-    deleteWhere(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext): Promise<number>;
+    save<E>(entity: E, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
+    saveToDestination<E>(repositoryDestination: string, entity: E, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
+    insertValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext, ensureGeneratedValues?: boolean): Promise<number>;
+    insertValuesGetIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number[][]>;
+    updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number>;
+    deleteWhere(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number>;
     private getActor;
     private ensureIocContext;
     private ensureIocContextSync;

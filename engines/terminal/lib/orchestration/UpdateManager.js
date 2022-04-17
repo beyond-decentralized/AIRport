@@ -5,7 +5,7 @@ import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, reposito
 import { OPERATION_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
 import { HISTORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
-    async updateValues(portableQuery, actor, transaction, context) {
+    async updateValues(portableQuery, actor, transaction, rootTransaction, context) {
         const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repoTransHistoryDuo, sequenceGenerator] = await container(this)
             .get(HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
         const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
@@ -27,7 +27,7 @@ export class UpdateManager {
             // This eats up more disk space but saves on operations that need
             // to be performed (one less query)
             [recordHistoryMap, repositorySheetSelectInfo]
-                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, context);
+                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, rootTransaction, context);
             internalFragments.SET.push({
                 column: repositorySheetSelectInfo.systemWideOperationIdColumn,
                 value: systemWideOperationId
@@ -46,7 +46,7 @@ export class UpdateManager {
         }
         return numUpdatedRows;
     }
-    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, histManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, context) {
+    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryTransactionHistoryDuo, transaction, rootTransaction, context) {
         if (!context.dbEntity.isRepositoryEntity) {
             throw new Error(errorPrefix +
                 `Cannot add update history for a non-RepositoryEntity`);
@@ -78,8 +78,8 @@ export class UpdateManager {
             // const repository                         = repositories.get(repositoryId)
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repoTransHistory = await histManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
-            const operationHistory = repoTransHistoryDuo.startOperation(repoTransHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, actor, operHistoryDuo);
+            const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
+            const operationHistory = repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, actor, operHistoryDuo, rootTransaction);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];

@@ -71,9 +71,12 @@ export class TransactionalServer
 
 	async addRepository(
 		credentials: ITransactionCredentials,
-		context: IOperationContext
+		context: IOperationContext & ITransactionContext
 	): Promise<Repository_Id> {
 		await this.ensureIocContext(context)
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
 
 		const actor = await this.getActor(credentials);
 
@@ -94,11 +97,16 @@ export class TransactionalServer
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		context: IQueryOperationContext,
+		credentials: ITransactionCredentials,
+		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context)
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		if (credentials.transactionId) {
+			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		}
 
 		return await context.ioc.queryManager.find<E, EntityArray>(
 			portableQuery, context, cachedSqlQueryId);
@@ -106,11 +114,16 @@ export class TransactionalServer
 
 	async findOne<E>(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		context: IQueryOperationContext,
+		credentials: ITransactionCredentials,
+		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
 		await this.ensureIocContext(context)
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		if (credentials.transactionId) {
+			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		}
 
 		return await context.ioc.queryManager.findOne<E>(
 			portableQuery, context, cachedSqlQueryId);
@@ -118,11 +131,16 @@ export class TransactionalServer
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		context: IQueryOperationContext,
+		credentials: ITransactionCredentials,
+		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
 		this.ensureIocContextSync(context)
+
+		const transactionManager = container(this).getSync(TRANSACTION_MANAGER)
+		if (credentials.transactionId) {
+			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		}
 
 		return context.ioc.queryManager.search<E, EntityArray>(
 			portableQuery, context);
@@ -130,18 +148,18 @@ export class TransactionalServer
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		credentials: ICredentials,
-		context: IQueryOperationContext,
+		credentials: ITransactionCredentials,
+		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
 		this.ensureIocContextSync(context)
 
-		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
-	}
+		const transactionManager = container(this).getSync(TRANSACTION_MANAGER)
+		if (credentials.transactionId) {
+			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		}
 
-	private checkCurrentTransaction(
-		credentials: ICredentials
-	): void {
+		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
 	}
 
 	async startTransaction(
@@ -164,23 +182,15 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
-		if (!this.currentTransactionContext
-			|| this.currentTransactionContext.transaction.id !== credentials.transactionId) {
-			return false
-		}
-
 		try {
 			await this.ensureIocContext(context)
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-			await transactionManager.commit(
-				this.currentTransactionContext.transaction, context)
+			await transactionManager.commit(credentials, context)
 			return true
 		} catch (e) {
 			console.error(e)
 			context.errorMessage = e.message
 			return false
-		} finally {
-			this.currentTransactionContext = null
 		}
 	}
 
@@ -194,27 +204,27 @@ export class TransactionalServer
 		try {
 			await this.ensureIocContext(context)
 			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-			await transactionManager.rollback(
-				this.currentTransactionContext.transaction, context)
+			await transactionManager.rollback(credentials, context)
 			return true
 		} catch (e) {
 			console.error(e)
 			context.errorMessage = e.message
 			return false
-		} finally {
-			this.currentTransactionContext = null
 		}
 	}
 
 	async save<E>(
 		entity: E,
 		credentials: ITransactionCredentials,
-		context: IOperationContext,
+		context: IOperationContext & ITransactionContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
 			return null
 		}
 		await this.ensureIocContext(context)
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
 
 		const actor = await this.getActor(credentials);
 		context.actor = actor
@@ -235,12 +245,15 @@ export class TransactionalServer
 		repositoryDestination: string,
 		entity: E,
 		credentials: ITransactionCredentials,
-		context: IOperationContext,
+		context: IOperationContext & ITransactionContext,
 	): Promise<ISaveResult> {
 		if (!entity) {
 			return null
 		}
 		await this.ensureIocContext(context)
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
 
 		const actor = await this.getActor(credentials);
 		context.actor = actor
@@ -262,11 +275,15 @@ export class TransactionalServer
 	async insertValues(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IOperationContext,
+		context: IOperationContext & ITransactionContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
 		await this.ensureIocContext(context)
-		const actor = await this.getActor(credentials);
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+
+		const actor = await this.getActor(credentials)
 
 		let numInsertedRecords
 		await transactional(async (
@@ -284,10 +301,14 @@ export class TransactionalServer
 	async insertValuesGetIds(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IOperationContext
+		context: IOperationContext & ITransactionContext
 	): Promise<number[][]> {
 		await this.ensureIocContext(context)
-		const actor = await this.getActor(credentials);
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+
+		const actor = await this.getActor(credentials)
 
 		let ids
 		await transactional(async (
@@ -304,10 +325,14 @@ export class TransactionalServer
 	async updateValues(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IOperationContext
+		context: IOperationContext & ITransactionContext
 	): Promise<number> {
 		await this.ensureIocContext(context)
-		const actor = await this.getActor(credentials);
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+
+		const actor = await this.getActor(credentials)
 
 		let numUpdatedRecords
 		await transactional(async (
@@ -324,10 +349,14 @@ export class TransactionalServer
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
-		context: IOperationContext
+		context: IOperationContext & ITransactionContext
 	): Promise<number> {
 		await this.ensureIocContext(context)
-		const actor = await this.getActor(credentials);
+
+		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
+		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+
+		const actor = await this.getActor(credentials)
 
 		let numDeletedRecords
 		await transactional(async (
