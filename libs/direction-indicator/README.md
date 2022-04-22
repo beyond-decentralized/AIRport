@@ -1,5 +1,5 @@
-# DI - Direction/Heading Indicator
-AIRports own Inversion of Control (IoC) or Dependency Injection (DI) 
+# Direction/Heading Indicator
+AIRports own Inversion of Control (IoC) or Dependency Injection 
 implementation.  In AIRport all objects are injected on the stack.
 
 This allows for seamless upgrades/bug fixes which can be done on the fly 
@@ -8,6 +8,10 @@ This is important because AIRport runs on user devices and does not
 have a defined maintenance schedule, while servicing multiple applications
 that may run in background and fail if the local AIRport server is down
 (due to upgrades).
+
+Additionaly full application replacements might cause cross-application
+dependency issues.  Also state that is stored in an application would
+have to be wiped out.
 
 Updates are performed whenever the the application sees new version of 
 the framework.  TODO: If the users chooses they should be able to run
