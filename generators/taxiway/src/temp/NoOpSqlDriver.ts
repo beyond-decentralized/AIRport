@@ -4,7 +4,8 @@ import {
 } from '@airport/fuel-hydrant-system';
 import {
 	IOperationContext,
-	ITransaction
+	ITransaction,
+	ITransactionContext
 } from '@airport/terminal-map';
 
 export class NoOpSqlDriver
@@ -70,17 +71,40 @@ export class NoOpSqlDriver
 		return Promise.resolve(undefined);
 	}
 
-	transact(
-		callback: { (transaction: ITransaction): Promise<void> },
-		context: IOperationContext,
-        parentTransaction?: ITransaction,
+	async startTransaction(
+		transaction: ITransaction,
+		context?: ITransactionContext,
 	): Promise<void> {
-		return Promise.resolve(undefined);
+		return Promise.resolve(undefined)
 	}
 
-    async startTransaction(): Promise<ITransaction> {
-        throw Promise.resolve(undefined)
-    }
+	async internalCommit(
+		transaction: ITransaction,
+		context?: ITransactionContext,
+	): Promise<void> {
+		return Promise.resolve(undefined)
+	}
+
+	async internalRollback(
+		transaction: ITransaction,
+		context?: ITransactionContext,
+	): Promise<void> {
+		return Promise.resolve(undefined)
+	}
+	
+	async internalStartTransaction(
+		transaction: ITransaction,
+		context?: ITransactionContext,
+	): Promise<void> {
+		return Promise.resolve(undefined)
+	}
+
+	async setupTransaction(
+		context: ITransactionContext,
+		parentTransaction?: ITransaction,
+	): Promise<ITransaction> {
+		return Promise.resolve(undefined)
+	}
 
 	protected executeNative(
 		sql: string,

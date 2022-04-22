@@ -1,5 +1,5 @@
 import { AIRPORT_DOMAIN } from './InjectionDomain';
-import { DiToken } from './Token';
+import { DependencyInjectionToken } from './Token';
 export class InjectionApplication {
     constructor(name, domain) {
         this.name = name;
@@ -7,13 +7,13 @@ export class InjectionApplication {
         this.tokenMap = new Map();
         this.autopilot = false;
     }
-    token(name) {
-        const existingToken = this.tokenMap.get(name);
+    token(descriptor) {
+        const existingToken = this.tokenMap.get(descriptor.token);
         if (existingToken) {
             throw new Error(`Token with name '${name}' has already been created`);
         }
-        const diToken = new DiToken(this, name);
-        this.tokenMap.set(name, diToken);
+        const diToken = new DependencyInjectionToken(this, descriptor);
+        this.tokenMap.set(descriptor.token, diToken);
         return diToken;
     }
 }

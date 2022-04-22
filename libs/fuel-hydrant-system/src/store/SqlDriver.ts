@@ -116,35 +116,6 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 	): Promise<any>;
 
-	async transact(
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-				context: ITransactionContext
-			): Promise<void>
-		},
-		context: ITransactionContext,
-		parentTransaction?: ITransaction,
-	): Promise<void> {
-		const transaction = await this.setupTransaction(context, parentTransaction)
-
-		await this.startTransaction(transaction)
-
-		try {
-			await transactionalCallback(transaction, context)
-		} catch (e) {
-			console.error(e)
-			try {
-				await this.rollback(transaction)
-			} catch (e) {
-				console.error(e)
-			}
-			throw e
-		}
-
-		await this.commit(transaction)
-	}
-
 	abstract setupTransaction(
 		context: ITransactionContext,
 		parentTransaction?: ITransaction,

@@ -8,6 +8,6 @@ import {
 export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>('TERMINAL_DAO')
 export const USER_DAO = travelDocumentCheckpoint.token<IUserDao>('USER_DAO')
 
-USER_API.setDependencies({
+USER_API.IDependencyInjectionToken({
     userDao: USER_DAO
 })

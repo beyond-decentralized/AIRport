@@ -43,9 +43,6 @@ export class SqlTransaction {
     searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
         return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId);
     }
-    async transact(transactionalCallback, context, parentTransaction) {
-        await transactionalCallback(this, context);
-    }
     async startTransaction(transaction, context) {
         throw new Error(`Nested transactions are not supported`);
     }

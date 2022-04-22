@@ -1,8 +1,9 @@
 import { IInjectionDomain, AIRPORT_DOMAIN } from './InjectionDomain'
 import {
-	DiToken,
+	DependencyInjectionToken,
 	GenericDependencyInjectionError,
-	IDiToken
+	IDependencyInjectionToken,
+	IDependencyInjectionTokenDescriptor
 } from './Token'
 
 export interface IInjectionApplication {
@@ -10,19 +11,19 @@ export interface IInjectionApplication {
 	autopilot: boolean
 	name: string
 	domain: IInjectionDomain
-	tokenMap: Map<string, IDiToken<any>>
+	tokenMap: Map<string, IDependencyInjectionToken<any>>
 
 	token<T = GenericDependencyInjectionError>(
-		name: string,
+		descriptor: IDependencyInjectionTokenDescriptor,
 		autopilot?: boolean
-	): IDiToken<T>
+	): IDependencyInjectionToken<T>
 
 }
 
 export class InjectionApplication
 	implements IInjectionApplication {
 
-	public tokenMap: Map<string, IDiToken<any>> = new Map()
+	public tokenMap: Map<string, IDependencyInjectionToken<any>> = new Map()
 	public autopilot = false
 
 	constructor(
@@ -32,20 +33,20 @@ export class InjectionApplication
 	}
 
 	token<T = GenericDependencyInjectionError>(
-		name: string,
-	): IDiToken<T> {
-		const existingToken = this.tokenMap.get(name)
+		descriptor: IDependencyInjectionTokenDescriptor,
+	): IDependencyInjectionToken<T> {
+		const existingToken = this.tokenMap.get(descriptor.token)
 
 		if (existingToken) {
 			throw new Error(`Token with name '${name}' has already been created`)
 		}
 
-		const diToken = new DiToken(
+		const diToken = new DependencyInjectionToken(
 			this,
-			name
+			descriptor
 		)
 
-		this.tokenMap.set(name, diToken)
+		this.tokenMap.set(descriptor.token, diToken)
 
 		return diToken
 	}

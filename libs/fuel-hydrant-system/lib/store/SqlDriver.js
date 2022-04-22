@@ -35,24 +35,6 @@ export class SqlDriver {
         }
         return this.composeTableName(fullApplicationName, theTableName, context);
     }
-    async transact(transactionalCallback, context, parentTransaction) {
-        const transaction = await this.setupTransaction(context, parentTransaction);
-        await this.startTransaction(transaction);
-        try {
-            await transactionalCallback(transaction, context);
-        }
-        catch (e) {
-            console.error(e);
-            try {
-                await this.rollback(transaction);
-            }
-            catch (e) {
-                console.error(e);
-            }
-            throw e;
-        }
-        await this.commit(transaction);
-    }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);
     }
@@ -140,6 +122,9 @@ export class SqlDriver {
         return await this.executeNative(sql, parameters, context);
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
+        if (context.transaction) {
+            return await context.transaction.find(portableQuery, internalFragments, context, cachedSqlQueryId);
+        }
         context = await this.ensureContext(context);
         const sqlQuery = this.getSQLQuery(portableQuery, context);
         const sql = sqlQuery.toSQL(internalFragments, context);

@@ -1,7 +1,7 @@
 export interface ICoreLocalApiRequest {
     args: Array<boolean | number | string>;
-    methodName: string;
-    objectName: string;
+    methodName?: string;
+    objectName?: string;
 }
 export declare type LocalApiRequestCategoryType = 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
 export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType> extends ICoreLocalApiRequest {

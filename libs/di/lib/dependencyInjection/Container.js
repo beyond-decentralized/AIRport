@@ -7,8 +7,8 @@ let numPendingInits = 0;
 const objectMap = new Map();
 export class Container {
     set(token, clazz) {
-        classMap.set(token.name, clazz);
-        objectMap.set(token.name, null);
+        classMap.set(token.descriptor.token, clazz);
+        objectMap.set(token.descriptor.token, null);
     }
 }
 export class ChildContainer extends Container {
@@ -83,14 +83,14 @@ export class ChildContainer extends Container {
             if (firstMissingClassToken || firstDiNotSetClass) {
                 return;
             }
-            let object = objectMap.get(token.name);
+            let object = objectMap.get(token.descriptor.token);
             if (!object) {
                 if (!this.context.inAIRportApp && token.application.autopilot) {
                     object = this.getSync(AUTOPILOT_API_LOADER)
                         .loadApiAutopilot(token);
                 }
                 else {
-                    const clazz = classMap.get(token.name);
+                    const clazz = classMap.get(token.descriptor.token);
                     if (!clazz) {
                         firstMissingClassToken = token;
                         return;
@@ -104,7 +104,7 @@ export class ChildContainer extends Container {
                     this.setDependencyGetters(object, token);
                 }
                 object.__container__ = this;
-                objectMap.set(token.name, object);
+                objectMap.set(token.descriptor.token, object);
                 if (!token.application.autopilot && object.init) {
                     const result = object.init();
                     if (result instanceof Promise) {

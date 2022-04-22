@@ -29,7 +29,7 @@ export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     application: string;
     category: CategoryType;
     domain: string;
-    errorMessage: string;
+    errorMessage?: string;
     id: string;
     repositoryDestination?: string;
     repositorySource?: string;
@@ -56,8 +56,8 @@ export interface ITransactionEndIMI extends IApiIMI, IIsolateMessage {
 export interface IAddRepositoryIMI extends IIsolateMessage {
 }
 export interface IApiIMI {
-    methodName: string;
-    objectName: string;
+    methodName?: string;
+    objectName?: string;
     transactionId?: string;
 }
 export interface ICallApiIMI extends IApiIMI, IIsolateMessage {

@@ -3,7 +3,7 @@ import {
 	ContextType,
 	IInjectionContext
 } from '../Context';
-import { IDiToken } from './Token';
+import { IDependencyInjectionToken } from './Token';
 import { AUTOPILOT_API_LOADER } from '../tokens';
 import { domain } from './InjectionDomain';
 import { lib } from './InjectionApplication';
@@ -14,349 +14,349 @@ export interface IChildContainer
 	context: IInjectionContext
 
 	get<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): Promise<A>
 
 	get<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): Promise<[A, B]>
 
 	get<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): Promise<[A, B, C]>
 
 	get<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): Promise<[A, B, C, D]>
 
 	get<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): Promise<[A, B, C, D, E]>
 
 	get<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): Promise<[A, B, C, D, E, F]>
 
 	get<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): Promise<[A, B, C, D, E, F, G]>
 
 	get<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): Promise<[A, B, C, D, E, F, G, H]>
 
 	get<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): Promise<[A, B, C, D, E, F, G, H, I]>
 
 	get<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): Promise<[A, B, C, D, E, F, G, H, I, J]>
 
 	get<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K]>
 
 	get<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L]>
 
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>
 
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>
 
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
 
 	get(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]>
 
 	eventuallyGet<A>(
-		token: IDiToken<A>
+		token: IDependencyInjectionToken<A>
 	): Promise<A>
 
 	eventuallyGet(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]>
 
 	getSync<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): A
 
 	getSync<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): [A, B]
 
 	getSync<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): [A, B, C]
 
 	getSync<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): [A, B, C, D]
 
 	getSync<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): [A, B, C, D, E]
 
 	getSync<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): [A, B, C, D, E, F]
 
 	getSync<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): [A, B, C, D, E, F, G]
 
 	getSync<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): [A, B, C, D, E, F, G, H]
 
 	getSync<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): [A, B, C, D, E, F, G, H, I]
 
 	getSync<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): [A, B, C, D, E, F, G, H, I, J]
 
 	getSync<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): [A, B, C, D, E, F, G, H, I, J, K]
 
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): [A, B, C, D, E, F, G, H, I, J, K, L]
 
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M]
 
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N]
 
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
 
 	getSync(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): any
 
 	getByNames(
@@ -369,7 +369,7 @@ export interface IChildContainer
 
 export interface IContainer {
 	set<I>(
-		token: IDiToken<I>,
+		token: IDependencyInjectionToken<I>,
 		clazz: new () => I
 	): void
 
@@ -398,11 +398,11 @@ export class Container
 	implements IContainer {
 
 	set<I>(
-		token: IDiToken<I>,
+		token: IDependencyInjectionToken<I>,
 		clazz: new () => I
 	): void {
-		classMap.set(token.name, clazz)
-		objectMap.set(token.name, null)
+		classMap.set(token.descriptor.token, clazz)
+		objectMap.set(token.descriptor.token, null)
 	}
 
 }
@@ -422,7 +422,7 @@ export class ChildContainer
 	}
 
 	private doEventuallyGet(
-		tokens: Array<IDiToken<any>>,
+		tokens: Array<IDependencyInjectionToken<any>>,
 		successCallback,
 		errorCallback,
 	) {
@@ -450,7 +450,7 @@ export class ChildContainer
 	}
 
 	private doGet(
-		tokens: Array<IDiToken<any>>,
+		tokens: Array<IDependencyInjectionToken<any>>,
 		successCallback,
 		errorCallback,
 	) {
@@ -508,10 +508,10 @@ export class ChildContainer
 	}
 
 	private doGetCore(
-		tokens: Array<IDiToken<any>>
+		tokens: Array<IDependencyInjectionToken<any>>
 	): {
 		firstDiNotSetClass;
-		firstMissingClassToken: IDiToken<any>;
+		firstMissingClassToken: IDependencyInjectionToken<any>;
 		objects;
 	} {
 		let firstMissingClassToken;
@@ -521,13 +521,13 @@ export class ChildContainer
 				if (firstMissingClassToken || firstDiNotSetClass) {
 					return;
 				}
-				let object = objectMap.get(token.name)
+				let object = objectMap.get(token.descriptor.token)
 				if (!object) {
 					if (!this.context.inAIRportApp && token.application.autopilot) {
 						object = this.getSync(AUTOPILOT_API_LOADER)
 							.loadApiAutopilot(token);
 					} else {
-						const clazz = classMap.get(token.name);
+						const clazz = classMap.get(token.descriptor.token);
 						if (!clazz) {
 							firstMissingClassToken = token;
 							return;
@@ -541,7 +541,7 @@ export class ChildContainer
 						this.setDependencyGetters(object, token)
 					}
 					object.__container__ = this
-					objectMap.set(token.name, object)
+					objectMap.set(token.descriptor.token, object)
 
 					if (!token.application.autopilot && object.init) {
 						const result = object.init()
@@ -570,7 +570,7 @@ export class ChildContainer
 
 	setDependencyGetters(
 		object,
-		token: IDiToken<any>
+		token: IDependencyInjectionToken<any>
 	) {
 		if (!token.dependencyConfiguration) {
 			return
@@ -631,159 +631,159 @@ export class ChildContainer
 	}
 
 	get<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): Promise<A>
 
 	get<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): Promise<[A, B]>
 
 	get<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): Promise<[A, B, C]>
 	get<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): Promise<[A, B, C, D]>
 	get<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): Promise<[A, B, C, D, E]>
 	get<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): Promise<[A, B, C, D, E, F]>
 	get<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): Promise<[A, B, C, D, E, F, G]>
 	get<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): Promise<[A, B, C, D, E, F, G, H]>
 	get<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): Promise<[A, B, C, D, E, F, G, H, I]>
 	get<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): Promise<[A, B, C, D, E, F, G, H, I, J]>
 	get<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
 	get(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
 		return new Promise((
 			resolve,
@@ -798,10 +798,10 @@ export class ChildContainer
 	}
 
 	eventuallyGet<A>(
-		token: IDiToken<A>
+		token: IDependencyInjectionToken<A>
 	): Promise<A>
 	eventuallyGet(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
 		return new Promise((
 			resolve,
@@ -816,157 +816,157 @@ export class ChildContainer
 	}
 
 	getSync<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): A
 	getSync<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): [A, B]
 	getSync<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): [A, B, C]
 	getSync<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): [A, B, C, D]
 	getSync<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): [A, B, C, D, E]
 	getSync<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): [A, B, C, D, E, F]
 	getSync<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): [A, B, C, D, E, F, G]
 	getSync<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): [A, B, C, D, E, F, G, H]
 	getSync<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): [A, B, C, D, E, F, G, H, I]
 	getSync<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): [A, B, C, D, E, F, G, H, I, J]
 	getSync<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): [A, B, C, D, E, F, G, H, I, J, K]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): [A, B, C, D, E, F, G, H, I, J, K, L]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
 	getSync(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): any {
 		const {
 			firstDiNotSetClass,
@@ -1056,324 +1056,324 @@ export class RootContainer
 export class InversionOfControl {
 
 	get<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): Promise<A>
 
 	get<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): Promise<[A, B]>
 
 	get<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): Promise<[A, B, C]>
 	get<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): Promise<[A, B, C, D]>
 	get<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): Promise<[A, B, C, D, E]>
 	get<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): Promise<[A, B, C, D, E, F]>
 	get<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): Promise<[A, B, C, D, E, F, G]>
 	get<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): Promise<[A, B, C, D, E, F, G, H]>
 	get<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): Promise<[A, B, C, D, E, F, G, H, I]>
 	get<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): Promise<[A, B, C, D, E, F, G, H, I, J]>
 	get<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N]>
 	get<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): Promise<[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]>
 	async get(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
 		return await DI.db().get(...tokens);
 	}
 
 	eventuallyGet<A>(
-		token: IDiToken<A>
+		token: IDependencyInjectionToken<A>
 	): Promise<A>
 	async eventuallyGet(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
 		return await DI.db().eventuallyGet(...tokens);
 	}
 
 	getSync<A>(
-		tokenA: IDiToken<A>
+		tokenA: IDependencyInjectionToken<A>
 	): A
 	getSync<A, B>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>
 	): [A, B]
 	getSync<A, B, C>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>
 	): [A, B, C]
 	getSync<A, B, C, D>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>
 	): [A, B, C, D]
 	getSync<A, B, C, D, E>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>
 	): [A, B, C, D, E]
 	getSync<A, B, C, D, E, F>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>
 	): [A, B, C, D, E, F]
 	getSync<A, B, C, D, E, F, G>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>
 	): [A, B, C, D, E, F, G]
 	getSync<A, B, C, D, E, F, G, H>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>
 	): [A, B, C, D, E, F, G, H]
 	getSync<A, B, C, D, E, F, G, H, I>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>
 	): [A, B, C, D, E, F, G, H, I]
 	getSync<A, B, C, D, E, F, G, H, I, J>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>
 	): [A, B, C, D, E, F, G, H, I, J]
 	getSync<A, B, C, D, E, F, G, H, I, J, K>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>
 	): [A, B, C, D, E, F, G, H, I, J, K]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>
 	): [A, B, C, D, E, F, G, H, I, J, K, L]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N]
 	getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-		tokenA: IDiToken<A>,
-		tokenB: IDiToken<B>,
-		tokenC: IDiToken<C>,
-		tokenD: IDiToken<D>,
-		tokenE: IDiToken<E>,
-		tokenF: IDiToken<F>,
-		tokenG: IDiToken<G>,
-		tokenH: IDiToken<H>,
-		tokenI: IDiToken<I>,
-		tokenJ: IDiToken<J>,
-		tokenK: IDiToken<K>,
-		tokenL: IDiToken<L>,
-		tokenM: IDiToken<M>,
-		tokenN: IDiToken<N>,
-		tokenO: IDiToken<O>
+		tokenA: IDependencyInjectionToken<A>,
+		tokenB: IDependencyInjectionToken<B>,
+		tokenC: IDependencyInjectionToken<C>,
+		tokenD: IDependencyInjectionToken<D>,
+		tokenE: IDependencyInjectionToken<E>,
+		tokenF: IDependencyInjectionToken<F>,
+		tokenG: IDependencyInjectionToken<G>,
+		tokenH: IDependencyInjectionToken<H>,
+		tokenI: IDependencyInjectionToken<I>,
+		tokenJ: IDependencyInjectionToken<J>,
+		tokenK: IDependencyInjectionToken<K>,
+		tokenL: IDependencyInjectionToken<L>,
+		tokenM: IDependencyInjectionToken<M>,
+		tokenN: IDependencyInjectionToken<N>,
+		tokenO: IDependencyInjectionToken<O>
 	): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O]
 	getSync(
-		...tokens: Array<IDiToken<any>>
+		...tokens: Array<IDependencyInjectionToken<any>>
 	): any {
 		return DI.db().getSync(...tokens);
 	}

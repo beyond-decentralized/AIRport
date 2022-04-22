@@ -168,20 +168,6 @@ export class PostgreSqlDriver
 		this.pool = new Pool(config as any);
 	}
 
-	async transact(
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-			): Promise<void>
-		},
-		context: IOperationContext,
-	): Promise<void> {
-		const client = await this.pool.connect()
-		await client.query('BEGIN')
-		const transaction = new PostgreTransaction(this, this.pool, client);
-		await transactionalCallback(transaction);
-	}
-
 	async initAllTables(
 		context: IOperationContext,
 	): Promise<any> {

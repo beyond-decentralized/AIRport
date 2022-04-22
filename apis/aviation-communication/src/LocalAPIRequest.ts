@@ -1,7 +1,7 @@
 export interface ICoreLocalApiRequest {
     args: Array<boolean | number | string>
-    methodName: string
-    objectName: string
+    methodName?: string
+    objectName?: string
 }
 
 export type LocalApiRequestCategoryType =

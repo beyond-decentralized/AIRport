@@ -1,9 +1,9 @@
-import { IDiToken } from "../dependencyInjection/Token";
+import { IDependencyInjectionToken } from "../dependencyInjection/Token";
 
 export interface IAutopilotApiLoader {
 
     loadApiAutopilot<Injectable = any>(
-        token: IDiToken<Injectable>
+        token: IDependencyInjectionToken<Injectable>
     ): any;
 
 }

@@ -207,18 +207,7 @@ export class PostgreTransaction
 		// config.database = database;
 		this.pool = new Pool(config as any);
 	}
-
-	async transact(
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-			): Promise<void>
-		},
-		context: IOperationContext,
-	): Promise<void> {
-		throw new Error('Cannot use transaction object to start another transaction')
-	}
-
+	
 	async initAllTables(
 		context: IOperationContext,
 	): Promise<any> {

@@ -25,9 +25,6 @@ export declare abstract class SqlDriver implements IStoreDriver {
     }, context: IFuelHydrantContext): string;
     abstract composeTableName(applicationName: string, tableName: string, context: IFuelHydrantContext): string;
     abstract initialize(dbName: string, context: IFuelHydrantContext): Promise<any>;
-    transact(transactionalCallback: {
-        (transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    }, context: ITransactionContext, parentTransaction?: ITransaction): Promise<void>;
     abstract setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
     protected internalSetupTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;

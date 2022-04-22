@@ -34,7 +34,7 @@ export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     application: string
     category: CategoryType
     domain: string
-    errorMessage: string
+    errorMessage?: string
     id: string
     repositoryDestination?: string
     repositorySource?: string
@@ -87,8 +87,8 @@ export interface IAddRepositoryIMI
 }
 
 export interface IApiIMI {
-    methodName: string
-    objectName: string
+    methodName?: string
+    objectName?: string
     transactionId?: string
 }
 

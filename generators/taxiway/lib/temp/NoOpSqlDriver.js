@@ -24,11 +24,20 @@ export class NoOpSqlDriver extends SqlDriver {
     query(queryType, query, params, context, saveTransaction) {
         return Promise.resolve(undefined);
     }
-    transact(callback, context, parentTransaction) {
+    async startTransaction(transaction, context) {
         return Promise.resolve(undefined);
     }
-    async startTransaction() {
-        throw Promise.resolve(undefined);
+    async internalCommit(transaction, context) {
+        return Promise.resolve(undefined);
+    }
+    async internalRollback(transaction, context) {
+        return Promise.resolve(undefined);
+    }
+    async internalStartTransaction(transaction, context) {
+        return Promise.resolve(undefined);
+    }
+    async setupTransaction(context, parentTransaction) {
+        return Promise.resolve(undefined);
     }
     executeNative(sql, parameters, context) {
         return Promise.resolve(0);

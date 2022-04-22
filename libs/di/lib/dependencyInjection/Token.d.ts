@@ -1,20 +1,26 @@
 import { IInjectionApplication } from './InjectionApplication';
 export declare type IDiTokenName = string;
 export interface ITokenDependencyConfiguration {
-    [propertyName: string]: IDiToken<any>;
+    [propertyName: string]: IDependencyInjectionToken<any>;
 }
-export interface IDiToken<Injectable> {
+export interface IDependencyInjectionTokenDescriptor {
+    class: any;
+    interface: string;
+    token: string;
+    isApi?: boolean;
+}
+export interface IDependencyInjectionToken<Injectable> {
     application: IInjectionApplication;
     dependencyConfiguration: ITokenDependencyConfiguration;
-    name: string;
+    descriptor: IDependencyInjectionTokenDescriptor;
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
 }
-export declare class DiToken<Injectable> implements IDiToken<Injectable> {
+export declare class DependencyInjectionToken<Injectable> implements IDependencyInjectionToken<Injectable> {
     application: IInjectionApplication;
-    name: string;
+    descriptor: IDependencyInjectionTokenDescriptor;
     dependencyConfiguration: ITokenDependencyConfiguration;
-    constructor(application: IInjectionApplication, name: string);
+    constructor(application: IInjectionApplication, descriptor: IDependencyInjectionTokenDescriptor);
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
 }

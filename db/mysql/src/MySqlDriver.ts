@@ -201,20 +201,6 @@ and TABLE_NAME = '${tableName}';`,
     return null;
   }
 
-  async transact(
-    transactionalCallback: {
-      (
-        transaction: ITransaction,
-      ): Promise<void>
-    },
-  ): Promise<void> {
-    const connection: Connection = await this.pool.getConnection();
-    await connection.beginTransaction();
-    const transactionModule = await import('./MySqlTransaction');
-    const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection);
-    await transactionalCallback(transaction);
-  }
-
   async initAllTables(
     context: IOperationContext,
   ): Promise<any> {

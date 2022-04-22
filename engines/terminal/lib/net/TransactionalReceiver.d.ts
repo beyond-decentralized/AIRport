@@ -7,6 +7,5 @@ export declare abstract class TransactionalReceiver {
     protected abstract nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<Result>;
     protected startApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext, nativeHandleCallback: () => void): Promise<boolean>;
     protected endApiCall(credentials: ITransactionCredentials, errorMessage: string, context: IApiCallContext): Promise<boolean>;
-    protected handleApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext, nativeHandleCallback: () => void): Promise<boolean>;
 }
 //# sourceMappingURL=TransactionalReceiver.d.ts.map

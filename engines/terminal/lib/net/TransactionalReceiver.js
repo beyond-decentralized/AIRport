@@ -203,25 +203,5 @@ export class TransactionalReceiver {
             return await transactionalServer.commit(credentials, context);
         }
     }
-    async handleApiCall(message, context, nativeHandleCallback) {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER);
-        if (!await transactionalServer.startTransaction({
-            application: message.application,
-            domain: message.domain,
-            methodName: message.methodName,
-            objectName: message.objectName
-        }, context)) {
-            return false;
-        }
-        try {
-            await nativeHandleCallback();
-        }
-        catch (e) {
-            context.errorMessage = e.message;
-            return false;
-        }
-        return true;
-    }
 }
 //# sourceMappingURL=TransactionalReceiver.js.map

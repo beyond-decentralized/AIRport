@@ -312,34 +312,4 @@ export abstract class TransactionalReceiver {
         }
     }
 
-    protected async handleApiCall(
-        message: ILocalAPIRequest<'FromClientRedirected'>,
-        context: IApiCallContext,
-        nativeHandleCallback: () => void
-    ): Promise<boolean> {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER)
-
-        if (!await transactionalServer.startTransaction(
-            {
-                application: message.application,
-                domain: message.domain,
-                methodName: message.methodName,
-                objectName: message.objectName
-            },
-            context
-        )) {
-            return false
-        }
-
-        try {
-            await nativeHandleCallback()
-        } catch (e) {
-            context.errorMessage = e.message
-            return false
-        }
-
-        return true
-    }
-
 }

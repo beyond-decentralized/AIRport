@@ -57,18 +57,6 @@ WHERE
 		throw new Error('Not implemented')
 	}
 
-	// TODO: refactor to work with callbacks
-	async transact(
-		callback: {
-			(
-				transaction: ITransaction
-			): Promise<void>
-		},
-		context: IOperationContext,
-	): Promise<any> {
-		throw new Error('Not implemented')
-	}
-
 	async query(
 		queryType: QueryType,
 		query: string,

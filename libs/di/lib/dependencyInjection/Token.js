@@ -1,10 +1,11 @@
-export class DiToken {
-    constructor(application, name) {
+export class DependencyInjectionToken {
+    constructor(application, descriptor) {
         this.application = application;
-        this.name = name;
+        this.descriptor = descriptor;
     }
     getPath() {
-        return this.application.domain.name + ':' + this.application.name + ':' + this.name;
+        return this.application.domain.name + ':' + this.application.name + ':'
+            + this.descriptor.token;
     }
     setDependencies(dependencyConfiguration) {
         this.dependencyConfiguration = dependencyConfiguration;

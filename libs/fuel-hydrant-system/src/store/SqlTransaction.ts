@@ -134,19 +134,6 @@ export abstract class SqlTransaction
         return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId)
     }
 
-    async transact(
-        transactionalCallback: {
-            (
-                transaction: ITransaction,
-                context: ITransactionContext
-            ): Promise<void> | void
-        },
-        context: ITransactionContext,
-        parentTransaction?: ITransaction,
-    ): Promise<void> {
-        await transactionalCallback(this, context);
-    }
-
     async startTransaction(
         transaction: ITransaction,
         context: ITransactionContext
