@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { APPLICATION_LOCATOR } from '../tokens';
 export class ApplicationLocator {
@@ -23,5 +23,5 @@ export class ApplicationLocator {
             .get(fullApplicationName);
     }
 }
-DI.set(APPLICATION_LOCATOR, ApplicationLocator);
+DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, ApplicationLocator);
 //# sourceMappingURL=ApplicationLocator.js.map

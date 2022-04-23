@@ -1,5 +1,4 @@
 import {
-	AIRPORT_DATABASE,
 	and,
 	compareNumbers,
 	DATABASE_FACADE,
@@ -71,20 +70,22 @@ type ColumnIndexAndValue = [ColumnIndex, any];
 export class Stage2SyncedInDataProcessor
 	implements IStage2SyncedInDataProcessor {
 
+	airportDatabase: IAirportDatabase
+
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>
 	): Promise<void> {
-		const [airDb, dbFacade, recordUpdateStageDao] = await container(this).get(
-			AIRPORT_DATABASE, DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO)
+		const [dbFacade, recordUpdateStageDao] = await container(this).get(
+			DATABASE_FACADE, RECORD_UPDATE_STAGE_DAO)
 		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersionIdMap, airDb, dbFacade, context)
+			applicationsByApplicationVersionIdMap, dbFacade, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersionIdMap, recordUpdateStageDao, context)
+			applicationsByApplicationVersionIdMap,recordUpdateStageDao, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersionIdMap, airDb, dbFacade, context)
+			applicationsByApplicationVersionIdMap, dbFacade, context)
 	}
 
 	/**
@@ -105,7 +106,6 @@ export class Stage2SyncedInDataProcessor
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
-		airDb: IAirportDatabase,
 		dbFacade: IDatabaseFacade,
 		context: IOperationContext
 	): Promise<void> {
@@ -113,9 +113,9 @@ export class Stage2SyncedInDataProcessor
 			for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
 				const applicationIndex = applicationsByApplicationVersionIdMap
 					.get(applicationVersionId).index
-				const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
-				const qEntity = airDb.qApplications[applicationIndex][dbEntity.name]
+				const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 				const columns = [
 					qEntity.repository.id,
 					qEntity.actor.id,
@@ -278,16 +278,15 @@ export class Stage2SyncedInDataProcessor
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Set<RepositoryEntity_ActorRecordId>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
-		airDb: IAirportDatabase,
 		dbFacade: IDatabaseFacade,
 		context: IOperationContext
 	): Promise<void> {
 		for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
 			const application = applicationsByApplicationVersionIdMap.get(applicationVersionId)
 			for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
-				const dbEntity = airDb.applications[application.index].currentVersion[0]
+				const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
 					.applicationVersion.entities[tableIndex]
-				const qEntity = airDb.qApplications[application.index][dbEntity.name]
+				const qEntity = this.airportDatabase.qApplications[application.index][dbEntity.name]
 
 				let numClauses = 0
 				let repositoryWhereFragments: JSONBaseOperation[] = []

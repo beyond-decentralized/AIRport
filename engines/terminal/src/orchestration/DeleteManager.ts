@@ -1,5 +1,4 @@
 import {
-	AIRPORT_DATABASE,
 	IAirportDatabase,
 	IApplicationUtils,
 	APPLICATION_UTILS,
@@ -57,6 +56,8 @@ import {
 export class DeleteManager
 	implements IDeleteManager {
 
+	airportDatabase: IAirportDatabase
+
 	async deleteWhere(
 		portableQuery: PortableQuery,
 		actor: IActor,
@@ -65,7 +66,6 @@ export class DeleteManager
 		context?: IOperationContext,
 	): Promise<number> {
 		const [
-			airDb,
 			historyManager,
 			operHistoryDuo,
 			recHistoryDuo,
@@ -74,11 +74,11 @@ export class DeleteManager
 			applicationUtils,
 			sequenceGenerator
 		] = await container(this)
-			.get(AIRPORT_DATABASE, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
+			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
 				RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO,
 				APPLICATION_UTILS, SEQUENCE_GENERATOR)
 
-		const dbEntity = airDb
+		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
 			.entities[portableQuery.tableIndex]
 

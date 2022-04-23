@@ -1,4 +1,3 @@
-import { IAirportDatabase } from '@airport/air-control'
 import { ISequence } from '@airport/airport-code'
 import { IContext } from '@airport/direction-indicator';
 import { JsonApplication } from '@airport/ground-control'
@@ -21,7 +20,6 @@ export interface IApplicationBuilder {
 
 	stageSequences(
 		jsonApplications: JsonApplication[],
-		airDb: IAirportDatabase,
 		context: IContext,
 	): ISequence[]
 

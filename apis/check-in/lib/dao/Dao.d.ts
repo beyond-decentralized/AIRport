@@ -1,6 +1,6 @@
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QApplication } from '@airport/air-control';
-import { IContext } from '@airport/di';
-import { EntityId as DbEntityId, ISaveResult } from '@airport/ground-control';
+import { IAirportDatabase, IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QApplication } from '@airport/air-control';
+import { IContext } from '@airport/direction-indicator';
+import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';
 /**
  * Created by Papa on 8/26/2017.
@@ -8,6 +8,8 @@ import { DaoStub } from './DaoStub';
 export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, QE extends IQEntity> implements IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE> {
     private internal;
     static BaseSave<EntitySelect extends IEntitySelectProperties>(config: EntitySelect): PropertyDecorator;
+    airportDatabase: IAirportDatabase;
+    entityStateManager: IEntityStateManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);

@@ -1,5 +1,5 @@
 import { EntityId, PortableQuery, ApplicationIndex, IRootTransaction } from "@airport/ground-control";
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import type { IActor, RepositoryEntity, Repository_Id } from "@airport/holding-pattern";
 import { ITransaction } from "../transaction/ITransaction";
 export interface IDeleteManager {

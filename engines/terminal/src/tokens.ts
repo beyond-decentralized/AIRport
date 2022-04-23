@@ -1,3 +1,4 @@
+import { AIRPORT_DATABASE } from '@airport/air-control'
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import {
@@ -40,4 +41,12 @@ INTERNAL_RECORD_MANAGER.setDependencies({
 
 OPERATION_MANAGER.setDependencies({
 	entityStateManager: ENTITY_STATE_MANAGER
+})
+
+DELETE_MANAGER.setDependencies({
+	airportDatabase: AIRPORT_DATABASE
+})
+
+INSERT_MANAGER.setDependencies({
+	airportDatabase: AIRPORT_DATABASE
 })

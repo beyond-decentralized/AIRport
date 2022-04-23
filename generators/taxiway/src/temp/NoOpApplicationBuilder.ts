@@ -1,10 +1,7 @@
 import {
-	AIRPORT_DATABASE,
-	IAirportDatabase,
 	QApplicationInternal
 }                           from '@airport/air-control';
 import {
-	container,
 	IContext
 }                           from '@airport/direction-indicator';
 import {
@@ -54,11 +51,9 @@ export class NoOpApplicationBuilder
 		jsonApplications: JsonApplication[],
 		context: IContext,
 	): Promise<any[]> {
-		let airDb = await container(this).get(AIRPORT_DATABASE);
-
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
@@ -69,12 +64,11 @@ export class NoOpApplicationBuilder
 
 	stageSequences(
 		jsonApplications: JsonApplication[],
-		airDb: IAirportDatabase,
 		context: IContext,
 	): any[] {
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}

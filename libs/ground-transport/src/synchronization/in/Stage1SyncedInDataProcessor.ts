@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { IAirportDatabase } from '@airport/air-control'
 import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in'
 import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
@@ -57,6 +57,8 @@ export interface IStage1SyncedInDataProcessor {
 
 export class Stage1SyncedInDataProcessor
 	implements IStage1SyncedInDataProcessor {
+
+	airportDatabase: IAirportDatabase
 
 	/**
 	 * In stage one:
@@ -219,8 +221,7 @@ export class Stage1SyncedInDataProcessor
 	private async populateSystemWideOperationIds(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>
 	): Promise<void> {
-		const [airportDatabase, sequenceGenerator] = await container(this).get(
-			AIRPORT_DATABASE, SEQUENCE_GENERATOR)
+		const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR)
 
 		let numSystemWideOperationIds = 0
 		for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
@@ -230,7 +231,7 @@ export class Stage1SyncedInDataProcessor
 			}
 		}
 		const systemWideOperationIds = await getSysWideOpIds(
-			numSystemWideOperationIds, airportDatabase, sequenceGenerator)
+			numSystemWideOperationIds, this.airportDatabase, sequenceGenerator)
 
 		let i = 0
 		for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {

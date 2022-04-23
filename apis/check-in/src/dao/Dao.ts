@@ -1,5 +1,6 @@
 import {
 	doEnsureContext,
+	IAirportDatabase,
 	IDao,
 	IEntityCascadeGraph,
 	IEntityContext,
@@ -49,6 +50,8 @@ export abstract class Dao<Entity,
 			// No runtime logic required.
 		};
 	}
+
+	airportDatabase: IAirportDatabase
 
 	entityStateManager: IEntityStateManager
 

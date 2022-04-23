@@ -1,5 +1,5 @@
 import { IAirportDatabase, IFieldUtils, IQMetadataUtils, IQueryFacade, IQueryUtils, IRelationManager, IApplicationUtils, IEntityUtils } from "@airport/air-control";
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import { DbEntity, IEntityStateManager, ITransactionalConnector } from "@airport/ground-control";
 import { IActor, IRepository } from "@airport/holding-pattern";
 import { IRepositoryManager } from "../repository/RepositoryManager";

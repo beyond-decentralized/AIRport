@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di';
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicationName, } from '@airport/ground-control';
 import { DOMAIN_RETRIEVER } from '@airport/terminal-map';
 import { APPLICATION_COMPOSER } from '../tokens';
@@ -549,5 +549,5 @@ export class ApplicationComposer {
         }
     }
 }
-DI.set(APPLICATION_COMPOSER, ApplicationComposer);
+DEPENDENCY_INJECTION.set(APPLICATION_COMPOSER, ApplicationComposer);
 //# sourceMappingURL=ApplicationComposer.js.map

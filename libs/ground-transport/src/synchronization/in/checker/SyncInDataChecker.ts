@@ -6,20 +6,17 @@ import {
 import {
 	ChangeType,
 	ColumnIndex,
-	DbColumn,
 	repositoryEntity,
 	TableIndex
 } from '@airport/ground-control'
 import {
 	IApplicationEntity,
-	IApplicationVersion,
-	APPLICATION_ENTITY_DAO,
 	IApplicationColumn
 } from '@airport/airspace'
 import {
 	SYNC_IN_DATA_CHECKER
 } from '../../../tokens'
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpIds,
 	SEQUENCE_GENERATOR
@@ -41,6 +38,8 @@ export interface ISyncInDataChecker {
 
 export class SyncInDataChecker
 	implements ISyncInDataChecker {
+
+	airportDatabase: IAirportDatabase
 
 	/**
 	 * Every dataMessage.data.repoTransHistories array must be sorted before entering
@@ -130,11 +129,10 @@ export class SyncInDataChecker
 			throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`)
 		}
 
-		const [airDb, sequenceGenerator] = await container(this)
-			.get(AIRPORT_DATABASE, SEQUENCE_GENERATOR)
+		const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR)
 
 		const systemWideOperationIds = getSysWideOpIds(
-			history.operationHistory.length, airDb, sequenceGenerator)
+			history.operationHistory.length, this.airportDatabase, sequenceGenerator)
 
 		let orderNumber = 0
 

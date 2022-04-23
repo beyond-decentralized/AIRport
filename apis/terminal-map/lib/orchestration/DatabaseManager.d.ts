@@ -1,4 +1,4 @@
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
 export interface IDatabaseManager {
     isInitialized(): boolean;

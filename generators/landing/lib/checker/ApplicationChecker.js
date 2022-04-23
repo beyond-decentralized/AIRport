@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di';
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ensureChildJsMap, getFullApplicationName, } from '@airport/ground-control';
 import { APPLICATION_DAO } from '@airport/airspace';
 import { APPLICATION_CHECKER } from '../tokens';
@@ -126,5 +126,5 @@ export class ApplicationChecker {
         return false;
     }
 }
-DI.set(APPLICATION_CHECKER, ApplicationChecker);
+DEPENDENCY_INJECTION.set(APPLICATION_CHECKER, ApplicationChecker);
 //# sourceMappingURL=ApplicationChecker.js.map

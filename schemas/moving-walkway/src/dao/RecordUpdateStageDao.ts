@@ -1,10 +1,9 @@
 import {
-	AIRPORT_DATABASE,
 	and,
 	field,
 	or
 } from '@airport/air-control'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
@@ -95,11 +94,9 @@ export class RecordUpdateStageDao
 		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
-		const airDb = await container(this).get(AIRPORT_DATABASE)
-
-		const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
-		const qEntity = airDb.qApplications[applicationIndex][dbEntity.name]
+		const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name]
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of idMap) {

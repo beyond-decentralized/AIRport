@@ -361,7 +361,6 @@ export class AirportDatabase
 		return await dbFacade.updateWhere(rawUpdate, context);
 	}
 }
-
 DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
 
 export function injectAirportDatabase(): void {

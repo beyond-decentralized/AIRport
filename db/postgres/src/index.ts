@@ -8,6 +8,7 @@ export * from './PostgreSchemaBuilder'
 export * from './PostgreSqlDriver'
 export * from './PostgreSqlSchemaBuilder'
 export * from './PostgreTransaction'
+export * from './tokens';
 
 export async function startDb(
     domainName: string,

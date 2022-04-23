@@ -1,5 +1,5 @@
 import { DATABASE_FACADE, EntityFind, EntityFindOne, } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 /**
  * Created by Papa on 12/11/2016.
  */
@@ -73,7 +73,7 @@ export class EntityDatabaseFacade {
         if (!ctx.startedAt) {
             ctx.startedAt = new Date();
         }
-        const databaseFacade = await DI.db()
+        const databaseFacade = await DEPENDENCY_INJECTION.db()
             .get(DATABASE_FACADE);
         const previousEntity = ctx.dbEntity;
         ctx.dbEntity = this.dbEntity;

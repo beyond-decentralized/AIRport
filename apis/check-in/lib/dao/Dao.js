@@ -1,6 +1,4 @@
 import { doEnsureContext, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 /**
@@ -65,14 +63,13 @@ export class Dao {
         return await this.db.save(entity, this.ensureContext(context));
     }
     markForDeletion(entityIdInfo, context) {
-        const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);
         if (entityIdInfo instanceof Array) {
             for (const anEntity of entityIdInfo) {
-                entityStateManager.markForDeletion(anEntity);
+                this.entityStateManager.markForDeletion(anEntity);
             }
         }
         else {
-            entityStateManager.markForDeletion(entityIdInfo);
+            this.entityStateManager.markForDeletion(entityIdInfo);
         }
     }
     ensureContext(context) {

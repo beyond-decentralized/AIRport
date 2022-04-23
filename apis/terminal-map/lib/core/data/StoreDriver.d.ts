@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { Observable } from 'rxjs';
 import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery';
 import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity';

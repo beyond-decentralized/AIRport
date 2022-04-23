@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { from } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { SELECTOR_MANAGER } from './tokens';
@@ -37,5 +37,5 @@ export class SelectorManager {
         return selector;
     }
 }
-DI.set(SELECTOR_MANAGER, SelectorManager);
+DEPENDENCY_INJECTION.set(SELECTOR_MANAGER, SelectorManager);
 //# sourceMappingURL=Selector.js.map

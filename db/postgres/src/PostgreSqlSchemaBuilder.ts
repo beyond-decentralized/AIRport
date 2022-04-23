@@ -1,10 +1,9 @@
-import { AIRPORT_DATABASE, IAirportDatabase, QApplicationInternal } from '@airport/air-control'
+import { IAirportDatabase, QApplicationInternal } from '@airport/air-control'
 import { ISequence, SEQUENCE_DAO } from '@airport/airport-code'
 import { container, DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
 import {
 	DbApplication,
 	getFullApplicationName,
-	getSequenceName,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
@@ -12,10 +11,12 @@ import {
 	SQLDataType
 } from '@airport/ground-control'
 import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing'
-import { IStoreDriver, STORE_DRIVER } from '@airport/terminal-map'
+import { IStoreDriver } from '@airport/terminal-map'
 
 export class PostgreSqlApplicationBuilder
 	extends SqlApplicationBuilder {
+
+	airportDatabase: IAirportDatabase
 
 	async createApplication(
 		jsonApplication: JsonApplication,
@@ -72,11 +73,11 @@ export class PostgreSqlApplicationBuilder
 	): Promise<ISequence[]> {
 		console.log('buildAllSequences')
 
-		let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO)
+		let sequenceDao = await container(this).get(SEQUENCE_DAO)
 
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -89,14 +90,13 @@ export class PostgreSqlApplicationBuilder
 
 	stageSequences(
 		jsonApplications: JsonApplication[],
-		airDb: IAirportDatabase,
 		context: IContext,
 	): ISequence[] {
 		console.log('stageSequences')
 
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}

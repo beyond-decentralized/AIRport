@@ -22,6 +22,8 @@ import { IApplicationBuilder } from './IApplicationBuilder';
 export abstract class SqlApplicationBuilder
   implements IApplicationBuilder {
 
+  airportDatabase: IAirportDatabase
+
   async build(
     jsonApplication: JsonApplication,
     existingApplicationMap: Map<string, IApplication>,
@@ -222,7 +224,6 @@ export abstract class SqlApplicationBuilder
 
   abstract stageSequences(
     jsonApplications: JsonApplication[],
-    airDb: IAirportDatabase,
     context: IContext,
   ): ISequence[]
 

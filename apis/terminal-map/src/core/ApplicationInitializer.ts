@@ -1,9 +1,5 @@
-import { IAirportDatabase } from "@airport/air-control";
-import { IApplication } from "@airport/airspace";
-import { ISequenceGenerator } from "@airport/check-in";
 import { IContext } from "@airport/direction-indicator";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
-import { IQueryObjectInitializer } from "./QueryObjectInitializer";
 
 export interface IApplicationInitializer {
 
@@ -32,6 +28,6 @@ export interface IApplicationInitializer {
     stage(
         jsonApplications: JsonApplicationWithLastIds[],
         context: IContext,
-    ): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]>
+    ): Promise<void>
 
 }

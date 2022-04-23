@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { IRootTransaction } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../Credentials';

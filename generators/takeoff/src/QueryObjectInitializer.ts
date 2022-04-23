@@ -1,47 +1,33 @@
-import { IAirportDatabase }         from '@airport/air-control';
 import {
 	container,
 	DEPENDENCY_INJECTION
-}                                   from '@airport/direction-indicator';
+} from '@airport/direction-indicator';
 import {
 	AllDdlObjects,
-	IQueryEntityClassCreator,
 	IQueryObjectInitializer,
-	ITerminalStore,
 	TERMINAL_STORE
-}                                   from '@airport/terminal-map';
+} from '@airport/terminal-map';
 import {
 	IDomain,
-	IApplication,
-	IApplicationColumn,
-	IApplicationEntity,
-	IApplicationProperty,
-	IApplicationPropertyColumn,
-	IApplicationReference,
-	IApplicationRelation,
-	IApplicationRelationColumn,
-	IApplicationVersion
-}                                   from '@airport/airspace';
-import { IDdlObjectLinker }         from './DdlObjectLinker';
+	IApplication
+} from '@airport/airspace';
 import {
 	DDL_OBJECT_LINKER,
 	DDL_OBJECT_RETRIEVER,
 	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
-}                                   from './tokens';
+} from './tokens';
 
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
 	generateQObjectsAndPopulateStore(
-		allDdlObjects: AllDdlObjects,
-		airDb: IAirportDatabase,
-		ddlObjectLinker: IDdlObjectLinker,
-		queryEntityClassCreator: IQueryEntityClassCreator,
-		terminalStore: ITerminalStore
+		allDdlObjects: AllDdlObjects
 	): void {
+		const [ddlObjectLinker, queryEntityClassCreator, terminalStore] = await container(this)
+			.get(DDL_OBJECT_LINKER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
 		ddlObjectLinker.link(allDdlObjects, terminalStore);
-		queryEntityClassCreator.createAll(allDdlObjects.all.applications, airDb);
+		queryEntityClassCreator.createAll(allDdlObjects.all.applications);
 		const lastTerminalState = terminalStore.getTerminalState();
 
 		const existingDomainMap = {};
@@ -82,18 +68,13 @@ export class QueryObjectInitializer
 	}
 
 	async initialize(
-		airDb: IAirportDatabase
 	): Promise<AllDdlObjects> {
-		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			      terminalStore] = await container(this).get(
-			DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
-			QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
-
+		DDL_OBJECT_RETRIEVER
 		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
 
 		const allApplicationVersionsByIds = []
 
-		for(const applicationVersion of ddlObjects.applicationVersions) {
+		for (const applicationVersion of ddlObjects.applicationVersions) {
 			allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
 		}
 
@@ -103,8 +84,7 @@ export class QueryObjectInitializer
 			added: ddlObjects
 		}
 
-		this.generateQObjectsAndPopulateStore(allDdlObjects, airDb,
-			ddlObjectLinker, queryEntityClassCreator, terminalStore);
+		this.generateQObjectsAndPopulateStore(allDdlObjects);
 
 		return allDdlObjects;
 	}

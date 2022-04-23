@@ -1,4 +1,4 @@
-import { container } from '@airport/di';
+import { container } from '@airport/direction-indicator';
 import { EntityRelationType, getFullApplicationNameFromDomainAndName, QueryType, } from '@airport/ground-control';
 import { STORE_DRIVER } from '@airport/terminal-map';
 export class SqlApplicationBuilder {

@@ -1,5 +1,4 @@
 import {
-  AIRPORT_DATABASE,
   IAirportDatabase,
   QApplicationInternal,
 } from '@airport/air-control';
@@ -27,6 +26,8 @@ import {
 
 export class SqLiteApplicationBuilder
   extends SqlApplicationBuilder {
+
+  airportDatabase: IAirportDatabase
 
   async createApplication(
     jsonApplication: JsonApplication,
@@ -82,11 +83,11 @@ export class SqLiteApplicationBuilder
   ): Promise<ISequence[]> {
     console.log('buildAllSequences');
 
-    let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO);
+    let [sequenceDao] = await container(this).get(SEQUENCE_DAO);
 
     let allSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -99,13 +100,13 @@ export class SqLiteApplicationBuilder
 
   stageSequences(
     jsonApplications: JsonApplication[],
-    airDb: IAirportDatabase,
+    context: IContext,
   ): ISequence[] {
     console.log('stageSequences');
 
     let stagedSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = airDb.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -158,20 +159,20 @@ export class SqLiteApplicationBuilder
     )`
   }
 
-	protected getForeignKeySql(
-		tableName: string,
-		foreignKeyName: string,
-		foreignKeyColumnNames: string[],
-		referencedTableName: string,
-		referencedColumnNames: string[]
-	): string {
+  protected getForeignKeySql(
+    tableName: string,
+    foreignKeyName: string,
+    foreignKeyColumnNames: string[],
+    referencedTableName: string,
+    referencedColumnNames: string[]
+  ): string {
     // TODO: investigate adding foreign key support for SqLite.
     // Right now there is no alter table command and it has to be baked
     // into the CREATE TALBE command, though techniques for getting
     // around this do exist:
     // https://stackoverflow.com/questions/1884818/how-do-i-add-a-foreign-key-to-an-existing-sqlite-table
-		return null;
-	}
+    return null;
+  }
 
 }
 

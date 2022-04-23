@@ -1,5 +1,4 @@
 import {
-	AIRPORT_DATABASE,
 	ALL_FIELDS,
 	and,
 	max,
@@ -167,10 +166,9 @@ export class ApplicationDao
 	}
 
 	async findMaxIndex(): Promise<ApplicationIndex> {
-		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const s = Q.Application
-		return await airDb.findOne.field({
+		return await this.airportDatabase.findOne.field({
 			select: max(s.index),
 			from: [
 				s
@@ -182,7 +180,6 @@ export class ApplicationDao
 		applicationDomainNames: DomainName[],
 		applicationNames: ApplicationName[]
 	): Promise<Map<DomainName, Map<ApplicationName, IApplicationLookupRecord>>> {
-		const airDb = await container(this).get(AIRPORT_DATABASE)
 
 		const maxVersionedMapByApplicationAndDomainNames: Map<DomainName, Map<ApplicationName, IApplicationLookupRecord>>
 			= new Map()
@@ -193,7 +190,7 @@ export class ApplicationDao
 		let sMaV
 		let sMiV
 
-		const applicationLookupRecords = await airDb.find.tree({
+		const applicationLookupRecords = await this.airportDatabase.find.tree({
 			from: [
 				sMiV = tree({
 					from: [

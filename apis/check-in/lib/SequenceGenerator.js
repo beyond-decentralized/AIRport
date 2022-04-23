@@ -21,11 +21,11 @@ export async function getSysWideOpId(airDb, sequenceGenerator) {
     const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator);
     return sequences[0];
 }
-export async function getSysWideOpIds(numSequencesNeeded, airDb, sequenceGenerator) {
+export async function getSysWideOpIds(numSequencesNeeded, airportDatabase, sequenceGenerator) {
     if (!numSequencesNeeded) {
         return [];
     }
-    const sysWideOpIdGeneratedColumn = airDb.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION]
+    const sysWideOpIdGeneratedColumn = airportDatabase.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION]
         .__dbApplication__.currentVersion[0].applicationVersion
         .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator

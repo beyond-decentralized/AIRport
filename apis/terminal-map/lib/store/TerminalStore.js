@@ -1,11 +1,11 @@
 import { SELECTOR_MANAGER } from '@airport/check-in';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { TERMINAL_STORE } from '../tokens';
 import { internalTerminalState } from './theState';
 export class TerminalStore {
     async init() {
-        const selectorManager = await DI.db().get(SELECTOR_MANAGER);
+        const selectorManager = await DEPENDENCY_INJECTION.db().get(SELECTOR_MANAGER);
         this.state = internalTerminalState;
         this.getTerminalState = selectorManager.createRootSelector(this.state);
         this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
@@ -117,5 +117,5 @@ export class TerminalStore {
     tearDown() {
     }
 }
-DI.set(TERMINAL_STORE, TerminalStore);
+DEPENDENCY_INJECTION.set(TERMINAL_STORE, TerminalStore);
 //# sourceMappingURL=TerminalStore.js.map

@@ -1,9 +1,7 @@
 import {
-	AIRPORT_DATABASE,
 	IAirportDatabase
 } from '@airport/air-control';
 import {
-	ISequenceGenerator,
 	SEQUENCE_GENERATOR
 } from '@airport/check-in';
 import {
@@ -26,7 +24,6 @@ import {
 import {
 	AllDdlObjects,
 	IApplicationInitializer,
-	IQueryObjectInitializer,
 	TERMINAL_STORE
 } from '@airport/terminal-map';
 import {
@@ -44,7 +41,11 @@ import {
 export abstract class ApplicationInitializer
 	implements IApplicationInitializer {
 
-	addNewApplicationVersionsToAll(ddlObjects: AllDdlObjects) {
+	airportDatabase: IAirportDatabase
+
+	addNewApplicationVersionsToAll(
+		ddlObjects: AllDdlObjects
+	) {
 		for (const applicationVersion of ddlObjects.added.applicationVersions) {
 			ddlObjects.allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
 		}
@@ -54,15 +55,16 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void> {
-		const [airDb, queryObjectInitializer, sequenceGenerator] =
-			await this.stage(jsonApplications, context);
+		QUERY_OBJECT_INITIALIZER
+		SEQUENCE_GENERATOR
+		await this.stage(jsonApplications, context);
 		// Hydrate all DDL objects and Sequences
 
-		const ddlObjects = await queryObjectInitializer.initialize(airDb);
+		const ddlObjects = await queryObjectInitializer.initialize();
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
-		this.setAirDbApplications(airDb, ddlObjects);
+		this.setAirDbApplications(ddlObjects);
 
 		await sequenceGenerator.initialize();
 	}
@@ -82,10 +84,10 @@ export abstract class ApplicationInitializer
 		checkDependencies: boolean,
 		loadExistingApplications: boolean
 	): Promise<void> {
-		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
+		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, applicationBuilder, applicationComposer,
 			applicationLocator, applicationRecorder, sequenceGenerator, terminalStore]
-			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			= await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER,
 				SEQUENCE_GENERATOR, TERMINAL_STORE);
@@ -128,10 +130,9 @@ export abstract class ApplicationInitializer
 
 		this.addNewApplicationVersionsToAll(allDdlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(
-			allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+		queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
 
-		this.setAirDbApplications(airDb, allDdlObjects);
+		this.setAirDbApplications(allDdlObjects);
 
 		const newSequences = await applicationBuilder.buildAllSequences(
 			applicationsWithValidDependencies, context);
@@ -144,9 +145,9 @@ export abstract class ApplicationInitializer
 	async initializeForAIRportApp(
 		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void> {
-		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
+		const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
 			queryObjectInitializer, applicationComposer, applicationLocator, terminalStore]
-			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+			= await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR, TERMINAL_STORE);
 
@@ -161,20 +162,18 @@ export abstract class ApplicationInitializer
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(
-			ddlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+		queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
 
-		this.setAirDbApplications(airDb, ddlObjects);
+		this.setAirDbApplications(ddlObjects);
 	}
 
 	async stage(
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
-	): Promise<[IAirportDatabase, IQueryObjectInitializer, ISequenceGenerator]> {
-		const [airDb, ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator,
-			queryObjectInitializer, applicationBuilder, applicationComposer,
-			applicationLocator, sequenceGenerator, terminalStore]
-			= await container(this).get(AIRPORT_DATABASE, DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER,
+	): Promise<void> {
+		const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder,
+			applicationComposer, applicationLocator, sequenceGenerator, terminalStore]
+			= await container(this).get(DDL_OBJECT_RETRIEVER,
 				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
 
@@ -187,17 +186,14 @@ export abstract class ApplicationInitializer
 
 		this.addNewApplicationVersionsToAll(tempDdlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(
-			tempDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+		queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
 
-		this.setAirDbApplications(airDb, tempDdlObjects);
+		this.setAirDbApplications(tempDdlObjects);
 
 		const newSequences = await applicationBuilder.stageSequences(
-			jsonApplications, airDb, context);
+			jsonApplications, context);
 
 		await sequenceGenerator.tempInitialize(newSequences);
-
-		return [airDb, queryObjectInitializer, sequenceGenerator];
 	}
 
 	abstract nativeInitializeApplication(
@@ -264,11 +260,10 @@ export abstract class ApplicationInitializer
 	}
 
 	private setAirDbApplications(
-		airDb: IAirportDatabase,
 		ddlObjects: AllDdlObjects
 	) {
 		for (let application of ddlObjects.all.applications) {
-			airDb.applications[application.index] = application as DbApplication;
+			this.airportDatabase.applications[application.index] = application as DbApplication;
 		}
 	}
 

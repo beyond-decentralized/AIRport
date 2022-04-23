@@ -6,6 +6,7 @@ export * from './MySqlDriver';
 export * from './MySqlQueryAdaptor';
 export * from './MySqlSchemaBuilder';
 export * from './MySqlTransaction';
+export * from './tokens';
 
 export async function startDb(
 	domainName: string

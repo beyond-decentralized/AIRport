@@ -1,4 +1,4 @@
-import { IDao } from '@airport/air-control';
+import { AIRPORT_DATABASE, IDao } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { IApiRegistry, IApiValidator } from '.';
@@ -27,5 +27,6 @@ export const SELECTOR_MANAGER = checkIn.token<ISelectorManager>('SELECTOR_MANAGE
 export const SEQUENCE_GENERATOR = checkIn.token<ISequenceGenerator>('SEQUENCE_GENERATOR');
 
 DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER
 })

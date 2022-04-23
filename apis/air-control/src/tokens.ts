@@ -18,7 +18,11 @@ import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 
 const airControl = lib('air-control')
 
-export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>('AIRPORT_DATABASE')
+export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>({
+	class: null,
+	interface: 'IAirportDatabase',
+	token: 'AIRPORT_DATABASE'
+})
 export const DATABASE_FACADE = airControl.token<IDatabaseFacade>('DATABASE_FACADE')
 export const LOOKUP = airControl.token<ILookup>('LOOKUP')
 export const ENTITY_UTILS = airControl.token<IEntityUtils>('ENTITY_UTILS')

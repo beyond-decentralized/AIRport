@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { transactional } from '@airport/tower';
 import { DOMAIN_DAO, APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, } from '@airport/airspace';
 import { APPLICATION_RECORDER } from '../tokens';
@@ -128,5 +128,5 @@ export class ApplicationRecorder {
         await dao.save(entities, context);
     }
 }
-DI.set(APPLICATION_RECORDER, ApplicationRecorder);
+DEPENDENCY_INJECTION.set(APPLICATION_RECORDER, ApplicationRecorder);
 //# sourceMappingURL=ApplicationRecorder.js.map

@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, IAirportDatabase } from '@airport/air-control'
+import { IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator,
@@ -50,6 +50,8 @@ interface ColumnsToPopulate {
 
 export class InsertManager
 	implements IInsertManager {
+
+	airportDatabase: IAirportDatabase
 
 	async insertValues(
 		portableQuery: PortableQuery,
@@ -104,7 +106,6 @@ export class InsertManager
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
 		const [
-			airDb,
 			sequenceGenerator,
 			historyManager,
 			operHistoryDuo,
@@ -112,12 +113,11 @@ export class InsertManager
 			recHistoryNewValueDuo,
 			repoTransHistoryDuo
 		] = await container(this)
-			.get(AIRPORT_DATABASE,
-				SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
+			.get(SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
 				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO,
 				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
-		const dbEntity = airDb.applications[portableQuery.applicationIndex]
+		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error inserting into '${dbEntity.name}'.'
@@ -172,7 +172,7 @@ appears more than once in the Columns clause`)
 
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal) {
-			systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)
+			systemWideOperationId = await getSysWideOpId(this.airportDatabase, sequenceGenerator)
 		}
 
 		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {

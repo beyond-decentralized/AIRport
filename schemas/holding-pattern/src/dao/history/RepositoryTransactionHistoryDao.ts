@@ -1,21 +1,12 @@
 import {
-	AIRPORT_DATABASE,
 	ALL_FIELDS,
 	and,
-	distinct,
-	IQNumberField,
-	IQOrderableField,
-	JSONLogicalOperation,
 	or,
-	RawFieldQuery,
 	Y
 } from '@airport/air-control'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
-	ChangeType,
 	ensureChildArray,
-	ensureChildJsMap,
-	ensureChildJsSet,
 	EntityId,
 	JSONBaseOperation,
 	TransactionType
@@ -23,30 +14,21 @@ import {
 import {
 	Actor_Id,
 	RecordHistoryActorRecordId,
-	RepositoryEntity_ActorRecordId,
 	Repository_Id,
-	RepositoryTransactionHistory_Id
 } from '../../ddl/ddl'
 import {
-	OPERATION_HISTORY_DUO,
-	RECORD_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DAO,
 } from '../../tokens'
-import { IOperationHistoryDuo } from '../../duo/history/OperationHistoryDuo'
-import { IRecordHistoryDuo } from '../../duo/history/RecordHistoryDuo'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
 	IRepositoryTransactionHistory,
 	Q,
-	QActor,
 	QOperationHistory,
 	QRecordHistory,
 	QRecordHistoryNewValue,
-	QRepository,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
-	RepositoryTransactionHistoryESelect
 } from '../../generated/generated'
 import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
 
