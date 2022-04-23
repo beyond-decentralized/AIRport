@@ -24,7 +24,7 @@ export function container(
 	}
 	if (!(iocContainer instanceof Container)) {
 		throw new Error('"container" property of injectable is not an' +
-			'instance of @airport/di Container');
+			'instance of @airport/direction-indicator Container');
 	}
 
 	return iocContainer;

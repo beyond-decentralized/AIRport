@@ -1,9 +1,9 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
 import { ITransactionContext } from '@airport/terminal-map'
 import { transactional } from '@airport/tower'
@@ -137,4 +137,4 @@ export class SynchronizationInManager
 
 }
 
-DI.set(SYNCHRONIZATION_IN_MANAGER, SynchronizationInManager)
+DEPENDENCY_INJECTION.set(SYNCHRONIZATION_IN_MANAGER, SynchronizationInManager)

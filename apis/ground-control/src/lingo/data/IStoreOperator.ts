@@ -1,4 +1,4 @@
-import {IContext}      from '@airport/di'
+import {IContext}      from '@airport/direction-indicator'
 import {SQLDataType}   from '../core/field/JSONClause'
 import {PortableQuery} from '../query/PortableQuery'
 import {DbColumn}      from '../application/Property'

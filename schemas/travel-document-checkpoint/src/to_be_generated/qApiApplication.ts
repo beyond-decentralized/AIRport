@@ -2,7 +2,7 @@ import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
 }                      from '@airport/air-control'
-import {DI}            from '@airport/di'
+import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
 import {
 	DbApplication,
 	getFullApplicationName
@@ -41,7 +41,7 @@ export const Q_APPLICATION: LocalQApplication = <any>{
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
-DI.db().eventuallyGet(AIRPORT_DATABASE).then((
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
 	airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q

@@ -1,5 +1,5 @@
 import { and } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	User_Id,
 	Terminal_UuId
@@ -92,5 +92,5 @@ export class TerminalDao
 
 }
 
-DI.set(TERMINAL_DAO, TerminalDao)
+DEPENDENCY_INJECTION.set(TERMINAL_DAO, TerminalDao)
 

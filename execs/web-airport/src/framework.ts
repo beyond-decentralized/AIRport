@@ -1,4 +1,4 @@
-import { IOC } from '@airport/di'
+import { IOC } from '@airport/direction-indicator'
 import { TRANSACTIONAL_RECEIVER } from '@airport/terminal-map'
 import { injectTransactionalReceiver } from '@airport/web-terminal'
 import { startDb } from '@airport/sqljs'

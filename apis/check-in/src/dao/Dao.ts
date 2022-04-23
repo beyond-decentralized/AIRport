@@ -15,9 +15,9 @@ import {
 	Y
 } from '@airport/air-control';
 import {
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	EntityId as DbEntityId,
 	ENTITY_STATE_MANAGER,
@@ -149,7 +149,7 @@ export abstract class Dao<Entity,
 		entityIdInfo: EntityInfo,
 		context?: IContext,
 	): void {
-		const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);
+		const entityStateManager = DEPENDENCY_INJECTION.db().getSync(ENTITY_STATE_MANAGER);
 		if (entityIdInfo instanceof Array) {
 			for (const anEntity of entityIdInfo) {
 				entityStateManager.markForDeletion(anEntity);

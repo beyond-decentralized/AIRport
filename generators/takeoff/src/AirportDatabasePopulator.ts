@@ -1,4 +1,4 @@
-import {DI}               from '@airport/di'
+import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {AIRPORT_DATABASE_POPULATOR} from './tokens'
 
 export interface IAirportDatabasePopulator {
@@ -20,4 +20,4 @@ export class AirportDatabasePopulator
 
 }
 
-DI.set(AIRPORT_DATABASE_POPULATOR, AirportDatabasePopulator)
+DEPENDENCY_INJECTION.set(AIRPORT_DATABASE_POPULATOR, AirportDatabasePopulator)

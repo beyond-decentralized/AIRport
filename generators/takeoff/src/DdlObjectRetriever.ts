@@ -12,7 +12,7 @@ import {
 	APPLICATION_RELATION_DAO,
 	APPLICATION_VERSION_DAO
 } from '@airport/airspace'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainId,
 	ApplicationIndex,
@@ -159,4 +159,4 @@ export class DdlObjectRetriever
 
 }
 
-DI.set(DDL_OBJECT_RETRIEVER, DdlObjectRetriever)
+DEPENDENCY_INJECTION.set(DDL_OBJECT_RETRIEVER, DdlObjectRetriever)

@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	User_UuId,
 	User_Username
@@ -85,4 +85,4 @@ export class UserDao
 
 }
 
-DI.set(USER_DAO, UserDao)
+DEPENDENCY_INJECTION.set(USER_DAO, UserDao)

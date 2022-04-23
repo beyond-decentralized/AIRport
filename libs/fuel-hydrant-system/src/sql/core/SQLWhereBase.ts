@@ -3,7 +3,7 @@ import {
 	JSONLogicalOperation,
 	Parameter,
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -63,7 +63,7 @@ export abstract class SQLWhereBase
 		context: IFuelHydrantContext,
 		// valuesArray: (boolean | Date | number | string)[] = null
 	): any[] {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		// let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
@@ -108,7 +108,7 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		const [sqlAdaptor, validator] = DI.db()
+		const [sqlAdaptor, validator] = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR)
 
 		let aValue = aField.v
@@ -134,7 +134,7 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		const [validator, subStatementSqlGenerator] = DI.db()
+		const [validator, subStatementSqlGenerator] = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR, SUB_STATEMENT_SQL_GENERATOR)
 
 		let columnName
@@ -329,7 +329,7 @@ export abstract class SQLWhereBase
 		columnName: string,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		let selectSqlFragment = `${value.ta}.${columnName}`

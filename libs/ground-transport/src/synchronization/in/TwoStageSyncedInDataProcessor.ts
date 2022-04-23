@@ -1,7 +1,7 @@
 import {
 	RepositorySynchronizationMessage
 } from '@airport/arrivals-n-departures'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ApplicationVersionId,
 	TransactionType
@@ -175,4 +175,4 @@ export class TwoStageSyncedInDataProcessor
 
 }
 
-DI.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor)
+DEPENDENCY_INJECTION.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor)

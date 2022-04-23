@@ -2,7 +2,7 @@ import {
 	IQEntityInternal,
 	Parameter
 } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
@@ -253,4 +253,4 @@ export class PostgreSqlFunctionAdaptor
 	}
 }
 
-DI.set(SQL_QUERY_ADAPTOR, PostgreQueryAdaptor);
+DEPENDENCY_INJECTION.set(SQL_QUERY_ADAPTOR, PostgreQueryAdaptor);

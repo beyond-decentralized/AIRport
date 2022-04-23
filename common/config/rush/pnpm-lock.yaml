@@ -18,7 +18,7 @@ dependencies:
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz_typescript@4.5.2'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
-  '@rush-temp/di': 'file:projects/di.tgz_typescript@4.5.2'
+  '@rush-temp/direction-indicator': 'file:projects/direction-indicator.tgz_typescript@4.5.2'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
   '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
@@ -96,12 +96,6 @@ dependencies:
   zipson: 0.2.12
 lockfileVersion: 5.1
 packages:
-  /@babel/code-frame/7.10.4:
-    dependencies:
-      '@babel/highlight': 7.10.4
-    dev: false
-    resolution:
-      integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==
   /@babel/code-frame/7.14.5:
     dependencies:
       '@babel/highlight': 7.14.5
@@ -110,24 +104,12 @@ packages:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-9pzDqyc6OLDaqe+zbACgFkb6fKMNG6CObKpnYXChRsvYGyEdc7CA2BaqeOM+vOtCS5ndmJicPJhKAwYRI6UfFw==
-  /@babel/helper-validator-identifier/7.10.4:
-    dev: false
-    resolution:
-      integrity: sha512-3U9y+43hz7ZM+rzG24Qe2mufW5KhvFg/NhnNph+i9mgCtdTCtMJuI1TMkrIUiK7Ix4PYlRF9I5dhqaLYA/ADXw==
   /@babel/helper-validator-identifier/7.14.9:
     dev: false
     engines:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-pQYxPY0UP6IHISRitNe8bsijHex4TWZXi2HwKVsjPiltzlhse2znVcm9Ace510VT1kxIHjGJCZZQBX2gJDbo0g==
-  /@babel/highlight/7.10.4:
-    dependencies:
-      '@babel/helper-validator-identifier': 7.10.4
-      chalk: 2.4.2
-      js-tokens: 4.0.0
-    dev: false
-    resolution:
-      integrity: sha512-i6rgnR/YgPEQzZZnbTHHuZdlE8qyoBNalD6F+q4vAFlcMEcqmkoG+mPqJYJCo63qPf74+Y1UZsl3l6f7/RIkmA==
   /@babel/highlight/7.14.5:
     dependencies:
       '@babel/helper-validator-identifier': 7.14.9
@@ -390,6 +372,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==
+  /@types/pg/8.6.5:
+    dependencies:
+      '@types/node': 16.11.2
+      pg-protocol: 1.5.0
+      pg-types: 2.2.0
+    dev: false
+    resolution:
+      integrity: sha512-tOkGtAqRVkHa/PVZicq67zuujI4Oorfglsr2IbKofDwBSysnaqSx7W1mDqFqdkGE6Fbgh+PZAl0r/BWON/mozw==
   /@types/pug/2.0.5:
     dev: false
     resolution:
@@ -1977,6 +1967,14 @@ packages:
       pg: '>=8.0'
     resolution:
       integrity: sha512-TVHxR/gf3MeJRvchgNHxsYsTCHQ+4wm3VIHSS19z8NC0+gioEhq1okDY1sm/TYbfoP6JLFx01s0ShvZ3puP/iQ==
+  /pg-pool/3.5.1_pg@8.7.3:
+    dependencies:
+      pg: 8.7.3_pg@8.7.3
+    dev: false
+    peerDependencies:
+      pg: '>=8.0'
+    resolution:
+      integrity: sha512-6iCR0wVrro6OOHFsyavV+i6KYL4lVNyYAB9RD18w66xSzN+d8b66HiwuP30Gp1SH5O9T82fckkzsRjlrhD0ioQ==
   /pg-protocol/1.5.0:
     dev: false
     resolution:
@@ -2013,6 +2011,26 @@ packages:
         optional: true
     resolution:
       integrity: sha512-7bdYcv7V6U3KAtWjpQJJBww0UEsWuh4yQ/EjNf2HeO/NnvKjpvhEIe/A/TleP6wtmSKnUnghs5A9jUoK6iDdkA==
+  /pg/8.7.3_pg@8.7.3:
+    dependencies:
+      buffer-writer: 2.0.0
+      packet-reader: 1.0.0
+      pg-connection-string: 2.5.0
+      pg-pool: 3.5.1_pg@8.7.3
+      pg-protocol: 1.5.0
+      pg-types: 2.2.0
+      pgpass: 1.0.4
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    peerDependencies:
+      pg: '*'
+      pg-native: '>=2.0.0'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+    resolution:
+      integrity: sha512-HPmH4GH4H3AOprDJOazoIcpI49XFsHCe8xlrjHkWiapdbHK+HLtbm/GQzXYAZwmPju/kzKhjaSfMACG+8cgJcw==
   /pgpass/1.0.4:
     dependencies:
       split2: 3.2.2
@@ -2253,12 +2271,6 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==
-  /resolve/1.15.1:
-    dependencies:
-      path-parse: 1.0.6
-    dev: false
-    resolution:
-      integrity: sha512-84oo6ZTtoTUpjgNEr5SJyzQhzL72gaRodsSfyxC/AXRvwu0Yse9H8eF9IpGo7b8YetZhlI6v7ZQ6bKBFV/6S7w==
   /resolve/1.20.0:
     dependencies:
       is-core-module: 2.6.0
@@ -2913,7 +2925,7 @@ packages:
       integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
   /tslint/5.20.1_typescript@4.5.2:
     dependencies:
-      '@babel/code-frame': 7.10.4
+      '@babel/code-frame': 7.14.5
       builtin-modules: 1.1.1
       chalk: 2.4.2
       commander: 2.20.3
@@ -2922,7 +2934,7 @@ packages:
       js-yaml: 3.13.1
       minimatch: 3.0.4
       mkdirp: 0.5.5
-      resolve: 1.15.1
+      resolve: 1.20.0
       semver: 5.7.1
       tslib: 1.14.1
       tsutils: 2.29.0_typescript@4.5.2
@@ -3194,28 +3206,28 @@ packages:
     dev: false
     name: '@rush-temp/air-control'
     resolution:
-      integrity: sha512-yDgr21KcmLcChzAuB9DYIa7ahVypimzsEJkGvOGRA5Y2M992KXXKYvD1J/K7gqPojQJk97cIWiEqazypkfkL+g==
+      integrity: sha512-8kPbkptM9JX/eCX8jD+TsmdWXLpYwRWsAelJcmmejC9F+DEgf9F9UfxBjP41og+J3cckSXLdjAl0pgMSDUjD2w==
       tarball: 'file:projects/air-control.tgz'
     version: 0.0.0
   'file:projects/airport-code.tgz':
     dev: false
     name: '@rush-temp/airport-code'
     resolution:
-      integrity: sha512-B6U5bvNWLlDTZQfxsfEMq+rUFtRX808K6f9vIhlC0bqInQCWV1GnmiimjNUyyqq04cUnM5Pesc7Z1rSHmuJpkA==
+      integrity: sha512-Hbl1JLs0y9thu+7/hHm0tltO0v24RNzeyXU5JFt8yymukuNWoQfY9KUis2LMxKpShblCG7OJrvFq/ctnB91ecg==
       tarball: 'file:projects/airport-code.tgz'
     version: 0.0.0
   'file:projects/airspace.tgz':
     dev: false
     name: '@rush-temp/airspace'
     resolution:
-      integrity: sha512-VY6S8Z1Fz54U4s4NF9U+/tGIm+0jsyIjL8JlwgRuQ1kg4OyxUGfZnqWq3js/tukrzih8LgjHYjbPTk/ieeEFWA==
+      integrity: sha512-ikwuIw795GDg4RV/EVk0dcLy5Tg+A2NG137c8YklCE4r5kVWas9mn1CMTxovsMG4uWAi/1mFrPjsJAqKTFqvHA==
       tarball: 'file:projects/airspace.tgz'
     version: 0.0.0
   'file:projects/arrivals-n-departures.tgz':
     dev: false
     name: '@rush-temp/arrivals-n-departures'
     resolution:
-      integrity: sha512-kl3LMc3/w/WLUzdfP7ppgcHO38FwoHeQR7NfYpjY3f60tFCU7qBJE/9FXDA4/Hp3mTZgrWiam74+iPzDzUeDCA==
+      integrity: sha512-uoRGWYp6cMPBhVQNRiWXr4O/4I5Iq7D12h2weiyA8gzDwea7XwhLutuU/u4s2N3auN1MT7ZMoKbAdQa4el8ogQ==
       tarball: 'file:projects/arrivals-n-departures.tgz'
     version: 0.0.0
   'file:projects/autopilot.tgz_typescript@4.5.2':
@@ -3229,7 +3241,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-tTxz0rezrxqlp67BLgcsR13MQS8t2AFc6mWR6IzOCKFaWlC90/f9HXpZAn7R/5IOfUG9E73pL7qkjurnfVSIAw==
+      integrity: sha512-NVOmS21jLEf+Xc4wr2AlIdAqyKcsdE+UkSEhRXG0vytBKXlrfCFJoNtOCAoH0muk4MoGHXT/GpYvH6h9lHwNDg==
       tarball: 'file:projects/autopilot.tgz'
     version: 0.0.0
   'file:projects/aviation-communication.tgz':
@@ -3257,27 +3269,27 @@ packages:
     dev: false
     name: '@rush-temp/check-in'
     resolution:
-      integrity: sha512-Lmi59piaePZXXlSHlK/DsuMCRrUkNuM7A8MHsUaSMYlT5thdZXy3Zt9lsp09XqpBrRvWh1TmsLnCBhfL/kB/DA==
+      integrity: sha512-GGewWEjdiZXlI2gbc96OFNWx3uYyPeat40lXLlCZ8dfCov7ZrMbAMPG8hxx/6fMNOoAU7Id4NHli0+x3j/XRXw==
       tarball: 'file:projects/check-in.tgz'
     version: 0.0.0
   'file:projects/cockroachdb.tgz':
     dev: false
     name: '@rush-temp/cockroachdb'
     resolution:
-      integrity: sha512-nvTuWm09CtJE2rIa0akm03mF+7roouCEueJzpJunTjjfEMhuAhRiHxXeaiB+773ZW/JOIdrV3vuDuq7ziweq5g==
+      integrity: sha512-vLL6ousGYYAr1ovhsJjW6oeEZXZwIy6v2aPVQhvqfhi4EdYBLc1lPlzduIlW1lNCiaVVNTZcq7DuTZO1F+vOcA==
       tarball: 'file:projects/cockroachdb.tgz'
     version: 0.0.0
-  'file:projects/di.tgz_typescript@4.5.2':
+  'file:projects/direction-indicator.tgz_typescript@4.5.2':
     dependencies:
       tslint: 5.20.1_typescript@4.5.2
     dev: false
-    id: 'file:projects/di.tgz'
-    name: '@rush-temp/di'
+    id: 'file:projects/direction-indicator.tgz'
+    name: '@rush-temp/direction-indicator'
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-TZt23YRxYfrkqWGEYgDT1xheyXngodPHa9hIi2UY9U3dUyAUyhT5ImzCuQroL+Sg1fLVsR7LIQMzkkRGEi3hKw==
-      tarball: 'file:projects/di.tgz'
+      integrity: sha512-aGqSq5pOo6zDaV5Z+wbdY/cTEqtOTb86iGhx+OGt2KriPLDDuUN+eWJviu9t/cbb94LmYsgJwkoZGuSWYscUZg==
+      tarball: 'file:projects/direction-indicator.tgz'
     version: 0.0.0
   'file:projects/fuel-hydrant-system.tgz':
     dependencies:
@@ -3287,7 +3299,7 @@ packages:
     dev: false
     name: '@rush-temp/fuel-hydrant-system'
     resolution:
-      integrity: sha512-50zXhTpGW/jj9KYxyh12eJsQS94ITSAYw/xF/ttE/hzHcaBgHXBNeXV/l2e+bmSWs9Vp+dzARWL+XDHUE44TXg==
+      integrity: sha512-r9/KCVnr7XZkHmvokdKCVO+CwTtTOtmZ6usRB3PUZfwHR0T4qYsAuYc4jynMiX1L97K12HdcD8OoVtv/bzxUlw==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
     version: 0.0.0
   'file:projects/go-terminal.tgz':
@@ -3296,7 +3308,7 @@ packages:
     dev: false
     name: '@rush-temp/go-terminal'
     resolution:
-      integrity: sha512-1KpVmsLEzk8fYNWmZAwWgFCWdbaqLTop2wDzdz0LL1xwm9iPgbq3h5G7SCXWEAXQXLFCaoHn63mT7YsYblNG3A==
+      integrity: sha512-wjtvI3XuX7oSmaU0D847ozhBXhz/YHeimsBpyPHlJkTXLC1t8cWm5IhYI/i7IY6sfoC/JfUnzGLYuM7CvhGlTg==
       tarball: 'file:projects/go-terminal.tgz'
     version: 0.0.0
   'file:projects/go-tower.tgz':
@@ -3305,7 +3317,7 @@ packages:
     dev: false
     name: '@rush-temp/go-tower'
     resolution:
-      integrity: sha512-0khoJLPg9MaNnagjKXb1h6eAsIGFRGqQXo8HDPJmBLHmQJuypAA5ezMkuszA5/F+SAft3kSDTdl+RfR9kMA/Hg==
+      integrity: sha512-ridcn6BydF3BJfGJ0EfjLtlZQVXBE8Y1uXdY77wVOdzZUXWhXJWnRXtYyVp8HTxxAjiIS5C3BYvMMhMMQBUgow==
       tarball: 'file:projects/go-tower.tgz'
     version: 0.0.0
   'file:projects/ground-control.tgz':
@@ -3314,7 +3326,7 @@ packages:
     dev: false
     name: '@rush-temp/ground-control'
     resolution:
-      integrity: sha512-wNxz7LwgdQprVhzoi3DBRmibuBacQFNL10VqFkDI7hb7Fg1AQKubB9tEkSVlot2NH4Dn8EmsYl8nNjZy8bMdPA==
+      integrity: sha512-QFIgFAEcSTSFGiKhvGf3KZiKY7oQS/2JjJ9dgzXlVabDIJnSelNjSpWM9Z89UIwmfQxEyF/4Gw258MCZ9I/fJQ==
       tarball: 'file:projects/ground-control.tgz'
     version: 0.0.0
   'file:projects/ground-transport.tgz':
@@ -3327,7 +3339,7 @@ packages:
     dev: false
     name: '@rush-temp/ground-transport'
     resolution:
-      integrity: sha512-TVryKKN0QngIKfFZAg6wxnLcDnktD5CruMpxFUi8yJQEb6kmq03tFjqnvFVvQZwbdN3/fvDhq60v/FLmQlfqjQ==
+      integrity: sha512-otja81wWOTOtkf/IvXrQLJYi2qkHZSdeZ5jqE+Jyx6E2jDactbNY8B1jh20nDmuYOFKGU6zSMMPZqUd2tGjr5Q==
       tarball: 'file:projects/ground-transport.tgz'
     version: 0.0.0
   'file:projects/holding-pattern.tgz':
@@ -3336,7 +3348,7 @@ packages:
     dev: false
     name: '@rush-temp/holding-pattern'
     resolution:
-      integrity: sha512-qBrznNY43wt10Yafw7cstvVF0qmOXEHDj0P6np5DbHNUZpTfQCdqjv/Ki/lOiMVC/8NrQP4b3dO3C8+LC6eWiQ==
+      integrity: sha512-VcWzYdqrccUAHL02qeO/NIjrUcTDwPs8ODGDhjC6CtKPFUKcT63dvD6BYGjBhanFfjI31QLdUd0S92n+H7ZfCg==
       tarball: 'file:projects/holding-pattern.tgz'
     version: 0.0.0
   'file:projects/hw-control.tgz':
@@ -3345,7 +3357,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-control'
     resolution:
-      integrity: sha512-eVkwaxqk51v+vmlI6W6Q+d1iygTV0UzPAzSSgZiBINzHaiXcHBBBVjJL3PWdfJPZTpELMkjQ9hQpxUhdy6HiYg==
+      integrity: sha512-hOV0lzweKy6vPPhK7nszfHU+Ex5lp2OqXlwf49W7t7q07ypgvTllwTNTCghm5WSbOy/b3hKY032JxV3x5FAB4Q==
       tarball: 'file:projects/hw-control.tgz'
     version: 0.0.0
   'file:projects/hw-driveway.tgz':
@@ -3355,7 +3367,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-driveway'
     resolution:
-      integrity: sha512-+vb869yvEESRR7DOax6U//MHhf+3twEdVBzFpyskYcLNwZVonVd4BQz656yXZlI/4L6oimxkRwY72BT9sm/1eA==
+      integrity: sha512-08Kf1BV90QN2Si3iuuzp1+QJ/GsTkkqAWVz/e/0YnNrrr21Fml4YXa3zl+EhesCkMS4FK+xgNY9faJgu5x3ONQ==
       tarball: 'file:projects/hw-driveway.tgz'
     version: 0.0.0
   'file:projects/hw-flow.tgz':
@@ -3380,7 +3392,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-flow'
     resolution:
-      integrity: sha512-ifK7Uz1MYaeFfpwuXF0sdnITt83XL5wbZz8YHeTtxBGFPp8GNUslZyVlS4f9cC26keOKgovfHENWhQOUAKod9w==
+      integrity: sha512-vXNWDI9TH/R1ZBLoxw2BiCMF+WDc6QD24OXWvKNYCh8kPiOPrHRQL/RzxaDAV6AEa5t2SWY5fDeoGSq2wDdvGg==
       tarball: 'file:projects/hw-flow.tgz'
     version: 0.0.0
   'file:projects/hw-scylladb.tgz':
@@ -3389,7 +3401,7 @@ packages:
     dev: false
     name: '@rush-temp/hw-scylladb'
     resolution:
-      integrity: sha512-uw49EEpztD7HmzeJ1UnoZx3JChI4WVvQnM7OJ0sxW4eS2FIDmIRO7skJWjGGw85et+bKnfo5lvR7oKA8wuc7PQ==
+      integrity: sha512-idoxJAFsDVPfgi5pC5g/L4G6HLjyXimzsHj3U8/Oh9FGNmbUflSjdATLinLl2RizTmX/Ol05zngjUYQh9BeEbQ==
       tarball: 'file:projects/hw-scylladb.tgz'
     version: 0.0.0
   'file:projects/hw-vespa.tgz':
@@ -3399,14 +3411,14 @@ packages:
     dev: false
     name: '@rush-temp/hw-vespa'
     resolution:
-      integrity: sha512-W/aIcOO8EgYJh35vfNetXYLcXO5W2Yfp1kqNnweiesa6qg/Yiyw2RHNTj0MWZt0x5XLsl/0aFgBjiLUSCGf00g==
+      integrity: sha512-/3LygrBhuOx2WSJvTPNnKvycReHB46qH1zGUowNn6cDOoEwHJslDhkvNWsIbvALmzCKqd56IP5ut8iArwFZH2g==
       tarball: 'file:projects/hw-vespa.tgz'
     version: 0.0.0
   'file:projects/landing.tgz':
     dev: false
     name: '@rush-temp/landing'
     resolution:
-      integrity: sha512-JEMq0eUT3s1XUbX/CMZl7QnmdQQJRWBY/kWCheLsgetNoN9c3YU/u6sbu+Ur2hNhCalpaT6RR1y5DUQg0X4vTA==
+      integrity: sha512-ILygSkr9DPXDsuM2GKQZu6FbgfeFj0W25P6ZgKurzFi8P1DreBk29mrfdVjNU33M9QuuHibpXVM7ztoxfrHz7g==
       tarball: 'file:projects/landing.tgz'
     version: 0.0.0
   'file:projects/moving-walkway.tgz':
@@ -3415,7 +3427,7 @@ packages:
     dev: false
     name: '@rush-temp/moving-walkway'
     resolution:
-      integrity: sha512-aqN0ONI1JPwx9Al+Rddq0YbnjrD+n0N/Vu6PNMfyDLStJKz8YyqyZ51QqMdWSNtCNBdTzNHzp4fyiv5aXVeZqQ==
+      integrity: sha512-zD6ukBEfzrW/3SvzICV0f14sfNxlsCJ8zn2GxxGZK1notCYXbONNkivDWcLi4IWw3x1pge+wQlnnYKL1MYyvdQ==
       tarball: 'file:projects/moving-walkway.tgz'
     version: 0.0.0
   'file:projects/mysql.tgz':
@@ -3424,7 +3436,7 @@ packages:
     dev: false
     name: '@rush-temp/mysql'
     resolution:
-      integrity: sha512-a8OPpQHikcQG65fzTuSZU4cVC2GtULKNCzHk50+nj6t+Aqjufgy3Tpzsv70ClwXtvq/HZXilzSHgqu248vghQg==
+      integrity: sha512-+p6M8pecnTEXV4Kj4x1gcszyEtglI7SL1uKnjZnI3y5ZUt1EGMi6sE9UiXWXaxO5XGKJ2UpcfKLdzNTbh4Fhmw==
       tarball: 'file:projects/mysql.tgz'
     version: 0.0.0
   'file:projects/nonhub-client.tgz':
@@ -3441,7 +3453,7 @@ packages:
     dev: false
     name: '@rush-temp/nonhub-client'
     resolution:
-      integrity: sha512-AKs/TJ3zUvPSfReD9nII0feohwNmmfYQx5tzS8PMJxGjnAlF7pxJ+GsmMVWMsXuxtxx9p9mbFGHM7WXu3bRRfw==
+      integrity: sha512-ZlTJuqw4xeyTB9Cvgd7thQfiEUVItT72jeuM62QOJBsA7UGb6rOnPlYX+4DG6hm9MuAHfz0ZKtapERykBQWFZQ==
       tarball: 'file:projects/nonhub-client.tgz'
     version: 0.0.0
   'file:projects/nonhub-in-memory-server.tgz':
@@ -3495,13 +3507,13 @@ packages:
   'file:projects/postgres.tgz':
     dependencies:
       '@types/node': 16.11.2
-      '@types/pg': 8.6.1
-      pg: 8.7.1_pg@8.7.1
+      '@types/pg': 8.6.5
+      pg: 8.7.3_pg@8.7.3
       pg-connection-string: 2.5.0
     dev: false
     name: '@rush-temp/postgres'
     resolution:
-      integrity: sha512-xiOZFEc0CfAorGg+Kj5skCCPmsG1PHTSrxr3vt7p2WsgzIIlnSh6SwtjmTmZFMaqno7da3zGvBMhZ6z+0ynklw==
+      integrity: sha512-MZ6Qbk/tkc+OSUevFouo/JiQU33hlhmMyM7xSc1LLK148jlvvcoqeSPKN/9JaTeiFqiJEP0byRAX4o+z3VUwnA==
       tarball: 'file:projects/postgres.tgz'
     version: 0.0.0
   'file:projects/pressurization.tgz_typescript@4.5.2':
@@ -3513,7 +3525,7 @@ packages:
     peerDependencies:
       typescript: '*'
     resolution:
-      integrity: sha512-AHNQm77ERlxUGVl60M4/mjmKvm1PPzenKTQbETETHo3KooPxFlARBGKvg1OxXWuW+Jt1UBUHzourwu1uKBOIqA==
+      integrity: sha512-s40jbDRhAk9qZ6hjQsGMCKJk8yTdVlB0bd/Mq28WFVSSqpslVW+6nNOQIYrRStgi+VTNWa6iojmq/75NyP3m7w==
       tarball: 'file:projects/pressurization.tgz'
     version: 0.0.0
   'file:projects/processor-common.tgz':
@@ -3544,7 +3556,7 @@ packages:
     dev: false
     name: '@rush-temp/runway'
     resolution:
-      integrity: sha512-IUwkOfo+5Ag6c4bSoGy8/TZsFF4DFMPOg2ydNmErRq2Ee3iT6kr12B/d+DKKGRbdnBp0Eo4UgVcweD5gOmrA+g==
+      integrity: sha512-8LZZyoCW2P0ACnioFfSKuko64aKHrcp8WmSsAGzuY0nXfxRGEBmsSp5alNuu004JPS8fDBGFPMy/ywqF6/721Q==
       tarball: 'file:projects/runway.tgz'
     version: 0.0.0
   'file:projects/security-check.tgz':
@@ -3553,21 +3565,21 @@ packages:
     dev: false
     name: '@rush-temp/security-check'
     resolution:
-      integrity: sha512-Jb+bMkZ2vbyjnCkJHYT1onzuxOGm+UtkL0RIXH4f4Bgc8UvUrARcP0E+LoUF/DHTL2I8+6z5dS7YnGqRf/wd4g==
+      integrity: sha512-OaspHfsIlzHLRdhfm8AN7AJTd4XYJP0P2rPzdj8ysIkQ5M4KeNnlmwaV+6srPdL21mPxkwcEKhYllQiT2PYt/A==
       tarball: 'file:projects/security-check.tgz'
     version: 0.0.0
   'file:projects/sequence.tgz':
     dev: false
     name: '@rush-temp/sequence'
     resolution:
-      integrity: sha512-m7YcyMv6AQ0GPICDk/xduQVpgEWmKjQhX72MlyNpL7kUyf/Zio9J8cOeuBLQsqUKlMK7gil2+3x6C4+35r8m+w==
+      integrity: sha512-vCG70S8vBoyTr45MwZwOla8Tz+lO9yrvZgqGFqVTYj8hItLju3ReDHIgoDNnqRr/6CiwrjR0KRQPtegGNJn1Cw==
       tarball: 'file:projects/sequence.tgz'
     version: 0.0.0
   'file:projects/sqlite.tgz':
     dev: false
     name: '@rush-temp/sqlite'
     resolution:
-      integrity: sha512-aSdRaxUWv2mHO1fjA+WHaC3lWsKI406kjxmL9hWke5OlFtyz5zfSBywEDNaIXAY2Bri9b0eFUhQ7FzcCyA04Ng==
+      integrity: sha512-4V6OC+DTPpxHZPId3EaVtBtoFugL0DIITF/NVnr2C1nhXeGKZwMA2t4POujJZfzH47IAT+mjsQXsJ7MOxAturg==
       tarball: 'file:projects/sqlite.tgz'
     version: 0.0.0
   'file:projects/sqljs.tgz':
@@ -3579,14 +3591,14 @@ packages:
     dev: false
     name: '@rush-temp/sqljs'
     resolution:
-      integrity: sha512-lB/AO1AnYHfWnnksCkd6v53WaAZfbGMiCe0a0QZTCbLavjOG6sr/C4SmPl0/s0q7amNjNjdJFy0UZo3A/5UTHQ==
+      integrity: sha512-uSGSurAmoWNsVtAKkLeVqv2H9B72Bqb3wg+gwQyDIQjBe9YewFbCKf1Jox1HZWoOUQerr5lSjcHLGFENLsXzDA==
       tarball: 'file:projects/sqljs.tgz'
     version: 0.0.0
   'file:projects/takeoff.tgz':
     dev: false
     name: '@rush-temp/takeoff'
     resolution:
-      integrity: sha512-/kTrB3HW2OI5YS3x7148LkUQxKlmGFHq/Ehljh/1omHb5QdLNcxEOESs8VCy+mXtTi0qdWkSKNbtJwHfYasJow==
+      integrity: sha512-SNJ3CiRjjA7ByZuVqAVvaD8qFQHPlj1v8EdaZdhRF7TCLQtIUXQ6Ni1eqvWaaX3T3k6gsd43UHSEpCYzggceFA==
       tarball: 'file:projects/takeoff.tgz'
     version: 0.0.0
   'file:projects/taxiway.tgz':
@@ -3596,7 +3608,7 @@ packages:
     dev: false
     name: '@rush-temp/taxiway'
     resolution:
-      integrity: sha512-x1p2vR9ZWkiv0y07+jyaNBmkfzCXjnf5U+dCORioheQFDtvHGL6whU5a+sA63YdaWLadu5yvlRqUWD92II35sg==
+      integrity: sha512-fczf3DcUWy6IcZGV+LKfzS5d9+CKN3npvmRh3pnpzUqcEQDAFt8FBzbTY8AaA2sNN/UW19xR9a64vqpm0aXz5A==
       tarball: 'file:projects/taxiway.tgz'
     version: 0.0.0
   'file:projects/terminal-map.tgz':
@@ -3605,7 +3617,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal-map'
     resolution:
-      integrity: sha512-tZLBQ82RcwpRY3XybdonZAvk4J5iaWtD8OUCxhFieJdcZfk/tGC8CAWjr8lDKaGNy7017ih87Xbxqs1UBcedZw==
+      integrity: sha512-CTVQcQJIoMnxJ129JGRxGybTQ9U5e2IcoQsJrOZgjlKA7mhl9smgNauSnIt6rzBAAegRAHxjVi9JMAjFKgu9NQ==
       tarball: 'file:projects/terminal-map.tgz'
     version: 0.0.0
   'file:projects/terminal.tgz':
@@ -3616,7 +3628,7 @@ packages:
     dev: false
     name: '@rush-temp/terminal'
     resolution:
-      integrity: sha512-ms82ptVu4jA6p3tYDTq5HKI8zrEeZv7MDf6B5dHLOOQiJr2i2kcFUqLEnlQwQWJglG8rdYLXiI4jjLHEHD6KaQ==
+      integrity: sha512-BaTbErPrShqA+1QiAE8ZvVrzUfOsv3X8f6nwVm22GDFEl3aRPiVOnCkktNt4d6POyfNC1mRtPSYLCdaGgmIpYg==
       tarball: 'file:projects/terminal.tgz'
     version: 0.0.0
   'file:projects/tower.tgz':
@@ -3625,7 +3637,7 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-C7YL2dn2fvO0t+zp2sod4EL0p5IX3sLLYzQYERvSADGA3XOS1aB+/Hh6iyahOfywvlumH2GUlaNqi/GD61sLzg==
+      integrity: sha512-omVuoTO9T1pgo2ELV5hBKf59bLIofB/Z5blnffZzEFOoR1whTZ2YMLvhkcotx3Idz1x+XBYz9+ceVIPhK4yPEg==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint-client.tgz':
@@ -3648,7 +3660,7 @@ packages:
     dev: false
     name: '@rush-temp/travel-document-checkpoint'
     resolution:
-      integrity: sha512-ok7CQSlFTIfJYUKzhF8RoCCA5u76CT+A+YIelmwiQh055DwFvkzehKFn/LGyMKW+cPBOs8J/aKJ8i1U0e3rqjg==
+      integrity: sha512-TFEoyVAxUUJIxs1uLXWp66+jhd+mTiLH5YdIROpXFq8IeTkaU+D9YbD+h1x8GRkSlWC/tuqSfoHNglkl2OORmg==
       tarball: 'file:projects/travel-document-checkpoint.tgz'
     version: 0.0.0
   'file:projects/vhf-radio.tgz':
@@ -3666,7 +3678,7 @@ packages:
     dev: false
     name: '@rush-temp/vhf-radio'
     resolution:
-      integrity: sha512-L2+yU+kQw0YMFYhM08vachUgAyxd4mJIXwJABY2Va3KVXnm9B9bOdzRc81igMriuHmXgdBK1lRgMrU96meCQzg==
+      integrity: sha512-zS1QPDDIR9sn/ghElPr+/H8YnSBzy84rIgoElZ+QQlyI3H3VFcR0k9H+ztfU593m7xlSa2LR4FmdpopUW/tFqQ==
       tarball: 'file:projects/vhf-radio.tgz'
     version: 0.0.0
   'file:projects/web-airport.tgz':
@@ -3691,7 +3703,7 @@ packages:
     dev: false
     name: '@rush-temp/web-airport'
     resolution:
-      integrity: sha512-Hj3yrRLob3A1uzvKFjqgRhXGdlmS3VC/F+i07n4MnYFViOOkGr7sqy8y+yUl1RYAHT/byjrsAuELJAcd1pkVXA==
+      integrity: sha512-2zHHZgI4ByXGxTc0J2xuwMcw4GXI2eERhZZH5JoZYzG2CAfISqDivDjtZqWaLOHVD9DGvfUOBBdQKMoY6pPQ0g==
       tarball: 'file:projects/web-airport.tgz'
     version: 0.0.0
   'file:projects/web-terminal.tgz':
@@ -3702,7 +3714,7 @@ packages:
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-sJVZZy8LPOZ0pur1hpALNn1ndPRIivs7j8RM+w/8J0e0HO3aQRqkkUzZUDMsO7vMnsdIj4yz4574pYT7k1pfvQ==
+      integrity: sha512-Yc89gwl5OY25rKRHPQmjo6Q9GJcUqHur1Mhw7sQRf9uPtWWmXE1Nlkjons3hkhuJqpCH08Uex2xLPvujG//erQ==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -3713,7 +3725,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-WLIIwX+Bstl+5L5PSoVvfuTdlJOGLaAAp+dvbyKIfOjEGoUkBS/oCDvDMsX1ci7sSndSnZtlZJhd8z1KOc5xMA==
+      integrity: sha512-Z0iZ1QYyZv7AXb0AGr/QjsKFV7gtUtkyVmsf3EDoTT1191Q95WA1jsGClOftZIlLQf7zTdqGqWgHlgYI9Orr2g==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
 registry: ''
@@ -3737,7 +3749,7 @@ specifiers:
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
   '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
-  '@rush-temp/di': 'file:./projects/di.tgz'
+  '@rush-temp/direction-indicator': 'file:./projects/direction-indicator.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
   '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
   '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'

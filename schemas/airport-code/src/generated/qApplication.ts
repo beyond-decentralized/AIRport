@@ -6,7 +6,7 @@ import {
 	diSet as dS,
 	duoDiSet as ddS
 }                      from '@airport/check-in'
-import {DI}            from '@airport/di'
+import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
 import {
 	DbApplication,
 	EntityId,
@@ -56,7 +56,7 @@ export function duoDiSet(
 	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DI.db().eventuallyGet(AIRPORT_DATABASE).then((
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
 	airDb
 ) => {
 	airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q

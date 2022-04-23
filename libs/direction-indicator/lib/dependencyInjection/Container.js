@@ -246,18 +246,18 @@ export class RootContainer extends Container {
 }
 export class InversionOfControl {
     async get(...tokens) {
-        return await DI.db().get(...tokens);
+        return await DEPENDENCY_INJECTION.db().get(...tokens);
     }
     async eventuallyGet(...tokens) {
-        return await DI.db().eventuallyGet(...tokens);
+        return await DEPENDENCY_INJECTION.db().eventuallyGet(...tokens);
     }
     getSync(...tokens) {
-        return DI.db().getSync(...tokens);
+        return DEPENDENCY_INJECTION.db().getSync(...tokens);
     }
 }
-export const DI = new RootContainer();
+export const DEPENDENCY_INJECTION = new RootContainer();
 if (typeof window !== 'undefined') {
-    window.DI = DI;
+    window.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
     window.lib = lib;
     window.domain = domain;
 }

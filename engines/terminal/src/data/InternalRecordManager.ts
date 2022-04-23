@@ -1,11 +1,11 @@
 import {
     container,
-    DI,
+    DEPENDENCY_INJECTION,
     IContext
-} from "@airport/di";
+} from "@airport/direction-indicator";
 import {
     DomainName,
-    ENTITY_STATE_MANAGER
+    IEntityStateManager
 } from "@airport/ground-control";
 import {
     Actor,
@@ -44,6 +44,8 @@ export interface IInternalRecordManager {
 
 export class InternalRecordManager
     implements IInternalRecordManager {
+
+    entityStateManager: IEntityStateManager
 
     async ensureApplicationRecords(
         application: JsonApplicationWithLastIds,
@@ -139,21 +141,21 @@ export class InternalRecordManager
     private async updateDomain(
         application: JsonApplicationWithLastIds,
     ): Promise<IDomain> {
-        const [domainDao, entityStateManager, terminalStore]
+        const [domainDao, terminalStore]
             = await container(this)
-                .get(DOMAIN_DAO, ENTITY_STATE_MANAGER,
+                .get(DOMAIN_DAO,
                     TERMINAL_STORE)
         let domain = terminalStore.getDomainMapByName().get(application.domain)
 
-        if (domain && entityStateManager.getOriginalValues(domain)) {
+        if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
         }
         let dbDomain = await domainDao.findByName(application.domain)
         let updatedDomain
         if (domain) {
             if (dbDomain) {
-                entityStateManager.setOriginalValues(
-                    entityStateManager.getOriginalValues(dbDomain), domain)
+                this.entityStateManager.setOriginalValues(
+                    this.entityStateManager.getOriginalValues(dbDomain), domain)
                 updatedDomain = domain
             }
         } else {
@@ -192,4 +194,4 @@ export class InternalRecordManager
         return updatedDomain
     }
 }
-DI.set(INTERNAL_RECORD_MANAGER, InternalRecordManager)
+DEPENDENCY_INJECTION.set(INTERNAL_RECORD_MANAGER, InternalRecordManager)

@@ -1,7 +1,7 @@
 import {
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-}                                  from '@airport/di';
+}                                  from '@airport/direction-indicator';
 import { QueryResultType }         from '@airport/ground-control';
 import {
 	Observable,

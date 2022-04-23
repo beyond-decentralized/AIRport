@@ -23,11 +23,11 @@ import {
 } from '@airport/air-control'
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import {
-	ENTITY_STATE_MANAGER,
+	IEntityStateManager,
 	ISaveResult,
 	PortableQuery,
 	TRANSACTIONAL_CONNECTOR
@@ -39,6 +39,8 @@ import { ENTITY_COPIER } from '../tokens'
  */
 export class DatabaseFacade
 	implements IDatabaseFacade {
+
+	entityStateManager: IEntityStateManager
 
 	name: string
 
@@ -170,14 +172,14 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, entityStateManager, applicationUtils,
+		const [updateCacheManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const saveResult = await transactionalConnector.save(entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			entityStateManager, applicationUtils, new Set())
+			this.entityStateManager, applicationUtils, new Set())
 
 		return saveResult
 	}
@@ -192,15 +194,15 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, entityStateManager, applicationUtils,
+		const [updateCacheManager, applicationUtils,
 			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const saveResult = await transactionalConnector
 			.saveToDestination(repositoryDestination, entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			entityStateManager, applicationUtils, new Set())
+			this.entityStateManager, applicationUtils, new Set())
 
 		return saveResult
 	}
@@ -212,15 +214,15 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [updateCacheManager, entityCopier, entityStateManager, applicationUtils]
+		const [updateCacheManager, entityCopier, applicationUtils]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
-				ENTITY_STATE_MANAGER, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
-			.copyEntityForProcessing(entity, dbEntity, entityStateManager, context)
+			.copyEntityForProcessing(entity, dbEntity, this.entityStateManager, context)
 		updateCacheManager.setOperationState(
-			entityCopy, dbEntity, entityStateManager, applicationUtils, new Set())
+			entityCopy, dbEntity, this.entityStateManager, applicationUtils, new Set())
 
 		return entityCopy
 	}
@@ -294,7 +296,7 @@ export class DatabaseFacade
 
 }
 
-DI.set(DATABASE_FACADE, DatabaseFacade)
+DEPENDENCY_INJECTION.set(DATABASE_FACADE, DatabaseFacade)
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {

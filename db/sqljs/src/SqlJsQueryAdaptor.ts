@@ -1,4 +1,4 @@
-import {DI}                 from '@airport/di'
+import {DEPENDENCY_INJECTION}                 from '@airport/direction-indicator'
 import {SQL_QUERY_ADAPTOR}  from '@airport/fuel-hydrant-system'
 import {SqLiteQueryAdaptor} from "@airport/sqlite";
 import {SQLDataType}        from "@airport/ground-control";
@@ -18,4 +18,4 @@ export class SqlJsQueryAdaptor extends SqLiteQueryAdaptor {
 		return resultRow[index];
 	}
 }
-DI.set(SQL_QUERY_ADAPTOR, SqlJsQueryAdaptor)
+DEPENDENCY_INJECTION.set(SQL_QUERY_ADAPTOR, SqlJsQueryAdaptor)

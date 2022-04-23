@@ -1,8 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -396,4 +396,4 @@ Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMess
 		}
 	}
 }
-DI.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker)

@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	EntityState,
@@ -15,7 +15,7 @@ export interface EntityWithState {
 export function markForDeletion<T>(
 	entity: T
 ) {
-	DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
+	DEPENDENCY_INJECTION.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
 
 export class EntityStateManager
@@ -198,7 +198,7 @@ export class EntityStateManager
 
 }
 
-DI.set(ENTITY_STATE_MANAGER, EntityStateManager)
+ENTITY_STATE_MANAGER.descriptor.class = EntityStateManager
 
 export function injectEntityStateManager() {
 	console.log('inject EntityStateManager')

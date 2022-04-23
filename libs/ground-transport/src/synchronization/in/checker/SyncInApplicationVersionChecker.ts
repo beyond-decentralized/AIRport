@@ -1,8 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	IApplicationVersion,
 	APPLICATION_VERSION_DAO
@@ -147,4 +147,4 @@ export class SyncInApplicationVersionChecker
 	}
 
 }
-DI.set(SYNC_IN_APPLICATION_VERSION_CHECKER, SyncInApplicationVersionChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_APPLICATION_VERSION_CHECKER, SyncInApplicationVersionChecker)

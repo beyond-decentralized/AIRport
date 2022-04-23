@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbRelation,
@@ -264,7 +264,7 @@ export class QEntityDriver
 		right: IF,
 		joinType: JoinType,
 	): IJoinFields<IF> {
-		const [airDb, applicationUtils, relationManager] = DI.db().getSync(
+		const [airDb, applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(
 			AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal = (<IQEntityInternal><any>right)
 			.__driver__.getInstance(airDb, applicationUtils)

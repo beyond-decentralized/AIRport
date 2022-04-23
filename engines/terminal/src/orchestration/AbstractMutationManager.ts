@@ -10,7 +10,7 @@ import {
   RawInsertValues,
   APPLICATION_UTILS,
 } from '@airport/air-control';
-import { container, IContext } from '@airport/di';
+import { container, IContext } from '@airport/direction-indicator';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 

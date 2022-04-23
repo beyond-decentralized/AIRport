@@ -6,9 +6,9 @@ import { IApplicationVersion } from '@airport/airspace'
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	DbDomain,
 	DomainName,
@@ -556,7 +556,7 @@ export class IframeTransactionalConnector
 				return true
 		}
 
-		const applicationLoader = await DI.db().get(APPLICATION_LOADER)
+		const applicationLoader = await DEPENDENCY_INJECTION.db().get(APPLICATION_LOADER)
 
 		let jsonApplication = applicationLoader.getApplication()
 		this.domain = jsonApplication.domain
@@ -589,4 +589,4 @@ export class IframeTransactionalConnector
 	}
 
 }
-DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector)
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector)

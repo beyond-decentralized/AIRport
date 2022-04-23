@@ -8,7 +8,7 @@ import {
 	ISequenceGenerator,
 	setSeqGen
 } from '@airport/check-in'
-import { container } from '@airport/di'
+import { container } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,

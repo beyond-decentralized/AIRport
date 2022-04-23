@@ -1,4 +1,4 @@
-import { lib } from "@airport/di";
+import { lib } from "@airport/direction-indicator";
 import { ICrossTabCommunicator } from "./CrossTabCommunicator";
 
 const vhfRadio = lib('vhf-radio');

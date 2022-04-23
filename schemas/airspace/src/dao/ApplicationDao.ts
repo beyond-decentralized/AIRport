@@ -6,7 +6,7 @@ import {
 	tree,
 	Y
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -386,4 +386,4 @@ export class ApplicationDao
 	}
 }
 
-DI.set(APPLICATION_DAO, ApplicationDao)
+DEPENDENCY_INJECTION.set(APPLICATION_DAO, ApplicationDao)

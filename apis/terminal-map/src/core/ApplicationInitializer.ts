@@ -1,7 +1,7 @@
 import { IAirportDatabase } from "@airport/air-control";
 import { IApplication } from "@airport/airspace";
 import { ISequenceGenerator } from "@airport/check-in";
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
 import { IQueryObjectInitializer } from "./QueryObjectInitializer";
 

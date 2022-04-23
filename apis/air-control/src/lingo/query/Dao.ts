@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di'
+import { IContext } from '@airport/direction-indicator'
 import { ISaveResult } from '@airport/ground-control'
 import {
 	IEntityCascadeGraph,

@@ -11,7 +11,7 @@ import {
 	ITransactionContext,
 	STORE_DRIVER
 } from '@airport/terminal-map';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { SqlJsTransaction } from './SqlJsTransaction';
 
 declare function initSqlJs(config: any): any;
@@ -139,4 +139,4 @@ export class SqlJsDriver
 	}
 
 }
-DI.set(STORE_DRIVER, SqlJsDriver);
+DEPENDENCY_INJECTION.set(STORE_DRIVER, SqlJsDriver);

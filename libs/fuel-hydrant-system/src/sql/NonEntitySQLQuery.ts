@@ -9,7 +9,7 @@ import {
 	QTree,
 	QUntypedField,
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
@@ -76,7 +76,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 		let jsonQuery = <JsonNonEntityQuery>this.jsonQuery
 		let joinNodeMap: { [alias: string]: JoinTreeNode }
@@ -132,7 +132,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 	): JoinTreeNode[] {
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 		let jsonTrees: JoinTreeNode[] = []
 		let jsonTree: JoinTreeNode
@@ -409,7 +409,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		currentTree: JoinTreeNode,
 		context: IFuelHydrantContext,
 	): string {
-		const subStatementSqlGenerator = DI.db()
+		const subStatementSqlGenerator = DEPENDENCY_INJECTION.db()
 			.getSync(SUB_STATEMENT_SQL_GENERATOR)
 		let fromFragment = '\t'
 		let currentRelation = currentTree.jsonRelation
@@ -509,7 +509,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected getGroupByFragment(
 		groupBy?: JSONFieldInGroupBy[]
 	): string {
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 		return groupBy.map(
 			(groupByField) => {
@@ -522,7 +522,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected getOrderByFragment(
 		orderBy: JSONFieldInOrderBy[]
 	): string {
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 		return orderBy.map(
 			(orderByField) => {

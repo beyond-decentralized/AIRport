@@ -1,7 +1,7 @@
 import {
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext,
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { IEntityQueryContext } from '../../../lingo/core/EntityContext';
 import { ILookup } from '../../../lingo/query/api/Lookup';
@@ -31,7 +31,7 @@ export class LookupProxy
 		context: IEntityQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		return DI.db()
+		return DEPENDENCY_INJECTION.db()
 			.get(LOOKUP)
 			.then(
 				lookup => lookup.lookup(
@@ -58,7 +58,7 @@ export class Lookup
 		context: IQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
+		const queryContextLoader = await DEPENDENCY_INJECTION.db().get(QUERY_CONTEXT_LOADER);
 		await queryContextLoader.ensure(context);
 		let query: IAbstractQuery;
 		if (QueryClass) {
@@ -133,4 +133,4 @@ export function doEnsureContext<C extends IContext = IContext>(
 	return context;
 }
 
-DI.set(LOOKUP, Lookup);
+DEPENDENCY_INJECTION.set(LOOKUP, Lookup);

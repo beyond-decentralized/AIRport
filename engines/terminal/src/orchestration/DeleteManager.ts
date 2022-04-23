@@ -13,8 +13,8 @@ import {
 } from '@airport/check-in'
 import {
 	container,
-	DI
-} from '@airport/di';
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator';
 import {
 	ChangeType,
 	DbColumn,
@@ -338,4 +338,4 @@ export class DeleteManager
 
 }
 
-DI.set(DELETE_MANAGER, DeleteManager)
+DEPENDENCY_INJECTION.set(DELETE_MANAGER, DeleteManager)

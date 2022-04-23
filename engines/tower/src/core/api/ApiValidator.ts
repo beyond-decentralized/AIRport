@@ -1,4 +1,4 @@
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     API_VALIDATOR,
     IApiOperation,
@@ -16,4 +16,4 @@ export class ApiValidator
     }
 
 }
-DI.set(API_VALIDATOR, ApiValidator)
+DEPENDENCY_INJECTION.set(API_VALIDATOR, ApiValidator)

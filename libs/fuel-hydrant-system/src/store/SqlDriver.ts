@@ -1,7 +1,7 @@
 import { doEnsureContext } from '@airport/air-control';
 import {
 	container
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	ApplicationName,
 	DbApplication,

@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IRecordHistoryNewValueDao } from './dao/history/RecordHistoryNewValueDao'
 import { IRecordHistoryOldValueDao } from './dao/history/RecordHistoryOldValueDao'
 import { IRepositoryTransactionHistoryDao } from './dao/history/RepositoryTransactionHistoryDao'

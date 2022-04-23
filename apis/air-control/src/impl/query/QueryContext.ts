@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	ITransactionalConnector,
 	TRANSACTIONAL_CONNECTOR
@@ -32,7 +32,7 @@ export class IocQueryContext
 
 	async init(): Promise<void> {
 		const [airDb, entityUtils, fieldUtils, queryFacade,
-			queryUtils, applicationUtils, transactionalConnector] = await DI.db()
+			queryUtils, applicationUtils, transactionalConnector] = await DEPENDENCY_INJECTION.db()
 				.get(AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE,
 					QUERY_UTILS, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
 		this.airDb = airDb;
@@ -72,4 +72,4 @@ export class QueryContextLoader
 
 }
 
-DI.set(QUERY_CONTEXT_LOADER, QueryContextLoader);
+DEPENDENCY_INJECTION.set(QUERY_CONTEXT_LOADER, QueryContextLoader);

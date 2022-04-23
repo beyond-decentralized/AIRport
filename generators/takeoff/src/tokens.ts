@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IQueryEntityClassCreator, IQueryObjectInitializer } from '@airport/terminal-map'
 import { IAirportDatabasePopulator } from './AirportDatabasePopulator'
 import { IDdlObjectLinker } from './DdlObjectLinker'

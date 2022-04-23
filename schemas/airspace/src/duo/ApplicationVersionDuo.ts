@@ -1,4 +1,4 @@
-import {DI}                 from '@airport/di'
+import {DEPENDENCY_INJECTION}                 from '@airport/direction-indicator'
 import {APPLICATION_VERSION_DUO} from '../tokens'
 import {
 	BaseApplicationVersionDuo,
@@ -16,4 +16,4 @@ export class ApplicationVersionDuo
 
 }
 
-DI.set(APPLICATION_VERSION_DUO, ApplicationVersionDuo)
+DEPENDENCY_INJECTION.set(APPLICATION_VERSION_DUO, ApplicationVersionDuo)

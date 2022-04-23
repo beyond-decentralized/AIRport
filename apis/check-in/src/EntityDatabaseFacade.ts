@@ -22,7 +22,7 @@ import {
   RawInsertValues,
   RawUpdate,
 } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
   DbEntity,
   ISaveResult
@@ -215,7 +215,7 @@ export class EntityDatabaseFacade<Entity,
     if (!ctx.startedAt) {
       ctx.startedAt = new Date();
     }
-    const databaseFacade = await DI.db()
+    const databaseFacade = await DEPENDENCY_INJECTION.db()
       .get(DATABASE_FACADE);
     const previousEntity = ctx.dbEntity;
     ctx.dbEntity = this.dbEntity;

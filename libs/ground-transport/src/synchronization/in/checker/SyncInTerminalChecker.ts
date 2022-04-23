@@ -3,8 +3,8 @@ import {
 } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	ITerminal,
 	ITerminalDao,
@@ -89,4 +89,4 @@ export class SyncInTerminalChecker
 
 }
 
-DI.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker)

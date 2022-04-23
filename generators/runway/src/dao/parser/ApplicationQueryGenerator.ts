@@ -17,7 +17,7 @@ import {
 	QUERY_FACADE,
 	Y
 }                                           from '@airport/air-control';
-import { DI }                               from '@airport/di';
+import { DEPENDENCY_INJECTION }                               from '@airport/direction-indicator';
 import {
 	getFullApplicationName,
 	IApplicationQuery,
@@ -137,7 +137,7 @@ export class ApplicationQueryGenerator {
 		queryJavascript          = queryJavascript.replace(functionStartRegex, '');
 		queryJavascript          = queryJavascript.replace(functionEndRegex, '');
 
-		const airDb = await DI.db().get(AIRPORT_DATABASE);
+		const airDb = await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
 		for (const functionName in airDb.functions) {
 			const regex     = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
@@ -158,7 +158,7 @@ export class ApplicationQueryGenerator {
 
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
-		const [lookup, queryFacade]    = await DI.db().get(LOOKUP, QUERY_FACADE);
+		const [lookup, queryFacade]    = await DEPENDENCY_INJECTION.db().get(LOOKUP, QUERY_FACADE);
 		const context                  = lookup.ensureContext(null);
 		const qApplication: QApplicationInternal = airDb.QM[getFullApplicationName(jsonApplication)];
 		const dbApplicationVersion          = qApplication.__dbApplication__

@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
@@ -53,4 +53,4 @@ export class SynchronizationConflictDao
 	}
 }
 
-DI.set(SYNCHRONIZATION_CONFLICT_DAO, SynchronizationConflictDao)
+DEPENDENCY_INJECTION.set(SYNCHRONIZATION_CONFLICT_DAO, SynchronizationConflictDao)

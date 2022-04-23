@@ -1,4 +1,4 @@
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import { ITransaction } from "@airport/terminal-map";
 
 export interface IFuelHydrantContext

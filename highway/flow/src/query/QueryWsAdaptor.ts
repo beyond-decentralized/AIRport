@@ -1,4 +1,4 @@
-import { DI }                from '@airport/di';
+import { DEPENDENCY_INJECTION }                from '@airport/direction-indicator';
 import { QUERY_WEB_SERVICE } from '../tokens';
 import {
 	IQueryConfig,
@@ -30,6 +30,6 @@ export async function queryWsHandler(
 	config: IQueryConfig,
 	context: IQueryContext
 ) {
-	const queryWebService = await DI.db().get(QUERY_WEB_SERVICE);
+	const queryWebService = await DEPENDENCY_INJECTION.db().get(QUERY_WEB_SERVICE);
 	return await queryWebService.handle(request, config, context);
 }

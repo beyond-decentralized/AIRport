@@ -1,6 +1,6 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
-import { container, IContext } from '@airport/di';
+import { container, IContext } from '@airport/direction-indicator';
 import {
   EntityRelationType,
   getFullApplicationNameFromDomainAndName,

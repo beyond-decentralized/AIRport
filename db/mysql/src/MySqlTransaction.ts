@@ -1,4 +1,4 @@
-import { IInjectable } from '@airport/di'
+import { IInjectable } from '@airport/direction-indicator'
 import { ITransactionHistory } from '@airport/holding-pattern'
 import {
 	ICredentials,

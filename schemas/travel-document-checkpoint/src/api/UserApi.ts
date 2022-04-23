@@ -1,5 +1,5 @@
 import { Api } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { v4 as uuidv4 } from "uuid";
 import { USER_API } from "../to_be_generated/api-tokens";
 import { IUser } from "../generated/generated";
@@ -75,4 +75,4 @@ export class UserApi {
     }
 
 }
-DI.set(USER_API, UserApi)
+DEPENDENCY_INJECTION.set(USER_API, UserApi)

@@ -1,9 +1,9 @@
 import { REPOSITORY_LOADER } from '@airport/air-control'
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import {
 	PortableQuery
 } from '@airport/ground-control'
@@ -73,11 +73,11 @@ export class QueryManager
 		context: IQueryOperationContext
 	) {
 		if (context.repository && context.repository.source && context.repository.uuId) {
-			const repositoryLoader = await DI.db().get(REPOSITORY_LOADER)
+			const repositoryLoader = await DEPENDENCY_INJECTION.db().get(REPOSITORY_LOADER)
 			await repositoryLoader.loadRepository(context.repository.source, context.repository.uuId, context)
 		}
 	}
 
 }
 
-DI.set(QUERY_MANAGER, QueryManager)
+DEPENDENCY_INJECTION.set(QUERY_MANAGER, QueryManager)

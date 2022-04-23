@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainId,
 	DomainName
@@ -174,4 +174,4 @@ export class DomainDao
 
 }
 
-DI.set(DOMAIN_DAO, DomainDao)
+DEPENDENCY_INJECTION.set(DOMAIN_DAO, DomainDao)

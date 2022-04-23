@@ -9,8 +9,8 @@ import {
 } from '@airport/check-in'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -350,4 +350,4 @@ export class UpdateManager
 
 }
 
-DI.set(UPDATE_MANAGER, UpdateManager)
+DEPENDENCY_INJECTION.set(UPDATE_MANAGER, UpdateManager)

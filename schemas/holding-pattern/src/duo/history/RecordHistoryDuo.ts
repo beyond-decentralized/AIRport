@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { DbColumn } from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -105,4 +105,4 @@ export class RecordHistoryDuo
 
 }
 
-DI.set(RECORD_HISTORY_DUO, RecordHistoryDuo)
+DEPENDENCY_INJECTION.set(RECORD_HISTORY_DUO, RecordHistoryDuo)

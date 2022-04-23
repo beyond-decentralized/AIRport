@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di';
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	ApplicationStatus,
 	DomainName,
@@ -782,4 +782,4 @@ export class ApplicationComposer
 
 }
 
-DI.set(APPLICATION_COMPOSER, ApplicationComposer);
+DEPENDENCY_INJECTION.set(APPLICATION_COMPOSER, ApplicationComposer);

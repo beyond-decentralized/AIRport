@@ -1,4 +1,4 @@
-import {DI}                     from '@airport/di'
+import {DEPENDENCY_INJECTION}                     from '@airport/direction-indicator'
 import {RecordHistoryId}        from '../../ddl/ddl'
 import {RECORD_HISTORY_NEW_VALUE_DAO} from '../../tokens'
 import {
@@ -39,4 +39,4 @@ export class RecordHistoryNewValueDao
 
 }
 
-DI.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao)
+DEPENDENCY_INJECTION.set(RECORD_HISTORY_NEW_VALUE_DAO, RecordHistoryNewValueDao)

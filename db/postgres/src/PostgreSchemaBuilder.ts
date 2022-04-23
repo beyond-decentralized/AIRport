@@ -9,8 +9,8 @@ import {
 } from '@airport/airport-code'
 import {
 	container,
-	DI, IContext,
-} from '@airport/di';
+	DEPENDENCY_INJECTION, IContext,
+} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	getFullApplicationName,
@@ -176,4 +176,4 @@ export class PostgreApplicationBuilder
 
 }
 
-DI.set(APPLICATION_BUILDER, PostgreApplicationBuilder)
+DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, PostgreApplicationBuilder)

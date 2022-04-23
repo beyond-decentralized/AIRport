@@ -1,6 +1,6 @@
 import {
     IContext
-} from "@airport/di"
+} from "@airport/direction-indicator"
 import {
 	JsonApplicationWithLastIds
 } from "@airport/security-check"

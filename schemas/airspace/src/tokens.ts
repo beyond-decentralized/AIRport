@@ -1,4 +1,4 @@
-import { lib } from '@airport/di';
+import { lib } from '@airport/direction-indicator';
 import { IDomainDao } from './dao/DomainDao'
 import { IApplicationColumnDao } from './dao/ApplicationColumnDao';
 import { IApplicationDao } from './dao/ApplicationDao';

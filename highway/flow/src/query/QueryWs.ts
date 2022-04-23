@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	QUERY_VALIDATOR,
 	QUERY_WEB_SERVICE
@@ -28,7 +28,7 @@ export class QueryWebService
 		config: IQueryConfig = {},
 		context: IQueryContext
 	): Promise<IQueryResponse> {
-		const queryValidator = await DI.db().get(QUERY_VALIDATOR);
+		const queryValidator = await DEPENDENCY_INJECTION.db().get(QUERY_VALIDATOR);
 		try {
 			queryValidator.validate(request);
 		} catch (e) {
@@ -41,4 +41,4 @@ export class QueryWebService
 	// Look up the query mapping: should it be directed to Vespa, ScyllaDb or CockroachDbco
 }
 
-DI.set(QUERY_WEB_SERVICE, QueryWebService);
+DEPENDENCY_INJECTION.set(QUERY_WEB_SERVICE, QueryWebService);

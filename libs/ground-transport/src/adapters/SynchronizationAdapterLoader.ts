@@ -1,7 +1,7 @@
 import {
     container,
-    DI
-} from "@airport/di";
+    DEPENDENCY_INJECTION
+} from "@airport/direction-indicator";
 import {
     DEBUG_SYNCHRONIZATION_ADAPTER,
     SYNCHRONIZATION_ADAPTER_LOADER
@@ -35,4 +35,4 @@ export class SynchronizationAdapterLoader
     }
 
 }
-DI.set(SYNCHRONIZATION_ADAPTER_LOADER, SynchronizationAdapterLoader)
+DEPENDENCY_INJECTION.set(SYNCHRONIZATION_ADAPTER_LOADER, SynchronizationAdapterLoader)

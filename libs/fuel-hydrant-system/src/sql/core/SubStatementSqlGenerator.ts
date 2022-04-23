@@ -1,5 +1,5 @@
 import { IQEntityInternal } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	JsonFieldQuery,
 	JsonTreeQuery
@@ -80,4 +80,4 @@ export class SubStatementSqlGenerator
 
 }
 
-DI.set(SUB_STATEMENT_SQL_GENERATOR, SubStatementSqlGenerator)
+DEPENDENCY_INJECTION.set(SUB_STATEMENT_SQL_GENERATOR, SubStatementSqlGenerator)

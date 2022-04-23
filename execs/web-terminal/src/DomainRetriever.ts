@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
     DbDomain,
     DomainName
@@ -21,4 +21,4 @@ export class DomainRetriever
     }
 
 }
-DI.set(DOMAIN_RETRIEVER, DomainRetriever)
+DEPENDENCY_INJECTION.set(DOMAIN_RETRIEVER, DomainRetriever)

@@ -1,4 +1,4 @@
-import {DI}          from '@airport/di'
+import {DEPENDENCY_INJECTION}          from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -107,4 +107,4 @@ export class QValidator
 
 }
 
-DI.set(Q_VALIDATOR, QValidator)
+DEPENDENCY_INJECTION.set(Q_VALIDATOR, QValidator)

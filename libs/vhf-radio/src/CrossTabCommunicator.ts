@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 import { CROSS_TAB_COMMUNCATOR } from "./tokens";
 
@@ -90,4 +90,4 @@ export class CrossTabCommunicator
         createChannel();
     }
 }
-DI.set(CROSS_TAB_COMMUNCATOR, CrossTabCommunicator)
+DEPENDENCY_INJECTION.set(CROSS_TAB_COMMUNCATOR, CrossTabCommunicator)

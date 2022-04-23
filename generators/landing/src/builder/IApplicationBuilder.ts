@@ -1,6 +1,6 @@
 import { IAirportDatabase } from '@airport/air-control'
 import { ISequence } from '@airport/airport-code'
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { JsonApplication } from '@airport/ground-control'
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { IApplication } from '@airport/airspace';

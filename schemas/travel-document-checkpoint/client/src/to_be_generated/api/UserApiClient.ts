@@ -1,4 +1,4 @@
-import { IOC } from "@airport/di"
+import { IOC } from "@airport/direction-indicator"
 import { IUser } from "../../generated/client"
 import { USER_API } from "../tokens"
 

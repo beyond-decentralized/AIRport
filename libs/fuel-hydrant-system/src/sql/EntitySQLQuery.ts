@@ -9,7 +9,7 @@ import {
 	ReferencedColumnData,
 	Y
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
@@ -66,7 +66,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 	) {
 		super(jsonQuery, dbEntity, dialect, queryResultType, context)
 
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
@@ -126,7 +126,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
-		const objectResultParserFactory = await DI.db()
+		const objectResultParserFactory = await DEPENDENCY_INJECTION.db()
 			.get(OBJECT_RESULT_PARSER_FACTORY)
 		this.queryParser = objectResultParserFactory.getObjectResultParser(
 			this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
@@ -261,7 +261,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		nextColumnIndex: number[],
 		context: IFuelHydrantContext,
 	): any {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		// Return blanks, primitives and Dates directly

@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -108,4 +108,4 @@ export class SyncInUtils
 	}
 
 }
-DI.set(SYNC_IN_UTILS, SyncInUtils)
+DEPENDENCY_INJECTION.set(SYNC_IN_UTILS, SyncInUtils)

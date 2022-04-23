@@ -1,4 +1,4 @@
-import {DI}                               from '@airport/di'
+import {DEPENDENCY_INJECTION}                               from '@airport/direction-indicator'
 import {TransactionType}                  from '@airport/ground-control'
 import {
 	Repository_Id,
@@ -65,4 +65,4 @@ export class TransactionHistoryDuo
 
 }
 
-DI.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo)
+DEPENDENCY_INJECTION.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo)

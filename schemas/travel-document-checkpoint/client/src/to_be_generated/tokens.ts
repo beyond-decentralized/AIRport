@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IUserApi } from './api/UserApiClient'
 
 export const travelDocumentCheckpoint = lib('travel-document-checkpoint')

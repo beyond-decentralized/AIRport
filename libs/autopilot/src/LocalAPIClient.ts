@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { container, DI, IDiToken } from "@airport/di";
+import { container, DEPENDENCY_INJECTION, IDependencyInjectionToken } from "@airport/direction-indicator";
 import {
     OPERATION_SERIALIZER,
     QUERY_RESULTS_DESERIALIZER,
@@ -14,7 +14,7 @@ import { LOCAL_API_CLIENT } from "./tokens";
 export interface ILocalAPIClient {
 
     invokeApiMethod<T = any>(
-        token: IDiToken<T>,
+        token: IDependencyInjectionToken<T>,
         methodName: string,
         args: any[]
     ): Promise<void>
@@ -111,7 +111,7 @@ export class LocalAPIClient
     }
 
     async invokeApiMethod<T>(
-        token: IDiToken<T>,
+        token: IDependencyInjectionToken<T>,
         methodName: string,
         args: any[]
     ): Promise<any> {
@@ -171,7 +171,7 @@ export class LocalAPIClient
     }
 
     private async isConnectionReady<T>(
-        token: IDiToken<T>
+        token: IDependencyInjectionToken<T>
     ): Promise<boolean> {
         if (this.connectionReady) {
             return true
@@ -265,4 +265,4 @@ export class LocalAPIClient
     }
 
 }
-DI.set(LOCAL_API_CLIENT, LocalAPIClient)
+DEPENDENCY_INJECTION.set(LOCAL_API_CLIENT, LocalAPIClient)

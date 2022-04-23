@@ -6,8 +6,8 @@ import {
 } from '@airport/check-in'
 import {
 	container,
-	DI,
-} from '@airport/di';
+	DEPENDENCY_INJECTION,
+} from '@airport/direction-indicator';
 import {
 	ChangeType,
 	DbColumn,
@@ -617,4 +617,4 @@ and cannot have NULL values.`)
 
 }
 
-DI.set(INSERT_MANAGER, InsertManager)
+DEPENDENCY_INJECTION.set(INSERT_MANAGER, InsertManager)

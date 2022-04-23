@@ -22,7 +22,7 @@ import {
 	IEntityUpdateProperties,
 	IQEntity,
 } from '../entity/Entity';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 
 export interface UpdateRecord {
 	newValue: any,

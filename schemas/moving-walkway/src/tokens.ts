@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { ISynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { ISynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
 import { IRecordUpdateStageDao } from "./dao/RecordUpdateStageDao";

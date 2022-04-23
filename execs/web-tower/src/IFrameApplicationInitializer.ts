@@ -1,6 +1,6 @@
 import {
-    DI
-} from "@airport/di";
+    DEPENDENCY_INJECTION
+} from "@airport/direction-indicator";
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
@@ -28,4 +28,4 @@ export class IFrameApplicationInitializer
             not from Application child frames`)
     }
 }
-DI.set(APPLICATION_INITIALIZER, IFrameApplicationInitializer)
+DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, IFrameApplicationInitializer)

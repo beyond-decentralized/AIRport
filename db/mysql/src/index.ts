@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
 export * from './MySqlDriver';
@@ -10,8 +10,8 @@ export * from './MySqlTransaction';
 export async function startDb(
 	domainName: string
 ) {
-	await DI.db().get(AIRPORT_DATABASE);
-	const dbManager = await DI.db().get(DATABASE_MANAGER);
+	await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
+	const dbManager = await DEPENDENCY_INJECTION.db().get(DATABASE_MANAGER);
 	await dbManager.initWithDb(domainName, {});
 }
 

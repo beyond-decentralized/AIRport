@@ -1,4 +1,5 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
+import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import {
     ICascadeGraphVerifier,
     IDatabaseManager,
@@ -32,3 +33,11 @@ export const QUERY_MANAGER = terminal.token<IQueryManager>('QUERY_MANAGER')
 export const REPOSITORY_MANAGER = terminal.token<IRepositoryManager>('REPOSITORY_MANAGER')
 export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token<IStructuralEntityValidator>('STRUCTURAL_ENTITY_VALIDATOR')
 export const UPDATE_MANAGER = terminal.token<IUpdateManager>('UPDATE_MANAGER')
+
+INTERNAL_RECORD_MANAGER.setDependencies({
+	entityStateManager: ENTITY_STATE_MANAGER
+})
+
+OPERATION_MANAGER.setDependencies({
+	entityStateManager: ENTITY_STATE_MANAGER
+})

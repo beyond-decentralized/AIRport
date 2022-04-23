@@ -1,5 +1,5 @@
 import { IInjectionApplication } from './InjectionApplication';
-export declare type IDiTokenName = string;
+export declare type IDependencyInjectionTokenName = string;
 export interface ITokenDependencyConfiguration {
     [propertyName: string]: IDependencyInjectionToken<any>;
 }
@@ -25,6 +25,6 @@ export declare class DependencyInjectionToken<Injectable> implements IDependency
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
 }
 export interface GenericDependencyInjectionError {
-    DiTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;
+    DependencyInjectionTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;
 }
 //# sourceMappingURL=Token.d.ts.map

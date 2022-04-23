@@ -6,7 +6,7 @@ import {
 	setQApplicationEntities
 } from '@airport/air-control'
 import { IApplication } from '@airport/airspace'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
 import { QUERY_ENTITY_CLASS_CREATOR } from './tokens'
@@ -48,4 +48,4 @@ export class QueryEntityClassCreator
 	}
 
 }
-DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator)
+DEPENDENCY_INJECTION.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator)

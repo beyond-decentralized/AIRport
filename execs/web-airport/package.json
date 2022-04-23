@@ -9,7 +9,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@airport/di": "0.0.1",
+    "@airport/direction-indicator": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/web-terminal": "0.0.1",
     "@airport/sqljs": "0.0.1",

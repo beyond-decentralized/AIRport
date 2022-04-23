@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { ISequenceDao } from './dao/SequenceDao'
 import { ITerminalRunDao } from './dao/TerminalRunDao'
 

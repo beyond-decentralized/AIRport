@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	ENTITY_STATE_MANAGER,
@@ -96,7 +96,7 @@ export abstract class EntityLookup<Child, MappedChild,
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
 		const [entityStateManager, applicationUtils, updateCacheManager] =
-			await DI.db().get(ENTITY_STATE_MANAGER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER)
+			await DEPENDENCY_INJECTION.db().get(ENTITY_STATE_MANAGER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {

@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { UI_STATE_MANAGER } from './tokens';
 
 export interface EntityWithState {
@@ -18,13 +18,13 @@ export enum EntityState {
 export function markForDeletion<T>(
 	entity: T
 ) {
-	DI.db().getSync(UI_STATE_MANAGER).markForDeletion(entity);
+	DEPENDENCY_INJECTION.db().getSync(UI_STATE_MANAGER).markForDeletion(entity);
 }
 
 export function isDeleted<T>(
 	entity: T
 ): boolean {
-	return DI.db().getSync(UI_STATE_MANAGER).isDeleted(entity);
+	return DEPENDENCY_INJECTION.db().getSync(UI_STATE_MANAGER).isDeleted(entity);
 }
 
 export interface IUiStateManager {
@@ -105,4 +105,4 @@ export class UiStateManager
 
 }
 
-DI.set(UI_STATE_MANAGER, UiStateManager)
+DEPENDENCY_INJECTION.set(UI_STATE_MANAGER, UiStateManager)

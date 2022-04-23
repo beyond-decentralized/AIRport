@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	CRUDOperation,
 	DbColumn,
@@ -6,10 +6,10 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
-	ENTITY_STATE_MANAGER,
 	repositoryEntity,
 	ApplicationIndex,
-	TableIndex
+	TableIndex,
+	IEntityStateManager
 } from '@airport/ground-control'
 import {
 	IAirportDatabase,
@@ -44,6 +44,8 @@ export class ApplicationUtils
 	implements IApplicationUtils {
 
 	static TEMP_ID: number = 0
+
+	entityStateManager: IEntityStateManager
 
 	getDbEntity(
 		applicationIndex: ApplicationIndex,
@@ -244,7 +246,6 @@ export class ApplicationUtils
 		selectClause: any,
 		allowDefaults: boolean = false,
 	): void {
-		const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER)
 		this.forEachColumnTypeOfRelation(
 			dbRelation,
 			(
@@ -261,7 +262,7 @@ export class ApplicationUtils
 					let propertyObject = propertySelectClause[propertyNameLink]
 					if (!propertyObject) {
 						propertyObject = {}
-						entityStateManager.markAsStub(propertyObject)
+						this.entityStateManager.markAsStub(propertyObject)
 						propertySelectClause[propertyNameLink] = propertyObject
 					} else {
 						if (index < firstPropertyNameChain.length - 1) {
@@ -581,4 +582,4 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 
 }
 
-DI.set(APPLICATION_UTILS, ApplicationUtils)
+DEPENDENCY_INJECTION.set(APPLICATION_UTILS, ApplicationUtils)

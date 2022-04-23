@@ -9,11 +9,11 @@ import {
 	UpdateProperties,
 	valuesEqual
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	EntityRelationType,
-	ENTITY_STATE_MANAGER,
+	IEntityStateManager,
 	IRootTransaction,
 	ISaveActor,
 	ISaveRepository,
@@ -34,6 +34,8 @@ import { OPERATION_MANAGER } from '../tokens'
  */
 export class OperationManager
 	implements IOperationManager {
+
+	entityStateManager: IEntityStateManager
 
 	/**
 	 * Transactional context must have been started by the time this method is called.
@@ -238,7 +240,6 @@ export class OperationManager
 		saveResult: ISaveResult,
 		context: IOperationContext
 	): Promise<void> {
-		const entityStateManager = await container(this).get(ENTITY_STATE_MANAGER)
 		const qEntity = context.ioc.airDb.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
@@ -246,7 +247,7 @@ export class OperationManager
 			const setFragment: any = {}
 			const idWhereFragments: JSONValueOperation[] = []
 			let runUpdate = false
-			const originalEntity = entityStateManager.getOriginalValues(entity)
+			const originalEntity = this.entityStateManager.getOriginalValues(entity)
 			if (!originalEntity) {
 				continue
 			}
@@ -448,4 +449,4 @@ export class OperationManager
 	}
 
 }
-DI.set(OPERATION_MANAGER, OperationManager)
+DEPENDENCY_INJECTION.set(OPERATION_MANAGER, OperationManager)

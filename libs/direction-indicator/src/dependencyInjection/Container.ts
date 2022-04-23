@@ -1210,7 +1210,7 @@ export class InversionOfControl {
 	async get(
 		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
-		return await DI.db().get(...tokens);
+		return await DEPENDENCY_INJECTION.db().get(...tokens);
 	}
 
 	eventuallyGet<A>(
@@ -1219,7 +1219,7 @@ export class InversionOfControl {
 	async eventuallyGet(
 		...tokens: Array<IDependencyInjectionToken<any>>
 	): Promise<any[]> {
-		return await DI.db().eventuallyGet(...tokens);
+		return await DEPENDENCY_INJECTION.db().eventuallyGet(...tokens);
 	}
 
 	getSync<A>(
@@ -1375,15 +1375,15 @@ export class InversionOfControl {
 	getSync(
 		...tokens: Array<IDependencyInjectionToken<any>>
 	): any {
-		return DI.db().getSync(...tokens);
+		return DEPENDENCY_INJECTION.db().getSync(...tokens);
 	}
 
 }
 
-export const DI: IRootContainer = new RootContainer();
+export const DEPENDENCY_INJECTION: IRootContainer = new RootContainer();
 
 if (typeof window !== 'undefined') {
-	(window as any).DI = DI;
+	(window as any).DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
 	(window as any).lib = lib;
 	(window as any).domain = domain
 }

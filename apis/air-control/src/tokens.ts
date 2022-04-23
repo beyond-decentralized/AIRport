@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IRepositoryLoader } from '.'
 import { IRelationManager } from './impl/core/entity/RelationManager'
 import { IQueryContextLoader } from './impl/query/QueryContext'
@@ -14,6 +14,7 @@ import { IFieldUtils } from './lingo/utils/FieldUtils'
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { IApplicationUtils } from './lingo/utils/ApplicationUtils'
+import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 
 const airControl = lib('air-control')
 
@@ -31,3 +32,9 @@ export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>('REPOSITORY
 export const APPLICATION_UTILS = airControl.token<IApplicationUtils>('APPLICATION_UTILS')
 export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>('UPDATE_CACHE_MANAGER')
 
+APPLICATION_UTILS.setDependencies({
+	entityStateManager: ENTITY_STATE_MANAGER
+})
+DATABASE_FACADE.setDependencies({
+	entityStateManager: ENTITY_STATE_MANAGER
+})

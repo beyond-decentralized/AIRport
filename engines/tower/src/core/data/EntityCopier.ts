@@ -1,5 +1,5 @@
 import { IEntityContext } from "@airport/air-control"
-import { DI } from "@airport/di"
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator"
 import {
     DbEntity,
     IEntityStateManager
@@ -95,4 +95,4 @@ export class EntityCopier
         }
     }
 }
-DI.set(ENTITY_COPIER, EntityCopier)
+DEPENDENCY_INJECTION.set(ENTITY_COPIER, EntityCopier)

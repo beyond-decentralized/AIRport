@@ -1,5 +1,5 @@
 import { IEntityCascadeGraph, isUpdate } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ensureChildArray,
 	EntityRelationType
@@ -384,4 +384,4 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
 	}
 }
 
-DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver)
+DEPENDENCY_INJECTION.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver)

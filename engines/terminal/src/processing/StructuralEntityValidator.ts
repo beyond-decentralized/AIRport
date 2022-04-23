@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
@@ -375,4 +375,4 @@ must always have a value for all entity operations.`)
 
 }
 
-DI.set(STRUCTURAL_ENTITY_VALIDATOR, StructuralEntityValidator)
+DEPENDENCY_INJECTION.set(STRUCTURAL_ENTITY_VALIDATOR, StructuralEntityValidator)

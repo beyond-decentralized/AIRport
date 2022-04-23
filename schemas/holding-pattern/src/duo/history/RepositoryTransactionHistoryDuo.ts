@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	DbEntity,
@@ -166,4 +166,4 @@ export class RepositoryTransactionHistoryDuo
 
 }
 
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo)
+DEPENDENCY_INJECTION.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo)

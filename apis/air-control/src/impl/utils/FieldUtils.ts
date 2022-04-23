@@ -1,4 +1,4 @@
-import {DI}               from '@airport/di'
+import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {JsonFieldQuery}   from '@airport/ground-control'
 import {FIELD_UTILS}      from '../../tokens'
 import {IEntityAliases}   from '../../lingo/core/entity/Aliases'
@@ -23,4 +23,4 @@ export class FieldUtils
 		return subSelectQuery.toJSON(queryUtils, this)
 	}
 }
-DI.set(FIELD_UTILS, FieldUtils)
+DEPENDENCY_INJECTION.set(FIELD_UTILS, FieldUtils)

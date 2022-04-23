@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbRelation,
 	JoinType
@@ -42,7 +42,7 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
-	const [airDb, relationManager, applicationUtils] = DI.db()
+	const [airDb, relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
 		.getSync(AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS)
 	const dbEntity = this.dbRelation.relationEntity
 

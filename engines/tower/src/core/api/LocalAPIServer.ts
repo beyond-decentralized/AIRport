@@ -5,8 +5,8 @@ import {
 import { API_REGISTRY } from "@airport/check-in";
 import {
     container,
-    DI
-} from "@airport/di";
+    DEPENDENCY_INJECTION
+} from "@airport/direction-indicator";
 import {
     ILocalAPIServer,
     LOCAL_API_SERVER
@@ -57,4 +57,4 @@ export class LocalAPIServer
 
 
 }
-DI.set(LOCAL_API_SERVER, LocalAPIServer)
+DEPENDENCY_INJECTION.set(LOCAL_API_SERVER, LocalAPIServer)

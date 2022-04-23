@@ -131,6 +131,6 @@ export declare class InversionOfControl {
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>, tokenC: IDependencyInjectionToken<C>, tokenD: IDependencyInjectionToken<D>, tokenE: IDependencyInjectionToken<E>, tokenF: IDependencyInjectionToken<F>, tokenG: IDependencyInjectionToken<G>, tokenH: IDependencyInjectionToken<H>, tokenI: IDependencyInjectionToken<I>, tokenJ: IDependencyInjectionToken<J>, tokenK: IDependencyInjectionToken<K>, tokenL: IDependencyInjectionToken<L>, tokenM: IDependencyInjectionToken<M>, tokenN: IDependencyInjectionToken<N>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N];
     getSync<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>, tokenC: IDependencyInjectionToken<C>, tokenD: IDependencyInjectionToken<D>, tokenE: IDependencyInjectionToken<E>, tokenF: IDependencyInjectionToken<F>, tokenG: IDependencyInjectionToken<G>, tokenH: IDependencyInjectionToken<H>, tokenI: IDependencyInjectionToken<I>, tokenJ: IDependencyInjectionToken<J>, tokenK: IDependencyInjectionToken<K>, tokenL: IDependencyInjectionToken<L>, tokenM: IDependencyInjectionToken<M>, tokenN: IDependencyInjectionToken<N>, tokenO: IDependencyInjectionToken<O>): [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O];
 }
-export declare const DI: IRootContainer;
+export declare const DEPENDENCY_INJECTION: IRootContainer;
 export declare const IOC: InversionOfControl;
 //# sourceMappingURL=Container.d.ts.map

@@ -1,9 +1,9 @@
 import { ISequenceGenerator, SEQUENCE_GENERATOR } from '@airport/check-in'
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity
@@ -140,4 +140,4 @@ export class IdGenerator
 
 }
 
-DI.set(ID_GENERATOR, IdGenerator)
+DEPENDENCY_INJECTION.set(ID_GENERATOR, IdGenerator)

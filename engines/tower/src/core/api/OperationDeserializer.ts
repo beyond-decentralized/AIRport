@@ -3,7 +3,7 @@ import {
     IOperationDeserializer,
     OPERATION_DESERIALIZER
 } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     DbEntity,
     DbProperty,
@@ -178,4 +178,4 @@ export class OperationDeserializer
         return valueCopy
     }
 }
-DI.set(OPERATION_DESERIALIZER, OperationDeserializer);
+DEPENDENCY_INJECTION.set(OPERATION_DESERIALIZER, OperationDeserializer);

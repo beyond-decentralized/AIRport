@@ -3,9 +3,9 @@ import {
 } from '@airport/air-control';
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	FullApplicationName,
 	getFullApplicationName,
@@ -175,4 +175,4 @@ export class DatabaseManager
 	}
 }
 
-DI.set(DATABASE_MANAGER, DatabaseManager);
+DEPENDENCY_INJECTION.set(DATABASE_MANAGER, DatabaseManager);

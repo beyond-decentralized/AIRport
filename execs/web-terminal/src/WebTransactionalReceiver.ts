@@ -4,8 +4,8 @@ import {
 } from '@airport/aviation-communication'
 import {
 	container,
-	DI,
-} from '@airport/di'
+	DEPENDENCY_INJECTION,
+} from '@airport/direction-indicator'
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IApiIMI,
@@ -496,4 +496,4 @@ export class WebTransactionalReceiver
 	}
 
 }
-DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);

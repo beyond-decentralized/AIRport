@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { ISerializationStateManager } from './SerializationStateManager'
 import { OPERATION_SERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens'
 
@@ -169,4 +169,4 @@ export class OperationSerializer
 
 }
 
-DI.set(OPERATION_SERIALIZER, OperationSerializer)
+DEPENDENCY_INJECTION.set(OPERATION_SERIALIZER, OperationSerializer)

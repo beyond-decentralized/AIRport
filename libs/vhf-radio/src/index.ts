@@ -1,4 +1,4 @@
-import { IOC } from '@airport/di'
+import { IOC } from '@airport/direction-indicator'
 import { CROSS_TAB_COMMUNCATOR } from './tokens'
 
 export * from './CrossTabCommunicator'

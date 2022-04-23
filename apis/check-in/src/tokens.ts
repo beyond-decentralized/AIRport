@@ -1,4 +1,4 @@
-import { lib } from '@airport/di';
+import { lib } from '@airport/direction-indicator';
 import { IApiRegistry, IApiValidator } from '.';
 import { IClientQueryManager } from './clientQuery/ClientQueryManager';
 import { ISelectorManager } from './Selector';

@@ -10,7 +10,7 @@ import {
 	RawFieldQuery,
 	Y
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ensureChildArray,
@@ -224,4 +224,4 @@ export class RepositoryTransactionHistoryDao
 	}
 }
 
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)
+DEPENDENCY_INJECTION.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)

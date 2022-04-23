@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	DbEntity,
@@ -106,4 +106,4 @@ export class OperationHistoryDuo
 
 }
 
-DI.set(OPERATION_HISTORY_DUO, OperationHistoryDuo)
+DEPENDENCY_INJECTION.set(OPERATION_HISTORY_DUO, OperationHistoryDuo)

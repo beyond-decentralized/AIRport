@@ -3,8 +3,8 @@ import {
 } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	SYNC_IN_ACTOR_CHECKER,
 	SYNC_IN_CHECKER,
@@ -69,4 +69,4 @@ export class SyncInChecker
 
 }
 
-DI.set(SYNC_IN_CHECKER, SyncInChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_CHECKER, SyncInChecker)

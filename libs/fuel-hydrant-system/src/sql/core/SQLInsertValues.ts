@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	JsonInsertValues
@@ -33,7 +33,7 @@ export class SQLInsertValues
 	toSQL(
 		context: IFuelHydrantContext
 	): string {
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 		if (!this.jsonInsertValues.II) {
 			throw new Error(`Expecting exactly one table in INSERT INTO clause`)
@@ -69,7 +69,7 @@ ${valuesFragment}
 		valuesClauseFragment: any[][],
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		let allValuesFragment = valuesClauseFragment.map((valuesArray) => {

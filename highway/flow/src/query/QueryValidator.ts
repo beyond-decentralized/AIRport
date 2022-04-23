@@ -1,4 +1,4 @@
-import { DI }              from '@airport/di';
+import { DEPENDENCY_INJECTION }              from '@airport/direction-indicator';
 import { QUERY_VALIDATOR } from '../tokens';
 import {
 	IQueryRequest,
@@ -28,4 +28,4 @@ export class QueryValidator
 	}
 }
 
-DI.set(QUERY_VALIDATOR, QueryValidator);
+DEPENDENCY_INJECTION.set(QUERY_VALIDATOR, QueryValidator);

@@ -1,6 +1,6 @@
 import {
     IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import { SqlTransaction } from '@airport/fuel-hydrant-system'
 
 export class SqlJsTransaction

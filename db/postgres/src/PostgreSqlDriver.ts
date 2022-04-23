@@ -4,7 +4,7 @@ import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { IOperationContext, ITransaction, STORE_DRIVER } from '@airport/terminal-map'
 import { PostgreTransaction } from './PostgreTransaction'
 
@@ -207,4 +207,4 @@ export class PostgreSqlDriver
 	}
 
 }
-DI.set(STORE_DRIVER, PostgreSqlDriver);
+DEPENDENCY_INJECTION.set(STORE_DRIVER, PostgreSqlDriver);

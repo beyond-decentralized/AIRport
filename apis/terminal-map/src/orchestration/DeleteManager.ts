@@ -4,7 +4,7 @@ import {
     ApplicationIndex,
     IRootTransaction
 } from "@airport/ground-control";
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import type {
     IActor,
     RepositoryEntity,

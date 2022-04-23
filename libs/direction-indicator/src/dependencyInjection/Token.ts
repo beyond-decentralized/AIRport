@@ -1,6 +1,6 @@
 import { IInjectionApplication } from './InjectionApplication'
 
-export type IDiTokenName = string
+export type IDependencyInjectionTokenName = string
 
 export interface ITokenDependencyConfiguration {
 
@@ -32,7 +32,9 @@ export interface IDependencyInjectionToken<Injectable> {
 export class DependencyInjectionToken<Injectable>
 	implements IDependencyInjectionToken<Injectable> {
 
-	dependencyConfiguration: ITokenDependencyConfiguration
+	get dependencyConfiguration(): ITokenDependencyConfiguration {
+		return this.getInheritedDependencyConfiguration(this.descriptor.class)
+	}
 
 	constructor(
 		public application: IInjectionApplication,
@@ -48,13 +50,38 @@ export class DependencyInjectionToken<Injectable>
 	setDependencies(
 		dependencyConfiguration: ITokenDependencyConfiguration
 	): void {
-		this.dependencyConfiguration = dependencyConfiguration
+		this.descriptor.class.dependencyConfiguration = dependencyConfiguration
+	}
+
+	setClass(
+		aClass: any
+	) {
+		this.descriptor.class = aClass
+	}
+
+	private getInheritedDependencyConfiguration(
+		aClass: any
+	) {
+		const parentClass = Object.getPrototypeOf(aClass)
+		let returnedDependencyConfiguration = {}
+		if (parentClass) {
+			returnedDependencyConfiguration = this.getInheritedDependencyConfiguration(parentClass)
+		}
+		const dependencyConfiguration = aClass.dependencyConfiguration
+		if (dependencyConfiguration) {
+			returnedDependencyConfiguration = {
+				...returnedDependencyConfiguration,
+				...dependencyConfiguration
+			}
+		}
+
+		return returnedDependencyConfiguration
 	}
 
 }
 
 export interface GenericDependencyInjectionError {
 
-	DiTokenMustBeGenerisizedWithTypeOfInjectedObject(): void
+	DependencyInjectionTokenMustBeGenerisizedWithTypeOfInjectedObject(): void
 
 }

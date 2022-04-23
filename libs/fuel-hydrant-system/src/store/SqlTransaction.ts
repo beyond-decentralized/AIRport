@@ -1,7 +1,7 @@
 import {
     IContext,
     IInjectable
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import {
     ApplicationName,
     DbEntity,

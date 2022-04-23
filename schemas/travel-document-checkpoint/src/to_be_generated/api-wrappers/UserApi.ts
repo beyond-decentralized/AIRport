@@ -1,7 +1,7 @@
-import { container, DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { USER_API } from "../api-tokens";
 import { IUser } from "../api-index";
-import { INTER_APP_API_CLIENT } from "@airport/ground-control";
+import { IInterAppAPIClient } from "@airport/ground-control";
 
 export enum AddUserErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
@@ -19,24 +19,22 @@ export interface IAddUserResponse {
 
 export class UserApi {
 
+    interAppApiClient: IInterAppAPIClient
+
     async addUser(
         username: string,
         email: string,
     ): Promise<IAddUserResponse> {
-        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT)
-
-        return await interAppApiClient.invokeApiMethod(
+        return await this.interAppApiClient.invokeApiMethod(
             USER_API, 'addUser', [username, email])
     }
 
     async findUser(
         privateId: string
     ): Promise<IUser> {
-        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT)
-
-        return await interAppApiClient.invokeApiMethod(
+        return await this.interAppApiClient.invokeApiMethod(
             USER_API, 'findUser', [privateId])
     }
 
 }
-DI.set(USER_API, UserApi)
+DEPENDENCY_INJECTION.set(USER_API, UserApi)

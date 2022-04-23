@@ -1,12 +1,12 @@
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	INTERNAL_DOMAIN,
+	IOperationContextLoader,
 	ISaveResult,
-	OPERATION_CONTEXT_LOADER,
 	PortableQuery
 } from '@airport/ground-control';
 import { Actor, IActor, Repository_Id } from '@airport/holding-pattern';
@@ -57,6 +57,8 @@ export interface InternalPortableQuery
  */
 export class TransactionalServer
 	implements ITransactionalServer {
+
+	operationContextLoader: IOperationContextLoader
 
 	tempActor: IActor;
 
@@ -429,22 +431,18 @@ export class TransactionalServer
 	private async ensureIocContext(
 		context: IOperationContext
 	): Promise<void> {
-		const operationContextLoader = await container(this)
-			.get(OPERATION_CONTEXT_LOADER)
-		await operationContextLoader.ensure(context)
+		await this.operationContextLoader.ensure(context)
 	}
 
 	private async ensureIocContextSync(
 		context: IOperationContext
 	): Promise<void> {
-		const operationContextLoader = container(this)
-			.getSync(OPERATION_CONTEXT_LOADER)
-		operationContextLoader.ensureSync(context)
+		this.operationContextLoader.ensureSync(context)
 	}
 
 }
 
-DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_SERVER, TransactionalServer);
 
 export function injectTransactionalServer(): void {
 	console.log('Injecting TransactionalServer')

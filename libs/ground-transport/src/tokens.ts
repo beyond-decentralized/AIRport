@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { ISyncInActorChecker } from './synchronization/in/checker/SyncInActorChecker'
 import { ISyncInChecker } from './synchronization/in/checker/SyncInChecker'
 import { ISyncInDataChecker } from './synchronization/in/checker/SyncInDataChecker'

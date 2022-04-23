@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	JsonApplication
 } from '@airport/ground-control';
@@ -39,20 +39,20 @@ export class TempDatabase
 		applications: JsonApplicationWithLastIds[]
 	): Promise<void> {
 		if (this.tempDbInitialized) {
-			const applicationInitializer = await DI.db().get(APPLICATION_INITIALIZER);
+			const applicationInitializer = await DEPENDENCY_INJECTION.db().get(APPLICATION_INITIALIZER);
 			await applicationInitializer.stage(applications, {});
 			return;
 		}
 
-		DI.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-		DI.set(APPLICATION_BUILDER, NoOpApplicationBuilder);
-		DI.set(STORE_DRIVER, NoOpSqlDriver);
+		DEPENDENCY_INJECTION.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
+		DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, NoOpApplicationBuilder);
+		DEPENDENCY_INJECTION.set(STORE_DRIVER, NoOpSqlDriver);
 		injectAirportDatabase();
 		injectTransactionalServer();
 		injectTransactionalConnector();
 
-		await DI.db().get(AIRPORT_DATABASE);
-		const dbManager = await DI.db().get(DATABASE_MANAGER);
+		await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
+		const dbManager = await DEPENDENCY_INJECTION.db().get(DATABASE_MANAGER);
 		await dbManager.initNoDb({}, ...applications);
 
 		this.tempDbInitialized = true;

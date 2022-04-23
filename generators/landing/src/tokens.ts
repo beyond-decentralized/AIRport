@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IApplicationBuilder } from './builder/IApplicationBuilder'
 import { IApplicationChecker } from './checker/ApplicationChecker'
 import { IApplicationLocator } from './locator/ApplicationLocator'

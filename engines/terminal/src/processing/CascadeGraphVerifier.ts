@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ICascadeGraphVerifier,
 	IOperationContext
@@ -25,4 +25,4 @@ export class CascadeGraphVerifier
 	}
 }
 
-DI.set(CASCADE_GRAPH_VERIFIER, CascadeGraphVerifier)
+DEPENDENCY_INJECTION.set(CASCADE_GRAPH_VERIFIER, CascadeGraphVerifier)

@@ -5,7 +5,7 @@
     "@airport/aviation-communication": "0.0.1",
     "@airport/blueprint": "0.0.1",
     "@airport/check-in": "0.0.1",
-    "@airport/di": "0.0.1",
+    "@airport/direction-indicator": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/ground-transport": "0.0.1",

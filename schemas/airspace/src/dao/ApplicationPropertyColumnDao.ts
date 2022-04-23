@@ -1,4 +1,4 @@
-import {DI}                         from '@airport/di'
+import {DEPENDENCY_INJECTION}                         from '@airport/direction-indicator'
 import {ColumnId}                   from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
@@ -69,4 +69,4 @@ export class ApplicationPropertyColumnDao
 
 }
 
-DI.set(APPLICATION_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao)
+DEPENDENCY_INJECTION.set(APPLICATION_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao)

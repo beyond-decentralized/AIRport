@@ -1,4 +1,4 @@
-import {DI}               from '@airport/di'
+import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {TERMINAL_RUN_DAO} from '../tokens'
 import {
 	BaseTerminalRunDao,
@@ -21,4 +21,4 @@ export class TerminalRunDao
 
 }
 
-DI.set(TERMINAL_RUN_DAO, TerminalRunDao)
+DEPENDENCY_INJECTION.set(TERMINAL_RUN_DAO, TerminalRunDao)

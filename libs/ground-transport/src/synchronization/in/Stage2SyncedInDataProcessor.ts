@@ -8,7 +8,7 @@ import {
 	IQEntityInternal,
 	or
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -411,4 +411,4 @@ export class Stage2SyncedInDataProcessor
 
 }
 
-DI.set(STAGE2_SYNCED_IN_DATA_PROCESSOR, Stage2SyncedInDataProcessor)
+DEPENDENCY_INJECTION.set(STAGE2_SYNCED_IN_DATA_PROCESSOR, Stage2SyncedInDataProcessor)

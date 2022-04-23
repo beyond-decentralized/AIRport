@@ -4,7 +4,7 @@ import {
     IQueryParameterDeserializer,
     QUERY_PARAMETER_DESERIALIZER
 } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     IEntityStateManager,
     SQLDataType
@@ -108,4 +108,4 @@ got: ${typeOfParameter}
     }
 
 }
-DI.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer)
+DEPENDENCY_INJECTION.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer)

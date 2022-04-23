@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
 	SerializationState
@@ -104,4 +104,4 @@ export class QueryResultsDeserializer
 
 }
 
-DI.set(QUERY_RESULTS_DESERIALIZER, QueryResultsDeserializer)
+DEPENDENCY_INJECTION.set(QUERY_RESULTS_DESERIALIZER, QueryResultsDeserializer)

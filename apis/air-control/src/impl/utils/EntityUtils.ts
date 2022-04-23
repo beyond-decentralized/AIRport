@@ -1,4 +1,4 @@
-import {DI}             from '@airport/di'
+import {DEPENDENCY_INJECTION}             from '@airport/direction-indicator'
 import {ENTITY_UTILS}   from '../../tokens'
 import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
 import {RawQuery}       from '../../lingo/query/facade/Query'
@@ -83,4 +83,4 @@ export class EntityUtils
 	}
 
 }
-DI.set(ENTITY_UTILS, EntityUtils)
+DEPENDENCY_INJECTION.set(ENTITY_UTILS, EntityUtils)

@@ -1,4 +1,4 @@
-import { IContext } from "@airport/di";
+import { IContext } from "@airport/direction-indicator";
 import { DbEntity } from "../application/Entity";
 
 export interface IAbstractQueryContext<IocContext>

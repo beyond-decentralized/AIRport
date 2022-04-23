@@ -9,9 +9,9 @@ import {
 } from '@airport/airport-code';
 import {
   container,
-  DI,
+  DEPENDENCY_INJECTION,
   IContext,
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
   DbApplication,
   getFullApplicationName,
@@ -175,4 +175,4 @@ export class SqLiteApplicationBuilder
 
 }
 
-DI.set(APPLICATION_BUILDER, SqLiteApplicationBuilder);
+DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, SqLiteApplicationBuilder);

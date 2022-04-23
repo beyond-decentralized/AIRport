@@ -1,4 +1,4 @@
-import {IContext}         from '@airport/di'
+import {IContext}         from '@airport/direction-indicator'
 import {Observable}      from 'rxjs'
 import {IQOrderableField} from '../../core/field/Field'
 import {RawFieldQuery}    from '../facade/FieldQuery'

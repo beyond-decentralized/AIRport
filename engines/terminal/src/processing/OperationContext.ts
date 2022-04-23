@@ -17,8 +17,8 @@ import {
 	ENTITY_UTILS,
 } from '@airport/air-control'
 import {
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	ENTITY_STATE_MANAGER,
 	IEntityStateManager,
@@ -94,7 +94,7 @@ export class IocOperationContext
 			queryManager, queryUtils, relationManager, repositoryManager,
 			applicationUtils, storeDriver, structuralEntityValidator,
 			transactionalConnector, transactionalServer, updateManager]
-			= await DI.db()
+			= await DEPENDENCY_INJECTION.db()
 				.get(
 					AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER,
 					DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR,
@@ -138,7 +138,7 @@ export class IocOperationContext
 			queryManager, queryUtils, relationManager, applicationUtils, storeDriver,
 			structuralEntityValidator, transactionalConnector, transactionalServer,
 			updateManager]
-			= DI.db()
+			= DEPENDENCY_INJECTION.db()
 				.getSync(
 					AIRPORT_DATABASE, CASCADE_GRAPH_VERIFIER, DELETE_MANAGER,
 					DEPENDENCY_GRAPH_RESOLVER, ENTITY_GRAPH_RECONSTRUCTOR,
@@ -229,5 +229,4 @@ export class OperationContextLoader
 	}
 
 }
-
-DI.set(OPERATION_CONTEXT_LOADER, OperationContextLoader)
+OPERATION_CONTEXT_LOADER.descriptor.class = OperationContextLoader

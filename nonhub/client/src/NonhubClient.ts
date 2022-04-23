@@ -9,7 +9,7 @@ import {
 import type {
     RepositoryTransactionHistory_SyncTimestamp
 } from '@airport/holding-pattern';
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { NONHUB_CLIENT } from './tokens';
 
 export interface INonhubClient {
@@ -116,4 +116,4 @@ export class NonhubClient
     }
 
 }
-DI.set(NONHUB_CLIENT, NonhubClient)
+DEPENDENCY_INJECTION.set(NONHUB_CLIENT, NonhubClient)

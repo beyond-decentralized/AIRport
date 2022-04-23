@@ -1,5 +1,5 @@
 import { and, Y } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	APPLICATION_VERSION_DAO
 } from '../tokens'
@@ -205,4 +205,4 @@ export class ApplicationVersionDao
 
 }
 
-DI.set(APPLICATION_VERSION_DAO, ApplicationVersionDao)
+DEPENDENCY_INJECTION.set(APPLICATION_VERSION_DAO, ApplicationVersionDao)

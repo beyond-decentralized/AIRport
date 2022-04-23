@@ -1,5 +1,5 @@
 import {AliasCache}            from '@airport/air-control'
-import {DI}                    from '@airport/di'
+import {DEPENDENCY_INJECTION}                    from '@airport/direction-indicator'
 import {
 	InternalFragments,
 	JSONClauseField,
@@ -34,7 +34,7 @@ export class TreeSQLQuery
 	) {
 		super(jsonQuery, dialect, QueryResultType.TREE, context)
 
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 
 		this.queryParser   = new TreeQueryResultParser()
@@ -139,7 +139,7 @@ export class TreeSQLQuery
 		aliasCache: AliasCache,
 		entityAlias: string
 	): any {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		// Return blanks, primitives and Dates directly

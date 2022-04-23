@@ -4,9 +4,9 @@ import {
 } from "@airport/air-control";
 import {
     container,
-    DI,
+    DEPENDENCY_INJECTION,
     IContext
-} from "@airport/di";
+} from "@airport/direction-indicator";
 import {
     SYNCHRONIZATION_ADAPTER_LOADER,
     SYNCHRONIZATION_IN_MANAGER
@@ -104,4 +104,4 @@ export class RepositoryLoader
     }
 
 }
-DI.set(REPOSITORY_LOADER, RepositoryLoader)
+DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader)

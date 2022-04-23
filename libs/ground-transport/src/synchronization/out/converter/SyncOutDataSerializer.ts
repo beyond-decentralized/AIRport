@@ -7,8 +7,8 @@ import {
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import {
 	container,
-	DI
-} from "@airport/di";
+	DEPENDENCY_INJECTION
+} from "@airport/direction-indicator";
 import { Application_Id, ColumnIndex, repositoryEntity } from "@airport/ground-control";
 import {
 	ACTOR_DAO,
@@ -577,4 +577,4 @@ export class SyncOutDataSerializer
 	}
 
 }
-DI.set(SYNC_OUT_DATA_SERIALIZER, SyncOutDataSerializer)
+DEPENDENCY_INJECTION.set(SYNC_OUT_DATA_SERIALIZER, SyncOutDataSerializer)

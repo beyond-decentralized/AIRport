@@ -1,4 +1,4 @@
-import { DI }                  from '@airport/di';
+import { DEPENDENCY_INJECTION }                  from '@airport/direction-indicator';
 import {
 	DbColumn,
 	DbProperty,
@@ -49,7 +49,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		queryUtils: IQueryUtils,
 		fieldUtils: IFieldUtils
 	): JSONClauseField {
-		const relationManager = DI.db().getSync(RELATION_MANAGER);
+		const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER);
 		let alias;
 		if (forSelectClause) {
 			alias = columnAliases.getNextAlias(this);
@@ -93,7 +93,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 
 	/**
 	 protected getFieldKey() {
-		const relationManager = DI.db().getSync(RELATION_MANAGER)
+		const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER)
 		let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
 		let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
 		return key;

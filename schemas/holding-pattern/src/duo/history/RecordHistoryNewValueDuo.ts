@@ -1,4 +1,4 @@
-import {DI}                     from '@airport/di'
+import {DEPENDENCY_INJECTION}                     from '@airport/direction-indicator'
 import {DbColumn}               from '@airport/ground-control'
 import {RecordHistoryNewValue}  from '../../ddl/ddl'
 import {RECORD_HISTORY_NEW_VALUE_DUO} from '../../tokens'
@@ -42,4 +42,4 @@ export class RecordHistoryNewValueDuo
 
 }
 
-DI.set(RECORD_HISTORY_NEW_VALUE_DUO, RecordHistoryNewValueDuo)
+DEPENDENCY_INJECTION.set(RECORD_HISTORY_NEW_VALUE_DUO, RecordHistoryNewValueDuo)

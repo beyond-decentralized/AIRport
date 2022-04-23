@@ -2,7 +2,7 @@ import {
 	IEntityUpdateProperties,
 	ManyToOneColumnMapping
 } from '@airport/air-control'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	InternalFragments,
 	JSONClauseObjectType,
@@ -73,7 +73,7 @@ ${whereFragment}`
 		setClauseFragment: IEntityUpdateProperties,
 		context: IFuelHydrantContext,
 	): string {
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 
 		let setFragments = []
@@ -97,7 +97,7 @@ ${whereFragment}`
 		setFragments: any[],
 		context: IFuelHydrantContext,
 	) {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		let fieldValue

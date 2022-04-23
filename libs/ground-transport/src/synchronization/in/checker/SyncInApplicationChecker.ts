@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { container, DI } from "@airport/di";
+import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { ApplicationName, ApplicationStatus } from '@airport/ground-control';
 import {
     DOMAIN_DAO,
@@ -185,4 +185,4 @@ export class SyncInApplicationChecker
     }
 
 }
-DI.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker)

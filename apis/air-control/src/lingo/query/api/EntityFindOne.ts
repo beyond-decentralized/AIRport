@@ -1,4 +1,4 @@
-import {IContext}                from '@airport/di'
+import {IContext}                from '@airport/direction-indicator'
 import {IEntitySelectProperties} from '../../core/entity/Entity'
 import {RawEntityQuery}          from '../facade/EntityQuery'
 import {IEntityLookup}           from './EntityLookup'

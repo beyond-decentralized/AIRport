@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
 	IActor,
@@ -40,4 +40,4 @@ export class HistoryManager
 
 }
 
-DI.set(HISTORY_MANAGER, HistoryManager)
+DEPENDENCY_INJECTION.set(HISTORY_MANAGER, HistoryManager)

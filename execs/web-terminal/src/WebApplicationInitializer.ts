@@ -1,7 +1,7 @@
 import {
     container,
-    DI
-} from "@airport/di";
+    DEPENDENCY_INJECTION
+} from "@airport/direction-indicator";
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
@@ -58,4 +58,4 @@ export class WebApplicationInitializer
     }
 }
 
-DI.set(APPLICATION_INITIALIZER, WebApplicationInitializer)
+DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, WebApplicationInitializer)

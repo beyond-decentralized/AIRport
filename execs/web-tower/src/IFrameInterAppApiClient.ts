@@ -3,7 +3,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { container, DI, IDiToken } from "@airport/di";
+import { container, DEPENDENCY_INJECTION, IDependencyInjectionToken } from "@airport/direction-indicator";
 import {
     IInterAppAPIClient,
     INTER_APP_API_CLIENT,
@@ -27,7 +27,7 @@ export class IFrameInterAppPIClient
     implements IInterAppAPIClient {
 
     async invokeApiMethod<ApiInterface, ReturnValue>(
-        token: IDiToken<ApiInterface>,
+        token: IDependencyInjectionToken<ApiInterface>,
         methodName: string,
         args: any[]
     ): Promise<ReturnValue> {
@@ -63,4 +63,4 @@ export class IFrameInterAppPIClient
     }
 
 }
-DI.set(INTER_APP_API_CLIENT, IFrameInterAppPIClient)
+DEPENDENCY_INJECTION.set(INTER_APP_API_CLIENT, IFrameInterAppPIClient)

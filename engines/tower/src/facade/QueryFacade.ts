@@ -8,8 +8,8 @@ import {
 } from '@airport/air-control';
 import {
 	container,
-	DI
-} from '@airport/di';
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator';
 import {
 	JsonQuery,
 	PortableQuery,
@@ -99,4 +99,4 @@ export class QueryFacade
 
 }
 
-DI.set(QUERY_FACADE, QueryFacade);
+DEPENDENCY_INJECTION.set(QUERY_FACADE, QueryFacade);

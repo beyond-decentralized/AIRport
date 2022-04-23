@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
-import { container, DI } from "@airport/di";
+import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     Repository_Source,
     Repository_UuId
@@ -86,4 +86,4 @@ export class DebugSynchronizationAdapter
     }
 
 }
-DI.set(DEBUG_SYNCHRONIZATION_ADAPTER, DebugSynchronizationAdapter)
+DEPENDENCY_INJECTION.set(DEBUG_SYNCHRONIZATION_ADAPTER, DebugSynchronizationAdapter)

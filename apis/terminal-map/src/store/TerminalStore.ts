@@ -11,7 +11,7 @@ import {
 	IMemoizedSelector,
 	SELECTOR_MANAGER
 } from '@airport/check-in';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	ApplicationSignature,
 	DomainName,
@@ -155,7 +155,7 @@ export class TerminalStore
 	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
 
 	async init(): Promise<void> {
-		const selectorManager = await DI.db().get(SELECTOR_MANAGER);
+		const selectorManager = await DEPENDENCY_INJECTION.db().get(SELECTOR_MANAGER);
 		this.state = internalTerminalState;
 
 		this.getTerminalState = selectorManager.createRootSelector(this.state);
@@ -314,4 +314,4 @@ export class TerminalStore
 	}
 }
 
-DI.set(TERMINAL_STORE, TerminalStore);
+DEPENDENCY_INJECTION.set(TERMINAL_STORE, TerminalStore);

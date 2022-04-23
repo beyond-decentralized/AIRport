@@ -1,4 +1,4 @@
-import { DI } from '@airport/di/lib'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator/lib'
 import {
 	DbEntity,
 	JSONBaseOperation,
@@ -62,4 +62,4 @@ export class QMetadataUtils
 
 }
 
-DI.set(Q_METADATA_UTILS, QMetadataUtils)
+DEPENDENCY_INJECTION.set(Q_METADATA_UTILS, QMetadataUtils)

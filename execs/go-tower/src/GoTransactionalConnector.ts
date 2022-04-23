@@ -1,9 +1,9 @@
 import { IQueryContext } from '@airport/air-control';
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	DistributionStrategy,
 	ISaveResult,
@@ -162,4 +162,4 @@ export class GoTransactionalConnector
 
 }
 
-DI.set(TRANSACTIONAL_CONNECTOR, GoTransactionalConnector);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, GoTransactionalConnector);

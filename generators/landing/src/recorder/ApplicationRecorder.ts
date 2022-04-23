@@ -4,9 +4,9 @@ import {
 } from '@airport/air-control'
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import { transactional } from '@airport/tower'
 import {
 	DOMAIN_DAO,
@@ -182,4 +182,4 @@ export class ApplicationRecorder
 
 }
 
-DI.set(APPLICATION_RECORDER, ApplicationRecorder)
+DEPENDENCY_INJECTION.set(APPLICATION_RECORDER, ApplicationRecorder)

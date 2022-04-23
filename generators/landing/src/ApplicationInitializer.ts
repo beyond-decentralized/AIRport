@@ -9,7 +9,7 @@ import {
 import {
 	container,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	FullApplicationName,

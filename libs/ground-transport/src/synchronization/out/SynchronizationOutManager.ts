@@ -1,8 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DI
-} from '@airport/di'
+	DEPENDENCY_INJECTION
+} from '@airport/direction-indicator'
 import {
 	ensureChildArray,
 	ensureChildJsMap,
@@ -154,4 +154,4 @@ export class SynchronizationOutManager
 	}
 
 }
-DI.set(SYNCHRONIZATION_OUT_MANAGER, SynchronizationOutManager)
+DEPENDENCY_INJECTION.set(SYNCHRONIZATION_OUT_MANAGER, SynchronizationOutManager)

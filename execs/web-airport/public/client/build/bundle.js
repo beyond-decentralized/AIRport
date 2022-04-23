@@ -45,7 +45,7 @@ var app = (function (exports) {
     }
     const AIRPORT_DOMAIN = domain('turbase.app');
 
-    class DiToken {
+    class DependencyInjectionToken {
         constructor(application, name) {
             this.application = application;
             this.name = name;
@@ -67,7 +67,7 @@ var app = (function (exports) {
             if (existingToken) {
                 throw new Error(`Token with name '${name}' has already been created`);
             }
-            const diToken = new DiToken(this, name);
+            const diToken = new DependencyInjectionToken(this, name);
             this.tokenMap.set(name, diToken);
             return diToken;
         }
@@ -302,18 +302,18 @@ var app = (function (exports) {
     }
     class InversionOfControl {
         async get(...tokens) {
-            return await DI.db().get(...tokens);
+            return await DEPENDENCY_INJECTION.db().get(...tokens);
         }
         async eventuallyGet(...tokens) {
-            return await DI.db().eventuallyGet(...tokens);
+            return await DEPENDENCY_INJECTION.db().eventuallyGet(...tokens);
         }
         getSync(...tokens) {
-            return DI.db().getSync(...tokens);
+            return DEPENDENCY_INJECTION.db().getSync(...tokens);
         }
     }
-    const DI = new RootContainer();
+    const DEPENDENCY_INJECTION = new RootContainer();
     if (typeof window !== 'undefined') {
-        window.DI = DI;
+        window.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
         window.lib = lib$1;
         window.domain = domain;
     }
@@ -2251,7 +2251,7 @@ var app = (function (exports) {
             createChannel();
         }
     }
-    DI.set(CROSS_TAB_COMMUNCATOR, CrossTabCommunicator);
+    DEPENDENCY_INJECTION.set(CROSS_TAB_COMMUNCATOR, CrossTabCommunicator);
 
     IOC.getSync(CROSS_TAB_COMMUNCATOR);
 

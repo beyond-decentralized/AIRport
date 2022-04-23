@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	getFullApplicationNameFromDomainAndName,
 	JsonApplication
@@ -63,4 +63,4 @@ export class ApplicationLocator
 
 }
 
-DI.set(APPLICATION_LOCATOR, ApplicationLocator)
+DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, ApplicationLocator)

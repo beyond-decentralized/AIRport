@@ -9,8 +9,8 @@ import {
 } from '@airport/airport-code'
 import {
 	container,
-	DI, IContext,
-} from '@airport/di';
+	DEPENDENCY_INJECTION, IContext,
+} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	getFullApplicationName,
@@ -148,4 +148,4 @@ export class MySqlApplicationBuilder
 
 }
 
-DI.set(APPLICATION_BUILDER, MySqlApplicationBuilder)
+DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, MySqlApplicationBuilder)

@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IInterAppAPIClient } from '@airport/ground-control/src/lingo/InterAppAPIClient'
 import { IEntityCopier } from './core/data/EntityCopier'
 

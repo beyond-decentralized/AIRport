@@ -1,5 +1,5 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
-import { container, DI } from "@airport/di";
+import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/security-check";
 import { TERMINAL_STORE, TRANSACTIONAL_RECEIVER } from "@airport/terminal-map";
 import {
@@ -71,7 +71,7 @@ export class WebMesageReceiver
     }
 
 }
-DI.set(WEB_MESSAGE_RECEIVER, WebMesageReceiver)
+DEPENDENCY_INJECTION.set(WEB_MESSAGE_RECEIVER, WebMesageReceiver)
 
 export function injectWebReceiver() {
     const terminalStore = container(this).getSync(TERMINAL_STORE)

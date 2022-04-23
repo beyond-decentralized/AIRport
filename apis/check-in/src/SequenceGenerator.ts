@@ -9,7 +9,7 @@ import {
 	DbSequence,
 	repositoryEntity
 } from '@airport/ground-control';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 
 /**
  * Sequence generator is needed at Airport initialization time. A Dao

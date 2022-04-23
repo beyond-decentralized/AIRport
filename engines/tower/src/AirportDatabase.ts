@@ -63,8 +63,8 @@ import {
 } from '@airport/air-control';
 import {
 	container,
-	DI,
-} from '@airport/di';
+	DEPENDENCY_INJECTION,
+} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	DistributionStrategy,
@@ -362,7 +362,7 @@ export class AirportDatabase
 	}
 }
 
-DI.set(AIRPORT_DATABASE, AirportDatabase);
+DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
 
 export function injectAirportDatabase(): void {
 	console.log('Injecting AirportDatabase');

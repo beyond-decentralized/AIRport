@@ -4,7 +4,7 @@ import {
 	field,
 	or
 } from '@airport/air-control'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
@@ -154,4 +154,4 @@ export class RecordUpdateStageDao
 
 }
 
-DI.set(RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao)
+DEPENDENCY_INJECTION.set(RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao)

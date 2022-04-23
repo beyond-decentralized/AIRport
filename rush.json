@@ -169,8 +169,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/di",
-      "projectFolder": "libs/di",
+      "packageName": "@airport/direction-indicator",
+      "projectFolder": "libs/direction-indicator",
       "shouldPublish": true
     },
     {

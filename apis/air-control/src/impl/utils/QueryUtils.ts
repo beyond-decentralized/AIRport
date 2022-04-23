@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	JSONBaseOperation,
 	JSONValueOperation,
@@ -106,4 +106,4 @@ export class QueryUtils
 	}
 }
 
-DI.set(QUERY_UTILS, QueryUtils)
+DEPENDENCY_INJECTION.set(QUERY_UTILS, QueryUtils)

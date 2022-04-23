@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
   SQLDialect,
   SqlDriver
@@ -237,4 +237,4 @@ and TABLE_NAME = '${tableName}';`,
 
 }
 
-DI.set(STORE_DRIVER, MySqlDriver);
+DEPENDENCY_INJECTION.set(STORE_DRIVER, MySqlDriver);

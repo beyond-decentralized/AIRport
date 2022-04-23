@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE, IAirportDatabase, QApplicationInternal } from '@airport/air-control'
 import { ISequence, SEQUENCE_DAO } from '@airport/airport-code'
-import { container, DI, IContext } from '@airport/di'
+import { container, DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
 import {
 	DbApplication,
 	getFullApplicationName,
@@ -187,4 +187,4 @@ export class PostgreSqlApplicationBuilder
 
 }
 
-DI.set(APPLICATION_BUILDER, PostgreSqlApplicationBuilder)
+DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, PostgreSqlApplicationBuilder)

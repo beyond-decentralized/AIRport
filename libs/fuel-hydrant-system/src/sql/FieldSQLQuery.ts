@@ -1,4 +1,4 @@
-import {DI}                 from '@airport/di'
+import {DEPENDENCY_INJECTION}                 from '@airport/direction-indicator'
 import {
 	InternalFragments,
 	JSONClauseField,
@@ -30,7 +30,7 @@ export class FieldSQLQuery
 	) {
 		super(jsonQuery, dialect, QueryResultType.FIELD, context)
 
-		const validator = DI.db()
+		const validator = DEPENDENCY_INJECTION.db()
 			.getSync(Q_VALIDATOR)
 
 		this.orderByParser = new ExactOrderByParser(validator)
@@ -88,7 +88,7 @@ export class FieldSQLQuery
 		resultRow: any,
 		nextFieldIndex: number[],
 	): any {
-		const sqlAdaptor = DI.db()
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
 			.getSync(SQL_QUERY_ADAPTOR)
 
 		let field         = <JSONClauseField>selectClauseFragment

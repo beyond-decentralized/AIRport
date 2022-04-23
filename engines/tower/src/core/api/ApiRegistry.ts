@@ -1,4 +1,4 @@
-import { container, DI } from "@airport/di";
+import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     API_REGISTRY,
     IApiOperation,
@@ -62,4 +62,4 @@ export class ApiRegistry
         }
     }
 }
-DI.set(API_REGISTRY, ApiRegistry)
+DEPENDENCY_INJECTION.set(API_REGISTRY, ApiRegistry)

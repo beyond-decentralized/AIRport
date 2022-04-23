@@ -3,7 +3,7 @@ import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
     container,
     IContext,
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
     getFullApplicationName,
     getFullApplicationNameFromDomainAndName,

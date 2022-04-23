@@ -7,7 +7,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
-import { container, DI, IContext } from '@airport/di'
+import { container, DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository,
@@ -173,4 +173,4 @@ already contains a new repository.`)
 
 }
 
-DI.set(REPOSITORY_MANAGER, RepositoryManager)
+DEPENDENCY_INJECTION.set(REPOSITORY_MANAGER, RepositoryManager)

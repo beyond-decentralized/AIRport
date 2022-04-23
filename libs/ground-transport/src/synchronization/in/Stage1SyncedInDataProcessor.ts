@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control'
 import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -745,4 +745,4 @@ export class Stage1SyncedInDataProcessor
 
 }
 
-DI.set(STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor)
+DEPENDENCY_INJECTION.set(STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor)

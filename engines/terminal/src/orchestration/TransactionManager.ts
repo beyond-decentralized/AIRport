@@ -1,9 +1,9 @@
 import { IQEntityInternal } from '@airport/air-control';
 import {
 	container,
-	DI,
+	DEPENDENCY_INJECTION,
 	IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
 	ACTIVE_QUERIES,
 	ID_GENERATOR,
@@ -473,4 +473,4 @@ ${callHerarchy}
 	}
 
 }
-DI.set(TRANSACTION_MANAGER, TransactionManager);
+DEPENDENCY_INJECTION.set(TRANSACTION_MANAGER, TransactionManager);

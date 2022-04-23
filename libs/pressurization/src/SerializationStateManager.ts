@@ -1,4 +1,4 @@
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { SERIALIZATION_STATE_MANAGER } from "./tokens";
 
 export enum SerializationState {
@@ -122,6 +122,6 @@ export class SerializationStateManager
     }
 
 }
-DI.set(SERIALIZATION_STATE_MANAGER, SerializationStateManager)
+DEPENDENCY_INJECTION.set(SERIALIZATION_STATE_MANAGER, SerializationStateManager)
 
 

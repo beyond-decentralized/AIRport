@@ -3,7 +3,7 @@ import {
     IUpdateCacheManager,
     UPDATE_CACHE_MANAGER
 } from "@airport/air-control";
-import { DI } from "@airport/di"
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator"
 import {
     DbEntity,
     EntityRelationType,
@@ -425,4 +425,4 @@ export class UpdateCacheManager
         }
     }
 }
-DI.set(UPDATE_CACHE_MANAGER, UpdateCacheManager)
+DEPENDENCY_INJECTION.set(UPDATE_CACHE_MANAGER, UpdateCacheManager)

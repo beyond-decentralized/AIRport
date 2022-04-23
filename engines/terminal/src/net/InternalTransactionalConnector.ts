@@ -8,9 +8,9 @@ import {
 } from '@airport/aviation-communication';
 import {
     container,
-    DI,
+    DEPENDENCY_INJECTION,
     IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import {
     ISaveResult,
     ITransactionalConnector,
@@ -264,7 +264,7 @@ they are internal to the AIRport framework).`)
 
 }
 
-DI.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
 
 export function injectTransactionalConnector(): void {
     console.log('Injecting TransactionalConnector')

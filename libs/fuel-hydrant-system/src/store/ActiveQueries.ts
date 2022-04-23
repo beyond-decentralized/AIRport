@@ -1,4 +1,4 @@
-import {DI}             from '@airport/di'
+import {DEPENDENCY_INJECTION}             from '@airport/direction-indicator'
 import {
 	PortableQuery,
 	SyncApplicationMap
@@ -75,7 +75,7 @@ export class ActiveQueries
 	}
 }
 
-DI.set(ACTIVE_QUERIES, ActiveQueries)
+DEPENDENCY_INJECTION.set(ACTIVE_QUERIES, ActiveQueries)
 
 export interface CachedSQLQuery {
 	parameters: any[],

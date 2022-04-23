@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { APPLICATION_LOCATOR, ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
@@ -25,4 +25,4 @@ export class IFrameApplicationLocator
         return await transactionalConnector.getLatestApplicationVersionMapByFullApplicationName(fullApplicationName)
     }
 }
-DI.set(APPLICATION_LOCATOR, IFrameApplicationLocator)
+DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, IFrameApplicationLocator)

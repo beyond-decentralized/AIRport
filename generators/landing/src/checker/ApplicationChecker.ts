@@ -1,4 +1,4 @@
-import {container, DI}             from '@airport/di'
+import {container, DEPENDENCY_INJECTION}             from '@airport/direction-indicator'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -229,4 +229,4 @@ export class ApplicationChecker
 
 }
 
-DI.set(APPLICATION_CHECKER, ApplicationChecker)
+DEPENDENCY_INJECTION.set(APPLICATION_CHECKER, ApplicationChecker)

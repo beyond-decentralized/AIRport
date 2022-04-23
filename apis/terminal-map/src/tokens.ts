@@ -1,10 +1,11 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { ITransactionManager } from './orchestration/TransactionManager'
 import { ITerminalStore } from './store/TerminalStore'
 import { ITransactionalServer } from './transaction/ITransactionalServer'
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
+import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
 
 const terminalMap = lib('terminal-map')
 
@@ -15,3 +16,7 @@ export const TERMINAL_STORE = terminalMap.token<ITerminalStore>('TERMINAL_STORE'
 export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>('TRANSACTION_MANAGER')
 export const TRANSACTIONAL_RECEIVER = terminalMap.token<ITransactionalReceiver>('TRANSACTIONAL_RECEIVER')
 export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>('TRANSACTIONAL_SERVER')
+
+TRANSACTIONAL_SERVER.setDependencies({
+    operationContextLoader: OPERATION_CONTEXT_LOADER
+})

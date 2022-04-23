@@ -1,4 +1,4 @@
-import { lib } from '@airport/di'
+import { lib } from '@airport/direction-indicator'
 import { IQueryResultsDeserializer } from './QueryResultsDeserializer'
 import { IOperationSerializer } from './OperationSerializer'
 import { ISerializationStateManager } from './SerializationStateManager'

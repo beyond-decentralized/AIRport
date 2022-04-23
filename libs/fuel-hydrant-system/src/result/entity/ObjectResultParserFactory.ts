@@ -1,4 +1,4 @@
-import {DI}                           from '@airport/di'
+import {DEPENDENCY_INJECTION}                           from '@airport/direction-indicator'
 import {
 	DbEntity,
 	QueryResultType
@@ -44,4 +44,4 @@ export class ObjectResultParserFactory
 
 }
 
-DI.set(OBJECT_RESULT_PARSER_FACTORY, ObjectResultParserFactory)
+DEPENDENCY_INJECTION.set(OBJECT_RESULT_PARSER_FACTORY, ObjectResultParserFactory)

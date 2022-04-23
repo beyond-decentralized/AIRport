@@ -1,5 +1,5 @@
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication'
-import { IContext } from '@airport/di'
+import { IContext } from '@airport/direction-indicator'
 import { Observable } from 'rxjs'
 import { IAbstractQueryContext } from './query/AbstractQueryContext'
 import { PortableQuery } from './query/PortableQuery'

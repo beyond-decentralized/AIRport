@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	Observable,
 	from
@@ -214,7 +214,7 @@ export class SelectorManager
 
 }
 
-DI.set(SELECTOR_MANAGER, SelectorManager);
+DEPENDENCY_INJECTION.set(SELECTOR_MANAGER, SelectorManager);
 
 
 

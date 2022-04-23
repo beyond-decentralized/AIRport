@@ -11,7 +11,7 @@ import type {
 	IApplicationRelationColumn,
 	IApplicationVersion
 } from '@airport/airspace'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import type {
 	ColumnId,
 	DomainId,
@@ -274,4 +274,4 @@ export class DdlObjectLinker
 
 }
 
-DI.set(DDL_OBJECT_LINKER, DdlObjectLinker)
+DEPENDENCY_INJECTION.set(DDL_OBJECT_LINKER, DdlObjectLinker)

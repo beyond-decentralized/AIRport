@@ -1,4 +1,4 @@
-import { DI, IContext } from '@airport/di';
+import { DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator';
 import {
 	INTERNAL_APP,
 	INTERNAL_DOMAIN
@@ -25,7 +25,7 @@ export async function transactional<T>(
 	if (!context) {
 		context = {}
 	}
-	const transactionManager = await DI.db()
+	const transactionManager = await DEPENDENCY_INJECTION.db()
 		.get(TRANSACTION_MANAGER)
 	await transactionManager.transact({
 		application: INTERNAL_APP,

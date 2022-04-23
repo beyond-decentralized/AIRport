@@ -5,7 +5,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
-import { IContext } from '@airport/di'
+import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository

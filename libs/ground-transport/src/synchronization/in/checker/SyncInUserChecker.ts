@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import { container, DI } from '@airport/di'
+import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	IUser,
 	IUserDao,
@@ -73,4 +73,4 @@ export class SyncInUserChecker
 
 }
 
-DI.set(SYNC_IN_USER_CHECKER, SyncInUserChecker)
+DEPENDENCY_INJECTION.set(SYNC_IN_USER_CHECKER, SyncInUserChecker)

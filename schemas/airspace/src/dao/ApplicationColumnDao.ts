@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	EntityId,
 	undefinedToNull
@@ -89,4 +89,4 @@ export class ApplicationColumnDao
 
 }
 
-DI.set(APPLICATION_COLUMN_DAO, ApplicationColumnDao)
+DEPENDENCY_INJECTION.set(APPLICATION_COLUMN_DAO, ApplicationColumnDao)

@@ -3,7 +3,7 @@ import {
 	IQueryResultsSerializer,
 	QUERY_RESULTS_SERIALIZER
 } from '@airport/check-in'
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	EntityState,
@@ -137,4 +137,4 @@ export class QueryResultsSerializer
 	}
 
 }
-DI.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer)
+DEPENDENCY_INJECTION.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer)

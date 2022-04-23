@@ -1,17 +1,17 @@
 import {
     AUTOPILOT_API_LOADER,
-    DI,
+    DEPENDENCY_INJECTION,
     IAutopilotApiLoader,
-    IDiToken,
+    IDependencyInjectionToken,
     IOC
-} from '@airport/di'
+} from '@airport/direction-indicator'
 import { LOCAL_API_CLIENT } from '../tokens';
 
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
     loadApiAutopilot<T>(
-        token: IDiToken<T>
+        token: IDependencyInjectionToken<T>
     ): T {
         return new Proxy({}, {
             get(target, methodName: string) {
@@ -29,4 +29,4 @@ export class AutopilotApiLoader
         }) as T;
     }
 }
-DI.set(AUTOPILOT_API_LOADER, AutopilotApiLoader)
+AUTOPILOT_API_LOADER.descriptor.class = AutopilotApiLoader

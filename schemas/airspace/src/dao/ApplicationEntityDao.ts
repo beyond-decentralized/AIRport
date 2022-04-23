@@ -1,4 +1,4 @@
-import {DI}                from '@airport/di'
+import {DEPENDENCY_INJECTION}                from '@airport/direction-indicator'
 import {ApplicationVersionId}   from '@airport/ground-control'
 import {
 	BaseApplicationEntityDao,
@@ -76,4 +76,4 @@ export class ApplicationEntityDao
 
 }
 
-DI.set(APPLICATION_ENTITY_DAO, ApplicationEntityDao)
+DEPENDENCY_INJECTION.set(APPLICATION_ENTITY_DAO, ApplicationEntityDao)

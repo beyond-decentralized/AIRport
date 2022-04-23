@@ -1,8 +1,8 @@
 import {
   container,
-  DI,
+  DEPENDENCY_INJECTION,
   IContext
-} from '@airport/di';
+} from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
 import {
   IRepository,
@@ -225,4 +225,4 @@ export class OnlineManager
 
 }
 
-DI.set(ONLINE_MANAGER, OnlineManager);
+DEPENDENCY_INJECTION.set(ONLINE_MANAGER, OnlineManager);

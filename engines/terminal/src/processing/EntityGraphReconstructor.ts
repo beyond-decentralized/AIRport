@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbProperty,
 	EntityRelationType
@@ -213,4 +213,4 @@ of entity ${dbProperty.entity.name}\``)
 	}
 }
 
-DI.set(ENTITY_GRAPH_RECONSTRUCTOR, EntityGraphReconstructor)
+DEPENDENCY_INJECTION.set(ENTITY_GRAPH_RECONSTRUCTOR, EntityGraphReconstructor)

@@ -1,4 +1,4 @@
-import {DI}               from '@airport/di'
+import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {
 	JSONEntityRelation,
 	JSONRelation
@@ -96,4 +96,4 @@ export class RelationManager
 
 }
 
-DI.set(RELATION_MANAGER, RelationManager)
+DEPENDENCY_INJECTION.set(RELATION_MANAGER, RelationManager)

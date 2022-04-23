@@ -1,4 +1,4 @@
-import { DI } from '@airport/di'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	PropertyId,
 	undefinedToNull
@@ -84,4 +84,4 @@ export class ApplicationRelationDao
 	}
 
 }
-DI.set(APPLICATION_RELATION_DAO, ApplicationRelationDao)
+DEPENDENCY_INJECTION.set(APPLICATION_RELATION_DAO, ApplicationRelationDao)

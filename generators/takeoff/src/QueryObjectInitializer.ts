@@ -1,8 +1,8 @@
 import { IAirportDatabase }         from '@airport/air-control';
 import {
 	container,
-	DI
-}                                   from '@airport/di';
+	DEPENDENCY_INJECTION
+}                                   from '@airport/direction-indicator';
 import {
 	AllDdlObjects,
 	IQueryEntityClassCreator,
@@ -111,4 +111,4 @@ export class QueryObjectInitializer
 
 }
 
-DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);
+DEPENDENCY_INJECTION.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);
