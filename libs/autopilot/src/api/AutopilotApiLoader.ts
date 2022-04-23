@@ -29,4 +29,4 @@ export class AutopilotApiLoader
         }) as T;
     }
 }
-AUTOPILOT_API_LOADER.descriptor.class = AutopilotApiLoader
+DEPENDENCY_INJECTION.set(AUTOPILOT_API_LOADER, AutopilotApiLoader)

@@ -134,11 +134,11 @@ export class ChildContainer extends Container {
         if (!token.dependencyConfiguration) {
             return;
         }
-        let thisContainer = this;
-        for (let propertyName in token.dependencyConfiguration) {
+        const thisContainer = this;
+        const dependencyConfiguration = token.dependencyConfiguration;
+        for (let propertyName in dependencyConfiguration) {
             delete object[propertyName];
-            let dependencyToken = token
-                .dependencyConfiguration[propertyName];
+            const dependencyToken = dependencyConfiguration[propertyName];
             Object.defineProperty(object, propertyName, {
                 get() {
                     return thisContainer.getSync(dependencyToken);

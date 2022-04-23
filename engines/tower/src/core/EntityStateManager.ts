@@ -197,8 +197,7 @@ export class EntityStateManager
 	}
 
 }
-
-ENTITY_STATE_MANAGER.descriptor.class = EntityStateManager
+DEPENDENCY_INJECTION.set(ENTITY_STATE_MANAGER, EntityStateManager)
 
 export function injectEntityStateManager() {
 	console.log('inject EntityStateManager')

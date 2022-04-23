@@ -26,7 +26,6 @@ import {
 } from '@airport/security-check';
 import {
     IApiCallContext,
-    ICredentials,
     IQueryOperationContext,
     ITransactionContext,
     ITransactionCredentials,

@@ -19,10 +19,11 @@ export interface IDependencyInjectionToken<Injectable> {
 export declare class DependencyInjectionToken<Injectable> implements IDependencyInjectionToken<Injectable> {
     application: IInjectionApplication;
     descriptor: IDependencyInjectionTokenDescriptor;
-    dependencyConfiguration: ITokenDependencyConfiguration;
+    get dependencyConfiguration(): ITokenDependencyConfiguration;
     constructor(application: IInjectionApplication, descriptor: IDependencyInjectionTokenDescriptor);
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
+    private getInheritedDependencyConfiguration;
 }
 export interface GenericDependencyInjectionError {
     DependencyInjectionTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;

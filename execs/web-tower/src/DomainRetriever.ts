@@ -1,8 +1,7 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
     DbDomain,
-    DomainName,
-    TRANSACTIONAL_CONNECTOR
+    DomainName
 } from '@airport/ground-control'
 import {
     DOMAIN_RETRIEVER,
@@ -13,11 +12,13 @@ import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 export class DomainRetriever
     implements IDomainRetriever {
 
+    transactionalConnector: IIframeTransactionalConnector
+
     async retrieveDomain(
         domainName: DomainName,
         domainNameMapByName: Map<string, DbDomain>,
-		allDomains: DbDomain[],
-		newDomains: DbDomain[]
+        allDomains: DbDomain[],
+        newDomains: DbDomain[]
     ): Promise<DbDomain> {
         let domain = domainNameMapByName.get(domainName)
 
@@ -25,10 +26,7 @@ export class DomainRetriever
             return domain
         }
 
-        const transactionalConnector = await container(this)
-            .get(TRANSACTIONAL_CONNECTOR) as IIframeTransactionalConnector
-
-        domain = await transactionalConnector.retrieveDomain(domainName)
+        domain = await this.transactionalConnector.retrieveDomain(domainName)
 
         if (domain) {
             domainNameMapByName.set(domainName, domain)

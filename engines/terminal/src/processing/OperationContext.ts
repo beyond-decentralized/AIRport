@@ -229,4 +229,4 @@ export class OperationContextLoader
 	}
 
 }
-OPERATION_CONTEXT_LOADER.descriptor.class = OperationContextLoader
+DEPENDENCY_INJECTION.set(OPERATION_CONTEXT_LOADER, OperationContextLoader)

@@ -263,8 +263,7 @@ they are internal to the AIRport framework).`)
     }
 
 }
-
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector)
 
 export function injectTransactionalConnector(): void {
     console.log('Injecting TransactionalConnector')

@@ -390,8 +390,6 @@ export interface IRootContainer
 
 }
 
-const classMap: Map<string, any> = new Map();
-let numPendingInits = 0;
 const objectMap: Map<string, any> = new Map();
 
 export class Container
@@ -399,10 +397,9 @@ export class Container
 
 	set<I>(
 		token: IDependencyInjectionToken<I>,
-		clazz: new () => I
+		aClass: new () => I
 	): void {
-		classMap.set(token.descriptor.token, clazz)
-		objectMap.set(token.descriptor.token, null)
+		token.descriptor.class = aClass
 	}
 
 }
@@ -527,17 +524,17 @@ export class ChildContainer
 						object = this.getSync(AUTOPILOT_API_LOADER)
 							.loadApiAutopilot(token);
 					} else {
-						const clazz = classMap.get(token.descriptor.token);
-						if (!clazz) {
+						const aClass = token.descriptor.class
+						if (!aClass) {
 							firstMissingClassToken = token;
 							return;
 						}
-						if (clazz.diSet && !clazz.diSet()) {
+						if (aClass.diSet && !aClass.diSet()) {
 							firstMissingClassToken = token;
-							firstDiNotSetClass = clazz;
+							firstDiNotSetClass = aClass;
 							return;
 						}
-						object = new clazz();
+						object = new aClass();
 						this.setDependencyGetters(object, token)
 					}
 					object.__container__ = this
@@ -576,12 +573,12 @@ export class ChildContainer
 			return
 		}
 
-		let thisContainer = this
-		for (let propertyName in token.dependencyConfiguration) {
+		const thisContainer = this
+		const dependencyConfiguration = token.dependencyConfiguration
+		for (let propertyName in dependencyConfiguration) {
 			delete object[propertyName]
 			
-			let dependencyToken = token
-				.dependencyConfiguration[propertyName]
+			const dependencyToken = dependencyConfiguration[propertyName]
 
 			Object.defineProperty(object, propertyName, {
 				get() {

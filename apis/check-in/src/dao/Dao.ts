@@ -10,17 +10,15 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-	OperationName,
 	QApplication,
 	Y
 } from '@airport/air-control';
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
 import {
 	EntityId as DbEntityId,
-	ENTITY_STATE_MANAGER,
+	IEntityStateManager,
 	ISaveResult
 } from '@airport/ground-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
@@ -51,6 +49,8 @@ export abstract class Dao<Entity,
 			// No runtime logic required.
 		};
 	}
+
+	entityStateManager: IEntityStateManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
@@ -86,20 +86,20 @@ export abstract class Dao<Entity,
 		throw new Error(`Not Implemented`);
 	}
 
-    protected repositoryId() {
-        return {
-            actor: {
-                id: Y,
-                uuId: Y
-            },
-            actorRecordId: Y,
-            ageSuitability:Y,
-            repository: {
-                id: Y,
-                uuId: Y
-            }
-        }
-    }
+	protected repositoryId() {
+		return {
+			actor: {
+				id: Y,
+				uuId: Y
+			},
+			actorRecordId: Y,
+			ageSuitability: Y,
+			repository: {
+				id: Y,
+				uuId: Y
+			}
+		}
+	}
 
 	async findAll(
 		entityIds?: EntityId[],
@@ -149,13 +149,12 @@ export abstract class Dao<Entity,
 		entityIdInfo: EntityInfo,
 		context?: IContext,
 	): void {
-		const entityStateManager = DEPENDENCY_INJECTION.db().getSync(ENTITY_STATE_MANAGER);
 		if (entityIdInfo instanceof Array) {
 			for (const anEntity of entityIdInfo) {
-				entityStateManager.markForDeletion(anEntity);
+				this.entityStateManager.markForDeletion(anEntity);
 			}
 		} else {
-			entityStateManager.markForDeletion(entityIdInfo);
+			this.entityStateManager.markForDeletion(entityIdInfo);
 		}
 	}
 

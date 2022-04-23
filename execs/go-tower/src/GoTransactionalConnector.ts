@@ -161,5 +161,4 @@ export class GoTransactionalConnector
     }
 
 }
-
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, GoTransactionalConnector);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, GoTransactionalConnector)

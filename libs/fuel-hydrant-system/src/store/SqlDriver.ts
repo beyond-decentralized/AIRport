@@ -10,6 +10,7 @@ import {
 	FullApplicationName,
 	getFullApplicationName,
 	InternalFragments,
+	IOperationContextLoader,
 	JsonDelete,
 	JsonEntityQuery,
 	JsonFieldQuery,
@@ -58,6 +59,8 @@ import { IFuelHydrantContext } from '../FuelHydrantContext';
 
 export abstract class SqlDriver
 	implements IStoreDriver {
+
+	operationContextLoader: IOperationContextLoader
 
 	// public queries: ActiveQueries
 	public type: StoreType;
@@ -487,10 +490,8 @@ export abstract class SqlDriver
 
 	protected async ensureIocContext(
 		context: IFuelHydrantContext
-	): Promise<void> {
-		const operationContextLoader = await container(this)
-			.get(OPERATION_CONTEXT_LOADER);
-		await operationContextLoader.ensure(context);
+	): Promise<void> {;
+		await this.operationContextLoader.ensure(context);
 	}
 
 }

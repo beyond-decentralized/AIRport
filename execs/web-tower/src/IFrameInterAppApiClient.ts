@@ -1,13 +1,16 @@
 import {
     ICoreLocalApiRequest,
-    ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIRequest
 } from "@airport/aviation-communication";
-import { container, DEPENDENCY_INJECTION, IDependencyInjectionToken } from "@airport/direction-indicator";
+import {
+    container,
+    DEPENDENCY_INJECTION,
+    IDependencyInjectionToken
+} from "@airport/direction-indicator";
 import {
     IInterAppAPIClient,
     INTER_APP_API_CLIENT,
-    TRANSACTIONAL_CONNECTOR
+    ITransactionalConnector
 } from "@airport/ground-control";
 import {
     OPERATION_SERIALIZER,
@@ -26,14 +29,16 @@ const _inDemoMode = true
 export class IFrameInterAppPIClient
     implements IInterAppAPIClient {
 
+    transactionalConnector: ITransactionalConnector
+
     async invokeApiMethod<ApiInterface, ReturnValue>(
         token: IDependencyInjectionToken<ApiInterface>,
         methodName: string,
         args: any[]
     ): Promise<ReturnValue> {
-        const [operationSerializer, queryResultsDeserializer, transactionalConnector]
+        const [operationSerializer, queryResultsDeserializer]
             = await container(this).get(OPERATION_SERIALIZER,
-                QUERY_RESULTS_DESERIALIZER, TRANSACTIONAL_CONNECTOR)
+                QUERY_RESULTS_DESERIALIZER)
 
         let serializedParams
         if (_inDemoMode) {
@@ -48,7 +53,7 @@ export class IFrameInterAppPIClient
             objectName: token.name
         }
 
-        let response = await transactionalConnector.callApi(request)
+        let response = await this.transactionalConnector.callApi(request)
 
         if (response.errorMessage) {
             throw new Error(response.errorMessage)

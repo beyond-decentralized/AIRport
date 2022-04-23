@@ -29,8 +29,8 @@ import {
 import {
 	IEntityStateManager,
 	ISaveResult,
-	PortableQuery,
-	TRANSACTIONAL_CONNECTOR
+	ITransactionalConnector,
+	PortableQuery
 } from '@airport/ground-control'
 import { ENTITY_COPIER } from '../tokens'
 
@@ -41,6 +41,7 @@ export class DatabaseFacade
 	implements IDatabaseFacade {
 
 	entityStateManager: IEntityStateManager
+	transactionalConnector: ITransactionalConnector
 
 	name: string
 
@@ -52,9 +53,7 @@ export class DatabaseFacade
 		context?: IContext
 	): Promise<number> {
 		// TODO: figure out how addRepository will work
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR)
-
-		return await transactionalConnector.addRepository(
+		return await this.transactionalConnector.addRepository(
 			// url, platform, platformConfig, distributionStrategy, 
 			context
 		)
@@ -77,8 +76,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			insertColumnValues, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.insertValues(portableQuery, context)
+		return await this.transactionalConnector.insertValues(portableQuery, context)
 	}
 
 	async insertValues<IQE extends IQEntity>(
@@ -96,8 +94,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.insertValues(portableQuery, context)
+		return await this.transactionalConnector.insertValues(portableQuery, context)
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -117,8 +114,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
+		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
@@ -138,8 +134,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.insertValuesGetIds(portableQuery, context)
+		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
 	}
 
 	async deleteWhere<IQE extends IQEntity>(
@@ -159,8 +154,7 @@ export class DatabaseFacade
 		let portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			deleteWhere, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.deleteWhere(portableQuery, context)
+		return await this.transactionalConnector.deleteWhere(portableQuery, context)
 	}
 
 	async save<E>(
@@ -172,11 +166,10 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, applicationUtils,
-			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+		const [updateCacheManager, applicationUtils] = await container(this)
+			.get(UPDATE_CACHE_MANAGER, APPLICATION_UTILS)
 
-		const saveResult = await transactionalConnector.save(entityCopy, context)
+		const saveResult = await this.transactionalConnector.save(entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
 			this.entityStateManager, applicationUtils, new Set())
@@ -194,11 +187,10 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, applicationUtils,
-			transactionalConnector] = await container(this).get(UPDATE_CACHE_MANAGER,
-				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+		const [updateCacheManager, applicationUtils] = await container(this)
+			.get(UPDATE_CACHE_MANAGER, APPLICATION_UTILS)
 
-		const saveResult = await transactionalConnector
+		const saveResult = await this.transactionalConnector
 			.saveToDestination(repositoryDestination, entityCopy, context)
 
 		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
@@ -216,7 +208,7 @@ export class DatabaseFacade
 		}
 		const [updateCacheManager, entityCopier, applicationUtils]
 			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
-				APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR)
+				APPLICATION_UTILS)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
@@ -252,8 +244,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			updateColumns, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.updateValues(portableQuery, context)
+		return await this.transactionalConnector.updateValues(portableQuery, context)
 	}
 
 	async updateWhere<IEUP extends IEntityUpdateProperties,
@@ -274,8 +265,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
 			update, null, queryContext)
 
-		const transactionalConnector = await container(this).get(TRANSACTIONAL_CONNECTOR);
-		return await transactionalConnector.updateValues(portableQuery, context)
+		return await this.transactionalConnector.updateValues(portableQuery, context)
 	}
 
 	prepare<QF extends Function>(

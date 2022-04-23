@@ -2,6 +2,7 @@ import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	ENTITY_STATE_MANAGER,
+	IEntityStateManager,
 	QueryResultType
 } from '@airport/ground-control'
 import {
@@ -12,7 +13,6 @@ import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
 import {
-	REPOSITORY_LOADER,
 	APPLICATION_UTILS,
 	UPDATE_CACHE_MANAGER
 } from '../../../tokens'
@@ -51,6 +51,8 @@ export abstract class EntityLookup<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
 	extends LookupProxy
 	implements IEntityLookupInternal<Child, MappedChild, IESP> {
+
+	entityStateManager: IEntityStateManager
 
 	static mapResults = false
 

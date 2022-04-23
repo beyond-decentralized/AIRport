@@ -53,12 +53,6 @@ export class DependencyInjectionToken<Injectable>
 		this.descriptor.class.dependencyConfiguration = dependencyConfiguration
 	}
 
-	setClass(
-		aClass: any
-	) {
-		this.descriptor.class = aClass
-	}
-
 	private getInheritedDependencyConfiguration(
 		aClass: any
 	) {
