@@ -1,16 +1,14 @@
 import {
   AbstractQuery,
-  FIELD_UTILS,
   IFieldUtils,
   InsertValues,
   IQEntity,
   IQEntityInternal,
   IQueryUtils,
-  QUERY_UTILS,
   RawInsertValues,
-  APPLICATION_UTILS,
+  IApplicationUtils,
 } from '@airport/air-control';
-import { container, IContext } from '@airport/direction-indicator';
+import { IContext } from '@airport/direction-indicator';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';
 
@@ -20,18 +18,20 @@ interface IColumnValueLookup {
 }
 export class AbstractMutationManager {
 
+  applicationUtils: IApplicationUtils
+  fieldUtils: IFieldUtils
+  queryUtils: IQueryUtils
+
   protected getPortableQuery(
     applicationIndex: number,
     tableIndex: number,
     query: AbstractQuery,
-    queryResultType: QueryResultType,
-    queryUtils: IQueryUtils,
-    fieldUtils: IFieldUtils,
+    queryResultType: QueryResultType
   ): PortableQuery {
     return {
       applicationIndex,
       tableIndex,
-      jsonQuery: <JsonQuery>query.toJSON(queryUtils, fieldUtils),
+      jsonQuery: <JsonQuery>query.toJSON(this.queryUtils, this.fieldUtils),
       parameterMap: query.getParameters(),
       queryResultType,
     };
@@ -43,10 +43,6 @@ export class AbstractMutationManager {
     entities: any[],
     context: IContext,
   ): Promise<number> {
-    const [fieldUtils, queryUtils, applicationUtils,
-    ] = await container(this).get(
-      FIELD_UTILS, QUERY_UTILS, APPLICATION_UTILS);
-
     const dbEntity = (q as IQEntityInternal).__driver__.dbEntity;
     const columnIndexes: number[] = [];
     const columnValueLookups: IColumnValueLookup[] = [];
@@ -57,7 +53,7 @@ export class AbstractMutationManager {
       };
       if (dbProperty.relation && dbProperty.relation.length) {
         const dbRelation = dbProperty.relation[0];
-        applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
+        this.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (
           dbColumn: DbColumn,
           propertyNameChains: string[][],
         ) => {
@@ -109,7 +105,7 @@ export class AbstractMutationManager {
     let insertValues: InsertValues<any> = new InsertValues(rawInsertValues, columnIndexes);
     let portableQuery: PortableQuery = this.getPortableQuery(
       dbEntity.applicationVersion.application.index, dbEntity.index,
-      insertValues, null, queryUtils, fieldUtils);
+      insertValues, null);
 
     return await transaction.insertValues(portableQuery, context);
   }

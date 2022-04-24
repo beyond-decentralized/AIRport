@@ -25,7 +25,7 @@ export declare abstract class QField<IQF extends IQOrderableField<IQF>> implemen
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType: JSONClauseObjectType);
     /**
      protected getFieldKey() {
-        const relationManager = DI.db().getSync(RELATION_MANAGER)
+        const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER)
         let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
         let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
         return key;

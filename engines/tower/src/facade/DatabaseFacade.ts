@@ -10,16 +10,15 @@ import {
 	InsertValues,
 	IQEntity,
 	IQueryContext,
-	QUERY_CONTEXT_LOADER,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
-	APPLICATION_UTILS,
-	UPDATE_CACHE_MANAGER,
 	UpdateColumns,
 	UpdateProperties,
+	IQueryContextLoader,
+	IUpdateCacheManager,
 } from '@airport/air-control'
 import {
 	container,
@@ -41,7 +40,9 @@ export class DatabaseFacade
 	implements IDatabaseFacade {
 
 	entityStateManager: IEntityStateManager
+	queryContextLoader: IQueryContextLoader
 	transactionalConnector: ITransactionalConnector
+	updateCacheManager: IUpdateCacheManager
 
 	name: string
 
@@ -166,13 +167,10 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, applicationUtils] = await container(this)
-			.get(UPDATE_CACHE_MANAGER, APPLICATION_UTILS)
-
 		const saveResult = await this.transactionalConnector.save(entityCopy, context)
 
-		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			this.entityStateManager, applicationUtils, new Set())
+		this.updateCacheManager.afterSaveModifications(
+			entity, context.dbEntity, saveResult, new Set())
 
 		return saveResult
 	}
@@ -187,14 +185,11 @@ export class DatabaseFacade
 		}
 		const entityCopy = await this.preSaveOperations(entity, context)
 
-		const [updateCacheManager, applicationUtils] = await container(this)
-			.get(UPDATE_CACHE_MANAGER, APPLICATION_UTILS)
-
 		const saveResult = await this.transactionalConnector
 			.saveToDestination(repositoryDestination, entityCopy, context)
 
-		updateCacheManager.afterSaveModifications(entity, context.dbEntity, saveResult,
-			this.entityStateManager, applicationUtils, new Set())
+		this.updateCacheManager.afterSaveModifications(
+			entity, context.dbEntity, saveResult, new Set())
 
 		return saveResult
 	}
@@ -206,15 +201,13 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const [updateCacheManager, entityCopier, applicationUtils]
-			= await container(this).get(UPDATE_CACHE_MANAGER, ENTITY_COPIER,
-				APPLICATION_UTILS)
+		const entityCopier
+			= await container(this).get(ENTITY_COPIER)
 
 		const dbEntity = context.dbEntity;
 		const entityCopy = entityCopier
 			.copyEntityForProcessing(entity, dbEntity, this.entityStateManager, context)
-		updateCacheManager.setOperationState(
-			entityCopy, dbEntity, this.entityStateManager, applicationUtils, new Set())
+		this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set())
 
 		return entityCopy
 	}
@@ -278,8 +271,7 @@ export class DatabaseFacade
 		context: IContext
 	): Promise<IQueryContext> {
 		const queryContext: IQueryContext = context as IQueryContext
-		const queryContextLoader = await container(this).get(QUERY_CONTEXT_LOADER)
-		await queryContextLoader.ensure(queryContext);
+		await this.queryContextLoader.ensure(queryContext);
 
 		return queryContext
 	}

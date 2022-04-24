@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
 import { AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
@@ -124,7 +124,7 @@ export class QEntityDriver {
         return this.qEntity;
     }
     join(right, joinType) {
-        const [airDb, applicationUtils, relationManager] = DI.db().getSync(AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER);
+        const [airDb, applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER);
         let joinChild = right
             .__driver__.getInstance(airDb, applicationUtils);
         joinChild.__driver__.currentChildIndex = 0;

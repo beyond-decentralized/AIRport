@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { IQOrderableField } from '../../core/field/Field';
 import { RawFieldQuery } from '../facade/FieldQuery';
 import { RawSheetQuery } from '../facade/SheetQuery';

@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
-import { QUERY_UTILS } from '../../tokens';
 import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
 import { TreeQuery } from '../query/facade/TreeQuery';
@@ -76,5 +74,4 @@ export class QueryUtils {
         }
     }
 }
-DI.set(QUERY_UTILS, QueryUtils);
 //# sourceMappingURL=QueryUtils.js.map

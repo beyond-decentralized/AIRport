@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { IQOrderableField } from '../../../lingo/core/field/Field';
 import { INonEntityFind } from '../../../lingo/query/api/NonEntityFind';

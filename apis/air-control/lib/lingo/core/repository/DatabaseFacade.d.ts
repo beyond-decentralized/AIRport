@@ -8,7 +8,7 @@ import { IQueryContext } from '../../query/QueryContext';
 import { EntityIdData } from '../../utils/ApplicationUtils';
 import { IEntityContext } from '../EntityContext';
 import { IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 export interface UpdateRecord {
     newValue: any;
     originalValue: any;

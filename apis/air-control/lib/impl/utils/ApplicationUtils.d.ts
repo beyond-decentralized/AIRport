@@ -1,10 +1,11 @@
-import { CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, TableIndex } from '@airport/ground-control';
+import { CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, TableIndex, IEntityStateManager } from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
 import { IdKeysByIdColumnIndex, IApplicationUtils, RepositorySheetSelectInfo } from '../../lingo/utils/ApplicationUtils';
 import { QEntityConstructor } from '../core/entity/Entity';
 export declare class ApplicationUtils implements IApplicationUtils {
     static TEMP_ID: number;
+    entityStateManager: IEntityStateManager;
     getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
     isActorId(columnName: string): boolean;
     isActorRecordId(columnName: string): boolean;

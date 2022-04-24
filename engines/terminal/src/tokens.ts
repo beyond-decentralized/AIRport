@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, REPOSITORY_LOADER } from '@airport/air-control'
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import {
@@ -17,9 +17,15 @@ import {
 } from '@airport/terminal-map'
 import { IInternalRecordManager } from './data/InternalRecordManager'
 import { IOnlineManager } from './net/OnlineManager'
+import { AbstractMutationManager } from './orchestration/AbstractMutationManager'
 
 const terminal = lib('terminal')
 
+export const ABSTRACT_MUTATION_MANAGER = terminal.token<AbstractMutationManager>({
+    class: AbstractMutationManager,
+    interface: 'class AbstractMutationManager',
+    token: 'ABSTRACT_MUTATION_MANAGER'
+})
 export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>('CASCADE_GRAPH_VERIFIER')
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>('DATABASE_MANAGER')
 export const DELETE_MANAGER = terminal.token<IDeleteManager>('DELETE_MANAGER')
@@ -35,18 +41,33 @@ export const REPOSITORY_MANAGER = terminal.token<IRepositoryManager>('REPOSITORY
 export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token<IStructuralEntityValidator>('STRUCTURAL_ENTITY_VALIDATOR')
 export const UPDATE_MANAGER = terminal.token<IUpdateManager>('UPDATE_MANAGER')
 
-INTERNAL_RECORD_MANAGER.setDependencies({
-	entityStateManager: ENTITY_STATE_MANAGER
-})
-
-OPERATION_MANAGER.setDependencies({
-	entityStateManager: ENTITY_STATE_MANAGER
+ABSTRACT_MUTATION_MANAGER.setDependencies({
+    applicationUtils: APPLICATION_UTILS,
+    fieldUtils: FIELD_UTILS,
+    queryUtils: QUERY_UTILS
 })
 
 DELETE_MANAGER.setDependencies({
-	airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: APPLICATION_UTILS
 })
 
 INSERT_MANAGER.setDependencies({
-	airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE
+})
+
+INTERNAL_RECORD_MANAGER.setDependencies({
+    entityStateManager: ENTITY_STATE_MANAGER
+})
+
+OPERATION_MANAGER.setDependencies({
+    entityStateManager: ENTITY_STATE_MANAGER
+})
+
+QUERY_MANAGER.setDependencies({
+    repositoryLoader: REPOSITORY_LOADER
+})
+
+UPDATE_MANAGER.setDependencies({
+    queryFacade: QUERY_FACADE
 })

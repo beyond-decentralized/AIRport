@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { RELATION_MANAGER } from '../../../tokens';
 export class RelationManager {
     getPositionAlias(rootEntityPrefix, fromClausePosition) {
         return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
@@ -25,5 +23,4 @@ export class RelationManager {
         return nextChildJoinPosition;
     }
 }
-DI.set(RELATION_MANAGER, RelationManager);
 //# sourceMappingURL=RelationManager.js.map

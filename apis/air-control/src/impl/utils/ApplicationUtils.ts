@@ -29,9 +29,6 @@ import {
 	IApplicationUtils,
 	RepositorySheetSelectInfo
 } from '../../lingo/utils/ApplicationUtils'
-import {
-	APPLICATION_UTILS
-} from '../../tokens'
 import { QEntityConstructor } from '../core/entity/Entity'
 import { valuesEqual } from '../Utils'
 
@@ -581,5 +578,3 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_UTILS, ApplicationUtils)

@@ -2,12 +2,11 @@ import {
 	AbstractQuery,
 	IAbstractQuery,
 	IQueryContext,
+	IQueryContextLoader,
 	IQueryFacade,
-	QUERY_CONTEXT_LOADER,
 	QUERY_FACADE
 } from '@airport/air-control';
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator';
 import {
@@ -18,12 +17,11 @@ import {
 import {
 	Observable,
 } from 'rxjs';
-import {
-	map
-} from 'rxjs/operators';
 
 export class QueryFacade
 	implements IQueryFacade {
+
+	queryContextLoader: IQueryContextLoader
 
 	async find<E, EntityArray extends Array<E>>(
 		query: AbstractQuery,
@@ -92,9 +90,7 @@ export class QueryFacade
 	async ensureIocContext<E>(
 		context: IQueryContext
 	): Promise<void> {
-		const queryContextLoader = await container(this)
-			.get(QUERY_CONTEXT_LOADER);
-		await queryContextLoader.ensure(context);
+		await this.queryContextLoader.ensure(context);
 	}
 
 }

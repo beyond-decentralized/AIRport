@@ -9,7 +9,6 @@ import {
 	IQEntityInternal
 }                         from '../../../lingo/core/entity/Entity'
 import {IApplicationUtils}     from '../../../lingo/utils/ApplicationUtils'
-import {RELATION_MANAGER} from '../../../tokens'
 
 export interface IRelationManager {
 
@@ -95,5 +94,3 @@ export class RelationManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(RELATION_MANAGER, RelationManager)

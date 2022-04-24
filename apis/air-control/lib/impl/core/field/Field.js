@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, SortOrder } from '@airport/ground-control';
 import { RELATION_MANAGER } from '../../../tokens';
 import { FieldInOrderBy } from './FieldInOrderBy';
@@ -19,7 +19,7 @@ export class QField {
         return appliedField;
     }
     toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        const relationManager = DI.db().getSync(RELATION_MANAGER);
+        const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER);
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -50,7 +50,7 @@ export class QField {
     }
     /**
      protected getFieldKey() {
-        const relationManager = DI.db().getSync(RELATION_MANAGER)
+        const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER)
         let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
         let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
         return key;

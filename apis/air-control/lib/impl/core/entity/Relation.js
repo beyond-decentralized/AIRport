@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
 import { AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
@@ -24,7 +24,7 @@ QRelation.prototype.leftJoin = function () {
     return this.getNewQEntity(JoinType.LEFT_JOIN);
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
-    const [airDb, relationManager, applicationUtils] = DI.db()
+    const [airDb, relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
         .getSync(AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS);
     const dbEntity = this.dbRelation.relationEntity;
     const qEntityConstructor = applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);

@@ -1,5 +1,5 @@
 import {
-	QUERY_FACADE,
+	IQueryFacade,
 	RepositorySheetSelectInfo,
 	SheetQuery
 } from '@airport/air-control'
@@ -43,19 +43,19 @@ import {
 import {
 	IHistoryManager,
 	IOperationContext,
-	IRepositoryManager,
 	ITransaction,
 	IUpdateManager,
 	RecordHistoryMap
 } from '@airport/terminal-map'
 import {
 	HISTORY_MANAGER,
-	REPOSITORY_MANAGER,
 	UPDATE_MANAGER
 } from '../tokens'
 
 export class UpdateManager
 	implements IUpdateManager {
+
+	queryFacade: IQueryFacade
 
 	async updateValues(
 		portableQuery: PortableQuery,
@@ -259,9 +259,7 @@ export class UpdateManager
 				.equals(systemWideOperationId)
 		})
 
-		const queryFacade = await container(this)
-			.get(QUERY_FACADE)
-		let portableSelect = queryFacade.getPortableQuery(
+		let portableSelect = this.queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
 
 		const resultSetIndexByColumnIndex: Map<ColumnIndex, number> = new Map()

@@ -1,9 +1,9 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_CONTEXT_LOADER, QUERY_FACADE, QUERY_UTILS, APPLICATION_UTILS } from '../../tokens';
+import { AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, APPLICATION_UTILS } from '../../tokens';
 export class IocQueryContext {
     async init() {
-        const [airDb, entityUtils, fieldUtils, queryFacade, queryUtils, applicationUtils, transactionalConnector] = await DI.db()
+        const [airDb, entityUtils, fieldUtils, queryFacade, queryUtils, applicationUtils, transactionalConnector] = await DEPENDENCY_INJECTION.db()
             .get(AIRPORT_DATABASE, ENTITY_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR);
         this.airDb = airDb;
         this.entityUtils = entityUtils;
@@ -22,5 +22,4 @@ export class QueryContextLoader {
         }
     }
 }
-DI.set(QUERY_CONTEXT_LOADER, QueryContextLoader);
 //# sourceMappingURL=QueryContext.js.map

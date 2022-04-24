@@ -1,7 +1,5 @@
-import { DI } from '@airport/di';
-import { CRUDOperation, EntityRelationType, ENTITY_STATE_MANAGER, repositoryEntity } from '@airport/ground-control';
+import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
-import { APPLICATION_UTILS } from '../../tokens';
 import { valuesEqual } from '../Utils';
 export class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex, airDb) {
@@ -113,7 +111,6 @@ export class ApplicationUtils {
         return [propertyNameChains, value];
     }
     addRelationToEntitySelectClause(dbRelation, selectClause, allowDefaults = false) {
-        const entityStateManager = DI.db().getSync(ENTITY_STATE_MANAGER);
         this.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
             let convertTo = true;
             let propertySelectClause = selectClause;
@@ -122,7 +119,7 @@ export class ApplicationUtils {
                 let propertyObject = propertySelectClause[propertyNameLink];
                 if (!propertyObject) {
                     propertyObject = {};
-                    entityStateManager.markAsStub(propertyObject);
+                    this.entityStateManager.markAsStub(propertyObject);
                     propertySelectClause[propertyNameLink] = propertyObject;
                 }
                 else {
@@ -385,5 +382,4 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
     }
 }
 ApplicationUtils.TEMP_ID = 0;
-DI.set(APPLICATION_UTILS, ApplicationUtils);
 //# sourceMappingURL=ApplicationUtils.js.map

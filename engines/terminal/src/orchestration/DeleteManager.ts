@@ -1,7 +1,6 @@
 import {
 	IAirportDatabase,
 	IApplicationUtils,
-	APPLICATION_UTILS,
 	valuesEqual,
 	Y
 } from '@airport/air-control'
@@ -57,6 +56,7 @@ export class DeleteManager
 	implements IDeleteManager {
 
 	airportDatabase: IAirportDatabase
+	applicationUtils: IApplicationUtils
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
@@ -71,12 +71,11 @@ export class DeleteManager
 			recHistoryDuo,
 			recHistoryOldValueDuo,
 			repoTransHistoryDuo,
-			applicationUtils,
 			sequenceGenerator
 		] = await container(this)
 			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
 				RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO,
-				APPLICATION_UTILS, SEQUENCE_GENERATOR)
+				SEQUENCE_GENERATOR)
 
 		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
@@ -88,7 +87,7 @@ export class DeleteManager
 		}
 
 		const selectCascadeTree: any = this.getCascadeSubTree(
-			dbEntity, applicationUtils)
+			dbEntity)
 		const jsonDelete = <JsonDelete>portableQuery.jsonQuery
 		const jsonSelect: JsonEntityQuery<any> = {
 			S: selectCascadeTree,
@@ -110,12 +109,12 @@ export class DeleteManager
 		const repositoryIdSet = new Set<number>()
 		for (const treeToDelete of treesToDelete) {
 			this.recordRepositoryIds(treeToDelete, dbEntity,
-				recordsToDelete, repositoryIdSet, applicationUtils)
+				recordsToDelete, repositoryIdSet, this.applicationUtils)
 		}
 
 		await this.recordTreeToDelete(recordsToDelete, actor,
 			airDb, historyManager, operHistoryDuo, recHistoryDuo,
-			recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils,
+			recHistoryOldValueDuo, repoTransHistoryDuo, this.applicationUtils,
 			sequenceGenerator, transaction, rootTransaction, context)
 
 		return await deleteCommand
@@ -302,7 +301,6 @@ export class DeleteManager
 
 	private getCascadeSubTree(
 		dbEntity: DbEntity,
-		applicationUtils: IApplicationUtils,
 		selectClause: any = {}
 	): any {
 		for (const dbProperty of dbEntity.properties) {
@@ -318,10 +316,10 @@ export class DeleteManager
 						}
 						const subTree = {}
 						selectClause[dbProperty.name] = subTree
-						this.getCascadeSubTree(dbRelation.relationEntity, applicationUtils, subTree)
+						this.getCascadeSubTree(dbRelation.relationEntity, subTree)
 						break
 					case EntityRelationType.MANY_TO_ONE:
-						applicationUtils.addRelationToEntitySelectClause(dbRelation, selectClause)
+						this.applicationUtils.addRelationToEntitySelectClause(dbRelation, selectClause)
 						break
 					default:
 						throw new Error(

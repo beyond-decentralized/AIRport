@@ -133,4 +133,3 @@ export function doEnsureContext<C extends IContext = IContext>(
 	return context;
 }
 
-DEPENDENCY_INJECTION.set(LOOKUP, Lookup);

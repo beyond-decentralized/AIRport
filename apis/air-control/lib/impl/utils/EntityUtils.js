@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { ENTITY_UTILS } from '../../tokens';
 import { QOperableField } from '../core/field/OperableField';
 import { EntityQuery } from '../query/facade/EntityQuery';
 import { objectExists } from '../Utils';
@@ -61,5 +59,4 @@ export class EntityUtils {
         return new EntityQuery(this.getRawQuery(rawGraphQuery));
     }
 }
-DI.set(ENTITY_UTILS, EntityUtils);
 //# sourceMappingURL=EntityUtils.js.map

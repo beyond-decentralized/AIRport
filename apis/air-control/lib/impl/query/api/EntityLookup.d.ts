@@ -1,4 +1,4 @@
-import { DbEntity, QueryResultType } from '@airport/ground-control';
+import { DbEntity, IEntityStateManager, QueryResultType } from '@airport/ground-control';
 import { IEntityContext, IEntityQueryContext } from '../../../lingo/core/EntityContext';
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup';
@@ -14,6 +14,7 @@ export interface IEntityLookupInternal<Child, MappedChild, IESP extends IEntityS
 export declare abstract class EntityLookup<Child, MappedChild, IESP extends IEntitySelectProperties> extends LookupProxy implements IEntityLookupInternal<Child, MappedChild, IESP> {
     protected dbEntity: DbEntity;
     protected mapResults: boolean;
+    entityStateManager: IEntityStateManager;
     static mapResults: boolean;
     constructor(dbEntity: DbEntity, mapResults?: boolean);
     abstract map(isMapped?: boolean): MappedChild;

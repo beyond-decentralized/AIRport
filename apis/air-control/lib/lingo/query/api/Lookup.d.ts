@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { IEntityContext } from '../../core/EntityContext';
 import { IAbstractQuery } from '../facade/AbstractQuery';

@@ -1,6 +1,5 @@
-import { DI } from '@airport/di';
-import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
-import { APPLICATION_UTILS, UPDATE_CACHE_MANAGER } from '../../../tokens';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { UPDATE_CACHE_MANAGER } from '../../../tokens';
 import { LookupProxy } from './Lookup';
 export class EntityLookup extends LookupProxy {
     constructor(dbEntity, mapResults = EntityLookup.mapResults) {
@@ -17,12 +16,12 @@ export class EntityLookup extends LookupProxy {
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
-        const [entityStateManager, applicationUtils, updateCacheManager] = await DI.db().get(ENTITY_STATE_MANAGER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER);
+        const updateCacheManager = await DEPENDENCY_INJECTION.db().get(UPDATE_CACHE_MANAGER);
         if (search) {
             throw new Error(`Search operations are not yet supported`);
         }
         else {
-            updateCacheManager.saveOriginalValues(result, context.dbEntity, entityStateManager, applicationUtils);
+            updateCacheManager.saveOriginalValues(result, context.dbEntity);
         }
         return result;
     }

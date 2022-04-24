@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IQOrderableField } from '../../../lingo/core/field/Field';

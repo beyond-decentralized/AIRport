@@ -1,6 +1,5 @@
 import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {JsonFieldQuery}   from '@airport/ground-control'
-import {FIELD_UTILS}      from '../../tokens'
 import {IEntityAliases}   from '../../lingo/core/entity/Aliases'
 import {IQOrderableField} from '../../lingo/core/field/Field'
 import {RawFieldQuery}    from '../../lingo/query/facade/FieldQuery'
@@ -23,4 +22,3 @@ export class FieldUtils
 		return subSelectQuery.toJSON(queryUtils, this)
 	}
 }
-DEPENDENCY_INJECTION.set(FIELD_UTILS, FieldUtils)

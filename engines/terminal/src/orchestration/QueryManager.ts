@@ -1,14 +1,13 @@
-import { REPOSITORY_LOADER } from '@airport/air-control'
+import { IRepositoryLoader } from '@airport/air-control'
 import {
 	container,
-	DEPENDENCY_INJECTION,
-	IContext
+	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import {
 	PortableQuery
 } from '@airport/ground-control'
 import {
-	IQueryManager, 
+	IQueryManager,
 	IQueryOperationContext,
 	STORE_DRIVER
 } from '@airport/terminal-map'
@@ -17,6 +16,8 @@ import { QUERY_MANAGER } from '../tokens'
 
 export class QueryManager
 	implements IQueryManager {
+
+	repositoryLoader: IRepositoryLoader
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -73,11 +74,9 @@ export class QueryManager
 		context: IQueryOperationContext
 	) {
 		if (context.repository && context.repository.source && context.repository.uuId) {
-			const repositoryLoader = await DEPENDENCY_INJECTION.db().get(REPOSITORY_LOADER)
-			await repositoryLoader.loadRepository(context.repository.source, context.repository.uuId, context)
+			await this.repositoryLoader.loadRepository(context.repository.source, context.repository.uuId, context)
 		}
 	}
 
 }
-
 DEPENDENCY_INJECTION.set(QUERY_MANAGER, QueryManager)

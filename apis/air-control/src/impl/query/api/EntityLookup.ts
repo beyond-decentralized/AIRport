@@ -97,13 +97,12 @@ export abstract class EntityLookup<Child, MappedChild,
 
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-		const [entityStateManager, applicationUtils, updateCacheManager] =
-			await DEPENDENCY_INJECTION.db().get(ENTITY_STATE_MANAGER, APPLICATION_UTILS, UPDATE_CACHE_MANAGER)
+		const updateCacheManager =
+			await DEPENDENCY_INJECTION.db().get(UPDATE_CACHE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {
-			updateCacheManager.saveOriginalValues(
-				result, context.dbEntity, entityStateManager, applicationUtils)
+			updateCacheManager.saveOriginalValues(result, context.dbEntity)
 		}
 		return result
 	}

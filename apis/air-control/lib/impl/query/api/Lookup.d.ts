@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { IEntityQueryContext } from '../../../lingo/core/EntityContext';
 import { ILookup } from '../../../lingo/query/api/Lookup';

@@ -1,4 +1,4 @@
-import { DI, } from '@airport/di';
+import { DEPENDENCY_INJECTION, } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
 export class LookupProxy {
@@ -6,7 +6,7 @@ export class LookupProxy {
         return doEnsureContext(context);
     }
     lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        return DI.db()
+        return DEPENDENCY_INJECTION.db()
             .get(LOOKUP)
             .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults));
     }
@@ -16,7 +16,7 @@ export class Lookup {
         return doEnsureContext(context);
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        const queryContextLoader = await DI.db().get(QUERY_CONTEXT_LOADER);
+        const queryContextLoader = await DEPENDENCY_INJECTION.db().get(QUERY_CONTEXT_LOADER);
         await queryContextLoader.ensure(context);
         let query;
         if (QueryClass) {
@@ -81,5 +81,4 @@ export function doEnsureContext(context) {
     }
     return context;
 }
-DI.set(LOOKUP, Lookup);
 //# sourceMappingURL=Lookup.js.map

@@ -5,7 +5,6 @@ import {
 	OperationCategory,
 	SqlOperator
 } from '@airport/ground-control'
-import { QUERY_UTILS } from '../../tokens'
 import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
 import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
 import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
@@ -105,5 +104,3 @@ export class QueryUtils
 		}
 	}
 }
-
-DEPENDENCY_INJECTION.set(QUERY_UTILS, QueryUtils)

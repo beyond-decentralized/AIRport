@@ -4,7 +4,6 @@ import {
 	JSONBaseOperation,
 	repositoryEntity
 } from '@airport/ground-control'
-import { Q_METADATA_UTILS } from '../../tokens'
 import { IAirportDatabase } from '../../lingo/AirportDatabase'
 import { IQEntityInternal } from '../../lingo/core/entity/Entity'
 import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
@@ -61,5 +60,3 @@ export class QMetadataUtils
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(Q_METADATA_UTILS, QMetadataUtils)

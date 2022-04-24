@@ -1,6 +1,4 @@
-import { DI } from '@airport/di/lib';
 import { repositoryEntity } from '@airport/ground-control';
-import { Q_METADATA_UTILS } from '../../tokens';
 export class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;
@@ -34,5 +32,4 @@ export class QMetadataUtils {
         return new entityConstructor();
     }
 }
-DI.set(Q_METADATA_UTILS, QMetadataUtils);
 //# sourceMappingURL=QMetadataUtils.js.map
