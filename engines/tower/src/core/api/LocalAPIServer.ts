@@ -2,9 +2,8 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { API_REGISTRY } from "@airport/check-in";
+import { IApiRegistry } from "@airport/check-in";
 import {
-    container,
     DEPENDENCY_INJECTION
 } from "@airport/direction-indicator";
 import {
@@ -16,10 +15,11 @@ import {
 export class LocalAPIServer
     implements ILocalAPIServer {
 
+    apiRegistry: IApiRegistry
+
     async handleRequest(
         request: ILocalAPIRequest
     ): Promise<ILocalAPIResponse> {
-        const apiRegistry = await container(this).get(API_REGISTRY)
 
         let payload
         let errorMessage: string
@@ -27,7 +27,7 @@ export class LocalAPIServer
             const {
                 apiObject,
                 apiOperation
-            } = await apiRegistry.findApiObjectAndOperation(
+            } = await this.apiRegistry.findApiObjectAndOperation(
                 request.domain, request.application, request.objectName, request.methodName)
             const result = apiObject[request.methodName].apply(apiObject, request.args)
             if (apiOperation.isAsync) {

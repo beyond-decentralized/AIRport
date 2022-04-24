@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	Observable,
 	from
@@ -7,7 +6,6 @@ import {
 	distinctUntilChanged,
 	map
 } from 'rxjs/operators'
-import { SELECTOR_MANAGER } from './tokens';
 
 /**
  *
@@ -213,8 +211,6 @@ export class SelectorManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SELECTOR_MANAGER, SelectorManager);
 
 
 

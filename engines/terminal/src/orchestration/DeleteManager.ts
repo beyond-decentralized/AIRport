@@ -6,8 +6,7 @@ import {
 } from '@airport/air-control'
 import {
 	getSysWideOpId,
-	ISequenceGenerator,
-	SEQUENCE_GENERATOR
+	ISequenceGenerator
 } from '@airport/check-in'
 import {
 	container,
@@ -38,7 +37,6 @@ import {
 	RECORD_HISTORY_OLD_VALUE_DUO,
 	RECORD_HISTORY_DUO,
 	REPOSITORY_TRANSACTION_HISTORY_DUO,
-	Actor_Id,
 } from '@airport/holding-pattern'
 import {
 	IDeleteManager,
@@ -57,6 +55,7 @@ export class DeleteManager
 
 	airportDatabase: IAirportDatabase
 	applicationUtils: IApplicationUtils
+	sequenceGenerator: ISequenceGenerator
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
@@ -70,12 +69,10 @@ export class DeleteManager
 			operHistoryDuo,
 			recHistoryDuo,
 			recHistoryOldValueDuo,
-			repoTransHistoryDuo,
-			sequenceGenerator
+			repoTransHistoryDuo
 		] = await container(this)
 			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
-				RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO,
-				SEQUENCE_GENERATOR)
+				RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO)
 
 		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
@@ -113,9 +110,9 @@ export class DeleteManager
 		}
 
 		await this.recordTreeToDelete(recordsToDelete, actor,
-			airDb, historyManager, operHistoryDuo, recHistoryDuo,
-			recHistoryOldValueDuo, repoTransHistoryDuo, this.applicationUtils,
-			sequenceGenerator, transaction, rootTransaction, context)
+			historyManager, operHistoryDuo, recHistoryDuo,
+			recHistoryOldValueDuo, repoTransHistoryDuo,
+			transaction, rootTransaction, context)
 
 		return await deleteCommand
 	}
@@ -219,14 +216,11 @@ export class DeleteManager
 	private async recordTreeToDelete(
 		recordsToDelete: RecordsToDelete,
 		actor: IActor,
-		airDb: IAirportDatabase,
 		historyManager: IHistoryManager,
 		operHistoryDuo: IOperationHistoryDuo,
 		recHistoryDuo: IRecordHistoryDuo,
 		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
 		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
-		applicationUtils: IApplicationUtils,
-		sequenceGenerator: ISequenceGenerator,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -234,11 +228,11 @@ export class DeleteManager
 		let systemWideOperationId
 		for (const [applicationIndex, applicationRecordsToDelete] of recordsToDelete) {
 			for (const [entityIndex, entityRecordsToDelete] of applicationRecordsToDelete) {
-				const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+				const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 					.applicationVersion.entities[entityIndex]
 
 				if (!systemWideOperationId) {
-					systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator)
+					systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator)
 				}
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
@@ -260,7 +254,7 @@ export class DeleteManager
 								const dbRelation = dbProperty.relation[0]
 								switch (dbRelation.relationType) {
 									case EntityRelationType.MANY_TO_ONE:
-										applicationUtils.forEachColumnOfRelation(
+										this.applicationUtils.forEachColumnOfRelation(
 											dbRelation, recordToDelete, (
 												dbColumn: DbColumn,
 												value: any,

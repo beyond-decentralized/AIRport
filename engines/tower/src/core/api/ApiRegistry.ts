@@ -3,7 +3,6 @@ import {
     API_REGISTRY,
     IApiOperation,
     IApiRegistry,
-    InstalledApi,
     IApplicationApi
 } from "@airport/check-in";
 

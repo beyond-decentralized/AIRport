@@ -6,6 +6,7 @@ import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
+import { SELECTOR_MANAGER } from '@airport/check-in'
 
 const terminalMap = lib('terminal-map')
 
@@ -19,4 +20,8 @@ export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>('TRA
 
 TRANSACTIONAL_SERVER.setDependencies({
     operationContextLoader: OPERATION_CONTEXT_LOADER
+})
+
+TERMINAL_STORE.setDependencies({
+    selectorManager: SELECTOR_MANAGER
 })

@@ -1,8 +1,7 @@
 import { IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpId,
-	ISequenceGenerator,
-	SEQUENCE_GENERATOR
+	ISequenceGenerator
 } from '@airport/check-in'
 import {
 	container,
@@ -52,6 +51,8 @@ export class InsertManager
 	implements IInsertManager {
 
 	airportDatabase: IAirportDatabase
+	insertManager: IInsertManager
+	sequenceGenerator: ISequenceGenerator
 
 	async insertValues(
 		portableQuery: PortableQuery,
@@ -106,14 +107,13 @@ export class InsertManager
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
 		const [
-			sequenceGenerator,
 			historyManager,
 			operHistoryDuo,
 			recHistoryDuo,
 			recHistoryNewValueDuo,
 			repoTransHistoryDuo
 		] = await container(this)
-			.get(SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO,
+			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
 				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO,
 				REPOSITORY_TRANSACTION_HISTORY_DUO)
 
@@ -172,7 +172,7 @@ appears more than once in the Columns clause`)
 
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal) {
-			systemWideOperationId = await getSysWideOpId(this.airportDatabase, sequenceGenerator)
+			systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator)
 		}
 
 		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
@@ -180,7 +180,7 @@ appears more than once in the Columns clause`)
 				dbEntity, insertValues, actor,
 				columnsToPopulate, generatedColumns,
 				systemWideOperationId, errorPrefix,
-				sequenceGenerator)
+				this.sequenceGenerator)
 		}
 
 		if (!dbEntity.isLocal && !transaction.isSync) {

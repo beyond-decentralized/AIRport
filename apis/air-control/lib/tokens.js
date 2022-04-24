@@ -82,7 +82,8 @@ APPLICATION_UTILS.setDependencies({
 DATABASE_FACADE.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
-    queryContextLoader: QUERY_CONTEXT_LOADER
+    queryContextLoader: QUERY_CONTEXT_LOADER,
+    updateCacheManager: UPDATE_CACHE_MANAGER
 });
 QUERY_FACADE.setDependencies({
     queryContextLoader: QUERY_CONTEXT_LOADER

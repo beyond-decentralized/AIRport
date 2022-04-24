@@ -1,4 +1,5 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, REPOSITORY_LOADER } from '@airport/air-control'
+import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import {
@@ -49,7 +50,8 @@ ABSTRACT_MUTATION_MANAGER.setDependencies({
 
 DELETE_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-    applicationUtils: APPLICATION_UTILS
+    applicationUtils: APPLICATION_UTILS,
+    sequenceGenerator: SEQUENCE_GENERATOR
 })
 
 INSERT_MANAGER.setDependencies({

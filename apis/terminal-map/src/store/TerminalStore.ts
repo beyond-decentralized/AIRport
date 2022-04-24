@@ -9,7 +9,7 @@ import {
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
 	IMemoizedSelector,
-	SELECTOR_MANAGER
+	ISelectorManager
 } from '@airport/check-in';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
@@ -116,6 +116,8 @@ export interface ITerminalStore {
 export class TerminalStore
 	implements ITerminalStore {
 
+	selectorManager: ISelectorManager
+
 	state: Subject<ITerminalState>;
 
 	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
@@ -155,13 +157,12 @@ export class TerminalStore
 	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
 
 	async init(): Promise<void> {
-		const selectorManager = await DEPENDENCY_INJECTION.db().get(SELECTOR_MANAGER);
 		this.state = internalTerminalState;
 
-		this.getTerminalState = selectorManager.createRootSelector(this.state);
-		this.getApplicationActors = selectorManager.createSelector(this.getTerminalState,
+		this.getTerminalState = this.selectorManager.createRootSelector(this.state);
+		this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)
-		this.getApplicationActorMapByDomainAndApplicationNames = selectorManager.createSelector(this.getApplicationActors,
+		this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
 				const applicationActorsByDomainAndApplicationNames: Map<DomainName, Map<ApplicationName, IActor[]>> = new Map()
 				for (const applicationActor of applicationActors) {
@@ -178,9 +179,9 @@ export class TerminalStore
 				}
 				return applicationActorsByDomainAndApplicationNames
 			})
-		this.getDomains = selectorManager.createSelector(this.getTerminalState,
+		this.getDomains = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
-		this.getDomainMapByName = selectorManager.createSelector(this.getDomains,
+		this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains,
 			domains => {
 				const domainsByName: Map<ApplicationSignature, IDomain> = new Map()
 				for (const domain of domains) {
@@ -188,11 +189,11 @@ export class TerminalStore
 				}
 				return domainsByName
 			})
-		this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState,
+		this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.frameworkActor)
-		this.getInternalConnector = selectorManager.createSelector(this.getTerminalState,
+		this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.internalConnector)
-		this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains,
+		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestApplicationVersionMapByNames: Map<DomainName, Map<ApplicationName, IApplicationVersion>> = new Map();
 
@@ -206,7 +207,7 @@ export class TerminalStore
 				return latestApplicationVersionMapByNames;
 			});
 
-		this.getLatestApplicationVersionMapByFullApplicationName = selectorManager.createSelector(
+		this.getLatestApplicationVersionMapByFullApplicationName = this.selectorManager.createSelector(
 			this.getLatestApplicationVersionMapByNames, (
 				latestApplicationVersionMapByNames: Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>
 			) => {
@@ -221,7 +222,7 @@ export class TerminalStore
 			return latestApplicationVersionMapByFullApplicationName;
 		});
 
-		this.getAllApplicationVersionsByIds = selectorManager.createSelector(this.getDomains,
+		this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains,
 			domains => {
 				const allApplicationVersionsByIds: IApplicationVersion[] = [];
 
@@ -236,7 +237,7 @@ export class TerminalStore
 				return allApplicationVersionsByIds;
 			});
 
-		this.getLatestApplicationVersionsByApplicationIndexes = selectorManager.createSelector(this.getDomains,
+		this.getLatestApplicationVersionsByApplicationIndexes = this.selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestApplicationVersionsByApplicationIndexes: IApplicationVersion[] = [];
 
@@ -250,10 +251,10 @@ export class TerminalStore
 				return latestApplicationVersionsByApplicationIndexes;
 			});
 
-		this.getApplications = selectorManager.createSelector(this.getTerminalState,
+		this.getApplications = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applications);
 
-		this.getAllEntities = selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes,
+		this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes,
 			latestApplicationVersionsByApplicationIndexes => {
 				const allEntities: IApplicationEntity[] = [];
 				for (const latestApplicationVersion of latestApplicationVersionsByApplicationIndexes) {
@@ -268,7 +269,7 @@ export class TerminalStore
 				return allEntities;
 			});
 
-		this.getAllColumns = selectorManager.createSelector(this.getAllEntities,
+		this.getAllColumns = this.selectorManager.createSelector(this.getAllEntities,
 			allEntities => {
 				const allColumns: IApplicationColumn[] = [];
 
@@ -284,7 +285,7 @@ export class TerminalStore
 				return allColumns;
 			});
 
-		this.getAllRelations = selectorManager.createSelector(this.getAllEntities,
+		this.getAllRelations = this.selectorManager.createSelector(this.getAllEntities,
 			allEntities => {
 				const allRelations: IApplicationRelation[] = [];
 
@@ -300,13 +301,13 @@ export class TerminalStore
 				return allRelations;
 			});
 
-		this.getReceiver = selectorManager.createSelector(this.getTerminalState,
+		this.getReceiver = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.receiver)
 
-		this.getTransactionManager = selectorManager.createSelector(this.getTerminalState,
+		this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.transactionManager)
 
-		this.getWebReceiver = selectorManager.createSelector(this.getTerminalState,
+		this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.webReceiver)
 	}
 
