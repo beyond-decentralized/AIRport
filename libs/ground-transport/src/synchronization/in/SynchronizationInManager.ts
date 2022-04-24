@@ -1,8 +1,7 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	container,
-	DEPENDENCY_INJECTION,
-	IContext
+	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
 import { ITransactionContext } from '@airport/terminal-map'

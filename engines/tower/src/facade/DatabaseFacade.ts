@@ -285,7 +285,6 @@ export class DatabaseFacade
 	}
 
 }
-
 DEPENDENCY_INJECTION.set(DATABASE_FACADE, DatabaseFacade)
 
 export class FunctionWrapper<QF extends Function>

@@ -23,7 +23,11 @@ export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>({
 	interface: 'IAirportDatabase',
 	token: 'AIRPORT_DATABASE'
 })
-export const DATABASE_FACADE = airControl.token<IDatabaseFacade>('DATABASE_FACADE')
+export const DATABASE_FACADE = airControl.token<IDatabaseFacade>({
+	class: null,
+	interface: 'IDatabaseFacade',
+	token: 'DATABASE_FACADE'
+})
 export const LOOKUP = airControl.token<ILookup>('LOOKUP')
 export const ENTITY_UTILS = airControl.token<IEntityUtils>('ENTITY_UTILS')
 export const FIELD_UTILS = airControl.token<IFieldUtils>('FIELD_UTILS')
@@ -36,6 +40,9 @@ export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>('REPOSITORY
 export const APPLICATION_UTILS = airControl.token<IApplicationUtils>('APPLICATION_UTILS')
 export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>('UPDATE_CACHE_MANAGER')
 
+AIRPORT_DATABASE.setDependencies({
+	databaseFacade: DATABASE_FACADE
+})
 APPLICATION_UTILS.setDependencies({
 	entityStateManager: ENTITY_STATE_MANAGER
 })

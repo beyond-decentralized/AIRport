@@ -8,7 +8,6 @@ import {
 	concat,
 	count,
 	date,
-	DATABASE_FACADE,
 	distinct,
 	divide,
 	exists,
@@ -102,7 +101,7 @@ class EntityAccumulator
 export class AirportDatabase
 	implements IAirportDatabase {
 
-	db: IDatabaseFacade;
+	databaseFacade: IDatabaseFacade;
 
 	entityMap: Map<any, IEntityRecord> = new Map<any, IEntityRecord>();
 
@@ -233,10 +232,7 @@ export class AirportDatabase
 		// distributionStrategy: DistributionStrategy,
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.addRepository( 
+		return await this.databaseFacade.addRepository( 
 			// url, platform, platformConfig, distributionStrategy, 
 			context);
 	}
@@ -247,10 +243,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.insertColumnValues(rawInsertValues, context);
+		return await this.databaseFacade.insertColumnValues(rawInsertValues, context);
 	}
 
 	async insertValues<IQE extends IQEntity>(
@@ -259,10 +252,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.insertValues(rawInsertValues, context);
+		return await this.databaseFacade.insertValues(rawInsertValues, context);
 	}
 
 	async insertColumnValuesGenerateIds<IQE extends IQEntity>(
@@ -271,10 +261,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
+		return await this.databaseFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
@@ -283,10 +270,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number[] | string[] | number[][] | string[][]> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.insertValuesGenerateIds(rawInsertValues, context);
+		return await this.databaseFacade.insertValuesGenerateIds(rawInsertValues, context);
 	}
 
 	/**
@@ -301,10 +285,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.deleteWhere(rawDelete, context);
+		return await this.databaseFacade.deleteWhere(rawDelete, context);
 	}
 
 	/**
@@ -318,10 +299,7 @@ export class AirportDatabase
 		context?: IEntityContext,
 		operationName?: OperationName,
 	): Promise<ISaveResult> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.save(entity, context);
+		return await this.databaseFacade.save(entity, context);
 	}
 
 	/**
@@ -337,10 +315,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.updateColumnsWhere(rawUpdateColumns, context);
+		return await this.databaseFacade.updateColumnsWhere(rawUpdateColumns, context);
 	}
 
 	/**
@@ -355,10 +330,7 @@ export class AirportDatabase
 		},
 		context?: IEntityContext,
 	): Promise<number> {
-		const dbFacade = await container(this)
-			.get(DATABASE_FACADE);
-
-		return await dbFacade.updateWhere(rawUpdate, context);
+		return await this.databaseFacade.updateWhere(rawUpdate, context);
 	}
 }
 DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
