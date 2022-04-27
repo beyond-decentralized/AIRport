@@ -1,6 +1,6 @@
 import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
 import { ILocalAPIRequest } from '@airport/aviation-communication';
-import { IMemoizedSelector } from '@airport/check-in';
+import { IMemoizedSelector, ISelectorManager } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { Subject, Subscription } from 'rxjs';
@@ -64,6 +64,7 @@ export interface ITerminalStore {
     tearDown(): any;
 }
 export declare class TerminalStore implements ITerminalStore {
+    selectorManager: ISelectorManager;
     state: Subject<ITerminalState>;
     getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;

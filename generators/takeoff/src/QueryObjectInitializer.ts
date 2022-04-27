@@ -5,7 +5,7 @@ import {
 import {
 	AllDdlObjects,
 	IQueryObjectInitializer,
-	TERMINAL_STORE
+	ITerminalStore
 } from '@airport/terminal-map';
 import {
 	IDomain,
@@ -21,14 +21,16 @@ import {
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
+	terminalStore: ITerminalStore
+
 	generateQObjectsAndPopulateStore(
 		allDdlObjects: AllDdlObjects
 	): void {
-		const [ddlObjectLinker, queryEntityClassCreator, terminalStore] = await container(this)
-			.get(DDL_OBJECT_LINKER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
-		ddlObjectLinker.link(allDdlObjects, terminalStore);
+		const [ddlObjectLinker, queryEntityClassCreator] = await container(this)
+			.get(DDL_OBJECT_LINKER, QUERY_ENTITY_CLASS_CREATOR);
+		ddlObjectLinker.link(allDdlObjects, this.terminalStore);
 		queryEntityClassCreator.createAll(allDdlObjects.all.applications);
-		const lastTerminalState = terminalStore.getTerminalState();
+		const lastTerminalState = this.terminalStore.getTerminalState();
 
 		const existingDomainMap = {};
 		for (const domain of lastTerminalState.domains) {
@@ -54,7 +56,7 @@ export class QueryObjectInitializer
 			unmodifiedApplications.push(existingApplicationMap[applicationName]);
 		}
 
-		terminalStore.state.next({
+		this.terminalStore.state.next({
 			...lastTerminalState,
 			domains: [
 				...unmodifiedDomains,

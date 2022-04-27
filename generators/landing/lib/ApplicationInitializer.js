@@ -1,4 +1,3 @@
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { container } from '@airport/direction-indicator';
 import { getFullApplicationName } from '@airport/ground-control';
 import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
@@ -13,13 +12,12 @@ export class ApplicationInitializer {
     }
     async hydrate(jsonApplications, context) {
         QUERY_OBJECT_INITIALIZER;
-        SEQUENCE_GENERATOR;
         await this.stage(jsonApplications, context);
         // Hydrate all DDL objects and Sequences
         const ddlObjects = await queryObjectInitializer.initialize();
         this.addNewApplicationVersionsToAll(ddlObjects);
         this.setAirDbApplications(ddlObjects);
-        await sequenceGenerator.initialize();
+        await this.sequenceGenerator.initialize();
     }
     /*
      * Initialization scenarios:
@@ -30,7 +28,7 @@ export class ApplicationInitializer {
      * Reload exiting App - nothing to do
      */
     async initialize(jsonApplications, context, checkDependencies, loadExistingApplications) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, sequenceGenerator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, SEQUENCE_GENERATOR, TERMINAL_STORE);
+        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, TERMINAL_STORE);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const existingApplicationMap = new Map();
@@ -66,7 +64,7 @@ export class ApplicationInitializer {
         queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
         const newSequences = await applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
-        await sequenceGenerator.initialize(newSequences);
+        await this.sequenceGenerator.initialize(newSequences);
         await applicationRecorder.record(allDdlObjects.added, context);
     }
     async initializeForAIRportApp(jsonApplication) {
@@ -82,7 +80,7 @@ export class ApplicationInitializer {
         this.setAirDbApplications(ddlObjects);
     }
     async stage(jsonApplications, context) {
-        const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, sequenceGenerator, terminalStore] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, SEQUENCE_GENERATOR, TERMINAL_STORE);
+        const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, terminalStore] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, TERMINAL_STORE);
         // Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
         const tempDdlObjects = await applicationComposer.compose(jsonApplications, ddlObjectRetriever, applicationLocator, {
             terminalStore
@@ -90,8 +88,8 @@ export class ApplicationInitializer {
         this.addNewApplicationVersionsToAll(tempDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
         this.setAirDbApplications(tempDdlObjects);
-        const newSequences = await applicationBuilder.stageSequences(jsonApplications, airDb, context);
-        await sequenceGenerator.tempInitialize(newSequences);
+        const newSequences = await applicationBuilder.stageSequences(jsonApplications, context);
+        await this.sequenceGenerator.tempInitialize(newSequences);
     }
     async wait(milliseconds) {
         return new Promise((resolve, _reject) => {

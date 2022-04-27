@@ -1,9 +1,9 @@
 import {
 	QApplicationInternal
-}                           from '@airport/air-control';
+} from '@airport/air-control';
 import {
 	IContext
-}                           from '@airport/direction-indicator';
+} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	getFullApplicationName,
@@ -11,24 +11,23 @@ import {
 	JsonApplicationColumn,
 	JsonApplicationEntity,
 	QueryType
-}                           from '@airport/ground-control';
+} from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
 import {
 	IStoreDriver
-}                           from '@airport/terminal-map';
+} from '@airport/terminal-map';
 
 export class NoOpApplicationBuilder
 	extends SqlApplicationBuilder {
 
 	async createApplication(
 		jsonApplication: JsonApplication,
-		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
-		const applicationName            = getFullApplicationName(jsonApplication);
+		const applicationName = getFullApplicationName(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
-		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
+		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false);
 	}
 

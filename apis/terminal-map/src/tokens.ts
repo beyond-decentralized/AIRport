@@ -1,27 +1,77 @@
 import { lib } from '@airport/direction-indicator'
 import { ITransactionManager } from './orchestration/TransactionManager'
-import { ITerminalStore } from './store/TerminalStore'
+import { ITerminalStore, TerminalStore } from './store/TerminalStore'
 import { ITransactionalServer } from './transaction/ITransactionalServer'
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
-import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
-import { SELECTOR_MANAGER } from '@airport/check-in'
+import { OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in'
+import { AIRPORT_DATABASE } from '@airport/air-control'
 
 const terminalMap = lib('terminal-map')
 
-export const APPLICATION_INITIALIZER = terminalMap.token<IApplicationInitializer>('APPLICATION_INITIALIZER')
-export const DOMAIN_RETRIEVER = terminalMap.token<IDomainRetriever>('DOMAIN_RETRIEVER')
-export const STORE_DRIVER = terminalMap.token<IStoreDriver>('STORE_DRIVER');
-export const TERMINAL_STORE = terminalMap.token<ITerminalStore>('TERMINAL_STORE')
-export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>('TRANSACTION_MANAGER')
-export const TRANSACTIONAL_RECEIVER = terminalMap.token<ITransactionalReceiver>('TRANSACTIONAL_RECEIVER')
-export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>('TRANSACTIONAL_SERVER')
+export const APPLICATION_INITIALIZER = terminalMap.token<IApplicationInitializer>({
+    class: null,
+    interface: 'IApplicationInitializer',
+    token: 'APPLICATION_INITIALIZER'
+})
+export const DOMAIN_RETRIEVER = terminalMap.token<IDomainRetriever>({
+    class: null,
+    interface: 'IDomainRetriever',
+    token: 'DOMAIN_RETRIEVER'
+})
+export const STORE_DRIVER = terminalMap.token<IStoreDriver>({
+    class: null,
+    interface: 'IStoreDriver',
+    token: 'STORE_DRIVER'
+});
+export const TERMINAL_STORE = terminalMap.token<ITerminalStore>({
+    class: TerminalStore,
+    interface: 'ITerminalStore',
+    token: 'TERMINAL_STORE'
+})
+export const TRANSACTION_MANAGER = terminalMap.token<ITransactionManager>({
+    class: null,
+    interface: 'ITransactionManager',
+    token: 'TRANSACTION_MANAGER'
+})
+export const TRANSACTIONAL_RECEIVER = terminalMap.token<ITransactionalReceiver>({
+    class: null,
+    interface: 'ITransactionalReceiver',
+    token: 'TRANSACTIONAL_RECEIVER'
+})
+export const TRANSACTIONAL_SERVER = terminalMap.token<ITransactionalServer>({
+    class: null,
+    interface: 'ITransactionalServer',
+    token: 'TRANSACTIONAL_SERVER'
+})
 
-TRANSACTIONAL_SERVER.setDependencies({
-    operationContextLoader: OPERATION_CONTEXT_LOADER
+APPLICATION_INITIALIZER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalStore: TERMINAL_STORE
+})
+
+DOMAIN_RETRIEVER.setDependencies({
+    transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 
 TERMINAL_STORE.setDependencies({
     selectorManager: SELECTOR_MANAGER
+})
+
+TRANSACTION_MANAGER.setDependencies({
+    storeDriver: STORE_DRIVER,
+    terminalStore: TERMINAL_STORE
+})
+
+TRANSACTIONAL_RECEIVER.setDependencies({
+    applicationInitializer: APPLICATION_INITIALIZER
+})
+
+TRANSACTIONAL_SERVER.setDependencies({
+    operationContextLoader: OPERATION_CONTEXT_LOADER,
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER
 })

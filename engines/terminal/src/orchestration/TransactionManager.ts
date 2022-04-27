@@ -18,16 +18,14 @@ import {
 	TRANSACTION_HISTORY_DUO,
 } from '@airport/holding-pattern';
 import {
-	ICredentials,
 	IStoreDriver,
+	ITerminalStore,
 	ITransaction,
 	ITransactionContext,
 	ITransactionCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
 	ITransactionManagerStore,
-	STORE_DRIVER,
-	TERMINAL_STORE,
 	TRANSACTION_MANAGER
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
@@ -35,6 +33,9 @@ import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
+
+	storeDriver: IStoreDriver
+	terminalStore: ITerminalStore
 
 	/**
 	 * Initializes the EntityManager at server load time.
@@ -44,9 +45,7 @@ export class TransactionManager
 		dbName: string,
 		context: IContext,
 	): Promise<void> {
-		const storeDriver = await container(this).get(STORE_DRIVER);
-
-		return await storeDriver.initialize(dbName, context);
+		return await this.storeDriver.initialize(dbName, context);
 		// await this.dataStore.initialize(dbName)
 		// await this.repositoryManager.initialize();
 	}
@@ -54,15 +53,14 @@ export class TransactionManager
 	getInProgressTransactionById(
 		transactionId: string
 	): ITransaction {
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-
-		return terminalStore.getTransactionManager().transactionInProgressMap.get(transactionId)
+		return this.terminalStore.getTransactionManager()
+			.transactionInProgressMap.get(transactionId)
 	}
 
 	isServer(
 		context?: ITransactionContext
 	) {
-		return container(this).getSync(STORE_DRIVER).isServer(context);
+		return this.storeDriver.isServer(context);
 	}
 
 	async transact(
@@ -96,8 +94,7 @@ export class TransactionManager
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
-		const terminalStore = await container(this).get(TERMINAL_STORE);
-		const transactionManagerStore = terminalStore.getTransactionManager()
+		const transactionManagerStore = this.terminalStore.getTransactionManager()
 
 		let parentTransaction: ITransaction
 		if (credentials.transactionId) {
@@ -162,12 +159,10 @@ Only one concurrent transaction is allowed per application.`)
 		parentTransaction: ITransaction,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
-		const [storeDriver, terminalStore] = await container(this)
-			.get(STORE_DRIVER, TERMINAL_STORE);
-
-		const transactionManagerStore = terminalStore.getTransactionManager()
-		const transaction = await storeDriver.setupTransaction(context, parentTransaction)
-		await storeDriver.startTransaction(transaction, context)
+		const transactionManagerStore = this.terminalStore.getTransactionManager()
+		const transaction = await this.storeDriver
+			.setupTransaction(context, parentTransaction)
+		await this.storeDriver.startTransaction(transaction, context)
 
 		transaction.credentials = credentials
 		await this.setupTransaction(credentials, transaction, parentTransaction,
@@ -201,8 +196,8 @@ Only one concurrent transaction is allowed per application.`)
 No Transaction Id is passed in Credentials for a Rollback operation.
 				`)
 			}
-			const terminalStore = await container(this).get(TERMINAL_STORE)
-			const transactionManagerStore = terminalStore.getTransactionManager()
+			const transactionManagerStore = this.terminalStore
+				.getTransactionManager()
 			transaction = transactionManagerStore.transactionInProgressMap.get(credentials.transactionId)
 			if (!transaction) {
 				throw new Error(`
@@ -224,8 +219,8 @@ parent transactions.
 		parentTransaction: ITransaction,
 		context: ITransactionContext,
 	): Promise<void> {
-		const terminalStore = await container(this).get(TERMINAL_STORE);
-		const transactionManagerStore = terminalStore.getTransactionManager()
+		const transactionManagerStore = this.terminalStore
+			.getTransactionManager()
 		if (parentTransaction) {
 			await this.setupTransaction(parentTransaction.credentials, parentTransaction,
 				parentTransaction.parentTransaction, transactionManagerStore,
@@ -388,9 +383,8 @@ ${callHerarchy}
 		credentials: ITransactionCredentials,
 		context: ITransactionContext
 	): Promise<void> {
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-
-		const transactionManagerStore = terminalStore.getTransactionManager()
+		const transactionManagerStore = this.terminalStore
+			.getTransactionManager()
 		transactionManagerStore.transactionInProgressMap.delete(transaction.id)
 
 		if (!parentTransaction) {

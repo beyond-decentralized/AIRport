@@ -1,7 +1,7 @@
 import { FullApplicationName } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { IDdlObjectRetriever } from '@airport/takeoff';
-import { AllDdlObjects, ITerminalStore } from '@airport/terminal-map';
+import { AllDdlObjects, IDomainRetriever, ITerminalStore } from '@airport/terminal-map';
 import { IApplicationVersion } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
 export interface IApplicationComposer {
@@ -12,6 +12,7 @@ export interface IApplicationComposerContext {
     deepTraverseReferences?: boolean;
 }
 export declare class ApplicationComposer implements IApplicationComposer {
+    domainRetriever: IDomainRetriever;
     compose(jsonApplications: JsonApplicationWithLastIds[], ddlObjectRetriever: IDdlObjectRetriever, applicationLocator: IApplicationLocator, context: IApplicationComposerContext): Promise<AllDdlObjects>;
     getExistingLatestApplicationVersion(referencedApplicationName: FullApplicationName, allDdlObjects: AllDdlObjects): Promise<IApplicationVersion>;
     private addApplicationVersionObjects;

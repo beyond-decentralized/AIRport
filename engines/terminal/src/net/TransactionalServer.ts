@@ -16,12 +16,12 @@ import {
 	IQueryOperationContext,
 	ITransaction,
 	ITransactionalServer,
-	TERMINAL_STORE,
-	TRANSACTION_MANAGER,
 	TRANSACTIONAL_SERVER,
 	ITransactionContext,
 	IApiCallContext,
-	ITransactionCredentials
+	ITransactionCredentials,
+	ITerminalStore,
+	ITransactionManager
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -58,17 +58,16 @@ export interface InternalPortableQuery
 export class TransactionalServer
 	implements ITransactionalServer {
 
+	terminalStore: ITerminalStore
 	operationContextLoader: IOperationContextLoader
+	transactionManager: ITransactionManager
 
 	tempActor: IActor;
 
 	async init(
 		context: IContext = {}
 	): Promise<void> {
-		const transManager = await container(this)
-			.get(TRANSACTION_MANAGER);
-
-		return await transManager.initialize('airport', context);
+		return await this.transactionManager.initialize('airport', context);
 	}
 
 	async addRepository(
@@ -77,8 +76,8 @@ export class TransactionalServer
 	): Promise<Repository_Id> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials);
 
@@ -105,9 +104,9 @@ export class TransactionalServer
 	): Promise<EntityArray> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
 		if (credentials.transactionId) {
-			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+			this.transactionManager.getTransactionFromContextOrCredentials(
+				credentials, context)
 		}
 
 		return await context.ioc.queryManager.find<E, EntityArray>(
@@ -122,9 +121,9 @@ export class TransactionalServer
 	): Promise<E> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
 		if (credentials.transactionId) {
-			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+			this.transactionManager.getTransactionFromContextOrCredentials(
+				credentials, context)
 		}
 
 		return await context.ioc.queryManager.findOne<E>(
@@ -139,9 +138,9 @@ export class TransactionalServer
 	): Observable<EntityArray> {
 		this.ensureIocContextSync(context)
 
-		const transactionManager = container(this).getSync(TRANSACTION_MANAGER)
 		if (credentials.transactionId) {
-			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+			this.transactionManager.getTransactionFromContextOrCredentials(
+				credentials, context)
 		}
 
 		return context.ioc.queryManager.search<E, EntityArray>(
@@ -156,9 +155,9 @@ export class TransactionalServer
 	): Observable<E> {
 		this.ensureIocContextSync(context)
 
-		const transactionManager = container(this).getSync(TRANSACTION_MANAGER)
 		if (credentials.transactionId) {
-			transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+			this.transactionManager.getTransactionFromContextOrCredentials(
+				credentials, context)
 		}
 
 		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
@@ -170,8 +169,7 @@ export class TransactionalServer
 	): Promise<boolean> {
 		try {
 			await this.ensureIocContext(context)
-			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-			await transactionManager.startTransaction(credentials, context)
+			await this.transactionManager.startTransaction(credentials, context)
 			return true
 		} catch (e) {
 			context.errorMessage = e.message
@@ -186,8 +184,7 @@ export class TransactionalServer
 	): Promise<boolean> {
 		try {
 			await this.ensureIocContext(context)
-			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-			await transactionManager.commit(credentials, context)
+			await this.transactionManager.commit(credentials, context)
 			return true
 		} catch (e) {
 			console.error(e)
@@ -205,8 +202,7 @@ export class TransactionalServer
 		}
 		try {
 			await this.ensureIocContext(context)
-			const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-			await transactionManager.rollback(credentials, context)
+			await this.transactionManager.rollback(credentials, context)
 			return true
 		} catch (e) {
 			console.error(e)
@@ -225,8 +221,8 @@ export class TransactionalServer
 		}
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials);
 		context.actor = actor
@@ -254,8 +250,8 @@ export class TransactionalServer
 		}
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials);
 		context.actor = actor
@@ -282,8 +278,8 @@ export class TransactionalServer
 	): Promise<number> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -307,8 +303,8 @@ export class TransactionalServer
 	): Promise<number[][]> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -331,8 +327,8 @@ export class TransactionalServer
 	): Promise<number> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -355,8 +351,8 @@ export class TransactionalServer
 	): Promise<number> {
 		await this.ensureIocContext(context)
 
-		const transactionManager = await container(this).get(TRANSACTION_MANAGER)
-		transactionManager.getTransactionFromContextOrCredentials(credentials, context)
+		this.transactionManager.getTransactionFromContextOrCredentials(
+			credentials, context)
 
 		const actor = await this.getActor(credentials)
 
@@ -381,9 +377,9 @@ export class TransactionalServer
 		if (credentials.domain === INTERNAL_DOMAIN) {
 			return new Actor()
 		}
-		const terminalStore = await container(this).get(TERMINAL_STORE)
 		let actors: IActor[]
-		const actorMapForDomain = terminalStore.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain)
+		const actorMapForDomain = this.terminalStore
+			.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain)
 		if (actorMapForDomain) {
 			actors = actorMapForDomain.get(credentials.application)
 		} else {
@@ -403,7 +399,7 @@ export class TransactionalServer
 			`)
 		}
 
-		const localTerminal = terminalStore.getFrameworkActor().terminal
+		const localTerminal = this.terminalStore.getFrameworkActor().terminal
 		if (!localTerminal.isLocal) {
 			throw new Error(
 				`Expecting terminal of the TerminalStore.frameworkActor to be .isLocal`)

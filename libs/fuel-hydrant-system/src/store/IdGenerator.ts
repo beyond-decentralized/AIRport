@@ -1,4 +1,4 @@
-import { ISequenceGenerator, SEQUENCE_GENERATOR } from '@airport/check-in'
+import { ISequenceGenerator } from '@airport/check-in'
 import {
 	container,
 	DEPENDENCY_INJECTION,
@@ -57,6 +57,8 @@ export interface IIdGeneratorContext
 export class IdGenerator
 	implements IIdGenerator {
 
+	sequenceGenerator: ISequenceGenerator
+
 	private transactionHistoryIdColumns: DbColumn[] = []
 
 	async init(): Promise<void> {
@@ -107,16 +109,15 @@ export class IdGenerator
 		numRecordHistories: NumRecordHistories
 	): Promise<TransactionHistoryIds> {
 
-		const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR)
-
-		let generatedSequenceNumbers: any = await sequenceGenerator.generateSequenceNumbers(
-			this.transactionHistoryIdColumns,
-			[
-				1,
-				numRepositoryTransHistories,
-				numOperationTransHistories,
-				numRecordHistories
-			]);
+		let generatedSequenceNumbers: any = await this.sequenceGenerator
+			.generateSequenceNumbers(
+				this.transactionHistoryIdColumns,
+				[
+					1,
+					numRepositoryTransHistories,
+					numOperationTransHistories,
+					numRecordHistories
+				]);
 
 		return {
 			operationHistoryIds: generatedSequenceNumbers[2],

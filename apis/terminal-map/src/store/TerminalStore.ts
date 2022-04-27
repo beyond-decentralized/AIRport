@@ -11,7 +11,6 @@ import {
 	IMemoizedSelector,
 	ISelectorManager
 } from '@airport/check-in';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	ApplicationSignature,
 	DomainName,
@@ -22,7 +21,6 @@ import {
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { Subject, Subscription } from 'rxjs';
-import { TERMINAL_STORE } from '../tokens';
 import { ITerminalState } from './TerminalState';
 import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
@@ -314,5 +312,3 @@ export class TerminalStore
 	tearDown() {
 	}
 }
-
-DEPENDENCY_INJECTION.set(TERMINAL_STORE, TerminalStore);

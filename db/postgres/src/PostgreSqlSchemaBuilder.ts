@@ -20,13 +20,12 @@ export class PostgreSqlApplicationBuilder
 
 	async createApplication(
 		jsonApplication: JsonApplication,
-		storeDriver: IStoreDriver,
 		context: IContext,
 	): Promise<void> {
 		const fullApplicationName = getFullApplicationName(jsonApplication)
 		const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`
 
-		await storeDriver.query(QueryType.DDL, createApplicationStatement, [],
+		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
 			context, false)
 	}
 

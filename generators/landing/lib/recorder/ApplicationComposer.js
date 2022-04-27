@@ -1,6 +1,5 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicationName, } from '@airport/ground-control';
-import { DOMAIN_RETRIEVER } from '@airport/terminal-map';
 import { APPLICATION_COMPOSER } from '../tokens';
 export class ApplicationComposer {
     async compose(jsonApplications, ddlObjectRetriever, applicationLocator, context) {
@@ -198,8 +197,7 @@ export class ApplicationComposer {
             .concat(fromObjects.applicationVersions);
     }
     async composeDomain(domainName, allDomains, newDomains, domainMapByName) {
-        let domainRetriever = await container(this).get(DOMAIN_RETRIEVER);
-        let domain = await domainRetriever.retrieveDomain(domainName, domainMapByName, allDomains, newDomains);
+        let domain = await this.domainRetriever.retrieveDomain(domainName, domainMapByName, allDomains, newDomains);
         if (!domain) {
             domain = {
                 id: null,

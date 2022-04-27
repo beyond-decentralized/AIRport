@@ -6,8 +6,16 @@ import { ILocalAPIServer } from './isolate/LocalApiServer'
 
 const checkIn = lib('security-check')
 
-export const APPLICATION_LOADER = checkIn.token<IApplicationLoader>('APPLICATION_LOADER')
-export const LOCAL_API_SERVER = checkIn.token<ILocalAPIServer>('LOCAL_API_SERVER')
+export const APPLICATION_LOADER = checkIn.token<IApplicationLoader>({
+    class: null,
+    interface: 'IApplicationLoader',
+    token: 'APPLICATION_LOADER'
+})
+export const LOCAL_API_SERVER = checkIn.token<ILocalAPIServer>({
+    class: null,
+    interface: 'ILocalAPIServer',
+    token: 'LOCAL_API_SERVER'
+})
 
 LOCAL_API_SERVER.setDependencies({
     apiRegistry: API_REGISTRY

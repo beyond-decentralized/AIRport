@@ -27,10 +27,10 @@ import {
 import {
     IApiCallContext,
     IQueryOperationContext,
+    ITerminalStore,
+    ITransactionalServer,
     ITransactionContext,
-    ITransactionCredentials,
-    TERMINAL_STORE,
-    TRANSACTIONAL_SERVER
+    ITransactionCredentials
 } from '@airport/terminal-map';
 import {
     DATABASE_MANAGER,
@@ -38,6 +38,9 @@ import {
 } from '../tokens';
 
 export abstract class TransactionalReceiver {
+
+    terminalStore: ITerminalStore
+    transactionalServer: ITransactionalServer
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(
         message: IIsolateMessage & IApiIMI
@@ -48,8 +51,6 @@ export abstract class TransactionalReceiver {
             if (message.domain === INTERNAL_DOMAIN) {
                 throw new Error(`Internal domain cannot be used in external calls`)
             }
-            const [transactionalServer, terminalStore] = await container(this)
-                .get(TRANSACTIONAL_SERVER, TERMINAL_STORE)
             let credentials: ITransactionCredentials = {
                 application: message.application,
                 domain: message.domain,
@@ -78,10 +79,12 @@ export abstract class TransactionalReceiver {
                         break
                     }
 
-                    if (terminalStore.getReceiver().initializingApps.has(fullApplicationName)) {
+                    if (this.terminalStore.getReceiver().initializingApps
+                        .has(fullApplicationName)) {
                         return null
                     }
-                    terminalStore.getReceiver().initializingApps.add(fullApplicationName)
+                    this.terminalStore.getReceiver().initializingApps
+                        .add(fullApplicationName)
 
                     const [databaseManager, internalRecordManager] = await container(this)
                         .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
@@ -94,24 +97,22 @@ export abstract class TransactionalReceiver {
                     result = application.lastIds
                     break
                 case IsolateMessageType.APP_INITIALIZED:
-                    const initializedApps = terminalStore.getReceiver().initializedApps
+                    const initializedApps = this.terminalStore.getReceiver().initializedApps
                     initializedApps.add((message as any as IConnectionInitializedIMI).fullApplicationName)
                     return null
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                    const terminalStore = await container(this).get(TERMINAL_STORE)
-                    result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+                    result = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                         .get((message as any as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
                     break
                 }
                 case IsolateMessageType.RETRIEVE_DOMAIN: {
-                    const terminalStore = await container(this).get(TERMINAL_STORE)
-                    result = terminalStore.getDomainMapByName()
+                    result = this.terminalStore.getDomainMapByName()
                         .get(message.domain)
                     break
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-                    result = await transactionalServer.addRepository(
+                    result = await this.transactionalServer.addRepository(
                         // addRepositoryMessage.url,
                         // addRepositoryMessage.platform,
                         // addRepositoryMessage.platformConfig,
@@ -122,7 +123,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transactionalServer.deleteWhere(
+                    result = await this.transactionalServer.deleteWhere(
                         deleteWhereMessage.portableQuery,
                         credentials,
                         context
@@ -130,7 +131,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.FIND:
                     const findMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transactionalServer.find(
+                    result = await this.transactionalServer.find(
                         findMessage.portableQuery,
                         credentials,
                         {
@@ -141,7 +142,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transactionalServer.findOne(
+                    result = await this.transactionalServer.findOne(
                         findOneMessage.portableQuery,
                         credentials,
                         {
@@ -152,7 +153,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.INSERT_VALUES:
                     const insertValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transactionalServer.insertValues(
+                    result = await this.transactionalServer.insertValues(
                         insertValuesMessage.portableQuery,
                         credentials,
                         context
@@ -160,7 +161,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.INSERT_VALUES_GET_IDS:
                     const insertValuesGetIdsMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transactionalServer.insertValuesGetIds(
+                    result = await this.transactionalServer.insertValuesGetIds(
                         insertValuesGetIdsMessage.portableQuery,
                         credentials,
                         context
@@ -169,20 +170,19 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.SAVE:
                 case IsolateMessageType.SAVE_TO_DESTINATION: {
                     const saveMessage: ISaveIMI<any, any> = <ISaveIMI<any, any>>message
-                    const terminalStore = await container(this).get(TERMINAL_STORE)
                     if (!saveMessage.dbEntity) {
                         errorMessage = `DbEntity id was not passed in`
                         break
                     }
                     const dbEntityId = saveMessage.dbEntity.id
-                    const dbEntity = terminalStore.getAllEntities()[dbEntityId]
+                    const dbEntity = this.terminalStore.getAllEntities()[dbEntityId]
                     if (!dbEntity) {
                         errorMessage = `Could not find DbEntity with Id ${dbEntityId}`
                         break
                     }
                     (context as IEntityContext).dbEntity = dbEntity as any
                     if (message.type === IsolateMessageType.SAVE) {
-                        result = await transactionalServer.save(
+                        result = await this.transactionalServer.save(
                             saveMessage.entity,
                             credentials,
                             context as IEntityContext
@@ -190,7 +190,7 @@ export abstract class TransactionalReceiver {
                     } else {
                         const saveToDestinationMessage: ISaveToDestinationIMI<any, any>
                             = <ISaveToDestinationIMI<any, any>>message
-                        result = await transactionalServer.saveToDestination(
+                        result = await this.transactionalServer.saveToDestination(
                             saveToDestinationMessage.repositoryDestination,
                             saveToDestinationMessage.entity,
                             credentials,
@@ -201,7 +201,7 @@ export abstract class TransactionalReceiver {
                 }
                 case IsolateMessageType.SEARCH:
                     const searchMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transactionalServer.search(
+                    result = await this.transactionalServer.search(
                         searchMessage.portableQuery,
                         credentials,
                         {
@@ -212,7 +212,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage: IReadQueryIMI = <IReadQueryIMI>message;
-                    result = await transactionalServer.search(
+                    result = await this.transactionalServer.search(
                         searchOneMessage.portableQuery,
                         credentials,
                         {
@@ -223,7 +223,7 @@ export abstract class TransactionalReceiver {
                     break
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                    result = await transactionalServer.updateValues(
+                    result = await this.transactionalServer.updateValues(
                         updateValuesMessage.portableQuery,
                         credentials,
                         context
@@ -264,9 +264,6 @@ export abstract class TransactionalReceiver {
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<boolean> {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER)
-
         const transactionCredentials: ITransactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -275,7 +272,7 @@ export abstract class TransactionalReceiver {
             transactionId: message.transactionId
         }
 
-        if (!await transactionalServer.startTransaction(transactionCredentials, context)) {
+        if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
             return false
         }
 
@@ -283,7 +280,7 @@ export abstract class TransactionalReceiver {
             await nativeHandleCallback()
         } catch (e) {
             context.errorMessage = e.message
-            transactionalServer.rollback(transactionCredentials, context)
+            this.transactionalServer.rollback(transactionCredentials, context)
             return false
         }
 
@@ -303,11 +300,10 @@ export abstract class TransactionalReceiver {
         errorMessage: string,
         context: IApiCallContext
     ): Promise<boolean> {
-        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER)
         if (errorMessage) {
-            return await transactionalServer.rollback(credentials, context)
+            return await this.transactionalServer.rollback(credentials, context)
         } else {
-            return await transactionalServer.commit(credentials, context)
+            return await this.transactionalServer.commit(credentials, context)
         }
     }
 

@@ -1,7 +1,7 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/security-check";
-import { TERMINAL_STORE, TRANSACTIONAL_RECEIVER } from "@airport/terminal-map";
+import { ITerminalStore, ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel
 } from '../node_modules/broadcast-channel/dist/lib/index.es5';
@@ -20,6 +20,9 @@ export interface IWebMessageReceiver {
 
 export class WebMesageReceiver
     implements IWebMessageReceiver {
+
+    terminalStore: ITerminalStore
+    transactionalReceiver: ITransactionalReceiver
 
     communicationChannel: SoftBroadcastChannel
     isNativeBroadcastChannel: boolean
@@ -42,8 +45,7 @@ export class WebMesageReceiver
             this.communicationChannel.onmessage = (
                 message: ILocalAPIRequest
             ) => {
-                const transactionalReceiver = container(this).getSync(TRANSACTIONAL_RECEIVER)
-                transactionalReceiver.handleClientRequest(message)
+                this.transactionalReceiver.handleClientRequest(message)
             };
         }
 
@@ -51,8 +53,8 @@ export class WebMesageReceiver
 
         window.addEventListener("message", event => {
             const message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse = event.data
-            const transactionalReceiver = container(this).getSync(TRANSACTIONAL_RECEIVER)
-            transactionalReceiver.handleAppRequest(message, event.origin, event.source)
+            this.transactionalReceiver.handleAppRequest(
+                message, event.origin, event.source)
         }, false)
     }
 

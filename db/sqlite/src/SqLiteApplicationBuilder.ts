@@ -31,7 +31,6 @@ export class SqLiteApplicationBuilder
 
   async createApplication(
     jsonApplication: JsonApplication,
-    storeDriver: IStoreDriver,
     context: IContext,
   ): Promise<void> {
     // Nothing to do

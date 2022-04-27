@@ -19,7 +19,6 @@ import {
 	TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
 import {
-	APPLICATION_LOADER,
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplicationNameIMI,
 	IInitConnectionIMI,
@@ -34,7 +33,9 @@ import {
 	ITransactionEndIMI,
 	LastIds,
 	LOCAL_API_SERVER,
-	ICallApiIMI
+	ICallApiIMI,
+	IApplicationLoader,
+	ILocalAPIServer
 } from '@airport/security-check';
 import { ITransactionContext } from '@airport/terminal-map';
 import {
@@ -92,6 +93,9 @@ export interface IIframeTransactionalConnector
 
 export class IframeTransactionalConnector
 	implements IIframeTransactionalConnector {
+
+	applicationLoader: IApplicationLoader
+	localApiServer: ILocalAPIServer
 
 	application: string
 	appState = AppState.NOT_INITIALIED
@@ -405,8 +409,7 @@ export class IframeTransactionalConnector
 		while (this.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
-		const localApiServer = await container(this).get(LOCAL_API_SERVER)
-		const response = await localApiServer.handleRequest(request)
+		const response = await this.localApiServer.handleRequest(request)
 		window.parent.postMessage(response, origin)
 	}
 
@@ -542,13 +545,13 @@ export class IframeTransactionalConnector
 				return false
 			case AppState.START_INITIALIZING:
 				this.appState = AppState.INITIALIZING_IN_PROGRESS
-				const applicationLoader = await container(this).get(APPLICATION_LOADER)
-				await applicationLoader.load(this.lastIds)
+				await this.applicationLoader.load(this.lastIds)
 				this.appState = AppState.INITIALIZED
-				await applicationLoader.initialize()
+				await this.applicationLoader.initialize()
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					fullApplicationName: getFullApplicationName(applicationLoader.getApplication()),
+					fullApplicationName: getFullApplicationName(
+						this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, hostServer)
 				return true
@@ -556,9 +559,7 @@ export class IframeTransactionalConnector
 				return true
 		}
 
-		const applicationLoader = await DEPENDENCY_INJECTION.db().get(APPLICATION_LOADER)
-
-		let jsonApplication = applicationLoader.getApplication()
+		let jsonApplication = this.applicationLoader.getApplication()
 		this.domain = jsonApplication.domain
 		this.application = jsonApplication.name
 

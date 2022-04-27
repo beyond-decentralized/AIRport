@@ -13,7 +13,7 @@ import {
     IActor,
 } from "@airport/holding-pattern";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
-import { TERMINAL_STORE } from "@airport/terminal-map";
+import { TerminalStore } from "@airport/terminal-map";
 import {
     DOMAIN_DAO,
     IDomain,
@@ -46,6 +46,7 @@ export class InternalRecordManager
     implements IInternalRecordManager {
 
     entityStateManager: IEntityStateManager
+    terminalStore: TerminalStore
 
     async ensureApplicationRecords(
         application: JsonApplicationWithLastIds,
@@ -54,13 +55,13 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, applicationDao, terminalStore]
+            const [actorDao, applicationDao]
                 = await container(this)
-                    .get(ACTOR_DAO, APPLICATION_DAO, TERMINAL_STORE)
+                    .get(ACTOR_DAO, APPLICATION_DAO)
 
             await this.updateDomain(application)
 
-            let actorMapForDomain = terminalStore
+            let actorMapForDomain = this.terminalStore
                 .getApplicationActorMapByDomainAndApplicationNames().get(application.domain)
             let actors: IActor[]
             if (actorMapForDomain) {
@@ -74,7 +75,7 @@ export class InternalRecordManager
             let anApplication: IApplication = await applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
-                const frameworkActor = terminalStore.getFrameworkActor()
+                const frameworkActor = this.terminalStore.getFrameworkActor()
                 const actor = {
                     id: null,
                     application: anApplication,
@@ -86,12 +87,12 @@ export class InternalRecordManager
                 actors = [actor]
             }
 
-            const lastTerminalState = terminalStore.getTerminalState()
+            const lastTerminalState = this.terminalStore.getTerminalState()
             const applications = lastTerminalState.applications.slice()
             applications.push(anApplication)
             let applicationActors = lastTerminalState.applicationActors.slice()
             applicationActors = applicationActors.concat(actors)
-            terminalStore.state.next({
+            this.terminalStore.state.next({
                 ...lastTerminalState,
                 applicationActors,
                 applications
@@ -128,9 +129,8 @@ export class InternalRecordManager
             const actorDao = await container(this).get(ACTOR_DAO);
             await actorDao.save(actor, context);
 
-            const terminalStore = await container(this).get(TERMINAL_STORE)
-            const lastTerminalState = terminalStore.getTerminalState()
-            terminalStore.state.next({
+            const lastTerminalState = this.terminalStore.getTerminalState()
+            this.terminalStore.state.next({
                 ...lastTerminalState,
                 frameworkActor: actor,
                 terminal
@@ -141,11 +141,8 @@ export class InternalRecordManager
     private async updateDomain(
         application: JsonApplicationWithLastIds,
     ): Promise<IDomain> {
-        const [domainDao, terminalStore]
-            = await container(this)
-                .get(DOMAIN_DAO,
-                    TERMINAL_STORE)
-        let domain = terminalStore.getDomainMapByName().get(application.domain)
+        const domainDao = await container(this).get(DOMAIN_DAO)
+        let domain = this.terminalStore.getDomainMapByName().get(application.domain)
 
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
@@ -172,7 +169,7 @@ export class InternalRecordManager
         if (!updatedDomain) {
             return domain
         }
-        const lastTerminalState = terminalStore.getTerminalState()
+        const lastTerminalState = this.terminalStore.getTerminalState()
         const domains = lastTerminalState.domains.slice()
         let replaced = false
         for (let i = 0; i < domains.length; i++) {

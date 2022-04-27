@@ -1,6 +1,5 @@
 import { IRepositoryLoader } from '@airport/air-control'
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import {
@@ -9,7 +8,7 @@ import {
 import {
 	IQueryManager,
 	IQueryOperationContext,
-	STORE_DRIVER
+	IStoreDriver
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 import { QUERY_MANAGER } from '../tokens'
@@ -18,6 +17,7 @@ export class QueryManager
 	implements IQueryManager {
 
 	repositoryLoader: IRepositoryLoader
+	storeDriver: IStoreDriver
 
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
@@ -25,10 +25,8 @@ export class QueryManager
 		cachedSqlQueryId?: number
 	): Promise<EntityArray> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER)
 
-		return await storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		return await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	async findOne<E>(
@@ -37,10 +35,8 @@ export class QueryManager
 		cachedSqlQueryId?: number
 	): Promise<E> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
-		const storeDriver = await container(this)
-			.get(STORE_DRIVER)
 
-		return await storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		return await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	search<E, EntityArray extends Array<E>>(
@@ -50,10 +46,8 @@ export class QueryManager
 	): Observable<EntityArray> {
 		// TODO: checking for presence of a repository in in an observable
 		// await this.ensureRepositoryPresenceAndCurrentState(context)
-		const storeDriver = container(this)
-			.getSync(STORE_DRIVER)
 
-		return storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		return this.storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	searchOne<E>(
@@ -64,10 +58,7 @@ export class QueryManager
 		// TODO: checking for presence of a repository in in an observable
 		// await this.ensureRepositoryPresenceAndCurrentState(context)
 
-		const storeDriver = container(this)
-			.getSync(STORE_DRIVER)
-
-		return storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		return this.storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 	}
 
 	private async ensureRepositoryPresenceAndCurrentState(

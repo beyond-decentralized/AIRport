@@ -1,15 +1,13 @@
-import { SELECTOR_MANAGER } from '@airport/check-in';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { TERMINAL_STORE } from '../tokens';
 import { internalTerminalState } from './theState';
 export class TerminalStore {
     async init() {
-        const selectorManager = await DEPENDENCY_INJECTION.db().get(SELECTOR_MANAGER);
         this.state = internalTerminalState;
-        this.getTerminalState = selectorManager.createRootSelector(this.state);
-        this.getApplicationActors = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
-        this.getApplicationActorMapByDomainAndApplicationNames = selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+        this.getTerminalState = this.selectorManager.createRootSelector(this.state);
+        this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
+        this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsByDomainAndApplicationNames = new Map();
             for (const applicationActor of applicationActors) {
                 const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplicationNames, applicationActor.application.domain.name);
@@ -23,17 +21,17 @@ export class TerminalStore {
             }
             return applicationActorsByDomainAndApplicationNames;
         });
-        this.getDomains = selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
-        this.getDomainMapByName = selectorManager.createSelector(this.getDomains, domains => {
+        this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
             const domainsByName = new Map();
             for (const domain of domains) {
                 domainsByName.set(domain.name, domain);
             }
             return domainsByName;
         });
-        this.getFrameworkActor = selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
-        this.getInternalConnector = selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
-        this.getLatestApplicationVersionMapByNames = selectorManager.createSelector(this.getDomains, domains => {
+        this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
+        this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
+        this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
             for (const domain of domains) {
                 const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
@@ -43,7 +41,7 @@ export class TerminalStore {
             }
             return latestApplicationVersionMapByNames;
         });
-        this.getLatestApplicationVersionMapByFullApplicationName = selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+        this.getLatestApplicationVersionMapByFullApplicationName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
             const latestApplicationVersionMapByFullApplicationName = new Map();
             for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
                 for (const applicationVersion of applicationVersionsForDomainName.values()) {
@@ -52,7 +50,7 @@ export class TerminalStore {
             }
             return latestApplicationVersionMapByFullApplicationName;
         });
-        this.getAllApplicationVersionsByIds = selectorManager.createSelector(this.getDomains, domains => {
+        this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
             const allApplicationVersionsByIds = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
@@ -63,7 +61,7 @@ export class TerminalStore {
             }
             return allApplicationVersionsByIds;
         });
-        this.getLatestApplicationVersionsByApplicationIndexes = selectorManager.createSelector(this.getDomains, domains => {
+        this.getLatestApplicationVersionsByApplicationIndexes = this.selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionsByApplicationIndexes = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
@@ -73,8 +71,8 @@ export class TerminalStore {
             }
             return latestApplicationVersionsByApplicationIndexes;
         });
-        this.getApplications = selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
-        this.getAllEntities = selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes, latestApplicationVersionsByApplicationIndexes => {
+        this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
+        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes, latestApplicationVersionsByApplicationIndexes => {
             const allEntities = [];
             for (const latestApplicationVersion of latestApplicationVersionsByApplicationIndexes) {
                 if (!latestApplicationVersion) {
@@ -86,7 +84,7 @@ export class TerminalStore {
             }
             return allEntities;
         });
-        this.getAllColumns = selectorManager.createSelector(this.getAllEntities, allEntities => {
+        this.getAllColumns = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
             const allColumns = [];
             for (const entity of allEntities) {
                 if (!entity) {
@@ -98,7 +96,7 @@ export class TerminalStore {
             }
             return allColumns;
         });
-        this.getAllRelations = selectorManager.createSelector(this.getAllEntities, allEntities => {
+        this.getAllRelations = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
             const allRelations = [];
             for (const entity of allEntities) {
                 if (!entity) {
@@ -110,9 +108,9 @@ export class TerminalStore {
             }
             return allRelations;
         });
-        this.getReceiver = selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
-        this.getTransactionManager = selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
-        this.getWebReceiver = selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
+        this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
+        this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
+        this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
     }
     tearDown() {
     }

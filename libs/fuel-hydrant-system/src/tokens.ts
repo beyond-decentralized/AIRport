@@ -8,6 +8,7 @@ import { IValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
 import { IStoreDriver } from '@airport/terminal-map'
 import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
+import { SEQUENCE_GENERATOR } from '@airport/check-in'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -22,6 +23,10 @@ export const SQL_DRIVER = fuelHydrantSystem.token<IStoreDriver>({
     class: SqlDriver,
     interface: 'IStoreDriver',
     token: 'SQL_DRIVER'
+})
+
+ID_GENERATOR.setDependencies({
+    sequenceGenerator: SEQUENCE_GENERATOR
 })
 
 SQL_DRIVER.setDependencies({

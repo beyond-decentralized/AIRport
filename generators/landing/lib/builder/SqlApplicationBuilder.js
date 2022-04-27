@@ -1,19 +1,16 @@
-import { container } from '@airport/direction-indicator';
 import { EntityRelationType, getFullApplicationNameFromDomainAndName, QueryType, } from '@airport/ground-control';
-import { STORE_DRIVER } from '@airport/terminal-map';
 export class SqlApplicationBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
-        await this.createApplication(jsonApplication, storeDriver, context);
+        await this.createApplication(jsonApplication, context);
         for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-            await this.buildTable(jsonApplication, jsonEntity, existingApplicationMap, storeDriver, context);
+            await this.buildTable(jsonApplication, jsonEntity, existingApplicationMap, context);
         }
         const relatedJsonApplicationMap = new Map();
         for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
-            await this.buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, storeDriver, context);
+            await this.buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context);
         }
     }
-    async buildTable(jsonApplication, jsonEntity, existingApplicationMap, storeDriver, context) {
+    async buildTable(jsonApplication, jsonEntity, existingApplicationMap, context) {
         const primaryKeyColumnNames = [];
         const tableColumnsDdl = jsonEntity.columns.map((jsonColumn) => {
             let columnDdl = `${jsonColumn.name} ${this.getColumnSuffix(jsonApplication, jsonEntity, jsonColumn)}`;
@@ -23,7 +20,7 @@ export class SqlApplicationBuilder {
             return columnDdl;
         });
         const createTableSuffix = this.getCreateTableSuffix(jsonApplication, jsonEntity);
-        const tableName = storeDriver.getTableName(jsonApplication, jsonEntity, context);
+        const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
         let primaryKeySubStatement = ``;
         if (primaryKeyColumnNames.length) {
             primaryKeySubStatement = this.getPrimaryKeyStatement(primaryKeyColumnNames);
@@ -31,12 +28,12 @@ export class SqlApplicationBuilder {
         const createTableDdl = `CREATE TABLE ${tableName} (
 		${tableColumnsDdl.join(',\n')}${primaryKeySubStatement}
 		)${createTableSuffix}`;
-        await storeDriver.query(QueryType.DDL, createTableDdl, [], context, false);
+        await this.storeDriver.query(QueryType.DDL, createTableDdl, [], context, false);
         let indexNumber = 0;
         if (jsonEntity.tableConfig.columnIndexes) {
             for (const indexConfig of jsonEntity.tableConfig.columnIndexes) {
                 const createIndexDdl = this.getIndexSql('idx_' + tableName + '_' + (++indexNumber), tableName, indexConfig.columnList, indexConfig.unique);
-                await storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
+                await this.storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
             }
         }
         if (jsonEntity.tableConfig.propertyIndexes) {
@@ -51,17 +48,17 @@ export class SqlApplicationBuilder {
                     }
                 }
                 const createIndexDdl = this.getIndexSql('idx_' + tableName + '_' + (++indexNumber), tableName, columnNameList, indexConfig.unique);
-                await storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
+                await this.storeDriver.query(QueryType.DDL, createIndexDdl, [], context, false);
             }
         }
         //
     }
-    async buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, storeDriver, context) {
+    async buildForeignKeys(jsonApplication, jsonEntity, existingApplicationMap, newJsonApplicationMap, relatedJsonApplicationMap, context) {
         if (!jsonEntity.relations || !jsonEntity.relations.length) {
             return;
         }
         const applicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
-        const tableName = storeDriver.getTableName(jsonApplication, jsonEntity, context);
+        const tableName = this.storeDriver.getTableName(jsonApplication, jsonEntity, context);
         let foreignKeyNumber = 0;
         for (const jsonRelation of jsonEntity.relations) {
             if (jsonRelation.relationType !== EntityRelationType.MANY_TO_ONE) {
@@ -108,7 +105,7 @@ export class SqlApplicationBuilder {
                     }
                 }
             }
-            const referencedTableName = storeDriver
+            const referencedTableName = this.storeDriver
                 .getTableName(relatedJsonApplication, relatedJsonEntity, context);
             let referencedColumnNames = [];
             for (const relatedIdColumnRef of relatedJsonEntity.idColumnRefs) {
@@ -116,7 +113,7 @@ export class SqlApplicationBuilder {
             }
             const foreignKeySql = this.getForeignKeySql(tableName, 'fk_' + tableName + '_foreignKeyNumber', foreignKeyColumnNames, referencedTableName, referencedColumnNames);
             if (foreignKeySql) {
-                await storeDriver.query(QueryType.DDL, foreignKeySql, [], context, false);
+                await this.storeDriver.query(QueryType.DDL, foreignKeySql, [], context, false);
             }
         }
     }

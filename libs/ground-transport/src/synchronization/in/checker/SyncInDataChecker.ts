@@ -19,14 +19,14 @@ import {
 import { IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpIds,
-	SEQUENCE_GENERATOR
+	ISequenceGenerator
 } from '@airport/check-in'
 import {
 	IOperationHistory,
 	IRecordHistory,
 	RepositoryTransactionType
 } from '@airport/holding-pattern'
-import { TERMINAL_STORE } from '@airport/terminal-map'
+import { ITerminalStore } from '@airport/terminal-map'
 
 export interface ISyncInDataChecker {
 
@@ -40,6 +40,8 @@ export class SyncInDataChecker
 	implements ISyncInDataChecker {
 
 	airportDatabase: IAirportDatabase
+	sequenceGenerator: ISequenceGenerator
+	terminalStore: ITerminalStore
 
 	/**
 	 * Every dataMessage.data.repoTransHistories array must be sorted before entering
@@ -74,7 +76,7 @@ export class SyncInDataChecker
 			if (history.syncTimestamp) {
 				throw new Error(`RepositorySynchronizationMessage.history.syncTimestamp cannot be specified`)
 			}
-			
+
 			// Repository is already set in SyncInRepositoryChecker
 			history.repositoryTransactionType = RepositoryTransactionType.REMOTE
 			history.syncTimestamp = message.syncTimestamp
@@ -94,11 +96,7 @@ export class SyncInDataChecker
 	private async populateApplicationEntityMap(
 		message: RepositorySynchronizationMessage
 	): Promise<Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>> {
-		// let applicationVersionsById: Map<number, IApplicationVersion> = new Map()
-		// let applicationVersionIds: number[] = []
-
-		const terminalStore = await container(this).get(TERMINAL_STORE)
-		const applicationVersionsByIds = terminalStore.getAllApplicationVersionsByIds()
+		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
 		const applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>> = new Map()
 		for (const messageApplicationVersion of message.applicationVersions) {
 			const applicationVersion = applicationVersionsByIds[messageApplicationVersion.id]
@@ -129,10 +127,8 @@ export class SyncInDataChecker
 			throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`)
 		}
 
-		const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR)
-
 		const systemWideOperationIds = getSysWideOpIds(
-			history.operationHistory.length, this.airportDatabase, sequenceGenerator)
+			history.operationHistory.length, this.airportDatabase, this.sequenceGenerator)
 
 		let orderNumber = 0
 
@@ -166,7 +162,7 @@ export class SyncInDataChecker
 			if (!actor) {
 				throw new Error(`Cannot find Actor for "in-message id" RepositorySynchronizationMessage.history.actor`)
 			}
-			
+
 			operationHistory.actor = actor
 			const applicationVersion = message.applicationVersions[operationHistory.entity.applicationVersion as any]
 			if (!applicationVersion) {

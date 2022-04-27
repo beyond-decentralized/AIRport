@@ -29,14 +29,9 @@ import {
 	Subject
 } from 'rxjs';
 import {
-	OPERATION_CONTEXT_LOADER
-} from '@airport/ground-control';
-import {
-	IOperationContext,
 	IStoreDriver,
 	ITransaction,
-	ITransactionContext,
-	TERMINAL_STORE
+	ITransactionContext
 } from '@airport/terminal-map';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';

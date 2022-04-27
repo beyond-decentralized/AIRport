@@ -1,10 +1,7 @@
-import { IQueryContext } from '@airport/air-control';
 import {
-	container,
-	DEPENDENCY_INJECTION,
-	IContext
+	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator';
-import { TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { TRANSACTIONAL_RECEIVER } from '@airport/terminal-map';
 
 export class GoTransactionalReceiver {
 

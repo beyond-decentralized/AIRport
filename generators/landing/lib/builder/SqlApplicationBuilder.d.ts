@@ -8,10 +8,11 @@ import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';
 export declare abstract class SqlApplicationBuilder implements IApplicationBuilder {
     airportDatabase: IAirportDatabase;
+    storeDriver: IStoreDriver;
     build(jsonApplication: JsonApplication, existingApplicationMap: Map<string, IApplication>, newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>, context: IContext): Promise<void>;
-    abstract createApplication(jsonApplication: JsonApplication, storeDriver: IStoreDriver, context: IContext): Promise<void>;
-    buildTable(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, existingApplicationMap: Map<string, IApplication>, storeDriver: IStoreDriver, context: IContext): Promise<void>;
-    buildForeignKeys(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, existingApplicationMap: Map<string, IApplication>, newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>, relatedJsonApplicationMap: Map<string, JsonApplication>, storeDriver: IStoreDriver, context: IContext): Promise<void>;
+    abstract createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
+    buildTable(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, existingApplicationMap: Map<string, IApplication>, context: IContext): Promise<void>;
+    buildForeignKeys(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, existingApplicationMap: Map<string, IApplication>, newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>, relatedJsonApplicationMap: Map<string, JsonApplication>, context: IContext): Promise<void>;
     buildForeignKeysForTable(): Promise<void>;
     protected abstract getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;
     protected abstract getForeignKeySql(tableName: string, foreignKeyName: string, foreignKeyColumnNames: string[], referencedTableName: string, referencedColumnNames: string[]): string;

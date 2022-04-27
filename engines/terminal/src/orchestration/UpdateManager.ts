@@ -5,7 +5,7 @@ import {
 } from '@airport/air-control'
 import {
 	getSysWideOpId,
-	SEQUENCE_GENERATOR
+	ISequenceGenerator
 } from '@airport/check-in'
 import {
 	container,
@@ -56,6 +56,7 @@ export class UpdateManager
 	implements IUpdateManager {
 
 	queryFacade: IQueryFacade
+	sequenceGenerator: ISequenceGenerator
 
 	async updateValues(
 		portableQuery: PortableQuery,
@@ -70,12 +71,11 @@ export class UpdateManager
 			recHistoryDuo,
 			recHistoryNewValueDuo,
 			recHistoryOldValueDuo,
-			repoTransHistoryDuo,
-			sequenceGenerator] = await container(this)
+			repoTransHistoryDuo] = await container(this)
 				.get(HISTORY_MANAGER,
 					OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO,
 					RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO,
-					REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR)
+					REPOSITORY_TRANSACTION_HISTORY_DUO)
 
 		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
@@ -92,7 +92,8 @@ export class UpdateManager
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal && !transaction.isSync) {
 
-			systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
+			systemWideOperationId = await getSysWideOpId(
+				context.ioc.airDb, this.sequenceGenerator);
 
 			// TODO: For entity queries an additional query really shouldn't be needed
 			// Specifically for entity queries, we got the new values, just record them

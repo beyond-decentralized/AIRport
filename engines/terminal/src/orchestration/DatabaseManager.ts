@@ -15,10 +15,10 @@ import {
 } from '@airport/holding-pattern';
 import { IApplication, APPLICATION_DAO } from '@airport/airspace';
 import {
-	APPLICATION_INITIALIZER,
+	IApplicationInitializer,
 	IDatabaseManager,
-	STORE_DRIVER,
-	TRANSACTIONAL_SERVER
+	IStoreDriver,
+	ITransactionalServer
 } from '@airport/terminal-map';
 import {
 	DATABASE_MANAGER,
@@ -30,6 +30,10 @@ import { BLUEPRINT } from '@airport/blueprint';
 export class DatabaseManager
 	implements IDatabaseManager {
 
+	applicationInitializer: IApplicationInitializer
+	storeDriver: IStoreDriver
+	transactionalServer: ITransactionalServer
+
 	private initialized = false;
 
 	async initNoDb(
@@ -38,14 +42,12 @@ export class DatabaseManager
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
-		const server = await container(this).get(TRANSACTIONAL_SERVER);
-		(server as any).tempActor = new Actor();
+		(this.transactionalServer as any).tempActor = new Actor();
 
 		await this.installStarterApplication(true, false, context);
 
-		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
-		await applicationInitializer.stage(applications, context);
-		(server as any).tempActor = null;
+		await this.applicationInitializer.stage(applications, context);
+		(this.transactionalServer as any).tempActor = null;
 		this.initialized = true;
 	}
 
@@ -55,12 +57,9 @@ export class DatabaseManager
 	): Promise<void> {
 		await container(this).get(AIRPORT_DATABASE);
 
-		const storeDriver = await container(this).get(STORE_DRIVER);
+		(this.transactionalServer as any).tempActor = new Actor();
 
-		const server = await container(this).get(TRANSACTIONAL_SERVER);
-		(server as any).tempActor = new Actor();
-
-		const hydrate = await storeDriver.doesTableExist(getFullApplicationName(BLUEPRINT[0]),
+		const hydrate = await this.storeDriver.doesTableExist(getFullApplicationName(BLUEPRINT[0]),
 			'PACKAGES', context);
 
 		await this.installStarterApplication(false, hydrate, context);
@@ -71,7 +70,7 @@ export class DatabaseManager
 			await internalRecordManager.initTerminal(domainName, context)
 		}
 
-		(server as any).tempActor = null;
+		(this.transactionalServer as any).tempActor = null;
 		this.initialized = true;
 	}
 
@@ -101,12 +100,11 @@ export class DatabaseManager
 			}
 		}
 
-		const [applicationInitializer, server] = await container(this)
-			.get(APPLICATION_INITIALIZER, TRANSACTIONAL_SERVER);
-		(server as any).tempActor = new Actor();
-		await applicationInitializer.initialize(applicationsToCreate, context, true, true);
+		(this.transactionalServer as any).tempActor = new Actor();
+		await this.applicationInitializer.initialize(
+			applicationsToCreate, context, true, true);
 
-		(server as any).tempActor = null;
+		(this.transactionalServer as any).tempActor = null;
 	}
 
 	/*
@@ -150,26 +148,12 @@ export class DatabaseManager
 		context: IContext,
 	) {
 		const blueprintFile = await import('@airport/blueprint');
-		const applicationInitializer = await container(this).get(APPLICATION_INITIALIZER);
 		if (stage) {
-			await applicationInitializer.stage(blueprintFile.BLUEPRINT as any, context);
+			await this.applicationInitializer.stage(blueprintFile.BLUEPRINT as any, context);
 		} else if (hydrate) {
-			await applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
-			// Below appears to be not needed - hydrate gets all applications
-			// const applicationDao = await container(this).get(APPLICATION_DAO)
-			// const applications = await applicationDao.findAll()
-			// const jsonApplicationNameSet: Set<string> = new Set()
-			// blueprintFile.BLUEPRINT
-			// 	.map(jsonApplication => getFullApplicationName(jsonApplication))
-			// 	// schemname contains both domain and application's actual name
-			// 	.forEach(applicationName => {
-			// 		jsonApplicationNameSet.add(applicationName)
-			// 	})
-			// const jsonApplications = applications.filter(application => !jsonApplicationNameSet.has(application.fullName))
-			// 	.map(application => application.jsonApplication)
-			// await applicationInitializer.hydrate(jsonApplications as any, context);
+			await this.applicationInitializer.hydrate(blueprintFile.BLUEPRINT as any, context);
 		} else {
-			await applicationInitializer.initialize(blueprintFile.BLUEPRINT as any,
+			await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT as any,
 				context, false, false);
 		}
 	}

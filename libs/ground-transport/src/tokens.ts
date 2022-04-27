@@ -17,6 +17,8 @@ import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter'
 import { ISynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-control'
+import { SEQUENCE_GENERATOR } from '@airport/check-in'
+import { TERMINAL_STORE } from '@airport/terminal-map'
 
 const groundTransport = lib('ground-transport')
 
@@ -39,7 +41,8 @@ export const DEBUG_SYNCHRONIZATION_ADAPTER = groundTransport.token<ISynchronizat
 export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchronizationAdapterLoader>('SYNCHRONIZATION_ADAPTER_LOADER')
 
 STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    sequenceGenerator: SEQUENCE_GENERATOR
 })
 
 STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
@@ -48,5 +51,7 @@ STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
 })
 
 SYNC_IN_DATA_CHECKER.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalStore: TERMINAL_STORE
 })

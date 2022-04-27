@@ -3,6 +3,7 @@ import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import {
+    APPLICATION_INITIALIZER,
     ICascadeGraphVerifier,
     IDatabaseManager,
     IDeleteManager,
@@ -14,10 +15,14 @@ import {
     IQueryManager,
     IRepositoryManager,
     IStructuralEntityValidator,
-    IUpdateManager
+    IUpdateManager,
+    STORE_DRIVER,
+    TERMINAL_STORE,
+    TRANSACTIONAL_SERVER
 } from '@airport/terminal-map'
 import { IInternalRecordManager } from './data/InternalRecordManager'
 import { IOnlineManager } from './net/OnlineManager'
+import { TransactionalReceiver } from './net/TransactionalReceiver'
 import { AbstractMutationManager } from './orchestration/AbstractMutationManager'
 
 const terminal = lib('terminal')
@@ -26,6 +31,11 @@ export const ABSTRACT_MUTATION_MANAGER = terminal.token<AbstractMutationManager>
     class: AbstractMutationManager,
     interface: 'class AbstractMutationManager',
     token: 'ABSTRACT_MUTATION_MANAGER'
+})
+export const ABSTRACT_TRANSACTIONAL_RECIEVER = terminal.token<TransactionalReceiver>({
+    class: TransactionalReceiver,
+    interface: 'class TransactionalReceiver',
+    token: 'ABSTRACT_TRANSACTIONAL_RECIEVER'
 })
 export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>('CASCADE_GRAPH_VERIFIER')
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>('DATABASE_MANAGER')
@@ -48,6 +58,17 @@ ABSTRACT_MUTATION_MANAGER.setDependencies({
     queryUtils: QUERY_UTILS
 })
 
+ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    transactionalServer: TRANSACTIONAL_SERVER
+})
+
+DATABASE_MANAGER.setDependencies({
+    applicationInitializer: APPLICATION_INITIALIZER,
+    storeDriver: STORE_DRIVER,
+    transactionalServer: TRANSACTIONAL_SERVER
+})
+
 DELETE_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
@@ -59,7 +80,8 @@ INSERT_MANAGER.setDependencies({
 })
 
 INTERNAL_RECORD_MANAGER.setDependencies({
-    entityStateManager: ENTITY_STATE_MANAGER
+    entityStateManager: ENTITY_STATE_MANAGER,
+    terminalStore: TERMINAL_STORE
 })
 
 OPERATION_MANAGER.setDependencies({
@@ -67,9 +89,11 @@ OPERATION_MANAGER.setDependencies({
 })
 
 QUERY_MANAGER.setDependencies({
-    repositoryLoader: REPOSITORY_LOADER
+    repositoryLoader: REPOSITORY_LOADER,
+    storeDriver: STORE_DRIVER
 })
 
 UPDATE_MANAGER.setDependencies({
-    queryFacade: QUERY_FACADE
+    queryFacade: QUERY_FACADE,
+    sequenceGenerator: SEQUENCE_GENERATOR
 })

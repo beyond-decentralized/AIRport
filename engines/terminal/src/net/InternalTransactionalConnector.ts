@@ -17,11 +17,14 @@ import {
     PortableQuery,
     TRANSACTIONAL_CONNECTOR
 } from '@airport/ground-control';
-import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { ITerminalStore, ITransactionalServer, TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 
 export class InternalTransactionalConnector
     implements ITransactionalConnector {
+
+    terminalStore: ITerminalStore
+    transactionalServer: ITransactionalServer
 
     callApi<Request, Response>(
         _: ILocalAPIRequest
@@ -38,15 +41,12 @@ they are internal to the AIRport framework).`)
         // distributionStrategy: DistributionStrategy,
         context: IContext
     ): Promise<number> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.addRepository(
+        return await this.transactionalServer.addRepository(
             // url,
             // platform,
             // platformConfig,
             // distributionStrategy,
-            terminalStore.getInternalConnector().internalCredentials,
+            this.terminalStore.getInternalConnector().internalCredentials,
             {
                 internal: true,
                 ...context
@@ -59,12 +59,9 @@ they are internal to the AIRport framework).`)
         context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Promise<EntityArray> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-
-        return await transServer.find(
+        return await this.transactionalServer.find(
             portableQuery,
-            terminalStore.getInternalConnector().internalCredentials,
+            this.terminalStore.getInternalConnector().internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -78,12 +75,9 @@ they are internal to the AIRport framework).`)
         context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Promise<E> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.findOne(
+        return await this.transactionalServer.findOne(
             portableQuery,
-            terminalStore.getInternalConnector().internalCredentials,
+            this.terminalStore.getInternalConnector().internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -97,12 +91,9 @@ they are internal to the AIRport framework).`)
         context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Observable<EntityArray> {
-        const [terminalStore, transServer] = container(this)
-            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return transServer.search(
+        return this.transactionalServer.search(
             portableQuery,
-            terminalStore.getInternalConnector().internalCredentials,
+            this.terminalStore.getInternalConnector().internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -116,12 +107,9 @@ they are internal to the AIRport framework).`)
         context: IQueryContext,
         cachedSqlQueryId?: number,
     ): Observable<E> {
-        const [terminalStore, transServer] = container(this)
-            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return transServer.searchOne(
+        return this.transactionalServer.searchOne(
             portableQuery,
-            terminalStore.getInternalConnector().internalCredentials,
+            this.terminalStore.getInternalConnector().internalCredentials,
             {
                 internal: true,
                 ...context as any
@@ -134,11 +122,8 @@ they are internal to the AIRport framework).`)
         entity: T,
         context: IEntityContext,
     ): Promise<ISaveResult> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.save(entity,
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.save(entity,
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
@@ -149,11 +134,8 @@ they are internal to the AIRport framework).`)
         entity: T,
         context?: IContext,
     ): Promise<ISaveResult> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.saveToDestination(repositoryDestination, entity,
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.saveToDestination(repositoryDestination, entity,
+            this.terminalStore.getInternalConnector().internalCredentials, {
                 internal: true,
                 ...context
             } as any);
@@ -164,12 +146,9 @@ they are internal to the AIRport framework).`)
         context: IContext,
         ensureGeneratedValues?: boolean // For internal use only
     ): Promise<number> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.insertValues(
+        return await this.transactionalServer.insertValues(
             portableQuery,
-            terminalStore.getInternalConnector().internalCredentials, {
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, ensureGeneratedValues)
@@ -179,11 +158,8 @@ they are internal to the AIRport framework).`)
         portableQuery: PortableQuery,
         context: IContext,
     ): Promise<number[][]> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.insertValuesGetIds(portableQuery,
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.insertValuesGetIds(portableQuery,
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -193,11 +169,8 @@ they are internal to the AIRport framework).`)
         portableQuery: PortableQuery,
         context: IContext,
     ): Promise<number> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.updateValues(portableQuery,
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.updateValues(portableQuery,
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -207,11 +180,8 @@ they are internal to the AIRport framework).`)
         portableQuery: PortableQuery,
         context: IContext,
     ): Promise<number> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.deleteWhere(portableQuery,
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.deleteWhere(portableQuery,
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -220,11 +190,8 @@ they are internal to the AIRport framework).`)
     async startTransaction(
         context: IContext
     ): Promise<boolean> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.startTransaction(
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.startTransaction(
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -233,11 +200,8 @@ they are internal to the AIRport framework).`)
     async commit(
         context: IContext
     ): Promise<boolean> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.commit(
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.commit(
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -246,11 +210,8 @@ they are internal to the AIRport framework).`)
     async rollback(
         context: IContext
     ): Promise<boolean> {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER)
-
-        return await transServer.rollback(
-            terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.rollback(
+            this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         })
@@ -264,6 +225,10 @@ they are internal to the AIRport framework).`)
 
 }
 DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector)
+TRANSACTIONAL_CONNECTOR.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    transactionalServer: TRANSACTIONAL_SERVER
+})
 
 export function injectTransactionalConnector(): void {
     console.log('Injecting TransactionalConnector')

@@ -19,10 +19,10 @@ import {
 import {
 	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver,
-	APPLICATION_INITIALIZER,
 	IApiCallContext,
 	ITransactionContext,
-	TERMINAL_STORE
+	TERMINAL_STORE,
+	ITerminalStore
 } from '@airport/terminal-map'
 import {
 	map
@@ -33,6 +33,9 @@ import { IWebApplicationInitializer } from './WebApplicationInitializer'
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
 	implements ITransactionalReceiver {
+
+	applicationInitializer: IWebApplicationInitializer
+	terminalStore: ITerminalStore
 
 	constructor() {
 		super()
@@ -48,8 +51,7 @@ export class WebTransactionalReceiver
 			document.domain = 'random_' + Math.random() + '_' + Math.random() + domainPrefix
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 		webReciever.domainPrefix = domainPrefix
 		webReciever.mainDomainFragments = mainDomainFragments
 	}
@@ -74,8 +76,7 @@ export class WebTransactionalReceiver
 			// FIXME: deserialize message
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		if (webReciever.onClientMessageCallback) {
 			const receivedDate = new Date()
@@ -115,8 +116,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		if (webReciever.onClientMessageCallback) {
 			const receivedDate = new Date()
@@ -178,8 +178,7 @@ export class WebTransactionalReceiver
 	onMessage(callback: (
 		message: any
 	) => void) {
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 		webReciever.onClientMessageCallback = callback
 	}
 
@@ -208,8 +207,7 @@ export class WebTransactionalReceiver
 			throw new Error(context.errorMessage)
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		return new Promise((resolve, reject) => {
 			webReciever.pendingInterAppApiCallMessageMap.set(message.id, {
@@ -226,19 +224,16 @@ export class WebTransactionalReceiver
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
 
-		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
-			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
-
-		const applicationInitializing = webApplicationInitializer.initializingApplicationMap.get(fullApplicationName)
+		const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName)
 		if (applicationInitializing) {
 			return
 		}
 
-		const applicationWindow = webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
+		const applicationWindow = this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
 
 		if (!applicationWindow) {
-			webApplicationInitializer.initializingApplicationMap.set(fullApplicationName, true)
-			await webApplicationInitializer.nativeInitializeApplication(message.domain,
+			this.applicationInitializer.initializingApplicationMap.set(fullApplicationName, true)
+			await this.applicationInitializer.nativeInitializeApplication(message.domain,
 				message.application, fullApplicationName)
 		}
 
@@ -271,8 +266,7 @@ export class WebTransactionalReceiver
 	private async handleFromClientRequest(
 		message: ILocalAPIRequest,
 	): Promise<void> {
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		let numPendingMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
 		if (!numPendingMessagesFromHost) {
@@ -357,8 +351,7 @@ export class WebTransactionalReceiver
 	) {
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
 		if (numMessagesFromHost > 0) {
@@ -384,10 +377,7 @@ export class WebTransactionalReceiver
 			return false
 		}
 
-		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
-			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
-
-		return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
+		return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
 	}
 
 	private async messageIsFromValidApp(
@@ -402,8 +392,7 @@ export class WebTransactionalReceiver
 			return true
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
@@ -429,10 +418,7 @@ export class WebTransactionalReceiver
 		}
 
 		// Make sure the application is installed
-		const webApplicationInitializer: IWebApplicationInitializer = await container(this)
-			.get(APPLICATION_INITIALIZER) as IWebApplicationInitializer
-
-		return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName)
+		return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
 	}
 
 	private async handleIsolateMessage(
@@ -444,8 +430,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const terminalStore = container(this).getSync(TERMINAL_STORE)
-		const webReciever = terminalStore.getWebReceiver()
+		const webReciever = this.terminalStore.getWebReceiver()
 
 		const fullApplicationName = getFullApplicationNameFromDomainAndName(
 			message.domain, message.application)
@@ -469,8 +454,7 @@ export class WebTransactionalReceiver
 				return
 			}
 
-			const terminalStore = container(this).getSync(TERMINAL_STORE)
-			const webReciever = terminalStore.getWebReceiver()
+			const webReciever = this.terminalStore.getWebReceiver()
 
 			let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain
 			switch (message.type) {
@@ -497,3 +481,6 @@ export class WebTransactionalReceiver
 
 }
 DEPENDENCY_INJECTION.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
+TRANSACTIONAL_RECEIVER.setDependencies({
+	terminalStore: TERMINAL_STORE
+})

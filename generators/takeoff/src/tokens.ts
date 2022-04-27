@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-control'
 import { lib } from '@airport/direction-indicator'
-import { IQueryEntityClassCreator, IQueryObjectInitializer } from '@airport/terminal-map'
+import { IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
 import { IAirportDatabasePopulator } from './AirportDatabasePopulator'
 import { IDdlObjectLinker } from './DdlObjectLinker'
 import { IDdlObjectRetriever } from './DdlObjectRetriever'
@@ -13,6 +13,14 @@ export const DDL_OBJECT_RETRIEVER = takeoff.token<IDdlObjectRetriever>('DDL_OBJE
 export const QUERY_ENTITY_CLASS_CREATOR = takeoff.token<IQueryEntityClassCreator>('QUERY_ENTITY_CLASS_CREATOR')
 export const QUERY_OBJECT_INITIALIZER = takeoff.token<IQueryObjectInitializer>('QUERY_OBJECT_INITIALIZER')
 
+DDL_OBJECT_LINKER.setDependencies({
+    terminalStore: TERMINAL_STORE
+})
+
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE
+})
+
+QUERY_OBJECT_INITIALIZER.setDependencies({
+    terminalStore: TERMINAL_STORE
 })

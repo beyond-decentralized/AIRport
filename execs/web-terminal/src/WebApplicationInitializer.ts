@@ -1,5 +1,4 @@
 import {
-    container,
     DEPENDENCY_INJECTION
 } from "@airport/direction-indicator";
 import { FullApplicationName } from "@airport/ground-control";
@@ -7,7 +6,7 @@ import { ApplicationInitializer } from "@airport/landing";
 import {
     APPLICATION_INITIALIZER,
     IApplicationInitializer,
-    TERMINAL_STORE
+    ITerminalStore
 } from "@airport/terminal-map";
 
 export interface IWebApplicationInitializer
@@ -22,6 +21,8 @@ export interface IWebApplicationInitializer
 export class WebApplicationInitializer
     extends ApplicationInitializer {
 
+    terminalStore: ITerminalStore
+
     applicationWindowMap: Map<FullApplicationName, Window> = new Map()
 
     initializingApplicationMap: Map<FullApplicationName, boolean> = new Map()
@@ -31,8 +32,8 @@ export class WebApplicationInitializer
         application: string,
         fullApplicationName: string,
     ): Promise<void> {
-        const terminalStore = await container(this).get(TERMINAL_STORE)
-        if (terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
+        if (this.terminalStore.getReceiver().initializedApps
+            .has(fullApplicationName)) {
             return
         }
 
@@ -49,7 +50,8 @@ export class WebApplicationInitializer
 
         }
 
-        while (!terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
+        while (!this.terminalStore.getReceiver().initializedApps
+            .has(fullApplicationName)) {
             await this.wait(100)
         }
 

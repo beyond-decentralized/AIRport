@@ -1,9 +1,11 @@
 import { IAirportDatabase } from '@airport/air-control';
+import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { AllDdlObjects, IApplicationInitializer } from '@airport/terminal-map';
 export declare abstract class ApplicationInitializer implements IApplicationInitializer {
     airportDatabase: IAirportDatabase;
+    sequenceGenerator: ISequenceGenerator;
     addNewApplicationVersionsToAll(ddlObjects: AllDdlObjects): void;
     hydrate(jsonApplications: JsonApplicationWithLastIds[], context: IContext): Promise<void>;
     initialize(jsonApplications: JsonApplicationWithLastIds[], context: IContext, checkDependencies: boolean, loadExistingApplications: boolean): Promise<void>;

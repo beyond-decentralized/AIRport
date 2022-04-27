@@ -25,8 +25,7 @@ import { DDL_OBJECT_LINKER } from './tokens'
 export interface IDdlObjectLinker {
 
 	link(
-		ddlObjects: AllDdlObjects,
-		terminalStore: ITerminalStore
+		ddlObjects: AllDdlObjects
 	): void
 
 }
@@ -34,9 +33,10 @@ export interface IDdlObjectLinker {
 export class DdlObjectLinker
 	implements IDdlObjectLinker {
 
+	terminalStore: ITerminalStore
+
 	link(
-		allDdlObjects: AllDdlObjects,
-		terminalStore: ITerminalStore
+		allDdlObjects: AllDdlObjects
 	): void {
 		const {
 			all, allApplicationVersionsByIds, added
@@ -54,9 +54,9 @@ export class DdlObjectLinker
 		const {
 			propertyMapById, relationMapById
 		} = this.linkPropertiesAndRelations(properties, relations,
-			entityArrayById, terminalStore)
+			entityArrayById)
 
-		this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore)
+		this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById)
 
 	}
 
@@ -149,8 +149,7 @@ export class DdlObjectLinker
 	private linkPropertiesAndRelations(
 		properties: IApplicationProperty[],
 		relations: IApplicationRelation[],
-		entityArrayById: IApplicationEntity[],
-		terminalStore: ITerminalStore
+		entityArrayById: IApplicationEntity[]
 	): {
 		propertyMapById: Map<PropertyId, IApplicationProperty>, relationMapById: Map<RelationId, IApplicationRelation>
 	} {
@@ -177,7 +176,7 @@ export class DdlObjectLinker
 			let relationEntity = entityArrayById[relation.relationEntity.id]
 
 			if (!relationEntity) {
-				relationEntity = terminalStore.getAllEntities()[relation.relationEntity.id]
+				relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity.id]
 			}
 			relationEntity.relationReferences.push(relation)
 
@@ -201,8 +200,7 @@ export class DdlObjectLinker
 		propertyMapById: Map<PropertyId, IApplicationProperty>,
 		relationMapById: Map<RelationId, IApplicationRelation>,
 		allDdlObjects: AllDdlObjects,
-		entityArrayById: IApplicationEntity[],
-		terminalStore: ITerminalStore
+		entityArrayById: IApplicationEntity[]
 	) {
 		const columnMapById: Map<ColumnId, IApplicationColumn> = new Map()
 		allDdlObjects.all.columns.forEach((column: IApplicationColumn) => {
@@ -237,13 +235,13 @@ export class DdlObjectLinker
 		allDdlObjects.added.relationColumns.forEach((relationColumn: IApplicationRelationColumn) => {
 			let manyColumn = columnMapById.get(relationColumn.manyColumn.id)
 			if (!manyColumn) {
-				manyColumn = terminalStore.getAllColumns()[relationColumn.manyColumn.id]
+				manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn.id]
 			}
 			manyColumn.manyRelationColumns.push(relationColumn)
 
 			let oneColumn = columnMapById.get(relationColumn.oneColumn.id)
 			if (!oneColumn) {
-				oneColumn = terminalStore.getAllColumns()[relationColumn.oneColumn.id]
+				oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn.id]
 			}
 			oneColumn.oneRelationColumns.push(relationColumn)
 
@@ -251,7 +249,7 @@ export class DdlObjectLinker
 			if (relationColumn.manyRelation && relationColumn.manyRelation.id) {
 				manyRelation = relationMapById.get(relationColumn.manyRelation.id)
 				if (!manyRelation) {
-					manyRelation = terminalStore.getAllRelations()[relationColumn.manyRelation.id]
+					manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation.id]
 				}
 				manyRelation.manyRelationColumns.push(relationColumn)
 			}
@@ -260,7 +258,7 @@ export class DdlObjectLinker
 			if (relationColumn.oneRelation && relationColumn.oneRelation.id) {
 				oneRelation = relationMapById.get(relationColumn.oneRelation.id)
 				if (!oneRelation) {
-					oneRelation = terminalStore.getAllRelations()[relationColumn.oneRelation.id]
+					oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation.id]
 				}
 				oneRelation.oneRelationColumns.push(relationColumn)
 			}
