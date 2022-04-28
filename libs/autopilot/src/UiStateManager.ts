@@ -104,5 +104,3 @@ export class UiStateManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(UI_STATE_MANAGER, UiStateManager)

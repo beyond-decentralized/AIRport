@@ -26,8 +26,8 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map';
 import {
-	APPLICATION_DAO,
-	IApplication
+	IApplication,
+	IApplicationDao
 } from '@airport/airspace';
 import {
 	APPLICATION_BUILDER,
@@ -41,6 +41,7 @@ export abstract class ApplicationInitializer
 	implements IApplicationInitializer {
 
 	airportDatabase: IAirportDatabase
+	applicationDao: IApplicationDao
 	sequenceGenerator: ISequenceGenerator
 	terminalStore: ITerminalStore
 
@@ -96,8 +97,7 @@ export abstract class ApplicationInitializer
 
 		const existingApplicationMap: Map<FullApplicationName, IApplication> = new Map()
 		if (loadExistingApplications) {
-			const applicationDao = await container(this).get(APPLICATION_DAO)
-			const applications = await applicationDao.findAllWithJson()
+			const applications = await this.applicationDao.findAllWithJson()
 			for (const application of applications) {
 				existingApplicationMap.set(application.fullName, application)
 			}

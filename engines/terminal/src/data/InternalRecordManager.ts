@@ -15,10 +15,10 @@ import {
 import { JsonApplicationWithLastIds } from "@airport/security-check";
 import { TerminalStore } from "@airport/terminal-map";
 import {
-    DOMAIN_DAO,
     IDomain,
     IApplication,
-    APPLICATION_DAO
+    IDomainDao,
+    IApplicationDao
 } from "@airport/airspace";
 import { transactional } from "@airport/tower";
 import {
@@ -45,6 +45,8 @@ export interface IInternalRecordManager {
 export class InternalRecordManager
     implements IInternalRecordManager {
 
+    applicationDao: IApplicationDao
+    domainDao: IDomainDao
     entityStateManager: IEntityStateManager
     terminalStore: TerminalStore
 
@@ -55,9 +57,9 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const [actorDao, applicationDao]
+            const actorDao
                 = await container(this)
-                    .get(ACTOR_DAO, APPLICATION_DAO)
+                    .get(ACTOR_DAO)
 
             await this.updateDomain(application)
 
@@ -72,7 +74,7 @@ export class InternalRecordManager
             }
 
             actors = await actorDao.findByDomainAndApplicationNames(application.domain, application.name)
-            let anApplication: IApplication = await applicationDao.findByIndex(
+            let anApplication: IApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
                 const frameworkActor = this.terminalStore.getFrameworkActor()
@@ -112,15 +114,11 @@ export class InternalRecordManager
             const user = new User();
             user.uuId = 'AIRportA-demo-demo-demo-functionalty';
             user.username = "internalUser";
-            // const userDao = await container(this).get(USER_DAO);
-            // await userDao.save(user, context);
 
             const terminal = new Terminal();
             terminal.owner = user;
             terminal.isLocal = true;
             terminal.uuId = uuidv4();
-            // const terminalDao = await container(this).get(TERMINAL_DAO);
-            // await terminalDao.save(terminal, context);
 
             const actor = new Actor();
             actor.user = user;
@@ -141,13 +139,12 @@ export class InternalRecordManager
     private async updateDomain(
         application: JsonApplicationWithLastIds,
     ): Promise<IDomain> {
-        const domainDao = await container(this).get(DOMAIN_DAO)
         let domain = this.terminalStore.getDomainMapByName().get(application.domain)
 
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain
         }
-        let dbDomain = await domainDao.findByName(application.domain)
+        let dbDomain = await this.domainDao.findByName(application.domain)
         let updatedDomain
         if (domain) {
             if (dbDomain) {
@@ -163,7 +160,7 @@ export class InternalRecordManager
                     id: null,
                     name: application.domain,
                 }
-                await domainDao.save(updatedDomain)
+                await this.domainDao.save(updatedDomain)
             }
         }
         if (!updatedDomain) {
@@ -183,7 +180,7 @@ export class InternalRecordManager
             domains.push(domain)
         }
 
-        terminalStore.state.next({
+        this.terminalStore.state.next({
             ...lastTerminalState,
             domains
         })

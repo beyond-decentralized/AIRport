@@ -2,13 +2,11 @@ import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import {
 	ITerminal,
-	ITerminalDao,
-	TERMINAL_DAO,
+	ITerminalDao
 } from '@airport/travel-document-checkpoint-internal'
 import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens'
 
@@ -23,12 +21,12 @@ export interface ISyncInTerminalChecker {
 export class SyncInTerminalChecker
 	implements ISyncInTerminalChecker {
 
+	terminalDao: ITerminalDao
+
 	async ensureTerminals(
 		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
-			const terminalDao = await container(this).get(TERMINAL_DAO)
-
 			let terminalUuids: string[] = []
 			let messageTerminalIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.terminals.length; i++) {
@@ -57,7 +55,7 @@ export class SyncInTerminalChecker
 				delete terminal.id
 			}
 
-			const terminals = await terminalDao.findByUuIds(terminalUuids)
+			const terminals = await this.terminalDao.findByUuIds(terminalUuids)
 			for (const terminal of terminals) {
 				const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId)
 				message.terminals[messageUserIndex] = terminal
@@ -67,7 +65,7 @@ export class SyncInTerminalChecker
 				.filter(messageTerminal => !messageTerminal.id)
 
 			if (missingTerminals.length) {
-				await this.addMissingTerminals(missingTerminals, terminalDao)
+				await this.addMissingTerminals(missingTerminals)
 			}
 		} catch (e) {
 			console.error(e)
@@ -78,13 +76,12 @@ export class SyncInTerminalChecker
 	}
 
 	private async addMissingTerminals(
-		missingTerminals: ITerminal[],
-		terminalDao: ITerminalDao
+		missingTerminals: ITerminal[]
 	): Promise<void> {
 		for (const terminal of missingTerminals) {
 			terminal.isLocal = false
 		}
-		await terminalDao.insert(missingTerminals)
+		await this.terminalDao.insert(missingTerminals)
 	}
 
 }

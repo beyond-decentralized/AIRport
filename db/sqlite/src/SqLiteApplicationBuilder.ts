@@ -3,11 +3,9 @@ import {
   QApplicationInternal,
 } from '@airport/air-control';
 import {
-  ISequence,
-  SEQUENCE_DAO,
+  ISequence
 } from '@airport/airport-code';
 import {
-  container,
   DEPENDENCY_INJECTION,
   IContext,
 } from '@airport/direction-indicator';
@@ -20,9 +18,6 @@ import {
   SQLDataType,
 } from '@airport/ground-control';
 import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing';
-import {
-  IStoreDriver
-} from '@airport/terminal-map'
 
 export class SqLiteApplicationBuilder
   extends SqlApplicationBuilder {
@@ -82,8 +77,6 @@ export class SqLiteApplicationBuilder
   ): Promise<ISequence[]> {
     console.log('buildAllSequences');
 
-    let [sequenceDao] = await container(this).get(SEQUENCE_DAO);
-
     let allSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
       const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
@@ -92,7 +85,7 @@ export class SqLiteApplicationBuilder
       }
     }
 
-    await sequenceDao.save(allSequences);
+    await this.sequenceDao.save(allSequences);
 
     return allSequences;
   }

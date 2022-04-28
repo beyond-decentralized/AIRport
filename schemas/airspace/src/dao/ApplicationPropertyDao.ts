@@ -1,6 +1,4 @@
-import {DEPENDENCY_INJECTION}                  from '@airport/direction-indicator'
 import {EntityId}            from '@airport/ground-control'
-import {APPLICATION_PROPERTY_DAO} from '../tokens'
 import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
@@ -72,5 +70,3 @@ export class ApplicationPropertyDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_PROPERTY_DAO, ApplicationPropertyDao)

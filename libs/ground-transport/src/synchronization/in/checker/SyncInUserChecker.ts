@@ -1,9 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	IUser,
-	IUserDao,
-	USER_DAO
+	IUserDao
 } from '@airport/travel-document-checkpoint-internal'
 import { SYNC_IN_USER_CHECKER } from '../../../tokens'
 
@@ -18,12 +17,12 @@ export interface ISyncInUserChecker {
 export class SyncInUserChecker
 	implements ISyncInUserChecker {
 
+	userDao: IUserDao
+
 	async ensureUsers(
 		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
-			const userDao = await container(this).get(USER_DAO)
-
 			let userUuids: string[] = []
 			let messageUserIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.users.length; i++) {
@@ -40,7 +39,7 @@ export class SyncInUserChecker
 				delete user.id
 			}
 
-			const users = await userDao.findByUuIds(userUuids)
+			const users = await this.userDao.findByUuIds(userUuids)
 			for (const user of users) {
 				const messageUserIndex = messageUserIndexMap.get(user.uuId)
 				message.users[messageUserIndex] = user
@@ -49,7 +48,7 @@ export class SyncInUserChecker
 			const missingUsers = message.users.filter(messageUser => !messageUser.id)
 
 			if (missingUsers.length) {
-				await this.addMissingUsers(missingUsers, userDao)
+				await this.addMissingUsers(missingUsers)
 			}
 		} catch (e) {
 			console.error(e)
@@ -60,15 +59,14 @@ export class SyncInUserChecker
 	}
 
 	private async addMissingUsers(
-		missingUsers: IUser[],
-		userDao: IUserDao
+		missingUsers: IUser[]
 	): Promise<void> {
 		for (const user of missingUsers) {
 			if (!user.username || typeof user.username !== 'string') {
 				throw new Error(`Invalid User.username ${user.username}`)
 			}
 		}
-		await userDao.insert(missingUsers)
+		await this.userDao.insert(missingUsers)
 	}
 
 }

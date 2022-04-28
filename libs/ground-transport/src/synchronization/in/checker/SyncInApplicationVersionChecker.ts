@@ -1,11 +1,10 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import {
 	IApplicationVersion,
-	APPLICATION_VERSION_DAO
+	IApplicationVersionDao
 } from '@airport/airspace'
 import { SYNC_IN_APPLICATION_VERSION_CHECKER } from '../../../tokens'
 
@@ -26,6 +25,8 @@ export interface ISyncInApplicationVersionChecker {
 
 export class SyncInApplicationVersionChecker
 	implements ISyncInApplicationVersionChecker {
+
+	applicationVersionDao: IApplicationVersionDao
 
 	async ensureApplicationVersions(
 		message: RepositorySynchronizationMessage
@@ -52,9 +53,7 @@ export class SyncInApplicationVersionChecker
 	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message)
 
-		const applicationVersionDao = await container(this).get(APPLICATION_VERSION_DAO)
-
-		const applicationVersions = await applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
+		const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
 
 		let lastDomainName
 		let lastApplicationName

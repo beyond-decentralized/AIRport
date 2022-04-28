@@ -1,18 +1,18 @@
 import {
-	DOMAIN_DAO,
 	IApplication,
 	IApplicationVersion,
-	APPLICATION_COLUMN_DAO,
-	APPLICATION_DAO,
-	APPLICATION_ENTITY_DAO,
-	APPLICATION_PROPERTY_COLUMN_DAO,
-	APPLICATION_PROPERTY_DAO,
-	APPLICATION_REFERENCE_DAO,
-	APPLICATION_RELATION_COLUMN_DAO,
-	APPLICATION_RELATION_DAO,
-	APPLICATION_VERSION_DAO
+	IDomainDao,
+	IApplicationColumnDao,
+	IApplicationDao,
+	IApplicationEntityDao,
+	IApplicationPropertyColumnDao,
+	IApplicationPropertyDao,
+	IApplicationReferenceDao,
+	IApplicationRelationColumnDao,
+	IApplicationRelationDao,
+	IApplicationVersionDao
 } from '@airport/airspace'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainId,
 	ApplicationIndex,
@@ -33,6 +33,17 @@ export interface IDdlObjectRetriever {
 export class DdlObjectRetriever
 	implements IDdlObjectRetriever {
 
+	applicationColumnDao: IApplicationColumnDao
+	applicationDao: IApplicationDao
+	applicationEntityDao: IApplicationEntityDao
+	applicationPropertyColumnDao: IApplicationPropertyColumnDao
+	applicationPropertyDao: IApplicationPropertyDao
+	applicationReferenceDao: IApplicationReferenceDao
+	applicationRelationColumnDao: IApplicationRelationColumnDao
+	applicationRelationDao: IApplicationRelationDao
+	applicationVersionDao: IApplicationVersionDao
+	domainDao: IDomainDao
+
 	lastIds: LastIds = {
 		columns: 0,
 		domains: 0,
@@ -46,16 +57,7 @@ export class DdlObjectRetriever
 	}
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
-		const [domainDao, applicationDao, applicationVersionDao, applicationReferenceDao,
-			applicationEntityDao, applicationPropertyDao, applicationRelationDao,
-			applicationColumnDao, applicationPropertyColumnDao,
-			applicationRelationColumnDao
-		] = await container(this).get(DOMAIN_DAO,
-			APPLICATION_DAO, APPLICATION_VERSION_DAO, APPLICATION_REFERENCE_DAO,
-			APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_RELATION_DAO,
-			APPLICATION_COLUMN_DAO, APPLICATION_PROPERTY_COLUMN_DAO,
-			APPLICATION_RELATION_COLUMN_DAO)
-		const applications = await applicationDao.findAllActive()
+		const applications = await this.applicationDao.findAllActive()
 		const applicationIndexes: ApplicationIndex[] = []
 		const domainIdSet: Set<DomainId> = new Set()
 		applications.forEach(
@@ -70,9 +72,9 @@ export class DdlObjectRetriever
 			return application1.index - application2.index
 		})
 
-		const domains = await domainDao.findByIdIn(Array.from(domainIdSet))
+		const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet))
 
-		const allApplicationVersions = await applicationVersionDao
+		const allApplicationVersions = await this.applicationVersionDao
 			.findAllActiveOrderByApplicationIndexAndId()
 
 		let lastApplicationIndex: ApplicationIndex
@@ -91,10 +93,10 @@ export class DdlObjectRetriever
 		const latestApplicationVersionIds = latestApplicationVersions.map(
 			applicationVersion => applicationVersion.id)
 
-		const applicationReferences = await applicationReferenceDao
+		const applicationReferences = await this.applicationReferenceDao
 			.findAllForApplicationVersions(latestApplicationVersionIds)
 
-		const entities = await applicationEntityDao
+		const entities = await this.applicationEntityDao
 			.findAllForApplicationVersions(latestApplicationVersionIds)
 		const entityIds = entities.map(
 			entity => entity.id)
@@ -108,23 +110,23 @@ export class DdlObjectRetriever
 	})
 		 */
 
-		const properties = await applicationPropertyDao
+		const properties = await this.applicationPropertyDao
 			.findAllForEntities(entityIds)
 		const propertyIds = properties.map(
 			property => property.id)
 
-		const relations = await applicationRelationDao
+		const relations = await this.applicationRelationDao
 			.findAllForProperties(propertyIds)
 
-		const columns = await applicationColumnDao
+		const columns = await this.applicationColumnDao
 			.findAllForEntities(entityIds)
 		const columnIds = columns.map(
 			column => column.id)
 
-		const propertyColumns = await applicationPropertyColumnDao
+		const propertyColumns = await this.applicationPropertyColumnDao
 			.findAllForColumns(columnIds)
 
-		const relationColumns = await applicationRelationColumnDao
+		const relationColumns = await this.applicationRelationColumnDao
 			.findAllForColumns(columnIds)
 
 		this.lastIds = {

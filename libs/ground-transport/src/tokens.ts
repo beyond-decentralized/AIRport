@@ -19,6 +19,8 @@ import { ISyncOutDataSerializer } from './synchronization/out/converter/SyncOutD
 import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { TERMINAL_STORE } from '@airport/terminal-map'
+import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-internal'
+import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 
 const groundTransport = lib('ground-transport')
 
@@ -50,8 +52,25 @@ STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
     databaseFacade: DATABASE_FACADE
 })
 
+SYNC_IN_APPLICATION_CHECKER.setDependencies({
+    applicationDao: APPLICATION_DAO,
+    domainDao: DOMAIN_DAO
+})
+
+SYNC_IN_APPLICATION_VERSION_CHECKER.setDependencies({
+    applicationVersionDao: APPLICATION_VERSION_DAO
+})
+
 SYNC_IN_DATA_CHECKER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TERMINAL_STORE
+})
+
+SYNC_IN_TERMINAL_CHECKER.setDependencies({
+    terminalDao: TERMINAL_DAO
+})
+
+SYNC_IN_USER_CHECKER.setDependencies({
+    userDao: USER_DAO
 })

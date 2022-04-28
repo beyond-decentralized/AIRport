@@ -1,9 +1,7 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainId,
 	DomainName
 } from '@airport/ground-control'
-import { DOMAIN_DAO } from '../tokens'
 import {
 	BaseDomainDao,
 	IBaseDomainDao,
@@ -173,5 +171,3 @@ export class DomainDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(DOMAIN_DAO, DomainDao)

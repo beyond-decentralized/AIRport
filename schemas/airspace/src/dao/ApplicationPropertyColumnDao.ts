@@ -1,4 +1,3 @@
-import {DEPENDENCY_INJECTION}                         from '@airport/direction-indicator'
 import {ColumnId}                   from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
@@ -7,7 +6,6 @@ import {
 	Q,
 	QApplicationPropertyColumn,
 }                                   from '../generated/generated'
-import {APPLICATION_PROPERTY_COLUMN_DAO} from '../tokens'
 
 export interface IApplicationPropertyColumnDao
 	extends IBaseApplicationPropertyColumnDao {
@@ -68,5 +66,3 @@ export class ApplicationPropertyColumnDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_PROPERTY_COLUMN_DAO, ApplicationPropertyColumnDao)

@@ -1,26 +1,70 @@
 import { lib } from '@airport/direction-indicator';
-import { IDomainDao } from './dao/DomainDao'
-import { IApplicationColumnDao } from './dao/ApplicationColumnDao';
-import { IApplicationDao } from './dao/ApplicationDao';
-import { IApplicationEntityDao } from './dao/ApplicationEntityDao';
-import { IApplicationPropertyColumnDao } from './dao/ApplicationPropertyColumnDao';
-import { IApplicationPropertyDao } from './dao/ApplicationPropertyDao';
-import { IApplicationReferenceDao } from './dao/ApplicationReferenceDao';
-import { IApplicationRelationColumnDao } from './dao/ApplicationRelationColumnDao';
-import { IApplicationRelationDao } from './dao/ApplicationRelationDao';
-import { IApplicationVersionDao } from './dao/ApplicationVersionDao';
-import { IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
+import { DomainDao, IDomainDao } from './dao/DomainDao'
+import { ApplicationColumnDao, IApplicationColumnDao } from './dao/ApplicationColumnDao';
+import { ApplicationDao, IApplicationDao } from './dao/ApplicationDao';
+import { ApplicationEntityDao, IApplicationEntityDao } from './dao/ApplicationEntityDao';
+import { ApplicationPropertyColumnDao, IApplicationPropertyColumnDao } from './dao/ApplicationPropertyColumnDao';
+import { ApplicationPropertyDao, IApplicationPropertyDao } from './dao/ApplicationPropertyDao';
+import { ApplicationReferenceDao, IApplicationReferenceDao } from './dao/ApplicationReferenceDao';
+import { ApplicationRelationColumnDao, IApplicationRelationColumnDao } from './dao/ApplicationRelationColumnDao';
+import { ApplicationRelationDao, IApplicationRelationDao } from './dao/ApplicationRelationDao';
+import { ApplicationVersionDao, IApplicationVersionDao } from './dao/ApplicationVersionDao';
+import { ApplicationVersionDuo, IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
 
 const trafficPattern = lib('traffic-pattern');
 
-export const DOMAIN_DAO = trafficPattern.token<IDomainDao>('DOMAIN_DAO')
-export const APPLICATION_COLUMN_DAO = trafficPattern.token<IApplicationColumnDao>('APPLICATION_COLUMN_DAO');
-export const APPLICATION_DAO = trafficPattern.token<IApplicationDao>('APPLICATION_DAO');
-export const APPLICATION_ENTITY_DAO = trafficPattern.token<IApplicationEntityDao>('APPLICATION_ENTITY_DAO');
-export const APPLICATION_PROPERTY_COLUMN_DAO = trafficPattern.token<IApplicationPropertyColumnDao>('APPLICATION_PROPERTY_COLUMN_DAO');
-export const APPLICATION_PROPERTY_DAO = trafficPattern.token<IApplicationPropertyDao>('APPLICATION_PROPERTY_DAO');
-export const APPLICATION_REFERENCE_DAO = trafficPattern.token<IApplicationReferenceDao>('APPLICATION_REFERENCE_DAO');
-export const APPLICATION_RELATION_COLUMN_DAO = trafficPattern.token<IApplicationRelationColumnDao>('APPLICATION_RELATION_COLUMN_DAO');
-export const APPLICATION_RELATION_DAO = trafficPattern.token<IApplicationRelationDao>('APPLICATION_RELATION_DAO');
-export const APPLICATION_VERSION_DAO = trafficPattern.token<IApplicationVersionDao>('APPLICATION_VERSION_DAO');
-export const APPLICATION_VERSION_DUO = trafficPattern.token<IApplicationVersionDuo>('APPLICATION_VERSION_DUO');
+export const DOMAIN_DAO = trafficPattern.token<IDomainDao>({
+    class: DomainDao,
+    interface: 'IDomainDao',
+    token: 'DOMAIN_DAO'
+})
+export const APPLICATION_COLUMN_DAO = trafficPattern.token<IApplicationColumnDao>({
+    class: ApplicationColumnDao,
+    interface: 'IApplicationColumnDao',
+    token: 'APPLICATION_COLUMN_DAO'
+});
+export const APPLICATION_DAO = trafficPattern.token<IApplicationDao>({
+    class: ApplicationDao,
+    interface: 'IApplicationDao',
+    token: 'APPLICATION_DAO'
+});
+export const APPLICATION_ENTITY_DAO = trafficPattern.token<IApplicationEntityDao>({
+    class: ApplicationEntityDao,
+    interface: 'IApplicationEntityDao',
+    token: 'APPLICATION_ENTITY_DAO'
+});
+export const APPLICATION_PROPERTY_COLUMN_DAO = trafficPattern.token<IApplicationPropertyColumnDao>({
+    class: ApplicationPropertyColumnDao,
+    interface: 'IApplicationPropertyColumnDao',
+    token: 'APPLICATION_PROPERTY_COLUMN_DAO'
+});
+export const APPLICATION_PROPERTY_DAO = trafficPattern.token<IApplicationPropertyDao>({
+    class: ApplicationPropertyDao,
+    interface: 'IApplicationPropertyDao',
+    token: 'APPLICATION_PROPERTY_DAO'
+});
+export const APPLICATION_REFERENCE_DAO = trafficPattern.token<IApplicationReferenceDao>({
+    class: ApplicationReferenceDao,
+    interface: 'IApplicationReferenceDao',
+    token: 'APPLICATION_REFERENCE_DAO'
+});
+export const APPLICATION_RELATION_COLUMN_DAO = trafficPattern.token<IApplicationRelationColumnDao>({
+    class: ApplicationRelationColumnDao,
+    interface: 'IApplicationRelationColumnDao',
+    token: 'APPLICATION_RELATION_COLUMN_DAO'
+});
+export const APPLICATION_RELATION_DAO = trafficPattern.token<IApplicationRelationDao>({
+    class: ApplicationRelationDao,
+    interface: 'IApplicationRelationDao',
+    token: 'APPLICATION_RELATION_DAO'
+});
+export const APPLICATION_VERSION_DAO = trafficPattern.token<IApplicationVersionDao>({
+    class: ApplicationVersionDao,
+    interface: 'IApplicationVersionDao',
+    token: 'APPLICATION_VERSION_DAO'
+});
+export const APPLICATION_VERSION_DUO = trafficPattern.token<IApplicationVersionDuo>({
+    class: ApplicationVersionDuo,
+    interface: 'IApplicationVersionDuo',
+    token: 'APPLICATION_VERSION_DUO'
+});

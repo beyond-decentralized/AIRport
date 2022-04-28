@@ -1,5 +1,5 @@
 import { IAirportDatabase } from '@airport/air-control';
-import { ISequence } from '@airport/airport-code';
+import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import { JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
@@ -8,6 +8,7 @@ import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';
 export declare abstract class SqlApplicationBuilder implements IApplicationBuilder {
     airportDatabase: IAirportDatabase;
+    sequenceDao: ISequenceDao;
     storeDriver: IStoreDriver;
     build(jsonApplication: JsonApplication, existingApplicationMap: Map<string, IApplication>, newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>, context: IContext): Promise<void>;
     abstract createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;

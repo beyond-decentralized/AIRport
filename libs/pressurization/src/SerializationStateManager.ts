@@ -1,6 +1,3 @@
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
-import { SERIALIZATION_STATE_MANAGER } from "./tokens";
-
 export enum SerializationState {
     DATE = 'DATE',
     STUB = 'STUB'
@@ -122,6 +119,3 @@ export class SerializationStateManager
     }
 
 }
-DEPENDENCY_INJECTION.set(SERIALIZATION_STATE_MANAGER, SerializationStateManager)
-
-

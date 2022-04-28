@@ -1,6 +1,4 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { ISerializationStateManager } from './SerializationStateManager'
-import { OPERATION_SERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens'
 
 /**
  * A simple operation serializer. Ids are assumed to always
@@ -28,6 +26,8 @@ interface ISerializableOperation {
 export class OperationSerializer
 	implements IOperationSerializer {
 
+	serializationStateManager: ISerializationStateManager
+
 	serializeAsArray<E>(
 		entity: E | E[]
 	): E[] {
@@ -37,13 +37,11 @@ export class OperationSerializer
 			return serializedEntity
 		}
 
-        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
-
 		if (entity instanceof Array) {
 			serializedEntity = entity
-				.map(anEntity => this.serializeWithManager(anEntity, serializationStateManager) as E)
+				.map(anEntity => this.serialize(anEntity) as E)
 		} else {
-			serializedEntity = [this.serializeWithManager(entity, serializationStateManager)as E]
+			serializedEntity = [this.serialize(entity) as E]
 		}
 
 		return serializedEntity
@@ -52,15 +50,6 @@ export class OperationSerializer
 	serialize<E>(
 		entity: E | E[]
 	): E | E[] {
-        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
-
-		return this.serializeWithManager(entity, serializationStateManager)
-	}
-
-	private serializeWithManager<E>(
-		entity: E | E[],
-		serializationStateManager: ISerializationStateManager
-	): E | E[] {
 		const operation: ISerializableOperation = {
 			namePath: ['root'],
 			processedEntityMap: new Map(),
@@ -68,20 +57,19 @@ export class OperationSerializer
 			stubLookupTable: [],
 		}
 
-		return this.doSerialize(entity, operation, serializationStateManager)
+		return this.doSerialize(entity, operation)
 	}
 
 	doSerialize<T>(
 		entity: T,
-		operation: ISerializableOperation,
-		serializationStateManager: ISerializationStateManager,
+		operation: ISerializableOperation
 	): T {
 		if (entity instanceof Object) {
 			if (entity instanceof Array) {
 				return entity.map(anEntity => this.doSerialize(
-					anEntity, operation, serializationStateManager)) as any as T
+					anEntity, operation)) as any as T
 			} else if (entity instanceof Date) {
-				return serializationStateManager.serializeAsDate(entity) as any
+				return this.serializationStateManager.serializeAsDate(entity) as any
 			}
 		} else {
 			return entity;
@@ -95,12 +83,12 @@ export class OperationSerializer
 		operation.processedEntityMap.set(entity, operationUniqueId)
 
 		let entityStub = {}
-		serializationStateManager.markAsStub(entity)
-		entityStub[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId
+		this.serializationStateManager.markAsStub(entity)
+		entityStub[this.serializationStateManager.getUniqueIdFieldName()] = operationUniqueId
 		operation.stubLookupTable[operationUniqueId] = entityStub
 
 		let serializedEntity: any = {}
-		serializedEntity[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId
+		serializedEntity[this.serializationStateManager.getUniqueIdFieldName()] = operationUniqueId
 
 		var isFirstProperty = true;
 		for (const propertyName in entity) {
@@ -122,10 +110,10 @@ export class OperationSerializer
 					// 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					// } else {
 					propertyCopy = property.map(aProperty => this.doSerialize(
-						aProperty, operation, serializationStateManager))
+						aProperty, operation))
 					// }
 				} else if (property instanceof Date) {
-					propertyCopy = serializationStateManager.serializeAsDate(property)
+					propertyCopy = this.serializationStateManager.serializeAsDate(property)
 				} else {
 					// if (propertyState === EntityState.RESULT_JSON) {
 					// 	propertyCopy = {
@@ -133,7 +121,7 @@ export class OperationSerializer
 					// 	}
 					// 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
 					// } else {
-					propertyCopy = this.doSerialize(property, operation, serializationStateManager)
+					propertyCopy = this.doSerialize(property, operation)
 					// }
 				}
 			} else {
@@ -168,5 +156,3 @@ export class OperationSerializer
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(OPERATION_SERIALIZER, OperationSerializer)

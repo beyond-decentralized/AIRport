@@ -5,7 +5,6 @@ import {
 import { IApplicationVersion } from '@airport/airspace'
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {
-	container,
 	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
@@ -32,7 +31,6 @@ import {
 	ISaveIMI,
 	ITransactionEndIMI,
 	LastIds,
-	LOCAL_API_SERVER,
 	ICallApiIMI,
 	IApplicationLoader,
 	ILocalAPIServer

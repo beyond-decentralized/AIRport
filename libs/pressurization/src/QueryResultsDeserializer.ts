@@ -1,9 +1,7 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
 	SerializationState
 } from './SerializationStateManager'
-import { QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens'
 
 /**
  * Deserializer for query results coming back from the server
@@ -23,19 +21,20 @@ interface IDeserializableOperation {
 export class QueryResultsDeserializer
 	implements IQueryResultsDeserializer {
 
+	serializationStateManager: ISerializationStateManager
+
 	deserialize<E, T = E | E[]>(
 		entity: T,
 	): T {
-		const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER)
 		const operation: IDeserializableOperation = {
 			lookupTable: [],
 		}
 		let deserializedEntity
 		if (entity instanceof Array) {
 			deserializedEntity = <any><E[]>entity.map(anEntity => this.doDeserialize(
-				anEntity, operation, serializationStateManager))
+				anEntity, operation))
 		} else {
-			deserializedEntity = this.doDeserialize(entity, operation, serializationStateManager)
+			deserializedEntity = this.doDeserialize(entity, operation)
 		}
 
 		return deserializedEntity
@@ -43,10 +42,9 @@ export class QueryResultsDeserializer
 
 	doDeserialize<E>(
 		entity: E,
-		operation: IDeserializableOperation,
-		serializationStateManager: ISerializationStateManager
+		operation: IDeserializableOperation
 	): E {
-		let state = serializationStateManager.getEntityState(entity)
+		let state = this.serializationStateManager.getEntityState(entity)
 		switch (state) {
 			case SerializationState.DATE:
 				return <any>new Date(entity['value'])
@@ -58,9 +56,9 @@ export class QueryResultsDeserializer
 			// 	return entity
 		}
 
-		let operationUniqueId = serializationStateManager.getSerializationUniqueId(entity)
+		let operationUniqueId = this.serializationStateManager.getSerializationUniqueId(entity)
 		if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-			throw new Error(`Invalid or missing ${serializationStateManager.getUniqueIdFieldName()} field.`)
+			throw new Error(`Invalid or missing ${this.serializationStateManager.getUniqueIdFieldName()} field.`)
 		}
 
 		let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId]
@@ -68,14 +66,14 @@ export class QueryResultsDeserializer
 			case SerializationState.STUB: {
 				if (!alreadyDeserializedEntity) {
 					throw new Error(`Could not find an already present entity for
-					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
+					${this.serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
 				}
 				return alreadyDeserializedEntity
 			}
 			default:
 				if (alreadyDeserializedEntity) {
 					throw new Error(`Entity appears more than once for
-					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
+					${this.serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`)
 				}
 		}
 
@@ -88,20 +86,18 @@ export class QueryResultsDeserializer
 			if (property instanceof Object) {
 				if (property instanceof Array) {
 					propertyCopy = property.map(aProperty => this.doDeserialize(
-						aProperty, operation, serializationStateManager))
+						aProperty, operation))
 				} else {
-					propertyCopy = this.doDeserialize(property, operation, serializationStateManager)
+					propertyCopy = this.doDeserialize(property, operation)
 				}
 			} else {
 				propertyCopy = property
 			}
 			deserializedEntity[propertyName] = propertyCopy
 		}
-		delete deserializedEntity[serializationStateManager.getUniqueIdFieldName()]
+		delete deserializedEntity[this.serializationStateManager.getUniqueIdFieldName()]
 
 		return deserializedEntity
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(QUERY_RESULTS_DESERIALIZER, QueryResultsDeserializer)

@@ -1,8 +1,22 @@
 import { lib } from "@airport/direction-indicator";
-import { ILocalAPIClient } from "./LocalAPIClient";
-import { IUiStateManager } from "./UiStateManager";
+import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
+import { ILocalAPIClient, LocalAPIClient } from "./LocalAPIClient";
+import { IUiStateManager, UiStateManager } from "./UiStateManager";
 
 const autopilot = lib('autopilot');
 
-export const LOCAL_API_CLIENT = autopilot.token<ILocalAPIClient>('LOCAL_API_CLIENT')
-export const UI_STATE_MANAGER = autopilot.token<IUiStateManager>('UI_STATE_MANAGER')
+export const LOCAL_API_CLIENT = autopilot.token<ILocalAPIClient>({
+    class: LocalAPIClient,
+    interface: 'ILocalAPIClient',
+    token: 'LOCAL_API_CLIENT'
+})
+export const UI_STATE_MANAGER = autopilot.token<IUiStateManager>({
+    class: UiStateManager,
+    interface: 'IUiStateManager',
+    token: 'UI_STATE_MANAGER'
+})
+
+LOCAL_API_CLIENT.setDependencies({
+    operationSerializer: OPERATION_SERIALIZER,
+    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER
+})

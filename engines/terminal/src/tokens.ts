@@ -1,4 +1,5 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, REPOSITORY_LOADER } from '@airport/air-control'
+import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
@@ -64,6 +65,7 @@ ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
 })
 
 DATABASE_MANAGER.setDependencies({
+    applicationDao: APPLICATION_DAO,
     applicationInitializer: APPLICATION_INITIALIZER,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER
@@ -80,6 +82,8 @@ INSERT_MANAGER.setDependencies({
 })
 
 INTERNAL_RECORD_MANAGER.setDependencies({
+    applicationDao: APPLICATION_DAO,
+    domainDao: DOMAIN_DAO,
     entityStateManager: ENTITY_STATE_MANAGER,
     terminalStore: TERMINAL_STORE
 })

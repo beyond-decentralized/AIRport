@@ -1,6 +1,4 @@
 import { plus } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
-import { SEQUENCE_DAO } from '../tokens'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
@@ -46,5 +44,3 @@ export class SequenceDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SEQUENCE_DAO, SequenceDao)

@@ -1,9 +1,6 @@
-import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
-import {TERMINAL_RUN_DAO} from '../tokens'
 import {
 	BaseTerminalRunDao,
-	IBaseTerminalRunDao,
-	TerminalRunECreateProperties
+	IBaseTerminalRunDao
 }                         from '../generated/generated'
 
 export interface ITerminalRunDao
@@ -20,5 +17,3 @@ export class TerminalRunDao
 	implements ITerminalRunDao {
 
 }
-
-DEPENDENCY_INJECTION.set(TERMINAL_RUN_DAO, TerminalRunDao)

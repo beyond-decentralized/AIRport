@@ -1,7 +1,5 @@
 import {or}                         from '@airport/air-control'
-import {DEPENDENCY_INJECTION}                         from '@airport/direction-indicator'
 import {ColumnId}                   from '@airport/ground-control'
-import {APPLICATION_RELATION_COLUMN_DAO} from '../tokens'
 import {
 	BaseApplicationRelationColumnDao,
 	IBaseApplicationRelationColumnDao,
@@ -80,5 +78,3 @@ export class ApplicationRelationColumnDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_RELATION_COLUMN_DAO, ApplicationRelationColumnDao)

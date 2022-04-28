@@ -1,4 +1,4 @@
-import {container, DEPENDENCY_INJECTION}             from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -7,12 +7,12 @@ import {
 	JsonApplicationName,
 	ApplicationName,
 	FullApplicationName,
-}                       from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IApplication,
-	APPLICATION_DAO
-}                       from '@airport/airspace'
-import {APPLICATION_CHECKER} from '../tokens'
+	IApplicationDao
+} from '@airport/airspace'
+import { APPLICATION_CHECKER } from '../tokens'
 
 
 export interface CoreDomainAndApplicationNames {
@@ -50,6 +50,8 @@ export interface IApplicationChecker {
 export class ApplicationChecker
 	implements IApplicationChecker {
 
+	applicationDao: IApplicationDao
+
 	async check(
 		jsonApplication: JsonApplication
 	): Promise<void> {
@@ -79,11 +81,11 @@ export class ApplicationChecker
 		const allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>> = new Map()
 
 		const referencedApplicationMapByApplication:
-			      Map<DomainName, Map<ApplicationName, Map<DomainName, Map<JsonApplicationName, JsonApplication>>>>
-			      = new Map()
+			Map<DomainName, Map<ApplicationName, Map<DomainName, Map<JsonApplicationName, JsonApplication>>>>
+			= new Map()
 
 		for (const jsonApplication of jsonApplications) {
-			const lastJsonApplicationVersion        = jsonApplication.versions[jsonApplication.versions.length - 1]
+			const lastJsonApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1]
 			const referencedApplicationMapForApplication = ensureChildJsMap(
 				ensureChildJsMap(
 					referencedApplicationMapByApplication, jsonApplication.domain
@@ -102,9 +104,9 @@ export class ApplicationChecker
 		await this.pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication)
 
 
-		const applicationsWithValidDependencies: JsonApplication[]          = []
+		const applicationsWithValidDependencies: JsonApplication[] = []
 		const applicationsInNeedOfAdditionalDependencies: JsonApplication[] = []
-		const neededDependencies: JsonApplication[]                    = []
+		const neededDependencies: JsonApplication[] = []
 
 		for (const dependenciesForDomain of allReferencedApplicationMap.values()) {
 			for (const dependency of dependenciesForDomain.values()) {
@@ -114,7 +116,7 @@ export class ApplicationChecker
 
 		for (const jsonApplication of jsonApplications) {
 			const referencedApplicationMapForApplication
-				      = referencedApplicationMapByApplication.get(jsonApplication.domain).get(jsonApplication.name)
+				= referencedApplicationMapByApplication.get(jsonApplication.domain).get(jsonApplication.name)
 
 			if (this.hasReferences(referencedApplicationMapForApplication)) {
 				applicationsInNeedOfAdditionalDependencies.push(jsonApplication)
@@ -163,20 +165,20 @@ export class ApplicationChecker
 
 		for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
 			const coreDomainAndApplicationNames
-				      = existingApplicationInfo.coreDomainAndApplicationNamesByApplicationName.get(applicationName)
+				= existingApplicationInfo.coreDomainAndApplicationNamesByApplicationName.get(applicationName)
 
 			// Remove every reference for this existing application
 			for (const referenceMapForApplicationsOfDomain of referencedApplicationMapByApplication.values()) {
 				for (const applicationsReferencedByAGivenApplication of referenceMapForApplicationsOfDomain.values()) {
 					const applicationReferencesForDomain
-						      = applicationsReferencedByAGivenApplication.get(coreDomainAndApplicationNames.domain)
+						= applicationsReferencedByAGivenApplication.get(coreDomainAndApplicationNames.domain)
 					if (applicationReferencesForDomain) {
 						applicationReferencesForDomain.delete(coreDomainAndApplicationNames.application)
 					}
 				}
 			}
 			const allApplicationReferencesForDomain
-				      = allReferencedApplicationMap.get(coreDomainAndApplicationNames.domain)
+				= allReferencedApplicationMap.get(coreDomainAndApplicationNames.domain)
 			if (allApplicationReferencesForDomain) {
 				allApplicationReferencesForDomain.delete(coreDomainAndApplicationNames.application)
 			}
@@ -187,7 +189,7 @@ export class ApplicationChecker
 	private async findExistingApplications(
 		allReferencedApplicationMap: Map<DomainName, Map<JsonApplicationName, JsonApplication>>
 	): Promise<ExistingApplicationInfo> {
-		const fullApplicationNames: FullApplicationName[]                                                       = []
+		const fullApplicationNames: FullApplicationName[] = []
 		const coreDomainAndApplicationNamesByApplicationName: Map<FullApplicationName, CoreDomainAndApplicationNames> = new Map()
 
 		for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
@@ -205,8 +207,7 @@ export class ApplicationChecker
 		if (!fullApplicationNames.length) {
 			existingApplicationMapByName = new Map()
 		} else {
-			const applicationDao         = await container(this).get(APPLICATION_DAO)
-			existingApplicationMapByName = await applicationDao.findMapByFullNames(fullApplicationNames)
+			existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullApplicationNames)
 		}
 
 		return {

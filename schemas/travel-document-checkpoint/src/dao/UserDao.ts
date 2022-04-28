@@ -1,9 +1,7 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	User_UuId,
 	User_Username
 } from '../ddl/ddl'
-import { USER_DAO } from '../to_be_generated/internal-tokens'
 import {
 	BaseUserDao,
 	IBaseUserDao,
@@ -84,5 +82,3 @@ export class UserDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(USER_DAO, UserDao)

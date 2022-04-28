@@ -1,5 +1,6 @@
 import {
 	ISequence,
+	ISequenceDao,
 	SEQUENCE_DAO
 } from '@airport/airport-code';
 import {
@@ -8,7 +9,6 @@ import {
 	setSeqGen
 } from '@airport/check-in';
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator';
 import {
@@ -37,6 +37,8 @@ import {
  */
 export class SequenceGenerator
 	implements ISequenceGenerator {
+
+	sequenceDao: ISequenceDao
 
 	protected sequences: ISequence[][][] = [];
 	protected sequenceBlocks: number[][][] = [];
@@ -73,13 +75,12 @@ export class SequenceGenerator
 	async initialize(
 		sequences?: ISequence[]
 	): Promise<void> {
-		const sequenceDao = await container(this).get(SEQUENCE_DAO);
 		if (!sequences) {
-			sequences = await sequenceDao.findAll();
+			sequences = await this.sequenceDao.findAll();
 		}
 		this.addSequences(sequences);
 
-		await sequenceDao.incrementCurrentValues();
+		await this.sequenceDao.incrementCurrentValues();
 
 		setSeqGen(this);
 	}
@@ -121,8 +122,6 @@ export class SequenceGenerator
 	): Promise<number[][]> {
 		const sequentialNumbers: number[][] = [];
 
-		const sequenceDao = await container(this).get(SEQUENCE_DAO);
-
 		for (let i = 0; i < dbColumns.length; i++) {
 			const dbColumn = dbColumns[i];
 
@@ -151,7 +150,7 @@ export class SequenceGenerator
 
 				const newSequence = { ...sequence };
 				newSequence.currentValue += numNewSequencesNeeded;
-				await sequenceDao.save(newSequence);
+				await this.sequenceDao.save(newSequence);
 				this.sequences[application.index][dbEntity.index][dbColumn.index] = newSequence;
 
 				sequenceBlock = numNewSequencesNeeded;
@@ -205,6 +204,9 @@ export class SequenceGenerator
 }
 
 DEPENDENCY_INJECTION.set(SEQUENCE_GENERATOR, SequenceGenerator)
+SEQUENCE_GENERATOR.setDependencies({
+	sequenceDao: SEQUENCE_DAO
+})
 
 export function injectSequenceGenerator() {
 	console.log('injecting SequenceGenerator')

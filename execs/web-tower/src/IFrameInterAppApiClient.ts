@@ -13,6 +13,8 @@ import {
     ITransactionalConnector
 } from "@airport/ground-control";
 import {
+    IOperationSerializer,
+    IQueryResultsDeserializer,
     OPERATION_SERIALIZER,
     QUERY_RESULTS_DESERIALIZER
 } from "@airport/pressurization";
@@ -29,6 +31,8 @@ const _inDemoMode = true
 export class IFrameInterAppPIClient
     implements IInterAppAPIClient {
 
+    operationSerializer: IOperationSerializer
+    queryResultsDeserializer: IQueryResultsDeserializer
     transactionalConnector: ITransactionalConnector
 
     async invokeApiMethod<ApiInterface, ReturnValue>(
@@ -36,15 +40,11 @@ export class IFrameInterAppPIClient
         methodName: string,
         args: any[]
     ): Promise<ReturnValue> {
-        const [operationSerializer, queryResultsDeserializer]
-            = await container(this).get(OPERATION_SERIALIZER,
-                QUERY_RESULTS_DESERIALIZER)
-
         let serializedParams
         if (_inDemoMode) {
             serializedParams = args
         } else {
-            serializedParams = operationSerializer.serializeAsArray(args)
+            serializedParams = this.operationSerializer.serializeAsArray(args)
         }
 
         const request: ICoreLocalApiRequest = {
@@ -62,10 +62,14 @@ export class IFrameInterAppPIClient
         if (_inDemoMode) {
             return response.payload
         } else {
-            return queryResultsDeserializer
+            return this.queryResultsDeserializer
                 .deserialize(response.payload)
         }
     }
 
 }
 DEPENDENCY_INJECTION.set(INTER_APP_API_CLIENT, IFrameInterAppPIClient)
+INTER_APP_API_CLIENT.setDependencies({
+    operationSerializer: OPERATION_SERIALIZER,
+    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER
+})

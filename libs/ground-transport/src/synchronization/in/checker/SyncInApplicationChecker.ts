@@ -1,11 +1,11 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { ApplicationName, ApplicationStatus } from '@airport/ground-control';
 import {
-    DOMAIN_DAO,
     IDomain,
     IApplication,
-    APPLICATION_DAO
+    IDomainDao,
+    IApplicationDao
 } from "@airport/airspace";
 import { SYNC_IN_APPLICATION_CHECKER } from "../../../tokens";
 
@@ -31,6 +31,9 @@ export interface ISyncInApplicationChecker {
 
 export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
+
+    applicationDao: IApplicationDao
+    domainDao: IDomainDao
 
     async ensureApplications(
         message: RepositorySynchronizationMessage
@@ -58,8 +61,8 @@ export class SyncInApplicationChecker
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(message)
 
-        const applicationDao = await container(this).get(APPLICATION_DAO)
-        const applications = await applicationDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
+        const applications = await this.applicationDao
+            .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
 
         for (let application of applications) {
             let domainName = application.domain.name
@@ -89,8 +92,7 @@ export class SyncInApplicationChecker
             domainsToCreate.push(domain)
         }
         if (domainsToCreate.length) {
-            const domainDao = await container(this).get(DOMAIN_DAO)
-            await domainDao.insert(domainsToCreate)
+            await this.domainDao.insert(domainsToCreate)
         }
 
         let applicationsToCreate: IApplication[] = []

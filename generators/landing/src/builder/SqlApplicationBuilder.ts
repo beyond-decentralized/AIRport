@@ -1,5 +1,5 @@
 import { IAirportDatabase } from '@airport/air-control';
-import { ISequence } from '@airport/airport-code';
+import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import {
   EntityRelationType,
@@ -22,6 +22,7 @@ export abstract class SqlApplicationBuilder
   implements IApplicationBuilder {
 
   airportDatabase: IAirportDatabase
+  sequenceDao: ISequenceDao
   storeDriver: IStoreDriver
 
   async build(

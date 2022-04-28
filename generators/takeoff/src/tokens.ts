@@ -1,4 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-control'
+import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { lib } from '@airport/direction-indicator'
 import { IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
 import { IAirportDatabasePopulator } from './AirportDatabasePopulator'
@@ -17,6 +18,19 @@ DDL_OBJECT_LINKER.setDependencies({
     terminalStore: TERMINAL_STORE
 })
 
+DDL_OBJECT_RETRIEVER.setDependencies({
+    applicationColumnDao: APPLICATION_COLUMN_DAO,
+    applicationDao: APPLICATION_DAO,
+    applicationEntityDao: APPLICATION_ENTITY_DAO,
+    applicationPropertyColumnDao: APPLICATION_PROPERTY_COLUMN_DAO,
+    applicationPropertyDao: APPLICATION_PROPERTY_DAO,
+    applicationReferenceDao: APPLICATION_REFERENCE_DAO,
+    applicationRelationColumnDao: APPLICATION_RELATION_COLUMN_DAO,
+    applicationRelationDao: APPLICATION_RELATION_DAO,
+    applicationVersionDao: APPLICATION_VERSION_DAO,
+    domainDao: DOMAIN_DAO
+})
+
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE
 })
@@ -24,3 +38,5 @@ QUERY_ENTITY_CLASS_CREATOR.setDependencies({
 QUERY_OBJECT_INITIALIZER.setDependencies({
     terminalStore: TERMINAL_STORE
 })
+
+

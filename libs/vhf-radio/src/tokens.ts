@@ -1,6 +1,10 @@
 import { lib } from "@airport/direction-indicator";
-import { ICrossTabCommunicator } from "./CrossTabCommunicator";
+import { CrossTabCommunicator, ICrossTabCommunicator } from "./CrossTabCommunicator";
 
 const vhfRadio = lib('vhf-radio');
 
-export const CROSS_TAB_COMMUNCATOR = vhfRadio.token<ICrossTabCommunicator>('CROSS_TAB_COMMUNCATOR')
+export const CROSS_TAB_COMMUNCATOR = vhfRadio.token<ICrossTabCommunicator>({
+    class: CrossTabCommunicator,
+    interface: 'ICrossTabCommunicator',
+    token: 'CROSS_TAB_COMMUNCATOR'
+})

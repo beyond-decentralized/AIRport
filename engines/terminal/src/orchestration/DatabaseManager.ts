@@ -13,7 +13,7 @@ import {
 import {
 	Actor,
 } from '@airport/holding-pattern';
-import { IApplication, APPLICATION_DAO } from '@airport/airspace';
+import { IApplication, IApplicationDao } from '@airport/airspace';
 import {
 	IApplicationInitializer,
 	IDatabaseManager,
@@ -30,6 +30,7 @@ import { BLUEPRINT } from '@airport/blueprint';
 export class DatabaseManager
 	implements IDatabaseManager {
 
+	applicationDao: IApplicationDao
 	applicationInitializer: IApplicationInitializer
 	storeDriver: IStoreDriver
 	transactionalServer: ITransactionalServer
@@ -82,9 +83,7 @@ export class DatabaseManager
 		context: IContext,
 		jsonApplications?: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		const applicationDao = await container(this).get(APPLICATION_DAO);
-
-		const applications = await applicationDao.findAllWithJson()
+		const applications = await this.applicationDao.findAllWithJson()
 		const existingApplicationMap: Map<FullApplicationName, IApplication> = new Map()
 		for (const application of applications) {
 			existingApplicationMap.set(application.fullName, application)

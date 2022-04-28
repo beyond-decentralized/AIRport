@@ -2,14 +2,12 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { container, DEPENDENCY_INJECTION, IDependencyInjectionToken } from "@airport/direction-indicator";
+import { IDependencyInjectionToken } from "@airport/direction-indicator";
 import {
-    OPERATION_SERIALIZER,
-    QUERY_RESULTS_DESERIALIZER,
-    SERIALIZATION_STATE_MANAGER
+    IOperationSerializer,
+    IQueryResultsDeserializer
 } from "@airport/pressurization";
 import { v4 as uuidv4 } from "uuid";
-import { LOCAL_API_CLIENT } from "./tokens";
 
 export interface ILocalAPIClient {
 
@@ -37,6 +35,9 @@ export interface IRequestRecord {
 
 export class LocalAPIClient
     implements ILocalAPIClient {
+
+    operationSerializer: IOperationSerializer
+    queryResultsDeserializer: IQueryResultsDeserializer
 
     pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();
 
@@ -119,14 +120,11 @@ export class LocalAPIClient
             await this.wait(100)
         }
 
-        const [operationSerializer, queryResultsDeserializer]
-            = await container(this).get(OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER)
-
         let serializedParams
         if (_inDemoMode) {
             serializedParams = args
         } else {
-            serializedParams = operationSerializer.serializeAsArray(args)
+            serializedParams = this.operationSerializer.serializeAsArray(args)
         }
 
         const request: ILocalAPIRequest = {
@@ -155,7 +153,7 @@ export class LocalAPIClient
         if (_inDemoMode) {
             return response.payload
         } else {
-            return queryResultsDeserializer
+            return this.queryResultsDeserializer
                 .deserialize(response.payload)
         }
     }
@@ -265,4 +263,3 @@ export class LocalAPIClient
     }
 
 }
-DEPENDENCY_INJECTION.set(LOCAL_API_CLIENT, LocalAPIClient)

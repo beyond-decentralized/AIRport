@@ -1,7 +1,6 @@
 import { container } from '@airport/direction-indicator';
 import { getFullApplicationName } from '@airport/ground-control';
-import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
-import { TERMINAL_STORE } from '@airport/terminal-map';
+import { DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { APPLICATION_DAO } from '@airport/airspace';
 import { APPLICATION_BUILDER, APPLICATION_CHECKER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER } from './tokens';
 export class ApplicationInitializer {
@@ -28,7 +27,7 @@ export class ApplicationInitializer {
      * Reload exiting App - nothing to do
      */
     async initialize(jsonApplications, context, checkDependencies, loadExistingApplications) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER, TERMINAL_STORE);
+        const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, applicationRecorder] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies(jsonApplications, checkDependencies);
         const existingApplicationMap = new Map();
@@ -58,7 +57,7 @@ export class ApplicationInitializer {
             }
         }
         const allDdlObjects = await applicationComposer.compose(checkedApplicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
-            terminalStore
+            terminalStore: this.terminalStore
         });
         this.addNewApplicationVersionsToAll(allDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
@@ -68,22 +67,22 @@ export class ApplicationInitializer {
         await applicationRecorder.record(allDdlObjects.added, context);
     }
     async initializeForAIRportApp(jsonApplication) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, queryObjectInitializer, applicationComposer, applicationLocator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, TERMINAL_STORE);
+        const [ddlObjectRetriever, queryObjectInitializer, applicationComposer, applicationLocator] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_OBJECT_INITIALIZER, APPLICATION_COMPOSER, APPLICATION_LOCATOR);
         const applicationsWithValidDependencies = await this.
             getApplicationsWithValidDependencies([jsonApplication], false);
         const ddlObjects = await applicationComposer.compose(applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
             deepTraverseReferences: true,
-            terminalStore
+            terminalStore: this.terminalStore
         });
         this.addNewApplicationVersionsToAll(ddlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
         this.setAirDbApplications(ddlObjects);
     }
     async stage(jsonApplications, context) {
-        const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator, terminalStore] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR, TERMINAL_STORE);
+        const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder, applicationComposer, applicationLocator] = await container(this).get(DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER, APPLICATION_COMPOSER, APPLICATION_LOCATOR);
         // Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
         const tempDdlObjects = await applicationComposer.compose(jsonApplications, ddlObjectRetriever, applicationLocator, {
-            terminalStore
+            terminalStore: this.terminalStore
         });
         this.addNewApplicationVersionsToAll(tempDdlObjects);
         queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
@@ -99,11 +98,11 @@ export class ApplicationInitializer {
         });
     }
     async getApplicationsWithValidDependencies(jsonApplications, checkDependencies) {
-        const [applicationChecker, applicationLocator, terminalStore] = await container(this).get(APPLICATION_CHECKER, APPLICATION_LOCATOR, TERMINAL_STORE);
+        const [applicationChecker, applicationLocator] = await container(this).get(APPLICATION_CHECKER, APPLICATION_LOCATOR);
         const jsonApplicationsToInstall = [];
         for (const jsonApplication of jsonApplications) {
             await applicationChecker.check(jsonApplication);
-            const existingApplication = applicationLocator.locateExistingApplicationVersionRecord(jsonApplication, terminalStore);
+            const existingApplication = applicationLocator.locateExistingApplicationVersionRecord(jsonApplication, this.terminalStore);
             if (existingApplication) {
                 // Nothing needs to be done, we already have this application version
                 continue;
