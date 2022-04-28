@@ -39,7 +39,6 @@ export interface IApplicationComposer {
 
 	compose(
 		jsonApplications: JsonApplicationWithLastIds[],
-		ddlObjectRetriever: IDdlObjectRetriever,
 		applicationLocator: IApplicationLocator,
 		context: IApplicationComposerContext
 	): Promise<AllDdlObjects>;
@@ -56,10 +55,10 @@ export class ApplicationComposer
 	implements IApplicationComposer {
 
 	domainRetriever: IDomainRetriever
+	terminalStore: ITerminalStore
 
 	async compose(
 		jsonApplications: JsonApplicationWithLastIds[],
-		ddlObjectRetriever: IDdlObjectRetriever,
 		applicationLocator: IApplicationLocator,
 		context: IApplicationComposerContext
 	): Promise<AllDdlObjects> {
@@ -151,35 +150,34 @@ export class ApplicationComposer
 			const domain = domainMapByName.get(jsonApplication.domain)
 			const application = applicationMapByFullName.get(getFullApplicationName(jsonApplication))
 			if (!application.index) {
-				const lastIds = {
-					...ddlObjectRetriever.lastIds
+				jsonApplication.lastIds = {
+					...this.terminalStore.getLastIds()
 				}
-				jsonApplication.lastIds = lastIds
-				application.index = ++ddlObjectRetriever.lastIds.applications
+				application.index = ++this.terminalStore.getLastIds().applications
 			}
 			if (!domain.id) {
-				domain.id = ++ddlObjectRetriever.lastIds.domains
+				domain.id = ++this.terminalStore.getLastIds().domains
 			}
 			const applicationVersion = newApplicationVersionMapByApplicationName.get(application.fullName)
 			if (!applicationVersion.id) {
-				applicationVersion.id = ++ddlObjectRetriever.lastIds.applicationVersions
+				applicationVersion.id = ++this.terminalStore.getLastIds().applicationVersions
 				applicationVersion.jsonApplication = jsonApplication
 			}
 
 			this.composeApplicationEntities(jsonApplication, applicationVersion,
-				newEntitiesMapByApplicationName, added.entities, ddlObjectRetriever)
+				newEntitiesMapByApplicationName, added.entities)
 			this.composeApplicationProperties(jsonApplication, added.properties, newPropertiesMap,
-				newEntitiesMapByApplicationName, ddlObjectRetriever)
+				newEntitiesMapByApplicationName)
 			await this.composeApplicationRelations(jsonApplication, added.relations, newRelationsMap,
 				newEntitiesMapByApplicationName, newPropertiesMap, newApplicationReferenceMap,
-				ddlObjectRetriever, terminalStore, allDdlObjects
+				terminalStore, allDdlObjects
 			)
 			this.composeApplicationColumns(jsonApplication, added.columns, newColumnsMap,
-				added.propertyColumns, newEntitiesMapByApplicationName, newPropertiesMap, ddlObjectRetriever)
+				added.propertyColumns, newEntitiesMapByApplicationName, newPropertiesMap)
 			await this.composeApplicationRelationColumns(
 				jsonApplication, added.relationColumns, newApplicationVersionMapByApplicationName,
 				newApplicationReferenceMap, newRelationsMap,
-				newColumnsMap, ddlObjectRetriever, terminalStore, allDdlObjects)
+				newColumnsMap, terminalStore, allDdlObjects)
 		}
 
 		this.addObjects(allDdlObjects.added, allDdlObjects.all)
@@ -467,8 +465,7 @@ export class ApplicationComposer
 		jsonApplication: JsonApplicationWithLastIds,
 		applicationVersion: IApplicationVersion,
 		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
-		newEntities: IApplicationEntity[],
-		ddlObjectRetriever: IDdlObjectRetriever
+		newEntities: IApplicationEntity[]
 	): void {
 		const applicationName = getFullApplicationName(jsonApplication)
 		let index = 0;
@@ -478,7 +475,7 @@ export class ApplicationComposer
 		const newApplicationEntities: IApplicationEntity[] = [];
 		for (const jsonEntity of jsonEntities) {
 			const entity: IApplicationEntity = {
-				id: ++ddlObjectRetriever.lastIds.entities,
+				id: ++this.terminalStore.getLastIds().entities,
 				index: index++,
 				applicationVersion,
 				isLocal: jsonEntity.isLocal,
@@ -506,7 +503,6 @@ export class ApplicationComposer
 		newProperties: IApplicationProperty[],
 		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
 		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
-		ddlObjectRetriever: IDdlObjectRetriever
 	): void {
 		const applicationName = getFullApplicationName(jsonApplication)
 		const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -527,7 +523,7 @@ export class ApplicationComposer
 
 			for (const jsonProperty of jsonEntity.properties) {
 				const property: IApplicationProperty = {
-					id: ++ddlObjectRetriever.lastIds.properties,
+					id: ++this.terminalStore.getLastIds().properties,
 					index,
 					entity,
 					name: jsonProperty.name,
@@ -547,7 +543,6 @@ export class ApplicationComposer
 		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
 		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
 		newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]>,
-		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects
 	): Promise<void> {
@@ -595,7 +590,7 @@ export class ApplicationComposer
 
 				const relation: IApplicationRelation = {
 					entity,
-					id: ++ddlObjectRetriever.lastIds.relations,
+					id: ++terminalStore.getLastIds().relations,
 					index,
 					foreignKey: jsonRelation.foreignKey,
 					isId: property.isId,
@@ -624,7 +619,6 @@ export class ApplicationComposer
 		newPropertyColumns: IApplicationPropertyColumn[],
 		newEntitiesMapByApplicationName: Map<FullApplicationName, IApplicationEntity[]>,
 		newPropertiesMap: Map<FullApplicationName, IApplicationProperty[][]>,
-		ddlObjectRetriever: IDdlObjectRetriever
 	): void {
 		const applicationName = getFullApplicationName(jsonApplication)
 		const columnsByTable: IApplicationColumn[][] = [];
@@ -658,7 +652,7 @@ export class ApplicationComposer
 				const column: IApplicationColumn = {
 					allocationSize: jsonColumn.allocationSize,
 					entity,
-					id: ++ddlObjectRetriever.lastIds.columns,
+					id: ++this.terminalStore.getLastIds().columns,
 					idIndex: idColumndIndex,
 					index,
 					isGenerated: jsonColumn.isGenerated,
@@ -695,7 +689,6 @@ export class ApplicationComposer
 		newApplicationReferenceMap: Map<FullApplicationName, IApplicationReference[]>,
 		newRelationsMap: Map<FullApplicationName, IApplicationRelation[][]>,
 		newColumnsMap: Map<FullApplicationName, IApplicationColumn[][]>,
-		ddlObjectRetriever: IDdlObjectRetriever,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects
 	): Promise<void> {
@@ -761,7 +754,7 @@ export class ApplicationComposer
 					// }
 
 					const relationColumn: IApplicationRelationColumn = {
-						id: ++ddlObjectRetriever.lastIds.relationColumns,
+						id: ++terminalStore.getLastIds().relationColumns,
 						manyColumn,
 						manyRelation,
 						oneColumn,

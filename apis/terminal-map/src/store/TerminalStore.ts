@@ -25,6 +25,7 @@ import { ITerminalState } from './TerminalState';
 import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
+import { LastIds } from '@airport/security-check';
 
 
 export interface InternalConnectorStore {
@@ -93,6 +94,8 @@ export interface ITerminalStore {
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
 
+	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
+
 	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>
 
 	// Application name contains the domain name as a prefix + '___'
@@ -139,6 +142,8 @@ export class TerminalStore
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
+
+	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
 	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
 
@@ -191,6 +196,8 @@ export class TerminalStore
 			terminal => terminal.frameworkActor)
 		this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.internalConnector)
+		this.getLastIds = this.selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.lastIds)
 		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,
 			domains => {
 				const latestApplicationVersionMapByNames: Map<DomainName, Map<ApplicationName, IApplicationVersion>> = new Map();

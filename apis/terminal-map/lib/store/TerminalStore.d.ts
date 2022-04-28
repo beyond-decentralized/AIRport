@@ -7,6 +7,7 @@ import { Subject, Subscription } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
+import { LastIds } from '@airport/security-check';
 export interface InternalConnectorStore {
     dbName: string;
     internalCredentials: ITransactionCredentials;
@@ -54,6 +55,7 @@ export interface ITerminalStore {
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>;
+    getLastIds: IMemoizedSelector<LastIds, ITerminalState>;
     getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
     getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
     getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
@@ -77,6 +79,7 @@ export declare class TerminalStore implements ITerminalStore {
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>;
+    getLastIds: IMemoizedSelector<LastIds, ITerminalState>;
     getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
     getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
     getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;

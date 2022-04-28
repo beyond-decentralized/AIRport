@@ -11,7 +11,6 @@ import type {
 	IApplicationRelationColumn,
 	IApplicationVersion
 } from '@airport/airspace'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import type {
 	ColumnId,
 	DomainId,
@@ -19,16 +18,7 @@ import type {
 	RelationId,
 	ApplicationIndex
 } from '@airport/ground-control'
-import type { AllDdlObjects, ITerminalStore } from '@airport/terminal-map'
-import { DDL_OBJECT_LINKER } from './tokens'
-
-export interface IDdlObjectLinker {
-
-	link(
-		ddlObjects: AllDdlObjects
-	): void
-
-}
+import type { AllDdlObjects, IDdlObjectLinker, ITerminalStore } from '@airport/terminal-map'
 
 export class DdlObjectLinker
 	implements IDdlObjectLinker {
@@ -271,5 +261,3 @@ export class DdlObjectLinker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(DDL_OBJECT_LINKER, DdlObjectLinker)

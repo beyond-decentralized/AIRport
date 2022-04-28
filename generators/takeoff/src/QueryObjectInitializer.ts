@@ -1,9 +1,10 @@
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator';
 import {
 	AllDdlObjects,
+	IDdlObjectLinker,
+	IQueryEntityClassCreator,
 	IQueryObjectInitializer,
 	ITerminalStore
 } from '@airport/terminal-map';
@@ -12,24 +13,23 @@ import {
 	IApplication
 } from '@airport/airspace';
 import {
-	DDL_OBJECT_LINKER,
-	DDL_OBJECT_RETRIEVER,
-	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
 } from './tokens';
+import { IDdlObjectRetriever } from './DdlObjectRetriever';
 
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
+	ddlObjectLinker: IDdlObjectLinker
+	ddlObjectRetriever: IDdlObjectRetriever
+	queryEntityClassCreator: IQueryEntityClassCreator
 	terminalStore: ITerminalStore
 
 	generateQObjectsAndPopulateStore(
 		allDdlObjects: AllDdlObjects
 	): void {
-		const [ddlObjectLinker, queryEntityClassCreator] = await container(this)
-			.get(DDL_OBJECT_LINKER, QUERY_ENTITY_CLASS_CREATOR);
-		ddlObjectLinker.link(allDdlObjects, this.terminalStore);
-		queryEntityClassCreator.createAll(allDdlObjects.all.applications);
+		this.ddlObjectLinker.link(allDdlObjects);
+		this.queryEntityClassCreator.createAll(allDdlObjects.all.applications);
 		const lastTerminalState = this.terminalStore.getTerminalState();
 
 		const existingDomainMap = {};
@@ -71,8 +71,7 @@ export class QueryObjectInitializer
 
 	async initialize(
 	): Promise<AllDdlObjects> {
-		DDL_OBJECT_RETRIEVER
-		const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
+		const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
 
 		const allApplicationVersionsByIds = []
 

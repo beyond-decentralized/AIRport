@@ -16,8 +16,6 @@ import {
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
-	DDL_OBJECT_RETRIEVER,
-	QUERY_ENTITY_CLASS_CREATOR,
 	QUERY_OBJECT_INITIALIZER
 } from '@airport/takeoff';
 import {
@@ -85,10 +83,10 @@ export abstract class ApplicationInitializer
 		checkDependencies: boolean,
 		loadExistingApplications: boolean
 	): Promise<void> {
-		const [ddlObjectRetriever,
+		const [
 			queryObjectInitializer, applicationBuilder, applicationComposer,
 			applicationLocator, applicationRecorder]
-			= await container(this).get(DDL_OBJECT_RETRIEVER,
+			= await container(this).get(
 				QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER);
 
@@ -123,7 +121,7 @@ export abstract class ApplicationInitializer
 		}
 
 		const allDdlObjects = await applicationComposer.compose(
-			checkedApplicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+			checkedApplicationsWithValidDependencies, applicationLocator, {
 			terminalStore: this.terminalStore
 		});
 
@@ -144,9 +142,9 @@ export abstract class ApplicationInitializer
 	async initializeForAIRportApp(
 		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void> {
-		const [ddlObjectRetriever,
+		const [
 			queryObjectInitializer, applicationComposer, applicationLocator]
-			= await container(this).get(DDL_OBJECT_RETRIEVER,
+			= await container(this).get(
 				QUERY_OBJECT_INITIALIZER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR);
 
@@ -154,7 +152,7 @@ export abstract class ApplicationInitializer
 			getApplicationsWithValidDependencies([jsonApplication], false)
 
 		const ddlObjects = await applicationComposer.compose(
-			applicationsWithValidDependencies, ddlObjectRetriever, applicationLocator, {
+			applicationsWithValidDependencies, applicationLocator, {
 			deepTraverseReferences: true,
 			terminalStore: this.terminalStore
 		})
@@ -170,16 +168,15 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void> {
-		const [ddlObjectRetriever, queryObjectInitializer, applicationBuilder,
+		const [queryObjectInitializer, applicationBuilder,
 			applicationComposer, applicationLocator]
-			= await container(this).get(DDL_OBJECT_RETRIEVER,
-				QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
+			= await container(this).get(QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
 				APPLICATION_COMPOSER, APPLICATION_LOCATOR);
 
 		// Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
 
 		const tempDdlObjects = await applicationComposer.compose(
-			jsonApplications, ddlObjectRetriever, applicationLocator, {
+			jsonApplications, applicationLocator, {
 			terminalStore: this.terminalStore
 		});
 

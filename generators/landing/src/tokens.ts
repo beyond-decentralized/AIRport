@@ -1,6 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-control'
 import { SEQUENCE_DAO } from '@airport/airport-code'
 import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
+import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TERMINAL_STORE } from '@airport/terminal-map'
 import { ApplicationInitializer } from './ApplicationInitializer'
@@ -31,7 +32,9 @@ export const SQL_APPLICATION_BUILDER = landing.token<IApplicationBuilder>({
 })
 
 ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
     applicationDao: APPLICATION_DAO,
+    sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TERMINAL_STORE
 })
 
@@ -40,7 +43,8 @@ APPLICATION_CHECKER.setDependencies({
 })
 
 APPLICATION_COMPOSER.setDependencies({
-    domainRetriever: DOMAIN_RETRIEVER
+    domainRetriever: DOMAIN_RETRIEVER,
+    terminalStore: TERMINAL_STORE
 })
 
 APPLICATION_RECORDER.setDependencies({

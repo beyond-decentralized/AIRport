@@ -12,18 +12,14 @@ import {
 	IApplicationRelationDao,
 	IApplicationVersionDao
 } from '@airport/airspace'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainId,
 	ApplicationIndex,
 } from '@airport/ground-control'
 import type { LastIds } from '@airport/security-check'
-import { DdlObjects } from '@airport/terminal-map'
-import { DDL_OBJECT_RETRIEVER } from './tokens'
+import { DdlObjects, ITerminalStore } from '@airport/terminal-map'
 
 export interface IDdlObjectRetriever {
-
-	lastIds: LastIds
 
 	retrieveDdlObjects()
 		: Promise<DdlObjects>
@@ -43,18 +39,7 @@ export class DdlObjectRetriever
 	applicationRelationDao: IApplicationRelationDao
 	applicationVersionDao: IApplicationVersionDao
 	domainDao: IDomainDao
-
-	lastIds: LastIds = {
-		columns: 0,
-		domains: 0,
-		entities: 0,
-		properties: 0,
-		propertyColumns: 0,
-		relations: 0,
-		relationColumns: 0,
-		applications: 0,
-		applicationVersions: 0
-	}
+	terminalStore: ITerminalStore
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
 		const applications = await this.applicationDao.findAllActive()
@@ -129,7 +114,10 @@ export class DdlObjectRetriever
 		const relationColumns = await this.applicationRelationColumnDao
 			.findAllForColumns(columnIds)
 
-		this.lastIds = {
+		const lastTerminalState = this.terminalStore.getTerminalState()
+
+
+		const lastIds: LastIds = {
 			columns: columns.length,
 			domains: domains.length,
 			entities: entities.length,
@@ -140,6 +128,10 @@ export class DdlObjectRetriever
 			applications: applications.length,
 			applicationVersions: applicationVersions.length,
 		}
+		this.terminalStore.state.next({
+			...lastTerminalState,
+			lastIds
+		})
 
 		return {
 			// allDomains: domains,
@@ -160,5 +152,3 @@ export class DdlObjectRetriever
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(DDL_OBJECT_RETRIEVER, DdlObjectRetriever)

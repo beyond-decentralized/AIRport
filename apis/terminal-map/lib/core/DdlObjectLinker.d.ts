@@ -1,6 +1,5 @@
 import { AllDdlObjects } from "./DllObjects";
-import { ITerminalStore } from "../store/TerminalStore";
 export interface IDdlObjectLinker {
-    link(ddlObjects: AllDdlObjects, terminalStore: ITerminalStore): void;
+    link(ddlObjects: AllDdlObjects): void;
 }
 //# sourceMappingURL=DdlObjectLinker.d.ts.map
