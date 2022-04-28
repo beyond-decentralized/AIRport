@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { TERMINAL_STORE } from '../tokens';
 import { internalTerminalState } from './theState';
 export class TerminalStore {
     async init() {
@@ -115,5 +113,4 @@ export class TerminalStore {
     tearDown() {
     }
 }
-DEPENDENCY_INJECTION.set(TERMINAL_STORE, TerminalStore);
 //# sourceMappingURL=TerminalStore.js.map
