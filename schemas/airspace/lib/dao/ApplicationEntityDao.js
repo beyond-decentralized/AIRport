@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { BaseApplicationEntityDao, Q, } from '../generated/generated';
-import { APPLICATION_ENTITY_DAO } from '../tokens';
 export class ApplicationEntityDao extends BaseApplicationEntityDao {
     async findAllForApplicationVersions(applicationVersionIds) {
         let se;
@@ -44,5 +42,4 @@ export class ApplicationEntityDao extends BaseApplicationEntityDao {
         });
     }
 }
-DI.set(APPLICATION_ENTITY_DAO, ApplicationEntityDao);
 //# sourceMappingURL=ApplicationEntityDao.js.map

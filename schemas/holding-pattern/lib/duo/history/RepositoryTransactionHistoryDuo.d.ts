@@ -6,13 +6,14 @@ export interface IRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId: Repository_Id, isRepositoryCreation: boolean): IRepositoryTransactionHistory;
     newRecord(data?: IRepositoryTransactionHistory): IRepositoryTransactionHistory;
     sortRepoTransHistories(repoTransHistories: IRepositoryTransactionHistory[], actorMapById: Map<Actor_Id, IActor>): void;
-    startOperation(repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, operHistoryDuo: IOperationHistoryDuo, rootTransaction: IRootTransaction): IOperationHistory;
+    startOperation(repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, rootTransaction: IRootTransaction): IOperationHistory;
 }
 export declare class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo implements IRepositoryTransactionHistoryDuo {
+    operationHistoryDuo: IOperationHistoryDuo;
     getNewRecord(repositoryId: Repository_Id, isRepositoryCreation: boolean): IRepositoryTransactionHistory;
     newRecord(data?: IRepositoryTransactionHistory): IRepositoryTransactionHistory;
     sortRepoTransHistories(repoTransHistories: IRepositoryTransactionHistory[], actorMapById: Map<Actor_Id, IActor>): void;
-    startOperation(repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, operationHistoryDuo: IOperationHistoryDuo, rootTransaction: IRootTransaction): IOperationHistory;
+    startOperation(repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, rootTransaction: IRootTransaction): IOperationHistory;
     private compareDates;
     private compareNumbers;
 }

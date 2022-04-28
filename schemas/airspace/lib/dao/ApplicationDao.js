@@ -1,7 +1,5 @@
-import { AIRPORT_DATABASE, ALL_FIELDS, and, max, tree, Y } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { ALL_FIELDS, and, max, tree, Y } from '@airport/air-control';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { APPLICATION_DAO } from '../tokens';
 import { BaseApplicationDao, Q } from '../generated/generated';
 export class ApplicationDao extends BaseApplicationDao {
     async findAllActive() {
@@ -73,9 +71,8 @@ export class ApplicationDao extends BaseApplicationDao {
         return applicationMapByIndex;
     }
     async findMaxIndex() {
-        const airDb = await container(this).get(AIRPORT_DATABASE);
         const s = Q.Application;
-        return await airDb.findOne.field({
+        return await this.airportDatabase.findOne.field({
             select: max(s.index),
             from: [
                 s
@@ -83,14 +80,13 @@ export class ApplicationDao extends BaseApplicationDao {
         });
     }
     async findMaxVersionedMapByApplicationAndDomainNames(applicationDomainNames, applicationNames) {
-        const airDb = await container(this).get(AIRPORT_DATABASE);
         const maxVersionedMapByApplicationAndDomainNames = new Map();
         let sv;
         let s;
         let d;
         let sMaV;
         let sMiV;
-        const applicationLookupRecords = await airDb.find.tree({
+        const applicationLookupRecords = await this.airportDatabase.find.tree({
             from: [
                 sMiV = tree({
                     from: [
@@ -252,5 +248,4 @@ export class ApplicationDao extends BaseApplicationDao {
         });
     }
 }
-DI.set(APPLICATION_DAO, ApplicationDao);
 //# sourceMappingURL=ApplicationDao.js.map

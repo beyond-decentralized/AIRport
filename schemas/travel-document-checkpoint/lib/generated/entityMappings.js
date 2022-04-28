@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { Continent } from '../ddl/Continent';
 import { Country } from '../ddl/Country';
 import { UserTerminal } from '../ddl/UserTerminal';
@@ -9,7 +9,7 @@ import { User } from '../ddl/User';
 import { Terminal } from '../ddl/Terminal';
 import { TerminalAgt } from '../ddl/TerminalAgt';
 import { Agt } from '../ddl/Agt';
-DI.db().get(AIRPORT_DATABASE).then(airDb => {
+DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
     accumulator.add(Continent, 0);
     accumulator.add(Country, 1);

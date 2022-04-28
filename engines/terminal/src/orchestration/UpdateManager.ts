@@ -29,14 +29,7 @@ import {
 	IActor,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
-	IRecordHistoryNewValueDuo,
-	IRecordHistoryOldValueDuo,
 	IRepositoryTransactionHistoryDuo,
-	OPERATION_HISTORY_DUO,
-	RECORD_HISTORY_NEW_VALUE_DUO,
-	RECORD_HISTORY_OLD_VALUE_DUO,
-	RECORD_HISTORY_DUO,
-	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
 } from '@airport/holding-pattern'
@@ -55,7 +48,10 @@ import {
 export class UpdateManager
 	implements IUpdateManager {
 
+	operationHistoryDuo: IOperationHistoryDuo
 	queryFacade: IQueryFacade
+	recordHistoryDuo: IRecordHistoryDuo
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
 
 	async updateValues(
@@ -65,17 +61,8 @@ export class UpdateManager
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<number> {
-		const [
-			historyManager,
-			operHistoryDuo,
-			recHistoryDuo,
-			recHistoryNewValueDuo,
-			recHistoryOldValueDuo,
-			repoTransHistoryDuo] = await container(this)
-				.get(HISTORY_MANAGER,
-					OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO,
-					RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO,
-					REPOSITORY_TRANSACTION_HISTORY_DUO)
+		const historyManager = await container(this)
+			.get(HISTORY_MANAGER)
 
 		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
@@ -104,8 +91,7 @@ export class UpdateManager
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
 					portableQuery, actor, systemWideOperationId, errorPrefix,
-					historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo,
-					repoTransHistoryDuo, transaction, rootTransaction, context)
+					historyManager, transaction, rootTransaction, context)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -126,7 +112,6 @@ export class UpdateManager
 				<JsonUpdate<any>>portableQuery.jsonQuery,
 				recordHistoryMap, systemWideOperationId,
 				repositorySheetSelectInfo, errorPrefix,
-				recHistoryDuo, recHistoryNewValueDuo,
 				transaction, context)
 			context.dbEntity = previousDbEntity
 		}
@@ -140,10 +125,6 @@ export class UpdateManager
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string,
 		historyManager: IHistoryManager,
-		operHistoryDuo: IOperationHistoryDuo,
-		recHistoryDuo: IRecordHistoryDuo,
-		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
-		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -201,9 +182,9 @@ export class UpdateManager
 			const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(
 				transaction.transactionHistory, repositoryId, context
 			)
-			const operationHistory = repositoryTransactionHistoryDuo.startOperation(
+			const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 				repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS,
-				context.dbEntity, actor, operHistoryDuo, rootTransaction)
+				context.dbEntity, actor, rootTransaction)
 
 			const recordsForRepositoryId = recordsByRepositoryId[repositoryId]
 			for (const recordToUpdate of recordsForRepositoryId) {
@@ -214,8 +195,8 @@ export class UpdateManager
 
 				const actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
-				const recordHistory = operHistoryDuo.startRecordHistory(
-					operationHistory, actorId, actorRecordId, recHistoryDuo)
+				const recordHistory = this.operationHistoryDuo.startRecordHistory(
+					operationHistory, actorId, actorRecordId)
 				recordHistoryMapForActor[actorRecordId] = recordHistory
 
 				for (let i = 0; i < recordToUpdate.length; i++) {
@@ -228,8 +209,7 @@ export class UpdateManager
 					const dbColumn = getSheetSelectFromSetClauseResult
 						.selectClause[i].dbColumn
 					const value = recordToUpdate[i]
-					recHistoryDuo.addOldValue(recordHistory, dbColumn, value,
-						recHistoryOldValueDuo)
+					this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value)
 				}
 			}
 		}
@@ -243,8 +223,6 @@ export class UpdateManager
 		systemWideOperationId: RepositoryEntity_SystemWideOperationId,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo,
 		errorPrefix: string,
-		recHistoryDuo: IRecordHistoryDuo,
-		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<void> {
@@ -309,8 +287,7 @@ export class UpdateManager
 						throw new Error(errorPrefix + `Column '${dbColumn.entity.name}'.'${dbColumn.name}' is NOT NULL
 						and cannot have NULL values.`)
 					}
-					recHistoryDuo.addNewValue(recordHistory, dbColumn, value,
-						recHistoryNewValueDuo)
+					this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, value)
 				}
 			}
 		}

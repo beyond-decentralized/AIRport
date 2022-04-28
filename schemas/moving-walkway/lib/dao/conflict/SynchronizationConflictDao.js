@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { BaseSynchronizationConflictDao, Q } from '../../generated/generated';
-import { SYNCHRONIZATION_CONFLICT_DAO } from '../../tokens';
 export class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
     async insert(synchronizationConflicts) {
         let sc;
@@ -31,5 +29,4 @@ export class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
         }
     }
 }
-DI.set(SYNCHRONIZATION_CONFLICT_DAO, SynchronizationConflictDao);
 //# sourceMappingURL=SynchronizationConflictDao.js.map

@@ -50,7 +50,14 @@ export class DependencyInjectionToken<Injectable>
 	setDependencies(
 		dependencyConfiguration: ITokenDependencyConfiguration
 	): void {
-		this.descriptor.class.dependencyConfiguration = dependencyConfiguration
+		if (this.descriptor.class.dependencyConfiguration) {
+			this.descriptor.class.dependencyConfiguration = {
+				...this.descriptor.class.dependencyConfiguration,
+				...dependencyConfiguration
+			}
+		} else {
+			this.descriptor.class.dependencyConfiguration = dependencyConfiguration
+		}
 	}
 
 	private getInheritedDependencyConfiguration(

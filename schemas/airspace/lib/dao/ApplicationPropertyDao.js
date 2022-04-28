@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { APPLICATION_PROPERTY_DAO } from '../tokens';
 import { BaseApplicationPropertyDao, Q, } from '../generated/generated';
 export class ApplicationPropertyDao extends BaseApplicationPropertyDao {
     async findAllForEntities(entityIds) {
@@ -41,5 +39,4 @@ export class ApplicationPropertyDao extends BaseApplicationPropertyDao {
         });
     }
 }
-DI.set(APPLICATION_PROPERTY_DAO, ApplicationPropertyDao);
 //# sourceMappingURL=ApplicationPropertyDao.js.map

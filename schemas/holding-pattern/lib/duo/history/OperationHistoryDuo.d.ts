@@ -6,11 +6,12 @@ import { IRecordHistoryDuo } from './RecordHistoryDuo';
 export interface IOperationHistoryDuo extends IBaseOperationHistoryDuo {
     getNewRecord(entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, rootTransaction: IRootTransaction): IOperationHistory;
     sort(ew1: IOperationHistory, ew2: IOperationHistory): number;
-    startRecordHistory(operationHistory: IOperationHistory, actorId: Actor_Id, actorRecordId: RepositoryEntity_ActorRecordId, recHistoryDuo: IRecordHistoryDuo): IRecordHistory;
+    startRecordHistory(operationHistory: IOperationHistory, actorId: Actor_Id, actorRecordId: RepositoryEntity_ActorRecordId): IRecordHistory;
 }
 export declare class OperationHistoryDuo extends BaseOperationHistoryDuo implements IOperationHistoryDuo {
+    recordHistoryDuo: IRecordHistoryDuo;
     getNewRecord(entityChangeType: ChangeType, dbEntity: DbEntity, actor: IActor, repositoryTransactionHistory: IRepositoryTransactionHistory, systemWideOperationId: SystemWideOperationId, rootTransaction: IRootTransaction): IOperationHistory;
     sort(ew1: IOperationHistory, ew2: IOperationHistory): number;
-    startRecordHistory(operationHistory: IOperationHistory, actorId: Actor_Id, actorRecordId: RepositoryEntity_ActorRecordId, recordHistoryDuo: IRecordHistoryDuo): IRecordHistory;
+    startRecordHistory(operationHistory: IOperationHistory, actorId: Actor_Id, actorRecordId: RepositoryEntity_ActorRecordId): IRecordHistory;
 }
 //# sourceMappingURL=OperationHistoryDuo.d.ts.map

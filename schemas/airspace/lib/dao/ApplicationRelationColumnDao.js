@@ -1,6 +1,4 @@
 import { or } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { APPLICATION_RELATION_COLUMN_DAO } from '../tokens';
 import { BaseApplicationRelationColumnDao, Q, } from '../generated/generated';
 export class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
     async findAllForColumns(columnIds) {
@@ -46,5 +44,4 @@ export class ApplicationRelationColumnDao extends BaseApplicationRelationColumnD
         });
     }
 }
-DI.set(APPLICATION_RELATION_COLUMN_DAO, ApplicationRelationColumnDao);
 //# sourceMappingURL=ApplicationRelationColumnDao.js.map

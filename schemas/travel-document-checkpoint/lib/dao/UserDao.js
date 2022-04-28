@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { USER_DAO } from '../to_be_generated/internal-tokens';
 import { BaseUserDao, Q, } from '../generated/generated';
 export class UserDao extends BaseUserDao {
     async findByUserNames(usernames) {
@@ -44,5 +42,4 @@ export class UserDao extends BaseUserDao {
         }
     }
 }
-DI.set(USER_DAO, UserDao);
 //# sourceMappingURL=UserDao.js.map

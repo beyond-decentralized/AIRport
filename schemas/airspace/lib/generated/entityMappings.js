@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { VersionedApplicationObject } from '../ddl/application/VersionedApplicationObject';
 import { ApplicationRelationColumn } from '../ddl/application/ApplicationRelationColumn';
 import { ApplicationRelation } from '../ddl/application/ApplicationRelation';
@@ -14,7 +14,7 @@ import { ApplicationVersion } from '../ddl/application/ApplicationVersion';
 import { ApplicationCurrentVersion } from '../ddl/application/ApplicationCurrentVersion';
 import { Application } from '../ddl/application/Application';
 import { Domain } from '../ddl/application/Domain';
-DI.db().get(AIRPORT_DATABASE).then(airDb => {
+DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'airspace');
     accumulator.add(VersionedApplicationObject, undefined);
     accumulator.add(ApplicationRelationColumn, 0);

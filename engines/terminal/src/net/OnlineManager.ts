@@ -8,9 +8,8 @@ import {
   IRepository,
   IRepositoryTransactionHistory,
   IRepositoryTransactionHistoryDao,
-  REPOSITORY_TRANSACTION_HISTORY_DAO,
-  REPOSITORY_DAO,
   RepositoryTransactionHistory,
+  IRepositoryDao,
 } from '@airport/holding-pattern';
 import {
   IRepositoryManager,
@@ -40,6 +39,9 @@ export interface IOnlineManager {
 
 export class OnlineManager
   implements IOnlineManager {
+
+  repositoryDao: IRepositoryDao
+  repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 
   private online = false;
 
@@ -89,19 +91,17 @@ export class OnlineManager
   ): Promise<void> {
     const [
       offlineDeltaStore,
-      repositoryDao,
-      repoTransHistoryDao,
       repositoryManager,
     ] = await container(this).get(
-      OFFLINE_DELTA_STORE, REPOSITORY_DAO,
-      REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_MANAGER);
+      OFFLINE_DELTA_STORE,
+      REPOSITORY_MANAGER);
     await transactional(async () => {
       try {
         // 1)  Flip update state to GO_ONLINE
         repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
         // 2)  Find repositories
         // const repoRecords = await this.repositoryDao.findWithTransaction()
-        const repoRecords = await repositoryDao.findReposWithDetailsByIds();
+        const repoRecords = await this.repositoryDao.findReposWithDetailsByIds();
 
         // 3) make each repository go Online
         let goOnlineCalls: Promise<void>[] = [];
@@ -109,8 +109,7 @@ export class OnlineManager
           goOnlineCalls.push(this.repositoryGoOnline(
             repository,
             offlineDeltaStore,
-            repositoryManager,
-            repoTransHistoryDao,
+            repositoryManager
           ));
         });
         await Promise.all(goOnlineCalls);
@@ -131,7 +130,6 @@ export class OnlineManager
     repository: IRepository,
     offlineDeltaStore: IOfflineDeltaStore,
     repositoryManager: IRepositoryManager,
-    repoTransHistoryDao: IRepositoryTransactionHistoryDao,
   ): Promise<void> {
     let deltaStore = repositoryManager.deltaStore[repository.id];
 
@@ -192,7 +190,8 @@ export class OnlineManager
     }
 
     // 7)  Find all local unsynced transactions
-    let unsyncedChanges = await repoTransHistoryDao.findUnsyncedTransactions(repository);
+    let unsyncedChanges = await this.repositoryTransactionHistoryDao
+      .findUnsyncedTransactions(repository);
     if (unsyncedChanges.length) {
       unsyncedChanges.forEach((transaction) => {
         // a)  Mark them as synchronized

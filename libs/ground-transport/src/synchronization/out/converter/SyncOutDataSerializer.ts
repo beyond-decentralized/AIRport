@@ -6,22 +6,21 @@ import {
 } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from "@airport/direction-indicator";
 import { Application_Id, ColumnIndex, repositoryEntity } from "@airport/ground-control";
 import {
-	ACTOR_DAO,
 	Actor_Id,
 	IActor,
+	IActorDao,
 	IOperationHistory,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
 	IRepository,
+	IRepositoryDao,
 	IRepositoryTransactionHistory,
 	RepositoryTransactionType,
-	REPOSITORY_DAO,
 	Repository_Id
 } from "@airport/holding-pattern";
 import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-internal";
@@ -74,6 +73,9 @@ export interface InMessageUserLookup {
 
 export class SyncOutDataSerializer
 	implements ISyncOutDataSerializer {
+
+	actorDao: IActorDao
+	repositoryDao: IRepositoryDao
 
 	async serialize(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
@@ -150,8 +152,7 @@ export class SyncOutDataSerializer
 		for (let actorId of lookups.actorInMessageIndexesById.keys()) {
 			actorIdsToFindBy.push(actorId)
 		}
-		const actorDao = await container(this).get(ACTOR_DAO)
-		const actors = await actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy)
+		const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy)
 
 		this.serializeUsers(actors, message, inMessageUserLookup)
 		const terminalInMessageIndexesById =
@@ -253,8 +254,7 @@ export class SyncOutDataSerializer
 			repositoryIdsToFindBy.push(repositoryId)
 		}
 		repositoryIdsToFindBy.push(repositoryTransactionHistory.id)
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		const repositories = await repositoryDao.findByIds(repositoryIdsToFindBy)
+		const repositories = await this.repositoryDao.findByIds(repositoryIdsToFindBy)
 
 		for (const repository of repositories) {
 			let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup)

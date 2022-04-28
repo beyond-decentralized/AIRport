@@ -4,7 +4,6 @@ import {
 	or,
 	Y
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ensureChildArray,
 	EntityId,
@@ -16,9 +15,6 @@ import {
 	RecordHistoryActorRecordId,
 	Repository_Id,
 } from '../../ddl/ddl'
-import {
-	REPOSITORY_TRANSACTION_HISTORY_DAO,
-} from '../../tokens'
 import {
 	BaseRepositoryTransactionHistoryDao,
 	IOperationHistory,
@@ -205,5 +201,3 @@ export class RepositoryTransactionHistoryDao
 		})
 	}
 }
-
-DEPENDENCY_INJECTION.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao)

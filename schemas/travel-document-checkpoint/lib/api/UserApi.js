@@ -5,9 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Api } from "@airport/check-in";
-import { DI } from "@airport/di";
 import { v4 as uuidv4 } from "uuid";
-import { USER_API } from "../to_be_generated/api-tokens";
 export var AddUserErrorCodes;
 (function (AddUserErrorCodes) {
     AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
@@ -51,5 +49,4 @@ __decorate([
 __decorate([
     Api()
 ], UserApi.prototype, "findUser", null);
-DI.set(USER_API, UserApi);
 //# sourceMappingURL=UserApi.js.map

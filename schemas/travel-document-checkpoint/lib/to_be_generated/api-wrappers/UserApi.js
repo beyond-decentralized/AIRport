@@ -1,6 +1,4 @@
-import { container, DI } from "@airport/di";
 import { USER_API } from "../api-tokens";
-import { INTER_APP_API_CLIENT } from "@airport/ground-control";
 export var AddUserErrorCodes;
 (function (AddUserErrorCodes) {
     AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
@@ -12,13 +10,10 @@ export var AddUserErrorCodes;
 })(AddUserErrorCodes || (AddUserErrorCodes = {}));
 export class UserApi {
     async addUser(username, email) {
-        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT);
-        return await interAppApiClient.invokeApiMethod(USER_API, 'addUser', [username, email]);
+        return await this.interAppApiClient.invokeApiMethod(USER_API, 'addUser', [username, email]);
     }
     async findUser(privateId) {
-        const interAppApiClient = await container(this).get(INTER_APP_API_CLIENT);
-        return await interAppApiClient.invokeApiMethod(USER_API, 'findUser', [privateId]);
+        return await this.interAppApiClient.invokeApiMethod(USER_API, 'findUser', [privateId]);
     }
 }
-DI.set(USER_API, UserApi);
 //# sourceMappingURL=UserApi.js.map

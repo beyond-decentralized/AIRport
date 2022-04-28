@@ -3,7 +3,6 @@ import {
 	and,
 	Y
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ApplicationName,
 	DomainName,
@@ -24,7 +23,6 @@ import {
 	Actor_Id,
 	Actor_UuId,
 } from '../../ddl/ddl'
-import { ACTOR_DAO } from '../../tokens'
 import {
 	BaseActorDao,
 	IActor,
@@ -236,5 +234,3 @@ export class ActorDao
 		})
 	}
 }
-
-DEPENDENCY_INJECTION.set(ACTOR_DAO, ActorDao)

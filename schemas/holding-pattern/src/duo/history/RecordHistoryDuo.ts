@@ -1,13 +1,9 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { DbColumn } from '@airport/ground-control'
 import {
 	Actor_Id,
 	RecordHistory,
 	RepositoryEntity_ActorRecordId
 } from '../../ddl/ddl'
-import {
-	RECORD_HISTORY_DUO
-} from '../../tokens'
 import {
 	BaseRecordHistoryDuo,
 	IBaseRecordHistoryDuo,
@@ -30,15 +26,13 @@ export interface IRecordHistoryDuo
 	addNewValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		newValue: any,
-		recHistoryNewValueDuo: IRecordHistoryNewValueDuo
+		newValue: any
 	): IRecordHistoryNewValue;
 
 	addOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		oldValue: any,
-		recHistoryOldValueDuo: IRecordHistoryOldValueDuo
+		oldValue: any
 	): IRecordHistoryOldValue;
 
 }
@@ -46,6 +40,9 @@ export interface IRecordHistoryDuo
 export class RecordHistoryDuo
 	extends BaseRecordHistoryDuo
 	implements IRecordHistoryDuo {
+
+	recordHistoryNewValueDuo: IRecordHistoryNewValueDuo
+	recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
 
 	getNewRecord(
 		actorId: Actor_Id,
@@ -64,14 +61,13 @@ export class RecordHistoryDuo
 	addNewValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		newValue: any,
-		recHistoryNewValueDuo: IRecordHistoryNewValueDuo
+		newValue: any
 	): IRecordHistoryNewValue {
 		if (newValue === null) {
 			// No need to record a null value
 			return null
 		}
-		const recordHistoryNewValue = recHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
+		const recordHistoryNewValue = this.recordHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue)
 
 		recordHistory.newValues.push(recordHistoryNewValue)
 
@@ -85,14 +81,13 @@ export class RecordHistoryDuo
 	addOldValue(
 		recordHistory: IRecordHistory,
 		dbColumn: DbColumn,
-		oldValue: any,
-		recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
+		oldValue: any
 	): IRecordHistoryOldValue {
 		if (oldValue === null) {
 			// No need to record a null value
 			return null
 		}
-		const recordHistoryOldValue = recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
+		const recordHistoryOldValue = this.recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue)
 
 		recordHistory.oldValues.push(recordHistoryOldValue)
 
@@ -104,5 +99,3 @@ export class RecordHistoryDuo
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(RECORD_HISTORY_DUO, RecordHistoryDuo)

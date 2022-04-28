@@ -1,7 +1,5 @@
 import { ALL_FIELDS, and, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
 import { TransactionType } from '@airport/ground-control';
-import { REPOSITORY_DAO } from '../../tokens';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 export class RepositoryDao extends BaseRepositoryDao {
     async getRepositoryLoadInfo(repositorySource, repositoryUuId, context) {
@@ -92,5 +90,4 @@ export class RepositoryDao extends BaseRepositoryDao {
         }
     }
 }
-DI.set(REPOSITORY_DAO, RepositoryDao);
 //# sourceMappingURL=RepositoryDao.js.map

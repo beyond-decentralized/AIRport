@@ -12,14 +12,16 @@ import {
     SYNCHRONIZATION_IN_MANAGER
 } from "@airport/ground-transport";
 import {
+    IRepositoryDao,
     RepositoryTransactionHistory_UuId,
-    REPOSITORY_DAO
 } from "@airport/holding-pattern";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
 
 export class RepositoryLoader
     implements IRepositoryLoader {
+
+    repositoryDao: IRepositoryDao
 
     /*
     Repository can be loaded because:
@@ -38,8 +40,7 @@ export class RepositoryLoader
         }
         context.repositoryExistenceChecked = true
 
-        const repositoryDao = await container(this).get(REPOSITORY_DAO)
-        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(
             repositorySource, repositoryUuId, context)
 
         let loadRepository = false

@@ -1,8 +1,6 @@
 import { ALL_FIELDS, and, or, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
 import { ensureChildArray, TransactionType } from '@airport/ground-control';
-import { REPOSITORY_TRANSACTION_HISTORY_DAO, } from '../../tokens';
-import { BaseRepositoryTransactionHistoryDao, Q } from '../../generated/generated';
+import { BaseRepositoryTransactionHistoryDao, Q, } from '../../generated/generated';
 export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
     async clearContentsWhereIdsIn(
@@ -119,5 +117,4 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
         });
     }
 }
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DAO, RepositoryTransactionHistoryDao);
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

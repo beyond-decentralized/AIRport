@@ -2,11 +2,10 @@ import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
-	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
 import {
-	ACTOR_DAO, IActor
+	IActor, IActorDao
 } from '@airport/holding-pattern'
 import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens'
 
@@ -21,12 +20,12 @@ export interface ISyncInActorChecker {
 export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
+	actorDao: IActorDao
+
 	async ensureActors(
 		message: RepositorySynchronizationMessage
 	): Promise<boolean> {
 		try {
-			const actorDao = await container(this).get(ACTOR_DAO)
-
 			let actorUuids: string[] = []
 			let messageActorIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.actors.length; i++) {
@@ -43,7 +42,7 @@ export class SyncInActorChecker
 				delete actor.id
 			}
 
-			const actors = await actorDao.findByUuIds(actorUuids)
+			const actors = await this.actorDao.findByUuIds(actorUuids)
 			for (const actor of actors) {
 				const messageUserIndex = messageActorIndexMap.get(actor.uuId)
 				message.actors[messageUserIndex] = actor
@@ -53,7 +52,7 @@ export class SyncInActorChecker
 				.filter(messageActor => !messageActor.id)
 
 			if (missingActors.length) {
-				await actorDao.insert(missingActors)
+				await this.actorDao.insert(missingActors)
 			}
 		} catch (e) {
 			console.error(e)

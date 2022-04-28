@@ -1,4 +1,5 @@
 import { IUser } from "../api-index";
+import { IInterAppAPIClient } from "@airport/ground-control";
 export declare enum AddUserErrorCodes {
     EMAIL_TAKEN = "EMAIL_TAKEN",
     INVALID_BIRTH_MONTH = "INVALID_BIRTH_MONTH",
@@ -12,6 +13,7 @@ export interface IAddUserResponse {
     user?: IUser;
 }
 export declare class UserApi {
+    interAppApiClient: IInterAppAPIClient;
     addUser(username: string, email: string): Promise<IAddUserResponse>;
     findUser(privateId: string): Promise<IUser>;
 }

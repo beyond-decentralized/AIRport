@@ -3,7 +3,7 @@ import {
 	and,
 	Y
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
+import { IContext } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
 	Terminal_UuId,
@@ -15,7 +15,6 @@ import {
 	Repository_Source,
 	Repository_UuId,
 } from '../../ddl/ddl'
-import { REPOSITORY_DAO } from '../../tokens'
 import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
@@ -170,5 +169,3 @@ export class RepositoryDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(REPOSITORY_DAO, RepositoryDao)

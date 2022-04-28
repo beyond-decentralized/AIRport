@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { RecordHistory } from '../ddl/history/RecordHistory';
 import { Actor } from '../ddl/infrastructure/Actor';
 import { Repository } from '../ddl/repository/Repository';
@@ -18,7 +18,7 @@ import { ImmutableRow } from '../ddl/traditional/ImmutableRow';
 import { MutableRepoRow } from '../ddl/traditional/MutableRepoRow';
 import { MutableRow } from '../ddl/traditional/MutableRow';
 import { ReferenceRow } from '../ddl/traditional/ReferenceRow';
-DI.db().get(AIRPORT_DATABASE).then(airDb => {
+DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'holding-pattern');
     accumulator.add(RecordHistory, 0);
     accumulator.add(Actor, 1);

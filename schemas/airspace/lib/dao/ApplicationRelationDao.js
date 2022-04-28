@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { undefinedToNull } from '@airport/ground-control';
 import { APPLICATION_RELATION_DAO } from '../tokens';
 import { BaseApplicationRelationDao, Q, } from '../generated/generated';
@@ -51,5 +51,5 @@ export class ApplicationRelationDao extends BaseApplicationRelationDao {
         });
     }
 }
-DI.set(APPLICATION_RELATION_DAO, ApplicationRelationDao);
+DEPENDENCY_INJECTION.set(APPLICATION_RELATION_DAO, ApplicationRelationDao);
 //# sourceMappingURL=ApplicationRelationDao.js.map

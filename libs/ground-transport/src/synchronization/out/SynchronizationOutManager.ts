@@ -5,16 +5,15 @@ import {
 } from '@airport/direction-indicator'
 import {
 	ensureChildArray,
-	ensureChildJsMap,
-	repositoryEntity
+	ensureChildJsMap
 } from '@airport/ground-control'
 import {
 	IRepository,
+	IRepositoryDao,
 	IRepositoryTransactionHistory,
-	REPOSITORY_DAO,
+	IRepositoryTransactionHistoryDao,
 	Repository_Id,
 	Repository_Source,
-	REPOSITORY_TRANSACTION_HISTORY_DAO,
 	Repository_UuId
 } from '@airport/holding-pattern'
 import {
@@ -33,6 +32,9 @@ export interface ISynchronizationOutManager {
 
 export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
+
+	repositoryDao: IRepositoryDao
+	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 
 	async synchronizeOut(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
@@ -72,8 +74,9 @@ export class SynchronizationOutManager
 			return
 		}
 
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		const repositories = await repositoryDao.findByIds([...repositoryIdsToLookup.values()])
+		const repositories = await this.repositoryDao.findByIds([
+			...repositoryIdsToLookup.values()
+		])
 		for (const repository of repositories) {
 			repositoryMapById.set(repository.id, repository)
 		}
@@ -103,8 +106,9 @@ export class SynchronizationOutManager
 			return
 		}
 
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		const repositories = await repositoryDao.findByIds([...repositoryIdsToLookup.values()])
+		const repositories = await this.repositoryDao.findByIds([
+			...repositoryIdsToLookup.values()
+		])
 		for (const repository of repositories) {
 			repositoryMapById.set(repository.id, repository)
 		}
@@ -140,15 +144,12 @@ export class SynchronizationOutManager
 		messages: RepositorySynchronizationMessage[],
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		const repositoryTransactionHistoryDao = await container(this)
-			.get(REPOSITORY_TRANSACTION_HISTORY_DAO)
-
 		for (let i = 0; i < messages.length; i++) {
 			const message = messages[i]
 			const repositoryTransactionHistory = repositoryTransactionHistories[i]
 			if (message.syncTimestamp) {
 				repositoryTransactionHistory.syncTimestamp = message.syncTimestamp
-				await repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory)
+				await this.repositoryTransactionHistoryDao.updateSyncTimestamp(repositoryTransactionHistory)
 			}
 		}
 	}

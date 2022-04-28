@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { DOMAIN_DAO } from '../tokens';
 import { BaseDomainDao, Q } from '../generated/generated';
 export class DomainDao extends BaseDomainDao {
     async findByIdIn(domainIds) {
@@ -101,5 +99,4 @@ export class DomainDao extends BaseDomainDao {
         }
     }
 }
-DI.set(DOMAIN_DAO, DomainDao);
 //# sourceMappingURL=DomainDao.js.map

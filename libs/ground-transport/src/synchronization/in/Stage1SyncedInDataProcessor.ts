@@ -15,7 +15,6 @@ import {
 	TableIndex
 } from '@airport/ground-control'
 import {
-	ACTOR_DAO,
 	Actor_Id,
 	IActor,
 	IChangedRecordIdsForRepository,
@@ -23,10 +22,11 @@ import {
 	IRecordHistory,
 	RecordHistoryActorRecordId,
 	RecordHistoryId,
-	REPOSITORY_TRANSACTION_HISTORY_DAO,
-	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id,
+	IActorDao,
+	IRepositoryTransactionHistoryDao,
+	IRepositoryTransactionHistoryDuo,
 } from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict,
@@ -61,7 +61,10 @@ export interface IStage1SyncedInDataProcessor {
 export class Stage1SyncedInDataProcessor
 	implements IStage1SyncedInDataProcessor {
 
+	actorDao: IActorDao
 	airportDatabase: IAirportDatabase
+	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
 
 	/**
@@ -80,10 +83,7 @@ export class Stage1SyncedInDataProcessor
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId)
 
-		const [actorDao, repoTransHistoryDao,
-			repoTransHistoryDuo, syncInUtils] = await container(this).get(
-				ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO,
-				REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS)
+		const syncInUtils = await container(this).get(SYNC_IN_UTILS)
 
 		const changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository> = new Map()
 
@@ -137,7 +137,7 @@ export class Stage1SyncedInDataProcessor
 		// find local history for the matching repositories and corresponding time period
 		const localRepoTransHistoryMapByRepositoryId
 			: Map<Repository_Id, ISyncRepoTransHistory[]>
-			= await repoTransHistoryDao
+			= await this.repositoryTransactionHistoryDao
 				.findAllLocalChangesForRecordIds(changedRecordIds)
 		const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
 			allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId,
@@ -159,7 +159,7 @@ export class Stage1SyncedInDataProcessor
 		}
 		if (newlyFoundActorSet.size) {
 			// cache remaining actors
-			const newActors = await actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet))
+			const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet))
 			for (const newActor of newActors) {
 				actorMayById.set(newActor.id, newActor)
 			}
@@ -168,7 +168,7 @@ export class Stage1SyncedInDataProcessor
 		// sort all repository histories in processing order
 		for (const [repositoryId, repoTransHistoriesForRepository]
 			of allRepoTransHistoryMapByRepoId) {
-			repoTransHistoryDuo
+			this.repositoryTransactionHistoryDuo
 				.sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById)
 		}
 

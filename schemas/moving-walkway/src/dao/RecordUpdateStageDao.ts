@@ -3,7 +3,6 @@ import {
 	field,
 	or
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	JSONBaseOperation,
@@ -17,7 +16,6 @@ import {
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
 } from '@airport/holding-pattern'
-import { RECORD_UPDATE_STAGE_DAO } from '../tokens'
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
@@ -150,5 +148,3 @@ export class RecordUpdateStageDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao)

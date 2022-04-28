@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	BaseSynchronizationConflictValuesDao,
 	IBaseSynchronizationConflictValuesDao,
@@ -6,7 +5,6 @@ import {
 	Q,
 	QSynchronizationConflictValues
 } from '../../generated/generated'
-import { SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '../../tokens'
 
 export interface ISynchronizationConflictValuesDao
 	extends IBaseSynchronizationConflictValuesDao {
@@ -43,5 +41,3 @@ export class SynchronizationConflictValuesDao
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNCHRONIZATION_CONFLICT_VALUES_DAO, SynchronizationConflictValuesDao)

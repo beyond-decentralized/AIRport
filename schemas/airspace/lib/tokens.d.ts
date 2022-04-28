@@ -9,15 +9,15 @@ import { IApplicationRelationColumnDao } from './dao/ApplicationRelationColumnDa
 import { IApplicationRelationDao } from './dao/ApplicationRelationDao';
 import { IApplicationVersionDao } from './dao/ApplicationVersionDao';
 import { IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
-export declare const DOMAIN_DAO: import("@airport/di").IDiToken<IDomainDao>;
-export declare const APPLICATION_COLUMN_DAO: import("@airport/di").IDiToken<IApplicationColumnDao>;
-export declare const APPLICATION_DAO: import("@airport/di").IDiToken<IApplicationDao>;
-export declare const APPLICATION_ENTITY_DAO: import("@airport/di").IDiToken<IApplicationEntityDao>;
-export declare const APPLICATION_PROPERTY_COLUMN_DAO: import("@airport/di").IDiToken<IApplicationPropertyColumnDao>;
-export declare const APPLICATION_PROPERTY_DAO: import("@airport/di").IDiToken<IApplicationPropertyDao>;
-export declare const APPLICATION_REFERENCE_DAO: import("@airport/di").IDiToken<IApplicationReferenceDao>;
-export declare const APPLICATION_RELATION_COLUMN_DAO: import("@airport/di").IDiToken<IApplicationRelationColumnDao>;
-export declare const APPLICATION_RELATION_DAO: import("@airport/di").IDiToken<IApplicationRelationDao>;
-export declare const APPLICATION_VERSION_DAO: import("@airport/di").IDiToken<IApplicationVersionDao>;
-export declare const APPLICATION_VERSION_DUO: import("@airport/di").IDiToken<IApplicationVersionDuo>;
+export declare const DOMAIN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IDomainDao>;
+export declare const APPLICATION_COLUMN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationColumnDao>;
+export declare const APPLICATION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationDao>;
+export declare const APPLICATION_ENTITY_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationEntityDao>;
+export declare const APPLICATION_PROPERTY_COLUMN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationPropertyColumnDao>;
+export declare const APPLICATION_PROPERTY_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationPropertyDao>;
+export declare const APPLICATION_REFERENCE_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationReferenceDao>;
+export declare const APPLICATION_RELATION_COLUMN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationRelationColumnDao>;
+export declare const APPLICATION_RELATION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationRelationDao>;
+export declare const APPLICATION_VERSION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationVersionDao>;
+export declare const APPLICATION_VERSION_DUO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationVersionDuo>;
 //# sourceMappingURL=tokens.d.ts.map

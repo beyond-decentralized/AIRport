@@ -10,15 +10,15 @@ import {
 	Actor_Id,
 	IActor,
 	IRepositoryTransactionHistory,
+	IRepositoryTransactionHistoryDuo,
 	RepositoryTransactionType,
-	Repository_Id,
-	REPOSITORY_TRANSACTION_HISTORY_DUO
+	Repository_Id
 } from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict,
+	ISynchronizationConflictDao,
 	ISynchronizationConflictValues,
-	SYNCHRONIZATION_CONFLICT_DAO,
-	SYNCHRONIZATION_CONFLICT_VALUES_DAO,
+	ISynchronizationConflictValuesDao,
 } from '@airport/moving-walkway'
 import {
 	ITransaction
@@ -45,6 +45,10 @@ export interface ITwoStageSyncedInDataProcessor {
 
 export class TwoStageSyncedInDataProcessor
 	implements ITwoStageSyncedInDataProcessor {
+
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+	synchronizationConflictDao: ISynchronizationConflictDao
+	synchronizationConflictValuesDao: ISynchronizationConflictValuesDao
 
 	/**
 	 * Synchronize the data messages coming to Terminal (new data for this TM)
@@ -107,7 +111,6 @@ export class TwoStageSyncedInDataProcessor
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>
 	}> {
-		const repositoryTransactionHistoryDuo = await container(this).get(REPOSITORY_TRANSACTION_HISTORY_DUO)
 		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 			= new Map()
 		const applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication> = new Map()
@@ -125,7 +128,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
-			repositoryTransactionHistoryDuo
+			this.repositoryTransactionHistoryDuo
 				.sortRepoTransHistories(repoTransHistories, actorMapById)
 		}
 
@@ -141,11 +144,9 @@ export class TwoStageSyncedInDataProcessor
 		actorMayById: Map<Actor_Id, IActor>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 	): Promise<void> {
-		const [stage1SyncedInDataProcessor, stage2SyncedInDataProcessor,
-			synchronizationConflictDao, synchronizationConflictValuesDao]
+		const [stage1SyncedInDataProcessor, stage2SyncedInDataProcessor]
 			= await container(this).get(
-				STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR,
-				SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO)
+				STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR)
 		const stage1Result
 			= await stage1SyncedInDataProcessor.performStage1DataProcessing(
 				repositoryTransactionHistoryMapByRepositoryId, actorMayById)
@@ -165,11 +166,11 @@ export class TwoStageSyncedInDataProcessor
 
 
 		if (allSyncConflicts.length) {
-			await synchronizationConflictDao.insert(allSyncConflicts)
+			await this.synchronizationConflictDao.insert(allSyncConflicts)
 		}
 
 		if (allSyncConflictValues.length) {
-			await synchronizationConflictValuesDao.insert(allSyncConflictValues)
+			await this.synchronizationConflictValuesDao.insert(allSyncConflictValues)
 		}
 	}
 

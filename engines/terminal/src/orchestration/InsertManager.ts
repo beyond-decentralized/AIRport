@@ -21,13 +21,8 @@ import {
 	IOperationHistory,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
-	IRecordHistoryNewValueDuo,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
-	OPERATION_HISTORY_DUO,
-	RECORD_HISTORY_NEW_VALUE_DUO,
-	RECORD_HISTORY_DUO,
-	REPOSITORY_TRANSACTION_HISTORY_DUO,
 	SystemWideOperationId
 } from '@airport/holding-pattern'
 import {
@@ -52,6 +47,9 @@ export class InsertManager
 
 	airportDatabase: IAirportDatabase
 	insertManager: IInsertManager
+	operationHistoryDuo: IOperationHistoryDuo
+	recordHistoryDuo: IRecordHistoryDuo
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
 
 	async insertValues(
@@ -106,16 +104,8 @@ export class InsertManager
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
-		const [
-			historyManager,
-			operHistoryDuo,
-			recHistoryDuo,
-			recHistoryNewValueDuo,
-			repoTransHistoryDuo
-		] = await container(this)
-			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
-				RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO,
-				REPOSITORY_TRANSACTION_HISTORY_DUO)
+		const historyManager = await container(this)
+			.get(HISTORY_MANAGER)
 
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
@@ -186,8 +176,7 @@ appears more than once in the Columns clause`)
 		if (!dbEntity.isLocal && !transaction.isSync) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
-				historyManager, operHistoryDuo, recHistoryDuo,
-				recHistoryNewValueDuo, repoTransHistoryDuo, transaction,
+				historyManager, transaction,
 				rootTransaction, context)
 		}
 
@@ -534,10 +523,6 @@ and cannot have NULL values.`)
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
 		historyManager: IHistoryManager,
-		operHistoryDuo: IOperationHistoryDuo,
-		recHistoryDuo: IRecordHistoryDuo,
-		recHistoryNewValueDuo: IRecordHistoryNewValueDuo,
-		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -582,16 +567,16 @@ and cannot have NULL values.`)
 
 			let operationHistory = operationsByRepo[repositoryId]
 			if (!operationHistory) {
-				operationHistory = repositoryTransactionHistoryDuo.startOperation(
+				operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 					repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES,
-					dbEntity, actor, operHistoryDuo, rootTransaction)
+					dbEntity, actor, rootTransaction)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
 			const actorRecordId = row[actorRecordIdColumnNumber]
 			const actorId = row[actorIdColumnNumber]
-			const recordHistory = operHistoryDuo.startRecordHistory(
-				operationHistory, actorId, actorRecordId, recHistoryDuo)
+			const recordHistory = this.operationHistoryDuo.startRecordHistory(
+				operationHistory, actorId, actorRecordId)
 
 			for (const columnNumber in jsonInsertValues.C) {
 				if (columnNumber === repositoryIdColumnNumber
@@ -602,8 +587,7 @@ and cannot have NULL values.`)
 				const columnIndex = jsonInsertValues.C[columnNumber]
 				const dbColumn = dbEntity.columns[columnIndex]
 				const newValue = row[columnNumber]
-				recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue,
-					recHistoryNewValueDuo)
+				this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, newValue)
 			}
 		}
 

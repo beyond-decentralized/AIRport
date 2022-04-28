@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	DbEntity,
@@ -17,7 +16,6 @@ import {
 	IRecordHistory,
 	IRepositoryTransactionHistory
 } from '../../generated/generated'
-import { OPERATION_HISTORY_DUO } from '../../tokens'
 import { IRecordHistoryDuo } from './RecordHistoryDuo'
 
 export interface IOperationHistoryDuo
@@ -40,8 +38,7 @@ export interface IOperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: RepositoryEntity_ActorRecordId,
-		recHistoryDuo: IRecordHistoryDuo
+		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory;
 
 }
@@ -49,6 +46,8 @@ export interface IOperationHistoryDuo
 export class OperationHistoryDuo
 	extends BaseOperationHistoryDuo
 	implements IOperationHistoryDuo {
+
+	recordHistoryDuo: IRecordHistoryDuo
 
 	getNewRecord(
 		entityChangeType: ChangeType,
@@ -89,10 +88,9 @@ export class OperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: RepositoryEntity_ActorRecordId,
-		recordHistoryDuo: IRecordHistoryDuo
+		actorRecordId: RepositoryEntity_ActorRecordId
 	): IRecordHistory {
-		const recordHistory = recordHistoryDuo.getNewRecord(actorId, actorRecordId)
+		const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, actorRecordId)
 
 		recordHistory.operationHistory = operationHistory
 
@@ -105,5 +103,3 @@ export class OperationHistoryDuo
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(OPERATION_HISTORY_DUO, OperationHistoryDuo)

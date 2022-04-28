@@ -1,6 +1,4 @@
-import { AIRPORT_DATABASE, and, field, or } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { RECORD_UPDATE_STAGE_DAO } from '../tokens';
+import { and, field, or } from '@airport/air-control';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
 export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values) {
@@ -23,10 +21,9 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
         });
     }
     async updateEntityWhereIds(applicationIndex, applicationVersionId, tableIndex, idMap, updatedColumnIndexes) {
-        const airDb = await container(this).get(AIRPORT_DATABASE);
-        const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+        const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[tableIndex];
-        const qEntity = airDb.qApplications[applicationIndex][dbEntity.name];
+        const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
@@ -61,5 +58,4 @@ export class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
         });
     }
 }
-DI.set(RECORD_UPDATE_STAGE_DAO, RecordUpdateStageDao);
 //# sourceMappingURL=RecordUpdateStageDao.js.map

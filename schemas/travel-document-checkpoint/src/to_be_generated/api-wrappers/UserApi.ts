@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { USER_API } from "../api-tokens";
 import { IUser } from "../api-index";
 import { IInterAppAPIClient } from "@airport/ground-control";
@@ -37,4 +36,3 @@ export class UserApi {
     }
 
 }
-DEPENDENCY_INJECTION.set(USER_API, UserApi)

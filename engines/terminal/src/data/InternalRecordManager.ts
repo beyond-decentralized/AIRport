@@ -1,5 +1,4 @@
 import {
-    container,
     DEPENDENCY_INJECTION,
     IContext
 } from "@airport/direction-indicator";
@@ -9,8 +8,8 @@ import {
 } from "@airport/ground-control";
 import {
     Actor,
-    ACTOR_DAO,
     IActor,
+    IActorDao,
 } from "@airport/holding-pattern";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
 import { TerminalStore } from "@airport/terminal-map";
@@ -45,6 +44,7 @@ export interface IInternalRecordManager {
 export class InternalRecordManager
     implements IInternalRecordManager {
 
+    actorDao: IActorDao
     applicationDao: IApplicationDao
     domainDao: IDomainDao
     entityStateManager: IEntityStateManager
@@ -57,10 +57,6 @@ export class InternalRecordManager
         await transactional(async (
             _transaction
         ) => {
-            const actorDao
-                = await container(this)
-                    .get(ACTOR_DAO)
-
             await this.updateDomain(application)
 
             let actorMapForDomain = this.terminalStore
@@ -73,7 +69,7 @@ export class InternalRecordManager
                 }
             }
 
-            actors = await actorDao.findByDomainAndApplicationNames(application.domain, application.name)
+            actors = await this.actorDao.findByDomainAndApplicationNames(application.domain, application.name)
             let anApplication: IApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
@@ -85,7 +81,7 @@ export class InternalRecordManager
                     user: frameworkActor.user,
                     uuId: uuidv4()
                 }
-                await actorDao.save(actor)
+                await this.actorDao.save(actor)
                 actors = [actor]
             }
 
@@ -124,8 +120,7 @@ export class InternalRecordManager
             actor.user = user;
             actor.terminal = terminal;
             actor.uuId = uuidv4();
-            const actorDao = await container(this).get(ACTOR_DAO);
-            await actorDao.save(actor, context);
+            await this.actorDao.save(actor, context);
 
             const lastTerminalState = this.terminalStore.getTerminalState()
             this.terminalStore.state.next({

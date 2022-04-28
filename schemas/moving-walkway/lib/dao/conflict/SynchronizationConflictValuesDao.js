@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { BaseSynchronizationConflictValuesDao, Q } from '../../generated/generated';
-import { SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '../../tokens';
 export class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
     async insert(synchronizationConflictValues) {
         let scv;
@@ -21,5 +19,4 @@ export class SynchronizationConflictValuesDao extends BaseSynchronizationConflic
         });
     }
 }
-DI.set(SYNCHRONIZATION_CONFLICT_VALUES_DAO, SynchronizationConflictValuesDao);
 //# sourceMappingURL=SynchronizationConflictValuesDao.js.map

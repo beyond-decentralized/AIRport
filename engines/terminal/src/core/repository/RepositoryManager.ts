@@ -7,12 +7,12 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
-import { container, DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository,
-	QRepositoryEntity,
-	REPOSITORY_DAO
+	IRepositoryDao,
+	QRepositoryEntity
 } from '@airport/holding-pattern'
 import {
 	IOperationContext,
@@ -38,6 +38,8 @@ export interface EntityRepoQueryData {
 
 export class RepositoryManager
 	implements IRepositoryManager {
+
+	repositoryDao: IRepositoryDao
 
 	async initialize(): Promise<void> {
 	}
@@ -103,8 +105,7 @@ already contains a new repository.`)
 	): Promise<IRepository> {
 		const repository: IRepository = this.getRepositoryRecord(actor)
 
-		const repositoryDao = await container(this).get(REPOSITORY_DAO)
-		await repositoryDao.save(repository, context)
+		await this.repositoryDao.save(repository, context)
 
 		return repository
 	}

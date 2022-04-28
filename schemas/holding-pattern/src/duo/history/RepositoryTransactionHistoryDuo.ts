@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	DbEntity,
@@ -12,7 +11,6 @@ import {
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
-import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens'
 import {
 	BaseRepositoryTransactionHistoryDuo,
 	IActor,
@@ -44,7 +42,6 @@ export interface IRepositoryTransactionHistoryDuo {
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		actor: IActor,
-		operHistoryDuo: IOperationHistoryDuo,
 		rootTransaction: IRootTransaction
 	): IOperationHistory;
 
@@ -53,6 +50,8 @@ export interface IRepositoryTransactionHistoryDuo {
 export class RepositoryTransactionHistoryDuo
 	extends BaseRepositoryTransactionHistoryDuo
 	implements IRepositoryTransactionHistoryDuo {
+
+	operationHistoryDuo: IOperationHistoryDuo
 
 	getNewRecord(
 		repositoryId: Repository_Id,
@@ -110,10 +109,9 @@ export class RepositoryTransactionHistoryDuo
 		entityChangeType: ChangeType,
 		dbEntity: DbEntity,
 		actor: IActor,
-		operationHistoryDuo: IOperationHistoryDuo,
 		rootTransaction: IRootTransaction
 	): IOperationHistory {
-		let operationHistory = operationHistoryDuo.getNewRecord(
+		let operationHistory = this.operationHistoryDuo.getNewRecord(
 			entityChangeType, dbEntity, actor, repositoryTransactionHistory,
 			systemWideOperationId, rootTransaction)
 		repositoryTransactionHistory.operationHistory.push(operationHistory)
@@ -165,5 +163,3 @@ export class RepositoryTransactionHistoryDuo
 		}*/
 
 }
-
-DEPENDENCY_INJECTION.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo)

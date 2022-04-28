@@ -1,18 +1,14 @@
-import {DEPENDENCY_INJECTION}                               from '@airport/direction-indicator'
-import {TransactionType}                  from '@airport/ground-control'
+import { TransactionType } from '@airport/ground-control'
 import {
 	Repository_Id,
 	TransactionHistory
-}                                         from '../../ddl/ddl'
-import {TRANSACTION_HISTORY_DUO}                from '../../tokens'
+} from '../../ddl/ddl'
 import {
 	BaseTransactionHistoryDuo,
-	IActor,
-	IRepository,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
-}                                         from '../../generated/generated'
-import {IRepositoryTransactionHistoryDuo} from './RepositoryTransactionHistoryDuo'
+} from '../../generated/generated'
+import { IRepositoryTransactionHistoryDuo } from './RepositoryTransactionHistoryDuo'
 
 export interface ITransactionHistoryDuo {
 
@@ -23,8 +19,7 @@ export interface ITransactionHistoryDuo {
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
 		repositoryId: Repository_Id,
-		isRepositoryCreation: boolean,
-		repoTransHistoryDuo: IRepositoryTransactionHistoryDuo
+		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory
 
 }
@@ -32,6 +27,8 @@ export interface ITransactionHistoryDuo {
 export class TransactionHistoryDuo
 	extends BaseTransactionHistoryDuo
 	implements ITransactionHistoryDuo {
+
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	getNewRecord(
 		transactionType: TransactionType = TransactionType.LOCAL
@@ -46,13 +43,12 @@ export class TransactionHistoryDuo
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
 		repositoryId: Repository_Id,
-		isRepositoryCreation: boolean,
-		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId]
 
 		if (!repositoryTransactionHistory) {
-			repositoryTransactionHistory = repositoryTransactionHistoryDuo.getNewRecord(
+			repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(
 				repositoryId, isRepositoryCreation)
 
 			transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory)
@@ -64,5 +60,3 @@ export class TransactionHistoryDuo
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo)

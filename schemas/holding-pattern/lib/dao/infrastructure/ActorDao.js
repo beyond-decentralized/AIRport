@@ -1,7 +1,5 @@
 import { ALL_FIELDS, and, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { ACTOR_DAO } from '../../tokens';
 import { BaseActorDao, Q } from '../../generated/generated';
 export class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
@@ -122,5 +120,4 @@ export class ActorDao extends BaseActorDao {
         });
     }
 }
-DI.set(ACTOR_DAO, ActorDao);
 //# sourceMappingURL=ActorDao.js.map

@@ -31,12 +31,7 @@ import {
 	IActor,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
-	IRecordHistoryOldValueDuo,
 	IRepositoryTransactionHistoryDuo,
-	OPERATION_HISTORY_DUO,
-	RECORD_HISTORY_OLD_VALUE_DUO,
-	RECORD_HISTORY_DUO,
-	REPOSITORY_TRANSACTION_HISTORY_DUO,
 } from '@airport/holding-pattern'
 import {
 	IDeleteManager,
@@ -55,6 +50,9 @@ export class DeleteManager
 
 	airportDatabase: IAirportDatabase
 	applicationUtils: IApplicationUtils
+	operationHistoryDuo: IOperationHistoryDuo
+	recordHistoryDuo: IRecordHistoryDuo
+	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
 
 	async deleteWhere(
@@ -64,15 +62,8 @@ export class DeleteManager
 		rootTransaction: IRootTransaction,
 		context?: IOperationContext,
 	): Promise<number> {
-		const [
-			historyManager,
-			operHistoryDuo,
-			recHistoryDuo,
-			recHistoryOldValueDuo,
-			repoTransHistoryDuo
-		] = await container(this)
-			.get(HISTORY_MANAGER, OPERATION_HISTORY_DUO,
-				RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO)
+		const historyManager = await container(this)
+			.get(HISTORY_MANAGER)
 
 		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
@@ -110,8 +101,7 @@ export class DeleteManager
 		}
 
 		await this.recordTreeToDelete(recordsToDelete, actor,
-			historyManager, operHistoryDuo, recHistoryDuo,
-			recHistoryOldValueDuo, repoTransHistoryDuo,
+			historyManager,
 			transaction, rootTransaction, context)
 
 		return await deleteCommand
@@ -217,10 +207,6 @@ export class DeleteManager
 		recordsToDelete: RecordsToDelete,
 		actor: IActor,
 		historyManager: IHistoryManager,
-		operHistoryDuo: IOperationHistoryDuo,
-		recHistoryDuo: IRecordHistoryDuo,
-		recHistoryOldValueDuo: IRecordHistoryOldValueDuo,
-		repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -240,15 +226,15 @@ export class DeleteManager
 						transaction.transactionHistory, repositoryId, context
 					)
 
-					const operationHistory = repositoryTransactionHistoryDuo.startOperation(
+					const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
 						repositoryTransactionHistory, systemWideOperationId,
 						ChangeType.DELETE_ROWS, dbEntity, actor,
-						operHistoryDuo, rootTransaction)
+						rootTransaction)
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
-						const recordHistory = operHistoryDuo.startRecordHistory(
+						const recordHistory = this.operationHistoryDuo.startRecordHistory(
 							operationHistory, recordToDelete.actor.id,
-							recordToDelete.actorRecordId, recHistoryDuo)
+							recordToDelete.actorRecordId)
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
 								const dbRelation = dbProperty.relation[0]
@@ -267,8 +253,8 @@ export class DeleteManager
 												case repositoryEntity.REPOSITORY_ID:
 													break;
 												default:
-													recHistoryDuo.addOldValue(recordHistory, dbColumn,
-														value, recHistoryOldValueDuo)
+													this.recordHistoryDuo.addOldValue(recordHistory, dbColumn,
+														value)
 											}
 										})
 										break
@@ -281,10 +267,9 @@ export class DeleteManager
 								}
 							} else {
 								const dbColumn = dbProperty.propertyColumns[0].column
-								recHistoryDuo
+								this.recordHistoryDuo
 									.addOldValue(recordHistory, dbColumn,
-										recordToDelete[dbProperty.name],
-										recHistoryOldValueDuo)
+										recordToDelete[dbProperty.name])
 							}
 						}
 					}

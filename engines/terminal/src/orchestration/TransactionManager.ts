@@ -14,8 +14,8 @@ import {
 } from '@airport/ground-control';
 import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import {
-	Q,
-	TRANSACTION_HISTORY_DUO,
+	ITransactionHistoryDuo,
+	Q
 } from '@airport/holding-pattern';
 import {
 	IStoreDriver,
@@ -36,6 +36,7 @@ export class TransactionManager
 
 	storeDriver: IStoreDriver
 	terminalStore: ITerminalStore
+	transactionHistoryDuo: ITransactionHistoryDuo
 
 	/**
 	 * Initializes the EntityManager at server load time.
@@ -331,8 +332,7 @@ ${callHerarchy}
 		context.transaction = transaction
 		credentials.transactionId = transaction.id
 
-		const transactionHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
-		transaction.transactionHistory = transactionHistoryDuo.getNewRecord();
+		transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
 
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
 		if (parentTransaction) {

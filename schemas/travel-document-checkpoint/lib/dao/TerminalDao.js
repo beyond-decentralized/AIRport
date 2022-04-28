@@ -1,6 +1,4 @@
 import { and } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { TERMINAL_DAO } from '../to_be_generated/internal-tokens';
 import { BaseTerminalDao, Q } from '../generated/generated';
 export class TerminalDao extends BaseTerminalDao {
     async findByOwnerIdsAndUuIds(ownerIds, uuIds) {
@@ -46,5 +44,4 @@ export class TerminalDao extends BaseTerminalDao {
         }
     }
 }
-DI.set(TERMINAL_DAO, TerminalDao);
 //# sourceMappingURL=TerminalDao.js.map

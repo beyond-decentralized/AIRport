@@ -1,1 +1,1 @@
-{"version":3,"file":"ApplicationVersionDuo.d.ts","sourceRoot":"","sources":["../../src/duo/ApplicationVersionDuo.ts"],"names":[],"mappings":"AAEA,OAAO,EACN,yBAAyB,EACzB,0BAA0B,EAC1B,MAAgC,wBAAwB,CAAA;AAEzD,MAAM,WAAW,sBAChB,SAAQ,0BAA0B;CAElC;AAED,qBAAa,qBACZ,SAAQ,yBACR,YAAW,sBAAsB;CAEjC"}
+{"version":3,"file":"ApplicationVersionDuo.d.ts","sourceRoot":"","sources":["../../src/duo/ApplicationVersionDuo.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,yBAAyB,EACzB,0BAA0B,EAC1B,MAAgC,wBAAwB,CAAA;AAEzD,MAAM,WAAW,sBAChB,SAAQ,0BAA0B;CAElC;AAED,qBAAa,qBACZ,SAAQ,yBACR,YAAW,sBAAsB;CAEjC"}

@@ -1,6 +1,4 @@
 import { and, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { APPLICATION_VERSION_DAO } from '../tokens';
 import { BaseApplicationVersionDao, Q } from '../generated/generated';
 export class ApplicationVersionDao extends BaseApplicationVersionDao {
     /*
@@ -160,5 +158,4 @@ export class ApplicationVersionDao extends BaseApplicationVersionDao {
         });
     }
 }
-DI.set(APPLICATION_VERSION_DAO, ApplicationVersionDao);
 //# sourceMappingURL=ApplicationVersionDao.js.map

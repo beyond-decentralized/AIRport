@@ -21,6 +21,8 @@ import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { TERMINAL_STORE } from '@airport/terminal-map'
 import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-internal'
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
+import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern'
+import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/moving-walkway'
 
 const groundTransport = lib('ground-transport')
 
@@ -43,13 +45,21 @@ export const DEBUG_SYNCHRONIZATION_ADAPTER = groundTransport.token<ISynchronizat
 export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchronizationAdapterLoader>('SYNCHRONIZATION_ADAPTER_LOADER')
 
 STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({
+    actorDao: ACTOR_DAO,
     airportDatabase: AIRPORT_DATABASE,
+    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
+    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
     sequenceGenerator: SEQUENCE_GENERATOR
 })
 
 STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-    databaseFacade: DATABASE_FACADE
+    databaseFacade: DATABASE_FACADE,
+    recordUpdateStageDao: RECORD_UPDATE_STAGE_DAO
+})
+
+SYNC_IN_ACTOR_CHECKER.setDependencies({
+    actorDao: ACTOR_DAO,
 })
 
 SYNC_IN_APPLICATION_CHECKER.setDependencies({
@@ -67,10 +77,33 @@ SYNC_IN_DATA_CHECKER.setDependencies({
     terminalStore: TERMINAL_STORE
 })
 
+SYNC_IN_REPOSITORY_CHECKER.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+})
+
 SYNC_IN_TERMINAL_CHECKER.setDependencies({
     terminalDao: TERMINAL_DAO
 })
 
 SYNC_IN_USER_CHECKER.setDependencies({
     userDao: USER_DAO
+})
+
+SYNC_OUT_DATA_SERIALIZER.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+})
+
+SYNCHRONIZATION_IN_MANAGER.setDependencies({
+    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO
+})
+
+SYNCHRONIZATION_OUT_MANAGER.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
+})
+
+TWO_STAGE_SYNCED_IN_DATA_PROCESSOR.setDependencies({
+    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    synchronizationConflictDao: SYNCHRONIZATION_CONFLICT_DAO,
+    synchronizationConflictValuesDao: SYNCHRONIZATION_CONFLICT_VALUES_DAO
 })

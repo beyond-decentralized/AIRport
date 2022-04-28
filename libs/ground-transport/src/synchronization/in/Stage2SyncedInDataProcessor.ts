@@ -6,7 +6,7 @@ import {
 	IQEntityInternal,
 	or
 } from '@airport/air-control'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -26,7 +26,6 @@ import {
 } from '@airport/holding-pattern'
 import {
 	IRecordUpdateStageDao,
-	RECORD_UPDATE_STAGE_DAO,
 	RecordUpdateStageValues
 } from '@airport/moving-walkway'
 import { IApplication } from '@airport/airspace'
@@ -71,20 +70,20 @@ export class Stage2SyncedInDataProcessor
 
 	airportDatabase: IAirportDatabase
 	databaseFacade: IDatabaseFacade
+	recordUpdateStageDao: IRecordUpdateStageDao
 
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>
 	): Promise<void> {
-		const recordUpdateStageDao = await container(this).get(RECORD_UPDATE_STAGE_DAO)
 		const context: IOperationContext = {} as any
 
 		await this.performCreates(stage1Result.recordCreations,
-			applicationsByApplicationVersionIdMap, dbFacade, context)
+			applicationsByApplicationVersionIdMap, context)
 		await this.performUpdates(stage1Result.recordUpdates,
-			applicationsByApplicationVersionIdMap, recordUpdateStageDao, context)
+			applicationsByApplicationVersionIdMap, context)
 		await this.performDeletes(stage1Result.recordDeletions,
-			applicationsByApplicationVersionIdMap, dbFacade, context)
+			applicationsByApplicationVersionIdMap, context)
 	}
 
 	/**
@@ -215,7 +214,6 @@ export class Stage2SyncedInDataProcessor
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
-		recordUpdateStageDao: IRecordUpdateStageDao,
 		context: IOperationContext
 	): Promise<void> {
 		const finalUpdateMap: Map<ApplicationVersionId, Map<TableIndex, ColumnUpdateKeyMap>> = new Map()
@@ -257,18 +255,18 @@ export class Stage2SyncedInDataProcessor
 			return
 		}
 
-		await recordUpdateStageDao.insertValues(recordUpdateStage)
+		await this.recordUpdateStageDao.insertValues(recordUpdateStage)
 
 		// Perform the updates
 		for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
 			const application = applicationsByApplicationVersionIdMap.get(applicationVersionId)
 			for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
 				await this.runUpdatesForTable(application.index, applicationVersionId,
-					tableIndex, updateMapForTable, recordUpdateStageDao)
+					tableIndex, updateMapForTable)
 			}
 		}
 
-		await recordUpdateStageDao.delete()
+		await this.recordUpdateStageDao.delete()
 	}
 
 	async performDeletes(
@@ -383,13 +381,12 @@ export class Stage2SyncedInDataProcessor
 		applicationIndex: ApplicationIndex,
 		applicationVersionId: ApplicationVersionId,
 		tableIndex: TableIndex,
-		updateKeyMap: ColumnUpdateKeyMap,
-		recordUpdateStageDao: IRecordUpdateStageDao
+		updateKeyMap: ColumnUpdateKeyMap
 	) {
 		for (const columnValueUpdate of updateKeyMap.values()) {
 			const updatedColumns = columnValueUpdate.updatedColumns
 			if (updatedColumns) {
-				await recordUpdateStageDao.updateEntityWhereIds(
+				await this.recordUpdateStageDao.updateEntityWhereIds(
 					applicationIndex,
 					applicationVersionId,
 					tableIndex,
@@ -400,7 +397,7 @@ export class Stage2SyncedInDataProcessor
 			// Traverse down into nested column update combinations
 			await this.runUpdatesForTable(
 				applicationIndex, applicationVersionId, tableIndex,
-				columnValueUpdate.childColumnUpdateKeyMap, recordUpdateStageDao)
+				columnValueUpdate.childColumnUpdateKeyMap)
 		}
 
 	}

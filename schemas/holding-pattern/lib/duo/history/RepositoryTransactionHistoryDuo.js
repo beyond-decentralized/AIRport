@@ -1,7 +1,5 @@
-import { DI } from '@airport/di';
 import { v4 as uuidv4 } from "uuid";
 import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
-import { REPOSITORY_TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
 export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, isRepositoryCreation) {
@@ -33,8 +31,8 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
             return 0;
         });
     }
-    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, operationHistoryDuo, rootTransaction) {
-        let operationHistory = operationHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction);
+    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, rootTransaction) {
+        let operationHistory = this.operationHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction);
         repositoryTransactionHistory.operationHistory.push(operationHistory);
         repositoryTransactionHistory
             .transactionHistory.allOperationHistory.push(operationHistory);
@@ -55,5 +53,4 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
         return 0;
     }
 }
-DI.set(REPOSITORY_TRANSACTION_HISTORY_DUO, RepositoryTransactionHistoryDuo);
 //# sourceMappingURL=RepositoryTransactionHistoryDuo.js.map

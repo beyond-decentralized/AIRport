@@ -1,6 +1,4 @@
 import { plus } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { SEQUENCE_DAO } from '../tokens';
 import { BaseSequenceDao, Q } from '../generated/generated';
 export class SequenceDao extends BaseSequenceDao {
     static diSet() {
@@ -26,5 +24,4 @@ export class SequenceDao extends BaseSequenceDao {
         });
     }
 }
-DI.set(SEQUENCE_DAO, SequenceDao);
 //# sourceMappingURL=SequenceDao.js.map

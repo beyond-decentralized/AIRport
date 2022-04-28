@@ -1,7 +1,5 @@
-import { DI } from '@airport/di';
 import { TransactionType } from '@airport/ground-control';
 import { TransactionHistory } from '../../ddl/ddl';
-import { TRANSACTION_HISTORY_DUO } from '../../tokens';
 import { BaseTransactionHistoryDuo, } from '../../generated/generated';
 export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
@@ -9,10 +7,10 @@ export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
         transaction.transactionType = TransactionType.LOCAL;
         return transaction;
     }
-    getRepositoryTransaction(transactionHistory, repositoryId, isRepositoryCreation, repositoryTransactionHistoryDuo) {
+    getRepositoryTransaction(transactionHistory, repositoryId, isRepositoryCreation) {
         let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId];
         if (!repositoryTransactionHistory) {
-            repositoryTransactionHistory = repositoryTransactionHistoryDuo.getNewRecord(repositoryId, isRepositoryCreation);
+            repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(repositoryId, isRepositoryCreation);
             transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
             transactionHistory.repositoryTransactionHistoryMap[repositoryId] = repositoryTransactionHistory;
             repositoryTransactionHistory.transactionHistory = transactionHistory;
@@ -20,5 +18,4 @@ export class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
         return repositoryTransactionHistory;
     }
 }
-DI.set(TRANSACTION_HISTORY_DUO, TransactionHistoryDuo);
 //# sourceMappingURL=TransactionHistoryDuo.js.map

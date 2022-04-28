@@ -3,7 +3,7 @@ import {
 	container,
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator'
-import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern'
+import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern'
 import { ITransactionContext } from '@airport/terminal-map'
 import { transactional } from '@airport/tower'
 import {
@@ -31,17 +31,19 @@ export interface ISynchronizationInManager {
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
+	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
 	async receiveMessages(
 		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
 		context: ITransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
-		const [repositoryTransactionHistoryDao, syncInChecker,
+		const [syncInChecker,
 			twoStageSyncedInDataProcessor] = await container(this)
-				.get(REPOSITORY_TRANSACTION_HISTORY_DAO, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
+				.get(SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
-		const existingRepositoryTransactionHistories = await repositoryTransactionHistoryDao
+		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
 			.findWhereUuIdsIn([...messageMapByUuId.keys()])
 		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
 			messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId)
