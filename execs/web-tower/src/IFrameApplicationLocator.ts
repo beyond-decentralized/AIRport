@@ -1,5 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
-import { APPLICATION_LOCATOR, ApplicationLocator } from '@airport/landing'
+import { ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
@@ -25,4 +24,3 @@ export class IFrameApplicationLocator
             .getLatestApplicationVersionMapByFullApplicationName(fullApplicationName)
     }
 }
-DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, IFrameApplicationLocator)

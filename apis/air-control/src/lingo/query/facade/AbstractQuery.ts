@@ -1,9 +1,12 @@
-import {JsonStatement} from '@airport/ground-control'
+import { JsonStatement } from '@airport/ground-control'
 import {
-	IFieldUtils,
+	IFieldUtils
+} from '../../../lingo/utils/FieldUtils'
+import {
 	IQueryUtils
-}                      from '../../..'
-import {Parameter}     from '../../core/entity/Aliases'
+} from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../../impl/core/entity/RelationManager'
+import { Parameter } from '../../core/entity/Aliases'
 
 export interface IAbstractQuery {
 
@@ -11,7 +14,8 @@ export interface IAbstractQuery {
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonStatement
 
 }

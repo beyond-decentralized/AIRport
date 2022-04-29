@@ -8,10 +8,8 @@ import { SqLiteDriver } from '@airport/sqlite'
 import {
 	IOperationContext,
 	ITransaction,
-	ITransactionContext,
-	STORE_DRIVER
+	ITransactionContext
 } from '@airport/terminal-map';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { SqlJsTransaction } from './SqlJsTransaction';
 
 declare function initSqlJs(config: any): any;
@@ -139,4 +137,3 @@ export class SqlJsDriver
 	}
 
 }
-DEPENDENCY_INJECTION.set(STORE_DRIVER, SqlJsDriver);

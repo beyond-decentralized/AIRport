@@ -4,6 +4,7 @@ export class MySqlTransaction extends MySqlDriver {
         super();
         this.driver = driver;
         this.connection = connection;
+        this.isSync = false;
         this.pool = pool;
         this.queryApi = connection;
         this.__container__ = driver.__container__;

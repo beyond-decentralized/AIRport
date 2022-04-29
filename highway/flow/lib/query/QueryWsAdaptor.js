@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { IOC } from '@airport/direction-indicator';
 import { QUERY_WEB_SERVICE } from '../tokens';
 export function getQueryWsHandler(config) {
     return async (request, context) => {
@@ -6,7 +6,7 @@ export function getQueryWsHandler(config) {
     };
 }
 export async function queryWsHandler(request, config, context) {
-    const queryWebService = await DI.db().get(QUERY_WEB_SERVICE);
+    const queryWebService = await IOC.get(QUERY_WEB_SERVICE);
     return await queryWebService.handle(request, config, context);
 }
 //# sourceMappingURL=QueryWsAdaptor.js.map

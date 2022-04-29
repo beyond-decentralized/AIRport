@@ -82,18 +82,6 @@ export interface ITransactionalConnector {
 		context?: IContext,
 	): Promise<number>
 
-	startTransaction(
-		context: IContext
-	): Promise<boolean>
-
-	commit(
-		context: IContext
-	): Promise<boolean>
-
-	rollback(
-		context: IContext
-	): Promise<boolean>
-
 	onMessage(callback: (
 		message: any
 	) => void)

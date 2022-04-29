@@ -1,10 +1,7 @@
-import { container, DI, } from '@airport/di';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { IsolateMessageType, } from '@airport/security-check';
 import { TransactionalReceiver } from '@airport/terminal';
-import { TRANSACTIONAL_RECEIVER, APPLICATION_INITIALIZER, TERMINAL_STORE } from '@airport/terminal-map';
 import { map } from 'rxjs/operators';
-import { WEB_MESSAGE_RECEIVER } from './tokens';
 export class WebTransactionalReceiver extends TransactionalReceiver {
     constructor() {
         super();
@@ -19,8 +16,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (document.domain !== 'localhost') {
             document.domain = 'random_' + Math.random() + '_' + Math.random() + domainPrefix;
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         webReciever.domainPrefix = domainPrefix;
         webReciever.mainDomainFragments = mainDomainFragments;
     }
@@ -34,12 +30,10 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!this.hasValidApplicationInfo(message)) {
             return;
         }
-        const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER);
-        if (webMessageReciever.needMessageSerialization()) {
+        if (this.webMessageReciever.needMessageSerialization()) {
             // FIXME: deserialize message
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         if (webReciever.onClientMessageCallback) {
             const receivedDate = new Date();
             message.__receivedTime__ = receivedDate.getTime();
@@ -70,8 +64,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!this.hasValidApplicationInfo(message)) {
             return;
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         if (webReciever.onClientMessageCallback) {
             const receivedDate = new Date();
             message.__receivedTime__ = receivedDate.getTime();
@@ -129,8 +122,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         }
     }
     onMessage(callback) {
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         webReciever.onClientMessageCallback = callback;
     }
     async nativeStartApiCall(message, context) {
@@ -150,8 +142,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (!await this.nativeStartApiCall(message, context)) {
             throw new Error(context.errorMessage);
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         return new Promise((resolve, reject) => {
             webReciever.pendingInterAppApiCallMessageMap.set(message.id, {
                 message,
@@ -162,16 +153,14 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     }
     async ensureConnectionIsReady(message) {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        const webApplicationInitializer = await container(this)
-            .get(APPLICATION_INITIALIZER);
-        const applicationInitializing = webApplicationInitializer.initializingApplicationMap.get(fullApplicationName);
+        const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName);
         if (applicationInitializing) {
             return;
         }
-        const applicationWindow = webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
+        const applicationWindow = this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
         if (!applicationWindow) {
-            webApplicationInitializer.initializingApplicationMap.set(fullApplicationName, true);
-            await webApplicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
+            this.applicationInitializer.initializingApplicationMap.set(fullApplicationName, true);
+            await this.applicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
         }
         const connectionIsReadyMessage = {
             application: message.application,
@@ -184,19 +173,17 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             protocol: window.location.protocol,
             payload: null,
         };
-        const webMessageReciever = await container(this).get(WEB_MESSAGE_RECEIVER);
-        if (webMessageReciever.needMessageSerialization()) {
+        if (this.webMessageReciever.needMessageSerialization()) {
             // FIXME: serialize message
         }
-        webMessageReciever.sendMessageToClient(connectionIsReadyMessage);
+        this.webMessageReciever.sendMessageToClient(connectionIsReadyMessage);
     }
     hasValidApplicationInfo(message) {
         return typeof message.domain === 'string' && message.domain.length >= 3
             && typeof message.application === 'string' && message.application.length >= 3;
     }
     async handleFromClientRequest(message) {
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         let numPendingMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (!numPendingMessagesFromHost) {
             numPendingMessagesFromHost = 0;
@@ -257,8 +244,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
     }
     replyToClientRequest(message) {
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (numMessagesFromHost > 0) {
             webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1);
@@ -268,19 +254,16 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1);
         }
         // Forward the request to the source client
-        const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER);
-        if (webMessageReciever.needMessageSerialization()) {
+        if (this.webMessageReciever.needMessageSerialization()) {
             // FIXME: serialize message
         }
-        webMessageReciever.sendMessageToClient(message);
+        this.webMessageReciever.sendMessageToClient(message);
     }
     async ensureApplicationIsInstalled(fullApplicationName) {
         if (!fullApplicationName) {
             return false;
         }
-        const webApplicationInitializer = await container(this)
-            .get(APPLICATION_INITIALIZER);
-        return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
     }
     async messageIsFromValidApp(message, messageOrigin) {
         const applicationDomain = messageOrigin.split('//')[1];
@@ -289,8 +272,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         if (applicationDomain.split(':')[0] === 'localhost') {
             return true;
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         // Only accept requests from https protocol
         if (!messageOrigin.startsWith("https")
@@ -313,16 +295,13 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             return false;
         }
         // Make sure the application is installed
-        const webApplicationInitializer = await container(this)
-            .get(APPLICATION_INITIALIZER);
-        return !!webApplicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
     }
     async handleIsolateMessage(message, messageOrigin, source) {
         if (!await this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        const webReciever = terminalStore.getWebReceiver();
+        const webReciever = this.terminalStore.getWebReceiver();
         const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
         switch (message.type) {
             case IsolateMessageType.SEARCH_UNSUBSCRIBE:
@@ -342,8 +321,7 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
             if (!response) {
                 return;
             }
-            const terminalStore = container(this).getSync(TERMINAL_STORE);
-            const webReciever = terminalStore.getWebReceiver();
+            const webReciever = this.terminalStore.getWebReceiver();
             let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain;
             switch (message.type) {
                 case IsolateMessageType.SEARCH:
@@ -365,5 +343,4 @@ export class WebTransactionalReceiver extends TransactionalReceiver {
         });
     }
 }
-DI.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
 //# sourceMappingURL=WebTransactionalReceiver.js.map

@@ -8,6 +8,7 @@ import { IQOperableField } from '../../../lingo/core/field/OperableField';
 import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery';
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
+import { IRelationManager } from '../../core/entity/RelationManager';
 /**
  * Created by Papa on 10/27/2016.
  */
@@ -20,11 +21,11 @@ export declare abstract class AbstractQuery implements IAbstractQuery {
     getParameters(): {
         [alias: string]: Parameter;
     };
-    abstract toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonStatement;
+    abstract toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonStatement;
     protected getNonEntityQuery(rawQuery: RawNonEntityQuery, jsonQuery: JsonNonEntityQuery, createSelectCallback: {
         (jsonQuery: JsonNonEntityQuery): void;
-    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonNonEntityQuery;
-    protected fromClauseToJSON(fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation[];
+    }, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonNonEntityQuery;
+    protected fromClauseToJSON(fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[], queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONRelation[];
     protected groupByClauseToJSON(groupBy: IQOperableField<any, any, any, any>[]): JSONFieldInGroupBy[];
     protected orderByClauseToJSON(orderBy: IFieldInOrderBy<any>[]): JSONFieldInOrderBy[];
 }

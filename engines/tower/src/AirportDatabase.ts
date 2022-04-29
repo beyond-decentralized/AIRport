@@ -26,6 +26,7 @@ import {
 	INonEntitySearchOne,
 	intersect,
 	IQEntity,
+	IUpdateCacheManager,
 	lcase,
 	len,
 	max,
@@ -98,7 +99,7 @@ class EntityAccumulator
 export class AirportDatabase
 	implements IAirportDatabase {
 
-	databaseFacade: IDatabaseFacade;
+	databaseFacade: IDatabaseFacade
 
 	entityMap: Map<any, IEntityRecord> = new Map<any, IEntityRecord>();
 

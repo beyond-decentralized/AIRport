@@ -26,8 +26,8 @@ export class QUntypedFunction extends QUntypedField {
     getInstance() {
         return this.copyFunctions(new QUntypedFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }

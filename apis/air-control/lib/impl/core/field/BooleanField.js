@@ -18,8 +18,8 @@ export class QBooleanFunction extends QBooleanField {
     getInstance() {
         return this.copyFunctions(new QBooleanFunction(this.value));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }

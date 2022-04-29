@@ -44,11 +44,6 @@
     },
     // "db" folder (alphabetical order)
     {
-      "packageName": "@airport/cockroachdb",
-      "projectFolder": "db/cockroachdb",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/mysql",
       "projectFolder": "db/mysql",
       "shouldPublish": true
@@ -85,16 +80,6 @@
       "shouldPublish": true
     },
     // "execs" folder (alphabetical order)
-    {
-      "packageName": "@airport/go-terminal",
-      "projectFolder": "execs/go-terminal",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/go-tower",
-      "projectFolder": "execs/go-tower",
-      "shouldPublish": true
-    },
     {
       "packageName": "@airport/web-airport",
       "projectFolder": "execs/web-airport",

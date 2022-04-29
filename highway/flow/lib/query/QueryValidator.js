@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { QUERY_VALIDATOR } from '../tokens';
 import { QueryType } from './Query';
 export class QueryValidator {
     validate(request) {
@@ -14,5 +12,4 @@ export class QueryValidator {
         }
     }
 }
-DI.set(QUERY_VALIDATOR, QueryValidator);
 //# sourceMappingURL=QueryValidator.js.map

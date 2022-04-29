@@ -1,12 +1,16 @@
 import { ILocalAPIRequest } from "@airport/aviation-communication";
-import { IDiToken } from "@airport/di";
-import { IInterAppAPIClient } from "@airport/ground-control";
+import { IDependencyInjectionToken } from "@airport/direction-indicator";
+import { IInterAppAPIClient, ITransactionalConnector } from "@airport/ground-control";
+import { IOperationSerializer, IQueryResultsDeserializer } from "@airport/pressurization";
 export interface IRequestRecord {
     request: ILocalAPIRequest;
     reject: any;
     resolve: any;
 }
 export declare class IFrameInterAppPIClient implements IInterAppAPIClient {
-    invokeApiMethod<ApiInterface, ReturnValue>(token: IDiToken<ApiInterface>, methodName: string, args: any[]): Promise<ReturnValue>;
+    operationSerializer: IOperationSerializer;
+    queryResultsDeserializer: IQueryResultsDeserializer;
+    transactionalConnector: ITransactionalConnector;
+    invokeApiMethod<ApiInterface, ReturnValue>(token: IDependencyInjectionToken<ApiInterface>, methodName: string, args: any[]): Promise<ReturnValue>;
 }
 //# sourceMappingURL=IFrameInterAppApiClient.d.ts.map

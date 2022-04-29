@@ -1,4 +1,4 @@
-import { AUTOPILOT_API_LOADER, DI, IOC } from '@airport/di';
+import { AUTOPILOT_API_LOADER, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { LOCAL_API_CLIENT } from '../tokens';
 export class AutopilotApiLoader {
     loadApiAutopilot(token) {
@@ -11,12 +11,14 @@ export class AutopilotApiLoader {
                         return target;
                 }
                 return function (...args) {
-                    return IOC.getSync(LOCAL_API_CLIENT)
-                        .invokeApiMethod(token, methodName, args);
+                    return this.localApiClient.invokeApiMethod(token, methodName, args);
                 };
             }
         });
     }
 }
-DI.set(AUTOPILOT_API_LOADER, AutopilotApiLoader);
+DEPENDENCY_INJECTION.set(AUTOPILOT_API_LOADER, AutopilotApiLoader);
+AUTOPILOT_API_LOADER.setDependencies({
+    localApiClient: LOCAL_API_CLIENT
+});
 //# sourceMappingURL=AutopilotApiLoader.js.map

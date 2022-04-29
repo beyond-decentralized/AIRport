@@ -1,5 +1,4 @@
-import { DI } from '@airport/di';
-import { AbstractFunctionAdaptor, SQL_QUERY_ADAPTOR, } from '@airport/fuel-hydrant-system';
+import { AbstractFunctionAdaptor, } from '@airport/fuel-hydrant-system';
 import { SQLDataType, SqlFunction } from '@airport/ground-control';
 /**
  * Created by Papa on 8/27/2016.
@@ -178,5 +177,4 @@ export class MySqlFunctionAdaptor extends AbstractFunctionAdaptor {
         }
     }
 }
-DI.set(SQL_QUERY_ADAPTOR, MySqlQueryAdaptor);
 //# sourceMappingURL=MySqlQueryAdaptor.js.map

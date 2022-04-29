@@ -1,27 +1,17 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
-import { SEQUENCE_DAO } from '@airport/airport-code';
-import { container, DI, } from '@airport/di';
-import { getSchemaName, QueryType, SQLDataType } from '@airport/ground-control';
-import { SCHEMA_BUILDER, SqlSchemaBuilder } from '@airport/landing';
-export class MySqlSchemaBuilder extends SqlSchemaBuilder {
-    async createSchema(jsonSchema, storeDriver, context) {
-        const schemaName = getSchemaName(jsonSchema);
-        const createSchemaStatement = `CREATE SCHEMA ${schemaName}`;
-        await storeDriver.query(QueryType.DDL, createSchemaStatement, [], context, false);
+import { getFullApplicationName, QueryType, SQLDataType } from '@airport/ground-control';
+import { SqlApplicationBuilder } from '@airport/landing';
+export class MySqlApplicationBuilder extends SqlApplicationBuilder {
+    async createApplication(jsonApplication, context) {
+        const fullApplicationName = getFullApplicationName(jsonApplication);
+        const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`;
+        await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
-    getColumnSuffix(jsonSchema, jsonEntity, jsonColumn) {
+    getColumnSuffix(jsonApplication, jsonEntity, jsonColumn) {
         let primaryKeySuffix = '';
         if (jsonColumn.notNull
             || this.isPrimaryKeyColumn(jsonEntity, jsonColumn)) {
             primaryKeySuffix = ' NOT NULL';
         }
-        // SEQUENCES no longer have a generated id (for simplicity of code)
-        // let autoincrementSuffix = ''
-        // if (jsonColumn.isGenerated
-        // 	&& jsonSchema.name === '@airport/airport-code'
-        // 	&& jsonEntity.name === 'SEQUENCES') {
-        // 	autoincrementSuffix = ' AUTOINCREMENT'
-        // }
         const suffix = primaryKeySuffix; // + autoincrementSuffix
         switch (jsonColumn.type) {
             case SQLDataType.ANY:
@@ -42,37 +32,36 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
             case SQLDataType.STRING:
                 return `TEXT ${suffix}`;
             default:
-                throw new Error(`Unexpected data type for column ${jsonSchema.name}${jsonEntity.name}.${jsonColumn.name}`);
+                throw new Error(`Unexpected data type for column ${jsonApplication.name}${jsonEntity.name}.${jsonColumn.name}`);
         }
     }
-    getCreateTableSuffix(jsonSchema, jsonEntity) {
+    getCreateTableSuffix(jsonApplication, jsonEntity) {
         return ``;
     }
-    async buildAllSequences(jsonSchemas, context) {
+    async buildAllSequences(jsonApplications, context) {
         console.log('buildAllSequences');
-        let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO);
         let allSequences = [];
-        for (const jsonSchema of jsonSchemas) {
-            const qSchema = airDb.QM[getSchemaName(jsonSchema)];
-            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-                allSequences = allSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+        for (const jsonApplication of jsonApplications) {
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+                allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
-        await sequenceDao.save(allSequences);
+        await this.sequenceDao.save(allSequences);
         return allSequences;
     }
-    stageSequences(jsonSchemas, airDb, context) {
+    stageSequences(jsonApplications, context) {
         console.log('stageSequences');
         let stagedSequences = [];
-        for (const jsonSchema of jsonSchemas) {
-            const qSchema = airDb.QM[getSchemaName(jsonSchema)];
-            for (const jsonEntity of jsonSchema.versions[jsonSchema.versions.length - 1].entities) {
-                stagedSequences = stagedSequences.concat(this.buildSequences(qSchema.__dbSchema__, jsonEntity));
+        for (const jsonApplication of jsonApplications) {
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
+                stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
         return stagedSequences;
     }
-    buildSequences(dbSchema, jsonEntity) {
+    buildSequences(dbApplication, jsonEntity) {
         const sequences = [];
         for (const jsonColumn of jsonEntity.columns) {
             if (!jsonColumn.isGenerated) {
@@ -83,7 +72,7 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
                 incrementBy = 1000;
             }
             sequences.push({
-                schemaIndex: dbSchema.index,
+                applicationIndex: dbApplication.index,
                 tableIndex: jsonEntity.index,
                 columnIndex: jsonColumn.index,
                 incrementBy,
@@ -93,5 +82,4 @@ export class MySqlSchemaBuilder extends SqlSchemaBuilder {
         return sequences;
     }
 }
-DI.set(SCHEMA_BUILDER, MySqlSchemaBuilder);
 //# sourceMappingURL=MySqlSchemaBuilder.js.map

@@ -1,10 +1,7 @@
-import { AIRPORT_DATABASE, } from '@airport/air-control';
-import { SEQUENCE_DAO, } from '@airport/airport-code';
-import { container, DI, } from '@airport/di';
 import { getFullApplicationName, SQLDataType, } from '@airport/ground-control';
-import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing';
+import { SqlApplicationBuilder } from '@airport/landing';
 export class SqLiteApplicationBuilder extends SqlApplicationBuilder {
-    async createApplication(jsonApplication, storeDriver, context) {
+    async createApplication(jsonApplication, context) {
         // Nothing to do
     }
     getColumnSuffix(jsonApplication, jsonEntity, jsonColumn) {
@@ -39,22 +36,21 @@ export class SqLiteApplicationBuilder extends SqlApplicationBuilder {
     }
     async buildAllSequences(jsonApplications) {
         console.log('buildAllSequences');
-        let [airDb, sequenceDao] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_DAO);
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
-        await sequenceDao.save(allSequences);
+        await this.sequenceDao.save(allSequences);
         return allSequences;
     }
-    stageSequences(jsonApplications, airDb) {
+    stageSequences(jsonApplications, context) {
         console.log('stageSequences');
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -103,5 +99,4 @@ export class SqLiteApplicationBuilder extends SqlApplicationBuilder {
         return null;
     }
 }
-DI.set(APPLICATION_BUILDER, SqLiteApplicationBuilder);
 //# sourceMappingURL=SqLiteApplicationBuilder.js.map

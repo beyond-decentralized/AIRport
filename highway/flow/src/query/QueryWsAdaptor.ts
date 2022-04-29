@@ -1,11 +1,11 @@
-import { DEPENDENCY_INJECTION }                from '@airport/direction-indicator';
+import { IOC } from '@airport/direction-indicator';
 import { QUERY_WEB_SERVICE } from '../tokens';
 import {
 	IQueryConfig,
 	IQueryContext,
 	IQueryRequest,
 	IQueryResponse
-}                            from './Query';
+} from './Query';
 
 export type IQueryHandlerCallback = {
 	(
@@ -30,6 +30,6 @@ export async function queryWsHandler(
 	config: IQueryConfig,
 	context: IQueryContext
 ) {
-	const queryWebService = await DEPENDENCY_INJECTION.db().get(QUERY_WEB_SERVICE);
+	const queryWebService = await IOC.get(QUERY_WEB_SERVICE);
 	return await queryWebService.handle(request, config, context);
 }

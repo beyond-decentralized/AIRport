@@ -8,16 +8,17 @@ export declare class PostgreTransaction extends SqlDriver implements ITransactio
     private driver;
     private client;
     credentials: ICredentials;
+    isSync: boolean;
     pool: pg.Pool;
-    transHistory: ITransactionHistory;
+    transactionHistory: ITransactionHistory;
     constructor(driver: PostgreSqlDriver, pool: pg.Pool, client: pg.PoolClient);
     saveTransaction(transaction: ITransactionHistory): Promise<void>;
     commit(): Promise<void>;
     rollback(): Promise<void>;
     protected getClient(): Promise<pg.PoolClient | pg.Pool>;
-    composeTableName(schemaName: string, tableName: string): string;
-    doesTableExist(schemaName: string, tableName: string): Promise<boolean>;
-    dropTable(schemaName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    composeTableName(applicationName: string, tableName: string): string;
+    doesTableExist(applicationName: string, tableName: string): Promise<boolean>;
+    dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected convertValueIn(value: any): number | string;
@@ -25,9 +26,6 @@ export declare class PostgreTransaction extends SqlDriver implements ITransactio
     query(queryType: QueryType, query: string, params: any, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     doQuery(queryType: QueryType, query: string, params: any, client: pg.PoolClient | pg.Pool, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     initialize(connectionString: string): Promise<void>;
-    transact(transactionalCallback: {
-        (transaction: ITransaction): Promise<void>;
-    }, context: IOperationContext): Promise<void>;
     initAllTables(context: IOperationContext): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
     isServer(): boolean;

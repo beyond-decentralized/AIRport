@@ -1,11 +1,9 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
-import { RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
-export function QEntity(dbEntity, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
-    this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this);
+export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
+    this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this, applicationUtils, relationManager);
 }
 QEntity.prototype.fullJoin = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);
@@ -20,8 +18,10 @@ QEntity.prototype.rightJoin = function (right) {
     return this.__driver__.join(right, JoinType.RIGHT_JOIN);
 };
 export class QEntityDriver {
-    constructor(dbEntity, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
+    constructor(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
         this.dbEntity = dbEntity;
+        this.applicationUtils = applicationUtils;
+        this.relationManager = relationManager;
         this.fromClausePosition = fromClausePosition;
         this.dbRelation = dbRelation;
         this.joinType = joinType;
@@ -33,10 +33,10 @@ export class QEntityDriver {
         this.relations = [];
         this.currentChildIndex = -1;
     }
-    getInstance(applicationUtils) {
-        const qEntityConstructor = applicationUtils
+    getInstance() {
+        const qEntityConstructor = this.applicationUtils
             .getQEntityConstructor(this.dbEntity);
-        let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
+        let instance = new qEntityConstructor(this.dbEntity, this.applicationUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
         instance.__driver__.entityFieldMap = this.entityFieldMap;
@@ -61,7 +61,7 @@ export class QEntityDriver {
         return QMetadataUtils.getRelationPropertyName(QMetadataUtils.getRelationByIndex(this.qEntity, this.relationIndex));
     }
 */
-    getRelationJson(columnAliases, queryUtils, fieldUtils) {
+    getRelationJson(columnAliases, queryUtils, fieldUtils, relationManager) {
         // FIXME: this does not work for non-entity tree queries, as there is not dbEntity
         // see ApplicationDao.findMaxVersionedMapByApplicationAndDomainNames for an example
         let jsonRelation = {
@@ -74,19 +74,19 @@ export class QEntityDriver {
             si: this.dbEntity.applicationVersion.application.index
         };
         if (this.joinWhereClause) {
-            this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
+            this.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
         }
         else if (this.dbRelation) {
             this.getEntityRelationJson(jsonRelation);
         }
         else {
-            this.getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
+            this.getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
         }
         return jsonRelation;
     }
-    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
+    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
         jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON;
-        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases, fieldUtils);
+        jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(this.joinWhereClause, columnAliases);
         return jsonRelation;
     }
     getEntityRelationJson(jsonRelation) {
@@ -116,7 +116,7 @@ export class QEntityDriver {
         // jsonRelation.joinWhereClauseOperator   = this.dbRelation.joinFunctionWithOperator;  return
         // jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
+    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
         jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
         return jsonRelation;
     }
@@ -124,11 +124,10 @@ export class QEntityDriver {
         return this.qEntity;
     }
     join(right, joinType) {
-        const [applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(APPLICATION_UTILS, RELATION_MANAGER);
         let joinChild = right
-            .__driver__.getInstance(applicationUtils);
+            .__driver__.getInstance();
         joinChild.__driver__.currentChildIndex = 0;
-        let nextChildPosition = relationManager.getNextChildJoinPosition(this);
+        let nextChildPosition = this.relationManager.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
         joinChild.__driver__.joinType = joinType;
         joinChild.__driver__.parentJoinEntity = this.qEntity;
@@ -151,8 +150,8 @@ export function QTree(fromClausePosition = [], subQuery) {
 }
 extend(QEntity, QTree, {});
 export class QTreeDriver extends QEntityDriver {
-    getInstance(applicationUtils) {
-        let instance = super.getInstance(applicationUtils);
+    getInstance() {
+        let instance = super.getInstance();
         instance.__driver__
             .subQuery = this.subQuery;
         return instance;
@@ -160,18 +159,18 @@ export class QTreeDriver extends QEntityDriver {
     // getRelationPropertyName(): string {
     // 	throw new Error(`not implemented`);
     // }
-    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
+    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
         jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-            .toJSON(queryUtils, fieldUtils);
+            .toJSON(queryUtils, fieldUtils, relationManager);
         return jsonRelation;
     }
-    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils);
+    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
+        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
         jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
         jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-            .toJSON(queryUtils, fieldUtils);
+            .toJSON(queryUtils, fieldUtils, relationManager);
         return jsonRelation;
     }
 }

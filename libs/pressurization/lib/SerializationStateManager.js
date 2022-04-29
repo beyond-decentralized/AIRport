@@ -1,5 +1,3 @@
-import { DI } from "@airport/di";
-import { SERIALIZATION_STATE_MANAGER } from "./tokens";
 export var SerializationState;
 (function (SerializationState) {
     SerializationState["DATE"] = "DATE";
@@ -50,5 +48,4 @@ export class SerializationStateManager {
 }
 SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD = '__SUID__';
 SerializationStateManager.SERIALIZATION_STATE_FIELD = '__serializationState__';
-DI.set(SERIALIZATION_STATE_MANAGER, SerializationStateManager);
 //# sourceMappingURL=SerializationStateManager.js.map

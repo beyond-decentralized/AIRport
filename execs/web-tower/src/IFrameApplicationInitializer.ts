@@ -1,10 +1,6 @@
-import {
-    DEPENDENCY_INJECTION
-} from "@airport/direction-indicator";
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
-    APPLICATION_INITIALIZER,
     IApplicationInitializer
 } from "@airport/terminal-map";
 
@@ -28,4 +24,3 @@ export class IFrameApplicationInitializer
             not from Application child frames`)
     }
 }
-DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, IFrameApplicationInitializer)

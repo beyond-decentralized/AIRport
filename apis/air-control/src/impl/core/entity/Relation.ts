@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbRelation,
 	JoinType
@@ -6,12 +5,10 @@ import {
 import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
 import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
-import {
-	RELATION_MANAGER,
-	APPLICATION_UTILS
-} from '../../../tokens'
+import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import { extend } from '../../utils/qApplicationBuilderUtils'
 import { and } from '../operation/LogicalOperation'
+import { IRelationManager } from './RelationManager'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -26,10 +23,14 @@ import { and } from '../operation/LogicalOperation'
  */
 export function QRelation(
 	dbRelation: DbRelation,
-	parentQ: IQEntityInternal
+	parentQ: IQEntityInternal,
+	appliationUtils: IApplicationUtils,
+	relationManager: IRelationManager
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ = parentQ
+	this.appliationUtils = appliationUtils
+	this.relationManager = relationManager
 }
 
 QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal>(): IQ {
@@ -41,18 +42,20 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
-	const [relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
-		.getSync(RELATION_MANAGER, APPLICATION_UTILS)
 	const dbEntity = this.dbRelation.relationEntity
 
-	const qEntityConstructor = applicationUtils.getQEntityConstructor(
+	const qEntityConstructor = this.applicationUtils.getQEntityConstructor(
 		this.dbRelation.relationEntity)
 
 	let newQEntity: IQEntityInternal = new qEntityConstructor(
 		dbEntity,
-		relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
+		this.appliationUtils,
+		this.relationManager,
+		this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,
-		joinType
+		joinType,
+		this.appliationUtils,
+		this.relationManager
 	)
 	newQEntity.__driver__.parentJoinEntity = this.parentQ
 	return <IQ>newQEntity

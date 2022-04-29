@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IFieldUtils, IQueryFacade, IQueryUtils } from '@airport/air-control';
+import { IAirportDatabase, IApplicationUtils, IFieldUtils, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { IRootTransaction, PortableQuery } from '@airport/ground-control';
 import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
@@ -12,6 +12,7 @@ export declare class UpdateManager implements IUpdateManager {
     queryFacade: IQueryFacade;
     queryUtils: IQueryUtils;
     recordHistoryDuo: IRecordHistoryDuo;
+    relationManager: IRelationManager;
     repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
     sequenceGenerator: ISequenceGenerator;
     updateValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<number>;

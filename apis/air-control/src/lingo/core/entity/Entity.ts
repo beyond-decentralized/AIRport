@@ -13,6 +13,7 @@ import {IQOperableFieldInternal} from '../field/OperableField'
 import {IFieldColumnAliases}     from './Aliases'
 import {IJoinFields}             from './Joins'
 import {IQInternalRelation}      from './Relation'
+import { IRelationManager } from '../../../impl/core/entity/RelationManager'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -186,14 +187,13 @@ export interface IQEntityDriver {
 	): void;
 	*/
 
-	getInstance(
-		applicationUtils: IApplicationUtils
-	): IQEntityInternal;
+	getInstance(): IQEntityInternal;
 
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONRelation;
 
 	// getRelationPropertyName(): string;

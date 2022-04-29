@@ -7,8 +7,10 @@ import { IQDateField } from '../../lingo/core/field/DateField';
 import { IQNumberField } from '../../lingo/core/field/NumberField';
 import { IQStringField } from '../../lingo/core/field/StringField';
 import { IQUntypedField } from '../../lingo/core/field/UntypedField';
+import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils';
 import { QEntity } from '../core/entity/Entity';
 import { QRelation } from '../core/entity/Relation';
+import { IRelationManager } from '../core/entity/RelationManager';
 /**
  * From:
  * http://js-bits.blogspot.com/2010/08/javascript-inheritance-done-right.html
@@ -17,7 +19,7 @@ import { QRelation } from '../core/entity/Relation';
  */
 export declare function extend(base: any, sub: any, methods: any): any;
 export declare function getColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
-export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal, allQApplications: QApplication[]): IQRelation<typeof q>;
+export declare function getQRelation(entity: DbEntity, property: DbProperty, q: IQEntityInternal, allQApplications: QApplication[], applicationUtils: IApplicationUtils, relationManager: IRelationManager): IQRelation<typeof q>;
 export declare function getQEntityConstructor(allQApplications: QApplication[]): typeof QEntity;
 export declare function addColumnQField(entity: DbEntity, property: DbProperty, q: IQEntityInternal, column: DbColumn): IQUntypedField | IQBooleanField | IQDateField | IQNumberField | IQStringField;
 export declare function getQEntityIdRelationConstructor(dbEntity: DbEntity): typeof QRelation;

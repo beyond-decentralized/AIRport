@@ -14,10 +14,10 @@ interface ISerializableOperation {
     stubLookupTable: any[];
 }
 export declare class OperationSerializer implements IOperationSerializer {
+    serializationStateManager: ISerializationStateManager;
     serializeAsArray<E>(entity: E | E[]): E[];
     serialize<E>(entity: E | E[]): E | E[];
-    private serializeWithManager;
-    doSerialize<T>(entity: T, operation: ISerializableOperation, serializationStateManager: ISerializationStateManager): T;
+    doSerialize<T>(entity: T, operation: ISerializableOperation): T;
 }
 export {};
 //# sourceMappingURL=OperationSerializer.d.ts.map

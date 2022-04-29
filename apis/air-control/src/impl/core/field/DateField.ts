@@ -4,20 +4,21 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                             from '@airport/ground-control';
-import { IQEntityInternal }   from '../../../lingo/core/entity/Entity';
-import { IQDateField }        from '../../../lingo/core/field/DateField';
-import { IQFunction }         from '../../../lingo/core/field/Functions';
+} from '@airport/ground-control';
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity';
+import { IQDateField } from '../../../lingo/core/field/DateField';
+import { IQFunction } from '../../../lingo/core/field/Functions';
 import {
 	IDateOperation,
 	JSONRawDateOperation
-}                             from '../../../lingo/core/operation/DateOperation';
-import { RawFieldQuery }      from '../../../lingo/query/facade/FieldQuery';
-import { IFieldUtils }        from '../../../lingo/utils/FieldUtils';
-import { IQueryUtils }        from '../../../lingo/utils/QueryUtils';
+} from '../../../lingo/core/operation/DateOperation';
+import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
-import { DateOperation }      from '../operation/DateOperation';
-import { QOperableField }     from './OperableField';
+import { IRelationManager } from '../entity/RelationManager';
+import { DateOperation } from '../operation/DateOperation';
+import { QOperableField } from './OperableField';
 
 /**
  * Created by Papa on 8/11/2016.
@@ -68,10 +69,12 @@ export class QDateFunction<T extends Date | Date[] = Date>
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
-			this, columnAliases, forSelectClause, queryUtils, fieldUtils);
+			this, columnAliases, forSelectClause,
+			queryUtils, fieldUtils, relationManager);
 
 		if (this.isQueryParameter) {
 			this.parameterAlias = <string>json.v;

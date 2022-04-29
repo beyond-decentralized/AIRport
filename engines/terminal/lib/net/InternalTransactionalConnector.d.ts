@@ -19,9 +19,6 @@ export declare class InternalTransactionalConnector implements ITransactionalCon
     insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
-    startTransaction(context: IContext): Promise<boolean>;
-    commit(context: IContext): Promise<boolean>;
-    rollback(context: IContext): Promise<boolean>;
     onMessage(callback: (message: any) => void): void;
 }
 export declare function injectTransactionalConnector(): void;

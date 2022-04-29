@@ -1,8 +1,6 @@
 import { SQLDialect } from '@airport/fuel-hydrant-system';
 import { QueryType, StoreType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
-import { STORE_DRIVER } from '@airport/terminal-map';
-import { DI } from '@airport/di';
 import { SqlJsTransaction } from './SqlJsTransaction';
 /**
  * Created by Papa on 11/27/2016.
@@ -84,5 +82,4 @@ export class SqlJsDriver extends SqLiteDriver {
         return SQLDialect.SQLITE;
     }
 }
-DI.set(STORE_DRIVER, SqlJsDriver);
 //# sourceMappingURL=SqlJsDriver.js.map

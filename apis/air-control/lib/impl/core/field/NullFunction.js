@@ -11,8 +11,8 @@ export class QNullFunction extends QField {
     getInstance() {
         return this.copyFunctions(new QNullFunction());
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        return this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+        return this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
     }
 }
 //# sourceMappingURL=NullFunction.js.map

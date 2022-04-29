@@ -10,6 +10,7 @@ import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils';
 import { FieldColumnAliases } from './Aliases';
+import { IRelationManager } from './RelationManager';
 /**
  * Created by Papa on 4/21/2016.
  */
@@ -25,15 +26,17 @@ export declare namespace QEntity {
     function db<IEntity>(databaseName?: string): IEntityDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IEntityCascadeGraph, IQEntity>;
 }
 export interface QEntityConstructor {
-    new <IQE extends IQEntityInternal>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
+    new <IQE extends IQEntityInternal>(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
         new (...args: any[]): IQEntityDriver;
     }): IQE;
 }
-export declare function QEntity<IEntity>(dbEntity: DbEntity, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
+export declare function QEntity<IEntity>(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
     new (...args: any[]): IQEntityDriver;
 }): void;
 export declare class QEntityDriver implements IQEntityDriver {
     dbEntity: DbEntity;
+    private applicationUtils;
+    private relationManager;
     fromClausePosition: number[];
     dbRelation: DbRelation;
     joinType: JoinType;
@@ -53,12 +56,12 @@ export declare class QEntityDriver implements IQEntityDriver {
     parentJoinEntity: IQEntityInternal;
     private entityRelationMap;
     private oneToManyConfigMap;
-    constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
-    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
-    getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
-    getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
+    constructor(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
+    getInstance(): IQEntityInternal;
+    getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONRelation;
+    getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONJoinRelation;
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
-    getRootRelationJson(jsonRelation: JSONRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
+    getRootRelationJson(jsonRelation: JSONRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONJoinRelation;
     getQ(): IQEntityInternal;
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
     isRootEntity(): boolean;
@@ -70,8 +73,8 @@ export interface IQTreeDriver extends IQEntityDriver {
 }
 export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     subQuery: RawTreeQuery<any>;
-    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
-    getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
-    getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
+    getInstance(): IQEntityInternal;
+    getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONViewJoinRelation;
+    getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONViewJoinRelation;
 }
 //# sourceMappingURL=Entity.d.ts.map

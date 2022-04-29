@@ -1,7 +1,8 @@
 import { ILocalAPIRequest } from "@airport/aviation-communication";
-import { IDiToken } from "@airport/di";
+import { IDependencyInjectionToken } from "@airport/direction-indicator";
+import { IOperationSerializer, IQueryResultsDeserializer } from "@airport/pressurization";
 export interface ILocalAPIClient {
-    invokeApiMethod<T = any>(token: IDiToken<T>, methodName: string, args: any[]): Promise<void>;
+    invokeApiMethod<T = any>(token: IDependencyInjectionToken<T>, methodName: string, args: any[]): Promise<void>;
     onMessage(callback: (message: any) => void): any;
 }
 export interface IRequestRecord {
@@ -10,6 +11,8 @@ export interface IRequestRecord {
     resolve: any;
 }
 export declare class LocalAPIClient implements ILocalAPIClient {
+    operationSerializer: IOperationSerializer;
+    queryResultsDeserializer: IQueryResultsDeserializer;
     pendingDemoMessageMap: Map<string, IRequestRecord>;
     demoListenerStarted: boolean;
     connectionReady: boolean;
@@ -18,7 +21,7 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     constructor();
     onMessage(callback: (message: any) => void): void;
     private hasValidApplicationInfo;
-    invokeApiMethod<T>(token: IDiToken<T>, methodName: string, args: any[]): Promise<any>;
+    invokeApiMethod<T>(token: IDependencyInjectionToken<T>, methodName: string, args: any[]): Promise<any>;
     private wait;
     private isConnectionReady;
     private sendLocalRequest;

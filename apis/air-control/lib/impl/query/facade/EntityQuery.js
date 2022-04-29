@@ -10,11 +10,11 @@ export class EntityQuery extends MappableQuery {
         this.isEntityQuery = true;
         this.isHierarchicalEntityQuery = true;
     }
-    toJSON(queryUtils, fieldUtils) {
+    toJSON(queryUtils, fieldUtils, relationManager) {
         return {
-            S: this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils),
-            F: this.fromClauseToJSON(this.rawQuery.from, queryUtils, fieldUtils),
-            W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases, fieldUtils),
+            S: this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager),
+            F: this.fromClauseToJSON(this.rawQuery.from, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases),
             OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
         };
     }
@@ -45,8 +45,8 @@ export class LimitedEntityQuery extends EntityQuery {
         this.rawQuery = rawQuery;
         this.isHierarchicalEntityQuery = false;
     }
-    toJSON(queryUtils, fieldUtils) {
-        let limitedJsonEntity = super.toJSON(queryUtils, fieldUtils);
+    toJSON(queryUtils, fieldUtils, relationManager) {
+        let limitedJsonEntity = super.toJSON(queryUtils, fieldUtils, relationManager);
         limitedJsonEntity.L = this.rawQuery.limit;
         limitedJsonEntity.O = this.rawQuery.offset;
         return limitedJsonEntity;

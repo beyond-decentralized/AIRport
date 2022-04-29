@@ -9,8 +9,9 @@ interface IDeserializableOperation {
     lookupTable: any[];
 }
 export declare class QueryResultsDeserializer implements IQueryResultsDeserializer {
+    serializationStateManager: ISerializationStateManager;
     deserialize<E, T = E | E[]>(entity: T): T;
-    doDeserialize<E>(entity: E, operation: IDeserializableOperation, serializationStateManager: ISerializationStateManager): E;
+    doDeserialize<E>(entity: E, operation: IDeserializableOperation): E;
 }
 export {};
 //# sourceMappingURL=QueryResultsDeserializer.d.ts.map

@@ -4,6 +4,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QField } from './Field';
 /**
  * Created by Papa on 11/29/2016.
@@ -13,6 +14,6 @@ export declare class QNullFunction extends QField<QNullFunction> implements IQFu
     value: any;
     constructor();
     getInstance(): QNullFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 //# sourceMappingURL=NullFunction.d.ts.map

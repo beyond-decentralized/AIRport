@@ -6,14 +6,14 @@ import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 export class EntityDatabaseFacade {
     // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     // searchOne: IEntitySearchOne<Entity, EntitySelect>;
-    constructor(dbEntity, Q) {
+    constructor(dbEntity, Q, updateCacheManager) {
         this.dbEntity = dbEntity;
         this.Q = Q;
-        this.find = new EntityFind(this.dbEntity);
-        this.findOne = new EntityFindOne(this.dbEntity);
+        this.find = new EntityFind(this.dbEntity, updateCacheManager);
+        this.findOne = new EntityFindOne(this.dbEntity, updateCacheManager);
         // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-        //   this.dbEntity);
-        // this.searchOne = new EntitySearchOne(this.dbEntity);
+        //   this.dbEntity, updateCacheManager);
+        // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
     }
     get from() {
         return this.Q[this.dbEntity.name];

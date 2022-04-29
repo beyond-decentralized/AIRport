@@ -5,6 +5,7 @@ import {
 	IQueryContext,
 	IQueryFacade,
 	IQueryUtils,
+	IRelationManager,
 	QUERY_FACADE,
 } from '@airport/air-control';
 import {
@@ -25,6 +26,7 @@ export class QueryFacade
 
 	fieldUtils: IFieldUtils
 	queryUtils: IQueryUtils
+	relationManager: IRelationManager
 	transactionalConnector: ITransactionalConnector
 
 	async find<E, EntityArray extends Array<E>>(
@@ -57,7 +59,8 @@ export class QueryFacade
 		context: IQueryContext
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(this.queryUtils, this.fieldUtils),
+			jsonQuery: <JsonQuery>query.toJSON(
+				this.queryUtils, this.fieldUtils, this.relationManager),
 			parameterMap: query.getParameters(),
 			queryResultType,
 			applicationIndex: context.dbEntity.applicationVersion.application.index,

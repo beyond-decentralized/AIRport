@@ -1,8 +1,5 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
-	ENTITY_STATE_MANAGER,
-	IEntityStateManager,
 	QueryResultType
 } from '@airport/ground-control'
 import {
@@ -12,11 +9,8 @@ import {
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
-import {
-	APPLICATION_UTILS,
-	UPDATE_CACHE_MANAGER
-} from '../../../tokens'
 import { LookupProxy } from './Lookup'
+import { IUpdateCacheManager } from '../../../lingo/core/UpdateCacheManager'
 
 export interface IEntityLookupInternal<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
@@ -33,6 +27,7 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
+			updateCacheManager: IUpdateCacheManager,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped: boolean
@@ -41,6 +36,7 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
+			updateCacheManager: IUpdateCacheManager,
 			mapResults: boolean
 		) => Child
 	): Child
@@ -52,12 +48,11 @@ export abstract class EntityLookup<Child, MappedChild,
 	extends LookupProxy
 	implements IEntityLookupInternal<Child, MappedChild, IESP> {
 
-	entityStateManager: IEntityStateManager
-
 	static mapResults = false
 
 	constructor(
 		protected dbEntity: DbEntity,
+		protected updateCacheManager: IUpdateCacheManager,
 		protected mapResults = EntityLookup.mapResults,
 	) {
 		super()
@@ -70,20 +65,22 @@ export abstract class EntityLookup<Child, MappedChild,
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
+			updateCacheManager: IUpdateCacheManager,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped = true
 	): MappedChild {
-		return new MappedChildClass(this.dbEntity, isMapped)
+		return new MappedChildClass(this.dbEntity, this.updateCacheManager, isMapped)
 	}
 
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
+			updateCacheManager: IUpdateCacheManager,
 			mapResults: boolean
 		) => Child
 	): Child {
-		return new ChildClass(this.dbEntity, this.mapResults)
+		return new ChildClass(this.dbEntity, this.updateCacheManager, this.mapResults)
 	}
 
 	async entityLookup(
@@ -97,12 +94,10 @@ export abstract class EntityLookup<Child, MappedChild,
 
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)
-		const updateCacheManager =
-			await DEPENDENCY_INJECTION.db().get(UPDATE_CACHE_MANAGER)
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {
-			updateCacheManager.saveOriginalValues(result, context.dbEntity)
+			this.updateCacheManager.saveOriginalValues(result, context.dbEntity)
 		}
 		return result
 	}

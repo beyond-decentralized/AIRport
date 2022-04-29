@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
+import { AIRPORT_DATABASE, UPDATE_CACHE_MANAGER } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { Dao } from './dao/Dao';
@@ -21,7 +21,7 @@ export const CLIENT_QUERY_MANAGER = checkIn.token({
 });
 export const DAO = checkIn.token({
     class: Dao,
-    interface: 'IDao',
+    interface: 'class Dao',
     token: 'DAO'
 });
 export const OPERATION_DESERIALIZER = checkIn.token({
@@ -51,6 +51,7 @@ export const SEQUENCE_GENERATOR = checkIn.token({
 });
 DAO.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-    entityStateManager: ENTITY_STATE_MANAGER
+    entityStateManager: ENTITY_STATE_MANAGER,
+    updateCacheManager: UPDATE_CACHE_MANAGER
 });
 //# sourceMappingURL=tokens.js.map

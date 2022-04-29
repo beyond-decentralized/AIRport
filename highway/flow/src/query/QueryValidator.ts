@@ -1,9 +1,7 @@
-import { DEPENDENCY_INJECTION }              from '@airport/direction-indicator';
-import { QUERY_VALIDATOR } from '../tokens';
 import {
 	IQueryRequest,
 	QueryType
-}                          from './Query';
+} from './Query';
 
 export interface IQueryValidator {
 
@@ -27,5 +25,3 @@ export class QueryValidator
 		}
 	}
 }
-
-DEPENDENCY_INJECTION.set(QUERY_VALIDATOR, QueryValidator);

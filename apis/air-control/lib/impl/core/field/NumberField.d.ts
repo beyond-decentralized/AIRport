@@ -7,6 +7,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QOperableField } from './OperableField';
 /**
  * Created by Papa on 8/11/2016.
@@ -23,7 +24,7 @@ export declare class QNumberFunction<T extends number | number[] = number> exten
     parameterAlias: string;
     constructor(value: T | RawFieldQuery<IQNumberField>, isQueryParameter?: boolean);
     getInstance(): QNumberFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 export declare class QNumberArrayFunction extends QNumberFunction<number[]> {
     value: number[] | RawFieldQuery<any>;

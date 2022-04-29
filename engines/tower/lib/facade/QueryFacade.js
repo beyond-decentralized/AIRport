@@ -13,7 +13,7 @@ export class QueryFacade {
     }
     getPortableQuery(query, queryResultType, context) {
         return {
-            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils),
+            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,

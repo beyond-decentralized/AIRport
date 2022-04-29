@@ -2,13 +2,11 @@ import {
 	IQEntityInternal,
 	Parameter
 } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
 	ISQLQueryAdaptor,
 	ISqlValueProvider,
-	SQL_QUERY_ADAPTOR,
 } from '@airport/fuel-hydrant-system';
 import {
 	JSONSqlFunctionCall,
@@ -252,5 +250,3 @@ export class MySqlFunctionAdaptor
 		}
 	}
 }
-
-DEPENDENCY_INJECTION.set(SQL_QUERY_ADAPTOR, MySqlQueryAdaptor);

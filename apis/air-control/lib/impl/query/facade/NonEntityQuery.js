@@ -9,17 +9,17 @@ export class DistinguishableQuery extends AbstractQuery {
         super(entityAliases);
         this.isHierarchicalEntityQuery = false;
     }
-    selectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
+    selectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (rawSelect instanceof QDistinctFunction) {
             if (this.isHierarchicalEntityQuery) {
                 throw new Error(`Distinct cannot be used in SELECT of Hierarchical/Bridged Entity queries.`);
             }
             let rawInnerSelect = rawSelect.getSelectClause();
-            let innerSelect = this.nonDistinctSelectClauseToJSON(rawInnerSelect, queryUtils, fieldUtils);
+            let innerSelect = this.nonDistinctSelectClauseToJSON(rawInnerSelect, queryUtils, fieldUtils, relationManager);
             return rawSelect.toJSON(innerSelect);
         }
         else {
-            return this.nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils);
+            return this.nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager);
         }
     }
 }

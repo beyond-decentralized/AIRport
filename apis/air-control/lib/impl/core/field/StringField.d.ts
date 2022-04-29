@@ -7,6 +7,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QOperableField } from './OperableField';
 /**
  * Created by Papa on 8/11/2016.
@@ -26,7 +27,7 @@ export declare class QStringFunction<T extends string | string[] = string> exten
     parameterAlias: string;
     constructor(value: T | RawFieldQuery<any>, isQueryParameter?: boolean);
     getInstance(): QStringFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 export declare class QStringArrayFunction extends QStringFunction<string[]> {
     value: string[] | RawFieldQuery<any>;

@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, REPOSITORY_LOADER } from '@airport/air-control';
+import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER } from '@airport/air-control';
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
@@ -106,7 +106,8 @@ export const UPDATE_MANAGER = terminal.token({
 ABSTRACT_MUTATION_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     fieldUtils: FIELD_UTILS,
-    queryUtils: QUERY_UTILS
+    queryUtils: QUERY_UTILS,
+    relationManager: RELATION_MANAGER
 });
 ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
     terminalStore: TERMINAL_STORE,
@@ -215,6 +216,7 @@ UPDATE_MANAGER.setDependencies({
     queryFacade: QUERY_FACADE,
     queryUtils: QUERY_UTILS,
     recordHistoryDuo: RECORD_HISTORY_DUO,
+    relationManager: RELATION_MANAGER,
     repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
     sequenceGenerator: SEQUENCE_GENERATOR,
 });

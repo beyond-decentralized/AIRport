@@ -5,6 +5,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IQuery } from '../../../lingo/query/facade/Query';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
+import { IRelationManager } from '../../core/entity/RelationManager';
 import { DistinguishableQuery } from './NonEntityQuery';
 /**
  * Created by Papa on 10/24/2016.
@@ -12,8 +13,8 @@ import { DistinguishableQuery } from './NonEntityQuery';
 export declare class FieldQuery<IQF extends IQOrderableField<IQF>> extends DistinguishableQuery implements IQuery {
     private rawQuery;
     constructor(rawQuery: RawFieldQuery<IQF>, entityAliases?: IEntityAliases);
-    nonDistinctSelectClauseToJSON(rawSelect: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): any;
-    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonFieldQuery;
+    nonDistinctSelectClauseToJSON(rawSelect: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): any;
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonFieldQuery;
     getClauseDataType(): SQLDataType;
 }
 //# sourceMappingURL=FieldQuery.d.ts.map

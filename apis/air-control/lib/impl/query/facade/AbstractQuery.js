@@ -13,21 +13,21 @@ export class AbstractQuery {
     ) {
         return this.entityAliases.getParams().getParameters();
     }
-    getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils) {
-        let from = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils);
+    getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils, relationManager) {
+        let from = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils, relationManager);
         jsonQuery.F = from;
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.where, this.columnAliases, fieldUtils);
+        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.where, this.columnAliases);
         jsonQuery.GB = this.groupByClauseToJSON(rawQuery.groupBy);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.having, this.columnAliases, fieldUtils);
+        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.having, this.columnAliases);
         jsonQuery.OB = this.orderByClauseToJSON(rawQuery.orderBy);
         jsonQuery.L = rawQuery.limit;
         jsonQuery.O = rawQuery.offset;
         return jsonQuery;
     }
-    fromClauseToJSON(fromClause, queryUtils, fieldUtils) {
+    fromClauseToJSON(fromClause, queryUtils, fieldUtils, relationManager) {
         if (!fromClause) {
             if (this.isEntityQuery) {
                 return [];
@@ -46,7 +46,7 @@ export class AbstractQuery {
                 }
             }
             return fromEntity.__driver__
-                .getRelationJson(this.columnAliases, queryUtils, fieldUtils);
+                .getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager);
         });
     }
     groupByClauseToJSON(groupBy) {

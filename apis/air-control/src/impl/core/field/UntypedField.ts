@@ -4,22 +4,23 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IFieldUtils,
 	IQueryUtils
-}                           from '../../..'
-import {IQEntityInternal}   from '../../../lingo/core/entity/Entity'
-import {IQFunction}         from '../../../lingo/core/field/Functions'
-import {IQUntypedField}     from '../../../lingo/core/field/UntypedField'
+} from '../../..'
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { IQFunction } from '../../../lingo/core/field/Functions'
+import { IQUntypedField } from '../../../lingo/core/field/UntypedField'
 import {
 	IUntypedOperation,
 	JSONRawUntypedOperation
-}                           from '../../../lingo/core/operation/UntypedOperation'
-import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
-import {FieldColumnAliases} from '../entity/Aliases'
-import {UntypedOperation}   from '../operation/UntypedOperation'
-import {QOperableField}     from './OperableField'
+} from '../../../lingo/core/operation/UntypedOperation'
+import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery'
+import { FieldColumnAliases } from '../entity/Aliases'
+import { IRelationManager } from '../entity/RelationManager'
+import { UntypedOperation } from '../operation/UntypedOperation'
+import { QOperableField } from './OperableField'
 
 /**
  * Created by papa on 7/13/17.
@@ -69,7 +70,7 @@ export class QUntypedFunction
 		private isQueryParameter: boolean = false
 	) {
 		// super(<any>{type: SQLDataType.ANY}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
-		super(<any>{type: null}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: null }, null, null, JSONClauseObjectType.FIELD_FUNCTION)
 		throw new Error(`Untyped data type is not supported`)
 	}
 
@@ -81,10 +82,12 @@ export class QUntypedFunction
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
-			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
+			this, columnAliases, forSelectClause,
+			queryUtils, fieldUtils, relationManager)
 
 		if (this.isQueryParameter) {
 			this.parameterAlias = <string>json.v

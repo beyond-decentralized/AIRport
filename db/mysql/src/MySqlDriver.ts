@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
   SQLDialect,
   SqlDriver
@@ -9,9 +8,7 @@ import {
 } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import {
-  IOperationContext,
-  ITransaction,
-  STORE_DRIVER
+  IOperationContext
 } from '@airport/terminal-map';
 import {
   FieldPacket,
@@ -237,4 +234,3 @@ and TABLE_NAME = '${tableName}';`,
 
 }
 
-DEPENDENCY_INJECTION.set(STORE_DRIVER, MySqlDriver);

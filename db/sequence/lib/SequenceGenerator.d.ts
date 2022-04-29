@@ -1,4 +1,4 @@
-import { ISequence } from '@airport/airport-code';
+import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity } from '@airport/ground-control';
 /**
@@ -20,6 +20,7 @@ import { DbColumn, DbEntity } from '@airport/ground-control';
  *
  */
 export declare class SequenceGenerator implements ISequenceGenerator {
+    sequenceDao: ISequenceDao;
     protected sequences: ISequence[][][];
     protected sequenceBlocks: number[][][];
     protected generatingSequenceNumbers: boolean;

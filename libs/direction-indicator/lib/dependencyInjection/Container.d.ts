@@ -47,7 +47,7 @@ export interface IRootContainer extends IContainer {
     remove(container: IChildContainer): void;
 }
 export declare class Container implements IContainer {
-    set<I>(token: IDependencyInjectionToken<I>, clazz: new () => I): void;
+    set<I>(token: IDependencyInjectionToken<I>, aClass: new () => I): void;
 }
 export declare class ChildContainer extends Container implements IChildContainer {
     context: IInjectionContext;

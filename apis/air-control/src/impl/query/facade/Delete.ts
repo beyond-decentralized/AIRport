@@ -1,19 +1,20 @@
 import {
 	JsonDelete,
 	JSONEntityRelation
-}                      from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IFieldUtils
-}                      from '../../../lingo/utils/FieldUtils'
+} from '../../../lingo/utils/FieldUtils'
 import {
 	IQueryUtils
-}                      from '../../../lingo/utils/QueryUtils'
+} from '../../../lingo/utils/QueryUtils'
 import {
 	IQEntity,
 	IQEntityInternal
-}                      from '../../../lingo/core/entity/Entity'
-import {RawDelete}     from '../../../lingo/query/facade/Delete'
-import {AbstractQuery} from './AbstractQuery'
+} from '../../../lingo/core/entity/Entity'
+import { RawDelete } from '../../../lingo/query/facade/Delete'
+import { AbstractQuery } from './AbstractQuery'
+import { IRelationManager } from '../../core/entity/RelationManager'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -30,13 +31,15 @@ export class Delete<IQE extends IQEntity>
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonDelete {
 		return {
 			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.deleteFrom)
 				.__driver__.getRelationJson(
-					this.columnAliases, queryUtils, fieldUtils),
-			W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases, fieldUtils)
+					this.columnAliases,
+					queryUtils, fieldUtils, relationManager),
+			W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases)
 		}
 	}
 }

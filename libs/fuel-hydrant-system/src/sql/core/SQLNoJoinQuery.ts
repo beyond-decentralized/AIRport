@@ -69,7 +69,7 @@ export abstract class SQLNoJoinQuery
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`)
 		}
 
-		const firstQEntity: IQEntity = new QEntity(firstDbEntity)
+		const firstQEntity: IQEntity = new QEntity(firstDbEntity, this.applicationUtils, this.relationManager)
 
 		const tableAlias = this.relationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal

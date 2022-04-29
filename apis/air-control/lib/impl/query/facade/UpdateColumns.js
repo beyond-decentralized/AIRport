@@ -4,7 +4,7 @@ export class UpdateColumns extends AbstractUpdate {
     constructor(rawUpdate) {
         super(rawUpdate);
     }
-    setToJSON(set, queryUtils, fieldUtils) {
+    setToJSON(set, queryUtils, fieldUtils, relationManager) {
         const setClause = {};
         const dbEntity = this.rawUpdate.update
             .__driver__.dbEntity;
@@ -33,7 +33,7 @@ export class UpdateColumns extends AbstractUpdate {
             if (!value.toJSON) {
                 throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${this.rawUpdate.update.__driver__.dbEntity.name}`;
             }
-            setClause[columnName] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils);
+            setClause[columnName] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
         }
         return setClause;
     }

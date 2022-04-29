@@ -3,20 +3,15 @@ import {
     ILocalAPIRequest
 } from "@airport/aviation-communication";
 import {
-    container,
-    DEPENDENCY_INJECTION,
     IDependencyInjectionToken
 } from "@airport/direction-indicator";
 import {
     IInterAppAPIClient,
-    INTER_APP_API_CLIENT,
     ITransactionalConnector
 } from "@airport/ground-control";
 import {
     IOperationSerializer,
-    IQueryResultsDeserializer,
-    OPERATION_SERIALIZER,
-    QUERY_RESULTS_DESERIALIZER
+    IQueryResultsDeserializer
 } from "@airport/pressurization";
 
 
@@ -50,7 +45,7 @@ export class IFrameInterAppPIClient
         const request: ICoreLocalApiRequest = {
             args: serializedParams,
             methodName,
-            objectName: token.name
+            objectName: token.descriptor.interface
         }
 
         let response = await this.transactionalConnector.callApi(request)
@@ -68,8 +63,3 @@ export class IFrameInterAppPIClient
     }
 
 }
-DEPENDENCY_INJECTION.set(INTER_APP_API_CLIENT, IFrameInterAppPIClient)
-INTER_APP_API_CLIENT.setDependencies({
-    operationSerializer: OPERATION_SERIALIZER,
-    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER
-})

@@ -9,12 +9,12 @@ export class UpdateProperties extends AbstractUpdate {
     constructor(rawUpdate) {
         super(rawUpdate);
     }
-    toJSON(queryUtils, fieldUtils) {
+    toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             U: this.rawUpdate.update
-                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils),
+                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
             S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases, fieldUtils)
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
         };
     }
     setToJSON(rawSet, queryUtils, fieldUtils) {

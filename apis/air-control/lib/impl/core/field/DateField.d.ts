@@ -7,6 +7,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QOperableField } from './OperableField';
 /**
  * Created by Papa on 8/11/2016.
@@ -23,7 +24,7 @@ export declare class QDateFunction<T extends Date | Date[] = Date> extends QDate
     parameterAlias: string;
     constructor(value: T | RawFieldQuery<QDateField>, isQueryParameter?: boolean);
     getInstance(): QDateFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 export declare class QDateArrayFunction extends QDateFunction<Date[]> {
     value: Date[] | RawFieldQuery<any>;

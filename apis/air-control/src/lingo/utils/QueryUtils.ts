@@ -6,8 +6,7 @@ export interface IQueryUtils {
 
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
-		columnAliases: IFieldColumnAliases<any>,
-		fieldUtils: IFieldUtils
+		columnAliases: IFieldColumnAliases<any>
 	): JSONBaseOperation;
 
 }

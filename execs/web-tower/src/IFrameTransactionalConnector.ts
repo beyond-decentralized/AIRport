@@ -5,7 +5,6 @@ import {
 import { IApplicationVersion } from '@airport/airspace'
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -14,8 +13,7 @@ import {
 	getFullApplicationName,
 	ISaveResult,
 	ITransactionalConnector,
-	PortableQuery,
-	TRANSACTIONAL_CONNECTOR
+	PortableQuery
 } from '@airport/ground-control';
 import {
 	IAddRepositoryIMI,
@@ -29,13 +27,11 @@ import {
 	IReadQueryIMI,
 	IRetrieveDomainIMI,
 	ISaveIMI,
-	ITransactionEndIMI,
 	LastIds,
 	ICallApiIMI,
 	IApplicationLoader,
 	ILocalAPIServer
 } from '@airport/security-check';
-import { ITransactionContext } from '@airport/terminal-map';
 import {
 	Observable,
 	Observer
@@ -67,10 +63,6 @@ export enum AppState {
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
-	commit(
-		context?: IContext
-	): Promise<boolean>
-
 	getLatestApplicationVersionMapByFullApplicationName(
 		applicationName: string
 	): Promise<IApplicationVersion>
@@ -78,14 +70,6 @@ export interface IIframeTransactionalConnector
 	retrieveDomain(
 		domainName: DomainName
 	): Promise<DbDomain>
-
-	rollback(
-		context?: IContext
-	): Promise<boolean>
-
-	startTransaction(
-		context?: IContext
-	): Promise<boolean>
 
 }
 
@@ -353,35 +337,6 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async startTransaction(
-		context: ITransactionContext
-	): Promise<boolean> {
-		return await this.sendMessage<IIsolateMessage, boolean>({
-			...this.getCoreFields(),
-			type: IsolateMessageType.START_TRANSACTION
-		})
-	}
-
-	async commit(
-		context: ITransactionContext
-	): Promise<boolean> {
-		return await this.sendMessage<ITransactionEndIMI, boolean>({
-			...this.getCoreFields(),
-			transactionId: context.transaction.id,
-			type: IsolateMessageType.COMMIT
-		})
-	}
-
-	async rollback(
-		context: ITransactionContext
-	): Promise<boolean> {
-		return await this.sendMessage<ITransactionEndIMI, boolean>({
-			...this.getCoreFields(),
-			transactionId: context.transaction.id,
-			type: IsolateMessageType.ROLLBACK
-		})
-	}
-
 	async getLatestApplicationVersionMapByFullApplicationName(
 		fullApplicationName: string
 	): Promise<IApplicationVersion> {
@@ -588,4 +543,3 @@ export class IframeTransactionalConnector
 	}
 
 }
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector)

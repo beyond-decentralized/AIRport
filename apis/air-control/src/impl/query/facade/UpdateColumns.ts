@@ -2,13 +2,14 @@ import {
 	IEntityUpdateColumns,
 	IQEntity,
 	IQEntityInternal
-}                         from '../../../lingo/core/entity/Entity'
-import {RawUpdateColumns} from '../../../lingo/query/facade/Update'
-import {IFieldUtils}      from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}      from '../../../lingo/utils/QueryUtils'
-import {QField}           from '../../core/field/Field'
-import {wrapPrimitive}    from '../../core/field/WrapperFunctions'
-import {AbstractUpdate}   from './AbstractUpdate'
+} from '../../../lingo/core/entity/Entity'
+import { RawUpdateColumns } from '../../../lingo/query/facade/Update'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
+import { QField } from '../../core/field/Field'
+import { wrapPrimitive } from '../../core/field/WrapperFunctions'
+import { AbstractUpdate } from './AbstractUpdate'
 
 export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>
 	extends AbstractUpdate<IQE, RawUpdateColumns<IEUC, IQE>> {
@@ -22,13 +23,14 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 	protected setToJSON(
 		set: any,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
-		const dbEntity        = (<IQEntityInternal><any>this.rawUpdate.update)
+		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.update)
 			.__driver__.dbEntity
-		const dbColumnMap     = dbEntity.columnMap
-		const idDbColumnMap   = dbEntity.idColumnMap
+		const dbColumnMap = dbEntity.columnMap
+		const idDbColumnMap = dbEntity.idColumnMap
 		for (const columnName in set) {
 			let value = set[columnName]
 			if (value === undefined) {
@@ -53,7 +55,8 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${(<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity.name}`
 			}
 			setClause[columnName] = (<QField<any>>value).toJSON(
-				this.columnAliases, false, queryUtils, fieldUtils)
+				this.columnAliases, false,
+				queryUtils, fieldUtils, relationManager)
 		}
 
 		return setClause

@@ -7,6 +7,7 @@ import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QOperableField } from './OperableField';
 /**
  * Created by Papa on 8/10/2016.
@@ -23,6 +24,6 @@ export declare class QBooleanFunction extends QBooleanField implements IQFunctio
     parameterAlias: string;
     constructor(value: boolean | RawFieldQuery<QBooleanField>, isQueryParameter?: boolean);
     getInstance(): QBooleanFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 //# sourceMappingURL=BooleanField.d.ts.map

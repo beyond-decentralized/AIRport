@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	JSONBaseOperation,
 	JSONValueOperation,
@@ -11,6 +10,7 @@ import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
 import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
 import { IFieldUtils } from '../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../core/entity/RelationManager'
 import { QExistsFunction } from '../core/field/Functions'
 import { QOperableField } from '../core/field/OperableField'
 import { wrapPrimitive } from '../core/field/WrapperFunctions'
@@ -19,10 +19,12 @@ import { TreeQuery } from '../query/facade/TreeQuery'
 export class QueryUtils
 	implements IQueryUtils {
 
+	fieldUtils: IFieldUtils
+	relationManager: IRelationManager
+
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,
-		columnAliases: IFieldColumnAliases<any>,
-		fieldUtils: IFieldUtils
+		columnAliases: IFieldColumnAliases<any>
 	): JSONBaseOperation {
 		if (!whereClause) {
 			return null
@@ -38,12 +40,13 @@ export class QueryUtils
 				let jsonLogicalOperation = <JSONLogicalOperation>jsonOperation
 				switch (operation.o) {
 					case SqlOperator.NOT:
-						jsonLogicalOperation.v = this.whereClauseToJSON(<JSONBaseOperation>logicalOperation.v, columnAliases, fieldUtils)
+						jsonLogicalOperation.v = this.whereClauseToJSON(
+							<JSONBaseOperation>logicalOperation.v, columnAliases)
 						break
 					case SqlOperator.AND:
 					case SqlOperator.OR:
 						jsonLogicalOperation.v = (<JSONBaseOperation[]>logicalOperation.v).map((value) =>
-							this.whereClauseToJSON(value, columnAliases, fieldUtils)
+							this.whereClauseToJSON(value, columnAliases)
 						)
 						break
 					default:
@@ -55,7 +58,8 @@ export class QueryUtils
 				let functionOperation: QExistsFunction<any> = <QExistsFunction<any>><any>operation
 				let query = functionOperation.getQuery()
 				let jsonQuery = new TreeQuery(
-					query, columnAliases.entityAliases).toJSON(this, fieldUtils)
+					query, columnAliases.entityAliases).toJSON(this,
+						this.fieldUtils, this.relationManager)
 				jsonOperation = functionOperation.toJSON(jsonQuery)
 				break
 			case OperationCategory.BOOLEAN:
@@ -68,14 +72,14 @@ export class QueryUtils
 				// etc.)
 				let jsonValueOperation: JSONValueOperation = <JSONValueOperation>jsonOperation
 				jsonValueOperation.l = this.convertLRValue(
-					valueOperation.l, columnAliases, fieldUtils)
+					valueOperation.l, columnAliases)
 				let rValue = valueOperation.r
 				if (rValue instanceof Array) {
 					jsonValueOperation.r = rValue.map((anRValue) => {
-						return this.convertLRValue(anRValue, columnAliases, fieldUtils)
+						return this.convertLRValue(anRValue, columnAliases)
 					})
 				} else {
-					jsonValueOperation.r = this.convertLRValue(rValue, columnAliases, fieldUtils)
+					jsonValueOperation.r = this.convertLRValue(rValue, columnAliases)
 				}
 				break
 		}
@@ -85,8 +89,7 @@ export class QueryUtils
 
 	private convertLRValue(
 		value,
-		columnAliases: IFieldColumnAliases<any>,
-		fieldUtils: IFieldUtils
+		columnAliases: IFieldColumnAliases<any>
 	): any {
 		value = wrapPrimitive(value)
 		switch (typeof value) {
@@ -94,11 +97,12 @@ export class QueryUtils
 				throw new Error(`'undefined' is not a valid L or R value`)
 			default:
 				if (value instanceof QOperableField) {
-					return value.toJSON(columnAliases, false, this, fieldUtils)
+					return value.toJSON(columnAliases, false,
+						this, this.fieldUtils, this.relationManager)
 				} // Must be a Field Query
 				else {
 					let rawFieldQuery: RawFieldQuery<any> = value
-					return fieldUtils.getFieldQueryJson(
+					return this.fieldUtils.getFieldQueryJson(
 						rawFieldQuery, columnAliases.entityAliases, this)
 				}
 		}

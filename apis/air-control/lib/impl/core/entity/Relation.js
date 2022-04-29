@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
-import { RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { and } from '../operation/LogicalOperation';
 /**
@@ -13,9 +11,11 @@ import { and } from '../operation/LogicalOperation';
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-export function QRelation(dbRelation, parentQ) {
+export function QRelation(dbRelation, parentQ, appliationUtils, relationManager) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
+    this.appliationUtils = appliationUtils;
+    this.relationManager = relationManager;
 }
 QRelation.prototype.innerJoin = function () {
     return this.getNewQEntity(JoinType.INNER_JOIN);
@@ -24,11 +24,9 @@ QRelation.prototype.leftJoin = function () {
     return this.getNewQEntity(JoinType.LEFT_JOIN);
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
-    const [relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
-        .getSync(RELATION_MANAGER, APPLICATION_UTILS);
     const dbEntity = this.dbRelation.relationEntity;
-    const qEntityConstructor = applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
-    let newQEntity = new qEntityConstructor(dbEntity, relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
+    const qEntityConstructor = this.applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
+    let newQEntity = new qEntityConstructor(dbEntity, this.appliationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.appliationUtils, this.relationManager);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };

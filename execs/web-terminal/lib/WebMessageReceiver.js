@@ -1,7 +1,6 @@
-import { container, DI } from "@airport/di";
-import { TERMINAL_STORE, TRANSACTIONAL_RECEIVER } from "@airport/terminal-map";
+import { IOC } from "@airport/direction-indicator";
+import { TERMINAL_STORE } from "@airport/terminal-map";
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
-import { WEB_MESSAGE_RECEIVER } from './tokens';
 export class WebMesageReceiver {
     constructor() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function';
@@ -18,15 +17,13 @@ export class WebMesageReceiver {
                 },
             });
             this.communicationChannel.onmessage = (message) => {
-                const transactionalReceiver = container(this).getSync(TRANSACTIONAL_RECEIVER);
-                transactionalReceiver.handleClientRequest(message);
+                this.transactionalReceiver.handleClientRequest(message);
             };
         };
         createChannel();
         window.addEventListener("message", event => {
             const message = event.data;
-            const transactionalReceiver = container(this).getSync(TRANSACTIONAL_RECEIVER);
-            transactionalReceiver.handleAppRequest(message, event.origin, event.source);
+            this.transactionalReceiver.handleAppRequest(message, event.origin, event.source);
         }, false);
     }
     needMessageSerialization() {
@@ -38,9 +35,8 @@ export class WebMesageReceiver {
     sendMessageToApp() {
     }
 }
-DI.set(WEB_MESSAGE_RECEIVER, WebMesageReceiver);
 export function injectWebReceiver() {
-    const terminalStore = container(this).getSync(TERMINAL_STORE);
+    const terminalStore = IOC.getSync(TERMINAL_STORE);
     const webReciever = terminalStore.getWebReceiver();
     webReciever.localDomain = 'localhost:31717';
 }

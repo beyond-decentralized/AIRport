@@ -1,11 +1,11 @@
 import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONRelation } from '@airport/ground-control';
 import { IFieldUtils } from '../../utils/FieldUtils';
 import { IQueryUtils } from '../../utils/QueryUtils';
-import { IApplicationUtils } from '../../utils/ApplicationUtils';
 import { IQOperableFieldInternal } from '../field/OperableField';
 import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
 import { IQInternalRelation } from './Relation';
+import { IRelationManager } from '../../../impl/core/entity/RelationManager';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
  * Used for DELETE statements.  Must list all @Id properties.
@@ -119,8 +119,8 @@ export interface IQEntityDriver {
     joinWhereClause: JSONBaseOperation;
     parentJoinEntity: IQEntityInternal;
     relations: IQInternalRelation<any>[];
-    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
-    getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
+    getInstance(): IQEntityInternal;
+    getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONRelation;
     getRootJoinEntity(): IQEntityInternal;
     isRootEntity(): boolean;
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;

@@ -4,20 +4,21 @@ import {
 	JSONClauseField,
 	JSONClauseObjectType,
 	SQLDataType
-}                           from '@airport/ground-control'
-import {IQEntityInternal}   from '../../../lingo/core/entity/Entity'
-import {IQBooleanField}     from '../../../lingo/core/field/BooleanField'
-import {IQFunction}         from '../../../lingo/core/field/Functions'
+} from '@airport/ground-control'
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { IQBooleanField } from '../../../lingo/core/field/BooleanField'
+import { IQFunction } from '../../../lingo/core/field/Functions'
 import {
 	IBooleanOperation,
 	JSONRawBooleanOperation
-}                           from '../../../lingo/core/operation/BooleanOperation'
-import {RawFieldQuery}      from '../../../lingo/query/facade/FieldQuery'
-import {IFieldUtils}        from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}        from '../../../lingo/utils/QueryUtils'
-import {FieldColumnAliases} from '../entity/Aliases'
-import {BooleanOperation}   from '../operation/BooleanOperation'
-import {QOperableField}     from './OperableField'
+} from '../../../lingo/core/operation/BooleanOperation'
+import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { FieldColumnAliases } from '../entity/Aliases'
+import { IRelationManager } from '../entity/RelationManager'
+import { BooleanOperation } from '../operation/BooleanOperation'
+import { QOperableField } from './OperableField'
 
 /**
  * Created by Papa on 8/10/2016.
@@ -59,7 +60,7 @@ export class QBooleanFunction
 		public value: boolean | RawFieldQuery<QBooleanField>,
 		private isQueryParameter: boolean = false
 	) {
-		super(<any>{type: SQLDataType.BOOLEAN}, null, null, JSONClauseObjectType.FIELD_FUNCTION)
+		super(<any>{ type: SQLDataType.BOOLEAN }, null, null, JSONClauseObjectType.FIELD_FUNCTION)
 	}
 
 	getInstance(): QBooleanFunction {
@@ -70,10 +71,12 @@ export class QBooleanFunction
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONClauseField {
 		let json = this.operableFunctionToJson(
-			this, columnAliases, forSelectClause, queryUtils, fieldUtils)
+			this, columnAliases, forSelectClause,
+			queryUtils, fieldUtils, relationManager)
 
 		if (this.isQueryParameter) {
 			this.parameterAlias = <string>json.v

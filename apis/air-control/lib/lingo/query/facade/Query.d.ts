@@ -3,6 +3,7 @@ import { IFieldUtils } from '../../utils/FieldUtils';
 import { IQueryUtils } from '../../utils/QueryUtils';
 import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
+import { IRelationManager } from '../../../impl/core/entity/RelationManager';
 /**
  * Query input format, as specified by the user. All queries extend this format.
  */
@@ -20,7 +21,7 @@ export interface RawLimitedQuery {
  * Internal query format. All query implementations extend this.
  */
 export interface IQuery {
-    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonQuery;
+    toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonQuery;
 }
 export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;

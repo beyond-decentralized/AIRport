@@ -1,12 +1,10 @@
-import { QueryType, SQLDataType,  } from '@airport/ground-control'
+import { QueryType, SQLDataType, } from '@airport/ground-control'
 import { transactional } from '@airport/tower'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
-import { IOperationContext, ITransaction, STORE_DRIVER } from '@airport/terminal-map'
-import { PostgreTransaction } from './PostgreTransaction'
+import { IOperationContext } from '@airport/terminal-map'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse
@@ -207,4 +205,3 @@ export class PostgreSqlDriver
 	}
 
 }
-DEPENDENCY_INJECTION.set(STORE_DRIVER, PostgreSqlDriver);

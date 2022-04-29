@@ -5,9 +5,7 @@ import {
 import {
 	ISequence
 } from '@airport/airport-code'
-import {
-	DEPENDENCY_INJECTION, IContext,
-} from '@airport/direction-indicator';
+import { IContext } from '@airport/direction-indicator'
 import {
 	DbApplication,
 	getFullApplicationName,
@@ -17,7 +15,7 @@ import {
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
-import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing'
+import { SqlApplicationBuilder } from '@airport/landing'
 
 export class PostgreApplicationBuilder
 	extends SqlApplicationBuilder {
@@ -170,4 +168,3 @@ export class PostgreApplicationBuilder
 
 }
 
-DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, PostgreApplicationBuilder)

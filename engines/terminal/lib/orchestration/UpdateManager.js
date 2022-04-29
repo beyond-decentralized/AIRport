@@ -51,7 +51,7 @@ export class UpdateManager {
         const jsonUpdate = portableQuery.jsonQuery;
         const getSheetSelectFromSetClauseResult = this.applicationUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
-        const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils);
+        const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils, this.relationManager);
         const jsonSelect = {
             S: jsonSelectClause,
             F: [jsonUpdate.U],

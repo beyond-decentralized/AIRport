@@ -21,21 +21,21 @@ export class FieldQuery extends DistinguishableQuery {
         super(entityAliases);
         this.rawQuery = rawQuery;
     }
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
+    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (!(this.rawQuery.select instanceof QField)) {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
         this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity());
-        return this.rawQuery.select.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
+        return this.rawQuery.select.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
     }
-    toJSON(queryUtils, fieldUtils) {
-        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
+    toJSON(queryUtils, fieldUtils, relationManager) {
+        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
             S: select,
             ot: JSONClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
+        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }
     getClauseDataType() {
         let selectField = this.rawQuery.select;

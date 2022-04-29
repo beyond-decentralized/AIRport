@@ -4,34 +4,35 @@ import {
 	JsonNonEntityQuery,
 	JSONRelation,
 	JsonStatement
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IFieldUtils
-}                          from '../../../lingo/utils/FieldUtils'
+} from '../../../lingo/utils/FieldUtils'
 import {
 	IQueryUtils
-}                          from '../../../lingo/utils/QueryUtils'
+} from '../../../lingo/utils/QueryUtils'
 import {
 	IEntityAliases,
 	IFieldColumnAliases,
 	Parameter
-}                          from '../../../lingo/core/entity/Aliases'
+} from '../../../lingo/core/entity/Aliases'
 import {
 	IEntityRelationFrom,
 	IFrom,
 	IQEntityInternal
-}                          from '../../../lingo/core/entity/Entity'
-import {IFieldInOrderBy}   from '../../../lingo/core/field/FieldInOrderBy'
-import {IQOperableField}   from '../../../lingo/core/field/OperableField'
-import {IAbstractQuery}    from '../../../lingo/query/facade/AbstractQuery'
-import {RawNonEntityQuery} from '../../../lingo/query/facade/NonEntityQuery'
-import {RawTreeQuery}      from '../../../lingo/query/facade/TreeQuery'
-import {EntityAliases,}    from '../../core/entity/Aliases'
+} from '../../../lingo/core/entity/Entity'
+import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy'
+import { IQOperableField } from '../../../lingo/core/field/OperableField'
+import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery'
+import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery'
+import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
+import { EntityAliases, } from '../../core/entity/Aliases'
 import {
 	QEntity,
 	QTree
-}                          from '../../core/entity/Entity'
-import {FieldInOrderBy}    from '../../core/field/FieldInOrderBy'
+} from '../../core/entity/Entity'
+import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
+import { IRelationManager } from '../../core/entity/RelationManager'
 
 /**
  * Created by Papa on 10/27/2016.
@@ -43,7 +44,7 @@ export abstract class AbstractQuery
 	protected isEntityQuery: boolean = false
 
 	constructor(
-		protected entityAliases: IEntityAliases           = new EntityAliases(),
+		protected entityAliases: IEntityAliases = new EntityAliases(),
 		protected columnAliases: IFieldColumnAliases<any> = entityAliases.getNewFieldColumnAliases()
 	) {
 	}
@@ -55,7 +56,8 @@ export abstract class AbstractQuery
 
 	abstract toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonStatement;
 
 	protected getNonEntityQuery(
@@ -63,22 +65,24 @@ export abstract class AbstractQuery
 		jsonQuery: JsonNonEntityQuery,
 		createSelectCallback: { (jsonQuery: JsonNonEntityQuery): void },
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonNonEntityQuery {
-		let from    = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils)
+		let from = this.fromClauseToJSON(rawQuery.from,
+			queryUtils, fieldUtils, relationManager)
 		jsonQuery.F = from
 		if (createSelectCallback) {
 			createSelectCallback(jsonQuery)
 		}
 
-		jsonQuery.W  = queryUtils.whereClauseToJSON(
-			rawQuery.where, this.columnAliases, fieldUtils)
+		jsonQuery.W = queryUtils.whereClauseToJSON(
+			rawQuery.where, this.columnAliases)
 		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.groupBy)
-		jsonQuery.H  = queryUtils.whereClauseToJSON(
-			rawQuery.having, this.columnAliases, fieldUtils)
+		jsonQuery.H = queryUtils.whereClauseToJSON(
+			rawQuery.having, this.columnAliases)
 		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.orderBy)
-		jsonQuery.L  = rawQuery.limit
-		jsonQuery.O  = rawQuery.offset
+		jsonQuery.L = rawQuery.limit
+		jsonQuery.O = rawQuery.offset
 
 		return jsonQuery
 	}
@@ -86,7 +90,8 @@ export abstract class AbstractQuery
 	protected fromClauseToJSON(
 		fromClause: (IFrom | IEntityRelationFrom | RawTreeQuery<any>)[],
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONRelation[] {
 		if (!fromClause) {
 			if (this.isEntityQuery) {
@@ -105,7 +110,8 @@ export abstract class AbstractQuery
 				}
 			}
 			return (fromEntity as IQEntityInternal).__driver__
-				.getRelationJson(this.columnAliases, queryUtils, fieldUtils)
+				.getRelationJson(this.columnAliases,
+					queryUtils, fieldUtils, relationManager)
 		})
 	}
 

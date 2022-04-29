@@ -15,6 +15,7 @@ import {
   IEntityUpdateColumns,
   IEntityUpdateProperties,
   IQEntity,
+  IUpdateCacheManager,
   MappedEntityArray,
   QApplication,
   RawDelete,
@@ -60,14 +61,15 @@ export class EntityDatabaseFacade<Entity,
   constructor(
     public dbEntity: DbEntity,
     private Q: QApplication,
+    updateCacheManager: IUpdateCacheManager
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
-      this.dbEntity);
+      this.dbEntity, updateCacheManager);
     this.findOne = new EntityFindOne<Entity, EntitySelect>(
-      this.dbEntity);
+      this.dbEntity, updateCacheManager);
     // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
-    //   this.dbEntity);
-    // this.searchOne = new EntitySearchOne(this.dbEntity);
+    //   this.dbEntity, updateCacheManager);
+    // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
   }
 
   get from(): IQ {

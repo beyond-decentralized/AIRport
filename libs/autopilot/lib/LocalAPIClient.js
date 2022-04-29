@@ -1,7 +1,4 @@
-import { container, DI } from "@airport/di";
-import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
 import { v4 as uuidv4 } from "uuid";
-import { LOCAL_API_CLIENT } from "./tokens";
 let _inDemoMode = true;
 // let _demoServer = 'https://turbase.app'
 let _demoServer = 'http://localhost:7500';
@@ -62,13 +59,12 @@ export class LocalAPIClient {
         while (!await this.isConnectionReady(token)) {
             await this.wait(100);
         }
-        const [operationSerializer, queryResultsDeserializer] = await container(this).get(OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER);
         let serializedParams;
         if (_inDemoMode) {
             serializedParams = args;
         }
         else {
-            serializedParams = operationSerializer.serializeAsArray(args);
+            serializedParams = this.operationSerializer.serializeAsArray(args);
         }
         const request = {
             application: token.application.name,
@@ -77,7 +73,7 @@ export class LocalAPIClient {
             domain: token.application.domain.name,
             id: uuidv4(),
             methodName,
-            objectName: token.name,
+            objectName: token.descriptor.interface,
             protocol: window.location.protocol,
         };
         let response;
@@ -94,7 +90,7 @@ export class LocalAPIClient {
             return response.payload;
         }
         else {
-            return queryResultsDeserializer
+            return this.queryResultsDeserializer
                 .deserialize(response.payload);
         }
     }
@@ -185,5 +181,4 @@ export class LocalAPIClient {
         }
     }
 }
-DI.set(LOCAL_API_CLIENT, LocalAPIClient);
 //# sourceMappingURL=LocalAPIClient.js.map

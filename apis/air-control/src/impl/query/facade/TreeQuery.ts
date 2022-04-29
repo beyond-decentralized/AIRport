@@ -12,6 +12,7 @@ import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
 import { EntityAliases } from '../../core/entity/Aliases'
 import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
+import { IRelationManager } from '../../core/entity/RelationManager'
 import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
@@ -34,7 +35,8 @@ export abstract class MappableQuery
 	protected nonDistinctSelectClauseToJSON(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): any {
 		let select = {}
 
@@ -49,7 +51,8 @@ export abstract class MappableQuery
 				// Because the alias only matters for GROUP BY and ORDER BY
 				// that is OK.
 				select[property] = value.toJSON(
-					this.columnAliases, true, queryUtils, fieldUtils)
+					this.columnAliases, true,
+					queryUtils, fieldUtils, relationManager)
 			} else if (value instanceof QOneToManyRelation
 				|| value instanceof QRepositoryEntityOneToManyRelation) {
 				throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`)
@@ -72,7 +75,7 @@ export abstract class MappableQuery
 							} else {
 								isChildObject = true
 								select[property] = this.nonDistinctSelectClauseToJSON(
-									value, queryUtils, fieldUtils)
+									value, queryUtils, fieldUtils, relationManager)
 							}
 					}
 				} finally {
@@ -100,16 +103,18 @@ export class TreeQuery<ITE extends ITreeEntity>
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonTreeQuery {
 		let jsonMappedQuery: JsonTreeQuery
 			= <JsonTreeQuery>this.getNonEntityQuery(this.rawQuery, <any>{}, (
 				jsonQuery: JsonNonEntityQuery
 			) => {
 				jsonQuery.S = this.selectClauseToJSON(
-					this.rawQuery.select, queryUtils, fieldUtils)
+					this.rawQuery.select,
+					queryUtils, fieldUtils, relationManager)
 
-			}, queryUtils, fieldUtils)
+			}, queryUtils, fieldUtils, relationManager)
 
 		return jsonMappedQuery
 	}

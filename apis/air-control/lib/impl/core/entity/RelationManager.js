@@ -15,7 +15,7 @@ export class RelationManager {
     createRelatedQEntity(joinRelation, context) {
         const dbEntity = this.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti);
         let QEntityConstructor = this.applicationUtils.getQEntityConstructor(dbEntity);
-        return new QEntityConstructor(dbEntity, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
+        return new QEntityConstructor(dbEntity, this.applicationUtils, this, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
     }
     getNextChildJoinPosition(joinParentDriver) {
         let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice();

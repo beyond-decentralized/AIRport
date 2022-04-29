@@ -1,10 +1,9 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { IApplicationVersion } from '@airport/airspace';
 import { ICoreLocalApiRequest, ILocalAPIResponse } from '@airport/aviation-communication';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { DbDomain, DomainName, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
-import { IIsolateMessage, LastIds } from '@airport/security-check';
-import { ITransactionContext } from '@airport/terminal-map';
+import { IIsolateMessage, LastIds, IApplicationLoader, ILocalAPIServer } from '@airport/security-check';
 import { Observable, Observer } from 'rxjs';
 export interface IMessageInRecord {
     message: IIsolateMessage;
@@ -23,13 +22,12 @@ export declare enum AppState {
     INITIALIZED = "INITIALIZED"
 }
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
-    commit(context?: IContext): Promise<boolean>;
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
     retrieveDomain(domainName: DomainName): Promise<DbDomain>;
-    rollback(context?: IContext): Promise<boolean>;
-    startTransaction(context?: IContext): Promise<boolean>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
+    applicationLoader: IApplicationLoader;
+    localApiServer: ILocalAPIServer;
     application: string;
     appState: AppState;
     dbName: string;
@@ -54,9 +52,6 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
-    startTransaction(context: ITransactionContext): Promise<boolean>;
-    commit(context: ITransactionContext): Promise<boolean>;
-    rollback(context: ITransactionContext): Promise<boolean>;
     getLatestApplicationVersionMapByFullApplicationName(fullApplicationName: string): Promise<IApplicationVersion>;
     private initializeConnection;
     private handleLocalApiRequest;

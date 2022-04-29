@@ -1,6 +1,7 @@
 import {IEntityAliases}    from '../../../lingo/core/entity/Aliases'
 import {IFieldUtils}       from '../../../lingo/utils/FieldUtils'
 import {IQueryUtils}       from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
 import {QDistinctFunction} from '../../core/field/Functions'
 import {AbstractQuery}     from './AbstractQuery'
 
@@ -25,7 +26,8 @@ export abstract class DistinguishableQuery
 	protected selectClauseToJSON(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): any {
 		if (rawSelect instanceof QDistinctFunction) {
 			if (this.isHierarchicalEntityQuery) {
@@ -33,18 +35,19 @@ export abstract class DistinguishableQuery
 			}
 			let rawInnerSelect = rawSelect.getSelectClause()
 			let innerSelect    = this.nonDistinctSelectClauseToJSON(
-				rawInnerSelect, queryUtils, fieldUtils)
+				rawInnerSelect, queryUtils, fieldUtils, relationManager)
 			return rawSelect.toJSON(innerSelect)
 		} else {
 			return this.nonDistinctSelectClauseToJSON(
-				rawSelect, queryUtils, fieldUtils)
+				rawSelect, queryUtils, fieldUtils, relationManager)
 		}
 	}
 
 	protected abstract nonDistinctSelectClauseToJSON(
 		rawSelect: any,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): any;
 
 }

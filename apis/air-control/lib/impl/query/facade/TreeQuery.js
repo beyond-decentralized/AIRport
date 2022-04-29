@@ -10,7 +10,7 @@ export const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = `Entity SELECT clauses can o
  * A query whose select facade is a collection of properties.
  */
 export class MappableQuery extends DistinguishableQuery {
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
+    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
         let select = {};
         for (let property in rawSelect) {
             let value = rawSelect[property];
@@ -22,7 +22,7 @@ export class MappableQuery extends DistinguishableQuery {
                 // In that case the last one will set the alias for all of them.
                 // Because the alias only matters for GROUP BY and ORDER BY
                 // that is OK.
-                select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
+                select[property] = value.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
             }
             else if (value instanceof QOneToManyRelation
                 || value instanceof QRepositoryEntityOneToManyRelation) {
@@ -45,7 +45,7 @@ export class MappableQuery extends DistinguishableQuery {
                             }
                             else {
                                 isChildObject = true;
-                                select[property] = this.nonDistinctSelectClauseToJSON(value, queryUtils, fieldUtils);
+                                select[property] = this.nonDistinctSelectClauseToJSON(value, queryUtils, fieldUtils, relationManager);
                             }
                     }
                 }
@@ -64,10 +64,10 @@ export class TreeQuery extends MappableQuery {
         super(entityAliases);
         this.rawQuery = rawQuery;
     }
-    toJSON(queryUtils, fieldUtils) {
+    toJSON(queryUtils, fieldUtils, relationManager) {
         let jsonMappedQuery = this.getNonEntityQuery(this.rawQuery, {}, (jsonQuery) => {
-            jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
-        }, queryUtils, fieldUtils);
+            jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
+        }, queryUtils, fieldUtils, relationManager);
         return jsonMappedQuery;
     }
 }

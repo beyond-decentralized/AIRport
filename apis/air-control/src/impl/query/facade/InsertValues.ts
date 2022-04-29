@@ -11,6 +11,7 @@ import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField
 import { RawInsertValues } from '../../../lingo/query/facade/InsertValues'
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
 import { AbstractInsertValues } from './AbstractInsertValues'
 
 /**
@@ -23,17 +24,18 @@ export class InsertValues<IQE extends IQEntity>
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonInsertValues {
 		const driver = (<IQEntityInternal><any>this.rawInsertValues.insertInto)
 			.__driver__
 		const insertInto = driver.getRelationJson(
-			this.columnAliases, queryUtils, fieldUtils)
+			this.columnAliases, queryUtils, fieldUtils, relationManager)
 		const dbColumns: DbColumn[] = []
 		let columnIndexes: number[]
 		if (this.columnIndexes) {
 			columnIndexes = this.columnIndexes;
-			for(let i = 0; i < columnIndexes.length; i++) {
+			for (let i = 0; i < columnIndexes.length; i++) {
 				const dbColumn = driver.dbEntity.columns[columnIndexes[i]]
 				this.validateColumn(dbColumn, driver.dbEntity)
 				dbColumns.push(dbColumn)
@@ -53,7 +55,8 @@ export class InsertValues<IQE extends IQEntity>
 			II: insertInto as JSONEntityRelation,
 			C: columnIndexes,
 			V: this.valuesToJSON(
-				this.rawInsertValues.values, dbColumns, queryUtils, fieldUtils)
+				this.rawInsertValues.values, dbColumns,
+				queryUtils, fieldUtils, relationManager)
 		}
 	}
 

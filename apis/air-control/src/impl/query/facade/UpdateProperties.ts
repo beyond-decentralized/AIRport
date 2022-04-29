@@ -7,17 +7,18 @@ import {
 	JSONEntityRelation,
 	JsonEntityUpdateColumns,
 	JsonUpdate
-}                       from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IEntityUpdateProperties,
 	IQEntity,
 	IQEntityInternal
-}                       from '../../../lingo/core/entity/Entity'
-import {RawUpdate}      from '../../../lingo/query/facade/Update'
-import {IFieldUtils}    from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}    from '../../../lingo/utils/QueryUtils'
-import {wrapPrimitive}  from '../../core/field/WrapperFunctions'
-import {AbstractUpdate} from './AbstractUpdate'
+} from '../../../lingo/core/entity/Entity'
+import { RawUpdate } from '../../../lingo/query/facade/Update'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
+import { wrapPrimitive } from '../../core/field/WrapperFunctions'
+import { AbstractUpdate } from './AbstractUpdate'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -35,15 +36,17 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
 				.__driver__.getRelationJson(
-					this.columnAliases, queryUtils, fieldUtils),
+					this.columnAliases,
+					queryUtils, fieldUtils, relationManager),
 			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
 			W: queryUtils.whereClauseToJSON(
-				this.rawUpdate.where, this.columnAliases, fieldUtils)
+				this.rawUpdate.where, this.columnAliases)
 		}
 	}
 
@@ -53,8 +56,8 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		fieldUtils: IFieldUtils
 	): JsonEntityUpdateColumns {
 		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
-		const dbEntity                                                   = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
-		const dbPropertyMap                                              = dbEntity.propertyMap
+		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
+		const dbPropertyMap = dbEntity.propertyMap
 
 		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [],
 			dbPropertyMap, [], queryUtils, fieldUtils)
@@ -74,7 +77,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		const isTopLevelFragment = !dbPropertyMap.length
 		for (const propertyName in rawSetFragment) {
 			const dbProperty = dbPropertyMap[propertyName]
-			const dbEntity   = dbProperty.entity
+			const dbEntity = dbProperty.entity
 			if (!dbProperty) {
 				throw new Error(`
 ${this.getPropertyChainDesription(dbPropertyChain)}
@@ -122,7 +125,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		fieldUtils: IFieldUtils
 	): void {
 		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
-		const dbEntity               = dbProperty.entity
+		const dbEntity = dbProperty.entity
 
 		let value = rawSetFragment[propertyName]
 		if (value === undefined) {
@@ -149,14 +152,14 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 				let dbColumn = dbProperty.propertyColumns[0].column
 				if (dbRelationChain.length) {
 					for (let i = dbRelationChain.length - 1; i >= 0; i--) {
-						const currentDbRelation          = dbRelationChain[i]
+						const currentDbRelation = dbRelationChain[i]
 						const matchingManyRelationColumn = currentDbRelation.manyRelationColumns.filter((
 							manyRelationColumn
 						) => {
 							return manyRelationColumn.manyColumn.index ===
 								dbColumn.index
 						})[0]
-						dbColumn                         = matchingManyRelationColumn.oneColumn
+						dbColumn = matchingManyRelationColumn.oneColumn
 					}
 				}
 
@@ -181,7 +184,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		else {
 			if (typeof value === 'object') {
 
-				const dbRelation           = dbProperty.relation[0]
+				const dbRelation = dbProperty.relation[0]
 				const childDbRelationChain = [...dbRelationChain]
 				childDbRelationChain.push(dbRelation)
 
@@ -205,7 +208,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Cannot update @OneToMany properties:
 					Property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-							this.rawUpdate.update).__driver__.dbEntity.name}
+								this.rawUpdate.update).__driver__.dbEntity.name}
 					is a @OneToMany relation and cannot be updated since it is
 					assumed to be based on @Id columns (which cannot be updated).'
 				`)
@@ -216,7 +219,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Undefined relation type: 
 					Property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-							this.rawUpdate.update).__driver__.dbEntity.name}'
+								this.rawUpdate.update).__driver__.dbEntity.name}'
 					is defined with an unknown type of a relation.  Expecting either
 					@ManyToOne(...)
 					or
@@ -231,7 +234,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Unexpected value ${JSON.stringify(value)} 
 					for property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-					this.rawUpdate.update).__driver__.dbEntity.name}'
+						this.rawUpdate.update).__driver__.dbEntity.name}'
 				Expecting a nested property definition.
 				`)
 			}
@@ -242,14 +245,14 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		dbPropertyChain: DbProperty[]
 	): string {
 		const rootDbEntity: DbEntity = dbPropertyChain[0].entity
-		let prefix                   = '    '
-		let lastPrefix               = ''
-		let ending                   = `...
+		let prefix = '    '
+		let lastPrefix = ''
+		let ending = `...
 }`
-		let message                  = `
+		let message = `
 Updated Entity: ${rootDbEntity.name}, property chain:
 {`
-		const maxChainDepth          = dbPropertyChain.length
+		const maxChainDepth = dbPropertyChain.length
 		for (let i = 0; i < maxChainDepth; i++) {
 			let dbProperty = dbPropertyChain[i]
 			message += `${prefix}${dbProperty.name}: `
@@ -258,7 +261,7 @@ Updated Entity: ${rootDbEntity.name}, property chain:
 			} else {
 				message += 'VALUE'
 			}
-			ending     = prefix + `...
+			ending = prefix + `...
 ${lastPrefix}}`
 			lastPrefix = prefix
 			prefix += '    '

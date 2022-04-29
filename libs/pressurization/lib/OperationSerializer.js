@@ -1,41 +1,34 @@
-import { container, DI } from '@airport/di';
-import { OPERATION_SERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens';
 export class OperationSerializer {
     serializeAsArray(entity) {
         let serializedEntity = [];
         if (!entity) {
             return serializedEntity;
         }
-        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
         if (entity instanceof Array) {
             serializedEntity = entity
-                .map(anEntity => this.serializeWithManager(anEntity, serializationStateManager));
+                .map(anEntity => this.serialize(anEntity));
         }
         else {
-            serializedEntity = [this.serializeWithManager(entity, serializationStateManager)];
+            serializedEntity = [this.serialize(entity)];
         }
         return serializedEntity;
     }
     serialize(entity) {
-        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
-        return this.serializeWithManager(entity, serializationStateManager);
-    }
-    serializeWithManager(entity, serializationStateManager) {
         const operation = {
             namePath: ['root'],
             processedEntityMap: new Map(),
             sequence: 0,
             stubLookupTable: [],
         };
-        return this.doSerialize(entity, operation, serializationStateManager);
+        return this.doSerialize(entity, operation);
     }
-    doSerialize(entity, operation, serializationStateManager) {
+    doSerialize(entity, operation) {
         if (entity instanceof Object) {
             if (entity instanceof Array) {
-                return entity.map(anEntity => this.doSerialize(anEntity, operation, serializationStateManager));
+                return entity.map(anEntity => this.doSerialize(anEntity, operation));
             }
             else if (entity instanceof Date) {
-                return serializationStateManager.serializeAsDate(entity);
+                return this.serializationStateManager.serializeAsDate(entity);
             }
         }
         else {
@@ -48,11 +41,11 @@ export class OperationSerializer {
         operationUniqueId = ++operation.sequence;
         operation.processedEntityMap.set(entity, operationUniqueId);
         let entityStub = {};
-        serializationStateManager.markAsStub(entity);
-        entityStub[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
+        this.serializationStateManager.markAsStub(entity);
+        entityStub[this.serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
         operation.stubLookupTable[operationUniqueId] = entityStub;
         let serializedEntity = {};
-        serializedEntity[serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
+        serializedEntity[this.serializationStateManager.getUniqueIdFieldName()] = operationUniqueId;
         var isFirstProperty = true;
         for (const propertyName in entity) {
             const property = entity[propertyName];
@@ -71,11 +64,11 @@ export class OperationSerializer {
                     // 	}
                     // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
                     // } else {
-                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation, serializationStateManager));
+                    propertyCopy = property.map(aProperty => this.doSerialize(aProperty, operation));
                     // }
                 }
                 else if (property instanceof Date) {
-                    propertyCopy = serializationStateManager.serializeAsDate(property);
+                    propertyCopy = this.serializationStateManager.serializeAsDate(property);
                 }
                 else {
                     // if (propertyState === EntityState.RESULT_JSON) {
@@ -84,7 +77,7 @@ export class OperationSerializer {
                     // 	}
                     // 	propertyCopy[entityStateManager.getStateFieldName()] = propertyState
                     // } else {
-                    propertyCopy = this.doSerialize(property, operation, serializationStateManager);
+                    propertyCopy = this.doSerialize(property, operation);
                     // }
                 }
             }
@@ -118,5 +111,4 @@ export class OperationSerializer {
         return serializedEntity;
     }
 }
-DI.set(OPERATION_SERIALIZER, OperationSerializer);
 //# sourceMappingURL=OperationSerializer.js.map

@@ -1,16 +1,11 @@
 import {
 	ISequence,
-	ISequenceDao,
-	SEQUENCE_DAO
+	ISequenceDao
 } from '@airport/airport-code';
 import {
 	ISequenceGenerator,
-	SEQUENCE_GENERATOR,
 	setSeqGen
 } from '@airport/check-in';
-import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator';
 import {
 	DbColumn,
 	DbEntity,
@@ -202,11 +197,6 @@ export class SequenceGenerator
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SEQUENCE_GENERATOR, SequenceGenerator)
-SEQUENCE_GENERATOR.setDependencies({
-	sequenceDao: SEQUENCE_DAO
-})
 
 export function injectSequenceGenerator() {
 	console.log('injecting SequenceGenerator')

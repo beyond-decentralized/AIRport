@@ -1,25 +1,23 @@
-import { QueryType, STORE_DRIVER } from '@airport/ground-control';
+import { QueryType, } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import pg from 'pg';
 import pgConnectionString from 'pg-connection-string';
 import { DDLManager } from './DDLManager';
-import { DI } from '@airport/di';
-import { PostgreTransaction } from './PostgreTransaction';
 const Pool = pg.Pool;
 const parse = pgConnectionString.parse;
 /**
  * Created by Papa on 11/27/2016.
  */
 export class PostgreSqlDriver extends SqlDriver {
-    composeTableName(schemaName, tableName) {
-        return `${schemaName}.${tableName}`;
+    composeTableName(applicationName, tableName) {
+        return `${applicationName}.${tableName}`;
     }
-    async doesTableExist(schemaName, tableName) {
+    async doesTableExist(applicationName, tableName) {
         try {
             const result = await this.pool.query(`SELECT EXISTS (
-				SELECT FROM information_schema.tables 
-				WHERE  table_schema = '${schemaName}'
+				SELECT FROM information_application.tables 
+				WHERE  table_application = '${applicationName}'
 				AND    table_name   = '${tableName}'
 				)`);
             return result.rows && !!result.rows.length;
@@ -29,8 +27,8 @@ export class PostgreSqlDriver extends SqlDriver {
             throw error;
         }
     }
-    async dropTable(schemaName, tableName, context) {
-        await this.pool.query(`DROP TABLE  '${schemaName}'.'${tableName}'`);
+    async dropTable(applicationName, tableName, context) {
+        await this.pool.query(`DROP TABLE  '${applicationName}'.'${tableName}'`);
         return true;
     }
     async findNative(sqlQuery, parameters, context) {
@@ -103,12 +101,6 @@ export class PostgreSqlDriver extends SqlDriver {
         // config.database = database;
         this.pool = new Pool(config);
     }
-    async transact(transactionalCallback, context) {
-        const client = await this.pool.connect();
-        await client.query('BEGIN');
-        const transaction = new PostgreTransaction(this, this.pool, client);
-        await transactionalCallback(transaction);
-    }
     async initAllTables(context) {
         let createOperations;
         let createQueries = [];
@@ -137,5 +129,4 @@ export class PostgreSqlDriver extends SqlDriver {
         return await this.pool;
     }
 }
-DI.set(STORE_DRIVER, PostgreSqlDriver);
 //# sourceMappingURL=PostgreSqlDriver.js.map

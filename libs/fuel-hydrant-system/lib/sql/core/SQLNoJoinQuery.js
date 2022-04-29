@@ -24,7 +24,7 @@ export class SQLNoJoinQuery extends SQLWhereBase {
 			'${tableName}',
 			expecting: '${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}'`);
         }
-        const firstQEntity = new QEntity(firstDbEntity);
+        const firstQEntity = new QEntity(firstDbEntity, this.applicationUtils, this.relationManager);
         const tableAlias = this.relationManager.getAlias(fromRelation);
         this.qEntityMapByAlias[tableAlias] = firstQEntity;
         let fromFragment = `\t${tableName}`;

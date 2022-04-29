@@ -34,7 +34,7 @@ export class AbstractInsertValues extends AbstractQuery {
 				Entity: ${dbColumn.entity.name}`);
         }
     }
-    valuesToJSON(valueSets, dbColumns, queryUtils, fieldUtils) {
+    valuesToJSON(valueSets, dbColumns, queryUtils, fieldUtils, relationManager) {
         // let currentValueIndex = -1;
         // this.values           = [];
         return valueSets.map((valueSet, rowIndex) => {
@@ -48,7 +48,7 @@ export class AbstractInsertValues extends AbstractQuery {
                     // return ++currentValueIndex;
                 }
                 else {
-                    return value.toJSON(this.columnAliases, false, queryUtils, fieldUtils);
+                    return value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
                 }
             });
         });

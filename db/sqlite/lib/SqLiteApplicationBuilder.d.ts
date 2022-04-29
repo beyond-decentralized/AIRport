@@ -1,15 +1,15 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
-import { IStoreDriver } from '@airport/terminal-map';
 export declare class SqLiteApplicationBuilder extends SqlApplicationBuilder {
-    createApplication(jsonApplication: JsonApplication, storeDriver: IStoreDriver, context: IContext): Promise<void>;
+    airportDatabase: IAirportDatabase;
+    createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
     getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;
     getCreateTableSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity): string;
     buildAllSequences(jsonApplications: JsonApplication[]): Promise<ISequence[]>;
-    stageSequences(jsonApplications: JsonApplication[], airDb: IAirportDatabase): ISequence[];
+    stageSequences(jsonApplications: JsonApplication[], context: IContext): ISequence[];
     buildSequences(dbApplication: DbApplication, jsonEntity: JsonApplicationEntity): ISequence[];
     protected getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;
     protected getForeignKeySql(tableName: string, foreignKeyName: string, foreignKeyColumnNames: string[], referencedTableName: string, referencedColumnNames: string[]): string;

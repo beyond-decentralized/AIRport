@@ -1,23 +1,20 @@
-import { container, DI } from '@airport/di';
 import { SerializationState } from './SerializationStateManager';
-import { QUERY_RESULTS_DESERIALIZER, SERIALIZATION_STATE_MANAGER } from './tokens';
 export class QueryResultsDeserializer {
     deserialize(entity) {
-        const serializationStateManager = container(this).getSync(SERIALIZATION_STATE_MANAGER);
         const operation = {
             lookupTable: [],
         };
         let deserializedEntity;
         if (entity instanceof Array) {
-            deserializedEntity = entity.map(anEntity => this.doDeserialize(anEntity, operation, serializationStateManager));
+            deserializedEntity = entity.map(anEntity => this.doDeserialize(anEntity, operation));
         }
         else {
-            deserializedEntity = this.doDeserialize(entity, operation, serializationStateManager);
+            deserializedEntity = this.doDeserialize(entity, operation);
         }
         return deserializedEntity;
     }
-    doDeserialize(entity, operation, serializationStateManager) {
-        let state = serializationStateManager.getEntityState(entity);
+    doDeserialize(entity, operation) {
+        let state = this.serializationStateManager.getEntityState(entity);
         switch (state) {
             case SerializationState.DATE:
                 return new Date(entity['value']);
@@ -28,23 +25,23 @@ export class QueryResultsDeserializer {
             // 	value[entityStateManager.getStateFieldName()] = EntityState.RESULT_JSON_ARRAY
             // 	return entity
         }
-        let operationUniqueId = serializationStateManager.getSerializationUniqueId(entity);
+        let operationUniqueId = this.serializationStateManager.getSerializationUniqueId(entity);
         if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
-            throw new Error(`Invalid or missing ${serializationStateManager.getUniqueIdFieldName()} field.`);
+            throw new Error(`Invalid or missing ${this.serializationStateManager.getUniqueIdFieldName()} field.`);
         }
         let alreadyDeserializedEntity = operation.lookupTable[operationUniqueId];
         switch (state) {
             case SerializationState.STUB: {
                 if (!alreadyDeserializedEntity) {
                     throw new Error(`Could not find an already present entity for
-					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`);
+					${this.serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`);
                 }
                 return alreadyDeserializedEntity;
             }
             default:
                 if (alreadyDeserializedEntity) {
                     throw new Error(`Entity appears more than once for
-					${serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`);
+					${this.serializationStateManager.getUniqueIdFieldName()} of ${operationUniqueId}`);
                 }
         }
         let deserializedEntity = {};
@@ -54,10 +51,10 @@ export class QueryResultsDeserializer {
             let propertyCopy;
             if (property instanceof Object) {
                 if (property instanceof Array) {
-                    propertyCopy = property.map(aProperty => this.doDeserialize(aProperty, operation, serializationStateManager));
+                    propertyCopy = property.map(aProperty => this.doDeserialize(aProperty, operation));
                 }
                 else {
-                    propertyCopy = this.doDeserialize(property, operation, serializationStateManager);
+                    propertyCopy = this.doDeserialize(property, operation);
                 }
             }
             else {
@@ -65,9 +62,8 @@ export class QueryResultsDeserializer {
             }
             deserializedEntity[propertyName] = propertyCopy;
         }
-        delete deserializedEntity[serializationStateManager.getUniqueIdFieldName()];
+        delete deserializedEntity[this.serializationStateManager.getUniqueIdFieldName()];
         return deserializedEntity;
     }
 }
-DI.set(QUERY_RESULTS_DESERIALIZER, QueryResultsDeserializer);
 //# sourceMappingURL=QueryResultsDeserializer.js.map

@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, IDao } from '@airport/air-control';
+import { AIRPORT_DATABASE, IDao, UPDATE_CACHE_MANAGER } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { IApiRegistry, IApiValidator } from '.';
@@ -29,7 +29,7 @@ export const CLIENT_QUERY_MANAGER = checkIn.token<IClientQueryManager>({
 });
 export const DAO = checkIn.token<IDao<any, any, any, any, any, any, any, any>>({
     class: Dao,
-    interface: 'IDao',
+    interface: 'class Dao',
     token: 'DAO'
 })
 export const OPERATION_DESERIALIZER = checkIn.token<IOperationDeserializer>({
@@ -60,5 +60,6 @@ export const SEQUENCE_GENERATOR = checkIn.token<ISequenceGenerator>({
 
 DAO.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-    entityStateManager: ENTITY_STATE_MANAGER
+    entityStateManager: ENTITY_STATE_MANAGER,
+    updateCacheManager: UPDATE_CACHE_MANAGER
 })

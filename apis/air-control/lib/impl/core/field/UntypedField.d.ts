@@ -6,6 +6,7 @@ import { IQUntypedField } from '../../../lingo/core/field/UntypedField';
 import { IUntypedOperation, JSONRawUntypedOperation } from '../../../lingo/core/operation/UntypedOperation';
 import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
 import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
 import { QOperableField } from './OperableField';
 /**
  * Created by papa on 7/13/17.
@@ -25,6 +26,6 @@ export declare class QUntypedFunction extends QUntypedField implements IQFunctio
     parameterAlias: string;
     constructor(value: number | string | RawFieldQuery<any>, isQueryParameter?: boolean);
     getInstance(): QUntypedFunction;
-    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONClauseField;
+    toJSON(columnAliases: FieldColumnAliases, forSelectClause: boolean, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONClauseField;
 }
 //# sourceMappingURL=UntypedField.d.ts.map

@@ -8,7 +8,7 @@ export class SheetQuery extends DistinguishableQuery {
         super();
         this.rawQuery = rawQuery;
     }
-    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils) {
+    nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
         if (!(rawSelect instanceof Array)) {
             throw new Error(`Flat Queries an array of fields in SELECT clause.`);
         }
@@ -17,15 +17,15 @@ export class SheetQuery extends DistinguishableQuery {
                 throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
             }
             this.columnAliases.entityAliases.getNextAlias(selectField.q.__driver__.getRootJoinEntity());
-            return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils);
+            return selectField.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
         });
     }
-    toJSON(queryUtils, fieldUtils) {
-        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils);
+    toJSON(queryUtils, fieldUtils, relationManager) {
+        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
             S: select
         };
-        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils);
+        return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }
 }
 //# sourceMappingURL=SheetQuery.js.map

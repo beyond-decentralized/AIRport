@@ -1,10 +1,6 @@
-import {
-    DEPENDENCY_INJECTION
-} from "@airport/direction-indicator";
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
-    APPLICATION_INITIALIZER,
     IApplicationInitializer,
     ITerminalStore
 } from "@airport/terminal-map";
@@ -60,4 +56,3 @@ export class WebApplicationInitializer
     }
 }
 
-DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, WebApplicationInitializer)

@@ -1,14 +1,15 @@
 import {
 	DbColumn,
 	DbEntity
-}                                from '@airport/ground-control'
-import {IQEntity}                from '../../../lingo/core/entity/Entity'
-import {AbstractRawInsertValues} from '../../../lingo/query/facade/InsertValues'
-import {IFieldUtils}             from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}             from '../../../lingo/utils/QueryUtils'
-import {QField}                  from '../../core/field/Field'
-import {getPrimitiveValue}       from '../../core/field/WrapperFunctions'
-import {AbstractQuery}           from './AbstractQuery'
+} from '@airport/ground-control'
+import { IQEntity } from '../../../lingo/core/entity/Entity'
+import { AbstractRawInsertValues } from '../../../lingo/query/facade/InsertValues'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
+import { QField } from '../../core/field/Field'
+import { getPrimitiveValue } from '../../core/field/WrapperFunctions'
+import { AbstractQuery } from './AbstractQuery'
 
 /**
  * Created by Papa on 11/17/2016.
@@ -57,7 +58,8 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 		valueSets: any[][],
 		dbColumns: DbColumn[],
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): any[][] {
 		// let currentValueIndex = -1;
 		// this.values           = [];
@@ -78,7 +80,7 @@ export abstract class AbstractInsertValues<IQE extends IQEntity, ARIV extends Ab
 					// return ++currentValueIndex;
 				} else {
 					return (<QField<any>>value).toJSON(
-						this.columnAliases, false, queryUtils, fieldUtils)
+						this.columnAliases, false, queryUtils, fieldUtils, relationManager)
 				}
 			})
 		})

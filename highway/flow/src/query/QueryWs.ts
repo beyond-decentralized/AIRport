@@ -1,14 +1,10 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import {
-	QUERY_VALIDATOR,
-	QUERY_WEB_SERVICE
-}             from '../tokens';
 import {
 	IQueryConfig,
 	IQueryContext,
 	IQueryRequest,
 	IQueryResponse
-}             from './Query';
+} from './Query';
+import { IQueryValidator } from './QueryValidator';
 
 export interface IQueryWebService {
 
@@ -23,14 +19,15 @@ export interface IQueryWebService {
 export class QueryWebService
 	implements IQueryWebService {
 
+	queryValidator: IQueryValidator
+
 	async handle(
 		request: IQueryRequest,
 		config: IQueryConfig = {},
 		context: IQueryContext
 	): Promise<IQueryResponse> {
-		const queryValidator = await DEPENDENCY_INJECTION.db().get(QUERY_VALIDATOR);
 		try {
-			queryValidator.validate(request);
+			this.queryValidator.validate(request);
 		} catch (e) {
 			return {
 				error: e.message
@@ -40,5 +37,3 @@ export class QueryWebService
 
 	// Look up the query mapping: should it be directed to Vespa, ScyllaDb or CockroachDbco
 }
-
-DEPENDENCY_INJECTION.set(QUERY_WEB_SERVICE, QueryWebService);

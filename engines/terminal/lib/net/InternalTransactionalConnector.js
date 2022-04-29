@@ -84,24 +84,6 @@ they are internal to the AIRport framework).`);
             ...context
         });
     }
-    async startTransaction(context) {
-        return await this.transactionalServer.startTransaction(this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        });
-    }
-    async commit(context) {
-        return await this.transactionalServer.commit(this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        });
-    }
-    async rollback(context) {
-        return await this.transactionalServer.rollback(this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        });
-    }
     onMessage(callback) {
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }

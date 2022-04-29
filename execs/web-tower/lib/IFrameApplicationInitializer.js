@@ -1,6 +1,4 @@
-import { DI } from "@airport/di";
 import { ApplicationInitializer } from "@airport/landing";
-import { APPLICATION_INITIALIZER } from "@airport/terminal-map";
 export class IFrameApplicationInitializer extends ApplicationInitializer {
     constructor() {
         super(...arguments);
@@ -11,5 +9,4 @@ export class IFrameApplicationInitializer extends ApplicationInitializer {
             not from Application child frames`);
     }
 }
-DI.set(APPLICATION_INITIALIZER, IFrameApplicationInitializer);
 //# sourceMappingURL=IFrameApplicationInitializer.js.map

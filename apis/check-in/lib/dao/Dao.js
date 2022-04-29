@@ -11,7 +11,7 @@ export class Dao {
         const dbEntity = Q.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
-        this.db = new EntityDatabaseFacade(dbEntity, Q);
+        this.db = new EntityDatabaseFacade(dbEntity, Q, this.updateCacheManager);
     }
     static BaseSave(config) {
         return function (target, propertyKey) {

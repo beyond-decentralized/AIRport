@@ -1,11 +1,10 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
-import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
+import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/security-check";
 import { ITerminalStore, ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel
 } from '../node_modules/broadcast-channel/dist/lib/index.es5';
-import { WEB_MESSAGE_RECEIVER } from './tokens'
 
 export interface IWebMessageReceiver {
 
@@ -73,10 +72,9 @@ export class WebMesageReceiver
     }
 
 }
-DEPENDENCY_INJECTION.set(WEB_MESSAGE_RECEIVER, WebMesageReceiver)
 
 export function injectWebReceiver() {
-    const terminalStore = container(this).getSync(TERMINAL_STORE)
+    const terminalStore = IOC.getSync(TERMINAL_STORE)
     const webReciever = terminalStore.getWebReceiver()
 
     webReciever.localDomain = 'localhost:31717'

@@ -11,7 +11,15 @@ export class DependencyInjectionToken {
             + this.descriptor.token;
     }
     setDependencies(dependencyConfiguration) {
-        this.descriptor.class.dependencyConfiguration = dependencyConfiguration;
+        if (this.descriptor.class.dependencyConfiguration) {
+            this.descriptor.class.dependencyConfiguration = {
+                ...this.descriptor.class.dependencyConfiguration,
+                ...dependencyConfiguration
+            };
+        }
+        else {
+            this.descriptor.class.dependencyConfiguration = dependencyConfiguration;
+        }
     }
     getInheritedDependencyConfiguration(aClass) {
         const parentClass = Object.getPrototypeOf(aClass);

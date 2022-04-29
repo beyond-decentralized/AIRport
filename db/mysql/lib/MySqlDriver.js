@@ -1,6 +1,5 @@
-import { DI } from '@airport/di';
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
-import { QueryType, STORE_DRIVER } from '@airport/ground-control';
+import { QueryType } from '@airport/ground-control';
 import { transactional } from '@airport/tower';
 import * as mysql from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
@@ -9,19 +8,19 @@ export class MySqlDriver extends SqlDriver {
         super(...arguments);
         this.maxValues = 1000000;
     }
-    composeTableName(schemaName, tableName) {
-        return `${schemaName}.${tableName}`;
+    composeTableName(applicationName, tableName) {
+        return `${applicationName}.${tableName}`;
     }
-    async doesTableExist(schemaName, tableName, context) {
+    async doesTableExist(applicationName, tableName, context) {
         const result = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-        `select count(1) as count from information_schema.TABLES
-where TABLE_SCHEMA = '${schemaName}'
+        `select count(1) as count from information_application.TABLES
+where TABLE_APPLICATION = '${applicationName}'
 and TABLE_NAME = '${tableName}';`, [], context);
         return result[0].count == 1;
     }
-    async dropTable(schemaName, tableName, context) {
-        await this.findNative(`DROP TABLE '${schemaName}'.'${tableName}'`, [], context);
+    async dropTable(applicationName, tableName, context) {
+        await this.findNative(`DROP TABLE '${applicationName}'.'${tableName}'`, [], context);
         return true;
     }
     async findNative(sqlQuery, parameters, context) {
@@ -80,13 +79,6 @@ and TABLE_NAME = '${tableName}';`, [], context);
         this.queryApi = this.pool;
         return null;
     }
-    async transact(transactionalCallback) {
-        const connection = await this.pool.getConnection();
-        await connection.beginTransaction();
-        const transactionModule = await import('./MySqlTransaction');
-        const transaction = new transactionModule.MySqlTransaction(this, this.pool, connection);
-        await transactionalCallback(transaction);
-    }
     async initAllTables(context) {
         let createOperations;
         let createQueries = [];
@@ -112,5 +104,4 @@ and TABLE_NAME = '${tableName}';`, [], context);
         return SQLDialect.MYSQL;
     }
 }
-DI.set(STORE_DRIVER, MySqlDriver);
 //# sourceMappingURL=MySqlDriver.js.map

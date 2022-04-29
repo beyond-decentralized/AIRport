@@ -10,12 +10,12 @@ import { QRelation, QRepositoryEntityRelation } from './Relation';
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-export function QOneToManyRelation(dbRelation, parentQ) {
-    QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ);
+export function QOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
+    QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
 }
 extend(QRelation, QOneToManyRelation, {});
-export function QRepositoryEntityOneToManyRelation(dbRelation, parentQ) {
-    QRepositoryEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ);
+export function QRepositoryEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
+    QRepositoryEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
 }
 extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, {});
 //# sourceMappingURL=OneToManyRelation.js.map

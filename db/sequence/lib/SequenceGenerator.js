@@ -1,6 +1,4 @@
-import { SEQUENCE_DAO } from '@airport/airport-code';
-import { SEQUENCE_GENERATOR, setSeqGen } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { setSeqGen } from '@airport/check-in';
 import { ensureChildArray } from '@airport/ground-control';
 /**
  * Assumptions: 7/4/2019
@@ -42,12 +40,11 @@ export class SequenceGenerator {
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
     async initialize(sequences) {
-        const sequenceDao = await container(this).get(SEQUENCE_DAO);
         if (!sequences) {
-            sequences = await sequenceDao.findAll();
+            sequences = await this.sequenceDao.findAll();
         }
         this.addSequences(sequences);
-        await sequenceDao.incrementCurrentValues();
+        await this.sequenceDao.incrementCurrentValues();
         setSeqGen(this);
     }
     async tempInitialize(sequences) {
@@ -75,7 +72,6 @@ export class SequenceGenerator {
      */
     async doGenerateSequenceNumbers(dbColumns, numSequencesNeeded) {
         const sequentialNumbers = [];
-        const sequenceDao = await container(this).get(SEQUENCE_DAO);
         for (let i = 0; i < dbColumns.length; i++) {
             const dbColumn = dbColumns[i];
             let numColumnSequencesNeeded = numSequencesNeeded[i];
@@ -94,7 +90,7 @@ export class SequenceGenerator {
                 const numNewSequencesNeeded = sequence.incrementBy + numColumnSequencesNeeded;
                 const newSequence = { ...sequence };
                 newSequence.currentValue += numNewSequencesNeeded;
-                await sequenceDao.save(newSequence);
+                await this.sequenceDao.save(newSequence);
                 this.sequences[application.index][dbEntity.index][dbColumn.index] = newSequence;
                 sequenceBlock = numNewSequencesNeeded;
                 while (numColumnSequencesNeeded) {
@@ -130,7 +126,6 @@ export class SequenceGenerator {
         }
     }
 }
-DI.set(SEQUENCE_GENERATOR, SequenceGenerator);
 export function injectSequenceGenerator() {
     console.log('injecting SequenceGenerator');
 }

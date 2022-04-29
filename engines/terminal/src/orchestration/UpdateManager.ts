@@ -4,6 +4,7 @@ import {
 	IFieldUtils,
 	IQueryFacade,
 	IQueryUtils,
+	IRelationManager,
 	RepositorySheetSelectInfo,
 	SheetQuery
 } from '@airport/air-control'
@@ -52,6 +53,7 @@ export class UpdateManager
 	queryFacade: IQueryFacade
 	queryUtils: IQueryUtils
 	recordHistoryDuo: IRecordHistoryDuo
+	relationManager: IRelationManager
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
 
@@ -143,8 +145,8 @@ export class UpdateManager
 		const sheetQuery = new SheetQuery(null)
 
 		const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(
-			getSheetSelectFromSetClauseResult.selectClause, this.queryUtils,
-			this.fieldUtils)
+			getSheetSelectFromSetClauseResult.selectClause,
+			this.queryUtils, this.fieldUtils, this.relationManager)
 
 		const jsonSelect: JsonSheetQuery = {
 			S: jsonSelectClause,

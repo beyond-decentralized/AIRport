@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, SortOrder } from '@airport/ground-control';
-import { RELATION_MANAGER } from '../../../tokens';
 import { FieldInOrderBy } from './FieldInOrderBy';
 /**
  * Created by Papa on 4/21/2016.
@@ -13,13 +11,19 @@ export class QField {
         this.objectType = objectType;
         this.__appliedFunctions__ = [];
     }
+    /**
+     protected getFieldKey() {
+        let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
+        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
+        return key;
+    }
+     */
     applySqlFunction(sqlFunctionCall) {
         let appliedField = this.getInstance();
         appliedField.__appliedFunctions__.push(sqlFunctionCall);
         return appliedField;
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
@@ -32,7 +36,7 @@ export class QField {
             rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
         }
         let jsonField = {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils, relationManager),
             si: this.dbProperty.entity.applicationVersion.id,
             ti: this.dbProperty.entity.index,
             fa: alias,
@@ -48,14 +52,6 @@ export class QField {
         }
         return jsonField;
     }
-    /**
-     protected getFieldKey() {
-        const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER)
-        let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
-        let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
-        return key;
-    }
-     */
     asc() {
         return new FieldInOrderBy(this, SortOrder.ASCENDING);
     }
@@ -67,36 +63,36 @@ export class QField {
         appliedField.__fieldSubQuery__ = subQuery;
         return appliedField;
     }
-    operableFunctionToJson(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils) {
+    operableFunctionToJson(functionObject, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
         let alias;
         if (forSelectClause) {
             alias = columnAliases.getNextAlias(this);
         }
         return {
-            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils),
+            appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases, queryUtils, fieldUtils, relationManager),
             fa: alias,
             ot: this.objectType,
             dt: this.dbColumn.type,
-            v: this.valueToJSON(functionObject, columnAliases, false, true, queryUtils, fieldUtils)
+            v: this.valueToJSON(functionObject, columnAliases, false, true, queryUtils, fieldUtils, relationManager)
         };
     }
     copyFunctions(field) {
         field.__appliedFunctions__ = this.__appliedFunctions__.slice();
         return field;
     }
-    appliedFunctionsToJson(appliedFunctions, columnAliases, queryUtils, fieldUtils) {
+    appliedFunctionsToJson(appliedFunctions, columnAliases, queryUtils, fieldUtils, relationManager) {
         if (!appliedFunctions) {
             return appliedFunctions;
         }
         return appliedFunctions.map((appliedFunction) => {
-            return this.functionCallToJson(appliedFunction, columnAliases, queryUtils, fieldUtils);
+            return this.functionCallToJson(appliedFunction, columnAliases, queryUtils, fieldUtils, relationManager);
         });
     }
-    functionCallToJson(functionCall, columnAliases, queryUtils, fieldUtils) {
+    functionCallToJson(functionCall, columnAliases, queryUtils, fieldUtils, relationManager) {
         let parameters;
         if (functionCall.p) {
             parameters = functionCall.p.map((parameter) => {
-                return this.valueToJSON(parameter, columnAliases, false, false, queryUtils, fieldUtils);
+                return this.valueToJSON(parameter, columnAliases, false, false, queryUtils, fieldUtils, relationManager);
             });
         }
         return {
@@ -104,12 +100,12 @@ export class QField {
             p: parameters
         };
     }
-    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, queryUtils, fieldUtils) {
+    valueToJSON(functionObject, columnAliases, forSelectClause, fromFunctionObject, queryUtils, fieldUtils, relationManager) {
         if (!functionObject) {
             throw new Error(`Function object must be provided to valueToJSON function.`);
         }
         if (!fromFunctionObject && functionObject instanceof QField) {
-            return functionObject.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils);
+            return functionObject.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
         }
         let value = functionObject.value;
         switch (typeof value) {
@@ -150,7 +146,7 @@ boolean | Date | Date[] | number | number[] | string | string[]
                 .getNextAlias(functionObject as IQFunction<any>)
         }
         if (value instanceof QField) {
-            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils)
+            return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
         }
         // must be a field sub-query
         let rawFieldQuery: RawFieldQuery<any> = value

@@ -41,7 +41,7 @@ export function getColumnQField(entity, property, q, column) {
             throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
     }
 }
-export function getQRelation(entity, property, q, allQApplications) {
+export function getQRelation(entity, property, q, allQApplications, applicationUtils, relationManager) {
     const relation = property.relation[0];
     switch (relation.relationType) {
         case EntityRelationType.MANY_TO_ONE:
@@ -53,10 +53,10 @@ export function getQRelation(entity, property, q, allQApplications) {
             return new qIdRelationConstructor(relation.relationEntity, relation, q);
         case EntityRelationType.ONE_TO_MANY:
             if (entity.isRepositoryEntity) {
-                return new QRepositoryEntityOneToManyRelation(relation, q);
+                return new QRepositoryEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
             }
             else {
-                return new QOneToManyRelation(relation, q);
+                return new QOneToManyRelation(relation, q, applicationUtils, relationManager);
             }
         default:
             throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
@@ -64,12 +64,12 @@ export function getQRelation(entity, property, q, allQApplications) {
 }
 export function getQEntityConstructor(allQApplications) {
     // ChildQEntity refers to the constructor
-    var ChildQEntity = function (entity, nextChildJoinPosition, dbRelation, joinType) {
+    var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
         ChildQEntity.base.constructor.call(this, entity, nextChildJoinPosition, dbRelation, joinType);
         entity.properties.forEach((property) => {
             let qFieldOrRelation;
             if (property.relation && property.relation.length) {
-                qFieldOrRelation = getQRelation(entity, property, this, allQApplications);
+                qFieldOrRelation = getQRelation(entity, property, this, allQApplications, applicationUtils, relationManager);
                 for (const propertyColumn of property.propertyColumns) {
                     addColumnQField(entity, property, this, propertyColumn.column);
                 }

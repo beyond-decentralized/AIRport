@@ -1,6 +1,6 @@
 export declare enum QueryType {
-    PREPARED = 0,
-    DYNAMIC = 1
+    PREPARED = "PREPARED",
+    DYNAMIC = "DYNAMIC"
 }
 export interface IQueryRequest {
     name: string;
@@ -16,6 +16,5 @@ export interface IQueryResponse {
 export interface IQueryConfig {
 }
 export interface IQueryContext {
-    ioc: any;
 }
 //# sourceMappingURL=Query.d.ts.map

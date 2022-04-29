@@ -1,7 +1,9 @@
 import { DbRelation } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import { extend } from '../../utils/qApplicationBuilderUtils'
 import { QRelation, QRepositoryEntityRelation } from './Relation'
+import { IRelationManager } from './RelationManager'
 
 /**
  * Created by Papa on 10/25/2016.
@@ -17,15 +19,21 @@ import { QRelation, QRepositoryEntityRelation } from './Relation'
 export function QOneToManyRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils,
+	repationManager: IRelationManager,
 ) {
-	(<any>QOneToManyRelation).base.constructor.call(this, dbRelation, parentQ)
+	(<any>QOneToManyRelation).base.constructor.call(this,
+		dbRelation, parentQ, applicationUtils, repationManager)
 }
 extend(QRelation, QOneToManyRelation, {})
 
 export function QRepositoryEntityOneToManyRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils,
+	repationManager: IRelationManager,
 ) {
-	(<any>QRepositoryEntityOneToManyRelation).base.constructor.call(this, dbRelation, parentQ)
+	(<any>QRepositoryEntityOneToManyRelation).base.constructor.call(this,
+		dbRelation, parentQ, applicationUtils, repationManager)
 }
 extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, {})

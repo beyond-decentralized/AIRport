@@ -1,9 +1,10 @@
-import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryFacade, IQueryUtils } from '@airport/air-control';
+import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-control';
 import { ITransactionalConnector, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 export declare class QueryFacade implements IQueryFacade {
     fieldUtils: IFieldUtils;
     queryUtils: IQueryUtils;
+    relationManager: IRelationManager;
     transactionalConnector: ITransactionalConnector;
     find<E, EntityArray extends Array<E>>(query: AbstractQuery, queryResultType: QueryResultType, context: IQueryContext): Promise<EntityArray>;
     findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, context: IQueryContext): Promise<E>;

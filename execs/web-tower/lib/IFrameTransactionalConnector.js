@@ -1,6 +1,5 @@
-import { container, DI } from '@airport/di';
-import { getFullApplicationName, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { APPLICATION_LOADER, IsolateMessageType, LOCAL_API_SERVER } from '@airport/security-check';
+import { getFullApplicationName } from '@airport/ground-control';
+import { IsolateMessageType } from '@airport/security-check';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from "uuid";
 // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
@@ -198,26 +197,6 @@ export class IframeTransactionalConnector {
             type: IsolateMessageType.DELETE_WHERE
         });
     }
-    async startTransaction(context) {
-        return await this.sendMessage({
-            ...this.getCoreFields(),
-            type: IsolateMessageType.START_TRANSACTION
-        });
-    }
-    async commit(context) {
-        return await this.sendMessage({
-            ...this.getCoreFields(),
-            transactionId: context.transaction.id,
-            type: IsolateMessageType.COMMIT
-        });
-    }
-    async rollback(context) {
-        return await this.sendMessage({
-            ...this.getCoreFields(),
-            transactionId: context.transaction.id,
-            type: IsolateMessageType.ROLLBACK
-        });
-    }
     async getLatestApplicationVersionMapByFullApplicationName(fullApplicationName) {
         return await this.sendMessageNoWait({
             ...this.getCoreFields(),
@@ -236,8 +215,7 @@ export class IframeTransactionalConnector {
         while (this.appState !== AppState.INITIALIZED) {
             await this.wait(100);
         }
-        const localApiServer = await container(this).get(LOCAL_API_SERVER);
-        const response = await localApiServer.handleRequest(request);
+        const response = await this.localApiServer.handleRequest(request);
         window.parent.postMessage(response, origin);
     }
     handleDbToIsolateMessage(message, mainDomain) {
@@ -345,21 +323,19 @@ export class IframeTransactionalConnector {
                 return false;
             case AppState.START_INITIALIZING:
                 this.appState = AppState.INITIALIZING_IN_PROGRESS;
-                const applicationLoader = await container(this).get(APPLICATION_LOADER);
-                await applicationLoader.load(this.lastIds);
+                await this.applicationLoader.load(this.lastIds);
                 this.appState = AppState.INITIALIZED;
-                await applicationLoader.initialize();
+                await this.applicationLoader.initialize();
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    fullApplicationName: getFullApplicationName(applicationLoader.getApplication()),
+                    fullApplicationName: getFullApplicationName(this.applicationLoader.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, hostServer);
                 return true;
             case AppState.INITIALIZED:
                 return true;
         }
-        const applicationLoader = await DI.db().get(APPLICATION_LOADER);
-        let jsonApplication = applicationLoader.getApplication();
+        let jsonApplication = this.applicationLoader.getApplication();
         this.domain = jsonApplication.domain;
         this.application = jsonApplication.name;
         let message = {
@@ -381,5 +357,4 @@ export class IframeTransactionalConnector {
         this.messageCallback = callback;
     }
 }
-DI.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector);
 //# sourceMappingURL=IFrameTransactionalConnector.js.map

@@ -68,7 +68,8 @@ export const UPDATE_CACHE_MANAGER = airControl.token({
     token: 'UPDATE_CACHE_MANAGER'
 });
 AIRPORT_DATABASE.setDependencies({
-    databaseFacade: DATABASE_FACADE
+    databaseFacade: DATABASE_FACADE,
+    updateCacheManager: UPDATE_CACHE_MANAGER
 });
 APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
@@ -79,10 +80,18 @@ DATABASE_FACADE.setDependencies({
     entityStateManager: ENTITY_STATE_MANAGER,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
+FIELD_UTILS.setDependencies({
+    relationManager: RELATION_MANAGER
+});
 QUERY_FACADE.setDependencies({
     fieldUtils: FIELD_UTILS,
     queryUtils: QUERY_UTILS,
+    relationManager: RELATION_MANAGER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR
+});
+QUERY_UTILS.setDependencies({
+    fieldUtils: FIELD_UTILS,
+    relationManager: RELATION_MANAGER
 });
 RELATION_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS

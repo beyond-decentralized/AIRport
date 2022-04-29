@@ -4,7 +4,7 @@ export class AbstractMutationManager {
         return {
             applicationIndex,
             tableIndex,
-            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils),
+            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils, this.relationManager),
             parameterMap: query.getParameters(),
             queryResultType,
         };

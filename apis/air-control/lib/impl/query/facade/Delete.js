@@ -7,11 +7,11 @@ export class Delete extends AbstractQuery {
         super();
         this.rawDelete = rawDelete;
     }
-    toJSON(queryUtils, fieldUtils) {
+    toJSON(queryUtils, fieldUtils, relationManager) {
         return {
             DF: this.rawDelete.deleteFrom
-                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils),
-            W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases, fieldUtils)
+                .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases)
         };
     }
 }

@@ -1,15 +1,16 @@
 import { IAirportDatabase } from '@airport/air-control';
 import { ISequence } from '@airport/airport-code';
-import { IContext } from '@airport/di';
-import { DbSchema, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
-import { SqlSchemaBuilder } from '@airport/landing';
-export declare class PostgreSchemaBuilder extends SqlSchemaBuilder {
-    createSchema(jsonSchema: JsonSchema, storeDriver: IStoreDriver, context: IContext): Promise<void>;
-    getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;
-    getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
-    buildAllSequences(jsonSchemas: JsonSchema[], context: IContext): Promise<ISequence[]>;
-    stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase, context: IContext): ISequence[];
-    buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): ISequence[];
+import { IContext } from '@airport/direction-indicator';
+import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
+import { SqlApplicationBuilder } from '@airport/landing';
+export declare class PostgreApplicationBuilder extends SqlApplicationBuilder {
+    airportDatabase: IAirportDatabase;
+    createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
+    getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;
+    getCreateTableSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity): string;
+    buildAllSequences(jsonApplications: JsonApplication[], context: IContext): Promise<ISequence[]>;
+    stageSequences(jsonApplications: JsonApplication[], context: IContext): ISequence[];
+    buildSequences(dbApplication: DbApplication, jsonEntity: JsonApplicationEntity): ISequence[];
     protected getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;
     protected getForeignKeySql(tableName: string, foreignKeyName: string, foreignKeyColumnNames: string[], referencedTableName: string, referencedColumnNames: string[]): string;
 }

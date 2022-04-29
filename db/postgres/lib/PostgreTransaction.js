@@ -11,6 +11,7 @@ export class PostgreTransaction extends SqlDriver {
         super();
         this.driver = driver;
         this.client = client;
+        this.isSync = false;
         this.pool = pool;
         this.__container__ = driver.__container__;
     }
@@ -35,14 +36,14 @@ export class PostgreTransaction extends SqlDriver {
     async getClient() {
         return await this.client;
     }
-    composeTableName(schemaName, tableName) {
-        return `${schemaName}.${tableName}`;
+    composeTableName(applicationName, tableName) {
+        return `${applicationName}.${tableName}`;
     }
-    async doesTableExist(schemaName, tableName) {
+    async doesTableExist(applicationName, tableName) {
         try {
             const result = await this.pool.query(`SELECT EXISTS (
-				SELECT FROM information_schema.tables 
-				WHERE  table_schema = '${schemaName}'
+				SELECT FROM information_application.tables 
+				WHERE  table_application = '${applicationName}'
 				AND    table_name   = '${tableName}'
 				)`);
             return result.rows && !!result.rows.length;
@@ -52,8 +53,8 @@ export class PostgreTransaction extends SqlDriver {
             throw error;
         }
     }
-    async dropTable(schemaName, tableName, context) {
-        await this.pool.query(`DROP TABLE  '${schemaName}'.'${tableName}'`);
+    async dropTable(applicationName, tableName, context) {
+        await this.pool.query(`DROP TABLE  '${applicationName}'.'${tableName}'`);
         return true;
     }
     async findNative(sqlQuery, parameters, context) {
@@ -125,9 +126,6 @@ export class PostgreTransaction extends SqlDriver {
         // config.port = port;
         // config.database = database;
         this.pool = new Pool(config);
-    }
-    async transact(transactionalCallback, context) {
-        throw new Error('Cannot use transaction object to start another transaction');
     }
     async initAllTables(context) {
         let createOperations;

@@ -6,6 +6,7 @@ import { DATABASE_MANAGER } from '@airport/terminal';
 export * from './SqlJsDriver'
 export * from './SqlJsQueryAdaptor'
 export * from './SqlJsTransaction'
+export * from './tokens'
 
 injectSequenceGenerator()
 

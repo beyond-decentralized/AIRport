@@ -1,18 +1,17 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { STORE_DRIVER } from '@airport/ground-control';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { STORE_DRIVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '@airport/terminal';
-export * from './DDLManager';
 export * from './PostgreQueryAdaptor';
 export * from './PostgreSchemaBuilder';
 export * from './PostgreSqlDriver';
-export * from './PostgreSqlSchemaBuilder';
 export * from './PostgreTransaction';
+export * from './tokens';
 export async function startDb(domainName, connectionString) {
-    const storeDriver = await DI.db().get(STORE_DRIVER);
+    const storeDriver = await DEPENDENCY_INJECTION.db().get(STORE_DRIVER);
     await storeDriver.initialize(connectionString, {});
-    await DI.db().get(AIRPORT_DATABASE);
-    const dbManager = await DI.db().get(DATABASE_MANAGER);
+    await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
+    const dbManager = await DEPENDENCY_INJECTION.db().get(DATABASE_MANAGER);
     await dbManager.initWithDb(domainName, {});
 }
 export async function closeDb() {

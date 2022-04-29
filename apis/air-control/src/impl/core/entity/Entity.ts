@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbRelation,
@@ -10,7 +9,6 @@ import {
 	JSONRelationType,
 	JSONViewJoinRelation
 } from '@airport/ground-control'
-import { IAirportDatabase } from '../../../lingo/AirportDatabase'
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases'
 import {
 	IEntityCascadeGraph,
@@ -33,15 +31,11 @@ import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
-import {
-	AIRPORT_DATABASE,
-	RELATION_MANAGER,
-	APPLICATION_UTILS
-} from '../../../tokens'
 import { TreeQuery } from '../../query/facade/TreeQuery'
 import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
 import { FieldColumnAliases } from './Aliases'
+import { IRelationManager } from './RelationManager'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -72,10 +66,12 @@ export interface QEntityConstructor {
 
 	new <IQE extends IQEntityInternal>(
 		dbEntity: DbEntity,
+		applicationUtils: IApplicationUtils,
+		relationManager: IRelationManager,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
 		joinType?: JoinType,
-		QDriver?: { new(...args: any[]): IQEntityDriver }
+		QDriver?: { new(...args: any[]): IQEntityDriver },
 	): IQE;
 
 }
@@ -83,12 +79,15 @@ export interface QEntityConstructor {
 
 export function QEntity<IEntity>(
 	dbEntity: DbEntity,
+	applicationUtils: IApplicationUtils,
+	relationManager: IRelationManager,
 	fromClausePosition: number[] = [],
 	dbRelation = null,
 	joinType: JoinType = null,
 	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
 ) {
-	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this)
+	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType,
+		this, applicationUtils, relationManager)
 }
 
 QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
@@ -125,6 +124,8 @@ export class QEntityDriver
 
 	constructor(
 		public dbEntity: DbEntity,
+		private applicationUtils: IApplicationUtils,
+		private relationManager: IRelationManager,
 		public fromClausePosition: number[] = [],
 		public dbRelation: DbRelation = null,
 		public joinType: JoinType = null,
@@ -132,13 +133,11 @@ export class QEntityDriver
 	) {
 	}
 
-	getInstance(
-		applicationUtils: IApplicationUtils
-	): IQEntityInternal {
-		const qEntityConstructor = applicationUtils
+	getInstance(): IQEntityInternal {
+		const qEntityConstructor = this.applicationUtils
 			.getQEntityConstructor(this.dbEntity)
 
-		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
+		let instance = new qEntityConstructor(this.dbEntity, this.applicationUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType)
 
 		instance.__driver__.currentChildIndex = this.currentChildIndex
 		instance.__driver__.joinWhereClause = this.joinWhereClause
@@ -171,7 +170,8 @@ export class QEntityDriver
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONRelation {
 		// FIXME: this does not work for non-entity tree queries, as there is not dbEntity
 		// see ApplicationDao.findMaxVersionedMapByApplicationAndDomainNames for an example
@@ -186,12 +186,12 @@ export class QEntityDriver
 		}
 		if (this.joinWhereClause) {
 			this.getJoinRelationJson(<JSONJoinRelation>jsonRelation, columnAliases,
-				queryUtils, fieldUtils)
+				queryUtils, fieldUtils, relationManager)
 		} else if (this.dbRelation) {
 			this.getEntityRelationJson(<JSONEntityRelation>jsonRelation)
 		} else {
 			this.getRootRelationJson(jsonRelation, columnAliases,
-				queryUtils, fieldUtils)
+				queryUtils, fieldUtils, relationManager)
 		}
 		return jsonRelation
 	}
@@ -200,11 +200,12 @@ export class QEntityDriver
 		jsonRelation: JSONJoinRelation,
 		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONJoinRelation {
 		jsonRelation.rt = JSONRelationType.ENTITY_JOIN_ON
 		jsonRelation.joinWhereClause = queryUtils.whereClauseToJSON(
-			this.joinWhereClause, columnAliases, fieldUtils)
+			this.joinWhereClause, columnAliases)
 
 		return jsonRelation
 	}
@@ -247,7 +248,8 @@ export class QEntityDriver
 		jsonRelation: JSONRelation,
 		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONJoinRelation {
 		jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
 
@@ -263,12 +265,10 @@ export class QEntityDriver
 		right: IF,
 		joinType: JoinType,
 	): IJoinFields<IF> {
-		const [applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(
-			APPLICATION_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal = (<IQEntityInternal><any>right)
-			.__driver__.getInstance(applicationUtils)
+			.__driver__.getInstance()
 		joinChild.__driver__.currentChildIndex = 0
-		let nextChildPosition = relationManager.getNextChildJoinPosition(this)
+		let nextChildPosition = this.relationManager.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
 		joinChild.__driver__.joinType = joinType
 		joinChild.__driver__.parentJoinEntity = this.qEntity
@@ -344,10 +344,8 @@ export class QTreeDriver
 
 	subQuery: RawTreeQuery<any>
 
-	getInstance(
-		applicationUtils: IApplicationUtils
-	): IQEntityInternal {
-		let instance = super.getInstance(applicationUtils);
+	getInstance(): IQEntityInternal {
+		let instance = super.getInstance();
 		(<IQTreeDriver>instance.__driver__)
 			.subQuery = this.subQuery
 
@@ -362,13 +360,15 @@ export class QTreeDriver
 		jsonRelation: JSONViewJoinRelation,
 		columnAliases: IFieldColumnAliases<any>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONViewJoinRelation {
 		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-			jsonRelation, columnAliases, queryUtils, fieldUtils)
+			jsonRelation, columnAliases,
+			queryUtils, fieldUtils, relationManager)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
 		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-			.toJSON(queryUtils, fieldUtils)
+			.toJSON(queryUtils, fieldUtils, relationManager)
 
 		return jsonRelation
 	}
@@ -377,13 +377,15 @@ export class QTreeDriver
 		jsonRelation: JSONViewJoinRelation,
 		columnAliases: FieldColumnAliases,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONViewJoinRelation {
 		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-			jsonRelation, columnAliases, queryUtils, fieldUtils)
+			jsonRelation, columnAliases,
+			queryUtils, fieldUtils, relationManager)
 		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
 		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-			.toJSON(queryUtils, fieldUtils)
+			.toJSON(queryUtils, fieldUtils, relationManager)
 
 		return jsonRelation
 	}

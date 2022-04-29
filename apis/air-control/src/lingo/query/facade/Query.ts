@@ -1,18 +1,19 @@
 import {
 	JSONBaseOperation,
 	JsonQuery
-}                          from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	IFieldUtils
-}                          from '../../utils/FieldUtils';
+} from '../../utils/FieldUtils';
 import {
 	IQueryUtils
-}                          from '../../utils/QueryUtils';
+} from '../../utils/QueryUtils';
 import {
 	IEntityRelationFrom,
 	IFrom
-}                          from '../../core/entity/Entity';
+} from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
+import { IRelationManager } from '../../../impl/core/entity/RelationManager';
 
 /**
  * Query input format, as specified by the user. All queries extend this format.
@@ -35,7 +36,8 @@ export interface RawLimitedQuery {
 export interface IQuery {
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonQuery;
 }
 

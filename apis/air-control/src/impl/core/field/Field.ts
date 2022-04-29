@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION }                  from '@airport/direction-indicator';
 import {
 	DbColumn,
 	DbProperty,
@@ -7,22 +6,22 @@ import {
 	JsonFieldQuery,
 	JSONSqlFunctionCall,
 	SortOrder
-}                              from '@airport/ground-control';
+} from '@airport/ground-control';
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases';
-import { IQEntityInternal }    from '../../../lingo/core/entity/Entity';
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import {
 	IQFieldInternal,
 	IQOrderableField
-}                              from '../../../lingo/core/field/Field';
-import { IFieldInOrderBy }     from '../../../lingo/core/field/FieldInOrderBy';
-import { IQFunction }          from '../../../lingo/core/field/Functions';
-import { RawFieldQuery }       from '../../../lingo/query/facade/FieldQuery';
-import { IFieldUtils }         from '../../../lingo/utils/FieldUtils';
-import { IQueryUtils }         from '../../../lingo/utils/QueryUtils';
-import { RELATION_MANAGER }    from '../../../tokens';
-import { FieldColumnAliases }  from '../entity/Aliases';
-import { IAppliable }          from './Appliable';
-import { FieldInOrderBy }      from './FieldInOrderBy';
+} from '../../../lingo/core/field/Field';
+import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy';
+import { IQFunction } from '../../../lingo/core/field/Functions';
+import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
+import { FieldColumnAliases } from '../entity/Aliases';
+import { IRelationManager } from '../entity/RelationManager';
+import { IAppliable } from './Appliable';
+import { FieldInOrderBy } from './FieldInOrderBy';
 
 /**
  * Created by Papa on 4/21/2016.
@@ -30,56 +29,11 @@ import { FieldInOrderBy }      from './FieldInOrderBy';
 
 export abstract class QField<IQF extends IQOrderableField<IQF>>
 	implements IQFieldInternal<IQF>,
-	           IAppliable<JSONClauseField, IQF> {
+	IAppliable<JSONClauseField, IQF> {
 
 	// TODO: figure out if this is ever used
 	alias: string;
 	__appliedFunctions__: JSONSqlFunctionCall[] = [];
-
-	applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF {
-		let appliedField = this.getInstance();
-		appliedField.__appliedFunctions__.push(sqlFunctionCall);
-
-		return <IQF><any>appliedField;
-	}
-
-	toJSON(
-		columnAliases: IFieldColumnAliases<IQF>,
-		forSelectClause: boolean,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
-	): JSONClauseField {
-		const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER);
-		let alias;
-		if (forSelectClause) {
-			alias = columnAliases.getNextAlias(this);
-		}
-		let rootEntityPrefix;
-		if (this.__fieldSubQuery__) {
-			rootEntityPrefix = columnAliases.entityAliases.getOnlyAlias();
-		} else {
-			rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
-		}
-		let jsonField: JSONClauseField = {
-			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
-				queryUtils, fieldUtils),
-			si: this.dbProperty.entity.applicationVersion.id,
-			ti: this.dbProperty.entity.index,
-			fa: alias,
-			pi: this.dbProperty.index,
-			ci: this.dbColumn.index,
-			ta: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
-			ot: this.objectType,
-			dt: this.dbColumn.type
-		};
-		if (this.__fieldSubQuery__) {
-			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
-				this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
-			jsonField.ot  = JSONClauseObjectType.FIELD_QUERY;
-		}
-
-		return jsonField;
-	}
 
 	__fieldSubQuery__: RawFieldQuery<IQF>;
 
@@ -93,12 +47,56 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 
 	/**
 	 protected getFieldKey() {
-		const relationManager = DEPENDENCY_INJECTION.db().getSync(RELATION_MANAGER)
 		let rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.parentQ.getRootJoinEntity());
 		let key = `${relationManager.getPositionAlias(rootEntityPrefix, this.parentQ.fromClausePosition)}.${this.fieldName}`;
 		return key;
 	}
 	 */
+
+	applySqlFunction(sqlFunctionCall: JSONSqlFunctionCall): IQF {
+		let appliedField = this.getInstance();
+		appliedField.__appliedFunctions__.push(sqlFunctionCall);
+
+		return <IQF><any>appliedField;
+	}
+
+	toJSON(
+		columnAliases: IFieldColumnAliases<IQF>,
+		forSelectClause: boolean,
+		queryUtils: IQueryUtils,
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
+	): JSONClauseField {
+		let alias;
+		if (forSelectClause) {
+			alias = columnAliases.getNextAlias(this);
+		}
+		let rootEntityPrefix;
+		if (this.__fieldSubQuery__) {
+			rootEntityPrefix = columnAliases.entityAliases.getOnlyAlias();
+		} else {
+			rootEntityPrefix = columnAliases.entityAliases.getExistingAlias(this.q.__driver__.getRootJoinEntity());
+		}
+		let jsonField: JSONClauseField = {
+			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
+				queryUtils, fieldUtils, relationManager),
+			si: this.dbProperty.entity.applicationVersion.id,
+			ti: this.dbProperty.entity.index,
+			fa: alias,
+			pi: this.dbProperty.index,
+			ci: this.dbColumn.index,
+			ta: relationManager.getPositionAlias(rootEntityPrefix, this.q.__driver__.fromClausePosition),
+			ot: this.objectType,
+			dt: this.dbColumn.type
+		};
+		if (this.__fieldSubQuery__) {
+			jsonField.fieldSubQuery = fieldUtils.getFieldQueryJson(
+				this.__fieldSubQuery__, columnAliases.entityAliases, queryUtils);
+			jsonField.ot = JSONClauseObjectType.FIELD_QUERY;
+		}
+
+		return jsonField;
+	}
 
 	asc(): IFieldInOrderBy<IQF> {
 		return new FieldInOrderBy<IQF>(this, SortOrder.ASCENDING);
@@ -113,7 +111,7 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 	addSubQuery(
 		subQuery: RawFieldQuery<IQF>
 	): IQF {
-		let appliedField               = this.getInstance();
+		let appliedField = this.getInstance();
 		appliedField.__fieldSubQuery__ = subQuery;
 
 		return <IQF><any>appliedField;
@@ -124,7 +122,8 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		columnAliases: FieldColumnAliases,
 		forSelectClause: boolean,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONClauseField {
 		let alias;
 		if (forSelectClause) {
@@ -132,12 +131,12 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		}
 		return {
 			appliedFunctions: this.appliedFunctionsToJson(this.__appliedFunctions__, columnAliases,
-				queryUtils, fieldUtils),
+				queryUtils, fieldUtils, relationManager),
 			fa: alias,
 			ot: this.objectType,
 			dt: this.dbColumn.type,
 			v: this.valueToJSON(functionObject, columnAliases, false,
-				true, queryUtils, fieldUtils)
+				true, queryUtils, fieldUtils, relationManager)
 		};
 	}
 
@@ -150,14 +149,16 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		appliedFunctions: JSONSqlFunctionCall[],
 		columnAliases: IFieldColumnAliases<IQF>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONSqlFunctionCall[] {
 		if (!appliedFunctions) {
 			return appliedFunctions;
 		}
 		return appliedFunctions.map((appliedFunction) => {
 			return this.functionCallToJson(
-				appliedFunction, columnAliases, queryUtils, fieldUtils);
+				appliedFunction, columnAliases,
+				queryUtils, fieldUtils, relationManager);
 		});
 	}
 
@@ -165,14 +166,15 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		functionCall: JSONSqlFunctionCall,
 		columnAliases: IFieldColumnAliases<IQF>,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JSONSqlFunctionCall {
 		let parameters;
 		if (functionCall.p) {
 			parameters = functionCall.p.map((parameter) => {
 				return this.valueToJSON(
 					parameter, columnAliases, false, false,
-					queryUtils, fieldUtils);
+					queryUtils, fieldUtils, relationManager);
 			});
 		}
 		return {
@@ -187,14 +189,16 @@ export abstract class QField<IQF extends IQOrderableField<IQF>>
 		forSelectClause: boolean,
 		fromFunctionObject: boolean,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): string | JSONClauseField | JsonFieldQuery {
 		if (!functionObject) {
 			throw new Error(`Function object must be provided to valueToJSON function.`);
 		}
 		if (!fromFunctionObject && functionObject instanceof QField) {
 			return functionObject.toJSON(
-				columnAliases, forSelectClause, queryUtils, fieldUtils);
+				columnAliases, forSelectClause,
+				queryUtils, fieldUtils, relationManager);
 		}
 
 		let value = (functionObject as IQFunction<any>).value;
@@ -233,7 +237,7 @@ boolean | Date | Date[] | number | number[] | string | string[]
 				.getNextAlias(functionObject as IQFunction<any>)
 		}
 		if (value instanceof QField) {
-			return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils)
+			return value.toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager)
 		}
 		// must be a field sub-query
 		let rawFieldQuery: RawFieldQuery<any> = value

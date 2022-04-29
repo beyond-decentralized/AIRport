@@ -2,10 +2,6 @@ import {
 	ILocalAPIRequest,
 	ILocalAPIResponse
 } from '@airport/aviation-communication'
-import {
-	container,
-	DEPENDENCY_INJECTION,
-} from '@airport/direction-indicator'
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IApiIMI,
@@ -17,18 +13,16 @@ import {
 	TransactionalReceiver
 } from '@airport/terminal'
 import {
-	TRANSACTIONAL_RECEIVER,
 	ITransactionalReceiver,
 	IApiCallContext,
 	ITransactionContext,
-	TERMINAL_STORE,
 	ITerminalStore
 } from '@airport/terminal-map'
 import {
 	map
 } from 'rxjs/operators'
-import { WEB_MESSAGE_RECEIVER } from './tokens'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
+import { IWebMessageReceiver } from './WebMessageReceiver'
 
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
@@ -36,6 +30,7 @@ export class WebTransactionalReceiver
 
 	applicationInitializer: IWebApplicationInitializer
 	terminalStore: ITerminalStore
+	webMessageReciever: IWebMessageReceiver
 
 	constructor() {
 		super()
@@ -71,8 +66,7 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER)
-		if (webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReciever.needMessageSerialization()) {
 			// FIXME: deserialize message
 		}
 
@@ -249,11 +243,10 @@ export class WebTransactionalReceiver
 			payload: null,
 		};
 
-		const webMessageReciever = await container(this).get(WEB_MESSAGE_RECEIVER)
-		if (webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReciever.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		webMessageReciever.sendMessageToClient(connectionIsReadyMessage)
+		this.webMessageReciever.sendMessageToClient(connectionIsReadyMessage)
 	}
 
 	private hasValidApplicationInfo(
@@ -363,11 +356,10 @@ export class WebTransactionalReceiver
 		}
 
 		// Forward the request to the source client
-		const webMessageReciever = container(this).getSync(WEB_MESSAGE_RECEIVER)
-		if (webMessageReciever.needMessageSerialization()) {
+		if (this.webMessageReciever.needMessageSerialization()) {
 			// FIXME: serialize message
 		}
-		webMessageReciever.sendMessageToClient(message)
+		this.webMessageReciever.sendMessageToClient(message)
 	}
 
 	private async ensureApplicationIsInstalled(
@@ -480,7 +472,3 @@ export class WebTransactionalReceiver
 	}
 
 }
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_RECEIVER, WebTransactionalReceiver);
-TRANSACTIONAL_RECEIVER.setDependencies({
-	terminalStore: TERMINAL_STORE
-})

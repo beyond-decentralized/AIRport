@@ -7,6 +7,7 @@ import {
   IQueryUtils,
   RawInsertValues,
   IApplicationUtils,
+  IRelationManager,
 } from '@airport/air-control';
 import { IContext } from '@airport/direction-indicator';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
@@ -21,6 +22,7 @@ export class AbstractMutationManager {
   applicationUtils: IApplicationUtils
   fieldUtils: IFieldUtils
   queryUtils: IQueryUtils
+  relationManager: IRelationManager
 
   protected getPortableQuery(
     applicationIndex: number,
@@ -31,7 +33,8 @@ export class AbstractMutationManager {
     return {
       applicationIndex,
       tableIndex,
-      jsonQuery: <JsonQuery>query.toJSON(this.queryUtils, this.fieldUtils),
+      jsonQuery: <JsonQuery>query.toJSON(
+        this.queryUtils, this.fieldUtils, this.relationManager),
       parameterMap: query.getParameters(),
       queryResultType,
     };

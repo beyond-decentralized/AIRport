@@ -17,11 +17,8 @@ dependencies:
   '@rush-temp/aviation-communication': 'file:projects/aviation-communication.tgz'
   '@rush-temp/blueprint': 'file:projects/blueprint.tgz_typescript@4.5.2'
   '@rush-temp/check-in': 'file:projects/check-in.tgz'
-  '@rush-temp/cockroachdb': 'file:projects/cockroachdb.tgz'
   '@rush-temp/direction-indicator': 'file:projects/direction-indicator.tgz_typescript@4.5.2'
   '@rush-temp/fuel-hydrant-system': 'file:projects/fuel-hydrant-system.tgz'
-  '@rush-temp/go-terminal': 'file:projects/go-terminal.tgz'
-  '@rush-temp/go-tower': 'file:projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:projects/ground-control.tgz'
   '@rush-temp/ground-transport': 'file:projects/ground-transport.tgz'
   '@rush-temp/holding-pattern': 'file:projects/holding-pattern.tgz'
@@ -3272,13 +3269,6 @@ packages:
       integrity: sha512-GGewWEjdiZXlI2gbc96OFNWx3uYyPeat40lXLlCZ8dfCov7ZrMbAMPG8hxx/6fMNOoAU7Id4NHli0+x3j/XRXw==
       tarball: 'file:projects/check-in.tgz'
     version: 0.0.0
-  'file:projects/cockroachdb.tgz':
-    dev: false
-    name: '@rush-temp/cockroachdb'
-    resolution:
-      integrity: sha512-vLL6ousGYYAr1ovhsJjW6oeEZXZwIy6v2aPVQhvqfhi4EdYBLc1lPlzduIlW1lNCiaVVNTZcq7DuTZO1F+vOcA==
-      tarball: 'file:projects/cockroachdb.tgz'
-    version: 0.0.0
   'file:projects/direction-indicator.tgz_typescript@4.5.2':
     dependencies:
       tslint: 5.20.1_typescript@4.5.2
@@ -3301,24 +3291,6 @@ packages:
     resolution:
       integrity: sha512-r9/KCVnr7XZkHmvokdKCVO+CwTtTOtmZ6usRB3PUZfwHR0T4qYsAuYc4jynMiX1L97K12HdcD8OoVtv/bzxUlw==
       tarball: 'file:projects/fuel-hydrant-system.tgz'
-    version: 0.0.0
-  'file:projects/go-terminal.tgz':
-    dependencies:
-      rxjs: 7.4.0
-    dev: false
-    name: '@rush-temp/go-terminal'
-    resolution:
-      integrity: sha512-wjtvI3XuX7oSmaU0D847ozhBXhz/YHeimsBpyPHlJkTXLC1t8cWm5IhYI/i7IY6sfoC/JfUnzGLYuM7CvhGlTg==
-      tarball: 'file:projects/go-terminal.tgz'
-    version: 0.0.0
-  'file:projects/go-tower.tgz':
-    dependencies:
-      rxjs: 7.4.0
-    dev: false
-    name: '@rush-temp/go-tower'
-    resolution:
-      integrity: sha512-ridcn6BydF3BJfGJ0EfjLtlZQVXBE8Y1uXdY77wVOdzZUXWhXJWnRXtYyVp8HTxxAjiIS5C3BYvMMhMMQBUgow==
-      tarball: 'file:projects/go-tower.tgz'
     version: 0.0.0
   'file:projects/ground-control.tgz':
     dependencies:
@@ -3748,11 +3720,8 @@ specifiers:
   '@rush-temp/aviation-communication': 'file:./projects/aviation-communication.tgz'
   '@rush-temp/blueprint': 'file:./projects/blueprint.tgz'
   '@rush-temp/check-in': 'file:./projects/check-in.tgz'
-  '@rush-temp/cockroachdb': 'file:./projects/cockroachdb.tgz'
   '@rush-temp/direction-indicator': 'file:./projects/direction-indicator.tgz'
   '@rush-temp/fuel-hydrant-system': 'file:./projects/fuel-hydrant-system.tgz'
-  '@rush-temp/go-terminal': 'file:./projects/go-terminal.tgz'
-  '@rush-temp/go-tower': 'file:./projects/go-tower.tgz'
   '@rush-temp/ground-control': 'file:./projects/ground-control.tgz'
   '@rush-temp/ground-transport': 'file:./projects/ground-transport.tgz'
   '@rush-temp/holding-pattern': 'file:./projects/holding-pattern.tgz'

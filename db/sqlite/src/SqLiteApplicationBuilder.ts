@@ -6,7 +6,6 @@ import {
   ISequence
 } from '@airport/airport-code';
 import {
-  DEPENDENCY_INJECTION,
   IContext,
 } from '@airport/direction-indicator';
 import {
@@ -17,7 +16,7 @@ import {
   JsonApplicationEntity,
   SQLDataType,
 } from '@airport/ground-control';
-import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing';
+import { SqlApplicationBuilder } from '@airport/landing';
 
 export class SqLiteApplicationBuilder
   extends SqlApplicationBuilder {
@@ -168,4 +167,3 @@ export class SqLiteApplicationBuilder
 
 }
 
-DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, SqLiteApplicationBuilder);

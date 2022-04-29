@@ -187,36 +187,6 @@ they are internal to the AIRport framework).`)
         })
     }
 
-    async startTransaction(
-        context: IContext
-    ): Promise<boolean> {
-        return await this.transactionalServer.startTransaction(
-            this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        })
-    }
-
-    async commit(
-        context: IContext
-    ): Promise<boolean> {
-        return await this.transactionalServer.commit(
-            this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        })
-    }
-
-    async rollback(
-        context: IContext
-    ): Promise<boolean> {
-        return await this.transactionalServer.rollback(
-            this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        })
-    }
-
     onMessage(callback: (
         message: any
     ) => void) {

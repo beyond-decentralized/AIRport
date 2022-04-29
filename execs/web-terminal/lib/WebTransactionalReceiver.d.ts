@@ -1,8 +1,13 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IApiIMI, IIsolateMessage } from '@airport/security-check';
 import { TransactionalReceiver } from '@airport/terminal';
-import { ITransactionalReceiver, IApiCallContext, ITransactionContext } from '@airport/terminal-map';
+import { ITransactionalReceiver, IApiCallContext, ITransactionContext, ITerminalStore } from '@airport/terminal-map';
+import { IWebApplicationInitializer } from './WebApplicationInitializer';
+import { IWebMessageReceiver } from './WebMessageReceiver';
 export declare class WebTransactionalReceiver extends TransactionalReceiver implements ITransactionalReceiver {
+    applicationInitializer: IWebApplicationInitializer;
+    terminalStore: ITerminalStore;
+    webMessageReciever: IWebMessageReceiver;
     constructor();
     handleClientRequest(message: ILocalAPIRequest): void;
     handleAppRequest(message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse, messageOrigin: string, source: any): void;

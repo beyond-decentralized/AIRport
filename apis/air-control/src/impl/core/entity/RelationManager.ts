@@ -75,6 +75,8 @@ export class RelationManager
 			dbEntity)
 		return new QEntityConstructor(
 			dbEntity,
+			this.applicationUtils,
+			this,
 			joinRelation.fromClausePosition,
 			dbEntity.relations[(<JSONEntityRelation>joinRelation).ri],
 			joinRelation.jt)

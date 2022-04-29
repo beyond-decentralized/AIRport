@@ -6,9 +6,6 @@ import {
 	ISequence
 } from '@airport/airport-code'
 import {
-	DEPENDENCY_INJECTION, IContext,
-} from '@airport/direction-indicator';
-import {
 	DbApplication,
 	getFullApplicationName,
 	JsonApplication,
@@ -17,11 +14,11 @@ import {
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
-import { APPLICATION_BUILDER, SqlApplicationBuilder } from '@airport/landing'
+import { SqlApplicationBuilder } from '@airport/landing'
 
 export class MySqlApplicationBuilder
 	extends SqlApplicationBuilder {
-		
+
 	airportDatabase: IAirportDatabase
 
 	async createApplication(
@@ -141,5 +138,3 @@ export class MySqlApplicationBuilder
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, MySqlApplicationBuilder)

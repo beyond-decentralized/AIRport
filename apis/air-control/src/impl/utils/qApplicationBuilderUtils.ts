@@ -25,9 +25,11 @@ import { IQNumberField } from '../../lingo/core/field/NumberField'
 import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
 import { IQStringField } from '../../lingo/core/field/StringField'
 import { IQUntypedField } from '../../lingo/core/field/UntypedField'
+import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils'
 import { QEntity } from '../core/entity/Entity'
 import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
 import { QRelation, QRepositoryEntityRelation } from '../core/entity/Relation'
+import { IRelationManager } from '../core/entity/RelationManager'
 import { QBooleanField } from '../core/field/BooleanField'
 import { QDateField } from '../core/field/DateField'
 import { QNumberField } from '../core/field/NumberField'
@@ -84,7 +86,9 @@ export function getQRelation(
 	entity: DbEntity,
 	property: DbProperty,
 	q: IQEntityInternal,
-	allQApplications: QApplication[]
+	allQApplications: QApplication[],
+	applicationUtils: IApplicationUtils,
+	relationManager: IRelationManager
 ): IQRelation<typeof q> {
 	const relation = property.relation[0]
 	switch (relation.relationType) {
@@ -98,9 +102,11 @@ export function getQRelation(
 			return new qIdRelationConstructor(relation.relationEntity, relation, q)
 		case EntityRelationType.ONE_TO_MANY:
 			if (entity.isRepositoryEntity) {
-				return new QRepositoryEntityOneToManyRelation(relation, q)
+				return new QRepositoryEntityOneToManyRelation(relation, q,
+					applicationUtils, relationManager)
 			} else {
-				return new QOneToManyRelation(relation, q)
+				return new QOneToManyRelation(relation, q,
+					applicationUtils, relationManager)
 			}
 		default:
 			throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`)
@@ -115,6 +121,8 @@ export function getQEntityConstructor(
 	// ChildQEntity refers to the constructor
 	var ChildQEntity = function (
 		entity: DbEntity,
+		applicationUtils: IApplicationUtils,
+		relationManager: IRelationManager,
 		nextChildJoinPosition: number[],
 		dbRelation: DbRelation,
 		joinType: JoinType
@@ -128,7 +136,8 @@ export function getQEntityConstructor(
 			let qFieldOrRelation
 
 			if (property.relation && property.relation.length) {
-				qFieldOrRelation = getQRelation(entity, property, this, allQApplications)
+				qFieldOrRelation = getQRelation(entity, property,
+					this, allQApplications, applicationUtils, relationManager)
 				for (const propertyColumn of property.propertyColumns) {
 					addColumnQField(entity, property, this, propertyColumn.column)
 				}

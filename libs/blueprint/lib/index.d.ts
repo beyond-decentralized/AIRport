@@ -382,24 +382,6 @@ export declare const BLUEPRINT: ({
                 sinceVersion: number;
                 type: string;
                 allocationSize?: undefined;
-            } | {
-                index: number;
-                isGenerated: boolean;
-                manyRelationColumnRefs: {
-                    manyRelationIndex: number;
-                    oneApplicationIndex: any;
-                    oneTableIndex: number;
-                    oneColumnIndex: number;
-                    sinceVersion: number;
-                }[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-                allocationSize?: undefined;
             })[];
             idColumnRefs: {
                 index: number;

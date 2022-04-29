@@ -11,6 +11,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
+	IUpdateCacheManager,
 	QApplication,
 	Y
 } from '@airport/air-control';
@@ -52,8 +53,8 @@ export abstract class Dao<Entity,
 	}
 
 	airportDatabase: IAirportDatabase
-
 	entityStateManager: IEntityStateManager
+	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId,
@@ -73,7 +74,7 @@ export abstract class Dao<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, EntityId,
 			EntityCascadeGraph, QE>(
-				dbEntity, Q);
+				dbEntity, Q, this.updateCacheManager);
 	}
 
 	async count(

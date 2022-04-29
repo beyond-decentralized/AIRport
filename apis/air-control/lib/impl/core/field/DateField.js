@@ -18,8 +18,8 @@ export class QDateFunction extends QDateField {
     getInstance() {
         return this.copyFunctions(new QDateFunction(this.value, this.isQueryParameter));
     }
-    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils) {
-        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils);
+    toJSON(columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager) {
+        let json = this.operableFunctionToJson(this, columnAliases, forSelectClause, queryUtils, fieldUtils, relationManager);
         if (this.isQueryParameter) {
             this.parameterAlias = json.v;
         }

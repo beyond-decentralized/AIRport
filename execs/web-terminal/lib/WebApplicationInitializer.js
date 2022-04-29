@@ -1,6 +1,4 @@
-import { container, DI } from "@airport/di";
 import { ApplicationInitializer } from "@airport/landing";
-import { APPLICATION_INITIALIZER, TERMINAL_STORE } from "@airport/terminal-map";
 export class WebApplicationInitializer extends ApplicationInitializer {
     constructor() {
         super(...arguments);
@@ -8,8 +6,8 @@ export class WebApplicationInitializer extends ApplicationInitializer {
         this.initializingApplicationMap = new Map();
     }
     async nativeInitializeApplication(domain, application, fullApplicationName) {
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        if (terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
+        if (this.terminalStore.getReceiver().initializedApps
+            .has(fullApplicationName)) {
             return;
         }
         let appIframes = document.getElementsByName(fullApplicationName);
@@ -22,12 +20,12 @@ export class WebApplicationInitializer extends ApplicationInitializer {
             appIframe.style.display = 'none';
             document.body.appendChild(appIframe);
         }
-        while (!terminalStore.getReceiver().initializedApps.has(fullApplicationName)) {
+        while (!this.terminalStore.getReceiver().initializedApps
+            .has(fullApplicationName)) {
             await this.wait(100);
         }
         this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);
         this.initializingApplicationMap.set(fullApplicationName, false);
     }
 }
-DI.set(APPLICATION_INITIALIZER, WebApplicationInitializer);
 //# sourceMappingURL=WebApplicationInitializer.js.map

@@ -2,13 +2,10 @@ import { Context, ContextType } from '../Context';
 import { AUTOPILOT_API_LOADER } from '../tokens';
 import { domain } from './InjectionDomain';
 import { lib } from './InjectionApplication';
-const classMap = new Map();
-let numPendingInits = 0;
 const objectMap = new Map();
 export class Container {
-    set(token, clazz) {
-        classMap.set(token.descriptor.token, clazz);
-        objectMap.set(token.descriptor.token, null);
+    set(token, aClass) {
+        token.descriptor.class = aClass;
     }
 }
 export class ChildContainer extends Container {
@@ -90,17 +87,17 @@ export class ChildContainer extends Container {
                         .loadApiAutopilot(token);
                 }
                 else {
-                    const clazz = classMap.get(token.descriptor.token);
-                    if (!clazz) {
+                    const aClass = token.descriptor.class;
+                    if (!aClass) {
                         firstMissingClassToken = token;
                         return;
                     }
-                    if (clazz.diSet && !clazz.diSet()) {
+                    if (aClass.diSet && !aClass.diSet()) {
                         firstMissingClassToken = token;
-                        firstDiNotSetClass = clazz;
+                        firstDiNotSetClass = aClass;
                         return;
                     }
-                    object = new clazz();
+                    object = new aClass();
                     this.setDependencyGetters(object, token);
                 }
                 object.__container__ = this;

@@ -6,7 +6,6 @@ import { DATABASE_MANAGER } from '@airport/terminal';
 export * from './PostgreQueryAdaptor'
 export * from './PostgreSchemaBuilder'
 export * from './PostgreSqlDriver'
-export * from './PostgreSqlSchemaBuilder'
 export * from './PostgreTransaction'
 export * from './tokens';
 

@@ -3,23 +3,24 @@ import {
 	JsonEntityQuery,
 	JSONEntityRelation,
 	JsonLimitedEntityQuery
-}                                from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IFieldUtils
-}                                from '../../../lingo/utils/FieldUtils'
+} from '../../../lingo/utils/FieldUtils'
 import {
 	IQueryUtils
-}                                from '../../../lingo/utils/QueryUtils'
-import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
-import {IFieldInOrderBy}         from '../../../lingo/core/field/FieldInOrderBy'
+} from '../../../lingo/utils/QueryUtils'
+import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
+import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy'
 import {
 	RawEntityQuery,
 	RawLimitedEntityQuery
-}                                from '../../../lingo/query/facade/EntityQuery'
-import {IQuery}                  from '../../../lingo/query/facade/Query'
-import {QField}                  from '../../core/field/Field'
-import {FieldInOrderBy}          from '../../core/field/FieldInOrderBy'
-import {MappableQuery}           from './TreeQuery'
+} from '../../../lingo/query/facade/EntityQuery'
+import { IQuery } from '../../../lingo/query/facade/Query'
+import { QField } from '../../core/field/Field'
+import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
+import { MappableQuery } from './TreeQuery'
+import { IRelationManager } from '../../core/entity/RelationManager'
 
 /**
  * Created by Papa on 10/24/2016.
@@ -33,21 +34,24 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 		protected rawQuery: RawEntityQuery<IEP>
 	) {
 		super()
-		this.isEntityQuery             = true
+		this.isEntityQuery = true
 		this.isHierarchicalEntityQuery = true
 	}
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonEntityQuery<IEP> {
 		return {
 			S: this.selectClauseToJSON(
-				this.rawQuery.select, queryUtils, fieldUtils),
+				this.rawQuery.select,
+				queryUtils, fieldUtils, relationManager),
 			F: <JSONEntityRelation[]>this.fromClauseToJSON(
-				this.rawQuery.from, queryUtils, fieldUtils),
+				this.rawQuery.from,
+				queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
-				this.rawQuery.where, this.columnAliases, fieldUtils),
+				this.rawQuery.where, this.columnAliases),
 			OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
 		}
 	}
@@ -87,13 +91,14 @@ export class LimitedEntityQuery<IEP extends IEntitySelectProperties>
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonLimitedEntityQuery<IEP> {
 		let limitedJsonEntity: JsonLimitedEntityQuery<IEP> = super.toJSON(
-			queryUtils, fieldUtils
+			queryUtils, fieldUtils, relationManager
 		)
-		limitedJsonEntity.L                                = this.rawQuery.limit
-		limitedJsonEntity.O                                = this.rawQuery.offset
+		limitedJsonEntity.L = this.rawQuery.limit
+		limitedJsonEntity.O = this.rawQuery.offset
 
 		return limitedJsonEntity
 	}

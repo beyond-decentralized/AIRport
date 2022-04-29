@@ -2,19 +2,20 @@ import {
 	JSONEntityRelation,
 	JsonEntityUpdateColumns,
 	JsonUpdate
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import {
 	IFieldUtils
-}                          from '../../../lingo/utils/FieldUtils'
+} from '../../../lingo/utils/FieldUtils'
 import {
 	IQueryUtils
-}                          from '../../../lingo/utils/QueryUtils'
+} from '../../../lingo/utils/QueryUtils'
 import {
 	IQEntity,
 	IQEntityInternal
-}                          from '../../../lingo/core/entity/Entity'
-import {AbstractRawUpdate} from '../../../lingo/query/facade/Update'
-import {AbstractQuery}     from './AbstractQuery'
+} from '../../../lingo/core/entity/Entity'
+import { AbstractRawUpdate } from '../../../lingo/query/facade/Update'
+import { AbstractQuery } from './AbstractQuery'
+import { IRelationManager } from '../../core/entity/RelationManager'
 
 export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractRawUpdate<IQE>>
 	extends AbstractQuery {
@@ -27,15 +28,18 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
 			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
 				.__driver__.getRelationJson(
-					this.columnAliases, queryUtils, fieldUtils),
-			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
+					this.columnAliases,
+					queryUtils, fieldUtils, relationManager),
+			S: this.setToJSON(this.rawUpdate.set,
+				queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
-				this.rawUpdate.where, this.columnAliases, fieldUtils)
+				this.rawUpdate.where, this.columnAliases)
 		}
 	}
 
@@ -43,7 +47,8 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 	protected abstract setToJSON(
 		set: any,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonEntityUpdateColumns;
 
 }

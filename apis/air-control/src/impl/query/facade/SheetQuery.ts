@@ -1,13 +1,14 @@
-import {JsonSheetQuery} from '@airport/ground-control'
-import {IQuery}         from '../../../lingo/query/facade/Query'
-import {RawSheetQuery}  from '../../../lingo/query/facade/SheetQuery'
-import {IFieldUtils}    from '../../../lingo/utils/FieldUtils'
-import {IQueryUtils}    from '../../../lingo/utils/QueryUtils'
-import {QField}         from '../../core/field/Field'
+import { JsonSheetQuery } from '@airport/ground-control'
+import { IQuery } from '../../../lingo/query/facade/Query'
+import { RawSheetQuery } from '../../../lingo/query/facade/SheetQuery'
+import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
+import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
+import { IRelationManager } from '../../core/entity/RelationManager'
+import { QField } from '../../core/field/Field'
 import {
 	DistinguishableQuery,
 	NON_ENTITY_SELECT_ERROR_MESSAGE,
-}                       from './NonEntityQuery'
+} from './NonEntityQuery'
 
 /**
  * Created by Papa on 10/23/2016.
@@ -26,7 +27,8 @@ export class SheetQuery
 	nonDistinctSelectClauseToJSON(
 		rawSelect: any[],
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): any {
 		if (!(rawSelect instanceof Array)) {
 			throw new Error(`Flat Queries an array of fields in SELECT clause.`)
@@ -38,23 +40,27 @@ export class SheetQuery
 			this.columnAliases.entityAliases.getNextAlias(
 				selectField.q.__driver__.getRootJoinEntity())
 			return selectField.toJSON(
-				this.columnAliases, true, queryUtils, fieldUtils)
+				this.columnAliases, true,
+				queryUtils, fieldUtils, relationManager)
 		})
 	}
 
 	toJSON(
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonSheetQuery {
 		let select = this.selectClauseToJSON(
-			this.rawQuery.select, queryUtils, fieldUtils)
+			this.rawQuery.select,
+			queryUtils, fieldUtils, relationManager)
 
 		let jsonFieldQuery: JsonSheetQuery = {
 			S: select
 		}
 
 		return <JsonSheetQuery>this.getNonEntityQuery(
-			this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils)
+			this.rawQuery, jsonFieldQuery, null,
+			queryUtils, fieldUtils, relationManager)
 	}
 
 }

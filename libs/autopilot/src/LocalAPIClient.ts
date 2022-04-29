@@ -134,7 +134,7 @@ export class LocalAPIClient
             domain: token.application.domain.name,
             id: uuidv4(),
             methodName,
-            objectName: token.name,
+            objectName: token.descriptor.interface,
             protocol: window.location.protocol,
         }
 
