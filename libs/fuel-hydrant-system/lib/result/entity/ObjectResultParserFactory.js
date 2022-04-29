@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { QueryResultType } from '@airport/ground-control';
-import { OBJECT_RESULT_PARSER_FACTORY } from '../../tokens';
 import { EntityGraphResultParser } from './EntityGraphResultParser';
 import { EntityTreeResultParser } from './EntityTreeResultParser';
 export class ObjectResultParserFactory {
@@ -17,5 +15,4 @@ export class ObjectResultParserFactory {
         }
     }
 }
-DI.set(OBJECT_RESULT_PARSER_FACTORY, ObjectResultParserFactory);
 //# sourceMappingURL=ObjectResultParserFactory.js.map

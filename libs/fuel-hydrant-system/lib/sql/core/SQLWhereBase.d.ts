@@ -2,7 +2,9 @@ import { IQEntityInternal, JSONLogicalOperation, Parameter } from '@airport/air-
 import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, ApplicationIndex, ApplicationMap, SqlOperator, TableIndex } from '@airport/ground-control';
 import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
+import { IValidator } from '../../validation/Validator';
 import { SQLDialect } from './SQLQuery';
+import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator';
 /**
  * Created by Papa on 10/2/2016.
  */
@@ -16,6 +18,8 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
     protected context: IFuelHydrantContext;
+    validator: IValidator;
+    subStatementSqlGenerator: ISubStatementSqlGenerator;
     parameterReferences: (string | number)[];
     protected fieldMap: ApplicationMap;
     protected qEntityMapByAlias: {

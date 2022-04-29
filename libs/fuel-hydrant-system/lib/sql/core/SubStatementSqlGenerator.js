@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { SUB_STATEMENT_SQL_GENERATOR } from '../../tokens';
 import { FieldSQLQuery } from '../FieldSQLQuery';
 import { TreeSQLQuery } from '../TreeSQLQuery';
 export class SubStatementSqlGenerator {
@@ -23,5 +21,4 @@ export class SubStatementSqlGenerator {
         };
     }
 }
-DI.set(SUB_STATEMENT_SQL_GENERATOR, SubStatementSqlGenerator);
 //# sourceMappingURL=SubStatementSqlGenerator.js.map

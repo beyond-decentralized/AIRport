@@ -1,6 +1,6 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, OperationCategory, ApplicationMap, SqlOperator } from '@airport/ground-control';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../../tokens';
+import { SQL_QUERY_ADAPTOR } from '../../tokens';
 /**
  * Created by Papa on 10/2/2016.
  */
@@ -23,7 +23,7 @@ export class SQLWhereBase {
     }
     getParameters(parameterMap, //,
     context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         // let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
         return this.parameterReferences
@@ -56,8 +56,8 @@ export class SQLWhereBase {
         return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
     }
     getFieldFunctionValue(aField, defaultCallback, context) {
-        const [sqlAdaptor, validator] = DI.db()
-            .getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR);
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
+            .getSync(SQL_QUERY_ADAPTOR);
         let aValue = aField.v;
         if (this.isParameterReference(aValue)) {
             let stringValue = aValue;
@@ -69,12 +69,10 @@ export class SQLWhereBase {
         }
         aValue = sqlAdaptor.getFunctionAdaptor()
             .getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
-        validator.addFunctionAlias(aField.fa);
+        this.validator.addFunctionAlias(aField.fa);
         return aValue;
     }
     getFieldValue(clauseField, clauseType, defaultCallback, context) {
-        const [validator, subStatementSqlGenerator] = DI.db()
-            .getSync(Q_VALIDATOR, SUB_STATEMENT_SQL_GENERATOR);
         let columnName;
         if (!clauseField) {
             throw new Error(`Missing Clause Field definition`);
@@ -98,7 +96,7 @@ export class SQLWhereBase {
                 if (clauseType !== ClauseType.WHERE_CLAUSE) {
                     throw new Error(`Exists can only be used as a top function in a WHERE clause.`);
                 }
-                const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
+                const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getTreeQuerySql(aField.v, this.dialect, context);
                 if (parameterReferences.length) {
                     this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
@@ -106,7 +104,7 @@ export class SQLWhereBase {
             }
             case JSONClauseObjectType.FIELD: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
+                this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
@@ -116,16 +114,16 @@ export class SQLWhereBase {
                 if (aField.S) {
                     jsonFieldSqlSubQuery = aField;
                 }
-                const { parameterReferences, subQuerySql } = subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
+                const { parameterReferences, subQuerySql } = this.subStatementSqlGenerator.getFieldQuerySql(jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context);
                 if (parameterReferences.length) {
                     this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
-                validator.addSubQueryAlias(aField.fa);
+                this.validator.addSubQueryAlias(aField.fa);
                 return `(${subQuerySql})`;
             }
             case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
+                this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
@@ -214,7 +212,7 @@ export class SQLWhereBase {
         return `${tableAlias}.${columnName}`;
     }
     getComplexColumnFragment(value, columnName, context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         let selectSqlFragment = `${value.ta}.${columnName}`;
         selectSqlFragment = sqlAdaptor.getFunctionAdaptor()

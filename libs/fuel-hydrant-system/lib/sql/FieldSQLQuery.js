@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
 import { ExactOrderByParser } from '../orderBy/ExactOrderByParser';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
@@ -10,7 +10,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 export class FieldSQLQuery extends NonEntitySQLQuery {
     constructor(jsonQuery, dialect, context) {
         super(jsonQuery, dialect, QueryResultType.FIELD, context);
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         this.orderByParser = new ExactOrderByParser(validator);
     }
@@ -44,7 +44,7 @@ export class FieldSQLQuery extends NonEntitySQLQuery {
         return selectSqlFragment;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         let field = selectClauseFragment;
         let propertyValue = sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);

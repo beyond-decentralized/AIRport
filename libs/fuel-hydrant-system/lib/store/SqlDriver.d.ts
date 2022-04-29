@@ -1,12 +1,15 @@
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IStoreDriver, ITransaction, ITransactionContext } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
+import { IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**
  * Created by Papa on 9/9/2016.
  */
 export declare abstract class SqlDriver implements IStoreDriver {
+    activeQueries: IActiveQueries;
+    operationContextLoader: IOperationContextLoader;
     type: StoreType;
     protected maxValues: number;
     supportsLocalTransactions(context: IFuelHydrantContext): boolean;

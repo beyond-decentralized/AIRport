@@ -1,5 +1,5 @@
 import { JoinTreeNode, QBooleanField, QDateField, QNumberField, QStringField, QTree, } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType, JSONClauseObjectType, JSONRelationType, SortOrder, SQLDataType } from '@airport/ground-control';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR, SUB_STATEMENT_SQL_GENERATOR } from '../tokens';
 import { SQLQuery } from './core/SQLQuery';
@@ -17,7 +17,7 @@ export class NonEntitySQLQuery extends SQLQuery {
         }
     }
     toSQL(internalFragments, context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         let jsonQuery = this.jsonQuery;
         let joinNodeMap = {};
@@ -62,7 +62,7 @@ FROM
 ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}`;
     }
     buildFromJoinTree(joinRelations, joinNodeMap, context) {
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         let jsonTrees = [];
         let jsonTree;
@@ -261,7 +261,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             .join('\n');
     }
     getFROMFragment(parentTree, currentTree, context) {
-        const subStatementSqlGenerator = DI.db()
+        const subStatementSqlGenerator = DEPENDENCY_INJECTION.db()
             .getSync(SUB_STATEMENT_SQL_GENERATOR);
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
@@ -337,7 +337,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
         return fromFragment;
     }
     getGroupByFragment(groupBy) {
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         return groupBy.map((groupByField) => {
             validator.validateAliasedFieldAccess(groupByField.fa);
@@ -346,7 +346,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
             .join(', ');
     }
     getOrderByFragment(orderBy) {
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         return orderBy.map((orderByField) => {
             validator.validateAliasedFieldAccess(orderByField.fa);

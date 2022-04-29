@@ -1,7 +1,5 @@
 import { ISequenceGenerator } from '@airport/check-in'
 import {
-	container,
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator'
 import {
@@ -15,7 +13,6 @@ import {
 	RepositoryTransactionHistory_Id,
 	TransactionHistoryId
 } from '@airport/holding-pattern'
-import { ID_GENERATOR } from '../tokens'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
@@ -140,5 +137,3 @@ export class IdGenerator
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(ID_GENERATOR, IdGenerator)

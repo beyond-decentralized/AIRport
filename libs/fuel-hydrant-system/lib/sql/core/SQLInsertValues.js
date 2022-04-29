@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { ClauseType } from './SQLWhereBase';
@@ -14,7 +14,7 @@ export class SQLInsertValues extends SQLNoJoinQuery {
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(context) {
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         if (!this.jsonInsertValues.II) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
@@ -37,7 +37,7 @@ ${valuesFragment}
         return `( ${columnNames.join(', \n')} )`;
     }
     getValuesFragment(valuesClauseFragment, context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {

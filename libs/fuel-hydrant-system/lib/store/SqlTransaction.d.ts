@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';

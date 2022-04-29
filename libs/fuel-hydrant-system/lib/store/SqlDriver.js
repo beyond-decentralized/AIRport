@@ -1,8 +1,6 @@
 import { doEnsureContext } from '@airport/air-control';
-import { container } from '@airport/di';
 import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
-import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -10,7 +8,6 @@ import { EntitySQLQuery } from '../sql/EntitySQLQuery';
 import { FieldSQLQuery } from '../sql/FieldSQLQuery';
 import { SheetSQLQuery } from '../sql/SheetSQLQuery';
 import { TreeSQLQuery } from '../sql/TreeSQLQuery';
-import { ACTIVE_QUERIES } from '../tokens';
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -105,14 +102,12 @@ export class SqlDriver {
         return numVals;
     }
     async deleteWhere(portableQuery, context) {
-        const activeQueries = await container(this)
-            .get(ACTIVE_QUERIES);
         let fieldMap = new SyncApplicationMap();
         let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-        activeQueries.markQueriesToRerun(fieldMap);
+        this.activeQueries.markQueriesToRerun(fieldMap);
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
@@ -174,14 +169,9 @@ export class SqlDriver {
         //    time a mutation operation is run
         // let resultsSubject                 = new Subject<EntityArray>(() => {
         // 	if (resultsSubject.subscriptions.length < 1) {
-        // 		container(this)
-        // 			.get(ACTIVE_QUERIES)
-        // 			.then(
-        // 				activeQueries =>
         // 					// Remove the query for the list of cached queries, that are checked every
         // 					// time a mutation operation is run
-        // 					activeQueries.remove(portableQuery)
-        // 			)
+        // 					this.activeQueries.remove(portableQuery)
         // 	}
         // })
         let cachedSqlQuery = {
@@ -204,14 +194,9 @@ export class SqlDriver {
         //       time a mutation operation is run
         // let resultsSubject                 = new Subject<E>(() => {
         // 	if (resultsSubject.subscriptions.length < 1) {
-        // 		container(this)
-        // 			.get(ACTIVE_QUERIES)
-        // 			.then(
-        // 				activeQueries =>
         // 					// Remove the query for the list of cached queries, that are checked every
         // 					// time a mutation operation is run
-        // 					activeQueries.remove(portableQuery)
-        // 			);
+        // 					this.activeQueries.remove(portableQuery)
         // 	}
         // });
         let cachedSqlQuery = {
@@ -250,9 +235,8 @@ export class SqlDriver {
         return context;
     }
     async ensureIocContext(context) {
-        const operationContextLoader = await container(this)
-            .get(OPERATION_CONTEXT_LOADER);
-        await operationContextLoader.ensure(context);
+        ;
+        await this.operationContextLoader.ensure(context);
     }
 }
 //# sourceMappingURL=SqlDriver.js.map

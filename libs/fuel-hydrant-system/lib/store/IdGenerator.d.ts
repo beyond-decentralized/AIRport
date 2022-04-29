@@ -1,5 +1,5 @@
 import { ISequenceGenerator } from '@airport/check-in';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { OperationHistory_Id, RecordHistoryId, RepositoryTransactionHistory_Id, TransactionHistoryId } from '@airport/holding-pattern';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
@@ -24,6 +24,7 @@ export interface IIdGeneratorContext extends IContext {
  * Created by Papa on 9/2/2016.
  */
 export declare class IdGenerator implements IIdGenerator {
+    sequenceGenerator: ISequenceGenerator;
     private transactionHistoryIdColumns;
     init(): Promise<void>;
     populateTransactionHistoryIdColumns(): Promise<void>;

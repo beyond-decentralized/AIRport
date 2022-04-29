@@ -44,8 +44,7 @@ import { EntitySQLQuery } from '../sql/EntitySQLQuery';
 import { FieldSQLQuery } from '../sql/FieldSQLQuery';
 import { SheetSQLQuery } from '../sql/SheetSQLQuery';
 import { TreeSQLQuery } from '../sql/TreeSQLQuery';
-import { ACTIVE_QUERIES } from '../tokens';
-import { CachedSQLQuery } from './ActiveQueries';
+import { CachedSQLQuery, IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 
 /**
@@ -55,6 +54,7 @@ import { IFuelHydrantContext } from '../FuelHydrantContext';
 export abstract class SqlDriver
 	implements IStoreDriver {
 
+	activeQueries: IActiveQueries
 	operationContextLoader: IOperationContextLoader
 
 	// public queries: ActiveQueries
@@ -231,16 +231,13 @@ export abstract class SqlDriver
 		portableQuery: PortableQuery,
 		context: IFuelHydrantContext,
 	): Promise<number> {
-		const activeQueries = await container(this)
-			.get(ACTIVE_QUERIES);
-
 		let fieldMap = new SyncApplicationMap();
 		let sqlDelete = new SQLDelete(
 			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), context);
 		let sql = sqlDelete.toSQL(context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
-		activeQueries.markQueriesToRerun(fieldMap);
+		this.activeQueries.markQueriesToRerun(fieldMap);
 
 		return numberOfAffectedRecords;
 	}
@@ -352,14 +349,9 @@ export abstract class SqlDriver
 
 		// let resultsSubject                 = new Subject<EntityArray>(() => {
 		// 	if (resultsSubject.subscriptions.length < 1) {
-		// 		container(this)
-		// 			.get(ACTIVE_QUERIES)
-		// 			.then(
-		// 				activeQueries =>
 		// 					// Remove the query for the list of cached queries, that are checked every
 		// 					// time a mutation operation is run
-		// 					activeQueries.remove(portableQuery)
-		// 			)
+		// 					this.activeQueries.remove(portableQuery)
 		// 	}
 		// })
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
@@ -389,14 +381,9 @@ export abstract class SqlDriver
 		//       time a mutation operation is run
 		// let resultsSubject                 = new Subject<E>(() => {
 		// 	if (resultsSubject.subscriptions.length < 1) {
-		// 		container(this)
-		// 			.get(ACTIVE_QUERIES)
-		// 			.then(
-		// 				activeQueries =>
 		// 					// Remove the query for the list of cached queries, that are checked every
 		// 					// time a mutation operation is run
-		// 					activeQueries.remove(portableQuery)
-		// 			);
+		// 					this.activeQueries.remove(portableQuery)
 		// 	}
 		// });
 		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
@@ -485,7 +472,8 @@ export abstract class SqlDriver
 
 	protected async ensureIocContext(
 		context: IFuelHydrantContext
-	): Promise<void> {;
+	): Promise<void> {
+		;
 		await this.operationContextLoader.ensure(context);
 	}
 

@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { ACTIVE_QUERIES } from '../tokens';
 export class ActiveQueries {
     constructor() {
         this.queries = new Map();
@@ -31,5 +29,4 @@ export class ActiveQueries {
         }, 100);
     }
 }
-DI.set(ACTIVE_QUERIES, ActiveQueries);
 //# sourceMappingURL=ActiveQueries.js.map

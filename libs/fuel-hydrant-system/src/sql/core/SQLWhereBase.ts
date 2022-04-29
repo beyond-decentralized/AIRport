@@ -26,11 +26,11 @@ import {
 import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR,
-	SUB_STATEMENT_SQL_GENERATOR
+	SQL_QUERY_ADAPTOR
 } from '../../tokens'
+import { IValidator } from '../../validation/Validator'
 import { SQLDialect } from './SQLQuery'
+import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -45,6 +45,9 @@ export enum ClauseType {
 
 export abstract class SQLWhereBase
 	implements ISqlValueProvider {
+
+	validator: IValidator;
+	subStatementSqlGenerator: ISubStatementSqlGenerator
 
 	public parameterReferences: (string | number)[] = []
 	protected fieldMap: ApplicationMap = new ApplicationMap()
@@ -108,8 +111,8 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		const [sqlAdaptor, validator] = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR, Q_VALIDATOR)
+		const sqlAdaptor = DEPENDENCY_INJECTION.db()
+			.getSync(SQL_QUERY_ADAPTOR)
 
 		let aValue = aField.v
 		if (this.isParameterReference(aValue)) {
@@ -123,7 +126,7 @@ export abstract class SQLWhereBase
 		aValue = sqlAdaptor.getFunctionAdaptor()
 			.getFunctionCalls(
 				aField, aValue, this.qEntityMapByAlias, this, context)
-		validator.addFunctionAlias(aField.fa)
+		this.validator.addFunctionAlias(aField.fa)
 
 		return aValue
 	}
@@ -134,9 +137,6 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		const [validator, subStatementSqlGenerator] = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR, SUB_STATEMENT_SQL_GENERATOR)
-
 		let columnName
 		if (!clauseField) {
 			throw new Error(`Missing Clause Field definition`)
@@ -166,7 +166,7 @@ export abstract class SQLWhereBase
 				const {
 					parameterReferences,
 					subQuerySql
-				} = subStatementSqlGenerator.getTreeQuerySql(<JsonTreeQuery>aField.v, this.dialect, context)
+				} = this.subStatementSqlGenerator.getTreeQuerySql(<JsonTreeQuery>aField.v, this.dialect, context)
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
@@ -174,7 +174,7 @@ export abstract class SQLWhereBase
 			}
 			case <any>JSONClauseObjectType.FIELD: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				validator.validateReadQEntityProperty(
+				this.validator.validateReadQEntityProperty(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityPropertyColumnName(
 					qEntity, aField.ci, context)
@@ -190,17 +190,17 @@ export abstract class SQLWhereBase
 				const {
 					parameterReferences,
 					subQuerySql
-				} = subStatementSqlGenerator.getFieldQuerySql(
+				} = this.subStatementSqlGenerator.getFieldQuerySql(
 					jsonFieldSqlSubQuery, this.dialect, this.qEntityMapByAlias, context)
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
-				validator.addSubQueryAlias(aField.fa)
+				this.validator.addSubQueryAlias(aField.fa)
 				return `(${subQuerySql})`
 			}
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				validator.validateReadQEntityManyToOneRelation(
+				this.validator.validateReadQEntityManyToOneRelation(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context)
 				this.addField(aField.si, aField.ti, aField.ci)

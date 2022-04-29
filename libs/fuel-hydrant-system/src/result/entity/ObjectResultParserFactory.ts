@@ -1,9 +1,7 @@
-import {DEPENDENCY_INJECTION}                           from '@airport/direction-indicator'
 import {
 	DbEntity,
 	QueryResultType
 }                                     from '@airport/ground-control'
-import {OBJECT_RESULT_PARSER_FACTORY} from '../../tokens'
 import {EntityGraphResultParser}      from './EntityGraphResultParser'
 import {EntityTreeResultParser}       from './EntityTreeResultParser'
 import {
@@ -43,5 +41,3 @@ export class ObjectResultParserFactory
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(OBJECT_RESULT_PARSER_FACTORY, ObjectResultParserFactory)

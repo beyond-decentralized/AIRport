@@ -1,11 +1,9 @@
 import { IQEntityInternal } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	JsonFieldQuery,
 	JsonTreeQuery
 } from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import { SUB_STATEMENT_SQL_GENERATOR } from '../../tokens'
 import { FieldSQLQuery } from '../FieldSQLQuery'
 import { TreeSQLQuery } from '../TreeSQLQuery'
 import { SQLDialect } from './SQLQuery'
@@ -79,5 +77,3 @@ export class SubStatementSqlGenerator
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SUB_STATEMENT_SQL_GENERATOR, SubStatementSqlGenerator)

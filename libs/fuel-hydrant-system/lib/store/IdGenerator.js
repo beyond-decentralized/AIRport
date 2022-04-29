@@ -1,7 +1,4 @@
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
 import { Q } from '@airport/holding-pattern';
-import { ID_GENERATOR } from '../tokens';
 /**
  * Created by Papa on 9/2/2016.
  */
@@ -36,8 +33,8 @@ export class IdGenerator {
         }
     }
     async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
-        const sequenceGenerator = await container(this).get(SEQUENCE_GENERATOR);
-        let generatedSequenceNumbers = await sequenceGenerator.generateSequenceNumbers(this.transactionHistoryIdColumns, [
+        let generatedSequenceNumbers = await this.sequenceGenerator
+            .generateSequenceNumbers(this.transactionHistoryIdColumns, [
             1,
             numRepositoryTransHistories,
             numOperationTransHistories,
@@ -57,5 +54,4 @@ export class IdGenerator {
             .entityMapByName[holdingPatternEntityName];
     }
 }
-DI.set(ID_GENERATOR, IdGenerator);
 //# sourceMappingURL=IdGenerator.js.map

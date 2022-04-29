@@ -2,6 +2,7 @@ import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_U
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
+import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern'
 import {
@@ -124,6 +125,8 @@ REPOSITORY_MANAGER.setDependencies({
 })
 
 TRANSACTION_MANAGER.setDependencies({
+    activeQueries: ACTIVE_QUERIES,
+    idGenerator: ID_GENERATOR,
     transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
 })
 

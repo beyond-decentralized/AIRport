@@ -5,8 +5,8 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	ACTIVE_QUERIES,
-	ID_GENERATOR,
+	IActiveQueries,
+	IIdGenerator,
 } from '@airport/fuel-hydrant-system';
 import {
 	INTERNAL_DOMAIN,
@@ -34,6 +34,8 @@ export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
 
+	activeQueries: IActiveQueries
+	idGenerator: IIdGenerator
 	storeDriver: IStoreDriver
 	terminalStore: ITerminalStore
 	transactionHistoryDuo: ITransactionHistoryDuo
@@ -276,8 +278,7 @@ parent transactions.
 				await transaction.saveTransaction(transaction.transactionHistory);
 			}
 
-			const activeQueries = await container(this).get(ACTIVE_QUERIES);
-			activeQueries.rerunQueries();
+			this.activeQueries.rerunQueries();
 			await transaction.commit(null, context);
 
 			let transactionHistory = transaction.transactionHistory;
@@ -404,9 +405,7 @@ ${callHerarchy}
 		}
 		let applicationMap = transactionHistory.applicationMap;
 
-		const idGenerator = await container(this).get(ID_GENERATOR)
-
-		const transactionHistoryIds = await idGenerator.generateTransactionHistoryIds(
+		const transactionHistoryIds = await this.idGenerator.generateTransactionHistoryIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
 			transactionHistory.allRecordHistory.length

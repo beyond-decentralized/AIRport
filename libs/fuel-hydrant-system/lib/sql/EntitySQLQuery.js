@@ -1,5 +1,5 @@
 import { AliasCache, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
 import { OBJECT_RESULT_PARSER_FACTORY, Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
@@ -15,7 +15,7 @@ export class EntitySQLQuery extends SQLQuery {
         super(jsonQuery, dbEntity, dialect, queryResultType, context);
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
             throw new Error(`"strict" configuration is not yet implemented for 
@@ -60,7 +60,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any[]}
      */
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
-        const objectResultParserFactory = await DI.db()
+        const objectResultParserFactory = await DEPENDENCY_INJECTION.db()
             .get(OBJECT_RESULT_PARSER_FACTORY);
         this.queryParser = objectResultParserFactory.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
@@ -172,7 +172,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         return jsonTree;
     }
     parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumnIndex, context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {

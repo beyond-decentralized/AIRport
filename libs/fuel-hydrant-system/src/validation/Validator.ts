@@ -1,4 +1,3 @@
-import {DEPENDENCY_INJECTION}          from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -7,7 +6,6 @@ import {
 	ApplicationIndex,
 	TableIndex
 }                    from '@airport/ground-control'
-import {Q_VALIDATOR} from '../tokens'
 
 /**
  * Created by Papa on 11/1/2016.
@@ -106,5 +104,3 @@ export class QValidator
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(Q_VALIDATOR, QValidator)

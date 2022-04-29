@@ -1,11 +1,9 @@
-import {DEPENDENCY_INJECTION}             from '@airport/direction-indicator'
 import {
 	PortableQuery,
 	SyncApplicationMap
 }                       from '@airport/ground-control'
 import {Subject}       from 'rxjs'
 import {SQLQuery}       from '../sql/core/SQLQuery'
-import {ACTIVE_QUERIES} from '../tokens'
 
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
@@ -74,8 +72,6 @@ export class ActiveQueries
 		}, 100)
 	}
 }
-
-DEPENDENCY_INJECTION.set(ACTIVE_QUERIES, ActiveQueries)
 
 export interface CachedSQLQuery {
 	parameters: any[],

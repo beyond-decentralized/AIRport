@@ -1,4 +1,4 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType } from '@airport/ground-control';
 import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
@@ -42,7 +42,7 @@ ${setFragment}
 ${whereFragment}`;
     }
     getSetFragment(setClauseFragment, context) {
-        const validator = DI.db()
+        const validator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         let setFragments = [];
         for (let columnName in setClauseFragment) {
@@ -57,7 +57,7 @@ ${whereFragment}`;
         return setFragments.join(', \n');
     }
     addSetFragment(columnName, value, setFragments, context) {
-        const sqlAdaptor = DI.db()
+        const sqlAdaptor = DEPENDENCY_INJECTION.db()
             .getSync(SQL_QUERY_ADAPTOR);
         let fieldValue;
         if (typeof value === 'number') {
