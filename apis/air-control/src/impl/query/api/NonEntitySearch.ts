@@ -1,5 +1,4 @@
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 }                               from '@airport/direction-indicator';
 import { QueryResultType }      from '@airport/ground-control';
