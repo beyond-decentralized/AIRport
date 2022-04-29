@@ -1,19 +1,19 @@
-import { QUERY_CONTEXT_LOADER, QUERY_FACADE } from '@airport/air-control';
-import { container, DI } from '@airport/di';
+import { QUERY_FACADE, } from '@airport/air-control';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 export class QueryFacade {
     async find(query, queryResultType, context) {
-        await this.ensureIocContext(context);
-        const result = await context.ioc.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context), context);
+        await this.ensureContext(context);
+        const result = await this.transactionalConnector.find(this.getPortableQuery(query, queryResultType, context), context);
         return result;
     }
     async findOne(query, queryResultType, context) {
-        await this.ensureIocContext(context);
-        const result = await context.ioc.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context), context);
+        await this.ensureContext(context);
+        const result = await this.transactionalConnector.findOne(this.getPortableQuery(query, queryResultType, context), context);
         return result;
     }
     getPortableQuery(query, queryResultType, context) {
         return {
-            jsonQuery: query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
+            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils),
             parameterMap: query.getParameters(),
             queryResultType,
             applicationIndex: context.dbEntity.applicationVersion.application.index,
@@ -23,20 +23,17 @@ export class QueryFacade {
     }
     // FIXME: merge update caches on the client
     async search(query, queryResultType, context) {
-        await this.ensureIocContext(context);
-        let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
+        await this.ensureContext(context);
+        let observable = await this.transactionalConnector.search(this.getPortableQuery(query, queryResultType, context), context);
         return observable;
     }
     async searchOne(query, queryResultType, context) {
-        await this.ensureIocContext(context);
-        let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
+        await this.ensureContext(context);
+        let observable = await this.transactionalConnector.searchOne(this.getPortableQuery(query, queryResultType, context), context);
         return observable;
     }
-    async ensureIocContext(context) {
-        const queryContextLoader = await container(this)
-            .get(QUERY_CONTEXT_LOADER);
-        await queryContextLoader.ensure(context);
+    async ensureContext(context) {
     }
 }
-DI.set(QUERY_FACADE, QueryFacade);
+DEPENDENCY_INJECTION.set(QUERY_FACADE, QueryFacade);
 //# sourceMappingURL=QueryFacade.js.map

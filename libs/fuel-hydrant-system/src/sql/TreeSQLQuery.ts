@@ -1,23 +1,28 @@
-import {AliasCache}            from '@airport/air-control'
-import {DEPENDENCY_INJECTION}                    from '@airport/direction-indicator'
+import { AliasCache, APPLICATION_UTILS, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
+	IEntityStateManager,
 	InternalFragments,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonTreeQuery,
 	QueryResultType
-}                              from '@airport/ground-control'
+} from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
-import {MappedOrderByParser}   from '../orderBy/MappedOrderByParser'
-import {TreeQueryResultParser} from '../result/TreeQueryResultParser'
+import { MappedOrderByParser } from '../orderBy/MappedOrderByParser'
+import { TreeQueryResultParser } from '../result/TreeQueryResultParser'
 import {
 	Q_VALIDATOR,
 	SQL_QUERY_ADAPTOR
-}                              from '../tokens'
-import {SQLDialect}            from './core/SQLQuery'
-import {ClauseType}            from './core/SQLWhereBase'
-import {NonEntitySQLQuery}     from './NonEntitySQLQuery'
-import {SqlFunctionField}      from './SqlFunctionField'
+} from '../tokens'
+import { IValidator } from '../validation/Validator'
+import { SQLDialect } from './core/SQLQuery'
+import { ClauseType } from './core/SQLWhereBase'
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
+import { NonEntitySQLQuery } from './NonEntitySQLQuery'
+import { SqlFunctionField } from './SqlFunctionField'
 
 /**
  * Created by Papa on 10/28/2016.
@@ -30,15 +35,31 @@ export class TreeSQLQuery
 	constructor(
 		jsonQuery: JsonTreeQuery,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
+		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, dialect, QueryResultType.TREE, context)
+		super(jsonQuery, dialect, QueryResultType.TREE,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			qValidator,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
+			subStatementQueryGenerator,
+			context)
 
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
-
-		this.queryParser   = new TreeQueryResultParser()
-		this.orderByParser = new MappedOrderByParser(validator)
+		this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager)
+		this.orderByParser = new MappedOrderByParser(qValidator)
 	}
 
 	/**
@@ -62,7 +83,7 @@ export class TreeSQLQuery
 		parsedResults = []
 		let lastResult
 		results.forEach((result) => {
-			let aliasCache   = new AliasCache()
+			let aliasCache = new AliasCache()
 			let parsedResult = this.parseQueryResult(this.jsonQuery.S, result, [0], aliasCache, aliasCache.getFollowingAlias())
 			if (!lastResult) {
 				parsedResults.push(parsedResult)
@@ -160,7 +181,7 @@ export class TreeSQLQuery
 				continue
 			}
 			let jsonClauseField: JSONClauseField = selectClauseFragment[propertyName]
-			let dataType                         = jsonClauseField.dt
+			let dataType = jsonClauseField.dt
 			// Must be a sub-query
 			if (!dataType) {
 				let childResultObject = this.parseQueryResult(

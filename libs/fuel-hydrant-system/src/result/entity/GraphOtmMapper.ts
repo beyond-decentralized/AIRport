@@ -1,14 +1,14 @@
 import {
 	MappedEntityArray,
 	newMappedEntityArray
-}                               from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DbEntity,
 	ensureChildArray,
 	ensureChildMap
-}                               from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {ManyToOneStubReference} from './GraphMtoMapper'
+import { ManyToOneStubReference } from './GraphMtoMapper'
 
 /**
  * Created by Papa on 10/15/2016.
@@ -53,10 +53,10 @@ export class GraphOtmMapper {
 		}
 		// Add into mtoEntityReferenceMap
 		const otmDbEntity = mtoStubReference.otmDbEntity
-		
+
 		let mtoEntityReferenceMapForEntity: {
 			[otmReferenceId: string]: { [otmProperty: string]: Array<any> }
-		}                 = ensureChildMap(
+		} = ensureChildMap(
 			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
@@ -71,16 +71,16 @@ export class GraphOtmMapper {
 		// let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
 		let mapForOtmEntity: { [otmProperty: string]: Array<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
 		if (!mapForOtmEntity) {
-			mapForOtmEntity                                              = {}
+			mapForOtmEntity = {}
 			mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity
 		}
 		// let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
 		let mtoCollection: any[] = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			// mtoCollection = newMappedEntityArray<any>(context.ioc.applicationUtils, dbEntity)
+			// mtoCollection = newMappedEntityArray<any>(this.applicationUtils, dbEntity)
 			mtoCollection = []
 			mapForOtmEntity[mtoStubReference.otmEntityField]
-			              = mtoCollection
+				= mtoCollection
 		}
 		// mtoCollection.put(mtoStubReference.mtoParentObject)
 
@@ -95,14 +95,14 @@ export class GraphOtmMapper {
 		const otmDbEntity = otmStubReference.otmDbEntity
 		let mtoEntityReferenceMapForEntity: {
 			[otmEntityId: string]: any
-		}                 = ensureChildMap(
+		} = ensureChildMap(
 			ensureChildArray(this.otmEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
 
 		let otmRecordByPropertyName = mtoEntityReferenceMapForEntity[otmEntityIdValue]
 		if (!otmRecordByPropertyName) {
-			otmRecordByPropertyName                          = {}
+			otmRecordByPropertyName = {}
 			mtoEntityReferenceMapForEntity[otmEntityIdValue] = otmRecordByPropertyName
 		}
 
@@ -119,7 +119,7 @@ export class GraphOtmMapper {
 				const mtoEntityReferenceMapForEntity = mtoEntityReferenceMapForApplication[entityIndex]
 
 				// If there are no entities of this type in query results, just keep the stubs
-				if(!entityMap[applicationIndex]) {
+				if (!entityMap[applicationIndex]) {
 					continue
 				}
 				let entityOfTypeMap = entityMap[applicationIndex][entityIndex]
@@ -128,7 +128,7 @@ export class GraphOtmMapper {
 					continue
 				}
 				// If there are no OTM for this type in query results, no mapping needs to happen
-				if(!this.otmEntityReferenceMap[applicationIndex]) {
+				if (!this.otmEntityReferenceMap[applicationIndex]) {
 					continue
 				}
 				let entityWithOtmMap: { [otmEntityId: string]: any } = this.otmEntityReferenceMap[applicationIndex][entityIndex]
@@ -138,7 +138,7 @@ export class GraphOtmMapper {
 				}
 				for (let otmEntityId in mtoEntityReferenceMapForEntity) {
 					let referencedEntitiesByPropertyMap: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[otmEntityId]
-					let otmRecordByPropertyName                                                            = entityWithOtmMap[otmEntityId]
+					let otmRecordByPropertyName = entityWithOtmMap[otmEntityId]
 					// If there are no OtMs for this entity, no mapping needs to happen
 					if (!otmRecordByPropertyName) {
 						continue

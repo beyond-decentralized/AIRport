@@ -1,9 +1,12 @@
 import { IEntityContext, IQueryContext } from '@airport/air-control';
 import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare class InternalTransactionalConnector implements ITransactionalConnector {
+    terminalStore: ITerminalStore;
+    transactionalServer: ITransactionalServer;
     callApi<Request, Response>(_: ILocalAPIRequest): Promise<ILocalAPIResponse>;
     addRepository(context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;

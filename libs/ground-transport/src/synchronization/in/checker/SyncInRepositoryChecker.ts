@@ -1,10 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	IRepository,
 	IRepositoryDao
 } from '@airport/holding-pattern'
-import { SYNC_IN_REPOSITORY_CHECKER } from '../../../tokens'
 
 export interface ISyncInRepositoryChecker {
 
@@ -134,5 +132,3 @@ export class SyncInRepositoryChecker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNC_IN_REPOSITORY_CHECKER, SyncInRepositoryChecker)

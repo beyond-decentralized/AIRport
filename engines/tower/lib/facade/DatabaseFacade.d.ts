@@ -1,10 +1,16 @@
-import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
-import { IContext } from '@airport/di';
-import { ISaveResult } from '@airport/ground-control';
+import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, IUpdateCacheManager, IQueryFacade } from '@airport/air-control';
+import { IContext } from '@airport/direction-indicator';
+import { IEntityStateManager, ISaveResult, ITransactionalConnector } from '@airport/ground-control';
+import { IEntityCopier } from '../core/data/EntityCopier';
 /**
  * Created by Papa on 5/23/2016.
  */
 export declare class DatabaseFacade implements IDatabaseFacade {
+    entityCopier: IEntityCopier;
+    entityStateManager: IEntityStateManager;
+    queryFacade: IQueryFacade;
+    transactionalConnector: ITransactionalConnector;
+    updateCacheManager: IUpdateCacheManager;
     name: string;
     addRepository(context?: IContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {

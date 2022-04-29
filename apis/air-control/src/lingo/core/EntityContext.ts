@@ -8,6 +8,6 @@ export interface IEntityContext
 
 
 export interface IEntityQueryContext
-	extends IAbstractQueryContext<any>, IEntityContext {
+	extends IAbstractQueryContext, IEntityContext {
 
 }

@@ -1,6 +1,6 @@
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
-import { AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
+import { RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
@@ -33,9 +33,9 @@ export class QEntityDriver {
         this.relations = [];
         this.currentChildIndex = -1;
     }
-    getInstance(airDb, applicationUtils) {
+    getInstance(applicationUtils) {
         const qEntityConstructor = applicationUtils
-            .getQEntityConstructor(this.dbEntity, airDb);
+            .getQEntityConstructor(this.dbEntity);
         let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType);
         instance.__driver__.currentChildIndex = this.currentChildIndex;
         instance.__driver__.joinWhereClause = this.joinWhereClause;
@@ -124,9 +124,9 @@ export class QEntityDriver {
         return this.qEntity;
     }
     join(right, joinType) {
-        const [airDb, applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER);
+        const [applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(APPLICATION_UTILS, RELATION_MANAGER);
         let joinChild = right
-            .__driver__.getInstance(airDb, applicationUtils);
+            .__driver__.getInstance(applicationUtils);
         joinChild.__driver__.currentChildIndex = 0;
         let nextChildPosition = relationManager.getNextChildJoinPosition(this);
         joinChild.__driver__.fromClausePosition = nextChildPosition;
@@ -151,8 +151,8 @@ export function QTree(fromClausePosition = [], subQuery) {
 }
 extend(QEntity, QTree, {});
 export class QTreeDriver extends QEntityDriver {
-    getInstance(airDb, applicationUtils) {
-        let instance = super.getInstance(airDb, applicationUtils);
+    getInstance(applicationUtils) {
+        let instance = super.getInstance(applicationUtils);
         instance.__driver__
             .subQuery = this.subQuery;
         return instance;

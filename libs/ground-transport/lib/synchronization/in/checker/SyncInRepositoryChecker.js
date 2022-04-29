@@ -1,6 +1,3 @@
-import { container, DI } from '@airport/di';
-import { REPOSITORY_DAO } from '@airport/holding-pattern';
-import { SYNC_IN_REPOSITORY_CHECKER } from '../../../tokens';
 export class SyncInRepositoryChecker {
     async ensureRepositories(message) {
         try {
@@ -24,8 +21,7 @@ export class SyncInRepositoryChecker {
                 }
                 repositoryUuids.push(history.repository);
             }
-            const repositoryDao = await container(this).get(REPOSITORY_DAO);
-            const repositories = await repositoryDao.findByUuIds(repositoryUuids);
+            const repositories = await this.repositoryDao.findByUuIds(repositoryUuids);
             for (const repository of repositories) {
                 const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
                 if (messageUserIndex || messageUserIndex === 0) {
@@ -50,7 +46,7 @@ export class SyncInRepositoryChecker {
                 missingRepositories.push(history.repository);
             }
             if (missingRepositories.length) {
-                await repositoryDao.insert(missingRepositories);
+                await this.repositoryDao.insert(missingRepositories);
             }
         }
         catch (e) {
@@ -93,5 +89,4 @@ export class SyncInRepositoryChecker {
         delete repository.id;
     }
 }
-DI.set(SYNC_IN_REPOSITORY_CHECKER, SyncInRepositoryChecker);
 //# sourceMappingURL=SyncInRepositoryChecker.js.map

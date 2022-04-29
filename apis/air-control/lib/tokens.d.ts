@@ -1,6 +1,5 @@
 import { IRepositoryLoader } from '.';
 import { IRelationManager } from './impl/core/entity/RelationManager';
-import { IQueryContextLoader } from './impl/query/QueryContext';
 import { IAirportDatabase } from './lingo/AirportDatabase';
 import { IDatabaseFacade, IQueryFacade } from './lingo/core/repository/DatabaseFacade';
 import { IUpdateCacheManager } from './lingo/core/UpdateCacheManager';
@@ -16,7 +15,6 @@ export declare const LOOKUP: import("@airport/direction-indicator").IDependencyI
 export declare const ENTITY_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IEntityUtils>;
 export declare const FIELD_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IFieldUtils>;
 export declare const Q_METADATA_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IQMetadataUtils>;
-export declare const QUERY_CONTEXT_LOADER: import("@airport/direction-indicator").IDependencyInjectionToken<IQueryContextLoader>;
 export declare const QUERY_FACADE: import("@airport/direction-indicator").IDependencyInjectionToken<IQueryFacade>;
 export declare const QUERY_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IQueryUtils>;
 export declare const RELATION_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IRelationManager>;

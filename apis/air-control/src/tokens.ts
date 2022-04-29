@@ -1,7 +1,6 @@
 import { lib } from '@airport/direction-indicator'
 import { IRepositoryLoader } from '.'
 import { IRelationManager, RelationManager } from './impl/core/entity/RelationManager'
-import { IQueryContextLoader, QueryContextLoader } from './impl/query/QueryContext'
 import { IAirportDatabase } from './lingo/AirportDatabase'
 import {
 	IDatabaseFacade,
@@ -14,7 +13,7 @@ import { IFieldUtils } from './lingo/utils/FieldUtils'
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { IApplicationUtils } from './lingo/utils/ApplicationUtils'
-import { ENTITY_STATE_MANAGER } from '@airport/ground-control'
+import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { Lookup } from './impl/query/api/Lookup'
 import { EntityUtils } from './impl/utils/EntityUtils'
 import { QMetadataUtils } from './impl/utils/QMetadataUtils'
@@ -53,14 +52,9 @@ export const Q_METADATA_UTILS = airControl.token<IQMetadataUtils>({
 	interface: 'IQMetadataUtils',
 	token: 'Q_METADATA_UTILS'
 })
-export const QUERY_CONTEXT_LOADER = airControl.token<IQueryContextLoader>({
-	class: QueryContextLoader,
-	interface: 'IQueryContextLoader',
-	token: 'QUERY_CONTEXT_LOADER'
-})
 
 export const QUERY_FACADE = airControl.token<IQueryFacade>({
-	class: QueryContextLoader,
+	class: null,
 	interface: 'IQueryFacade',
 	token: 'QUERY_FACADE'
 })
@@ -96,16 +90,21 @@ AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE
 })
 APPLICATION_UTILS.setDependencies({
+	airportDatabase: AIRPORT_DATABASE,
 	entityStateManager: ENTITY_STATE_MANAGER
 })
 DATABASE_FACADE.setDependencies({
 	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
-	queryContextLoader: QUERY_CONTEXT_LOADER,
 	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 QUERY_FACADE.setDependencies({
-	queryContextLoader: QUERY_CONTEXT_LOADER
+	fieldUtils: FIELD_UTILS,
+	queryUtils: QUERY_UTILS,
+	transactionalConnector: TRANSACTIONAL_CONNECTOR
+})
+RELATION_MANAGER.setDependencies({
+	applicationUtils: APPLICATION_UTILS
 })
 UPDATE_CACHE_MANAGER.setDependencies({
 	applicationUtils: APPLICATION_UTILS,

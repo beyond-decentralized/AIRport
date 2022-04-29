@@ -1,9 +1,5 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
-import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI, } from '@airport/di';
+import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, repositoryEntity, } from '@airport/ground-control';
-import { OPERATION_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { HISTORY_MANAGER, INSERT_MANAGER, } from '../tokens';
 export class InsertManager {
     async insertValues(portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues);
@@ -23,9 +19,7 @@ export class InsertManager {
         return dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
     }
     async internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, getIds = false, ensureGeneratedValues = true) {
-        const [airDb, sequenceGenerator, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoTransHistoryDuo] = await container(this)
-            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR, HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO);
-        const dbEntity = airDb.applications[portableQuery.applicationIndex]
+        const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error inserting into '${dbEntity.name}'.'
 `;
@@ -68,13 +62,13 @@ appears more than once in the Columns clause`);
         let ids;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
-            systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
+            systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
         }
         if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
-            ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, sequenceGenerator);
+            ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, this.sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
-            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repoTransHistoryDuo, transaction, rootTransaction, context);
+            await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
         return getIds ? ids : numberOfInsertedRecords;
@@ -348,7 +342,7 @@ and cannot have NULL values.`);
      * @param {PortableQuery} portableQuery
      * @returns {Promise<void>}
      */
-    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, repositoryTransactionHistoryDuo, transaction, rootTransaction, context) {
+    async addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context) {
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
@@ -378,17 +372,17 @@ and cannot have NULL values.`);
             // const repo           = await repoManager.getRepository(repositoryId)
             let repositoryTransactionHistory = repoTransHistories[repositoryId];
             if (!repositoryTransactionHistory) {
-                repositoryTransactionHistory = await historyManager
+                repositoryTransactionHistory = await this.historyManager
                     .getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
             }
             let operationHistory = operationsByRepo[repositoryId];
             if (!operationHistory) {
-                operationHistory = repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, actor, operHistoryDuo, rootTransaction);
+                operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, actor, rootTransaction);
                 operationsByRepo[repositoryId] = operationHistory;
             }
             const actorRecordId = row[actorRecordIdColumnNumber];
             const actorId = row[actorIdColumnNumber];
-            const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId, recHistoryDuo);
+            const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber
@@ -398,7 +392,7 @@ and cannot have NULL values.`);
                 const columnIndex = jsonInsertValues.C[columnNumber];
                 const dbColumn = dbEntity.columns[columnIndex];
                 const newValue = row[columnNumber];
-                recHistoryDuo.addNewValue(recordHistory, dbColumn, newValue, recHistoryNewValueDuo);
+                this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, newValue);
             }
         }
         // for (const repositoryId in operationsByRepo) {
@@ -409,5 +403,4 @@ and cannot have NULL values.`);
         // }
     }
 }
-DI.set(INSERT_MANAGER, InsertManager);
 //# sourceMappingURL=InsertManager.js.map

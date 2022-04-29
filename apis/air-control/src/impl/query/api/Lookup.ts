@@ -9,8 +9,9 @@ import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, } from '../../../lingo/query/facade/Query';
 import { IQueryContext } from '../../../lingo/query/QueryContext';
 import {
+	ENTITY_UTILS,
 	LOOKUP,
-	QUERY_CONTEXT_LOADER
+	QUERY_FACADE
 } from '../../../tokens';
 
 export class LookupProxy
@@ -58,32 +59,32 @@ export class Lookup
 		context: IQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		const queryContextLoader = await DEPENDENCY_INJECTION.db().get(QUERY_CONTEXT_LOADER);
-		await queryContextLoader.ensure(context);
+		const [entityUtils, queryFacade] = await DEPENDENCY_INJECTION.db()
+			.get(ENTITY_UTILS, QUERY_FACADE);
 		let query: IAbstractQuery;
 		if (QueryClass) {
-			const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery);
+			const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
 			query = new QueryClass(rawNonEntityQuery);
 		} else {
-			query = context.ioc.entityUtils.getEntityQuery(rawQuery);
+			query = entityUtils.getEntityQuery(rawQuery);
 			queryResultType = this.getQueryResultType(queryResultType, mapResults);
 		}
 		let queryMethod;
 		if (search) {
 			if (one) {
-				queryMethod = context.ioc.queryFacade.searchOne;
+				queryMethod = queryFacade.searchOne;
 			} else {
-				queryMethod = context.ioc.queryFacade.search;
+				queryMethod = queryFacade.search;
 			}
 		} else {
 			if (one) {
-				queryMethod = context.ioc.queryFacade.findOne;
+				queryMethod = queryFacade.findOne;
 			} else {
-				queryMethod = context.ioc.queryFacade.find;
+				queryMethod = queryFacade.find;
 			}
 		}
 
-		let result = await queryMethod.call(context.ioc.queryFacade, query,
+		let result = await queryMethod.call(queryFacade, query,
 			this.getQueryResultType(queryResultType, mapResults), context);
 		if (!one && !result) {
 			result = []

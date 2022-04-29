@@ -7,7 +7,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION, IContext } from '@airport/direction-indicator'
+import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository,
@@ -21,7 +21,6 @@ import {
 	UpdateState,
 } from '@airport/terminal-map'
 import { v4 as uuidv4 } from "uuid";
-import { REPOSITORY_MANAGER } from '../../tokens'
 
 /**
  * Created by Papa on 2/12/2017.
@@ -173,5 +172,3 @@ already contains a new repository.`)
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(REPOSITORY_MANAGER, RepositoryManager)

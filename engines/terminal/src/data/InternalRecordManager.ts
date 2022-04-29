@@ -1,5 +1,4 @@
 import {
-    DEPENDENCY_INJECTION,
     IContext
 } from "@airport/direction-indicator";
 import {
@@ -25,7 +24,6 @@ import {
     User
 } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
-import { INTERNAL_RECORD_MANAGER } from "../tokens";
 
 export interface IInternalRecordManager {
 
@@ -183,4 +181,3 @@ export class InternalRecordManager
         return updatedDomain
     }
 }
-DEPENDENCY_INJECTION.set(INTERNAL_RECORD_MANAGER, InternalRecordManager)

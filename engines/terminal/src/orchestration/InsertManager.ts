@@ -4,10 +4,6 @@ import {
 	ISequenceGenerator
 } from '@airport/check-in'
 import {
-	container,
-	DEPENDENCY_INJECTION,
-} from '@airport/direction-indicator';
-import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
@@ -32,10 +28,6 @@ import {
 	ITransaction,
 	RecordId,
 } from '@airport/terminal-map'
-import {
-	HISTORY_MANAGER,
-	INSERT_MANAGER,
-} from '../tokens'
 
 interface ColumnsToPopulate {
 	actorIdColumn: DbColumn
@@ -46,6 +38,7 @@ export class InsertManager
 	implements IInsertManager {
 
 	airportDatabase: IAirportDatabase
+	historyManager: IHistoryManager
 	insertManager: IInsertManager
 	operationHistoryDuo: IOperationHistoryDuo
 	recordHistoryDuo: IRecordHistoryDuo
@@ -104,9 +97,6 @@ export class InsertManager
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
 	): Promise<number | RecordId[] | RecordId[][]> {
-		const historyManager = await container(this)
-			.get(HISTORY_MANAGER)
-
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
@@ -176,8 +166,7 @@ appears more than once in the Columns clause`)
 		if (!dbEntity.isLocal && !transaction.isSync) {
 			await this.addInsertHistory(
 				dbEntity, portableQuery, actor, systemWideOperationId,
-				historyManager, transaction,
-				rootTransaction, context)
+				transaction, rootTransaction, context)
 		}
 
 		const numberOfInsertedRecords = await transaction.insertValues(
@@ -522,7 +511,6 @@ and cannot have NULL values.`)
 		portableQuery: PortableQuery,
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
-		historyManager: IHistoryManager,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -560,7 +548,7 @@ and cannot have NULL values.`)
 			// const repo           = await repoManager.getRepository(repositoryId)
 			let repositoryTransactionHistory = repoTransHistories[repositoryId]
 			if (!repositoryTransactionHistory) {
-				repositoryTransactionHistory = await historyManager
+				repositoryTransactionHistory = await this.historyManager
 					.getNewRepositoryTransactionHistory(transaction.transactionHistory,
 						repositoryId, context)
 			}
@@ -600,5 +588,3 @@ and cannot have NULL values.`)
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(INSERT_MANAGER, InsertManager)

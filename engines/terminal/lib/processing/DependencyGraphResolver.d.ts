@@ -1,5 +1,7 @@
+import { IEntityStateManager } from '@airport/ground-control';
 import { IDependencyGraphNode, IDependencyGraphResolver, IOperationContext, IOperationNode } from '@airport/terminal-map';
 export declare class DependencyGraphResolver implements IDependencyGraphResolver {
+    entityStateManager: IEntityStateManager;
     getOperationsInOrder<E>(entities: E[], context: IOperationContext): IOperationNode<E>[];
     protected getEntitiesToPersist<E>(entities: E[], operatedOnEntities: IDependencyGraphNode<any>[], operatedOnPassThroughs: boolean[], context: IOperationContext, dependsOn?: IDependencyGraphNode<any>, dependency?: IDependencyGraphNode<any>, deleteByCascade?: boolean): IDependencyGraphNode<any>[];
     protected resolveCircularDependencies<E>(unorderedDependencies: IDependencyGraphNode<any>[], context: IOperationContext): void;

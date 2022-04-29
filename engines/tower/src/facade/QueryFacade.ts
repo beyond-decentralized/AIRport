@@ -1,15 +1,17 @@
 import {
 	AbstractQuery,
 	IAbstractQuery,
+	IFieldUtils,
 	IQueryContext,
-	IQueryContextLoader,
 	IQueryFacade,
-	QUERY_FACADE
+	IQueryUtils,
+	QUERY_FACADE,
 } from '@airport/air-control';
 import {
 	DEPENDENCY_INJECTION
 } from '@airport/direction-indicator';
 import {
+	ITransactionalConnector,
 	JsonQuery,
 	PortableQuery,
 	QueryResultType,
@@ -21,15 +23,17 @@ import {
 export class QueryFacade
 	implements IQueryFacade {
 
-	queryContextLoader: IQueryContextLoader
+	fieldUtils: IFieldUtils
+	queryUtils: IQueryUtils
+	transactionalConnector: ITransactionalConnector
 
 	async find<E, EntityArray extends Array<E>>(
 		query: AbstractQuery,
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<EntityArray> {
-		await this.ensureIocContext(context);
-		const result = await context.ioc.transactionalConnector.find<E, EntityArray>(
+		await this.ensureContext(context);
+		const result = await this.transactionalConnector.find<E, EntityArray>(
 			this.getPortableQuery(query, queryResultType, context), context);
 
 		return result;
@@ -40,8 +44,8 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<E> {
-		await this.ensureIocContext(context);
-		const result = await context.ioc.transactionalConnector.findOne<E>(this.getPortableQuery(
+		await this.ensureContext(context);
+		const result = await this.transactionalConnector.findOne<E>(this.getPortableQuery(
 			query, queryResultType, context), context);
 
 		return result;
@@ -53,7 +57,7 @@ export class QueryFacade
 		context: IQueryContext
 	): PortableQuery {
 		return {
-			jsonQuery: <JsonQuery>query.toJSON(context.ioc.queryUtils, context.ioc.fieldUtils),
+			jsonQuery: <JsonQuery>query.toJSON(this.queryUtils, this.fieldUtils),
 			parameterMap: query.getParameters(),
 			queryResultType,
 			applicationIndex: context.dbEntity.applicationVersion.application.index,
@@ -68,8 +72,8 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<Observable<EntityArray>> {
-		await this.ensureIocContext(context);
-		let observable = await context.ioc.transactionalConnector.search(this.getPortableQuery(
+		await this.ensureContext(context);
+		let observable = await this.transactionalConnector.search(this.getPortableQuery(
 			query, queryResultType, context), context);
 
 		return observable as Observable<EntityArray>;
@@ -80,19 +84,17 @@ export class QueryFacade
 		queryResultType: QueryResultType,
 		context: IQueryContext
 	): Promise<Observable<E>> {
-		await this.ensureIocContext(context);
-		let observable = await context.ioc.transactionalConnector.searchOne(this.getPortableQuery(
+		await this.ensureContext(context);
+		let observable = await this.transactionalConnector.searchOne(this.getPortableQuery(
 			query, queryResultType, context), context);
 
 		return observable as Observable<E>;
 	}
 
-	async ensureIocContext<E>(
+	async ensureContext<E>(
 		context: IQueryContext
 	): Promise<void> {
-		await this.queryContextLoader.ensure(context);
 	}
 
 }
-
 DEPENDENCY_INJECTION.set(QUERY_FACADE, QueryFacade);

@@ -1,7 +1,5 @@
 import { REPOSITORY_LOADER } from "@airport/air-control";
-import { container, DI } from "@airport/di";
-import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER } from "@airport/ground-transport";
-import { REPOSITORY_DAO } from "@airport/holding-pattern";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 export class RepositoryLoader {
     /*
     Repository can be loaded because:
@@ -15,8 +13,7 @@ export class RepositoryLoader {
             return;
         }
         context.repositoryExistenceChecked = true;
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        const repositoryLoadInfo = await repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId, context);
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId, context);
         let loadRepository = false;
         let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {
@@ -34,8 +31,7 @@ export class RepositoryLoader {
             return;
         }
         const now = new Date().getTime();
-        const [synchronizationAdapterLoader, synchronizationInManager] = await container(this).get(SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER);
-        const synchronizationAdapter = await synchronizationAdapterLoader
+        const synchronizationAdapter = await this.synchronizationAdapterLoader
             .load(repositorySource);
         let messages;
         try {
@@ -61,7 +57,7 @@ export class RepositoryLoader {
             for (const message of messages) {
                 messageMapByUuId.set(message.history.uuId, message);
             }
-            await synchronizationInManager.receiveMessages(messageMapByUuId, context);
+            await this.synchronizationInManager.receiveMessages(messageMapByUuId, context);
         }
         catch (e) {
             console.error(e);
@@ -69,5 +65,5 @@ export class RepositoryLoader {
         }
     }
 }
-DI.set(REPOSITORY_LOADER, RepositoryLoader);
+DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader);
 //# sourceMappingURL=RepositoryLoader.js.map

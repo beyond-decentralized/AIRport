@@ -1,4 +1,4 @@
-import { container, DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class InternalTransactionalConnector {
@@ -13,119 +13,91 @@ they are internal to the AIRport framework).`);
     // platformConfig: string,
     // distributionStrategy: DistributionStrategy,
     context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.addRepository(
+        return await this.transactionalServer.addRepository(
         // url,
         // platform,
         // platformConfig,
         // distributionStrategy,
-        terminalStore.getInternalConnector().internalCredentials, {
+        this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async find(portableQuery, context, cachedSqlQueryId) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.find(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.find(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.findOne(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.findOne(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     search(portableQuery, context, cachedSqlQueryId) {
-        const [terminalStore, transServer] = container(this)
-            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return transServer.search(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return this.transactionalServer.search(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     searchOne(portableQuery, context, cachedSqlQueryId) {
-        const [terminalStore, transServer] = container(this)
-            .getSync(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return transServer.searchOne(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return this.transactionalServer.searchOne(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, cachedSqlQueryId);
     }
     async save(entity, context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.save(entity, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.save(entity, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async saveToDestination(repositoryDestination, entity, context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.saveToDestination(repositoryDestination, entity, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.saveToDestination(repositoryDestination, entity, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async insertValues(portableQuery, context, ensureGeneratedValues // For internal use only
     ) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.insertValues(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.insertValues(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         }, ensureGeneratedValues);
     }
     async insertValuesGetIds(portableQuery, context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.insertValuesGetIds(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.insertValuesGetIds(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async updateValues(portableQuery, context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.updateValues(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.updateValues(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async deleteWhere(portableQuery, context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.deleteWhere(portableQuery, terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.deleteWhere(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async startTransaction(context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.startTransaction(terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.startTransaction(this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async commit(context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.commit(terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.commit(this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
     }
     async rollback(context) {
-        const [terminalStore, transServer] = await container(this)
-            .get(TERMINAL_STORE, TRANSACTIONAL_SERVER);
-        return await transServer.rollback(terminalStore.getInternalConnector().internalCredentials, {
+        return await this.transactionalServer.rollback(this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
@@ -134,7 +106,11 @@ they are internal to the AIRport framework).`);
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 }
-DI.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
+TRANSACTIONAL_CONNECTOR.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    transactionalServer: TRANSACTIONAL_SERVER
+});
 export function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }

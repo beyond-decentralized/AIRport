@@ -1,8 +1,14 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
+import { IAirportDatabase } from '@airport/air-control';
+import { ISequenceGenerator } from '@airport/check-in';
+import { ITerminalStore } from '@airport/terminal-map';
 export interface ISyncInDataChecker {
     checkData(message: RepositorySynchronizationMessage): Promise<boolean>;
 }
 export declare class SyncInDataChecker implements ISyncInDataChecker {
+    airportDatabase: IAirportDatabase;
+    sequenceGenerator: ISequenceGenerator;
+    terminalStore: ITerminalStore;
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
      * this method.

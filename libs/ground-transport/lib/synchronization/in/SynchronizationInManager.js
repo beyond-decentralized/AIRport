@@ -1,16 +1,11 @@
-import { container, DI } from '@airport/di';
-import { REPOSITORY_TRANSACTION_HISTORY_DAO } from '@airport/holding-pattern';
 import { transactional } from '@airport/tower';
-import { SYNC_IN_CHECKER, SYNCHRONIZATION_IN_MANAGER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
 /**
  * Synchronization in Manager implementation.
  */
 export class SynchronizationInManager {
     async receiveMessages(messageMapByUuId, context) {
         const syncTimestamp = new Date().getTime();
-        const [repositoryTransactionHistoryDao, syncInChecker, twoStageSyncedInDataProcessor] = await container(this)
-            .get(REPOSITORY_TRANSACTION_HISTORY_DAO, SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR);
-        const existingRepositoryTransactionHistories = await repositoryTransactionHistoryDao
+        const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
             .findWhereUuIdsIn([...messageMapByUuId.keys()]);
         for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
             messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId);
@@ -30,7 +25,7 @@ export class SynchronizationInManager {
             }
             let processMessage = true;
             await transactional(async (transaction) => {
-                if (!await syncInChecker.checkMessage(message)) {
+                if (!await this.syncInChecker.checkMessage(message)) {
                     transaction.rollback(null, context);
                     processMessage = false;
                     return;
@@ -42,7 +37,7 @@ export class SynchronizationInManager {
         }
         await transactional(async (transaction) => {
             transaction.isSync = true;
-            await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
+            await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
         }, context);
     }
     timeOrderMessages(messageMapByUuId) {
@@ -78,5 +73,4 @@ export class SynchronizationInManager {
         return true;
     }
 }
-DI.set(SYNCHRONIZATION_IN_MANAGER, SynchronizationInManager);
 //# sourceMappingURL=SynchronizationInManager.js.map

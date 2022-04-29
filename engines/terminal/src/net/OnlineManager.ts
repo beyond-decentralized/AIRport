@@ -1,6 +1,5 @@
 import {
   container,
-  DEPENDENCY_INJECTION,
   IContext
 } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
@@ -16,10 +15,6 @@ import {
   UpdateState
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
-import {
-  ONLINE_MANAGER,
-  REPOSITORY_MANAGER
-} from '../tokens';
 
 export interface IOnlineManager {
 
@@ -41,6 +36,7 @@ export class OnlineManager
   implements IOnlineManager {
 
   repositoryDao: IRepositoryDao
+  repositoryManager: IRepositoryManager
   repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 
   private online = false;
@@ -48,9 +44,7 @@ export class OnlineManager
   async goOffline(
     context: IContext = {}
   ): Promise<void> {
-    const repositoryManager = await container(this).get(REPOSITORY_MANAGER);
-
-    repositoryManager.goOffline();
+    this.repositoryManager.goOffline();
     this.online = false;
   }
 
@@ -89,16 +83,12 @@ export class OnlineManager
   async goOnline(
     context: IContext = {}
   ): Promise<void> {
-    const [
-      offlineDeltaStore,
-      repositoryManager,
-    ] = await container(this).get(
-      OFFLINE_DELTA_STORE,
-      REPOSITORY_MANAGER);
+    const offlineDeltaStore = await container(this).get(
+      OFFLINE_DELTA_STORE);
     await transactional(async () => {
       try {
         // 1)  Flip update state to GO_ONLINE
-        repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
+        this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
         // 2)  Find repositories
         // const repoRecords = await this.repositoryDao.findWithTransaction()
         const repoRecords = await this.repositoryDao.findReposWithDetailsByIds();
@@ -109,7 +99,7 @@ export class OnlineManager
           goOnlineCalls.push(this.repositoryGoOnline(
             repository,
             offlineDeltaStore,
-            repositoryManager
+            this.repositoryManager
           ));
         });
         await Promise.all(goOnlineCalls);
@@ -121,7 +111,7 @@ export class OnlineManager
         throw error;
       } finally {
         // Finally, always flip update state to LOCAL
-        repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
+        this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
       }
     });
   }
@@ -223,5 +213,3 @@ export class OnlineManager
   }
 
 }
-
-DEPENDENCY_INJECTION.set(ONLINE_MANAGER, OnlineManager);

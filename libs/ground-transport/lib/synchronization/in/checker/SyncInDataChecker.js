@@ -1,10 +1,6 @@
-import { container, DI } from '@airport/di';
 import { ChangeType, repositoryEntity } from '@airport/ground-control';
-import { SYNC_IN_DATA_CHECKER } from '../../../tokens';
-import { AIRPORT_DATABASE } from '@airport/air-control';
-import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
+import { getSysWideOpIds } from '@airport/check-in';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
-import { TERMINAL_STORE } from '@airport/terminal-map';
 export class SyncInDataChecker {
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering
@@ -51,10 +47,7 @@ export class SyncInDataChecker {
         return true;
     }
     async populateApplicationEntityMap(message) {
-        // let applicationVersionsById: Map<number, IApplicationVersion> = new Map()
-        // let applicationVersionIds: number[] = []
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        const applicationVersionsByIds = terminalStore.getAllApplicationVersionsByIds();
+        const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds();
         const applicationEntityMap = new Map();
         for (const messageApplicationVersion of message.applicationVersions) {
             const applicationVersion = applicationVersionsByIds[messageApplicationVersion.id];
@@ -79,9 +72,7 @@ export class SyncInDataChecker {
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
             throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
         }
-        const [airDb, sequenceGenerator] = await container(this)
-            .get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
-        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, airDb, sequenceGenerator);
+        const systemWideOperationIds = getSysWideOpIds(history.operationHistory.length, this.airportDatabase, this.sequenceGenerator);
         let orderNumber = 0;
         for (let i = 0; i < history.operationHistory.length; i++) {
             const operationHistory = history.operationHistory[i];
@@ -306,5 +297,4 @@ Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMess
         }
     }
 }
-DI.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker);
 //# sourceMappingURL=SyncInDataChecker.js.map

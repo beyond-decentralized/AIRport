@@ -17,11 +17,11 @@ import {
 	RawUpdateColumns,
 	UpdateColumns,
 	UpdateProperties,
-	IQueryContextLoader,
 	IUpdateCacheManager,
+	QUERY_FACADE,
+	IQueryFacade,
 } from '@airport/air-control'
 import {
-	container,
 	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator'
@@ -31,6 +31,7 @@ import {
 	ITransactionalConnector,
 	PortableQuery
 } from '@airport/ground-control'
+import { IEntityCopier } from '../core/data/EntityCopier'
 import { ENTITY_COPIER } from '../tokens'
 
 /**
@@ -39,8 +40,9 @@ import { ENTITY_COPIER } from '../tokens'
 export class DatabaseFacade
 	implements IDatabaseFacade {
 
+	entityCopier: IEntityCopier
 	entityStateManager: IEntityStateManager
-	queryContextLoader: IQueryContextLoader
+	queryFacade: IQueryFacade
 	transactionalConnector: ITransactionalConnector
 	updateCacheManager: IUpdateCacheManager
 
@@ -74,7 +76,7 @@ export class DatabaseFacade
 		}
 		const insertColumnValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertColumnValues, null, queryContext)
 
 		return await this.transactionalConnector.insertValues(portableQuery, context)
@@ -92,7 +94,7 @@ export class DatabaseFacade
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
 		return await this.transactionalConnector.insertValues(portableQuery, context)
@@ -112,7 +114,7 @@ export class DatabaseFacade
 		}
 		const insertValues: InsertColumnValues<IQE> = new InsertColumnValues(rawInsertColumnValues)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
 		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
@@ -132,7 +134,7 @@ export class DatabaseFacade
 		}
 		const insertValues: InsertValues<IQE> = new InsertValues(rawInsertValues)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
 		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
@@ -152,7 +154,7 @@ export class DatabaseFacade
 		}
 		let deleteWhere: Delete<IQE> = new Delete(rawDelete)
 		const queryContext = await this.ensureQueryContext(context)
-		let portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			deleteWhere, null, queryContext)
 
 		return await this.transactionalConnector.deleteWhere(portableQuery, context)
@@ -201,11 +203,9 @@ export class DatabaseFacade
 		if (!entity) {
 			return null
 		}
-		const entityCopier
-			= await container(this).get(ENTITY_COPIER)
 
 		const dbEntity = context.dbEntity;
-		const entityCopy = entityCopier
+		const entityCopy = this.entityCopier
 			.copyEntityForProcessing(entity, dbEntity, this.entityStateManager, context)
 		this.updateCacheManager.setOperationState(entityCopy, dbEntity, new Set())
 
@@ -234,7 +234,7 @@ export class DatabaseFacade
 
 		let updateColumns: UpdateColumns<any, IQE> = new UpdateColumns(rawUpdate)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			updateColumns, null, queryContext)
 
 		return await this.transactionalConnector.updateValues(portableQuery, context)
@@ -255,7 +255,7 @@ export class DatabaseFacade
 		}
 		let update: UpdateProperties<any, IQE> = new UpdateProperties(rawUpdate)
 		const queryContext = await this.ensureQueryContext(context)
-		const portableQuery: PortableQuery = queryContext.ioc.queryFacade.getPortableQuery(
+		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			update, null, queryContext)
 
 		return await this.transactionalConnector.updateValues(portableQuery, context)
@@ -271,13 +271,16 @@ export class DatabaseFacade
 		context: IContext
 	): Promise<IQueryContext> {
 		const queryContext: IQueryContext = context as IQueryContext
-		await this.queryContextLoader.ensure(queryContext);
 
 		return queryContext
 	}
 
 }
 DEPENDENCY_INJECTION.set(DATABASE_FACADE, DatabaseFacade)
+DATABASE_FACADE.setDependencies({
+	entityCopier: ENTITY_COPIER,
+	queryFacade: QUERY_FACADE
+})
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {

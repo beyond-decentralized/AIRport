@@ -1,10 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	IUser,
 	IUserDao
 } from '@airport/travel-document-checkpoint-internal'
-import { SYNC_IN_USER_CHECKER } from '../../../tokens'
 
 export interface ISyncInUserChecker {
 
@@ -70,5 +68,3 @@ export class SyncInUserChecker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNC_IN_USER_CHECKER, SyncInUserChecker)

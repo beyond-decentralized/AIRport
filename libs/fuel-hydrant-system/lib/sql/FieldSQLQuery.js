@@ -1,18 +1,14 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
 import { ExactOrderByParser } from '../orderBy/ExactOrderByParser';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { ClauseType } from './core/SQLWhereBase';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 /**
  * Created by Papa on 10/29/2016.
  */
 export class FieldSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, context) {
-        super(jsonQuery, dialect, QueryResultType.FIELD, context);
-        const validator = DEPENDENCY_INJECTION.db()
-            .getSync(Q_VALIDATOR);
-        this.orderByParser = new ExactOrderByParser(validator);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context) {
+        super(jsonQuery, dialect, QueryResultType.FIELD, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context);
+        this.orderByParser = new ExactOrderByParser(qValidator);
     }
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
         let parsedResults = [];
@@ -44,10 +40,8 @@ export class FieldSQLQuery extends NonEntitySQLQuery {
         return selectSqlFragment;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         let field = selectClauseFragment;
-        let propertyValue = sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
+        let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null);
         nextFieldIndex[0]++;
         return propertyValue;
     }

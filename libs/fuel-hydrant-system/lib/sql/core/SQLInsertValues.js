@@ -6,11 +6,11 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 11/17/2016.
  */
 export class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, context
+    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context
     // repository?: IRepository
     ) {
-        super(context.ioc.airDb.applications[jsonInsertValues.II.si].currentVersion[0]
-            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, context);
+        super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
+            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
         this.jsonInsertValues = jsonInsertValues;
     }
     toSQL(context) {

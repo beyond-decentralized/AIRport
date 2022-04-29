@@ -1,4 +1,4 @@
-import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { IAirportDatabase, IQEntityInternal, IRelationManager, JoinTreeNode } from '@airport/air-control';
 import { JSONEntityFieldInOrderBy, JSONFieldInOrderBy } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { IValidator } from '../validation/Validator';
@@ -15,9 +15,11 @@ export interface INonEntityOrderByParser {
 }
 export declare abstract class AbstractEntityOrderByParser {
     protected rootSelectClauseFragment: any;
-    protected validator: IValidator;
+    protected airportDatabase: IAirportDatabase;
+    protected qValidator: IValidator;
+    protected relationManager: IRelationManager;
     protected orderBy?: JSONEntityFieldInOrderBy[];
-    constructor(rootSelectClauseFragment: any, validator: IValidator, orderBy?: JSONEntityFieldInOrderBy[]);
+    constructor(rootSelectClauseFragment: any, airportDatabase: IAirportDatabase, qValidator: IValidator, relationManager: IRelationManager, orderBy?: JSONEntityFieldInOrderBy[]);
     protected getCommonOrderByFragment(orderByFields: JSONFieldInOrderBy[]): string;
 }
 //# sourceMappingURL=AbstractEntityOrderByParser.d.ts.map

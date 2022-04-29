@@ -1,11 +1,3 @@
-import {
-    container,
-    DEPENDENCY_INJECTION
-} from "@airport/direction-indicator";
-import {
-    DEBUG_SYNCHRONIZATION_ADAPTER,
-    SYNCHRONIZATION_ADAPTER_LOADER
-} from "../tokens";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 export interface ISynchronizationAdapterLoader {
@@ -19,6 +11,8 @@ export interface ISynchronizationAdapterLoader {
 export class SynchronizationAdapterLoader
     implements ISynchronizationAdapterLoader {
 
+    debugSynchronizationAdapter: ISynchronizationAdapter
+
     async load(
         synchronizationSource: string
     ): Promise<ISynchronizationAdapter> {
@@ -27,7 +21,7 @@ export class SynchronizationAdapterLoader
                 throw new Error(`Not Implemented`)
             }
             case 'localhost:9000': {
-                return await container(this).get(DEBUG_SYNCHRONIZATION_ADAPTER)
+                return this.debugSynchronizationAdapter
             }
             default:
                 throw new Error(`Unexpected synchronization source: ${synchronizationSource}`)
@@ -35,4 +29,3 @@ export class SynchronizationAdapterLoader
     }
 
 }
-DEPENDENCY_INJECTION.set(SYNCHRONIZATION_ADAPTER_LOADER, SynchronizationAdapterLoader)

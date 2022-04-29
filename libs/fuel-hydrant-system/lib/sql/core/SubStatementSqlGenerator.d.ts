@@ -1,6 +1,9 @@
-import { IQEntityInternal } from '@airport/air-control';
-import { JsonFieldQuery, JsonTreeQuery } from '@airport/ground-control';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import { IEntityStateManager, JsonFieldQuery, JsonTreeQuery } from '@airport/ground-control';
+import { IStoreDriver } from '@airport/terminal-map';
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
+import { IValidator } from '../../validation/Validator';
 import { SQLDialect } from './SQLQuery';
 export interface ISubStatementSqlGenerator {
     getTreeQuerySql(jsonTreeQuery: JsonTreeQuery, dialect: SQLDialect, context: IFuelHydrantContext): {
@@ -15,6 +18,15 @@ export interface ISubStatementSqlGenerator {
     };
 }
 export declare class SubStatementSqlGenerator implements ISubStatementSqlGenerator {
+    airportDatabase: IAirportDatabase;
+    applicationUtils: IApplicationUtils;
+    entityStateManager: IEntityStateManager;
+    qMetadataUtils: IQMetadataUtils;
+    qValidator: IValidator;
+    relationManager: IRelationManager;
+    sqlQueryAdapter: ISQLQueryAdaptor;
+    storeDriver: IStoreDriver;
+    subStatementQueryGenerator: ISubStatementSqlGenerator;
     getTreeQuerySql(jsonTreeQuery: JsonTreeQuery, dialect: SQLDialect, context: IFuelHydrantContext): {
         parameterReferences: (number | string)[];
         subQuerySql: string;

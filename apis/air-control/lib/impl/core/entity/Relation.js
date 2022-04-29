@@ -1,6 +1,6 @@
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
-import { AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
+import { RELATION_MANAGER, APPLICATION_UTILS } from '../../../tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { and } from '../operation/LogicalOperation';
 /**
@@ -24,10 +24,10 @@ QRelation.prototype.leftJoin = function () {
     return this.getNewQEntity(JoinType.LEFT_JOIN);
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
-    const [airDb, relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
-        .getSync(AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS);
+    const [relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
+        .getSync(RELATION_MANAGER, APPLICATION_UTILS);
     const dbEntity = this.dbRelation.relationEntity;
-    const qEntityConstructor = applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity, airDb);
+    const qEntityConstructor = applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
     let newQEntity = new qEntityConstructor(dbEntity, relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;

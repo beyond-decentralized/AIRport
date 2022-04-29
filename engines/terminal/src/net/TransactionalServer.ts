@@ -1,5 +1,4 @@
 import {
-	container,
 	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
@@ -21,7 +20,13 @@ import {
 	IApiCallContext,
 	ITransactionCredentials,
 	ITerminalStore,
-	ITransactionManager
+	ITransactionManager,
+	IOperationManager,
+	IInsertManager,
+	IDeleteManager,
+	IQueryManager,
+	IRepositoryManager,
+	IUpdateManager
 } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
@@ -58,9 +63,15 @@ export interface InternalPortableQuery
 export class TransactionalServer
 	implements ITransactionalServer {
 
-	terminalStore: ITerminalStore
+	deleteManager: IDeleteManager
+	insertManager: IInsertManager
+	operationManager: IOperationManager
 	operationContextLoader: IOperationContextLoader
+	queryManager: IQueryManager
+	repositoryManager: IRepositoryManager
+	terminalStore: ITerminalStore
 	transactionManager: ITransactionManager
+	updateManager: IUpdateManager
 
 	tempActor: IActor;
 
@@ -74,7 +85,7 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<Repository_Id> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -86,7 +97,7 @@ export class TransactionalServer
 		let repositoryId = 0
 
 		await transactional(async () => {
-			const repository = await context.ioc.repositoryManager.createRepository(
+			const repository = await this.repositoryManager.createRepository(
 				// url, platform, platformConfig, distributionStrategy
 				actor,
 				context);
@@ -102,14 +113,14 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
 		}
 
-		return await context.ioc.queryManager.find<E, EntityArray>(
+		return await this.queryManager.find<E, EntityArray>(
 			portableQuery, context, cachedSqlQueryId);
 	}
 
@@ -119,14 +130,14 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
 		}
 
-		return await context.ioc.queryManager.findOne<E>(
+		return await this.queryManager.findOne<E>(
 			portableQuery, context, cachedSqlQueryId);
 	}
 
@@ -136,14 +147,14 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
-		this.ensureIocContextSync(context)
+		this.ensureContextSync(context)
 
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
 		}
 
-		return context.ioc.queryManager.search<E, EntityArray>(
+		return this.queryManager.search<E, EntityArray>(
 			portableQuery, context);
 	}
 
@@ -153,14 +164,14 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
-		this.ensureIocContextSync(context)
+		this.ensureContextSync(context)
 
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
 		}
 
-		return context.ioc.queryManager.searchOne<E>(portableQuery, context);
+		return this.queryManager.searchOne<E>(portableQuery, context);
 	}
 
 	async startTransaction(
@@ -168,7 +179,7 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
-			await this.ensureIocContext(context)
+			await this.ensureContext(context)
 			await this.transactionManager.startTransaction(credentials, context)
 			return true
 		} catch (e) {
@@ -183,7 +194,7 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
-			await this.ensureIocContext(context)
+			await this.ensureContext(context)
 			await this.transactionManager.commit(credentials, context)
 			return true
 		} catch (e) {
@@ -201,7 +212,7 @@ export class TransactionalServer
 
 		}
 		try {
-			await this.ensureIocContext(context)
+			await this.ensureContext(context)
 			await this.transactionManager.rollback(credentials, context)
 			return true
 		} catch (e) {
@@ -219,7 +230,7 @@ export class TransactionalServer
 		if (!entity) {
 			return null
 		}
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -232,7 +243,7 @@ export class TransactionalServer
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			saveResult = await context.ioc.operationManager.performSave(
+			saveResult = await this.operationManager.performSave(
 				entity, actor, transaction, context.rootTransaction, context)
 		}, context)
 
@@ -248,7 +259,7 @@ export class TransactionalServer
 		if (!entity) {
 			return null
 		}
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -262,7 +273,7 @@ export class TransactionalServer
 			context: IOperationContext & ITransactionContext
 		) => {
 			// TODO: save to serialized repository to the specified destination
-			saveResult = await context.ioc.operationManager.performSave(
+			saveResult = await this.operationManager.performSave(
 				entity, actor, transaction, context.rootTransaction, context)
 		}, context)
 
@@ -276,7 +287,7 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -288,7 +299,7 @@ export class TransactionalServer
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			numInsertedRecords = await context.ioc.insertManager.insertValues(
+			numInsertedRecords = await this.insertManager.insertValues(
 				portableQuery, actor, transaction, context.rootTransaction,
 				context, ensureGeneratedValues);
 		}, context)
@@ -301,7 +312,7 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number[][]> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -313,7 +324,7 @@ export class TransactionalServer
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			ids = await context.ioc.insertManager.insertValuesGetIds(
+			ids = await this.insertManager.insertValuesGetIds(
 				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
@@ -325,7 +336,7 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -337,7 +348,7 @@ export class TransactionalServer
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			numUpdatedRecords = await context.ioc.updateManager.updateValues(
+			numUpdatedRecords = await this.updateManager.updateValues(
 				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
@@ -349,7 +360,7 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		await this.ensureIocContext(context)
+		await this.ensureContext(context)
 
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
@@ -361,7 +372,7 @@ export class TransactionalServer
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			numDeletedRecords = await context.ioc.deleteManager.deleteWhere(
+			numDeletedRecords = await this.deleteManager.deleteWhere(
 				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
@@ -424,13 +435,13 @@ export class TransactionalServer
 		return actor
 	}
 
-	private async ensureIocContext(
+	private async ensureContext(
 		context: IOperationContext
 	): Promise<void> {
 		await this.operationContextLoader.ensure(context)
 	}
 
-	private async ensureIocContextSync(
+	private async ensureContextSync(
 		context: IOperationContext
 	): Promise<void> {
 		this.operationContextLoader.ensureSync(context)

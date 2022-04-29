@@ -187,7 +187,6 @@ export interface IQEntityDriver {
 	*/
 
 	getInstance(
-		airDb: IAirportDatabase,
 		applicationUtils: IApplicationUtils
 	): IQEntityInternal;
 

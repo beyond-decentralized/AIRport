@@ -41,14 +41,14 @@ export class ApplicationUtils
 
 	static TEMP_ID: number = 0
 
+	airportDatabase: IAirportDatabase
 	entityStateManager: IEntityStateManager
 
 	getDbEntity(
 		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		airDb: IAirportDatabase
+		tableIndex: TableIndex
 	): DbEntity {
-		return airDb.applications[applicationIndex].currentVersion[0]
+		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
 	}
 
@@ -93,28 +93,25 @@ export class ApplicationUtils
 	}
 
 	getQEntityConstructor(
-		dbEntity: DbEntity,
-		airDb: IAirportDatabase
+		dbEntity: DbEntity
 	): QEntityConstructor {
-		return (<QApplicationInternal>airDb.qApplications[dbEntity.applicationVersion.application.index])
+		return (<QApplicationInternal>this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index])
 			.__qConstructors__[dbEntity.index]
 	}
 
 	getEntityConstructor(
-		dbEntity: DbEntity,
-		airDb: IAirportDatabase
+		dbEntity: DbEntity
 	): any {
-		const entityConstructor = airDb.qApplications[dbEntity.applicationVersion.application.index]
+		const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
 			.__constructors__[dbEntity.name]
 		return entityConstructor
 	}
 
 	getNewEntity(
-		dbEntity: DbEntity,
-		airDb: IAirportDatabase
+		dbEntity: DbEntity
 	): any {
-		const entityConstructor = this.getEntityConstructor(dbEntity, airDb)
-		if(!entityConstructor) {
+		const entityConstructor = this.getEntityConstructor(dbEntity)
+		if (!entityConstructor) {
 			return {}
 		}
 		return new entityConstructor()

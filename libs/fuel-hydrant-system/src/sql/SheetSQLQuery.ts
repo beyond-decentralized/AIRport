@@ -1,20 +1,21 @@
-import {DEPENDENCY_INJECTION}                 from '@airport/direction-indicator'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
 import {
+	IEntityStateManager,
 	InternalFragments,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonSheetQuery,
 	QueryResultType
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
-import {ExactOrderByParser} from '../orderBy/ExactOrderByParser'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-}                           from '../tokens'
-import {SQLDialect}         from './core/SQLQuery'
-import {ClauseType}         from './core/SQLWhereBase'
-import {NonEntitySQLQuery}  from './NonEntitySQLQuery'
+import { ExactOrderByParser } from '../orderBy/ExactOrderByParser'
+import { IValidator } from '../validation/Validator'
+import { SQLDialect } from './core/SQLQuery'
+import { ClauseType } from './core/SQLWhereBase'
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
+import { NonEntitySQLQuery } from './NonEntitySQLQuery'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -29,14 +30,30 @@ export class SheetSQLQuery
 	constructor(
 		jsonQuery: JsonSheetQuery,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
+		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, dialect, QueryResultType.SHEET, context)
+		super(jsonQuery, dialect, QueryResultType.SHEET,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			qValidator,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
+			subStatementQueryGenerator,
+			context)
 
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
-
-		this.orderByParser = new ExactOrderByParser(validator)
+		this.orderByParser = new ExactOrderByParser(qValidator)
 	}
 
 	async parseQueryResults(
@@ -83,7 +100,7 @@ export class SheetSQLQuery
 			throw new Error(`SELECT clause for a Flat Query must be an Array`)
 		}
 
-		let fieldIndex        = 0
+		let fieldIndex = 0
 		let selectSqlFragment = selectClauseFragment.map((field: JSONClauseField) => {
 			return this.getFieldSelectFragment(field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
 				null, fieldIndex++, context)
@@ -109,20 +126,17 @@ export class SheetSQLQuery
 		nextFieldIndex: number[],
 		internalFragments: InternalFragments
 	): any {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		const resultsFromSelect = selectClauseFragment.map((field: JSONClauseField) => {
-			let propertyValue = sqlAdaptor.getResultCellValue(
+			let propertyValue = this.sqlQueryAdapter.getResultCellValue(
 				resultRow, field.fa, nextFieldIndex[0], field.dt, null)
 			nextFieldIndex[0]++
 			return propertyValue
 		})
-		const selectClause      = internalFragments.SELECT
+		const selectClause = internalFragments.SELECT
 
 		if (selectClause && selectClause.length) {
 			for (const dbColumn of selectClause) {
-				let propertyValue = sqlAdaptor.getResultCellValue(
+				let propertyValue = this.sqlQueryAdapter.getResultCellValue(
 					resultRow, dbColumn.name, nextFieldIndex[0], dbColumn.type, null)
 				resultsFromSelect.push(propertyValue)
 				nextFieldIndex[0]++

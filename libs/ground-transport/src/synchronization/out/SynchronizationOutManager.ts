@@ -1,9 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
 	ensureChildArray,
 	ensureChildJsMap
 } from '@airport/ground-control'
@@ -16,11 +12,8 @@ import {
 	Repository_Source,
 	Repository_UuId
 } from '@airport/holding-pattern'
-import {
-	SYNC_OUT_DATA_SERIALIZER,
-	SYNCHRONIZATION_ADAPTER_LOADER,
-	SYNCHRONIZATION_OUT_MANAGER
-} from '../../tokens'
+import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
+import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 
 export interface ISynchronizationOutManager {
 
@@ -35,25 +28,24 @@ export class SynchronizationOutManager
 
 	repositoryDao: IRepositoryDao
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	synchronizationAdapterLoader: ISynchronizationAdapterLoader
+	syncOutDataSerializer: ISyncOutDataSerializer
 
 	async synchronizeOut(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[]
 	): Promise<void> {
-		const [
-			syncOutDataSerializer,
-			synchronizationAdapterLoader
-		] = await container(this).get(SYNC_OUT_DATA_SERIALIZER, SYNCHRONIZATION_ADAPTER_LOADER)
 		await this.loadHistoryRepositories(repositoryTransactionHistories)
 		const {
 			historiesToSend,
 			messages
-		} = await syncOutDataSerializer.serialize(repositoryTransactionHistories)
+		} = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories)
 		// await this.ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages)
 		const groupMessageMap = this.groupMessagesBySourceAndRepository(
 			messages, historiesToSend)
 
 		for (const [repositorySource, messageMapForSource] of groupMessageMap) {
-			const synchronizationAdapter = await synchronizationAdapterLoader.load(repositorySource)
+			const synchronizationAdapter = await this.synchronizationAdapterLoader.load(
+				repositorySource)
 			await synchronizationAdapter.sendTransactions(repositorySource, messageMapForSource)
 		}
 
@@ -155,4 +147,3 @@ export class SynchronizationOutManager
 	}
 
 }
-DEPENDENCY_INJECTION.set(SYNCHRONIZATION_OUT_MANAGER, SynchronizationOutManager)

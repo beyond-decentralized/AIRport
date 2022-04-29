@@ -1,7 +1,7 @@
 import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_Id } from "@airport/ground-control";
-import { Actor_Id, IRecordHistory, IRepository, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern";
+import { Actor_Id, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern";
 import { User_Id } from "@airport/travel-document-checkpoint-internal";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
@@ -40,6 +40,8 @@ export interface InMessageUserLookup {
     lastInMessageIndex: number;
 }
 export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
+    actorDao: IActorDao;
+    repositoryDao: IRepositoryDao;
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
         historiesToSend: IRepositoryTransactionHistory[];
         messages: RepositorySynchronizationMessage[];

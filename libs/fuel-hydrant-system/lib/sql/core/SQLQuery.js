@@ -26,8 +26,8 @@ export class EntityDefaults {
  * String based SQL query.
  */
 export class SQLQuery extends SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, context) {
-        super(dbEntity, dialect, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context) {
+        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
         this.entityDefaults = new EntityDefaults();
@@ -92,7 +92,7 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
             onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`;
         }
-        const tableName = context.ioc.storeDriver.getEntityTableName(rightDbEntity, context);
+        const tableName = this.storeDriver.getEntityTableName(rightDbEntity, context);
         const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`;
         return fromFragment;
     }

@@ -1,7 +1,16 @@
+import { IAirportDatabase } from '@airport/air-control';
+import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity, IRootTransaction, JsonInsertValues, PortableQuery } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern';
-import { IInsertManager, IOperationContext, ITransaction, RecordId } from '@airport/terminal-map';
+import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
+import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, RecordId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
+    airportDatabase: IAirportDatabase;
+    historyManager: IHistoryManager;
+    insertManager: IInsertManager;
+    operationHistoryDuo: IOperationHistoryDuo;
+    recordHistoryDuo: IRecordHistoryDuo;
+    repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
+    sequenceGenerator: ISequenceGenerator;
     insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<RecordId[][]>;
     verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];

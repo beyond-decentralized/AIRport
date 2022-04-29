@@ -1,7 +1,5 @@
-import { container, DI } from "@airport/di";
 import { repositoryEntity } from "@airport/ground-control";
-import { ACTOR_DAO, RepositoryTransactionType, REPOSITORY_DAO } from "@airport/holding-pattern";
-import { SYNC_OUT_DATA_SERIALIZER } from "../../../tokens";
+import { RepositoryTransactionType } from "@airport/holding-pattern";
 export const WITH_ID = {};
 export const WITH_RECORD_HISTORY = {};
 export const WITH_INDEX = {};
@@ -59,8 +57,7 @@ export class SyncOutDataSerializer {
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
-        const actorDao = await container(this).get(ACTOR_DAO);
-        const actors = await actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
+        const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
         this.serializeUsers(actors, message, inMessageUserLookup);
         const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserLookup);
         const inMessageApplicationLookup = {
@@ -127,8 +124,7 @@ export class SyncOutDataSerializer {
             repositoryIdsToFindBy.push(repositoryId);
         }
         repositoryIdsToFindBy.push(repositoryTransactionHistory.id);
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        const repositories = await repositoryDao.findByIds(repositoryIdsToFindBy);
+        const repositories = await this.repositoryDao.findByIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
             let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository.id)) {
@@ -365,5 +361,4 @@ export class SyncOutDataSerializer {
         };
     }
 }
-DI.set(SYNC_OUT_DATA_SERIALIZER, SyncOutDataSerializer);
 //# sourceMappingURL=SyncOutDataSerializer.js.map

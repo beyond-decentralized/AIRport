@@ -1,17 +1,15 @@
-import { FIELD_UTILS, InsertValues, QUERY_UTILS, APPLICATION_UTILS, } from '@airport/air-control';
-import { container } from '@airport/di';
+import { InsertValues, } from '@airport/air-control';
 export class AbstractMutationManager {
-    getPortableQuery(applicationIndex, tableIndex, query, queryResultType, queryUtils, fieldUtils) {
+    getPortableQuery(applicationIndex, tableIndex, query, queryResultType) {
         return {
             applicationIndex,
             tableIndex,
-            jsonQuery: query.toJSON(queryUtils, fieldUtils),
+            jsonQuery: query.toJSON(this.queryUtils, this.fieldUtils),
             parameterMap: query.getParameters(),
             queryResultType,
         };
     }
     async doInsertValues(transaction, q, entities, context) {
-        const [fieldUtils, queryUtils, applicationUtils,] = await container(this).get(FIELD_UTILS, QUERY_UTILS, APPLICATION_UTILS);
         const dbEntity = q.__driver__.dbEntity;
         const columnIndexes = [];
         const columnValueLookups = [];
@@ -22,7 +20,7 @@ export class AbstractMutationManager {
             };
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
-                applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+                this.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                     if (columnIndexes[dbColumn.index]) {
                         return;
                     }
@@ -68,7 +66,7 @@ export class AbstractMutationManager {
             values,
         };
         let insertValues = new InsertValues(rawInsertValues, columnIndexes);
-        let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null, queryUtils, fieldUtils);
+        let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null);
         return await transaction.insertValues(portableQuery, context);
     }
 }

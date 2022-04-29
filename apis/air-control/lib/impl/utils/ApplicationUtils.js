@@ -2,8 +2,8 @@ import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/gr
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { valuesEqual } from '../Utils';
 export class ApplicationUtils {
-    getDbEntity(applicationIndex, tableIndex, airDb) {
-        return airDb.applications[applicationIndex].currentVersion[0]
+    getDbEntity(applicationIndex, tableIndex) {
+        return this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[tableIndex];
     }
     isActorId(columnName) {
@@ -31,17 +31,17 @@ export class ApplicationUtils {
                 throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
         }
     }
-    getQEntityConstructor(dbEntity, airDb) {
-        return airDb.qApplications[dbEntity.applicationVersion.application.index]
+    getQEntityConstructor(dbEntity) {
+        return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
             .__qConstructors__[dbEntity.index];
     }
-    getEntityConstructor(dbEntity, airDb) {
-        const entityConstructor = airDb.qApplications[dbEntity.applicationVersion.application.index]
+    getEntityConstructor(dbEntity) {
+        const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
             .__constructors__[dbEntity.name];
         return entityConstructor;
     }
-    getNewEntity(dbEntity, airDb) {
-        const entityConstructor = this.getEntityConstructor(dbEntity, airDb);
+    getNewEntity(dbEntity) {
+        const entityConstructor = this.getEntityConstructor(dbEntity);
         if (!entityConstructor) {
             return {};
         }

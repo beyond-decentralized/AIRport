@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { ensureChildJsMap } from '@airport/ground-control';
-import { SYNC_IN_UTILS } from '../../tokens';
 /**
  * Result of comparing to versions of a given application.
  */
@@ -21,5 +19,4 @@ export class SyncInUtils {
         return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id), operationHistory.entity.index), repositoryId);
     }
 }
-DI.set(SYNC_IN_UTILS, SyncInUtils);
 //# sourceMappingURL=SyncInUtils.js.map

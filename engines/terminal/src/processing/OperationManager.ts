@@ -1,15 +1,18 @@
 import {
 	and,
 	Delete,
+	IAirportDatabase,
+	IApplicationUtils,
 	InsertValues,
+	IQMetadataUtils,
 	IQOperableFieldInternal,
+	IQueryFacade,
 	or,
 	RawDelete,
 	RawInsertValues,
 	UpdateProperties,
 	valuesEqual
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	EntityRelationType,
@@ -23,11 +26,17 @@ import {
 } from '@airport/ground-control'
 import { IActor } from '@airport/holding-pattern'
 import {
+	ICascadeGraphVerifier,
+	IDeleteManager,
+	IDependencyGraphResolver,
+	IEntityGraphReconstructor,
+	IInsertManager,
 	IOperationContext,
 	IOperationManager,
-	ITransaction
+	IStructuralEntityValidator,
+	ITransaction,
+	IUpdateManager
 } from '@airport/terminal-map'
-import { OPERATION_MANAGER } from '../tokens'
 
 /**
  * Created by Papa on 11/15/2016.
@@ -35,7 +44,18 @@ import { OPERATION_MANAGER } from '../tokens'
 export class OperationManager
 	implements IOperationManager {
 
+	airportDatabase: IAirportDatabase
+	applicationUtils: IApplicationUtils
+	cascadeGraphVerifier: ICascadeGraphVerifier
+	deleteManager: IDeleteManager
+	dependencyGraphResolver: IDependencyGraphResolver
+	entityGraphReconstructor: IEntityGraphReconstructor
 	entityStateManager: IEntityStateManager
+	insertManager: IInsertManager
+	qMetadataUtils: IQMetadataUtils
+	queryFacade: IQueryFacade
+	structuralEntityValidator: IStructuralEntityValidator
+	updateManager: IUpdateManager
 
 	/**
 	 * Transactional context must have been started by the time this method is called.
@@ -59,14 +79,14 @@ export class OperationManager
 				entityGraph = [entities]
 			}
 		} else {
-			const verifiedTree = context.ioc.cascadeGraphVerifier
+			const verifiedTree = this.cascadeGraphVerifier
 				.verify(entities, context)
-			entityGraph = context.ioc.entityGraphReconstructor
+			entityGraph = this.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
-		await context.ioc.structuralEntityValidator.validate(entityGraph, [], context)
+		await this.structuralEntityValidator.validate(entityGraph, [], context)
 
-		const operations = context.ioc.dependencyGraphResolver
+		const operations = this.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
 		let saveActor: ISaveActor = {
@@ -127,12 +147,12 @@ export class OperationManager
 		context: IOperationContext,
 		ensureGeneratedValues?: boolean
 	): Promise<void> {
-		const qEntity = context.ioc.airDb.qApplications
+		const qEntity = this.airportDatabase.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		let rawInsert: RawInsertValues<any> = {
 			insertInto: qEntity,
-			columns: context.ioc.metadataUtils.getAllInsertableColumns(qEntity),
+			columns: this.qMetadataUtils.getAllInsertableColumns(qEntity),
 			values: []
 		}
 		let columnIndexesInValues = []
@@ -156,7 +176,7 @@ export class OperationManager
 					const dbRelation = dbProperty.relation[0]
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
+							this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								dbColumn: DbColumn,
 								columnValue: any,
 								_propertyNameChains: string[][],
@@ -191,15 +211,15 @@ export class OperationManager
 			const generatedColumns = context.dbEntity.columns.filter(
 				column => column.isGenerated)
 			if (generatedColumns.length && ensureGeneratedValues) {
-				const portableQuery: PortableQuery = context.ioc.queryFacade
+				const portableQuery: PortableQuery = this.queryFacade
 					.getPortableQuery(insertValues, null, context)
-				const idsAndGeneratedValues = await context.ioc.insertManager
+				const idsAndGeneratedValues = await this.insertManager
 					.insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					const entitySaveResult = {}
 					saveResult.created[
-						context.ioc.entityStateManager.getOperationUniqueId(entity)
+						this.entityStateManager.getOperationUniqueId(entity)
 					] = entitySaveResult
 					for (const generatedColumn of generatedColumns) {
 						// Return index for generated column values is: DbColumn.index
@@ -210,14 +230,14 @@ export class OperationManager
 					}
 				}
 			} else {
-				const portableQuery: PortableQuery = context.ioc.queryFacade
+				const portableQuery: PortableQuery = this.queryFacade
 					.getPortableQuery(insertValues, null, context)
-				await context.ioc.insertManager.insertValues(
+				await this.insertManager.insertValues(
 					portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					saveResult.created[
-						context.ioc.entityStateManager.getOperationUniqueId(entity)
+						this.entityStateManager.getOperationUniqueId(entity)
 					] = true
 				}
 			}
@@ -240,7 +260,7 @@ export class OperationManager
 		saveResult: ISaveResult,
 		context: IOperationContext
 	): Promise<void> {
-		const qEntity = context.ioc.airDb.qApplications
+		const qEntity = this.airportDatabase.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		for (const entity of entities) {
@@ -263,7 +283,7 @@ export class OperationManager
 					} else if (!valuesEqual(originalValue, updatedValue)) {
 						setFragment[dbProperty.name] = updatedValue
 						saveResult.updated[
-							context.ioc.entityStateManager.getOperationUniqueId(entity)
+							this.entityStateManager.getOperationUniqueId(entity)
 						] = true
 						runUpdate = true
 					}
@@ -272,7 +292,7 @@ export class OperationManager
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
 							let propertyOriginalValue = originalEntity[dbProperty.name]
-							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
+							this.applicationUtils.forEachColumnOfRelation(dbRelation, entity, (
 								_dbColumn: DbColumn,
 								value: any,
 								propertyNameChains: string[][],
@@ -314,7 +334,7 @@ export class OperationManager
 									}
 									currentSetFragment[valuePropertyNameChain.length - 1] = columnValue
 									saveResult.updated[
-										context.ioc.entityStateManager.getOperationUniqueId(entity)
+										this.entityStateManager.getOperationUniqueId(entity)
 									] = true
 									runUpdate = true
 								}
@@ -343,10 +363,10 @@ export class OperationManager
 					where: whereFragment
 				}
 				const update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate)
-				const portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+				const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 					update, null, context)
 
-				await context.ioc.updateManager.updateValues(
+				await this.updateManager.updateValues(
 					portableQuery, actor, transaction, rootTransaction, context);
 
 			}
@@ -364,7 +384,7 @@ export class OperationManager
 
 		const dbEntity = context.dbEntity
 		const qEntity =
-			context.ioc.airDb.qApplications
+			this.airportDatabase.qApplications
 			[dbEntity.applicationVersion.application.index][dbEntity.name]
 		const idWhereFragments: JSONValueOperation[] = []
 		const valuesMapByColumn: any[] = []
@@ -394,7 +414,7 @@ export class OperationManager
 				} else {
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
+							this.applicationUtils.forEachColumnOfRelation(dbRelation, dbEntity, (
 								dbColumn: DbColumn,
 								value: any,
 								propertyNameChains: string[][]
@@ -426,7 +446,7 @@ export class OperationManager
 				entityIdWhereClauses.push(idWhereFragments[0])
 			}
 			saveResult.deleted[
-				context.ioc.entityStateManager.getOperationUniqueId(entity)
+				this.entityStateManager.getOperationUniqueId(entity)
 			] = true
 		}
 
@@ -442,11 +462,10 @@ export class OperationManager
 			where
 		}
 		let deleteWhere: Delete<any> = new Delete(rawDelete)
-		let portableQuery: PortableQuery = context.ioc.queryFacade.getPortableQuery(
+		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			deleteWhere, null, context)
-		await context.ioc.deleteManager.deleteWhere(portableQuery, actor,
+		await this.deleteManager.deleteWhere(portableQuery, actor,
 			transaction, rootTransaction, context)
 	}
 
 }
-DEPENDENCY_INJECTION.set(OPERATION_MANAGER, OperationManager)

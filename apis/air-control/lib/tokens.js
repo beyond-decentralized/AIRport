@@ -1,7 +1,6 @@
 import { lib } from '@airport/direction-indicator';
 import { RelationManager } from './impl/core/entity/RelationManager';
-import { QueryContextLoader } from './impl/query/QueryContext';
-import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { Lookup } from './impl/query/api/Lookup';
 import { EntityUtils } from './impl/utils/EntityUtils';
 import { QMetadataUtils } from './impl/utils/QMetadataUtils';
@@ -38,13 +37,8 @@ export const Q_METADATA_UTILS = airControl.token({
     interface: 'IQMetadataUtils',
     token: 'Q_METADATA_UTILS'
 });
-export const QUERY_CONTEXT_LOADER = airControl.token({
-    class: QueryContextLoader,
-    interface: 'IQueryContextLoader',
-    token: 'QUERY_CONTEXT_LOADER'
-});
 export const QUERY_FACADE = airControl.token({
-    class: QueryContextLoader,
+    class: null,
     interface: 'IQueryFacade',
     token: 'QUERY_FACADE'
 });
@@ -77,16 +71,21 @@ AIRPORT_DATABASE.setDependencies({
     databaseFacade: DATABASE_FACADE
 });
 APPLICATION_UTILS.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER
 });
 DATABASE_FACADE.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
-    queryContextLoader: QUERY_CONTEXT_LOADER,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 QUERY_FACADE.setDependencies({
-    queryContextLoader: QUERY_CONTEXT_LOADER
+    fieldUtils: FIELD_UTILS,
+    queryUtils: QUERY_UTILS,
+    transactionalConnector: TRANSACTIONAL_CONNECTOR
+});
+RELATION_MANAGER.setDependencies({
+    applicationUtils: APPLICATION_UTILS
 });
 UPDATE_CACHE_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS,

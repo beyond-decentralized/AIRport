@@ -1,5 +1,4 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { ApplicationName, ApplicationStatus } from '@airport/ground-control';
 import {
     IDomain,
@@ -7,7 +6,6 @@ import {
     IDomainDao,
     IApplicationDao
 } from "@airport/airspace";
-import { SYNC_IN_APPLICATION_CHECKER } from "../../../tokens";
 
 export interface IDomainCheckRecord {
     domain?: IDomain
@@ -116,7 +114,7 @@ export class SyncInApplicationChecker
         }
 
         if (applicationsToCreate.length) {
-            await applicationDao.insert(applicationsToCreate)
+            await this.applicationDao.insert(applicationsToCreate)
         }
 
         return applicationCheckMap
@@ -187,4 +185,3 @@ export class SyncInApplicationChecker
     }
 
 }
-DEPENDENCY_INJECTION.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker)

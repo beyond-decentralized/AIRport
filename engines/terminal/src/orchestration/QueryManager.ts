@@ -1,8 +1,5 @@
 import { IRepositoryLoader } from '@airport/air-control'
 import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
 	PortableQuery
 } from '@airport/ground-control'
 import {
@@ -11,7 +8,6 @@ import {
 	IStoreDriver
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
-import { QUERY_MANAGER } from '../tokens'
 
 export class QueryManager
 	implements IQueryManager {
@@ -70,4 +66,3 @@ export class QueryManager
 	}
 
 }
-DEPENDENCY_INJECTION.set(QUERY_MANAGER, QueryManager)

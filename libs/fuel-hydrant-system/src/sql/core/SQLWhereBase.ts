@@ -1,9 +1,11 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
 	IQEntityInternal,
+	IQMetadataUtils,
 	JSONLogicalOperation,
 	Parameter,
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,
@@ -21,13 +23,12 @@ import {
 	ApplicationIndex,
 	ApplicationMap,
 	SqlOperator,
-	TableIndex
+	TableIndex,
+	IEntityStateManager
 } from '@airport/ground-control'
-import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {
-	SQL_QUERY_ADAPTOR
-} from '../../tokens'
 import { IValidator } from '../../validation/Validator'
 import { SQLDialect } from './SQLQuery'
 import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
@@ -57,6 +58,12 @@ export abstract class SQLWhereBase
 	constructor(
 		protected dbEntity: DbEntity,
 		protected dialect: SQLDialect,
+		protected airportDatabase: IAirportDatabase,
+		protected applicationUtils: IApplicationUtils,
+		protected entityStateManager: IEntityStateManager,
+		protected qMetadataUtils: IQMetadataUtils,
+		protected sqlQueryAdapter: ISQLQueryAdaptor,
+		protected storeDriver: IStoreDriver,
 		protected context: IFuelHydrantContext,
 	) {
 	}
@@ -66,9 +73,6 @@ export abstract class SQLWhereBase
 		context: IFuelHydrantContext,
 		// valuesArray: (boolean | Date | number | string)[] = null
 	): any[] {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		// let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
 		return this.parameterReferences
 			/*
@@ -93,7 +97,7 @@ export abstract class SQLWhereBase
 					}
 					throw new Error(`No parameter found for alias '${parameterReference}'`)
 				}
-				return sqlAdaptor.getParameterValue(parameter)
+				return this.sqlQueryAdapter.getParameterValue(parameter)
 			})
 	}
 
@@ -111,19 +115,16 @@ export abstract class SQLWhereBase
 		defaultCallback: () => string,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		let aValue = aField.v
 		if (this.isParameterReference(aValue)) {
 			let stringValue = <string>aValue
 			this.parameterReferences.push(stringValue)
-			aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue)
+			aValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, stringValue)
 		} else {
 			aValue = this.getFieldValue(
 				<any>aValue, ClauseType.FUNCTION_CALL, defaultCallback, context)
 		}
-		aValue = sqlAdaptor.getFunctionAdaptor()
+		aValue = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(
 				aField, aValue, this.qEntityMapByAlias, this, context)
 		this.validator.addFunctionAlias(aField.fa)
@@ -292,7 +293,7 @@ export abstract class SQLWhereBase
 		columnIndex: number,
 		context: IFuelHydrantContext,
 	): string {
-		const dbEntity = context.ioc.metadataUtils.getDbEntity(qEntity)
+		const dbEntity = this.qMetadataUtils.getDbEntity(qEntity)
 
 		return dbEntity.columns[columnIndex].name
 	}
@@ -329,11 +330,8 @@ export abstract class SQLWhereBase
 		columnName: string,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		let selectSqlFragment = `${value.ta}.${columnName}`
-		selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
+		selectSqlFragment = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias,
 				this, context)
 

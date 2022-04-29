@@ -1,8 +1,10 @@
 import { SortOrder } from '@airport/ground-control';
 export class AbstractEntityOrderByParser {
-    constructor(rootSelectClauseFragment, validator, orderBy) {
+    constructor(rootSelectClauseFragment, airportDatabase, qValidator, relationManager, orderBy) {
         this.rootSelectClauseFragment = rootSelectClauseFragment;
-        this.validator = validator;
+        this.airportDatabase = airportDatabase;
+        this.qValidator = qValidator;
+        this.relationManager = relationManager;
         this.orderBy = orderBy;
     }
     getCommonOrderByFragment(orderByFields) {

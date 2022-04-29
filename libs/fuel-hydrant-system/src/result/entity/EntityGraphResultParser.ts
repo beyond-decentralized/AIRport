@@ -1,29 +1,31 @@
 import {
+	IApplicationUtils,
 	// newMappedEntityArray,
 	objectExists,
 	ReferencedColumnData
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DbEntity,
 	ensureChildArray,
 	ensureChildMap,
 	EntityRelationType,
+	IEntityStateManager,
 	SQLDataType
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	GraphMtoMapper,
 	ManyToOneStubReference
-}                          from './GraphMtoMapper'
+} from './GraphMtoMapper'
 import {
 	GraphOtmMapper,
 	OneToManyStubReference
-}                          from './GraphOtmMapper'
+} from './GraphOtmMapper'
 import {
 	AbstractObjectResultParser,
 	GraphQueryConfiguration,
 	IEntityResultParser
-}                          from './IEntityResultParser'
+} from './IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -53,8 +55,10 @@ export class EntityGraphResultParser
 	constructor(
 		private config: GraphQueryConfiguration,
 		private rootDbEntity: DbEntity,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager
 	) {
-		super()
+		super(applicationUtils, entityStateManager)
 		this.otmMapper = new GraphOtmMapper()
 		this.mtoMapper = new GraphMtoMapper()
 	}
@@ -64,7 +68,7 @@ export class EntityGraphResultParser
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): any {
-		return context.ioc.applicationUtils.getNewEntity(dbEntity, context.ioc.airDb)
+		return this.applicationUtils.getNewEntity(dbEntity)
 	}
 
 	addProperty(
@@ -90,7 +94,7 @@ export class EntityGraphResultParser
 		const oneToManyStubAdded = this.addManyToOneStub(
 			resultObject, propertyName, relationInfos, context)
 		if (oneToManyStubAdded) {
-			const relatedEntityId = context.ioc.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+			const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 			this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
 		}
 	}
@@ -114,7 +118,7 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): any {
 		resultObject[propertyName] = childResultObject
-		const relatedEntityId      = context.ioc.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
+		const relatedEntityId = this.applicationUtils.getIdKey(resultObject[propertyName], relationDbEntity)
 		this.bufferManyToOne(dbEntity, propertyName, relationDbEntity, relatedEntityId)
 	}
 
@@ -145,7 +149,7 @@ export class EntityGraphResultParser
 	): void {
 		this.bufferOneToMany(otmDbEntity, propertyName)
 		// TODO: MappedEntityArray is not serializable, make it so before using
-		// let childResultsArray = newMappedEntityArray(context.ioc.applicationUtils, relationDbEntity)
+		// let childResultsArray = newMappedEntityArray(this.applicationUtils, relationDbEntity)
 		// childResultsArray.put(childResultObject)
 		// resultObject[propertyName] = childResultsArray
 		resultObject[propertyName] = [childResultObject]
@@ -160,7 +164,7 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): void {
 		// TODO: MappedEntityArray is not serializable, make it so before using
-		// resultObject[propertyName] = newMappedEntityArray<any>(context.ioc.applicationUtils, relationDbEntity)
+		// resultObject[propertyName] = newMappedEntityArray<any>(this.applicationUtils, relationDbEntity)
 		resultObject[propertyName] = []
 	}
 
@@ -198,13 +202,13 @@ export class EntityGraphResultParser
 
 		// merge any out of order entity references (there shouldn't be any)
 		// TODO: MappedEntityArray is not serializable, make it so before using
-		// let resultMEA = newMappedEntityArray(context.ioc.applicationUtils, this.rootDbEntity)
+		// let resultMEA = newMappedEntityArray(this.applicationUtils, this.rootDbEntity)
 		// resultMEA.putAll(parsedResults)
 		// if (!this.config || this.config.mapped) {
 		// 	return resultMEA
 		// }
 		// return resultMEA.toArray()
-	
+
 		return parsedResults
 	}
 
@@ -225,7 +229,7 @@ export class EntityGraphResultParser
 					throw new Error(`Unknown EntityRelationType: ${dbRelation.relationType}`)
 			}
 			if (dbRelation.oneToManyElems && dbRelation.oneToManyElems.mappedBy) {
-				if(dbEntity.id === dbRelation.relationEntity.id
+				if (dbEntity.id === dbRelation.relationEntity.id
 					|| dbRelation.oneToManyElems.mappedBy === propertyName) {
 					otmEntityField = dbRelation.property.name
 				}
@@ -271,8 +275,8 @@ export class EntityGraphResultParser
 			dbEntity.index
 		)
 
-		let existingEntity        = entityMapForName[idValue]
-		let currentEntity         = this.mergeEntities(
+		let existingEntity = entityMapForName[idValue]
+		let currentEntity = this.mergeEntities(
 			existingEntity, resultObject, dbEntity, selectClauseFragment, context)
 		entityMapForName[idValue] = currentEntity
 
@@ -301,7 +305,7 @@ export class EntityGraphResultParser
 		if (!source || target === source) {
 			return target
 		}
-		const id = context.ioc.applicationUtils.getIdKey(target, dbEntity)
+		const id = this.applicationUtils.getIdKey(target, dbEntity)
 
 		for (let propertyName in selectClauseFragment) {
 			if (selectClauseFragment[propertyName] === undefined) {
@@ -311,7 +315,7 @@ export class EntityGraphResultParser
 			// Merge properties (conflicts detected at query parsing time):
 			if (!dbProperty.relation || !dbProperty.relation.length) {
 				// If source property doesn't exist
-				if (context.ioc.applicationUtils.isEmpty(source[propertyName])) {
+				if (this.applicationUtils.isEmpty(source[propertyName])) {
 					// set the source property to value of target
 					source[propertyName] = target[propertyName]
 				}
@@ -331,7 +335,7 @@ export class EntityGraphResultParser
 				}
 				// For actual objects
 				else {
-					const dbRelation    = dbProperty.relation[0]
+					const dbRelation = dbProperty.relation[0]
 					const childDbEntity = dbRelation.relationEntity
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
@@ -346,7 +350,7 @@ export class EntityGraphResultParser
 							// don't process
 							break
 						case EntityRelationType.ONE_TO_MANY:
-							let sourceArray   = source[propertyName]
+							let sourceArray = source[propertyName]
 							const targetArray = target[propertyName]
 							// Because parseQueryResult is depth-first, all child objects have already
 							// been processed
@@ -365,16 +369,16 @@ export class EntityGraphResultParser
 							const sourceSet: { [id: string]: any } = {}
 							if (sourceArray) {
 								sourceArray.forEach((sourceChild) => {
-									const sourceChildIdValue      = context.ioc.applicationUtils.getIdKey(sourceChild, childDbEntity)
+									const sourceChildIdValue = this.applicationUtils.getIdKey(sourceChild, childDbEntity)
 									sourceSet[sourceChildIdValue] = sourceChild
 								})
 							} else {
-								sourceArray          = []
+								sourceArray = []
 								source[propertyName] = sourceArray
 							}
 							if (targetArray) {
 								targetArray.forEach((targetChild) => {
-									const targetChildIdValue = context.ioc.applicationUtils.getIdKey(targetChild, childDbEntity)
+									const targetChildIdValue = this.applicationUtils.getIdKey(targetChild, childDbEntity)
 									if (this.config && this.config.strict && !sourceSet[targetChildIdValue]) {
 										throw new Error(`One-to-Many child arrays don't match for 
 										'${dbEntity.name}.${dbProperty.name}', Id: ${id}`)
@@ -406,13 +410,13 @@ export class EntityGraphResultParser
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): void {
-		let otmStubBuffer  = this.otmStubBuffer
+		let otmStubBuffer = this.otmStubBuffer
 		this.otmStubBuffer = []
 		otmStubBuffer.forEach((otmStub) => {
 			otmStub.otmObject = currentEntity
 			this.otmMapper.addOtmReference(otmStub, entityIdValue)
 		})
-		let mtoStubBuffer  = this.mtoStubBuffer
+		let mtoStubBuffer = this.mtoStubBuffer
 		this.mtoStubBuffer = []
 		mtoStubBuffer.forEach((mtoStub) => {
 			mtoStub.mtoParentObject = currentEntity

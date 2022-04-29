@@ -1,5 +1,5 @@
 import { OPERATION_DESERIALIZER } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side operation entities.  Since then moved to Isolates and generic
@@ -132,5 +132,5 @@ export class OperationDeserializer {
         return valueCopy;
     }
 }
-DI.set(OPERATION_DESERIALIZER, OperationDeserializer);
+DEPENDENCY_INJECTION.set(OPERATION_DESERIALIZER, OperationDeserializer);
 //# sourceMappingURL=OperationDeserializer.js.map

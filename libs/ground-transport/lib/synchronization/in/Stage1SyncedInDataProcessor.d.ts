@@ -1,5 +1,7 @@
-import { Actor_Id, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
-import { ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
+import { IAirportDatabase } from '@airport/air-control';
+import { ISequenceGenerator } from '@airport/check-in';
+import { Actor_Id, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
+import { ISyncInUtils, ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to
  *
@@ -10,6 +12,12 @@ export interface IStage1SyncedInDataProcessor {
     performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>): Promise<Stage1SyncedInDataProcessingResult>;
 }
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
+    actorDao: IActorDao;
+    airportDatabase: IAirportDatabase;
+    repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao;
+    repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
+    sequenceGenerator: ISequenceGenerator;
+    syncInUtils: ISyncInUtils;
     /**
      * In stage one:
      *

@@ -35,7 +35,6 @@ export interface IOperationContext
     dbEntity: DbEntity
     entityCascadeGraph: any
     internal: boolean
-    ioc: IIocOperationContext
     isSaveOperation?: boolean
     // Only one new repository can be created at at time
     newRepository?: IRepository
@@ -43,31 +42,4 @@ export interface IOperationContext
 
 export interface IQueryOperationContext
     extends IOperationContext {
-}
-
-export interface IIocOperationContext {
-
-    airDb: IAirportDatabase
-    cascadeGraphVerifier: ICascadeGraphVerifier
-    deleteManager: IDeleteManager
-    dependencyGraphResolver: IDependencyGraphResolver
-    entityGraphReconstructor: IEntityGraphReconstructor
-    entityStateManager: IEntityStateManager
-    entityUtils: IEntityUtils
-    fieldUtils: IFieldUtils
-    insertManager: IInsertManager
-    metadataUtils: IQMetadataUtils
-    operationManager: IOperationManager
-    queryFacade: IQueryFacade
-    queryManager: IQueryManager
-    queryUtils: IQueryUtils
-    relationManager: IRelationManager
-    repositoryManager: IRepositoryManager
-    applicationUtils: IApplicationUtils
-    storeDriver: IStoreDriver
-    structuralEntityValidator: IStructuralEntityValidator
-    transactionalConnector: ITransactionalConnector
-    transactionalServer: ITransactionalServer
-    updateManager: IUpdateManager
-
 }

@@ -1,7 +1,4 @@
-import { doEnsureContext } from '@airport/air-control';
-import {
-	container
-} from '@airport/direction-indicator';
+import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control';
 import {
 	ApplicationName,
 	DbApplication,
@@ -9,6 +6,7 @@ import {
 	DomainName,
 	FullApplicationName,
 	getFullApplicationName,
+	IEntityStateManager,
 	InternalFragments,
 	IOperationContextLoader,
 	JsonDelete,
@@ -46,6 +44,9 @@ import { SheetSQLQuery } from '../sql/SheetSQLQuery';
 import { TreeSQLQuery } from '../sql/TreeSQLQuery';
 import { CachedSQLQuery, IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
+import { IValidator } from '../validation/Validator';
+import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 
 /**
  * Created by Papa on 9/9/2016.
@@ -55,7 +56,15 @@ export abstract class SqlDriver
 	implements IStoreDriver {
 
 	activeQueries: IActiveQueries
+	airportDatabase: IAirportDatabase
+	applicationUtils: IApplicationUtils
+	entityStateManager: IEntityStateManager
 	operationContextLoader: IOperationContextLoader
+	qMetadataUtils: IQMetadataUtils
+	qValidator: IValidator
+	relationManager: IRelationManager
+	sqlQueryAdapter: ISQLQueryAdaptor
+	subStatementQueryGenerator: ISubStatementSqlGenerator
 
 	// public queries: ActiveQueries
 	public type: StoreType;
@@ -121,7 +130,7 @@ export abstract class SqlDriver
 
 	protected async internalSetupTransaction(
 		transaction: ITransaction,
-		context: ITransactionContext,
+		context: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 	}
@@ -141,7 +150,7 @@ export abstract class SqlDriver
 
 	async startTransaction(
 		transaction: ITransaction,
-		context?: ITransactionContext,
+		context?: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -155,12 +164,12 @@ export abstract class SqlDriver
 
 	abstract internalStartTransaction(
 		transaction: ITransaction,
-		context?: ITransactionContext,
+		context?: IFuelHydrantContext,
 	): Promise<void>
 
 	async commit(
 		transaction: ITransaction,
-		context?: ITransactionContext,
+		context?: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -185,7 +194,7 @@ export abstract class SqlDriver
 
 	async rollback(
 		transaction: ITransaction,
-		context?: ITransactionContext,
+		context?: IFuelHydrantContext,
 	): Promise<void> {
 		await this.ensureContext(context)
 		try {
@@ -200,7 +209,7 @@ export abstract class SqlDriver
 
 	abstract internalRollback(
 		transaction: ITransaction,
-		context?: ITransactionContext,
+		context?: IFuelHydrantContext,
 	): Promise<void>
 
 	async insertValues(
@@ -217,7 +226,15 @@ export abstract class SqlDriver
 			let sqlInsertValues = new SQLInsertValues(<JsonInsertValues>{
 				...portableQuery.jsonQuery,
 				V
-			}, this.getDialect(context), context);
+			}, this.getDialect(context),
+				this.airportDatabase,
+				this.applicationUtils,
+				this.entityStateManager,
+				this.qMetadataUtils,
+				this.relationManager,
+				this.sqlQueryAdapter,
+				this,
+				context);
 			let sql = sqlInsertValues.toSQL(context);
 			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
 
@@ -233,7 +250,15 @@ export abstract class SqlDriver
 	): Promise<number> {
 		let fieldMap = new SyncApplicationMap();
 		let sqlDelete = new SQLDelete(
-			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context), context);
+			<JsonDelete>portableQuery.jsonQuery, this.getDialect(context),
+			this.airportDatabase,
+			this.applicationUtils,
+			this.entityStateManager,
+			this.qMetadataUtils,
+			this.relationManager,
+			this.sqlQueryAdapter,
+			this,
+			context);
 		let sql = sqlDelete.toSQL(context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
 		let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -248,7 +273,15 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 	): Promise<number> {
 		let sqlUpdate = new SQLUpdate(
-			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context), context);
+			<JsonUpdate<any>>portableQuery.jsonQuery, this.getDialect(context),
+			this.airportDatabase,
+			this.applicationUtils,
+			this.entityStateManager,
+			this.qMetadataUtils,
+			this.relationManager,
+			this.sqlQueryAdapter,
+			this,
+			context);
 		let sql = sqlUpdate.toSQL(internalFragments, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
 
@@ -291,16 +324,53 @@ export abstract class SqlDriver
 			case QueryResType.ENTITY_TREE:
 			case QueryResType.MAPPED_ENTITY_GRAPH:
 			case QueryResType.MAPPED_ENTITY_TREE:
-				const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+				const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 					.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
-					dbEntity, dialect, resultType, context);
+					dbEntity, dialect, resultType,
+					this.airportDatabase,
+					this.applicationUtils,
+					this.entityStateManager,
+					this.qMetadataUtils,
+					this.relationManager,
+					this.sqlQueryAdapter,
+					this, context);
 			case QueryResType.FIELD:
-				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect, context);
+				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect,
+					this.airportDatabase,
+					this.applicationUtils,
+					this.entityStateManager,
+					this.qMetadataUtils,
+					this.qValidator,
+					this.relationManager,
+					this.sqlQueryAdapter,
+					this,
+					this.subStatementQueryGenerator,
+					context);
 			case QueryResType.SHEET:
-				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect, context);
+				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
+					this.airportDatabase,
+					this.applicationUtils,
+					this.entityStateManager,
+					this.qMetadataUtils,
+					this.qValidator,
+					this.relationManager,
+					this.sqlQueryAdapter,
+					this,
+					this.subStatementQueryGenerator,
+					context);
 			case QueryResType.TREE:
-				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect, context);
+				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
+					this.airportDatabase,
+					this.applicationUtils,
+					this.entityStateManager,
+					this.qMetadataUtils,
+					this.qValidator,
+					this.relationManager,
+					this.sqlQueryAdapter,
+					this,
+					this.subStatementQueryGenerator,
+					context);
 			case QueryResType.RAW:
 			default:
 				throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -465,16 +535,9 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext
 	): Promise<IFuelHydrantContext> {
 		context = <IFuelHydrantContext>doEnsureContext(context);
-		await this.ensureIocContext(context);
+		await this.operationContextLoader.ensure(context);
 
 		return context;
-	}
-
-	protected async ensureIocContext(
-		context: IFuelHydrantContext
-	): Promise<void> {
-		;
-		await this.operationContextLoader.ensure(context);
 	}
 
 }

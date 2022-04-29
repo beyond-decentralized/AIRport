@@ -1,15 +1,22 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
 	IQEntity,
 	IQEntityInternal,
+	IQMetadataUtils,
+	IRelationManager,
 	QEntity
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	DbEntity,
+	IEntityStateManager,
 	JSONEntityRelation
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {SQLDialect}        from './SQLQuery'
-import {SQLWhereBase}      from './SQLWhereBase'
+import { SQLDialect } from './SQLQuery'
+import { SQLWhereBase } from './SQLWhereBase'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -21,9 +28,23 @@ export abstract class SQLNoJoinQuery
 	constructor(
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		protected relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
 		context: IFuelHydrantContext,
 	) {
-		super(dbEntity, dialect, context)
+		super(dbEntity, dialect,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			sqlQueryAdapter,
+			storeDriver,
+			context)
 	}
 
 	protected getTableFragment(
@@ -38,9 +59,9 @@ export abstract class SQLNoJoinQuery
 			throw new Error(`Table in UPDATE/DELETE clause cannot be joined`)
 		}
 
-		const firstDbEntity: DbEntity = context.ioc.airDb.applications[fromRelation.si]
+		const firstDbEntity: DbEntity = this.airportDatabase.applications[fromRelation.si]
 			.currentVersion[0].applicationVersion.entities[fromRelation.ti]
-		let tableName                 = context.ioc.storeDriver.getEntityTableName(firstDbEntity, context)
+		let tableName = this.storeDriver.getEntityTableName(firstDbEntity, context)
 		if (fromRelation.si !== this.dbEntity.applicationVersion.application.index
 			|| fromRelation.ti !== this.dbEntity.index) {
 			throw new Error(`Unexpected table in UPDATE/DELETE clause: 
@@ -50,9 +71,9 @@ export abstract class SQLNoJoinQuery
 
 		const firstQEntity: IQEntity = new QEntity(firstDbEntity)
 
-		const tableAlias                   = context.ioc.relationManager.getAlias(fromRelation)
+		const tableAlias = this.relationManager.getAlias(fromRelation)
 		this.qEntityMapByAlias[tableAlias] = firstQEntity as IQEntityInternal
-		let fromFragment                   = `\t${tableName}`
+		let fromFragment = `\t${tableName}`
 		if (addAs) {
 			fromFragment += ` AS ${tableAlias}`
 		}

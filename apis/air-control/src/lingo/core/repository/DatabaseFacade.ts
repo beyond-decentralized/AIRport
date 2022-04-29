@@ -153,7 +153,7 @@ export interface IDatabaseFacade {
 
 export interface IQueryFacade {
 
-	ensureIocContext<E>(
+	ensureContext<E>(
 		context: IQueryContext
 	): Promise<void>
 

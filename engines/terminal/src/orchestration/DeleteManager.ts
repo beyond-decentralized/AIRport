@@ -9,10 +9,6 @@ import {
 	ISequenceGenerator
 } from '@airport/check-in'
 import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator';
-import {
 	ChangeType,
 	DbColumn,
 	DbEntity,
@@ -40,16 +36,13 @@ import {
 	ITransaction,
 	RecordsToDelete
 } from '@airport/terminal-map'
-import {
-	DELETE_MANAGER,
-	HISTORY_MANAGER,
-} from '../tokens'
 
 export class DeleteManager
 	implements IDeleteManager {
 
 	airportDatabase: IAirportDatabase
 	applicationUtils: IApplicationUtils
+	historyManager: IHistoryManager
 	operationHistoryDuo: IOperationHistoryDuo
 	recordHistoryDuo: IRecordHistoryDuo
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
@@ -62,9 +55,6 @@ export class DeleteManager
 		rootTransaction: IRootTransaction,
 		context?: IOperationContext,
 	): Promise<number> {
-		const historyManager = await container(this)
-			.get(HISTORY_MANAGER)
-
 		const dbEntity = this.airportDatabase
 			.applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
 			.entities[portableQuery.tableIndex]
@@ -101,7 +91,6 @@ export class DeleteManager
 		}
 
 		await this.recordTreeToDelete(recordsToDelete, actor,
-			historyManager,
 			transaction, rootTransaction, context)
 
 		return await deleteCommand
@@ -206,7 +195,6 @@ export class DeleteManager
 	private async recordTreeToDelete(
 		recordsToDelete: RecordsToDelete,
 		actor: IActor,
-		historyManager: IHistoryManager,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -222,7 +210,7 @@ export class DeleteManager
 				}
 
 				for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-					const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(
+					const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(
 						transaction.transactionHistory, repositoryId, context
 					)
 
@@ -314,5 +302,3 @@ export class DeleteManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(DELETE_MANAGER, DeleteManager)

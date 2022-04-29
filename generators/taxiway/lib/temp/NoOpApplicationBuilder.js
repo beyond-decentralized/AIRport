@@ -1,12 +1,10 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
-import { container } from '@airport/di';
 import { getFullApplicationName, QueryType } from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
 export class NoOpApplicationBuilder extends SqlApplicationBuilder {
-    async createApplication(jsonApplication, storeDriver, context) {
+    async createApplication(jsonApplication, context) {
         const applicationName = getFullApplicationName(jsonApplication);
         const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
-        await storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
+        await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
     getColumnSuffix(jsonApplication, jsonEntity, jsonColumn) {
         return '';
@@ -15,20 +13,19 @@ export class NoOpApplicationBuilder extends SqlApplicationBuilder {
         return ``;
     }
     async buildAllSequences(jsonApplications, context) {
-        let airDb = await container(this).get(AIRPORT_DATABASE);
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
         return allSequences;
     }
-    stageSequences(jsonApplications, airDb, context) {
+    stageSequences(jsonApplications, context) {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

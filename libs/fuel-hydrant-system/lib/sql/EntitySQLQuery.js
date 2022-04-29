@@ -1,4 +1,4 @@
-import { AliasCache, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
+import { AliasCache, APPLICATION_UTILS, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
@@ -11,18 +11,19 @@ import { SQLQuery } from './core/SQLQuery';
  * Represents SQL String query with Entity tree Select clause.
  */
 export class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, context, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context, graphQueryConfiguration) {
+        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
+        this.relationManager = relationManager;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
-        const validator = DEPENDENCY_INJECTION.db()
+        const qValidator = DEPENDENCY_INJECTION.db()
             .getSync(Q_VALIDATOR);
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
             throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`);
         }
         this.finalSelectTree = this.setupSelectFields(this.jsonQuery.S, dbEntity, context);
-        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, validator, jsonQuery.OB);
+        this.orderByParser = new EntityOrderByParser(this.finalSelectTree, airportDatabase, qValidator, relationManager, jsonQuery.OB);
     }
     toSQL(internalFragments, context) {
         let joinNodeMap = {};
@@ -60,9 +61,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any[]}
      */
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
-        const objectResultParserFactory = await DEPENDENCY_INJECTION.db()
-            .get(OBJECT_RESULT_PARSER_FACTORY);
-        this.queryParser = objectResultParserFactory.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
+        const [applicationUtils, objectResultParserFactory] = await DEPENDENCY_INJECTION.db()
+            .get(APPLICATION_UTILS, OBJECT_RESULT_PARSER_FACTORY);
+        this.queryParser = objectResultParserFactory.getObjectResultParser(this.queryResultType, applicationUtils, this.entityStateManager, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -71,7 +72,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let lastResult;
         for (let i = 0; i < results.length; i++) {
             let result = results[i];
-            let entityAlias = context.ioc.relationManager.getAlias(this.joinTree.jsonRelation);
+            let entityAlias = this.relationManager.getAlias(this.joinTree.jsonRelation);
             this.columnAliases.reset();
             let parsedResult = this.parseQueryResult(this.finalSelectTree, entityAlias, this.joinTree, result, [0], context);
             if (!lastResult) {
@@ -117,8 +118,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         // if (firstRelation.rt !== JSONRelationType.ENTITY_ROOT) {
         // 	throw new Error(`First table in FROM clause cannot be joined`)
         // }
-        let alias = context.ioc.relationManager.getAlias(firstRelation);
-        let firstEntity = context.ioc.relationManager.createRelatedQEntity(firstRelation, context);
+        let alias = this.relationManager.getAlias(firstRelation);
+        let firstEntity = this.relationManager.createRelatedQEntity(firstRelation, context);
         this.qEntityMapByAlias[alias] = firstEntity;
         this.jsonRelationMapByAlias[alias] = firstRelation;
         // In entity queries the first entity must always be the same as the query entity
@@ -148,7 +149,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 throw new Error(`Table ${i + 1} in FROM clause is missing 
 				relationPropertyName`);
             }
-            let parentAlias = context.ioc.relationManager.getParentAlias(joinRelation);
+            let parentAlias = this.relationManager.getParentAlias(joinRelation);
             if (!joinNodeMap[parentAlias]) {
                 throw new Error(`Missing parent entity for alias ${parentAlias}, 
 				on table ${i + 1} in FROM clause`);
@@ -156,8 +157,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             let leftNode = joinNodeMap[parentAlias];
             let rightNode = new JoinTreeNode(joinRelation, [], leftNode);
             leftNode.addChildNode(rightNode);
-            alias = context.ioc.relationManager.getAlias(joinRelation);
-            let rightEntity = context.ioc.relationManager.createRelatedQEntity(joinRelation, context);
+            alias = this.relationManager.getAlias(joinRelation);
+            let rightEntity = this.relationManager.createRelatedQEntity(joinRelation, context);
             this.qEntityMapByAlias[alias] = rightEntity;
             this.jsonRelationMapByAlias[alias] = firstRelation;
             if (!rightEntity) {
@@ -203,7 +204,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                         case EntityRelationType.MANY_TO_ONE:
                             let haveRelationValues = false;
                             let relationInfos = [];
-                            context.ioc.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+                            this.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
                                 let value = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null);
                                 relationInfos.push({
@@ -234,7 +235,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 }
                 else {
                     const childJoinNode = currentJoinNode.getEntityRelationChildNode(dbRelation);
-                    const childEntityAlias = context.ioc.relationManager.getAlias(childJoinNode.jsonRelation);
+                    const childEntityAlias = this.relationManager.getAlias(childJoinNode.jsonRelation);
                     const relationQEntity = this.qEntityMapByAlias[childEntityAlias];
                     const relationDbEntity = relationQEntity.__driver__.dbEntity;
                     let childResultObject = this.parseQueryResult(childSelectClauseFragment, childEntityAlias, childJoinNode, resultRow, nextColumnIndex, context);
@@ -265,7 +266,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         if (numNonNullColumns === 0) {
             return null;
         }
-        let idValue = context.ioc.applicationUtils.getIdKey(resultObject, dbEntity);
+        let idValue = this.applicationUtils.getIdKey(resultObject, dbEntity);
         return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context);
     }
     /**
@@ -360,7 +361,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                             break;
                         }
                         const manyToOneRelation = {};
-                        context.ioc.entityStateManager.markAsStub(manyToOneRelation);
+                        this.entityStateManager.markAsStub(manyToOneRelation);
                         selectFragment[dbProperty.name] = manyToOneRelation;
                         // applicationUtils.addRelationToEntitySelectClause(dbRelation, selectFragment,
                         // allowDefaults)
@@ -386,9 +387,9 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         return selectFragment;
     }
     getSELECTFragment(dbEntity, selectClauseFragment, joinTree, context, parentProperty) {
-        const tableAlias = context.ioc.relationManager.getAlias(joinTree.jsonRelation);
+        const tableAlias = this.relationManager.getAlias(joinTree.jsonRelation);
         let selectSqlFragments = [];
-        let isStubProperty = context.ioc.entityStateManager.isStub(selectClauseFragment);
+        let isStubProperty = this.entityStateManager.isStub(selectClauseFragment);
         const defaults = this.entityDefaults.getForAlias(tableAlias);
         for (let propertyName in selectClauseFragment) {
             if (propertyName === '__state__') {
@@ -401,7 +402,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
             const dbProperty = dbEntity.propertyMap[propertyName];
             if (dbProperty.relation && dbProperty.relation.length) {
                 const dbRelation = dbProperty.relation[0];
-                if (context.ioc.entityStateManager.isStub(selectClauseFragment[propertyName])) {
+                if (this.entityStateManager.isStub(selectClauseFragment[propertyName])) {
                     for (const relationColumn of dbRelation.manyRelationColumns) {
                         const dbColumn = relationColumn.manyColumn;
                         this.addFieldFromColumn(dbColumn);
@@ -426,15 +427,15 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
     getFROMFragment(parentTree, currentTree, context) {
         let fromFragment = '\t';
         let currentRelation = currentTree.jsonRelation;
-        let currentAlias = context.ioc.relationManager.getAlias(currentRelation);
+        let currentAlias = this.relationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
-        let tableName = context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context);
+        let tableName = this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context);
         if (!parentTree) {
             fromFragment += `${tableName} ${currentAlias}`;
         }
         else {
             let parentRelation = parentTree.jsonRelation;
-            let parentAlias = context.ioc.relationManager.getAlias(parentRelation);
+            let parentAlias = this.relationManager.getAlias(parentRelation);
             let leftEntity = this.qEntityMapByAlias[parentAlias];
             let rightEntity = this.qEntityMapByAlias[currentAlias];
             let joinTypeString;

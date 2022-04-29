@@ -1,5 +1,9 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
+	IFieldUtils,
 	IQueryFacade,
+	IQueryUtils,
 	RepositorySheetSelectInfo,
 	SheetQuery
 } from '@airport/air-control'
@@ -7,10 +11,6 @@ import {
 	getSysWideOpId,
 	ISequenceGenerator
 } from '@airport/check-in'
-import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -40,16 +40,17 @@ import {
 	IUpdateManager,
 	RecordHistoryMap
 } from '@airport/terminal-map'
-import {
-	HISTORY_MANAGER,
-	UPDATE_MANAGER
-} from '../tokens'
 
 export class UpdateManager
 	implements IUpdateManager {
 
+	airportDatabase: IAirportDatabase
+	applicationUtils: IApplicationUtils
+	fieldUtils: IFieldUtils
+	historyManager: IHistoryManager
 	operationHistoryDuo: IOperationHistoryDuo
 	queryFacade: IQueryFacade
+	queryUtils: IQueryUtils
 	recordHistoryDuo: IRecordHistoryDuo
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
@@ -61,10 +62,7 @@ export class UpdateManager
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
 	): Promise<number> {
-		const historyManager = await container(this)
-			.get(HISTORY_MANAGER)
-
-		const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
 		const errorPrefix = `Error updating '${dbEntity.name}'
@@ -80,7 +78,7 @@ export class UpdateManager
 		if (!dbEntity.isLocal && !transaction.isSync) {
 
 			systemWideOperationId = await getSysWideOpId(
-				context.ioc.airDb, this.sequenceGenerator);
+				this.airportDatabase, this.sequenceGenerator);
 
 			// TODO: For entity queries an additional query really shouldn't be needed
 			// Specifically for entity queries, we got the new values, just record them
@@ -91,7 +89,7 @@ export class UpdateManager
 			[recordHistoryMap, repositorySheetSelectInfo]
 				= await this.addUpdateHistory(
 					portableQuery, actor, systemWideOperationId, errorPrefix,
-					historyManager, transaction, rootTransaction, context)
+					transaction, rootTransaction, context)
 
 			internalFragments.SET.push({
 				column: repositorySheetSelectInfo.systemWideOperationIdColumn,
@@ -124,7 +122,6 @@ export class UpdateManager
 		actor: IActor,
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string,
-		historyManager: IHistoryManager,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext
@@ -137,17 +134,17 @@ export class UpdateManager
 				`Cannot add update history for a non-RepositoryEntity`)
 		}
 
-		const qEntity = context.ioc.airDb
+		const qEntity = this.airportDatabase
 			.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 		const jsonUpdate: JsonUpdate<any> = <JsonUpdate<any>>portableQuery.jsonQuery
-		const getSheetSelectFromSetClauseResult = context.ioc.applicationUtils.getSheetSelectFromSetClause(
+		const getSheetSelectFromSetClauseResult = this.applicationUtils.getSheetSelectFromSetClause(
 			context.dbEntity, qEntity, jsonUpdate.S, errorPrefix)
 
 		const sheetQuery = new SheetQuery(null)
 
 		const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(
-			getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils,
-			context.ioc.fieldUtils)
+			getSheetSelectFromSetClauseResult.selectClause, this.queryUtils,
+			this.fieldUtils)
 
 		const jsonSelect: JsonSheetQuery = {
 			S: jsonSelectClause,
@@ -179,7 +176,7 @@ export class UpdateManager
 			// const repository                         = repositories.get(repositoryId)
 			const recordHistoryMapForRepository = {}
 			recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository
-			const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(
+			const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(
 				transaction.transactionHistory, repositoryId, context
 			)
 			const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(
@@ -226,7 +223,7 @@ export class UpdateManager
 		transaction: ITransaction,
 		context: IOperationContext
 	): Promise<void> {
-		const qEntity = context.ioc.airDb.qApplications
+		const qEntity = this.airportDatabase.qApplications
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		const sheetQuery = new SheetQuery({
@@ -325,5 +322,3 @@ export class UpdateManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(UPDATE_MANAGER, UpdateManager)

@@ -1,5 +1,5 @@
-import { abs, add, AIRPORT_DATABASE, and, avg, bool, concat, count, date, DATABASE_FACADE, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
-import { container, DI, } from '@airport/di';
+import { abs, add, AIRPORT_DATABASE, and, avg, bool, concat, count, date, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
+import { DEPENDENCY_INJECTION, } from '@airport/direction-indicator';
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
         this.applicationDomain = applicationDomain;
@@ -126,31 +126,21 @@ export class AirportDatabase {
     // platformConfig: string,
     // distributionStrategy: DistributionStrategy,
     context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.addRepository(
+        return await this.databaseFacade.addRepository(
         // url, platform, platformConfig, distributionStrategy, 
         context);
     }
     async insertColumnValues(rawInsertValues, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.insertColumnValues(rawInsertValues, context);
+        return await this.databaseFacade.insertColumnValues(rawInsertValues, context);
     }
     async insertValues(rawInsertValues, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.insertValues(rawInsertValues, context);
+        return await this.databaseFacade.insertValues(rawInsertValues, context);
     }
     async insertColumnValuesGenerateIds(rawInsertValues, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
+        return await this.databaseFacade.insertColumnValuesGenerateIds(rawInsertValues, context);
     }
     async insertValuesGenerateIds(rawInsertValues, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.insertValuesGenerateIds(rawInsertValues, context);
+        return await this.databaseFacade.insertValuesGenerateIds(rawInsertValues, context);
     }
     /**
      * Creates an entity with a where clause - internal API.  Use the
@@ -159,9 +149,7 @@ export class AirportDatabase {
      * @return Number of records deleted
      */
     async deleteWhere(rawDelete, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.deleteWhere(rawDelete, context);
+        return await this.databaseFacade.deleteWhere(rawDelete, context);
     }
     /**
      * Ether creates or updates an entity - internal API.  Use the
@@ -170,9 +158,7 @@ export class AirportDatabase {
      * @return Number of records saved (1 or 0)
      */
     async save(entity, context, operationName) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.save(entity, context);
+        return await this.databaseFacade.save(entity, context);
     }
     /**
      * Updates an entity with a where clause, using a column based set clause
@@ -181,9 +167,7 @@ export class AirportDatabase {
      * @return Number of records updated
      */
     async updateColumnsWhere(rawUpdateColumns, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.updateColumnsWhere(rawUpdateColumns, context);
+        return await this.databaseFacade.updateColumnsWhere(rawUpdateColumns, context);
     }
     /**
      * Updates an entity with a where clause, using a property based set clause
@@ -192,12 +176,10 @@ export class AirportDatabase {
      * @return Number of records updated
      */
     async updateWhere(rawUpdate, context) {
-        const dbFacade = await container(this)
-            .get(DATABASE_FACADE);
-        return await dbFacade.updateWhere(rawUpdate, context);
+        return await this.databaseFacade.updateWhere(rawUpdate, context);
     }
 }
-DI.set(AIRPORT_DATABASE, AirportDatabase);
+DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
 export function injectAirportDatabase() {
     console.log('Injecting AirportDatabase');
 }

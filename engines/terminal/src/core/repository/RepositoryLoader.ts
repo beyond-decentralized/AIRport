@@ -3,13 +3,12 @@ import {
     REPOSITORY_LOADER
 } from "@airport/air-control";
 import {
-    container,
     DEPENDENCY_INJECTION,
     IContext
 } from "@airport/direction-indicator";
 import {
-    SYNCHRONIZATION_ADAPTER_LOADER,
-    SYNCHRONIZATION_IN_MANAGER
+    ISynchronizationAdapterLoader,
+    ISynchronizationInManager
 } from "@airport/ground-transport";
 import {
     IRepositoryDao,
@@ -22,6 +21,8 @@ export class RepositoryLoader
     implements IRepositoryLoader {
 
     repositoryDao: IRepositoryDao
+    synchronizationAdapterLoader: ISynchronizationAdapterLoader
+    synchronizationInManager: ISynchronizationInManager
 
     /*
     Repository can be loaded because:
@@ -61,11 +62,7 @@ export class RepositoryLoader
         }
 
         const now = new Date().getTime()
-
-        const [synchronizationAdapterLoader, synchronizationInManager] =
-            await container(this).get(
-                SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER)
-        const synchronizationAdapter = await synchronizationAdapterLoader
+        const synchronizationAdapter = await this.synchronizationAdapterLoader
             .load(repositorySource)
 
         let messages: RepositorySynchronizationMessage[]
@@ -97,7 +94,7 @@ export class RepositoryLoader
                 messageMapByUuId.set(message.history.uuId, message)
             }
 
-            await synchronizationInManager.receiveMessages(messageMapByUuId, context)
+            await this.synchronizationInManager.receiveMessages(messageMapByUuId, context)
         } catch (e) {
             console.error(e)
             return

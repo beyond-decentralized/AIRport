@@ -1,19 +1,22 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
 	IQEntityInternal,
+	IQMetadataUtils,
 	IQTree,
+	IRelationManager,
 	JoinTreeNode,
 	QBooleanField,
 	QDateField,
 	QNumberField,
 	QStringField,
 	QTree,
-	QUntypedField,
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
 	DbProperty,
+	IEntityStateManager,
 	InternalFragments,
 	JoinType,
 	JSONClauseField,
@@ -31,18 +34,17 @@ import {
 	SortOrder,
 	SQLDataType
 } from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import { INonEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR,
-	SUB_STATEMENT_SQL_GENERATOR
-} from '../tokens'
+import { IValidator } from '../validation/Validator'
 import {
 	SQLDialect,
 	SQLQuery
 } from './core/SQLQuery'
 import { ClauseType } from './core/SQLWhereBase'
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
 import { SqlFunctionField } from './SqlFunctionField'
 
 /**
@@ -59,9 +61,24 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		jsonQuery: JNEQ,
 		dialect: SQLDialect,
 		queryResultType: QueryResultType,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		protected qValidator: IValidator,
+		protected relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
+		protected subStatementQueryGenerator: ISubStatementSqlGenerator,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, null, dialect, queryResultType, context)
+		super(jsonQuery, null, dialect, queryResultType,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			sqlQueryAdapter,
+			storeDriver, context)
 	}
 
 	addQEntityMapByAlias(
@@ -76,8 +93,6 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		internalFragments: InternalFragments,
 		context: IFuelHydrantContext,
 	): string {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
 		let jsonQuery = <JsonNonEntityQuery>this.jsonQuery
 		let joinNodeMap: { [alias: string]: JoinTreeNode }
 			= {}
@@ -114,11 +129,11 @@ ORDER BY
 		}
 		let offsetFragment = ''
 		if (jsonQuery.O) {
-			offsetFragment = sqlAdaptor.getOffsetFragment(jsonQuery.O)
+			offsetFragment = this.sqlQueryAdapter.getOffsetFragment(jsonQuery.O)
 		}
 		let limitFragment = ''
 		if (jsonQuery.L) {
-			offsetFragment = sqlAdaptor.getLimitFragment(jsonQuery.L)
+			offsetFragment = this.sqlQueryAdapter.getLimitFragment(jsonQuery.L)
 		}
 
 		return `SELECT
@@ -132,8 +147,6 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		joinNodeMap: { [alias: string]: JoinTreeNode },
 		context: IFuelHydrantContext,
 	): JoinTreeNode[] {
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
 		let jsonTrees: JoinTreeNode[] = []
 		let jsonTree: JoinTreeNode
 
@@ -153,9 +166,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 				throw new Error(`First table in FROM clause cannot be joined`)
 		}
 
-		let alias = context.ioc.relationManager.getAlias(firstRelation)
-		validator.validateReadFromEntity(firstRelation)
-		let firstEntity = context.ioc.relationManager.createRelatedQEntity(
+		let alias = this.relationManager.getAlias(firstRelation)
+		this.qValidator.validateReadFromEntity(firstRelation)
+		let firstEntity = this.relationManager.createRelatedQEntity(
 			firstRelation, context)
 		this.qEntityMapByAlias[alias] = firstEntity
 		jsonTree = new JoinTreeNode(firstRelation, [], null)
@@ -168,8 +181,8 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			if (!joinRelation.jt) {
 				throw new Error(`Table ${i + 1} in FROM clause is missing joinType`)
 			}
-			validator.validateReadFromEntity(joinRelation)
-			alias = context.ioc.relationManager.getAlias(joinRelation)
+			this.qValidator.validateReadFromEntity(joinRelation)
+			alias = this.relationManager.getAlias(joinRelation)
 			switch (joinRelation.rt) {
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let view = this.addFieldsToView(
@@ -178,7 +191,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					continue
 				case JSONRelationType.ENTITY_ROOT:
 					// Non-Joined table
-					let nonJoinedEntity = context.ioc.relationManager.createRelatedQEntity(
+					let nonJoinedEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					this.qEntityMapByAlias[alias] = nonJoinedEntity
 					let anotherTree = new JoinTreeNode(joinRelation, [], null)
@@ -194,7 +207,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 						throw new Error(
 							`Table ${i + 1} in FROM clause is missing relationPropertyName`)
 					}
-					rightEntity = context.ioc.relationManager.createRelatedQEntity(
+					rightEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
 				case JSONRelationType.SUB_QUERY_JOIN_ON:
@@ -207,13 +220,13 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					if (!(<JSONJoinRelation>joinRelation).joinWhereClause) {
 						this.warn(`Table ${i + 1} in FROM clause is missing joinWhereClause`)
 					}
-					rightEntity = context.ioc.relationManager.createRelatedQEntity(
+					rightEntity = this.relationManager.createRelatedQEntity(
 						joinRelation, context)
 					break
 				default:
 					throw new Error(`Unknown JSONRelationType ${joinRelation.rt}`)
 			}
-			let parentAlias = context.ioc.relationManager.getParentAlias(joinRelation)
+			let parentAlias = this.relationManager.getParentAlias(joinRelation)
 			if (!joinNodeMap[parentAlias]) {
 				throw new Error(
 					`Missing parent entity for alias ${parentAlias}, on table ${i + 1} in FROM clause. 
@@ -223,7 +236,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			let rightNode = new JoinTreeNode(joinRelation, [], leftNode)
 			leftNode.addChildNode(rightNode)
 
-			validator.validateReadFromEntity(joinRelation)
+			this.qValidator.validateReadFromEntity(joinRelation)
 			this.qEntityMapByAlias[alias] = rightEntity
 			if (!rightEntity) {
 				throw new Error(
@@ -313,7 +326,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			case JSONClauseObjectType.EXISTS_FUNCTION:
 				throw new Error(`Exists function cannot be used in SELECT clause.`)
 			case JSONClauseObjectType.FIELD:
-				dbEntity = context.ioc.airDb.applications[fieldJson.si].currentVersion[0]
+				dbEntity = this.airportDatabase.applications[fieldJson.si].currentVersion[0]
 					.applicationVersion.entities[fieldJson.ti]
 				dbProperty = dbEntity.properties[fieldJson.pi]
 				dbColumn = dbEntity.columns[fieldJson.ci]
@@ -409,24 +422,22 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 		currentTree: JoinTreeNode,
 		context: IFuelHydrantContext,
 	): string {
-		const subStatementSqlGenerator = DEPENDENCY_INJECTION.db()
-			.getSync(SUB_STATEMENT_SQL_GENERATOR)
 		let fromFragment = '\t'
 		let currentRelation = currentTree.jsonRelation
-		let currentAlias = context.ioc.relationManager.getAlias(currentRelation)
+		let currentAlias = this.relationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 
 		if (!parentTree) {
 			switch (currentRelation.rt) {
 				case JSONRelationType.ENTITY_ROOT:
-					fromFragment += `${context.ioc.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`
+					fromFragment += `${this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)} ${currentAlias}`
 					break
 				case JSONRelationType.SUB_QUERY_ROOT:
 					let viewRelation = <JSONViewJoinRelation>currentRelation
 					const {
 						parameterReferences,
 						subQuerySql
-					} = subStatementSqlGenerator.getTreeQuerySql(
+					} = this.subStatementSqlGenerator.getTreeQuerySql(
 						viewRelation.subQuery, this.dialect, context)
 					if (parameterReferences.length) {
 						this.parameterReferences = this.parameterReferences.concat(parameterReferences)
@@ -439,7 +450,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 			}
 		} else {
 			let parentRelation = parentTree.jsonRelation
-			let parentAlias = context.ioc.relationManager.getAlias(parentRelation)
+			let parentAlias = this.relationManager.getAlias(parentRelation)
 			let leftEntity = this.qEntityMapByAlias[parentAlias]
 
 			let rightEntity = this.qEntityMapByAlias[currentAlias]
@@ -469,7 +480,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					let joinRelation = <JSONJoinRelation>currentRelation
 					joinOnClause = this.getWHEREFragment(joinRelation.joinWhereClause, '\t',
 						context)
-					fromFragment += `\t${joinTypeString} ${context.ioc.storeDriver.getEntityTableName(
+					fromFragment += `\t${joinTypeString} ${this.storeDriver.getEntityTableName(
 						qEntity.__driver__.dbEntity, context)} ${currentAlias} ON\n${joinOnClause}`
 					break
 				case JSONRelationType.ENTITY_APPLICATION_RELATION:
@@ -483,7 +494,7 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 					const {
 						parameterReferences,
 						subQuerySql
-					} = subStatementSqlGenerator.getTreeQuerySql(
+					} = this.subStatementSqlGenerator.getTreeQuerySql(
 						viewJoinRelation.subQuery, this.dialect, context)
 					if (parameterReferences.length) {
 						this.parameterReferences = this.parameterReferences.concat(parameterReferences)
@@ -509,11 +520,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected getGroupByFragment(
 		groupBy?: JSONFieldInGroupBy[]
 	): string {
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
 		return groupBy.map(
 			(groupByField) => {
-				validator.validateAliasedFieldAccess(groupByField.fa)
+				this.qValidator.validateAliasedFieldAccess(groupByField.fa)
 				return `${groupByField.fa}`
 			})
 			.join(', ')
@@ -522,11 +531,9 @@ ${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragm
 	protected getOrderByFragment(
 		orderBy: JSONFieldInOrderBy[]
 	): string {
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
 		return orderBy.map(
 			(orderByField) => {
-				validator.validateAliasedFieldAccess(orderByField.fa)
+				this.qValidator.validateAliasedFieldAccess(orderByField.fa)
 				switch (orderByField.so) {
 					case SortOrder.ASCENDING:
 						return `${orderByField.fa} ASC`

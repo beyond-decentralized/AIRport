@@ -1,10 +1,6 @@
-import { container, DI } from "@airport/di";
-import { NONHUB_CLIENT } from "@airport/nonhub-client";
-import { DEBUG_SYNCHRONIZATION_ADAPTER } from "../tokens";
 export class DebugSynchronizationAdapter {
     async getTransactionsForRepository(repositorySource, repositoryUuId, sinceSyncTimestamp) {
-        const nonhubClient = await container(this).get(NONHUB_CLIENT);
-        const response = await nonhubClient.getRepositoryTransactions(repositorySource, repositoryUuId, sinceSyncTimestamp);
+        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryUuId, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
@@ -40,8 +36,7 @@ export class DebugSynchronizationAdapter {
         if (!messages || !messages.length) {
             return false;
         }
-        const nonhubClient = await container(this).get(NONHUB_CLIENT);
-        const syncTimestamp = await nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
+        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
         if (!syncTimestamp) {
             return false;
         }
@@ -51,5 +46,4 @@ export class DebugSynchronizationAdapter {
         return true;
     }
 }
-DI.set(DEBUG_SYNCHRONIZATION_ADAPTER, DebugSynchronizationAdapter);
 //# sourceMappingURL=DebugSynchronizationAdapter.js.map

@@ -1,17 +1,9 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
-import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
 import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern'
 import { ITransactionContext } from '@airport/terminal-map'
 import { transactional } from '@airport/tower'
-import {
-	SYNC_IN_CHECKER,
-	SYNCHRONIZATION_IN_MANAGER,
-	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
-} from '../../tokens'
-
+import { ISyncInChecker } from './checker/SyncInChecker'
+import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 
 /**
  * The manager for synchronizing data coming in  to Terminal (TM)
@@ -32,16 +24,14 @@ export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+	syncInChecker: ISyncInChecker
+	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
 	async receiveMessages(
 		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
 		context: ITransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
-
-		const [syncInChecker,
-			twoStageSyncedInDataProcessor] = await container(this)
-				.get(SYNC_IN_CHECKER, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR)
 
 		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
 			.findWhereUuIdsIn([...messageMapByUuId.keys()])
@@ -72,7 +62,7 @@ export class SynchronizationInManager
 
 			let processMessage = true
 			await transactional(async (transaction) => {
-				if (!await syncInChecker.checkMessage(message)) {
+				if (!await this.syncInChecker.checkMessage(message)) {
 					transaction.rollback(null, context)
 					processMessage = false
 					return
@@ -86,7 +76,7 @@ export class SynchronizationInManager
 
 		await transactional(async (transaction) => {
 			transaction.isSync = true
-			await twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
+			await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
 		}, context)
 	}
 
@@ -137,5 +127,3 @@ export class SynchronizationInManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNCHRONIZATION_IN_MANAGER, SynchronizationInManager)

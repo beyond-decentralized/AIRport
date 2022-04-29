@@ -1,20 +1,21 @@
-import {DEPENDENCY_INJECTION}                 from '@airport/direction-indicator'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
 import {
+	IEntityStateManager,
 	InternalFragments,
 	JSONClauseField,
 	JSONClauseObjectType,
 	JsonFieldQuery,
 	QueryResultType
-}                           from '@airport/ground-control'
+} from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
-import {ExactOrderByParser} from '../orderBy/ExactOrderByParser'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-}                           from '../tokens'
-import {SQLDialect}         from './core/SQLQuery'
-import {ClauseType}         from './core/SQLWhereBase'
-import {NonEntitySQLQuery}  from './NonEntitySQLQuery'
+import { ExactOrderByParser } from '../orderBy/ExactOrderByParser'
+import { IValidator } from '../validation/Validator'
+import { SQLDialect } from './core/SQLQuery'
+import { ClauseType } from './core/SQLWhereBase'
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
+import { NonEntitySQLQuery } from './NonEntitySQLQuery'
 
 /**
  * Created by Papa on 10/29/2016.
@@ -26,14 +27,30 @@ export class FieldSQLQuery
 	constructor(
 		jsonQuery: JsonFieldQuery,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
+		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		context: IFuelHydrantContext,
 	) {
-		super(jsonQuery, dialect, QueryResultType.FIELD, context)
+		super(jsonQuery, dialect, QueryResultType.FIELD,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			qValidator,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
+			subStatementQueryGenerator,
+			context)
 
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
-
-		this.orderByParser = new ExactOrderByParser(validator)
+		this.orderByParser = new ExactOrderByParser(qValidator)
 	}
 
 	async parseQueryResults(
@@ -75,8 +92,8 @@ export class FieldSQLQuery
 			}
 		}
 
-		let field             = <JSONClauseField>selectClauseFragment
-		let fieldIndex        = 0
+		let field = <JSONClauseField>selectClauseFragment
+		let fieldIndex = 0
 		let selectSqlFragment = this.getFieldSelectFragment(
 			field, ClauseType.NON_MAPPED_SELECT_CLAUSE,
 			null, fieldIndex++, context)
@@ -88,11 +105,9 @@ export class FieldSQLQuery
 		resultRow: any,
 		nextFieldIndex: number[],
 	): any {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
-		let field         = <JSONClauseField>selectClauseFragment
-		let propertyValue = sqlAdaptor.getResultCellValue(resultRow, field.fa, nextFieldIndex[0], field.dt, null)
+		let field = <JSONClauseField>selectClauseFragment
+		let propertyValue = this.sqlQueryAdapter.getResultCellValue(
+			resultRow, field.fa, nextFieldIndex[0], field.dt, null)
 		nextFieldIndex[0]++
 
 		return propertyValue

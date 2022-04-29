@@ -1,8 +1,13 @@
-import { lib } from '@airport/di';
+import { lib } from '@airport/direction-indicator';
+import { NonhubClient } from './NonhubClient';
 // import {
 //     decryptString,
 //     encryptString,
 // } from "string-cipher";
 const nonhubClient = lib('nonhub-client');
-export const NONHUB_CLIENT = nonhubClient.token('INonhubClient');
+export const NONHUB_CLIENT = nonhubClient.token({
+    class: NonhubClient,
+    interface: 'INonhubClient',
+    token: 'INonhubClient'
+});
 //# sourceMappingURL=tokens.js.map

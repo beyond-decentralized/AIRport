@@ -12,6 +12,6 @@ export declare const ID_GENERATOR: import("@airport/direction-indicator").IDepen
 export declare const OBJECT_RESULT_PARSER_FACTORY: import("@airport/direction-indicator").IDependencyInjectionToken<IObjectResultParserFactory>;
 export declare const Q_VALIDATOR: import("@airport/direction-indicator").IDependencyInjectionToken<IValidator>;
 export declare const SQL_QUERY_ADAPTOR: import("@airport/direction-indicator").IDependencyInjectionToken<ISQLQueryAdaptor>;
-export declare const SQL_DRIVER: import("@airport/direction-indicator").IDependencyInjectionToken<IStoreDriver>;
+export declare const ABSTRACT_SQL_DRIVER: import("@airport/direction-indicator").IDependencyInjectionToken<IStoreDriver>;
 export declare const SQL_WHERE_BASE: import("@airport/direction-indicator").IDependencyInjectionToken<SQLWhereBase>;
 //# sourceMappingURL=tokens.d.ts.map

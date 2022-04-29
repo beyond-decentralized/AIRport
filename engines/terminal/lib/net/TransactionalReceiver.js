@@ -1,8 +1,5 @@
-import { container, } from '@airport/di';
 import { getFullApplicationName, getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/security-check';
-import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
-import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from '../tokens';
 export class TransactionalReceiver {
     async processMessage(message) {
         let result;
@@ -11,8 +8,6 @@ export class TransactionalReceiver {
             if (message.domain === INTERNAL_DOMAIN) {
                 throw new Error(`Internal domain cannot be used in external calls`);
             }
-            const [transactionalServer, terminalStore] = await container(this)
-                .get(TRANSACTIONAL_SERVER, TERMINAL_STORE);
             let credentials = {
                 application: message.application,
                 domain: message.domain,
@@ -41,36 +36,34 @@ export class TransactionalReceiver {
                         result = null;
                         break;
                     }
-                    if (terminalStore.getReceiver().initializingApps.has(fullApplicationName)) {
+                    if (this.terminalStore.getReceiver().initializingApps
+                        .has(fullApplicationName)) {
                         return null;
                     }
-                    terminalStore.getReceiver().initializingApps.add(fullApplicationName);
-                    const [databaseManager, internalRecordManager] = await container(this)
-                        .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER);
+                    this.terminalStore.getReceiver().initializingApps
+                        .add(fullApplicationName);
                     // FIXME: initalize ahead of time, at Isolate Loading
-                    await databaseManager.initFeatureApplications({}, [application]);
-                    await internalRecordManager.ensureApplicationRecords(application, {});
+                    await this.databaseManager.initFeatureApplications({}, [application]);
+                    await this.internalRecordManager.ensureApplicationRecords(application, {});
                     result = application.lastIds;
                     break;
                 case IsolateMessageType.APP_INITIALIZED:
-                    const initializedApps = terminalStore.getReceiver().initializedApps;
+                    const initializedApps = this.terminalStore.getReceiver().initializedApps;
                     initializedApps.add(message.fullApplicationName);
                     return null;
                 case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                    const terminalStore = await container(this).get(TERMINAL_STORE);
-                    result = terminalStore.getLatestApplicationVersionMapByFullApplicationName()
+                    result = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                         .get(message.fullApplicationName);
                     break;
                 }
                 case IsolateMessageType.RETRIEVE_DOMAIN: {
-                    const terminalStore = await container(this).get(TERMINAL_STORE);
-                    result = terminalStore.getDomainMapByName()
+                    result = this.terminalStore.getDomainMapByName()
                         .get(message.domain);
                     break;
                 }
                 case IsolateMessageType.ADD_REPOSITORY:
                     // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-                    result = await transactionalServer.addRepository(
+                    result = await this.transactionalServer.addRepository(
                     // addRepositoryMessage.url,
                     // addRepositoryMessage.platform,
                     // addRepositoryMessage.platformConfig,
@@ -79,71 +72,70 @@ export class TransactionalReceiver {
                     break;
                 case IsolateMessageType.DELETE_WHERE:
                     const deleteWhereMessage = message;
-                    result = await transactionalServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
+                    result = await this.transactionalServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.FIND:
                     const findMessage = message;
-                    result = await transactionalServer.find(findMessage.portableQuery, credentials, {
+                    result = await this.transactionalServer.find(findMessage.portableQuery, credentials, {
                         ...context,
                         repository: findMessage.repository
                     });
                     break;
                 case IsolateMessageType.FIND_ONE:
                     const findOneMessage = message;
-                    result = await transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
+                    result = await this.transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
                         ...context,
                         repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.INSERT_VALUES:
                     const insertValuesMessage = message;
-                    result = await transactionalServer.insertValues(insertValuesMessage.portableQuery, credentials, context);
+                    result = await this.transactionalServer.insertValues(insertValuesMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.INSERT_VALUES_GET_IDS:
                     const insertValuesGetIdsMessage = message;
-                    result = await transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
+                    result = await this.transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
                     break;
                 case IsolateMessageType.SAVE:
                 case IsolateMessageType.SAVE_TO_DESTINATION: {
                     const saveMessage = message;
-                    const terminalStore = await container(this).get(TERMINAL_STORE);
                     if (!saveMessage.dbEntity) {
                         errorMessage = `DbEntity id was not passed in`;
                         break;
                     }
                     const dbEntityId = saveMessage.dbEntity.id;
-                    const dbEntity = terminalStore.getAllEntities()[dbEntityId];
+                    const dbEntity = this.terminalStore.getAllEntities()[dbEntityId];
                     if (!dbEntity) {
                         errorMessage = `Could not find DbEntity with Id ${dbEntityId}`;
                         break;
                     }
                     context.dbEntity = dbEntity;
                     if (message.type === IsolateMessageType.SAVE) {
-                        result = await transactionalServer.save(saveMessage.entity, credentials, context);
+                        result = await this.transactionalServer.save(saveMessage.entity, credentials, context);
                     }
                     else {
                         const saveToDestinationMessage = message;
-                        result = await transactionalServer.saveToDestination(saveToDestinationMessage.repositoryDestination, saveToDestinationMessage.entity, credentials, context);
+                        result = await this.transactionalServer.saveToDestination(saveToDestinationMessage.repositoryDestination, saveToDestinationMessage.entity, credentials, context);
                     }
                     break;
                 }
                 case IsolateMessageType.SEARCH:
                     const searchMessage = message;
-                    result = await transactionalServer.search(searchMessage.portableQuery, credentials, {
+                    result = await this.transactionalServer.search(searchMessage.portableQuery, credentials, {
                         ...context,
                         repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.SEARCH_ONE:
                     const searchOneMessage = message;
-                    result = await transactionalServer.search(searchOneMessage.portableQuery, credentials, {
+                    result = await this.transactionalServer.search(searchOneMessage.portableQuery, credentials, {
                         ...context,
                         repository: findMessage.repository,
                     });
                     break;
                 case IsolateMessageType.UPDATE_VALUES:
                     const updateValuesMessage = message;
-                    result = await transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
+                    result = await this.transactionalServer.updateValues(updateValuesMessage.portableQuery, credentials, context);
                     break;
                 default:
                     // Unexpected IsolateMessageInType
@@ -166,8 +158,6 @@ export class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
-        const transactionalServer = await container(this)
-            .get(TRANSACTIONAL_SERVER);
         const transactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -175,7 +165,7 @@ export class TransactionalReceiver {
             objectName: message.objectName,
             transactionId: message.transactionId
         };
-        if (!await transactionalServer.startTransaction(transactionCredentials, context)) {
+        if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
             return false;
         }
         try {
@@ -183,7 +173,7 @@ export class TransactionalReceiver {
         }
         catch (e) {
             context.errorMessage = e.message;
-            transactionalServer.rollback(transactionCredentials, context);
+            this.transactionalServer.rollback(transactionCredentials, context);
             return false;
         }
         const initiator = context.transaction.initiator;
@@ -195,12 +185,11 @@ export class TransactionalReceiver {
         return true;
     }
     async endApiCall(credentials, errorMessage, context) {
-        const transactionalServer = await container(this).get(TRANSACTIONAL_SERVER);
         if (errorMessage) {
-            return await transactionalServer.rollback(credentials, context);
+            return await this.transactionalServer.rollback(credentials, context);
         }
         else {
-            return await transactionalServer.commit(credentials, context);
+            return await this.transactionalServer.commit(credentials, context);
         }
     }
 }

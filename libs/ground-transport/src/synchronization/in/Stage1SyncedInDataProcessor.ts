@@ -3,7 +3,6 @@ import {
 	getSysWideOpIds,
 	ISequenceGenerator
 } from '@airport/check-in'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	ColumnIndex,
@@ -32,10 +31,6 @@ import {
 	ISynchronizationConflict,
 	SynchronizationConflict_Type
 } from '@airport/moving-walkway'
-import {
-	STAGE1_SYNCED_IN_DATA_PROCESSOR,
-	SYNC_IN_UTILS
-} from '../../tokens'
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,
@@ -66,6 +61,7 @@ export class Stage1SyncedInDataProcessor
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 	sequenceGenerator: ISequenceGenerator
+	syncInUtils: ISyncInUtils
 
 	/**
 	 * In stage one:
@@ -82,8 +78,6 @@ export class Stage1SyncedInDataProcessor
 		actorMayById: Map<Actor_Id, IActor>
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId)
-
-		const syncInUtils = await container(this).get(SYNC_IN_UTILS)
 
 		const changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository> = new Map()
 
@@ -131,8 +125,7 @@ export class Stage1SyncedInDataProcessor
 			= new Map()
 
 		const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
-			allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryId,
-			syncInUtils)
+			allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryId)
 
 		// find local history for the matching repositories and corresponding time period
 		const localRepoTransHistoryMapByRepositoryId
@@ -141,7 +134,7 @@ export class Stage1SyncedInDataProcessor
 				.findAllLocalChangesForRecordIds(changedRecordIds)
 		const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(
 			allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId,
-			syncInUtils, true)
+			true)
 
 		// Find all actors that modified the locally recorded history, which are not already
 		// in the actorMapById collect actors not already in cache
@@ -196,18 +189,18 @@ export class Stage1SyncedInDataProcessor
 							this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal,
 								recordCreations, recordUpdates, recordDeletions,
 								allRemoteRecordDeletions, allLocalRecordDeletions,
-								syncConflictMapByRepoId, syncInUtils)
+								syncConflictMapByRepoId)
 							break
 						case ChangeType.UPDATE_ROWS:
 							this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal,
 								recordCreations, recordUpdates,
 								allRemoteRecordDeletions, allLocalRecordDeletions,
-								syncConflictMapByRepoId, syncInUtils)
+								syncConflictMapByRepoId)
 							break
 						case ChangeType.DELETE_ROWS:
 							this.processDeletion(repositoryId, operationHistory,
 								recordCreations, recordUpdates, recordDeletions,
-								allLocalRecordDeletions, syncInUtils)
+								allLocalRecordDeletions)
 							break
 					}
 				}
@@ -260,7 +253,6 @@ export class Stage1SyncedInDataProcessor
 	private getDeletedRecordIdsAndPopulateAllHistoryMap(
 		allRepoTransHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		repositoryTransactionHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
-		syncInUtils: ISyncInUtils,
 		isLocal = false
 	): Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 		Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> {
@@ -274,7 +266,7 @@ export class Stage1SyncedInDataProcessor
 					switch (operationHistory.changeType) {
 						case ChangeType.DELETE_ROWS:
 							for (const recordHistory of operationHistory.recordHistory) {
-								this.ensureRecordHistoryId(recordHistory, syncInUtils
+								this.ensureRecordHistoryId(recordHistory, this.syncInUtils
 									.ensureRecordMapForRepoInTable(
 										repositoryId, operationHistory, recordDeletions))
 							}
@@ -323,8 +315,7 @@ export class Stage1SyncedInDataProcessor
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
-		syncInUtils: ISyncInUtils
+		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 	): void {
 
 		const recordUpdatesForRepoInTable
@@ -336,7 +327,7 @@ export class Stage1SyncedInDataProcessor
 		const allLocalRecordDeletesForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions)
 
-		const insertsForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(repositoryId,
+		const insertsForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryId,
 			operationHistory, recordCreations)
 
 		for (const recordHistory of operationHistory.recordHistory) {
@@ -422,8 +413,7 @@ export class Stage1SyncedInDataProcessor
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>,
-		syncInUtils: ISyncInUtils
+		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 	): void {
 		const recordCreationsForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, recordCreations)
@@ -431,7 +421,7 @@ export class Stage1SyncedInDataProcessor
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, allRemoteRecordDeletions)
 		const allLocalRecordDeletesForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions)
-		const updatesForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(
+		const updatesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(
 			repositoryId, operationHistory, recordUpdates)
 
 		for (const recordHistory of operationHistory.recordHistory) {
@@ -559,7 +549,6 @@ export class Stage1SyncedInDataProcessor
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
 				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
-		syncInUtils: ISyncInUtils
 	): void {
 		const recordCreationsForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, recordCreations)
@@ -567,7 +556,7 @@ export class Stage1SyncedInDataProcessor
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, recordUpdates)
 		const allLocalRecordDeletesForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions)
-		const deletesForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(
+		const deletesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(
 			repositoryId, operationHistory, recordDeletions)
 
 		for (const recordHistory of operationHistory.recordHistory) {
@@ -748,5 +737,3 @@ export class Stage1SyncedInDataProcessor
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor)

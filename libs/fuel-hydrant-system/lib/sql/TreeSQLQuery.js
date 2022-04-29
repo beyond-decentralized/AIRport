@@ -3,7 +3,7 @@ import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
+import { SQL_QUERY_ADAPTOR } from '../tokens';
 import { ClauseType } from './core/SQLWhereBase';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 import { SqlFunctionField } from './SqlFunctionField';
@@ -11,12 +11,10 @@ import { SqlFunctionField } from './SqlFunctionField';
  * Created by Papa on 10/28/2016.
  */
 export class TreeSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, context) {
-        super(jsonQuery, dialect, QueryResultType.TREE, context);
-        const validator = DEPENDENCY_INJECTION.db()
-            .getSync(Q_VALIDATOR);
-        this.queryParser = new TreeQueryResultParser();
-        this.orderByParser = new MappedOrderByParser(validator);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context) {
+        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context);
+        this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager);
+        this.orderByParser = new MappedOrderByParser(qValidator);
     }
     /**
      * Entities get merged if they are right next to each other in the result set.  If they

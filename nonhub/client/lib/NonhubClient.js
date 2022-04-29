@@ -1,5 +1,3 @@
-import { DI } from '@airport/di';
-import { NONHUB_CLIENT } from './tokens';
 export class NonhubClient {
     constructor() {
         // encryptionKey = process.env.ENCRYPTION_KEY
@@ -65,5 +63,4 @@ export class NonhubClient {
         return response.json();
     }
 }
-DI.set(NONHUB_CLIENT, NonhubClient);
 //# sourceMappingURL=NonhubClient.js.map

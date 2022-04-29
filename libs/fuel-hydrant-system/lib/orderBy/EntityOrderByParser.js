@@ -46,7 +46,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
         // Perform breadth-first select clause traversal
         while ((currentSelectFragment = selectFragmentQueue.shift())
             && (currentJoinNode = joinNodeQueue.shift())) {
-            const tableAlias = context.ioc.relationManager.getAlias(currentJoinNode.jsonRelation);
+            const tableAlias = this.relationManager.getAlias(currentJoinNode.jsonRelation);
             const dbEntity = qEntityMapByAlias[tableAlias].__driver__.dbEntity;
             const currentEntityOrderBy = [];
             let parentNodeFound;
@@ -54,7 +54,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (parentNodeFound) {
                     return true;
                 }
-                const orderByDbEntity = context.ioc.airDb.applications[orderByField.si]
+                const orderByDbEntity = this.airportDatabase.applications[orderByField.si]
                     .currentVersion[0].applicationVersion.entities[orderByField.ti];
                 const dbColumn = orderByDbEntity.columns[orderByField.ci];
                 if (this.isForParentNode(currentJoinNode, orderByField)) {
@@ -65,7 +65,7 @@ export class EntityOrderByParser extends AbstractEntityOrderByParser {
                 if (orderByField.si !== dbEntity.applicationVersion.application.index || orderByField.ti !== dbEntity.index) {
                     return true;
                 }
-                this.validator.validateReadProperty(dbColumn);
+                this.qValidator.validateReadProperty(dbColumn);
                 orderByField.fa = `${tableAlias}.${dbColumn.name}`;
                 currentEntityOrderBy.push(orderByField);
                 return false;

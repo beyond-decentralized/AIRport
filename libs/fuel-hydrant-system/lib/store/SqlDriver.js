@@ -94,7 +94,7 @@ export class SqlDriver {
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(context), context);
+            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.relationManager, this.sqlQueryAdapter, this, context);
             let sql = sqlInsertValues.toSQL(context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
@@ -103,7 +103,7 @@ export class SqlDriver {
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), context);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.relationManager, this.sqlQueryAdapter, this, context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -111,7 +111,7 @@ export class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
-        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), context);
+        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.relationManager, this.sqlQueryAdapter, this, context);
         let sql = sqlUpdate.toSQL(internalFragments, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         return await this.executeNative(sql, parameters, context);
@@ -139,15 +139,15 @@ export class SqlDriver {
             case QueryResType.ENTITY_TREE:
             case QueryResType.MAPPED_ENTITY_GRAPH:
             case QueryResType.MAPPED_ENTITY_TREE:
-                const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+                const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, context);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.relationManager, this.sqlQueryAdapter, this, context);
             case QueryResType.FIELD:
-                return new FieldSQLQuery(jsonQuery, dialect, context);
+                return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, context);
             case QueryResType.SHEET:
-                return new SheetSQLQuery(jsonQuery, dialect, context);
+                return new SheetSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, context);
             case QueryResType.TREE:
-                return new TreeSQLQuery(jsonQuery, dialect, context);
+                return new TreeSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, context);
             case QueryResType.RAW:
             default:
                 throw new Error(`Unknown QueryResultType: ${resultType}`);
@@ -231,12 +231,8 @@ export class SqlDriver {
     }
     async ensureContext(context) {
         context = doEnsureContext(context);
-        await this.ensureIocContext(context);
-        return context;
-    }
-    async ensureIocContext(context) {
-        ;
         await this.operationContextLoader.ensure(context);
+        return context;
     }
 }
 //# sourceMappingURL=SqlDriver.js.map

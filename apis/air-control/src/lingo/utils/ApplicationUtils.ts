@@ -9,7 +9,6 @@ import {
   TableIndex,
 } from '@airport/ground-control';
 import { QEntityConstructor } from '../../impl/core/entity/Entity';
-import { IAirportDatabase } from '../AirportDatabase';
 import {
   IEntityIdProperties,
   IQEntity,
@@ -56,23 +55,19 @@ export interface IApplicationUtils {
 
   getDbEntity(
     applicationIndex: ApplicationIndex,
-    tableIndex: TableIndex,
-    airDb: IAirportDatabase,
+    tableIndex: TableIndex
   ): DbEntity;
 
   getQEntityConstructor(
-    dbEntity: DbEntity,
-    airDb: IAirportDatabase,
+    dbEntity: DbEntity
   ): QEntityConstructor;
 
   getEntityConstructor(
-    dbEntity: DbEntity,
-    airDb: IAirportDatabase,
+    dbEntity: DbEntity
   ): any;
 
   getNewEntity(
-    dbEntity: DbEntity,
-    airDb: IAirportDatabase,
+    dbEntity: DbEntity
   ): any;
 
   isIdEmpty(idValue: any): boolean;

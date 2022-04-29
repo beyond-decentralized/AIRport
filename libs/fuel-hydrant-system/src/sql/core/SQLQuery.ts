@@ -1,5 +1,8 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
 	IQEntityInternal,
+	IQMetadataUtils,
 	JoinTreeNode
 } from '@airport/air-control'
 import {
@@ -13,8 +16,11 @@ import {
 	JSONRelation,
 	QueryResultType,
 	ApplicationMap,
-	SqlOperator
+	SqlOperator,
+	IEntityStateManager
 } from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import { SQLWhereBase } from './SQLWhereBase'
 
@@ -59,9 +65,21 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		dbEntity: DbEntity,
 		dialect: SQLDialect,
 		protected queryResultType: QueryResultType,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
 		context: IFuelHydrantContext,
 	) {
-		super(dbEntity, dialect, context)
+		super(dbEntity, dialect,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			sqlQueryAdapter,
+			storeDriver, context)
 	}
 
 	getFieldMap(): ApplicationMap {
@@ -177,7 +195,7 @@ on '${leftDbEntity.applicationVersion.application.name}.${leftDbEntity.name}.${d
 			onClause = `${onClause}
 			${joinWhereOperator} ${whereClause}`
 		}
-		const tableName = context.ioc.storeDriver.getEntityTableName(rightDbEntity, context)
+		const tableName = this.storeDriver.getEntityTableName(rightDbEntity, context)
 		const fromFragment = `\n\t${joinTypeString} ${tableName} ${currentAlias}\n\t\tON ${onClause}`
 
 		return fromFragment

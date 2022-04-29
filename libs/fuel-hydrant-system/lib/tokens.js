@@ -5,9 +5,11 @@ import { ActiveQueries } from './store/ActiveQueries';
 import { IdGenerator } from './store/IdGenerator';
 import { QValidator } from './validation/Validator';
 import { SqlDriver } from './store/SqlDriver';
-import { OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { STORE_DRIVER } from '@airport/terminal-map';
+import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { SQLWhereBase } from './sql/core/SQLWhereBase';
+import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-control';
 const fuelHydrantSystem = lib('fuel-hydrant-system');
 export const ACTIVE_QUERIES = fuelHydrantSystem.token({
     class: ActiveQueries,
@@ -39,10 +41,10 @@ export const SQL_QUERY_ADAPTOR = fuelHydrantSystem.token({
     interface: 'ISQLQueryAdaptor',
     token: 'SQL_QUERY_ADAPTOR'
 });
-export const SQL_DRIVER = fuelHydrantSystem.token({
+export const ABSTRACT_SQL_DRIVER = fuelHydrantSystem.token({
     class: SqlDriver,
-    interface: 'IStoreDriver',
-    token: 'SQL_DRIVER'
+    interface: 'class SqlDriver',
+    token: 'ABSTRACT_SQL_DRIVER'
 });
 export const SQL_WHERE_BASE = fuelHydrantSystem.token({
     class: SQLWhereBase,
@@ -52,12 +54,32 @@ export const SQL_WHERE_BASE = fuelHydrantSystem.token({
 ID_GENERATOR.setDependencies({
     sequenceGenerator: SEQUENCE_GENERATOR
 });
-SQL_DRIVER.setDependencies({
+ABSTRACT_SQL_DRIVER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
-    operationContextLoader: OPERATION_CONTEXT_LOADER
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: APPLICATION_UTILS,
+    entityStateManager: ENTITY_STATE_MANAGER,
+    operationContextLoader: OPERATION_CONTEXT_LOADER,
+    qMetadataUtils: Q_METADATA_UTILS,
+    qValidator: Q_VALIDATOR,
+    relationManager: RELATION_MANAGER,
+    sqlQueryAdapter: SQL_QUERY_ADAPTOR,
+    subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
 });
 SQL_WHERE_BASE.setDependencies({
     qValidator: Q_VALIDATOR,
     subStatementSqlGenerator: SUB_STATEMENT_SQL_GENERATOR
+});
+SUB_STATEMENT_SQL_GENERATOR.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: APPLICATION_UTILS,
+    entityStateManager: ENTITY_STATE_MANAGER,
+    operationContextLoader: OPERATION_CONTEXT_LOADER,
+    qMetadataUtils: Q_METADATA_UTILS,
+    qValidator: Q_VALIDATOR,
+    relationManager: RELATION_MANAGER,
+    sqlQueryAdapter: SQL_QUERY_ADAPTOR,
+    storeDriver: STORE_DRIVER,
+    subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
 });
 //# sourceMappingURL=tokens.js.map

@@ -35,7 +35,7 @@ export class GraphOtmMapper {
         // let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            // mtoCollection = newMappedEntityArray<any>(context.ioc.applicationUtils, dbEntity)
+            // mtoCollection = newMappedEntityArray<any>(this.applicationUtils, dbEntity)
             mtoCollection = [];
             mapForOtmEntity[mtoStubReference.otmEntityField]
                 = mtoCollection;

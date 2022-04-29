@@ -6,7 +6,6 @@ import {
 	IQEntityInternal,
 	or
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -29,7 +28,6 @@ import {
 	RecordUpdateStageValues
 } from '@airport/moving-walkway'
 import { IApplication } from '@airport/airspace'
-import { STAGE2_SYNCED_IN_DATA_PROCESSOR } from '../../tokens'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult
@@ -403,5 +401,3 @@ export class Stage2SyncedInDataProcessor
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(STAGE2_SYNCED_IN_DATA_PROCESSOR, Stage2SyncedInDataProcessor)

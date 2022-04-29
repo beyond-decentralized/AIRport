@@ -5,15 +5,16 @@ import { IdKeysByIdColumnIndex, IApplicationUtils, RepositorySheetSelectInfo } f
 import { QEntityConstructor } from '../core/entity/Entity';
 export declare class ApplicationUtils implements IApplicationUtils {
     static TEMP_ID: number;
+    airportDatabase: IAirportDatabase;
     entityStateManager: IEntityStateManager;
-    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
+    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex): DbEntity;
     isActorId(columnName: string): boolean;
     isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
-    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
-    getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
-    getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;
+    getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
+    getEntityConstructor(dbEntity: DbEntity): any;
+    getNewEntity(dbEntity: DbEntity): any;
     isIdEmpty(idValue: any): boolean;
     isEmpty(value: any): boolean;
     isRelationColumn(dbColumn: DbColumn): boolean;

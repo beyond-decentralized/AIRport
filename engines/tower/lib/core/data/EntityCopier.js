@@ -1,5 +1,3 @@
-import { DI } from "@airport/di";
-import { ENTITY_COPIER } from "../../tokens";
 export class EntityCopier {
     copyEntityForProcessing(entity, dbEntity, entityStateManager, context) {
         const operation = {
@@ -41,5 +39,4 @@ export class EntityCopier {
         }
     }
 }
-DI.set(ENTITY_COPIER, EntityCopier);
 //# sourceMappingURL=EntityCopier.js.map

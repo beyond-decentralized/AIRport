@@ -1,5 +1,4 @@
 import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from '@airport/ground-control';
-import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IJoinFields } from '../../../lingo/core/entity/Joins';
@@ -55,7 +54,7 @@ export declare class QEntityDriver implements IQEntityDriver {
     private entityRelationMap;
     private oneToManyConfigMap;
     constructor(dbEntity: DbEntity, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
+    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONJoinRelation;
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
@@ -71,7 +70,7 @@ export interface IQTreeDriver extends IQEntityDriver {
 }
 export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
     subQuery: RawTreeQuery<any>;
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
+    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
     getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
     getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONViewJoinRelation;
 }

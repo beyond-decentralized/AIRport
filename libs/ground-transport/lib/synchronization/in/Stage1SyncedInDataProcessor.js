@@ -1,10 +1,6 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
-import { getSysWideOpIds, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { getSysWideOpIds } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
-import { ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
 import { SynchronizationConflict_Type } from '@airport/moving-walkway';
-import { STAGE1_SYNCED_IN_DATA_PROCESSOR, SYNC_IN_UTILS } from '../../tokens';
 export class Stage1SyncedInDataProcessor {
     /**
      * In stage one:
@@ -18,7 +14,6 @@ export class Stage1SyncedInDataProcessor {
      */
     async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById) {
         await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId);
-        const [actorDao, repoTransHistoryDao, repoTransHistoryDuo, syncInUtils] = await container(this).get(ACTOR_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, SYNC_IN_UTILS);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
         // received change time).  Get the
@@ -55,11 +50,11 @@ export class Stage1SyncedInDataProcessor {
             }
         }
         const allRepoTransHistoryMapByRepoId = new Map();
-        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryId, syncInUtils);
+        const allRemoteRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepositoryId);
         // find local history for the matching repositories and corresponding time period
-        const localRepoTransHistoryMapByRepositoryId = await repoTransHistoryDao
+        const localRepoTransHistoryMapByRepositoryId = await this.repositoryTransactionHistoryDao
             .findAllLocalChangesForRecordIds(changedRecordIds);
-        const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, syncInUtils, true);
+        const allLocalRecordDeletions = this.getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, localRepoTransHistoryMapByRepositoryId, true);
         // Find all actors that modified the locally recorded history, which are not already
         // in the actorMapById collect actors not already in cache
         const newlyFoundActorSet = new Set();
@@ -75,14 +70,14 @@ export class Stage1SyncedInDataProcessor {
         }
         if (newlyFoundActorSet.size) {
             // cache remaining actors
-            const newActors = await actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
+            const newActors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(Array.from(newlyFoundActorSet));
             for (const newActor of newActors) {
                 actorMayById.set(newActor.id, newActor);
             }
         }
         // sort all repository histories in processing order
         for (const [repositoryId, repoTransHistoriesForRepository] of allRepoTransHistoryMapByRepoId) {
-            repoTransHistoryDuo
+            this.repositoryTransactionHistoryDuo
                 .sortRepoTransHistories(repoTransHistoriesForRepository, actorMayById);
         }
         const recordCreations = new Map();
@@ -97,13 +92,13 @@ export class Stage1SyncedInDataProcessor {
                 for (const operationHistory of repoTransHistory.operationHistory) {
                     switch (operationHistory.changeType) {
                         case ChangeType.INSERT_VALUES:
-                            this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils);
+                            this.processCreation(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
                             break;
                         case ChangeType.UPDATE_ROWS:
-                            this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils);
+                            this.processUpdate(repositoryId, operationHistory, repoTransHistory.isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId);
                             break;
                         case ChangeType.DELETE_ROWS:
-                            this.processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions, syncInUtils);
+                            this.processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions);
                             break;
                     }
                 }
@@ -117,7 +112,6 @@ export class Stage1SyncedInDataProcessor {
         };
     }
     async populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId) {
-        const [airportDatabase, sequenceGenerator] = await container(this).get(AIRPORT_DATABASE, SEQUENCE_GENERATOR);
         let numSystemWideOperationIds = 0;
         for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
@@ -125,7 +119,7 @@ export class Stage1SyncedInDataProcessor {
                     .operationHistory.length;
             }
         }
-        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, airportDatabase, sequenceGenerator);
+        const systemWideOperationIds = await getSysWideOpIds(numSystemWideOperationIds, this.airportDatabase, this.sequenceGenerator);
         let i = 0;
         for (const [_, repoTransHistoriesForRepo] of repositoryTransactionHistoryMapByRepositoryId) {
             for (const repositoryTransactionHistory of repoTransHistoriesForRepo) {
@@ -140,7 +134,7 @@ export class Stage1SyncedInDataProcessor {
         ensureChildJsMap(actorRecordIdSetByActor, recordHistory.actor.id)
             .set(actorRecordId, recordHistory.id);
     }
-    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, syncInUtils, isLocal = false) {
+    getDeletedRecordIdsAndPopulateAllHistoryMap(allRepoTransHistoryMapByRepoId, repositoryTransactionHistoryMapByRepoId, isLocal = false) {
         const recordDeletions = new Map();
         for (const [repositoryId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
             this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories);
@@ -150,7 +144,7 @@ export class Stage1SyncedInDataProcessor {
                     switch (operationHistory.changeType) {
                         case ChangeType.DELETE_ROWS:
                             for (const recordHistory of operationHistory.recordHistory) {
-                                this.ensureRecordHistoryId(recordHistory, syncInUtils
+                                this.ensureRecordHistoryId(recordHistory, this.syncInUtils
                                     .ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordDeletions));
                             }
                             break;
@@ -173,12 +167,12 @@ export class Stage1SyncedInDataProcessor {
     /*
     NOTE: local creates are not inputted into this processing.
      */
-    processCreation(repositoryId, operationHistory, isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils) {
+    processCreation(repositoryId, operationHistory, isLocal, recordCreations, recordUpdates, recordDeletions, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
         const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, recordUpdates);
         const recordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, recordDeletions);
         const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, allRemoteRecordDeletions);
         const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions);
-        const insertsForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordCreations);
+        const insertsForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordCreations);
         for (const recordHistory of operationHistory.recordHistory) {
             if (this.getRecord(recordHistory, insertsForEntityInRepo)) {
                 throw new Error(`A record is being created more than once.
@@ -231,11 +225,11 @@ export class Stage1SyncedInDataProcessor {
     NOTE: local updates to records NOT in incoming changes do not get inputted into
     this processing.
      */
-    processUpdate(repositoryId, operationHistory, isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId, syncInUtils) {
+    processUpdate(repositoryId, operationHistory, isLocal, recordCreations, recordUpdates, allRemoteRecordDeletions, allLocalRecordDeletions, syncConflictMapByRepoId) {
         const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, recordCreations);
         const allRemoteRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, allRemoteRecordDeletions);
         const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions);
-        const updatesForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordUpdates);
+        const updatesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordUpdates);
         for (const recordHistory of operationHistory.recordHistory) {
             const localDeleteRecordHistoryId = this.getRecordHistoryId(recordHistory, allLocalRecordDeletesForRepoInTable);
             if (localDeleteRecordHistoryId) {
@@ -320,11 +314,11 @@ export class Stage1SyncedInDataProcessor {
     NOTE: local deletes of records NOT in incoming changes do not get inputted into
     this processing.
      */
-    processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions, syncInUtils) {
+    processDeletion(repositoryId, operationHistory, recordCreations, recordUpdates, recordDeletions, allLocalRecordDeletions) {
         const recordCreationsForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, recordCreations);
         const recordUpdatesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, recordUpdates);
         const allLocalRecordDeletesForRepoInTable = this.getRecordsForRepoInTable(repositoryId, operationHistory, allLocalRecordDeletions);
-        const deletesForEntityInRepo = syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordDeletions);
+        const deletesForEntityInRepo = this.syncInUtils.ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordDeletions);
         for (const recordHistory of operationHistory.recordHistory) {
             let recordCreationsForActorInRepoInTable = this.getRecordsForActor(recordHistory, recordCreationsForRepoInTable);
             // If a remotely deleted record was also created remotely
@@ -426,5 +420,4 @@ export class Stage1SyncedInDataProcessor {
         return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor.id), recordHistory.actorRecordId);
     }
 }
-DI.set(STAGE1_SYNCED_IN_DATA_PROCESSOR, Stage1SyncedInDataProcessor);
 //# sourceMappingURL=Stage1SyncedInDataProcessor.js.map

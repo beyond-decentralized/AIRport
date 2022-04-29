@@ -7,7 +7,6 @@ import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
 import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import {
-	AIRPORT_DATABASE,
 	RELATION_MANAGER,
 	APPLICATION_UTILS
 } from '../../../tokens'
@@ -42,12 +41,12 @@ QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {
-	const [airDb, relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
-		.getSync(AIRPORT_DATABASE, RELATION_MANAGER, APPLICATION_UTILS)
+	const [relationManager, applicationUtils] = DEPENDENCY_INJECTION.db()
+		.getSync(RELATION_MANAGER, APPLICATION_UTILS)
 	const dbEntity = this.dbRelation.relationEntity
 
 	const qEntityConstructor = applicationUtils.getQEntityConstructor(
-		this.dbRelation.relationEntity, airDb)
+		this.dbRelation.relationEntity)
 
 	let newQEntity: IQEntityInternal = new qEntityConstructor(
 		dbEntity,

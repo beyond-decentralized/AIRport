@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { getFullApplicationName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
 import { TempDatabase } from '@airport/taxiway';
 import tsc from 'typescript';
@@ -70,7 +70,7 @@ export class ApplicationQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const airDb = await DI.db().get(AIRPORT_DATABASE);
+        const airDb = await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript
@@ -86,13 +86,13 @@ export class ApplicationQueryGenerator {
         const queryFunction = new Function(...functionConstructorParams);
         const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb);
         const rawQuery = queryFunction(...queryFunctionParameters);
-        const [lookup, queryFacade] = await DI.db().get(LOOKUP, QUERY_FACADE);
+        const [lookup, queryFacade] = await DEPENDENCY_INJECTION.db().get(LOOKUP, QUERY_FACADE);
         const context = lookup.ensureContext(null);
         const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
         const dbApplicationVersion = qApplication.__dbApplication__
             .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
-        await queryFacade.ensureIocContext(context);
+        await queryFacade.ensureContext(context);
         const queryResultType = this.getQueryResultType(queryDefinition.type, false);
         const portableQuery = queryFacade.getPortableQuery(new LimitedEntityQuery(rawQuery), queryResultType, context);
         const parameterFieldMapByAlias = {};

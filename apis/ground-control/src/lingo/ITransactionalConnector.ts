@@ -28,25 +28,25 @@ export interface ITransactionalConnector {
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context?: IAbstractQueryContext<any>,
+		context?: IAbstractQueryContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray>
 
 	findOne<E>(
 		portableQuery: PortableQuery,
-		context?: IAbstractQueryContext<any>,
+		context?: IAbstractQueryContext,
 		cachedSqlQueryId?: number,
 	): Promise<E>
 
 	search<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
-		context?: IAbstractQueryContext<any>,
+		context?: IAbstractQueryContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray>
 
 	searchOne<E>(
 		portableQuery: PortableQuery,
-		context?: IAbstractQueryContext<any>,
+		context?: IAbstractQueryContext,
 		cachedSqlQueryId?: number,
 	): Observable<E>
 

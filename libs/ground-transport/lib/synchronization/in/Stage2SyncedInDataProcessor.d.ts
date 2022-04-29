@@ -13,6 +13,9 @@ export interface IStage2SyncedInDataProcessor {
     applyChangesToDb(stage1Result: Stage1SyncedInDataProcessingResult, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>): Promise<void>;
 }
 export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataProcessor {
+    airportDatabase: IAirportDatabase;
+    databaseFacade: IDatabaseFacade;
+    recordUpdateStageDao: IRecordUpdateStageDao;
     applyChangesToDb(stage1Result: Stage1SyncedInDataProcessingResult, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>): Promise<void>;
     /**
      * Remote changes come in with ApplicationVersionIds not ApplicationIndexes, so it makes
@@ -26,10 +29,10 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
      *  structure is passed in.
      */
-    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
+    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
     getNonIdColumnsInIndexOrder(dbEntity: DbEntity): DbColumn[];
-    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, recordUpdateStageDao: IRecordUpdateStageDao, context: IOperationContext): Promise<void>;
-    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, airDb: IAirportDatabase, dbFacade: IDatabaseFacade, context: IOperationContext): Promise<void>;
+    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
+    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
      * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination

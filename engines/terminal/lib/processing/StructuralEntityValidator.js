@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
-import { STRUCTURAL_ENTITY_VALIDATOR } from '../tokens';
 export class StructuralEntityValidator {
     async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
@@ -13,12 +11,12 @@ export class StructuralEntityValidator {
             if (!haveRootRelationRecord) {
                 rootRelationRecord = record;
             }
-            const { isCreate, isParentId, isStub } = context.ioc.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
+            const { isCreate, isParentId, isStub } = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
             if (isParentId) {
                 // No processing is needed (already covered by id check)
                 continue;
             }
-            const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(record);
+            const operationUniqueId = this.entityStateManager.getOperationUniqueId(record);
             const entityOperatedOn = !!operatedOnEntityIndicator[operationUniqueId];
             if (entityOperatedOn) {
                 continue;
@@ -46,7 +44,7 @@ export class StructuralEntityValidator {
                             // checked as part of this entity
                             if (dbProperty.isId) {
                                 let isMissingRepositoryProperty = false;
-                                context.ioc.applicationUtils.forEachColumnOfRelation(dbRelation, record, (dbColumn, columnValue, _propertyNameChains) => {
+                                this.applicationUtils.forEachColumnOfRelation(dbRelation, record, (dbColumn, columnValue, _propertyNameChains) => {
                                     if (dbColumn.notNull) {
                                         isRelationNullable = false;
                                     }
@@ -56,7 +54,7 @@ export class StructuralEntityValidator {
                                 }, false);
                                 if (isMissingRepositoryProperty) {
                                     if (!context.newRepository) {
-                                        await context.ioc.repositoryManager.createRepository(context.actor, context);
+                                        await this.repositoryManager.createRepository(context.actor, context);
                                         newRepositoryNeeded = true;
                                     }
                                     record[dbProperty.name] = context.newRepository;
@@ -108,14 +106,14 @@ for ${dbEntity.name}.${dbProperty.name}`);
                 else {
                     const dbColumn = dbProperty.propertyColumns[0].column;
                     if (dbProperty.isId) {
-                        const isIdColumnEmpty = context.ioc.applicationUtils.isIdEmpty(propertyValue);
+                        const isIdColumnEmpty = this.applicationUtils.isIdEmpty(propertyValue);
                         this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
                     }
                     else {
                         if (isStub || isParentId) {
                             if (propertyValue !== undefined) {
                                 throw new Error(`Unexpected non-@Id value Stub|ParentId|Deleted record.
-Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
+Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
                             }
                         }
                     }
@@ -130,15 +128,14 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${context.ioc.entityStateMa
             return;
         }
         if (!parentRelationRecord) {
-            const entityStateManager = context.ioc.entityStateManager;
-            const originalValues = entityStateManager.getOriginalValues(record);
+            const originalValues = this.entityStateManager.getOriginalValues(record);
             if (newRepositoryNeeded && originalValues && originalValues.repository
                 && originalValues.actor && originalValues.actorRecordId) {
                 const repositoryEntity = record;
                 repositoryEntity.originalRepository = originalValues.repository;
-                entityStateManager.markAsStub(repositoryEntity.originalRepository);
+                this.entityStateManager.markAsStub(repositoryEntity.originalRepository);
                 repositoryEntity.originalActor = originalValues.actor;
-                entityStateManager.markAsStub(repositoryEntity.originalActor);
+                this.entityStateManager.markAsStub(repositoryEntity.originalActor);
                 repositoryEntity.originalActorRecordId = originalValues.actorRecordId;
             }
             return;
@@ -187,7 +184,7 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         delete repositoryEntity.actorRecordId;
         // Flip the state of this record to EntityState.CREATE this record now
         // has to be created in the referencing repository
-        repositoryEntity[context.ioc.entityStateManager.getStateFieldName()] = EntityState.CREATE;
+        repositoryEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE;
         // NOTE: If the child record is not provided and it's an optional
         // @ManyToOne() it will be treated as if no record is there.  That is
         // probaby the only correct way to handle it and a warning is
@@ -197,14 +194,14 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
             return;
         }
-        const isIdColumnEmpty = context.ioc.applicationUtils.isIdEmpty(columnValue);
+        const isIdColumnEmpty = this.applicationUtils.isIdEmpty(columnValue);
         if (!dbEntity.isRepositoryEntity) {
             this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
             return false;
         }
         if (!isIdColumnEmpty) {
             if (isCreate) {
-                if (context.ioc.applicationUtils.isActorId(dbColumn.name)) {
+                if (this.applicationUtils.isActorId(dbColumn.name)) {
                     throw new Error(`Actor cannot be passed in for create Operations`);
                 }
             }
@@ -213,16 +210,16 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         if (!isCreate) {
             throw new Error(`Ids must be populated in entities for non-Create operations`);
         }
-        if (context.ioc.applicationUtils.isRepositoryId(dbColumn.name)) {
+        if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
             // Repository was not provided - use context's 'newRepository'
             return true;
         }
-        else if (context.ioc.applicationUtils.isActorId(dbColumn.name)) {
+        else if (this.applicationUtils.isActorId(dbColumn.name)) {
             // Use context's 'actor'
             entity[dbProperty.name] = context.actor;
             return false;
         }
-        else if (context.ioc.applicationUtils.isActorRecordId(dbColumn.name)) {
+        else if (this.applicationUtils.isActorRecordId(dbColumn.name)) {
             return false;
         }
         throw new Error(`Unexpected @Id column '${dbColumn.name}' in a Repository Entity.`);
@@ -285,5 +282,4 @@ must always have a value for all entity operations.`);
 		(column: '${dbColumn.name}').`);
     }
 }
-DI.set(STRUCTURAL_ENTITY_VALIDATOR, StructuralEntityValidator);
 //# sourceMappingURL=StructuralEntityValidator.js.map

@@ -1,6 +1,10 @@
-import { DbColumn, DbEntity, DbProperty } from '@airport/ground-control';
-import { IOperationContext, IStructuralEntityValidator } from '@airport/terminal-map';
+import { IApplicationUtils } from '@airport/air-control';
+import { DbColumn, DbEntity, DbProperty, IEntityStateManager } from '@airport/ground-control';
+import { IOperationContext, IRepositoryManager, IStructuralEntityValidator } from '@airport/terminal-map';
 export declare class StructuralEntityValidator implements IStructuralEntityValidator {
+    applicationUtils: IApplicationUtils;
+    entityStateManager: IEntityStateManager;
+    repositoryManager: IRepositoryManager;
     validate<E>(records: E[], operatedOnEntityIndicator: boolean[], context: IOperationContext, fromOneToMany?: boolean, parentRelationProperty?: DbProperty, rootRelationRecord?: any, parentRelationRecord?: any): Promise<void>;
     private ensureRepositoryValidity;
     protected isRepositoryColumnAndNewRepositoryNeed<E>(dbEntity: DbEntity, dbProperty: DbProperty, dbColumn: DbColumn, isCreate: boolean, entity: E, columnValue: any, context: IOperationContext): boolean;

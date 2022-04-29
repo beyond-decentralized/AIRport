@@ -1,10 +1,8 @@
 import { IEntityContext } from "@airport/air-control"
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator"
 import {
     DbEntity,
     IEntityStateManager
 } from "@airport/ground-control"
-import { ENTITY_COPIER } from "../../tokens"
 
 interface ICopyOperation {
     processedEntityMap: Map<any, any>
@@ -95,4 +93,3 @@ export class EntityCopier
         }
     }
 }
-DEPENDENCY_INJECTION.set(ENTITY_COPIER, EntityCopier)

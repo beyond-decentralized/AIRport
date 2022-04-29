@@ -1,8 +1,12 @@
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
+	IEntityStateManager,
 	JsonInsertValues
 } from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
@@ -22,11 +26,25 @@ export class SQLInsertValues
 	constructor(
 		public jsonInsertValues: JsonInsertValues,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
-		super(context.ioc.airDb.applications[jsonInsertValues.II.si].currentVersion[0]
+		super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
 			.applicationVersion.entities[jsonInsertValues.II.ti], dialect,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
 			context)
 	}
 

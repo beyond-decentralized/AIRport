@@ -1,7 +1,7 @@
-import { container, DI } from '@airport/di';
-import { INTERNAL_DOMAIN, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
-import { TERMINAL_STORE, TRANSACTION_MANAGER, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -29,19 +29,16 @@ import { transactional } from '@airport/tower';
  */
 export class TransactionalServer {
     async init(context = {}) {
-        const transManager = await container(this)
-            .get(TRANSACTION_MANAGER);
-        return await transManager.initialize('airport', context);
+        return await this.transactionManager.initialize('airport', context);
     }
     async addRepository(credentials, context) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         // FIXME: check actor
         let repositoryId = 0;
         await transactional(async () => {
-            const repository = await context.ioc.repositoryManager.createRepository(
+            const repository = await this.repositoryManager.createRepository(
             // url, platform, platformConfig, distributionStrategy
             actor, context);
             repositoryId = repository.id;
@@ -49,42 +46,37 @@ export class TransactionalServer {
         return repositoryId;
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        await this.ensureContext(context);
         if (credentials.transactionId) {
-            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return await context.ioc.queryManager.find(portableQuery, context, cachedSqlQueryId);
+        return await this.queryManager.find(portableQuery, context, cachedSqlQueryId);
     }
     async findOne(portableQuery, credentials, context, cachedSqlQueryId) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
+        await this.ensureContext(context);
         if (credentials.transactionId) {
-            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return await context.ioc.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
+        return await this.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
     }
     search(portableQuery, credentials, context, cachedSqlQueryId) {
-        this.ensureIocContextSync(context);
-        const transactionManager = container(this).getSync(TRANSACTION_MANAGER);
+        this.ensureContextSync(context);
         if (credentials.transactionId) {
-            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return context.ioc.queryManager.search(portableQuery, context);
+        return this.queryManager.search(portableQuery, context);
     }
     searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
-        this.ensureIocContextSync(context);
-        const transactionManager = container(this).getSync(TRANSACTION_MANAGER);
+        this.ensureContextSync(context);
         if (credentials.transactionId) {
-            transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
-        return context.ioc.queryManager.searchOne(portableQuery, context);
+        return this.queryManager.searchOne(portableQuery, context);
     }
     async startTransaction(credentials, context) {
         try {
-            await this.ensureIocContext(context);
-            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-            await transactionManager.startTransaction(credentials, context);
+            await this.ensureContext(context);
+            await this.transactionManager.startTransaction(credentials, context);
             return true;
         }
         catch (e) {
@@ -95,9 +87,8 @@ export class TransactionalServer {
     }
     async commit(credentials, context) {
         try {
-            await this.ensureIocContext(context);
-            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-            await transactionManager.commit(credentials, context);
+            await this.ensureContext(context);
+            await this.transactionManager.commit(credentials, context);
             return true;
         }
         catch (e) {
@@ -110,9 +101,8 @@ export class TransactionalServer {
         if (context.transaction) {
         }
         try {
-            await this.ensureIocContext(context);
-            const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-            await transactionManager.rollback(credentials, context);
+            await this.ensureContext(context);
+            await this.transactionManager.rollback(credentials, context);
             return true;
         }
         catch (e) {
@@ -125,14 +115,13 @@ export class TransactionalServer {
         if (!entity) {
             return null;
         }
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
         await transactional(async (transaction, context) => {
-            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
+            saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
         return saveResult;
     }
@@ -140,60 +129,55 @@ export class TransactionalServer {
         if (!entity) {
             return null;
         }
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
         await transactional(async (transaction, context) => {
             // TODO: save to serialized repository to the specified destination
-            saveResult = await context.ioc.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
+            saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
         return saveResult;
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
         await transactional(async (transaction, context) => {
-            numInsertedRecords = await context.ioc.insertManager.insertValues(portableQuery, actor, transaction, context.rootTransaction, context, ensureGeneratedValues);
+            numInsertedRecords = await this.insertManager.insertValues(portableQuery, actor, transaction, context.rootTransaction, context, ensureGeneratedValues);
         }, context);
         return numInsertedRecords;
     }
     async insertValuesGetIds(portableQuery, credentials, context) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let ids;
         await transactional(async (transaction, context) => {
-            ids = await context.ioc.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
+            ids = await this.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return ids;
     }
     async updateValues(portableQuery, credentials, context) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numUpdatedRecords;
         await transactional(async (transaction, context) => {
-            numUpdatedRecords = await context.ioc.updateManager.updateValues(portableQuery, actor, transaction, context.rootTransaction, context);
+            numUpdatedRecords = await this.updateManager.updateValues(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numUpdatedRecords;
     }
     async deleteWhere(portableQuery, credentials, context) {
-        await this.ensureIocContext(context);
-        const transactionManager = await container(this).get(TRANSACTION_MANAGER);
-        transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        await this.ensureContext(context);
+        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numDeletedRecords;
         await transactional(async (transaction, context) => {
-            numDeletedRecords = await context.ioc.deleteManager.deleteWhere(portableQuery, actor, transaction, context.rootTransaction, context);
+            numDeletedRecords = await this.deleteManager.deleteWhere(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numDeletedRecords;
     }
@@ -204,9 +188,9 @@ export class TransactionalServer {
         if (credentials.domain === INTERNAL_DOMAIN) {
             return new Actor();
         }
-        const terminalStore = await container(this).get(TERMINAL_STORE);
         let actors;
-        const actorMapForDomain = terminalStore.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain);
+        const actorMapForDomain = this.terminalStore
+            .getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain);
         if (actorMapForDomain) {
             actors = actorMapForDomain.get(credentials.application);
         }
@@ -224,7 +208,7 @@ export class TransactionalServer {
 		${credentials.application}
 			`);
         }
-        const localTerminal = terminalStore.getFrameworkActor().terminal;
+        const localTerminal = this.terminalStore.getFrameworkActor().terminal;
         if (!localTerminal.isLocal) {
             throw new Error(`Expecting terminal of the TerminalStore.frameworkActor to be .isLocal`);
         }
@@ -245,18 +229,14 @@ export class TransactionalServer {
         }
         return actor;
     }
-    async ensureIocContext(context) {
-        const operationContextLoader = await container(this)
-            .get(OPERATION_CONTEXT_LOADER);
-        await operationContextLoader.ensure(context);
+    async ensureContext(context) {
+        await this.operationContextLoader.ensure(context);
     }
-    async ensureIocContextSync(context) {
-        const operationContextLoader = container(this)
-            .getSync(OPERATION_CONTEXT_LOADER);
-        operationContextLoader.ensureSync(context);
+    async ensureContextSync(context) {
+        this.operationContextLoader.ensureSync(context);
     }
 }
-DI.set(TRANSACTIONAL_SERVER, TransactionalServer);
+DEPENDENCY_INJECTION.set(TRANSACTIONAL_SERVER, TransactionalServer);
 export function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }

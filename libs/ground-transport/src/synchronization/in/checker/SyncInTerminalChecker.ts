@@ -2,13 +2,9 @@ import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
 	ITerminal,
 	ITerminalDao
 } from '@airport/travel-document-checkpoint-internal'
-import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens'
 
 export interface ISyncInTerminalChecker {
 
@@ -85,5 +81,3 @@ export class SyncInTerminalChecker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker)

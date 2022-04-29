@@ -133,11 +133,10 @@ export class QEntityDriver
 	}
 
 	getInstance(
-		airDb: IAirportDatabase,
 		applicationUtils: IApplicationUtils
 	): IQEntityInternal {
 		const qEntityConstructor = applicationUtils
-			.getQEntityConstructor(this.dbEntity, airDb)
+			.getQEntityConstructor(this.dbEntity)
 
 		let instance = new qEntityConstructor(this.dbEntity, this.fromClausePosition, this.dbRelation, this.joinType)
 
@@ -264,10 +263,10 @@ export class QEntityDriver
 		right: IF,
 		joinType: JoinType,
 	): IJoinFields<IF> {
-		const [airDb, applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(
-			AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER)
+		const [applicationUtils, relationManager] = DEPENDENCY_INJECTION.db().getSync(
+			APPLICATION_UTILS, RELATION_MANAGER)
 		let joinChild: IQEntityInternal = (<IQEntityInternal><any>right)
-			.__driver__.getInstance(airDb, applicationUtils)
+			.__driver__.getInstance(applicationUtils)
 		joinChild.__driver__.currentChildIndex = 0
 		let nextChildPosition = relationManager.getNextChildJoinPosition(this)
 		joinChild.__driver__.fromClausePosition = nextChildPosition
@@ -346,10 +345,9 @@ export class QTreeDriver
 	subQuery: RawTreeQuery<any>
 
 	getInstance(
-		airDb: IAirportDatabase,
 		applicationUtils: IApplicationUtils
 	): IQEntityInternal {
-		let instance = super.getInstance(airDb, applicationUtils);
+		let instance = super.getInstance(applicationUtils);
 		(<IQTreeDriver>instance.__driver__)
 			.subQuery = this.subQuery
 

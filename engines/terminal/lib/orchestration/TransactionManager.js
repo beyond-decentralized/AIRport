@@ -1,9 +1,7 @@
-import { container, DI } from '@airport/di';
-import { ACTIVE_QUERIES, ID_GENERATOR, } from '@airport/fuel-hydrant-system';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
-import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
-import { Q, TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
-import { STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { Q } from '@airport/holding-pattern';
+import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
     /**
@@ -11,17 +9,16 @@ export class TransactionManager extends AbstractMutationManager {
      * @returns {Promise<void>}
      */
     async initialize(dbName, context) {
-        const storeDriver = await container(this).get(STORE_DRIVER);
-        return await storeDriver.initialize(dbName, context);
+        return await this.storeDriver.initialize(dbName, context);
         // await this.dataStore.initialize(dbName)
         // await this.repositoryManager.initialize();
     }
     getInProgressTransactionById(transactionId) {
-        const terminalStore = container(this).getSync(TERMINAL_STORE);
-        return terminalStore.getTransactionManager().transactionInProgressMap.get(transactionId);
+        return this.terminalStore.getTransactionManager()
+            .transactionInProgressMap.get(transactionId);
     }
     isServer(context) {
-        return container(this).getSync(STORE_DRIVER).isServer(context);
+        return this.storeDriver.isServer(context);
     }
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {
@@ -41,8 +38,7 @@ export class TransactionManager extends AbstractMutationManager {
         }
     }
     async startTransaction(credentials, context) {
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        const transactionManagerStore = terminalStore.getTransactionManager();
+        const transactionManagerStore = this.terminalStore.getTransactionManager();
         let parentTransaction;
         if (credentials.transactionId) {
             parentTransaction = transactionManagerStore
@@ -99,11 +95,10 @@ Only one concurrent transaction is allowed per application.`)
         return transaction;
     }
     async internalStartTransaction(credentials, parentTransaction, context) {
-        const [storeDriver, terminalStore] = await container(this)
-            .get(STORE_DRIVER, TERMINAL_STORE);
-        const transactionManagerStore = terminalStore.getTransactionManager();
-        const transaction = await storeDriver.setupTransaction(context, parentTransaction);
-        await storeDriver.startTransaction(transaction, context);
+        const transactionManagerStore = this.terminalStore.getTransactionManager();
+        const transaction = await this.storeDriver
+            .setupTransaction(context, parentTransaction);
+        await this.storeDriver.startTransaction(transaction, context);
         transaction.credentials = credentials;
         await this.setupTransaction(credentials, transaction, parentTransaction, transactionManagerStore, context);
         return transaction;
@@ -123,8 +118,8 @@ Only one concurrent transaction is allowed per application.`)
 No Transaction Id is passed in Credentials for a Rollback operation.
 				`);
             }
-            const terminalStore = await container(this).get(TERMINAL_STORE);
-            const transactionManagerStore = terminalStore.getTransactionManager();
+            const transactionManagerStore = this.terminalStore
+                .getTransactionManager();
             transaction = transactionManagerStore.transactionInProgressMap.get(credentials.transactionId);
             if (!transaction) {
                 throw new Error(`
@@ -142,8 +137,8 @@ parent transactions.
         return transaction;
     }
     async resumeParentOrPendingTransaction(parentTransaction, context) {
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        const transactionManagerStore = terminalStore.getTransactionManager();
+        const transactionManagerStore = this.terminalStore
+            .getTransactionManager();
         if (parentTransaction) {
             await this.setupTransaction(parentTransaction.credentials, parentTransaction, parentTransaction.parentTransaction, transactionManagerStore, context);
         }
@@ -189,14 +184,11 @@ parent transactions.
                 await this.saveRepositoryHistory(transaction, context);
                 await transaction.saveTransaction(transaction.transactionHistory);
             }
-            const activeQueries = await container(this).get(ACTIVE_QUERIES);
-            activeQueries.rerunQueries();
+            this.activeQueries.rerunQueries();
             await transaction.commit(null, context);
             let transactionHistory = transaction.transactionHistory;
             if (!parentTransaction && transactionHistory.allRecordHistory.length) {
-                const synchronizationOutManager = await container(this)
-                    .get(SYNCHRONIZATION_OUT_MANAGER);
-                await synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
+                await this.synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
             }
         }
         finally {
@@ -230,8 +222,7 @@ ${callHerarchy}
     async setupTransaction(credentials, transaction, parentTransaction, transactionManagerStore, context) {
         context.transaction = transaction;
         credentials.transactionId = transaction.id;
-        const transactionHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
-        transaction.transactionHistory = transactionHistoryDuo.getNewRecord();
+        transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
         transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction);
         if (parentTransaction) {
             transactionManagerStore.transactionInProgressMap.delete(parentTransaction.id);
@@ -268,8 +259,8 @@ ${callHerarchy}
         return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`;
     }
     async clearTransaction(transaction, parentTransaction, credentials, context) {
-        const terminalStore = await container(this).get(TERMINAL_STORE);
-        const transactionManagerStore = terminalStore.getTransactionManager();
+        const transactionManagerStore = this.terminalStore
+            .getTransactionManager();
         transactionManagerStore.transactionInProgressMap.delete(transaction.id);
         if (!parentTransaction) {
             transactionManagerStore.rootTransactionInProgressMap.delete(transaction.id);
@@ -283,8 +274,7 @@ ${callHerarchy}
             return false;
         }
         let applicationMap = transactionHistory.applicationMap;
-        const idGenerator = await container(this).get(ID_GENERATOR);
-        const transactionHistoryIds = await idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
+        const transactionHistoryIds = await this.idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         applicationMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory.id = transactionHistoryIds.transactionHistoryId;
         await this.doInsertValues(transaction, Q.TransactionHistory, [transactionHistory], context);
@@ -315,5 +305,5 @@ ${callHerarchy}
         return true;
     }
 }
-DI.set(TRANSACTION_MANAGER, TransactionManager);
+DEPENDENCY_INJECTION.set(TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

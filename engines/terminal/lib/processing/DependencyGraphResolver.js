@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { ensureChildArray, EntityRelationType } from '@airport/ground-control';
-import { DEPENDENCY_GRAPH_RESOLVER } from '../tokens';
 /*
  * Takes a (potentially) interconnected entity graph and returns
  * an array of entities to be operated on, in a order that is valid
@@ -27,17 +25,17 @@ export class DependencyGraphResolver {
              * has no associated operations or child entities of
              * it's own).
              */
-            const { isCreate, isDelete, isParentId, isPassThrough, isStub, isUpdate } = context.ioc.entityStateManager
+            const { isCreate, isDelete, isParentId, isPassThrough, isStub, isUpdate } = this.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             if (isStub) {
                 // No processing is needed
                 continue;
             }
-            const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
+            const operationUniqueId = this.entityStateManager.getOperationUniqueId(entity);
             if (deleteByCascade && (isCreate || isUpdate)) {
                 throw new Error(`Cannot do a Create or Update operation on an entity that will be
 deleted by cascading rules.  Entity: ${dbEntity.name}.
-Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
+Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
             }
             let dependencyGraphNode;
             if (isPassThrough) {
@@ -69,9 +67,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                 }
                 if (!isParentId && !isDelete) {
                     if (dependsOn && !isDelete) {
-                        const dependsOnOUID = context.ioc.entityStateManager.getOperationUniqueId(dependsOn.entity);
+                        const dependsOnOUID = this.entityStateManager.getOperationUniqueId(dependsOn.entity);
                         if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
-                            && context.ioc.entityStateManager
+                            && this.entityStateManager
                                 .getOperationUniqueId(dependencyGraphNode.entity) !== dependsOnOUID) {
                             dependencyGraphNode.dependsOnByOUID[dependsOnOUID] = dependsOn;
                             dependencyGraphNode.dependsOn.push(dependsOn);
@@ -79,7 +77,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                     }
                     if (dependency) {
                         if (!dependencyGraphNode.dependsOnByOUID[operationUniqueId]
-                            && context.ioc.entityStateManager
+                            && this.entityStateManager
                                 .getOperationUniqueId(dependency.entity) !== operationUniqueId) {
                             dependency.dependsOnByOUID[operationUniqueId] = dependencyGraphNode;
                             dependency.dependsOn.push(dependencyGraphNode);
@@ -108,10 +106,10 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                         // TODO: see if there is a cleaner way to escape nested Actor and Repository records
                         if (dbEntity.isRepositoryEntity && (dbProperty.name === 'repository'
                             || dbProperty.name === 'actor')
-                            && !propertyValue[context.ioc.entityStateManager.getStateFieldName()]) {
+                            && !propertyValue[this.entityStateManager.getStateFieldName()]) {
                             continue;
                         }
-                        const parentState = context.ioc.entityStateManager
+                        const parentState = this.entityStateManager
                             .getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity);
                         if (parentState.isParentId) {
                             continue;
@@ -119,12 +117,12 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
                         if (parentState.isDelete) {
                             if (isPassThrough) {
                                 // Automatically delete all contained records
-                                context.ioc.entityStateManager.markForDeletion(entity);
+                                this.entityStateManager.markForDeletion(entity);
                             }
                             else if (!isDelete) {
                                 throw new Error(`Cannot delete an entity without removing all references to it.
 								Found a reference in ${dbEntity.name}.${dbProperty.name}.
-								Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
+								Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`);
                             }
                             else {
                                 // Prune this entry
@@ -167,7 +165,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
     }
     resolveCircularDependencies(unorderedDependencies, context) {
         for (const node of unorderedDependencies) {
-            const nodeOUID = context.ioc.entityStateManager.getOperationUniqueId(node.entity);
+            const nodeOUID = this.entityStateManager.getOperationUniqueId(node.entity);
             this.resolveCircularDependenciesForNode(node, nodeOUID, node, context);
         }
     }
@@ -179,7 +177,7 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
         currentlyTraversedNode.circleTraversedFor[nodeOUID] = true;
         for (let i = currentlyTraversedNode.dependsOn.length - 1; i >= 0; i--) {
             const dependency = currentlyTraversedNode.dependsOn[i];
-            const dependencyOUID = context.ioc.entityStateManager
+            const dependencyOUID = this.entityStateManager
                 .getOperationUniqueId(dependency.entity);
             if (dependencyOUID === nodeOUID) {
                 let entityPath = [];
@@ -204,14 +202,14 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
         let processedNodes = [];
         while (orderedNodes.length < unorderedDependencies.length) {
             for (const node of unorderedDependencies) {
-                const entityUid = context.ioc.entityStateManager
+                const entityUid = this.entityStateManager
                     .getOperationUniqueId(node.entity);
                 if (processedNodes[entityUid]) {
                     continue;
                 }
                 let nodeProcessed = true;
                 for (const dependency of node.dependsOn) {
-                    const dependencyUid = context.ioc.entityStateManager
+                    const dependencyUid = this.entityStateManager
                         .getOperationUniqueId(dependency.entity);
                     // If a dependency is not yet processed (and is possibly has
                     // other dependencies of it's own)
@@ -275,9 +273,9 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
             // on the same entity
             let canBeCombined = true;
             for (const dependency of node.dependsOn) {
-                const dependencyUid = context.ioc.entityStateManager
+                const dependencyUid = this.entityStateManager
                     .getOperationUniqueId(dependency.entity);
-                const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(dependency.entity);
+                const operationUniqueId = this.entityStateManager.getOperationUniqueId(dependency.entity);
                 if (!processedNodes[dependencyUid]) {
                     canBeCombined = false;
                     break;
@@ -309,5 +307,4 @@ Entity "${context.ioc.entityStateManager.getUniqueIdFieldName()}":  ${operationU
         return operationNodes;
     }
 }
-DI.set(DEPENDENCY_GRAPH_RESOLVER, DependencyGraphResolver);
 //# sourceMappingURL=DependencyGraphResolver.js.map

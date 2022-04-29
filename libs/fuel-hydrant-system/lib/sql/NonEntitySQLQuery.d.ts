@@ -1,16 +1,23 @@
-import { IQEntityInternal, IQTree, JoinTreeNode } from '@airport/air-control';
-import { InternalFragments, JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IQTree, IRelationManager, JoinTreeNode } from '@airport/air-control';
+import { IEntityStateManager, InternalFragments, JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
+import { IStoreDriver } from '@airport/terminal-map';
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { INonEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
+import { IValidator } from '../validation/Validator';
 import { SQLDialect, SQLQuery } from './core/SQLQuery';
 import { ClauseType } from './core/SQLWhereBase';
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator';
 /**
  * Created by Papa on 10/28/2016.
  */
 export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery> extends SQLQuery<JNEQ> {
+    protected qValidator: IValidator;
+    protected relationManager: IRelationManager;
+    protected subStatementQueryGenerator: ISubStatementSqlGenerator;
     protected joinTrees: JoinTreeNode[];
     protected orderByParser: INonEntityOrderByParser;
-    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext);
+    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, context: IFuelHydrantContext);
     addQEntityMapByAlias(sourceMap: {
         [entityAlias: string]: IQEntityInternal;
     }): void;

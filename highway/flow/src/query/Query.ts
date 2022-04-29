@@ -21,5 +21,4 @@ export interface IQueryConfig {
 }
 
 export interface IQueryContext {
-	ioc
 }

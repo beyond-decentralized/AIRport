@@ -1,7 +1,4 @@
-import { container, DI } from "@airport/di";
 import { ApplicationStatus } from '@airport/ground-control';
-import { DOMAIN_DAO, APPLICATION_DAO } from "@airport/airspace";
-import { SYNC_IN_APPLICATION_CHECKER } from "../../../tokens";
 export class SyncInApplicationChecker {
     async ensureApplications(message) {
         try {
@@ -21,8 +18,8 @@ export class SyncInApplicationChecker {
     }
     async checkApplicationsAndDomains(message) {
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
-        const applicationDao = await container(this).get(APPLICATION_DAO);
-        const applications = await applicationDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
+        const applications = await this.applicationDao
+            .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
         for (let application of applications) {
             let domainName = application.domain.name;
             let applicationName = application.name;
@@ -49,8 +46,7 @@ export class SyncInApplicationChecker {
             domainsToCreate.push(domain);
         }
         if (domainsToCreate.length) {
-            const domainDao = await container(this).get(DOMAIN_DAO);
-            await domainDao.insert(domainsToCreate);
+            await this.domainDao.insert(domainsToCreate);
         }
         let applicationsToCreate = [];
         for (let [domainName, applicationChecksByName] of applicationCheckMap) {
@@ -72,7 +68,7 @@ export class SyncInApplicationChecker {
             }
         }
         if (applicationsToCreate.length) {
-            await applicationDao.insert(applicationsToCreate);
+            await this.applicationDao.insert(applicationsToCreate);
         }
         return applicationCheckMap;
     }
@@ -129,5 +125,4 @@ export class SyncInApplicationChecker {
         };
     }
 }
-DI.set(SYNC_IN_APPLICATION_CHECKER, SyncInApplicationChecker);
 //# sourceMappingURL=SyncInApplicationChecker.js.map

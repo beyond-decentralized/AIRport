@@ -1,14 +1,12 @@
-import {DEPENDENCY_INJECTION}               from '@airport/direction-indicator'
 import {
 	JSONEntityRelation,
 	JSONRelation
-}                         from '@airport/ground-control'
-import {IAirportDatabase} from '../../../lingo/AirportDatabase'
+} from '@airport/ground-control'
 import {
 	IQEntityDriver,
 	IQEntityInternal
-}                         from '../../../lingo/core/entity/Entity'
-import {IApplicationUtils}     from '../../../lingo/utils/ApplicationUtils'
+} from '../../../lingo/core/entity/Entity'
+import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 
 export interface IRelationManager {
 
@@ -37,14 +35,12 @@ export interface IRelationManager {
 }
 
 export interface IRelationManagerContext {
-	ioc: {
-		airDb: IAirportDatabase
-		applicationUtils: IApplicationUtils
-	}
 }
 
 export class RelationManager
 	implements IRelationManager {
+
+	applicationUtils: IApplicationUtils
 
 	getPositionAlias(
 		rootEntityPrefix: string,
@@ -73,10 +69,10 @@ export class RelationManager
 		joinRelation: JSONRelation,
 		context: IRelationManagerContext,
 	): IQ {
-		const dbEntity         = context.ioc.applicationUtils.getDbEntity(
-			joinRelation.si, joinRelation.ti, context.ioc.airDb)
-		let QEntityConstructor = context.ioc.applicationUtils.getQEntityConstructor(
-			dbEntity, context.ioc.airDb)
+		const dbEntity = this.applicationUtils.getDbEntity(
+			joinRelation.si, joinRelation.ti)
+		let QEntityConstructor = this.applicationUtils.getQEntityConstructor(
+			dbEntity)
 		return new QEntityConstructor(
 			dbEntity,
 			joinRelation.fromClausePosition,

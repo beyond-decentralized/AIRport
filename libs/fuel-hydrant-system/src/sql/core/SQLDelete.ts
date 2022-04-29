@@ -1,4 +1,7 @@
-import { JsonDelete } from '@airport/ground-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { IEntityStateManager, JsonDelete } from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import { SQLNoJoinQuery } from './SQLNoJoinQuery'
 import { SQLDialect } from './SQLQuery'
@@ -13,10 +16,24 @@ export class SQLDelete
 	constructor(
 		public jsonDelete: JsonDelete,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
 		context: IFuelHydrantContext,
 	) {
-		super(context.ioc.airDb.applications[jsonDelete.DF.si].currentVersion[0]
+		super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
 			.applicationVersion.entities[jsonDelete.DF.ti], dialect,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
 			context)
 	}
 
@@ -33,8 +50,8 @@ WHERE
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = context.ioc.relationManager.getAlias(this.jsonDelete.DF)
-			// let tableName = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
+			// let tableAlias = this.relationManager.getAlias(this.jsonDelete.DF)
+			// let tableName = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 

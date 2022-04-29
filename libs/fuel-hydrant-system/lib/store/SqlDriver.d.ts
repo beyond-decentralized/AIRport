@@ -1,15 +1,27 @@
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, IEntityStateManager, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IStoreDriver, ITransaction, ITransactionContext } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 import { IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
+import { IValidator } from '../validation/Validator';
+import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 /**
  * Created by Papa on 9/9/2016.
  */
 export declare abstract class SqlDriver implements IStoreDriver {
     activeQueries: IActiveQueries;
+    airportDatabase: IAirportDatabase;
+    applicationUtils: IApplicationUtils;
+    entityStateManager: IEntityStateManager;
     operationContextLoader: IOperationContextLoader;
+    qMetadataUtils: IQMetadataUtils;
+    qValidator: IValidator;
+    relationManager: IRelationManager;
+    sqlQueryAdapter: ISQLQueryAdaptor;
+    subStatementQueryGenerator: ISubStatementSqlGenerator;
     type: StoreType;
     protected maxValues: number;
     supportsLocalTransactions(context: IFuelHydrantContext): boolean;
@@ -29,14 +41,14 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract composeTableName(applicationName: string, tableName: string, context: IFuelHydrantContext): string;
     abstract initialize(dbName: string, context: IFuelHydrantContext): Promise<any>;
     abstract setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
-    protected internalSetupTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
+    protected internalSetupTransaction(transaction: ITransaction, context: IFuelHydrantContext): Promise<void>;
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    startTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
-    abstract internalStartTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
-    commit(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    startTransaction(transaction: ITransaction, context?: IFuelHydrantContext): Promise<void>;
+    abstract internalStartTransaction(transaction: ITransaction, context?: IFuelHydrantContext): Promise<void>;
+    commit(transaction: ITransaction, context?: IFuelHydrantContext): Promise<void>;
     abstract internalCommit(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
-    rollback(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
-    abstract internalRollback(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
+    rollback(transaction: ITransaction, context?: IFuelHydrantContext): Promise<void>;
+    abstract internalRollback(transaction: ITransaction, context?: IFuelHydrantContext): Promise<void>;
     insertValues(portableQuery: PortableQuery, context: IFuelHydrantContext, cachedSqlQueryId?: number): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IFuelHydrantContext): Promise<number>;
     updateWhere(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext): Promise<number>;
@@ -56,6 +68,5 @@ export declare abstract class SqlDriver implements IStoreDriver {
     protected abstract getDialect(context: IFuelHydrantContext): SQLDialect;
     protected splitValues(values: any[][], context: IFuelHydrantContext): any[][][];
     protected ensureContext(context: IFuelHydrantContext): Promise<IFuelHydrantContext>;
-    protected ensureIocContext(context: IFuelHydrantContext): Promise<void>;
 }
 //# sourceMappingURL=SqlDriver.d.ts.map

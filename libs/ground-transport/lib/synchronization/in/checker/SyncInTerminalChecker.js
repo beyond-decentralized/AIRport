@@ -1,10 +1,6 @@
-import { container, DI } from '@airport/di';
-import { TERMINAL_DAO, } from '@airport/travel-document-checkpoint-internal';
-import { SYNC_IN_TERMINAL_CHECKER } from '../../../tokens';
 export class SyncInTerminalChecker {
     async ensureTerminals(message) {
         try {
-            const terminalDao = await container(this).get(TERMINAL_DAO);
             let terminalUuids = [];
             let messageTerminalIndexMap = new Map();
             for (let i = 0; i < message.terminals.length; i++) {
@@ -31,7 +27,7 @@ export class SyncInTerminalChecker {
                 // Make sure id field is not in the input
                 delete terminal.id;
             }
-            const terminals = await terminalDao.findByUuIds(terminalUuids);
+            const terminals = await this.terminalDao.findByUuIds(terminalUuids);
             for (const terminal of terminals) {
                 const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId);
                 message.terminals[messageUserIndex] = terminal;
@@ -39,7 +35,7 @@ export class SyncInTerminalChecker {
             const missingTerminals = message.terminals
                 .filter(messageTerminal => !messageTerminal.id);
             if (missingTerminals.length) {
-                await this.addMissingTerminals(missingTerminals, terminalDao);
+                await this.addMissingTerminals(missingTerminals);
             }
         }
         catch (e) {
@@ -48,12 +44,11 @@ export class SyncInTerminalChecker {
         }
         return true;
     }
-    async addMissingTerminals(missingTerminals, terminalDao) {
+    async addMissingTerminals(missingTerminals) {
         for (const terminal of missingTerminals) {
             terminal.isLocal = false;
         }
-        await terminalDao.insert(missingTerminals);
+        await this.terminalDao.insert(missingTerminals);
     }
 }
-DI.set(SYNC_IN_TERMINAL_CHECKER, SyncInTerminalChecker);
 //# sourceMappingURL=SyncInTerminalChecker.js.map

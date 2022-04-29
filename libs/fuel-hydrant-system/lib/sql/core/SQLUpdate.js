@@ -7,9 +7,9 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 10/2/2016.
  */
 export class SQLUpdate extends SQLNoJoinQuery {
-    constructor(jsonUpdate, dialect, context) {
-        super(context.ioc.airDb.applications[jsonUpdate.U.si].currentVersion[0]
-            .applicationVersion.entities[jsonUpdate.U.ti], dialect, context);
+    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context) {
+        super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
+            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
         this.jsonUpdate = jsonUpdate;
     }
     toSQL(internalFragments, context) {
@@ -31,8 +31,8 @@ export class SQLUpdate extends SQLNoJoinQuery {
 ${whereFragment}`;
             // TODO: following might be needed for some RDBMS, does not work for SqLite
             // Replace the root entity alias reference with the table name
-            // let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U)
-            // let tableName  = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
+            // let tableAlias = this.relationManager.getAlias(this.jsonUpdate.U)
+            // let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
             // whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
         }
         return `UPDATE

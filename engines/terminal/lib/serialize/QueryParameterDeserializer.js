@@ -1,5 +1,5 @@
 import { QUERY_PARAMETER_DESERIALIZER } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { SQLDataType } from "@airport/ground-control";
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side query parameters.  Since then moved to Isolates and generic
@@ -73,5 +73,5 @@ got: ${typeOfParameter}
         }
     }
 }
-DI.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer);
+DEPENDENCY_INJECTION.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer);
 //# sourceMappingURL=QueryParameterDeserializer.js.map

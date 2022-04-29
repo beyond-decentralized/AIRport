@@ -1,5 +1,5 @@
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
-import { IActor, IRepository } from '@airport/holding-pattern';
+import { IActor, IRepository, IRepositoryDao } from '@airport/holding-pattern';
 import { IOperationContext, IRepositoryManager, UpdateState } from '@airport/terminal-map';
 /**
  * Created by Papa on 2/12/2017.
@@ -12,6 +12,7 @@ export interface EntityRepoQueryData {
     idProperty: string;
 }
 export declare class RepositoryManager implements IRepositoryManager {
+    repositoryDao: IRepositoryDao;
     initialize(): Promise<void>;
     createRepository(actor: IActor, context: IOperationContext): Promise<IRepository>;
     goOffline(): void;

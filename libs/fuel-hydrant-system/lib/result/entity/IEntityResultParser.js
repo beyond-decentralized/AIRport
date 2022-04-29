@@ -13,13 +13,17 @@ export class GraphQueryConfiguration {
     }
 }
 export class AbstractObjectResultParser {
+    constructor(applicationUtils, entityStateManager) {
+        this.applicationUtils = applicationUtils;
+        this.entityStateManager = entityStateManager;
+    }
     addManyToOneStub(resultObject, propertyName, relationInfos, context) {
         let manyToOneStub = {};
-        context.ioc.entityStateManager.isStub(manyToOneStub);
+        this.entityStateManager.isStub(manyToOneStub);
         resultObject[propertyName] = manyToOneStub;
         let haveAllIds = true;
         relationInfos.forEach((relationInfo) => {
-            if (context.ioc.applicationUtils.isIdEmpty(relationInfo.value)) {
+            if (this.applicationUtils.isIdEmpty(relationInfo.value)) {
                 haveAllIds = false;
                 return;
             }
@@ -31,7 +35,7 @@ export class AbstractObjectResultParser {
                 // If there is no object in context, create one
                 if (!currentObject) {
                     currentObject = {};
-                    context.ioc.entityStateManager.markAsStub(currentObject);
+                    this.entityStateManager.markAsStub(currentObject);
                     lastObject[propertyNameChain[currentIndex - 1]] = currentObject;
                 }
                 // If it's not a leaf (more objects in the chain exist)

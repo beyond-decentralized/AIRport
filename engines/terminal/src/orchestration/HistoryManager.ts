@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
 	IRepositoryTransactionHistory,
@@ -7,7 +6,6 @@ import {
 	Repository_Id,
 } from '@airport/holding-pattern'
 import { IHistoryManager, IOperationContext } from '@airport/terminal-map'
-import { HISTORY_MANAGER } from '../tokens'
 
 export class HistoryManager
 	implements IHistoryManager {
@@ -30,5 +28,3 @@ export class HistoryManager
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(HISTORY_MANAGER, HistoryManager)

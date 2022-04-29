@@ -164,7 +164,7 @@ export class ApplicationQueryGenerator {
 		const dbApplicationVersion          = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
 		context.dbEntity               = dbApplicationVersion.entityMapByName[entityName];
-		await queryFacade.ensureIocContext(context);
+		await queryFacade.ensureContext(context);
 		const queryResultType = this.getQueryResultType(queryDefinition.type, false);
 
 		const portableQuery = queryFacade.getPortableQuery(

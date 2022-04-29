@@ -1,13 +1,20 @@
 import {
+	IAirportDatabase,
+	IApplicationUtils,
 	IEntityUpdateProperties,
+	IQMetadataUtils,
+	IRelationManager,
 	ManyToOneColumnMapping
 } from '@airport/air-control'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
+	IEntityStateManager,
 	InternalFragments,
 	JSONClauseObjectType,
 	JsonUpdate
 } from '@airport/ground-control'
+import { IStoreDriver } from '@airport/terminal-map'
+import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	Q_VALIDATOR,
@@ -27,10 +34,25 @@ export class SQLUpdate
 	constructor(
 		public jsonUpdate: JsonUpdate<IEntityUpdateProperties>,
 		dialect: SQLDialect,
+		airportDatabase: IAirportDatabase,
+		applicationUtils: IApplicationUtils,
+		entityStateManager: IEntityStateManager,
+		qMetadataUtils: IQMetadataUtils,
+		relationManager: IRelationManager,
+		sqlQueryAdapter: ISQLQueryAdaptor,
+		storeDriver: IStoreDriver,
 		context: IFuelHydrantContext,
 	) {
-		super(context.ioc.airDb.applications[jsonUpdate.U.si].currentVersion[0]
-			.applicationVersion.entities[jsonUpdate.U.ti], dialect, context)
+		super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
+			.applicationVersion.entities[jsonUpdate.U.ti], dialect,
+			airportDatabase,
+			applicationUtils,
+			entityStateManager,
+			qMetadataUtils,
+			relationManager,
+			sqlQueryAdapter,
+			storeDriver,
+			context)
 	}
 
 	toSQL(
@@ -57,8 +79,8 @@ export class SQLUpdate
 ${whereFragment}`
 			// TODO: following might be needed for some RDBMS, does not work for SqLite
 			// Replace the root entity alias reference with the table name
-			// let tableAlias = context.ioc.relationManager.getAlias(this.jsonUpdate.U)
-			// let tableName  = context.ioc.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
+			// let tableAlias = this.relationManager.getAlias(this.jsonUpdate.U)
+			// let tableName  = this.storeDriver.getEntityTableName(this.qEntityMapByAlias[tableAlias].__driver__.dbEntity, context)
 			// whereFragment  = whereFragment.replace(new RegExp(`${tableAlias}`, 'g'), tableName)
 		}
 

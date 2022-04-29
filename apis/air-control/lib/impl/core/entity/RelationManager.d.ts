@@ -1,5 +1,4 @@
 import { JSONRelation } from '@airport/ground-control';
-import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils';
 export interface IRelationManager {
@@ -10,12 +9,9 @@ export interface IRelationManager {
     getNextChildJoinPosition(joinParentDriver: IQEntityDriver): number[];
 }
 export interface IRelationManagerContext {
-    ioc: {
-        airDb: IAirportDatabase;
-        applicationUtils: IApplicationUtils;
-    };
 }
 export declare class RelationManager implements IRelationManager {
+    applicationUtils: IApplicationUtils;
     getPositionAlias(rootEntityPrefix: string, fromClausePosition: number[]): string;
     getAlias(jsonRelation: JSONRelation): string;
     getParentAlias(jsonRelation: JSONRelation): string;

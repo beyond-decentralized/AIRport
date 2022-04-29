@@ -1,6 +1,7 @@
-import { IQEntityInternal, JSONLogicalOperation, Parameter } from '@airport/air-control';
-import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, ApplicationIndex, ApplicationMap, SqlOperator, TableIndex } from '@airport/ground-control';
-import { ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, JSONLogicalOperation, Parameter } from '@airport/air-control';
+import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, ApplicationIndex, ApplicationMap, SqlOperator, TableIndex, IEntityStateManager } from '@airport/ground-control';
+import { IStoreDriver } from '@airport/terminal-map';
+import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { IValidator } from '../../validation/Validator';
 import { SQLDialect } from './SQLQuery';
@@ -17,6 +18,12 @@ export declare enum ClauseType {
 export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected dbEntity: DbEntity;
     protected dialect: SQLDialect;
+    protected airportDatabase: IAirportDatabase;
+    protected applicationUtils: IApplicationUtils;
+    protected entityStateManager: IEntityStateManager;
+    protected qMetadataUtils: IQMetadataUtils;
+    protected sqlQueryAdapter: ISQLQueryAdaptor;
+    protected storeDriver: IStoreDriver;
     protected context: IFuelHydrantContext;
     validator: IValidator;
     subStatementSqlGenerator: ISubStatementSqlGenerator;
@@ -28,7 +35,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
     };
-    constructor(dbEntity: DbEntity, dialect: SQLDialect, context: IFuelHydrantContext);
+    constructor(dbEntity: DbEntity, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
     }, //,

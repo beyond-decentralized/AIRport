@@ -12,10 +12,10 @@ export interface IRootTransaction {
 export interface ITransactionalConnector {
     callApi<Request, Response>(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context?: IContext): Promise<number>;
-    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<EntityArray>;
-    findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext<any>, cachedSqlQueryId?: number): Observable<E>;
+    find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
+    findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<E>;
+    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;
+    searchOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Observable<E>;
     save<E, T = E | E[]>(entity: T, context?: IContext): Promise<ISaveResult>;
     saveToDestination<E, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context?: IContext, ensureGeneratedValues?: boolean): Promise<number>;

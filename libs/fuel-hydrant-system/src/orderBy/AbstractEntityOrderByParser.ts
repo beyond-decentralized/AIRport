@@ -1,14 +1,16 @@
 import {
+	IAirportDatabase,
 	IQEntityInternal,
+	IRelationManager,
 	JoinTreeNode
-}                          from '@airport/air-control'
+} from '@airport/air-control'
 import {
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
-import {IValidator}        from '../validation/Validator'
+import { IValidator } from '../validation/Validator'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -36,7 +38,9 @@ export abstract class AbstractEntityOrderByParser {
 
 	constructor(
 		protected rootSelectClauseFragment: any,
-		protected validator: IValidator,
+		protected airportDatabase: IAirportDatabase,
+		protected qValidator: IValidator,
+		protected relationManager: IRelationManager,
 		protected orderBy?: JSONEntityFieldInOrderBy[]
 	) {
 	}

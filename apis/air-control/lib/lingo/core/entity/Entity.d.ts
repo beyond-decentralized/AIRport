@@ -1,5 +1,4 @@
 import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONRelation } from '@airport/ground-control';
-import { IAirportDatabase } from '../../AirportDatabase';
 import { IFieldUtils } from '../../utils/FieldUtils';
 import { IQueryUtils } from '../../utils/QueryUtils';
 import { IApplicationUtils } from '../../utils/ApplicationUtils';
@@ -120,7 +119,7 @@ export interface IQEntityDriver {
     joinWhereClause: JSONBaseOperation;
     parentJoinEntity: IQEntityInternal;
     relations: IQInternalRelation<any>[];
-    getInstance(airDb: IAirportDatabase, applicationUtils: IApplicationUtils): IQEntityInternal;
+    getInstance(applicationUtils: IApplicationUtils): IQEntityInternal;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JSONRelation;
     getRootJoinEntity(): IQEntityInternal;
     isRootEntity(): boolean;

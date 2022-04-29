@@ -1,9 +1,6 @@
 import { and, } from '@airport/air-control';
-import { container, DI } from '@airport/di';
-import { REPOSITORY_DAO } from '@airport/holding-pattern';
 import { REPOSITORY_FIELD, } from '@airport/terminal-map';
 import { v4 as uuidv4 } from "uuid";
-import { REPOSITORY_MANAGER } from '../../tokens';
 export class RepositoryManager {
     async initialize() {
     }
@@ -46,8 +43,7 @@ already contains a new repository.`);
     }
     async createRepositoryRecord(actor, context) {
         const repository = this.getRepositoryRecord(actor);
-        const repositoryDao = await container(this).get(REPOSITORY_DAO);
-        await repositoryDao.save(repository, context);
+        await this.repositoryDao.save(repository, context);
         return repository;
     }
     ensureRepositoryScopeOnInsertValues(repository, rawInsertValues) {
@@ -93,5 +89,4 @@ already contains a new repository.`);
         };
     }
 }
-DI.set(REPOSITORY_MANAGER, RepositoryManager);
 //# sourceMappingURL=RepositoryManager.js.map

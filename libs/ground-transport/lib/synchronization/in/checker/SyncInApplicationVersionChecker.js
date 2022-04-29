@@ -1,6 +1,3 @@
-import { container, DI } from '@airport/di';
-import { APPLICATION_VERSION_DAO } from '@airport/airspace';
-import { SYNC_IN_APPLICATION_VERSION_CHECKER } from '../../../tokens';
 export class SyncInApplicationVersionChecker {
     async ensureApplicationVersions(message) {
         try {
@@ -20,8 +17,7 @@ export class SyncInApplicationVersionChecker {
     }
     async checkVersionsApplicationsDomains(message) {
         const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message);
-        const applicationVersionDao = await container(this).get(APPLICATION_VERSION_DAO);
-        const applicationVersions = await applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
+        const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
         let lastDomainName;
         let lastApplicationName;
         for (let applicationVersion of applicationVersions) {
@@ -96,5 +92,4 @@ export class SyncInApplicationVersionChecker {
         };
     }
 }
-DI.set(SYNC_IN_APPLICATION_VERSION_CHECKER, SyncInApplicationVersionChecker);
 //# sourceMappingURL=SyncInApplicationVersionChecker.js.map

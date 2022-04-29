@@ -1,35 +1,31 @@
-import { container, DI } from '@airport/di';
-import { SYNC_IN_ACTOR_CHECKER, SYNC_IN_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPOSITORY_CHECKER, SYNC_IN_APPLICATION_CHECKER, SYNC_IN_APPLICATION_VERSION_CHECKER, SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER } from '../../../tokens';
 export class SyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
     async checkMessage(message) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        const [syncInActorChecker, syncInDataChecker, syncInRepositoryChecker, syncInApplicationChecker, syncInApplicationVersionChecker, syncInTerminalChecker, syncInUserChecker] = await container(this).get(SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPOSITORY_CHECKER, SYNC_IN_APPLICATION_CHECKER, SYNC_IN_APPLICATION_VERSION_CHECKER, SYNC_IN_TERMINAL_CHECKER, SYNC_IN_USER_CHECKER);
-        if (!await syncInUserChecker.ensureUsers(message)) {
+        if (!await this.syncInUserChecker.ensureUsers(message)) {
             return false;
         }
-        if (!await syncInTerminalChecker.ensureTerminals(message)) {
+        if (!await this.syncInTerminalChecker.ensureTerminals(message)) {
             return false;
         }
-        if (!await syncInApplicationChecker.ensureApplications(message)) {
+        if (!await this.syncInApplicationChecker.ensureApplications(message)) {
             return false;
         }
-        if (!await syncInActorChecker.ensureActors(message)) {
+        if (!await this.syncInActorChecker.ensureActors(message)) {
             return false;
         }
-        if (!await syncInRepositoryChecker.ensureRepositories(message)) {
+        if (!await this.syncInRepositoryChecker.ensureRepositories(message)) {
             return false;
         }
-        if (!await syncInApplicationVersionChecker.ensureApplicationVersions(message)) {
+        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message)) {
             return false;
         }
-        if (!await syncInDataChecker.checkData(message)) {
+        if (!await this.syncInDataChecker.checkData(message)) {
             return false;
         }
         return true;
     }
 }
-DI.set(SYNC_IN_CHECKER, SyncInChecker);
 //# sourceMappingURL=SyncInChecker.js.map

@@ -1,4 +1,4 @@
-import { container, DI } from "@airport/di";
+import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { API_REGISTRY } from "@airport/check-in";
 export class ApiRegistry {
     initialize(
@@ -38,5 +38,5 @@ export class ApiRegistry {
         };
     }
 }
-DI.set(API_REGISTRY, ApiRegistry);
+DEPENDENCY_INJECTION.set(API_REGISTRY, ApiRegistry);
 //# sourceMappingURL=ApiRegistry.js.map

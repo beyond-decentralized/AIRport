@@ -5,9 +5,6 @@ import {
 	IApplicationVersion
 } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import {
-	DEPENDENCY_INJECTION
-} from "@airport/direction-indicator";
 import { Application_Id, ColumnIndex, repositoryEntity } from "@airport/ground-control";
 import {
 	Actor_Id,
@@ -24,7 +21,6 @@ import {
 	Repository_Id
 } from "@airport/holding-pattern";
 import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-internal";
-import { SYNC_OUT_DATA_SERIALIZER } from "../../../tokens";
 
 export interface ISyncOutDataSerializer {
 
@@ -577,4 +573,3 @@ export class SyncOutDataSerializer
 	}
 
 }
-DEPENDENCY_INJECTION.set(SYNC_OUT_DATA_SERIALIZER, SyncOutDataSerializer)

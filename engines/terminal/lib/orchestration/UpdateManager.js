@@ -1,14 +1,9 @@
-import { QUERY_FACADE, SheetQuery } from '@airport/air-control';
-import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { SheetQuery } from '@airport/air-control';
+import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
-import { OPERATION_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { HISTORY_MANAGER, UPDATE_MANAGER } from '../tokens';
 export class UpdateManager {
     async updateValues(portableQuery, actor, transaction, rootTransaction, context) {
-        const [historyManager, operHistoryDuo, recHistoryDuo, recHistoryNewValueDuo, recHistoryOldValueDuo, repoTransHistoryDuo, sequenceGenerator] = await container(this)
-            .get(HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, SEQUENCE_GENERATOR);
-        const dbEntity = context.ioc.airDb.applications[portableQuery.applicationIndex]
+        const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const errorPrefix = `Error updating '${dbEntity.name}'
 `;
@@ -19,7 +14,7 @@ export class UpdateManager {
         let repositorySheetSelectInfo;
         let systemWideOperationId;
         if (!dbEntity.isLocal && !transaction.isSync) {
-            systemWideOperationId = await getSysWideOpId(context.ioc.airDb, sequenceGenerator);
+            systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
             // TODO: For entity queries an additional query really shouldn't be needed
             // Specifically for entity queries, we got the new values, just record them
             // This will require an additional operation on the first update
@@ -27,7 +22,7 @@ export class UpdateManager {
             // This eats up more disk space but saves on operations that need
             // to be performed (one less query)
             [recordHistoryMap, repositorySheetSelectInfo]
-                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, transaction, rootTransaction, context);
+                = await this.addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, transaction, rootTransaction, context);
             internalFragments.SET.push({
                 column: repositorySheetSelectInfo.systemWideOperationIdColumn,
                 value: systemWideOperationId
@@ -41,22 +36,22 @@ export class UpdateManager {
             // TODO: Entity based updates already have all of the new values being
             // updated, detect the type of update and if entity just pull out
             // the new values from them
-            await this.addNewValueHistory(portableQuery.jsonQuery, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, recHistoryDuo, recHistoryNewValueDuo, transaction, context);
+            await this.addNewValueHistory(portableQuery.jsonQuery, recordHistoryMap, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context);
             context.dbEntity = previousDbEntity;
         }
         return numUpdatedRows;
     }
-    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryTransactionHistoryDuo, transaction, rootTransaction, context) {
+    async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, transaction, rootTransaction, context) {
         if (!context.dbEntity.isRepositoryEntity) {
             throw new Error(errorPrefix +
                 `Cannot add update history for a non-RepositoryEntity`);
         }
-        const qEntity = context.ioc.airDb
+        const qEntity = this.airportDatabase
             .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const jsonUpdate = portableQuery.jsonQuery;
-        const getSheetSelectFromSetClauseResult = context.ioc.applicationUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
+        const getSheetSelectFromSetClauseResult = this.applicationUtils.getSheetSelectFromSetClause(context.dbEntity, qEntity, jsonUpdate.S, errorPrefix);
         const sheetQuery = new SheetQuery(null);
-        const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, context.ioc.queryUtils, context.ioc.fieldUtils);
+        const jsonSelectClause = sheetQuery.nonDistinctSelectClauseToJSON(getSheetSelectFromSetClauseResult.selectClause, this.queryUtils, this.fieldUtils);
         const jsonSelect = {
             S: jsonSelectClause,
             F: [jsonUpdate.U],
@@ -78,14 +73,14 @@ export class UpdateManager {
             // const repository                         = repositories.get(repositoryId)
             const recordHistoryMapForRepository = {};
             recordHistoryMapByRecordId[repositoryId] = recordHistoryMapForRepository;
-            const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
-            const operationHistory = repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, actor, operHistoryDuo, rootTransaction);
+            const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
+            const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.UPDATE_ROWS, context.dbEntity, actor, rootTransaction);
             const recordsForRepositoryId = recordsByRepositoryId[repositoryId];
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];
                 const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
                 const actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
-                const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId, recHistoryDuo);
+                const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId);
                 recordHistoryMapForActor[actorRecordId] = recordHistory;
                 for (let i = 0; i < recordToUpdate.length; i++) {
                     switch (i) {
@@ -97,14 +92,14 @@ export class UpdateManager {
                     const dbColumn = getSheetSelectFromSetClauseResult
                         .selectClause[i].dbColumn;
                     const value = recordToUpdate[i];
-                    recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
+                    this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);
                 }
             }
         }
         return [recordHistoryMapByRecordId, getSheetSelectFromSetClauseResult];
     }
-    async addNewValueHistory(jsonUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, recHistoryDuo, recHistoryNewValueDuo, transaction, context) {
-        const qEntity = context.ioc.airDb.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
+    async addNewValueHistory(jsonUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context) {
+        const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const sheetQuery = new SheetQuery({
             from: [
                 qEntity
@@ -113,9 +108,7 @@ export class UpdateManager {
             where: qEntity[repositoryEntity.systemWideOperationId]
                 .equals(systemWideOperationId)
         });
-        const queryFacade = await container(this)
-            .get(QUERY_FACADE);
-        let portableSelect = queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);
+        let portableSelect = this.queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);
         const resultSetIndexByColumnIndex = new Map();
         const selectDbColumns = [];
         let i = 0;
@@ -147,7 +140,7 @@ export class UpdateManager {
                         throw new Error(errorPrefix + `Column '${dbColumn.entity.name}'.'${dbColumn.name}' is NOT NULL
 						and cannot have NULL values.`);
                     }
-                    recHistoryDuo.addNewValue(recordHistory, dbColumn, value, recHistoryNewValueDuo);
+                    this.recordHistoryDuo.addNewValue(recordHistory, dbColumn, value);
                 }
             }
         }
@@ -167,5 +160,4 @@ export class UpdateManager {
         };
     }
 }
-DI.set(UPDATE_MANAGER, UpdateManager);
 //# sourceMappingURL=UpdateManager.js.map

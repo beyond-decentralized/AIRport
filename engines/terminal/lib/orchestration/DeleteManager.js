@@ -1,21 +1,16 @@
-import { AIRPORT_DATABASE, APPLICATION_UTILS, valuesEqual, Y } from '@airport/air-control';
-import { getSysWideOpId, SEQUENCE_GENERATOR } from '@airport/check-in';
-import { container, DI } from '@airport/di';
+import { valuesEqual, Y } from '@airport/air-control';
+import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, repositoryEntity, } from '@airport/ground-control';
-import { OPERATION_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, RECORD_HISTORY_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, } from '@airport/holding-pattern';
-import { DELETE_MANAGER, HISTORY_MANAGER, } from '../tokens';
 export class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, rootTransaction, context) {
-        const [airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils, sequenceGenerator] = await container(this)
-            .get(AIRPORT_DATABASE, HISTORY_MANAGER, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_TRANSACTION_HISTORY_DUO, APPLICATION_UTILS, SEQUENCE_GENERATOR);
-        const dbEntity = airDb
+        const dbEntity = this.airportDatabase
             .applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
             .entities[portableQuery.tableIndex];
         const deleteCommand = transaction.deleteWhere(portableQuery, context);
         if (dbEntity.isLocal || transaction.isSync) {
             return await deleteCommand;
         }
-        const selectCascadeTree = this.getCascadeSubTree(dbEntity, applicationUtils);
+        const selectCascadeTree = this.getCascadeSubTree(dbEntity);
         const jsonDelete = portableQuery.jsonQuery;
         const jsonSelect = {
             S: selectCascadeTree,
@@ -35,9 +30,9 @@ export class DeleteManager {
         const recordsToDelete = new Map();
         const repositoryIdSet = new Set();
         for (const treeToDelete of treesToDelete) {
-            this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils);
+            this.recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, this.applicationUtils);
         }
-        await this.recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repoTransHistoryDuo, applicationUtils, sequenceGenerator, transaction, rootTransaction, context);
+        await this.recordTreeToDelete(recordsToDelete, actor, transaction, rootTransaction, context);
         return await deleteCommand;
     }
     recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils) {
@@ -107,26 +102,26 @@ export class DeleteManager {
         }
         return true;
     }
-    async recordTreeToDelete(recordsToDelete, actor, airDb, historyManager, operHistoryDuo, recHistoryDuo, recHistoryOldValueDuo, repositoryTransactionHistoryDuo, applicationUtils, sequenceGenerator, transaction, rootTransaction, context) {
+    async recordTreeToDelete(recordsToDelete, actor, transaction, rootTransaction, context) {
         let systemWideOperationId;
         for (const [applicationIndex, applicationRecordsToDelete] of recordsToDelete) {
             for (const [entityIndex, entityRecordsToDelete] of applicationRecordsToDelete) {
-                const dbEntity = airDb.applications[applicationIndex].currentVersion[0]
+                const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
                     .applicationVersion.entities[entityIndex];
                 if (!systemWideOperationId) {
-                    systemWideOperationId = await getSysWideOpId(airDb, sequenceGenerator);
+                    systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
                 }
                 for (const [repositoryId, entityRecordsToDeleteForRepo] of entityRecordsToDelete) {
-                    const repositoryTransactionHistory = await historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
-                    const operationHistory = repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, actor, operHistoryDuo, rootTransaction);
+                    const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
+                    const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, actor, rootTransaction);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
-                        const recordHistory = operHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor.id, recordToDelete.actorRecordId, recHistoryDuo);
+                        const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor.id, recordToDelete.actorRecordId);
                         for (const dbProperty of dbEntity.properties) {
                             if (dbProperty.relation && dbProperty.relation.length) {
                                 const dbRelation = dbProperty.relation[0];
                                 switch (dbRelation.relationType) {
                                     case EntityRelationType.MANY_TO_ONE:
-                                        applicationUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
+                                        this.applicationUtils.forEachColumnOfRelation(dbRelation, recordToDelete, (dbColumn, value, propertyNameChains) => {
                                             switch (dbColumn.name) {
                                                 // Do not add Actor or Repository the are recorded
                                                 // at record history level
@@ -134,7 +129,7 @@ export class DeleteManager {
                                                 case repositoryEntity.REPOSITORY_ID:
                                                     break;
                                                 default:
-                                                    recHistoryDuo.addOldValue(recordHistory, dbColumn, value, recHistoryOldValueDuo);
+                                                    this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);
                                             }
                                         });
                                         break;
@@ -148,8 +143,8 @@ export class DeleteManager {
                             }
                             else {
                                 const dbColumn = dbProperty.propertyColumns[0].column;
-                                recHistoryDuo
-                                    .addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name], recHistoryOldValueDuo);
+                                this.recordHistoryDuo
+                                    .addOldValue(recordHistory, dbColumn, recordToDelete[dbProperty.name]);
                             }
                         }
                     }
@@ -157,7 +152,7 @@ export class DeleteManager {
             }
         }
     }
-    getCascadeSubTree(dbEntity, applicationUtils, selectClause = {}) {
+    getCascadeSubTree(dbEntity, selectClause = {}) {
         for (const dbProperty of dbEntity.properties) {
             let dbRelation;
             if (dbProperty.relation && dbProperty.relation.length) {
@@ -171,10 +166,10 @@ export class DeleteManager {
                         }
                         const subTree = {};
                         selectClause[dbProperty.name] = subTree;
-                        this.getCascadeSubTree(dbRelation.relationEntity, applicationUtils, subTree);
+                        this.getCascadeSubTree(dbRelation.relationEntity, subTree);
                         break;
                     case EntityRelationType.MANY_TO_ONE:
-                        applicationUtils.addRelationToEntitySelectClause(dbRelation, selectClause);
+                        this.applicationUtils.addRelationToEntitySelectClause(dbRelation, selectClause);
                         break;
                     default:
                         throw new Error(`Unknown relation type: '${dbRelation.relationType}' 
@@ -188,5 +183,4 @@ export class DeleteManager {
         return selectClause;
     }
 }
-DI.set(DELETE_MANAGER, DeleteManager);
 //# sourceMappingURL=DeleteManager.js.map

@@ -1,20 +1,13 @@
 import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
-import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
-	SYNC_IN_ACTOR_CHECKER,
-	SYNC_IN_CHECKER,
-	SYNC_IN_DATA_CHECKER,
-	SYNC_IN_REPOSITORY_CHECKER,
-	SYNC_IN_APPLICATION_CHECKER,
-	SYNC_IN_APPLICATION_VERSION_CHECKER,
-	SYNC_IN_TERMINAL_CHECKER,
-	SYNC_IN_USER_CHECKER
-} from '../../../tokens'
+import { ISyncInApplicationVersionChecker } from './SyncInApplicationVersionChecker';
+import { ISyncInActorChecker } from './SyncInActorChecker';
+import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
+import { ISyncInDataChecker } from './SyncInDataChecker';
+import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
+import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
+import { ISyncInUserChecker } from './SyncInUserChecker';
 
 export interface ISyncInChecker {
 
@@ -27,6 +20,14 @@ export interface ISyncInChecker {
 export class SyncInChecker
 	implements ISyncInChecker {
 
+	syncInActorChecker: ISyncInActorChecker
+	syncInApplicationChecker: ISyncInApplicationChecker
+	syncInApplicationVersionChecker: ISyncInApplicationVersionChecker
+	syncInDataChecker: ISyncInDataChecker
+	syncInRepositoryChecker: ISyncInRepositoryChecker
+	syncInTerminalChecker: ISyncInTerminalChecker
+	syncInUserChecker: ISyncInUserChecker
+
 	/**
 	 * Check the message and load all required auxiliary entities.
 	 */
@@ -35,32 +36,25 @@ export class SyncInChecker
 	): Promise<boolean> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
-		const [syncInActorChecker, syncInDataChecker, syncInRepositoryChecker,
-			syncInApplicationChecker, syncInApplicationVersionChecker, syncInTerminalChecker,
-			syncInUserChecker] = await container(this).get(
-				SYNC_IN_ACTOR_CHECKER, SYNC_IN_DATA_CHECKER, SYNC_IN_REPOSITORY_CHECKER,
-				SYNC_IN_APPLICATION_CHECKER, SYNC_IN_APPLICATION_VERSION_CHECKER, SYNC_IN_TERMINAL_CHECKER,
-				SYNC_IN_USER_CHECKER)
-
-		if (! await syncInUserChecker.ensureUsers(message)) {
+		if (! await this.syncInUserChecker.ensureUsers(message)) {
 			return false
 		}
-		if (! await syncInTerminalChecker.ensureTerminals(message)) {
+		if (! await this.syncInTerminalChecker.ensureTerminals(message)) {
 			return false
 		}
-		if (! await syncInApplicationChecker.ensureApplications(message)) {
+		if (! await this.syncInApplicationChecker.ensureApplications(message)) {
 			return false
 		}
-		if (! await syncInActorChecker.ensureActors(message)) {
+		if (! await this.syncInActorChecker.ensureActors(message)) {
 			return false
 		}
-		if (! await syncInRepositoryChecker.ensureRepositories(message)) {
+		if (! await this.syncInRepositoryChecker.ensureRepositories(message)) {
 			return false
 		}
-		if (!await syncInApplicationVersionChecker.ensureApplicationVersions(message)) {
+		if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message)) {
 			return false
 		}
-		if (!await syncInDataChecker.checkData(message)) {
+		if (!await this.syncInDataChecker.checkData(message)) {
 			return false
 		}
 
@@ -68,5 +62,3 @@ export class SyncInChecker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(SYNC_IN_CHECKER, SyncInChecker)

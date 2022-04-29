@@ -82,7 +82,7 @@ export interface IDatabaseFacade {
     prepare<QF extends Function>(queryFunction: QF): IFunctionWrapper<QF>;
 }
 export interface IQueryFacade {
-    ensureIocContext<E>(context: IQueryContext): Promise<void>;
+    ensureContext<E>(context: IQueryContext): Promise<void>;
     find<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<EntityArray>;
     findOne<E>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<E>;
     search<E, EntityArray extends Array<E>>(query: IAbstractQuery, queryResultType: QueryResultType, ctx: IEntityContext): Promise<Observable<EntityArray>>;

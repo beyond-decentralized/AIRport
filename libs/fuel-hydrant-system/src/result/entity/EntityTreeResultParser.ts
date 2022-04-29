@@ -1,11 +1,11 @@
 import {
 	ReferencedColumnData,
 	valuesEqual
-}                            from '@airport/air-control'
-import {DbEntity}            from '@airport/ground-control'
+} from '@airport/air-control'
+import { DbEntity } from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {TreeResultParser}    from '../TreeResultParser'
-import {IEntityResultParser} from './IEntityResultParser'
+import { TreeResultParser } from '../TreeResultParser'
+import { IEntityResultParser } from './IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -20,7 +20,7 @@ export class EntityTreeResultParser
 	extends TreeResultParser
 	implements IEntityResultParser {
 
-	currentRowObjectMap: { [alias: string]: any }   = {}
+	currentRowObjectMap: { [alias: string]: any } = {}
 	objectEqualityMap: { [alias: string]: boolean } = {}
 
 	lastRowObjectMap: { [alias: string]: any } = {}
@@ -32,8 +32,8 @@ export class EntityTreeResultParser
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): any {
-		let resultObject                      = context.ioc.applicationUtils.getNewEntity(
-			dbEntity, context.ioc.airDb)
+		let resultObject = this.applicationUtils.getNewEntity(
+			dbEntity)
 		this.currentRowObjectMap[entityAlias] = resultObject
 		if (this.objectEqualityMap[entityAlias] !== undefined) {
 			this.objectEqualityMap[entityAlias] = true
@@ -78,7 +78,7 @@ export class EntityTreeResultParser
 			return
 		}
 		// Both last and current objects must exist here
-		let lastObject                      = this.lastRowObjectMap[entityAlias]
+		let lastObject = this.lastRowObjectMap[entityAlias]
 		// @ManyToOne objects will have been merged by now, just check if its the same facade
 		this.objectEqualityMap[entityAlias] = lastObject[propertyName] === resultObject[propertyName]
 	}
@@ -156,7 +156,7 @@ export class EntityTreeResultParser
 		// Both last and current objects must exist here
 		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
 
-		let currentMtoStub                  = resultObject[propertyName]
+		let currentMtoStub = resultObject[propertyName]
 		this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 

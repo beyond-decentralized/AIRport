@@ -1,10 +1,6 @@
-import { container, DI } from '@airport/di';
-import { USER_DAO } from '@airport/travel-document-checkpoint-internal';
-import { SYNC_IN_USER_CHECKER } from '../../../tokens';
 export class SyncInUserChecker {
     async ensureUsers(message) {
         try {
-            const userDao = await container(this).get(USER_DAO);
             let userUuids = [];
             let messageUserIndexMap = new Map();
             for (let i = 0; i < message.users.length; i++) {
@@ -20,14 +16,14 @@ export class SyncInUserChecker {
                 // Make sure id field is not in the input
                 delete user.id;
             }
-            const users = await userDao.findByUuIds(userUuids);
+            const users = await this.userDao.findByUuIds(userUuids);
             for (const user of users) {
                 const messageUserIndex = messageUserIndexMap.get(user.uuId);
                 message.users[messageUserIndex] = user;
             }
             const missingUsers = message.users.filter(messageUser => !messageUser.id);
             if (missingUsers.length) {
-                await this.addMissingUsers(missingUsers, userDao);
+                await this.addMissingUsers(missingUsers);
             }
         }
         catch (e) {
@@ -36,14 +32,13 @@ export class SyncInUserChecker {
         }
         return true;
     }
-    async addMissingUsers(missingUsers, userDao) {
+    async addMissingUsers(missingUsers) {
         for (const user of missingUsers) {
             if (!user.username || typeof user.username !== 'string') {
                 throw new Error(`Invalid User.username ${user.username}`);
             }
         }
-        await userDao.insert(missingUsers);
+        await this.userDao.insert(missingUsers);
     }
 }
-DI.set(SYNC_IN_USER_CHECKER, SyncInUserChecker);
 //# sourceMappingURL=SyncInUserChecker.js.map

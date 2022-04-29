@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -19,7 +18,6 @@ import {
 import {
 	ISynchronizationConflict
 } from '@airport/moving-walkway'
-import { SYNC_IN_UTILS } from '../../tokens'
 
 export type RemoteApplicationIndex = ApplicationIndex;
 export type RemoteApplicationVersionId = ApplicationVersionId;
@@ -108,4 +106,3 @@ export class SyncInUtils
 	}
 
 }
-DEPENDENCY_INJECTION.set(SYNC_IN_UTILS, SyncInUtils)

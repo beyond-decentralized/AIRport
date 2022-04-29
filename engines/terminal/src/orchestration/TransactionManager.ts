@@ -1,6 +1,5 @@
 import { IQEntityInternal } from '@airport/air-control';
 import {
-	container,
 	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
@@ -12,7 +11,7 @@ import {
 	INTERNAL_DOMAIN,
 	IRootTransaction
 } from '@airport/ground-control';
-import { SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
+import { ISynchronizationOutManager } from '@airport/ground-transport';
 import {
 	ITransactionHistoryDuo,
 	Q
@@ -37,6 +36,7 @@ export class TransactionManager
 	activeQueries: IActiveQueries
 	idGenerator: IIdGenerator
 	storeDriver: IStoreDriver
+	synchronizationOutManager: ISynchronizationOutManager
 	terminalStore: ITerminalStore
 	transactionHistoryDuo: ITransactionHistoryDuo
 
@@ -283,10 +283,7 @@ parent transactions.
 
 			let transactionHistory = transaction.transactionHistory;
 			if (!parentTransaction && transactionHistory.allRecordHistory.length) {
-				const synchronizationOutManager = await container(this)
-					.get(SYNCHRONIZATION_OUT_MANAGER)
-
-				await synchronizationOutManager.synchronizeOut(
+				await this.synchronizationOutManager.synchronizeOut(
 					transactionHistory.repositoryTransactionHistories)
 			}
 		} finally {

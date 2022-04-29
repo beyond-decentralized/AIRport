@@ -9,7 +9,7 @@ import { AbstractObjectResultParser } from './entity/IEntityResultParser';
  */
 export class PlainResultParser extends AbstractObjectResultParser {
     addEntity(entityAlias, dbEntity, context) {
-        return context.ioc.applicationUtils.getNewEntity(dbEntity, context.ioc.airDb);
+        return this.applicationUtils.getNewEntity(dbEntity);
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;

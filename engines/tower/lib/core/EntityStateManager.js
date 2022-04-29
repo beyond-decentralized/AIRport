@@ -1,7 +1,7 @@
-import { DI } from '@airport/di';
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { EntityState, ENTITY_STATE_MANAGER } from '@airport/ground-control';
 export function markForDeletion(entity) {
-    DI.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
+    DEPENDENCY_INJECTION.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
 export class EntityStateManager {
     isStub(entity) {
@@ -122,7 +122,7 @@ EntityStateManager.DELETED_PROPERTY = '__deleted__';
 EntityStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 EntityStateManager.STATE_FIELD = '__state__';
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
-DI.set(ENTITY_STATE_MANAGER, EntityStateManager);
+DEPENDENCY_INJECTION.set(ENTITY_STATE_MANAGER, EntityStateManager);
 export function injectEntityStateManager() {
     console.log('inject EntityStateManager');
 }

@@ -1,26 +1,24 @@
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
-import { container, DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     Repository_Source,
     Repository_UuId
 } from "@airport/holding-pattern";
-import { NONHUB_CLIENT } from "@airport/nonhub-client";
-import { DEBUG_SYNCHRONIZATION_ADAPTER } from "../tokens";
+import { INonhubClient } from "@airport/nonhub-client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 export class DebugSynchronizationAdapter
     implements ISynchronizationAdapter {
+
+    nonhubClient: INonhubClient
 
     async getTransactionsForRepository(
         repositorySource: Repository_Source,
         repositoryUuId: Repository_UuId,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
-        const nonhubClient = await container(this).get(NONHUB_CLIENT)
         const response: RepositorySynchronizationReadResponseFragment[]
-            = await nonhubClient.getRepositoryTransactions(
+            = await this.nonhubClient.getRepositoryTransactions(
                 repositorySource, repositoryUuId, sinceSyncTimestamp)
-
 
         const messages: RepositorySynchronizationMessage[] = []
 
@@ -70,9 +68,8 @@ export class DebugSynchronizationAdapter
             return false
         }
 
-        const nonhubClient = await container(this).get(NONHUB_CLIENT)
-        const syncTimestamp = await nonhubClient.sendRepositoryTransactions(repositorySource,
-            repositoryUuId, messages)
+        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(
+            repositorySource, repositoryUuId, messages)
 
         if (!syncTimestamp) {
             return false
@@ -86,4 +83,3 @@ export class DebugSynchronizationAdapter
     }
 
 }
-DEPENDENCY_INJECTION.set(DEBUG_SYNCHRONIZATION_ADAPTER, DebugSynchronizationAdapter)

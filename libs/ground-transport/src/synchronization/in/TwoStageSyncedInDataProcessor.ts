@@ -1,7 +1,6 @@
 import {
 	RepositorySynchronizationMessage
 } from '@airport/arrivals-n-departures'
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ApplicationVersionId,
 	TransactionType
@@ -24,12 +23,9 @@ import {
 	ITransaction
 } from '@airport/terminal-map'
 import { IApplication } from '@airport/airspace'
-import {
-	STAGE1_SYNCED_IN_DATA_PROCESSOR,
-	STAGE2_SYNCED_IN_DATA_PROCESSOR,
-	TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
-} from '../../tokens'
 import { ISyncRepoTransHistory } from './SyncInUtils'
+import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
+import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -47,6 +43,8 @@ export class TwoStageSyncedInDataProcessor
 	implements ITwoStageSyncedInDataProcessor {
 
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+	stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor
+	stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor
 	synchronizationConflictDao: ISynchronizationConflictDao
 	synchronizationConflictValuesDao: ISynchronizationConflictValuesDao
 
@@ -144,11 +142,8 @@ export class TwoStageSyncedInDataProcessor
 		actorMayById: Map<Actor_Id, IActor>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 	): Promise<void> {
-		const [stage1SyncedInDataProcessor, stage2SyncedInDataProcessor]
-			= await container(this).get(
-				STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR)
 		const stage1Result
-			= await stage1SyncedInDataProcessor.performStage1DataProcessing(
+			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
 				repositoryTransactionHistoryMapByRepositoryId, actorMayById)
 
 		let allSyncConflicts: ISynchronizationConflict[] = []
@@ -162,7 +157,8 @@ export class TwoStageSyncedInDataProcessor
 			}
 		}
 
-		await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap)
+		await this.stage2SyncedInDataProcessor.applyChangesToDb(
+			stage1Result, applicationsByApplicationVersionIdMap)
 
 
 		if (allSyncConflicts.length) {
@@ -175,5 +171,3 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor)

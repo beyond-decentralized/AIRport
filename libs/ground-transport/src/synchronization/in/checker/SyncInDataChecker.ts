@@ -1,9 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	container,
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
 	ChangeType,
 	ColumnIndex,
 	repositoryEntity,
@@ -13,9 +9,6 @@ import {
 	IApplicationEntity,
 	IApplicationColumn
 } from '@airport/airspace'
-import {
-	SYNC_IN_DATA_CHECKER
-} from '../../../tokens'
 import { IAirportDatabase } from '@airport/air-control'
 import {
 	getSysWideOpIds,
@@ -390,4 +383,3 @@ Value is for ORIGINAL_REPOSITORY_ID and could find RepositorySynchronizationMess
 		}
 	}
 }
-DEPENDENCY_INJECTION.set(SYNC_IN_DATA_CHECKER, SyncInDataChecker)

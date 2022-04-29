@@ -1,10 +1,10 @@
 import { QueryResultType } from '@airport/ground-control';
 import { EntityOrderByParser } from './EntityOrderByParser';
-export function getOrderByParser(queryResultType, selectClauseFragment, validator, orderBy) {
+export function getOrderByParser(queryResultType, selectClauseFragment, airportDatabase, qValidator, relationalManager, orderBy) {
     switch (queryResultType) {
         case QueryResultType.ENTITY_GRAPH:
         case QueryResultType.ENTITY_TREE:
-            return new EntityOrderByParser(selectClauseFragment, validator, orderBy);
+            return new EntityOrderByParser(selectClauseFragment, airportDatabase, qValidator, relationalManager, orderBy);
         //		case QueryResultType.FLAT:
         //		case QueryResultType.FIELD:
         //			return new ExactOrderByParser(rootQEntity, selectClauseFragment,

@@ -1,5 +1,5 @@
 import { CLIENT_QUERY_MANAGER } from "@airport/check-in";
-import { DI } from "@airport/di";
+import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 /**
  * TODO: probably not-needed - queries no longer come from
  * the client directly.  They can come from the client but
@@ -12,5 +12,5 @@ export class ClientQueryManager {
         throw new Error('TODO: implement');
     }
 }
-DI.set(CLIENT_QUERY_MANAGER, ClientQueryManager);
+DEPENDENCY_INJECTION.set(CLIENT_QUERY_MANAGER, ClientQueryManager);
 //# sourceMappingURL=ClientQueryManager.js.map

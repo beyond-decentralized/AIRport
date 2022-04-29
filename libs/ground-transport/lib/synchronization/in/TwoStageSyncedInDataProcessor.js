@@ -1,8 +1,5 @@
-import { container, DI } from '@airport/di';
 import { TransactionType } from '@airport/ground-control';
-import { RepositoryTransactionType, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO, } from '@airport/moving-walkway';
-import { STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, TWO_STAGE_SYNCED_IN_DATA_PROCESSOR } from '../../tokens';
+import { RepositoryTransactionType } from '@airport/holding-pattern';
 export class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
@@ -39,7 +36,6 @@ export class TwoStageSyncedInDataProcessor {
         }
     }
     async getDataStructures(messages) {
-        const repositoryTransactionHistoryDuo = await container(this).get(REPOSITORY_TRANSACTION_HISTORY_DUO);
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
         const applicationsByApplicationVersionIdMap = new Map();
         const actorMapById = new Map();
@@ -55,7 +51,7 @@ export class TwoStageSyncedInDataProcessor {
             }
         }
         for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
-            repositoryTransactionHistoryDuo
+            this.repositoryTransactionHistoryDuo
                 .sortRepoTransHistories(repoTransHistories, actorMapById);
         }
         return {
@@ -65,8 +61,7 @@ export class TwoStageSyncedInDataProcessor {
         };
     }
     async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap) {
-        const [stage1SyncedInDataProcessor, stage2SyncedInDataProcessor, synchronizationConflictDao, synchronizationConflictValuesDao] = await container(this).get(STAGE1_SYNCED_IN_DATA_PROCESSOR, STAGE2_SYNCED_IN_DATA_PROCESSOR, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO);
-        const stage1Result = await stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
@@ -77,14 +72,13 @@ export class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap);
         if (allSyncConflicts.length) {
-            await synchronizationConflictDao.insert(allSyncConflicts);
+            await this.synchronizationConflictDao.insert(allSyncConflicts);
         }
         if (allSyncConflictValues.length) {
-            await synchronizationConflictValuesDao.insert(allSyncConflictValues);
+            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues);
         }
     }
 }
-DI.set(TWO_STAGE_SYNCED_IN_DATA_PROCESSOR, TwoStageSyncedInDataProcessor);
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

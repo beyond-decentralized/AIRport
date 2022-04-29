@@ -1,12 +1,8 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
 	IApplicationVersion,
 	IApplicationVersionDao
 } from '@airport/airspace'
-import { SYNC_IN_APPLICATION_VERSION_CHECKER } from '../../../tokens'
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -146,4 +142,3 @@ export class SyncInApplicationVersionChecker
 	}
 
 }
-DEPENDENCY_INJECTION.set(SYNC_IN_APPLICATION_VERSION_CHECKER, SyncInApplicationVersionChecker)

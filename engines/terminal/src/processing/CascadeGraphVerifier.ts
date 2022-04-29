@@ -1,9 +1,7 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	ICascadeGraphVerifier,
 	IOperationContext
 } from '@airport/terminal-map'
-import { CASCADE_GRAPH_VERIFIER } from '../tokens'
 
 export class CascadeGraphVerifier
 	implements ICascadeGraphVerifier {
@@ -24,5 +22,3 @@ export class CascadeGraphVerifier
 		return root
 	}
 }
-
-DEPENDENCY_INJECTION.set(CASCADE_GRAPH_VERIFIER, CascadeGraphVerifier)

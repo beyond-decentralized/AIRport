@@ -1,6 +1,5 @@
 import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, SQLDataType, TableIndex } from '@airport/ground-control';
 import { QEntityConstructor } from '../../impl/core/entity/Entity';
-import { IAirportDatabase } from '../AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../core/entity/Entity';
 import { IQFieldInternal } from '../core/field/Field';
 export interface ManyToOneColumnMapping {
@@ -37,10 +36,10 @@ export interface RepositorySheetSelectInfo {
     selectClauseColumns?: DbColumn[];
 }
 export interface IApplicationUtils {
-    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex, airDb: IAirportDatabase): DbEntity;
-    getQEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): QEntityConstructor;
-    getEntityConstructor(dbEntity: DbEntity, airDb: IAirportDatabase): any;
-    getNewEntity(dbEntity: DbEntity, airDb: IAirportDatabase): any;
+    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex): DbEntity;
+    getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
+    getEntityConstructor(dbEntity: DbEntity): any;
+    getNewEntity(dbEntity: DbEntity): any;
     isIdEmpty(idValue: any): boolean;
     isEmpty(value: any): boolean;
     isRelationColumn(dbColumn: DbColumn): boolean;

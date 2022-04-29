@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { ITransaction, ITransactionContext } from '@airport/terminal-map';
 /**
  * Created by Papa on 4/3/2019.

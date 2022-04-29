@@ -1,6 +1,6 @@
 import { DEPENDENCY_INJECTION, } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
-import { LOOKUP, QUERY_CONTEXT_LOADER } from '../../../tokens';
+import { ENTITY_UTILS, LOOKUP, QUERY_FACADE } from '../../../tokens';
 export class LookupProxy {
     ensureContext(context) {
         return doEnsureContext(context);
@@ -16,35 +16,35 @@ export class Lookup {
         return doEnsureContext(context);
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        const queryContextLoader = await DEPENDENCY_INJECTION.db().get(QUERY_CONTEXT_LOADER);
-        await queryContextLoader.ensure(context);
+        const [entityUtils, queryFacade] = await DEPENDENCY_INJECTION.db()
+            .get(ENTITY_UTILS, QUERY_FACADE);
         let query;
         if (QueryClass) {
-            const rawNonEntityQuery = context.ioc.entityUtils.getQuery(rawQuery);
+            const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
             query = new QueryClass(rawNonEntityQuery);
         }
         else {
-            query = context.ioc.entityUtils.getEntityQuery(rawQuery);
+            query = entityUtils.getEntityQuery(rawQuery);
             queryResultType = this.getQueryResultType(queryResultType, mapResults);
         }
         let queryMethod;
         if (search) {
             if (one) {
-                queryMethod = context.ioc.queryFacade.searchOne;
+                queryMethod = queryFacade.searchOne;
             }
             else {
-                queryMethod = context.ioc.queryFacade.search;
+                queryMethod = queryFacade.search;
             }
         }
         else {
             if (one) {
-                queryMethod = context.ioc.queryFacade.findOne;
+                queryMethod = queryFacade.findOne;
             }
             else {
-                queryMethod = context.ioc.queryFacade.find;
+                queryMethod = queryFacade.find;
             }
         }
-        let result = await queryMethod.call(context.ioc.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
+        let result = await queryMethod.call(queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
         if (!one && !result) {
             result = [];
         }

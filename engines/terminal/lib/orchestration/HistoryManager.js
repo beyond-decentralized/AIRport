@@ -1,19 +1,10 @@
-import { container, DI } from '@airport/di';
 import { TransactionType } from '@airport/ground-control';
-import { REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
-import { HISTORY_MANAGER } from '../tokens';
 export class HistoryManager {
-    // private operHistoryDuo: Promise<IOperationHistoryDuo>
-    // private recHistoryDuo: Promise<IRecordHistoryDuo>
-    // private repoTransHistoryDuo: Promise<IRepositoryTransactionHistoryDuo>
     async getNewTransactionHistory(transactionType = TransactionType.LOCAL) {
-        const transactionHistoryDuo = await container(this).get(TRANSACTION_HISTORY_DUO);
-        return await transactionHistoryDuo.getNewRecord(transactionType);
+        return await this.transactionHistoryDuo.getNewRecord(transactionType);
     }
     async getNewRepositoryTransactionHistory(transactionHistory, repositoryId, context) {
-        const [repositoryTransactionHistoryDuo, transactionHistoryDuo] = await container(this).get(REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO);
-        return await transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.newRepository, repositoryTransactionHistoryDuo);
+        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.newRepository);
     }
 }
-DI.set(HISTORY_MANAGER, HistoryManager);
 //# sourceMappingURL=HistoryManager.js.map

@@ -1,5 +1,5 @@
-import { MappedEntityArray, ReferencedColumnData } from '@airport/air-control';
-import { DbEntity, SQLDataType } from '@airport/ground-control';
+import { IApplicationUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-control';
+import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 /**
  * Created by Papa on 10/16/2016.
@@ -23,6 +23,9 @@ export interface IEntityResultParser {
     bridge(parsedResults: any[], selectClauseFragment: any, context: IFuelHydrantContext): any[] | MappedEntityArray<any>;
 }
 export declare abstract class AbstractObjectResultParser {
+    protected applicationUtils: IApplicationUtils;
+    protected entityStateManager: IEntityStateManager;
+    constructor(applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager);
     protected addManyToOneStub(resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[], context: IFuelHydrantContext): boolean;
 }
 //# sourceMappingURL=IEntityResultParser.d.ts.map

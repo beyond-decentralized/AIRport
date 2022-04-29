@@ -1,7 +1,7 @@
 import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-control';
 import { DbApplication, ISaveResult } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
-    db: IDatabaseFacade;
+    databaseFacade: IDatabaseFacade;
     entityMap: Map<any, IEntityRecord>;
     F: FunctionsAndOperators;
     functions: FunctionsAndOperators;

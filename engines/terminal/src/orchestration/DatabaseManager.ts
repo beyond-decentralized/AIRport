@@ -3,7 +3,6 @@ import {
 } from '@airport/air-control';
 import {
 	container,
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -20,18 +19,16 @@ import {
 	IStoreDriver,
 	ITransactionalServer
 } from '@airport/terminal-map';
-import {
-	DATABASE_MANAGER,
-	INTERNAL_RECORD_MANAGER
-} from '../tokens';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { BLUEPRINT } from '@airport/blueprint';
+import { IInternalRecordManager } from '../data/InternalRecordManager';
 
 export class DatabaseManager
 	implements IDatabaseManager {
 
 	applicationDao: IApplicationDao
 	applicationInitializer: IApplicationInitializer
+	internalRecordManager: IInternalRecordManager
 	storeDriver: IStoreDriver
 	transactionalServer: ITransactionalServer
 
@@ -66,9 +63,7 @@ export class DatabaseManager
 		await this.installStarterApplication(false, hydrate, context);
 
 		if (!hydrate) {
-			const internalRecordManager = await container(this)
-				.get(INTERNAL_RECORD_MANAGER)
-			await internalRecordManager.initTerminal(domainName, context)
+			await this.internalRecordManager.initTerminal(domainName, context)
 		}
 
 		(this.transactionalServer as any).tempActor = null;
@@ -157,5 +152,3 @@ export class DatabaseManager
 		}
 	}
 }
-
-DEPENDENCY_INJECTION.set(DATABASE_MANAGER, DatabaseManager);

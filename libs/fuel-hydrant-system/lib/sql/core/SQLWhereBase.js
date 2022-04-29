@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, OperationCategory, ApplicationMap, SqlOperator } from '@airport/ground-control';
-import { SQL_QUERY_ADAPTOR } from '../../tokens';
 /**
  * Created by Papa on 10/2/2016.
  */
@@ -12,9 +10,15 @@ export var ClauseType;
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 export class SQLWhereBase {
-    constructor(dbEntity, dialect, context) {
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
+        this.airportDatabase = airportDatabase;
+        this.applicationUtils = applicationUtils;
+        this.entityStateManager = entityStateManager;
+        this.qMetadataUtils = qMetadataUtils;
+        this.sqlQueryAdapter = sqlQueryAdapter;
+        this.storeDriver = storeDriver;
         this.context = context;
         this.parameterReferences = [];
         this.fieldMap = new ApplicationMap();
@@ -23,8 +27,6 @@ export class SQLWhereBase {
     }
     getParameters(parameterMap, //,
     context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         // let populatedParameterMap: {[parameterAlias: string]: boolean} = {};
         return this.parameterReferences
             /*
@@ -49,25 +51,23 @@ export class SQLWhereBase {
                 }
                 throw new Error(`No parameter found for alias '${parameterReference}'`);
             }
-            return sqlAdaptor.getParameterValue(parameter);
+            return this.sqlQueryAdapter.getParameterValue(parameter);
         });
     }
     getFunctionCallValue(rawValue, context) {
         return this.getFieldValue(rawValue, ClauseType.FUNCTION_CALL, null, context);
     }
     getFieldFunctionValue(aField, defaultCallback, context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         let aValue = aField.v;
         if (this.isParameterReference(aValue)) {
             let stringValue = aValue;
             this.parameterReferences.push(stringValue);
-            aValue = sqlAdaptor.getParameterReference(this.parameterReferences, stringValue);
+            aValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, stringValue);
         }
         else {
             aValue = this.getFieldValue(aValue, ClauseType.FUNCTION_CALL, defaultCallback, context);
         }
-        aValue = sqlAdaptor.getFunctionAdaptor()
+        aValue = this.sqlQueryAdapter.getFunctionAdaptor()
             .getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
         this.validator.addFunctionAlias(aField.fa);
         return aValue;
@@ -194,7 +194,7 @@ export class SQLWhereBase {
         return whereFragment;
     }
     getEntityPropertyColumnName(qEntity, columnIndex, context) {
-        const dbEntity = context.ioc.metadataUtils.getDbEntity(qEntity);
+        const dbEntity = this.qMetadataUtils.getDbEntity(qEntity);
         return dbEntity.columns[columnIndex].name;
     }
     addFieldFromColumn(dbColumn) {
@@ -212,10 +212,8 @@ export class SQLWhereBase {
         return `${tableAlias}.${columnName}`;
     }
     getComplexColumnFragment(value, columnName, context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         let selectSqlFragment = `${value.ta}.${columnName}`;
-        selectSqlFragment = sqlAdaptor.getFunctionAdaptor()
+        selectSqlFragment = this.sqlQueryAdapter.getFunctionAdaptor()
             .getFunctionCalls(value, selectSqlFragment, this.qEntityMapByAlias, this, context);
         return selectSqlFragment;
     }

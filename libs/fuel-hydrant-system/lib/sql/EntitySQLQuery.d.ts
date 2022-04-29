@@ -1,5 +1,7 @@
-import { IEntitySelectProperties, JoinTreeNode } from '@airport/air-control';
-import { DbEntity, DbProperty, InternalFragments, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
+import { IAirportDatabase, IApplicationUtils, IEntitySelectProperties, IQMetadataUtils, IRelationManager, JoinTreeNode } from '@airport/air-control';
+import { DbEntity, DbProperty, IEntityStateManager, InternalFragments, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
+import { IStoreDriver } from '@airport/terminal-map';
+import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { IEntityOrderByParser } from '../orderBy/AbstractEntityOrderByParser';
 import { GraphQueryConfiguration } from '../result/entity/IEntityResultParser';
@@ -11,13 +13,14 @@ import { SQLDialect, SQLQuery } from './core/SQLQuery';
  * Represents SQL String query with Entity tree Select clause.
  */
 export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends SQLQuery<JsonEntityQuery<IEP>> {
+    protected relationManager: IRelationManager;
     protected graphQueryConfiguration?: GraphQueryConfiguration;
     orderByParser: IEntityOrderByParser;
     protected finalSelectTree: any;
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, context: IFuelHydrantContext, graphQueryConfiguration?: GraphQueryConfiguration);
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext, graphQueryConfiguration?: GraphQueryConfiguration);
     toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     /**
      * If bridging is not applied:

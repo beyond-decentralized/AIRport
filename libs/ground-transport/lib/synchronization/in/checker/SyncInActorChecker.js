@@ -1,10 +1,6 @@
-import { container, DI } from '@airport/di';
-import { ACTOR_DAO } from '@airport/holding-pattern';
-import { SYNC_IN_ACTOR_CHECKER } from '../../../tokens';
 export class SyncInActorChecker {
     async ensureActors(message) {
         try {
-            const actorDao = await container(this).get(ACTOR_DAO);
             let actorUuids = [];
             let messageActorIndexMap = new Map();
             for (let i = 0; i < message.actors.length; i++) {
@@ -20,7 +16,7 @@ export class SyncInActorChecker {
                 // Make sure id field is not in the input
                 delete actor.id;
             }
-            const actors = await actorDao.findByUuIds(actorUuids);
+            const actors = await this.actorDao.findByUuIds(actorUuids);
             for (const actor of actors) {
                 const messageUserIndex = messageActorIndexMap.get(actor.uuId);
                 message.actors[messageUserIndex] = actor;
@@ -28,7 +24,7 @@ export class SyncInActorChecker {
             const missingActors = message.actors
                 .filter(messageActor => !messageActor.id);
             if (missingActors.length) {
-                await actorDao.insert(missingActors);
+                await this.actorDao.insert(missingActors);
             }
         }
         catch (e) {
@@ -71,5 +67,4 @@ export class SyncInActorChecker {
         actor.user = user;
     }
 }
-DI.set(SYNC_IN_ACTOR_CHECKER, SyncInActorChecker);
 //# sourceMappingURL=SyncInActorChecker.js.map

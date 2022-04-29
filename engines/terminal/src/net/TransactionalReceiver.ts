@@ -26,19 +26,19 @@ import {
 } from '@airport/security-check';
 import {
     IApiCallContext,
+    IDatabaseManager,
     IQueryOperationContext,
     ITerminalStore,
     ITransactionalServer,
     ITransactionContext,
     ITransactionCredentials
 } from '@airport/terminal-map';
-import {
-    DATABASE_MANAGER,
-    INTERNAL_RECORD_MANAGER
-} from '../tokens';
+import { IInternalRecordManager } from '../data/InternalRecordManager';
 
 export abstract class TransactionalReceiver {
 
+    databaseManager: IDatabaseManager
+    internalRecordManager: IInternalRecordManager
     terminalStore: ITerminalStore
     transactionalServer: ITransactionalServer
 
@@ -86,12 +86,10 @@ export abstract class TransactionalReceiver {
                     this.terminalStore.getReceiver().initializingApps
                         .add(fullApplicationName)
 
-                    const [databaseManager, internalRecordManager] = await container(this)
-                        .get(DATABASE_MANAGER, INTERNAL_RECORD_MANAGER)
                     // FIXME: initalize ahead of time, at Isolate Loading
-                    await databaseManager.initFeatureApplications({}, [application])
+                    await this.databaseManager.initFeatureApplications({}, [application])
 
-                    await internalRecordManager.ensureApplicationRecords(
+                    await this.internalRecordManager.ensureApplicationRecords(
                         application, {})
 
                     result = application.lastIds

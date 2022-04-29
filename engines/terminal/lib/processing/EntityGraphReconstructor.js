@@ -1,6 +1,4 @@
-import { DI } from '@airport/di';
 import { EntityRelationType } from '@airport/ground-control';
-import { ENTITY_GRAPH_RECONSTRUCTOR } from '../tokens';
 /**
  * Takes a serialized object tree and reconstructs a (potentially)
  * interlinked object graph.
@@ -14,7 +12,7 @@ export class EntityGraphReconstructor {
             const entity = entitiesByOperationIndex[i];
             if (!entity) {
                 throw new Error(`Missing entity for
-"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${i}`);
+"${this.entityStateManager.getUniqueIdFieldName()}": ${i}`);
             }
         }
         context.lastOUID = entitiesByOperationIndex.length - 1;
@@ -27,11 +25,11 @@ export class EntityGraphReconstructor {
             if (!entity) {
                 throw new Error(`Null root entities and @OneToMany arrays with null entities are not allowed`);
             }
-            const operationUniqueId = context.ioc.entityStateManager.getOperationUniqueId(entity);
+            const operationUniqueId = this.entityStateManager.getOperationUniqueId(entity);
             if (!operationUniqueId || typeof operationUniqueId !== 'number'
                 || operationUniqueId < 1) {
                 throw new Error(`Invalid entity Unique Id Field
-"${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}.`);
+"${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}.`);
             }
             const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId];
             if (processedEntitySet.has(entity)) {
@@ -47,30 +45,30 @@ export class EntityGraphReconstructor {
              * entity stubs that are needed structurally to get to
              * other entities.
              */
-            const { isParentId, isStub } = context.ioc.entityStateManager
+            const { isParentId, isStub } = this.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             let entityCopy;
             if (previouslyFoundEntity) {
-                if (!context.ioc.entityStateManager.isStub(previouslyFoundEntity)) {
+                if (!this.entityStateManager.isStub(previouslyFoundEntity)) {
                     if (!isStub) {
                         throw new Error(`More than 1 non-Stub object found in input
-for "${context.ioc.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`);
+for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`);
                     }
                 }
                 else {
                     if (!isStub) {
-                        context.ioc.entityStateManager.copyEntityState(entity, previouslyFoundEntity);
+                        this.entityStateManager.copyEntityState(entity, previouslyFoundEntity);
                     }
                 }
                 entityCopy = previouslyFoundEntity;
             }
             else {
                 entityCopy = {};
-                entityCopy[context.ioc.entityStateManager.getUniqueIdFieldName()]
+                entityCopy[this.entityStateManager.getUniqueIdFieldName()]
                     = operationUniqueId;
-                entityCopy[context.ioc.entityStateManager.getStateFieldName()]
-                    = context.ioc.entityStateManager.getEntityState(entity);
-                context.ioc.entityStateManager.copyEntityState(entity, entityCopy);
+                entityCopy[this.entityStateManager.getStateFieldName()]
+                    = this.entityStateManager.getEntityState(entity);
+                this.entityStateManager.copyEntityState(entity, entityCopy);
                 entitiesByOperationIndex[operationUniqueId]
                     = entityCopy;
             }
@@ -117,7 +115,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                         if (isManyToOne) {
                             propertyCopyValue = propertyCopyValue[0];
                             if (isParentId) {
-                                if (!context.ioc.entityStateManager.isParentId(propertyCopyValue)) {
+                                if (!this.entityStateManager.isParentId(propertyCopyValue)) {
                                     throw new Error(`Parent Ids may only contain @ManyToOne relations
 that are themselves Parent Ids.`);
                                 }
@@ -168,5 +166,4 @@ of entity ${dbProperty.entity.name}\``);
         }
     }
 }
-DI.set(ENTITY_GRAPH_RECONSTRUCTOR, EntityGraphReconstructor);
 //# sourceMappingURL=EntityGraphReconstructor.js.map
