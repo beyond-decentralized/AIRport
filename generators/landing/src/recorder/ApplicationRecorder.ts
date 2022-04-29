@@ -2,7 +2,6 @@ import {
 	IDao
 } from '@airport/air-control'
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator'
 import { transactional } from '@airport/tower'
@@ -18,7 +17,6 @@ import {
 	IApplicationVersionDao,
 	IDomainDao,
 } from '@airport/airspace'
-import { APPLICATION_RECORDER } from '../tokens'
 import { DdlObjects } from '@airport/terminal-map'
 
 export interface IApplicationRecorder {
@@ -116,5 +114,3 @@ export class ApplicationRecorder
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_RECORDER, ApplicationRecorder)

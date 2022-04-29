@@ -1,4 +1,3 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
 	ApplicationStatus,
 	DomainName,
@@ -10,9 +9,6 @@ import {
 	JsonApplication,
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
-import {
-	IDdlObjectRetriever
-} from '@airport/takeoff';
 import {
 	AllDdlObjects,
 	DdlObjects,
@@ -33,13 +29,11 @@ import {
 	IApplicationVersion
 } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
-import { APPLICATION_COMPOSER } from '../tokens';
 
 export interface IApplicationComposer {
 
 	compose(
 		jsonApplications: JsonApplicationWithLastIds[],
-		applicationLocator: IApplicationLocator,
 		context: IApplicationComposerContext
 	): Promise<AllDdlObjects>;
 
@@ -54,12 +48,12 @@ export interface IApplicationComposerContext {
 export class ApplicationComposer
 	implements IApplicationComposer {
 
+	applicationLocator: IApplicationLocator
 	domainRetriever: IDomainRetriever
 	terminalStore: ITerminalStore
 
 	async compose(
 		jsonApplications: JsonApplicationWithLastIds[],
-		applicationLocator: IApplicationLocator,
 		context: IApplicationComposerContext
 	): Promise<AllDdlObjects> {
 		// NOTE: application name contains domain name as a prefix
@@ -132,7 +126,7 @@ export class ApplicationComposer
 			newApplicationReferenceMap,
 			newApplicationReferences
 		} = await this.composeApplicationReferences(jsonApplicationMapByFullName,
-			newApplicationVersionMapByApplicationName, applicationLocator, terminalStore,
+			newApplicationVersionMapByApplicationName, terminalStore,
 			allDdlObjects, context.deepTraverseReferences)
 
 		added.applicationReferences = newApplicationReferences
@@ -401,7 +395,6 @@ export class ApplicationComposer
 	private async composeApplicationReferences(
 		jsonApplicationMapByName: Map<FullApplicationName, JsonApplication>,
 		newApplicationVersionMapByApplicationName: Map<FullApplicationName, IApplicationVersion>,
-		applicationLocator: IApplicationLocator,
 		terminalStore: ITerminalStore,
 		allDdlObjects: AllDdlObjects,
 		deepTraverseReferences: boolean
@@ -428,7 +421,7 @@ export class ApplicationComposer
 				const referencedFullApplicationName = getFullApplicationName(jsonReferencedApplication);
 				let referencedApplicationVersion = newApplicationVersionMapByApplicationName.get(referencedFullApplicationName);
 				if (!referencedApplicationVersion) {
-					referencedApplicationVersion = await applicationLocator.locateLatestApplicationVersionByApplicationName(
+					referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByApplicationName(
 						referencedFullApplicationName, terminalStore);
 					if (!referencedApplicationVersion) {
 						throw new Error(`Could not locate application:
@@ -776,5 +769,3 @@ export class ApplicationComposer
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_COMPOSER, ApplicationComposer);

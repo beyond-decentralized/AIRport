@@ -1,8 +1,11 @@
-import { IAirportDatabase } from '@airport/air-control';
-import { AllDdlObjects, IQueryEntityClassCreator, IQueryObjectInitializer, ITerminalStore } from '@airport/terminal-map';
-import { IDdlObjectLinker } from './DdlObjectLinker';
+import { AllDdlObjects, IDdlObjectLinker, IQueryEntityClassCreator, IQueryObjectInitializer, ITerminalStore } from '@airport/terminal-map';
+import { IDdlObjectRetriever } from './DdlObjectRetriever';
 export declare class QueryObjectInitializer implements IQueryObjectInitializer {
-    generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects, airDb: IAirportDatabase, ddlObjectLinker: IDdlObjectLinker, queryEntityClassCreator: IQueryEntityClassCreator, terminalStore: ITerminalStore): void;
-    initialize(airDb: IAirportDatabase): Promise<AllDdlObjects>;
+    ddlObjectLinker: IDdlObjectLinker;
+    ddlObjectRetriever: IDdlObjectRetriever;
+    queryEntityClassCreator: IQueryEntityClassCreator;
+    terminalStore: ITerminalStore;
+    generateQObjectsAndPopulateStore(allDdlObjects: AllDdlObjects): void;
+    initialize(): Promise<AllDdlObjects>;
 }
 //# sourceMappingURL=QueryObjectInitializer.d.ts.map

@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	getFullApplicationNameFromDomainAndName,
 	JsonApplication
@@ -7,7 +6,6 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
-import { APPLICATION_LOCATOR } from '../tokens'
 
 export interface IApplicationLocator {
 
@@ -62,5 +60,3 @@ export class ApplicationLocator
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, ApplicationLocator)

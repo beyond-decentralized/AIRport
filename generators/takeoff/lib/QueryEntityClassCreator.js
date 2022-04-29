@@ -1,13 +1,11 @@
 import { orderApplicationsInOrderOfPrecedence, setQApplicationEntities } from '@airport/air-control';
-import { DI } from '@airport/di';
-import { QUERY_ENTITY_CLASS_CREATOR } from './tokens';
 export class QueryEntityClassCreator {
-    createAll(applications, airDb) {
+    createAll(applications) {
         const applicationsToCreate = orderApplicationsInOrderOfPrecedence(applications);
-        applicationsToCreate.map(dbApplication => this.create(dbApplication, airDb));
+        applicationsToCreate.map(dbApplication => this.create(dbApplication));
     }
-    create(dbApplication, airDb) {
-        let qApplication = airDb.QM[dbApplication.fullName];
+    create(dbApplication) {
+        let qApplication = this.airportDatabase.QM[dbApplication.fullName];
         // If the Application API source has already been loaded
         if (qApplication) {
             qApplication.__dbApplication__ = dbApplication;
@@ -20,12 +18,11 @@ export class QueryEntityClassCreator {
                 name: dbApplication.name,
                 domain: dbApplication.domain.name
             };
-            airDb.QM[dbApplication.fullName] = qApplication;
+            this.airportDatabase.QM[dbApplication.fullName] = qApplication;
         }
-        airDb.Q[dbApplication.index] = qApplication;
-        setQApplicationEntities(dbApplication, qApplication, airDb.qApplications);
+        this.airportDatabase.Q[dbApplication.index] = qApplication;
+        setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications);
         return qApplication;
     }
 }
-DI.set(QUERY_ENTITY_CLASS_CREATOR, QueryEntityClassCreator);
 //# sourceMappingURL=QueryEntityClassCreator.js.map

@@ -5,7 +5,6 @@ import {
 	ISequenceGenerator
 } from '@airport/check-in';
 import {
-	container,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -16,30 +15,32 @@ import {
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/security-check';
 import {
-	QUERY_OBJECT_INITIALIZER
-} from '@airport/takeoff';
-import {
 	AllDdlObjects,
 	IApplicationInitializer,
+	IQueryObjectInitializer,
 	ITerminalStore
 } from '@airport/terminal-map';
 import {
 	IApplication,
 	IApplicationDao
 } from '@airport/airspace';
-import {
-	APPLICATION_BUILDER,
-	APPLICATION_CHECKER,
-	APPLICATION_COMPOSER,
-	APPLICATION_LOCATOR,
-	APPLICATION_RECORDER
-} from './tokens';
+import { IApplicationBuilder } from './builder/IApplicationBuilder';
+import { IApplicationChecker } from './checker/ApplicationChecker';
+import { IApplicationComposer } from './recorder/ApplicationComposer';
+import { IApplicationLocator } from './locator/ApplicationLocator';
+import { IApplicationRecorder } from './recorder/ApplicationRecorder';
 
 export abstract class ApplicationInitializer
 	implements IApplicationInitializer {
 
 	airportDatabase: IAirportDatabase
+	applicationBuilder: IApplicationBuilder
+	applicationChecker: IApplicationChecker
+	applicationComposer: IApplicationComposer
 	applicationDao: IApplicationDao
+	applicationLocator: IApplicationLocator
+	applicationRecorder: IApplicationRecorder
+	queryObjectInitializer: IQueryObjectInitializer
 	sequenceGenerator: ISequenceGenerator
 	terminalStore: ITerminalStore
 
@@ -55,11 +56,10 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void> {
-		QUERY_OBJECT_INITIALIZER
 		await this.stage(jsonApplications, context);
 		// Hydrate all DDL objects and Sequences
 
-		const ddlObjects = await queryObjectInitializer.initialize();
+		const ddlObjects = await this.queryObjectInitializer.initialize();
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
@@ -83,13 +83,6 @@ export abstract class ApplicationInitializer
 		checkDependencies: boolean,
 		loadExistingApplications: boolean
 	): Promise<void> {
-		const [
-			queryObjectInitializer, applicationBuilder, applicationComposer,
-			applicationLocator, applicationRecorder]
-			= await container(this).get(
-				QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
-				APPLICATION_COMPOSER, APPLICATION_LOCATOR, APPLICATION_RECORDER);
-
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
@@ -116,50 +109,45 @@ export abstract class ApplicationInitializer
 			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
 			if (!existingApplication) {
 				checkedApplicationsWithValidDependencies.push(jsonApplication)
-				await applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
+				await this.applicationBuilder.build(
+					jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
 			}
 		}
 
-		const allDdlObjects = await applicationComposer.compose(
-			checkedApplicationsWithValidDependencies, applicationLocator, {
+		const allDdlObjects = await this.applicationComposer.compose(
+			checkedApplicationsWithValidDependencies, {
 			terminalStore: this.terminalStore
 		});
 
 		this.addNewApplicationVersionsToAll(allDdlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
+		this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
 
 		this.setAirDbApplications(allDdlObjects);
 
-		const newSequences = await applicationBuilder.buildAllSequences(
+		const newSequences = await this.applicationBuilder.buildAllSequences(
 			applicationsWithValidDependencies, context);
 
 		await this.sequenceGenerator.initialize(newSequences);
 
-		await applicationRecorder.record(allDdlObjects.added, context);
+		await this.applicationRecorder.record(allDdlObjects.added, context);
 	}
 
 	async initializeForAIRportApp(
 		jsonApplication: JsonApplicationWithLastIds
 	): Promise<void> {
-		const [
-			queryObjectInitializer, applicationComposer, applicationLocator]
-			= await container(this).get(
-				QUERY_OBJECT_INITIALIZER,
-				APPLICATION_COMPOSER, APPLICATION_LOCATOR);
-
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies([jsonApplication], false)
 
-		const ddlObjects = await applicationComposer.compose(
-			applicationsWithValidDependencies, applicationLocator, {
+		const ddlObjects = await this.applicationComposer.compose(
+			applicationsWithValidDependencies, {
 			deepTraverseReferences: true,
 			terminalStore: this.terminalStore
 		})
 
 		this.addNewApplicationVersionsToAll(ddlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
+		this.queryObjectInitializer.generateQObjectsAndPopulateStore(ddlObjects);
 
 		this.setAirDbApplications(ddlObjects);
 	}
@@ -168,25 +156,20 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		context: IContext,
 	): Promise<void> {
-		const [queryObjectInitializer, applicationBuilder,
-			applicationComposer, applicationLocator]
-			= await container(this).get(QUERY_OBJECT_INITIALIZER, APPLICATION_BUILDER,
-				APPLICATION_COMPOSER, APPLICATION_LOCATOR);
-
 		// Temporarily Initialize application DDL objects and Sequences to allow for normal hydration
 
-		const tempDdlObjects = await applicationComposer.compose(
-			jsonApplications, applicationLocator, {
+		const tempDdlObjects = await this.applicationComposer.compose(
+			jsonApplications, {
 			terminalStore: this.terminalStore
 		});
 
 		this.addNewApplicationVersionsToAll(tempDdlObjects);
 
-		queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
+		this.queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
 
 		this.setAirDbApplications(tempDdlObjects);
 
-		const newSequences = await applicationBuilder.stageSequences(
+		const newSequences = await this.applicationBuilder.stageSequences(
 			jsonApplications, context);
 
 		await this.sequenceGenerator.tempInitialize(newSequences);
@@ -212,13 +195,11 @@ export abstract class ApplicationInitializer
 		jsonApplications: JsonApplicationWithLastIds[],
 		checkDependencies: boolean
 	): Promise<JsonApplicationWithLastIds[]> {
-		const [applicationChecker, applicationLocator]
-			= await container(this).get(APPLICATION_CHECKER, APPLICATION_LOCATOR);
 		const jsonApplicationsToInstall: JsonApplication[] = [];
 
 		for (const jsonApplication of jsonApplications) {
-			await applicationChecker.check(jsonApplication);
-			const existingApplication = applicationLocator.locateExistingApplicationVersionRecord(
+			await this.applicationChecker.check(jsonApplication);
+			const existingApplication = this.applicationLocator.locateExistingApplicationVersionRecord(
 				jsonApplication, this.terminalStore);
 
 			if (existingApplication) {
@@ -231,7 +212,7 @@ export abstract class ApplicationInitializer
 		let applicationsWithValidDependencies;
 
 		if (checkDependencies) {
-			const applicationReferenceCheckResults = await applicationChecker
+			const applicationReferenceCheckResults = await this.applicationChecker
 				.checkDependencies(jsonApplicationsToInstall);
 
 			if (applicationReferenceCheckResults.applicationsInNeedOfAdditionalDependencies.length) {

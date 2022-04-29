@@ -1,7 +1,4 @@
 import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator';
-import {
 	AllDdlObjects,
 	IDdlObjectLinker,
 	IQueryEntityClassCreator,
@@ -12,9 +9,6 @@ import {
 	IDomain,
 	IApplication
 } from '@airport/airspace';
-import {
-	QUERY_OBJECT_INITIALIZER
-} from './tokens';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
 
 export class QueryObjectInitializer
@@ -91,5 +85,3 @@ export class QueryObjectInitializer
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);

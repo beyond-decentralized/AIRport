@@ -1,13 +1,11 @@
-import { DI } from '@airport/di';
-import { DDL_OBJECT_LINKER } from './tokens';
 export class DdlObjectLinker {
-    link(allDdlObjects, terminalStore) {
+    link(allDdlObjects) {
         const { all, allApplicationVersionsByIds, added } = allDdlObjects;
         const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
         this.linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, all.domains, applications, latestApplicationVersions, applicationReferences);
         const entityArrayById = this.linkEntities(allApplicationVersionsByIds, all.entities, added.entities);
-        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore);
-        this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore);
+        const { propertyMapById, relationMapById } = this.linkPropertiesAndRelations(properties, relations, entityArrayById);
+        this.linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById);
     }
     linkDomainsAndApplicationsAndVersions(allApplicationVersionsByIds, domains, applications, latestApplicationVersions, applicationReferences) {
         const domainMapById = new Map();
@@ -73,7 +71,7 @@ export class DdlObjectLinker {
         });
         return entityArrayById;
     }
-    linkPropertiesAndRelations(properties, relations, entityArrayById, terminalStore) {
+    linkPropertiesAndRelations(properties, relations, entityArrayById) {
         const propertyMapById = new Map();
         properties.forEach((property) => {
             // Entity is already property wired in
@@ -90,7 +88,7 @@ export class DdlObjectLinker {
             entity.relations[relation.index] = relation;
             let relationEntity = entityArrayById[relation.relationEntity.id];
             if (!relationEntity) {
-                relationEntity = terminalStore.getAllEntities()[relation.relationEntity.id];
+                relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity.id];
             }
             relationEntity.relationReferences.push(relation);
             const property = propertyMapById.get(relation.property.id);
@@ -106,7 +104,7 @@ export class DdlObjectLinker {
             propertyMapById, relationMapById
         };
     }
-    linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById, terminalStore) {
+    linkColumns(propertyMapById, relationMapById, allDdlObjects, entityArrayById) {
         const columnMapById = new Map();
         allDdlObjects.all.columns.forEach((column) => {
             columnMapById.set(column.id, column);
@@ -133,19 +131,19 @@ export class DdlObjectLinker {
         allDdlObjects.added.relationColumns.forEach((relationColumn) => {
             let manyColumn = columnMapById.get(relationColumn.manyColumn.id);
             if (!manyColumn) {
-                manyColumn = terminalStore.getAllColumns()[relationColumn.manyColumn.id];
+                manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn.id];
             }
             manyColumn.manyRelationColumns.push(relationColumn);
             let oneColumn = columnMapById.get(relationColumn.oneColumn.id);
             if (!oneColumn) {
-                oneColumn = terminalStore.getAllColumns()[relationColumn.oneColumn.id];
+                oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn.id];
             }
             oneColumn.oneRelationColumns.push(relationColumn);
             let manyRelation;
             if (relationColumn.manyRelation && relationColumn.manyRelation.id) {
                 manyRelation = relationMapById.get(relationColumn.manyRelation.id);
                 if (!manyRelation) {
-                    manyRelation = terminalStore.getAllRelations()[relationColumn.manyRelation.id];
+                    manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation.id];
                 }
                 manyRelation.manyRelationColumns.push(relationColumn);
             }
@@ -153,7 +151,7 @@ export class DdlObjectLinker {
             if (relationColumn.oneRelation && relationColumn.oneRelation.id) {
                 oneRelation = relationMapById.get(relationColumn.oneRelation.id);
                 if (!oneRelation) {
-                    oneRelation = terminalStore.getAllRelations()[relationColumn.oneRelation.id];
+                    oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation.id];
                 }
                 oneRelation.oneRelationColumns.push(relationColumn);
             }
@@ -164,5 +162,4 @@ export class DdlObjectLinker {
         });
     }
 }
-DI.set(DDL_OBJECT_LINKER, DdlObjectLinker);
 //# sourceMappingURL=DdlObjectLinker.js.map

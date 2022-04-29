@@ -1,4 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -12,8 +11,6 @@ import {
 	IApplication,
 	IApplicationDao
 } from '@airport/airspace'
-import { APPLICATION_CHECKER } from '../tokens'
-
 
 export interface CoreDomainAndApplicationNames {
 
@@ -229,5 +226,3 @@ export class ApplicationChecker
 	}
 
 }
-
-DEPENDENCY_INJECTION.set(APPLICATION_CHECKER, ApplicationChecker)

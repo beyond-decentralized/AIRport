@@ -1,11 +1,12 @@
 import { AIRPORT_DATABASE } from '@airport/air-control'
 import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { lib } from '@airport/direction-indicator'
-import { IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
+import { IDdlObjectLinker, IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
 import { AirportDatabasePopulator, IAirportDatabasePopulator } from './AirportDatabasePopulator'
-import { DdlObjectLinker, IDdlObjectLinker } from './DdlObjectLinker'
+import { DdlObjectLinker } from './DdlObjectLinker'
 import { DdlObjectRetriever, IDdlObjectRetriever } from './DdlObjectRetriever'
 import { QueryEntityClassCreator } from './QueryEntityClassCreator'
+import { QueryObjectInitializer } from './QueryObjectInitializer'
 
 const takeoff = lib('takeoff')
 
@@ -29,7 +30,11 @@ export const QUERY_ENTITY_CLASS_CREATOR = takeoff.token<IQueryEntityClassCreator
     interface: 'IQueryEntityClassCreator',
     token: 'QUERY_ENTITY_CLASS_CREATOR'
 })
-export const QUERY_OBJECT_INITIALIZER = takeoff.token<IQueryObjectInitializer>('QUERY_OBJECT_INITIALIZER')
+export const QUERY_OBJECT_INITIALIZER = takeoff.token<IQueryObjectInitializer>({
+    class: QueryObjectInitializer,
+    interface: 'IQueryObjectInitializer',
+    token: 'QUERY_OBJECT_INITIALIZER'
+})
 
 DDL_OBJECT_LINKER.setDependencies({
     terminalStore: TERMINAL_STORE

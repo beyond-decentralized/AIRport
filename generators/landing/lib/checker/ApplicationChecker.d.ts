@@ -1,5 +1,5 @@
 import { JsonApplication, ApplicationName } from '@airport/ground-control';
-import { IApplication } from '@airport/airspace';
+import { IApplication, IApplicationDao } from '@airport/airspace';
 export interface CoreDomainAndApplicationNames {
     domain: string;
     application: string;
@@ -18,6 +18,7 @@ export interface IApplicationChecker {
     checkDependencies(jsonApplications: JsonApplication[]): Promise<ApplicationReferenceCheckResults>;
 }
 export declare class ApplicationChecker implements IApplicationChecker {
+    applicationDao: IApplicationDao;
     check(jsonApplication: JsonApplication): Promise<void>;
     checkDomain(jsonApplication: JsonApplication): Promise<void>;
     checkDependencies(jsonApplications: JsonApplication[]): Promise<ApplicationReferenceCheckResults>;

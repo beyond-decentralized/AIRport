@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
-import { APPLICATION_LOCATOR } from '../tokens';
 export class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {
@@ -23,5 +21,4 @@ export class ApplicationLocator {
             .get(fullApplicationName);
     }
 }
-DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, ApplicationLocator);
 //# sourceMappingURL=ApplicationLocator.js.map

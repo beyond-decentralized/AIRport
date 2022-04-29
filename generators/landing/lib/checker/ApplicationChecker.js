@@ -1,7 +1,4 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { ensureChildJsMap, getFullApplicationName, } from '@airport/ground-control';
-import { APPLICATION_DAO } from '@airport/airspace';
-import { APPLICATION_CHECKER } from '../tokens';
 export class ApplicationChecker {
     async check(jsonApplication) {
         if (!jsonApplication) {
@@ -109,8 +106,7 @@ export class ApplicationChecker {
             existingApplicationMapByName = new Map();
         }
         else {
-            const applicationDao = await container(this).get(APPLICATION_DAO);
-            existingApplicationMapByName = await applicationDao.findMapByFullNames(fullApplicationNames);
+            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullApplicationNames);
         }
         return {
             coreDomainAndApplicationNamesByApplicationName,
@@ -126,5 +122,4 @@ export class ApplicationChecker {
         return false;
     }
 }
-DEPENDENCY_INJECTION.set(APPLICATION_CHECKER, ApplicationChecker);
 //# sourceMappingURL=ApplicationChecker.js.map

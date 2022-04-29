@@ -1,26 +1,21 @@
-import { container, DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { transactional } from '@airport/tower';
-import { DOMAIN_DAO, APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, } from '@airport/airspace';
-import { APPLICATION_RECORDER } from '../tokens';
 export class ApplicationRecorder {
     async record(ddlObjects, 
     // normalOperation: boolean,
     context) {
-        const [domainDao, applicationColumnDao, applicationDao, applicationEntityDao, applicationPropertyColumnDao, applicationPropertyDao, applicationReferenceDao, applicationRelationColumnDao, applicationRelationDao, applicationVersionDao] = await container(this)
-            .get(DOMAIN_DAO, APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO);
         await transactional(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            await domainDao.checkAndInsertIfNeeded(ddlObjects.domains);
-            await applicationDao.insert(ddlObjects.applications);
-            await applicationVersionDao.insert(ddlObjects.applicationVersions);
-            await applicationReferenceDao.insert(ddlObjects.applicationReferences);
-            await applicationEntityDao.insert(ddlObjects.entities);
-            await applicationPropertyDao.insert(ddlObjects.properties);
-            await applicationRelationDao.insert(ddlObjects.relations);
-            await applicationColumnDao.insert(ddlObjects.columns);
-            await applicationPropertyColumnDao.insert(ddlObjects.propertyColumns);
-            await applicationRelationColumnDao.insert(ddlObjects.relationColumns);
+            await this.domainDao.checkAndInsertIfNeeded(ddlObjects.domains);
+            await this.applicationDao.insert(ddlObjects.applications);
+            await this.applicationVersionDao.insert(ddlObjects.applicationVersions);
+            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences);
+            await this.applicationEntityDao.insert(ddlObjects.entities);
+            await this.applicationPropertyDao.insert(ddlObjects.properties);
+            await this.applicationRelationDao.insert(ddlObjects.relations);
+            await this.applicationColumnDao.insert(ddlObjects.columns);
+            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns);
+            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns);
         }, context);
     }
     setDefaultVersioning(ddlObjects) {
@@ -64,5 +59,4 @@ export class ApplicationRecorder {
         await dao.save(entities, context);
     }
 }
-DEPENDENCY_INJECTION.set(APPLICATION_RECORDER, ApplicationRecorder);
 //# sourceMappingURL=ApplicationRecorder.js.map

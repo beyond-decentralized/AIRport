@@ -1,11 +1,8 @@
-import { container, DI } from '@airport/di';
-import { TERMINAL_STORE } from '@airport/terminal-map';
-import { DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, QUERY_OBJECT_INITIALIZER } from './tokens';
 export class QueryObjectInitializer {
-    generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore) {
-        ddlObjectLinker.link(allDdlObjects, terminalStore);
-        queryEntityClassCreator.createAll(allDdlObjects.all.applications, airDb);
-        const lastTerminalState = terminalStore.getTerminalState();
+    generateQObjectsAndPopulateStore(allDdlObjects) {
+        this.ddlObjectLinker.link(allDdlObjects);
+        this.queryEntityClassCreator.createAll(allDdlObjects.all.applications);
+        const lastTerminalState = this.terminalStore.getTerminalState();
         const existingDomainMap = {};
         for (const domain of lastTerminalState.domains) {
             existingDomainMap[domain.name] = domain;
@@ -28,7 +25,7 @@ export class QueryObjectInitializer {
         for (const applicationName in existingApplicationMap) {
             unmodifiedApplications.push(existingApplicationMap[applicationName]);
         }
-        terminalStore.state.next({
+        this.terminalStore.state.next({
             ...lastTerminalState,
             domains: [
                 ...unmodifiedDomains,
@@ -40,9 +37,8 @@ export class QueryObjectInitializer {
             ]
         });
     }
-    async initialize(airDb) {
-        const [ddlObjectLinker, ddlObjectRetriever, queryEntityClassCreator, terminalStore] = await container(this).get(DDL_OBJECT_LINKER, DDL_OBJECT_RETRIEVER, QUERY_ENTITY_CLASS_CREATOR, TERMINAL_STORE);
-        const ddlObjects = await ddlObjectRetriever.retrieveDdlObjects();
+    async initialize() {
+        const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
         const allApplicationVersionsByIds = [];
         for (const applicationVersion of ddlObjects.applicationVersions) {
             allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
@@ -52,9 +48,8 @@ export class QueryObjectInitializer {
             allApplicationVersionsByIds,
             added: ddlObjects
         };
-        this.generateQObjectsAndPopulateStore(allDdlObjects, airDb, ddlObjectLinker, queryEntityClassCreator, terminalStore);
+        this.generateQObjectsAndPopulateStore(allDdlObjects);
         return allDdlObjects;
     }
 }
-DI.set(QUERY_OBJECT_INITIALIZER, QueryObjectInitializer);
 //# sourceMappingURL=QueryObjectInitializer.js.map
