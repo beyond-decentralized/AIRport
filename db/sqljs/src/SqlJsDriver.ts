@@ -11,7 +11,9 @@ import {
 	ITransactionContext
 } from '@airport/terminal-map';
 import { SqlJsTransaction } from './SqlJsTransaction';
-import { Injected } from '@airport/air-control';
+import {
+	Injected
+} from '@airport/direction-indicator'
 
 declare function initSqlJs(config: any): any;
 

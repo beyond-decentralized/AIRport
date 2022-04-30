@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {
 	BaseApplicationVersionDuo,
 	IBaseApplicationVersionDuo
@@ -8,6 +9,7 @@ export interface IApplicationVersionDuo
 
 }
 
+@Injected()
 export class ApplicationVersionDuo
 	extends BaseApplicationVersionDuo
 	implements IApplicationVersionDuo {

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { QOperableField } from '../core/field/OperableField';
-import { Injected } from '../core/metadata/dependencyInjection';
+import { Injected } from '@airport/direction-indicator';
 import { EntityQuery } from '../query/facade/EntityQuery';
 import { objectExists } from '../Utils';
 /**

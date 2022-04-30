@@ -29,7 +29,7 @@ import {
 	RepositorySheetSelectInfo
 } from '../../lingo/utils/ApplicationUtils'
 import { QEntityConstructor } from '../core/entity/Entity'
-import { Inject, Injected } from '../core/metadata/dependencyInjection'
+import { Inject, Injected } from '@airport/direction-indicator'
 import { valuesEqual } from '../Utils'
 
 interface ColumnValueForPath {

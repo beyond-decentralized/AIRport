@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/direction-indicator'
 import { ISerializationStateManager } from './SerializationStateManager'
 
 /**

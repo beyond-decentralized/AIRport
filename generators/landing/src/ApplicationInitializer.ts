@@ -1,6 +1,10 @@
 import {
-	IAirportDatabase, Inject, Injected
+	IAirportDatabase
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ISequenceGenerator
 } from '@airport/check-in';

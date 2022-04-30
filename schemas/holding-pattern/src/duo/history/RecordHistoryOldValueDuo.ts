@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {DbColumn}               from '@airport/ground-control'
 import {RecordHistoryOldValue}  from '../../ddl/ddl'
 import {
@@ -16,6 +17,7 @@ export interface IRecordHistoryOldValueDuo {
 
 }
 
+@Injected()
 export class RecordHistoryOldValueDuo
 	extends BaseRecordHistoryOldValueDuo
 	implements IRecordHistoryOldValueDuo {

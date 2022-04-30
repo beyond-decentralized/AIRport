@@ -1,6 +1,8 @@
 import {SqLiteQueryAdaptor} from "@airport/sqlite";
 import {SQLDataType}        from "@airport/ground-control";
-import { Injected } from "@airport/air-control";
+import {
+	Injected
+} from '@airport/direction-indicator'
 /**
  * Created by Papa on 2/8/2017.
  */

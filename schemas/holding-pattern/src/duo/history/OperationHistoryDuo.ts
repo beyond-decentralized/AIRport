@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	ChangeType,
 	DbEntity,
@@ -43,10 +44,12 @@ export interface IOperationHistoryDuo
 
 }
 
+@Injected()
 export class OperationHistoryDuo
 	extends BaseOperationHistoryDuo
 	implements IOperationHistoryDuo {
 
+	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
 
 	getNewRecord(

@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import {
 	DomainId,
 	DomainName
@@ -43,6 +44,7 @@ export interface IDomainDao
 
 }
 
+@Injected()
 export class DomainDao
 	extends BaseDomainDao
 	implements IDomainDao {

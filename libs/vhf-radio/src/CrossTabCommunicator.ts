@@ -2,12 +2,14 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
+import { Injected } from "@airport/direction-indicator";
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 
 export interface ICrossTabCommunicator {
 
 }
 
+@Injected()
 export class CrossTabCommunicator
     implements ICrossTabCommunicator {
 

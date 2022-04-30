@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
 import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
-import { Inject, Injected } from '../core/metadata/dependencyInjection';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { TreeQuery } from '../query/facade/TreeQuery';
 let QueryUtils = class QueryUtils {
     whereClauseToJSON(whereClause, columnAliases) {

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { QueryResultType } from '@airport/ground-control';
-import { Inject, Injected } from '../../core/metadata/dependencyInjection';
+import { Inject, Injected } from '@airport/direction-indicator';
 export class LookupProxy {
     constructor(dao) {
         this.dao = dao;

@@ -1,4 +1,8 @@
-import { IAirportDatabase, Inject, Injected } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import {

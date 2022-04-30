@@ -23,7 +23,10 @@ import {
     User
 } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
-import { Inject, Injected } from "@airport/air-control";
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 export interface IInternalRecordManager {
 

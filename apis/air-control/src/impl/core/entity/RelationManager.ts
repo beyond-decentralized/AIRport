@@ -7,7 +7,7 @@ import {
 	IQEntityInternal
 } from '../../../lingo/core/entity/Entity'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
-import { Inject, Injected } from '../metadata/dependencyInjection'
+import { Inject, Injected } from '@airport/direction-indicator'
 
 export interface IRelationManager {
 

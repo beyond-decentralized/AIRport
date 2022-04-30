@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { ALL_FIELDS, and, max, tree, Y } from '@airport/air-control';
+import { Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { BaseApplicationDao, Q } from '../generated/generated';
-export class ApplicationDao extends BaseApplicationDao {
+let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
     async findAllActive() {
         let s;
         return this.db.find.tree({
@@ -247,5 +254,9 @@ export class ApplicationDao extends BaseApplicationDao {
             values
         });
     }
-}
+};
+ApplicationDao = __decorate([
+    Injected()
+], ApplicationDao);
+export { ApplicationDao };
 //# sourceMappingURL=ApplicationDao.js.map

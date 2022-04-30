@@ -1,4 +1,5 @@
 import { plus } from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
@@ -14,6 +15,7 @@ export interface ISequenceDao
 	incrementCurrentValues(): Promise<void>
 }
 
+@Injected()
 export class SequenceDao
 	extends BaseSequenceDao
 	implements ISequenceDao {

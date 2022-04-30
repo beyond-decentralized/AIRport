@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
-import { Injected } from '@airport/air-control';
+import { Injected } from '@airport/direction-indicator';
 let ApplicationLocator = class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {

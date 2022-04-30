@@ -1,4 +1,23 @@
-import { InjectDecorator, InjectedDecorator } from "../../../lingo/core/metadata/dependencyInjection"
+export interface ClassDecorator {
+	( constructor: Function );
+
+	// (constructor: {new (): any});
+}
+
+export interface PropertyDecorator {
+	(
+		target: any,
+		propertyKey: string
+	);
+}
+
+export interface InjectedDecorator {
+    (): ClassDecorator
+}
+
+export interface InjectDecorator {
+    (): PropertyDecorator
+}
 
 export const Injected: InjectedDecorator = function () {
     return function (constructor: { new(): Object }) {

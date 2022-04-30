@@ -1,4 +1,5 @@
 import { and } from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator';
 import {
 	User_Id,
 	Terminal_UuId
@@ -29,6 +30,7 @@ export interface ITerminalDao
 
 }
 
+@Injected()
 export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {

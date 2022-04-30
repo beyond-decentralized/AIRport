@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import {ColumnId}                   from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
@@ -20,6 +21,7 @@ export interface IApplicationPropertyColumnDao
 
 }
 
+@Injected()
 export class ApplicationPropertyColumnDao
 	extends BaseApplicationPropertyColumnDao
 	implements IApplicationPropertyColumnDao {

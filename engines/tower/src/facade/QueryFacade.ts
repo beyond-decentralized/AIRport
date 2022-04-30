@@ -2,13 +2,15 @@ import {
 	AbstractQuery,
 	IAbstractQuery,
 	IFieldUtils,
-	Inject,
-	Injected,
 	IQueryContext,
 	IQueryFacade,
 	IQueryUtils,
 	IRelationManager
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ITransactionalConnector,
 	JsonQuery,

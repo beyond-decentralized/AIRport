@@ -19,8 +19,6 @@ import {
 	IEntityRecord,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
-	Inject,
-	Injected,
 	INonEntityFind,
 	INonEntityFindOne,
 	INonEntitySearch,
@@ -61,6 +59,10 @@ import {
 	unionAll,
 	wrapPrimitive,
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	DbApplication,
 	ISaveResult,

@@ -1,4 +1,7 @@
-import { IApplicationUtils, Injected } from '@airport/air-control'
+import { IApplicationUtils } from '@airport/air-control'
+import {
+	Injected
+} from '@airport/direction-indicator'
 import {
 	IQueryResultsSerializer
 } from '@airport/check-in'

@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
 	SerializationState
@@ -18,9 +19,11 @@ interface IDeserializableOperation {
 	lookupTable: any[]
 }
 
+@Injected()
 export class QueryResultsDeserializer
 	implements IQueryResultsDeserializer {
 
+	@Inject()
 	serializationStateManager: ISerializationStateManager
 
 	deserialize<E, T = E | E[]>(

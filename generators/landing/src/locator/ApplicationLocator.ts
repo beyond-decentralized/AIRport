@@ -6,7 +6,9 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
-import { Injected } from '@airport/air-control'
+import {
+	Injected
+} from '@airport/direction-indicator'
 
 export interface IApplicationLocator {
 

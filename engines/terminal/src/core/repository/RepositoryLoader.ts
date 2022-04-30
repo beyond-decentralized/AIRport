@@ -1,8 +1,10 @@
 import {
-    Inject,
-    Injected,
     IRepositoryLoader
 } from "@airport/air-control";
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
     IContext
 } from "@airport/direction-indicator";

@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
@@ -15,6 +16,7 @@ export interface ISynchronizationConflictDao
 
 }
 
+@Injected()
 export class SynchronizationConflictDao
 	extends BaseSynchronizationConflictDao
 	implements ISynchronizationConflictDao {

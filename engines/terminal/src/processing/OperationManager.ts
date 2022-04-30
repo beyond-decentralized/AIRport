@@ -3,8 +3,6 @@ import {
 	Delete,
 	IAirportDatabase,
 	IApplicationUtils,
-	Inject,
-	Injected,
 	InsertValues,
 	IQMetadataUtils,
 	IQOperableFieldInternal,
@@ -15,6 +13,10 @@ import {
 	UpdateProperties,
 	valuesEqual
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	DbColumn,
 	EntityRelationType,

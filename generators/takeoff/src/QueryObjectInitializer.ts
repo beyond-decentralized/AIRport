@@ -10,7 +10,10 @@ import {
 	IApplication
 } from '@airport/airspace';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 @Injected()
 export class QueryObjectInitializer

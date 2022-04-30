@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { IDependencyInjectionToken } from "@airport/direction-indicator";
+import { IDependencyInjectionToken, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
@@ -33,8 +33,7 @@ export interface IRequestRecord {
     resolve
 }
 
-// Autopilot is included in client source, so not adding @airport/air-control dependency
-// @Injected()
+@Injected()
 export class LocalAPIClient
     implements ILocalAPIClient {
 

@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import {ApplicationVersionId}   from '@airport/ground-control'
 import {
 	BaseApplicationEntityDao,
@@ -20,6 +21,7 @@ export interface IApplicationEntityDao
 
 }
 
+@Injected()
 export class ApplicationEntityDao
 	extends BaseApplicationEntityDao
 	implements IApplicationEntityDao {

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { repositoryEntity } from '@airport/ground-control';
-import { Injected } from '../core/metadata/dependencyInjection';
+import { Injected } from '@airport/direction-indicator';
 let QMetadataUtils = class QMetadataUtils {
     getAllColumns(qEntity) {
         return qEntity.__driver__.allColumns;

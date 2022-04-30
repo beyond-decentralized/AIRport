@@ -1,4 +1,6 @@
-import { Injected } from '@airport/air-control';
+import {
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,

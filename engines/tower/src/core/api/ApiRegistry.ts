@@ -4,7 +4,9 @@ import {
     IApiRegistry,
     IApplicationApi
 } from "@airport/check-in";
-import { Injected } from "@airport/air-control";
+import {
+	Injected
+} from '@airport/direction-indicator'
 
 @Injected()
 export class ApiRegistry

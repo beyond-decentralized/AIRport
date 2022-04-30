@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var EntityStateManager_1;
-import { Injected } from '@airport/air-control';
+import { Injected } from '@airport/direction-indicator';
 import { EntityState } from '@airport/ground-control';
 let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
     isStub(entity) {

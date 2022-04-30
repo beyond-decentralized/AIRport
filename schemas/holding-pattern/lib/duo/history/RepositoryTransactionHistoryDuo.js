@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/direction-indicator';
 import { v4 as uuidv4 } from "uuid";
 import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
-export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
+let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, isRepositoryCreation) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
@@ -52,5 +59,12 @@ export class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHi
         }
         return 0;
     }
-}
+};
+__decorate([
+    Inject()
+], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
+RepositoryTransactionHistoryDuo = __decorate([
+    Injected()
+], RepositoryTransactionHistoryDuo);
+export { RepositoryTransactionHistoryDuo };
 //# sourceMappingURL=RepositoryTransactionHistoryDuo.js.map

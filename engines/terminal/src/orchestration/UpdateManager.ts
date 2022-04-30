@@ -2,14 +2,16 @@ import {
 	IAirportDatabase,
 	IApplicationUtils,
 	IFieldUtils,
-	Inject,
-	Injected,
 	IQueryFacade,
 	IQueryUtils,
 	IRelationManager,
 	RepositorySheetSelectInfo,
 	SheetQuery
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	getSysWideOpId,
 	ISequenceGenerator

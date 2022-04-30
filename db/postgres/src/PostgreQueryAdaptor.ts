@@ -1,8 +1,10 @@
 import {
-	Injected,
 	IQEntityInternal,
 	Parameter
 } from '@airport/air-control';
+import {
+	Injected
+} from '@airport/direction-indicator'
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,

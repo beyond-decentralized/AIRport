@@ -11,8 +11,10 @@ import {
 	DbEntity,
 	ensureChildArray
 } from '@airport/ground-control';
-import { Inject } from '@airport/air-control';
-import { Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 /**
  * Assumptions: 7/4/2019

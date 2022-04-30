@@ -8,7 +8,10 @@ import { ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
 import { ISyncInUserChecker } from './SyncInUserChecker';
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 export interface ISyncInChecker {
 

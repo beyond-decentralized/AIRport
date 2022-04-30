@@ -1,6 +1,10 @@
 import {
-	AIRPORT_DATABASE, Inject, Injected
+	AIRPORT_DATABASE
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	container,
 	IContext

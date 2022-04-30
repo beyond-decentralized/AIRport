@@ -1,13 +1,15 @@
 import {
 	IAirportDatabase,
 	IApplicationUtils,
-	Inject,
-	Injected,
 	IQEntityInternal,
 	IQMetadataUtils,
 	JSONLogicalOperation,
 	Parameter,
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	DbColumn,

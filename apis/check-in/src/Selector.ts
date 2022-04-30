@@ -1,4 +1,4 @@
-import { Injected } from '@airport/air-control';
+import { Injected } from '@airport/direction-indicator';
 import {
 	Observable,
 	from

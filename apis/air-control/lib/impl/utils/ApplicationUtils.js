@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var ApplicationUtils_1;
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
-import { Inject, Injected } from '../core/metadata/dependencyInjection';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { valuesEqual } from '../Utils';
 let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex) {

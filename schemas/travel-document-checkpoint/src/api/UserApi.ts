@@ -2,6 +2,7 @@ import { Api } from "@airport/check-in";
 import { v4 as uuidv4 } from "uuid";
 import { IUser } from "../generated/generated";
 import { UserDao } from "../dao/UserDao";
+import { Injected } from "@airport/direction-indicator";
 
 export enum AddUserErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
@@ -30,6 +31,7 @@ export interface IUserApi {
 
 }
 
+@Injected()
 export class UserApi {
 
     userDao: UserDao

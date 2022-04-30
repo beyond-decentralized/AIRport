@@ -1,4 +1,8 @@
-import { IAirportDatabase, Inject, Injected } from '@airport/air-control'
+import { IAirportDatabase } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	getSysWideOpId,
 	ISequenceGenerator

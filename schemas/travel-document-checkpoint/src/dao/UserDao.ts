@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import {
 	User_UuId,
 	User_Username
@@ -27,6 +28,7 @@ export interface IUserDao
 
 }
 
+@Injected()
 export class UserDao
 	extends BaseUserDao
 	implements IUserDao {

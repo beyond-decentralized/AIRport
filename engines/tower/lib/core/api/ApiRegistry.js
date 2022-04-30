@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { container } from "@airport/direction-indicator";
-import { Injected } from "@airport/air-control";
+import { Injected } from '@airport/direction-indicator';
 let ApiRegistry = class ApiRegistry {
     initialize(
     // installedApi: InstalledApi

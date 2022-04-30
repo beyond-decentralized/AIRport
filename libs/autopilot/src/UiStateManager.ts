@@ -1,3 +1,5 @@
+import { Injected } from "@airport/direction-indicator";
+
 export interface EntityWithState {
 	__state__: EntityState;
 }
@@ -36,8 +38,7 @@ export interface IUiStateManager {
 
 }
 
-// Autopilot is included in client source, so not adding @airport/air-control dependency
-// @Injected()
+@Injected()
 export class UiStateManager
 	implements IUiStateManager {
 	protected static STATE_FIELD = '__state__'

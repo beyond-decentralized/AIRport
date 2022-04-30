@@ -27,6 +27,7 @@ import {
 	QTransactionHistory,
 } from '../../generated/generated'
 import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
+import { Injected } from '@airport/direction-indicator'
 
 export interface IRepositoryTransactionHistoryDao {
 
@@ -49,6 +50,7 @@ export interface IChangedRecordIdsForRepository {
 	firstChangeTime: number;
 }
 
+@Injected()
 export class RepositoryTransactionHistoryDao
 	extends BaseRepositoryTransactionHistoryDao
 	implements IRepositoryTransactionHistoryDao {

@@ -5,6 +5,7 @@ import {
 	tree,
 	Y
 } from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator'
 import {
 	DomainName,
 	ensureChildJsMap,
@@ -77,6 +78,7 @@ export interface IApplicationDao
 
 }
 
+@Injected()
 export class ApplicationDao
 	extends BaseApplicationDao
 	implements IApplicationDao {

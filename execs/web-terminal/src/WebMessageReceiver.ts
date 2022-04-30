@@ -1,4 +1,7 @@
-import { Inject, Injected } from "@airport/air-control";
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/security-check";

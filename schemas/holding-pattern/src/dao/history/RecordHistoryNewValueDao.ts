@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {RecordHistoryId}        from '../../ddl/ddl'
 import {
 	BaseRecordHistoryNewValueDao,
@@ -16,6 +17,7 @@ export interface IRecordHistoryNewValueDao
 
 }
 
+@Injected()
 export class RecordHistoryNewValueDao
 	extends BaseRecordHistoryNewValueDao
 	implements IRecordHistoryNewValueDao {

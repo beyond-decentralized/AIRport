@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Api } from "@airport/check-in";
 import { v4 as uuidv4 } from "uuid";
+import { Injected } from "@airport/direction-indicator";
 export var AddUserErrorCodes;
 (function (AddUserErrorCodes) {
     AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
@@ -15,7 +16,7 @@ export var AddUserErrorCodes;
     AddUserErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
     AddUserErrorCodes["USERNAME_TAKEN"] = "USERNAME_TAKEN";
 })(AddUserErrorCodes || (AddUserErrorCodes = {}));
-export class UserApi {
+let UserApi = class UserApi {
     async addUser(username, email) {
         const existingUsers = await this.userDao.findByUserNames([username]);
         for (const existingUser of existingUsers) {
@@ -42,11 +43,15 @@ export class UserApi {
         }
         return null;
     }
-}
+};
 __decorate([
     Api()
 ], UserApi.prototype, "addUser", null);
 __decorate([
     Api()
 ], UserApi.prototype, "findUser", null);
+UserApi = __decorate([
+    Injected()
+], UserApi);
+export { UserApi };
 //# sourceMappingURL=UserApi.js.map

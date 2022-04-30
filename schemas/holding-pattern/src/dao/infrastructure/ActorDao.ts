@@ -30,6 +30,7 @@ import {
 	Q,
 	QActor
 } from '../../generated/generated'
+import { Injected } from '@airport/direction-indicator'
 
 export interface IActorDao
 	extends IBaseActorDao {
@@ -67,6 +68,7 @@ export interface IActorDao
 
 }
 
+@Injected()
 export class ActorDao
 	extends BaseActorDao
 	implements IActorDao {

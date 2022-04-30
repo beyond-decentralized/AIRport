@@ -1,4 +1,7 @@
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IUser,

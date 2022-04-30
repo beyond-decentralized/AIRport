@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { TransactionType } from '@airport/ground-control';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
-import { Inject, Injected } from '@airport/air-control';
+import { Inject, Injected } from '@airport/direction-indicator';
 let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)

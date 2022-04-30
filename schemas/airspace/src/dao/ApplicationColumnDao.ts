@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {
 	EntityId,
 	undefinedToNull
@@ -23,6 +24,7 @@ export interface IApplicationColumnDao
 
 }
 
+@Injected()
 export class ApplicationColumnDao
 	extends BaseApplicationColumnDao
 	implements IApplicationColumnDao {

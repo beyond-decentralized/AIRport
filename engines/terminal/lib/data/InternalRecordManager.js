@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Actor, } from "@airport/holding-pattern";
 import { Terminal, User } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
-import { Inject, Injected } from "@airport/air-control";
+import { Inject, Injected } from '@airport/direction-indicator';
 let InternalRecordManager = class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
         await this.transactionManager.transactInternal(async (_transaction) => {

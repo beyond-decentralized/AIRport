@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { ensureChildJsMap } from '@airport/ground-control';
 import { internalTerminalState } from './theState';
-import { Inject, Injected } from '@airport/air-control';
+import { Inject, Injected } from '@airport/direction-indicator';
 let TerminalStore = class TerminalStore {
     async init() {
         this.state = internalTerminalState;

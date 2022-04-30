@@ -12,13 +12,15 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	ILookup,
-	Inject,
-	Injected,
 	IQEntity,
 	IUpdateCacheManager,
 	QApplication,
 	Y
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	IContext
 } from '@airport/direction-indicator';

@@ -1,4 +1,7 @@
-import { IEntityContext, Injected } from "@airport/air-control"
+import { IEntityContext } from "@airport/air-control"
+import {
+	Injected
+} from '@airport/direction-indicator'
 import {
     DbEntity,
     IEntityStateManager

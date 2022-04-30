@@ -9,7 +9,7 @@ import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import pg from 'pg';
 import pgConnectionString from 'pg-connection-string';
 import { DDLManager } from './DDLManager';
-import { Injected } from '@airport/air-control';
+import { Injected } from '@airport/direction-indicator';
 const Pool = pg.Pool;
 const parse = pgConnectionString.parse;
 /**

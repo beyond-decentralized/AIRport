@@ -3,6 +3,7 @@ import {
 	field,
 	or
 } from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator';
 import {
 	ColumnIndex,
 	JSONBaseOperation,
@@ -55,6 +56,7 @@ export interface IRecordUpdateStageDao
 
 }
 
+@Injected()
 export class RecordUpdateStageDao
 	extends BaseRecordUpdateStageDao
 	implements IRecordUpdateStageDao {

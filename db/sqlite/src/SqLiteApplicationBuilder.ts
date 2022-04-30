@@ -1,9 +1,11 @@
 import {
   IAirportDatabase,
-  Inject,
-  Injected,
   QApplicationInternal,
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
   ISequence
 } from '@airport/airport-code';

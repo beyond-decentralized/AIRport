@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {
 	BaseTerminalRunDao,
 	IBaseTerminalRunDao
@@ -12,6 +13,7 @@ export interface ITerminalRunDao
 
 }
 
+@Injected()
 export class TerminalRunDao
 	extends BaseTerminalRunDao
 	implements ITerminalRunDao {

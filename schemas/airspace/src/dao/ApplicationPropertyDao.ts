@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator';
 import {EntityId}            from '@airport/ground-control'
 import {
 	BaseApplicationPropertyDao,
@@ -20,6 +21,7 @@ export interface IApplicationPropertyDao
 
 }
 
+@Injected()
 export class ApplicationPropertyDao
 	extends BaseApplicationPropertyDao
 	implements IApplicationPropertyDao {

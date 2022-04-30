@@ -1,4 +1,6 @@
-import { Injected } from "@airport/air-control";
+import {
+	Injected
+} from '@airport/direction-indicator'
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {

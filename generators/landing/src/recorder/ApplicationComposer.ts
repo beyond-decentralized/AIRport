@@ -29,7 +29,10 @@ import {
 	IApplicationVersion
 } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 export interface IApplicationComposer {
 

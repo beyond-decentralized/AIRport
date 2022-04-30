@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { ChangeType, repositoryEntity } from '@airport/ground-control';
-import { Inject, Injected } from '@airport/air-control';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpIds } from '@airport/check-in';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
 let SyncInDataChecker = class SyncInDataChecker {

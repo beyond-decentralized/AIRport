@@ -1,9 +1,11 @@
 import {
 	IEntityContext,
-	Inject,
-	Injected,
 	IQueryContext
 } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { IApplicationVersion } from '@airport/airspace'
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {

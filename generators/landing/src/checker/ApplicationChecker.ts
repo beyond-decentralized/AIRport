@@ -11,7 +11,10 @@ import {
 	IApplication,
 	IApplicationDao
 } from '@airport/airspace'
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 export interface CoreDomainAndApplicationNames {
 

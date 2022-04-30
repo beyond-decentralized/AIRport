@@ -6,6 +6,7 @@ import {
     RepositorySynchronizationWriteRequest,
     RepositorySynchronizationWriteResponse
 } from '@airport/arrivals-n-departures';
+import { Injected } from '@airport/direction-indicator';
 import type {
     RepositoryTransactionHistory_SyncTimestamp
 } from '@airport/holding-pattern';
@@ -26,6 +27,7 @@ export interface INonhubClient {
 
 }
 
+@Injected()
 export class NonhubClient
     implements INonhubClient {
 

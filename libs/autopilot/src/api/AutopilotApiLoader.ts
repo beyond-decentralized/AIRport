@@ -1,11 +1,11 @@
 import {
     IAutopilotApiLoader,
-    IDependencyInjectionToken
+    IDependencyInjectionToken,
+    Injected
 } from '@airport/direction-indicator'
 import { ILocalAPIClient } from '../LocalAPIClient';
 
-// Autopilot is included in client source, so not adding @airport/air-control dependency
-// @Injected()
+@Injected()
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 

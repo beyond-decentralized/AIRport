@@ -1,12 +1,14 @@
 import {
 	IAirportDatabase,
-	Inject,
-	Injected,
 	orderApplicationsInOrderOfPrecedence,
 	QApplication,
 	QApplicationInternal,
 	setQApplicationEntities
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { IApplication } from '@airport/airspace'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'

@@ -1,4 +1,8 @@
-import { doEnsureContext, IAirportDatabase, IApplicationUtils, Inject, Injected, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ApplicationName,
 	DbApplication,

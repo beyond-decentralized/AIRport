@@ -2,7 +2,10 @@ import { ApplicationLocator } from '@airport/landing'
 import { ITerminalStore } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
-import { Inject, Injected } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 @Injected()
 export class IFrameApplicationLocator

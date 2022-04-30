@@ -4,7 +4,9 @@ import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
 import { IOperationContext } from '@airport/terminal-map'
-import { Injected } from '@airport/air-control'
+import {
+	Injected
+} from '@airport/direction-indicator'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse

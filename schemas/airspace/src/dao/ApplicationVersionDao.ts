@@ -1,4 +1,5 @@
 import { and, Y } from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator'
 import {
 	BaseApplicationVersionDao,
 	IBaseApplicationVersionDao,
@@ -25,6 +26,7 @@ export interface IApplicationVersionDao
 
 }
 
+@Injected()
 export class ApplicationVersionDao
 	extends BaseApplicationVersionDao
 	implements IApplicationVersionDao {

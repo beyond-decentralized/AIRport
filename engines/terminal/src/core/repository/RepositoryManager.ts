@@ -1,14 +1,16 @@
 import {
 	and,
 	IEntityUpdateProperties,
-	Inject,
-	Injected,
 	IQEntityInternal,
 	IQOperableFieldInternal,
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,

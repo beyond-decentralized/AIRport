@@ -26,7 +26,10 @@ import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/security-check';
-import { Inject, Injected } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 
 export interface InternalConnectorStore {

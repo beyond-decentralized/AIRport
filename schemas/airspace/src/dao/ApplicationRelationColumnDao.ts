@@ -1,4 +1,5 @@
 import {or}                         from '@airport/air-control'
+import { Injected } from '@airport/direction-indicator'
 import {ColumnId}                   from '@airport/ground-control'
 import {
 	BaseApplicationRelationColumnDao,
@@ -21,6 +22,7 @@ export interface IApplicationRelationColumnDao
 
 }
 
+@Injected()
 export class ApplicationRelationColumnDao
 	extends BaseApplicationRelationColumnDao
 	implements IApplicationRelationColumnDao {

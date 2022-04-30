@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { ALL_FIELDS, and, or, Y } from '@airport/air-control';
 import { ensureChildArray, TransactionType } from '@airport/ground-control';
 import { BaseRepositoryTransactionHistoryDao, Q, } from '../../generated/generated';
-export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
+import { Injected } from '@airport/direction-indicator';
+let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
     /*
     async clearContentsWhereIdsIn(
         repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
@@ -116,5 +123,9 @@ export class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHi
             where: rth.id.equals(repositoryTransactionHistory.id)
         });
     }
-}
+};
+RepositoryTransactionHistoryDao = __decorate([
+    Injected()
+], RepositoryTransactionHistoryDao);
+export { RepositoryTransactionHistoryDao };
 //# sourceMappingURL=RepositoryTransactionHistoryDao.js.map

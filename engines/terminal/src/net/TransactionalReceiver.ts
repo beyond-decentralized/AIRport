@@ -1,4 +1,8 @@
-import { IEntityContext, Inject, Injected } from '@airport/air-control';
+import { IEntityContext } from '@airport/air-control';
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
     container,

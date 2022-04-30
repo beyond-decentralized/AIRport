@@ -3,7 +3,7 @@ import {
 	and,
 	Y
 } from '@airport/air-control'
-import { IContext } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
 	Terminal_UuId,
@@ -53,6 +53,7 @@ export type RepositoryIdMap = Map<User_UuId,
 		Map<Actor_UuId, Map<number,
 			Map<Repository_UuId, Repository_Id>>>>>>;
 
+@Injected()
 export class RepositoryDao
 	extends BaseRepositoryDao
 	implements IRepositoryDao {

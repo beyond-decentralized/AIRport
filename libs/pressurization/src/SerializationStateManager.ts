@@ -1,3 +1,5 @@
+import { Injected } from "@airport/direction-indicator"
+
 export enum SerializationState {
     DATE = 'DATE',
     STUB = 'STUB'
@@ -41,6 +43,7 @@ export interface ISerializationStateManager {
 
 }
 
+@Injected()
 export class SerializationStateManager
     implements ISerializationStateManager {
 

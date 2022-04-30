@@ -26,7 +26,10 @@ import { IApplication } from '@airport/airspace'
 import { ISyncRepoTransHistory } from './SyncInUtils'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
-import { Inject, Injected } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.

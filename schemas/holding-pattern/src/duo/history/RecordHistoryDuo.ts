@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/direction-indicator'
 import { DbColumn } from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -37,11 +38,15 @@ export interface IRecordHistoryDuo
 
 }
 
+@Injected()
 export class RecordHistoryDuo
 	extends BaseRecordHistoryDuo
 	implements IRecordHistoryDuo {
 
+	@Inject()
 	recordHistoryNewValueDuo: IRecordHistoryNewValueDuo
+	
+	@Inject()
 	recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
 
 	getNewRecord(

@@ -3,11 +3,13 @@ import {
 	compareNumbers,
 	IAirportDatabase,
 	IDatabaseFacade,
-	Inject,
-	Injected,
 	IQEntityInternal,
 	or
 } from '@airport/air-control'
+import {
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	ColumnIndex,
 	ensureChildJsMap,

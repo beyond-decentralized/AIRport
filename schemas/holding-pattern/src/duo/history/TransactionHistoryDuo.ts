@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control'
 import {
 	Repository_Id,
@@ -24,10 +25,12 @@ export interface ITransactionHistoryDuo {
 
 }
 
+@Injected()
 export class TransactionHistoryDuo
 	extends BaseTransactionHistoryDuo
 	implements ITransactionHistoryDuo {
 
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
 
 	getNewRecord(

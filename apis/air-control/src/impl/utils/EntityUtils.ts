@@ -2,7 +2,7 @@ import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
 import {RawQuery}       from '../../lingo/query/facade/Query'
 import {IEntityUtils}   from '../../lingo/utils/EntityUtils'
 import {QOperableField} from '../core/field/OperableField'
-import { Injected } from '../core/metadata/dependencyInjection'
+import { Injected } from '@airport/direction-indicator'
 import {EntityQuery}    from '../query/facade/EntityQuery'
 import {objectExists}   from '../Utils'
 

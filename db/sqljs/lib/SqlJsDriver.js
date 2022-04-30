@@ -1,11 +1,18 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { SQLDialect } from '@airport/fuel-hydrant-system';
 import { QueryType, StoreType } from '@airport/ground-control';
 import { SqLiteDriver } from '@airport/sqlite';
 import { SqlJsTransaction } from './SqlJsTransaction';
+import { Injected } from '@airport/direction-indicator';
 /**
  * Created by Papa on 11/27/2016.
  */
-export class SqlJsDriver extends SqLiteDriver {
+let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
     constructor() {
         super();
         this.type = StoreType.SQLJS;
@@ -81,5 +88,9 @@ export class SqlJsDriver extends SqLiteDriver {
     getDialect() {
         return SQLDialect.SQLITE;
     }
-}
+};
+SqlJsDriver = __decorate([
+    Injected()
+], SqlJsDriver);
+export { SqlJsDriver };
 //# sourceMappingURL=SqlJsDriver.js.map

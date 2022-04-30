@@ -11,7 +11,7 @@ import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, } from '../../../lingo/query/facade/Query';
 import { IQueryContext } from '../../../lingo/query/QueryContext';
 import { IEntityUtils } from '../../../lingo/utils/EntityUtils';
-import { Inject, Injected } from '../../core/metadata/dependencyInjection';
+import { Inject, Injected } from '@airport/direction-indicator';
 
 export interface IDaoStub {
 	airportDatabase: IAirportDatabase

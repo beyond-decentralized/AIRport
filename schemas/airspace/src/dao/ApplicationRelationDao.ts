@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import {
 	PropertyId,
 	undefinedToNull
@@ -23,6 +24,7 @@ export interface IApplicationRelationDao
 
 }
 
+@Injected()
 export class ApplicationRelationDao
 	extends BaseApplicationRelationDao
 	implements IApplicationRelationDao {
