@@ -5,12 +5,8 @@ import {
 	IQueryContext,
 	IQueryFacade,
 	IQueryUtils,
-	IRelationManager,
-	QUERY_FACADE,
+	IRelationManager
 } from '@airport/air-control';
-import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator';
 import {
 	ITransactionalConnector,
 	JsonQuery,
@@ -100,4 +96,3 @@ export class QueryFacade
 	}
 
 }
-DEPENDENCY_INJECTION.set(QUERY_FACADE, QueryFacade);

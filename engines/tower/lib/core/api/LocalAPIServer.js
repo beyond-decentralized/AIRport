@@ -1,5 +1,3 @@
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
-import { LOCAL_API_SERVER } from "@airport/security-check";
 export class LocalAPIServer {
     async handleRequest(request) {
         let payload;
@@ -32,5 +30,4 @@ export class LocalAPIServer {
         return response;
     }
 }
-DEPENDENCY_INJECTION.set(LOCAL_API_SERVER, LocalAPIServer);
 //# sourceMappingURL=LocalApiServer.js.map

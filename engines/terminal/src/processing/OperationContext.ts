@@ -1,9 +1,5 @@
 import {
-	DEPENDENCY_INJECTION
-} from '@airport/direction-indicator'
-import {
-	IOperationContextLoader,
-	OPERATION_CONTEXT_LOADER
+	IOperationContextLoader
 } from '@airport/ground-control'
 import {
 	IOperationContext
@@ -23,4 +19,3 @@ export class OperationContextLoader
 	}
 
 }
-DEPENDENCY_INJECTION.set(OPERATION_CONTEXT_LOADER, OperationContextLoader)

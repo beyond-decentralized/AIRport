@@ -1,6 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 export class InternalTransactionalConnector {
     callApi(_) {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
@@ -88,11 +85,6 @@ they are internal to the AIRport framework).`);
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 }
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);
-TRANSACTIONAL_CONNECTOR.setDependencies({
-    terminalStore: TERMINAL_STORE,
-    transactionalServer: TRANSACTIONAL_SERVER
-});
 export function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }

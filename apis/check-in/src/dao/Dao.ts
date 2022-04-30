@@ -2,6 +2,7 @@ import {
 	doEnsureContext,
 	IAirportDatabase,
 	IDao,
+	IDatabaseFacade,
 	IEntityCascadeGraph,
 	IEntityContext,
 	IEntityCreateProperties,
@@ -10,6 +11,7 @@ import {
 	IEntitySelectProperties,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
+	ILookup,
 	IQEntity,
 	IUpdateCacheManager,
 	QApplication,
@@ -53,7 +55,9 @@ export abstract class Dao<Entity,
 	}
 
 	airportDatabase: IAirportDatabase
+	databaseFacade: IDatabaseFacade
 	entityStateManager: IEntityStateManager
+	lookup: ILookup
 	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
@@ -74,7 +78,7 @@ export abstract class Dao<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, EntityId,
 			EntityCascadeGraph, QE>(
-				dbEntity, Q, this.updateCacheManager);
+				dbEntity, Q, this);
 	}
 
 	async count(

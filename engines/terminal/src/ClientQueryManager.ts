@@ -1,9 +1,7 @@
 import {
-    CLIENT_QUERY_MANAGER,
     IClientQuery,
     IClientQueryManager
 } from "@airport/check-in";
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 
 /**
  * TODO: probably not-needed - queries no longer come from
@@ -25,4 +23,3 @@ export class ClientQueryManager
     }
 
 }
-DEPENDENCY_INJECTION.set(CLIENT_QUERY_MANAGER, ClientQueryManager)

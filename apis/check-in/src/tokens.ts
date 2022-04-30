@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, IDao, UPDATE_CACHE_MANAGER } from '@airport/air-control';
+import { AIRPORT_DATABASE, DATABASE_FACADE, ENTITY_UTILS, IDao, LOOKUP, QUERY_FACADE, UPDATE_CACHE_MANAGER } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { IApiRegistry, IApiValidator } from '.';
@@ -60,6 +60,8 @@ export const SEQUENCE_GENERATOR = checkIn.token<ISequenceGenerator>({
 
 DAO.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
+    databaseFacade: DATABASE_FACADE,
     entityStateManager: ENTITY_STATE_MANAGER,
+    lookup: LOOKUP,
     updateCacheManager: UPDATE_CACHE_MANAGER
 })

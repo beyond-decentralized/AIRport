@@ -1,9 +1,7 @@
 import {
-    IRepositoryLoader,
-    REPOSITORY_LOADER
+    IRepositoryLoader
 } from "@airport/air-control";
 import {
-    DEPENDENCY_INJECTION,
     IContext
 } from "@airport/direction-indicator";
 import {
@@ -102,4 +100,3 @@ export class RepositoryLoader
     }
 
 }
-DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader)

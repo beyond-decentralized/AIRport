@@ -1,14 +1,13 @@
-import { DEPENDENCY_INJECTION, } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
-import { ENTITY_UTILS, LOOKUP, QUERY_FACADE } from '../../../tokens';
 export class LookupProxy {
+    constructor(dao) {
+        this.dao = dao;
+    }
     ensureContext(context) {
         return doEnsureContext(context);
     }
-    lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        return DEPENDENCY_INJECTION.db()
-            .get(LOOKUP)
-            .then(lookup => lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults));
+    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
+        return await this.dao.lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults);
     }
 }
 export class Lookup {
@@ -16,35 +15,33 @@ export class Lookup {
         return doEnsureContext(context);
     }
     async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
-        const [entityUtils, queryFacade] = await DEPENDENCY_INJECTION.db()
-            .get(ENTITY_UTILS, QUERY_FACADE);
         let query;
         if (QueryClass) {
-            const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
+            const rawNonEntityQuery = this.entityUtils.getQuery(rawQuery);
             query = new QueryClass(rawNonEntityQuery);
         }
         else {
-            query = entityUtils.getEntityQuery(rawQuery);
+            query = this.entityUtils.getEntityQuery(rawQuery);
             queryResultType = this.getQueryResultType(queryResultType, mapResults);
         }
         let queryMethod;
         if (search) {
             if (one) {
-                queryMethod = queryFacade.searchOne;
+                queryMethod = this.queryFacade.searchOne;
             }
             else {
-                queryMethod = queryFacade.search;
+                queryMethod = this.queryFacade.search;
             }
         }
         else {
             if (one) {
-                queryMethod = queryFacade.findOne;
+                queryMethod = this.queryFacade.findOne;
             }
             else {
-                queryMethod = queryFacade.find;
+                queryMethod = this.queryFacade.find;
             }
         }
-        let result = await queryMethod.call(queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
+        let result = await queryMethod.call(this.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
         if (!one && !result) {
             result = [];
         }

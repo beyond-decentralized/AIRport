@@ -1,6 +1,4 @@
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
-    API_VALIDATOR,
     IApiOperation,
     IApiValidator
 } from "@airport/check-in";
@@ -16,4 +14,3 @@ export class ApiValidator
     }
 
 }
-DEPENDENCY_INJECTION.set(API_VALIDATOR, ApiValidator)

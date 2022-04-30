@@ -1,5 +1,3 @@
-import { REPOSITORY_LOADER } from "@airport/air-control";
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 export class RepositoryLoader {
     /*
     Repository can be loaded because:
@@ -65,5 +63,4 @@ export class RepositoryLoader {
         }
     }
 }
-DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader);
 //# sourceMappingURL=RepositoryLoader.js.map

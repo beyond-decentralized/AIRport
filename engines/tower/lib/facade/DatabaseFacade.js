@@ -1,6 +1,4 @@
-import { DATABASE_FACADE, Delete, InsertColumnValues, InsertValues, UpdateColumns, UpdateProperties, QUERY_FACADE, } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { ENTITY_COPIER } from '../tokens';
+import { Delete, InsertColumnValues, InsertValues, UpdateColumns, UpdateProperties, } from '@airport/air-control';
 /**
  * Created by Papa on 5/23/2016.
  */
@@ -143,11 +141,6 @@ export class DatabaseFacade {
         return queryContext;
     }
 }
-DEPENDENCY_INJECTION.set(DATABASE_FACADE, DatabaseFacade);
-DATABASE_FACADE.setDependencies({
-    entityCopier: ENTITY_COPIER,
-    queryFacade: QUERY_FACADE
-});
 export class FunctionWrapper {
     constructor(queryFunction) {
         throw new Error('Not Implemented');

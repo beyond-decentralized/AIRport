@@ -1,5 +1,6 @@
 import { IContext } from '@airport/direction-indicator'
-import { ISaveResult } from '@airport/ground-control'
+import { IEntityStateManager, ISaveResult } from '@airport/ground-control'
+import { IAirportDatabase } from '../AirportDatabase'
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -9,7 +10,11 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '../core/entity/Entity'
+import { IDatabaseFacade, IQueryFacade } from '../core/repository/DatabaseFacade'
 import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade'
+import { IUpdateCacheManager } from '../core/UpdateCacheManager'
+import { IEntityUtils } from '../utils/EntityUtils'
+import { ILookup } from './api/Lookup'
 
 export type OperationName = string
 
@@ -24,6 +29,12 @@ export interface IDao<Entity,
 	EntityId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
+
+	airportDatabase: IAirportDatabase
+	databaseFacade: IDatabaseFacade
+	entityStateManager: IEntityStateManager
+	lookup: ILookup
+	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>

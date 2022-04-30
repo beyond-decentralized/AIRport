@@ -1,5 +1,3 @@
-import { UPDATE_CACHE_MANAGER } from "@airport/air-control";
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
 export class UpdateCacheManager {
     saveOriginalValues(entity, dbEntity) {
@@ -350,5 +348,4 @@ export class UpdateCacheManager {
         }
     }
 }
-DEPENDENCY_INJECTION.set(UPDATE_CACHE_MANAGER, UpdateCacheManager);
 //# sourceMappingURL=UpdateCacheManager.js.map

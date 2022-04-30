@@ -1,7 +1,6 @@
 import {
 	abs,
 	add,
-	AIRPORT_DATABASE,
 	and,
 	avg,
 	bool,
@@ -26,7 +25,6 @@ import {
 	INonEntitySearchOne,
 	intersect,
 	IQEntity,
-	IUpdateCacheManager,
 	lcase,
 	len,
 	max,
@@ -61,9 +59,6 @@ import {
 	unionAll,
 	wrapPrimitive,
 } from '@airport/air-control';
-import {
-	DEPENDENCY_INJECTION,
-} from '@airport/direction-indicator';
 import {
 	DbApplication,
 	ISaveResult,
@@ -331,7 +326,6 @@ export class AirportDatabase
 		return await this.databaseFacade.updateWhere(rawUpdate, context);
 	}
 }
-DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
 
 export function injectAirportDatabase(): void {
 	console.log('Injecting AirportDatabase');

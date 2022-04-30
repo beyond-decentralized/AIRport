@@ -1,5 +1,4 @@
 import {
-	DATABASE_FACADE,
 	Delete,
 	IDatabaseFacade,
 	IEntityContext,
@@ -18,11 +17,9 @@ import {
 	UpdateColumns,
 	UpdateProperties,
 	IUpdateCacheManager,
-	QUERY_FACADE,
 	IQueryFacade,
 } from '@airport/air-control'
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator'
 import {
@@ -32,7 +29,6 @@ import {
 	PortableQuery
 } from '@airport/ground-control'
 import { IEntityCopier } from '../core/data/EntityCopier'
-import { ENTITY_COPIER } from '../tokens'
 
 /**
  * Created by Papa on 5/23/2016.
@@ -276,11 +272,6 @@ export class DatabaseFacade
 	}
 
 }
-DEPENDENCY_INJECTION.set(DATABASE_FACADE, DatabaseFacade)
-DATABASE_FACADE.setDependencies({
-	entityCopier: ENTITY_COPIER,
-	queryFacade: QUERY_FACADE
-})
 
 export class FunctionWrapper<QF extends Function>
 	implements IFunctionWrapper<any> {

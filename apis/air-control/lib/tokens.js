@@ -83,6 +83,10 @@ DATABASE_FACADE.setDependencies({
 FIELD_UTILS.setDependencies({
     relationManager: RELATION_MANAGER
 });
+LOOKUP.setDependencies({
+    entityUtils: ENTITY_UTILS,
+    queryFacade: QUERY_FACADE
+});
 QUERY_FACADE.setDependencies({
     fieldUtils: FIELD_UTILS,
     queryUtils: QUERY_UTILS,

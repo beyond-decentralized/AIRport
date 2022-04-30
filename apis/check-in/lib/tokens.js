@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, UPDATE_CACHE_MANAGER } from '@airport/air-control';
+import { AIRPORT_DATABASE, DATABASE_FACADE, LOOKUP, UPDATE_CACHE_MANAGER } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { Dao } from './dao/Dao';
@@ -51,7 +51,9 @@ export const SEQUENCE_GENERATOR = checkIn.token({
 });
 DAO.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
+    databaseFacade: DATABASE_FACADE,
     entityStateManager: ENTITY_STATE_MANAGER,
+    lookup: LOOKUP,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 //# sourceMappingURL=tokens.js.map

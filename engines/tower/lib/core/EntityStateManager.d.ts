@@ -3,7 +3,6 @@ export interface EntityWithState {
     __state__: EntityState;
     __originalValues__: any;
 }
-export declare function markForDeletion<T>(entity: T): void;
 export declare class EntityStateManager implements IEntityStateManager {
     static DELETED_PROPERTY: string;
     static ORIGINAL_VALUES_PROPERTY: string;

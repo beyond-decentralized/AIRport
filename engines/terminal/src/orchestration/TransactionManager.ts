@@ -1,6 +1,5 @@
 import { IQEntityInternal } from '@airport/air-control';
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -24,8 +23,7 @@ import {
 	ITransactionCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
-	ITransactionManagerStore,
-	TRANSACTION_MANAGER
+	ITransactionManagerStore
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
@@ -463,4 +461,3 @@ ${callHerarchy}
 	}
 
 }
-DEPENDENCY_INJECTION.set(TRANSACTION_MANAGER, TransactionManager);

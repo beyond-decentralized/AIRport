@@ -1,5 +1,4 @@
 import {
-	DEPENDENCY_INJECTION,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -15,7 +14,6 @@ import {
 	IQueryOperationContext,
 	ITransaction,
 	ITransactionalServer,
-	TRANSACTIONAL_SERVER,
 	ITransactionContext,
 	IApiCallContext,
 	ITransactionCredentials,
@@ -449,7 +447,6 @@ export class TransactionalServer
 
 }
 
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_SERVER, TransactionalServer);
 
 export function injectTransactionalServer(): void {
 	console.log('Injecting TransactionalServer')

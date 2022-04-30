@@ -9,8 +9,7 @@ import {
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
-import { LookupProxy } from './Lookup'
-import { IUpdateCacheManager } from '../../../lingo/core/UpdateCacheManager'
+import { IDaoStub, LookupProxy } from './Lookup'
 
 export interface IEntityLookupInternal<Child, MappedChild,
 	IESP extends IEntitySelectProperties>
@@ -27,7 +26,7 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
-			updateCacheManager: IUpdateCacheManager,
+			dao: IDaoStub,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped: boolean
@@ -36,7 +35,7 @@ export interface IEntityLookupInternal<Child, MappedChild,
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			updateCacheManager: IUpdateCacheManager,
+			dao: IDaoStub,
 			mapResults: boolean
 		) => Child
 	): Child
@@ -52,10 +51,10 @@ export abstract class EntityLookup<Child, MappedChild,
 
 	constructor(
 		protected dbEntity: DbEntity,
-		protected updateCacheManager: IUpdateCacheManager,
+		dao: IDaoStub,
 		protected mapResults = EntityLookup.mapResults,
 	) {
-		super()
+		super(dao)
 	}
 
 	abstract map(
@@ -65,22 +64,22 @@ export abstract class EntityLookup<Child, MappedChild,
 	setMap(
 		MappedChildClass: new (
 			dbEntity: DbEntity,
-			updateCacheManager: IUpdateCacheManager,
+			dao: IDaoStub,
 			mapResults: boolean
 		) => MappedChild,
 		isMapped = true
 	): MappedChild {
-		return new MappedChildClass(this.dbEntity, this.updateCacheManager, isMapped)
+		return new MappedChildClass(this.dbEntity, this.dao, isMapped)
 	}
 
 	setNoCache(
 		ChildClass: new (
 			dbEntity: DbEntity,
-			updateCacheManager: IUpdateCacheManager,
+			dao: IDaoStub,
 			mapResults: boolean
 		) => Child
 	): Child {
-		return new ChildClass(this.dbEntity, this.updateCacheManager, this.mapResults)
+		return new ChildClass(this.dbEntity, this.dao, this.mapResults)
 	}
 
 	async entityLookup(
@@ -97,7 +96,7 @@ export abstract class EntityLookup<Child, MappedChild,
 		if (search) {
 			throw new Error(`Search operations are not yet supported`);
 		} else {
-			this.updateCacheManager.saveOriginalValues(result, context.dbEntity)
+			this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity)
 		}
 		return result
 	}

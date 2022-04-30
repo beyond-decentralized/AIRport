@@ -1,7 +1,7 @@
 import {
-  DATABASE_FACADE,
   EntityFind,
   EntityFindOne,
+  IDao,
   IDatabaseFacade,
   IDuo,
   IEntityCascadeGraph,
@@ -15,7 +15,6 @@ import {
   IEntityUpdateColumns,
   IEntityUpdateProperties,
   IQEntity,
-  IUpdateCacheManager,
   MappedEntityArray,
   QApplication,
   RawDelete,
@@ -23,7 +22,6 @@ import {
   RawInsertValues,
   RawUpdate,
 } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
   DbEntity,
   ISaveResult
@@ -61,12 +59,15 @@ export class EntityDatabaseFacade<Entity,
   constructor(
     public dbEntity: DbEntity,
     private Q: QApplication,
-    updateCacheManager: IUpdateCacheManager
+    protected dao: IDao<Entity, EntitySelect,
+      EntityCreate, EntityUpdateColumns,
+      EntityUpdateProperties, EntityId,
+      EntityCascadeGraph, IQ>
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(
-      this.dbEntity, updateCacheManager);
+      this.dbEntity, dao);
     this.findOne = new EntityFindOne<Entity, EntitySelect>(
-      this.dbEntity, updateCacheManager);
+      this.dbEntity, dao);
     // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
     //   this.dbEntity, updateCacheManager);
     // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
@@ -217,13 +218,11 @@ export class EntityDatabaseFacade<Entity,
     if (!ctx.startedAt) {
       ctx.startedAt = new Date();
     }
-    const databaseFacade = await DEPENDENCY_INJECTION.db()
-      .get(DATABASE_FACADE);
     const previousEntity = ctx.dbEntity;
     ctx.dbEntity = this.dbEntity;
     try {
 
-      return await callback(databaseFacade, ctx);
+      return await callback(this.dao.databaseFacade, ctx);
     } finally {
       ctx.dbEntity = previousEntity;
     }

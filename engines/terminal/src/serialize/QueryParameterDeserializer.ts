@@ -1,10 +1,8 @@
 import {
     IClientQuery,
     IJsonClientQueryParameter,
-    IQueryParameterDeserializer,
-    QUERY_PARAMETER_DESERIALIZER
+    IQueryParameterDeserializer
 } from "@airport/check-in";
-import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import {
     IEntityStateManager,
     SQLDataType
@@ -108,4 +106,3 @@ got: ${typeOfParameter}
     }
 
 }
-DEPENDENCY_INJECTION.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer)

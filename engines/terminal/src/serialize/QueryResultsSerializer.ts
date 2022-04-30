@@ -1,9 +1,7 @@
 import { IApplicationUtils } from '@airport/air-control'
 import {
-	IQueryResultsSerializer,
-	QUERY_RESULTS_SERIALIZER
+	IQueryResultsSerializer
 } from '@airport/check-in'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	EntityState,
@@ -137,4 +135,3 @@ export class QueryResultsSerializer
 	}
 
 }
-DEPENDENCY_INJECTION.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer)

@@ -1,18 +1,23 @@
 import {
-	DEPENDENCY_INJECTION,
 	IContext,
 } from '@airport/direction-indicator';
-import { QueryResultType } from '@airport/ground-control';
+import { IEntityStateManager, QueryResultType } from '@airport/ground-control';
+import { IAirportDatabase } from '../../../lingo/AirportDatabase';
 import { IEntityQueryContext } from '../../../lingo/core/EntityContext';
+import { IQueryFacade } from '../../../lingo/core/repository/DatabaseFacade';
+import { IUpdateCacheManager } from '../../../lingo/core/UpdateCacheManager';
 import { ILookup } from '../../../lingo/query/api/Lookup';
 import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, } from '../../../lingo/query/facade/Query';
 import { IQueryContext } from '../../../lingo/query/QueryContext';
-import {
-	ENTITY_UTILS,
-	LOOKUP,
-	QUERY_FACADE
-} from '../../../tokens';
+import { IEntityUtils } from '../../../lingo/utils/EntityUtils';
+
+export interface IDaoStub {
+	airportDatabase: IAirportDatabase
+	entityStateManager: IEntityStateManager
+	lookup: ILookup
+	updateCacheManager: IUpdateCacheManager
+}
 
 export class LookupProxy
 	implements ILookup {
@@ -23,7 +28,12 @@ export class LookupProxy
 		return doEnsureContext<C>(context);
 	}
 
-	lookup(
+	constructor(
+		protected dao: IDaoStub
+	) {
+	}
+
+	async lookup(
 		rawQuery: RawQuery | { (...args: any[]): RawQuery },
 		queryResultType: QueryResultType,
 		search: boolean,
@@ -32,17 +42,17 @@ export class LookupProxy
 		context: IEntityQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		return DEPENDENCY_INJECTION.db()
-			.get(LOOKUP)
-			.then(
-				lookup => lookup.lookup(
+		return await this.dao.lookup.lookup(
 					rawQuery, queryResultType, search, one,
-					QueryClass, context, mapResults));
+					QueryClass, context, mapResults);
 	}
 }
 
 export class Lookup
 	implements ILookup {
+
+	entityUtils: IEntityUtils
+	queryFacade: IQueryFacade
 
 	ensureContext<C extends IContext = IContext>(
 		context?: C
@@ -59,32 +69,30 @@ export class Lookup
 		context: IQueryContext,
 		mapResults?: boolean
 	): Promise<any> {
-		const [entityUtils, queryFacade] = await DEPENDENCY_INJECTION.db()
-			.get(ENTITY_UTILS, QUERY_FACADE);
 		let query: IAbstractQuery;
 		if (QueryClass) {
-			const rawNonEntityQuery = entityUtils.getQuery(rawQuery);
+			const rawNonEntityQuery = this.entityUtils.getQuery(rawQuery);
 			query = new QueryClass(rawNonEntityQuery);
 		} else {
-			query = entityUtils.getEntityQuery(rawQuery);
+			query = this.entityUtils.getEntityQuery(rawQuery);
 			queryResultType = this.getQueryResultType(queryResultType, mapResults);
 		}
 		let queryMethod;
 		if (search) {
 			if (one) {
-				queryMethod = queryFacade.searchOne;
+				queryMethod = this.queryFacade.searchOne;
 			} else {
-				queryMethod = queryFacade.search;
+				queryMethod = this.queryFacade.search;
 			}
 		} else {
 			if (one) {
-				queryMethod = queryFacade.findOne;
+				queryMethod = this.queryFacade.findOne;
 			} else {
-				queryMethod = queryFacade.find;
+				queryMethod = this.queryFacade.find;
 			}
 		}
 
-		let result = await queryMethod.call(queryFacade, query,
+		let result = await queryMethod.call(this.queryFacade, query,
 			this.getQueryResultType(queryResultType, mapResults), context);
 		if (!one && !result) {
 			result = []

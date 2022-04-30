@@ -1,7 +1,5 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
-import { TRANSACTIONAL_SERVER } from '@airport/terminal-map';
 import { transactional } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
@@ -236,7 +234,6 @@ export class TransactionalServer {
         this.operationContextLoader.ensureSync(context);
     }
 }
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_SERVER, TransactionalServer);
 export function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }

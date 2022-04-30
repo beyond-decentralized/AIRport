@@ -1,5 +1,3 @@
-import { QUERY_RESULTS_SERIALIZER } from '@airport/check-in';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { EntityState, SQLDataType } from '@airport/ground-control';
 // TODO: figure out if this is needed - originally written for serializing
 // query resuts returned to the client.  Since then moved to Isolates and
@@ -97,5 +95,4 @@ export class QueryResultsSerializer {
         return entityCopy;
     }
 }
-DEPENDENCY_INJECTION.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer);
 //# sourceMappingURL=QueryResultsSerializer.js.map

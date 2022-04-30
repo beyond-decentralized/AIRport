@@ -1,4 +1,4 @@
-import { IAirportDatabase, IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IUpdateCacheManager, QApplication } from '@airport/air-control';
+import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, QApplication } from '@airport/air-control';
 import { IContext } from '@airport/direction-indicator';
 import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';
@@ -9,7 +9,9 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     private internal;
     static BaseSave<EntitySelect extends IEntitySelectProperties>(config: EntitySelect): PropertyDecorator;
     airportDatabase: IAirportDatabase;
+    databaseFacade: IDatabaseFacade;
     entityStateManager: IEntityStateManager;
+    lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;

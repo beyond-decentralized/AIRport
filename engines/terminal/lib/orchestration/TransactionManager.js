@@ -1,7 +1,5 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Q } from '@airport/holding-pattern';
-import { TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
     /**
@@ -305,5 +303,4 @@ ${callHerarchy}
         return true;
     }
 }
-DEPENDENCY_INJECTION.set(TRANSACTION_MANAGER, TransactionManager);
 //# sourceMappingURL=TransactionManager.js.map

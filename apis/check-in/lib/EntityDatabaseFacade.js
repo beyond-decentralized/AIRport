@@ -1,16 +1,16 @@
-import { DATABASE_FACADE, EntityFind, EntityFindOne, } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { EntityFind, EntityFindOne, } from '@airport/air-control';
 /**
  * Created by Papa on 12/11/2016.
  */
 export class EntityDatabaseFacade {
     // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
     // searchOne: IEntitySearchOne<Entity, EntitySelect>;
-    constructor(dbEntity, Q, updateCacheManager) {
+    constructor(dbEntity, Q, dao) {
         this.dbEntity = dbEntity;
         this.Q = Q;
-        this.find = new EntityFind(this.dbEntity, updateCacheManager);
-        this.findOne = new EntityFindOne(this.dbEntity, updateCacheManager);
+        this.dao = dao;
+        this.find = new EntityFind(this.dbEntity, dao);
+        this.findOne = new EntityFindOne(this.dbEntity, dao);
         // this.search = new EntitySearch<Entity, Array<Entity>, EntitySelect>(
         //   this.dbEntity, updateCacheManager);
         // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
@@ -73,12 +73,10 @@ export class EntityDatabaseFacade {
         if (!ctx.startedAt) {
             ctx.startedAt = new Date();
         }
-        const databaseFacade = await DEPENDENCY_INJECTION.db()
-            .get(DATABASE_FACADE);
         const previousEntity = ctx.dbEntity;
         ctx.dbEntity = this.dbEntity;
         try {
-            return await callback(databaseFacade, ctx);
+            return await callback(this.dao.databaseFacade, ctx);
         }
         finally {
             ctx.dbEntity = previousEntity;

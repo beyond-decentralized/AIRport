@@ -7,17 +7,14 @@ import {
     ILocalAPIResponse
 } from '@airport/aviation-communication';
 import {
-    container,
-    DEPENDENCY_INJECTION,
     IContext
 } from '@airport/direction-indicator';
 import {
     ISaveResult,
     ITransactionalConnector,
-    PortableQuery,
-    TRANSACTIONAL_CONNECTOR
+    PortableQuery
 } from '@airport/ground-control';
-import { ITerminalStore, ITransactionalServer, TERMINAL_STORE, TRANSACTIONAL_SERVER } from '@airport/terminal-map';
+import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 
 export class InternalTransactionalConnector
@@ -194,11 +191,6 @@ they are internal to the AIRport framework).`)
     }
 
 }
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector)
-TRANSACTIONAL_CONNECTOR.setDependencies({
-    terminalStore: TERMINAL_STORE,
-    transactionalServer: TRANSACTIONAL_SERVER
-})
 
 export function injectTransactionalConnector(): void {
     console.log('Injecting TransactionalConnector')

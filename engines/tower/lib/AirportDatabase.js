@@ -1,5 +1,4 @@
-import { abs, add, AIRPORT_DATABASE, and, avg, bool, concat, count, date, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
-import { DEPENDENCY_INJECTION, } from '@airport/direction-indicator';
+import { abs, add, and, avg, bool, concat, count, date, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
         this.applicationDomain = applicationDomain;
@@ -179,7 +178,6 @@ export class AirportDatabase {
         return await this.databaseFacade.updateWhere(rawUpdate, context);
     }
 }
-DEPENDENCY_INJECTION.set(AIRPORT_DATABASE, AirportDatabase);
 export function injectAirportDatabase() {
     console.log('Injecting AirportDatabase');
 }

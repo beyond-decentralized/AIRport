@@ -1,8 +1,6 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	EntityState,
-	ENTITY_STATE_MANAGER,
 	IEntityStateAsFlags,
 	IEntityStateManager
 } from '@airport/ground-control';
@@ -10,12 +8,6 @@ import {
 export interface EntityWithState {
 	__state__: EntityState;
 	__originalValues__: any
-}
-
-export function markForDeletion<T>(
-	entity: T
-) {
-	DEPENDENCY_INJECTION.db().getSync(ENTITY_STATE_MANAGER).markForDeletion(entity);
 }
 
 export class EntityStateManager
@@ -197,7 +189,6 @@ export class EntityStateManager
 	}
 
 }
-DEPENDENCY_INJECTION.set(ENTITY_STATE_MANAGER, EntityStateManager)
 
 export function injectEntityStateManager() {
 	console.log('inject EntityStateManager')

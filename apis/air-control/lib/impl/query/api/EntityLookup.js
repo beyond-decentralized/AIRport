@@ -1,16 +1,15 @@
 import { LookupProxy } from './Lookup';
 export class EntityLookup extends LookupProxy {
-    constructor(dbEntity, updateCacheManager, mapResults = EntityLookup.mapResults) {
-        super();
+    constructor(dbEntity, dao, mapResults = EntityLookup.mapResults) {
+        super(dao);
         this.dbEntity = dbEntity;
-        this.updateCacheManager = updateCacheManager;
         this.mapResults = mapResults;
     }
     setMap(MappedChildClass, isMapped = true) {
-        return new MappedChildClass(this.dbEntity, this.updateCacheManager, isMapped);
+        return new MappedChildClass(this.dbEntity, this.dao, isMapped);
     }
     setNoCache(ChildClass) {
-        return new ChildClass(this.dbEntity, this.updateCacheManager, this.mapResults);
+        return new ChildClass(this.dbEntity, this.dao, this.mapResults);
     }
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
@@ -19,7 +18,7 @@ export class EntityLookup extends LookupProxy {
             throw new Error(`Search operations are not yet supported`);
         }
         else {
-            this.updateCacheManager.saveOriginalValues(result, context.dbEntity);
+            this.dao.updateCacheManager.saveOriginalValues(result, context.dbEntity);
         }
         return result;
     }

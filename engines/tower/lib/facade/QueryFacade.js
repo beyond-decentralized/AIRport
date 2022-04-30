@@ -1,5 +1,3 @@
-import { QUERY_FACADE, } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 export class QueryFacade {
     async find(query, queryResultType, context) {
         await this.ensureContext(context);
@@ -35,5 +33,4 @@ export class QueryFacade {
     async ensureContext(context) {
     }
 }
-DEPENDENCY_INJECTION.set(QUERY_FACADE, QueryFacade);
 //# sourceMappingURL=QueryFacade.js.map

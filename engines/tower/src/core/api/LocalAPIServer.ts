@@ -4,11 +4,7 @@ import {
 } from "@airport/aviation-communication";
 import { IApiRegistry } from "@airport/check-in";
 import {
-    DEPENDENCY_INJECTION
-} from "@airport/direction-indicator";
-import {
-    ILocalAPIServer,
-    LOCAL_API_SERVER
+    ILocalAPIServer
 } from "@airport/security-check";
 
 
@@ -57,4 +53,3 @@ export class LocalAPIServer
 
 
 }
-DEPENDENCY_INJECTION.set(LOCAL_API_SERVER, LocalAPIServer)
