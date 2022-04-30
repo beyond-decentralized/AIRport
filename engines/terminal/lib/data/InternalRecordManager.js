@@ -1,10 +1,9 @@
 import { Actor, } from "@airport/holding-pattern";
-import { transactional } from "@airport/tower";
 import { Terminal, User } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
 export class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
-        await transactional(async (_transaction) => {
+        await this.transactionManager.transactInternal(async (_transaction) => {
             await this.updateDomain(application);
             let actorMapForDomain = this.terminalStore
                 .getApplicationActorMapByDomainAndApplicationNames().get(application.domain);
@@ -42,7 +41,7 @@ export class InternalRecordManager {
         }, context);
     }
     async initTerminal(domainName, context) {
-        await transactional(async (_transaction) => {
+        await this.transactionManager.transactInternal(async (_transaction) => {
             const user = new User();
             user.uuId = 'AIRportA-demo-demo-demo-functionalty';
             user.username = "internalUser";

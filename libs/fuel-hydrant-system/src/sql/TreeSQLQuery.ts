@@ -1,5 +1,4 @@
-import { AliasCache, APPLICATION_UTILS, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
 import {
 	IEntityStateManager,
 	InternalFragments,
@@ -13,10 +12,6 @@ import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser'
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-} from '../tokens'
 import { IValidator } from '../validation/Validator'
 import { SQLDialect } from './core/SQLQuery'
 import { ClauseType } from './core/SQLWhereBase'
@@ -160,9 +155,6 @@ export class TreeSQLQuery
 		aliasCache: AliasCache,
 		entityAlias: string
 	): any {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
 			return resultRow
@@ -193,7 +185,8 @@ export class TreeSQLQuery
 				)
 				this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject)
 			} else {
-				let propertyValue = sqlAdaptor.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null)
+				let propertyValue = this.sqlQueryAdapter.getResultCellValue(
+					resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null)
 				this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue)
 			}
 			nextFieldIndex[0]++

@@ -170,12 +170,14 @@ INTERNAL_RECORD_MANAGER.setDependencies({
     applicationDao: APPLICATION_DAO,
     domainDao: DOMAIN_DAO,
     entityStateManager: ENTITY_STATE_MANAGER,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER
 });
 ONLINE_MANAGER.setDependencies({
     repositoryDao: REPOSITORY_DAO,
     repositoryManager: REPOSITORY_MANAGER,
-    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO
+    repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
+    transactionManager: TRANSACTION_MANAGER
 });
 OPERATION_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

@@ -6,7 +6,6 @@ import {
   QueryType,
   SQLDataType
 } from '@airport/ground-control';
-import { transactional } from '@airport/tower';
 import {
   IOperationContext
 } from '@airport/terminal-map';
@@ -18,7 +17,7 @@ import {
   RowDataPacket
 } from 'mysql2';
 import * as mysql from 'mysql2/promise';
-import { Connection, Pool } from 'mysql2/promise';
+import { Pool } from 'mysql2/promise';
 import { DDLManager } from './DDLManager';
 
 /**
@@ -204,7 +203,7 @@ and TABLE_NAME = '${tableName}';`,
     let createOperations;
     let createQueries: Promise<any>[] = [];
     let createSql = DDLManager.getCreateDDL();
-    await transactional(async () => {
+    await this.transactionManager.transactInternal(async () => {
       for (const createSqlStatement of createSql) {
         const createTablePromise = this.query(QueryType.DDL, createSqlStatement,
           [], context, false);

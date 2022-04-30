@@ -26,7 +26,6 @@ import {
 	IRepositoryManager,
 	IUpdateManager
 } from '@airport/terminal-map';
-import { transactional } from '@airport/tower';
 import { Observable } from 'rxjs';
 
 export interface InternalPortableQuery
@@ -94,7 +93,7 @@ export class TransactionalServer
 
 		let repositoryId = 0
 
-		await transactional(async () => {
+		await this.transactionManager.transactInternal(async () => {
 			const repository = await this.repositoryManager.createRepository(
 				// url, platform, platformConfig, distributionStrategy
 				actor,
@@ -237,7 +236,7 @@ export class TransactionalServer
 		context.actor = actor
 
 		let saveResult: ISaveResult
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
@@ -266,7 +265,7 @@ export class TransactionalServer
 		context.actor = actor
 
 		let saveResult: ISaveResult
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
@@ -293,7 +292,7 @@ export class TransactionalServer
 		const actor = await this.getActor(credentials)
 
 		let numInsertedRecords
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
@@ -318,7 +317,7 @@ export class TransactionalServer
 		const actor = await this.getActor(credentials)
 
 		let ids
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
@@ -342,7 +341,7 @@ export class TransactionalServer
 		const actor = await this.getActor(credentials)
 
 		let numUpdatedRecords
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
@@ -366,7 +365,7 @@ export class TransactionalServer
 		const actor = await this.getActor(credentials)
 
 		let numDeletedRecords
-		await transactional(async (
+		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {

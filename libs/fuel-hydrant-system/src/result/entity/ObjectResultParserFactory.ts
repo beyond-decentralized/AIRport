@@ -15,8 +15,6 @@ export interface IObjectResultParserFactory {
 
 	getObjectResultParser(
 		queryResultType: QueryResultType,
-		applicationUtils: IApplicationUtils,
-		entityStateManager: IEntityStateManager,
 		config?: GraphQueryConfiguration,
 		rootDbEntity?: DbEntity,
 	): IEntityResultParser
@@ -26,10 +24,11 @@ export interface IObjectResultParserFactory {
 export class ObjectResultParserFactory
 	implements IObjectResultParserFactory {
 
+	applicationUtils: IApplicationUtils
+	entityStateManager: IEntityStateManager
+
 	getObjectResultParser(
 		queryResultType: QueryResultType,
-		applicationUtils: IApplicationUtils,
-		entityStateManager: IEntityStateManager,
 		config?: GraphQueryConfiguration,
 		rootDbEntity?: DbEntity,
 	): IEntityResultParser {
@@ -37,10 +36,10 @@ export class ObjectResultParserFactory
 			case QueryResultType.ENTITY_GRAPH:
 			case QueryResultType.MAPPED_ENTITY_GRAPH:
 				return new EntityGraphResultParser(config, rootDbEntity,
-					applicationUtils, entityStateManager)
+					this.applicationUtils, this.entityStateManager)
 			case QueryResultType.ENTITY_TREE:
 			case QueryResultType.MAPPED_ENTITY_TREE:
-				return new EntityTreeResultParser(applicationUtils, entityStateManager)
+				return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager)
 			default:
 				throw new Error(
 					`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`)

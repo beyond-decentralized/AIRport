@@ -1,8 +1,6 @@
-import { AliasCache, APPLICATION_UTILS, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { AliasCache, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-control';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
-import { OBJECT_RESULT_PARSER_FACTORY, Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../tokens';
 import { SQLQuery } from './core/SQLQuery';
 /**
  * Created by Papa on 10/16/2016.
@@ -11,13 +9,12 @@ import { SQLQuery } from './core/SQLQuery';
  * Represents SQL String query with Entity tree Select clause.
  */
 export class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context, graphQueryConfiguration) {
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, context, graphQueryConfiguration) {
         super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
+        this.objectResultParserFactory = objectResultParserFactory;
         this.relationManager = relationManager;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
-        const qValidator = DEPENDENCY_INJECTION.db()
-            .getSync(Q_VALIDATOR);
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
             throw new Error(`"strict" configuration is not yet implemented for 
 			QueryResultType.ENTITY_GRAPH`);
@@ -61,9 +58,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
      * @returns {any[]}
      */
     async parseQueryResults(results, internalFragments, queryResultType, context, bridgedQueryConfiguration) {
-        const [applicationUtils, objectResultParserFactory] = await DEPENDENCY_INJECTION.db()
-            .get(APPLICATION_UTILS, OBJECT_RESULT_PARSER_FACTORY);
-        this.queryParser = objectResultParserFactory.getObjectResultParser(this.queryResultType, applicationUtils, this.entityStateManager, this.graphQueryConfiguration, this.dbEntity);
+        this.queryParser = this.objectResultParserFactory.getObjectResultParser(this.queryResultType, this.graphQueryConfiguration, this.dbEntity);
         let parsedResults = [];
         if (!results || !results.length) {
             return parsedResults;
@@ -173,8 +168,6 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         return jsonTree;
     }
     parseQueryResult(selectClauseFragment, entityAlias, currentJoinNode, resultRow, nextColumnIndex, context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
             return resultRow;
@@ -189,7 +182,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                 const columnAlias = this.columnAliases.getFollowingAlias();
                 const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName];
                 const dbColumn = dbProperty.propertyColumns[0].column;
-                const propertyValue = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue);
+                const propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue);
                 if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
                     numNonNullColumns++;
                 }
@@ -206,7 +199,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                             let relationInfos = [];
                             this.applicationUtils.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
                                 const columnAlias = this.columnAliases.getFollowingAlias();
-                                let value = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null);
+                                let value = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null);
                                 relationInfos.push({
                                     propertyNameChains: propertyNameChains,
                                     sqlDataType: dbColumn.type,

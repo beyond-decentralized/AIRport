@@ -9,8 +9,6 @@ export declare enum EntityState {
     STUB = "STUB",
     UPDATE = "UPDATE"
 }
-export declare function markForDeletion<T>(entity: T): void;
-export declare function isDeleted<T>(entity: T): boolean;
 export interface IUiStateManager {
     isStub<T>(entity: T): boolean;
     isParentId<T>(entity: T): boolean;

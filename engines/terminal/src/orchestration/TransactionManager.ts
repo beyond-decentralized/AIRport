@@ -7,6 +7,7 @@ import {
 	IIdGenerator,
 } from '@airport/fuel-hydrant-system';
 import {
+	INTERNAL_APP,
 	INTERNAL_DOMAIN,
 	IRootTransaction
 } from '@airport/ground-control';
@@ -64,11 +65,28 @@ export class TransactionManager
 		return this.storeDriver.isServer(context);
 	}
 
+	async transactInternal(
+		transactionalCallback: {
+			(
+				transaction: ITransaction,
+				context: ITransactionContext
+			): Promise<void> | void
+		},
+		context: ITransactionContext,
+	): Promise<void> {
+		return await this.transact({
+			application: INTERNAL_APP,
+			domain: INTERNAL_DOMAIN,
+			methodName: null,
+			objectName: null
+		}, transactionalCallback, context);
+	}
+
 	async transact(
 		credentials: ITransactionCredentials,
 		transactionalCallback: {
 			(
-				transaction: IStoreDriver,
+				transaction: ITransaction,
 				context: ITransactionContext
 			): Promise<void> | void
 		},

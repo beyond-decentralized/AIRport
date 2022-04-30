@@ -6,7 +6,7 @@ import { ActiveQueries, IActiveQueries } from './store/ActiveQueries'
 import { IdGenerator, IIdGenerator } from './store/IdGenerator'
 import { IValidator, QValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
-import { IStoreDriver, STORE_DRIVER } from '@airport/terminal-map'
+import { IStoreDriver, STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { SQLWhereBase } from './sql/core/SQLWhereBase'
@@ -61,15 +61,22 @@ ID_GENERATOR.setDependencies({
     sequenceGenerator: SEQUENCE_GENERATOR
 })
 
+OBJECT_RESULT_PARSER_FACTORY.setDependencies({
+    applicationUtils: APPLICATION_UTILS,
+    entityStateManager: ENTITY_STATE_MANAGER,
+})
+
 ABSTRACT_SQL_DRIVER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
+    objectResultParserFactory: OBJECT_RESULT_PARSER_FACTORY,
     operationContextLoader: OPERATION_CONTEXT_LOADER,
     qMetadataUtils: Q_METADATA_UTILS,
     qValidator: Q_VALIDATOR,
     relationManager: RELATION_MANAGER,
+    transactionManager: TRANSACTION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
 })

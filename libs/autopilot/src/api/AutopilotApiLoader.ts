@@ -1,12 +1,8 @@
 import {
-    AUTOPILOT_API_LOADER,
-    DEPENDENCY_INJECTION,
     IAutopilotApiLoader,
-    IDependencyInjectionToken,
-    IOC
+    IDependencyInjectionToken
 } from '@airport/direction-indicator'
 import { ILocalAPIClient } from '../LocalAPIClient';
-import { LOCAL_API_CLIENT } from '../tokens';
 
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
@@ -32,7 +28,3 @@ export class AutopilotApiLoader
         }) as T;
     }
 }
-DEPENDENCY_INJECTION.set(AUTOPILOT_API_LOADER, AutopilotApiLoader)
-AUTOPILOT_API_LOADER.setDependencies({
-    localApiClient: LOCAL_API_CLIENT
-})

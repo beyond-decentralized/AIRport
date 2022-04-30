@@ -2,7 +2,6 @@ import { IContext } from '@airport/direction-indicator';
 import { IRootTransaction } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
-import { IStoreDriver } from '../core/data/StoreDriver';
 export interface IApiCallContext extends IContext {
     errorMessage?: string;
 }
@@ -14,7 +13,10 @@ export interface ITransactionManager {
     initialize(dbName: string, context: IContext): Promise<void>;
     isServer(contex?: IContext): boolean;
     transact(credentials: ICredentials, callback: {
-        (transaction: IStoreDriver, context?: IContext): Promise<void> | void;
+        (transaction: ITransaction, context?: IContext): Promise<void> | void;
+    }, context: IContext): Promise<void>;
+    transactInternal(callback: {
+        (transaction: ITransaction, context?: IContext): Promise<void> | void;
     }, context: IContext): Promise<void>;
     startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<ITransaction>;
     rollback(credentials: ITransactionCredentials, context: IContext): Promise<void>;

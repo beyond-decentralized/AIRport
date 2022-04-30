@@ -1,6 +1,5 @@
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
-import { transactional } from '@airport/tower';
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -35,7 +34,7 @@ export class TransactionalServer {
         const actor = await this.getActor(credentials);
         // FIXME: check actor
         let repositoryId = 0;
-        await transactional(async () => {
+        await this.transactionManager.transactInternal(async () => {
             const repository = await this.repositoryManager.createRepository(
             // url, platform, platformConfig, distributionStrategy
             actor, context);
@@ -118,7 +117,7 @@ export class TransactionalServer {
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
         return saveResult;
@@ -132,7 +131,7 @@ export class TransactionalServer {
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             // TODO: save to serialized repository to the specified destination
             saveResult = await this.operationManager.performSave(entity, actor, transaction, context.rootTransaction, context);
         }, context);
@@ -144,7 +143,7 @@ export class TransactionalServer {
         this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             numInsertedRecords = await this.insertManager.insertValues(portableQuery, actor, transaction, context.rootTransaction, context, ensureGeneratedValues);
         }, context);
         return numInsertedRecords;
@@ -154,7 +153,7 @@ export class TransactionalServer {
         this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let ids;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             ids = await this.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return ids;
@@ -164,7 +163,7 @@ export class TransactionalServer {
         this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numUpdatedRecords;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             numUpdatedRecords = await this.updateManager.updateValues(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numUpdatedRecords;
@@ -174,7 +173,7 @@ export class TransactionalServer {
         this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         const actor = await this.getActor(credentials);
         let numDeletedRecords;
-        await transactional(async (transaction, context) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             numDeletedRecords = await this.deleteManager.deleteWhere(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return numDeletedRecords;

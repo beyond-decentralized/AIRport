@@ -7,7 +7,6 @@ import {
 	IOperationContext,
 	ITransaction
 } from '@airport/terminal-map'
-import { transactional } from '@airport/tower'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
@@ -214,7 +213,7 @@ export class PostgreTransaction
 		let createOperations
 		let createQueries: Promise<any>[] = []
 		let createSql = DDLManager.getCreateDDL()
-		await transactional(async () => {
+		await this.transactionManager.transactInternal(async () => {
 			for (const createSqlStatement of createSql) {
 				const createTablePromise = this.query(
 					QueryType.DDL, createSqlStatement, [], context, false)

@@ -4,7 +4,6 @@ import {
 import {
 	IContext
 } from '@airport/direction-indicator'
-import { transactional } from '@airport/tower'
 import {
 	IApplicationColumnDao,
 	IApplicationDao,
@@ -17,7 +16,7 @@ import {
 	IApplicationVersionDao,
 	IDomainDao,
 } from '@airport/airspace'
-import { DdlObjects } from '@airport/terminal-map'
+import { DdlObjects, ITransactionManager } from '@airport/terminal-map'
 
 export interface IApplicationRecorder {
 
@@ -42,13 +41,14 @@ export class ApplicationRecorder
 	applicationRelationDao: IApplicationRelationDao
 	applicationVersionDao: IApplicationVersionDao
 	domainDao: IDomainDao
+    transactionManager: ITransactionManager
 
 	async record(
 		ddlObjects: DdlObjects,
 		// normalOperation: boolean,
 		context: IContext
 	): Promise<void> {
-		await transactional(async () => {
+		await this.transactionManager.transactInternal(async () => {
 			// FIXME: add support for real application versioning
 			this.setDefaultVersioning(ddlObjects)
 

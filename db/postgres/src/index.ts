@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { IOC } from '@airport/direction-indicator';
 import { STORE_DRIVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
@@ -15,10 +15,10 @@ export async function startDb(
     // database: string,
     // port: string = '26257'
 ) {
-    const storeDriver = await DEPENDENCY_INJECTION.db().get(STORE_DRIVER)
+    const storeDriver = await IOC.get(STORE_DRIVER)
     await storeDriver.initialize(connectionString, {})
-    await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
-    const dbManager = await DEPENDENCY_INJECTION.db().get(DATABASE_MANAGER);
+    await IOC.get(AIRPORT_DATABASE);
+    const dbManager = await IOC.get(DATABASE_MANAGER);
     await dbManager.initWithDb(domainName, {});
 }
 

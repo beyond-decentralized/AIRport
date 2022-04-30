@@ -2,7 +2,6 @@ import { container } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { RepositoryTransactionHistory, } from '@airport/holding-pattern';
 import { UpdateState } from '@airport/terminal-map';
-import { transactional } from '@airport/tower';
 export class OnlineManager {
     constructor() {
         this.online = false;
@@ -45,7 +44,7 @@ export class OnlineManager {
      */
     async goOnline(context = {}) {
         const offlineDeltaStore = await container(this).get(OFFLINE_DELTA_STORE);
-        await transactional(async () => {
+        await this.transactionManager.transactInternal(async () => {
             try {
                 // 1)  Flip update state to GO_ONLINE
                 this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
@@ -69,7 +68,7 @@ export class OnlineManager {
                 // Finally, always flip update state to LOCAL
                 this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
             }
-        });
+        }, context);
     }
     async repositoryGoOnline(repository, offlineDeltaStore, repositoryManager) {
         let deltaStore = repositoryManager.deltaStore[repository.id];

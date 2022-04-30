@@ -1,9 +1,7 @@
 import { AliasCache } from '@airport/air-control';
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
-import { SQL_QUERY_ADAPTOR } from '../tokens';
 import { ClauseType } from './core/SQLWhereBase';
 import { NonEntitySQLQuery } from './NonEntitySQLQuery';
 import { SqlFunctionField } from './SqlFunctionField';
@@ -87,8 +85,6 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
         return selectSqlFragment;
     }
     parseQueryResult(selectClauseFragment, resultRow, nextFieldIndex, aliasCache, entityAlias) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         // Return blanks, primitives and Dates directly
         if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
             return resultRow;
@@ -112,7 +108,7 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
                 this.queryParser.bufferOneToManyCollection(entityAlias, resultObject, propertyName, childResultObject);
             }
             else {
-                let propertyValue = sqlAdaptor.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null);
+                let propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, jsonClauseField.fa, nextFieldIndex[0], dataType, null);
                 this.queryParser.addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue);
             }
             nextFieldIndex[0]++;

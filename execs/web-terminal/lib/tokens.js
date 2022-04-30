@@ -1,9 +1,11 @@
 import { DEPENDENCY_INJECTION, lib } from "@airport/direction-indicator";
-import { APPLICATION_INITIALIZER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER } from "@airport/terminal-map";
+import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER } from "@airport/terminal-map";
+import { DomainRetriever } from "./DomainRetriever";
 import { WebApplicationInitializer } from "./WebApplicationInitializer";
 import { WebMesageReceiver } from "./WebMessageReceiver";
 import { WebTransactionalReceiver } from "./WebTransactionalReceiver";
 const webTerminal = lib('web-terminal');
+DEPENDENCY_INJECTION.set(DOMAIN_RETRIEVER, DomainRetriever);
 DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, WebApplicationInitializer);
 export const WEB_MESSAGE_RECEIVER = webTerminal.token({
     class: WebMesageReceiver,

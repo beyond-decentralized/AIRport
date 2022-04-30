@@ -17,7 +17,7 @@ import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterL
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer';
 import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
-import { TERMINAL_STORE } from '@airport/terminal-map';
+import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-internal';
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace';
 import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
@@ -168,6 +168,7 @@ SYNCHRONIZATION_ADAPTER_LOADER.setDependencies({
 SYNCHRONIZATION_IN_MANAGER.setDependencies({
     repositoryTransactionHistoryDao: REPOSITORY_TRANSACTION_HISTORY_DAO,
     syncInChecker: SYNC_IN_CHECKER,
+    transactionManager: TRANSACTION_MANAGER,
     twoStageSyncedInDataProcessor: TWO_STAGE_SYNCED_IN_DATA_PROCESSOR
 });
 SYNCHRONIZATION_OUT_MANAGER.setDependencies({

@@ -30,7 +30,17 @@ export interface ITransactionManager {
 		credentials: ICredentials,
 		callback: {
 			(
-				transaction: IStoreDriver,
+				transaction: ITransaction,
+				context?: IContext
+			): Promise<void> | void
+		},
+		context: IContext,
+	): Promise<void>;
+
+	transactInternal(
+		callback: {
+			(
+				transaction: ITransaction,
 				context?: IContext
 			): Promise<void> | void
 		},

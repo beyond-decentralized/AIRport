@@ -6,7 +6,6 @@ import {
 	IRelationManager,
 	ManyToOneColumnMapping
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	IEntityStateManager,
 	InternalFragments,
@@ -16,10 +15,7 @@ import {
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
-import {
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-} from '../../tokens'
+import { IValidator } from '../../validation/Validator'
 import { SQLNoJoinQuery } from './SQLNoJoinQuery'
 import { SQLDialect } from './SQLQuery'
 import { ClauseType } from './SQLWhereBase'
@@ -38,6 +34,7 @@ export class SQLUpdate
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
+		protected qValidator: IValidator,
 		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
@@ -95,9 +92,6 @@ ${whereFragment}`
 		setClauseFragment: IEntityUpdateProperties,
 		context: IFuelHydrantContext,
 	): string {
-		const validator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
-
 		let setFragments = []
 		for (let columnName in setClauseFragment) {
 			let value = setClauseFragment[columnName]
@@ -105,7 +99,7 @@ ${whereFragment}`
 			if (value === undefined) {
 				continue
 			}
-			validator.validateUpdateColumn(this.dbEntity.columnMap[columnName])
+			this.qValidator.validateUpdateColumn(this.dbEntity.columnMap[columnName])
 			this.addSetFragment(columnName, value, setFragments,
 				context)
 		}
@@ -119,13 +113,11 @@ ${whereFragment}`
 		setFragments: any[],
 		context: IFuelHydrantContext,
 	) {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		let fieldValue
 		if (typeof value === 'number') {
 			this.parameterReferences.push(value)
-			fieldValue = sqlAdaptor.getParameterReference(this.parameterReferences, value)
+			fieldValue = this.sqlQueryAdapter.getParameterReference(
+				this.parameterReferences, value)
 		} else {
 			fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE,
 				null, context)

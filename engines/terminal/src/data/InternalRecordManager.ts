@@ -11,14 +11,13 @@ import {
     IActorDao,
 } from "@airport/holding-pattern";
 import { JsonApplicationWithLastIds } from "@airport/security-check";
-import { TerminalStore } from "@airport/terminal-map";
+import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
     IDomain,
     IApplication,
     IDomainDao,
     IApplicationDao
 } from "@airport/airspace";
-import { transactional } from "@airport/tower";
 import {
     Terminal,
     User
@@ -47,12 +46,13 @@ export class InternalRecordManager
     domainDao: IDomainDao
     entityStateManager: IEntityStateManager
     terminalStore: TerminalStore
+    transactionManager: ITransactionManager
 
     async ensureApplicationRecords(
         application: JsonApplicationWithLastIds,
         context: IContext
     ): Promise<void> {
-        await transactional(async (
+        await this.transactionManager.transactInternal(async (
             _transaction
         ) => {
             await this.updateDomain(application)
@@ -102,7 +102,7 @@ export class InternalRecordManager
         domainName: DomainName,
         context: IContext
     ): Promise<void> {
-        await transactional(async (
+        await this.transactionManager.transactInternal(async (
             _transaction
         ) => {
             const user = new User();

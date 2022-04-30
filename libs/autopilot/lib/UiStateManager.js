@@ -1,5 +1,3 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { UI_STATE_MANAGER } from './tokens';
 export var EntityState;
 (function (EntityState) {
     EntityState["CREATE"] = "CREATE";
@@ -9,12 +7,6 @@ export var EntityState;
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
 })(EntityState || (EntityState = {}));
-export function markForDeletion(entity) {
-    DEPENDENCY_INJECTION.db().getSync(UI_STATE_MANAGER).markForDeletion(entity);
-}
-export function isDeleted(entity) {
-    return DEPENDENCY_INJECTION.db().getSync(UI_STATE_MANAGER).isDeleted(entity);
-}
 export class UiStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;

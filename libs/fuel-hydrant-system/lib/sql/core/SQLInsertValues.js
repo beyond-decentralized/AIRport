@@ -1,25 +1,22 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { ClauseType } from './SQLWhereBase';
 /**
  * Created by Papa on 11/17/2016.
  */
 export class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context
+    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, context
     // repository?: IRepository
     ) {
         super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
             .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
         this.jsonInsertValues = jsonInsertValues;
+        this.qValidator = qValidator;
     }
     toSQL(context) {
-        const validator = DEPENDENCY_INJECTION.db()
-            .getSync(Q_VALIDATOR);
         if (!this.jsonInsertValues.II) {
             throw new Error(`Expecting exactly one table in INSERT INTO clause`);
         }
-        validator.validateInsertQEntity(this.dbEntity);
+        this.qValidator.validateInsertQEntity(this.dbEntity);
         let tableFragment = this.getTableFragment(this.jsonInsertValues.II, context, false);
         let columnsFragment = this.getColumnsFragment(this.dbEntity, this.jsonInsertValues.C);
         let valuesFragment = this.getValuesFragment(this.jsonInsertValues.V, context);
@@ -37,13 +34,11 @@ ${valuesFragment}
         return `( ${columnNames.join(', \n')} )`;
     }
     getValuesFragment(valuesClauseFragment, context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         let allValuesFragment = valuesClauseFragment.map((valuesArray) => {
             let valuesFragment = valuesArray.map((value) => {
                 if (value === null || ['number', 'string'].indexOf(typeof value) > -1) {
                     this.parameterReferences.push(value);
-                    return sqlAdaptor.getParameterReference(this.parameterReferences, value);
+                    return this.sqlQueryAdapter.getParameterReference(this.parameterReferences, value);
                 }
                 else if (value === undefined) {
                     throw new Error(`An 'undefined' value was provided when inserting into: ${this.dbEntity.applicationVersion.application.name}.${this.dbEntity.name}`);

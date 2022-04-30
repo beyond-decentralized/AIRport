@@ -18,8 +18,11 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     initialize(dbName: string, context: IContext): Promise<void>;
     getInProgressTransactionById(transactionId: string): ITransaction;
     isServer(context?: ITransactionContext): boolean;
+    transactInternal(transactionalCallback: {
+        (transaction: ITransaction, context: ITransactionContext): Promise<void> | void;
+    }, context: ITransactionContext): Promise<void>;
     transact(credentials: ITransactionCredentials, transactionalCallback: {
-        (transaction: IStoreDriver, context: ITransactionContext): Promise<void> | void;
+        (transaction: ITransaction, context: ITransactionContext): Promise<void> | void;
     }, context: ITransactionContext): Promise<void>;
     startTransaction(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
     private internalStartTransaction;

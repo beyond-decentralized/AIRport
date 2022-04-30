@@ -7,14 +7,4 @@ export interface MethodDecorator {
 export interface PropertyDecorator {
     (target: any, propertyKey: string): any;
 }
-/**
- * Transactional decorator
- *
- * Ex:
- * @Transactional
- * async transactionalMethod() { ... }
- *
- * When decorated with this the decorated method will run
- * in a transactional context.
- */
 //# sourceMappingURL=decorators.d.ts.map

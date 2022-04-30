@@ -1,4 +1,4 @@
-import { INTERNAL_DOMAIN } from '@airport/ground-control';
+import { INTERNAL_APP, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Q } from '@airport/holding-pattern';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export class TransactionManager extends AbstractMutationManager {
@@ -17,6 +17,14 @@ export class TransactionManager extends AbstractMutationManager {
     }
     isServer(context) {
         return this.storeDriver.isServer(context);
+    }
+    async transactInternal(transactionalCallback, context) {
+        return await this.transact({
+            application: INTERNAL_APP,
+            domain: INTERNAL_DOMAIN,
+            methodName: null,
+            objectName: null
+        }, transactionalCallback, context);
     }
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {

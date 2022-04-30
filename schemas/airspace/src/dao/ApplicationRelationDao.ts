@@ -1,9 +1,7 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	PropertyId,
 	undefinedToNull
 } from '@airport/ground-control'
-import { APPLICATION_RELATION_DAO } from '../tokens'
 import {
 	BaseApplicationRelationDao,
 	IBaseApplicationRelationDao,
@@ -84,4 +82,3 @@ export class ApplicationRelationDao
 	}
 
 }
-DEPENDENCY_INJECTION.set(APPLICATION_RELATION_DAO, ApplicationRelationDao)

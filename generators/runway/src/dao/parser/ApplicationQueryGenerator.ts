@@ -16,8 +16,8 @@ import {
 	QStringFunction,
 	QUERY_FACADE,
 	Y
-}                                           from '@airport/air-control';
-import { DEPENDENCY_INJECTION }                               from '@airport/direction-indicator';
+} from '@airport/air-control';
+import { IOC } from '@airport/direction-indicator';
 import {
 	getFullApplicationName,
 	IApplicationQuery,
@@ -29,12 +29,12 @@ import {
 	QueryParameter,
 	QueryParameterType,
 	QueryResultType
-}                                           from '@airport/ground-control';
+} from '@airport/ground-control';
 import {
 	ITempDatabase,
 	TempDatabase
-}                                           from '@airport/taxiway';
-import tsc                                  from 'typescript';
+} from '@airport/taxiway';
+import tsc from 'typescript';
 import { JsonFormattedQueryWithExpression } from './OperationGenerator';
 
 export class ApplicationQueryGenerator {
@@ -56,7 +56,7 @@ export class ApplicationQueryGenerator {
 
 		for (const entityName in entityOperationMap) {
 			const operations: { [operationName: string]: JsonOperation; }
-				      = entityOperationMap[entityName];
+				= entityOperationMap[entityName];
 			for (const operationName in operations) {
 				const operation = operations[operationName];
 				switch (operation.type) {
@@ -66,7 +66,7 @@ export class ApplicationQueryGenerator {
 					default:
 						// its a query
 						const queryDefinition: JsonFormattedQueryWithExpression
-							      = operation as JsonFormattedQueryWithExpression;
+							= operation as JsonFormattedQueryWithExpression;
 
 						const query = await this.getApplicationQuery(queryDefinition, entityName,
 							jsonApplication);
@@ -102,7 +102,7 @@ export class ApplicationQueryGenerator {
 	): boolean {
 		for (const entityName in entityOperationMap) {
 			const operations: { [operationName: string]: JsonOperation; }
-				      = entityOperationMap[entityName];
+				= entityOperationMap[entityName];
 			for (const operationName in operations) {
 				const operation = operations[operationName];
 				switch (operation.type) {
@@ -130,16 +130,16 @@ export class ApplicationQueryGenerator {
 		entityName: string,
 		jsonApplication: JsonApplication,
 	): Promise<IApplicationQuery> {
-		const queryTypescript    = queryDefinition.expression.getText();
-		let queryJavascript      = tsc.transpile(queryTypescript);
+		const queryTypescript = queryDefinition.expression.getText();
+		let queryJavascript = tsc.transpile(queryTypescript);
 		const functionStartRegex = /\(\s*function \s*\(\s*[\w,\s]*\)\s*\{\s*/;
-		const functionEndRegex   = /\s*\}\);\s*$/;
-		queryJavascript          = queryJavascript.replace(functionStartRegex, '');
-		queryJavascript          = queryJavascript.replace(functionEndRegex, '');
+		const functionEndRegex = /\s*\}\);\s*$/;
+		queryJavascript = queryJavascript.replace(functionStartRegex, '');
+		queryJavascript = queryJavascript.replace(functionEndRegex, '');
 
-		const airDb = await DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE);
+		const airDb = await IOC.get(AIRPORT_DATABASE);
 		for (const functionName in airDb.functions) {
-			const regex     = new RegExp(`\\s*${functionName}\\(`);
+			const regex = new RegExp(`\\s*${functionName}\\(`);
 			queryJavascript = queryJavascript
 				.replace(regex, ` airDb.functions.${functionName}(`);
 		}
@@ -158,12 +158,12 @@ export class ApplicationQueryGenerator {
 
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
-		const [lookup, queryFacade]    = await DEPENDENCY_INJECTION.db().get(LOOKUP, QUERY_FACADE);
-		const context                  = lookup.ensureContext(null);
+		const [lookup, queryFacade] = await IOC.get(LOOKUP, QUERY_FACADE);
+		const context = lookup.ensureContext(null);
 		const qApplication: QApplicationInternal = airDb.QM[getFullApplicationName(jsonApplication)];
-		const dbApplicationVersion          = qApplication.__dbApplication__
+		const dbApplicationVersion = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
-		context.dbEntity               = dbApplicationVersion.entityMapByName[entityName];
+		context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
 		await queryFacade.ensureContext(context);
 		const queryResultType = this.getQueryResultType(queryDefinition.type, false);
 
@@ -172,7 +172,7 @@ export class ApplicationQueryGenerator {
 
 		const parameterFieldMapByAlias = {};
 		for (const queryParameter of queryParameters) {
-			const qFunction: IQFunction<any>                   = queryParameter.parameter as any;
+			const qFunction: IQFunction<any> = queryParameter.parameter as any;
 			parameterFieldMapByAlias[qFunction.parameterAlias] = queryParameter;
 		}
 		const parameterMap = {
@@ -196,13 +196,13 @@ export class ApplicationQueryGenerator {
 		airDb: IAirportDatabase,
 	): [any[], { index: number, parameter: IQOperableField<any, any, any, any> }[]] {
 		const queryFunctionParameters = [];
-		const queryParameters         = [];
+		const queryParameters = [];
 		let parameter: QueryParameter;
 		let queryParameter: IQOperableField<any, any, any, any>;
-		let lastBooleanParameter      = false;
-		let lastNumberParameter       = 0;
-		let lastStringParameter       = 0;
-		let lastDateParameter         = new Date().getTime();
+		let lastBooleanParameter = false;
+		let lastNumberParameter = 0;
+		let lastStringParameter = 0;
+		let lastDateParameter = new Date().getTime();
 		let Q: QApplication;
 		for (const input of queryDefinition.inputs) {
 			switch (input.type) {
@@ -211,7 +211,7 @@ export class ApplicationQueryGenerator {
 					switch (parameter.parameterType) {
 						case QueryParameterType.BOOLEAN:
 							lastBooleanParameter = !lastBooleanParameter;
-							queryParameter       = new QBooleanFunction(lastBooleanParameter, true);
+							queryParameter = new QBooleanFunction(lastBooleanParameter, true);
 							queryFunctionParameters.push(queryParameter);
 							queryParameters.push(queryParameter);
 							break;

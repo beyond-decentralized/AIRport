@@ -1,9 +1,8 @@
-import { transactional } from '@airport/tower';
 export class ApplicationRecorder {
     async record(ddlObjects, 
     // normalOperation: boolean,
     context) {
-        await transactional(async () => {
+        await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
             await this.domainDao.checkAndInsertIfNeeded(ddlObjects.domains);

@@ -12,9 +12,9 @@ import {
 } from '@airport/holding-pattern';
 import {
   IRepositoryManager,
+  ITransactionManager,
   UpdateState
 } from '@airport/terminal-map';
-import { transactional } from '@airport/tower';
 
 export interface IOnlineManager {
 
@@ -38,6 +38,7 @@ export class OnlineManager
   repositoryDao: IRepositoryDao
   repositoryManager: IRepositoryManager
   repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+  transactionManager: ITransactionManager
 
   private online = false;
 
@@ -85,7 +86,7 @@ export class OnlineManager
   ): Promise<void> {
     const offlineDeltaStore = await container(this).get(
       OFFLINE_DELTA_STORE);
-    await transactional(async () => {
+    await this.transactionManager.transactInternal(async () => {
       try {
         // 1)  Flip update state to GO_ONLINE
         this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
@@ -113,7 +114,7 @@ export class OnlineManager
         // Finally, always flip update state to LOCAL
         this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
       }
-    });
+    }, context);
   }
 
   async repositoryGoOnline(

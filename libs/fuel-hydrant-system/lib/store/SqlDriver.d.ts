@@ -1,13 +1,14 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control';
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, IEntityStateManager, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
-import { IStoreDriver, ITransaction, ITransactionContext } from '@airport/terminal-map';
+import { IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
 import { IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
+import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -16,10 +17,12 @@ export declare abstract class SqlDriver implements IStoreDriver {
     airportDatabase: IAirportDatabase;
     applicationUtils: IApplicationUtils;
     entityStateManager: IEntityStateManager;
+    objectResultParserFactory: IObjectResultParserFactory;
     operationContextLoader: IOperationContextLoader;
     qMetadataUtils: IQMetadataUtils;
     qValidator: IValidator;
     relationManager: IRelationManager;
+    transactionManager: ITransactionManager;
     sqlQueryAdapter: ISQLQueryAdaptor;
     subStatementQueryGenerator: ISubStatementSqlGenerator;
     type: StoreType;

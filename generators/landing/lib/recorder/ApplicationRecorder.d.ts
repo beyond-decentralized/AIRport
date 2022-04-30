@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { IApplicationColumnDao, IApplicationDao, IApplicationEntityDao, IApplicationPropertyColumnDao, IApplicationPropertyDao, IApplicationReferenceDao, IApplicationRelationColumnDao, IApplicationRelationDao, IApplicationVersionDao, IDomainDao } from '@airport/airspace';
-import { DdlObjects } from '@airport/terminal-map';
+import { DdlObjects, ITransactionManager } from '@airport/terminal-map';
 export interface IApplicationRecorder {
     record(ddlObjects: DdlObjects, context: IContext): Promise<void>;
 }
@@ -15,6 +15,7 @@ export declare class ApplicationRecorder implements IApplicationRecorder {
     applicationRelationDao: IApplicationRelationDao;
     applicationVersionDao: IApplicationVersionDao;
     domainDao: IDomainDao;
+    transactionManager: ITransactionManager;
     record(ddlObjects: DdlObjects, context: IContext): Promise<void>;
     private setDefaultVersioning;
     private bulkCreate;

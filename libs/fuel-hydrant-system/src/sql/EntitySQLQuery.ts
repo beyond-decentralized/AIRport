@@ -1,6 +1,5 @@
 import {
 	AliasCache,
-	APPLICATION_UTILS,
 	IAirportDatabase,
 	IApplicationUtils,
 	IEntitySelectProperties,
@@ -14,7 +13,6 @@ import {
 	ReferencedColumnData,
 	Y
 } from '@airport/air-control'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
@@ -38,11 +36,8 @@ import {
 	GraphQueryConfiguration,
 	IEntityResultParser
 } from '../result/entity/IEntityResultParser'
-import {
-	OBJECT_RESULT_PARSER_FACTORY,
-	Q_VALIDATOR,
-	SQL_QUERY_ADAPTOR
-} from '../tokens'
+import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory'
+import { IValidator } from '../validation/Validator'
 import {
 	SQLDialect,
 	SQLQuery
@@ -72,7 +67,9 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		airportDatabase: IAirportDatabase,
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
+		protected objectResultParserFactory: IObjectResultParserFactory,
 		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
 		protected relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
@@ -86,9 +83,6 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			qMetadataUtils,
 			sqlQueryAdapter,
 			storeDriver, context)
-
-		const qValidator = DEPENDENCY_INJECTION.db()
-			.getSync(Q_VALIDATOR)
 
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
 			throw new Error(`"strict" configuration is not yet implemented for 
@@ -147,11 +141,8 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		context: IFuelHydrantContext,
 		bridgedQueryConfiguration?: any
 	): Promise<any[]> {
-		const [applicationUtils, objectResultParserFactory] = await DEPENDENCY_INJECTION.db()
-			.get(APPLICATION_UTILS, OBJECT_RESULT_PARSER_FACTORY)
-		this.queryParser = objectResultParserFactory.getObjectResultParser(
-			this.queryResultType, applicationUtils, this.entityStateManager,
-			this.graphQueryConfiguration, this.dbEntity)
+		this.queryParser = this.objectResultParserFactory.getObjectResultParser(
+			this.queryResultType, this.graphQueryConfiguration, this.dbEntity)
 		let parsedResults: any[] = []
 		if (!results || !results.length) {
 			return parsedResults
@@ -283,9 +274,6 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		nextColumnIndex: number[],
 		context: IFuelHydrantContext,
 	): any {
-		const sqlAdaptor = DEPENDENCY_INJECTION.db()
-			.getSync(SQL_QUERY_ADAPTOR)
-
 		// Return blanks, primitives and Dates directly
 		if (!resultRow || !(resultRow instanceof Object) || resultRow instanceof Date) {
 			return resultRow
@@ -305,7 +293,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 				const defaultValue = this.entityDefaults.getForAlias(entityAlias)[propertyName]
 
 				const dbColumn = dbProperty.propertyColumns[0].column
-				const propertyValue = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue)
+				const propertyValue = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, defaultValue)
 				if (this.queryParser.addProperty(entityAlias, resultObject, dbColumn.type, propertyName, propertyValue)) {
 					numNonNullColumns++
 				}
@@ -325,7 +313,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 								propertyNameChains: string[][],
 							) => {
 								const columnAlias = this.columnAliases.getFollowingAlias()
-								let value = sqlAdaptor.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null)
+								let value = this.sqlQueryAdapter.getResultCellValue(resultRow, columnAlias, nextColumnIndex[0], dbColumn.type, null)
 								relationInfos.push({
 									propertyNameChains: propertyNameChains,
 									sqlDataType: dbColumn.type,

@@ -1,16 +1,15 @@
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { JSONClauseObjectType } from '@airport/ground-control';
-import { Q_VALIDATOR, SQL_QUERY_ADAPTOR } from '../../tokens';
 import { SQLNoJoinQuery } from './SQLNoJoinQuery';
 import { ClauseType } from './SQLWhereBase';
 /**
  * Created by Papa on 10/2/2016.
  */
 export class SQLUpdate extends SQLNoJoinQuery {
-    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context) {
+    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, context) {
         super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
             .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
         this.jsonUpdate = jsonUpdate;
+        this.qValidator = qValidator;
     }
     toSQL(internalFragments, context) {
         if (!this.jsonUpdate.U) {
@@ -42,8 +41,6 @@ ${setFragment}
 ${whereFragment}`;
     }
     getSetFragment(setClauseFragment, context) {
-        const validator = DEPENDENCY_INJECTION.db()
-            .getSync(Q_VALIDATOR);
         let setFragments = [];
         for (let columnName in setClauseFragment) {
             let value = setClauseFragment[columnName];
@@ -51,18 +48,16 @@ ${whereFragment}`;
             if (value === undefined) {
                 continue;
             }
-            validator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
+            this.qValidator.validateUpdateColumn(this.dbEntity.columnMap[columnName]);
             this.addSetFragment(columnName, value, setFragments, context);
         }
         return setFragments.join(', \n');
     }
     addSetFragment(columnName, value, setFragments, context) {
-        const sqlAdaptor = DEPENDENCY_INJECTION.db()
-            .getSync(SQL_QUERY_ADAPTOR);
         let fieldValue;
         if (typeof value === 'number') {
             this.parameterReferences.push(value);
-            fieldValue = sqlAdaptor.getParameterReference(this.parameterReferences, value);
+            fieldValue = this.sqlQueryAdapter.getParameterReference(this.parameterReferences, value);
         }
         else {
             fieldValue = this.getFieldValue(value, ClauseType.WHERE_CLAUSE, null, context);

@@ -1,4 +1,3 @@
-import { transactional } from '@airport/tower';
 /**
  * Synchronization in Manager implementation.
  */
@@ -24,18 +23,18 @@ export class SynchronizationInManager {
                 continue;
             }
             let processMessage = true;
-            await transactional(async (transaction) => {
+            await this.transactionManager.transactInternal(async (transaction) => {
                 if (!await this.syncInChecker.checkMessage(message)) {
                     transaction.rollback(null, context);
                     processMessage = false;
                     return;
                 }
-            });
+            }, context);
             if (processMessage) {
                 messagesToProcess.push(message);
             }
         }
-        await transactional(async (transaction) => {
+        await this.transactionManager.transactInternal(async (transaction) => {
             transaction.isSync = true;
             await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
         }, context);

@@ -4,7 +4,7 @@ import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLIC
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { QUERY_OBJECT_INITIALIZER } from '@airport/takeoff'
-import { DOMAIN_RETRIEVER, STORE_DRIVER, TERMINAL_STORE } from '@airport/terminal-map'
+import { DOMAIN_RETRIEVER, STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { ApplicationInitializer } from './ApplicationInitializer'
 import { IApplicationBuilder } from './builder/IApplicationBuilder'
 import { SqlApplicationBuilder } from './builder/SqlApplicationBuilder'
@@ -84,7 +84,8 @@ APPLICATION_RECORDER.setDependencies({
     applicationRelationColumnDao: APPLICATION_RELATION_COLUMN_DAO,
     applicationRelationDao: APPLICATION_RELATION_DAO,
     applicationVersionDao: APPLICATION_VERSION_DAO,
-    domainDao: DOMAIN_DAO
+    domainDao: DOMAIN_DAO,
+    transactionManager: TRANSACTION_MANAGER
 })
 
 SQL_APPLICATION_BUILDER.setDependencies({

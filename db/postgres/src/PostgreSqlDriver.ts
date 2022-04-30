@@ -1,5 +1,4 @@
 import { QueryType, SQLDataType, } from '@airport/ground-control'
-import { transactional } from '@airport/tower'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
@@ -172,7 +171,7 @@ export class PostgreSqlDriver
 		let createOperations
 		let createQueries: Promise<any>[] = []
 		let createSql = DDLManager.getCreateDDL()
-		await transactional(async () => {
+		await this.transactionManager.transactInternal(async () => {
 			for (const createSqlStatement of createSql) {
 				const createTablePromise = this.query(
 					QueryType.DDL, createSqlStatement, [], context, false)
