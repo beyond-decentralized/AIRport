@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import { TransactionType } from '@airport/ground-control'
 import {
 	IRepositoryTransactionHistory,
@@ -7,9 +8,11 @@ import {
 } from '@airport/holding-pattern'
 import { IHistoryManager, IOperationContext } from '@airport/terminal-map'
 
+@Injected()
 export class HistoryManager
 	implements IHistoryManager {
 
+	@Inject()
 	transactionHistoryDuo: ITransactionHistoryDuo
 
 	async getNewTransactionHistory(

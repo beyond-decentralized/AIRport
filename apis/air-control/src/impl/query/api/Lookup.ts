@@ -11,6 +11,7 @@ import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawQuery, } from '../../../lingo/query/facade/Query';
 import { IQueryContext } from '../../../lingo/query/QueryContext';
 import { IEntityUtils } from '../../../lingo/utils/EntityUtils';
+import { Inject, Injected } from '../../core/metadata/dependencyInjection';
 
 export interface IDaoStub {
 	airportDatabase: IAirportDatabase
@@ -43,15 +44,19 @@ export class LookupProxy
 		mapResults?: boolean
 	): Promise<any> {
 		return await this.dao.lookup.lookup(
-					rawQuery, queryResultType, search, one,
-					QueryClass, context, mapResults);
+			rawQuery, queryResultType, search, one,
+			QueryClass, context, mapResults);
 	}
 }
 
+@Injected()
 export class Lookup
 	implements ILookup {
 
+	@Inject()
 	entityUtils: IEntityUtils
+
+	@Inject()
 	queryFacade: IQueryFacade
 
 	ensureContext<C extends IContext = IContext>(

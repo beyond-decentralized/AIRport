@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
 	DbEntity,
 	EntityState,
@@ -10,6 +11,7 @@ export interface EntityWithState {
 	__originalValues__: any
 }
 
+@Injected()
 export class EntityStateManager
 	implements IEntityStateManager {
 	static DELETED_PROPERTY = '__deleted__'

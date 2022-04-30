@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
     DbDomain,
     DomainName
@@ -7,9 +8,11 @@ import {
 } from '@airport/terminal-map'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
+@Injected()
 export class DomainRetriever
     implements IDomainRetriever {
 
+    @Inject()
     transactionalConnector: IIframeTransactionalConnector
 
     async retrieveDomain(

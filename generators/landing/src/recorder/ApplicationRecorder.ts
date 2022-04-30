@@ -1,5 +1,5 @@
 import {
-	IDao
+	IDao, Inject, Injected
 } from '@airport/air-control'
 import {
 	IContext
@@ -28,20 +28,42 @@ export interface IApplicationRecorder {
 
 }
 
+@Injected()
 export class ApplicationRecorder
 	implements IApplicationRecorder {
 
+	@Inject()
 	applicationColumnDao: IApplicationColumnDao
+
+	@Inject()
 	applicationDao: IApplicationDao
+
+	@Inject()
 	applicationEntityDao: IApplicationEntityDao
+
+	@Inject()
 	applicationPropertyColumnDao: IApplicationPropertyColumnDao
+
+	@Inject()
 	applicationPropertyDao: IApplicationPropertyDao
+
+	@Inject()
 	applicationReferenceDao: IApplicationReferenceDao
+
+	@Inject()
 	applicationRelationColumnDao: IApplicationRelationColumnDao
+
+	@Inject()
 	applicationRelationDao: IApplicationRelationDao
+
+	@Inject()
 	applicationVersionDao: IApplicationVersionDao
+
+	@Inject()
 	domainDao: IDomainDao
-    transactionManager: ITransactionManager
+
+	@Inject()
+	transactionManager: ITransactionManager
 
 	async record(
 		ddlObjects: DdlObjects,

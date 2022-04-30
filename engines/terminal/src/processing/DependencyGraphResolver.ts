@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	ensureChildArray,
 	EntityRelationType,
@@ -17,9 +18,11 @@ import {
  * for insertion (with all needed new ids being inserted in an order
  * that will work).
  */
+@Injected()
 export class DependencyGraphResolver
 	implements IDependencyGraphResolver {
 
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	getOperationsInOrder<E>(

@@ -1,6 +1,8 @@
 import {
 	and,
 	IEntityUpdateProperties,
+	Inject,
+	Injected,
 	IQEntityInternal,
 	IQOperableFieldInternal,
 	RawDelete,
@@ -35,9 +37,11 @@ export interface EntityRepoQueryData {
 	idProperty: string;
 }
 
+@Injected()
 export class RepositoryManager
 	implements IRepositoryManager {
 
+	@Inject()
 	repositoryDao: IRepositoryDao
 
 	async initialize(): Promise<void> {

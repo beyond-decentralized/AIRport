@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { ensureChildArray, ensureChildJsMap } from '@airport/ground-control';
-export class SynchronizationOutManager {
+let SynchronizationOutManager = class SynchronizationOutManager {
     async synchronizeOut(repositoryTransactionHistories) {
         await this.loadHistoryRepositories(repositoryTransactionHistories);
         const { historiesToSend, messages } = await this.syncOutDataSerializer.serialize(repositoryTransactionHistories);
@@ -80,5 +87,21 @@ export class SynchronizationOutManager {
             }
         }
     }
-}
+};
+__decorate([
+    Inject()
+], SynchronizationOutManager.prototype, "repositoryDao", void 0);
+__decorate([
+    Inject()
+], SynchronizationOutManager.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate([
+    Inject()
+], SynchronizationOutManager.prototype, "synchronizationAdapterLoader", void 0);
+__decorate([
+    Inject()
+], SynchronizationOutManager.prototype, "syncOutDataSerializer", void 0);
+SynchronizationOutManager = __decorate([
+    Injected()
+], SynchronizationOutManager);
+export { SynchronizationOutManager };
 //# sourceMappingURL=SynchronizationOutManager.js.map

@@ -11,13 +11,14 @@ import {
 	ITransactionContext
 } from '@airport/terminal-map';
 import { SqlJsTransaction } from './SqlJsTransaction';
+import { Injected } from '@airport/air-control';
 
 declare function initSqlJs(config: any): any;
 
 /**
  * Created by Papa on 11/27/2016.
  */
-
+@Injected()
 export class SqlJsDriver
 	extends SqLiteDriver {
 

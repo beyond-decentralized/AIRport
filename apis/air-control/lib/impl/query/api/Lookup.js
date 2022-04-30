@@ -1,4 +1,11 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { QueryResultType } from '@airport/ground-control';
+import { Inject, Injected } from '../../core/metadata/dependencyInjection';
 export class LookupProxy {
     constructor(dao) {
         this.dao = dao;
@@ -10,7 +17,7 @@ export class LookupProxy {
         return await this.dao.lookup.lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults);
     }
 }
-export class Lookup {
+let Lookup = class Lookup {
     ensureContext(context) {
         return doEnsureContext(context);
     }
@@ -68,7 +75,17 @@ export class Lookup {
                 throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
         }
     }
-}
+};
+__decorate([
+    Inject()
+], Lookup.prototype, "entityUtils", void 0);
+__decorate([
+    Inject()
+], Lookup.prototype, "queryFacade", void 0);
+Lookup = __decorate([
+    Injected()
+], Lookup);
+export { Lookup };
 export function doEnsureContext(context) {
     if (!context) {
         context = {};

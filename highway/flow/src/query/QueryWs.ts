@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control';
 import {
 	IQueryConfig,
 	IQueryContext,
@@ -16,9 +17,11 @@ export interface IQueryWebService {
 
 }
 
+@Injected()
 export class QueryWebService
 	implements IQueryWebService {
 
+	@Inject()
 	queryValidator: IQueryValidator
 
 	async handle(

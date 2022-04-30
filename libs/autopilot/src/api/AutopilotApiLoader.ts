@@ -4,9 +4,12 @@ import {
 } from '@airport/direction-indicator'
 import { ILocalAPIClient } from '../LocalAPIClient';
 
+// Autopilot is included in client source, so not adding @airport/air-control dependency
+// @Injected()
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
+    // @Inject()
     localApiClient: ILocalAPIClient
 
     loadApiAutopilot<T>(

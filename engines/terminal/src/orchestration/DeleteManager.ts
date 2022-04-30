@@ -1,6 +1,8 @@
 import {
 	IAirportDatabase,
 	IApplicationUtils,
+	Inject,
+	Injected,
 	valuesEqual,
 	Y
 } from '@airport/air-control'
@@ -37,15 +39,29 @@ import {
 	RecordsToDelete
 } from '@airport/terminal-map'
 
+@Injected()
 export class DeleteManager
 	implements IDeleteManager {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	historyManager: IHistoryManager
+
+	@Inject()
 	operationHistoryDuo: IOperationHistoryDuo
+
+	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
+
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
 	async deleteWhere(

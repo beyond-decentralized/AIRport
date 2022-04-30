@@ -1,6 +1,13 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { TransactionType } from '@airport/ground-control';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
-export class TwoStageSyncedInDataProcessor {
+import { Inject, Injected } from '@airport/air-control';
+let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
@@ -80,5 +87,24 @@ export class TwoStageSyncedInDataProcessor {
             await this.synchronizationConflictValuesDao.insert(allSyncConflictValues);
         }
     }
-}
+};
+__decorate([
+    Inject()
+], TwoStageSyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate([
+    Inject()
+], TwoStageSyncedInDataProcessor.prototype, "stage1SyncedInDataProcessor", void 0);
+__decorate([
+    Inject()
+], TwoStageSyncedInDataProcessor.prototype, "stage2SyncedInDataProcessor", void 0);
+__decorate([
+    Inject()
+], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictDao", void 0);
+__decorate([
+    Inject()
+], TwoStageSyncedInDataProcessor.prototype, "synchronizationConflictValuesDao", void 0);
+TwoStageSyncedInDataProcessor = __decorate([
+    Injected()
+], TwoStageSyncedInDataProcessor);
+export { TwoStageSyncedInDataProcessor };
 //# sourceMappingURL=TwoStageSyncedInDataProcessor.js.map

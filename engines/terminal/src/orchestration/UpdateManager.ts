@@ -2,6 +2,8 @@ import {
 	IAirportDatabase,
 	IApplicationUtils,
 	IFieldUtils,
+	Inject,
+	Injected,
 	IQueryFacade,
 	IQueryUtils,
 	IRelationManager,
@@ -42,19 +44,41 @@ import {
 	RecordHistoryMap
 } from '@airport/terminal-map'
 
+@Injected()
 export class UpdateManager
 	implements IUpdateManager {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	fieldUtils: IFieldUtils
+
+	@Inject()
 	historyManager: IHistoryManager
+
+	@Inject()
 	operationHistoryDuo: IOperationHistoryDuo
+
+	@Inject()
 	queryFacade: IQueryFacade
+
+	@Inject()
 	queryUtils: IQueryUtils
+
+	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
+
+	@Inject()
 	relationManager: IRelationManager
+
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
 	async updateValues(

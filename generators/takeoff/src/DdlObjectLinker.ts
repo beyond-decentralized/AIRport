@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import type {
 	IDomain,
 	IApplication,
@@ -20,9 +21,11 @@ import type {
 } from '@airport/ground-control'
 import type { AllDdlObjects, IDdlObjectLinker, ITerminalStore } from '@airport/terminal-map'
 
+@Injected()
 export class DdlObjectLinker
 	implements IDdlObjectLinker {
 
+	@Inject()
 	terminalStore: ITerminalStore
 
 	link(

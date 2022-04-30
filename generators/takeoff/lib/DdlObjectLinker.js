@@ -1,4 +1,11 @@
-export class DdlObjectLinker {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
+let DdlObjectLinker = class DdlObjectLinker {
     link(allDdlObjects) {
         const { all, allApplicationVersionsByIds, added } = allDdlObjects;
         const { latestApplicationVersions, properties, relations, applicationReferences, applications } = added;
@@ -161,5 +168,12 @@ export class DdlObjectLinker {
             relationColumn.oneRelation = oneRelation;
         });
     }
-}
+};
+__decorate([
+    Inject()
+], DdlObjectLinker.prototype, "terminalStore", void 0);
+DdlObjectLinker = __decorate([
+    Injected()
+], DdlObjectLinker);
+export { DdlObjectLinker };
 //# sourceMappingURL=DdlObjectLinker.js.map

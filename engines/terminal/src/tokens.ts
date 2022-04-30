@@ -5,7 +5,7 @@ import { DEPENDENCY_INJECTION, lib } from '@airport/direction-indicator'
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system'
 import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport'
-import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, RECORD_HISTORY_NEW_VALUE_DUO, RECORD_HISTORY_OLD_VALUE_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern'
+import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern'
 import {
     APPLICATION_INITIALIZER,
     ICascadeGraphVerifier,
@@ -35,6 +35,7 @@ import { IOnlineManager, OnlineManager } from './net/OnlineManager'
 import { TransactionalReceiver } from './net/TransactionalReceiver'
 import { TransactionalServer } from './net/TransactionalServer'
 import { AbstractMutationManager } from './orchestration/AbstractMutationManager'
+import { DatabaseManager } from './orchestration/DatabaseManager'
 import { DeleteManager } from './orchestration/DeleteManager'
 import { HistoryManager } from './orchestration/HistoryManager'
 import { InsertManager } from './orchestration/InsertManager'
@@ -82,8 +83,8 @@ export const CASCADE_GRAPH_VERIFIER = terminal.token<ICascadeGraphVerifier>({
     token: 'CASCADE_GRAPH_VERIFIER'
 })
 export const DATABASE_MANAGER = terminal.token<IDatabaseManager>({
-    class: CascadeGraphVerifier,
-    interface: 'ICascadeGraphVerifier',
+    class: DatabaseManager,
+    interface: 'IDatabaseManager',
     token: 'DATABASE_MANAGER'
 })
 export const DELETE_MANAGER = terminal.token<IDeleteManager>({

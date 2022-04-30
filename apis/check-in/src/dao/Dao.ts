@@ -12,6 +12,8 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	ILookup,
+	Inject,
+	Injected,
 	IQEntity,
 	IUpdateCacheManager,
 	QApplication,
@@ -31,6 +33,7 @@ import { DaoStub } from './DaoStub';
 /**
  * Created by Papa on 8/26/2017.
  */
+@Injected()
 export abstract class Dao<Entity,
 	EntitySelect extends IEntitySelectProperties,
 	EntityCreate extends IEntityCreateProperties,
@@ -54,10 +57,19 @@ export abstract class Dao<Entity,
 		};
 	}
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	databaseFacade: IDatabaseFacade
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	lookup: ILookup
+
+	@Inject()
 	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,

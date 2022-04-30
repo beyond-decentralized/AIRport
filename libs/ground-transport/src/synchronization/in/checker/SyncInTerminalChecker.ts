@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
@@ -14,9 +15,11 @@ export interface ISyncInTerminalChecker {
 
 }
 
+@Injected()
 export class SyncInTerminalChecker
 	implements ISyncInTerminalChecker {
 
+	@Inject()
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(

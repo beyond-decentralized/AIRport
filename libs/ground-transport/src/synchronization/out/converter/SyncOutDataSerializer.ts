@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import {
 	IApplication,
 	IApplicationColumn,
@@ -67,10 +68,14 @@ export interface InMessageUserLookup {
 	lastInMessageIndex: number
 }
 
+@Injected()
 export class SyncOutDataSerializer
 	implements ISyncOutDataSerializer {
 
+	@Inject()
 	actorDao: IActorDao
+
+	@Inject()
 	repositoryDao: IRepositoryDao
 
 	async serialize(

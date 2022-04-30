@@ -1,10 +1,17 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Injected } from "@airport/air-control";
 import { SQLDataType } from "@airport/ground-control";
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side query parameters.  Since then moved to Isolates and generic
 // API calls.  Probably should be used in go-tower to deserialize all of the
 // method argiments passed it (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
-export class QueryParameterDeserializer {
+let QueryParameterDeserializer = class QueryParameterDeserializer {
     deserialize(parameters, query, entityStateManager) {
         if (parameters.length !== query.jsonQuery.parameters.length) {
             throw new Error(`Wrong number of parameters for ${query.dbEntity.name}.${query.jsonQuery.queryName}
@@ -70,5 +77,9 @@ got: ${typeOfParameter}
             `);
         }
     }
-}
+};
+QueryParameterDeserializer = __decorate([
+    Injected()
+], QueryParameterDeserializer);
+export { QueryParameterDeserializer };
 //# sourceMappingURL=QueryParameterDeserializer.js.map

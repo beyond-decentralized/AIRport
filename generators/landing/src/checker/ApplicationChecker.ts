@@ -11,6 +11,7 @@ import {
 	IApplication,
 	IApplicationDao
 } from '@airport/airspace'
+import { Inject, Injected } from '@airport/air-control';
 
 export interface CoreDomainAndApplicationNames {
 
@@ -44,9 +45,11 @@ export interface IApplicationChecker {
 
 }
 
+@Injected()
 export class ApplicationChecker
 	implements IApplicationChecker {
 
+	@Inject()
 	applicationDao: IApplicationDao
 
 	async check(

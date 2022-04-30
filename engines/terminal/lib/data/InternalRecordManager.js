@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { Actor, } from "@airport/holding-pattern";
 import { Terminal, User } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
-export class InternalRecordManager {
+import { Inject, Injected } from "@airport/air-control";
+let InternalRecordManager = class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
         await this.transactionManager.transactInternal(async (_transaction) => {
             await this.updateDomain(application);
@@ -109,5 +116,27 @@ export class InternalRecordManager {
         });
         return updatedDomain;
     }
-}
+};
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "actorDao", void 0);
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "domainDao", void 0);
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], InternalRecordManager.prototype, "transactionManager", void 0);
+InternalRecordManager = __decorate([
+    Injected()
+], InternalRecordManager);
+export { InternalRecordManager };
 //# sourceMappingURL=InternalRecordManager.js.map

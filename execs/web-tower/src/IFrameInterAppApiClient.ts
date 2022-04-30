@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import {
     ICoreLocalApiRequest,
     ILocalAPIRequest
@@ -23,11 +24,17 @@ export interface IRequestRecord {
 
 const _inDemoMode = true
 
+@Injected()
 export class IFrameInterAppPIClient
     implements IInterAppAPIClient {
 
+    @Inject()
     operationSerializer: IOperationSerializer
+
+    @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
+
+    @Inject()
     transactionalConnector: ITransactionalConnector
 
     async invokeApiMethod<ApiInterface, ReturnValue>(

@@ -6,6 +6,7 @@ import {
     IDomainDao,
     IApplicationDao
 } from "@airport/airspace";
+import { Inject, Injected } from "@airport/air-control";
 
 export interface IDomainCheckRecord {
     domain?: IDomain
@@ -27,10 +28,14 @@ export interface ISyncInApplicationChecker {
 
 }
 
+@Injected()
 export class SyncInApplicationChecker
     implements ISyncInApplicationChecker {
 
+    @Inject()
     applicationDao: IApplicationDao
+
+    @Inject()
     domainDao: IDomainDao
 
     async ensureApplications(

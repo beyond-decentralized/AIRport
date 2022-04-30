@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	ILocalAPIRequest,
 	ILocalAPIResponse
@@ -24,12 +25,18 @@ import {
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
 
+@Injected()
 export class WebTransactionalReceiver
 	extends TransactionalReceiver
 	implements ITransactionalReceiver {
 
+	@Inject()
 	applicationInitializer: IWebApplicationInitializer
+
+	@Inject()
 	terminalStore: ITerminalStore
+
+	@Inject()
 	webMessageReciever: IWebMessageReceiver
 
 	constructor() {

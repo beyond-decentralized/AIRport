@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	DbProperty,
 	EntityRelationType,
@@ -12,9 +13,11 @@ import {
  * Takes a serialized object tree and reconstructs a (potentially)
  * interlinked object graph.
  */
+@Injected()
 export class EntityGraphReconstructor
 	implements IEntityGraphReconstructor {
 
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	restoreEntityGraph<T>(
@@ -98,7 +101,7 @@ for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
 					= operationUniqueId
 				entityCopy[this.entityStateManager.getStateFieldName()]
 					= this.entityStateManager.getEntityState(entity)
-					this.entityStateManager.copyEntityState(entity, entityCopy)
+				this.entityStateManager.copyEntityState(entity, entityCopy)
 				entitiesByOperationIndex[operationUniqueId]
 					= entityCopy
 			}

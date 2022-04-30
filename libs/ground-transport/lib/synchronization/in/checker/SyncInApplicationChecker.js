@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { ApplicationStatus } from '@airport/ground-control';
-export class SyncInApplicationChecker {
+import { Inject, Injected } from "@airport/air-control";
+let SyncInApplicationChecker = class SyncInApplicationChecker {
     async ensureApplications(message) {
         try {
             let applicationCheckMap = await this.checkApplicationsAndDomains(message);
@@ -124,5 +131,15 @@ export class SyncInApplicationChecker {
             applicationCheckMap
         };
     }
-}
+};
+__decorate([
+    Inject()
+], SyncInApplicationChecker.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
+], SyncInApplicationChecker.prototype, "domainDao", void 0);
+SyncInApplicationChecker = __decorate([
+    Injected()
+], SyncInApplicationChecker);
+export { SyncInApplicationChecker };
 //# sourceMappingURL=SyncInApplicationChecker.js.map

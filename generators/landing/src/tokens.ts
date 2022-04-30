@@ -63,6 +63,10 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     terminalStore: TERMINAL_STORE
 })
 
+APPLICATION_BUILDER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
+})
+
 APPLICATION_CHECKER.setDependencies({
     applicationDao: APPLICATION_DAO
 })

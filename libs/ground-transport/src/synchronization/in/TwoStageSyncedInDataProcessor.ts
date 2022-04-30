@@ -26,6 +26,7 @@ import { IApplication } from '@airport/airspace'
 import { ISyncRepoTransHistory } from './SyncInUtils'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
+import { Inject, Injected } from '@airport/air-control'
 
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
@@ -39,13 +40,23 @@ export interface ITwoStageSyncedInDataProcessor {
 
 }
 
+@Injected()
 export class TwoStageSyncedInDataProcessor
 	implements ITwoStageSyncedInDataProcessor {
 
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
 	stage1SyncedInDataProcessor: IStage1SyncedInDataProcessor
+
+	@Inject()
 	stage2SyncedInDataProcessor: IStage2SyncedInDataProcessor
+
+	@Inject()
 	synchronizationConflictDao: ISynchronizationConflictDao
+
+	@Inject()
 	synchronizationConflictValuesDao: ISynchronizationConflictValuesDao
 
 	/**

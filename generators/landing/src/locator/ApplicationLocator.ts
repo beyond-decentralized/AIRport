@@ -6,6 +6,7 @@ import {
 	ITerminalStore
 } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
+import { Injected } from '@airport/air-control'
 
 export interface IApplicationLocator {
 
@@ -21,6 +22,7 @@ export interface IApplicationLocator {
 
 }
 
+@Injected()
 export class ApplicationLocator
 	implements IApplicationLocator {
 

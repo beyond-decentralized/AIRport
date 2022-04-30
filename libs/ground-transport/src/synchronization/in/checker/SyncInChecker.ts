@@ -8,6 +8,7 @@ import { ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
 import { ISyncInUserChecker } from './SyncInUserChecker';
+import { Inject, Injected } from '@airport/air-control';
 
 export interface ISyncInChecker {
 
@@ -17,15 +18,29 @@ export interface ISyncInChecker {
 
 }
 
+@Injected()
 export class SyncInChecker
 	implements ISyncInChecker {
 
+	@Inject()
 	syncInActorChecker: ISyncInActorChecker
+
+	@Inject()
 	syncInApplicationChecker: ISyncInApplicationChecker
+
+	@Inject()
 	syncInApplicationVersionChecker: ISyncInApplicationVersionChecker
+
+	@Inject()
 	syncInDataChecker: ISyncInDataChecker
+
+	@Inject()
 	syncInRepositoryChecker: ISyncInRepositoryChecker
+
+	@Inject()
 	syncInTerminalChecker: ISyncInTerminalChecker
+
+	@Inject()
 	syncInUserChecker: ISyncInUserChecker
 
 	/**

@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import {
     ILocalAPIRequest,
     ILocalAPIResponse
@@ -7,10 +8,11 @@ import {
     ILocalAPIServer
 } from "@airport/security-check";
 
-
+@Injected()
 export class LocalAPIServer
     implements ILocalAPIServer {
 
+    @Inject()
     apiRegistry: IApiRegistry
 
     async handleRequest(

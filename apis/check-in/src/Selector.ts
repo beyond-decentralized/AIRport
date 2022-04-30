@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
 	Observable,
 	from
@@ -102,6 +103,7 @@ export interface ISelectorManager {
 
 }
 
+@Injected()
 export class SelectorManager
 	implements ISelectorManager {
 

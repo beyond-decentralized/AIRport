@@ -19,7 +19,8 @@ DEPENDENCY_INJECTION.set(APPLICATION_LOCATOR, IFrameApplicationLocator)
 DEPENDENCY_INJECTION.set(INTER_APP_API_CLIENT, IFrameInterAppPIClient)
 INTER_APP_API_CLIENT.setDependencies({
     operationSerializer: OPERATION_SERIALIZER,
-    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER
+    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER,
+    transactionalConnector: TRANSACTIONAL_CONNECTOR
 })
 DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, IframeTransactionalConnector)
 TRANSACTIONAL_CONNECTOR.setDependencies({

@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control';
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	IUser,
@@ -12,9 +13,11 @@ export interface ISyncInUserChecker {
 
 }
 
+@Injected()
 export class SyncInUserChecker
 	implements ISyncInUserChecker {
 
+	@Inject()
 	userDao: IUserDao
 
 	async ensureUsers(

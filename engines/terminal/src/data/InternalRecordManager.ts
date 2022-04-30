@@ -23,6 +23,7 @@ import {
     User
 } from "@airport/travel-document-checkpoint-internal";
 import { v4 as uuidv4 } from "uuid";
+import { Inject, Injected } from "@airport/air-control";
 
 export interface IInternalRecordManager {
 
@@ -38,14 +39,26 @@ export interface IInternalRecordManager {
 
 }
 
+@Injected()
 export class InternalRecordManager
     implements IInternalRecordManager {
 
+    @Inject()
     actorDao: IActorDao
+
+    @Inject()
     applicationDao: IApplicationDao
+
+    @Inject()
     domainDao: IDomainDao
+
+    @Inject()
     entityStateManager: IEntityStateManager
+
+    @Inject()
     terminalStore: TerminalStore
+
+    @Inject()
     transactionManager: ITransactionManager
 
     async ensureApplicationRecords(

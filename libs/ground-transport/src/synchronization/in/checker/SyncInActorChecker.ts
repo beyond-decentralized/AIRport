@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
@@ -13,9 +14,11 @@ export interface ISyncInActorChecker {
 
 }
 
+@Injected()
 export class SyncInActorChecker
 	implements ISyncInActorChecker {
 
+	@Inject()
 	actorDao: IActorDao
 
 	async ensureActors(

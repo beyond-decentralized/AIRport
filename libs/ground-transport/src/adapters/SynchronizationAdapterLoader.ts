@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 export interface ISynchronizationAdapterLoader {
@@ -8,9 +9,11 @@ export interface ISynchronizationAdapterLoader {
 
 }
 
+@Injected()
 export class SynchronizationAdapterLoader
     implements ISynchronizationAdapterLoader {
 
+    @Inject()
     debugSynchronizationAdapter: ISynchronizationAdapter
 
     async load(

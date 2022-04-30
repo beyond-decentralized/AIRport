@@ -1,5 +1,13 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var EntityStateManager_1;
+import { Injected } from '@airport/air-control';
 import { EntityState } from '@airport/ground-control';
-export class EntityStateManager {
+let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;
     }
@@ -7,31 +15,31 @@ export class EntityStateManager {
         return this.getEntityState(entity) === EntityState.PARENT_ID;
     }
     markForDeletion(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE;
+        entity[EntityStateManager_1.STATE_FIELD] = EntityState.DELETE;
     }
     markToCreate(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.CREATE;
+        entity[EntityStateManager_1.STATE_FIELD] = EntityState.CREATE;
     }
     markToUpdate(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.UPDATE;
+        entity[EntityStateManager_1.STATE_FIELD] = EntityState.UPDATE;
     }
     getEntityState(entity) {
-        return entity[EntityStateManager.STATE_FIELD];
+        return entity[EntityStateManager_1.STATE_FIELD];
     }
     getOriginalValues(entity) {
-        return entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
+        return entity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY];
     }
     setOriginalValues(originalValues, entity) {
-        entity[EntityStateManager.ORIGINAL_VALUES_PROPERTY] = originalValues;
+        entity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY] = originalValues;
     }
     copyEntityState(fromEntity, toEntity) {
-        toEntity[EntityStateManager.STATE_FIELD]
-            = fromEntity[EntityStateManager.STATE_FIELD];
-        toEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY]
-            = fromEntity[EntityStateManager.ORIGINAL_VALUES_PROPERTY];
+        toEntity[EntityStateManager_1.STATE_FIELD]
+            = fromEntity[EntityStateManager_1.STATE_FIELD];
+        toEntity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY]
+            = fromEntity[EntityStateManager_1.ORIGINAL_VALUES_PROPERTY];
     }
     getStateFieldName() {
-        return EntityStateManager.STATE_FIELD;
+        return EntityStateManager_1.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
         let isCreate, isDelete, isParentId, isPassThrough, isResult, isResultDate, isResultJson, isStub, isUpdate;
@@ -80,13 +88,13 @@ export class EntityStateManager {
         };
     }
     setIsDeleted(isDeleted, entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.DELETE;
+        entity[EntityStateManager_1.STATE_FIELD] = EntityState.DELETE;
     }
     isDeleted(entity) {
-        return entity[EntityStateManager.STATE_FIELD] === EntityState.DELETE;
+        return entity[EntityStateManager_1.STATE_FIELD] === EntityState.DELETE;
     }
     getOperationUniqueId(entity, throwIfNotFound = true, dbEntity = null) {
-        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
+        const operationUniqueId = entity[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD];
         if (!operationUniqueId || typeof operationUniqueId !== 'number' || operationUniqueId < 1) {
             if (throwIfNotFound) {
                 let entityDescription;
@@ -96,7 +104,7 @@ export class EntityStateManager {
                 else {
                     entityDescription = JSON.stringify(entity);
                 }
-                throw new Error(`Could not find "${EntityStateManager.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
+                throw new Error(`Could not find "${EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD}" property on DTO:
         
         ${entityDescription}`);
             }
@@ -104,20 +112,24 @@ export class EntityStateManager {
         return operationUniqueId;
     }
     copyOperationUniqueId(entity, entityCopy) {
-        const operationUniqueId = entity[EntityStateManager.OPERATION_UNIQUE_ID_FIELD];
-        entityCopy[EntityStateManager.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
+        const operationUniqueId = entity[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD];
+        entityCopy[EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD] = operationUniqueId;
     }
     markAsStub(entity) {
-        entity[EntityStateManager.STATE_FIELD] = EntityState.STUB;
+        entity[EntityStateManager_1.STATE_FIELD] = EntityState.STUB;
     }
     getUniqueIdFieldName() {
-        return EntityStateManager.OPERATION_UNIQUE_ID_FIELD;
+        return EntityStateManager_1.OPERATION_UNIQUE_ID_FIELD;
     }
-}
+};
 EntityStateManager.DELETED_PROPERTY = '__deleted__';
 EntityStateManager.ORIGINAL_VALUES_PROPERTY = '__originalValues__';
 EntityStateManager.STATE_FIELD = '__state__';
 EntityStateManager.OPERATION_UNIQUE_ID_FIELD = '__OUID__';
+EntityStateManager = EntityStateManager_1 = __decorate([
+    Injected()
+], EntityStateManager);
+export { EntityStateManager };
 export function injectEntityStateManager() {
     console.log('inject EntityStateManager');
 }

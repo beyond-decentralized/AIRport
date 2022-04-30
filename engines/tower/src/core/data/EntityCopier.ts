@@ -1,4 +1,4 @@
-import { IEntityContext } from "@airport/air-control"
+import { IEntityContext, Injected } from "@airport/air-control"
 import {
     DbEntity,
     IEntityStateManager
@@ -29,6 +29,7 @@ export interface IEntityCopier {
 
 }
 
+@Injected()
 export class EntityCopier
     implements IEntityCopier {
 

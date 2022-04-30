@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from "@airport/air-control";
 import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
-export class UpdateCacheManager {
+let UpdateCacheManager = class UpdateCacheManager {
     saveOriginalValues(entity, dbEntity) {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
@@ -347,5 +354,15 @@ export class UpdateCacheManager {
             return this.entityStateManager.isDeleted(entity);
         }
     }
-}
+};
+__decorate([
+    Inject()
+], UpdateCacheManager.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], UpdateCacheManager.prototype, "applicationUtils", void 0);
+UpdateCacheManager = __decorate([
+    Injected()
+], UpdateCacheManager);
+export { UpdateCacheManager };
 //# sourceMappingURL=UpdateCacheManager.js.map

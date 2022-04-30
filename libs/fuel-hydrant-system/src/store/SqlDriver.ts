@@ -1,4 +1,4 @@
-import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import { doEnsureContext, IAirportDatabase, IApplicationUtils, Inject, Injected, IQMetadataUtils, IRelationManager } from '@airport/air-control';
 import {
 	ApplicationName,
 	DbApplication,
@@ -53,21 +53,44 @@ import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserF
 /**
  * Created by Papa on 9/9/2016.
  */
-
+@Injected()
 export abstract class SqlDriver
 	implements IStoreDriver {
 
+	@Inject()
 	activeQueries: IActiveQueries
+
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	objectResultParserFactory: IObjectResultParserFactory
+
+	@Inject()
 	operationContextLoader: IOperationContextLoader
+
+	@Inject()
 	qMetadataUtils: IQMetadataUtils
+
+	@Inject()
 	qValidator: IValidator
+
+	@Inject()
 	relationManager: IRelationManager
+
+	@Inject()
 	transactionManager: ITransactionManager
+
+	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
+
+	@Inject()
 	subStatementQueryGenerator: ISubStatementSqlGenerator
 
 	// public queries: ActiveQueries

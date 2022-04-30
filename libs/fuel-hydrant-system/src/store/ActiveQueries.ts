@@ -1,9 +1,10 @@
+import { Injected } from '@airport/air-control';
 import {
 	PortableQuery,
 	SyncApplicationMap
-}                       from '@airport/ground-control'
-import {Subject}       from 'rxjs'
-import {SQLQuery}       from '../sql/core/SQLQuery'
+} from '@airport/ground-control'
+import { Subject } from 'rxjs'
+import { SQLQuery } from '../sql/core/SQLQuery'
 
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
@@ -30,6 +31,7 @@ export interface IActiveQueries {
 
 }
 
+@Injected()
 export class ActiveQueries
 	implements IActiveQueries {
 

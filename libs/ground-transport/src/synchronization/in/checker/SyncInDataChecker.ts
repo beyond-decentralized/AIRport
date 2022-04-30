@@ -9,7 +9,7 @@ import {
 	IApplicationEntity,
 	IApplicationColumn
 } from '@airport/airspace'
-import { IAirportDatabase } from '@airport/air-control'
+import { IAirportDatabase, Inject, Injected } from '@airport/air-control'
 import {
 	getSysWideOpIds,
 	ISequenceGenerator
@@ -29,11 +29,18 @@ export interface ISyncInDataChecker {
 
 }
 
+@Injected()
 export class SyncInDataChecker
 	implements ISyncInDataChecker {
 
+
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
+
+	@Inject()
 	terminalStore: ITerminalStore
 
 	/**

@@ -1,4 +1,11 @@
-export class RepositoryLoader {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from "@airport/air-control";
+let RepositoryLoader = class RepositoryLoader {
     /*
     Repository can be loaded because:
     - Repository is not present at all
@@ -62,5 +69,18 @@ export class RepositoryLoader {
             return;
         }
     }
-}
+};
+__decorate([
+    Inject()
+], RepositoryLoader.prototype, "repositoryDao", void 0);
+__decorate([
+    Inject()
+], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
+__decorate([
+    Inject()
+], RepositoryLoader.prototype, "synchronizationInManager", void 0);
+RepositoryLoader = __decorate([
+    Injected()
+], RepositoryLoader);
+export { RepositoryLoader };
 //# sourceMappingURL=RepositoryLoader.js.map

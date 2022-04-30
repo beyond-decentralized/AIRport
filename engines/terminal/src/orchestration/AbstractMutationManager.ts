@@ -8,6 +8,8 @@ import {
   RawInsertValues,
   IApplicationUtils,
   IRelationManager,
+  Injected,
+  Inject,
 } from '@airport/air-control';
 import { IContext } from '@airport/direction-indicator';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';
@@ -17,11 +19,19 @@ interface IColumnValueLookup {
   name: string
   nested: IColumnValueLookup
 }
+@Injected()
 export class AbstractMutationManager {
 
+  @Inject()
   applicationUtils: IApplicationUtils
+
+  @Inject()
   fieldUtils: IFieldUtils
+
+  @Inject()
   queryUtils: IQueryUtils
+
+  @Inject()
   relationManager: IRelationManager
 
   protected getPortableQuery(

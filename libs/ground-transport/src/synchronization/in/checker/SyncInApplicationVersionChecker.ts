@@ -3,6 +3,7 @@ import {
 	IApplicationVersion,
 	IApplicationVersionDao
 } from '@airport/airspace'
+import { Inject, Injected } from '@airport/air-control';
 
 export interface IApplicationVersionCheckRecord {
 	found?: boolean
@@ -19,9 +20,11 @@ export interface ISyncInApplicationVersionChecker {
 
 }
 
+@Injected()
 export class SyncInApplicationVersionChecker
 	implements ISyncInApplicationVersionChecker {
 
+	@Inject()
 	applicationVersionDao: IApplicationVersionDao
 
 	async ensureApplicationVersions(

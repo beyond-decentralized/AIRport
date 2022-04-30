@@ -1,4 +1,11 @@
-export class ApplicationRecorder {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
+let ApplicationRecorder = class ApplicationRecorder {
     async record(ddlObjects, 
     // normalOperation: boolean,
     context) {
@@ -57,5 +64,42 @@ export class ApplicationRecorder {
     async bulkCreate(dao, entities, context) {
         await dao.save(entities, context);
     }
-}
+};
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationColumnDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationEntityDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationPropertyColumnDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationPropertyDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationReferenceDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationRelationColumnDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationRelationDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "applicationVersionDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "domainDao", void 0);
+__decorate([
+    Inject()
+], ApplicationRecorder.prototype, "transactionManager", void 0);
+ApplicationRecorder = __decorate([
+    Injected()
+], ApplicationRecorder);
+export { ApplicationRecorder };
 //# sourceMappingURL=ApplicationRecorder.js.map

@@ -4,6 +4,7 @@ import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
 import { DDLManager } from './DDLManager'
 import { IOperationContext } from '@airport/terminal-map'
+import { Injected } from '@airport/air-control'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse
@@ -11,6 +12,7 @@ const parse = pgConnectionString.parse
  * Created by Papa on 11/27/2016.
  */
 
+@Injected()
 export class PostgreSqlDriver
 	extends SqlDriver {
 

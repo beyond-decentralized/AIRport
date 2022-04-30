@@ -10,13 +10,22 @@ import {
 	IApplication
 } from '@airport/airspace';
 import { IDdlObjectRetriever } from './DdlObjectRetriever';
+import { Inject, Injected } from '@airport/air-control';
 
+@Injected()
 export class QueryObjectInitializer
 	implements IQueryObjectInitializer {
 
+	@Inject()
 	ddlObjectLinker: IDdlObjectLinker
+
+	@Inject()
 	ddlObjectRetriever: IDdlObjectRetriever
+
+	@Inject()
 	queryEntityClassCreator: IQueryEntityClassCreator
+
+	@Inject()
 	terminalStore: ITerminalStore
 
 	generateQObjectsAndPopulateStore(

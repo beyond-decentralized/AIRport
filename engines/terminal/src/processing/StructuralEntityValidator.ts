@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-control'
+import { IApplicationUtils, Inject, Injected } from '@airport/air-control'
 import {
 	DbColumn,
 	DbEntity,
@@ -15,11 +15,17 @@ import {
 	IStructuralEntityValidator
 } from '@airport/terminal-map'
 
+@Injected()
 export class StructuralEntityValidator
 	implements IStructuralEntityValidator {
 
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	repositoryManager: IRepositoryManager
 
 	async validate<E>(

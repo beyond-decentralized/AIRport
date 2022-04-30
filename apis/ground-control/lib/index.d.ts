@@ -2,7 +2,6 @@ export * from './impl/query/ColumnMap';
 export * from './impl/query/DbApplicationUtils';
 export * from './impl/query/ApplicationMap';
 export * from './impl/query/TableMap';
-export * from './impl/application/builder/DbApplicationBuilder';
 export * from './impl/sync/SyncColumnMap';
 export * from './impl/sync/SyncApplicationMap';
 export * from './impl/sync/SyncStatus';

@@ -23,9 +23,12 @@ interface ISerializableOperation {
 	stubLookupTable: any[]
 }
 
+
+@Injected()
 export class OperationSerializer
 	implements IOperationSerializer {
 
+	@Inject()
 	serializationStateManager: ISerializationStateManager
 
 	serializeAsArray<E>(

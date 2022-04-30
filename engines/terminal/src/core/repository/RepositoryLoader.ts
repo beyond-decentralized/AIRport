@@ -1,4 +1,6 @@
 import {
+    Inject,
+    Injected,
     IRepositoryLoader
 } from "@airport/air-control";
 import {
@@ -15,11 +17,17 @@ import {
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
 
+@Injected()
 export class RepositoryLoader
     implements IRepositoryLoader {
 
+    @Inject()
     repositoryDao: IRepositoryDao
+
+    @Inject()
     synchronizationAdapterLoader: ISynchronizationAdapterLoader
+
+    @Inject()
     synchronizationInManager: ISynchronizationInManager
 
     /*

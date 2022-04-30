@@ -1,9 +1,16 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { EntityRelationType } from '@airport/ground-control';
 /**
  * Takes a serialized object tree and reconstructs a (potentially)
  * interlinked object graph.
  */
-export class EntityGraphReconstructor {
+let EntityGraphReconstructor = class EntityGraphReconstructor {
     restoreEntityGraph(root, context) {
         const entitiesByOperationIndex = [];
         const processedEntitySet = new Set();
@@ -165,5 +172,12 @@ of entity ${dbProperty.entity.name}`);
 of entity ${dbProperty.entity.name}\``);
         }
     }
-}
+};
+__decorate([
+    Inject()
+], EntityGraphReconstructor.prototype, "entityStateManager", void 0);
+EntityGraphReconstructor = __decorate([
+    Injected()
+], EntityGraphReconstructor);
+export { EntityGraphReconstructor };
 //# sourceMappingURL=EntityGraphReconstructor.js.map

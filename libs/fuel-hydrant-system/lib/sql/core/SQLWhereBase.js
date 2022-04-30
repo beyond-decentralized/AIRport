@@ -1,3 +1,10 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected, } from '@airport/air-control';
 import { JSONClauseObjectType, OperationCategory, ApplicationMap, SqlOperator } from '@airport/ground-control';
 /**
  * Created by Papa on 10/2/2016.
@@ -9,7 +16,7 @@ export var ClauseType;
     ClauseType["WHERE_CLAUSE"] = "WHERE_CLAUSE";
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
-export class SQLWhereBase {
+let SQLWhereBase = class SQLWhereBase {
     constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
@@ -265,5 +272,15 @@ export class SQLWhereBase {
         }
         return false;
     }
-}
+};
+__decorate([
+    Inject()
+], SQLWhereBase.prototype, "validator", void 0);
+__decorate([
+    Inject()
+], SQLWhereBase.prototype, "subStatementSqlGenerator", void 0);
+SQLWhereBase = __decorate([
+    Injected()
+], SQLWhereBase);
+export { SQLWhereBase };
 //# sourceMappingURL=SQLWhereBase.js.map

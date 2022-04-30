@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
-export class StructuralEntityValidator {
+let StructuralEntityValidator = class StructuralEntityValidator {
     async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
@@ -281,5 +288,18 @@ must always have a value for all entity operations.`);
         throw new Error(`Unexpected property value '${value.toString()}' in property '${dbProperty.entity.name}.${dbProperty.name}'
 		(column: '${dbColumn.name}').`);
     }
-}
+};
+__decorate([
+    Inject()
+], StructuralEntityValidator.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], StructuralEntityValidator.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], StructuralEntityValidator.prototype, "repositoryManager", void 0);
+StructuralEntityValidator = __decorate([
+    Injected()
+], StructuralEntityValidator);
+export { StructuralEntityValidator };
 //# sourceMappingURL=StructuralEntityValidator.js.map

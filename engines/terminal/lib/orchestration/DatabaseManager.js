@@ -1,9 +1,15 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { AIRPORT_DATABASE, Inject, Injected } from '@airport/air-control';
 import { container } from '@airport/direction-indicator';
 import { getFullApplicationName, } from '@airport/ground-control';
 import { Actor, } from '@airport/holding-pattern';
 import { BLUEPRINT } from '@airport/blueprint';
-export class DatabaseManager {
+let DatabaseManager = class DatabaseManager {
     constructor() {
         this.initialized = false;
     }
@@ -95,5 +101,24 @@ export class DatabaseManager {
             await this.applicationInitializer.initialize(blueprintFile.BLUEPRINT, context, false, false);
         }
     }
-}
+};
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "applicationInitializer", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "internalRecordManager", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "storeDriver", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "transactionalServer", void 0);
+DatabaseManager = __decorate([
+    Injected()
+], DatabaseManager);
+export { DatabaseManager };
 //# sourceMappingURL=DatabaseManager.js.map

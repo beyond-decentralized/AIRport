@@ -1,7 +1,15 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var ApplicationUtils_1;
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
+import { Inject, Injected } from '../core/metadata/dependencyInjection';
 import { valuesEqual } from '../Utils';
-export class ApplicationUtils {
+let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
             .applicationVersion.entities[tableIndex];
@@ -282,7 +290,7 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             if (forIdKey && this.isIdEmpty(value)) {
                 if (dbColumn.isGenerated) {
                     if (generateNegativeIdsForMissing) {
-                        value = --ApplicationUtils.TEMP_ID;
+                        value = --ApplicationUtils_1.TEMP_ID;
                     }
                     else {
                         value = null;
@@ -380,6 +388,16 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
         }
         return false;
     }
-}
+};
 ApplicationUtils.TEMP_ID = 0;
+__decorate([
+    Inject()
+], ApplicationUtils.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], ApplicationUtils.prototype, "entityStateManager", void 0);
+ApplicationUtils = ApplicationUtils_1 = __decorate([
+    Injected()
+], ApplicationUtils);
+export { ApplicationUtils };
 //# sourceMappingURL=ApplicationUtils.js.map

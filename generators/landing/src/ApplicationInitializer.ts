@@ -1,5 +1,5 @@
 import {
-	IAirportDatabase
+	IAirportDatabase, Inject, Injected
 } from '@airport/air-control';
 import {
 	ISequenceGenerator
@@ -30,18 +30,38 @@ import { IApplicationComposer } from './recorder/ApplicationComposer';
 import { IApplicationLocator } from './locator/ApplicationLocator';
 import { IApplicationRecorder } from './recorder/ApplicationRecorder';
 
+@Injected()
 export abstract class ApplicationInitializer
 	implements IApplicationInitializer {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationBuilder: IApplicationBuilder
+
+	@Inject()
 	applicationChecker: IApplicationChecker
+
+	@Inject()
 	applicationComposer: IApplicationComposer
+
+	@Inject()
 	applicationDao: IApplicationDao
+
+	@Inject()
 	applicationLocator: IApplicationLocator
+
+	@Inject()
 	applicationRecorder: IApplicationRecorder
+
+	@Inject()
 	queryObjectInitializer: IQueryObjectInitializer
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
+
+	@Inject()
 	terminalStore: ITerminalStore
 
 	addNewApplicationVersionsToAll(

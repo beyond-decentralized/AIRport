@@ -1,6 +1,6 @@
-import { IDbApplicationBuilder } from '../../../lingo/application/builder/DbApplicationBuilder';
-import { ILinkingDictionary } from '../../../lingo/application/builder/LinkingDictionary';
-import { DbApplication, JsonApplication } from '../../../lingo/application/Application';
+import { IDbApplicationBuilder } from '../../../apis/ground-control/lib/lingo/application/builder/DbApplicationBuilder';
+import { ILinkingDictionary } from '../../../apis/ground-control/lib/lingo/application/builder/LinkingDictionary';
+import { DbApplication, JsonApplication } from '../../../apis/ground-control/lib/lingo/application/Application';
 export declare class DbApplicationBuilder implements IDbApplicationBuilder {
     buildDbApplicationWithoutReferences(jsonApplication: JsonApplication, allApplications: DbApplication[], dictionary: ILinkingDictionary): DbApplication;
     /**

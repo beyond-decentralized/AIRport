@@ -1,7 +1,13 @@
-import { SheetQuery } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected, SheetQuery } from '@airport/air-control';
 import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
-export class UpdateManager {
+let UpdateManager = class UpdateManager {
     async updateValues(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
@@ -159,5 +165,42 @@ export class UpdateManager {
             repositoryIdSet
         };
     }
-}
+};
+__decorate([
+    Inject()
+], UpdateManager.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "fieldUtils", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "historyManager", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "operationHistoryDuo", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "queryFacade", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "queryUtils", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "recordHistoryDuo", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "relationManager", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate([
+    Inject()
+], UpdateManager.prototype, "sequenceGenerator", void 0);
+UpdateManager = __decorate([
+    Injected()
+], UpdateManager);
+export { UpdateManager };
 //# sourceMappingURL=UpdateManager.js.map

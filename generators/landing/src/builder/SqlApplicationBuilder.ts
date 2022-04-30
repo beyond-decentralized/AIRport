@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase, Inject, Injected } from '@airport/air-control';
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import {
@@ -18,11 +18,17 @@ import {
 import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';
 
+@Injected()
 export abstract class SqlApplicationBuilder
   implements IApplicationBuilder {
 
+  @Inject()
   airportDatabase: IAirportDatabase
+
+  @Inject()
   sequenceDao: ISequenceDao
+
+  @Inject()
   storeDriver: IStoreDriver
 
   async build(

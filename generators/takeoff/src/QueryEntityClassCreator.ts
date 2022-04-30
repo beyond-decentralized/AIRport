@@ -1,5 +1,7 @@
 import {
 	IAirportDatabase,
+	Inject,
+	Injected,
 	orderApplicationsInOrderOfPrecedence,
 	QApplication,
 	QApplicationInternal,
@@ -9,9 +11,11 @@ import { IApplication } from '@airport/airspace'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
 
+@Injected()
 export class QueryEntityClassCreator
 	implements IQueryEntityClassCreator {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
 
 	createAll(

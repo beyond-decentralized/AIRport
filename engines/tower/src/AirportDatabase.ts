@@ -19,6 +19,8 @@ import {
 	IEntityRecord,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
+	Inject,
+	Injected,
 	INonEntityFind,
 	INonEntityFindOne,
 	INonEntitySearch,
@@ -91,9 +93,12 @@ class EntityAccumulator
 	}
 }
 
+@Injected()
 export class AirportDatabase
 	implements IAirportDatabase {
 
+
+	@Inject()
 	databaseFacade: IDatabaseFacade
 
 	entityMap: Map<any, IEntityRecord> = new Map<any, IEntityRecord>();
@@ -162,9 +167,9 @@ export class AirportDatabase
 		this.S = this.applications;
 		this.Q = this.qApplications;
 
-		this.find      = new NonEntityFind();
-		this.findOne   = new NonEntityFindOne();
-		this.search    = new NonEntitySearch();
+		this.find = new NonEntityFind();
+		this.findOne = new NonEntityFindOne();
+		this.search = new NonEntitySearch();
 		this.searchOne = new NonEntitySearchOne();
 	}
 
@@ -225,7 +230,7 @@ export class AirportDatabase
 		// distributionStrategy: DistributionStrategy,
 		context?: IEntityContext,
 	): Promise<number> {
-		return await this.databaseFacade.addRepository( 
+		return await this.databaseFacade.addRepository(
 			// url, platform, platformConfig, distributionStrategy, 
 			context);
 	}
@@ -304,8 +309,8 @@ export class AirportDatabase
 	async updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
 		rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
 			| {
-			(...args: any[]): RawUpdateColumns<IEUC, IQE>
-		},
+				(...args: any[]): RawUpdateColumns<IEUC, IQE>
+			},
 		context?: IEntityContext,
 	): Promise<number> {
 		return await this.databaseFacade.updateColumnsWhere(rawUpdateColumns, context);

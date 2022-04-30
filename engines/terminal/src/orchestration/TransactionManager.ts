@@ -1,4 +1,4 @@
-import { IQEntityInternal } from '@airport/air-control';
+import { Inject, Injected, IQEntityInternal } from '@airport/air-control';
 import {
 	IContext
 } from '@airport/direction-indicator';
@@ -28,15 +28,27 @@ import {
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
+@Injected()
 export class TransactionManager
 	extends AbstractMutationManager
 	implements ITransactionManager {
 
+	@Inject()
 	activeQueries: IActiveQueries
+
+	@Inject()
 	idGenerator: IIdGenerator
+
+	@Inject()
 	storeDriver: IStoreDriver
+
+	@Inject()
 	synchronizationOutManager: ISynchronizationOutManager
+
+	@Inject()
 	terminalStore: ITerminalStore
+
+	@Inject()
 	transactionHistoryDuo: ITransactionHistoryDuo
 
 	/**

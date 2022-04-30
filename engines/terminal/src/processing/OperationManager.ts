@@ -3,6 +3,8 @@ import {
 	Delete,
 	IAirportDatabase,
 	IApplicationUtils,
+	Inject,
+	Injected,
 	InsertValues,
 	IQMetadataUtils,
 	IQOperableFieldInternal,
@@ -41,20 +43,44 @@ import {
 /**
  * Created by Papa on 11/15/2016.
  */
+@Injected()
 export class OperationManager
 	implements IOperationManager {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	cascadeGraphVerifier: ICascadeGraphVerifier
+
+	@Inject()
 	deleteManager: IDeleteManager
+
+	@Inject()
 	dependencyGraphResolver: IDependencyGraphResolver
+
+	@Inject()
 	entityGraphReconstructor: IEntityGraphReconstructor
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	insertManager: IInsertManager
+
+	@Inject()
 	qMetadataUtils: IQMetadataUtils
+
+	@Inject()
 	queryFacade: IQueryFacade
+
+	@Inject()
 	structuralEntityValidator: IStructuralEntityValidator
+
+	@Inject()
 	updateManager: IUpdateManager
 
 	/**

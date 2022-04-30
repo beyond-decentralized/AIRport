@@ -1,4 +1,4 @@
-import { IRepositoryLoader } from '@airport/air-control'
+import { Inject, Injected, IRepositoryLoader } from '@airport/air-control'
 import {
 	PortableQuery
 } from '@airport/ground-control'
@@ -9,10 +9,14 @@ import {
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 
+@Injected()
 export class QueryManager
 	implements IQueryManager {
 
+	@Inject()
 	repositoryLoader: IRepositoryLoader
+
+	@Inject()
 	storeDriver: IStoreDriver
 
 	async find<E, EntityArray extends Array<E>>(

@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
 	IQueryRequest,
 	QueryType
@@ -10,6 +11,7 @@ export interface IQueryValidator {
 	): void
 }
 
+@Injected()
 export class QueryValidator
 	implements IQueryValidator {
 

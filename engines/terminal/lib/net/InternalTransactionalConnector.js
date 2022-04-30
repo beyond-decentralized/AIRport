@@ -1,4 +1,11 @@
-export class InternalTransactionalConnector {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
+let InternalTransactionalConnector = class InternalTransactionalConnector {
     callApi(_) {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
 Interal Application API requests should be made directly (since
@@ -84,7 +91,17 @@ they are internal to the AIRport framework).`);
     onMessage(callback) {
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
-}
+};
+__decorate([
+    Inject()
+], InternalTransactionalConnector.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], InternalTransactionalConnector.prototype, "transactionalServer", void 0);
+InternalTransactionalConnector = __decorate([
+    Injected()
+], InternalTransactionalConnector);
+export { InternalTransactionalConnector };
 export function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }

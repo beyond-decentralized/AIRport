@@ -1,5 +1,7 @@
 import {
     IEntityContext,
+    Inject,
+    Injected,
     IQueryContext
 } from '@airport/air-control';
 import {
@@ -17,10 +19,14 @@ import {
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 
+@Injected()
 export class InternalTransactionalConnector
     implements ITransactionalConnector {
 
+    @Inject()
     terminalStore: ITerminalStore
+
+    @Inject()
     transactionalServer: ITransactionalServer
 
     callApi<Request, Response>(

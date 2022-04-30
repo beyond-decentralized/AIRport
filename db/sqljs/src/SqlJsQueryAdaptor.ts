@@ -1,9 +1,10 @@
 import {SqLiteQueryAdaptor} from "@airport/sqlite";
 import {SQLDataType}        from "@airport/ground-control";
+import { Injected } from "@airport/air-control";
 /**
  * Created by Papa on 2/8/2017.
  */
-
+@Injected()
 export class SqlJsQueryAdaptor extends SqLiteQueryAdaptor {
 
 	getResultCellRawValue(

@@ -1,5 +1,11 @@
-import { InsertValues, } from '@airport/air-control';
-export class AbstractMutationManager {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { InsertValues, Injected, Inject, } from '@airport/air-control';
+let AbstractMutationManager = class AbstractMutationManager {
     getPortableQuery(applicationIndex, tableIndex, query, queryResultType) {
         return {
             applicationIndex,
@@ -69,5 +75,21 @@ export class AbstractMutationManager {
         let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null);
         return await transaction.insertValues(portableQuery, context);
     }
-}
+};
+__decorate([
+    Inject()
+], AbstractMutationManager.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], AbstractMutationManager.prototype, "fieldUtils", void 0);
+__decorate([
+    Inject()
+], AbstractMutationManager.prototype, "queryUtils", void 0);
+__decorate([
+    Inject()
+], AbstractMutationManager.prototype, "relationManager", void 0);
+AbstractMutationManager = __decorate([
+    Injected()
+], AbstractMutationManager);
+export { AbstractMutationManager };
 //# sourceMappingURL=AbstractMutationManager.js.map

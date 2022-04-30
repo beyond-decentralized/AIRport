@@ -1,4 +1,5 @@
 import {
+	Injected,
 	IQEntityInternal,
 	Parameter
 } from '@airport/air-control';
@@ -18,6 +19,7 @@ import { IOperationContext } from '@airport/terminal-map';
 /**
  * Created by Papa on 8/27/2016.
  */
+@Injected()
 export class PostgreQueryAdaptor
 	implements ISQLQueryAdaptor {
 

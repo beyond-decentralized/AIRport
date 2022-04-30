@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { getSysWideOpIds } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { SynchronizationConflict_Type } from '@airport/moving-walkway';
-export class Stage1SyncedInDataProcessor {
+let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     /**
      * In stage one:
      *
@@ -419,5 +426,27 @@ export class Stage1SyncedInDataProcessor {
     ensureRecord(recordHistory, recordMapByActor) {
         return ensureChildJsMap(ensureChildJsMap(recordMapByActor, recordHistory.actor.id), recordHistory.actorRecordId);
     }
-}
+};
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "actorDao", void 0);
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "sequenceGenerator", void 0);
+__decorate([
+    Inject()
+], Stage1SyncedInDataProcessor.prototype, "syncInUtils", void 0);
+Stage1SyncedInDataProcessor = __decorate([
+    Injected()
+], Stage1SyncedInDataProcessor);
+export { Stage1SyncedInDataProcessor };
 //# sourceMappingURL=Stage1SyncedInDataProcessor.js.map

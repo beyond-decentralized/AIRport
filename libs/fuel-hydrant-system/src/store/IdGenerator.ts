@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import { ISequenceGenerator } from '@airport/check-in'
 import {
 	IContext
@@ -50,10 +51,11 @@ export interface IIdGeneratorContext
 /**
  * Created by Papa on 9/2/2016.
  */
-
+@Injected()
 export class IdGenerator
 	implements IIdGenerator {
 
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
 	private transactionHistoryIdColumns: DbColumn[] = []

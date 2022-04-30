@@ -1,10 +1,16 @@
-import { doEnsureContext, Y } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { doEnsureContext, Inject, Injected, Y } from '@airport/air-control';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 /**
  * Created by Papa on 8/26/2017.
  */
-export class Dao {
+let Dao = class Dao {
     constructor(dbEntityId, Q, internal = false) {
         this.internal = internal;
         this.stub = new DaoStub();
@@ -75,5 +81,24 @@ export class Dao {
     ensureContext(context) {
         return doEnsureContext(context);
     }
-}
+};
+__decorate([
+    Inject()
+], Dao.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], Dao.prototype, "databaseFacade", void 0);
+__decorate([
+    Inject()
+], Dao.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], Dao.prototype, "lookup", void 0);
+__decorate([
+    Inject()
+], Dao.prototype, "updateCacheManager", void 0);
+Dao = __decorate([
+    Injected()
+], Dao);
+export { Dao };
 //# sourceMappingURL=Dao.js.map

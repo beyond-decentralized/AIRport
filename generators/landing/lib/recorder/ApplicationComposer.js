@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicationName, } from '@airport/ground-control';
-export class ApplicationComposer {
+import { Inject, Injected } from '@airport/air-control';
+let ApplicationComposer = class ApplicationComposer {
     async compose(jsonApplications, context) {
         // NOTE: application name contains domain name as a prefix
         const jsonApplicationMapByFullName = new Map();
@@ -543,5 +550,18 @@ export class ApplicationComposer {
             }
         }
     }
-}
+};
+__decorate([
+    Inject()
+], ApplicationComposer.prototype, "applicationLocator", void 0);
+__decorate([
+    Inject()
+], ApplicationComposer.prototype, "domainRetriever", void 0);
+__decorate([
+    Inject()
+], ApplicationComposer.prototype, "terminalStore", void 0);
+ApplicationComposer = __decorate([
+    Injected()
+], ApplicationComposer);
+export { ApplicationComposer };
 //# sourceMappingURL=ApplicationComposer.js.map

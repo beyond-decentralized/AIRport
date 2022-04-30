@@ -1,6 +1,8 @@
 import {
 	IAirportDatabase,
 	IApplicationUtils,
+	Inject,
+	Injected,
 	IQEntityInternal,
 	IQMetadataUtils,
 	JSONLogicalOperation,
@@ -44,10 +46,14 @@ export enum ClauseType {
 	FUNCTION_CALL = 'FUNCTION_CALL'
 }
 
+@Injected()
 export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
+	@Inject()
 	validator: IValidator;
+
+	@Inject()
 	subStatementSqlGenerator: ISubStatementSqlGenerator
 
 	public parameterReferences: (string | number)[] = []

@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-control'
+import { IAirportDatabase, Inject, Injected } from '@airport/air-control'
 import {
 	getSysWideOpId,
 	ISequenceGenerator
@@ -34,15 +34,29 @@ interface ColumnsToPopulate {
 	sysWideOperationIdColumn: DbColumn
 }
 
+@Injected()
 export class InsertManager
 	implements IInsertManager {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	historyManager: IHistoryManager
+
+	@Inject()
 	insertManager: IInsertManager
+
+	@Inject()
 	operationHistoryDuo: IOperationHistoryDuo
+
+	@Inject()
 	recordHistoryDuo: IRecordHistoryDuo
+
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
 	async insertValues(

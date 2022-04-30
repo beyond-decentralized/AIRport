@@ -29,6 +29,7 @@ import {
 	IApplicationVersion
 } from '@airport/airspace';
 import { IApplicationLocator } from '../locator/ApplicationLocator';
+import { Inject, Injected } from '@airport/air-control';
 
 export interface IApplicationComposer {
 
@@ -45,11 +46,17 @@ export interface IApplicationComposerContext {
 	deepTraverseReferences?: boolean
 }
 
+@Injected()
 export class ApplicationComposer
 	implements IApplicationComposer {
 
+	@Inject()
 	applicationLocator: IApplicationLocator
+
+	@Inject()
 	domainRetriever: IDomainRetriever
+
+	@Inject()
 	terminalStore: ITerminalStore
 
 	async compose(

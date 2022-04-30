@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-control'
+import { IApplicationUtils, Inject, Injected } from '@airport/air-control'
 import {
 	DbEntity,
 	IEntityStateManager,
@@ -21,10 +21,14 @@ export interface IObjectResultParserFactory {
 
 }
 
+@Injected()
 export class ObjectResultParserFactory
 	implements IObjectResultParserFactory {
 
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	getObjectResultParser(

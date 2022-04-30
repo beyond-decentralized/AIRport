@@ -1,7 +1,13 @@
-import { valuesEqual, Y } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected, valuesEqual, Y } from '@airport/air-control';
 import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, repositoryEntity, } from '@airport/ground-control';
-export class DeleteManager {
+let DeleteManager = class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase
             .applications[portableQuery.applicationIndex].currentVersion[0].applicationVersion
@@ -182,5 +188,30 @@ export class DeleteManager {
         }
         return selectClause;
     }
-}
+};
+__decorate([
+    Inject()
+], DeleteManager.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "historyManager", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "operationHistoryDuo", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "recordHistoryDuo", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "repositoryTransactionHistoryDuo", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "sequenceGenerator", void 0);
+DeleteManager = __decorate([
+    Injected()
+], DeleteManager);
+export { DeleteManager };
 //# sourceMappingURL=DeleteManager.js.map

@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { IAirportDatabase, IApplicationUtils, Inject, Injected, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-control'
 import {
 	IEntityStateManager,
 	JsonFieldQuery,
@@ -35,17 +35,35 @@ export interface ISubStatementSqlGenerator {
 
 }
 
+@Injected()
 export class SubStatementSqlGenerator
 	implements ISubStatementSqlGenerator {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	qMetadataUtils: IQMetadataUtils
+
+	@Inject()
 	qValidator: IValidator
+
+	@Inject()
 	relationManager: IRelationManager
+
+	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
+
+	@Inject()
 	storeDriver: IStoreDriver
+
+	@Inject()
 	subStatementQueryGenerator: ISubStatementSqlGenerator
 
 	getTreeQuerySql(

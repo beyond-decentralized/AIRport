@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import {
 	IApplication,
 	IApplicationVersion,
@@ -26,19 +27,41 @@ export interface IDdlObjectRetriever {
 
 }
 
+@Injected()
 export class DdlObjectRetriever
 	implements IDdlObjectRetriever {
 
+	@Inject()
 	applicationColumnDao: IApplicationColumnDao
+
+	@Inject()
 	applicationDao: IApplicationDao
+
+	@Inject()
 	applicationEntityDao: IApplicationEntityDao
+
+	@Inject()
 	applicationPropertyColumnDao: IApplicationPropertyColumnDao
+
+	@Inject()
 	applicationPropertyDao: IApplicationPropertyDao
+
+	@Inject()
 	applicationReferenceDao: IApplicationReferenceDao
+
+	@Inject()
 	applicationRelationColumnDao: IApplicationRelationColumnDao
+
+	@Inject()
 	applicationRelationDao: IApplicationRelationDao
+
+	@Inject()
 	applicationVersionDao: IApplicationVersionDao
+
+	@Inject()
 	domainDao: IDomainDao
+
+	@Inject()
 	terminalStore: ITerminalStore
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {

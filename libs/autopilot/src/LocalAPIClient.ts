@@ -33,10 +33,14 @@ export interface IRequestRecord {
     resolve
 }
 
+// Autopilot is included in client source, so not adding @airport/air-control dependency
+// @Injected()
 export class LocalAPIClient
     implements ILocalAPIClient {
 
+    // @Inject()
     operationSerializer: IOperationSerializer
+    // @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
     pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();

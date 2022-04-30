@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control';
 import {
   container,
   IContext
@@ -32,12 +33,20 @@ export interface IOnlineManager {
 
 }
 
+@Injected()
 export class OnlineManager
   implements IOnlineManager {
 
+  @Inject()
   repositoryDao: IRepositoryDao
+
+  @Inject()
   repositoryManager: IRepositoryManager
+
+  @Inject()
   repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
+  @Inject()
   transactionManager: ITransactionManager
 
   private online = false;

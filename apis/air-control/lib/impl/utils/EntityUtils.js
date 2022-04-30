@@ -1,10 +1,17 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { QOperableField } from '../core/field/OperableField';
+import { Injected } from '../core/metadata/dependencyInjection';
 import { EntityQuery } from '../query/facade/EntityQuery';
 import { objectExists } from '../Utils';
 /**
  * Created by Papa on 6/14/2016.
  */
-export class EntityUtils {
+let EntityUtils = class EntityUtils {
     getObjectClassName(object) {
         if (typeof object != 'object' || object === null) {
             throw new Error(`Not an object instance`);
@@ -58,5 +65,9 @@ export class EntityUtils {
     getEntityQuery(rawGraphQuery) {
         return new EntityQuery(this.getRawQuery(rawGraphQuery));
     }
-}
+};
+EntityUtils = __decorate([
+    Injected()
+], EntityUtils);
+export { EntityUtils };
 //# sourceMappingURL=EntityUtils.js.map

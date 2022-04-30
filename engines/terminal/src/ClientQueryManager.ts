@@ -1,3 +1,4 @@
+import { Injected } from "@airport/air-control";
 import {
     IClientQuery,
     IClientQueryManager
@@ -9,6 +10,7 @@ import {
  * are considered generic API calls. DaoRegistry is now
  * replaced with API registry. 
  */
+@Injected()
 export class ClientQueryManager
     implements IClientQueryManager {
 

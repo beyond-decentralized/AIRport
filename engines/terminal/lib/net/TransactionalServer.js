@@ -1,3 +1,10 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Actor } from '@airport/holding-pattern';
 /**
@@ -24,7 +31,7 @@ import { Actor } from '@airport/holding-pattern';
  * A single transactional queue should be enough.
  *
  */
-export class TransactionalServer {
+let TransactionalServer = class TransactionalServer {
     async init(context = {}) {
         return await this.transactionManager.initialize('airport', context);
     }
@@ -232,7 +239,38 @@ export class TransactionalServer {
     async ensureContextSync(context) {
         this.operationContextLoader.ensureSync(context);
     }
-}
+};
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "deleteManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "insertManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "operationManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "operationContextLoader", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "queryManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "repositoryManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "transactionManager", void 0);
+__decorate([
+    Inject()
+], TransactionalServer.prototype, "updateManager", void 0);
+TransactionalServer = __decorate([
+    Injected()
+], TransactionalServer);
+export { TransactionalServer };
 export function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }

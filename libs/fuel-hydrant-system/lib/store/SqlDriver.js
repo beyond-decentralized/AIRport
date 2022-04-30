@@ -1,4 +1,10 @@
-import { doEnsureContext } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { doEnsureContext, Inject, Injected } from '@airport/air-control';
 import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { SQLDelete } from '../sql/core/SQLDelete';
@@ -11,7 +17,7 @@ import { TreeSQLQuery } from '../sql/TreeSQLQuery';
 /**
  * Created by Papa on 9/9/2016.
  */
-export class SqlDriver {
+let SqlDriver = class SqlDriver {
     supportsLocalTransactions(context) {
         return true;
     }
@@ -234,5 +240,45 @@ export class SqlDriver {
         await this.operationContextLoader.ensure(context);
         return context;
     }
-}
+};
+__decorate([
+    Inject()
+], SqlDriver.prototype, "activeQueries", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "objectResultParserFactory", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "operationContextLoader", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "qMetadataUtils", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "qValidator", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "relationManager", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "transactionManager", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "sqlQueryAdapter", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "subStatementQueryGenerator", void 0);
+SqlDriver = __decorate([
+    Injected()
+], SqlDriver);
+export { SqlDriver };
 //# sourceMappingURL=SqlDriver.js.map

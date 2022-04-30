@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-control'
+import { IApplicationUtils, Injected } from '@airport/air-control'
 import {
 	IQueryResultsSerializer
 } from '@airport/check-in'
@@ -20,6 +20,7 @@ interface ISerializableOperation {
 // generic API calls.  Probably should be used in go-tower to serialize
 // the values returned (and won't be tied to a query of any kind, API
 // interface is generic, unless already known to contain entity objects.)
+@Injected()
 export class QueryResultsSerializer
 	implements IQueryResultsSerializer {
 

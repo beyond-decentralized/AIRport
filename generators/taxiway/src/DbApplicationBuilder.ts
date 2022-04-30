@@ -1,16 +1,16 @@
-import { IDbApplicationBuilder } from '../../../lingo/application/builder/DbApplicationBuilder';
-import { ILinkingDictionary } from '../../../lingo/application/builder/LinkingDictionary';
+import { IDbApplicationBuilder } from '@airport/ground-control';
+import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
 	JsonApplicationEntity,
-} from '../../../lingo/application/Entity';
+} from '@airport/ground-control/src/lingo/application/Entity';
 import {
 	DbColumn,
 	DbProperty,
 	DbRelation,
 	JsonApplicationColumn,
 	JsonApplicationRelation
-} from '../../../lingo/application/Property';
+} from '@airport/ground-control/src/lingo/application/Property';
 import {
 	DbDomain,
 	DbApplication,
@@ -18,10 +18,10 @@ import {
 	DbApplicationReference,
 	DbApplicationVersion,
 	JsonApplication,
-} from '../../../lingo/application/Application';
-import { ApplicationStatus } from '../../../lingo/application/ApplicationStatus';
-import { getFullApplicationNameFromDomainAndName } from '../../query/DbApplicationUtils';
-import { ensureChildMap } from '../../utils/DatastructureUtils';
+} from '@airport/ground-control/src/lingo/application/Application';
+import { ApplicationStatus } from '@airport/ground-control';
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { ensureChildMap } from '@airport/ground-control';
 
 export class DbApplicationBuilder
 	implements IDbApplicationBuilder {

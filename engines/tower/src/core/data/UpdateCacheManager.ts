@@ -1,5 +1,7 @@
 import {
     IApplicationUtils,
+    Inject,
+    Injected,
     IUpdateCacheManager
 } from "@airport/air-control";
 import {
@@ -13,10 +15,14 @@ import {
 } from "@airport/ground-control"
 import { IRepositoryEntity } from "@airport/holding-pattern";
 
+@Injected()
 export class UpdateCacheManager
     implements IUpdateCacheManager {
 
+    @Inject()
     entityStateManager: IEntityStateManager
+
+    @Inject()
     applicationUtils: IApplicationUtils
 
     saveOriginalValues<E, T = E | E[]>(

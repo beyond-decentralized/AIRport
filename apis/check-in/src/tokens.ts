@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, DATABASE_FACADE, ENTITY_UTILS, IDao, LOOKUP, QUERY_FACADE, UPDATE_CACHE_MANAGER } from '@airport/air-control';
+import { AIRPORT_DATABASE, DATABASE_FACADE, IDao, LOOKUP, UPDATE_CACHE_MANAGER } from '@airport/air-control';
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { IApiRegistry, IApiValidator } from '.';

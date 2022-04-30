@@ -1,8 +1,10 @@
+import { Injected } from '@airport/air-control'
 import {
 	ICascadeGraphVerifier,
 	IOperationContext
 } from '@airport/terminal-map'
 
+@Injected()
 export class CascadeGraphVerifier
 	implements ICascadeGraphVerifier {
 

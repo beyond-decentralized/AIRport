@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import { IRepositoryTransactionHistoryDao } from '@airport/holding-pattern'
 import { ITransactionContext, ITransactionManager } from '@airport/terminal-map'
@@ -19,12 +20,20 @@ export interface ISynchronizationInManager {
 /**
  * Synchronization in Manager implementation.
  */
+@Injected()
 export class SynchronizationInManager
 	implements ISynchronizationInManager {
 
+	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
+	@Inject()
 	syncInChecker: ISyncInChecker
+
+	@Inject()
 	transactionManager: ITransactionManager
+
+	@Inject()
 	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
 	async receiveMessages(

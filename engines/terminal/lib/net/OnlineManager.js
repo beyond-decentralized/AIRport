@@ -1,8 +1,15 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { container } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { RepositoryTransactionHistory, } from '@airport/holding-pattern';
 import { UpdateState } from '@airport/terminal-map';
-export class OnlineManager {
+let OnlineManager = class OnlineManager {
     constructor() {
         this.online = false;
     }
@@ -151,5 +158,21 @@ export class OnlineManager {
     isOnline(context = {}) {
         return this.online;
     }
-}
+};
+__decorate([
+    Inject()
+], OnlineManager.prototype, "repositoryDao", void 0);
+__decorate([
+    Inject()
+], OnlineManager.prototype, "repositoryManager", void 0);
+__decorate([
+    Inject()
+], OnlineManager.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate([
+    Inject()
+], OnlineManager.prototype, "transactionManager", void 0);
+OnlineManager = __decorate([
+    Injected()
+], OnlineManager);
+export { OnlineManager };
 //# sourceMappingURL=OnlineManager.js.map

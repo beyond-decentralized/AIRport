@@ -23,7 +23,6 @@ dependencies:
   '@rush-temp/ground-transport': 'file:projects/ground-transport.tgz'
   '@rush-temp/holding-pattern': 'file:projects/holding-pattern.tgz'
   '@rush-temp/hw-control': 'file:projects/hw-control.tgz'
-  '@rush-temp/hw-driveway': 'file:projects/hw-driveway.tgz'
   '@rush-temp/hw-flow': 'file:projects/hw-flow.tgz'
   '@rush-temp/hw-scylladb': 'file:projects/hw-scylladb.tgz'
   '@rush-temp/hw-vespa': 'file:projects/hw-vespa.tgz'
@@ -3332,16 +3331,6 @@ packages:
       integrity: sha512-hOV0lzweKy6vPPhK7nszfHU+Ex5lp2OqXlwf49W7t7q07ypgvTllwTNTCghm5WSbOy/b3hKY032JxV3x5FAB4Q==
       tarball: 'file:projects/hw-control.tgz'
     version: 0.0.0
-  'file:projects/hw-driveway.tgz':
-    dependencies:
-      '@types/node': 14.14.20
-      typescript: 4.5.2
-    dev: false
-    name: '@rush-temp/hw-driveway'
-    resolution:
-      integrity: sha512-08Kf1BV90QN2Si3iuuzp1+QJ/GsTkkqAWVz/e/0YnNrrr21Fml4YXa3zl+EhesCkMS4FK+xgNY9faJgu5x3ONQ==
-      tarball: 'file:projects/hw-driveway.tgz'
-    version: 0.0.0
   'file:projects/hw-flow.tgz':
     dependencies:
       '@node-ts/bus-core': 0.6.3_@node-ts+logger-core@0.1.1
@@ -3544,7 +3533,7 @@ packages:
     dev: false
     name: '@rush-temp/sequence'
     resolution:
-      integrity: sha512-vCG70S8vBoyTr45MwZwOla8Tz+lO9yrvZgqGFqVTYj8hItLju3ReDHIgoDNnqRr/6CiwrjR0KRQPtegGNJn1Cw==
+      integrity: sha512-W77HHdcEo6Th27sDlflWYzm31FBq/e7vW7PZ797ldAXVTlfOh/n//jHjuU3kPEmNK3wJeF1EgfGpo59TRb6Abw==
       tarball: 'file:projects/sequence.tgz'
     version: 0.0.0
   'file:projects/sqlite.tgz':
@@ -3726,7 +3715,6 @@ specifiers:
   '@rush-temp/ground-transport': 'file:./projects/ground-transport.tgz'
   '@rush-temp/holding-pattern': 'file:./projects/holding-pattern.tgz'
   '@rush-temp/hw-control': 'file:./projects/hw-control.tgz'
-  '@rush-temp/hw-driveway': 'file:./projects/hw-driveway.tgz'
   '@rush-temp/hw-flow': 'file:./projects/hw-flow.tgz'
   '@rush-temp/hw-scylladb': 'file:./projects/hw-scylladb.tgz'
   '@rush-temp/hw-vespa': 'file:./projects/hw-vespa.tgz'

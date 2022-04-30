@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
 	ColumnIndex,
 	ensureChildJsMap,
@@ -89,6 +90,7 @@ export interface Stage1SyncedInDataProcessingResult {
 	syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 }
 
+@Injected()
 export class SyncInUtils
 	implements ISyncInUtils {
 

@@ -19,6 +19,7 @@ import { EntityUtils } from './impl/utils/EntityUtils'
 import { QMetadataUtils } from './impl/utils/QMetadataUtils'
 import { QueryUtils } from './impl/utils/QueryUtils'
 import { ApplicationUtils } from './impl/utils/ApplicationUtils'
+import { FieldUtils } from './impl/utils/FieldUtils'
 
 const airControl = lib('air-control')
 
@@ -27,15 +28,15 @@ export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>({
 	interface: 'IAirportDatabase',
 	token: 'AIRPORT_DATABASE'
 })
+export const APPLICATION_UTILS = airControl.token<IApplicationUtils>({
+	class: ApplicationUtils,
+	interface: 'IApplicationUtils',
+	token: 'APPLICATION_UTILS'
+})
 export const DATABASE_FACADE = airControl.token<IDatabaseFacade>({
 	class: null,
 	interface: 'IDatabaseFacade',
 	token: 'DATABASE_FACADE'
-})
-export const LOOKUP = airControl.token<ILookup>({
-	class: Lookup,
-	interface: 'ILookup',
-	token: 'LOOKUP'
 })
 export const ENTITY_UTILS = airControl.token<IEntityUtils>({
 	class: EntityUtils,
@@ -43,9 +44,14 @@ export const ENTITY_UTILS = airControl.token<IEntityUtils>({
 	token: 'ENTITY_UTILS'
 })
 export const FIELD_UTILS = airControl.token<IFieldUtils>({
-	class: EntityUtils,
+	class: FieldUtils,
 	interface: 'IFieldUtils',
 	token: 'FIELD_UTILS'
+})
+export const LOOKUP = airControl.token<ILookup>({
+	class: Lookup,
+	interface: 'ILookup',
+	token: 'LOOKUP'
 })
 export const Q_METADATA_UTILS = airControl.token<IQMetadataUtils>({
 	class: QMetadataUtils,
@@ -74,11 +80,6 @@ export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>({
 	class: null,
 	interface: 'IRepositoryLoader',
 	token: 'REPOSITORY_LOADER'
-})
-export const APPLICATION_UTILS = airControl.token<IApplicationUtils>({
-	class: ApplicationUtils,
-	interface: 'IApplicationUtils',
-	token: 'APPLICATION_UTILS'
 })
 export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>({
 	class: null,

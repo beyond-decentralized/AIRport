@@ -1,4 +1,10 @@
-import { abs, add, and, avg, bool, concat, count, date, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { abs, add, and, avg, bool, concat, count, date, distinct, divide, exists, format, Inject, Injected, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-control';
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
         this.applicationDomain = applicationDomain;
@@ -18,7 +24,7 @@ class EntityAccumulator {
         });
     }
 }
-export class AirportDatabase {
+let AirportDatabase = class AirportDatabase {
     // private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
     // private dbNames: string[]                                        = []
     // private dbNameSet: { [databaseName: string]: boolean }           = {}
@@ -177,7 +183,14 @@ export class AirportDatabase {
     async updateWhere(rawUpdate, context) {
         return await this.databaseFacade.updateWhere(rawUpdate, context);
     }
-}
+};
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "databaseFacade", void 0);
+AirportDatabase = __decorate([
+    Injected()
+], AirportDatabase);
+export { AirportDatabase };
 export function injectAirportDatabase() {
     console.log('Injecting AirportDatabase');
 }

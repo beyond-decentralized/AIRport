@@ -1,5 +1,7 @@
 import {
   IAirportDatabase,
+  Inject,
+  Injected,
   QApplicationInternal,
 } from '@airport/air-control';
 import {
@@ -18,9 +20,11 @@ import {
 } from '@airport/ground-control';
 import { SqlApplicationBuilder } from '@airport/landing';
 
+@Injected()
 export class SqLiteApplicationBuilder
   extends SqlApplicationBuilder {
 
+  @Inject()
   airportDatabase: IAirportDatabase
 
   async createApplication(

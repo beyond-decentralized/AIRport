@@ -1,4 +1,3 @@
-import { FullApplicationName } from '../..';
 import { ColumnName } from '../../lingo/application/Property';
 
 export function getFullApplicationName({

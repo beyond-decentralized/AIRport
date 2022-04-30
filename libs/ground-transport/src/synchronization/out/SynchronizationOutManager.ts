@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control'
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	ensureChildArray,
@@ -23,12 +24,21 @@ export interface ISynchronizationOutManager {
 
 }
 
+@Injected()
 export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
 
+	@Inject()
+
 	repositoryDao: IRepositoryDao
+
+	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
+	@Inject()
 	synchronizationAdapterLoader: ISynchronizationAdapterLoader
+
+	@Inject()
 	syncOutDataSerializer: ISyncOutDataSerializer
 
 	async synchronizeOut(

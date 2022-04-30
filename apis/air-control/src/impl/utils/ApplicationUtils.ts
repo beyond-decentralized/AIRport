@@ -29,6 +29,7 @@ import {
 	RepositorySheetSelectInfo
 } from '../../lingo/utils/ApplicationUtils'
 import { QEntityConstructor } from '../core/entity/Entity'
+import { Inject, Injected } from '../core/metadata/dependencyInjection'
 import { valuesEqual } from '../Utils'
 
 interface ColumnValueForPath {
@@ -36,12 +37,16 @@ interface ColumnValueForPath {
 	path: string[]
 }
 
+@Injected()
 export class ApplicationUtils
 	implements IApplicationUtils {
 
 	static TEMP_ID: number = 0
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	entityStateManager: IEntityStateManager
 
 	getDbEntity(

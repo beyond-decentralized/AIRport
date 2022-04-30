@@ -1,5 +1,7 @@
 import {
 	IEntityContext,
+	Inject,
+	Injected,
 	IQueryContext
 } from '@airport/air-control';
 import { IApplicationVersion } from '@airport/airspace'
@@ -73,10 +75,14 @@ export interface IIframeTransactionalConnector
 
 }
 
+@Injected()
 export class IframeTransactionalConnector
 	implements IIframeTransactionalConnector {
 
+	@Inject()
 	applicationLoader: IApplicationLoader
+
+	@Inject()
 	localApiServer: ILocalAPIServer
 
 	application: string

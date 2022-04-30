@@ -36,6 +36,8 @@ export interface IUiStateManager {
 
 }
 
+// Autopilot is included in client source, so not adding @airport/air-control dependency
+// @Injected()
 export class UiStateManager
 	implements IUiStateManager {
 	protected static STATE_FIELD = '__state__'

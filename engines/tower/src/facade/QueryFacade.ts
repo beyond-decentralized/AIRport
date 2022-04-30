@@ -2,6 +2,8 @@ import {
 	AbstractQuery,
 	IAbstractQuery,
 	IFieldUtils,
+	Inject,
+	Injected,
 	IQueryContext,
 	IQueryFacade,
 	IQueryUtils,
@@ -17,12 +19,20 @@ import {
 	Observable,
 } from 'rxjs';
 
+@Injected()
 export class QueryFacade
 	implements IQueryFacade {
 
+	@Inject()
 	fieldUtils: IFieldUtils
+
+	@Inject()
 	queryUtils: IQueryUtils
+
+	@Inject()
 	relationManager: IRelationManager
+
+	@Inject()
 	transactionalConnector: ITransactionalConnector
 
 	async find<E, EntityArray extends Array<E>>(

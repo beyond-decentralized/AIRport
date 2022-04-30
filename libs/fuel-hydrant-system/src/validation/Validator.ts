@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
 	ColumnIndex,
 	DbColumn,
@@ -5,7 +6,7 @@ import {
 	JSONRelation,
 	ApplicationIndex,
 	TableIndex
-}                    from '@airport/ground-control'
+} from '@airport/ground-control'
 
 /**
  * Created by Papa on 11/1/2016.
@@ -53,6 +54,7 @@ export interface IValidator {
 	validateAliasedFieldAccess(fieldAlias: string): void;
 }
 
+@Injected()
 export class QValidator
 	implements IValidator {
 

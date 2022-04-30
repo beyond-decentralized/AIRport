@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/security-check";
@@ -17,10 +18,14 @@ export interface IWebMessageReceiver {
     sendMessageToApp(): void
 }
 
+@Injected()
 export class WebMesageReceiver
     implements IWebMessageReceiver {
 
+    @Inject()
     terminalStore: ITerminalStore
+
+    @Inject()
     transactionalReceiver: ITransactionalReceiver
 
     communicationChannel: SoftBroadcastChannel

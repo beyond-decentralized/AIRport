@@ -1,3 +1,4 @@
+import { Inject, Injected } from "@airport/air-control";
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
 import {
     Repository_Source,
@@ -6,9 +7,11 @@ import {
 import { INonhubClient } from "@airport/nonhub-client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
+@Injected()
 export class DebugSynchronizationAdapter
     implements ISynchronizationAdapter {
 
+    @Inject()
     nonhubClient: INonhubClient
 
     async getTransactionsForRepository(

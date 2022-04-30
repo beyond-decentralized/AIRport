@@ -7,7 +7,9 @@ import { IAirportDatabase } from '../../lingo/AirportDatabase'
 import { IQEntityInternal } from '../../lingo/core/entity/Entity'
 import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
 import { IQMetadataUtils } from '../../lingo/utils/QMetadataUtils'
+import { Injected } from '../core/metadata/dependencyInjection'
 
+@Injected()
 export class QMetadataUtils
 	implements IQMetadataUtils {
 

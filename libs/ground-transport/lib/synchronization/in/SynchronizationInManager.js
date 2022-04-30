@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 /**
  * Synchronization in Manager implementation.
  */
-export class SynchronizationInManager {
+let SynchronizationInManager = class SynchronizationInManager {
     async receiveMessages(messageMapByUuId, context) {
         const syncTimestamp = new Date().getTime();
         const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
@@ -71,5 +78,21 @@ export class SynchronizationInManager {
         }
         return true;
     }
-}
+};
+__decorate([
+    Inject()
+], SynchronizationInManager.prototype, "repositoryTransactionHistoryDao", void 0);
+__decorate([
+    Inject()
+], SynchronizationInManager.prototype, "syncInChecker", void 0);
+__decorate([
+    Inject()
+], SynchronizationInManager.prototype, "transactionManager", void 0);
+__decorate([
+    Inject()
+], SynchronizationInManager.prototype, "twoStageSyncedInDataProcessor", void 0);
+SynchronizationInManager = __decorate([
+    Injected()
+], SynchronizationInManager);
+export { SynchronizationInManager };
 //# sourceMappingURL=SynchronizationInManager.js.map

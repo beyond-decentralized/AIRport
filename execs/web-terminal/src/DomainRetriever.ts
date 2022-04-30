@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control'
 import {
     DbDomain,
     DomainName
@@ -6,14 +7,15 @@ import {
     IDomainRetriever
 } from '@airport/terminal-map'
 
+@Injected()
 export class DomainRetriever
     implements IDomainRetriever {
 
     async retrieveDomain(
         domainName: DomainName,
         domainNameMapByName: Map<string, DbDomain>,
-		allDomains: DbDomain[],
-		newDomains: DbDomain[]
+        allDomains: DbDomain[],
+        newDomains: DbDomain[]
     ): Promise<DbDomain> {
         return domainNameMapByName.get(domainName)
     }

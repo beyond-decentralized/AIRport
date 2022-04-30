@@ -1,3 +1,4 @@
+import { Inject, Injected } from '@airport/air-control';
 import {
 	IContext
 } from '@airport/direction-indicator';
@@ -57,17 +58,35 @@ export interface InternalPortableQuery
  * A single transactional queue should be enough.
  *
  */
+@Injected()
 export class TransactionalServer
 	implements ITransactionalServer {
 
+	@Inject()
 	deleteManager: IDeleteManager
+
+	@Inject()
 	insertManager: IInsertManager
+
+	@Inject()
 	operationManager: IOperationManager
+
+	@Inject()
 	operationContextLoader: IOperationContextLoader
+
+	@Inject()
 	queryManager: IQueryManager
+
+	@Inject()
 	repositoryManager: IRepositoryManager
+
+	@Inject()
 	terminalStore: ITerminalStore
+
+	@Inject()
 	transactionManager: ITransactionManager
+
+	@Inject()
 	updateManager: IUpdateManager
 
 	tempActor: IActor;

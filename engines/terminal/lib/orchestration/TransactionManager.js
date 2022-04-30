@@ -1,7 +1,14 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { INTERNAL_APP, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Q } from '@airport/holding-pattern';
 import { AbstractMutationManager } from './AbstractMutationManager';
-export class TransactionManager extends AbstractMutationManager {
+let TransactionManager = class TransactionManager extends AbstractMutationManager {
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
@@ -310,5 +317,27 @@ ${callHerarchy}
         }
         return true;
     }
-}
+};
+__decorate([
+    Inject()
+], TransactionManager.prototype, "activeQueries", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "idGenerator", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "storeDriver", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "synchronizationOutManager", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "transactionHistoryDuo", void 0);
+TransactionManager = __decorate([
+    Injected()
+], TransactionManager);
+export { TransactionManager };
 //# sourceMappingURL=TransactionManager.js.map

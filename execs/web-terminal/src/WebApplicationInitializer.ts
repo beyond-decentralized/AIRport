@@ -1,3 +1,4 @@
+import { Injected } from "@airport/air-control";
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
@@ -14,6 +15,7 @@ export interface IWebApplicationInitializer
 
 }
 
+@Injected()
 export class WebApplicationInitializer
     extends ApplicationInitializer {
 

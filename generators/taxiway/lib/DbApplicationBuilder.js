@@ -1,6 +1,6 @@
-import { ApplicationStatus } from '../../../lingo/application/ApplicationStatus';
-import { getFullApplicationNameFromDomainAndName } from '../../query/DbApplicationUtils';
-import { ensureChildMap } from '../../utils/DatastructureUtils';
+import { ApplicationStatus } from '@airport/ground-control';
+import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
+import { ensureChildMap } from '@airport/ground-control';
 export class DbApplicationBuilder {
     buildDbApplicationWithoutReferences(jsonApplication, allApplications, dictionary) {
         const entities = [];

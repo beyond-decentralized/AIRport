@@ -7,6 +7,7 @@ import {
 	IQEntityInternal
 } from '../../../lingo/core/entity/Entity'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
+import { Inject, Injected } from '../metadata/dependencyInjection'
 
 export interface IRelationManager {
 
@@ -37,9 +38,11 @@ export interface IRelationManager {
 export interface IRelationManagerContext {
 }
 
+@Injected()
 export class RelationManager
 	implements IRelationManager {
 
+	@Inject()
 	applicationUtils: IApplicationUtils
 
 	getPositionAlias(

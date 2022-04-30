@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-control'
+import { IAirportDatabase, Inject, Injected } from '@airport/air-control'
 import {
 	getSysWideOpIds,
 	ISequenceGenerator
@@ -53,14 +53,26 @@ export interface IStage1SyncedInDataProcessor {
 
 }
 
+@Injected()
 export class Stage1SyncedInDataProcessor
 	implements IStage1SyncedInDataProcessor {
 
+	@Inject()
 	actorDao: IActorDao
+
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao
+
+	@Inject()
 	repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo
+
+	@Inject()
 	sequenceGenerator: ISequenceGenerator
+
+	@Inject()
 	syncInUtils: ISyncInUtils
 
 	/**

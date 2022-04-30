@@ -1,8 +1,15 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Inject, Injected } from '@airport/air-control';
 import { Q } from '@airport/holding-pattern';
 /**
  * Created by Papa on 9/2/2016.
  */
-export class IdGenerator {
+let IdGenerator = class IdGenerator {
     constructor() {
         this.transactionHistoryIdColumns = [];
     }
@@ -53,5 +60,12 @@ export class IdGenerator {
         return Q.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
-}
+};
+__decorate([
+    Inject()
+], IdGenerator.prototype, "sequenceGenerator", void 0);
+IdGenerator = __decorate([
+    Injected()
+], IdGenerator);
+export { IdGenerator };
 //# sourceMappingURL=IdGenerator.js.map

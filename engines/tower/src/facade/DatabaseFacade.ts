@@ -18,6 +18,8 @@ import {
 	UpdateProperties,
 	IUpdateCacheManager,
 	IQueryFacade,
+	Injected,
+	Inject,
 } from '@airport/air-control'
 import {
 	IContext
@@ -33,13 +35,23 @@ import { IEntityCopier } from '../core/data/EntityCopier'
 /**
  * Created by Papa on 5/23/2016.
  */
+@Injected()
 export class DatabaseFacade
 	implements IDatabaseFacade {
 
+	@Inject()
 	entityCopier: IEntityCopier
+
+	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
 	queryFacade: IQueryFacade
+
+	@Inject()
 	transactionalConnector: ITransactionalConnector
+
+	@Inject()
 	updateCacheManager: IUpdateCacheManager
 
 	name: string

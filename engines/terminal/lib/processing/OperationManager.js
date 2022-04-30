@@ -1,9 +1,15 @@
-import { and, Delete, InsertValues, or, UpdateProperties, valuesEqual } from '@airport/air-control';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { and, Delete, Inject, Injected, InsertValues, or, UpdateProperties, valuesEqual } from '@airport/air-control';
 import { EntityRelationType } from '@airport/ground-control';
 /**
  * Created by Papa on 11/15/2016.
  */
-export class OperationManager {
+let OperationManager = class OperationManager {
     /**
      * Transactional context must have been started by the time this method is called.
      *
@@ -340,5 +346,45 @@ export class OperationManager {
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, context);
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
     }
-}
+};
+__decorate([
+    Inject()
+], OperationManager.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "cascadeGraphVerifier", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "deleteManager", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "dependencyGraphResolver", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "entityGraphReconstructor", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "insertManager", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "qMetadataUtils", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "queryFacade", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "structuralEntityValidator", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "updateManager", void 0);
+OperationManager = __decorate([
+    Injected()
+], OperationManager);
+export { OperationManager };
 //# sourceMappingURL=OperationManager.js.map

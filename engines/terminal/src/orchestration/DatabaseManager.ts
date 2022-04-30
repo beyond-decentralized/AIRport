@@ -1,5 +1,5 @@
 import {
-	AIRPORT_DATABASE
+	AIRPORT_DATABASE, Inject, Injected
 } from '@airport/air-control';
 import {
 	container,
@@ -23,13 +23,23 @@ import { JsonApplicationWithLastIds } from '@airport/security-check';
 import { BLUEPRINT } from '@airport/blueprint';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 
+@Injected()
 export class DatabaseManager
 	implements IDatabaseManager {
 
+	@Inject()
 	applicationDao: IApplicationDao
+
+	@Inject()
 	applicationInitializer: IApplicationInitializer
+
+	@Inject()
 	internalRecordManager: IInternalRecordManager
+
+	@Inject()
 	storeDriver: IStoreDriver
+
+	@Inject()
 	transactionalServer: ITransactionalServer
 
 	private initialized = false;

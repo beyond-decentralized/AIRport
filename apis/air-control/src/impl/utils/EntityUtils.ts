@@ -2,13 +2,14 @@ import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
 import {RawQuery}       from '../../lingo/query/facade/Query'
 import {IEntityUtils}   from '../../lingo/utils/EntityUtils'
 import {QOperableField} from '../core/field/OperableField'
+import { Injected } from '../core/metadata/dependencyInjection'
 import {EntityQuery}    from '../query/facade/EntityQuery'
 import {objectExists}   from '../Utils'
 
 /**
  * Created by Papa on 6/14/2016.
  */
-
+@Injected()
 export class EntityUtils
 	implements IEntityUtils {
 

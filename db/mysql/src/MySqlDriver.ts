@@ -1,3 +1,4 @@
+import { Injected } from '@airport/air-control';
 import {
   SQLDialect,
   SqlDriver
@@ -62,6 +63,7 @@ export interface IQueryApi {
   ): Promise<[T, FieldPacket[]]>;
 }
 
+@Injected()
 export class MySqlDriver
   extends SqlDriver {
 

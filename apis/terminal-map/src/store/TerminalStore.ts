@@ -26,6 +26,7 @@ import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/security-check';
+import { Inject, Injected } from '@airport/air-control';
 
 
 export interface InternalConnectorStore {
@@ -114,9 +115,11 @@ export interface ITerminalStore {
 	tearDown()
 }
 
+@Injected()
 export class TerminalStore
 	implements ITerminalStore {
 
+	@Inject()
 	selectorManager: ISelectorManager
 
 	state: Subject<ITerminalState>;

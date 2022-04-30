@@ -1,4 +1,4 @@
-import { IEntityContext } from '@airport/air-control';
+import { IEntityContext, Inject, Injected } from '@airport/air-control';
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
     container,
@@ -34,12 +34,20 @@ import {
     ITransactionCredentials
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
-
+@Injected()
 export abstract class TransactionalReceiver {
 
+
+    @Inject()
     databaseManager: IDatabaseManager
+
+    @Inject()
     internalRecordManager: IInternalRecordManager
+
+    @Inject()
     terminalStore: ITerminalStore
+
+    @Inject()
     transactionalServer: ITransactionalServer
 
     async processMessage<ReturnType extends IIsolateMessageOut<any>>(

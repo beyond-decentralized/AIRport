@@ -3,6 +3,8 @@ import {
 	compareNumbers,
 	IAirportDatabase,
 	IDatabaseFacade,
+	Inject,
+	Injected,
 	IQEntityInternal,
 	or
 } from '@airport/air-control'
@@ -63,11 +65,17 @@ interface RecordKeyMap
 
 type ColumnIndexAndValue = [ColumnIndex, any];
 
+@Injected()
 export class Stage2SyncedInDataProcessor
 	implements IStage2SyncedInDataProcessor {
 
+	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
 	databaseFacade: IDatabaseFacade
+
+	@Inject()
 	recordUpdateStageDao: IRecordUpdateStageDao
 
 	async applyChangesToDb(

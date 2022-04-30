@@ -5,11 +5,14 @@ import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
 import { IFieldUtils } from '../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../lingo/utils/QueryUtils'
 import { IRelationManager } from '../core/entity/RelationManager'
+import { Inject, Injected } from '../core/metadata/dependencyInjection'
 import { FieldQuery } from '../query/facade/FieldQuery'
 
+@Injected()
 export class FieldUtils
 	implements IFieldUtils {
 
+	@Inject()
 	relationManager: IRelationManager
 
 	FieldQuery: typeof FieldQuery
