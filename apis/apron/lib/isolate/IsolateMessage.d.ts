@@ -33,6 +33,7 @@ export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     id: string;
     repositoryDestination?: string;
     repositorySource?: string;
+    transactionId?: string;
     type: IsolateMessageType;
 }
 export interface IIsolateMessageOut<T> extends IIsolateMessage {

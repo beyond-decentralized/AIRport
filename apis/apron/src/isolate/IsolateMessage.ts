@@ -38,6 +38,7 @@ export interface IIsolateMessage<CategoryType = IsolateMessageCategoryType> {
     id: string
     repositoryDestination?: string
     repositorySource?: string
+    transactionId?: string
     type: IsolateMessageType
 }
 

@@ -5,7 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Injected } from "@airport/direction-indicator";
+import { applicationState } from "./theApplicationState";
 let ApplicationStore = class ApplicationStore {
+    get state() {
+        return applicationState;
+    }
 };
 ApplicationStore = __decorate([
     Injected()

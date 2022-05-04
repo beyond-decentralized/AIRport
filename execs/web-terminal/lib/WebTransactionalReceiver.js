@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
-import { IsolateMessageType, } from '@airport/security-check';
+import { IsolateMessageType, } from '@airport/apron';
 import { TransactionalReceiver } from '@airport/terminal';
 import { map } from 'rxjs/operators';
 let WebTransactionalReceiver = class WebTransactionalReceiver extends TransactionalReceiver {

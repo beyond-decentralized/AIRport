@@ -1,1 +1,1 @@
-{"version":3,"file":"theApplicationState.d.ts","sourceRoot":"","sources":["../../src/state/theApplicationState.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,oBAAoB,CAAC;AAEvD,eAAO,MAAM,gBAAgB,EAAE,iBAE9B,CAAA"}
+{"version":3,"file":"theApplicationState.d.ts","sourceRoot":"","sources":["../../src/state/theApplicationState.ts"],"names":[],"mappings":"AAAA,OAAO,EAAY,iBAAiB,EAAE,MAAM,oBAAoB,CAAC;AAEjE,eAAO,MAAM,gBAAgB,EAAE,iBAa9B,CAAA"}

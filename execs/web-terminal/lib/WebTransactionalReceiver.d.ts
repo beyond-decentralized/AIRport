@@ -1,5 +1,5 @@
 import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
-import { IApiIMI, IIsolateMessage } from '@airport/security-check';
+import { IApiIMI, IIsolateMessage } from '@airport/apron';
 import { TransactionalReceiver } from '@airport/terminal';
 import { ITransactionalReceiver, IApiCallContext, ITransactionContext, ITerminalStore } from '@airport/terminal-map';
 import { IWebApplicationInitializer } from './WebApplicationInitializer';

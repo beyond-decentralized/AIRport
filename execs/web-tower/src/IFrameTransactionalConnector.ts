@@ -3,6 +3,7 @@ import {
 	IQueryContext
 } from '@airport/air-traffic-control';
 import {
+	IInjectable,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -34,7 +35,10 @@ import {
 	LastIds,
 	ICallApiIMI,
 	IApplicationLoader,
-	ILocalAPIServer
+	ILocalAPIServer,
+	IApplicationStore,
+	AppState,
+	IObservableMessageInRecord
 } from '@airport/apron';
 import {
 	Observable,
@@ -42,34 +46,19 @@ import {
 } from 'rxjs';
 import { v4 as uuidv4 } from "uuid";
 
-export interface IMessageInRecord {
-	message: IIsolateMessage
-	reject
-	resolve
-}
-
-export interface IObservableMessageInRecord<T> {
-	id: string
-	observer?: Observer<T>
-}
-
-// FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-// and debugging (http://localhost:7500)
-export const hostServer = 'http://localhost:7500'
-
-export enum AppState {
-	NOT_INITIALIED = 'NOT_INITIALIED',
-	START_INITIALIZING = 'START_INITIALIZING',
-	INITIALIZING_IN_PROGRESS = 'INITIALIZING_IN_PROGRESS',
-	INITIALIZED = 'INITIALIZED'
-}
-
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
 	getLatestApplicationVersionMapByFullApplicationName(
 		applicationName: string
 	): Promise<IApplicationVersion>
+
+	initializeConnection(): Promise<void>
+
+	processMessage(
+		message: IIsolateMessageOut<any> | ILocalAPIRequest,
+		origin: string
+	): Promise<void>
 
 	retrieveDomain(
 		domainName: DomainName
@@ -87,99 +76,82 @@ export class IframeTransactionalConnector
 	@Inject()
 	localApiServer: ILocalAPIServer
 
-	application: string
-	appState = AppState.NOT_INITIALIED
-	dbName: string;
-	domain: string
-	lastIds: LastIds
-	// FIXME: tie this in to the hostServer variable
-	mainDomain: string
-	messageId = 0;
-	observableMessageMap: Map<string, IObservableMessageInRecord<any>> = new Map()
-	pendingMessageMap: Map<string, IMessageInRecord> = new Map();
-	serverUrl: string;
+	@Inject()
+	applicationStore: IApplicationStore
 
-	messageCallback: (
-		message: any
-	) => void
+	async processMessage(
+		message: IIsolateMessageOut<any> | ILocalAPIRequest,
+		origin: string
+	): Promise<void> {
+		if (message.__received__) {
+			return
+		}
+		message.__received__ = true
 
-	async init() {
-		window.addEventListener("message", event => {
-			const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data;
-			if (message.__received__) {
+		if (this.applicationStore.state.messageCallback) {
+			const receivedDate = new Date()
+			message.__receivedTime__ = receivedDate.getTime()
+			this.applicationStore.state.messageCallback(message)
+		}
+		if (message.domain.indexOf('.') > -1) {
+			// Invalid Domain name - cannot have periods that would point to invalid subdomains
+			return
+		}
+		if (message.application.indexOf('.') > -1) {
+			// Invalid Application name - cannot have periods that would point to invalid subdomains
+			return
+		}
+		const mainDomain = origin.split('//')[1]
+		const mainDomainFragments = mainDomain.split('.')
+		let startsWithWww = false
+		if (mainDomainFragments[0] === 'www') {
+			mainDomainFragments.splice(0, 1)
+			startsWithWww = true
+		}
+		const domainSuffix = '.' + mainDomainFragments.join('.')
+		const ownDomain = window.location.hostname
+		if (ownDomain !== 'localhost') {
+			// Only accept requests from https protocol
+			if (!origin.startsWith("https")
+				// And only if message has Domain and Application names 
+				|| !message.domain
+				|| !message.application
+				// And if own domain is a direct sub-domain of the message's domain
+				|| ownDomain !== getFullApplicationName({
+					domain: message.domain,
+					name: message.application,
+				}) + domainSuffix) {
 				return
 			}
-			message.__received__ = true
-
-			if (this.messageCallback) {
-				const receivedDate = new Date()
-				message.__receivedTime__ = receivedDate.getTime()
-				this.messageCallback(message)
-			}
-
-			const origin = event.origin;
-			if (message.domain.indexOf('.') > -1) {
-				// Invalid Domain name - cannot have periods that would point to invalid subdomains
+			const ownDomainFragments = ownDomain.split('.')
+			// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+			// All 'App' messages must first come from the main domain, which ensures
+			// that the application is installed
+			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
+			if (ownDomainFragments.length !== expectedNumFragments) {
 				return
 			}
-			if (message.application.indexOf('.') > -1) {
-				// Invalid Application name - cannot have periods that would point to invalid subdomains
+		}
+		switch (message.category) {
+			case 'FromClientRedirected':
+				await this.handleLocalApiRequest(message as ILocalAPIRequest, origin)
 				return
-			}
-			const mainDomain = origin.split('//')[1]
-			const mainDomainFragments = mainDomain.split('.')
-			let startsWithWww = false
-			if (mainDomainFragments[0] === 'www') {
-				mainDomainFragments.splice(0, 1)
-				startsWithWww = true
-			}
-			const domainSuffix = '.' + mainDomainFragments.join('.')
-			const ownDomain = window.location.hostname
-			if (ownDomain !== 'localhost') {
-				// Only accept requests from https protocol
-				if (!origin.startsWith("https")
-					// And only if message has Domain and Application names 
-					|| !message.domain
-					|| !message.application
-					// And if own domain is a direct sub-domain of the message's domain
-					|| ownDomain !== getFullApplicationName({
-						domain: message.domain,
-						name: message.application,
-					}) + domainSuffix) {
-					return
-				}
-				const ownDomainFragments = ownDomain.split('.')
-				// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
-				// All 'App' messages must first come from the main domain, which ensures
-				// that the application is installed
-				const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
-				if (ownDomainFragments.length !== expectedNumFragments) {
-					return
-				}
-			}
-			switch (message.category) {
-				case 'FromClientRedirected':
-					this.handleLocalApiRequest(message as ILocalAPIRequest, origin).then()
-					return
-				case 'FromDb':
-					this.domain = message.domain
-					this.application = message.application
-					if (message.type === IsolateMessageType.APP_INITIALIZING) {
-						if (this.appState === AppState.NOT_INITIALIED) {
-							let initConnectionIMO: IInitConnectionIMO = message
-							this.lastIds = initConnectionIMO.result
-							this.appState = AppState.START_INITIALIZING
-						}
-						return
+			case 'FromDb':
+				this.applicationStore.state.domain = message.domain
+				this.applicationStore.state.application = message.application
+				if (message.type === IsolateMessageType.APP_INITIALIZING) {
+					if (this.applicationStore.state.appState === AppState.NOT_INITIALIED) {
+						let initConnectionIMO: IInitConnectionIMO = message
+						this.applicationStore.state.lastIds = initConnectionIMO.result
+						this.applicationStore.state.appState = AppState.START_INITIALIZING
 					}
-					this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
 					return
-				default:
-					return
-			}
-
-		})
-		this.initializeConnection().then()
+				}
+				this.handleDbToIsolateMessage(message as IIsolateMessageOut<any>, mainDomain)
+				return
+			default:
+				return
+		}
 	}
 
 	async callApi<Request, Response>(
@@ -355,9 +327,9 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	private async initializeConnection() {
-		while (this.appState === AppState.NOT_INITIALIED
-			|| this.appState === AppState.START_INITIALIZING) {
+	async initializeConnection(): Promise<void> {
+		while (this.applicationStore.state.appState === AppState.NOT_INITIALIED
+			|| this.applicationStore.state.appState === AppState.START_INITIALIZING) {
 			await this.isConnectionInitialized()
 			await this.wait(100)
 		}
@@ -367,7 +339,7 @@ export class IframeTransactionalConnector
 		request: ILocalAPIRequest,
 		origin: string
 	) {
-		while (this.appState !== AppState.INITIALIZED) {
+		while (this.applicationStore.state.appState !== AppState.INITIALIZED) {
 			await this.wait(100)
 		}
 		const response = await this.localApiServer.handleRequest(request)
@@ -378,8 +350,7 @@ export class IframeTransactionalConnector
 		message: IIsolateMessageOut<any>,
 		mainDomain: string
 	) {
-
-		const messageRecord = this.pendingMessageMap.get(message.id);
+		const messageRecord = this.applicationStore.state.pendingMessageMap.get(message.id);
 		if (!messageRecord) {
 			return
 		}
@@ -392,7 +363,7 @@ export class IframeTransactionalConnector
 			// 	return
 			case IsolateMessageType.SEARCH:
 			case IsolateMessageType.SEARCH_ONE:
-				observableMessageRecord = this.observableMessageMap.get(message.id)
+				observableMessageRecord = this.applicationStore.state.observableMessageMap.get(message.id)
 				if (!observableMessageRecord || !observableMessageRecord.observer) {
 					return
 				}
@@ -403,12 +374,12 @@ export class IframeTransactionalConnector
 				}
 				return
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				observableMessageRecord = this.observableMessageMap.get(message.id)
+				observableMessageRecord = this.applicationStore.state.observableMessageMap.get(message.id)
 				if (!observableMessageRecord || !observableMessageRecord.observer) {
 					return
 				}
 				observableMessageRecord.observer.complete()
-				this.pendingMessageMap.delete(message.id)
+				this.applicationStore.state.pendingMessageMap.delete(message.id)
 				return
 		}
 
@@ -417,7 +388,7 @@ export class IframeTransactionalConnector
 		} else {
 			messageRecord.resolve(message.result)
 		}
-		this.pendingMessageMap.delete(message.id)
+		this.applicationStore.state.pendingMessageMap.delete(message.id)
 	}
 
 	private getCoreFields(): {
@@ -427,9 +398,9 @@ export class IframeTransactionalConnector
 		id: string,
 	} {
 		return {
-			application: this.application,
+			application: this.applicationStore.state.application,
 			category: 'ToDb',
-			domain: this.domain,
+			domain: this.applicationStore.state.domain,
 			id: uuidv4(),
 		}
 	}
@@ -446,9 +417,10 @@ export class IframeTransactionalConnector
 	private async sendMessageNoWait<IMessageIn extends IIsolateMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
-		window.parent.postMessage(message, hostServer)
+		message.transactionId = (<IInjectable>this).__container__.context.id
+		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 		return new Promise<ReturnType>((resolve, reject) => {
-			this.pendingMessageMap.set(message.id, {
+			this.applicationStore.state.pendingMessageMap.set(message.id, {
 				message,
 				resolve,
 				reject
@@ -473,7 +445,7 @@ export class IframeTransactionalConnector
 		let observableMessageRecord: IObservableMessageInRecord<T> = {
 			id: coreFields.id
 		}
-		this.observableMessageMap.set(coreFields.id, observableMessageRecord)
+		this.applicationStore.state.observableMessageMap.set(coreFields.id, observableMessageRecord)
 		const observable = new Observable((observer: Observer<any>) => {
 			observableMessageRecord.observer = observer
 			return () => {
@@ -483,7 +455,7 @@ export class IframeTransactionalConnector
 				}).then()
 			};
 		});
-		window.parent.postMessage(message, hostServer)
+		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 
 		return observable;
 	}
@@ -499,30 +471,30 @@ export class IframeTransactionalConnector
 	}
 
 	private async isConnectionInitialized(): Promise<boolean> {
-		switch (this.appState) {
+		switch (this.applicationStore.state.appState) {
 			case AppState.NOT_INITIALIED:
 				break;
 			case AppState.INITIALIZING_IN_PROGRESS:
 				return false
 			case AppState.START_INITIALIZING:
-				this.appState = AppState.INITIALIZING_IN_PROGRESS
-				await this.applicationLoader.load(this.lastIds)
-				this.appState = AppState.INITIALIZED
+				this.applicationStore.state.appState = AppState.INITIALIZING_IN_PROGRESS
+				await this.applicationLoader.load(this.applicationStore.state.lastIds)
+				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()
 				window.parent.postMessage({
 					...this.getCoreFields(),
 					fullApplicationName: getFullApplicationName(
 						this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
-				}, hostServer)
+				}, this.applicationStore.state.hostServer)
 				return true
 			case AppState.INITIALIZED:
 				return true
 		}
 
 		let jsonApplication = this.applicationLoader.getApplication()
-		this.domain = jsonApplication.domain
-		this.application = jsonApplication.name
+		this.applicationStore.state.domain = jsonApplication.domain
+		this.applicationStore.state.application = jsonApplication.name
 
 		let message: IInitConnectionIMI = {
 			...this.getCoreFields(),
@@ -530,7 +502,7 @@ export class IframeTransactionalConnector
 			type: IsolateMessageType.APP_INITIALIZING
 		}
 
-		window.parent.postMessage(message, hostServer)
+		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 		return false
 	}
 
@@ -547,7 +519,7 @@ export class IframeTransactionalConnector
 	onMessage(callback: (
 		message: any
 	) => void) {
-		this.messageCallback = callback
+		this.applicationStore.state.messageCallback = callback
 	}
 
 }

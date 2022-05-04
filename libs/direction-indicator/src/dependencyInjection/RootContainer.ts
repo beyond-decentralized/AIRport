@@ -1,4 +1,4 @@
-import { Context, ContextType, IInjectionContext } from "../Context";
+import { Context, ContextType } from "../Context";
 import { ChildContainer } from "./ChildContainer";
 import { Container } from "./Container";
 import { IChildContainer } from "./interfaces/IChildContainer";
@@ -11,7 +11,11 @@ export class RootContainer
 
     uiContainers: Set<IContainer> = new Set<IContainer>();
     dbContainerMap: Map<string, IChildContainer>
-    objectPoolMap: Map<string, any[]> = new Map();
+    // NOTE: Object pooling is not supported because of possible callbacks
+    // that are out of synchronous flow of a transaction.  Thus objects are
+    // retained in the container even after the container is removed
+    // in order to allow for transactionId reference
+    // objectPoolMap: Map<string, any[]> = new Map();
 
     db(
         id?: string
@@ -35,16 +39,17 @@ export class RootContainer
         const dbContainer = this.dbContainerMap.get(container.context.id)
         if (dbContainer) {
             this.dbContainerMap.delete(container.context.id)
-            const objectTokens = dbContainer.objectMap.keys()
-            for (const objectToken of objectTokens) {
-                const object = dbContainer.objectMap.get(objectToken)
-                let objectPool = this.objectPoolMap.get(objectToken)
-                if (!objectPool) {
-                    objectPool = []
-                    this.objectPoolMap.set(objectToken, objectPool)
-                }
-                objectPool.push(object)
-            }
+            // NOTE: objectPooling is not supported, see above
+            // const objectTokens = dbContainer.objectMap.keys()
+            // for (const objectToken of objectTokens) {
+            // const object = dbContainer.objectMap.get(objectToken)
+            // let objectPool = this.objectPoolMap.get(objectToken)
+            // if (!objectPool) {
+            //     objectPool = []
+            //     this.objectPoolMap.set(objectToken, objectPool)
+            // }
+            // objectPool.push(object)
+            // }
         } else {
             this.uiContainers.delete(container);
         }
