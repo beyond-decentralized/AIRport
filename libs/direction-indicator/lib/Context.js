@@ -4,8 +4,8 @@ export var ContextType;
     ContextType["UI"] = "UI";
 })(ContextType || (ContextType = {}));
 export class Context {
-    constructor(name, type) {
-        this.name = name;
+    constructor(id, type) {
+        this.id = id;
         this.type = type;
     }
 }

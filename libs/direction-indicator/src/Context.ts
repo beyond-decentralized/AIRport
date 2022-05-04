@@ -13,7 +13,7 @@ export interface IInjectionContext
 	extends IContext {
 
 	inAIRportApp?: boolean
-	name: string
+	id: string
 	type: ContextType
 }
 
@@ -26,7 +26,7 @@ export class Context
 	implements IInjectionContext {
 
 	constructor(
-		public name: string,
+		public id: string,
 		public type: ContextType
 	) {
 	}

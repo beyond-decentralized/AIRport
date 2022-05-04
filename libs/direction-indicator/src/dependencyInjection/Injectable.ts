@@ -1,7 +1,7 @@
 import {
-	Container,
-	IChildContainer
+	Container
 } from './Container';
+import { IChildContainer } from './interfaces/IChildContainer';
 
 export interface IInjectable {
 

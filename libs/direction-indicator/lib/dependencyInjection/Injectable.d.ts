@@ -1,4 +1,4 @@
-import { IChildContainer } from './Container';
+import { IChildContainer } from './interfaces/IChildContainer';
 export interface IInjectable {
     __container__?: IChildContainer;
     __initialized__?: boolean;

@@ -10,7 +10,7 @@ export interface IContext {
 }
 export interface IInjectionContext extends IContext {
     inAIRportApp?: boolean;
-    name: string;
+    id: string;
     type: ContextType;
 }
 export declare enum ContextType {
@@ -18,8 +18,8 @@ export declare enum ContextType {
     UI = "UI"
 }
 export declare class Context implements IInjectionContext {
-    name: string;
+    id: string;
     type: ContextType;
-    constructor(name: string, type: ContextType);
+    constructor(id: string, type: ContextType);
 }
 //# sourceMappingURL=Context.d.ts.map
