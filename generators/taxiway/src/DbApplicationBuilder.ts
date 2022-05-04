@@ -3,14 +3,14 @@ import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
 	JsonApplicationEntity,
-} from '@airport/ground-control/src/lingo/application/Entity';
+} from '@airport/ground-control';
 import {
 	DbColumn,
 	DbProperty,
 	DbRelation,
 	JsonApplicationColumn,
 	JsonApplicationRelation
-} from '@airport/ground-control/src/lingo/application/Property';
+} from '@airport/ground-control';
 import {
 	DbDomain,
 	DbApplication,
@@ -18,7 +18,7 @@ import {
 	DbApplicationReference,
 	DbApplicationVersion,
 	JsonApplication,
-} from '@airport/ground-control/src/lingo/application/Application';
+} from '@airport/ground-control';
 import { ApplicationStatus } from '@airport/ground-control';
 import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { ensureChildMap } from '@airport/ground-control';

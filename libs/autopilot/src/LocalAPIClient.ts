@@ -2,7 +2,7 @@ import {
     ILocalAPIRequest,
     ILocalAPIResponse
 } from "@airport/aviation-communication";
-import { IDependencyInjectionToken, Injected } from "@airport/direction-indicator";
+import { IDependencyInjectionToken, Inject, Injected } from "@airport/direction-indicator";
 import {
     IOperationSerializer,
     IQueryResultsDeserializer
@@ -37,9 +37,9 @@ export interface IRequestRecord {
 export class LocalAPIClient
     implements ILocalAPIClient {
 
-    // @Inject()
+    @Inject()
     operationSerializer: IOperationSerializer
-    // @Inject()
+    @Inject()
     queryResultsDeserializer: IQueryResultsDeserializer
 
     pendingDemoMessageMap: Map<string, IRequestRecord> = new Map();

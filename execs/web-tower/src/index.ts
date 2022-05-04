@@ -8,14 +8,12 @@ export * from './IFrameInterAppApiClient'
 export * from './IFrameTransactionalConnector'
 export * from './tokens'
 
+
+
+// window.addEventListener("message", event => {
+    
+// })
+
 export function loadIframe() {
     console.log('Iframe loaded')
 }
-
-APPLICATION_LOCATOR.setDependencies({
-    transactionalConnector: TRANSACTIONAL_CONNECTOR
-})
-
-INTER_APP_API_CLIENT.setDependencies({
-    transactionalConnector: TRANSACTIONAL_CONNECTOR
-})

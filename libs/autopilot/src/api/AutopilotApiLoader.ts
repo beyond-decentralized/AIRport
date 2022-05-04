@@ -1,6 +1,7 @@
 import {
     IAutopilotApiLoader,
     IDependencyInjectionToken,
+    Inject,
     Injected
 } from '@airport/direction-indicator'
 import { ILocalAPIClient } from '../LocalAPIClient';
@@ -9,7 +10,7 @@ import { ILocalAPIClient } from '../LocalAPIClient';
 export class AutopilotApiLoader
     implements IAutopilotApiLoader {
 
-    // @Inject()
+    @Inject()
     localApiClient: ILocalAPIClient
 
     loadApiAutopilot<T>(
