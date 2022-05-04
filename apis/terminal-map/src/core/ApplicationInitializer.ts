@@ -1,5 +1,5 @@
 import { IContext } from "@airport/direction-indicator";
-import { JsonApplicationWithLastIds } from "@airport/security-check";
+import { JsonApplicationWithLastIds } from "@airport/apron";
 
 export interface IApplicationInitializer {
 

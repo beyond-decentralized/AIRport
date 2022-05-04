@@ -1,5 +1,5 @@
-import { ApplicationLoader } from '@airport/taxiway';
 import { canBeInterface, getImplNameFromInterfaceName } from '../../resolve/pathResolver';
+import { ApplicationLoader } from '../loader/ApplicationLoader';
 import { EntityCandidate, Interface } from './EntityCandidate';
 import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';
 import { endsWith, isPrimitive, startsWith } from './utils';

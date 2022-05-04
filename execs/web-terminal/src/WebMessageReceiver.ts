@@ -4,7 +4,7 @@ import {
 } from '@airport/direction-indicator'
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { IOC } from "@airport/direction-indicator";
-import { IApiIMI, IIsolateMessage } from "@airport/security-check";
+import { IApiIMI, IIsolateMessage } from "@airport/apron";
 import { ITerminalStore, ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel

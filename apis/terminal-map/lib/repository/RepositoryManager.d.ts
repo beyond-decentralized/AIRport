@@ -1,4 +1,4 @@
-import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-control';
+import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IActor, IRepository } from '@airport/holding-pattern';
 import { UpdateState } from '../core/UpdateState';

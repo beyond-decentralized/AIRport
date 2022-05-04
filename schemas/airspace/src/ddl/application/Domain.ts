@@ -5,7 +5,7 @@ import {
 	Id,
 	OneToMany,
 	Table,
-}                    from '@airport/air-control'
+}                    from '@airport/air-traffic-control'
 import {
 	DomainId,
 	DomainName,

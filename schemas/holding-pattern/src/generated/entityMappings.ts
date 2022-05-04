@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { AIRPORT_DATABASE } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { RecordHistory } from '../ddl/history/RecordHistory';
 import { Actor } from '../ddl/infrastructure/Actor';

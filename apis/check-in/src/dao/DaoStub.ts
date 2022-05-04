@@ -1,4 +1,4 @@
-import { IEntityCreateProperties } from '@airport/air-control';
+import { IEntityCreateProperties } from '@airport/air-traffic-control';
 import { DaoFindOneStub }          from './DaoFindOneStub';
 import { DaoFindStub }             from './DaoFindStub';
 import { DaoSearchOneStub }        from './DaoSearchOneStub';

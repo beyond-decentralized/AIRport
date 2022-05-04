@@ -21,11 +21,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@airport/air-control": [
-        "apis/air-control/src"
+      "@airport/air-traffic-control": [
+        "apis/air-traffic-control/src"
       ],
-      "@airport/air-control/*": [
-        "apis/air-control/src/*"
+      "@airport/air-traffic-control/*": [
+        "apis/air-traffic-control/src/*"
       ],
       "@airport/check-in": [
         "apis/check-in/src"

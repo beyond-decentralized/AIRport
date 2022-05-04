@@ -1,4 +1,4 @@
-import {PropertyDecorator}     from '@airport/air-control'
+import {PropertyDecorator}     from '@airport/air-traffic-control'
 import {DocumentConfiguration} from '../lingo/DocumentDecorators'
 
 export function Document<T>(

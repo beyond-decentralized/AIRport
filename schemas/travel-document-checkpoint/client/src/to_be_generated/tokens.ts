@@ -3,4 +3,8 @@ import { IUserApi } from './api/UserApiClient'
 
 export const travelDocumentCheckpoint = lib('travel-document-checkpoint')
 
-export const USER_API = travelDocumentCheckpoint.token<IUserApi>('USER_API')
+export const USER_API = travelDocumentCheckpoint.token<IUserApi>({
+    class: null,
+    interface: 'IUserApi',
+    token: 'USER_API'
+})

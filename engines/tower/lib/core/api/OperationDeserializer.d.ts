@@ -1,4 +1,4 @@
-import { IApplicationUtils } from "@airport/air-control";
+import { IApplicationUtils } from "@airport/air-traffic-control";
 import { IOperationDeserializer } from "@airport/check-in";
 import { DbEntity, IEntityStateManager } from "@airport/ground-control";
 interface IDeserializableOperation {

@@ -8,7 +8,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	OneToMany
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import { Country } from './Country';
 import { UserTerminal } from './UserTerminal'
 import { UserTerminalAgt } from './UserTerminalAgt'

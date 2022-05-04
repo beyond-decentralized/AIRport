@@ -10,7 +10,7 @@ import {
     IActor,
     IActorDao,
 } from "@airport/holding-pattern";
-import { JsonApplicationWithLastIds } from "@airport/security-check";
+import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
     IDomain,

@@ -1,4 +1,4 @@
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IApplicationEntity } from './applicationentity';
 import { IApplicationReference } from './applicationreference';
 import { IApplication } from './application';

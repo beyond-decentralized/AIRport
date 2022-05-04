@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected

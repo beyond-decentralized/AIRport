@@ -5,7 +5,7 @@ import {
 	IQMetadataUtils,
 	IRelationManager,
 	ManyToOneColumnMapping
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,

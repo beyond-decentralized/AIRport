@@ -1,4 +1,4 @@
-import { AliasCache } from '@airport/air-control';
+import { AliasCache } from '@airport/air-traffic-control';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';

@@ -6,7 +6,7 @@ import {
 	JoinColumns,
 	ManyToOne,
 	Table
-}              from '@airport/air-control'
+}              from '@airport/air-traffic-control'
 import {TestD} from './TestD'
 import {TestE} from './TestE'
 

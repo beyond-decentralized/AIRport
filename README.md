@@ -445,7 +445,7 @@ Data Access objects).  Now you can enter the mutation and query logic:
 import {
   ANOTHER,
   Y
-}                         from '@airport/air-control'
+}                         from '@airport/air-traffic-control'
 import {
   Persist,
   RULES

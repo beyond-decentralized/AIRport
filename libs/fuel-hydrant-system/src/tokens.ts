@@ -10,7 +10,7 @@ import { IStoreDriver, STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/termin
 import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { SQLWhereBase } from './sql/core/SQLWhereBase'
-import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-control'
+import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 

@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-control';
+import { IApplicationUtils } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, QueryResultType } from '@airport/ground-control';
 import { GraphQueryConfiguration, IEntityResultParser } from './IEntityResultParser';
 export interface IObjectResultParserFactory {

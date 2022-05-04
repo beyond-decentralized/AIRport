@@ -1,7 +1,7 @@
 import {
 	Column,
 	MappedSuperclass
-}                         from '@airport/air-control'
+}                         from '@airport/air-traffic-control'
 import {RepositoryEntity} from '../repository/RepositoryEntity'
 
 @MappedSuperclass()

@@ -4,7 +4,7 @@ import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationReference } from './ApplicationReference';
 import { IApplicationEntity } from '../../generated/application/applicationentity';
 import { IApplicationReference } from '../../generated/application/applicationreference';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 export declare class ApplicationVersion {
     id: ApplicationVersionId;
     integerVersion: ApplicationVersionInteger;

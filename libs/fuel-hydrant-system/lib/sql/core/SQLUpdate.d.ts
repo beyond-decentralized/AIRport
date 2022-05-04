@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IEntityUpdateProperties, IQMetadataUtils, IRelationManager } from '@airport/air-control';
+import { IAirportDatabase, IApplicationUtils, IEntityUpdateProperties, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
 import { IEntityStateManager, InternalFragments, JsonUpdate } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor';

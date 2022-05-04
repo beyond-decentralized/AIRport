@@ -1,8 +1,8 @@
-import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-control';
+import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import { getFullApplicationName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
-import { TempDatabase } from '@airport/taxiway';
 import tsc from 'typescript';
+import { TempDatabase } from '../../ddl/loader/temp/TempDatabase';
 export class ApplicationQueryGenerator {
     constructor() {
         this.tempDatabase = new TempDatabase();

@@ -1,4 +1,4 @@
-import { IEntityContext } from "@airport/air-control"
+import { IEntityContext } from "@airport/air-traffic-control"
 import {
 	Injected
 } from '@airport/direction-indicator'

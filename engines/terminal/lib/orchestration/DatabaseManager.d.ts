@@ -1,7 +1,7 @@
 import { IContext } from '@airport/direction-indicator';
 import { IApplicationDao } from '@airport/airspace';
 import { IApplicationInitializer, IDatabaseManager, IStoreDriver, ITransactionalServer } from '@airport/terminal-map';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 export declare class DatabaseManager implements IDatabaseManager {
     applicationDao: IApplicationDao;

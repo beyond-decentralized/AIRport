@@ -1,6 +1,6 @@
 import {
 	JsonApplicationWithLastIds,
-} from '@airport/security-check';
+} from '@airport/apron';
 import {
 	IApplicationEntity,
 } from './applicationentity';

@@ -1,4 +1,4 @@
-import { IEntityContext, IQueryContext } from '@airport/air-control'
+import { IEntityContext, IQueryContext } from '@airport/air-traffic-control'
 import { IContext } from '@airport/direction-indicator'
 import {
 	ISaveResult,

@@ -6,7 +6,7 @@ import {
     Id,
     OneToMany,
     Table
-} from "@airport/air-control";
+} from "@airport/air-traffic-control";
 import { Country } from "./Country";
 
 export type Continent_Id = number;

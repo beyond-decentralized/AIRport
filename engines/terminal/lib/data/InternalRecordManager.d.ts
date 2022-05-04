@@ -1,7 +1,7 @@
 import { IContext } from "@airport/direction-indicator";
 import { DomainName, IEntityStateManager } from "@airport/ground-control";
 import { IActorDao } from "@airport/holding-pattern";
-import { JsonApplicationWithLastIds } from "@airport/security-check";
+import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import { IDomainDao, IApplicationDao } from "@airport/airspace";
 export interface IInternalRecordManager {

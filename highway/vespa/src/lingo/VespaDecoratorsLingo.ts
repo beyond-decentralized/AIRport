@@ -1,7 +1,7 @@
 import {
 	ClassDecorator,
 	PropertyDecorator
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 
 export interface VespaIndexing {
 	attribute?: boolean,

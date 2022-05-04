@@ -12,7 +12,7 @@ import {
 	Table,
 	TableConfiguration,
 	Transient
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	EntityId,
 	EntityIsLocal,

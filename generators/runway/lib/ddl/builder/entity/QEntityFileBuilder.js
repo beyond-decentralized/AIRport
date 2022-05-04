@@ -37,7 +37,7 @@ export class QEntityFileBuilder extends FileBuilder {
             'IQEntity', 'IQRelation',
             'IQRepositoryEntityOneToManyRelation', 'IQRepositoryEntityRelation',
             'RawDelete', 'RawUpdate'
-        ], '@airport/air-control');
+        ], '@airport/air-traffic-control');
         // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
         if (entity.parentEntity) {
             let parentQEntityRelativePath;

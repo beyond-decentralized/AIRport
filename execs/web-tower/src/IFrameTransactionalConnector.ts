@@ -1,7 +1,7 @@
 import {
 	IEntityContext,
 	IQueryContext
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
@@ -35,7 +35,7 @@ import {
 	ICallApiIMI,
 	IApplicationLoader,
 	ILocalAPIServer
-} from '@airport/security-check';
+} from '@airport/apron';
 import {
 	Observable,
 	Observer

@@ -1,4 +1,4 @@
-import { IRepositoryLoader } from '@airport/air-control'
+import { IRepositoryLoader } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected

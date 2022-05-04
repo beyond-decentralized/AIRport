@@ -1,4 +1,4 @@
-import { MappedEntityArray } from '@airport/air-control';
+import { MappedEntityArray } from '@airport/air-traffic-control';
 import { DbEntity } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { ManyToOneStubReference } from './GraphMtoMapper';

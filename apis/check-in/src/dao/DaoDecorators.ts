@@ -1,7 +1,7 @@
 import {
 	IDao,
 	IEntityCascadeGraph
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 
 export const Persist = function <IEntityGraph extends IEntityCascadeGraph>(
 	rules: IEntityGraph

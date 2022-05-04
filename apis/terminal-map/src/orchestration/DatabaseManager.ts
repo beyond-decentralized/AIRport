@@ -3,7 +3,7 @@ import {
 } from "@airport/direction-indicator"
 import {
 	JsonApplicationWithLastIds
-} from "@airport/security-check"
+} from "@airport/apron"
 
 export interface IDatabaseManager {
 

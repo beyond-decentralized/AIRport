@@ -10,7 +10,7 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table
-}                                     from '@airport/air-control'
+}                                     from '@airport/air-traffic-control'
 import {ChangeType}                   from '@airport/ground-control'
 import {IApplicationEntity}                from '@airport/airspace'
 import {SystemWideOperationId}        from '../common'

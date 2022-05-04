@@ -67,7 +67,7 @@ export class QApplicationBuilder {
         return `import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
-}                      from '@airport/air-control'
+}                      from '@airport/air-traffic-control'
 import {
 	diSet as dS,
 	duoDiSet as ddS

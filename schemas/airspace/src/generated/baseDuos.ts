@@ -164,7 +164,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	Duo,
 } from '@airport/check-in';

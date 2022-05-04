@@ -23,7 +23,7 @@ import {
 	RawDelete,
 	RawUpdate,
 	TableConfiguration,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	VersionedApplicationObjectGraph,
 	VersionedApplicationObjectEId,

@@ -5,7 +5,7 @@ import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/press
 import {
     APPLICATION_LOADER,
     LOCAL_API_SERVER
-} from "@airport/security-check";
+} from "@airport/apron";
 import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER } from "@airport/terminal-map";
 import { DomainRetriever } from "./DomainRetriever";
 import { IFrameApplicationInitializer } from "./IFrameApplicationInitializer";

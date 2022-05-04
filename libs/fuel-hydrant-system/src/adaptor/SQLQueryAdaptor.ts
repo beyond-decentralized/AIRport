@@ -1,7 +1,7 @@
 import {
 	IQEntityInternal,
 	Parameter
-}                          from '@airport/air-control'
+}                          from '@airport/air-traffic-control'
 import {
 	JSONClauseField,
 	JSONClauseObject,

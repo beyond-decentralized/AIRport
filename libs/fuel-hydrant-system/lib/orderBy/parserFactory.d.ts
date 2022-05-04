@@ -1,4 +1,4 @@
-import { IAirportDatabase, IRelationManager } from '@airport/air-control';
+import { IAirportDatabase, IRelationManager } from '@airport/air-traffic-control';
 import { JSONEntityFieldInOrderBy, QueryResultType } from '@airport/ground-control';
 import { IValidator } from '../validation/Validator';
 import { IEntityOrderByParser } from './AbstractEntityOrderByParser';

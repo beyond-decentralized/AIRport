@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import { DATABASE_MANAGER } from '@airport/terminal';
 export * from './MySqlDriver';

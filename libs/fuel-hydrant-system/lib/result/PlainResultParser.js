@@ -1,4 +1,4 @@
-import { objectExists } from '@airport/air-control';
+import { objectExists } from '@airport/air-traffic-control';
 import { AbstractObjectResultParser } from './entity/IEntityResultParser';
 /**
  * Created by Papa on 10/16/2016.

@@ -12,7 +12,7 @@ import {
 	IIsolateMessage,
 	IObservableDataIMO,
 	IsolateMessageType,
-} from '@airport/security-check'
+} from '@airport/apron'
 import {
 	TransactionalReceiver
 } from '@airport/terminal'

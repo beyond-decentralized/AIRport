@@ -3,13 +3,10 @@ import {
 	DbApplication
 } from '@airport/ground-control';
 import {
-	IApplicationLoader,
-	ApplicationLoader
-} from '@airport/taxiway';
-import {
 	canBeInterface,
 	getImplNameFromInterfaceName
 } from '../../resolve/pathResolver';
+import { ApplicationLoader, IApplicationLoader } from '../loader/ApplicationLoader';
 import { Configuration } from '../options/Options';
 import {
 	EntityReference,

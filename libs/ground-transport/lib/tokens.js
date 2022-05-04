@@ -15,7 +15,7 @@ import { TwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSync
 import { SynchronizationOutManager } from './synchronization/out/SynchronizationOutManager';
 import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader';
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer';
-import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-control';
+import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-traffic-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-internal';

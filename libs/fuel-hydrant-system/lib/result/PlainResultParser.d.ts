@@ -1,4 +1,4 @@
-import { ReferencedColumnData } from '@airport/air-control';
+import { ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { AbstractObjectResultParser, IEntityResultParser } from './entity/IEntityResultParser';

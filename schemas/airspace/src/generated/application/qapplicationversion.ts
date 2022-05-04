@@ -22,10 +22,10 @@ import {
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	JsonApplicationWithLastIds,
-} from '@airport/security-check';
+} from '@airport/apron';
 import {
 	ApplicationGraph,
 	ApplicationEId,

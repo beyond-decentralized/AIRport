@@ -1,4 +1,4 @@
-import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,

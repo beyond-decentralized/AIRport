@@ -1,4 +1,4 @@
-import { Y, } from '@airport/air-control';
+import { Y, } from '@airport/air-traffic-control';
 import { EntityRelationType } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.

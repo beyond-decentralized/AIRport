@@ -4,7 +4,7 @@ import {
 	IQEntityInternal,
 	IQMetadataUtils,
 	JoinTreeNode
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DatabaseManyToOneElements,
 	DbEntity,

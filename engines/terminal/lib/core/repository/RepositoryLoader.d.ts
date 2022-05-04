@@ -1,4 +1,4 @@
-import { IRepositoryLoader } from "@airport/air-control";
+import { IRepositoryLoader } from "@airport/air-traffic-control";
 import { IContext } from "@airport/direction-indicator";
 import { ISynchronizationAdapterLoader, ISynchronizationInManager } from "@airport/ground-transport";
 import { IRepositoryDao } from "@airport/holding-pattern";

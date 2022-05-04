@@ -1,4 +1,4 @@
-import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, IUpdateCacheManager, IQueryFacade } from '@airport/air-control';
+import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, IUpdateCacheManager, IQueryFacade } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IEntityStateManager, ISaveResult, ITransactionalConnector } from '@airport/ground-control';
 import { IEntityCopier } from '../core/data/EntityCopier';

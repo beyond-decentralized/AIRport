@@ -1,4 +1,4 @@
-import { IApplicationUtils, IUpdateCacheManager } from "@airport/air-control";
+import { IApplicationUtils, IUpdateCacheManager } from "@airport/air-traffic-control";
 import { DbEntity, IEntityStateManager, ISaveResult } from "@airport/ground-control";
 export declare class UpdateCacheManager implements IUpdateCacheManager {
     entityStateManager: IEntityStateManager;

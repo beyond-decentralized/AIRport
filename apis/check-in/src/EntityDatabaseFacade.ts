@@ -21,7 +21,7 @@ import {
   RawInsertColumnValues,
   RawInsertValues,
   RawUpdate,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
   DbEntity,
   ISaveResult

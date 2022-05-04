@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getFullApplicationName, getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
-import { IsolateMessageType } from '@airport/security-check';
+import { IsolateMessageType } from '@airport/apron';
 let TransactionalReceiver = class TransactionalReceiver {
     async processMessage(message) {
         let result;
@@ -175,6 +175,12 @@ let TransactionalReceiver = class TransactionalReceiver {
         if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
             return false;
         }
+        const initiator = context.transaction.initiator;
+        initiator.application = message.application;
+        initiator.domain = message.domain;
+        initiator.methodName = message.methodName;
+        initiator.objectName = message.objectName;
+        message.transactionId = context.transaction.id;
         try {
             await nativeHandleCallback();
         }
@@ -183,12 +189,6 @@ let TransactionalReceiver = class TransactionalReceiver {
             this.transactionalServer.rollback(transactionCredentials, context);
             return false;
         }
-        const initiator = context.transaction.initiator;
-        initiator.application = message.application;
-        initiator.domain = message.domain;
-        initiator.methodName = message.methodName;
-        initiator.objectName = message.objectName;
-        message.transactionId = context.transaction.id;
         return true;
     }
     async endApiCall(credentials, errorMessage, context) {

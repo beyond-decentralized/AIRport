@@ -1,7 +1,7 @@
 import {
     IApiIMI,
     IIsolateMessage
-} from "@airport/security-check"
+} from "@airport/apron"
 import {
     ILocalAPIRequest,
     ILocalAPIResponse

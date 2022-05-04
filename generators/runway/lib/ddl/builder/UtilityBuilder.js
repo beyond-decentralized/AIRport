@@ -64,7 +64,7 @@ ${baseClassDefinitions}`;
             'IEntityUpdateColumns',
             'IEntityUpdateProperties',
             'IQEntity'
-        ], '@airport/air-control');
+        ], '@airport/air-traffic-control');
         this.addImport([
             `${this.classSuffix}`
         ], '@airport/check-in');

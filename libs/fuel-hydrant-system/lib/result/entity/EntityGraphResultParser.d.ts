@@ -1,4 +1,4 @@
-import { IApplicationUtils, ReferencedColumnData } from '@airport/air-control';
+import { IApplicationUtils, ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { GraphMtoMapper, ManyToOneStubReference } from './GraphMtoMapper';

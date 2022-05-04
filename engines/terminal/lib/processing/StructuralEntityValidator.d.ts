@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-control';
+import { IApplicationUtils } from '@airport/air-traffic-control';
 import { DbColumn, DbEntity, DbProperty, IEntityStateManager } from '@airport/ground-control';
 import { IOperationContext, IRepositoryManager, IStructuralEntityValidator } from '@airport/terminal-map';
 export declare class StructuralEntityValidator implements IStructuralEntityValidator {

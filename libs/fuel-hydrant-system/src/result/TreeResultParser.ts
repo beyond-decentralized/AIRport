@@ -1,4 +1,4 @@
-import {objectExists}               from '@airport/air-control'
+import {objectExists}               from '@airport/air-traffic-control'
 import {SQLDataType}                from '@airport/ground-control'
 import {AbstractObjectResultParser} from './entity/IEntityResultParser'
 

@@ -7,7 +7,7 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	Terminal,
 	User

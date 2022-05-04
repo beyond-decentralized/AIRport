@@ -3,7 +3,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-}                  from '@airport/air-control'
+}                  from '@airport/air-traffic-control'
 import {IUser}     from '@airport/travel-document-checkpoint-internal'
 
 @MappedSuperclass()

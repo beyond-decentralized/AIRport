@@ -1,7 +1,7 @@
 import {
 	IEntitySelectProperties,
 	RawLimitedEntityQuery
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 
 export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 

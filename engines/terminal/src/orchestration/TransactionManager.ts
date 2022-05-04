@@ -1,4 +1,4 @@
-import { IQEntityInternal } from '@airport/air-control';
+import { IQEntityInternal } from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected

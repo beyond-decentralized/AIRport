@@ -1,4 +1,4 @@
-import { IDao } from '@airport/air-control';
+import { IDao } from '@airport/air-traffic-control';
 import { IApiRegistry, IApiValidator } from '.';
 import { IClientQueryManager } from './clientQuery/ClientQueryManager';
 import { ISelectorManager } from './Selector';

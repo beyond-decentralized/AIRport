@@ -1,7 +1,7 @@
 import {
     IApplicationUtils,
     IUpdateCacheManager
-} from "@airport/air-control";
+} from "@airport/air-traffic-control";
 import {
 	Inject,
 	Injected

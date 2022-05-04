@@ -3,7 +3,7 @@ import {
 	Entity,
 	Id,
 	Table
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 
 // TODO: add support for TS interfaces on non-id based relations
 @Entity()

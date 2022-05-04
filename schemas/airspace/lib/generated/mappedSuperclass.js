@@ -41,7 +41,7 @@ export const MAPPED_SUPERCLASS = [
                                 "sourceName": "MappedSuperclass"
                             }
                         },
-                        "path": "@airport/air-control"
+                        "path": "@airport/air-traffic-control"
                     },
                     "ManyToOne": null,
                     "MappedSuperclass": null,
@@ -59,7 +59,7 @@ export const MAPPED_SUPERCLASS = [
                     }
                 },
                 "importMapByModulePath": {
-                    "@airport/air-control": null,
+                    "@airport/air-traffic-control": null,
                     "./ApplicationVersion": null
                 }
             },
@@ -214,7 +214,7 @@ export const MAPPED_SUPERCLASS = [
                                                 "sourceName": "Transient"
                                             }
                                         },
-                                        "path": "@airport/air-control"
+                                        "path": "@airport/air-traffic-control"
                                     },
                                     "DbNumber": null,
                                     "DbString": null,
@@ -339,18 +339,18 @@ export const MAPPED_SUPERCLASS = [
                                                 "sourceName": "JsonApplicationWithLastIds"
                                             }
                                         },
-                                        "path": "@airport/security-check"
+                                        "path": "@airport/apron"
                                     }
                                 },
                                 "importMapByModulePath": {
-                                    "@airport/air-control": null,
+                                    "@airport/air-traffic-control": null,
                                     "@airport/ground-control": null,
                                     "./Application": null,
                                     "./ApplicationEntity": null,
                                     "./ApplicationReference": null,
                                     "../../generated/application/applicationentity": null,
                                     "../../generated/application/applicationreference": null,
-                                    "@airport/security-check": null
+                                    "@airport/apron": null
                                 }
                             },
                             "properties": [
@@ -687,7 +687,7 @@ export const MAPPED_SUPERCLASS = [
                                                                 "sourceName": "Table"
                                                             }
                                                         },
-                                                        "path": "@airport/air-control"
+                                                        "path": "@airport/air-traffic-control"
                                                     },
                                                     "DbNumber": null,
                                                     "DbString": null,
@@ -778,7 +778,7 @@ export const MAPPED_SUPERCLASS = [
                                                     }
                                                 },
                                                 "importMapByModulePath": {
-                                                    "@airport/air-control": null,
+                                                    "@airport/air-traffic-control": null,
                                                     "@airport/ground-control": null,
                                                     "./Domain": null,
                                                     "./ApplicationCurrentVersion": null,
@@ -929,7 +929,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                 "sourceName": "Table"
                                                                             }
                                                                         },
-                                                                        "path": "@airport/air-control"
+                                                                        "path": "@airport/air-traffic-control"
                                                                     },
                                                                     "DbString": null,
                                                                     "Entity": null,
@@ -968,7 +968,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 },
                                                                 "importMapByModulePath": {
-                                                                    "@airport/air-control": null,
+                                                                    "@airport/air-traffic-control": null,
                                                                     "@airport/ground-control": null,
                                                                     "./Application": null
                                                                 }
@@ -1352,7 +1352,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                 "sourceName": "Table"
                                                                             }
                                                                         },
-                                                                        "path": "@airport/air-control"
+                                                                        "path": "@airport/air-traffic-control"
                                                                     },
                                                                     "Id": null,
                                                                     "JoinColumn": null,
@@ -1384,7 +1384,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 },
                                                                 "importMapByModulePath": {
-                                                                    "@airport/air-control": null,
+                                                                    "@airport/air-traffic-control": null,
                                                                     "./Application": null,
                                                                     "./ApplicationVersion": null
                                                                 }
@@ -1623,7 +1623,7 @@ export const MAPPED_SUPERCLASS = [
                                                                 "sourceName": "Transient"
                                                             }
                                                         },
-                                                        "path": "@airport/air-control"
+                                                        "path": "@airport/air-traffic-control"
                                                     },
                                                     "DbBoolean": null,
                                                     "DbNumber": null,
@@ -1771,7 +1771,7 @@ export const MAPPED_SUPERCLASS = [
                                                     }
                                                 },
                                                 "importMapByModulePath": {
-                                                    "@airport/air-control": null,
+                                                    "@airport/air-traffic-control": null,
                                                     "@airport/ground-control": null,
                                                     "./ApplicationColumn": null,
                                                     "./ApplicationOperation": null,
@@ -2097,7 +2097,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                 "sourceName": "Table"
                                                                             }
                                                                         },
-                                                                        "path": "@airport/air-control"
+                                                                        "path": "@airport/air-traffic-control"
                                                                     },
                                                                     "DbBoolean": null,
                                                                     "DbNumber": null,
@@ -2224,7 +2224,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 },
                                                                 "importMapByModulePath": {
-                                                                    "@airport/air-control": null,
+                                                                    "@airport/air-traffic-control": null,
                                                                     "@airport/ground-control": null,
                                                                     "./ApplicationEntity": null,
                                                                     "./ApplicationPropertyColumn": null,
@@ -2667,7 +2667,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                                 "sourceName": "Table"
                                                                                             }
                                                                                         },
-                                                                                        "path": "@airport/air-control"
+                                                                                        "path": "@airport/air-traffic-control"
                                                                                     },
                                                                                     "Id": null,
                                                                                     "JoinColumn": null,
@@ -2711,7 +2711,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                     }
                                                                                 },
                                                                                 "importMapByModulePath": {
-                                                                                    "@airport/air-control": null,
+                                                                                    "@airport/air-traffic-control": null,
                                                                                     "./ApplicationColumn": null,
                                                                                     "./ApplicationProperty": null,
                                                                                     "./VersionedApplicationObject": null
@@ -2988,7 +2988,7 @@ export const MAPPED_SUPERCLASS = [
                                                                                 "sourceName": "Table"
                                                                             }
                                                                         },
-                                                                        "path": "@airport/air-control"
+                                                                        "path": "@airport/air-traffic-control"
                                                                     },
                                                                     "DbNumber": null,
                                                                     "DbString": null,
@@ -3055,7 +3055,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     }
                                                                 },
                                                                 "importMapByModulePath": {
-                                                                    "@airport/air-control": null,
+                                                                    "@airport/air-traffic-control": null,
                                                                     "@airport/ground-control": null,
                                                                     "./ApplicationEntity": null,
                                                                     "./VersionedApplicationObject": null
@@ -3529,7 +3529,7 @@ export const MAPPED_SUPERCLASS = [
                                                                 "sourceName": "Table"
                                                             }
                                                         },
-                                                        "path": "@airport/air-control"
+                                                        "path": "@airport/air-traffic-control"
                                                     },
                                                     "DbNumber": null,
                                                     "Entity": null,
@@ -3575,7 +3575,7 @@ export const MAPPED_SUPERCLASS = [
                                                     }
                                                 },
                                                 "importMapByModulePath": {
-                                                    "@airport/air-control": null,
+                                                    "@airport/air-traffic-control": null,
                                                     "@airport/ground-control": null,
                                                     "./ApplicationVersion": null,
                                                     "./VersionedApplicationObject": null

@@ -1,4 +1,4 @@
-import { ClassDecorator }        from '@airport/air-control';
+import { ClassDecorator }        from '@airport/air-traffic-control';
 import {
 	IVespaDocument,
 	IVespaDocumentWithConstructor

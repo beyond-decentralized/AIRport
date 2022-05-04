@@ -1,5 +1,5 @@
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, OperationName, QSchema } from '@airport/air-control';
-import { IContext } from '@airport/di';
+import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, OperationName, QSchema } from '@airport/air-traffic-control';
+import { IContext } from '@airport/direction-indicator';
 import { EntityId as DbEntityId } from '@airport/ground-control';
 /**
  * Created by Papa on 8/26/2017.

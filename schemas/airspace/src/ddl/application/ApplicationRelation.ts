@@ -12,7 +12,7 @@ import {
 	OneToMany,
 	OneToManyElements,
 	Table
-}                              from '@airport/air-control'
+}                              from '@airport/air-traffic-control'
 import {
 	EntityRelationType,
 	RelationId,

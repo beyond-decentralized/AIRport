@@ -10,7 +10,7 @@ import {
 	ITransactionManagerStore,
 	IWebReceiverStore
 } from './TerminalStore'
-import { LastIds } from '@airport/security-check'
+import { LastIds } from '@airport/apron'
 
 export interface ITerminalState {
 

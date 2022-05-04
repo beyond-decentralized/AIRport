@@ -1,6 +1,6 @@
 import {
 	AIRPORT_DATABASE
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
@@ -23,7 +23,7 @@ import {
 	IStoreDriver,
 	ITransactionalServer
 } from '@airport/terminal-map';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 import { BLUEPRINT } from '@airport/blueprint';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 

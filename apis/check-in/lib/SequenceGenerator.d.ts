@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-traffic-control';
 import { DbColumn, DbEntity, DbApplication, DbSequence } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
 /**

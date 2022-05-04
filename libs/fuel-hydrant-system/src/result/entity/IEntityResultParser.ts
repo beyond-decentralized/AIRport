@@ -2,7 +2,7 @@ import {
 	IApplicationUtils,
 	MappedEntityArray,
 	ReferencedColumnData
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	IEntityStateManager,

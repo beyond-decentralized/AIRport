@@ -9,7 +9,7 @@ import {
 import { IApiRegistry } from "@airport/check-in";
 import {
     ILocalAPIServer
-} from "@airport/security-check";
+} from "@airport/apron";
 
 @Injected()
 export class LocalAPIServer

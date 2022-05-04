@@ -112,7 +112,7 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	Dao,
 	DaoQueryDecorators,

@@ -25,7 +25,7 @@ import { ITerminalState } from './TerminalState';
 import { internalTerminalState } from './theState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
-import { LastIds } from '@airport/security-check';
+import { LastIds } from '@airport/apron';
 import {
 	Inject,
 	Injected

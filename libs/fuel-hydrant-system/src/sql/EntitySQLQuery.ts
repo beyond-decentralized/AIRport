@@ -12,7 +12,7 @@ import {
 	objectExists,
 	ReferencedColumnData,
 	Y
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DbColumn,
 	DbEntity,

@@ -16,7 +16,7 @@ import {
 	QStringFunction,
 	QUERY_FACADE,
 	Y
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import {
 	getFullApplicationName,
@@ -30,11 +30,8 @@ import {
 	QueryParameterType,
 	QueryResultType
 } from '@airport/ground-control';
-import {
-	ITempDatabase,
-	TempDatabase
-} from '@airport/taxiway';
 import tsc from 'typescript';
+import { ITempDatabase, TempDatabase } from '../../ddl/loader/temp/TempDatabase';
 import { JsonFormattedQueryWithExpression } from './OperationGenerator';
 
 export class ApplicationQueryGenerator {

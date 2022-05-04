@@ -1,4 +1,4 @@
-import { plus } from '@airport/air-control'
+import { plus } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,

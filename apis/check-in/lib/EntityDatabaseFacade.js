@@ -1,4 +1,4 @@
-import { EntityFind, EntityFindOne, } from '@airport/air-control';
+import { EntityFind, EntityFindOne, } from '@airport/air-traffic-control';
 /**
  * Created by Papa on 12/11/2016.
  */

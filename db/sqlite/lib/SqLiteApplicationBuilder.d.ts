@@ -1,4 +1,4 @@
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequence } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';

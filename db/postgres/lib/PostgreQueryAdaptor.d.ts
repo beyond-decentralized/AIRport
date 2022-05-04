@@ -1,4 +1,4 @@
-import { IQEntityInternal, Parameter } from '@airport/air-control';
+import { IQEntityInternal, Parameter } from '@airport/air-traffic-control';
 import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from '@airport/fuel-hydrant-system';
 import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
 import { IOperationContext } from '@airport/terminal-map';

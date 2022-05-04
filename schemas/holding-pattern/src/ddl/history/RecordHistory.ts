@@ -10,7 +10,7 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	SyncColumnMap
 } from '@airport/ground-control'

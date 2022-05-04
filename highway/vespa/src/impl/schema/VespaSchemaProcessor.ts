@@ -1,4 +1,4 @@
-import { QOperableField }                from '@airport/air-control';
+import { QOperableField }                from '@airport/air-traffic-control';
 import { IVespaDocumentWithConstructor } from '../../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo }         from '../../lingo/model/VespaField';
 import { ensureField }                   from '../VespaDecoratorsImpl';

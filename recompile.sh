@@ -4,7 +4,7 @@ cd ../observe
 tsc
 cd ../../apis/ground-control
 tsc
-cd ../air-control
+cd ../air-traffic-control
 tsc
 cd ../arrivals-n-departures
 tsc
@@ -12,7 +12,7 @@ cd ../check-in
 tsc
 cd ../config
 tsc
-cd ../security-check
+cd ../apron
 tsc
 cd ../../generators/runway
 tsc

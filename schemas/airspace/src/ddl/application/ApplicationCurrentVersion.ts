@@ -4,7 +4,7 @@ import {
     JoinColumn,
     ManyToOne,
     Table
-} from "@airport/air-control";
+} from "@airport/air-traffic-control";
 import { Application } from "./Application";
 import { ApplicationVersion } from "./ApplicationVersion";
 

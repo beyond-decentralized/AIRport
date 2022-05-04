@@ -1,4 +1,4 @@
-import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-control';
+import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-traffic-control';
 import { EntityRelationType, RelationId, RelationIndex } from '@airport/ground-control';
 import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationProperty } from './ApplicationProperty';

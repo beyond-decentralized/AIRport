@@ -1,8 +1,8 @@
-import { AIRPORT_DATABASE, DATABASE_FACADE, QUERY_FACADE, UPDATE_CACHE_MANAGER } from '@airport/air-control';
+import { AIRPORT_DATABASE, DATABASE_FACADE, QUERY_FACADE, UPDATE_CACHE_MANAGER } from '@airport/air-traffic-control';
 import { API_REGISTRY, API_VALIDATOR, OPERATION_DESERIALIZER } from '@airport/check-in';
 import { DEPENDENCY_INJECTION, lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
-import { LOCAL_API_SERVER } from '@airport/security-check';
+import { LOCAL_API_SERVER } from '@airport/apron';
 import { AirportDatabase } from './AirportDatabase';
 import { ApiRegistry } from './core/api/ApiRegistry';
 import { ApiValidator } from './core/api/ApiValidator';

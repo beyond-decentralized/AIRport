@@ -1,4 +1,4 @@
-import { IApiIMI, IIsolateMessage } from "@airport/security-check";
+import { IApiIMI, IIsolateMessage } from "@airport/apron";
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 export interface ITransactionalReceiver {
     handleClientRequest(message: ILocalAPIRequest): void;

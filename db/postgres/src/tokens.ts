@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from "@airport/air-control";
+import { AIRPORT_DATABASE } from "@airport/air-traffic-control";
 import { DEPENDENCY_INJECTION } from "@airport/direction-indicator";
 import { SQL_QUERY_ADAPTOR } from "@airport/fuel-hydrant-system";
 import { APPLICATION_BUILDER } from "@airport/landing";

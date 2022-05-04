@@ -8,8 +8,13 @@
   "projects": [
     // "apis" folder (alphabetical order)
     {
-      "packageName": "@airport/air-control",
-      "projectFolder": "apis/air-control",
+      "packageName": "@airport/air-traffic-control",
+      "projectFolder": "apis/air-traffic-control",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/apron",
+      "projectFolder": "apis/apron",
       "shouldPublish": true
     },
     {
@@ -30,11 +35,6 @@
     {
       "packageName": "@airport/ground-control",
       "projectFolder": "apis/ground-control",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/security-check",
-      "projectFolder": "apis/security-check",
       "shouldPublish": true
     },
     {
@@ -109,11 +109,6 @@
     {
       "packageName": "@airport/takeoff",
       "projectFolder": "generators/takeoff",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/taxiway",
-      "projectFolder": "generators/taxiway",
       "shouldPublish": true
     },
     // "highway" folder (alphabetical order)

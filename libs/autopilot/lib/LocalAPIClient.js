@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Injected } from "@airport/direction-indicator";
+import { Inject, Injected } from "@airport/direction-indicator";
 import { v4 as uuidv4 } from "uuid";
 let _inDemoMode = true;
 // let _demoServer = 'https://turbase.app'
@@ -188,6 +188,12 @@ let LocalAPIClient = class LocalAPIClient {
         }
     }
 };
+__decorate([
+    Inject()
+], LocalAPIClient.prototype, "operationSerializer", void 0);
+__decorate([
+    Inject()
+], LocalAPIClient.prototype, "queryResultsDeserializer", void 0);
 LocalAPIClient = __decorate([
     Injected()
 ], LocalAPIClient);

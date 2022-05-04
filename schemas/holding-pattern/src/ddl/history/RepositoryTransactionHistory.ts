@@ -11,7 +11,7 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import { Actor } from '../infrastructure/Actor'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'

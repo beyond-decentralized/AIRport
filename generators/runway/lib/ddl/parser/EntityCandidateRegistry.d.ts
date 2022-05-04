@@ -1,5 +1,5 @@
 import { DbApplication } from '@airport/ground-control';
-import { IApplicationLoader } from '@airport/taxiway';
+import { IApplicationLoader } from '../loader/ApplicationLoader';
 import { Configuration } from '../options/Options';
 import { EntityReference } from './DocEntry';
 import { EntityCandidate, Interface } from './EntityCandidate';

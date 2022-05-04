@@ -7,7 +7,7 @@ import {
 	IRelationManager,
 	RepositorySheetSelectInfo,
 	SheetQuery
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected

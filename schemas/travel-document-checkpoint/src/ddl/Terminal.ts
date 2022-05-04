@@ -10,7 +10,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import { TerminalAgt } from './TerminalAgt'
 import { User } from './User'
 import { UserTerminal } from './UserTerminal'

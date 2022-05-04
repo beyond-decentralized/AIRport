@@ -1,4 +1,4 @@
-import { IApplicationUtils } from "@airport/air-control";
+import { IApplicationUtils } from "@airport/air-traffic-control";
 import {
 	Injected
 } from '@airport/direction-indicator'

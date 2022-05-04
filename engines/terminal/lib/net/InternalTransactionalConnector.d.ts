@@ -1,4 +1,4 @@
-import { IEntityContext, IQueryContext } from '@airport/air-control';
+import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';

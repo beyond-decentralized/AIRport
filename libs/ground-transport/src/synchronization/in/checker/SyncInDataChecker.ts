@@ -9,7 +9,7 @@ import {
 	IApplicationEntity,
 	IApplicationColumn
 } from '@airport/airspace'
-import { IAirportDatabase } from '@airport/air-control'
+import { IAirportDatabase } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected

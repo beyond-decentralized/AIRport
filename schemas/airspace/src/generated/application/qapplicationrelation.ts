@@ -25,7 +25,7 @@ import {
 	ForeignKey,
 	ManyToOneElements,
 	OneToManyElements,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	VersionedApplicationObjectGraph,
 	VersionedApplicationObjectEId,

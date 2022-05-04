@@ -1,4 +1,4 @@
-import { IQEntityInternal, Parameter } from '@airport/air-control';
+import { IQEntityInternal, Parameter } from '@airport/air-traffic-control';
 import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**

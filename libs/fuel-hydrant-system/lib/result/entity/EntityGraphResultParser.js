@@ -1,6 +1,6 @@
 import { 
 // newMappedEntityArray,
-objectExists } from '@airport/air-control';
+objectExists } from '@airport/air-traffic-control';
 import { ensureChildArray, ensureChildMap, EntityRelationType } from '@airport/ground-control';
 import { GraphMtoMapper } from './GraphMtoMapper';
 import { GraphOtmMapper } from './GraphOtmMapper';

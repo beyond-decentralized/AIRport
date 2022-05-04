@@ -1,4 +1,4 @@
-import { and, Y } from '@airport/air-control'
+import { and, Y } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator'
 import {
 	BaseApplicationVersionDao,

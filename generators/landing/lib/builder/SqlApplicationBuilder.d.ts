@@ -1,8 +1,8 @@
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import { JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IStoreDriver } from '@airport/terminal-map';
 import { IApplication } from '@airport/airspace';
 import { IApplicationBuilder } from './IApplicationBuilder';

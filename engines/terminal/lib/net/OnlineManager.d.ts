@@ -1,4 +1,4 @@
-import { IContext } from '@airport/di';
+import { IContext } from '@airport/direction-indicator';
 import { IRepository, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
 import { IRepositoryManager } from '@airport/terminal-map';
 import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';

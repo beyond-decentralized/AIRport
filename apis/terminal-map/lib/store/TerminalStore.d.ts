@@ -7,7 +7,7 @@ import { Subject, Subscription } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
-import { LastIds } from '@airport/security-check';
+import { LastIds } from '@airport/apron';
 export interface InternalConnectorStore {
     dbName: string;
     internalCredentials: ITransactionCredentials;

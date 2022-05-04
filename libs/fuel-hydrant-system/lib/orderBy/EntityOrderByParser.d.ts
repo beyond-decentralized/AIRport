@@ -1,4 +1,4 @@
-import { IQEntityInternal, JoinTreeNode } from '@airport/air-control';
+import { IQEntityInternal, JoinTreeNode } from '@airport/air-traffic-control';
 import { JSONEntityFieldInOrderBy } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { AbstractEntityOrderByParser, IEntityOrderByParser } from './AbstractEntityOrderByParser';

@@ -5,7 +5,7 @@ import {
 	IQMetadataUtils,
 	JSONLogicalOperation,
 	Parameter,
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected

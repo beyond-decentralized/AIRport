@@ -8,7 +8,7 @@ import {
 	IdColumnOnlyIndex,
 	JsonApplication,
 } from '@airport/ground-control';
-import { JsonApplicationWithLastIds } from '@airport/security-check';
+import { JsonApplicationWithLastIds } from '@airport/apron';
 import {
 	AllDdlObjects,
 	DdlObjects,

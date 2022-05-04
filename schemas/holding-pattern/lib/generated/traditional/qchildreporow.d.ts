@@ -1,4 +1,4 @@
-import { IQEntity } from '@airport/air-control';
+import { IQEntity } from '@airport/air-traffic-control';
 import { RepositoryEntityGraph, RepositoryEntityEId, RepositoryEntityEUpdateColumns, RepositoryEntityEUpdateProperties, RepositoryEntityESelect, QRepositoryEntityQId, QRepositoryEntityQRelation, QRepositoryEntity } from '../repository/qrepositoryentity';
 /**
  * SELECT - All fields and relations (optional).

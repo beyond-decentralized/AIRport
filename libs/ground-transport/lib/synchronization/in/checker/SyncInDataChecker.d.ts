@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { ITerminalStore } from '@airport/terminal-map';
 export interface ISyncInDataChecker {

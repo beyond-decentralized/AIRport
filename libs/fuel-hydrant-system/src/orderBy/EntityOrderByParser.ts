@@ -1,7 +1,7 @@
 import {
 	IQEntityInternal,
 	JoinTreeNode
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,

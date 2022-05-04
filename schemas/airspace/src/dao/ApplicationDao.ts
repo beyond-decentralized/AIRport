@@ -4,7 +4,7 @@ import {
 	max,
 	tree,
 	Y
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator'
 import {
 	DomainName,

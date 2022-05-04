@@ -1,4 +1,4 @@
-import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-control';
+import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-traffic-control';
 import { ITransactionalConnector, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 export declare class QueryFacade implements IQueryFacade {

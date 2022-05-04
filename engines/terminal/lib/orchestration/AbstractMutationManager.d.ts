@@ -1,4 +1,4 @@
-import { AbstractQuery, IFieldUtils, IQEntity, IQueryUtils, IApplicationUtils, IRelationManager } from '@airport/air-control';
+import { AbstractQuery, IFieldUtils, IQEntity, IQueryUtils, IApplicationUtils, IRelationManager } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { PortableQuery, QueryResultType } from '@airport/ground-control';
 import { ITransaction } from '@airport/terminal-map';

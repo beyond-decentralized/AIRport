@@ -1,5 +1,5 @@
 import { ILocalAPIRequest } from '@airport/aviation-communication';
-import { IApiIMI, IIsolateMessage, IIsolateMessageOut } from '@airport/security-check';
+import { IApiIMI, IIsolateMessage, IIsolateMessageOut } from '@airport/apron';
 import { IApiCallContext, IDatabaseManager, ITerminalStore, ITransactionalServer, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 export declare abstract class TransactionalReceiver {

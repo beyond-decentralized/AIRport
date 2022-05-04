@@ -1,7 +1,7 @@
 import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
-}                      from '@airport/air-control'
+}                      from '@airport/air-traffic-control'
 import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
 import {
 	DbApplication,

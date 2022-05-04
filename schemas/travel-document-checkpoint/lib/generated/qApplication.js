@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { diSet as dS, duoDiSet as ddS } from '@airport/check-in';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { getFullApplicationName } from '@airport/ground-control';

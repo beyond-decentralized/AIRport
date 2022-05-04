@@ -1,4 +1,4 @@
-import { IApplicationUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-control';
+import { IApplicationUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 /**

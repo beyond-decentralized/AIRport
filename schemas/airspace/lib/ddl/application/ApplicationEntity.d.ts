@@ -1,4 +1,4 @@
-import { TableConfiguration } from '@airport/air-control';
+import { TableConfiguration } from '@airport/air-traffic-control';
 import { EntityId, EntityIsLocal, EntityIsRepositoryEntity, EntityName, TableIndex } from '@airport/ground-control';
 import { ApplicationColumn } from './ApplicationColumn';
 import { ApplicationOperation } from './ApplicationOperation';

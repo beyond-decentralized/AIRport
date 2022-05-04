@@ -22,7 +22,7 @@ import {
 	IQRepositoryEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	RepositoryEntityGraph,
 	RepositoryEntityEId,

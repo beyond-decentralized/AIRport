@@ -6,7 +6,7 @@ import {
 	IQMetadataUtils,
 	IRelationManager,
 	QEntity
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	IEntityStateManager,

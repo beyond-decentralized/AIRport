@@ -7,7 +7,7 @@ import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
 import { OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in'
-import { AIRPORT_DATABASE } from '@airport/air-control'
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 
 const terminalMap = lib('terminal-map')
 

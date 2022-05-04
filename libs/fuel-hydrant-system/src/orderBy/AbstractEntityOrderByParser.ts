@@ -3,7 +3,7 @@ import {
 	IQEntityInternal,
 	IRelationManager,
 	JoinTreeNode
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,

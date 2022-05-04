@@ -1,7 +1,7 @@
 import {
 	Column,
 	MappedSuperclass
-}                     from '@airport/air-control'
+}                     from '@airport/air-traffic-control'
 import {ImmutableRow} from './ImmutableRow'
 
 @MappedSuperclass()

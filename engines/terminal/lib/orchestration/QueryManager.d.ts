@@ -1,4 +1,4 @@
-import { IRepositoryLoader } from '@airport/air-control';
+import { IRepositoryLoader } from '@airport/air-traffic-control';
 import { PortableQuery } from '@airport/ground-control';
 import { IQueryManager, IQueryOperationContext, IStoreDriver } from '@airport/terminal-map';
 import { Observable } from 'rxjs';

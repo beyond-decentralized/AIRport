@@ -1,5 +1,5 @@
 import { IVersionedApplicationObject } from './versionedapplicationobject';
-import { TableConfiguration } from '@airport/air-control';
+import { TableConfiguration } from '@airport/air-traffic-control';
 import { IApplicationColumn } from './applicationcolumn';
 import { IApplicationProperty } from './applicationproperty';
 import { IApplicationVersion } from './applicationversion';

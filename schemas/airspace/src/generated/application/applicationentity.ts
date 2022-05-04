@@ -3,7 +3,7 @@ import {
 } from './versionedapplicationobject';
 import {
 	TableConfiguration,
-} from '@airport/air-control';
+} from '@airport/air-traffic-control';
 import {
 	IApplicationColumn,
 } from './applicationcolumn';

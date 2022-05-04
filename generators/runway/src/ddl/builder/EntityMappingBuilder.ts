@@ -48,7 +48,7 @@ export class EntityMappingBuilder {
 				return `  accumulator.add(${entityMapping.entityName}, ${entityMapping.entityIndex});`;
 			}).join('\n');
 		return `/* eslint-disable */
-import { AIRPORT_DATABASE } from '@airport/air-control';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 ${imports.join('\n')}
 

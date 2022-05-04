@@ -1,4 +1,4 @@
-import { IAirportDatabase, IRelationManager } from '@airport/air-control'
+import { IAirportDatabase, IRelationManager } from '@airport/air-traffic-control'
 import {
 	JSONEntityFieldInOrderBy,
 	QueryResultType

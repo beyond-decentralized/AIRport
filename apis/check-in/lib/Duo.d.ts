@@ -1,4 +1,4 @@
-import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFieldsSelect, IQEntity, QApplication } from '@airport/air-control';
+import { IDuo, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFieldsSelect, IQEntity, QApplication } from '@airport/air-traffic-control';
 import { DbEntity, EntityId as DbEntityId } from '@airport/ground-control';
 /**
  * Data Manipulation object.

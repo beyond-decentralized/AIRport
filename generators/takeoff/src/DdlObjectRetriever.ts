@@ -20,7 +20,7 @@ import {
 	DomainId,
 	ApplicationIndex,
 } from '@airport/ground-control'
-import type { LastIds } from '@airport/security-check'
+import type { LastIds } from '@airport/apron'
 import { DdlObjects, ITerminalStore } from '@airport/terminal-map'
 
 export interface IDdlObjectRetriever {

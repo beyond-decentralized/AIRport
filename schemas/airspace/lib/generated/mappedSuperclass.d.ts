@@ -55,7 +55,7 @@ export declare const MAPPED_SUPERCLASS: {
                 };
             };
             importMapByModulePath: {
-                "@airport/air-control": any;
+                "@airport/air-traffic-control": any;
                 "./ApplicationVersion": any;
             };
         };
@@ -308,14 +308,14 @@ export declare const MAPPED_SUPERCLASS: {
                             };
                         };
                         importMapByModulePath: {
-                            "@airport/air-control": any;
+                            "@airport/air-traffic-control": any;
                             "@airport/ground-control": any;
                             "./Application": any;
                             "./ApplicationEntity": any;
                             "./ApplicationReference": any;
                             "../../generated/application/applicationentity": any;
                             "../../generated/application/applicationreference": any;
-                            "@airport/security-check": any;
+                            "@airport/apron": any;
                         };
                     };
                     properties: ({
@@ -589,7 +589,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         ApplicationReferenceIndex?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-control": any;
+                                        "@airport/air-traffic-control": any;
                                         "@airport/ground-control": any;
                                         "./Domain": any;
                                         "./ApplicationCurrentVersion": any;
@@ -753,7 +753,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ApplicationVersion?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-control": any;
+                                                    "@airport/air-traffic-control": any;
                                                     "@airport/ground-control": any;
                                                     "./Application": any;
                                                     "./ApplicationVersion"?: undefined;
@@ -930,7 +930,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     DomainName?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-control": any;
+                                                    "@airport/air-traffic-control": any;
                                                     "./Application": any;
                                                     "./ApplicationVersion": any;
                                                     "@airport/ground-control"?: undefined;
@@ -1266,7 +1266,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         ApplicationReferenceIndex?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-control": any;
+                                        "@airport/air-traffic-control": any;
                                         "@airport/ground-control": any;
                                         "./ApplicationColumn": any;
                                         "./ApplicationOperation": any;
@@ -1574,7 +1574,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     Operation_Type?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-control": any;
+                                                    "@airport/air-traffic-control": any;
                                                     "@airport/ground-control": any;
                                                     "./ApplicationEntity": any;
                                                     "./ApplicationPropertyColumn": any;
@@ -1773,7 +1773,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                                 };
                                                             };
                                                             importMapByModulePath: {
-                                                                "@airport/air-control": any;
+                                                                "@airport/air-traffic-control": any;
                                                                 "./ApplicationColumn": any;
                                                                 "./ApplicationProperty": any;
                                                                 "./VersionedApplicationObject": any;
@@ -2018,7 +2018,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ApplicationRelationColumn?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-control": any;
+                                                    "@airport/air-traffic-control": any;
                                                     "@airport/ground-control": any;
                                                     "./ApplicationEntity": any;
                                                     "./VersionedApplicationObject": any;
@@ -2318,7 +2318,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         IApplicationProperty?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-control": any;
+                                        "@airport/air-traffic-control": any;
                                         "@airport/ground-control": any;
                                         "./ApplicationVersion": any;
                                         "./VersionedApplicationObject": any;

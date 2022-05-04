@@ -1,4 +1,4 @@
-import { QApplication as AirportQApplication } from '@airport/air-control';
+import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QRecordUpdateStage } from './qrecordupdatestage';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';

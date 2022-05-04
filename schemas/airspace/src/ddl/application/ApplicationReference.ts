@@ -6,7 +6,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {ApplicationReferenceIndex}  from '@airport/ground-control'
 import {ApplicationVersion}         from './ApplicationVersion'
 import {VersionedApplicationObject} from './VersionedApplicationObject'

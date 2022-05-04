@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,

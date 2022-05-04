@@ -11,7 +11,7 @@ import {
 	QNumberField,
 	QStringField,
 	QTree,
-} from '@airport/air-control'
+} from '@airport/air-traffic-control'
 import {
 	DbColumn,
 	DbEntity,
