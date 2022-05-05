@@ -1,5 +1,6 @@
 import { lib } from "./dependencyInjection/InjectionApplication";
 const directionIndicator = lib('di');
+directionIndicator.autopilot = false;
 export const AUTOPILOT_API_LOADER = directionIndicator.token({
     class: null,
     interface: 'IAutopilotApiLoader',

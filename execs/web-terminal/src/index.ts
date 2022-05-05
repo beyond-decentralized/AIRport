@@ -1,3 +1,4 @@
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
     injectTransactionalConnector,
     injectTransactionalServer

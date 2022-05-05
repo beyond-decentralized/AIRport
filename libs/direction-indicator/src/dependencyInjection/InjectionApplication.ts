@@ -24,7 +24,7 @@ export class InjectionApplication
 	implements IInjectionApplication {
 
 	public tokenMap: Map<string, IDependencyInjectionToken<any>> = new Map()
-	public autopilot = false
+	public autopilot = true
 
 	constructor(
 		public name: string,

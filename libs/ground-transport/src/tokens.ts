@@ -27,6 +27,7 @@ import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdap
 import { NONHUB_CLIENT } from '@airport/nonhub-client'
 
 const groundTransport = lib('ground-transport')
+groundTransport.autopilot = false
 
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token<IStage1SyncedInDataProcessor>({
     class: Stage1SyncedInDataProcessor,

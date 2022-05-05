@@ -32,6 +32,7 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer';
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer';
 const terminal = lib('terminal');
+terminal.autopilot = false;
 DEPENDENCY_INJECTION.set(CLIENT_QUERY_MANAGER, ClientQueryManager);
 DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader);
 DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector);

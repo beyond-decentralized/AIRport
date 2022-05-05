@@ -4,6 +4,7 @@ import { IOperationSerializer, OperationSerializer } from './OperationSerializer
 import { ISerializationStateManager, SerializationStateManager } from './SerializationStateManager'
 
 const pressurization = lib('pressurization')
+pressurization.autopilot = false
 
 export const OPERATION_SERIALIZER = pressurization.token<IOperationSerializer>({
     class: OperationSerializer,

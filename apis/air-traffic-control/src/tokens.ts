@@ -21,67 +21,68 @@ import { QueryUtils } from './impl/utils/QueryUtils'
 import { ApplicationUtils } from './impl/utils/ApplicationUtils'
 import { FieldUtils } from './impl/utils/FieldUtils'
 
-const airControl = lib('air-traffic-control')
+const airTrafficControl = lib('air-traffic-control')
+airTrafficControl.autopilot = false
 
-export const AIRPORT_DATABASE = airControl.token<IAirportDatabase>({
+export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>({
 	class: null,
 	interface: 'IAirportDatabase',
 	token: 'AIRPORT_DATABASE'
 })
-export const APPLICATION_UTILS = airControl.token<IApplicationUtils>({
+export const APPLICATION_UTILS = airTrafficControl.token<IApplicationUtils>({
 	class: ApplicationUtils,
 	interface: 'IApplicationUtils',
 	token: 'APPLICATION_UTILS'
 })
-export const DATABASE_FACADE = airControl.token<IDatabaseFacade>({
+export const DATABASE_FACADE = airTrafficControl.token<IDatabaseFacade>({
 	class: null,
 	interface: 'IDatabaseFacade',
 	token: 'DATABASE_FACADE'
 })
-export const ENTITY_UTILS = airControl.token<IEntityUtils>({
+export const ENTITY_UTILS = airTrafficControl.token<IEntityUtils>({
 	class: EntityUtils,
 	interface: 'IEntityUtils',
 	token: 'ENTITY_UTILS'
 })
-export const FIELD_UTILS = airControl.token<IFieldUtils>({
+export const FIELD_UTILS = airTrafficControl.token<IFieldUtils>({
 	class: FieldUtils,
 	interface: 'IFieldUtils',
 	token: 'FIELD_UTILS'
 })
-export const LOOKUP = airControl.token<ILookup>({
+export const LOOKUP = airTrafficControl.token<ILookup>({
 	class: Lookup,
 	interface: 'ILookup',
 	token: 'LOOKUP'
 })
-export const Q_METADATA_UTILS = airControl.token<IQMetadataUtils>({
+export const Q_METADATA_UTILS = airTrafficControl.token<IQMetadataUtils>({
 	class: QMetadataUtils,
 	interface: 'IQMetadataUtils',
 	token: 'Q_METADATA_UTILS'
 })
 
-export const QUERY_FACADE = airControl.token<IQueryFacade>({
+export const QUERY_FACADE = airTrafficControl.token<IQueryFacade>({
 	class: null,
 	interface: 'IQueryFacade',
 	token: 'QUERY_FACADE'
 })
 
-export const QUERY_UTILS = airControl.token<IQueryUtils>({
+export const QUERY_UTILS = airTrafficControl.token<IQueryUtils>({
 	class: QueryUtils,
 	interface: 'IQueryUtils',
 	token: 'QUERY_UTILS'
 })
 
-export const RELATION_MANAGER = airControl.token<IRelationManager>({
+export const RELATION_MANAGER = airTrafficControl.token<IRelationManager>({
 	class: RelationManager,
 	interface: 'IRelationManager',
 	token: 'RELATION_MANAGER'
 })
-export const REPOSITORY_LOADER = airControl.token<IRepositoryLoader>({
+export const REPOSITORY_LOADER = airTrafficControl.token<IRepositoryLoader>({
 	class: null,
 	interface: 'IRepositoryLoader',
 	token: 'REPOSITORY_LOADER'
 })
-export const UPDATE_CACHE_MANAGER = airControl.token<IUpdateCacheManager>({
+export const UPDATE_CACHE_MANAGER = airTrafficControl.token<IUpdateCacheManager>({
 	class: null,
 	interface: 'IUpdateCacheManager',
 	token: 'UPDATE_CACHE_MANAGER'

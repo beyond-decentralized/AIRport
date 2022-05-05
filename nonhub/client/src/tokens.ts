@@ -6,6 +6,8 @@ import { INonhubClient, NonhubClient } from './NonhubClient'
 // } from "string-cipher";
 
 const nonhubClient = lib('nonhub-client')
+nonhubClient.autopilot = false
+
 export const NONHUB_CLIENT = nonhubClient.token<INonhubClient>({
     class: NonhubClient,
     interface: 'INonhubClient',

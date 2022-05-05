@@ -4,6 +4,8 @@ import { IContainer } from "./IContainer"
 export interface IRootContainer
     extends IContainer {
 
+    isFramework: boolean
+
     // objectPoolMap: Map<string, any[]>
 
     db(

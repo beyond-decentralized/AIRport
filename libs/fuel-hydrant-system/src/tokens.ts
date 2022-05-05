@@ -13,6 +13,7 @@ import { SQLWhereBase } from './sql/core/SQLWhereBase'
 import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
+fuelHydrantSystem.autopilot = false
 
 export const ACTIVE_QUERIES = fuelHydrantSystem.token<IActiveQueries>({
     class: ActiveQueries,

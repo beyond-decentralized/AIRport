@@ -77,7 +77,7 @@ export class ChildContainer extends Container {
             }
             let object = this.objectMap.get(token.descriptor.token);
             if (!object) {
-                if (!this.context.inAIRportApp && token.application.autopilot) {
+                if (!this.rootContainer.isFramework && token.application.autopilot) {
                     object = this.getSync(AUTOPILOT_API_LOADER)
                         .loadApiAutopilot(token);
                 }

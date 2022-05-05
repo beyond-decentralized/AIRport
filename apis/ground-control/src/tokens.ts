@@ -4,7 +4,8 @@ import { IInterAppAPIClient } from './lingo/InterAppAPIClient';
 import { ITransactionalConnector } from './lingo/ITransactionalConnector';
 import { IOperationContextLoader } from './lingo/OperationContextLoader';
 
-const groundControl = lib('ground-control');
+const groundControl = lib('ground-control')
+groundControl.autopilot = false
 
 export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>({
     class: null,

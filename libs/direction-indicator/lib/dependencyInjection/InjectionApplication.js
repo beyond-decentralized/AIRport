@@ -5,7 +5,7 @@ export class InjectionApplication {
         this.name = name;
         this.domain = domain;
         this.tokenMap = new Map();
-        this.autopilot = false;
+        this.autopilot = true;
     }
     token(descriptor) {
         const existingToken = this.tokenMap.get(descriptor.token);

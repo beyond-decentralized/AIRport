@@ -4,6 +4,7 @@ import { Container } from "./Container";
 export class RootContainer extends Container {
     constructor() {
         super(...arguments);
+        this.isFramework = false;
         this.uiContainers = new Set();
     }
     // NOTE: Object pooling is not supported because of possible callbacks

@@ -1,3 +1,5 @@
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+
 export * from './core/repository/RepositoryLoader'
 export * from './core/repository/RepositoryManager'
 export * from './data/InternalRecordManager'
@@ -27,3 +29,4 @@ export * from './shared/PlatformUtils'
 export * from './ClientQueryManager'
 // export * from './Constants'
 export * from './tokens'
+DEPENDENCY_INJECTION.isFramework = true

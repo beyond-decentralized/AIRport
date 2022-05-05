@@ -9,7 +9,6 @@ export interface IContext {
     [propertyName: string]: any;
 }
 export interface IInjectionContext extends IContext {
-    inAIRportApp?: boolean;
     id: string;
     type: ContextType;
 }

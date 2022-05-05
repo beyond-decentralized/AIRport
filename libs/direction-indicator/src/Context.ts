@@ -12,7 +12,6 @@ export interface IContext {
 export interface IInjectionContext
 	extends IContext {
 
-	inAIRportApp?: boolean
 	id: string
 	type: ContextType
 }

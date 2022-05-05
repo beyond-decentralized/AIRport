@@ -3,6 +3,7 @@ import { QueryResultsDeserializer } from './QueryResultsDeserializer';
 import { OperationSerializer } from './OperationSerializer';
 import { SerializationStateManager } from './SerializationStateManager';
 const pressurization = lib('pressurization');
+pressurization.autopilot = false;
 export const OPERATION_SERIALIZER = pressurization.token({
     class: OperationSerializer,
     interface: 'IOperationSerializer',

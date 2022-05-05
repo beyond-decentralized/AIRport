@@ -9,8 +9,9 @@ export class RootContainer
     extends Container
     implements IRootContainer {
 
-    uiContainers: Set<IContainer> = new Set<IContainer>();
+    isFramework = false
     dbContainerMap: Map<string, IChildContainer>
+    uiContainers: Set<IContainer> = new Set<IContainer>();
     // NOTE: Object pooling is not supported because of possible callbacks
     // that are out of synchronous flow of a transaction.  Thus objects are
     // retained in the container even after the container is removed

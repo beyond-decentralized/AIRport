@@ -14,6 +14,7 @@ import { ApplicationComposer, IApplicationComposer } from './recorder/Applicatio
 import { ApplicationRecorder, IApplicationRecorder } from './recorder/ApplicationRecorder'
 
 const landing = lib('landing')
+landing.autopilot = false
 
 export const ABSTRACT_APPLICATION_INITIALIZER = landing.token<ApplicationInitializer>({
     class: ApplicationInitializer,
