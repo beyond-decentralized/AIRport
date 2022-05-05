@@ -1,6 +1,6 @@
 import { TerminalDao } from '../dao/TerminalDao';
 import { UserDao } from '../dao/UserDao';
-import { travelDocumentCheckpoint, USER_API } from './api-tokens';
+import { travelDocumentCheckpoint, USER_API } from './common-tokens';
 export const TERMINAL_DAO = travelDocumentCheckpoint.token({
     class: TerminalDao,
     interface: 'ITerminalDao',

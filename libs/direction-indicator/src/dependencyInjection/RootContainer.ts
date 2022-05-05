@@ -19,7 +19,7 @@ export class RootContainer
     // objectPoolMap: Map<string, any[]> = new Map();
 
     db(
-        id?: string
+        id: string = null
     ): IChildContainer {
         let dbContainer = this.dbContainerMap.get(id)
         if (!dbContainer) {

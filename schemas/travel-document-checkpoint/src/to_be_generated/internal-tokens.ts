@@ -3,7 +3,7 @@ import { IUserDao, UserDao } from '../dao/UserDao'
 import {
     travelDocumentCheckpoint,
     USER_API
-} from './api-tokens'
+} from './common-tokens'
 
 export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>({
     class: TerminalDao,

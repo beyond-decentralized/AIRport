@@ -1,6 +1,7 @@
-import { USER_API } from "../api-tokens";
+import { USER_API } from "../common-tokens";
 import { IUser } from "../api-index";
 import { IInterAppAPIClient } from "@airport/ground-control";
+import { Inject, Injected } from "@airport/direction-indicator";
 
 export enum AddUserErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
@@ -16,8 +17,10 @@ export interface IAddUserResponse {
     user?: IUser
 }
 
+@Injected()
 export class UserApi {
 
+    @Inject()
     interAppApiClient: IInterAppAPIClient
 
     async addUser(

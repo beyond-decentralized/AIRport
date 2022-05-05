@@ -12,7 +12,7 @@ export class RootContainer extends Container {
     // retained in the container even after the container is removed
     // in order to allow for transactionId reference
     // objectPoolMap: Map<string, any[]> = new Map();
-    db(id) {
+    db(id = null) {
         let dbContainer = this.dbContainerMap.get(id);
         if (!dbContainer) {
             dbContainer = new ChildContainer(this, new Context(id, ContextType.DB));
