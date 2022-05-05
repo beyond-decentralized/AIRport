@@ -1,6 +1,6 @@
 {
   "main": "lib/to_be_generated/client.js",
-  "name": "@airport/travel-document-checkpoint-client",
+  "name": "@airport/holding-pattern-client",
   "type": "module",
   "typings": "lib/to_be_generated/client",
   "version": "0.0.1"
