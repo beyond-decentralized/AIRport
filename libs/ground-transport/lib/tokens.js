@@ -20,7 +20,7 @@ import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-runtime';
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace';
-import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern';
+import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern-runtime';
 import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/moving-walkway';
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter';
 import { NONHUB_CLIENT } from '@airport/nonhub-client';

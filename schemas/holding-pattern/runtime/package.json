@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@airport/holding-pattern": "0.0.1"
+  },
+  "main": "lib/runtime.js",
+  "name": "@airport/holding-pattern-runtime",
+  "type": "module",
+  "typings": "lib/runtime",
+  "version": "0.0.1"
+}

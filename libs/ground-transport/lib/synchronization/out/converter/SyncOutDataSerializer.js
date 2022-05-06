@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { repositoryEntity } from "@airport/ground-control";
-import { RepositoryTransactionType } from "@airport/holding-pattern";
+import { RepositoryTransactionType } from "@airport/holding-pattern-runtime";
 export const WITH_ID = {};
 export const WITH_RECORD_HISTORY = {};
 export const WITH_INDEX = {};

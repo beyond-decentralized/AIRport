@@ -7,7 +7,7 @@ import {
 } from '@airport/arrivals-n-departures'
 import {
 	IActor, IActorDao
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 
 export interface ISyncInActorChecker {
 

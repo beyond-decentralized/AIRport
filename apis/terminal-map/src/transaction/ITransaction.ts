@@ -1,4 +1,4 @@
-import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern'
+import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern-runtime'
 import { IStoreDriver } from '../core/data/StoreDriver'
 import { ITransactionCredentials } from '../Credentials'
 

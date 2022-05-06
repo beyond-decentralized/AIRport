@@ -13,7 +13,7 @@ import {
 import {
 	IRecordHistory,
 	IRepository
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern-runtime";
 import { SynchronizationConflict_Type } from "./SynchronizationConflictType";
 import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
 

@@ -1,4 +1,4 @@
-import { IRecordHistory, IRepository } from "@airport/holding-pattern";
+import { IRecordHistory, IRepository } from "@airport/holding-pattern-runtime";
 import { SynchronizationConflict_Type } from "./SynchronizationConflictType";
 import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
 export declare type SynchronizationConflict_Id = number;

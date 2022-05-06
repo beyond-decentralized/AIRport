@@ -13,7 +13,7 @@ import {
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
-import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern'
+import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern-runtime'
 import {
     ICredentials,
     IOperationContext,

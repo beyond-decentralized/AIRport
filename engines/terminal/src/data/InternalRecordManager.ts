@@ -9,7 +9,7 @@ import {
     Actor,
     IActor,
     IActorDao,
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern-runtime";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {

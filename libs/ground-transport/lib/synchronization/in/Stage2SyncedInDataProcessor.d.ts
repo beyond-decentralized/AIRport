@@ -1,6 +1,6 @@
 import { IAirportDatabase, IDatabaseFacade } from '@airport/air-traffic-control';
 import { ColumnIndex, ApplicationVersionId, TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
-import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
+import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern-runtime';
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
 import { IApplication } from '@airport/airspace';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';

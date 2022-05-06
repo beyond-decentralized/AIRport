@@ -2,7 +2,7 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryTransactionHistory
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern-runtime";
 import type {
 	ITerminal,
 	IUser

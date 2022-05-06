@@ -1,6 +1,6 @@
 import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
-import { OperationHistory_Id, RecordHistoryId, RepositoryTransactionHistory_Id, TransactionHistoryId } from '@airport/holding-pattern';
+import { OperationHistory_Id, RecordHistoryId, RepositoryTransactionHistory_Id, TransactionHistoryId } from '@airport/holding-pattern-runtime';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;

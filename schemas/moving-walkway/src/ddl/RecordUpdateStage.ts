@@ -12,7 +12,7 @@ import {
 	IActor,
 	IRepository,
 	RecordHistoryActorRecordId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import {
 	IApplicationColumn,
 	IApplicationEntity,

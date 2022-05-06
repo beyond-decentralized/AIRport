@@ -23,7 +23,7 @@ import {
 	IRepositoryTransactionHistory,
 	RepositoryTransactionType,
 	Repository_Id
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern-runtime";
 import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-runtime";
 
 export interface ISyncOutDataSerializer {

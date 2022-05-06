@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "@airport/arrivals-n-departures": "0.0.1",
-        "@airport/holding-pattern": "0.0.1",
+        "@airport/holding-pattern-runtime": "0.0.1",
         "@airport/nonhub-types": "0.0.1",
         "@airport/processor-common": "0.0.1",
         "async": "^3.2.1",

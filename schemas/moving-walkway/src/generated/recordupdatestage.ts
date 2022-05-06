@@ -6,7 +6,7 @@ import {
 import {
 	IRepository,
 	IActor,
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern-runtime';
 
 
 

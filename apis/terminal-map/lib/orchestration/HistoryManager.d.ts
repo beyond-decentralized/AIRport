@@ -1,5 +1,5 @@
 import { TransactionType } from "@airport/ground-control";
-import type { IRepositoryTransactionHistory, ITransactionHistory, Repository_Id } from "@airport/holding-pattern";
+import type { IRepositoryTransactionHistory, ITransactionHistory, Repository_Id } from "@airport/holding-pattern-runtime";
 import { IOperationContext } from "../processing/OperationContext";
 export interface IHistoryManager {
     getNewTransactionHistory(transactionType: TransactionType): Promise<ITransactionHistory>;

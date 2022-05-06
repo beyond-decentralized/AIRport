@@ -2,7 +2,7 @@ import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplica
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { IMemoizedSelector, ISelectorManager } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern';
+import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject, Subscription } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';

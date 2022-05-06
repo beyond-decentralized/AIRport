@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IActorDao } from '@airport/holding-pattern';
+import { IActorDao } from '@airport/holding-pattern-runtime';
 export interface ISyncInActorChecker {
     ensureActors(message: RepositorySynchronizationMessage): Promise<boolean>;
 }

@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
+import { IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern-runtime';
 import { ISynchronizationConflictDao, ISynchronizationConflictValuesDao } from '@airport/moving-walkway';
 import { ITransaction } from '@airport/terminal-map';
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor';

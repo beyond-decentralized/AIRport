@@ -19,7 +19,7 @@ import {
 	ApplicationName,
 	FullApplicationName
 } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern';
+import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject, Subscription } from 'rxjs';
 import { ITerminalState } from './TerminalState';
 import { internalTerminalState } from './theState';

@@ -1,4 +1,4 @@
-import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
+import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern-runtime";
 import type { ITerminal, IUser } from "@airport/travel-document-checkpoint-runtime";
 import { IApplication, IApplicationVersion } from "@airport/airspace";
 export interface RepositorySynchronizationMessage {

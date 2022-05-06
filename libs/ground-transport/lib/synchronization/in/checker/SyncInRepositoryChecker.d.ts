@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IRepositoryDao } from '@airport/holding-pattern';
+import { IRepositoryDao } from '@airport/holding-pattern-runtime';
 export interface ISyncInRepositoryChecker {
     ensureRepositories(message: RepositorySynchronizationMessage): Promise<boolean>;
 }

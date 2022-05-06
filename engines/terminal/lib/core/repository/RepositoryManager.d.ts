@@ -1,5 +1,5 @@
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/air-traffic-control';
-import { IActor, IRepository, IRepositoryDao } from '@airport/holding-pattern';
+import { IActor, IRepository, IRepositoryDao } from '@airport/holding-pattern-runtime';
 import { IOperationContext, IRepositoryManager, UpdateState } from '@airport/terminal-map';
 /**
  * Created by Papa on 2/12/2017.

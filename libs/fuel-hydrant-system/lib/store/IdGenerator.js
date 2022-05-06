@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { Q } from '@airport/holding-pattern';
+import { Q } from '@airport/holding-pattern-runtime';
 /**
  * Created by Papa on 9/2/2016.
  */

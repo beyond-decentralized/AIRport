@@ -1,7 +1,7 @@
 import { IInjectable } from '@airport/direction-indicator'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import { QueryType, SQLDataType } from '@airport/ground-control'
-import { ITransactionHistory } from '@airport/holding-pattern'
+import { ITransactionHistory } from '@airport/holding-pattern-runtime'
 import {
 	ICredentials,
 	IOperationContext,

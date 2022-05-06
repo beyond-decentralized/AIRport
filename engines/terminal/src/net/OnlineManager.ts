@@ -13,7 +13,7 @@ import {
   IRepositoryTransactionHistoryDao,
   RepositoryTransactionHistory,
   IRepositoryDao,
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern-runtime';
 import {
   IRepositoryManager,
   ITransactionManager,

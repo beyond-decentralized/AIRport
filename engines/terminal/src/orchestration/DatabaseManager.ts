@@ -15,7 +15,7 @@ import {
 } from '@airport/ground-control';
 import {
 	Actor,
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern-runtime';
 import { IApplication, IApplicationDao } from '@airport/airspace';
 import {
 	IApplicationInitializer,

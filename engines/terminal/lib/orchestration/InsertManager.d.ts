@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity, IRootTransaction, JsonInsertValues, PortableQuery } from '@airport/ground-control';
-import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern';
+import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern-runtime';
 import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, RecordId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
     airportDatabase: IAirportDatabase;

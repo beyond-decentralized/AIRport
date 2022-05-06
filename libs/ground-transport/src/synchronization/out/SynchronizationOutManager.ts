@@ -15,7 +15,7 @@ import {
 	Repository_Id,
 	Repository_Source,
 	Repository_UuId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 

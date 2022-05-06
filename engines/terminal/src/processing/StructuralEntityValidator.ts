@@ -12,7 +12,7 @@ import {
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
-import { IRepositoryEntity } from '@airport/holding-pattern'
+import { IRepositoryEntity } from '@airport/holding-pattern-runtime'
 import {
 	IOperationContext,
 	IRepositoryManager,

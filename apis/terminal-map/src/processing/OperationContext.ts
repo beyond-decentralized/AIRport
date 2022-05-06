@@ -2,7 +2,7 @@ import { IContext } from "@airport/direction-indicator";
 import {
     DbEntity
 } from "@airport/ground-control";
-import { IActor, IRepository } from "@airport/holding-pattern";
+import { IActor, IRepository } from "@airport/holding-pattern-runtime";
 
 export interface IOperationContext
     extends IContext {

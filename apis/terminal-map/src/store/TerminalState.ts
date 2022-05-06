@@ -1,4 +1,4 @@
-import { IActor } from '@airport/holding-pattern'
+import { IActor } from '@airport/holding-pattern-runtime'
 import type {
 	IDomain,
 	IApplication

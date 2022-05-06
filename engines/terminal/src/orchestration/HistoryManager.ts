@@ -8,7 +8,7 @@ import {
 	ITransactionHistory,
 	ITransactionHistoryDuo,
 	Repository_Id,
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import { IHistoryManager, IOperationContext } from '@airport/terminal-map'
 
 @Injected()

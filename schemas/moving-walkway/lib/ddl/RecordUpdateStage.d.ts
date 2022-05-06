@@ -1,4 +1,4 @@
-import { IActor, IRepository, RecordHistoryActorRecordId } from '@airport/holding-pattern';
+import { IActor, IRepository, RecordHistoryActorRecordId } from '@airport/holding-pattern-runtime';
 import { IApplicationColumn, IApplicationEntity, IApplicationVersion } from '@airport/airspace';
 export declare type RecordUpdateStageId = number;
 /**

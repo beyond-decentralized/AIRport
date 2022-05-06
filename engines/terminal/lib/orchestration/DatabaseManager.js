@@ -8,7 +8,7 @@ import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { container } from '@airport/direction-indicator';
 import { getFullApplicationName, } from '@airport/ground-control';
-import { Actor, } from '@airport/holding-pattern';
+import { Actor, } from '@airport/holding-pattern-runtime';
 import { BLUEPRINT } from '@airport/blueprint';
 let DatabaseManager = class DatabaseManager {
     constructor() {

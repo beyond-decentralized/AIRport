@@ -30,7 +30,7 @@ import {
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import {
 	ISynchronizationConflict,
 	SynchronizationConflict_Type

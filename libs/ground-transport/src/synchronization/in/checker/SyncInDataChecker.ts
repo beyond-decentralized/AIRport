@@ -22,7 +22,7 @@ import {
 	IOperationHistory,
 	IRecordHistory,
 	RepositoryTransactionType
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import { ITerminalStore } from '@airport/terminal-map'
 
 export interface ISyncInDataChecker {

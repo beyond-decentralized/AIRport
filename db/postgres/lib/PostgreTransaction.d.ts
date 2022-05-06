@@ -1,6 +1,6 @@
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import { QueryType, SQLDataType } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern';
+import { ITransactionHistory } from '@airport/holding-pattern-runtime';
 import { ICredentials, IOperationContext, ITransaction } from '@airport/terminal-map';
 import pg from 'pg';
 import { PostgreSqlDriver } from './PostgreSqlDriver';

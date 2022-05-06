@@ -37,7 +37,7 @@ import {
 	IRepositoryTransactionHistoryDuo,
 	RepositoryEntity_SystemWideOperationId,
 	SystemWideOperationId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import {
 	IHistoryManager,
 	IOperationContext,

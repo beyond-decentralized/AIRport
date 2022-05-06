@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { INTERNAL_APP, INTERNAL_DOMAIN } from '@airport/ground-control';
-import { Q } from '@airport/holding-pattern';
+import { Q } from '@airport/holding-pattern-runtime';
 import { AbstractMutationManager } from './AbstractMutationManager';
 let TransactionManager = class TransactionManager extends AbstractMutationManager {
     /**

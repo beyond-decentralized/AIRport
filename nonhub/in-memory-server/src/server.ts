@@ -4,7 +4,7 @@ import type {
     RepositorySynchronizationReadResponse,
     RepositorySynchronizationWriteRequest,
 } from '@airport/arrivals-n-departures';
-import type { Repository_UuId } from '@airport/holding-pattern';
+import type { Repository_UuId } from '@airport/holding-pattern-runtime';
 import type {
     SearchRequest,
     UserRequest,

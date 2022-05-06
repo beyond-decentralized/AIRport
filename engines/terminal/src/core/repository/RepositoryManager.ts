@@ -17,7 +17,7 @@ import {
 	IRepository,
 	IRepositoryDao,
 	QRepositoryEntity
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import {
 	IOperationContext,
 	IRepositoryManager,

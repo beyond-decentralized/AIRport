@@ -211,6 +211,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/holding-pattern-runtime",
+      "projectFolder": "schemas/holding-pattern/runtime",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/moving-walkway",
       "projectFolder": "schemas/moving-walkway",
       "shouldPublish": true

@@ -28,7 +28,7 @@ import {
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor } from '@airport/holding-pattern'
+import { IActor } from '@airport/holding-pattern-runtime'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,

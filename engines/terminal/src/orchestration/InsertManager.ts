@@ -24,7 +24,7 @@ import {
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
 	SystemWideOperationId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 import {
 	IHistoryManager,
 	IInsertManager,

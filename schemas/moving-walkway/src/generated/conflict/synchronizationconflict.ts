@@ -1,7 +1,7 @@
 import {
 	IRepository,
 	IRecordHistory,
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern-runtime';
 import {
 	ISynchronizationConflictValues,
 } from './synchronizationconflictvalues';

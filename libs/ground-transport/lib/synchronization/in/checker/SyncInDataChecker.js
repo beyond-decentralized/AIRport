@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { ChangeType, repositoryEntity } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpIds } from '@airport/check-in';
-import { RepositoryTransactionType } from '@airport/holding-pattern';
+import { RepositoryTransactionType } from '@airport/holding-pattern-runtime';
 let SyncInDataChecker = class SyncInDataChecker {
     /**
      * Every dataMessage.data.repoTransHistories array must be sorted before entering

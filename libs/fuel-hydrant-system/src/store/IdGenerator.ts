@@ -16,7 +16,7 @@ import {
 	RecordHistoryId,
 	RepositoryTransactionHistory_Id,
 	TransactionHistoryId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern-runtime'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
