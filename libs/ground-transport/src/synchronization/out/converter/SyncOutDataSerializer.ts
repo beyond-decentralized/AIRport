@@ -24,7 +24,7 @@ import {
 	RepositoryTransactionType,
 	Repository_Id
 } from "@airport/holding-pattern";
-import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-internal";
+import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint-runtime";
 
 export interface ISyncOutDataSerializer {
 

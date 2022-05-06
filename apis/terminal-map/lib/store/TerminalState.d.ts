@@ -1,6 +1,6 @@
 import { IActor } from '@airport/holding-pattern';
 import type { IDomain, IApplication } from '@airport/airspace';
-import type { ITerminal } from '@airport/travel-document-checkpoint-internal';
+import type { ITerminal } from '@airport/travel-document-checkpoint-runtime';
 import { InternalConnectorStore, IReceiverStore, ITransactionManagerStore, IWebReceiverStore } from './TerminalStore';
 import { LastIds } from '@airport/apron';
 export interface ITerminalState {

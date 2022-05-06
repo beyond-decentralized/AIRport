@@ -2,9 +2,9 @@
   "dependencies": {
     "@airport/travel-document-checkpoint": "0.0.1"
   },
-  "main": "lib/internal.js",
-  "name": "@airport/travel-document-checkpoint-internal",
+  "main": "lib/runtime.js",
+  "name": "@airport/travel-document-checkpoint-runtime",
   "type": "module",
-  "typings": "lib/internal",
+  "typings": "lib/runtime",
   "version": "0.0.1"
 }

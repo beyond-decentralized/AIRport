@@ -1,4 +1,4 @@
-import { QApplication as AirportQApplication } from '@airport/air-control';
+import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
 import { DbApplication } from '@airport/ground-control';
 import { QAgt } from '../generated/qagt';
 import { QContinent } from '../generated/qcontinent';

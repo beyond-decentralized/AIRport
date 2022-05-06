@@ -33,7 +33,7 @@ import {
 	QUserQId,
 	QUserQRelation,
 	IUser,
-} from '@airport/travel-document-checkpoint-internal';
+} from '@airport/travel-document-checkpoint-runtime';
 import {
 	IImmutableRow,
 } from './immutablerow';

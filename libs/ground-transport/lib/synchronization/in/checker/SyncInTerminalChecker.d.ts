@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { ITerminalDao } from '@airport/travel-document-checkpoint-internal';
+import { ITerminalDao } from '@airport/travel-document-checkpoint-runtime';
 export interface ISyncInTerminalChecker {
     ensureTerminals(message: RepositorySynchronizationMessage): Promise<boolean>;
 }

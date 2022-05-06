@@ -14,6 +14,7 @@ export interface IAddUserResponse {
 }
 export interface IUserApi {
     addUser(username: string, email: string): Promise<IAddUserResponse>;
+    findUser(privateId: string): Promise<IUser>;
 }
 export declare class UserApi {
     userDao: UserDao;

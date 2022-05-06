@@ -1,7 +1,7 @@
 import {
 	IUser,
 	ITerminal,
-} from '@airport/travel-document-checkpoint-internal';
+} from '@airport/travel-document-checkpoint-runtime';
 import {
 	IApplication,
 } from '@airport/airspace';

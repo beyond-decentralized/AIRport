@@ -1,3 +1,5 @@
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+import { UserApi } from '../api/UserApi'
 import { ITerminalDao, TerminalDao } from '../dao/TerminalDao'
 import { IUserDao, UserDao } from '../dao/UserDao'
 import {
@@ -16,6 +18,7 @@ export const USER_DAO = travelDocumentCheckpoint.token<IUserDao>({
     token: 'USER_DAO'
 })
 
+DEPENDENCY_INJECTION.set(USER_API, UserApi)
 USER_API.setDependencies({
     userDao: USER_DAO
 })

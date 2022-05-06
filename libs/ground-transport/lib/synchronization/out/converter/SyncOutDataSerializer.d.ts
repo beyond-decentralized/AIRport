@@ -2,7 +2,7 @@ import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_Id } from "@airport/ground-control";
 import { Actor_Id, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern";
-import { User_Id } from "@airport/travel-document-checkpoint-internal";
+import { User_Id } from "@airport/travel-document-checkpoint-runtime";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
         historiesToSend: IRepositoryTransactionHistory[];

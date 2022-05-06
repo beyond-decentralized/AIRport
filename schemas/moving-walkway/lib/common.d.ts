@@ -1,6 +1,6 @@
 import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
 import { IDomain, IApplication, IApplicationVersion } from "@airport/airspace";
-import { ITerminal, IUser } from '@airport/travel-document-checkpoint-internal';
+import { ITerminal, IUser } from '@airport/travel-document-checkpoint-runtime';
 export interface RepositoryTransactionBlockData {
     actors: IActor[];
     domains: IDomain[];

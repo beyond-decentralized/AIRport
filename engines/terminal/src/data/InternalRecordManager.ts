@@ -21,7 +21,7 @@ import {
 import {
     Terminal,
     User
-} from "@airport/travel-document-checkpoint-internal";
+} from "@airport/travel-document-checkpoint-runtime";
 import { v4 as uuidv4 } from "uuid";
 import {
 	Inject,

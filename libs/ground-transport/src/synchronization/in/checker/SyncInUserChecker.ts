@@ -6,7 +6,7 @@ import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures
 import {
 	IUser,
 	IUserDao
-} from '@airport/travel-document-checkpoint-internal'
+} from '@airport/travel-document-checkpoint-runtime'
 
 export interface ISyncInUserChecker {
 

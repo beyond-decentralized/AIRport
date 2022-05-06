@@ -11,7 +11,7 @@ import {
 import {
 	ITerminal,
 	IUser
-}                from '@airport/travel-document-checkpoint-internal'
+}                from '@airport/travel-document-checkpoint-runtime'
 
 export interface RepositoryTransactionBlockData {
 	actors: IActor[];

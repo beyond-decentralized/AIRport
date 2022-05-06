@@ -4,7 +4,7 @@ import {
 	ManyToOne,
 	MappedSuperclass
 }                  from '@airport/air-traffic-control'
-import {IUser}     from '@airport/travel-document-checkpoint-internal'
+import {IUser}     from '@airport/travel-document-checkpoint-runtime'
 
 @MappedSuperclass()
 export abstract class ImmutableRow {

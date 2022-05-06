@@ -1597,12 +1597,12 @@ export const MAPPED_SUPERCLASS = [
                                 "sourceName": "IUser"
                             }
                         },
-                        "path": "@airport/travel-document-checkpoint-internal"
+                        "path": "@airport/travel-document-checkpoint-runtime"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-traffic-control": null,
-                    "@airport/travel-document-checkpoint-internal": null
+                    "@airport/travel-document-checkpoint-runtime": null
                 }
             },
             "properties": [
@@ -1629,7 +1629,7 @@ export const MAPPED_SUPERCLASS = [
                     "type": "IUser",
                     "ownerEntity": null,
                     "nonArrayType": "IUser",
-                    "fromProject": "@airport/travel-document-checkpoint-internal",
+                    "fromProject": "@airport/travel-document-checkpoint-runtime",
                     "otherApplicationDbEntity": {
                         "columnMap": null,
                         "columns": [
@@ -2670,12 +2670,12 @@ export const MAPPED_SUPERCLASS = [
                                     "sourceName": "IUser"
                                 }
                             },
-                            "path": "@airport/travel-document-checkpoint-internal"
+                            "path": "@airport/travel-document-checkpoint-runtime"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
-                        "@airport/travel-document-checkpoint-internal": null
+                        "@airport/travel-document-checkpoint-runtime": null
                     }
                 },
                 "properties": [
@@ -2702,7 +2702,7 @@ export const MAPPED_SUPERCLASS = [
                         "type": "IUser",
                         "ownerEntity": null,
                         "nonArrayType": "IUser",
-                        "fromProject": "@airport/travel-document-checkpoint-internal",
+                        "fromProject": "@airport/travel-document-checkpoint-runtime",
                         "otherApplicationDbEntity": {
                             "columnMap": null,
                             "columns": [

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Actor, } from "@airport/holding-pattern";
-import { Terminal, User } from "@airport/travel-document-checkpoint-internal";
+import { Terminal, User } from "@airport/travel-document-checkpoint-runtime";
 import { v4 as uuidv4 } from "uuid";
 import { Inject, Injected } from '@airport/direction-indicator';
 let InternalRecordManager = class InternalRecordManager {

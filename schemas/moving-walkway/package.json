@@ -14,7 +14,7 @@
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/airspace": "0.0.1",
-    "@airport/travel-document-checkpoint-internal": "0.0.1",
+    "@airport/travel-document-checkpoint-runtime": "0.0.1",
     "typedi": "^0.8.0"
   },
   "devDependencies": {

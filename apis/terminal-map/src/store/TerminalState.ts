@@ -3,7 +3,7 @@ import type {
 	IDomain,
 	IApplication
 } from '@airport/airspace'
-import type { ITerminal } from '@airport/travel-document-checkpoint-internal'
+import type { ITerminal } from '@airport/travel-document-checkpoint-runtime'
 import {
 	InternalConnectorStore,
 	IReceiverStore,

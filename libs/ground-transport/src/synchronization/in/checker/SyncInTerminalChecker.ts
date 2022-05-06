@@ -8,7 +8,7 @@ import {
 import {
 	ITerminal,
 	ITerminalDao
-} from '@airport/travel-document-checkpoint-internal'
+} from '@airport/travel-document-checkpoint-runtime'
 
 export interface ISyncInTerminalChecker {
 

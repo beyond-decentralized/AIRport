@@ -1,4 +1,9 @@
-import { lib } from '@airport/di';
-export const travelDocumentCheckpoint = lib('travel-document-checkpoint');
-export const USER_API = travelDocumentCheckpoint.token('USER_API');
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { INTER_APP_API_CLIENT } from '@airport/ground-control';
+import { UserApi } from './api-wrappers/UserApi';
+import { USER_API } from './common-tokens';
+USER_API.setDependencies({
+    interAppApiClient: INTER_APP_API_CLIENT
+});
+DEPENDENCY_INJECTION.set(USER_API, UserApi);
 //# sourceMappingURL=api-tokens.js.map

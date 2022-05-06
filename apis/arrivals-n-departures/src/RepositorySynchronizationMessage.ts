@@ -3,10 +3,10 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory
 } from "@airport/holding-pattern";
-import {
+import type {
 	ITerminal,
 	IUser
-} from "@airport/travel-document-checkpoint-internal";
+} from "@airport/travel-document-checkpoint-runtime";
 import {
 	IApplication,
 	IApplicationVersion

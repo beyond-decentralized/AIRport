@@ -9,7 +9,7 @@
     "client",
     "lib",
     "node_modules",
-    "internal"
+    "runtime"
   ],
   "extends": "../../tsconfig.core.json"
 }
