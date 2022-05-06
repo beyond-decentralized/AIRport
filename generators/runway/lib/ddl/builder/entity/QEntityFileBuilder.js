@@ -99,9 +99,6 @@ ${addEntityCommand}`;
             let qEntityRelativePath;
             if (property.fromProject) {
                 qEntityRelativePath = property.fromProject;
-                if (property.fromProject.indexOf('@airport/') !== 0) {
-                    qEntityRelativePath += '/lib/app';
-                }
                 type = property.otherApplicationDbEntity.name;
             }
             else {
@@ -125,9 +122,6 @@ ${addEntityCommand}`;
             ], qEntityRelativePath);
             if (property.fromProject) {
                 let relationEntityPath = property.fromProject;
-                if (property.fromProject.indexOf('@airport/') !== 0) {
-                    relationEntityPath += '/lib/app';
-                }
                 this.addImport(['I' + type], relationEntityPath, false);
             }
             else {
