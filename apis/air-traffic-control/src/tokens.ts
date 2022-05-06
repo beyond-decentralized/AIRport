@@ -22,7 +22,6 @@ import { ApplicationUtils } from './impl/utils/ApplicationUtils'
 import { FieldUtils } from './impl/utils/FieldUtils'
 
 const airTrafficControl = lib('air-traffic-control')
-airTrafficControl.autopilot = false
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>({
 	class: null,

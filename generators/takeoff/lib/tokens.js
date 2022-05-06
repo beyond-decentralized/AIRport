@@ -8,7 +8,6 @@ import { DdlObjectRetriever } from './DdlObjectRetriever';
 import { QueryEntityClassCreator } from './QueryEntityClassCreator';
 import { QueryObjectInitializer } from './QueryObjectInitializer';
 const takeoff = lib('takeoff');
-takeoff.autopilot = false;
 export const AIRPORT_DATABASE_POPULATOR = takeoff.token({
     class: AirportDatabasePopulator,
     interface: 'IAirportDatabasePopulator',

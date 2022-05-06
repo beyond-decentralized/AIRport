@@ -8,3 +8,4 @@ export const USER_API = travelDocumentCheckpoint.token<IUserApi>({
     interface: 'IUserApi',
     token: 'USER_API'
 })
+travelDocumentCheckpoint.autopilot = true

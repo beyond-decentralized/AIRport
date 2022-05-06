@@ -12,7 +12,6 @@ import { ApplicationLocator } from './locator/ApplicationLocator';
 import { ApplicationComposer } from './recorder/ApplicationComposer';
 import { ApplicationRecorder } from './recorder/ApplicationRecorder';
 const landing = lib('landing');
-landing.autopilot = false;
 export const ABSTRACT_APPLICATION_INITIALIZER = landing.token({
     class: ApplicationInitializer,
     interface: 'class ApplicationInitializer',

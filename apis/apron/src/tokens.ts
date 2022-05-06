@@ -6,7 +6,6 @@ import { ILocalAPIServer } from './isolate/LocalApiServer'
 import { ApplicationStore, IApplicationStore } from './state/ApplicationStore'
 
 const apron = lib('apron')
-apron.autopilot = false
 
 export const APPLICATION_LOADER = apron.token<IApplicationLoader>({
     class: null,

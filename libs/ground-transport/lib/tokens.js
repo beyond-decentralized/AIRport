@@ -25,7 +25,6 @@ import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter';
 import { NONHUB_CLIENT } from '@airport/nonhub-client';
 const groundTransport = lib('ground-transport');
-groundTransport.autopilot = false;
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token({
     class: Stage1SyncedInDataProcessor,
     interface: 'IStage1SyncedInDataProcessor',

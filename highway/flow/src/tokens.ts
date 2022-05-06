@@ -3,7 +3,6 @@ import { IQueryValidator, QueryValidator } from './query/QueryValidator';
 import { IQueryWebService, QueryWebService } from './query/QueryWs';
 
 const hwFlow = lib('hw-flow')
-hwFlow.autopilot = false
 
 export const QUERY_WEB_SERVICE = hwFlow.token<IQueryWebService>({
     class: QueryWebService,

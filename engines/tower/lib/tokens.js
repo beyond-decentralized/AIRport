@@ -14,7 +14,6 @@ import { EntityStateManager } from './core/EntityStateManager';
 import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 const tower = lib('tower');
-tower.autopilot = false;
 export const ENTITY_COPIER = tower.token({
     class: EntityCopier,
     interface: 'IEntityCopier',

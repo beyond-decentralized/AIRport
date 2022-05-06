@@ -11,7 +11,6 @@ import { IQueryParameterDeserializer } from './serialize/QueryParameterDeseriali
 import { IQueryResultsSerializer } from './serialize/QueryResultsSerializer';
 
 const checkIn = lib('check-in')
-checkIn.autopilot = false
 
 export const API_REGISTRY = checkIn.token<IApiRegistry>({
     class: null,

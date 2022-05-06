@@ -2,7 +2,6 @@ import { API_REGISTRY } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
 import { ApplicationStore } from './state/ApplicationStore';
 const apron = lib('apron');
-apron.autopilot = false;
 export const APPLICATION_LOADER = apron.token({
     class: null,
     interface: 'IApplicationLoader',

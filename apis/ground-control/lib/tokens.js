@@ -1,6 +1,5 @@
 import { lib } from '@airport/direction-indicator';
 const groundControl = lib('ground-control');
-groundControl.autopilot = false;
 export const ENTITY_STATE_MANAGER = groundControl.token({
     class: null,
     interface: 'IEntityStateManager',

@@ -5,7 +5,6 @@ import { WebApplicationInitializer } from "./WebApplicationInitializer";
 import { WebMesageReceiver } from "./WebMessageReceiver";
 import { WebTransactionalReceiver } from "./WebTransactionalReceiver";
 const webTerminal = lib('web-terminal');
-webTerminal.autopilot = false;
 DEPENDENCY_INJECTION.set(DOMAIN_RETRIEVER, DomainRetriever);
 DEPENDENCY_INJECTION.set(APPLICATION_INITIALIZER, WebApplicationInitializer);
 export const WEB_MESSAGE_RECEIVER = webTerminal.token({

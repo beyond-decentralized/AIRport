@@ -4,7 +4,6 @@ import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { Dao } from './dao/Dao';
 import { SelectorManager } from './Selector';
 const checkIn = lib('check-in');
-checkIn.autopilot = false;
 export const API_REGISTRY = checkIn.token({
     class: null,
     interface: 'IApiRegistry',

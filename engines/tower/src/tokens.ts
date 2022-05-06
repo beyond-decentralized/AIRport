@@ -15,7 +15,6 @@ import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 
 const tower = lib('tower')
-tower.autopilot = false
 
 export const ENTITY_COPIER = tower.token<IEntityCopier>({
     class: EntityCopier,

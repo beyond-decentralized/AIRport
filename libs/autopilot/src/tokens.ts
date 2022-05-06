@@ -5,7 +5,6 @@ import { ILocalAPIClient, LocalAPIClient } from "./LocalAPIClient";
 import { IUiStateManager, UiStateManager } from "./UiStateManager";
 
 const autopilot = lib('autopilot')
-autopilot.autopilot = false
 
 export const LOCAL_API_CLIENT = autopilot.token<ILocalAPIClient>({
     class: LocalAPIClient,

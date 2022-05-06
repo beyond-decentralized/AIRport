@@ -4,7 +4,6 @@ import { OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/grou
 import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 const terminalMap = lib('terminal-map');
-terminalMap.autopilot = false;
 export const APPLICATION_INITIALIZER = terminalMap.token({
     class: null,
     interface: 'IApplicationInitializer',
