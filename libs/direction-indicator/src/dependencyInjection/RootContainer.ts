@@ -70,3 +70,5 @@ export class RootContainer
     }
 
 }
+
+export const DEPENDENCY_INJECTION: IRootContainer = new RootContainer();

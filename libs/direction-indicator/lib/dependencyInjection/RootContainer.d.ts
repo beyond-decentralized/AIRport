@@ -10,4 +10,5 @@ export declare class RootContainer extends Container implements IRootContainer {
     remove(container: IChildContainer): void;
     ui(componentName: string): IChildContainer;
 }
+export declare const DEPENDENCY_INJECTION: IRootContainer;
 //# sourceMappingURL=RootContainer.d.ts.map

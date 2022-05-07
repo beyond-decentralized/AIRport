@@ -1,3 +1,4 @@
+import { InversionOfControl } from './dependencyInjection/InversionOfControl';
 export * from './autopilot/IAutopilotApiLoader';
 export * from './autopilot/IApiAutopilot';
 export * from './dependencyInjection/interfaces/IChildContainer';
@@ -14,4 +15,5 @@ export * from './dependencyInjection/RootContainer';
 export * from './dependencyInjection/Token';
 export * from './Context';
 export * from './tokens';
+export declare const IOC: InversionOfControl;
 //# sourceMappingURL=index.d.ts.map

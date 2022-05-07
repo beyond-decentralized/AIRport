@@ -1,4 +1,4 @@
-import { DEPENDENCY_INJECTION } from "./Container";
+import { DEPENDENCY_INJECTION } from "./RootContainer";
 export class InversionOfControl {
     async get(...tokens) {
         return await DEPENDENCY_INJECTION.db().get(...tokens);

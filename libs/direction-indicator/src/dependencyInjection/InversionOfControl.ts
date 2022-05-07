@@ -1,4 +1,4 @@
-import { DEPENDENCY_INJECTION } from "./Container";
+import { DEPENDENCY_INJECTION } from "./RootContainer";
 import { IDependencyInjectionToken } from "./Token";
 
 export class InversionOfControl {

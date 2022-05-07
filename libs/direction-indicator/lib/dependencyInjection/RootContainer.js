@@ -50,4 +50,5 @@ export class RootContainer extends Container {
         return childContainer;
     }
 }
+export const DEPENDENCY_INJECTION = new RootContainer();
 //# sourceMappingURL=RootContainer.js.map

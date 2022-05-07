@@ -1,3 +1,8 @@
+import { lib } from './dependencyInjection/InjectionApplication'
+import { domain } from './dependencyInjection/InjectionDomain'
+import { InversionOfControl } from './dependencyInjection/InversionOfControl'
+import { DEPENDENCY_INJECTION } from './dependencyInjection/RootContainer'
+
 export * from './autopilot/IAutopilotApiLoader'
 export * from './autopilot/IApiAutopilot'
 export * from './dependencyInjection/interfaces/IChildContainer'
@@ -14,3 +19,11 @@ export * from './dependencyInjection/RootContainer'
 export * from './dependencyInjection/Token'
 export * from './Context'
 export * from './tokens'
+
+if (typeof window !== 'undefined') {
+    (window as any).DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;
+    (window as any).lib = lib;
+    (window as any).domain = domain
+}
+
+export const IOC: InversionOfControl = new InversionOfControl();
