@@ -22,6 +22,7 @@ let DatabaseManager = class DatabaseManager {
     async initWithDb(domainName, context) {
         this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
+        this.transactionManager.nonTransactionalMode = true;
         const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
             .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
         await this.installStarterApplication(false, hydrate, context);
@@ -30,6 +31,7 @@ let DatabaseManager = class DatabaseManager {
         }
         this.transactionalServer.tempActor = null;
         this.initialized = true;
+        this.transactionManager.nonTransactionalMode = false;
     }
     isInitialized() {
         return this.initialized;
@@ -89,6 +91,9 @@ __decorate([
 __decorate([
     Inject()
 ], DatabaseManager.prototype, "transactionalServer", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "transactionManager", void 0);
 DatabaseManager = __decorate([
     Injected()
 ], DatabaseManager);

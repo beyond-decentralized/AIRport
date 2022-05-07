@@ -15,7 +15,15 @@ export interface ITransactionContext {
 	transaction?: ITransaction
 	rootTransaction?: IRootTransaction
 }
+export interface ITransactionalCallback {
+	(
+		transaction: ITransaction,
+		context?: IContext
+	): Promise<void>
+}
 export interface ITransactionManager {
+
+	nonTransactionalMode: boolean
 
 	initialize(
 		dbName: string,
@@ -28,22 +36,12 @@ export interface ITransactionManager {
 
 	transact(
 		credentials: ICredentials,
-		callback: {
-			(
-				transaction: ITransaction,
-				context?: IContext
-			): Promise<void> | void
-		},
+		callback: ITransactionalCallback,
 		context: IContext,
 	): Promise<void>;
 
 	transactInternal(
-		callback: {
-			(
-				transaction: ITransaction,
-				context?: IContext
-			): Promise<void> | void
-		},
+		callback: ITransactionalCallback,
 		context: IContext,
 	): Promise<void>;
 

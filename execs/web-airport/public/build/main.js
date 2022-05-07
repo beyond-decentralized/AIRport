@@ -19497,6 +19497,7 @@ let DatabaseManager = class DatabaseManager {
     async initWithDb(domainName, context) {
         this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
+        this.transactionManager.nonTransactionalMode = true;
         const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
             .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
         await this.installStarterApplication(false, hydrate, context);
@@ -19505,6 +19506,7 @@ let DatabaseManager = class DatabaseManager {
         }
         this.transactionalServer.tempActor = null;
         this.initialized = true;
+        this.transactionManager.nonTransactionalMode = false;
     }
     isInitialized() {
         return this.initialized;
@@ -19564,6 +19566,9 @@ __decorate$1D([
 __decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "transactionalServer", void 0);
+__decorate$1D([
+    Inject()
+], DatabaseManager.prototype, "transactionManager", void 0);
 DatabaseManager = __decorate$1D([
     Injected()
 ], DatabaseManager);
@@ -20271,6 +20276,10 @@ var __decorate$1y = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let TransactionManager = class TransactionManager extends AbstractMutationManager {
+    constructor() {
+        super(...arguments);
+        this.nonTransactionalMode = false;
+    }
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
@@ -20288,7 +20297,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         return this.storeDriver.isServer(context);
     }
     async transactInternal(transactionalCallback, context) {
-        return await this.transact({
+        await this.transact({
             application: INTERNAL_APP,
             domain: INTERNAL_DOMAIN,
             methodName: null,
@@ -20296,7 +20305,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         }, transactionalCallback, context);
     }
     async transact(credentials, transactionalCallback, context) {
-        if (context.transaction) {
+        if (this.nonTransactionalMode || context.transaction) {
             // Nested transactal() calls in internal operations
             // do not create nested transactions 
             await transactionalCallback(context.transaction, context);
@@ -20386,6 +20395,9 @@ Only one concurrent transaction is allowed per application.`)
         await this.resumeParentOrPendingTransaction(parentTransaction, context);
     }
     async getTransactionFromContextOrCredentials(credentials, context) {
+        if (this.nonTransactionalMode) {
+            return null;
+        }
         let transaction = context.transaction;
         if (!transaction) {
             if (!credentials.transactionId) {
@@ -30504,7 +30516,8 @@ DATABASE_MANAGER.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
     internalRecordManager: INTERNAL_RECORD_MANAGER,
     storeDriver: STORE_DRIVER,
-    transactionalServer: TRANSACTIONAL_SERVER
+    transactionalServer: TRANSACTIONAL_SERVER,
+    transactionManager: TRANSACTION_MANAGER
 });
 DELETE_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
@@ -36687,16 +36700,25 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
         return transaction;
     }
     async internalStartTransaction(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);
     }
     async internalCommit(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `RELEASE SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);
     }
     async internalRollback(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);

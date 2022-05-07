@@ -55,6 +55,9 @@ export class SqlJsDriver
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
+		while (!this._db) {
+			await this.wait(50)
+		}
 		const command = `SAVEPOINT '${transaction.id}'`
 		console.log(command)
 		this._db.exec(command)
@@ -64,6 +67,9 @@ export class SqlJsDriver
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
+		while (!this._db) {
+			await this.wait(50)
+		}
 		const command = `RELEASE SAVEPOINT '${transaction.id}'`
 		console.log(command)
 		this._db.exec(command)
@@ -73,6 +79,9 @@ export class SqlJsDriver
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
+		while (!this._db) {
+			await this.wait(50)
+		}
 		const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`
 		console.log(command)
 		this._db.exec(command)

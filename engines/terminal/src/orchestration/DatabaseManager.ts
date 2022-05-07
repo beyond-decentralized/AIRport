@@ -19,7 +19,10 @@ import {
 	IApplicationInitializer,
 	IDatabaseManager,
 	IStoreDriver,
-	ITransactionalServer
+	ITerminalState,
+	ITerminalStore,
+	ITransactionalServer,
+	ITransactionManager
 } from '@airport/terminal-map';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { BLUEPRINT } from '@airport/blueprint';
@@ -50,6 +53,9 @@ export class DatabaseManager
 	@Inject()
 	transactionalServer: ITransactionalServer
 
+	@Inject()
+	transactionManager: ITransactionManager
+
 	private initialized = false;
 
 	async initNoDb(
@@ -75,6 +81,8 @@ export class DatabaseManager
 
 		(this.transactionalServer as any).tempActor = new Actor();
 
+		this.transactionManager.nonTransactionalMode = true
+
 		const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
 			.getFullApplicationName(BLUEPRINT[0]),
 			'PACKAGES', context);
@@ -87,6 +95,8 @@ export class DatabaseManager
 
 		(this.transactionalServer as any).tempActor = null;
 		this.initialized = true;
+
+		this.transactionManager.nonTransactionalMode = false
 	}
 
 	isInitialized(): boolean {
