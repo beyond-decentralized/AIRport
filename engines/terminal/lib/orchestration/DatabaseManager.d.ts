@@ -2,7 +2,7 @@ import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IDbApplicationUtils } from '@airport/ground-control';
 import { IApplicationDao } from '@airport/airspace';
-import { IApplicationInitializer, IDatabaseManager, IStoreDriver, ITransactionalServer } from '@airport/terminal-map';
+import { IApplicationInitializer, IDatabaseManager, IStoreDriver, ITransactionalServer, ITransactionManager } from '@airport/terminal-map';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 export declare class DatabaseManager implements IDatabaseManager {
@@ -13,6 +13,7 @@ export declare class DatabaseManager implements IDatabaseManager {
     internalRecordManager: IInternalRecordManager;
     storeDriver: IStoreDriver;
     transactionalServer: ITransactionalServer;
+    transactionManager: ITransactionManager;
     private initialized;
     initNoDb(context: IContext, ...applications: JsonApplicationWithLastIds[]): Promise<void>;
     initWithDb(domainName: string, context: IContext): Promise<void>;

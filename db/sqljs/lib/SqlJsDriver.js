@@ -31,16 +31,25 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
         return transaction;
     }
     async internalStartTransaction(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);
     }
     async internalCommit(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `RELEASE SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);
     }
     async internalRollback(transaction, context) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`;
         console.log(command);
         this._db.exec(command);

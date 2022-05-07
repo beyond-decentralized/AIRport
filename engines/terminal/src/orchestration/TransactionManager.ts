@@ -24,6 +24,7 @@ import {
 	IStoreDriver,
 	ITerminalStore,
 	ITransaction,
+	ITransactionalCallback,
 	ITransactionContext,
 	ITransactionCredentials,
 	ITransactionInitiator,
@@ -55,6 +56,8 @@ export class TransactionManager
 	@Inject()
 	transactionHistoryDuo: ITransactionHistoryDuo
 
+	nonTransactionalMode = false
+
 	/**
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
@@ -82,15 +85,10 @@ export class TransactionManager
 	}
 
 	async transactInternal(
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-				context: ITransactionContext
-			): Promise<void> | void
-		},
+		transactionalCallback: ITransactionalCallback,
 		context: ITransactionContext,
 	): Promise<void> {
-		return await this.transact({
+		await this.transact({
 			application: INTERNAL_APP,
 			domain: INTERNAL_DOMAIN,
 			methodName: null,
@@ -100,15 +98,10 @@ export class TransactionManager
 
 	async transact(
 		credentials: ITransactionCredentials,
-		transactionalCallback: {
-			(
-				transaction: ITransaction,
-				context: ITransactionContext
-			): Promise<void> | void
-		},
+		transactionalCallback: ITransactionalCallback,
 		context: ITransactionContext,
 	): Promise<void> {
-		if (context.transaction) {
+		if (this.nonTransactionalMode || context.transaction) {
 			// Nested transactal() calls in internal operations
 			// do not create nested transactions 
 			await transactionalCallback(context.transaction, context)
@@ -224,6 +217,10 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
+		if(this.nonTransactionalMode) {
+			return null
+		}
+		
 		let transaction = context.transaction
 		if (!transaction) {
 			if (!credentials.transactionId) {

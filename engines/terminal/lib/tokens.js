@@ -139,7 +139,8 @@ DATABASE_MANAGER.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
     internalRecordManager: INTERNAL_RECORD_MANAGER,
     storeDriver: STORE_DRIVER,
-    transactionalServer: TRANSACTIONAL_SERVER
+    transactionalServer: TRANSACTIONAL_SERVER,
+    transactionManager: TRANSACTION_MANAGER
 });
 DELETE_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

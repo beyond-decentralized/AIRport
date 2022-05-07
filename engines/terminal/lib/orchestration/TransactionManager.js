@@ -9,6 +9,10 @@ import { INTERNAL_APP, INTERNAL_DOMAIN } from '@airport/ground-control';
 import { Q } from '@airport/holding-pattern-runtime';
 import { AbstractMutationManager } from './AbstractMutationManager';
 let TransactionManager = class TransactionManager extends AbstractMutationManager {
+    constructor() {
+        super(...arguments);
+        this.nonTransactionalMode = false;
+    }
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
@@ -26,7 +30,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         return this.storeDriver.isServer(context);
     }
     async transactInternal(transactionalCallback, context) {
-        return await this.transact({
+        await this.transact({
             application: INTERNAL_APP,
             domain: INTERNAL_DOMAIN,
             methodName: null,
@@ -34,7 +38,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         }, transactionalCallback, context);
     }
     async transact(credentials, transactionalCallback, context) {
-        if (context.transaction) {
+        if (this.nonTransactionalMode || context.transaction) {
             // Nested transactal() calls in internal operations
             // do not create nested transactions 
             await transactionalCallback(context.transaction, context);
@@ -124,6 +128,9 @@ Only one concurrent transaction is allowed per application.`)
         await this.resumeParentOrPendingTransaction(parentTransaction, context);
     }
     async getTransactionFromContextOrCredentials(credentials, context) {
+        if (this.nonTransactionalMode) {
+            return null;
+        }
         let transaction = context.transaction;
         if (!transaction) {
             if (!credentials.transactionId) {
