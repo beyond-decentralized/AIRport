@@ -1,6 +1,6 @@
 import { lib } from '@airport/direction-indicator';
 import { TerminalStore } from './store/TerminalStore';
-import { OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { DB_APPLICATION_UTILS, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { TerminalState } from './store/TerminalState';
@@ -62,7 +62,8 @@ TRANSACTION_MANAGER.setDependencies({
     terminalStore: TERMINAL_STORE
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
-    applicationInitializer: APPLICATION_INITIALIZER
+    applicationInitializer: APPLICATION_INITIALIZER,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
 });
 TRANSACTIONAL_SERVER.setDependencies({
     operationContextLoader: OPERATION_CONTEXT_LOADER,
