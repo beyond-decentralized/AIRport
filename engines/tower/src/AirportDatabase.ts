@@ -1,16 +1,4 @@
 import {
-	abs,
-	add,
-	and,
-	avg,
-	bool,
-	concat,
-	count,
-	date,
-	distinct,
-	divide,
-	exists,
-	format,
 	FunctionsAndOperators,
 	IAirportDatabase,
 	IDatabaseFacade,
@@ -24,41 +12,14 @@ import {
 	INonEntityFindOne,
 	INonEntitySearch,
 	INonEntitySearchOne,
-	intersect,
 	IQEntity,
-	lcase,
-	len,
-	max,
-	mid,
-	min,
-	minus,
-	modulus,
-	multiply,
-	NonEntityFind,
-	NonEntityFindOne,
-	NonEntitySearch,
-	NonEntitySearchOne,
-	not,
-	now,
-	num,
 	OperationName,
-	or,
 	QApplication,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
-	replace,
-	round,
-	str,
-	subtract,
-	sum,
-	trim,
-	ucase,
-	union,
-	unionAll,
-	wrapPrimitive,
 } from '@airport/air-traffic-control';
 import {
 	Inject,
@@ -122,7 +83,10 @@ export class AirportDatabase
 		return this.databaseStore.entityMap
 	};
 
-	F: FunctionsAndOperators;
+	get F(): FunctionsAndOperators {
+		return this.databaseStore.functions
+	}
+
 	get functions(): FunctionsAndOperators {
 		return this.databaseStore.functions
 	}

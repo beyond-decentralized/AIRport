@@ -29,6 +29,9 @@ let AirportDatabase = class AirportDatabase {
         return this.databaseStore.entityMap;
     }
     ;
+    get F() {
+        return this.databaseStore.functions;
+    }
     get functions() {
         return this.databaseStore.functions;
     }

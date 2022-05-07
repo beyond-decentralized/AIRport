@@ -8,7 +8,7 @@ export declare class AirportDatabase implements IAirportDatabase {
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
     get entityMap(): Map<any, IEntityRecord>;
-    F: FunctionsAndOperators;
+    get F(): FunctionsAndOperators;
     get functions(): FunctionsAndOperators;
     get A(): DbApplication[];
     get applications(): DbApplication[];
