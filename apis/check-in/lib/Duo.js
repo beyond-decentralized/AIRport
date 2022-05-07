@@ -62,10 +62,4 @@ export class Duo {
         throw new Error(`Not Implemented.`);
     }
 }
-export function getAllFieldsSelect(dbEntity) {
-    throw new Error(`Not implemented`);
-}
-export const DUO = {
-    getAllFieldsSelect: getAllFieldsSelect,
-};
 //# sourceMappingURL=Duo.js.map

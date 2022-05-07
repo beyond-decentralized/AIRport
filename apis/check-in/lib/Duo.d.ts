@@ -10,8 +10,4 @@ export declare class Duo<Entity, EntitySelect extends IEntitySelectProperties, E
     getIdStub(ids: number | string | number[] | string[]): EntityId;
     getIdStubs(ids: number[] | string[] | number[][] | string[][]): EntityId[];
 }
-export declare function getAllFieldsSelect(dbEntity: DbEntity): IEntitySelectProperties;
-export declare const DUO: {
-    getAllFieldsSelect: typeof getAllFieldsSelect;
-};
 //# sourceMappingURL=Duo.d.ts.map

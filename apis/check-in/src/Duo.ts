@@ -161,14 +161,3 @@ export class Duo<Entity,
    */
 
 }
-
-export function getAllFieldsSelect(
-  dbEntity: DbEntity,
-): IEntitySelectProperties {
-  throw new Error(`Not implemented`);
-}
-
-
-export const DUO = {
-  getAllFieldsSelect: getAllFieldsSelect,
-};
