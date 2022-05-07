@@ -6,7 +6,6 @@ import {
 	ILocalAPIRequest,
 	ILocalAPIResponse
 } from '@airport/aviation-communication'
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control'
 import {
 	IApiIMI,
 	IIsolateMessage,
@@ -27,6 +26,7 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
+import { IDbApplicationUtils } from '@airport/ground-control'
 
 @Injected()
 export class WebTransactionalReceiver
@@ -35,6 +35,9 @@ export class WebTransactionalReceiver
 
 	@Inject()
 	applicationInitializer: IWebApplicationInitializer
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	terminalStore: ITerminalStore
@@ -191,8 +194,9 @@ export class WebTransactionalReceiver
 		context: IApiCallContext & ITransactionContext
 	): Promise<boolean> {
 		return await this.startApiCall(message, context, async () => {
-			const fullApplicationName = getFullApplicationNameFromDomainAndName(
-				message.domain, message.application)
+			const fullApplicationName = this.dbApplicationUtils.
+				getFullApplicationNameFromDomainAndName(
+					message.domain, message.application)
 			const frameWindow = this.getFrameWindow(fullApplicationName)
 			if (frameWindow) {
 				// Forward the request to the correct application iframe
@@ -225,8 +229,9 @@ export class WebTransactionalReceiver
 	private async ensureConnectionIsReady(
 		message: ILocalAPIRequest
 	): Promise<void> {
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			message.domain, message.application)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 
 		const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName)
 		if (applicationInitializing) {
@@ -280,8 +285,9 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			message.domain, message.application)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 
 		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName)
 		if (!numPendingMessagesForApplication) {
@@ -352,8 +358,9 @@ export class WebTransactionalReceiver
 	private replyToClientRequest(
 		message: ILocalAPIResponse
 	) {
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			message.domain, message.application)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 		const webReciever = this.terminalStore.getWebReceiver()
 
 		let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain)
@@ -396,8 +403,9 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			message.domain, message.application)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
 			// and from application domains that match the fullApplicationName
@@ -434,8 +442,9 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			message.domain, message.application)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
 				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)

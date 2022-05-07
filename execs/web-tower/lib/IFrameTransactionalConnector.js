@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName } from '@airport/ground-control';
 import { IsolateMessageType, AppState } from '@airport/apron';
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from "uuid";
@@ -44,7 +43,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 || !message.domain
                 || !message.application
                 // And if own domain is a direct sub-domain of the message's domain
-                || ownDomain !== getFullApplicationName({
+                || ownDomain !== this.dbApplicationUtils.
+                    getFullApplicationName({
                     domain: message.domain,
                     name: message.application,
                 }) + domainSuffix) {
@@ -315,7 +315,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 await this.applicationLoader.initialize();
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    fullApplicationName: getFullApplicationName(this.applicationLoader.getApplication()),
+                    fullApplicationName: this.dbApplicationUtils.
+                        getFullApplicationName(this.applicationLoader.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, this.applicationStore.state.hostServer);
                 return true;
@@ -349,10 +350,13 @@ __decorate([
 ], IframeTransactionalConnector.prototype, "applicationLoader", void 0);
 __decorate([
     Inject()
-], IframeTransactionalConnector.prototype, "localApiServer", void 0);
+], IframeTransactionalConnector.prototype, "applicationStore", void 0);
 __decorate([
     Inject()
-], IframeTransactionalConnector.prototype, "applicationStore", void 0);
+], IframeTransactionalConnector.prototype, "dbApplicationUtils", void 0);
+__decorate([
+    Inject()
+], IframeTransactionalConnector.prototype, "localApiServer", void 0);
 IframeTransactionalConnector = __decorate([
     Injected()
 ], IframeTransactionalConnector);

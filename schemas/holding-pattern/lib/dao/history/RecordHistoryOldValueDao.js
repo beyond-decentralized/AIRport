@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Injected } from '@airport/direction-indicator';
 import { BaseRecordHistoryOldValueDao } from '../../generated/generated';
-import { Q } from '../../index';
+import { Q, } from '../../generated/generated';
 let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
     async findByRecordHistoryIdIn(recordHistoryIds) {
         let rhov;

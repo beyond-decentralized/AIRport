@@ -1,13 +1,13 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import {
-	Inject,
-	Injected
+  Inject,
+  Injected
 } from '@airport/direction-indicator'
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import {
   EntityRelationType,
-  getFullApplicationNameFromDomainAndName,
+  IDbApplicationUtils,
   JsonApplication,
   JsonApplicationColumn,
   JsonApplicationEntity,
@@ -20,14 +20,17 @@ import {
   IStoreDriver
 } from '@airport/terminal-map'
 import { IApplication } from '@airport/airspace';
-import { IApplicationBuilder } from './IApplicationBuilder';
+import { ISchemaBuilder } from './ISchemaBuilder';
 
 @Injected()
-export abstract class SqlApplicationBuilder
-  implements IApplicationBuilder {
+export abstract class SqlSchemaBuilder
+  implements ISchemaBuilder {
 
   @Inject()
   airportDatabase: IAirportDatabase
+
+  @Inject()
+  dbApplicationUtils: IDbApplicationUtils
 
   @Inject()
   sequenceDao: ISequenceDao
@@ -153,9 +156,10 @@ export abstract class SqlApplicationBuilder
         || jsonRelation.relationTableApplicationIndex === 0) {
         const referencedApplication = applicationVersion
           .referencedApplications[jsonRelation.relationTableApplicationIndex]
-        let relatedFullApplicationName = getFullApplicationNameFromDomainAndName(
-          referencedApplication.domain, referencedApplication.name
-        )
+        let relatedFullApplicationName = this.dbApplicationUtils
+          .getFullApplicationNameFromDomainAndName(
+            referencedApplication.domain, referencedApplication.name
+          )
         relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplicationName)
         if (!relatedJsonApplication) {
           const relatedApplication = existingApplicationMap.get(relatedFullApplicationName)

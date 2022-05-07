@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { doEnsureContext } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName, QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
+import { QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
 import { Subject } from 'rxjs';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
@@ -35,7 +35,7 @@ let SqlDriver = class SqlDriver {
             fullApplicationName = application.fullName;
         }
         else {
-            fullApplicationName = getFullApplicationName(application);
+            fullApplicationName = this.dbApplicationUtils.getFullApplicationName(application);
         }
         return this.composeTableName(fullApplicationName, theTableName, context);
     }
@@ -251,6 +251,9 @@ __decorate([
 __decorate([
     Inject()
 ], SqlDriver.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], SqlDriver.prototype, "entityStateManager", void 0);

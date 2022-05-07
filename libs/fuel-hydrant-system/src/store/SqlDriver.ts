@@ -9,7 +9,7 @@ import {
 	DbEntity,
 	DomainName,
 	FullApplicationName,
-	getFullApplicationName,
+	IDbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
 	IOperationContextLoader,
@@ -69,6 +69,9 @@ export abstract class SqlDriver
 
 	@Inject()
 	applicationUtils: IApplicationUtils
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
@@ -138,7 +141,7 @@ export abstract class SqlDriver
 		if ((application as DbApplication).fullName) {
 			fullApplicationName = (application as DbApplication).fullName;
 		} else {
-			fullApplicationName = getFullApplicationName(application);
+			fullApplicationName = this.dbApplicationUtils.getFullApplicationName(application);
 		}
 		return this.composeTableName(fullApplicationName, theTableName, context);
 	}

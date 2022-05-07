@@ -49,8 +49,8 @@ export class QApplicationBuilder
     const qApiDefinitions = this.entityNames
       .filter(entityName => !this.mappedSuperclassSet[entityName])
       .map(
-      entityName => `${entityName}: Q${entityName};`,
-    ).join('\n\t');
+        entityName => `${entityName}: Q${entityName};`,
+      ).join('\n\t');
     // TODO: enable DUO and DAO injections into QApplication, if needed
     // const duoDefinitions = this.entityNames.map(
     // 	entityName => `${entityName}: IBase${entityName}Duo;`
@@ -84,13 +84,13 @@ export class QApplicationBuilder
     // 		`IBase${entityName}Dao`
     // ).join(',\n\t');
 
-// import {
-// 	${iDuoImports}
-// } from './baseDuos';
-//
-// import {
-// 	${iDaoImports}
-// } from './baseDaos';
+    // import {
+    // 	${iDuoImports}
+    // } from './baseDuos';
+    //
+    // import {
+    // 	${iDaoImports}
+    // } from './baseDaos';
 
     // duo: {
     // 	${duoDefinitions}
@@ -108,11 +108,11 @@ import {
 	diSet as dS,
 	duoDiSet as ddS
 }                      from '@airport/check-in'
-import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
+import {DEPENDENCY_INJECTION} from '@airport/direction-indicator'
 import {
 	DbApplication,
+	DB_APPLICATION_UTILS,
 	EntityId,
-	getFullApplicationName
 }                      from '@airport/ground-control';
 ${qEntityImports}
 ${entityImports}
@@ -148,10 +148,10 @@ export function duoDiSet(
 	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
-	airDb
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then((
+	[airDb, dbApplicationUtils]
 ) => {
-	airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q
+	airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION)] = Q
 })
 `;
   }

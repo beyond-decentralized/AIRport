@@ -5,7 +5,7 @@ import { ITransactionalServer } from './transaction/ITransactionalServer'
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
-import { OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { DB_APPLICATION_UTILS, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in'
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { ITerminalState, ITerminalStateContainer, TerminalState } from './store/TerminalState'
@@ -74,7 +74,8 @@ TRANSACTION_MANAGER.setDependencies({
 })
 
 TRANSACTIONAL_RECEIVER.setDependencies({
-    applicationInitializer: APPLICATION_INITIALIZER
+    applicationInitializer: APPLICATION_INITIALIZER,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
 })
 
 TRANSACTIONAL_SERVER.setDependencies({

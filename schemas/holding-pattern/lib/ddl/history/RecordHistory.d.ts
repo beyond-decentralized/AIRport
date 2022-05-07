@@ -1,5 +1,8 @@
 import { SyncColumnMap } from '@airport/ground-control';
-import { Actor, OperationHistory, RecordHistoryNewValue, RecordHistoryOldValue } from '../..';
+import { Actor } from '../infrastructure/Actor';
+import { OperationHistory } from './OperationHistory';
+import { RecordHistoryNewValue } from './RecordHistoryNewValue';
+import { RecordHistoryOldValue } from './RecordHistoryOldValue';
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
  */

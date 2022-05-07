@@ -6,7 +6,7 @@ import { IdGenerator } from './store/IdGenerator';
 import { QValidator } from './validation/Validator';
 import { SqlDriver } from './store/SqlDriver';
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { SQLWhereBase } from './sql/core/SQLWhereBase';
 import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control';
@@ -62,6 +62,7 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: OBJECT_RESULT_PARSER_FACTORY,
     operationContextLoader: OPERATION_CONTEXT_LOADER,

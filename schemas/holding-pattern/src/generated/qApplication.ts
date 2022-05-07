@@ -1,17 +1,17 @@
 import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
-}                      from '@airport/air-traffic-control'
+} from '@airport/air-traffic-control'
 import {
 	diSet as dS,
 	duoDiSet as ddS
-}                      from '@airport/check-in'
-import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
+} from '@airport/check-in'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbApplication,
+	DB_APPLICATION_UTILS,
 	EntityId,
-	getFullApplicationName
-}                      from '@airport/ground-control';
+} from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
 import { QChildRepoRow } from './traditional/qchildreporow';
 import { QChildRow } from './traditional/qchildrow';
@@ -30,28 +30,28 @@ import { QRepositoryEntity } from './repository/qrepositoryentity';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import {
-  Actor,
-  ChildRepoRow,
-  ChildRow,
-  ImmutableRepoRow,
-  ImmutableRow,
-  MutableRepoRow,
-  MutableRow,
-  OperationHistory,
-  RecordHistory,
-  RecordHistoryNewValue,
-  RecordHistoryOldValue,
-  ReferenceRow,
-  Repository,
-  RepositoryApplication,
-  RepositoryEntity,
-  RepositoryTransactionHistory,
-  TransactionHistory
+	Actor,
+	ChildRepoRow,
+	ChildRow,
+	ImmutableRepoRow,
+	ImmutableRow,
+	MutableRepoRow,
+	MutableRow,
+	OperationHistory,
+	RecordHistory,
+	RecordHistoryNewValue,
+	RecordHistoryOldValue,
+	ReferenceRow,
+	Repository,
+	RepositoryApplication,
+	RepositoryEntity,
+	RepositoryTransactionHistory,
+	TransactionHistory
 } from '../ddl/ddl';
 
 export interface LocalQApplication extends AirportQApplication {
 
-  db: DbApplication;
+	db: DbApplication;
 
 	Actor: QActor;
 	OperationHistory: QOperationHistory;
@@ -87,8 +87,8 @@ const __constructors__ = {
 
 export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
-  domain: 'air',
-  name: '@airport/holding-pattern'
+	domain: 'air',
+	name: '@airport/holding-pattern'
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
@@ -104,8 +104,8 @@ export function duoDiSet(
 	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
-	airDb
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then((
+	[airDb, dbApplicationUtils]
 ) => {
-	airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q
+	airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION)] = Q
 })

@@ -3,6 +3,7 @@ import {
 	QApplicationInternal
 } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -11,18 +12,18 @@ import {
 } from '@airport/airport-code'
 import {
 	DbApplication,
-	getFullApplicationName,
+	IDbApplicationUtils,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
-import { SqlApplicationBuilder } from '@airport/landing'
+import { SqlSchemaBuilder } from '@airport/landing'
 
 @Injected()
-export class MySqlApplicationBuilder
-	extends SqlApplicationBuilder {
+export class MySqlSchemaBuilder
+	extends SqlSchemaBuilder {
 
 	@Inject()
 	airportDatabase: IAirportDatabase
@@ -31,7 +32,7 @@ export class MySqlApplicationBuilder
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const fullApplicationName = getFullApplicationName(jsonApplication)
+		const fullApplicationName = this.dbApplicationUtils.getFullApplicationName(jsonApplication)
 		const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -89,7 +90,8 @@ export class MySqlApplicationBuilder
 
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
+				.getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -108,7 +110,8 @@ export class MySqlApplicationBuilder
 
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal
+			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
+				.getFullApplicationName(jsonApplication)] as QApplicationInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}

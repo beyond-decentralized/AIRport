@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ensureChildJsMap, getFullApplicationName, } from '@airport/ground-control';
+import { ensureChildJsMap, } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 let ApplicationChecker = class ApplicationChecker {
     async check(jsonApplication) {
@@ -100,7 +100,8 @@ let ApplicationChecker = class ApplicationChecker {
         const coreDomainAndApplicationNamesByApplicationName = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
             for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
-                const fullApplicationName = getFullApplicationName(referencedApplication);
+                const fullApplicationName = this.dbApplicationUtils.
+                    getFullApplicationName(referencedApplication);
                 fullApplicationNames.push(fullApplicationName);
                 coreDomainAndApplicationNamesByApplicationName.set(fullApplicationName, {
                     domain: domainName,
@@ -132,6 +133,9 @@ let ApplicationChecker = class ApplicationChecker {
 __decorate([
     Inject()
 ], ApplicationChecker.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
+], ApplicationChecker.prototype, "dbApplicationUtils", void 0);
 ApplicationChecker = __decorate([
     Injected()
 ], ApplicationChecker);

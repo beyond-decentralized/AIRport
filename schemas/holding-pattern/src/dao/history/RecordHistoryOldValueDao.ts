@@ -1,14 +1,14 @@
 import { Injected } from '@airport/direction-indicator'
+import { RecordHistoryId } from '../../ddl/ddl'
 import {
 	BaseRecordHistoryOldValueDao,
 	IBaseRecordHistoryOldValueDao
-}                               from '../../generated/generated'
+} from '../../generated/generated'
 import {
 	IRecordHistoryOldValue,
 	Q,
 	QRecordHistoryOldValue,
-	RecordHistoryId
-}                               from '../../index'
+} from '../../generated/generated'
 
 export interface IRecordHistoryOldValueDao
 	extends IBaseRecordHistoryOldValueDao {

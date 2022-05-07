@@ -1,5 +1,5 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, IEntityStateManager, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, IDbApplicationUtils, IEntityStateManager, InternalFragments, IOperationContextLoader, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -16,6 +16,7 @@ export declare abstract class SqlDriver implements IStoreDriver {
     activeQueries: IActiveQueries;
     airportDatabase: IAirportDatabase;
     applicationUtils: IApplicationUtils;
+    dbApplicationUtils: IDbApplicationUtils;
     entityStateManager: IEntityStateManager;
     objectResultParserFactory: IObjectResultParserFactory;
     operationContextLoader: IOperationContextLoader;

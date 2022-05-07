@@ -1,11 +1,11 @@
 import {
 	DomainName,
 	ensureChildJsMap,
-	getFullApplicationName,
 	JsonApplication,
 	JsonApplicationName,
 	ApplicationName,
 	FullApplicationName,
+	IDbApplicationUtils,
 } from '@airport/ground-control'
 import {
 	IApplication,
@@ -54,6 +54,9 @@ export class ApplicationChecker
 
 	@Inject()
 	applicationDao: IApplicationDao
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	async check(
 		jsonApplication: JsonApplication
@@ -197,7 +200,8 @@ export class ApplicationChecker
 
 		for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
 			for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
-				const fullApplicationName = getFullApplicationName(referencedApplication)
+				const fullApplicationName = this.dbApplicationUtils.
+					getFullApplicationName(referencedApplication)
 				fullApplicationNames.push(fullApplicationName)
 				coreDomainAndApplicationNamesByApplicationName.set(fullApplicationName, {
 					domain: domainName,

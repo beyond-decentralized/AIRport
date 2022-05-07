@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ApplicationStatus, ensureChildArray, ensureChildJsSet, getFullApplicationName, } from '@airport/ground-control';
+import { ApplicationStatus, ensureChildArray, ensureChildJsSet, } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 let ApplicationComposer = class ApplicationComposer {
     async compose(jsonApplications, context) {
@@ -61,7 +61,8 @@ let ApplicationComposer = class ApplicationComposer {
             added
         };
         for (const jsonApplication of jsonApplications) {
-            jsonApplicationMapByFullName.set(getFullApplicationName(jsonApplication), jsonApplication);
+            jsonApplicationMapByFullName.set(this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication), jsonApplication);
             const domain = await this.composeDomain(jsonApplication.domain, allDomains, added.domains, domainMapByName);
             const application = this.composeApplication(domain, jsonApplication, allApplications, added.applications, applicationMapByFullName);
             this.composeApplicationVersion(jsonApplication, application, newLatestApplicationVersions, added.applicationVersions, newApplicationVersionMapByApplicationName);
@@ -74,10 +75,12 @@ let ApplicationComposer = class ApplicationComposer {
             }
         }
         for (const jsonApplication of jsonApplications) {
-            const fullApplicationName = getFullApplicationName(jsonApplication);
+            const fullApplicationName = this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication);
             jsonApplicationMapByFullName.set(fullApplicationName, jsonApplication);
             const domain = domainMapByName.get(jsonApplication.domain);
-            const application = applicationMapByFullName.get(getFullApplicationName(jsonApplication));
+            const application = applicationMapByFullName.get(this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication));
             if (!application.index) {
                 jsonApplication.lastIds = {
                     ...this.terminalStore.getLastIds()
@@ -215,7 +218,8 @@ let ApplicationComposer = class ApplicationComposer {
         return domain;
     }
     composeApplication(domain, jsonApplication, allApplications, newApplications, applicationMapByFullName) {
-        const fullApplicationName = getFullApplicationName(jsonApplication);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         let application = applicationMapByFullName.get(fullApplicationName);
         if (!application) {
             application = {
@@ -283,7 +287,8 @@ let ApplicationComposer = class ApplicationComposer {
             const applicationReferences = ensureChildArray(newApplicationReferenceMap, applicationName);
             const applicationReferenceLookup = ensureChildJsSet(newApplicationReferenceLookup, applicationName);
             for (const jsonReferencedApplication of lastJsonApplicationVersion.referencedApplications) {
-                const referencedFullApplicationName = getFullApplicationName(jsonReferencedApplication);
+                const referencedFullApplicationName = this.dbApplicationUtils.
+                    getFullApplicationName(jsonReferencedApplication);
                 let referencedApplicationVersion = newApplicationVersionMapByApplicationName.get(referencedFullApplicationName);
                 if (!referencedApplicationVersion) {
                     referencedApplicationVersion = await this.applicationLocator.locateLatestApplicationVersionByApplicationName(referencedFullApplicationName, terminalStore);
@@ -317,7 +322,8 @@ let ApplicationComposer = class ApplicationComposer {
         };
     }
     composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplicationName, newEntities) {
-        const applicationName = getFullApplicationName(jsonApplication);
+        const applicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         let index = 0;
         // TODO: verify that jsonApplication.versions is always ordered ascending
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
@@ -348,7 +354,8 @@ let ApplicationComposer = class ApplicationComposer {
         applicationVersion.entities = newApplicationEntities;
     }
     composeApplicationProperties(jsonApplication, newProperties, newPropertiesMap, newEntitiesMapByApplicationName) {
-        const applicationName = getFullApplicationName(jsonApplication);
+        const applicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const entities = newEntitiesMapByApplicationName.get(applicationName);
@@ -374,7 +381,8 @@ let ApplicationComposer = class ApplicationComposer {
         });
     }
     async composeApplicationRelations(jsonApplication, newRelations, newRelationsMap, newEntitiesMapByApplicationName, newPropertiesMap, newApplicationReferenceMap, terminalStore, allDdlObjects) {
-        const applicationName = getFullApplicationName(jsonApplication);
+        const applicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const entitiesForApplication = newEntitiesMapByApplicationName.get(applicationName);
@@ -428,7 +436,8 @@ let ApplicationComposer = class ApplicationComposer {
         }
     }
     composeApplicationColumns(jsonApplication, newColumns, newColumnsMap, newPropertyColumns, newEntitiesMapByApplicationName, newPropertiesMap) {
-        const applicationName = getFullApplicationName(jsonApplication);
+        const applicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         const columnsByTable = [];
         newColumnsMap.set(applicationName, columnsByTable);
         const entitiesForApplication = newEntitiesMapByApplicationName.get(applicationName);
@@ -476,7 +485,8 @@ let ApplicationComposer = class ApplicationComposer {
         });
     }
     async composeApplicationRelationColumns(jsonApplication, newRelationColumns, newApplicationVersionMapByApplicationName, newApplicationReferenceMap, newRelationsMap, newColumnsMap, terminalStore, allDdlObjects) {
-        const applicationName = getFullApplicationName(jsonApplication);
+        const applicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         const currentApplicationVersion = jsonApplication.versions[jsonApplication.versions.length - 1];
         const jsonEntities = currentApplicationVersion.entities;
         const columnsForApplication = newColumnsMap.get(applicationName);
@@ -554,6 +564,9 @@ let ApplicationComposer = class ApplicationComposer {
 __decorate([
     Inject()
 ], ApplicationComposer.prototype, "applicationLocator", void 0);
+__decorate([
+    Inject()
+], ApplicationComposer.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], ApplicationComposer.prototype, "domainRetriever", void 0);

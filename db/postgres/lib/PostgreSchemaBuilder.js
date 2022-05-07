@@ -5,11 +5,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName, QueryType, SQLDataType } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
-let PostgreApplicationBuilder = class PostgreApplicationBuilder extends SqlApplicationBuilder {
+import { QueryType, SQLDataType } from '@airport/ground-control';
+import { SqlSchemaBuilder } from '@airport/landing';
+let PostgreApplicationBuilder = class PostgreApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
-        const fullApplicationName = getFullApplicationName(jsonApplication);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationName(jsonApplication);
         const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
@@ -46,7 +47,8 @@ let PostgreApplicationBuilder = class PostgreApplicationBuilder extends SqlAppli
         console.log('buildAllSequences');
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -58,7 +60,8 @@ let PostgreApplicationBuilder = class PostgreApplicationBuilder extends SqlAppli
         console.log('stageSequences');
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

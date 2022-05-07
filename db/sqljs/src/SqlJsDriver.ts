@@ -79,6 +79,9 @@ export class SqlJsDriver
 		context: IOperationContext,
 		saveTransaction: boolean = false
 	): Promise<any> {
+		while (!this._db) {
+			await this.wait(50)
+		}
 		return new Promise<any>((
 			resolve,
 			reject
@@ -119,6 +122,16 @@ export class SqlJsDriver
 		result: any
 	): number {
 		return result
+	}
+
+	private wait(
+		milliseconds
+	): Promise<void> {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve()
+			}, milliseconds)
+		})
 	}
 
 	private getReturnValue(

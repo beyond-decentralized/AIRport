@@ -1,14 +1,15 @@
-import { IAirportDatabase } from '@airport/air-control';
+import { IAirportDatabase } from '@airport/air-traffic-control';
+import { IContext } from '@airport/direction-indicator';
 import { ISequence } from '@airport/airport-code';
-import { IContext } from '@airport/di';
-import { DbSchema, IStoreDriver, JsonSchema, JsonSchemaColumn, JsonSchemaEntity } from '@airport/ground-control';
+import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '@airport/landing';
 export declare class MySqlSchemaBuilder extends SqlSchemaBuilder {
-    createSchema(jsonSchema: JsonSchema, storeDriver: IStoreDriver, context: IContext): Promise<void>;
-    getColumnSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity, jsonColumn: JsonSchemaColumn): string;
-    getCreateTableSuffix(jsonSchema: JsonSchema, jsonEntity: JsonSchemaEntity): string;
-    buildAllSequences(jsonSchemas: JsonSchema[], context: IContext): Promise<ISequence[]>;
-    stageSequences(jsonSchemas: JsonSchema[], airDb: IAirportDatabase, context: IContext): ISequence[];
-    buildSequences(dbSchema: DbSchema, jsonEntity: JsonSchemaEntity): ISequence[];
+    airportDatabase: IAirportDatabase;
+    createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
+    getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;
+    getCreateTableSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity): string;
+    buildAllSequences(jsonApplications: JsonApplication[], context: IContext): Promise<ISequence[]>;
+    stageSequences(jsonApplications: JsonApplication[], context: IContext): ISequence[];
+    buildSequences(dbApplication: DbApplication, jsonEntity: JsonApplicationEntity): ISequence[];
 }
 //# sourceMappingURL=MySqlSchemaBuilder.d.ts.map

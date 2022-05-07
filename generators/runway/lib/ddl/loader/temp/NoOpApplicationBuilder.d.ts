@@ -1,7 +1,7 @@
 import { IContext } from '@airport/direction-indicator';
 import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
-export declare class NoOpApplicationBuilder extends SqlApplicationBuilder {
+import { SqlSchemaBuilder } from '@airport/landing';
+export declare class NoOpApplicationBuilder extends SqlSchemaBuilder {
     createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
     getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;
     getCreateTableSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity): string;

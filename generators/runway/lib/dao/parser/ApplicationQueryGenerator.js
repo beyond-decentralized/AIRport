@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
-import { getFullApplicationName, OperationType, QueryInputKind, QueryParameterType, QueryResultType } from '@airport/ground-control';
+import { OperationType, QueryInputKind, QueryParameterType, QueryResultType, DB_APPLICATION_UTILS } from '@airport/ground-control';
 import tsc from 'typescript';
 import { TempDatabase } from '../../ddl/loader/temp/TempDatabase';
 export class ApplicationQueryGenerator {
@@ -70,7 +70,7 @@ export class ApplicationQueryGenerator {
         const functionEndRegex = /\s*\}\);\s*$/;
         queryJavascript = queryJavascript.replace(functionStartRegex, '');
         queryJavascript = queryJavascript.replace(functionEndRegex, '');
-        const airDb = await IOC.get(AIRPORT_DATABASE);
+        const [airDb, dbApplicationUtils] = await IOC.get(AIRPORT_DATABASE, DB_APPLICATION_UTILS);
         for (const functionName in airDb.functions) {
             const regex = new RegExp(`\\s*${functionName}\\(`);
             queryJavascript = queryJavascript
@@ -84,11 +84,12 @@ export class ApplicationQueryGenerator {
         functionConstructorParams.push('Y');
         functionConstructorParams.push(queryJavascript);
         const queryFunction = new Function(...functionConstructorParams);
-        const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb);
+        const [queryFunctionParameters, queryParameters] = this.getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils);
         const rawQuery = queryFunction(...queryFunctionParameters);
-        const [lookup, queryFacade] = await IOC.get(LOOKUP, QUERY_FACADE);
+        const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
         const context = lookup.ensureContext(null);
-        const qApplication = airDb.QM[getFullApplicationName(jsonApplication)];
+        const qApplication = airDb.QM[dbAppliationUtils.
+            getFullApplicationName(jsonApplication)];
         const dbApplicationVersion = qApplication.__dbApplication__
             .versions[qApplication.__dbApplication__.versions.length - 1];
         context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
@@ -113,7 +114,7 @@ export class ApplicationQueryGenerator {
             tableIndex: portableQuery.tableIndex
         };
     }
-    getQueryFunctionParameters(queryDefinition, jsonApplication, airDb) {
+    getQueryFunctionParameters(queryDefinition, jsonApplication, airDb, dbApplicationUtils) {
         const queryFunctionParameters = [];
         const queryParameters = [];
         let parameter;
@@ -173,7 +174,8 @@ export class ApplicationQueryGenerator {
                     }
                     break;
                 case QueryInputKind.Q:
-                    Q = airDb.QM[getFullApplicationName(jsonApplication)];
+                    Q = airDb.QM[dbApplicationUtils.
+                        getFullApplicationName(jsonApplication)];
                     queryFunctionParameters.push(Q);
                     break;
                 case QueryInputKind.QENTITY:

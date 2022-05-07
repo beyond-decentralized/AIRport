@@ -15,7 +15,7 @@ import {
 import {
 	DbDomain,
 	DomainName,
-	getFullApplicationName,
+	IDbApplicationUtils,
 	ISaveResult,
 	ITransactionalConnector,
 	PortableQuery
@@ -74,10 +74,13 @@ export class IframeTransactionalConnector
 	applicationLoader: IApplicationLoader
 
 	@Inject()
-	localApiServer: ILocalAPIServer
+	applicationStore: IApplicationStore
 
 	@Inject()
-	applicationStore: IApplicationStore
+	dbApplicationUtils: IDbApplicationUtils
+
+	@Inject()
+	localApiServer: ILocalAPIServer
 
 	async processMessage(
 		message: IIsolateMessageOut<any> | ILocalAPIRequest,
@@ -117,10 +120,11 @@ export class IframeTransactionalConnector
 				|| !message.domain
 				|| !message.application
 				// And if own domain is a direct sub-domain of the message's domain
-				|| ownDomain !== getFullApplicationName({
-					domain: message.domain,
-					name: message.application,
-				}) + domainSuffix) {
+				|| ownDomain !== this.dbApplicationUtils.
+					getFullApplicationName({
+						domain: message.domain,
+						name: message.application,
+					}) + domainSuffix) {
 				return
 			}
 			const ownDomainFragments = ownDomain.split('.')
@@ -483,8 +487,9 @@ export class IframeTransactionalConnector
 				await this.applicationLoader.initialize()
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					fullApplicationName: getFullApplicationName(
-						this.applicationLoader.getApplication()),
+					fullApplicationName: this.dbApplicationUtils.
+						getFullApplicationName(
+							this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, this.applicationStore.state.hostServer)
 				return true

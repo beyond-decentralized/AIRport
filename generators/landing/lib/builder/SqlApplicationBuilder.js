@@ -5,8 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { EntityRelationType, getFullApplicationNameFromDomainAndName, QueryType, } from '@airport/ground-control';
-let SqlApplicationBuilder = class SqlApplicationBuilder {
+import { EntityRelationType, QueryType, } from '@airport/ground-control';
+let SqlSchemaBuilder = class SqlSchemaBuilder {
     async build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context) {
         await this.createApplication(jsonApplication, context);
         for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
@@ -77,7 +77,8 @@ let SqlApplicationBuilder = class SqlApplicationBuilder {
                 || jsonRelation.relationTableApplicationIndex === 0) {
                 const referencedApplication = applicationVersion
                     .referencedApplications[jsonRelation.relationTableApplicationIndex];
-                let relatedFullApplicationName = getFullApplicationNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
+                let relatedFullApplicationName = this.dbApplicationUtils
+                    .getFullApplicationNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
                 relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplicationName);
                 if (!relatedJsonApplication) {
                     const relatedApplication = existingApplicationMap.get(relatedFullApplicationName);
@@ -149,15 +150,18 @@ let SqlApplicationBuilder = class SqlApplicationBuilder {
 };
 __decorate([
     Inject()
-], SqlApplicationBuilder.prototype, "airportDatabase", void 0);
+], SqlSchemaBuilder.prototype, "airportDatabase", void 0);
 __decorate([
     Inject()
-], SqlApplicationBuilder.prototype, "sequenceDao", void 0);
+], SqlSchemaBuilder.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
-], SqlApplicationBuilder.prototype, "storeDriver", void 0);
-SqlApplicationBuilder = __decorate([
+], SqlSchemaBuilder.prototype, "sequenceDao", void 0);
+__decorate([
+    Inject()
+], SqlSchemaBuilder.prototype, "storeDriver", void 0);
+SqlSchemaBuilder = __decorate([
     Injected()
-], SqlApplicationBuilder);
-export { SqlApplicationBuilder };
+], SqlSchemaBuilder);
+export { SqlSchemaBuilder };
 //# sourceMappingURL=SqlApplicationBuilder.js.map

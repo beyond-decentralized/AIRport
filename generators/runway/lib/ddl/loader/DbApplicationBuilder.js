@@ -1,5 +1,6 @@
+import { IOC } from '@airport/direction-indicator';
+import { DB_APPLICATION_UTILS } from '@airport/ground-control';
 import { ApplicationStatus } from '@airport/ground-control';
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { ensureChildMap } from '@airport/ground-control';
 export class DbApplicationBuilder {
     buildDbApplicationWithoutReferences(jsonApplication, allApplications, dictionary) {
@@ -41,7 +42,8 @@ export class DbApplicationBuilder {
             applicationPackages: [],
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
-            fullName: getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+            fullName: IOC.getSync(DB_APPLICATION_UTILS).
+                getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
             id: null,
             index: allApplications.length,
             name: jsonApplication.name,

@@ -5,9 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName, SQLDataType, } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
-let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlApplicationBuilder {
+import { SQLDataType, } from '@airport/ground-control';
+import { SqlSchemaBuilder } from '@airport/landing';
+let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
         // Nothing to do
     }
@@ -45,7 +45,8 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlApplica
         console.log('buildAllSequences');
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -57,7 +58,8 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlApplica
         console.log('stageSequences');
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
-            const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)];
+            const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

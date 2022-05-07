@@ -2,8 +2,8 @@ import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequence } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
 import { DbApplication, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
-export declare class PostgreApplicationBuilder extends SqlApplicationBuilder {
+import { SqlSchemaBuilder } from '@airport/landing';
+export declare class PostgreApplicationBuilder extends SqlSchemaBuilder {
     airportDatabase: IAirportDatabase;
     createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
     getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;

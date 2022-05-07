@@ -1,4 +1,5 @@
-import { IDbApplicationBuilder } from '@airport/ground-control';
+import { IOC } from '@airport/direction-indicator';
+import { DB_APPLICATION_UTILS, IDbApplicationBuilder } from '@airport/ground-control';
 import { ILinkingDictionary } from '@airport/ground-control';
 import {
 	DbEntity,
@@ -20,7 +21,6 @@ import {
 	JsonApplication,
 } from '@airport/ground-control';
 import { ApplicationStatus } from '@airport/ground-control';
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { ensureChildMap } from '@airport/ground-control';
 
 export class DbApplicationBuilder
@@ -66,11 +66,13 @@ export class DbApplicationBuilder
 			id: undefined,
 			name: jsonApplication.domain,
 		};
+
 		const dbApplication: DbApplication = {
 			applicationPackages: [],
 			currentVersion: [dbApplicationCurrentVersion],
 			domain: dbDomain,
-			fullName: getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+			fullName: IOC.getSync(DB_APPLICATION_UTILS).
+				getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
 			id: null,
 			index: allApplications.length,
 			name: jsonApplication.name,

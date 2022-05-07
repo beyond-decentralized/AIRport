@@ -1,17 +1,17 @@
 import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
-}                      from '@airport/air-traffic-control'
+} from '@airport/air-traffic-control'
 import {
 	diSet as dS,
 	duoDiSet as ddS
-}                      from '@airport/check-in'
-import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
+} from '@airport/check-in'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import {
 	DbApplication,
+	DB_APPLICATION_UTILS,
 	EntityId,
-	getFullApplicationName
-}                      from '@airport/ground-control';
+} from '@airport/ground-control';
 import { QAgt } from './qagt';
 import { QContinent } from './qcontinent';
 import { QCountry } from './qcountry';
@@ -21,19 +21,19 @@ import { QUser } from './quser';
 import { QUserTerminal } from './quserterminal';
 import { QUserTerminalAgt } from './quserterminalagt';
 import {
-  Agt,
-  Continent,
-  Country,
-  Terminal,
-  TerminalAgt,
-  User,
-  UserTerminal,
-  UserTerminalAgt
+	Agt,
+	Continent,
+	Country,
+	Terminal,
+	TerminalAgt,
+	User,
+	UserTerminal,
+	UserTerminalAgt
 } from '../ddl/ddl';
 
 export interface LocalQApplication extends AirportQApplication {
 
-  db: DbApplication;
+	db: DbApplication;
 
 	Agt: QAgt;
 	Continent: QContinent;
@@ -59,8 +59,8 @@ const __constructors__ = {
 
 export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
-  domain: 'air',
-  name: '@airport/travel-document-checkpoint'
+	domain: 'air',
+	name: '@airport/travel-document-checkpoint'
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
@@ -76,8 +76,8 @@ export function duoDiSet(
 	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
-	airDb
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then((
+	[airDb, dbApplicationUtils]
 ) => {
-	airDb.QM[getFullApplicationName(Q_APPLICATION)] = Q
+	airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION)] = Q
 })

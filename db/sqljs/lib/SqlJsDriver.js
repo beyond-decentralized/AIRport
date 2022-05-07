@@ -40,6 +40,9 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
         this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`);
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {
+        while (!this._db) {
+            await this.wait(50);
+        }
         return new Promise((resolve, reject) => {
             let stmt;
             try {
@@ -74,6 +77,13 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
     }
     getRows(result) {
         return result;
+    }
+    wait(milliseconds) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, milliseconds);
+        });
     }
     getReturnValue(queryType, response) {
         switch (queryType) {

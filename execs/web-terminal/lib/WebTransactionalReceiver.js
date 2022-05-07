@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationNameFromDomainAndName } from '@airport/ground-control';
 import { IsolateMessageType, } from '@airport/apron';
 import { TransactionalReceiver } from '@airport/terminal';
 import { map } from 'rxjs/operators';
@@ -134,7 +133,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
     }
     async nativeStartApiCall(message, context) {
         return await this.startApiCall(message, context, async () => {
-            const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+            const fullApplicationName = this.dbApplicationUtils.
+                getFullApplicationNameFromDomainAndName(message.domain, message.application);
             const frameWindow = this.getFrameWindow(fullApplicationName);
             if (frameWindow) {
                 // Forward the request to the correct application iframe
@@ -159,7 +159,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         });
     }
     async ensureConnectionIsReady(message) {
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationNameFromDomainAndName(message.domain, message.application);
         const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName);
         if (applicationInitializing) {
             return;
@@ -199,7 +200,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             // Prevent hosts from making local 'Denial of Service' attacks
             return;
         }
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationNameFromDomainAndName(message.domain, message.application);
         let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName);
         if (!numPendingMessagesForApplication) {
             numPendingMessagesForApplication = 0;
@@ -250,7 +252,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         this.replyToClientRequest(message);
     }
     replyToClientRequest(message) {
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationNameFromDomainAndName(message.domain, message.application);
         const webReciever = this.terminalStore.getWebReceiver();
         let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (numMessagesFromHost > 0) {
@@ -280,7 +283,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return true;
         }
         const webReciever = this.terminalStore.getWebReceiver();
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationNameFromDomainAndName(message.domain, message.application);
         // Only accept requests from https protocol
         if (!messageOrigin.startsWith("https")
             // and from application domains that match the fullApplicationName
@@ -309,7 +313,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return;
         }
         const webReciever = this.terminalStore.getWebReceiver();
-        const fullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplicationName = this.dbApplicationUtils.
+            getFullApplicationNameFromDomainAndName(message.domain, message.application);
         switch (message.type) {
             case IsolateMessageType.SEARCH_UNSUBSCRIBE:
                 let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
@@ -353,6 +358,9 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
 __decorate([
     Inject()
 ], WebTransactionalReceiver.prototype, "applicationInitializer", void 0);
+__decorate([
+    Inject()
+], WebTransactionalReceiver.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], WebTransactionalReceiver.prototype, "terminalStore", void 0);

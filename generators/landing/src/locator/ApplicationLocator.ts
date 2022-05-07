@@ -1,5 +1,5 @@
 import {
-	getFullApplicationNameFromDomainAndName,
+	IDbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control'
 import {
@@ -7,6 +7,7 @@ import {
 } from '@airport/terminal-map'
 import { IApplicationVersion } from '@airport/airspace'
 import {
+	Inject,
 	Injected
 } from '@airport/direction-indicator'
 
@@ -28,6 +29,9 @@ export interface IApplicationLocator {
 export class ApplicationLocator
 	implements IApplicationLocator {
 
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
+
 	// private terminalStore: ITerminalStore
 
 	locateExistingApplicationVersionRecord(
@@ -39,10 +43,11 @@ export class ApplicationLocator
 		if (!applicationVersionsForDomainName) {
 			return null
 		}
-		const fullApplicationName = getFullApplicationNameFromDomainAndName(
-			jsonApplication.domain,
-			jsonApplication.name
-		)
+		const fullApplicationName = this.dbApplicationUtils.
+			getFullApplicationNameFromDomainAndName(
+				jsonApplication.domain,
+				jsonApplication.name
+			)
 		const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(fullApplicationName)
 
 		const jsonApplicationVersion = jsonApplication.versions[0]

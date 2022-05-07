@@ -2,29 +2,30 @@ import {
 	QApplicationInternal
 } from '@airport/air-traffic-control';
 import {
-	IContext
+	IContext, IOC
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
-	getFullApplicationName,
+	DB_APPLICATION_UTILS,
 	JsonApplication,
 	JsonApplicationColumn,
 	JsonApplicationEntity,
 	QueryType
 } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
+import { SqlSchemaBuilder } from '@airport/landing';
 import {
 	IStoreDriver
 } from '@airport/terminal-map';
 
 export class NoOpApplicationBuilder
-	extends SqlApplicationBuilder {
+	extends SqlSchemaBuilder {
 
 	async createApplication(
 		jsonApplication: JsonApplication,
 		context: IContext,
 	): Promise<void> {
-		const applicationName = getFullApplicationName(jsonApplication);
+		const applicationName = IOC.getSync(DB_APPLICATION_UTILS).
+			getFullApplicationName(jsonApplication);
 		const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
 
 		await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [],
@@ -52,7 +53,8 @@ export class NoOpApplicationBuilder
 	): Promise<any[]> {
 		let allSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+				getFullApplicationName(jsonApplication)] as QApplicationInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}
@@ -67,7 +69,8 @@ export class NoOpApplicationBuilder
 	): any[] {
 		let stagedSequences: any[] = [];
 		for (const jsonApplication of jsonApplications) {
-			const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+			const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
+				getFullApplicationName(jsonApplication)] as QApplicationInternal;
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
 			}

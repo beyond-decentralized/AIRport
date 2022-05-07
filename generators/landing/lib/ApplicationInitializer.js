@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName } from '@airport/ground-control';
 let ApplicationInitializer = class ApplicationInitializer {
     addNewApplicationVersionsToAll(ddlObjects) {
         for (const applicationVersion of ddlObjects.added.applicationVersions) {
@@ -40,17 +39,20 @@ let ApplicationInitializer = class ApplicationInitializer {
         }
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
-            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
             else {
-                newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+                newJsonApplicationMap.set(this.dbApplicationUtils.
+                    getFullApplicationName(jsonApplication), jsonApplication);
             }
         }
         let checkedApplicationsWithValidDependencies = [];
         for (const jsonApplication of applicationsWithValidDependencies) {
-            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+                getFullApplicationName(jsonApplication));
             if (!existingApplication) {
                 checkedApplicationsWithValidDependencies.push(jsonApplication);
                 await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
@@ -114,7 +116,8 @@ let ApplicationInitializer = class ApplicationInitializer {
                 // const
                 for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
                     const neededDependency = applicationReferenceCheckResults.neededDependencies[i];
-                    const fullApplicationName = getFullApplicationName(neededDependency);
+                    const fullApplicationName = this.dbApplicationUtils.
+                        getFullApplicationName(neededDependency);
                     await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplicationName);
                 }
             }
@@ -155,6 +158,9 @@ __decorate([
 __decorate([
     Inject()
 ], ApplicationInitializer.prototype, "applicationRecorder", void 0);
+__decorate([
+    Inject()
+], ApplicationInitializer.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], ApplicationInitializer.prototype, "queryObjectInitializer", void 0);

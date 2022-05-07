@@ -2,7 +2,7 @@ import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { IApplicationVersion } from '@airport/airspace';
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { DbDomain, DomainName, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { DbDomain, DomainName, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
 import { Observable } from 'rxjs';
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
@@ -13,8 +13,9 @@ export interface IIframeTransactionalConnector extends ITransactionalConnector {
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     applicationLoader: IApplicationLoader;
-    localApiServer: ILocalAPIServer;
     applicationStore: IApplicationStore;
+    dbApplicationUtils: IDbApplicationUtils;
+    localApiServer: ILocalAPIServer;
     processMessage(message: IIsolateMessageOut<any> | ILocalAPIRequest, origin: string): Promise<void>;
     callApi<Request, Response>(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context: IContext): Promise<number>;

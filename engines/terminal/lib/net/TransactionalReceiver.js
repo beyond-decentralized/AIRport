@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getFullApplicationName, getFullApplicationNameFromDomainAndName, INTERNAL_DOMAIN } from '@airport/ground-control';
+import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/apron';
 let TransactionalReceiver = class TransactionalReceiver {
     async processMessage(message) {
@@ -37,8 +37,10 @@ let TransactionalReceiver = class TransactionalReceiver {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage = message;
                     const application = initConnectionMessage.jsonApplication;
-                    const fullApplicationName = getFullApplicationName(application);
-                    const messageFullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application);
+                    const fullApplicationName = this.dbApplicationUtils.
+                        getFullApplicationName(application);
+                    const messageFullApplicationName = this.dbApplicationUtils.
+                        getFullApplicationNameFromDomainAndName(message.domain, message.application);
                     if (fullApplicationName !== messageFullApplicationName) {
                         result = null;
                         break;
@@ -203,6 +205,9 @@ let TransactionalReceiver = class TransactionalReceiver {
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "databaseManager", void 0);
+__decorate([
+    Inject()
+], TransactionalReceiver.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);

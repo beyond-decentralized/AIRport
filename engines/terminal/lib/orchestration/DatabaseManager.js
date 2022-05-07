@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { container } from '@airport/direction-indicator';
-import { getFullApplicationName, } from '@airport/ground-control';
 import { Actor, } from '@airport/holding-pattern-runtime';
 import { BLUEPRINT } from '@airport/blueprint';
 let DatabaseManager = class DatabaseManager {
@@ -25,7 +24,8 @@ let DatabaseManager = class DatabaseManager {
     async initWithDb(domainName, context) {
         await container(this).get(AIRPORT_DATABASE);
         this.transactionalServer.tempActor = new Actor();
-        const hydrate = await this.storeDriver.doesTableExist(getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
+        const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
+            .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
         await this.installStarterApplication(false, hydrate, context);
         if (!hydrate) {
             await this.internalRecordManager.initTerminal(domainName, context);
@@ -44,7 +44,8 @@ let DatabaseManager = class DatabaseManager {
         }
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
-            const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication));
+            const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
+                .getFullApplicationName(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
@@ -109,6 +110,9 @@ __decorate([
 __decorate([
     Inject()
 ], DatabaseManager.prototype, "applicationInitializer", void 0);
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], DatabaseManager.prototype, "internalRecordManager", void 0);

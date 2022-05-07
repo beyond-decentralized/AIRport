@@ -3,11 +3,12 @@ import { SEQUENCE_DAO } from '@airport/airport-code'
 import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
+import { DB_APPLICATION_UTILS } from '@airport/ground-control'
 import { QUERY_OBJECT_INITIALIZER } from '@airport/takeoff'
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { ApplicationInitializer } from './ApplicationInitializer'
-import { IApplicationBuilder } from './builder/IApplicationBuilder'
-import { SqlApplicationBuilder } from './builder/SqlApplicationBuilder'
+import { ISchemaBuilder } from './builder/ISchemaBuilder'
+import { SqlSchemaBuilder } from './builder/SqlSchemaBuilder'
 import { ApplicationChecker, IApplicationChecker } from './checker/ApplicationChecker'
 import { ApplicationLocator, IApplicationLocator } from './locator/ApplicationLocator'
 import { ApplicationComposer, IApplicationComposer } from './recorder/ApplicationComposer'
@@ -20,9 +21,9 @@ export const ABSTRACT_APPLICATION_INITIALIZER = landing.token<ApplicationInitial
     interface: 'class ApplicationInitializer',
     token: 'ABSTRACT_APPLICATION_INITIALIZER'
 })
-export const APPLICATION_BUILDER = landing.token<IApplicationBuilder>({
+export const APPLICATION_BUILDER = landing.token<ISchemaBuilder>({
     class: null,
-    interface: 'IApplicationBuilder',
+    interface: 'ISchemaBuilder',
     token: 'APPLICATION_BUILDER'
 })
 export const APPLICATION_CHECKER = landing.token<IApplicationChecker>({
@@ -46,10 +47,10 @@ export const APPLICATION_RECORDER = landing.token<IApplicationRecorder>({
     token: 'APPLICATION_RECORDER'
 })
 
-export const SQL_APPLICATION_BUILDER = landing.token<IApplicationBuilder>({
-    class: SqlApplicationBuilder,
-    interface: 'class SqlApplicationBuilder',
-    token: 'SQL_APPLICATION_BUILDER'
+export const SQL_SCHEMA_BUILDER = landing.token<ISchemaBuilder>({
+    class: SqlSchemaBuilder,
+    interface: 'class SqlSchemaBuilder',
+    token: 'SQL_SCHEMA_BUILDER'
 })
 
 ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
@@ -58,6 +59,7 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     applicationChecker: APPLICATION_CHECKER,
     applicationDao: APPLICATION_DAO,
     applicationLocator: APPLICATION_LOCATOR,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     queryObjectInitializer: QUERY_OBJECT_INITIALIZER,
     sequenceGenerator: SEQUENCE_GENERATOR,
     terminalStore: TERMINAL_STORE
@@ -68,13 +70,19 @@ APPLICATION_BUILDER.setDependencies({
 })
 
 APPLICATION_CHECKER.setDependencies({
-    applicationDao: APPLICATION_DAO
+    applicationDao: APPLICATION_DAO,
+    dbApplicationUtils: DB_APPLICATION_UTILS
 })
 
 APPLICATION_COMPOSER.setDependencies({
     applicationLocator: APPLICATION_LOCATOR,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     domainRetriever: DOMAIN_RETRIEVER,
     terminalStore: TERMINAL_STORE
+})
+
+APPLICATION_LOCATOR.setDependencies({
+    dbApplicationUtils: DB_APPLICATION_UTILS,
 })
 
 APPLICATION_RECORDER.setDependencies({
@@ -92,8 +100,9 @@ APPLICATION_RECORDER.setDependencies({
     transactionManager: TRANSACTION_MANAGER
 })
 
-SQL_APPLICATION_BUILDER.setDependencies({
+SQL_SCHEMA_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     sequenceDao: SEQUENCE_DAO,
     storeDriver: STORE_DRIVER
 })

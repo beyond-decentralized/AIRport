@@ -10,8 +10,7 @@ import {
 	IContext
 } from '@airport/direction-indicator';
 import {
-	FullApplicationName,
-	getFullApplicationName,
+	FullApplicationName, IDbApplicationUtils,
 } from '@airport/ground-control';
 import {
 	Actor,
@@ -36,6 +35,9 @@ export class DatabaseManager
 
 	@Inject()
 	applicationInitializer: IApplicationInitializer
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	internalRecordManager: IInternalRecordManager
@@ -71,7 +73,8 @@ export class DatabaseManager
 
 		(this.transactionalServer as any).tempActor = new Actor();
 
-		const hydrate = await this.storeDriver.doesTableExist(getFullApplicationName(BLUEPRINT[0]),
+		const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
+			.getFullApplicationName(BLUEPRINT[0]),
 			'PACKAGES', context);
 
 		await this.installStarterApplication(false, hydrate, context);
@@ -100,7 +103,8 @@ export class DatabaseManager
 
 		const applicationsToCreate: JsonApplicationWithLastIds[] = []
 		for (const jsonApplication of jsonApplications) {
-			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
+			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
+				.getFullApplicationName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {

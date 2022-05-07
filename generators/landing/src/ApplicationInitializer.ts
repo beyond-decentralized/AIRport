@@ -14,7 +14,7 @@ import {
 import {
 	DbApplication,
 	FullApplicationName,
-	getFullApplicationName,
+	IDbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
@@ -28,7 +28,7 @@ import {
 	IApplication,
 	IApplicationDao
 } from '@airport/airspace';
-import { IApplicationBuilder } from './builder/IApplicationBuilder';
+import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
 import { IApplicationComposer } from './recorder/ApplicationComposer';
 import { IApplicationLocator } from './locator/ApplicationLocator';
@@ -42,7 +42,7 @@ export abstract class ApplicationInitializer
 	airportDatabase: IAirportDatabase
 
 	@Inject()
-	applicationBuilder: IApplicationBuilder
+	applicationBuilder: ISchemaBuilder
 
 	@Inject()
 	applicationChecker: IApplicationChecker
@@ -58,6 +58,9 @@ export abstract class ApplicationInitializer
 
 	@Inject()
 	applicationRecorder: IApplicationRecorder
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	queryObjectInitializer: IQueryObjectInitializer
@@ -120,17 +123,20 @@ export abstract class ApplicationInitializer
 
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
 		for (const jsonApplication of jsonApplications) {
-			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
+			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+				getFullApplicationName(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {
-				newJsonApplicationMap.set(getFullApplicationName(jsonApplication), jsonApplication);
+				newJsonApplicationMap.set(this.dbApplicationUtils.
+					getFullApplicationName(jsonApplication), jsonApplication);
 			}
 		}
 
 		let checkedApplicationsWithValidDependencies = []
 		for (const jsonApplication of applicationsWithValidDependencies) {
-			const existingApplication = existingApplicationMap.get(getFullApplicationName(jsonApplication))
+			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
+				getFullApplicationName(jsonApplication))
 			if (!existingApplication) {
 				checkedApplicationsWithValidDependencies.push(jsonApplication)
 				await this.applicationBuilder.build(
@@ -243,7 +249,8 @@ export abstract class ApplicationInitializer
 				// const
 				for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
 					const neededDependency = applicationReferenceCheckResults.neededDependencies[i]
-					const fullApplicationName = getFullApplicationName(neededDependency)
+					const fullApplicationName = this.dbApplicationUtils.
+						getFullApplicationName(neededDependency)
 
 					await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name,
 						fullApplicationName)

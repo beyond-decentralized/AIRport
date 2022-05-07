@@ -1,16 +1,14 @@
 import { IEntityContext } from '@airport/air-traffic-control';
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import {
-    container,
     IContext,
 } from '@airport/direction-indicator';
 import {
-    getFullApplicationName,
-    getFullApplicationNameFromDomainAndName,
+    IDbApplicationUtils,
     INTERNAL_DOMAIN
 } from '@airport/ground-control';
 import {
@@ -44,6 +42,9 @@ export abstract class TransactionalReceiver {
 
     @Inject()
     databaseManager: IDatabaseManager
+
+    @Inject()
+    dbApplicationUtils: IDbApplicationUtils
 
     @Inject()
     internalRecordManager: IInternalRecordManager
@@ -84,8 +85,10 @@ export abstract class TransactionalReceiver {
                 case IsolateMessageType.APP_INITIALIZING:
                     let initConnectionMessage: IInitConnectionIMI = message as any
                     const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
-                    const fullApplicationName = getFullApplicationName(application)
-                    const messageFullApplicationName = getFullApplicationNameFromDomainAndName(message.domain, message.application)
+                    const fullApplicationName = this.dbApplicationUtils.
+                        getFullApplicationName(application)
+                    const messageFullApplicationName = this.dbApplicationUtils.
+                        getFullApplicationNameFromDomainAndName(message.domain, message.application)
                     if (fullApplicationName !== messageFullApplicationName) {
                         result = null
                         break

@@ -1,13 +1,14 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { IContext } from '@airport/direction-indicator';
-import { JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
+import { IDbApplicationUtils, JsonApplication, JsonApplicationColumn, JsonApplicationEntity } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IStoreDriver } from '@airport/terminal-map';
 import { IApplication } from '@airport/airspace';
-import { IApplicationBuilder } from './IApplicationBuilder';
-export declare abstract class SqlApplicationBuilder implements IApplicationBuilder {
+import { IApplicationBuilder } from './ISchemaBuilder';
+export declare abstract class SqlSchemaBuilder implements IApplicationBuilder {
     airportDatabase: IAirportDatabase;
+    dbApplicationUtils: IDbApplicationUtils;
     sequenceDao: ISequenceDao;
     storeDriver: IStoreDriver;
     build(jsonApplication: JsonApplication, existingApplicationMap: Map<string, IApplication>, newJsonApplicationMap: Map<string, JsonApplicationWithLastIds>, context: IContext): Promise<void>;
@@ -24,4 +25,4 @@ export declare abstract class SqlApplicationBuilder implements IApplicationBuild
     protected isPrimaryKeyColumn(jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): boolean;
     protected getPrimaryKeyStatement(columnNames: string[]): string;
 }
-//# sourceMappingURL=SqlApplicationBuilder.d.ts.map
+//# sourceMappingURL=SqlSchemaBuilder.d.ts.map

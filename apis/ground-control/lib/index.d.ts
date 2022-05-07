@@ -30,6 +30,7 @@ export * from './lingo/query/facade/SheetQuery';
 export * from './lingo/query/facade/TreeQuery';
 export * from './lingo/query/facade/Update';
 export * from './lingo/query/AbstractQueryContext';
+export * from './lingo/query/DbApplicationUtils';
 export * from './lingo/query/PortableQuery';
 export * from './lingo/query/QueryResultType';
 export * from './lingo/query/SaveResult';

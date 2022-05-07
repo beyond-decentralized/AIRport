@@ -3,8 +3,8 @@ import {
   QApplicationInternal,
 } from '@airport/air-traffic-control';
 import {
-	Inject,
-	Injected
+  Inject,
+  Injected
 } from '@airport/direction-indicator'
 import {
   ISequence
@@ -14,17 +14,16 @@ import {
 } from '@airport/direction-indicator';
 import {
   DbApplication,
-  getFullApplicationName,
   JsonApplication,
   JsonApplicationColumn,
   JsonApplicationEntity,
   SQLDataType,
 } from '@airport/ground-control';
-import { SqlApplicationBuilder } from '@airport/landing';
+import { SqlSchemaBuilder } from '@airport/landing';
 
 @Injected()
 export class SqLiteApplicationBuilder
-  extends SqlApplicationBuilder {
+  extends SqlSchemaBuilder {
 
   @Inject()
   airportDatabase: IAirportDatabase
@@ -84,7 +83,8 @@ export class SqLiteApplicationBuilder
 
     let allSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+        getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }
@@ -103,7 +103,8 @@ export class SqLiteApplicationBuilder
 
     let stagedSequences: ISequence[] = [];
     for (const jsonApplication of jsonApplications) {
-      const qApplication = this.airportDatabase.QM[getFullApplicationName(jsonApplication)] as QApplicationInternal;
+      const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
+        getFullApplicationName(jsonApplication)] as QApplicationInternal;
       for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
         stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
       }

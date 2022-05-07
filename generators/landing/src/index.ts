@@ -1,5 +1,5 @@
-export * from './builder/IApplicationBuilder'
-export * from './builder/SqlApplicationBuilder'
+export * from './builder/ISchemaBuilder'
+export * from './builder/SqlSchemaBuilder'
 export * from './checker/ApplicationChecker'
 export * from './locator/ApplicationLocator'
 export * from './recorder/ApplicationComposer'

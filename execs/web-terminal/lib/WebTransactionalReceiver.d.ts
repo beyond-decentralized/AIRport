@@ -4,8 +4,10 @@ import { TransactionalReceiver } from '@airport/terminal';
 import { ITransactionalReceiver, IApiCallContext, ITransactionContext, ITerminalStore } from '@airport/terminal-map';
 import { IWebApplicationInitializer } from './WebApplicationInitializer';
 import { IWebMessageReceiver } from './WebMessageReceiver';
+import { IDbApplicationUtils } from '@airport/ground-control';
 export declare class WebTransactionalReceiver extends TransactionalReceiver implements ITransactionalReceiver {
     applicationInitializer: IWebApplicationInitializer;
+    dbApplicationUtils: IDbApplicationUtils;
     terminalStore: ITerminalStore;
     webMessageReciever: IWebMessageReceiver;
     constructor();
