@@ -14,6 +14,7 @@ import {
 	FunctionsAndOperators,
 	IAirportDatabase,
 	IDatabaseFacade,
+	IDatabaseState,
 	IEntityAccumulator,
 	IEntityContext,
 	IEntityRecord,
@@ -99,124 +100,51 @@ class EntityAccumulator
 export class AirportDatabase
 	implements IAirportDatabase {
 
-
 	@Inject()
 	databaseFacade: IDatabaseFacade
 
-	entityMap: Map<any, IEntityRecord> = new Map<any, IEntityRecord>();
+	@Inject()
+	databaseStore: IDatabaseState
 
-	F: FunctionsAndOperators;
-	functions: FunctionsAndOperators = {
-		abs,
-		avg,
-		count,
-		max,
-		min,
-		sum,
-		ucase,
-		lcase,
-		mid,
-		len,
-		round,
-		now,
-		format,
-		replace,
-		trim,
-		distinct,
-		exists,
-		divide,
-		subtract,
-		modulus,
-		multiply,
-		add,
-		concat,
-		union,
-		unionAll,
-		intersect,
-		minus,
-		// logical operators
-		and,
-		not,
-		or,
-		// primitive wrappers
-		bool,
-		date,
-		num,
-		str,
-		wrapPrimitive,
+	@Inject()
+	find: INonEntityFind
+
+	@Inject()
+	findOne: INonEntityFindOne
+
+	@Inject()
+	search: INonEntitySearch
+
+	@Inject()
+	searchOne: INonEntitySearchOne
+
+	get entityMap(): Map<any, IEntityRecord> {
+		return this.databaseStore.entityMap
 	};
 
-	S: DbApplication[];
-	applications: DbApplication[] = [];
-
-	qApplications: QApplication[] = [];
-	Q: QApplication[];
-
-	QM: { [name: string]: QApplication } = {};
-
-	find: INonEntityFind;
-	findOne: INonEntityFindOne;
-	search: INonEntitySearch;
-	searchOne: INonEntitySearchOne;
-
-	// private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
-	// private dbNames: string[]                                        = []
-	// private dbNameSet: { [databaseName: string]: boolean }           = {}
-
-	// private currentDbName = dbConst.DEFAULT_DB
-
-	constructor() {
-		this.S = this.applications;
-		this.Q = this.qApplications;
-
-		this.find = new NonEntityFind();
-		this.findOne = new NonEntityFindOne();
-		this.search = new NonEntitySearch();
-		this.searchOne = new NonEntitySearchOne();
+	F: FunctionsAndOperators;
+	get functions(): FunctionsAndOperators {
+		return this.databaseStore.functions
 	}
 
-	/*
-		registerDatabase(
-			facade: IDatabaseFacade
-		) {
-			if (!this.dbNameSet[facade.name]) {
-				this.dbNames.push(facade.name)
-			}
-			this.databaseMap[facade.name] = facade
-			this.dbNameSet[facade.name]   = true
-		}
+	get A(): DbApplication[] {
+		return this.databaseStore.applications
+	}
 
-		async registerQApplications(
-			qApplications: QApplication[]
-		) {
-			for (const qApplication of qApplications) {
-				const fullApplicationName    = getFullApplicationName(qApplication)
-				this.QM[fullApplicationName] = qApplication
-			}
-		}
+	get applications(): DbApplication[] {
+		return this.databaseStore.applications
+	}
 
-		setCurrentDb(
-			dbName: string = dbConst.DEFAULT_DB
-		): void {
-			this.currentDbName = dbName
-		}
+	get qApplications(): QApplication[] {
+		return this.databaseStore.qApplications
+	}
+	get Q(): QApplication[] {
+		return this.databaseStore.qApplications
+	}
 
-		getDbNames(): string[] {
-			return this.dbNames
-		}
-
-		getDbNameSet(): { [databaseName: string]: boolean } {
-			return this.dbNameSet
-		}
-
-		get db(): IDatabaseFacade {
-			let database = this.databaseMap[this.currentDbName]
-			if (!database) {
-				throw new Error(`Did not find database '${this.currentDbName}'`)
-			}
-			return database
-		}
-	*/
+	get QM(): { [name: string]: QApplication } {
+		return this.databaseStore.QM
+	}
 
 	getAccumulator(
 		applicationDomain: string,

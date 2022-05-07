@@ -1,8 +1,6 @@
 import {
   DbApplication,
-  DistributionStrategy,
   ISaveResult,
-  PlatformType,
 } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
@@ -59,7 +57,7 @@ export interface ApplicationHub {
   entityMap: Map<any, IEntityRecord>
 
   applications: DbApplication[];
-  S: DbApplication[];
+  A: DbApplication[];
 
   qApplications: QApplication[];
   Q: QApplication[];
@@ -70,7 +68,7 @@ export interface ApplicationHub {
 
 export interface IAirportDatabase
   extends ApplicationHub,
-    FunctionAndOperatorHub {
+  FunctionAndOperatorHub {
 
   find: INonEntityFind
   findOne: INonEntityFindOne
@@ -168,8 +166,8 @@ export interface IAirportDatabase
   updateColumnsWhere<IEUC extends IEntityUpdateColumns, IQE extends IQEntity>(
     rawUpdateColumns: RawUpdateColumns<IEUC, IQE>
       | {
-      (...args: any[]): RawUpdateColumns<IEUC, IQE>
-    },
+        (...args: any[]): RawUpdateColumns<IEUC, IQE>
+      },
     context?: IEntityContext,
   ): Promise<number>;
 

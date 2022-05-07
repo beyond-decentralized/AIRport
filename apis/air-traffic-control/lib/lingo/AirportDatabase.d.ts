@@ -32,7 +32,7 @@ export interface IEntityRecord {
 export interface ApplicationHub {
     entityMap: Map<any, IEntityRecord>;
     applications: DbApplication[];
-    S: DbApplication[];
+    A: DbApplication[];
     qApplications: QApplication[];
     Q: QApplication[];
     QM: {

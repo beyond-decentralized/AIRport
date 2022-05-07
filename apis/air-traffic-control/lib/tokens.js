@@ -7,6 +7,11 @@ import { QMetadataUtils } from './impl/utils/QMetadataUtils';
 import { QueryUtils } from './impl/utils/QueryUtils';
 import { ApplicationUtils } from './impl/utils/ApplicationUtils';
 import { FieldUtils } from './impl/utils/FieldUtils';
+import { NonEntityFind } from './impl/query/api/NonEntityFind';
+import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne';
+import { NonEntitySearch } from './impl/query/api/NonEntitySearch';
+import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne';
+import { DatabaseStore } from './lingo/DatabaseStore';
 const airTrafficControl = lib('air-traffic-control');
 export const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,
@@ -23,6 +28,11 @@ export const DATABASE_FACADE = airTrafficControl.token({
     interface: 'IDatabaseFacade',
     token: 'DATABASE_FACADE'
 });
+export const DATABASE_STORE = airTrafficControl.token({
+    class: DatabaseStore,
+    interface: 'IDatabaseState',
+    token: 'DATABASE_STORE'
+});
 export const ENTITY_UTILS = airTrafficControl.token({
     class: EntityUtils,
     interface: 'IEntityUtils',
@@ -37,6 +47,26 @@ export const LOOKUP = airTrafficControl.token({
     class: Lookup,
     interface: 'ILookup',
     token: 'LOOKUP'
+});
+export const NON_ENTITY_FIND = airTrafficControl.token({
+    class: NonEntityFind,
+    interface: 'INonEntityFind',
+    token: 'NON_ENTITY_FIND'
+});
+export const NON_ENTITY_FIND_ONE = airTrafficControl.token({
+    class: NonEntityFindOne,
+    interface: 'INonEntityFindOne',
+    token: 'NON_ENTITY_FIND_ONE'
+});
+export const NON_ENTITY_SEARCH = airTrafficControl.token({
+    class: NonEntitySearch,
+    interface: 'INonEntitySearch',
+    token: 'NON_ENTITY_SEARCH'
+});
+export const NON_ENTITY_SEARCH_ONE = airTrafficControl.token({
+    class: NonEntitySearchOne,
+    interface: 'INonEntitySearchOne',
+    token: 'NON_ENTITY_SEARCH_ONE'
 });
 export const Q_METADATA_UTILS = airTrafficControl.token({
     class: QMetadataUtils,
@@ -70,7 +100,11 @@ export const UPDATE_CACHE_MANAGER = airTrafficControl.token({
 });
 AIRPORT_DATABASE.setDependencies({
     databaseFacade: DATABASE_FACADE,
-    updateCacheManager: UPDATE_CACHE_MANAGER
+    databaseStore: DATABASE_STORE,
+    find: NON_ENTITY_FIND,
+    findOne: NON_ENTITY_FIND_ONE,
+    search: NON_ENTITY_SEARCH,
+    searchOne: NON_ENTITY_SEARCH_ONE
 });
 APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

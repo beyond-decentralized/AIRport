@@ -4,7 +4,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { abs, add, and, avg, bool, concat, count, date, distinct, divide, exists, format, intersect, lcase, len, max, mid, min, minus, modulus, multiply, NonEntityFind, NonEntityFindOne, NonEntitySearch, NonEntitySearchOne, not, now, num, or, replace, round, str, subtract, sum, trim, ucase, union, unionAll, wrapPrimitive, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
@@ -26,103 +25,28 @@ class EntityAccumulator {
     }
 }
 let AirportDatabase = class AirportDatabase {
-    // private databaseMap: { [databaseName: string]: IDatabaseFacade } = {}
-    // private dbNames: string[]                                        = []
-    // private dbNameSet: { [databaseName: string]: boolean }           = {}
-    // private currentDbName = dbConst.DEFAULT_DB
-    constructor() {
-        this.entityMap = new Map();
-        this.functions = {
-            abs,
-            avg,
-            count,
-            max,
-            min,
-            sum,
-            ucase,
-            lcase,
-            mid,
-            len,
-            round,
-            now,
-            format,
-            replace,
-            trim,
-            distinct,
-            exists,
-            divide,
-            subtract,
-            modulus,
-            multiply,
-            add,
-            concat,
-            union,
-            unionAll,
-            intersect,
-            minus,
-            // logical operators
-            and,
-            not,
-            or,
-            // primitive wrappers
-            bool,
-            date,
-            num,
-            str,
-            wrapPrimitive,
-        };
-        this.applications = [];
-        this.qApplications = [];
-        this.QM = {};
-        this.S = this.applications;
-        this.Q = this.qApplications;
-        this.find = new NonEntityFind();
-        this.findOne = new NonEntityFindOne();
-        this.search = new NonEntitySearch();
-        this.searchOne = new NonEntitySearchOne();
+    get entityMap() {
+        return this.databaseStore.entityMap;
     }
-    /*
-        registerDatabase(
-            facade: IDatabaseFacade
-        ) {
-            if (!this.dbNameSet[facade.name]) {
-                this.dbNames.push(facade.name)
-            }
-            this.databaseMap[facade.name] = facade
-            this.dbNameSet[facade.name]   = true
-        }
-
-        async registerQApplications(
-            qApplications: QApplication[]
-        ) {
-            for (const qApplication of qApplications) {
-                const fullApplicationName    = getFullApplicationName(qApplication)
-                this.QM[fullApplicationName] = qApplication
-            }
-        }
-
-        setCurrentDb(
-            dbName: string = dbConst.DEFAULT_DB
-        ): void {
-            this.currentDbName = dbName
-        }
-
-        getDbNames(): string[] {
-            return this.dbNames
-        }
-
-        getDbNameSet(): { [databaseName: string]: boolean } {
-            return this.dbNameSet
-        }
-
-        get db(): IDatabaseFacade {
-            let database = this.databaseMap[this.currentDbName]
-            if (!database) {
-                throw new Error(`Did not find database '${this.currentDbName}'`)
-            }
-            return database
-        }
-    */
+    ;
+    get functions() {
+        return this.databaseStore.functions;
+    }
+    get A() {
+        return this.databaseStore.applications;
+    }
+    get applications() {
+        return this.databaseStore.applications;
+    }
+    get qApplications() {
+        return this.databaseStore.qApplications;
+    }
+    get Q() {
+        return this.databaseStore.qApplications;
+    }
+    get QM() {
+        return this.databaseStore.QM;
+    }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
     }
@@ -188,6 +112,21 @@ let AirportDatabase = class AirportDatabase {
 __decorate([
     Inject()
 ], AirportDatabase.prototype, "databaseFacade", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "databaseStore", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "find", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "findOne", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "search", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "searchOne", void 0);
 AirportDatabase = __decorate([
     Injected()
 ], AirportDatabase);

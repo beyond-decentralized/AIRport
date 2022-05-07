@@ -1,30 +1,32 @@
 import {
-	IContext
-}                               from '@airport/direction-indicator';
-import { QueryResultType }      from '@airport/ground-control';
+	IContext, Injected
+} from '@airport/direction-indicator';
+import { QueryResultType } from '@airport/ground-control';
 import {
 	Observable,
 	from
-}                               from 'rxjs';
-import { IQOrderableField }     from '../../../lingo/core/field/Field';
-import { INonEntitySearch }     from '../../../lingo/query/api/NonEntitySearch';
-import { RawFieldQuery }        from '../../../lingo/query/facade/FieldQuery';
-import { RawNonEntityQuery }    from '../../../lingo/query/facade/NonEntityQuery';
-import { RawSheetQuery }        from '../../../lingo/query/facade/SheetQuery';
+} from 'rxjs';
+import { IQOrderableField } from '../../../lingo/core/field/Field';
+import { INonEntitySearch } from '../../../lingo/query/api/NonEntitySearch';
+import { RawFieldQuery } from '../../../lingo/query/facade/FieldQuery';
+import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery';
+import { RawSheetQuery } from '../../../lingo/query/facade/SheetQuery';
 import {
 	ITreeEntity,
 	RawTreeQuery
-}                               from '../../../lingo/query/facade/TreeQuery';
-import { IQueryContext }        from '../../../lingo/query/QueryContext';
-import { FieldQuery }           from '../facade/FieldQuery';
+} from '../../../lingo/query/facade/TreeQuery';
+import { IQueryContext } from '../../../lingo/query/QueryContext';
+import { FieldQuery } from '../facade/FieldQuery';
 import { DistinguishableQuery } from '../facade/NonEntityQuery';
-import { SheetQuery }           from '../facade/SheetQuery';
-import { TreeQuery }            from '../facade/TreeQuery';
-import { Lookup }               from './Lookup';
+import { SheetQuery } from '../facade/SheetQuery';
+import { TreeQuery } from '../facade/TreeQuery';
+import { Lookup } from './Lookup';
 
 /**
  * Created by Papa on 11/12/2016.
  */
+
+@Injected()
 export class NonEntitySearch
 	extends Lookup
 	implements INonEntitySearch {

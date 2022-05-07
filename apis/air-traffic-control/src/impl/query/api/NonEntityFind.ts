@@ -1,4 +1,4 @@
-import { IContext }             from '@airport/direction-indicator';
+import { IContext, Injected }             from '@airport/direction-indicator';
 import { QueryResultType }      from '@airport/ground-control';
 import { IQOrderableField }     from '../../../lingo/core/field/Field';
 import { INonEntityFind }       from '../../../lingo/query/api/NonEntityFind';
@@ -19,6 +19,7 @@ import { Lookup }               from './Lookup';
 /**
  * Created by Papa on 11/12/2016.
  */
+@Injected()
 export class NonEntityFind
 	extends Lookup
 	implements INonEntityFind {

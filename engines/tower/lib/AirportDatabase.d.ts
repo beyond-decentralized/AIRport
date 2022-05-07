@@ -1,22 +1,22 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-traffic-control';
+import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IDatabaseState, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-traffic-control';
 import { DbApplication, ISaveResult } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
     databaseFacade: IDatabaseFacade;
-    entityMap: Map<any, IEntityRecord>;
-    F: FunctionsAndOperators;
-    functions: FunctionsAndOperators;
-    S: DbApplication[];
-    applications: DbApplication[];
-    qApplications: QApplication[];
-    Q: QApplication[];
-    QM: {
-        [name: string]: QApplication;
-    };
+    databaseStore: IDatabaseState;
     find: INonEntityFind;
     findOne: INonEntityFindOne;
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
-    constructor();
+    get entityMap(): Map<any, IEntityRecord>;
+    F: FunctionsAndOperators;
+    get functions(): FunctionsAndOperators;
+    get A(): DbApplication[];
+    get applications(): DbApplication[];
+    get qApplications(): QApplication[];
+    get Q(): QApplication[];
+    get QM(): {
+        [name: string]: QApplication;
+    };
     getAccumulator(applicationDomain: string, applicationName: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {

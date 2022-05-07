@@ -1,3 +1,10 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { Injected } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
 import { from } from 'rxjs';
 import { FieldQuery } from '../facade/FieldQuery';
@@ -7,7 +14,7 @@ import { Lookup } from './Lookup';
 /**
  * Created by Papa on 11/12/2016.
  */
-export class NonEntitySearchOne extends Lookup {
+let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
     field(rawFieldQuery, context) {
         return from(this.searchOne(rawFieldQuery, QueryResultType.FIELD, FieldQuery, context));
     }
@@ -20,5 +27,9 @@ export class NonEntitySearchOne extends Lookup {
     searchOne(rawNonEntityQuery, queryResultType, QueryClass, context) {
         return this.lookup(rawNonEntityQuery, queryResultType, true, true, QueryClass, this.ensureContext(context));
     }
-}
+};
+NonEntitySearchOne = __decorate([
+    Injected()
+], NonEntitySearchOne);
+export { NonEntitySearchOne };
 //# sourceMappingURL=NonEntitySearchOne.js.map

@@ -20,6 +20,16 @@ import { QMetadataUtils } from './impl/utils/QMetadataUtils'
 import { QueryUtils } from './impl/utils/QueryUtils'
 import { ApplicationUtils } from './impl/utils/ApplicationUtils'
 import { FieldUtils } from './impl/utils/FieldUtils'
+import { INonEntityFind } from './lingo/query/api/NonEntityFind'
+import { NonEntityFind } from './impl/query/api/NonEntityFind'
+import { INonEntityFindOne } from './lingo/query/api/NonEntityFindOne'
+import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne'
+import { INonEntitySearch } from './lingo/query/api/NonEntitySearch'
+import { NonEntitySearch } from './impl/query/api/NonEntitySearch'
+import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne'
+import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne'
+import { IDatabaseState } from './lingo/DatabaseState'
+import { DatabaseStore } from './lingo/DatabaseStore'
 
 const airTrafficControl = lib('air-traffic-control')
 
@@ -38,6 +48,11 @@ export const DATABASE_FACADE = airTrafficControl.token<IDatabaseFacade>({
 	interface: 'IDatabaseFacade',
 	token: 'DATABASE_FACADE'
 })
+export const DATABASE_STORE = airTrafficControl.token<IDatabaseState>({
+	class: DatabaseStore,
+	interface: 'IDatabaseState',
+	token: 'DATABASE_STORE'
+})
 export const ENTITY_UTILS = airTrafficControl.token<IEntityUtils>({
 	class: EntityUtils,
 	interface: 'IEntityUtils',
@@ -52,6 +67,26 @@ export const LOOKUP = airTrafficControl.token<ILookup>({
 	class: Lookup,
 	interface: 'ILookup',
 	token: 'LOOKUP'
+})
+export const NON_ENTITY_FIND = airTrafficControl.token<INonEntityFind>({
+	class: NonEntityFind,
+	interface: 'INonEntityFind',
+	token: 'NON_ENTITY_FIND'
+})
+export const NON_ENTITY_FIND_ONE = airTrafficControl.token<INonEntityFindOne>({
+	class: NonEntityFindOne,
+	interface: 'INonEntityFindOne',
+	token: 'NON_ENTITY_FIND_ONE'
+})
+export const NON_ENTITY_SEARCH = airTrafficControl.token<INonEntitySearch>({
+	class: NonEntitySearch,
+	interface: 'INonEntitySearch',
+	token: 'NON_ENTITY_SEARCH'
+})
+export const NON_ENTITY_SEARCH_ONE = airTrafficControl.token<INonEntitySearchOne>({
+	class: NonEntitySearchOne,
+	interface: 'INonEntitySearchOne',
+	token: 'NON_ENTITY_SEARCH_ONE'
 })
 export const Q_METADATA_UTILS = airTrafficControl.token<IQMetadataUtils>({
 	class: QMetadataUtils,
@@ -89,7 +124,11 @@ export const UPDATE_CACHE_MANAGER = airTrafficControl.token<IUpdateCacheManager>
 
 AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE,
-	updateCacheManager: UPDATE_CACHE_MANAGER
+	databaseStore: DATABASE_STORE,
+	find: NON_ENTITY_FIND,
+	findOne: NON_ENTITY_FIND_ONE,
+	search: NON_ENTITY_SEARCH,
+	searchOne: NON_ENTITY_SEARCH_ONE
 })
 APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
