@@ -77,7 +77,13 @@ export class DbApplicationUtils {
 			throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
 		}
 
-		return `${domainPrefix}___${applicationPrefix}`;
+		let fullApplicationName = `${domainPrefix}___${applicationPrefix}`
+
+		if (!fullApplicationName.endsWith('_dash_runtime')) {
+			fullApplicationName += '_dash_runtime'
+		}
+
+		return fullApplicationName;
 	}
 
 	getSequenceName(

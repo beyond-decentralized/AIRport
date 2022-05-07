@@ -137,6 +137,7 @@ APPLICATION_UTILS.setDependencies({
 DATABASE_FACADE.setDependencies({
 	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
+	transactionalConnector: TRANSACTIONAL_CONNECTOR,
 	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 FIELD_UTILS.setDependencies({

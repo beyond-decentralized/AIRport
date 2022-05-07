@@ -2169,7 +2169,11 @@ let DbApplicationUtils = class DbApplicationUtils {
         if (applicationPrefix.indexOf('___') > -1) {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
-        return `${domainPrefix}___${applicationPrefix}`;
+        let fullApplicationName = `${domainPrefix}___${applicationPrefix}`;
+        if (!fullApplicationName.endsWith('_dash_runtime')) {
+            fullApplicationName += '_dash_runtime';
+        }
+        return fullApplicationName;
     }
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
@@ -8063,6 +8067,7 @@ APPLICATION_UTILS.setDependencies({
 DATABASE_FACADE.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
+    transactionalConnector: TRANSACTIONAL_CONNECTOR,
     updateCacheManager: UPDATE_CACHE_MANAGER
 });
 FIELD_UTILS.setDependencies({
@@ -35655,8 +35660,10 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     applicationBuilder: APPLICATION_BUILDER,
     applicationChecker: APPLICATION_CHECKER,
+    applicationComposer: APPLICATION_COMPOSER,
     applicationDao: APPLICATION_DAO,
     applicationLocator: APPLICATION_LOCATOR,
+    applicationRecorder: APPLICATION_RECORDER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     queryObjectInitializer: QUERY_OBJECT_INITIALIZER,
     sequenceGenerator: SEQUENCE_GENERATOR,

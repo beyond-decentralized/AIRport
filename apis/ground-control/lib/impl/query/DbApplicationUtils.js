@@ -51,7 +51,11 @@ let DbApplicationUtils = class DbApplicationUtils {
         if (applicationPrefix.indexOf('___') > -1) {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
-        return `${domainPrefix}___${applicationPrefix}`;
+        let fullApplicationName = `${domainPrefix}___${applicationPrefix}`;
+        if (!fullApplicationName.endsWith('_dash_runtime')) {
+            fullApplicationName += '_dash_runtime';
+        }
+        return fullApplicationName;
     }
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
