@@ -1,9 +1,8 @@
 import {
-	Inject,
-	Injected
+  Inject,
+  Injected
 } from '@airport/direction-indicator'
 import {
-  container,
   IContext
 } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
@@ -39,6 +38,9 @@ export interface IOnlineManager {
 @Injected()
 export class OnlineManager
   implements IOnlineManager {
+
+  // @Inject()
+  offlineDeltaStore: any
 
   @Inject()
   repositoryDao: IRepositoryDao
@@ -96,8 +98,6 @@ export class OnlineManager
   async goOnline(
     context: IContext = {}
   ): Promise<void> {
-    const offlineDeltaStore = await container(this).get(
-      OFFLINE_DELTA_STORE);
     await this.transactionManager.transactInternal(async () => {
       try {
         // 1)  Flip update state to GO_ONLINE
@@ -111,7 +111,6 @@ export class OnlineManager
         repoRecords.forEach((repository) => {
           goOnlineCalls.push(this.repositoryGoOnline(
             repository,
-            offlineDeltaStore,
             this.repositoryManager
           ));
         });
@@ -131,7 +130,6 @@ export class OnlineManager
 
   async repositoryGoOnline(
     repository: IRepository,
-    offlineDeltaStore: IOfflineDeltaStore,
     repositoryManager: IRepositoryManager,
   ): Promise<void> {
     let deltaStore = repositoryManager.deltaStore[repository.id];
@@ -161,7 +159,7 @@ export class OnlineManager
           // i)  Flip update state to REMOTE_CHANGES
           repositoryManager.setUpdateState(repository, UpdateState.REMOTE);
           // ii)  Add remote transactions to local store
-          await offlineDeltaStore.addRemoteChanges(repository, transactions);
+          await this.offlineDeltaStore.addRemoteChanges(repository, transactions);
         } catch (error) {
           // TODO: notify of error
           throw error;
@@ -181,7 +179,7 @@ export class OnlineManager
     }
     // 5)  Add remote transactions to local store
     if (remoteChanges.length) {
-      await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
     }
 
     // 6)  While there are more transactions coming in remotely:
@@ -189,7 +187,7 @@ export class OnlineManager
       remoteChanges = remoteChangesSinceInitialGoOnline;
       remoteChangesSinceInitialGoOnline = [];
       // Add them to local store
-      await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
     }
 
     // 7)  Find all local unsynced transactions
@@ -204,7 +202,7 @@ export class OnlineManager
       await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
       // c)  save them back in local store, now with the synched flag
       // (and update db with new lastSyncedTransaction)
-      await offlineDeltaStore.markChangesAsSynced(repository, null);
+      await this.offlineDeltaStore.markChangesAsSynced(repository, null);
     }
 
     // 	8)  While there are more transactions coming in remotely:
@@ -212,7 +210,7 @@ export class OnlineManager
     while (remoteChangesSinceInitialGoOnline.length) {
       remoteChanges = remoteChangesSinceInitialGoOnline;
       remoteChangesSinceInitialGoOnline = [];
-      await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
     }
 
     // 9)  Flip the online state to true

@@ -9,7 +9,7 @@ export interface IDependencyInjectionTokenDescriptor {
     token: string;
     isApi?: boolean;
 }
-export interface IDependencyInjectionToken<Injectable> {
+export interface IDependencyInjectionToken<Injected> {
     application: IInjectionApplication;
     dependencyConfiguration: ITokenDependencyConfiguration;
     descriptor: IDependencyInjectionTokenDescriptor;
@@ -17,7 +17,7 @@ export interface IDependencyInjectionToken<Injectable> {
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
     setClass(aClass: any): void;
 }
-export declare class DependencyInjectionToken<Injectable> implements IDependencyInjectionToken<Injectable> {
+export declare class DependencyInjectionToken<Injected> implements IDependencyInjectionToken<Injected> {
     application: IInjectionApplication;
     descriptor: IDependencyInjectionTokenDescriptor;
     private _dependencyConfiguration;

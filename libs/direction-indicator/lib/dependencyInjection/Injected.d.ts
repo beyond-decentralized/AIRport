@@ -1,10 +1,9 @@
 import { IChildContainer } from './interfaces/IChildContainer';
-export interface IInjectable {
+export interface IInjected {
     __container__?: IChildContainer;
     __initialized__?: boolean;
 }
 export interface IInitializable {
     init(): Promise<void>;
 }
-export declare function container(injectable: any): IChildContainer;
-//# sourceMappingURL=Injectable.d.ts.map
+//# sourceMappingURL=Injected.d.ts.map

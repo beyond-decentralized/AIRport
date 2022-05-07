@@ -1,13 +1,17 @@
 import { IContext } from '@airport/direction-indicator';
-import { IRepository, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern';
-import { IRepositoryManager } from '@airport/terminal-map';
-import { IOfflineDeltaStore } from '../data/OfflineDeltaStore';
+import { IRepository, IRepositoryTransactionHistoryDao, IRepositoryDao } from '@airport/holding-pattern-runtime';
+import { IRepositoryManager, ITransactionManager } from '@airport/terminal-map';
 export interface IOnlineManager {
     goOffline(context?: IContext): Promise<void>;
     goOnline(context?: IContext): Promise<void>;
     isOnline(context?: IContext): boolean;
 }
 export declare class OnlineManager implements IOnlineManager {
+    offlineDeltaStore: any;
+    repositoryDao: IRepositoryDao;
+    repositoryManager: IRepositoryManager;
+    repositoryTransactionHistoryDao: IRepositoryTransactionHistoryDao;
+    transactionManager: ITransactionManager;
     private online;
     goOffline(context?: IContext): Promise<void>;
     /**
@@ -43,7 +47,7 @@ export declare class OnlineManager implements IOnlineManager {
      * @returns {Promise<void>}
      */
     goOnline(context?: IContext): Promise<void>;
-    repositoryGoOnline(repository: IRepository, offlineDeltaStore: IOfflineDeltaStore, repositoryManager: IRepositoryManager, repoTransHistoryDao: IRepositoryTransactionHistoryDao): Promise<void>;
+    repositoryGoOnline(repository: IRepository, repositoryManager: IRepositoryManager): Promise<void>;
     isOnline(context?: IContext): boolean;
 }
 //# sourceMappingURL=OnlineManager.d.ts.map

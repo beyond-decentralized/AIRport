@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { container } from "@airport/direction-indicator";
+import { Inject } from "@airport/direction-indicator";
 import { Injected } from '@airport/direction-indicator';
 let ApiRegistry = class ApiRegistry {
     initialize(
@@ -36,7 +36,7 @@ let ApiRegistry = class ApiRegistry {
         Method name:
             ${methodName}`);
         }
-        const apiObject = await container(this)
+        const apiObject = await this.containerAccessor.getContainer(this)
             .getByNames(domainName, applicationName, apiObjectName);
         return {
             apiObject,
@@ -44,6 +44,9 @@ let ApiRegistry = class ApiRegistry {
         };
     }
 };
+__decorate([
+    Inject()
+], ApiRegistry.prototype, "containerAccessor", void 0);
 ApiRegistry = __decorate([
     Injected()
 ], ApiRegistry);

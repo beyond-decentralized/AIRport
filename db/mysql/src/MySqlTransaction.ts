@@ -1,4 +1,4 @@
-import { IInjectable } from '@airport/direction-indicator'
+import { IInjected } from '@airport/direction-indicator'
 import { ITransactionHistory } from '@airport/holding-pattern-runtime'
 import {
 	ICredentials,
@@ -26,7 +26,7 @@ export class MySqlTransaction
 		super()
 		this.pool = pool
 		this.queryApi = connection;
-		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
+		(<IInjected>this).__container__ = (<IInjected>driver).__container__
 	}
 
 	async saveTransaction(transaction: ITransactionHistory): Promise<void> {

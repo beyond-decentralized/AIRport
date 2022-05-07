@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE, DATABASE_FACADE, LOOKUP, UPDATE_CACHE_MANAGER } from '@airport/air-traffic-control';
-import { lib } from '@airport/direction-indicator';
+import { CONTAINER_ACCESSOR, lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { Dao } from './dao/Dao';
 import { SelectorManager } from './Selector';
@@ -43,6 +43,9 @@ export const SEQUENCE_GENERATOR = checkIn.token({
     class: null,
     interface: 'ISequenceGenerator',
     token: 'SEQUENCE_GENERATOR'
+});
+API_REGISTRY.setDependencies({
+    containerAccessor: CONTAINER_ACCESSOR
 });
 DAO.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

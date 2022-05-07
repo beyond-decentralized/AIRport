@@ -1,4 +1,4 @@
-import { IInjectable } from '@airport/direction-indicator'
+import { IInjected } from '@airport/direction-indicator'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import { QueryType, SQLDataType } from '@airport/ground-control'
 import { ITransactionHistory } from '@airport/holding-pattern-runtime'
@@ -32,7 +32,7 @@ export class PostgreTransaction
 	) {
 		super()
 		this.pool = pool;
-		(<IInjectable>this).__container__ = (<IInjectable>driver).__container__
+		(<IInjected>this).__container__ = (<IInjected>driver).__container__
 	}
 
 	async saveTransaction(transaction: ITransactionHistory): Promise<void> {

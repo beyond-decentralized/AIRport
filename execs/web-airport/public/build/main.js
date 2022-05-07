@@ -2117,7 +2117,7 @@ class ColumnMap {
     }
 }
 
-var __decorate$2F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -2179,7 +2179,7 @@ let DbApplicationUtils = class DbApplicationUtils {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-DbApplicationUtils = __decorate$2F([
+DbApplicationUtils = __decorate$2E([
     Injected()
 ], DbApplicationUtils);
 
@@ -4110,7 +4110,7 @@ const internalTerminalState = new BehaviorSubject({
     }
 });
 
-var __decorate$2E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -4121,11 +4121,11 @@ let TerminalState = class TerminalState {
         this.terminalState = internalTerminalState;
     }
 };
-TerminalState = __decorate$2E([
+TerminalState = __decorate$2D([
     Injected()
 ], TerminalState);
 
-var __decorate$2D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -4247,13 +4247,13 @@ let TerminalStore = class TerminalStore {
     tearDown() {
     }
 };
-__decorate$2D([
+__decorate$2C([
     Inject()
 ], TerminalStore.prototype, "selectorManager", void 0);
-__decorate$2D([
+__decorate$2C([
     Inject()
 ], TerminalStore.prototype, "terminalState", void 0);
-TerminalStore = __decorate$2D([
+TerminalStore = __decorate$2C([
     Injected()
 ], TerminalStore);
 
@@ -6362,7 +6362,7 @@ class JoinTreeNode {
     }
 }
 
-var __decorate$2C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6393,14 +6393,14 @@ let RelationManager = class RelationManager {
         return nextChildJoinPosition;
     }
 };
-__decorate$2C([
+__decorate$2B([
     Inject()
 ], RelationManager.prototype, "applicationUtils", void 0);
-RelationManager = __decorate$2C([
+RelationManager = __decorate$2B([
     Injected()
 ], RelationManager);
 
-var __decorate$2B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6476,13 +6476,13 @@ let Lookup = class Lookup {
         }
     }
 };
-__decorate$2B([
+__decorate$2A([
     Inject()
 ], Lookup.prototype, "entityUtils", void 0);
-__decorate$2B([
+__decorate$2A([
     Inject()
 ], Lookup.prototype, "queryFacade", void 0);
-Lookup = __decorate$2B([
+Lookup = __decorate$2A([
     Injected()
 ], Lookup);
 function doEnsureContext(context) {
@@ -6649,7 +6649,7 @@ class SheetQuery extends DistinguishableQuery {
     }
 }
 
-var __decorate$2A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6675,11 +6675,11 @@ let NonEntityFind = class NonEntityFind extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, false, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFind = __decorate$2A([
+NonEntityFind = __decorate$2z([
     Injected()
 ], NonEntityFind);
 
-var __decorate$2z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6702,11 +6702,11 @@ let NonEntityFindOne = class NonEntityFindOne extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFindOne = __decorate$2z([
+NonEntityFindOne = __decorate$2y([
     Injected()
 ], NonEntityFindOne);
 
-var __decorate$2y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6729,11 +6729,11 @@ let NonEntitySearch = class NonEntitySearch extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, true, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearch = __decorate$2y([
+NonEntitySearch = __decorate$2x([
     Injected()
 ], NonEntitySearch);
 
-var __decorate$2x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6756,7 +6756,7 @@ let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, true, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearchOne = __decorate$2x([
+NonEntitySearchOne = __decorate$2w([
     Injected()
 ], NonEntitySearchOne);
 
@@ -7234,7 +7234,7 @@ function compareNumbers(number1, number2) {
     return 0;
 }
 
-var __decorate$2w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7298,11 +7298,11 @@ let EntityUtils = class EntityUtils {
         return new EntityQuery(this.getRawQuery(rawGraphQuery));
     }
 };
-EntityUtils = __decorate$2w([
+EntityUtils = __decorate$2v([
     Injected()
 ], EntityUtils);
 
-var __decorate$2v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7314,14 +7314,14 @@ let FieldUtils = class FieldUtils {
         return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
     }
 };
-__decorate$2v([
+__decorate$2u([
     Inject()
 ], FieldUtils.prototype, "relationManager", void 0);
-FieldUtils = __decorate$2v([
+FieldUtils = __decorate$2u([
     Injected()
 ], FieldUtils);
 
-var __decorate$2u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7360,11 +7360,11 @@ let QMetadataUtils = class QMetadataUtils {
         return new entityConstructor();
     }
 };
-QMetadataUtils = __decorate$2u([
+QMetadataUtils = __decorate$2t([
     Injected()
 ], QMetadataUtils);
 
-var __decorate$2t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7442,13 +7442,13 @@ let QueryUtils = class QueryUtils {
         }
     }
 };
-__decorate$2t([
+__decorate$2s([
     Inject()
 ], QueryUtils.prototype, "fieldUtils", void 0);
-__decorate$2t([
+__decorate$2s([
     Inject()
 ], QueryUtils.prototype, "relationManager", void 0);
-QueryUtils = __decorate$2t([
+QueryUtils = __decorate$2s([
     Injected()
 ], QueryUtils);
 
@@ -7473,7 +7473,7 @@ function isID(object) {
     return object && object.airportSelectField === 'ID';
 }
 
-var __decorate$2s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7861,13 +7861,13 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
     }
 };
 ApplicationUtils.TEMP_ID = 0;
-__decorate$2s([
+__decorate$2r([
     Inject()
 ], ApplicationUtils.prototype, "airportDatabase", void 0);
-__decorate$2s([
+__decorate$2r([
     Inject()
 ], ApplicationUtils.prototype, "entityStateManager", void 0);
-ApplicationUtils = ApplicationUtils_1 = __decorate$2s([
+ApplicationUtils = ApplicationUtils_1 = __decorate$2r([
     Injected()
 ], ApplicationUtils);
 
@@ -7929,7 +7929,7 @@ const databaseState = {
     QM: {},
 };
 
-var __decorate$2r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -7955,7 +7955,7 @@ let DatabaseStore = class DatabaseStore {
         return this.databaseState.QM;
     }
 };
-DatabaseStore = __decorate$2r([
+DatabaseStore = __decorate$2q([
     Injected()
 ], DatabaseStore);
 
@@ -8246,7 +8246,7 @@ class DaoStub {
     }
 }
 
-var __decorate$2q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8327,22 +8327,22 @@ let Dao = class Dao {
         return doEnsureContext(context);
     }
 };
-__decorate$2q([
+__decorate$2p([
     Inject()
 ], Dao.prototype, "airportDatabase", void 0);
-__decorate$2q([
+__decorate$2p([
     Inject()
 ], Dao.prototype, "databaseFacade", void 0);
-__decorate$2q([
+__decorate$2p([
     Inject()
 ], Dao.prototype, "entityStateManager", void 0);
-__decorate$2q([
+__decorate$2p([
     Inject()
 ], Dao.prototype, "lookup", void 0);
-__decorate$2q([
+__decorate$2p([
     Inject()
 ], Dao.prototype, "updateCacheManager", void 0);
-Dao = __decorate$2q([
+Dao = __decorate$2p([
     Injected()
 ], Dao);
 
@@ -8444,7 +8444,7 @@ class Duo {
     }
 }
 
-var __decorate$2p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8485,7 +8485,7 @@ let SelectorManager = class SelectorManager {
         return selector;
     }
 };
-SelectorManager = __decorate$2p([
+SelectorManager = __decorate$2o([
     Injected()
 ], SelectorManager);
 
@@ -8519,11 +8519,6 @@ const API_VALIDATOR = checkIn.token({
     class: null,
     interface: 'IApiValidator',
     token: 'API_VALIDATOR'
-});
-const CLIENT_QUERY_MANAGER = checkIn.token({
-    class: null,
-    interface: 'IClientQueryManager',
-    token: 'CLIENT_QUERY_MANAGER'
 });
 const DAO = checkIn.token({
     class: Dao,
@@ -8629,7 +8624,7 @@ TRANSACTIONAL_SERVER.setDependencies({
     transactionManager: TRANSACTION_MANAGER
 });
 
-var __decorate$2o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8700,16 +8695,16 @@ let RepositoryLoader = class RepositoryLoader {
         }
     }
 };
-__decorate$2o([
+__decorate$2n([
     Inject()
 ], RepositoryLoader.prototype, "repositoryDao", void 0);
-__decorate$2o([
+__decorate$2n([
     Inject()
 ], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$2o([
+__decorate$2n([
     Inject()
 ], RepositoryLoader.prototype, "synchronizationInManager", void 0);
-RepositoryLoader = __decorate$2o([
+RepositoryLoader = __decorate$2n([
     Injected()
 ], RepositoryLoader);
 
@@ -8787,7 +8782,7 @@ function v4(options, buf, offset) {
   return stringify(rnds);
 }
 
-var __decorate$2n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8881,14 +8876,14 @@ already contains a new repository.`);
         };
     }
 };
-__decorate$2n([
+__decorate$2m([
     Inject()
 ], RepositoryManager.prototype, "repositoryDao", void 0);
-RepositoryManager = __decorate$2n([
+RepositoryManager = __decorate$2m([
     Injected()
 ], RepositoryManager);
 
-var __decorate$2m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8902,44 +8897,44 @@ let OperationHistory = class OperationHistory {
         this.recordHistory = [];
     }
 };
-__decorate$2m([
+__decorate$2l([
     GeneratedValue(),
     SequenceGenerator$1(),
     Id()
 ], OperationHistory.prototype, "id", void 0);
-__decorate$2m([
+__decorate$2l([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "orderNumber", void 0);
-__decorate$2m([
+__decorate$2l([
     Column(),
     DbString()
 ], OperationHistory.prototype, "changeType", void 0);
-__decorate$2m([
+__decorate$2l([
     Column(),
     DbNumber()
 ], OperationHistory.prototype, "systemWideOperationId", void 0);
-__decorate$2m([
+__decorate$2l([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "entity", void 0);
-__decorate$2m([
+__decorate$2l([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "actor", void 0);
-__decorate$2m([
+__decorate$2l([
     ManyToOne(),
     JoinColumn()
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
-__decorate$2m([
+__decorate$2l([
     OneToMany()
 ], OperationHistory.prototype, "recordHistory", void 0);
-OperationHistory = __decorate$2m([
+OperationHistory = __decorate$2l([
     Entity(),
     Table()
 ], OperationHistory);
 
-var __decorate$2l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -8951,71 +8946,36 @@ let RecordHistory = class RecordHistory {
         this.oldValues = [];
     }
 };
-__decorate$2l([
+__decorate$2k([
     Id(),
     GeneratedValue(),
     SequenceGenerator$1()
 ], RecordHistory.prototype, "id", void 0);
-__decorate$2l([
+__decorate$2k([
     Column(),
     DbNumber()
 ], RecordHistory.prototype, "actorRecordId", void 0);
-__decorate$2l([
+__decorate$2k([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "actor", void 0);
-__decorate$2l([
+__decorate$2k([
     ManyToOne(),
     JoinColumn()
 ], RecordHistory.prototype, "operationHistory", void 0);
-__decorate$2l([
+__decorate$2k([
     OneToMany()
 ], RecordHistory.prototype, "newValues", void 0);
-__decorate$2l([
+__decorate$2k([
     OneToMany()
 ], RecordHistory.prototype, "oldValues", void 0);
-__decorate$2l([
+__decorate$2k([
     Transient()
 ], RecordHistory.prototype, "tableColumnMap", void 0);
-RecordHistory = __decorate$2l([
+RecordHistory = __decorate$2k([
     Entity(),
     Table()
 ], RecordHistory);
-
-var __decorate$2k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
- */
-let RecordHistoryNewValue = class RecordHistoryNewValue {
-};
-__decorate$2k([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RecordHistoryNewValue.prototype, "recordHistory", void 0);
-__decorate$2k([
-    Id(),
-    Column(),
-    DbNumber()
-], RecordHistoryNewValue.prototype, "columnIndex", void 0);
-__decorate$2k([
-    Column(),
-    DbAny()
-], RecordHistoryNewValue.prototype, "newValue", void 0);
-RecordHistoryNewValue = __decorate$2k([
-    Entity(),
-    Table()
-], RecordHistoryNewValue);
 
 var __decorate$2j = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9031,23 +8991,58 @@ var __decorate$2j = (undefined && undefined.__decorate) || function (decorators,
  * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
  * also be required.
  */
-let RecordHistoryOldValue = class RecordHistoryOldValue {
+let RecordHistoryNewValue = class RecordHistoryNewValue {
 };
 __decorate$2j([
     Id(),
     ManyToOne(),
     JoinColumn()
-], RecordHistoryOldValue.prototype, "recordHistory", void 0);
+], RecordHistoryNewValue.prototype, "recordHistory", void 0);
 __decorate$2j([
     Id(),
     Column(),
     DbNumber()
-], RecordHistoryOldValue.prototype, "columnIndex", void 0);
+], RecordHistoryNewValue.prototype, "columnIndex", void 0);
 __decorate$2j([
     Column(),
     DbAny()
+], RecordHistoryNewValue.prototype, "newValue", void 0);
+RecordHistoryNewValue = __decorate$2j([
+    Entity(),
+    Table()
+], RecordHistoryNewValue);
+
+var __decorate$2i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Currently, syncing databases are always SqLite dbs.  This means
+ * we don't need to store types for values.  If a need arises type
+ * specific FieldChange classes can always be added.  Having
+ * VARCHAR and NUMBER should suffice for other db implementations.
+ * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
+ * also be required.
+ */
+let RecordHistoryOldValue = class RecordHistoryOldValue {
+};
+__decorate$2i([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RecordHistoryOldValue.prototype, "recordHistory", void 0);
+__decorate$2i([
+    Id(),
+    Column(),
+    DbNumber()
+], RecordHistoryOldValue.prototype, "columnIndex", void 0);
+__decorate$2i([
+    Column(),
+    DbAny()
 ], RecordHistoryOldValue.prototype, "oldValue", void 0);
-RecordHistoryOldValue = __decorate$2j([
+RecordHistoryOldValue = __decorate$2i([
     Entity(),
     Table()
 ], RecordHistoryOldValue);
@@ -9059,7 +9054,7 @@ var RepositoryTransactionType;
     RepositoryTransactionType["REMOTE_REFERENCE"] = "REMOTE_REFERENCE";
 })(RepositoryTransactionType || (RepositoryTransactionType = {}));
 
-var __decorate$2i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9079,48 +9074,48 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         this.operationHistory = data.operationHistory;
     }
 };
-__decorate$2i([
+__decorate$2h([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1()
 ], RepositoryTransactionHistory.prototype, "id", void 0);
-__decorate$2i([
+__decorate$2h([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate$2i([
+__decorate$2h([
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate$2i([
+__decorate$2h([
     Column(),
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
-__decorate$2i([
+__decorate$2h([
     Column(),
     DbString()
 ], RepositoryTransactionHistory.prototype, "uuId", void 0);
-__decorate$2i([
+__decorate$2h([
     Column(),
     DbBoolean()
 ], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
-__decorate$2i([
+__decorate$2h([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate$2i([
+__decorate$2h([
     ManyToOne(),
     JoinColumn()
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate$2i([
+__decorate$2h([
     OneToMany()
 ], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
-RepositoryTransactionHistory = __decorate$2i([
+RepositoryTransactionHistory = __decorate$2h([
     Entity(),
     Table()
 ], RepositoryTransactionHistory);
 
-var __decorate$2h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9137,42 +9132,42 @@ let TransactionHistory = class TransactionHistory {
         this.allRecordHistoryOldValues = [];
     }
 };
-__decorate$2h([
+__decorate$2g([
     GeneratedValue(),
     Id(),
     SequenceGenerator$1()
 ], TransactionHistory.prototype, "id", void 0);
-__decorate$2h([
+__decorate$2g([
     Column(),
     DbString()
 ], TransactionHistory.prototype, "transactionType", void 0);
-__decorate$2h([
+__decorate$2g([
     OneToMany()
 ], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "applicationMap", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "allOperationHistory", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistory", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
-__decorate$2h([
+__decorate$2g([
     Transient()
 ], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-TransactionHistory = __decorate$2h([
+TransactionHistory = __decorate$2g([
     Entity(),
     Table()
 ], TransactionHistory);
 
-var __decorate$2g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9180,33 +9175,33 @@ var __decorate$2g = (undefined && undefined.__decorate) || function (decorators,
 };
 let Actor = class Actor {
 };
-__decorate$2g([
+__decorate$2f([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Actor.prototype, "id", void 0);
-__decorate$2g([
+__decorate$2f([
     Column(),
     DbString()
 ], Actor.prototype, "uuId", void 0);
-__decorate$2g([
+__decorate$2f([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "user", void 0);
-__decorate$2g([
+__decorate$2f([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "terminal", void 0);
-__decorate$2g([
+__decorate$2f([
     ManyToOne(),
     JoinColumn()
 ], Actor.prototype, "application", void 0);
-Actor = __decorate$2g([
+Actor = __decorate$2f([
     Entity()
 ], Actor);
 
-var __decorate$2f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9217,87 +9212,42 @@ let Repository = class Repository {
         this.repositoryTransactionHistory = [];
     }
 };
-__decorate$2f([
+__decorate$2e([
     Column(),
     GeneratedValue(),
     Id(),
     DbNumber()
 ], Repository.prototype, "id", void 0);
-__decorate$2f([
+__decorate$2e([
     Column(),
     DbNumber()
 ], Repository.prototype, "ageSuitability", void 0);
-__decorate$2f([
+__decorate$2e([
     Column(),
     DbDate()
 ], Repository.prototype, "createdAt", void 0);
-__decorate$2f([
+__decorate$2e([
     Column()
 ], Repository.prototype, "immutable", void 0);
-__decorate$2f([
+__decorate$2e([
     Column(),
     DbString()
 ], Repository.prototype, "source", void 0);
-__decorate$2f([
+__decorate$2e([
     Column(),
     DbString()
 ], Repository.prototype, "uuId", void 0);
-__decorate$2f([
+__decorate$2e([
     ManyToOne(),
     JoinColumn()
 ], Repository.prototype, "owner", void 0);
-__decorate$2f([
+__decorate$2e([
     OneToMany()
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
-Repository = __decorate$2f([
+Repository = __decorate$2e([
     Entity(),
     Table()
 ], Repository);
-
-var __decorate$2e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryEntity = class RepositoryEntity {
-};
-__decorate$2e([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryEntity.prototype, "repository", void 0);
-__decorate$2e([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryEntity.prototype, "actor", void 0);
-__decorate$2e([
-    Id(),
-    Column(),
-    GeneratedValue()
-], RepositoryEntity.prototype, "actorRecordId", void 0);
-__decorate$2e([
-    Column(),
-    DbNumber()
-], RepositoryEntity.prototype, "ageSuitability", void 0);
-__decorate$2e([
-    Column()
-], RepositoryEntity.prototype, "systemWideOperationId", void 0);
-__decorate$2e([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryEntity.prototype, "originalRepository", void 0);
-__decorate$2e([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryEntity.prototype, "originalActor", void 0);
-__decorate$2e([
-    Column()
-], RepositoryEntity.prototype, "originalActorRecordId", void 0);
-RepositoryEntity = __decorate$2e([
-    MappedSuperclass()
-], RepositoryEntity);
 
 var __decorate$2d = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9305,27 +9255,44 @@ var __decorate$2d = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let RepositoryApplication = class RepositoryApplication {
+let RepositoryEntity = class RepositoryEntity {
 };
-__decorate$2d([
-    Id(),
-    Column(),
-    GeneratedValue(),
-    DbNumber()
-], RepositoryApplication.prototype, "id", void 0);
 __decorate$2d([
     Id(),
     ManyToOne(),
     JoinColumn()
-], RepositoryApplication.prototype, "repository", void 0);
+], RepositoryEntity.prototype, "repository", void 0);
+__decorate$2d([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryEntity.prototype, "actor", void 0);
+__decorate$2d([
+    Id(),
+    Column(),
+    GeneratedValue()
+], RepositoryEntity.prototype, "actorRecordId", void 0);
 __decorate$2d([
     Column(),
     DbNumber()
-], RepositoryApplication.prototype, "applicationIndex", void 0);
-RepositoryApplication = __decorate$2d([
-    Entity(),
-    Table()
-], RepositoryApplication);
+], RepositoryEntity.prototype, "ageSuitability", void 0);
+__decorate$2d([
+    Column()
+], RepositoryEntity.prototype, "systemWideOperationId", void 0);
+__decorate$2d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryEntity.prototype, "originalRepository", void 0);
+__decorate$2d([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryEntity.prototype, "originalActor", void 0);
+__decorate$2d([
+    Column()
+], RepositoryEntity.prototype, "originalActorRecordId", void 0);
+RepositoryEntity = __decorate$2d([
+    MappedSuperclass()
+], RepositoryEntity);
 
 var __decorate$2c = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9333,11 +9300,27 @@ var __decorate$2c = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let ChildRepoRow = class ChildRepoRow extends RepositoryEntity {
+let RepositoryApplication = class RepositoryApplication {
 };
-ChildRepoRow = __decorate$2c([
-    MappedSuperclass()
-], ChildRepoRow);
+__decorate$2c([
+    Id(),
+    Column(),
+    GeneratedValue(),
+    DbNumber()
+], RepositoryApplication.prototype, "id", void 0);
+__decorate$2c([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryApplication.prototype, "repository", void 0);
+__decorate$2c([
+    Column(),
+    DbNumber()
+], RepositoryApplication.prototype, "applicationIndex", void 0);
+RepositoryApplication = __decorate$2c([
+    Entity(),
+    Table()
+], RepositoryApplication);
 
 var __decorate$2b = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9345,11 +9328,11 @@ var __decorate$2b = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let ChildRow = class ChildRow {
+let ChildRepoRow = class ChildRepoRow extends RepositoryEntity {
 };
-ChildRow = __decorate$2b([
+ChildRepoRow = __decorate$2b([
     MappedSuperclass()
-], ChildRow);
+], ChildRepoRow);
 
 var __decorate$2a = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9357,14 +9340,11 @@ var __decorate$2a = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let ImmutableRepoRow = class ImmutableRepoRow extends RepositoryEntity {
+let ChildRow = class ChildRow {
 };
-__decorate$2a([
-    Column()
-], ImmutableRepoRow.prototype, "createdAt", void 0);
-ImmutableRepoRow = __decorate$2a([
+ChildRow = __decorate$2a([
     MappedSuperclass()
-], ImmutableRepoRow);
+], ChildRow);
 
 var __decorate$29 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9372,18 +9352,14 @@ var __decorate$29 = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let ImmutableRow = class ImmutableRow {
+let ImmutableRepoRow = class ImmutableRepoRow extends RepositoryEntity {
 };
 __decorate$29([
-    ManyToOne(),
-    JoinColumn()
-], ImmutableRow.prototype, "user", void 0);
-__decorate$29([
     Column()
-], ImmutableRow.prototype, "createdAt", void 0);
-ImmutableRow = __decorate$29([
+], ImmutableRepoRow.prototype, "createdAt", void 0);
+ImmutableRepoRow = __decorate$29([
     MappedSuperclass()
-], ImmutableRow);
+], ImmutableRepoRow);
 
 var __decorate$28 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9391,14 +9367,18 @@ var __decorate$28 = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let MutableRepoRow = class MutableRepoRow extends ImmutableRepoRow {
+let ImmutableRow = class ImmutableRow {
 };
 __decorate$28([
+    ManyToOne(),
+    JoinColumn()
+], ImmutableRow.prototype, "user", void 0);
+__decorate$28([
     Column()
-], MutableRepoRow.prototype, "updatedAt", void 0);
-MutableRepoRow = __decorate$28([
+], ImmutableRow.prototype, "createdAt", void 0);
+ImmutableRow = __decorate$28([
     MappedSuperclass()
-], MutableRepoRow);
+], ImmutableRow);
 
 var __decorate$27 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9406,14 +9386,14 @@ var __decorate$27 = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let MutableRow = class MutableRow extends ImmutableRow {
+let MutableRepoRow = class MutableRepoRow extends ImmutableRepoRow {
 };
 __decorate$27([
     Column()
-], MutableRow.prototype, "updatedAt", void 0);
-MutableRow = __decorate$27([
+], MutableRepoRow.prototype, "updatedAt", void 0);
+MutableRepoRow = __decorate$27([
     MappedSuperclass()
-], MutableRow);
+], MutableRepoRow);
 
 var __decorate$26 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -9421,9 +9401,24 @@ var __decorate$26 = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+let MutableRow = class MutableRow extends ImmutableRow {
+};
+__decorate$26([
+    Column()
+], MutableRow.prototype, "updatedAt", void 0);
+MutableRow = __decorate$26([
+    MappedSuperclass()
+], MutableRow);
+
+var __decorate$25 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 let ReferenceRow = class ReferenceRow {
 };
-ReferenceRow = __decorate$26([
+ReferenceRow = __decorate$25([
     MappedSuperclass()
 ], ReferenceRow);
 
@@ -9656,7 +9651,7 @@ class BaseTransactionHistoryDuo extends SQDIDuo$1 {
     }
 }
 
-var __decorate$25 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$24 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9674,11 +9669,11 @@ let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecord
         });
     }
 };
-RecordHistoryNewValueDao = __decorate$25([
+RecordHistoryNewValueDao = __decorate$24([
     Injected()
 ], RecordHistoryNewValueDao);
 
-var __decorate$24 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$23 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9696,11 +9691,11 @@ let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecord
         });
     }
 };
-RecordHistoryOldValueDao = __decorate$24([
+RecordHistoryOldValueDao = __decorate$23([
     Injected()
 ], RecordHistoryOldValueDao);
 
-var __decorate$23 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$22 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9822,11 +9817,11 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         });
     }
 };
-RepositoryTransactionHistoryDao = __decorate$23([
+RepositoryTransactionHistoryDao = __decorate$22([
     Injected()
 ], RepositoryTransactionHistoryDao);
 
-var __decorate$22 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$21 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -9949,11 +9944,11 @@ let ActorDao = class ActorDao extends BaseActorDao {
         });
     }
 };
-ActorDao = __decorate$22([
+ActorDao = __decorate$21([
     Injected()
 ], ActorDao);
 
-var __decorate$21 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$20 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10048,11 +10043,11 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         }
     }
 };
-RepositoryDao = __decorate$21([
+RepositoryDao = __decorate$20([
     Injected()
 ], RepositoryDao);
 
-var __decorate$20 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10092,14 +10087,14 @@ let OperationHistoryDuo = class OperationHistoryDuo extends BaseOperationHistory
         return recordHistory;
     }
 };
-__decorate$20([
+__decorate$1$([
     Inject()
 ], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
-OperationHistoryDuo = __decorate$20([
+OperationHistoryDuo = __decorate$1$([
     Injected()
 ], OperationHistoryDuo);
 
-var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1_ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10137,17 +10132,17 @@ let RecordHistoryDuo = class RecordHistoryDuo extends BaseRecordHistoryDuo {
         return recordHistoryOldValue;
     }
 };
-__decorate$1$([
+__decorate$1_([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
-__decorate$1$([
+__decorate$1_([
     Inject()
 ], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
-RecordHistoryDuo = __decorate$1$([
+RecordHistoryDuo = __decorate$1_([
     Injected()
 ], RecordHistoryDuo);
 
-var __decorate$1_ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1Z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10165,11 +10160,11 @@ let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo extends BaseRecord
         return recordHistoryNewValue;
     }
 };
-RecordHistoryNewValueDuo = __decorate$1_([
+RecordHistoryNewValueDuo = __decorate$1Z([
     Injected()
 ], RecordHistoryNewValueDuo);
 
-var __decorate$1Z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1Y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10187,11 +10182,11 @@ let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo extends BaseRecord
         return recordHistoryOldValue;
     }
 };
-RecordHistoryOldValueDuo = __decorate$1Z([
+RecordHistoryOldValueDuo = __decorate$1Y([
     Injected()
 ], RecordHistoryOldValueDuo);
 
-var __decorate$1Y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1X = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10249,14 +10244,14 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo exte
         return 0;
     }
 };
-__decorate$1Y([
+__decorate$1X([
     Inject()
 ], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
-RepositoryTransactionHistoryDuo = __decorate$1Y([
+RepositoryTransactionHistoryDuo = __decorate$1X([
     Injected()
 ], RepositoryTransactionHistoryDuo);
 
-var __decorate$1X = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10279,10 +10274,10 @@ let TransactionHistoryDuo = class TransactionHistoryDuo extends BaseTransactionH
         return repositoryTransactionHistory;
     }
 };
-__decorate$1X([
+__decorate$1W([
     Inject()
 ], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
-TransactionHistoryDuo = __decorate$1X([
+TransactionHistoryDuo = __decorate$1W([
     Injected()
 ], TransactionHistoryDuo);
 
@@ -10357,7 +10352,7 @@ TRANSACTION_HISTORY_DUO.setDependencies({
     repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
 });
 
-var __decorate$1W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10365,44 +10360,20 @@ var __decorate$1W = (undefined && undefined.__decorate) || function (decorators,
 };
 let Agt = class Agt {
 };
-__decorate$1W([
+__decorate$1V([
     Id(),
     GeneratedValue()
 ], Agt.prototype, "id", void 0);
-__decorate$1W([
+__decorate$1V([
     OneToMany()
 ], Agt.prototype, "terminalAgts", void 0);
-__decorate$1W([
+__decorate$1V([
     OneToMany()
 ], Agt.prototype, "userTerminalAgts", void 0);
-Agt = __decorate$1W([
+Agt = __decorate$1V([
     Entity(),
     Table()
 ], Agt);
-
-var __decorate$1V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let Continent = class Continent {
-};
-__decorate$1V([
-    Id(),
-    GeneratedValue(),
-    DbNumber()
-], Continent.prototype, "id", void 0);
-__decorate$1V([
-    DbString()
-], Continent.prototype, "name", void 0);
-__decorate$1V([
-    OneToMany()
-], Continent.prototype, "countries", void 0);
-Continent = __decorate$1V([
-    Entity(),
-    Table()
-], Continent);
 
 var __decorate$1U = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10410,29 +10381,53 @@ var __decorate$1U = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let Country = class Country {
+let Continent = class Continent {
 };
 __decorate$1U([
     Id(),
     GeneratedValue(),
     DbNumber()
-], Country.prototype, "id", void 0);
+], Continent.prototype, "id", void 0);
 __decorate$1U([
     DbString()
-], Country.prototype, "name", void 0);
+], Continent.prototype, "name", void 0);
 __decorate$1U([
+    OneToMany()
+], Continent.prototype, "countries", void 0);
+Continent = __decorate$1U([
+    Entity(),
+    Table()
+], Continent);
+
+var __decorate$1T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let Country = class Country {
+};
+__decorate$1T([
+    Id(),
+    GeneratedValue(),
+    DbNumber()
+], Country.prototype, "id", void 0);
+__decorate$1T([
+    DbString()
+], Country.prototype, "name", void 0);
+__decorate$1T([
     ManyToOne(),
     JoinColumn()
 ], Country.prototype, "continent", void 0);
-__decorate$1U([
+__decorate$1T([
     OneToMany()
 ], Country.prototype, "users", void 0);
-Country = __decorate$1U([
+Country = __decorate$1T([
     Entity(),
     Table()
 ], Country);
 
-var __decorate$1T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10454,29 +10449,29 @@ let Terminal = class Terminal {
         // userTerminalAgt: UserTerminalAgt[]
     }
 };
-__decorate$1T([
+__decorate$1S([
     Id(),
     GeneratedValue(),
     DbNumber()
 ], Terminal.prototype, "id", void 0);
-__decorate$1T([
+__decorate$1S([
     Column(),
     DbString()
 ], Terminal.prototype, "uuId", void 0);
-__decorate$1T([
+__decorate$1S([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "owner", void 0);
-__decorate$1T([
+__decorate$1S([
     Column(),
     DbBoolean()
 ], Terminal.prototype, "isLocal", void 0);
-Terminal = __decorate$1T([
+Terminal = __decorate$1S([
     Entity(),
     Table()
 ], Terminal);
 
-var __decorate$1S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10489,25 +10484,25 @@ var __decorate$1S = (undefined && undefined.__decorate) || function (decorators,
  */
 let TerminalAgt = class TerminalAgt {
 };
-__decorate$1S([
+__decorate$1R([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalAgt.prototype, "terminal", void 0);
-__decorate$1S([
+__decorate$1R([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalAgt.prototype, "agt", void 0);
-__decorate$1S([
+__decorate$1R([
     OneToMany()
 ], TerminalAgt.prototype, "userTerminalAgts", void 0);
-TerminalAgt = __decorate$1S([
+TerminalAgt = __decorate$1R([
     Entity(),
     Table()
 ], TerminalAgt);
 
-var __decorate$1R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10515,32 +10510,32 @@ var __decorate$1R = (undefined && undefined.__decorate) || function (decorators,
 };
 let User = class User {
 };
-__decorate$1R([
+__decorate$1Q([
     Id(),
     GeneratedValue(),
     DbNumber()
 ], User.prototype, "id", void 0);
-__decorate$1R([
+__decorate$1Q([
     Column(),
     DbString()
 ], User.prototype, "email", void 0);
-__decorate$1R([
+__decorate$1Q([
     Column(),
     DbString()
 ], User.prototype, "passwordHash", void 0);
-__decorate$1R([
+__decorate$1Q([
     Column(),
     DbString()
 ], User.prototype, "username", void 0);
-__decorate$1R([
+__decorate$1Q([
     Column(),
     DbString()
 ], User.prototype, "uuId", void 0);
-User = __decorate$1R([
+User = __decorate$1Q([
     Entity()
 ], User);
 
-var __decorate$1Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10553,22 +10548,22 @@ var __decorate$1Q = (undefined && undefined.__decorate) || function (decorators,
  */
 let UserTerminal = class UserTerminal {
 };
-__decorate$1Q([
+__decorate$1P([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], UserTerminal.prototype, "user", void 0);
-__decorate$1Q([
+__decorate$1P([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], UserTerminal.prototype, "terminal", void 0);
-UserTerminal = __decorate$1Q([
+UserTerminal = __decorate$1P([
     Entity(),
     Table()
 ], UserTerminal);
 
-var __decorate$1P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10597,34 +10592,34 @@ var __decorate$1P = (undefined && undefined.__decorate) || function (decorators,
  */
 let UserTerminalAgt = class UserTerminalAgt {
 };
-__decorate$1P([
+__decorate$1O([
     Id(),
     DbNumber(),
     GeneratedValue()
 ], UserTerminalAgt.prototype, "id", void 0);
-__decorate$1P([
+__decorate$1O([
     Id(),
     Column(),
     DbNumber(),
     GeneratedValue()
 ], UserTerminalAgt.prototype, "agtId", void 0);
-__decorate$1P([
+__decorate$1O([
     ManyToOne(),
     JoinColumn()
 ], UserTerminalAgt.prototype, "user", void 0);
-__decorate$1P([
+__decorate$1O([
     ManyToOne(),
     JoinColumn()
 ], UserTerminalAgt.prototype, "terminal", void 0);
-__decorate$1P([
+__decorate$1O([
     ManyToOne(),
     JoinColumn()
 ], UserTerminalAgt.prototype, "agt", void 0);
-__decorate$1P([
+__decorate$1O([
     ManyToOne(),
     JoinColumns()
 ], UserTerminalAgt.prototype, "terminalAgt", void 0);
-UserTerminalAgt = __decorate$1P([
+UserTerminalAgt = __decorate$1O([
     Entity(),
     Table()
 ], UserTerminalAgt);
@@ -10779,7 +10774,7 @@ BaseUserTerminalAgtDao.FindOne = new DaoQueryDecorators();
 BaseUserTerminalAgtDao.Search = new DaoQueryDecorators();
 BaseUserTerminalAgtDao.SearchOne = new DaoQueryDecorators();
 
-var __decorate$1O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10829,11 +10824,11 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         }
     }
 };
-TerminalDao = __decorate$1O([
+TerminalDao = __decorate$1N([
     Injected()
 ], TerminalDao);
 
-var __decorate$1N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10882,11 +10877,11 @@ let UserDao = class UserDao extends BaseUserDao {
         }
     }
 };
-UserDao = __decorate$1N([
+UserDao = __decorate$1M([
     Injected()
 ], UserDao);
 
-var __decorate$1M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -10929,13 +10924,13 @@ let UserApi = class UserApi {
         return null;
     }
 };
-__decorate$1M([
+__decorate$1L([
     Api()
 ], UserApi.prototype, "addUser", null);
-__decorate$1M([
+__decorate$1L([
     Api()
 ], UserApi.prototype, "findUser", null);
-UserApi = __decorate$1M([
+UserApi = __decorate$1L([
     Injected()
 ], UserApi);
 
@@ -10961,7 +10956,7 @@ USER_API.setDependencies({
     userDao: USER_DAO
 });
 
-var __decorate$1L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11076,29 +11071,29 @@ let InternalRecordManager = class InternalRecordManager {
         return updatedDomain;
     }
 };
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "actorDao", void 0);
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "applicationDao", void 0);
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "domainDao", void 0);
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "entityStateManager", void 0);
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "terminalStore", void 0);
-__decorate$1L([
+__decorate$1K([
     Inject()
 ], InternalRecordManager.prototype, "transactionManager", void 0);
-InternalRecordManager = __decorate$1L([
+InternalRecordManager = __decorate$1K([
     Injected()
 ], InternalRecordManager);
 
-var __decorate$1K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11191,20 +11186,20 @@ they are internal to the AIRport framework).`);
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 };
-__decorate$1K([
+__decorate$1J([
     Inject()
 ], InternalTransactionalConnector.prototype, "terminalStore", void 0);
-__decorate$1K([
+__decorate$1J([
     Inject()
 ], InternalTransactionalConnector.prototype, "transactionalServer", void 0);
-InternalTransactionalConnector = __decorate$1K([
+InternalTransactionalConnector = __decorate$1J([
     Injected()
 ], InternalTransactionalConnector);
 function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }
 
-var __decorate$1J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11360,19 +11355,19 @@ let OnlineManager = class OnlineManager {
         return this.online;
     }
 };
-__decorate$1J([
+__decorate$1I([
     Inject()
 ], OnlineManager.prototype, "repositoryDao", void 0);
-__decorate$1J([
+__decorate$1I([
     Inject()
 ], OnlineManager.prototype, "repositoryManager", void 0);
-__decorate$1J([
+__decorate$1I([
     Inject()
 ], OnlineManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$1J([
+__decorate$1I([
     Inject()
 ], OnlineManager.prototype, "transactionManager", void 0);
-OnlineManager = __decorate$1J([
+OnlineManager = __decorate$1I([
     Injected()
 ], OnlineManager);
 
@@ -11420,7 +11415,7 @@ const applicationState = {
     messageCallback: null,
 };
 
-var __decorate$1I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11434,7 +11429,7 @@ let ApplicationStore = class ApplicationStore {
         return this.applicationState;
     }
 };
-ApplicationStore = __decorate$1I([
+ApplicationStore = __decorate$1H([
     Injected()
 ], ApplicationStore);
 
@@ -11458,7 +11453,7 @@ LOCAL_API_SERVER.setDependencies({
     apiRegistry: API_REGISTRY
 });
 
-var __decorate$1H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11659,26 +11654,26 @@ let TransactionalReceiver = class TransactionalReceiver {
         }
     }
 };
-__decorate$1H([
+__decorate$1G([
     Inject()
 ], TransactionalReceiver.prototype, "databaseManager", void 0);
-__decorate$1H([
+__decorate$1G([
     Inject()
 ], TransactionalReceiver.prototype, "dbApplicationUtils", void 0);
-__decorate$1H([
+__decorate$1G([
     Inject()
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);
-__decorate$1H([
+__decorate$1G([
     Inject()
 ], TransactionalReceiver.prototype, "terminalStore", void 0);
-__decorate$1H([
+__decorate$1G([
     Inject()
 ], TransactionalReceiver.prototype, "transactionalServer", void 0);
-TransactionalReceiver = __decorate$1H([
+TransactionalReceiver = __decorate$1G([
     Injected()
 ], TransactionalReceiver);
 
-var __decorate$1G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11916,41 +11911,41 @@ let TransactionalServer = class TransactionalServer {
         this.operationContextLoader.ensureSync(context);
     }
 };
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "deleteManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "insertManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "operationManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "operationContextLoader", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "queryManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "repositoryManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "terminalStore", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "transactionManager", void 0);
-__decorate$1G([
+__decorate$1F([
     Inject()
 ], TransactionalServer.prototype, "updateManager", void 0);
-TransactionalServer = __decorate$1G([
+TransactionalServer = __decorate$1F([
     Injected()
 ], TransactionalServer);
 function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }
 
-var __decorate$1F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12027,19 +12022,19 @@ let AbstractMutationManager = class AbstractMutationManager {
         return await transaction.insertValues(portableQuery, context);
     }
 };
-__decorate$1F([
+__decorate$1E([
     Inject()
 ], AbstractMutationManager.prototype, "applicationUtils", void 0);
-__decorate$1F([
+__decorate$1E([
     Inject()
 ], AbstractMutationManager.prototype, "fieldUtils", void 0);
-__decorate$1F([
+__decorate$1E([
     Inject()
 ], AbstractMutationManager.prototype, "queryUtils", void 0);
-__decorate$1F([
+__decorate$1E([
     Inject()
 ], AbstractMutationManager.prototype, "relationManager", void 0);
-AbstractMutationManager = __decorate$1F([
+AbstractMutationManager = __decorate$1E([
     Injected()
 ], AbstractMutationManager);
 
@@ -19445,7 +19440,7 @@ var index = /*#__PURE__*/Object.freeze({
     BLUEPRINT: BLUEPRINT
 });
 
-var __decorate$1E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -19546,32 +19541,32 @@ let DatabaseManager = class DatabaseManager {
         }
     }
 };
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "airportDatabase", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "applicationDao", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "applicationInitializer", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "dbApplicationUtils", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "internalRecordManager", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "storeDriver", void 0);
-__decorate$1E([
+__decorate$1D([
     Inject()
 ], DatabaseManager.prototype, "transactionalServer", void 0);
-DatabaseManager = __decorate$1E([
+DatabaseManager = __decorate$1D([
     Injected()
 ], DatabaseManager);
 
-var __decorate$1D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -19759,32 +19754,32 @@ let DeleteManager = class DeleteManager {
         return selectClause;
     }
 };
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "airportDatabase", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "applicationUtils", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "historyManager", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1D([
+__decorate$1C([
     Inject()
 ], DeleteManager.prototype, "sequenceGenerator", void 0);
-DeleteManager = __decorate$1D([
+DeleteManager = __decorate$1C([
     Injected()
 ], DeleteManager);
 
-var __decorate$1C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -19798,14 +19793,14 @@ let HistoryManager = class HistoryManager {
         return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.newRepository);
     }
 };
-__decorate$1C([
+__decorate$1B([
     Inject()
 ], HistoryManager.prototype, "transactionHistoryDuo", void 0);
-HistoryManager = __decorate$1C([
+HistoryManager = __decorate$1B([
     Injected()
 ], HistoryManager);
 
-var __decorate$1B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -20198,32 +20193,32 @@ and cannot have NULL values.`);
         // }
     }
 };
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "airportDatabase", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "historyManager", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "insertManager", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1B([
+__decorate$1A([
     Inject()
 ], InsertManager.prototype, "sequenceGenerator", void 0);
-InsertManager = __decorate$1B([
+InsertManager = __decorate$1A([
     Injected()
 ], InsertManager);
 
-var __decorate$1A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -20254,17 +20249,17 @@ let QueryManager = class QueryManager {
         }
     }
 };
-__decorate$1A([
+__decorate$1z([
     Inject()
 ], QueryManager.prototype, "repositoryLoader", void 0);
-__decorate$1A([
+__decorate$1z([
     Inject()
 ], QueryManager.prototype, "storeDriver", void 0);
-QueryManager = __decorate$1A([
+QueryManager = __decorate$1z([
     Injected()
 ], QueryManager);
 
-var __decorate$1z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -20580,29 +20575,29 @@ ${callHerarchy}
         return true;
     }
 };
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "activeQueries", void 0);
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "idGenerator", void 0);
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "storeDriver", void 0);
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "synchronizationOutManager", void 0);
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "terminalStore", void 0);
-__decorate$1z([
+__decorate$1y([
     Inject()
 ], TransactionManager.prototype, "transactionHistoryDuo", void 0);
-TransactionManager = __decorate$1z([
+TransactionManager = __decorate$1y([
     Injected()
 ], TransactionManager);
 
-var __decorate$1y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -20767,44 +20762,44 @@ let UpdateManager = class UpdateManager {
         };
     }
 };
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "airportDatabase", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "applicationUtils", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "fieldUtils", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "historyManager", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "queryFacade", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "queryUtils", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "relationManager", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1y([
+__decorate$1x([
     Inject()
 ], UpdateManager.prototype, "sequenceGenerator", void 0);
-UpdateManager = __decorate$1y([
+UpdateManager = __decorate$1x([
     Injected()
 ], UpdateManager);
 
-var __decorate$1x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -20823,11 +20818,11 @@ let CascadeGraphVerifier = class CascadeGraphVerifier {
         return root;
     }
 };
-CascadeGraphVerifier = __decorate$1x([
+CascadeGraphVerifier = __decorate$1w([
     Injected()
 ], CascadeGraphVerifier);
 
-var __decorate$1w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -21141,14 +21136,14 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
         return operationNodes;
     }
 };
-__decorate$1w([
+__decorate$1v([
     Inject()
 ], DependencyGraphResolver.prototype, "entityStateManager", void 0);
-DependencyGraphResolver = __decorate$1w([
+DependencyGraphResolver = __decorate$1v([
     Injected()
 ], DependencyGraphResolver);
 
-var __decorate$1v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -21321,14 +21316,14 @@ of entity ${dbProperty.entity.name}\``);
         }
     }
 };
-__decorate$1v([
+__decorate$1u([
     Inject()
 ], EntityGraphReconstructor.prototype, "entityStateManager", void 0);
-EntityGraphReconstructor = __decorate$1v([
+EntityGraphReconstructor = __decorate$1u([
     Injected()
 ], EntityGraphReconstructor);
 
-var __decorate$1u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -21340,11 +21335,11 @@ let OperationContextLoader = class OperationContextLoader {
     ensureSync(context) {
     }
 };
-OperationContextLoader = __decorate$1u([
+OperationContextLoader = __decorate$1t([
     Injected()
 ], OperationContextLoader);
 
-var __decorate$1t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -21691,47 +21686,47 @@ let OperationManager = class OperationManager {
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
     }
 };
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "airportDatabase", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "applicationUtils", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "cascadeGraphVerifier", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "deleteManager", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "dependencyGraphResolver", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "entityGraphReconstructor", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "entityStateManager", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "insertManager", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "qMetadataUtils", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "queryFacade", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "structuralEntityValidator", void 0);
-__decorate$1t([
+__decorate$1s([
     Inject()
 ], OperationManager.prototype, "updateManager", void 0);
-OperationManager = __decorate$1t([
+OperationManager = __decorate$1s([
     Injected()
 ], OperationManager);
 
-var __decorate$1s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -22020,20 +22015,20 @@ must always have a value for all entity operations.`);
 		(column: '${dbColumn.name}').`);
     }
 };
-__decorate$1s([
+__decorate$1r([
     Inject()
 ], StructuralEntityValidator.prototype, "applicationUtils", void 0);
-__decorate$1s([
+__decorate$1r([
     Inject()
 ], StructuralEntityValidator.prototype, "entityStateManager", void 0);
-__decorate$1s([
+__decorate$1r([
     Inject()
 ], StructuralEntityValidator.prototype, "repositoryManager", void 0);
-StructuralEntityValidator = __decorate$1s([
+StructuralEntityValidator = __decorate$1r([
     Injected()
 ], StructuralEntityValidator);
 
-var __decorate$1r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -22111,11 +22106,11 @@ got: ${typeOfParameter}
         }
     }
 };
-QueryParameterDeserializer = __decorate$1r([
+QueryParameterDeserializer = __decorate$1q([
     Injected()
 ], QueryParameterDeserializer);
 
-var __decorate$1q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -22216,7 +22211,7 @@ let QueryResultsSerializer = class QueryResultsSerializer {
         return entityCopy;
     }
 };
-QueryResultsSerializer = __decorate$1q([
+QueryResultsSerializer = __decorate$1p([
     Injected()
 ], QueryResultsSerializer);
 
@@ -22224,28 +22219,6 @@ QueryResultsSerializer = __decorate$1q([
  * Created by Papa on 6/30/2016.
  */
 new Date().getTime();
-
-var __decorate$1p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * TODO: probably not-needed - queries no longer come from
- * the client directly.  They can come from the client but
- * are considered generic API calls. DaoRegistry is now
- * replaced with API registry.
- */
-let ClientQueryManager = class ClientQueryManager {
-    async getClientQuery(applicationName, daoName, methodName) {
-        // const daoRegistry = await container(this).get(DAO_REGISTRY)
-        throw new Error('TODO: implement');
-    }
-};
-ClientQueryManager = __decorate$1p([
-    Injected()
-], ClientQueryManager);
 
 var __decorate$1o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -30402,7 +30375,6 @@ TWO_STAGE_SYNCED_IN_DATA_PROCESSOR.setDependencies({
 });
 
 const terminal = lib$1('terminal');
-CLIENT_QUERY_MANAGER.setClass(ClientQueryManager);
 REPOSITORY_LOADER.setClass(RepositoryLoader);
 TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector);
 TRANSACTIONAL_CONNECTOR.setDependencies({

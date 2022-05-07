@@ -1,5 +1,5 @@
 import { IDependencyInjectionToken } from "../dependencyInjection/Token";
 export interface IAutopilotApiLoader {
-    loadApiAutopilot<Injectable = any>(token: IDependencyInjectionToken<Injectable>): any;
+    loadApiAutopilot<Injected = any>(token: IDependencyInjectionToken<Injected>): any;
 }
 //# sourceMappingURL=IAutopilotApiLoader.d.ts.map

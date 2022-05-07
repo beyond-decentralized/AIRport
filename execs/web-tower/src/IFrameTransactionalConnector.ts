@@ -3,7 +3,7 @@ import {
 	IQueryContext
 } from '@airport/air-traffic-control';
 import {
-	IInjectable,
+	IInjected,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -421,7 +421,7 @@ export class IframeTransactionalConnector
 	private async sendMessageNoWait<IMessageIn extends IIsolateMessage, ReturnType>(
 		message: IMessageIn
 	): Promise<ReturnType> {
-		message.transactionId = (<IInjectable>this).__container__.context.id
+		message.transactionId = (<IInjected>this).__container__.context.id
 		window.parent.postMessage(message, this.applicationStore.state.hostServer)
 		return new Promise<ReturnType>((resolve, reject) => {
 			this.applicationStore.state.pendingMessageMap.set(message.id, {

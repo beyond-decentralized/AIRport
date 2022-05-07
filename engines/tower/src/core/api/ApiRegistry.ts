@@ -1,16 +1,19 @@
-import { container } from "@airport/direction-indicator";
+import { IContainerAccessor, Inject } from "@airport/direction-indicator";
 import {
     IApiOperation,
     IApiRegistry,
     IApplicationApi
 } from "@airport/check-in";
 import {
-	Injected
+    Injected
 } from '@airport/direction-indicator'
 
 @Injected()
 export class ApiRegistry
     implements IApiRegistry {
+
+    @Inject()
+    containerAccessor: IContainerAccessor
 
     // installedApi: InstalledApi
     applicationApi: IApplicationApi
@@ -55,7 +58,7 @@ export class ApiRegistry
             ${methodName}`)
         }
 
-        const apiObject = await container(this)
+        const apiObject = await this.containerAccessor.getContainer(this)
             .getByNames(domainName, applicationName, apiObjectName);
 
         return {

@@ -1,0 +1,1 @@
+{"version":3,"file":"IContainerAccessor.d.ts","sourceRoot":"","sources":["../../../src/dependencyInjection/interfaces/IContainerAccessor.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,mBAAmB,CAAC;AAEpD,MAAM,WAAW,kBAAkB;IAE/B,YAAY,CACR,cAAc,KAAA,GACf,eAAe,CAAA;CAErB"}

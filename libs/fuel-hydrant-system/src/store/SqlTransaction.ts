@@ -1,6 +1,6 @@
 import {
     IContext,
-    IInjectable
+    IInjected
 } from '@airport/direction-indicator'
 import {
     ApplicationName,
@@ -47,7 +47,7 @@ export abstract class SqlTransaction
         protected driver: IStoreDriver,
         public parentTransaction: ITransaction
     ) {
-        (<IInjectable>this).__container__ = (<IInjectable>driver).__container__
+        (<IInjected>this).__container__ = (<IInjected>driver).__container__
         this.id = uuidv4()
         this.type = driver.type
         if (parentTransaction) {

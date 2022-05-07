@@ -55,40 +55,6 @@ let DatabaseManager = class DatabaseManager {
         await this.applicationInitializer.initialize(applicationsToCreate, context, true, true);
         this.transactionalServer.tempActor = null;
     }
-    /*
-    static async addDataStore(
-        storeType: StoreType,
-        terminalName: string
-    ): Promise<void> {
-        if (this.isInitialized(terminalName)) {
-            throw new Error(
-            `Database '${terminalName}' is already initialized`);
-        }
-        const newDataStore = await QDataStore.db(dbConst.DEFAULT_DB).save({
-            name: terminalName,
-            storeType: storeType
-        });
-        await TQ.init(storeType, terminalName);
-    }
-
-    private doEnsureInitialized(
-        terminalName: string,
-        resolve,
-        reject,
-        remainingTimeout: number
-    ): void {
-        if (this.isInitialized(terminalName)) {
-            resolve()
-        }
-        if (remainingTimeout <= 0) {
-            reject(`Timeout out waiting for initialization of DB: [${terminalName}]`)
-        }
-        remainingTimeout -= 100
-        setTimeout(() => {
-            this.doEnsureInitialized(terminalName, resolve, reject, remainingTimeout)
-        }, 100)
-    }
-    */
     async installStarterApplication(stage, hydrate, context) {
         const blueprintFile = await import('@airport/blueprint');
         if (stage) {

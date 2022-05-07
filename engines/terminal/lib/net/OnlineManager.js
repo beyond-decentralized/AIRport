@@ -5,7 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { container } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
 import { RepositoryTransactionHistory, } from '@airport/holding-pattern-runtime';
 import { UpdateState } from '@airport/terminal-map';
@@ -50,7 +49,6 @@ let OnlineManager = class OnlineManager {
      * @returns {Promise<void>}
      */
     async goOnline(context = {}) {
-        const offlineDeltaStore = await container(this).get(OFFLINE_DELTA_STORE);
         await this.transactionManager.transactInternal(async () => {
             try {
                 // 1)  Flip update state to GO_ONLINE
@@ -61,7 +59,7 @@ let OnlineManager = class OnlineManager {
                 // 3) make each repository go Online
                 let goOnlineCalls = [];
                 repoRecords.forEach((repository) => {
-                    goOnlineCalls.push(this.repositoryGoOnline(repository, offlineDeltaStore, this.repositoryManager));
+                    goOnlineCalls.push(this.repositoryGoOnline(repository, this.repositoryManager));
                 });
                 await Promise.all(goOnlineCalls);
                 // 9)  Flip the online state to true
@@ -77,7 +75,7 @@ let OnlineManager = class OnlineManager {
             }
         }, context);
     }
-    async repositoryGoOnline(repository, offlineDeltaStore, repositoryManager) {
+    async repositoryGoOnline(repository, repositoryManager) {
         let deltaStore = repositoryManager.deltaStore[repository.id];
         let remoteChangesSinceInitialGoOnline = [];
         // 3)  Go Online and start listening for new transactions coming in
@@ -102,7 +100,7 @@ let OnlineManager = class OnlineManager {
                     // i)  Flip update state to REMOTE_CHANGES
                     repositoryManager.setUpdateState(repository, UpdateState.REMOTE);
                     // ii)  Add remote transactions to local store
-                    await offlineDeltaStore.addRemoteChanges(repository, transactions);
+                    await this.offlineDeltaStore.addRemoteChanges(repository, transactions);
                 }
                 catch (error) {
                     // TODO: notify of error
@@ -122,14 +120,14 @@ let OnlineManager = class OnlineManager {
         }
         // 5)  Add remote transactions to local store
         if (remoteChanges.length) {
-            await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+            await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
         }
         // 6)  While there are more transactions coming in remotely:
         while (remoteChangesSinceInitialGoOnline.length) {
             remoteChanges = remoteChangesSinceInitialGoOnline;
             remoteChangesSinceInitialGoOnline = [];
             // Add them to local store
-            await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+            await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
         }
         // 7)  Find all local unsynced transactions
         let unsyncedChanges = await this.repositoryTransactionHistoryDao
@@ -143,14 +141,14 @@ let OnlineManager = class OnlineManager {
             await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
             // c)  save them back in local store, now with the synched flag
             // (and update db with new lastSyncedTransaction)
-            await offlineDeltaStore.markChangesAsSynced(repository, null);
+            await this.offlineDeltaStore.markChangesAsSynced(repository, null);
         }
         // 	8)  While there are more transactions coming in remotely:
         // Add them to local store
         while (remoteChangesSinceInitialGoOnline.length) {
             remoteChanges = remoteChangesSinceInitialGoOnline;
             remoteChangesSinceInitialGoOnline = [];
-            await offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+            await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
         }
         // 9)  Flip the online state to true
         this.online = true;
