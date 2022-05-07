@@ -7,7 +7,6 @@ export * from './dao/DaoSearchOneStub';
 export * from './dao/DaoSearchStub';
 export * from './dao/DaoStub';
 export * from './clientQuery/ClientQuery';
-export * from './clientQuery/ClientQueryManager';
 export * from './serialize/OperationDeserializer';
 export * from './serialize/QueryParameterDeserializer';
 export * from './serialize/QueryResultsSerializer';

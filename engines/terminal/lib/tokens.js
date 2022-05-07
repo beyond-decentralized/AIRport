@@ -1,13 +1,12 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER } from '@airport/air-traffic-control';
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace';
-import { CLIENT_QUERY_MANAGER, QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER, SEQUENCE_GENERATOR } from '@airport/check-in';
+import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
 import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern-runtime';
 import { APPLICATION_INITIALIZER, STORE_DRIVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { ClientQueryManager } from './ClientQueryManager';
 import { RepositoryLoader } from './core/repository/RepositoryLoader';
 import { RepositoryManager } from './core/repository/RepositoryManager';
 import { InternalRecordManager } from './data/InternalRecordManager';
@@ -32,7 +31,6 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer';
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer';
 const terminal = lib('terminal');
-CLIENT_QUERY_MANAGER.setClass(ClientQueryManager);
 REPOSITORY_LOADER.setClass(RepositoryLoader);
 TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector);
 TRANSACTIONAL_CONNECTOR.setDependencies({

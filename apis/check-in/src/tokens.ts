@@ -2,7 +2,6 @@ import { AIRPORT_DATABASE, DATABASE_FACADE, IDao, LOOKUP, UPDATE_CACHE_MANAGER }
 import { lib } from '@airport/direction-indicator';
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { IApiRegistry, IApiValidator } from '.';
-import { IClientQueryManager } from './clientQuery/ClientQueryManager';
 import { Dao } from './dao/Dao';
 import { ISelectorManager, SelectorManager } from './Selector';
 import { ISequenceGenerator } from './SequenceGenerator';
@@ -22,11 +21,6 @@ export const API_VALIDATOR = checkIn.token<IApiValidator>({
     interface: 'IApiValidator',
     token: 'API_VALIDATOR'
 })
-export const CLIENT_QUERY_MANAGER = checkIn.token<IClientQueryManager>({
-    class: null,
-    interface: 'IClientQueryManager',
-    token: 'CLIENT_QUERY_MANAGER'
-});
 export const DAO = checkIn.token<IDao<any, any, any, any, any, any, any, any>>({
     class: Dao,
     interface: 'class Dao',

@@ -25,7 +25,6 @@ export * from './serialize/QueryResultsSerializer';
 export * from './shared/logic/DatabaseLogic';
 export * from './shared/DateUtils';
 export * from './shared/PlatformUtils';
-export * from './ClientQueryManager';
 // export * from './Constants'
 export * from './tokens';
 DEPENDENCY_INJECTION.isFramework = true;

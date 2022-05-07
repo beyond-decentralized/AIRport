@@ -14,11 +14,6 @@ export const API_VALIDATOR = checkIn.token({
     interface: 'IApiValidator',
     token: 'API_VALIDATOR'
 });
-export const CLIENT_QUERY_MANAGER = checkIn.token({
-    class: null,
-    interface: 'IClientQueryManager',
-    token: 'CLIENT_QUERY_MANAGER'
-});
 export const DAO = checkIn.token({
     class: Dao,
     interface: 'class Dao',
