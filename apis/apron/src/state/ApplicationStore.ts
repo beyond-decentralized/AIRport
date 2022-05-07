@@ -1,6 +1,6 @@
 import { Injected } from "@airport/direction-indicator";
 import { IApplicationState } from "./ApplicationState";
-import { applicationState } from "./theApplicationState";
+import { applicationState as theApplicationState } from "./theApplicationState";
 
 export interface IApplicationStore {
 
@@ -11,8 +11,10 @@ export interface IApplicationStore {
 export class ApplicationStore
     implements IApplicationStore {
 
+    applicationState = theApplicationState
+
     get state(): IApplicationState {
-        return applicationState
+        return this.applicationState
     }
 
 }

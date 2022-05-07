@@ -4,7 +4,7 @@ import { IMemoizedSelector, ISelectorManager } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject, Subscription } from 'rxjs';
-import { ITerminalState } from './TerminalState';
+import { ITerminalState, ITerminalStateContainer } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/apron';
@@ -67,7 +67,8 @@ export interface ITerminalStore {
 }
 export declare class TerminalStore implements ITerminalStore {
     selectorManager: ISelectorManager;
-    state: Subject<ITerminalState>;
+    terminalState: ITerminalStateContainer;
+    get state(): Subject<ITerminalState>;
     getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
     getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;

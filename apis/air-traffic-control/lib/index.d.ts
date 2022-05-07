@@ -58,7 +58,8 @@ export * from './impl/utils/qApplicationBuilderUtils';
 export * from './impl/utils/QueryUtils';
 export * from './impl/utils/ApplicationUtils';
 export * from './impl/Constants';
-export * from './lingo/databaseState';
+export * from './impl/databaseState';
+export * from './impl/DatabaseStore';
 export * from './impl/Utils';
 export * from './lingo/core/EntityContext';
 export * from './lingo/core/entity/metadata/ColumnDecorators';
@@ -123,6 +124,5 @@ export * from './lingo/utils/ApplicationUtils';
 export * from './lingo/AirportDatabase';
 export * from './lingo/DeepPartial';
 export * from './lingo/DatabaseState';
-export * from './lingo/DatabaseStore';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

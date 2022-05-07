@@ -10,4 +10,4 @@ export interface IDatabaseState {
         [name: string]: QApplication;
     };
 }
-//# sourceMappingURL=databaseState.d.ts.map
+//# sourceMappingURL=DatabaseState.d.ts.map

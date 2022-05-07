@@ -1,3 +1,4 @@
+import { Injected } from '@airport/direction-indicator'
 import { IActor } from '@airport/holding-pattern-runtime'
 import type {
 	IDomain,
@@ -11,6 +12,8 @@ import {
 	IWebReceiverStore
 } from './TerminalStore'
 import { LastIds } from '@airport/apron'
+import { internalTerminalState } from './theState'
+import { Subject } from 'rxjs'
 
 export interface ITerminalState {
 
@@ -25,4 +28,14 @@ export interface ITerminalState {
 	transactionManager: ITransactionManagerStore
 	webReceiver: IWebReceiverStore
 
+}
+
+export interface ITerminalStateContainer {
+	terminalState: Subject<ITerminalState>
+}
+
+@Injected()
+export class TerminalState
+	implements ITerminalStateContainer {
+	terminalState = internalTerminalState
 }

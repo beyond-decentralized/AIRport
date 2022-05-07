@@ -5,22 +5,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Injected } from "@airport/direction-indicator";
-import { databaseState } from "../impl/databaseState";
+import { databaseState as theDatabaseState } from "./databaseState";
 let DatabaseStore = class DatabaseStore {
+    constructor() {
+        this.databaseState = theDatabaseState;
+    }
     get applications() {
-        return databaseState.applications;
+        return this.databaseState.applications;
     }
     get entityMap() {
-        return databaseState.entityMap;
+        return this.databaseState.entityMap;
     }
     get functions() {
-        return databaseState.functions;
+        return this.databaseState.functions;
     }
     get qApplications() {
-        return databaseState.qApplications;
+        return this.databaseState.qApplications;
     }
     get QM() {
-        return databaseState.QM;
+        return this.databaseState.QM;
     }
 };
 DatabaseStore = __decorate([

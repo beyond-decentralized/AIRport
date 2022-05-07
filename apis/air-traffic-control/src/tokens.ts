@@ -29,7 +29,7 @@ import { NonEntitySearch } from './impl/query/api/NonEntitySearch'
 import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne'
 import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne'
 import { IDatabaseState } from './lingo/DatabaseState'
-import { DatabaseStore } from './lingo/DatabaseStore'
+import { DatabaseStore } from './impl/DatabaseStore'
 
 const airTrafficControl = lib('air-traffic-control')
 

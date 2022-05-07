@@ -5,11 +5,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { ensureChildJsMap } from '@airport/ground-control';
-import { internalTerminalState } from './theState';
 import { Inject, Injected } from '@airport/direction-indicator';
 let TerminalStore = class TerminalStore {
+    get state() {
+        return this.terminalState.terminalState;
+    }
     async init() {
-        this.state = internalTerminalState;
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
@@ -124,6 +125,9 @@ let TerminalStore = class TerminalStore {
 __decorate([
     Inject()
 ], TerminalStore.prototype, "selectorManager", void 0);
+__decorate([
+    Inject()
+], TerminalStore.prototype, "terminalState", void 0);
 TerminalStore = __decorate([
     Injected()
 ], TerminalStore);

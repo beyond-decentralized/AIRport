@@ -11,7 +11,7 @@ import { NonEntityFind } from './impl/query/api/NonEntityFind';
 import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne';
 import { NonEntitySearch } from './impl/query/api/NonEntitySearch';
 import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne';
-import { DatabaseStore } from './lingo/DatabaseStore';
+import { DatabaseStore } from './impl/DatabaseStore';
 const airTrafficControl = lib('air-traffic-control');
 export const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,

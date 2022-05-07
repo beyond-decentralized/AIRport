@@ -21,8 +21,7 @@ import {
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject, Subscription } from 'rxjs';
-import { ITerminalState } from './TerminalState';
-import { internalTerminalState } from './theState';
+import { ITerminalState, ITerminalStateContainer } from './TerminalState';
 import { ITransaction } from '../transaction/ITransaction';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/apron';
@@ -125,7 +124,12 @@ export class TerminalStore
 	@Inject()
 	selectorManager: ISelectorManager
 
-	state: Subject<ITerminalState>;
+	@Inject()
+	terminalState: ITerminalStateContainer
+
+	get state(): Subject<ITerminalState> {
+		return this.terminalState.terminalState
+	}
 
 	getAllApplicationVersionsByIds: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
 
@@ -166,7 +170,6 @@ export class TerminalStore
 	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
 
 	async init(): Promise<void> {
-		this.state = internalTerminalState;
 
 		this.getTerminalState = this.selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState,
