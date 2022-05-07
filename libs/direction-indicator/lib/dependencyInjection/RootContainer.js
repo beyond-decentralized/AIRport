@@ -5,6 +5,7 @@ export class RootContainer extends Container {
     constructor() {
         super(...arguments);
         this.isFramework = false;
+        this.dbContainerMap = new Map();
         this.uiContainers = new Set();
     }
     // NOTE: Object pooling is not supported because of possible callbacks
