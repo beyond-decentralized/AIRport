@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,
@@ -36,6 +36,7 @@ export class FieldSQLQuery
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.FIELD,
@@ -48,6 +49,7 @@ export class FieldSQLQuery
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementQueryGenerator,
+			utils,
 			context)
 
 		this.orderByParser = new ExactOrderByParser(qValidator)

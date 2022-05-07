@@ -3,6 +3,7 @@ import {
 	IApplicationUtils,
 	IQEntityInternal,
 	IQMetadataUtils,
+	IUtils,
 	JSONLogicalOperation,
 	Parameter,
 } from '@airport/air-traffic-control'
@@ -72,6 +73,7 @@ export abstract class SQLWhereBase
 		protected qMetadataUtils: IQMetadataUtils,
 		protected sqlQueryAdapter: ISQLQueryAdaptor,
 		protected storeDriver: IStoreDriver,
+		protected utils: IUtils,
 		protected context: IFuelHydrantContext,
 	) {
 	}

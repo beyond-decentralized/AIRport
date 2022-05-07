@@ -1,4 +1,3 @@
-import { valuesEqual } from '@airport/air-traffic-control';
 import { TreeResultParser } from '../TreeResultParser';
 /**
  * Created by Papa on 10/16/2016.
@@ -71,7 +70,7 @@ export class EntityTreeResultParser extends TreeResultParser {
         // Both last and current objects must exist here
         let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName];
         let currentMtoStub = resultObject[propertyName];
-        this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true);
+        this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true);
     }
 }
 //# sourceMappingURL=EntityTreeResultParser.js.map

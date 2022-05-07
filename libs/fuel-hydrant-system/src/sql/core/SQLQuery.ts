@@ -3,6 +3,7 @@ import {
 	IApplicationUtils,
 	IQEntityInternal,
 	IQMetadataUtils,
+	IUtils,
 	JoinTreeNode
 } from '@airport/air-traffic-control'
 import {
@@ -71,6 +72,7 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		qMetadataUtils: IQMetadataUtils,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect,
@@ -79,7 +81,8 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 			entityStateManager,
 			qMetadataUtils,
 			sqlQueryAdapter,
-			storeDriver, context)
+			storeDriver, utils,
+			context)
 	}
 
 	getFieldMap(): ApplicationMap {

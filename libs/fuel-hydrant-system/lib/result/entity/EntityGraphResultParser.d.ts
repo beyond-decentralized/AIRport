@@ -1,4 +1,4 @@
-import { IApplicationUtils, ReferencedColumnData } from '@airport/air-traffic-control';
+import { IApplicationUtils, IUtils, ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { GraphMtoMapper, ManyToOneStubReference } from './GraphMtoMapper';
@@ -22,7 +22,7 @@ export declare class EntityGraphResultParser extends AbstractObjectResultParser 
     otmStubBuffer: OneToManyStubReference[];
     mtoStubBuffer: ManyToOneStubReference[];
     currentResultRow: any[];
-    constructor(config: GraphQueryConfiguration, rootDbEntity: DbEntity, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager);
+    constructor(config: GraphQueryConfiguration, rootDbEntity: DbEntity, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, utils: IUtils);
     addEntity(entityAlias: string, dbEntity: DbEntity, context: IFuelHydrantContext): any;
     addProperty(entityAlias: string, resultObject: any, dataType: SQLDataType, propertyName: string, propertyValue: any): boolean;
     bufferManyToOneStub(entityAlias: string, dbEntity: DbEntity, resultObject: any, propertyName: string, relationDbEntity: DbEntity, relationInfos: ReferencedColumnData[], context: IFuelHydrantContext): void;

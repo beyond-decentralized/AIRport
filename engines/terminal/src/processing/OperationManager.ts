@@ -7,11 +7,11 @@ import {
 	IQMetadataUtils,
 	IQOperableFieldInternal,
 	IQueryFacade,
+	IUtils,
 	or,
 	RawDelete,
 	RawInsertValues,
 	UpdateProperties,
-	valuesEqual
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -84,6 +84,9 @@ export class OperationManager
 
 	@Inject()
 	updateManager: IUpdateManager
+
+	@Inject()
+	utils: IUtils
 
 	/**
 	 * Transactional context must have been started by the time this method is called.
@@ -308,7 +311,7 @@ export class OperationManager
 						// cannot entity-update id fields
 						idWhereFragments.push((<any>qEntity)[dbProperty.name]
 							.equals(updatedValue))
-					} else if (!valuesEqual(originalValue, updatedValue)) {
+					} else if (!this.utils.valuesEqual(originalValue, updatedValue)) {
 						setFragment[dbProperty.name] = updatedValue
 						saveResult.updated[
 							this.entityStateManager.getOperationUniqueId(entity)
@@ -351,7 +354,7 @@ export class OperationManager
 									// For an id property, the value is guaranteed to be the same (and not
 									// empty) - cannot entity-update id fields
 									idWhereFragments.push(idQProperty.equals(value))
-								} else if (!valuesEqual(originalColumnValue, columnValue)) {
+								} else if (!this.utils.valuesEqual(originalColumnValue, columnValue)) {
 									let currentSetFragment = setFragment
 									for (let i = 0; i < valuePropertyNameChain.length - 1; i++) {
 										const childPropertyName = valuePropertyNameChain[i]

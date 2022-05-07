@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IQTree, IRelationManager, JoinTreeNode } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IQTree, IRelationManager, IUtils, JoinTreeNode } from '@airport/air-traffic-control';
 import { IEntityStateManager, InternalFragments, JSONClauseField, JSONFieldInGroupBy, JSONFieldInOrderBy, JsonNonEntityQuery, JSONRelation, JSONViewJoinRelation, QueryResultType } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
@@ -17,7 +17,7 @@ export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
     protected subStatementQueryGenerator: ISubStatementSqlGenerator;
     protected joinTrees: JoinTreeNode[];
     protected orderByParser: INonEntityOrderByParser;
-    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, context: IFuelHydrantContext);
+    constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, utils: IUtils, context: IFuelHydrantContext);
     addQEntityMapByAlias(sourceMap: {
         [entityAlias: string]: IQEntityInternal;
     }): void;

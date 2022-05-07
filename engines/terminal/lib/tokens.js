@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER } from '@airport/air-traffic-control';
+import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER, UTILS } from '@airport/air-traffic-control';
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace';
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
@@ -148,7 +148,8 @@ DELETE_MANAGER.setDependencies({
     operationHistoryDuo: OPERATION_HISTORY_DUO,
     recordHistoryDuo: RECORD_HISTORY_DUO,
     repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
-    sequenceGenerator: SEQUENCE_GENERATOR
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    utils: UTILS
 });
 DEPENDENCY_GRAPH_RESOLVER.setDependencies({
     entityStateManager: ENTITY_STATE_MANAGER
@@ -192,7 +193,8 @@ OPERATION_MANAGER.setDependencies({
     qMetadataUtils: Q_METADATA_UTILS,
     queryFacade: QUERY_FACADE,
     structuralEntityValidator: STRUCTURAL_ENTITY_VALIDATOR,
-    updateManager: UPDATE_MANAGER
+    updateManager: UPDATE_MANAGER,
+    utils: UTILS
 });
 QUERY_MANAGER.setDependencies({
     repositoryLoader: REPOSITORY_LOADER,

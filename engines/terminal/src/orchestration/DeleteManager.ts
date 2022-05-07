@@ -1,7 +1,7 @@
 import {
 	IAirportDatabase,
 	IApplicationUtils,
-	valuesEqual,
+	IUtils,
 	Y
 } from '@airport/air-traffic-control'
 import {
@@ -65,6 +65,9 @@ export class DeleteManager
 
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
+
+	@Inject()
+	utils: IUtils
 
 	async deleteWhere(
 		portableQuery: PortableQuery,
@@ -202,7 +205,7 @@ export class DeleteManager
 			foundValues[dbColumn.name] = value
 			return false
 		}
-		if (!valuesEqual(foundValues[dbColumn.name], value)) {
+		if (!this.utils.valuesEqual(foundValues[dbColumn.name], value)) {
 			throw new Error(
 				`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
 			(column: '${dbColumn.name}'): ${foundValues[dbColumn.name]} !== ${value}`)

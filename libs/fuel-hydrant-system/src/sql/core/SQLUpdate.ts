@@ -4,6 +4,7 @@ import {
 	IEntityUpdateProperties,
 	IQMetadataUtils,
 	IRelationManager,
+	IUtils,
 	ManyToOneColumnMapping
 } from '@airport/air-traffic-control'
 import {
@@ -38,6 +39,7 @@ export class SQLUpdate
 		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
@@ -49,6 +51,7 @@ export class SQLUpdate
 			relationManager,
 			sqlQueryAdapter,
 			storeDriver,
+			utils,
 			context)
 	}
 

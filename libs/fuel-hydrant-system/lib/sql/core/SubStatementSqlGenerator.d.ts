@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, JsonFieldQuery, JsonTreeQuery } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor';
@@ -26,7 +26,7 @@ export declare class SubStatementSqlGenerator implements ISubStatementSqlGenerat
     relationManager: IRelationManager;
     sqlQueryAdapter: ISQLQueryAdaptor;
     storeDriver: IStoreDriver;
-    subStatementQueryGenerator: ISubStatementSqlGenerator;
+    utils: IUtils;
     getTreeQuerySql(jsonTreeQuery: JsonTreeQuery, dialect: SQLDialect, context: IFuelHydrantContext): {
         parameterReferences: (number | string)[];
         subQuerySql: string;

@@ -9,7 +9,7 @@ import { FieldSQLQuery } from '../FieldSQLQuery';
 import { TreeSQLQuery } from '../TreeSQLQuery';
 let SubStatementSqlGenerator = class SubStatementSqlGenerator {
     getTreeQuerySql(jsonTreeQuery, dialect, context) {
-        let mappedSqlQuery = new TreeSQLQuery(jsonTreeQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this.subStatementQueryGenerator, context);
+        let mappedSqlQuery = new TreeSQLQuery(jsonTreeQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         const subQuerySql = mappedSqlQuery.toSQL({}, context);
         const parameterReferences = mappedSqlQuery.parameterReferences;
         return {
@@ -18,7 +18,7 @@ let SubStatementSqlGenerator = class SubStatementSqlGenerator {
         };
     }
     getFieldQuerySql(jsonFieldSqlSubQuery, dialect, qEntityMapByAlias, context) {
-        let fieldSqlQuery = new FieldSQLQuery(jsonFieldSqlSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this.subStatementQueryGenerator, context);
+        let fieldSqlQuery = new FieldSQLQuery(jsonFieldSqlSubQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this.storeDriver, this, this.utils, context);
         fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias);
         const subQuerySql = fieldSqlQuery.toSQL({}, context);
         const parameterReferences = fieldSqlQuery.parameterReferences;
@@ -54,7 +54,7 @@ __decorate([
 ], SubStatementSqlGenerator.prototype, "storeDriver", void 0);
 __decorate([
     Inject()
-], SubStatementSqlGenerator.prototype, "subStatementQueryGenerator", void 0);
+], SubStatementSqlGenerator.prototype, "utils", void 0);
 SubStatementSqlGenerator = __decorate([
     Injected()
 ], SubStatementSqlGenerator);

@@ -1,9 +1,9 @@
 import {
 	and,
-	compareNumbers,
 	IAirportDatabase,
 	IDatabaseFacade,
 	IQEntityInternal,
+	IUtils,
 	or
 } from '@airport/air-traffic-control'
 import {
@@ -80,6 +80,9 @@ export class Stage2SyncedInDataProcessor
 	@Inject()
 	recordUpdateStageDao: IRecordUpdateStageDao
 
+	@Inject()
+	utils: IUtils
+
 	async applyChangesToDb(
 		stage1Result: Stage1SyncedInDataProcessingResult,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>
@@ -149,7 +152,8 @@ export class Stage2SyncedInDataProcessor
 								col1IndexAndValue: ColumnIndexAndValue,
 								col2IndexAndValue: ColumnIndexAndValue
 							) => {
-								return compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0])
+								return this.utils.compareNumbers(
+									col1IndexAndValue[0], col2IndexAndValue[0])
 							})
 							let currentNonIdColumnArrayIndex = 0
 							for (const [columnIndex, columnValue] of columnIndexedValues) {
@@ -211,7 +215,7 @@ export class Stage2SyncedInDataProcessor
 			column1: DbColumn,
 			column2: DbColumn
 		) => {
-			return compareNumbers(column1.index, column2.index)
+			return this.utils.compareNumbers(column1.index, column2.index)
 		})
 
 		return nonIdColumns
@@ -345,7 +349,7 @@ export class Stage2SyncedInDataProcessor
 		}
 		// Sort the updated columns by column index, to ensure that all records with the
 		// same combination of updated columns are grouped
-		updatedColumns.sort(compareNumbers)
+		updatedColumns.sort(this.utils.compareNumbers)
 
 
 		// Navigate down the table UpdateKeyMap to find the matching combination of

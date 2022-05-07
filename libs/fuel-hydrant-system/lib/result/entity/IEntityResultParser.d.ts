@@ -1,4 +1,4 @@
-import { IApplicationUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-traffic-control';
+import { IApplicationUtils, IUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 /**
@@ -25,7 +25,8 @@ export interface IEntityResultParser {
 export declare abstract class AbstractObjectResultParser {
     protected applicationUtils: IApplicationUtils;
     protected entityStateManager: IEntityStateManager;
-    constructor(applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager);
+    protected utils: IUtils;
+    constructor(applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, utils: IUtils);
     protected addManyToOneStub(resultObject: any, propertyName: string, relationInfos: ReferencedColumnData[], context: IFuelHydrantContext): boolean;
 }
 //# sourceMappingURL=IEntityResultParser.d.ts.map

@@ -2,10 +2,12 @@ import { RawEntityQuery } from '../../lingo/query/facade/EntityQuery';
 import { RawQuery } from '../../lingo/query/facade/Query';
 import { IEntityUtils } from '../../lingo/utils/EntityUtils';
 import { EntityQuery } from '../query/facade/EntityQuery';
+import { IUtils } from '../../lingo/Utils';
 /**
  * Created by Papa on 6/14/2016.
  */
 export declare class EntityUtils implements IEntityUtils {
+    utils: IUtils;
     getObjectClassName(object: any): string;
     getClassName(clazz: Function): string;
     exists(object: any): boolean;

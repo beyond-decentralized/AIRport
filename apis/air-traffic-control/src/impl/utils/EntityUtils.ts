@@ -1,10 +1,10 @@
-import {RawEntityQuery} from '../../lingo/query/facade/EntityQuery'
-import {RawQuery}       from '../../lingo/query/facade/Query'
-import {IEntityUtils}   from '../../lingo/utils/EntityUtils'
-import {QOperableField} from '../core/field/OperableField'
-import { Injected } from '@airport/direction-indicator'
-import {EntityQuery}    from '../query/facade/EntityQuery'
-import {objectExists}   from '../Utils'
+import { RawEntityQuery } from '../../lingo/query/facade/EntityQuery'
+import { RawQuery } from '../../lingo/query/facade/Query'
+import { IEntityUtils } from '../../lingo/utils/EntityUtils'
+import { QOperableField } from '../core/field/OperableField'
+import { Inject, Injected } from '@airport/direction-indicator'
+import { EntityQuery } from '../query/facade/EntityQuery'
+import { IUtils } from '../../lingo/Utils'
 
 /**
  * Created by Papa on 6/14/2016.
@@ -12,6 +12,9 @@ import {objectExists}   from '../Utils'
 @Injected()
 export class EntityUtils
 	implements IEntityUtils {
+
+	@Inject()
+	utils: IUtils
 
 	getObjectClassName(object: any): string {
 		if (typeof object != 'object' || object === null) {
@@ -32,7 +35,7 @@ export class EntityUtils
 	}
 
 	exists(object: any) {
-		return objectExists(object)
+		return this.utils.objectExists(object)
 	}
 
 	/*

@@ -1,5 +1,4 @@
-import { IUtils } from "../lingo/Utils";
-export declare class Utils implements IUtils {
+export interface IUtils {
     strsToNums(strings: string[]): number[];
     objectExists(object: any): boolean;
     valuesEqual(value1: any, value2: any, checkChildObjects?: boolean): boolean;

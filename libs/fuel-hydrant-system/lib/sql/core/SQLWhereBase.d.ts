@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, JSONLogicalOperation, Parameter } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IUtils, JSONLogicalOperation, Parameter } from '@airport/air-traffic-control';
 import { ColumnIndex, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, ApplicationIndex, ApplicationMap, SqlOperator, TableIndex, IEntityStateManager } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
@@ -24,6 +24,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected qMetadataUtils: IQMetadataUtils;
     protected sqlQueryAdapter: ISQLQueryAdaptor;
     protected storeDriver: IStoreDriver;
+    protected utils: IUtils;
     protected context: IFuelHydrantContext;
     validator: IValidator;
     subStatementSqlGenerator: ISubStatementSqlGenerator;
@@ -35,7 +36,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
     };
-    constructor(dbEntity: DbEntity, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext);
+    constructor(dbEntity: DbEntity, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, utils: IUtils, context: IFuelHydrantContext);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
     }, //,

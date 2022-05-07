@@ -14,6 +14,7 @@ import { INonEntityFindOne } from './lingo/query/api/NonEntityFindOne';
 import { INonEntitySearch } from './lingo/query/api/NonEntitySearch';
 import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne';
 import { IDatabaseState } from './lingo/DatabaseState';
+import { IUtils } from './lingo/Utils';
 export declare const AIRPORT_DATABASE: import("@airport/direction-indicator").IDependencyInjectionToken<IAirportDatabase>;
 export declare const APPLICATION_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationUtils>;
 export declare const DATABASE_FACADE: import("@airport/direction-indicator").IDependencyInjectionToken<IDatabaseFacade>;
@@ -31,4 +32,5 @@ export declare const QUERY_UTILS: import("@airport/direction-indicator").IDepend
 export declare const RELATION_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IRelationManager>;
 export declare const REPOSITORY_LOADER: import("@airport/direction-indicator").IDependencyInjectionToken<IRepositoryLoader>;
 export declare const UPDATE_CACHE_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IUpdateCacheManager>;
+export declare const UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<IUtils>;
 //# sourceMappingURL=tokens.d.ts.map

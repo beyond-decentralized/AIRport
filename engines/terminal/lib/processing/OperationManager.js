@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, Delete, InsertValues, or, UpdateProperties, valuesEqual } from '@airport/air-traffic-control';
+import { and, Delete, InsertValues, or, UpdateProperties, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType } from '@airport/ground-control';
 /**
@@ -190,7 +190,7 @@ let OperationManager = class OperationManager {
                         idWhereFragments.push(qEntity[dbProperty.name]
                             .equals(updatedValue));
                     }
-                    else if (!valuesEqual(originalValue, updatedValue)) {
+                    else if (!this.utils.valuesEqual(originalValue, updatedValue)) {
                         setFragment[dbProperty.name] = updatedValue;
                         saveResult.updated[this.entityStateManager.getOperationUniqueId(entity)] = true;
                         runUpdate = true;
@@ -231,7 +231,7 @@ let OperationManager = class OperationManager {
                                     // empty) - cannot entity-update id fields
                                     idWhereFragments.push(idQProperty.equals(value));
                                 }
-                                else if (!valuesEqual(originalColumnValue, columnValue)) {
+                                else if (!this.utils.valuesEqual(originalColumnValue, columnValue)) {
                                     let currentSetFragment = setFragment;
                                     for (let i = 0; i < valuePropertyNameChain.length - 1; i++) {
                                         const childPropertyName = valuePropertyNameChain[i];
@@ -384,6 +384,9 @@ __decorate([
 __decorate([
     Inject()
 ], OperationManager.prototype, "updateManager", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "utils", void 0);
 OperationManager = __decorate([
     Injected()
 ], OperationManager);

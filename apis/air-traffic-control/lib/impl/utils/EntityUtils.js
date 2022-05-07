@@ -5,9 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { QOperableField } from '../core/field/OperableField';
-import { Injected } from '@airport/direction-indicator';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityQuery } from '../query/facade/EntityQuery';
-import { objectExists } from '../Utils';
 /**
  * Created by Papa on 6/14/2016.
  */
@@ -27,7 +26,7 @@ let EntityUtils = class EntityUtils {
         return className;
     }
     exists(object) {
-        return objectExists(object);
+        return this.utils.objectExists(object);
     }
     /*
      static isBlank(
@@ -66,6 +65,9 @@ let EntityUtils = class EntityUtils {
         return new EntityQuery(this.getRawQuery(rawGraphQuery));
     }
 };
+__decorate([
+    Inject()
+], EntityUtils.prototype, "utils", void 0);
 EntityUtils = __decorate([
     Injected()
 ], EntityUtils);

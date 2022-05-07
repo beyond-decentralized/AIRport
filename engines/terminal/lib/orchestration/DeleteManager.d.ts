@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IUtils } from '@airport/air-traffic-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { IRootTransaction, PortableQuery } from '@airport/ground-control';
 import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern-runtime';
@@ -11,6 +11,7 @@ export declare class DeleteManager implements IDeleteManager {
     recordHistoryDuo: IRecordHistoryDuo;
     repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
     sequenceGenerator: ISequenceGenerator;
+    utils: IUtils;
     deleteWhere(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context?: IOperationContext): Promise<number>;
     private recordRepositoryIds;
     private columnProcessed;

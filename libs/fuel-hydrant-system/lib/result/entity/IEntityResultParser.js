@@ -13,9 +13,10 @@ export class GraphQueryConfiguration {
     }
 }
 export class AbstractObjectResultParser {
-    constructor(applicationUtils, entityStateManager) {
+    constructor(applicationUtils, entityStateManager, utils) {
         this.applicationUtils = applicationUtils;
         this.entityStateManager = entityStateManager;
+        this.utils = utils;
     }
     addManyToOneStub(resultObject, propertyName, relationInfos, context) {
         let manyToOneStub = {};

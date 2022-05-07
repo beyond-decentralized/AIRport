@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	IEntityStateManager,
@@ -30,6 +30,7 @@ export class SQLInsertValues
 		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext
 		// repository?: IRepository
 	) {
@@ -42,6 +43,7 @@ export class SQLInsertValues
 			relationManager,
 			sqlQueryAdapter,
 			storeDriver,
+			utils,
 			context)
 	}
 

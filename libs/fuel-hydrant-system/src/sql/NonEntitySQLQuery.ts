@@ -5,6 +5,7 @@ import {
 	IQMetadataUtils,
 	IQTree,
 	IRelationManager,
+	IUtils,
 	JoinTreeNode,
 	QBooleanField,
 	QDateField,
@@ -70,6 +71,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		protected subStatementQueryGenerator: ISubStatementSqlGenerator,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, null, dialect, queryResultType,
@@ -78,7 +80,7 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 			entityStateManager,
 			qMetadataUtils,
 			sqlQueryAdapter,
-			storeDriver, context)
+			storeDriver, utils, context)
 	}
 
 	addQEntityMapByAlias(

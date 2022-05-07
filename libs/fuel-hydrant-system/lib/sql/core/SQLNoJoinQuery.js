@@ -4,8 +4,8 @@ import { SQLWhereBase } from './SQLWhereBase';
  * Created by Papa on 10/2/2016.
  */
 export class SQLNoJoinQuery extends SQLWhereBase {
-    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context) {
-        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, utils, context) {
+        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
         this.relationManager = relationManager;
     }
     getTableFragment(fromRelation, context, addAs = true) {

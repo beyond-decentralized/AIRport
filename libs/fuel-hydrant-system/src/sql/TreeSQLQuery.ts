@@ -1,4 +1,4 @@
-import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,
@@ -39,6 +39,7 @@ export class TreeSQLQuery
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.TREE,
@@ -51,9 +52,11 @@ export class TreeSQLQuery
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementQueryGenerator,
+			utils,
 			context)
 
-		this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager)
+		this.queryParser = new TreeQueryResultParser(
+			applicationUtils, entityStateManager, utils)
 		this.orderByParser = new MappedOrderByParser(qValidator)
 	}
 

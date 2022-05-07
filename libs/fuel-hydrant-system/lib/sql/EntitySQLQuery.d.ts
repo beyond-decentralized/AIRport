@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IEntitySelectProperties, IQMetadataUtils, IRelationManager, JoinTreeNode } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IEntitySelectProperties, IQMetadataUtils, IRelationManager, IUtils, JoinTreeNode } from '@airport/air-traffic-control';
 import { DbEntity, DbProperty, IEntityStateManager, InternalFragments, JsonEntityQuery, JSONEntityRelation, QueryResultType } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
@@ -23,7 +23,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     protected joinTree: JoinTreeNode;
     private queryParser;
     private columnAliases;
-    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, objectResultParserFactory: IObjectResultParserFactory, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext, graphQueryConfiguration?: GraphQueryConfiguration);
+    constructor(jsonQuery: JsonEntityQuery<IEP>, dbEntity: DbEntity, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, objectResultParserFactory: IObjectResultParserFactory, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, utils: IUtils, context: IFuelHydrantContext, graphQueryConfiguration?: GraphQueryConfiguration);
     toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     /**
      * If bridging is not applied:

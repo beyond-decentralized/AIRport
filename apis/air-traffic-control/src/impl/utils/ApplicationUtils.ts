@@ -30,7 +30,7 @@ import {
 } from '../../lingo/utils/ApplicationUtils'
 import { QEntityConstructor } from '../core/entity/Entity'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { valuesEqual } from '../Utils'
+import { IUtils } from '../../lingo/Utils'
 
 interface ColumnValueForPath {
 	value: any,
@@ -48,6 +48,9 @@ export class ApplicationUtils
 
 	@Inject()
 	entityStateManager: IEntityStateManager
+
+	@Inject()
+	utils: IUtils
 
 	getDbEntity(
 		applicationIndex: ApplicationIndex,
@@ -226,7 +229,7 @@ export class ApplicationUtils
 			last,
 			current
 		) => {
-			if (!valuesEqual(last.value, current.value, true)) {
+			if (!this.utils.valuesEqual(last.value, current.value, true)) {
 				throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
 						'${current.path.join('.')}' = ${current.value}`)

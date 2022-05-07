@@ -30,6 +30,8 @@ import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne'
 import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne'
 import { IDatabaseState } from './lingo/DatabaseState'
 import { DatabaseStore } from './impl/DatabaseStore'
+import { IUtils } from './lingo/Utils'
+import { Utils } from './impl/Utils'
 
 const airTrafficControl = lib('air-traffic-control')
 
@@ -121,6 +123,11 @@ export const UPDATE_CACHE_MANAGER = airTrafficControl.token<IUpdateCacheManager>
 	interface: 'IUpdateCacheManager',
 	token: 'UPDATE_CACHE_MANAGER'
 })
+export const UTILS = airTrafficControl.token<IUtils>({
+	class: Utils,
+	interface: 'IUtils',
+	token: 'UTILS'
+})
 
 AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE,
@@ -132,13 +139,17 @@ AIRPORT_DATABASE.setDependencies({
 })
 APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
-	entityStateManager: ENTITY_STATE_MANAGER
+	entityStateManager: ENTITY_STATE_MANAGER,
+	utils: UTILS
 })
 DATABASE_FACADE.setDependencies({
 	applicationUtils: APPLICATION_UTILS,
 	entityStateManager: ENTITY_STATE_MANAGER,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR,
 	updateCacheManager: UPDATE_CACHE_MANAGER
+})
+ENTITY_UTILS.setDependencies({
+	utils: UTILS
 })
 FIELD_UTILS.setDependencies({
 	relationManager: RELATION_MANAGER

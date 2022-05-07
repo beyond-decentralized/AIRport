@@ -1,5 +1,6 @@
 import {
 	IApplicationUtils,
+	IUtils,
 	MappedEntityArray,
 	ReferencedColumnData
 } from '@airport/air-traffic-control'
@@ -120,7 +121,8 @@ export abstract class AbstractObjectResultParser {
 
 	constructor(
 		protected applicationUtils: IApplicationUtils,
-		protected entityStateManager: IEntityStateManager
+		protected entityStateManager: IEntityStateManager,
+		protected utils: IUtils
 	) {
 	}
 

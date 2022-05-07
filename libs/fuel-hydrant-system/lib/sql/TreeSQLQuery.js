@@ -9,9 +9,9 @@ import { SqlFunctionField } from './SqlFunctionField';
  * Created by Papa on 10/28/2016.
  */
 export class TreeSQLQuery extends NonEntitySQLQuery {
-    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context) {
-        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context);
-        this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager);
+    constructor(jsonQuery, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, dialect, QueryResultType.TREE, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
+        this.queryParser = new TreeQueryResultParser(applicationUtils, entityStateManager, utils);
         this.orderByParser = new MappedOrderByParser(qValidator);
     }
     /**

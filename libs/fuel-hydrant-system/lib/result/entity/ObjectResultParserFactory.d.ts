@@ -1,4 +1,4 @@
-import { IApplicationUtils } from '@airport/air-traffic-control';
+import { IApplicationUtils, IUtils } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, QueryResultType } from '@airport/ground-control';
 import { GraphQueryConfiguration, IEntityResultParser } from './IEntityResultParser';
 export interface IObjectResultParserFactory {
@@ -7,6 +7,7 @@ export interface IObjectResultParserFactory {
 export declare class ObjectResultParserFactory implements IObjectResultParserFactory {
     applicationUtils: IApplicationUtils;
     entityStateManager: IEntityStateManager;
+    utils: IUtils;
     getObjectResultParser(queryResultType: QueryResultType, config?: GraphQueryConfiguration, rootDbEntity?: DbEntity): IEntityResultParser;
 }
 //# sourceMappingURL=ObjectResultParserFactory.d.ts.map

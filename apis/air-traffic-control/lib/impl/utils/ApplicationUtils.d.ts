@@ -3,10 +3,12 @@ import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
 import { IdKeysByIdColumnIndex, IApplicationUtils, RepositorySheetSelectInfo } from '../../lingo/utils/ApplicationUtils';
 import { QEntityConstructor } from '../core/entity/Entity';
+import { IUtils } from '../../lingo/Utils';
 export declare class ApplicationUtils implements IApplicationUtils {
     static TEMP_ID: number;
     airportDatabase: IAirportDatabase;
     entityStateManager: IEntityStateManager;
+    utils: IUtils;
     getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex): DbEntity;
     isActorId(columnName: string): boolean;
     isActorRecordId(columnName: string): boolean;

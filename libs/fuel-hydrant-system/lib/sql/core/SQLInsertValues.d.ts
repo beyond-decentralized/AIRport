@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, JsonInsertValues } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor';
@@ -12,7 +12,7 @@ import { SQLDialect } from './SQLQuery';
 export declare class SQLInsertValues extends SQLNoJoinQuery {
     jsonInsertValues: JsonInsertValues;
     protected qValidator: IValidator;
-    constructor(jsonInsertValues: JsonInsertValues, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext);
+    constructor(jsonInsertValues: JsonInsertValues, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, utils: IUtils, context: IFuelHydrantContext);
     toSQL(context: IFuelHydrantContext): string;
     protected getColumnsFragment(dbEntity: DbEntity, columns: number[]): string;
     protected getValuesFragment(valuesClauseFragment: any[][], context: IFuelHydrantContext): string;

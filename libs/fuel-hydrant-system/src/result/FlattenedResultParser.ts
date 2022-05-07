@@ -1,16 +1,15 @@
 import {
-	objectExists,
 	ReferencedColumnData
-}                          from '@airport/air-traffic-control'
+} from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	SQLDataType
-}                          from '@airport/ground-control'
+} from '@airport/ground-control'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractObjectResultParser,
 	IEntityResultParser
-}                          from './entity/IEntityResultParser'
+} from './entity/IEntityResultParser'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -38,7 +37,7 @@ export class FlattenedResultParser
 		propertyValue: any
 	): boolean {
 		resultObject.push(propertyValue)
-		return objectExists(propertyValue)
+		return this.utils.objectExists(propertyValue)
 	}
 
 	bufferManyToOneStub(

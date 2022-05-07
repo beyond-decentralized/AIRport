@@ -16,7 +16,7 @@ import { ISynchronizationOutManager, SynchronizationOutManager } from './synchro
 import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter'
 import { ISynchronizationAdapterLoader, SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer, SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
-import { AIRPORT_DATABASE, DATABASE_FACADE } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, DATABASE_FACADE, UTILS } from '@airport/air-traffic-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-runtime'
@@ -130,7 +130,8 @@ STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({
 STAGE2_SYNCED_IN_DATA_PROCESSOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     databaseFacade: DATABASE_FACADE,
-    recordUpdateStageDao: RECORD_UPDATE_STAGE_DAO
+    recordUpdateStageDao: RECORD_UPDATE_STAGE_DAO,
+    utils: UTILS
 })
 
 SYNC_IN_ACTOR_CHECKER.setDependencies({

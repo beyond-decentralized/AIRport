@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { valuesEqual, Y } from '@airport/air-traffic-control';
+import { Y } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpId } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, repositoryEntity, } from '@airport/ground-control';
@@ -103,7 +103,7 @@ let DeleteManager = class DeleteManager {
             foundValues[dbColumn.name] = value;
             return false;
         }
-        if (!valuesEqual(foundValues[dbColumn.name], value)) {
+        if (!this.utils.valuesEqual(foundValues[dbColumn.name], value)) {
             throw new Error(`Found value mismatch in '${dbProperty.entity.name}.${dbProperty.name}'
 			(column: '${dbColumn.name}'): ${foundValues[dbColumn.name]} !== ${value}`);
         }
@@ -211,6 +211,9 @@ __decorate([
 __decorate([
     Inject()
 ], DeleteManager.prototype, "sequenceGenerator", void 0);
+__decorate([
+    Inject()
+], DeleteManager.prototype, "utils", void 0);
 DeleteManager = __decorate([
     Injected()
 ], DeleteManager);

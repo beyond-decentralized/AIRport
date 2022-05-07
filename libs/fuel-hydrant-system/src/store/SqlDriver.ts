@@ -1,4 +1,4 @@
-import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
+import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
@@ -99,6 +99,9 @@ export abstract class SqlDriver
 
 	@Inject()
 	subStatementQueryGenerator: ISubStatementSqlGenerator
+
+	@Inject()
+	utils: IUtils
 
 	// public queries: ActiveQueries
 	public type: StoreType;
@@ -269,6 +272,7 @@ export abstract class SqlDriver
 				this.relationManager,
 				this.sqlQueryAdapter,
 				this,
+				this.utils,
 				context);
 			let sql = sqlInsertValues.toSQL(context);
 			let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
@@ -293,6 +297,7 @@ export abstract class SqlDriver
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
+			this.utils,
 			context);
 		let sql = sqlDelete.toSQL(context);
 		let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
@@ -317,6 +322,7 @@ export abstract class SqlDriver
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
+			this.utils,
 			context);
 		let sql = sqlUpdate.toSQL(internalFragments, context);
 		let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
@@ -372,7 +378,9 @@ export abstract class SqlDriver
 					this.qValidator,
 					this.relationManager,
 					this.sqlQueryAdapter,
-					this, context);
+					this,
+					this.utils,
+					context);
 			case QueryResType.FIELD:
 				return new FieldSQLQuery(<JsonFieldQuery>jsonQuery, dialect,
 					this.airportDatabase,
@@ -384,6 +392,7 @@ export abstract class SqlDriver
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementQueryGenerator,
+					this.utils,
 					context);
 			case QueryResType.SHEET:
 				return new SheetSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
@@ -396,6 +405,7 @@ export abstract class SqlDriver
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementQueryGenerator,
+					this.utils,
 					context);
 			case QueryResType.TREE:
 				return new TreeSQLQuery(<JsonSheetQuery>jsonQuery, dialect,
@@ -408,6 +418,7 @@ export abstract class SqlDriver
 					this.sqlQueryAdapter,
 					this,
 					this.subStatementQueryGenerator,
+					this.utils,
 					context);
 			case QueryResType.RAW:
 			default:

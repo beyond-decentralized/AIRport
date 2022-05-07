@@ -1,4 +1,3 @@
-import {objectExists}               from '@airport/air-traffic-control'
 import {SQLDataType}                from '@airport/ground-control'
 import {AbstractObjectResultParser} from './entity/IEntityResultParser'
 
@@ -30,7 +29,7 @@ export class TreeResultParser
 	): boolean {
 		resultObject[propertyName] = propertyValue
 		if (this.isDifferentOrDoesntExist(entityAlias, resultObject, propertyName)) {
-			return objectExists(propertyValue)
+			return this.utils.objectExists(propertyValue)
 		}
 		// Both last and current objects must exist here
 		let lastObject = this.lastRowObjectMap[entityAlias]

@@ -5,9 +5,9 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 10/2/2016.
  */
 export class SQLUpdate extends SQLNoJoinQuery {
-    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, context) {
+    constructor(jsonUpdate, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, utils, context) {
         super(airportDatabase.applications[jsonUpdate.U.si].currentVersion[0]
-            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
+            .applicationVersion.entities[jsonUpdate.U.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, utils, context);
         this.jsonUpdate = jsonUpdate;
         this.qValidator = qValidator;
     }

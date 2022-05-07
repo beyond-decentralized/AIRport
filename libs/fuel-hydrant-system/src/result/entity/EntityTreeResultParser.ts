@@ -1,6 +1,5 @@
 import {
-	ReferencedColumnData,
-	valuesEqual
+	ReferencedColumnData
 } from '@airport/air-traffic-control'
 import { DbEntity } from '@airport/ground-control'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
@@ -157,7 +156,7 @@ export class EntityTreeResultParser
 		let lastMtoStub = this.lastRowObjectMap[entityAlias][propertyName]
 
 		let currentMtoStub = resultObject[propertyName]
-		this.objectEqualityMap[entityAlias] = valuesEqual(lastMtoStub, currentMtoStub, true)
+		this.objectEqualityMap[entityAlias] = this.utils.valuesEqual(lastMtoStub, currentMtoStub, true)
 	}
 
 }

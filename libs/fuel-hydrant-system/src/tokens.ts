@@ -10,7 +10,7 @@ import { IStoreDriver, STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/termin
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { SQLWhereBase } from './sql/core/SQLWhereBase'
-import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, UTILS } from '@airport/air-traffic-control'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
@@ -64,6 +64,7 @@ ID_GENERATOR.setDependencies({
 OBJECT_RESULT_PARSER_FACTORY.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
+    utils: UTILS
 })
 
 ABSTRACT_SQL_DRIVER.setDependencies({
@@ -80,6 +81,7 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     transactionManager: TRANSACTION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
+    utils: UTILS
 })
 
 SQL_WHERE_BASE.setDependencies({
@@ -91,11 +93,10 @@ SUB_STATEMENT_SQL_GENERATOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
-    operationContextLoader: OPERATION_CONTEXT_LOADER,
     qMetadataUtils: Q_METADATA_UTILS,
     qValidator: Q_VALIDATOR,
     relationManager: RELATION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     storeDriver: STORE_DRIVER,
-    subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
+    utils: UTILS
 })

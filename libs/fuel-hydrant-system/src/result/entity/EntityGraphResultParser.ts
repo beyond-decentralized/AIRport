@@ -1,8 +1,7 @@
 import {
 	IApplicationUtils,
-	// newMappedEntityArray,
-	objectExists,
-	ReferencedColumnData
+	IUtils,
+	ReferencedColumnData,
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
@@ -56,9 +55,10 @@ export class EntityGraphResultParser
 		private config: GraphQueryConfiguration,
 		private rootDbEntity: DbEntity,
 		applicationUtils: IApplicationUtils,
-		entityStateManager: IEntityStateManager
+		entityStateManager: IEntityStateManager,
+		utils: IUtils
 	) {
-		super(applicationUtils, entityStateManager)
+		super(applicationUtils, entityStateManager, utils)
 		this.otmMapper = new GraphOtmMapper()
 		this.mtoMapper = new GraphMtoMapper()
 	}
@@ -79,7 +79,7 @@ export class EntityGraphResultParser
 		propertyValue: any
 	): boolean {
 		resultObject[propertyName] = propertyValue
-		return objectExists(propertyValue)
+		return this.utils.objectExists(propertyValue)
 	}
 
 	bufferManyToOneStub(

@@ -57,7 +57,6 @@ export * from './impl/utils/QMetadataUtils';
 export * from './impl/utils/qApplicationBuilderUtils';
 export * from './impl/utils/QueryUtils';
 export * from './impl/utils/ApplicationUtils';
-export * from './impl/Constants';
 export * from './impl/databaseState';
 export * from './impl/DatabaseStore';
 export * from './impl/Utils';
@@ -124,5 +123,6 @@ export * from './lingo/utils/ApplicationUtils';
 export * from './lingo/AirportDatabase';
 export * from './lingo/DeepPartial';
 export * from './lingo/DatabaseState';
+export * from './lingo/Utils';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

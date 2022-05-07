@@ -1,4 +1,7 @@
-import { IApplicationUtils } from '@airport/air-traffic-control'
+import {
+	IApplicationUtils,
+	IUtils
+} from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
@@ -35,6 +38,9 @@ export class ObjectResultParserFactory
 	@Inject()
 	entityStateManager: IEntityStateManager
 
+	@Inject()
+	utils: IUtils
+
 	getObjectResultParser(
 		queryResultType: QueryResultType,
 		config?: GraphQueryConfiguration,
@@ -44,10 +50,11 @@ export class ObjectResultParserFactory
 			case QueryResultType.ENTITY_GRAPH:
 			case QueryResultType.MAPPED_ENTITY_GRAPH:
 				return new EntityGraphResultParser(config, rootDbEntity,
-					this.applicationUtils, this.entityStateManager)
+					this.applicationUtils, this.entityStateManager, this.utils)
 			case QueryResultType.ENTITY_TREE:
 			case QueryResultType.MAPPED_ENTITY_TREE:
-				return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager)
+				return new EntityTreeResultParser(
+					this.applicationUtils, this.entityStateManager, this.utils)
 			default:
 				throw new Error(
 					`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`)

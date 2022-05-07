@@ -8,8 +8,8 @@ import {
 	isID,
 	isN,
 	isY,
+	IUtils,
 	JoinTreeNode,
-	objectExists,
 	ReferencedColumnData,
 	Y
 } from '@airport/air-traffic-control'
@@ -73,6 +73,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 		protected graphQueryConfiguration?: GraphQueryConfiguration
 	) {
@@ -82,7 +83,7 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			entityStateManager,
 			qMetadataUtils,
 			sqlQueryAdapter,
-			storeDriver, context)
+			storeDriver, utils, context)
 
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
 			throw new Error(`"strict" configuration is not yet implemented for 
@@ -319,7 +320,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 									sqlDataType: dbColumn.type,
 									value
 								})
-								if (objectExists(value)) {
+								if (this.utils.objectExists(value)) {
 									haveRelationValues = true
 									numNonNullColumns++
 								}

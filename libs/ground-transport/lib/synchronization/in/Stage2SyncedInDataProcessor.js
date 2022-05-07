@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, compareNumbers, or } from '@airport/air-traffic-control';
+import { and, or } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap, ensureChildJsSet, repositoryEntity } from '@airport/ground-control';
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
@@ -59,7 +59,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                                 numInserts++;
                             }
                             columnIndexedValues.sort((col1IndexAndValue, col2IndexAndValue) => {
-                                return compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
+                                return this.utils.compareNumbers(col1IndexAndValue[0], col2IndexAndValue[0]);
                             });
                             let currentNonIdColumnArrayIndex = 0;
                             for (const [columnIndex, columnValue] of columnIndexedValues) {
@@ -115,7 +115,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
             nonIdColumns.push(column);
         }
         nonIdColumns.sort((column1, column2) => {
-            return compareNumbers(column1.index, column2.index);
+            return this.utils.compareNumbers(column1.index, column2.index);
         });
         return nonIdColumns;
     }
@@ -213,7 +213,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         }
         // Sort the updated columns by column index, to ensure that all records with the
         // same combination of updated columns are grouped
-        updatedColumns.sort(compareNumbers);
+        updatedColumns.sort(this.utils.compareNumbers);
         // Navigate down the table UpdateKeyMap to find the matching combination of
         // columns being updated
         let columnValueUpdate;
@@ -266,6 +266,9 @@ __decorate([
 __decorate([
     Inject()
 ], Stage2SyncedInDataProcessor.prototype, "recordUpdateStageDao", void 0);
+__decorate([
+    Inject()
+], Stage2SyncedInDataProcessor.prototype, "utils", void 0);
 Stage2SyncedInDataProcessor = __decorate([
     Injected()
 ], Stage2SyncedInDataProcessor);

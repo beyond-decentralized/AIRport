@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
@@ -68,7 +68,7 @@ export class SubStatementSqlGenerator
 	storeDriver: IStoreDriver
 
 	@Inject()
-	subStatementQueryGenerator: ISubStatementSqlGenerator
+	utils: IUtils
 
 	getTreeQuerySql(
 		jsonTreeQuery: JsonTreeQuery,
@@ -88,7 +88,8 @@ export class SubStatementSqlGenerator
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this.storeDriver,
-			this.subStatementQueryGenerator,
+			this,
+			this.utils,
 			context)
 
 		const subQuerySql = mappedSqlQuery.toSQL({}, context)
@@ -119,7 +120,8 @@ export class SubStatementSqlGenerator
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this.storeDriver,
-			this.subStatementQueryGenerator,
+			this,
+			this.utils,
 			context)
 		fieldSqlQuery.addQEntityMapByAlias(qEntityMapByAlias)
 

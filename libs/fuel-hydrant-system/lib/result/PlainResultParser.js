@@ -1,4 +1,3 @@
-import { objectExists } from '@airport/air-traffic-control';
 import { AbstractObjectResultParser } from './entity/IEntityResultParser';
 /**
  * Created by Papa on 10/16/2016.
@@ -13,7 +12,7 @@ export class PlainResultParser extends AbstractObjectResultParser {
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return objectExists(propertyValue);
+        return this.utils.objectExists(propertyValue);
     }
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
         this.addManyToOneStub(resultObject, propertyName, relationInfos, context);

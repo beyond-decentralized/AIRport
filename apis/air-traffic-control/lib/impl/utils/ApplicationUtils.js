@@ -8,7 +8,6 @@ var ApplicationUtils_1;
 import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { valuesEqual } from '../Utils';
 let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
     getDbEntity(applicationIndex, tableIndex) {
         return this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -108,7 +107,7 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
         const propertyNameChains = [firstColumnValueAndPath.path];
         const value = firstColumnValueAndPath.value;
         columnValuesAndPaths.reduce((last, current) => {
-            if (!valuesEqual(last.value, current.value, true)) {
+            if (!this.utils.valuesEqual(last.value, current.value, true)) {
                 throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
 						'${last.path.join('.')}' = ${last.value}
 						'${current.path.join('.')}' = ${current.value}`);
@@ -396,6 +395,9 @@ __decorate([
 __decorate([
     Inject()
 ], ApplicationUtils.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], ApplicationUtils.prototype, "utils", void 0);
 ApplicationUtils = ApplicationUtils_1 = __decorate([
     Injected()
 ], ApplicationUtils);

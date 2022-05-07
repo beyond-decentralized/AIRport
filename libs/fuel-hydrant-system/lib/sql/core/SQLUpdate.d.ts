@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IEntityUpdateProperties, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IEntityUpdateProperties, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, InternalFragments, JsonUpdate } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor';
@@ -12,7 +12,7 @@ import { SQLDialect } from './SQLQuery';
 export declare class SQLUpdate extends SQLNoJoinQuery {
     jsonUpdate: JsonUpdate<IEntityUpdateProperties>;
     protected qValidator: IValidator;
-    constructor(jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, context: IFuelHydrantContext);
+    constructor(jsonUpdate: JsonUpdate<IEntityUpdateProperties>, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, utils: IUtils, context: IFuelHydrantContext);
     toSQL(internalFragments: InternalFragments, context: IFuelHydrantContext): string;
     protected getSetFragment(setClauseFragment: IEntityUpdateProperties, context: IFuelHydrantContext): string;
     private addSetFragment;

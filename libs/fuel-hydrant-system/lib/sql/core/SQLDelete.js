@@ -3,9 +3,9 @@ import { SQLNoJoinQuery } from './SQLNoJoinQuery';
  * Created by Papa on 10/2/2016.
  */
 export class SQLDelete extends SQLNoJoinQuery {
-    constructor(jsonDelete, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context) {
+    constructor(jsonDelete, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, utils, context) {
         super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
-            .applicationVersion.entities[jsonDelete.DF.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, context);
+            .applicationVersion.entities[jsonDelete.DF.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, utils, context);
         this.jsonDelete = jsonDelete;
     }
     toSQL(context) {

@@ -1,4 +1,4 @@
-import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control';
+import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, InternalFragments, JsonTreeQuery, QueryResultType } from '@airport/ground-control';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
@@ -13,7 +13,7 @@ import { NonEntitySQLQuery } from './NonEntitySQLQuery';
  */
 export declare class TreeSQLQuery extends NonEntitySQLQuery<JsonTreeQuery> {
     protected queryParser: TreeQueryResultParser;
-    constructor(jsonQuery: JsonTreeQuery, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, context: IFuelHydrantContext);
+    constructor(jsonQuery: JsonTreeQuery, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, utils: IUtils, context: IFuelHydrantContext);
     /**
      * Entities get merged if they are right next to each other in the result set.  If they
      * are not, they are treated as separate entities - hence, your sort order matters.

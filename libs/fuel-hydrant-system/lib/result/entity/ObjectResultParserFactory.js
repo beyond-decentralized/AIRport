@@ -13,10 +13,10 @@ let ObjectResultParserFactory = class ObjectResultParserFactory {
         switch (queryResultType) {
             case QueryResultType.ENTITY_GRAPH:
             case QueryResultType.MAPPED_ENTITY_GRAPH:
-                return new EntityGraphResultParser(config, rootDbEntity, this.applicationUtils, this.entityStateManager);
+                return new EntityGraphResultParser(config, rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils);
             case QueryResultType.ENTITY_TREE:
             case QueryResultType.MAPPED_ENTITY_TREE:
-                return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager);
+                return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager, this.utils);
             default:
                 throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);
         }
@@ -28,6 +28,9 @@ __decorate([
 __decorate([
     Inject()
 ], ObjectResultParserFactory.prototype, "entityStateManager", void 0);
+__decorate([
+    Inject()
+], ObjectResultParserFactory.prototype, "utils", void 0);
 ObjectResultParserFactory = __decorate([
     Injected()
 ], ObjectResultParserFactory);

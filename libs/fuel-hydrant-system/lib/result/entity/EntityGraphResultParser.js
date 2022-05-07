@@ -1,6 +1,3 @@
-import { 
-// newMappedEntityArray,
-objectExists } from '@airport/air-traffic-control';
 import { ensureChildArray, ensureChildMap, EntityRelationType } from '@airport/ground-control';
 import { GraphMtoMapper } from './GraphMtoMapper';
 import { GraphOtmMapper } from './GraphOtmMapper';
@@ -13,8 +10,8 @@ import { AbstractObjectResultParser } from './IEntityResultParser';
  * inter-connected graph (where possible).
  */
 export class EntityGraphResultParser extends AbstractObjectResultParser {
-    constructor(config, rootDbEntity, applicationUtils, entityStateManager) {
-        super(applicationUtils, entityStateManager);
+    constructor(config, rootDbEntity, applicationUtils, entityStateManager, utils) {
+        super(applicationUtils, entityStateManager, utils);
         this.config = config;
         this.rootDbEntity = rootDbEntity;
         // Keys can only be strings or numbers | TODO: change to JS Maps, if needed
@@ -32,7 +29,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
     }
     addProperty(entityAlias, resultObject, dataType, propertyName, propertyValue) {
         resultObject[propertyName] = propertyValue;
-        return objectExists(propertyValue);
+        return this.utils.objectExists(propertyValue);
     }
     bufferManyToOneStub(entityAlias, dbEntity, resultObject, propertyName, relationDbEntity, relationInfos, context) {
         const oneToManyStubAdded = this.addManyToOneStub(resultObject, propertyName, relationInfos, context);

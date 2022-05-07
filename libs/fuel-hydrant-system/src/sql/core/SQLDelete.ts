@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import { IEntityStateManager, JsonDelete } from '@airport/ground-control'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
@@ -23,6 +23,7 @@ export class SQLDelete
 		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(airportDatabase.applications[jsonDelete.DF.si].currentVersion[0]
@@ -34,6 +35,7 @@ export class SQLDelete
 			relationManager,
 			sqlQueryAdapter,
 			storeDriver,
+			utils,
 			context)
 	}
 

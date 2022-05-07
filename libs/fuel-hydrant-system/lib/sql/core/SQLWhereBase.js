@@ -17,7 +17,7 @@ export var ClauseType;
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 let SQLWhereBase = class SQLWhereBase {
-    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context) {
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.airportDatabase = airportDatabase;
@@ -26,6 +26,7 @@ let SQLWhereBase = class SQLWhereBase {
         this.qMetadataUtils = qMetadataUtils;
         this.sqlQueryAdapter = sqlQueryAdapter;
         this.storeDriver = storeDriver;
+        this.utils = utils;
         this.context = context;
         this.parameterReferences = [];
         this.fieldMap = new ApplicationMap();

@@ -6,8 +6,8 @@ import { SqlFunctionField } from './SqlFunctionField';
  * Created by Papa on 10/28/2016.
  */
 export class NonEntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, context) {
-        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
+    constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
+        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
         this.qValidator = qValidator;
         this.relationManager = relationManager;
         this.subStatementQueryGenerator = subStatementQueryGenerator;

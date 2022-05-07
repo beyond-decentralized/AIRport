@@ -1,4 +1,4 @@
-import { AliasCache, isID, isN, isY, JoinTreeNode, objectExists, Y } from '@airport/air-traffic-control';
+import { AliasCache, isID, isN, isY, JoinTreeNode, Y } from '@airport/air-traffic-control';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
 import { SQLQuery } from './core/SQLQuery';
@@ -9,8 +9,8 @@ import { SQLQuery } from './core/SQLQuery';
  * Represents SQL String query with Entity tree Select clause.
  */
 export class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, context, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, utils, context, graphQueryConfiguration) {
+        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
         this.objectResultParserFactory = objectResultParserFactory;
         this.relationManager = relationManager;
         this.graphQueryConfiguration = graphQueryConfiguration;
@@ -205,7 +205,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
                                     sqlDataType: dbColumn.type,
                                     value
                                 });
-                                if (objectExists(value)) {
+                                if (this.utils.objectExists(value)) {
                                     haveRelationValues = true;
                                     numNonNullColumns++;
                                 }

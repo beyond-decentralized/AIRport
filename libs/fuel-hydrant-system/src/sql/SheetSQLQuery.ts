@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager } from '@airport/air-traffic-control'
+import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
 	InternalFragments,
@@ -39,6 +39,7 @@ export class SheetSQLQuery
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
 		subStatementQueryGenerator: ISubStatementSqlGenerator,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(jsonQuery, dialect, QueryResultType.SHEET,
@@ -51,6 +52,7 @@ export class SheetSQLQuery
 			sqlQueryAdapter,
 			storeDriver,
 			subStatementQueryGenerator,
+			utils,
 			context)
 
 		this.orderByParser = new ExactOrderByParser(qValidator)

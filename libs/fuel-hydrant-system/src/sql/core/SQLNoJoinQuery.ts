@@ -5,6 +5,7 @@ import {
 	IQEntityInternal,
 	IQMetadataUtils,
 	IRelationManager,
+	IUtils,
 	QEntity
 } from '@airport/air-traffic-control'
 import {
@@ -35,6 +36,7 @@ export abstract class SQLNoJoinQuery
 		protected relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
 		super(dbEntity, dialect,
@@ -44,6 +46,7 @@ export abstract class SQLNoJoinQuery
 			qMetadataUtils,
 			sqlQueryAdapter,
 			storeDriver,
+			utils,
 			context)
 	}
 

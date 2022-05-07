@@ -1,4 +1,4 @@
-import { IAirportDatabase, IDatabaseFacade } from '@airport/air-traffic-control';
+import { IAirportDatabase, IDatabaseFacade, IUtils } from '@airport/air-traffic-control';
 import { ColumnIndex, ApplicationVersionId, TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
 import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern-runtime';
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
@@ -16,6 +16,7 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
     airportDatabase: IAirportDatabase;
     databaseFacade: IDatabaseFacade;
     recordUpdateStageDao: IRecordUpdateStageDao;
+    utils: IUtils;
     applyChangesToDb(stage1Result: Stage1SyncedInDataProcessingResult, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>): Promise<void>;
     /**
      * Remote changes come in with ApplicationVersionIds not ApplicationIndexes, so it makes
