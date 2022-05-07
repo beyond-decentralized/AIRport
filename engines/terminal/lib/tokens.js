@@ -135,6 +135,7 @@ ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
     transactionalServer: TRANSACTIONAL_SERVER
 });
 DATABASE_MANAGER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
     applicationDao: APPLICATION_DAO,
     applicationInitializer: APPLICATION_INITIALIZER,
     dbApplicationUtils: DB_APPLICATION_UTILS,

@@ -75,21 +75,7 @@ export interface IAirportDatabase
   search: INonEntitySearch
   searchOne: INonEntitySearchOne
 
-  /*	registerDatabase(
-      facade: IDatabaseFacade
-    )
-
-    registerQApplications(
-      qApplications: QApplication[]
-    )
-
-    setCurrentDb(dbName: string)
-
-    getDbNames(): string[]
-
-    getDbNameSet(): { [databaseName: string]: boolean }
-
-    db: IDatabaseFacade*/
+  load(): Promise<any>
 
   getAccumulator(
     domain: string,

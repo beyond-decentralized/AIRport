@@ -1,4 +1,3 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import { STORE_DRIVER } from '@airport/terminal-map';
 import { DATABASE_MANAGER } from '@airport/terminal';
@@ -17,7 +16,6 @@ export async function startDb(
 ) {
     const storeDriver = await IOC.get(STORE_DRIVER)
     await storeDriver.initialize(connectionString, {})
-    await IOC.get(AIRPORT_DATABASE);
     const dbManager = await IOC.get(DATABASE_MANAGER);
     await dbManager.initWithDb(domainName, {});
 }

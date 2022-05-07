@@ -1,12 +1,11 @@
 import {
-	AIRPORT_DATABASE
+	IAirportDatabase
 } from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
-	container,
 	IContext
 } from '@airport/direction-indicator';
 import {
@@ -29,6 +28,9 @@ import { IInternalRecordManager } from '../data/InternalRecordManager';
 @Injected()
 export class DatabaseManager
 	implements IDatabaseManager {
+
+	@Inject()
+	airportDatabase: IAirportDatabase
 
 	@Inject()
 	applicationDao: IApplicationDao
@@ -54,7 +56,7 @@ export class DatabaseManager
 		context: IContext,
 		...applications: JsonApplicationWithLastIds[]
 	): Promise<void> {
-		await container(this).get(AIRPORT_DATABASE);
+		this.airportDatabase.load();
 
 		(this.transactionalServer as any).tempActor = new Actor();
 
@@ -69,7 +71,7 @@ export class DatabaseManager
 		domainName: string,
 		context: IContext
 	): Promise<void> {
-		await container(this).get(AIRPORT_DATABASE);
+		this.airportDatabase.load();
 
 		(this.transactionalServer as any).tempActor = new Actor();
 

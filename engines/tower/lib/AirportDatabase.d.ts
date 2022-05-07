@@ -17,6 +17,7 @@ export declare class AirportDatabase implements IAirportDatabase {
     get QM(): {
         [name: string]: QApplication;
     };
+    load(): Promise<any>;
     getAccumulator(applicationDomain: string, applicationName: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {

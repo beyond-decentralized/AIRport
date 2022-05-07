@@ -1,4 +1,3 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import { DATABASE_MANAGER } from '@airport/terminal';
 
@@ -11,7 +10,6 @@ export * from './tokens';
 export async function startDb(
 	domainName: string
 ) {
-	await IOC.get(AIRPORT_DATABASE);
 	const dbManager = await IOC.get(DATABASE_MANAGER);
 	await dbManager.initWithDb(domainName, {});
 }

@@ -19456,7 +19456,7 @@ let DatabaseManager = class DatabaseManager {
         this.initialized = false;
     }
     async initNoDb(context, ...applications) {
-        await container(this).get(AIRPORT_DATABASE);
+        this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
         await this.installStarterApplication(true, false, context);
         await this.applicationInitializer.stage(applications, context);
@@ -19464,7 +19464,7 @@ let DatabaseManager = class DatabaseManager {
         this.initialized = true;
     }
     async initWithDb(domainName, context) {
-        await container(this).get(AIRPORT_DATABASE);
+        this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
         const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
             .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
@@ -19546,6 +19546,9 @@ let DatabaseManager = class DatabaseManager {
         }
     }
 };
+__decorate$1E([
+    Inject()
+], DatabaseManager.prototype, "airportDatabase", void 0);
 __decorate$1E([
     Inject()
 ], DatabaseManager.prototype, "applicationDao", void 0);
@@ -30502,6 +30505,7 @@ ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
     transactionalServer: TRANSACTIONAL_SERVER
 });
 DATABASE_MANAGER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
     applicationDao: APPLICATION_DAO,
     applicationInitializer: APPLICATION_INITIALIZER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
@@ -31692,6 +31696,9 @@ let AirportDatabase = class AirportDatabase {
     }
     get QM() {
         return this.databaseStore.QM;
+    }
+    async load() {
+        // Just calling this method, loads the AirpotDatabase object
     }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
@@ -36688,13 +36695,19 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
         return transaction;
     }
     async internalStartTransaction(transaction, context) {
-        this._db.exec(`SAVEPOINT ${transaction.id}`);
+        const command = `SAVEPOINT '${transaction.id}'`;
+        console.log(command);
+        this._db.exec(command);
     }
     async internalCommit(transaction, context) {
-        this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`);
+        const command = `RELEASE SAVEPOINT '${transaction.id}'`;
+        console.log(command);
+        this._db.exec(command);
     }
     async internalRollback(transaction, context) {
-        this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`);
+        const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`;
+        console.log(command);
+        this._db.exec(command);
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {
         while (!this._db) {
@@ -36783,7 +36796,6 @@ SQL_QUERY_ADAPTOR.setClass(SqlJsQueryAdaptor);
 
 injectSequenceGenerator();
 async function startDb(domainName) {
-    await IOC.get(AIRPORT_DATABASE);
     const dbManager = await IOC.get(DATABASE_MANAGER);
     await dbManager.initWithDb(domainName, {});
 }

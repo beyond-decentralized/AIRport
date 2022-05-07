@@ -4,9 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { container } from '@airport/direction-indicator';
 import { Actor, } from '@airport/holding-pattern-runtime';
 import { BLUEPRINT } from '@airport/blueprint';
 let DatabaseManager = class DatabaseManager {
@@ -14,7 +12,7 @@ let DatabaseManager = class DatabaseManager {
         this.initialized = false;
     }
     async initNoDb(context, ...applications) {
-        await container(this).get(AIRPORT_DATABASE);
+        this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
         await this.installStarterApplication(true, false, context);
         await this.applicationInitializer.stage(applications, context);
@@ -22,7 +20,7 @@ let DatabaseManager = class DatabaseManager {
         this.initialized = true;
     }
     async initWithDb(domainName, context) {
-        await container(this).get(AIRPORT_DATABASE);
+        this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
         const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
             .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
@@ -104,6 +102,9 @@ let DatabaseManager = class DatabaseManager {
         }
     }
 };
+__decorate([
+    Inject()
+], DatabaseManager.prototype, "airportDatabase", void 0);
 __decorate([
     Inject()
 ], DatabaseManager.prototype, "applicationDao", void 0);

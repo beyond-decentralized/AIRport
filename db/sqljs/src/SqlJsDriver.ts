@@ -55,21 +55,27 @@ export class SqlJsDriver
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
-		this._db.exec(`SAVEPOINT ${transaction.id}`)
+		const command = `SAVEPOINT '${transaction.id}'`
+		console.log(command)
+		this._db.exec(command)
 	}
 
 	async internalCommit(
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
-		this._db.exec(`RELEASE SAVEPOINT ${transaction.id}`)
+		const command = `RELEASE SAVEPOINT '${transaction.id}'`
+		console.log(command)
+		this._db.exec(command)
 	}
 
 	async internalRollback(
 		transaction: ITransaction,
 		context?: ITransactionContext,
 	): Promise<void> {
-		this._db.exec(`ROLLBACK TO SAVEPOINT ${transaction.id}`)
+		const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`
+		console.log(command)
+		this._db.exec(command)
 	}
 
 	async query(

@@ -110,6 +110,10 @@ export class AirportDatabase
 		return this.databaseStore.QM
 	}
 
+	async load(): Promise<any> {
+		// Just calling this method, loads the AirpotDatabase object
+	}
+
 	getAccumulator(
 		applicationDomain: string,
 		applicationName: string,

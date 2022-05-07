@@ -50,6 +50,9 @@ let AirportDatabase = class AirportDatabase {
     get QM() {
         return this.databaseStore.QM;
     }
+    async load() {
+        // Just calling this method, loads the AirpotDatabase object
+    }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
     }

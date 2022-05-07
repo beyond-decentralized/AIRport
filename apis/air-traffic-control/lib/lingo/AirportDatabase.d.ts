@@ -44,6 +44,7 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
     findOne: INonEntityFindOne;
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
+    load(): Promise<any>;
     getAccumulator(domain: string, application: string): IEntityAccumulator;
     addRepository(context?: IEntityContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {

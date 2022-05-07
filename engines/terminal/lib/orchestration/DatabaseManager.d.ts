@@ -1,3 +1,4 @@
+import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IDbApplicationUtils } from '@airport/ground-control';
 import { IApplicationDao } from '@airport/airspace';
@@ -5,6 +6,7 @@ import { IApplicationInitializer, IDatabaseManager, IStoreDriver, ITransactional
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 export declare class DatabaseManager implements IDatabaseManager {
+    airportDatabase: IAirportDatabase;
     applicationDao: IApplicationDao;
     applicationInitializer: IApplicationInitializer;
     dbApplicationUtils: IDbApplicationUtils;
