@@ -1,7 +1,7 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, QUERY_FACADE, QUERY_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER } from '@airport/air-traffic-control'
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { CLIENT_QUERY_MANAGER, QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER, SEQUENCE_GENERATOR } from '@airport/check-in'
-import { DEPENDENCY_INJECTION, lib } from '@airport/direction-indicator'
+import { lib } from '@airport/direction-indicator'
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system'
 import { ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport'
@@ -53,18 +53,18 @@ import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 
 const terminal = lib('terminal')
 
-DEPENDENCY_INJECTION.set(CLIENT_QUERY_MANAGER, ClientQueryManager)
-DEPENDENCY_INJECTION.set(REPOSITORY_LOADER, RepositoryLoader)
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_CONNECTOR, InternalTransactionalConnector)
+CLIENT_QUERY_MANAGER.setClass(ClientQueryManager)
+REPOSITORY_LOADER.setClass(RepositoryLoader)
+TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector)
 TRANSACTIONAL_CONNECTOR.setDependencies({
     terminalStore: TERMINAL_STORE,
     transactionalServer: TRANSACTIONAL_SERVER
 })
-DEPENDENCY_INJECTION.set(TRANSACTIONAL_SERVER, TransactionalServer);
-DEPENDENCY_INJECTION.set(TRANSACTION_MANAGER, TransactionManager);
-DEPENDENCY_INJECTION.set(OPERATION_CONTEXT_LOADER, OperationContextLoader)
-DEPENDENCY_INJECTION.set(QUERY_PARAMETER_DESERIALIZER, QueryParameterDeserializer)
-DEPENDENCY_INJECTION.set(QUERY_RESULTS_SERIALIZER, QueryResultsSerializer)
+TRANSACTIONAL_SERVER.setClass(TransactionalServer);
+TRANSACTION_MANAGER.setClass(TransactionManager);
+OPERATION_CONTEXT_LOADER.setClass(OperationContextLoader)
+QUERY_PARAMETER_DESERIALIZER.setClass(QueryParameterDeserializer)
+QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer)
 
 
 export const ABSTRACT_MUTATION_MANAGER = terminal.token<AbstractMutationManager>({

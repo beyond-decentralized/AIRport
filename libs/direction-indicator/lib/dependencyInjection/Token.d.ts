@@ -15,14 +15,17 @@ export interface IDependencyInjectionToken<Injectable> {
     descriptor: IDependencyInjectionTokenDescriptor;
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
+    setClass(aClass: any): void;
 }
 export declare class DependencyInjectionToken<Injectable> implements IDependencyInjectionToken<Injectable> {
     application: IInjectionApplication;
     descriptor: IDependencyInjectionTokenDescriptor;
+    private _dependencyConfiguration;
     get dependencyConfiguration(): ITokenDependencyConfiguration;
     constructor(application: IInjectionApplication, descriptor: IDependencyInjectionTokenDescriptor);
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
+    setClass(aClass: any): void;
     private getInheritedDependencyConfiguration;
 }
 export interface GenericDependencyInjectionError {

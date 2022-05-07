@@ -1,4 +1,4 @@
-import { AUTOPILOT_API_LOADER, DEPENDENCY_INJECTION, lib } from "@airport/direction-indicator";
+import { AUTOPILOT_API_LOADER, lib } from "@airport/direction-indicator";
 import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
 import { AutopilotApiLoader } from "./api/AutopilotApiLoader";
 import { LocalAPIClient } from "./LocalAPIClient";
@@ -18,7 +18,7 @@ LOCAL_API_CLIENT.setDependencies({
     operationSerializer: OPERATION_SERIALIZER,
     queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER
 });
-DEPENDENCY_INJECTION.set(AUTOPILOT_API_LOADER, AutopilotApiLoader);
+AUTOPILOT_API_LOADER.setClass(AutopilotApiLoader);
 AUTOPILOT_API_LOADER.setDependencies({
     localApiClient: LOCAL_API_CLIENT
 });

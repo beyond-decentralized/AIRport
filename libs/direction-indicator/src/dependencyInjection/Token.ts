@@ -27,10 +27,16 @@ export interface IDependencyInjectionToken<Injectable> {
 		dependencyConfiguration: ITokenDependencyConfiguration
 	): void
 
+	setClass(
+		aClass: any
+	): void
+
 }
 
 export class DependencyInjectionToken<Injectable>
 	implements IDependencyInjectionToken<Injectable> {
+
+	private _dependencyConfiguration: ITokenDependencyConfiguration
 
 	get dependencyConfiguration(): ITokenDependencyConfiguration {
 		return this.getInheritedDependencyConfiguration(this.descriptor.class)
@@ -50,6 +56,17 @@ export class DependencyInjectionToken<Injectable>
 	setDependencies(
 		dependencyConfiguration: ITokenDependencyConfiguration
 	): void {
+		if (this._dependencyConfiguration) {
+			this._dependencyConfiguration = {
+				...this._dependencyConfiguration,
+				...dependencyConfiguration
+			}
+		} else {
+			this._dependencyConfiguration = dependencyConfiguration
+		}
+		if (!this.descriptor.class) {
+			return
+		}
 		if (this.descriptor.class.dependencyConfiguration) {
 			this.descriptor.class.dependencyConfiguration = {
 				...this.descriptor.class.dependencyConfiguration,
@@ -58,6 +75,14 @@ export class DependencyInjectionToken<Injectable>
 		} else {
 			this.descriptor.class.dependencyConfiguration = dependencyConfiguration
 		}
+	}
+
+
+	setClass(
+		aClass: any
+	): void {
+		this.descriptor.class = aClass
+		aClass.dependencyConfiguration = this._dependencyConfiguration
 	}
 
 	private getInheritedDependencyConfiguration(

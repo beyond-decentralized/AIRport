@@ -11,6 +11,18 @@ export class DependencyInjectionToken {
             + this.descriptor.token;
     }
     setDependencies(dependencyConfiguration) {
+        if (this._dependencyConfiguration) {
+            this._dependencyConfiguration = {
+                ...this._dependencyConfiguration,
+                ...dependencyConfiguration
+            };
+        }
+        else {
+            this._dependencyConfiguration = dependencyConfiguration;
+        }
+        if (!this.descriptor.class) {
+            return;
+        }
         if (this.descriptor.class.dependencyConfiguration) {
             this.descriptor.class.dependencyConfiguration = {
                 ...this.descriptor.class.dependencyConfiguration,
@@ -20,6 +32,10 @@ export class DependencyInjectionToken {
         else {
             this.descriptor.class.dependencyConfiguration = dependencyConfiguration;
         }
+    }
+    setClass(aClass) {
+        this.descriptor.class = aClass;
+        aClass.dependencyConfiguration = this._dependencyConfiguration;
     }
     getInheritedDependencyConfiguration(aClass) {
         const parentClass = Object.getPrototypeOf(aClass);

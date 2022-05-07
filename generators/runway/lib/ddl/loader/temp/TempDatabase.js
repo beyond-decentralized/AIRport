@@ -18,9 +18,9 @@ export class TempDatabase {
             await applicationInitializer.stage(applications, {});
             return;
         }
-        DEPENDENCY_INJECTION.set(SEQUENCE_GENERATOR, NoOpSequenceGenerator);
-        DEPENDENCY_INJECTION.set(APPLICATION_BUILDER, NoOpApplicationBuilder);
-        DEPENDENCY_INJECTION.set(STORE_DRIVER, NoOpSqlDriver);
+        SEQUENCE_GENERATOR.setClass(NoOpSequenceGenerator);
+        APPLICATION_BUILDER.setClass(NoOpApplicationBuilder);
+        STORE_DRIVER.setClass(NoOpSqlDriver);
         injectAirportDatabase();
         injectTransactionalServer();
         injectTransactionalConnector();
