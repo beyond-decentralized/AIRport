@@ -6,6 +6,7 @@ export interface IApiCallContext extends IContext {
     errorMessage?: string;
 }
 export interface ITransactionContext {
+    doNotRecordHistory?: boolean;
     transaction?: ITransaction;
     rootTransaction?: IRootTransaction;
 }
@@ -13,7 +14,6 @@ export interface ITransactionalCallback {
     (transaction: ITransaction, context?: IContext): Promise<void>;
 }
 export interface ITransactionManager {
-    nonTransactionalMode: boolean;
     initialize(dbName: string, context: IContext): Promise<void>;
     isServer(contex?: IContext): boolean;
     transact(credentials: ICredentials, callback: ITransactionalCallback, context: IContext): Promise<void>;

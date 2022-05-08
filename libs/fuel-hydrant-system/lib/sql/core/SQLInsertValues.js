@@ -4,13 +4,12 @@ import { ClauseType } from './SQLWhereBase';
  * Created by Papa on 11/17/2016.
  */
 export class SQLInsertValues extends SQLNoJoinQuery {
-    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, utils, context
+    constructor(jsonInsertValues, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context
     // repository?: IRepository
     ) {
         super(airportDatabase.applications[jsonInsertValues.II.si].currentVersion[0]
-            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, relationManager, sqlQueryAdapter, storeDriver, utils, context);
+            .applicationVersion.entities[jsonInsertValues.II.ti], dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonInsertValues = jsonInsertValues;
-        this.qValidator = qValidator;
     }
     toSQL(context) {
         if (!this.jsonInsertValues.II) {

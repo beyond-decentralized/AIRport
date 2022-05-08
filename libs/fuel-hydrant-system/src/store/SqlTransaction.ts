@@ -42,7 +42,7 @@ export abstract class SqlTransaction
         methodName: '',
         objectName: ''
     }
-    
+
     constructor(
         protected driver: IStoreDriver,
         public parentTransaction: ITransaction
@@ -53,9 +53,6 @@ export abstract class SqlTransaction
         if (parentTransaction) {
             parentTransaction.childTransaction = this
         }
-    }
-
-    async saveTransaction(transaction: ITransactionHistory): Promise<any> {
     }
 
     async query(

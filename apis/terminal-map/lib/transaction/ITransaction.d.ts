@@ -15,6 +15,5 @@ export interface ITransaction extends IStoreDriver {
     isSync: boolean;
     parentTransaction: ITransaction;
     transactionHistory: ITransactionHistory;
-    saveTransaction(transaction: ITransactionHistory): Promise<void>;
 }
 //# sourceMappingURL=ITransaction.d.ts.map

@@ -11,7 +11,6 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     synchronizationOutManager: ISynchronizationOutManager;
     terminalStore: ITerminalStore;
     transactionHistoryDuo: ITransactionHistoryDuo;
-    nonTransactionalMode: boolean;
     /**
      * Initializes the EntityManager at server load time.
      * @returns {Promise<void>}
@@ -27,6 +26,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
     private resumeParentOrPendingTransaction;
     commit(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
+    private copyTransactionHistoryToParentTransaction;
     private checkForCircularDependencies;
     private setupTransaction;
     private isSameSource;

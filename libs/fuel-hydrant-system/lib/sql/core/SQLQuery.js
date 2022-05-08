@@ -26,10 +26,11 @@ export class EntityDefaults {
  * String based SQL query.
  */
 export class SQLQuery extends SQLWhereBase {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context) {
-        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
+        super(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.jsonQuery = jsonQuery;
         this.queryResultType = queryResultType;
+        this.relationManager = relationManager;
         this.entityDefaults = new EntityDefaults();
     }
     getFieldMap() {

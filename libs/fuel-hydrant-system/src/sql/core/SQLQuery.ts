@@ -3,6 +3,7 @@ import {
 	IApplicationUtils,
 	IQEntityInternal,
 	IQMetadataUtils,
+	IRelationManager,
 	IUtils,
 	JoinTreeNode
 } from '@airport/air-traffic-control'
@@ -23,7 +24,9 @@ import {
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
+import { IValidator } from '../../validation/Validator'
 import { SQLWhereBase } from './SQLWhereBase'
+import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
 
 /**
  * Created by Papa on 8/20/2016.
@@ -70,8 +73,11 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
+		protected relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
@@ -80,8 +86,11 @@ export abstract class SQLQuery<JQ extends JsonQuery>
 			applicationUtils,
 			entityStateManager,
 			qMetadataUtils,
+			qValidator,
 			sqlQueryAdapter,
-			storeDriver, utils,
+			storeDriver,
+			subStatementSqlGenerator,
+			utils,
 			context)
 	}
 

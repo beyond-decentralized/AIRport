@@ -1,5 +1,5 @@
 import { plus } from '@airport/air-traffic-control'
-import { Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,
 	IBaseSequenceDao,
@@ -12,7 +12,9 @@ export interface IAbstractSequenceDao {
 export interface ISequenceDao
 	extends IBaseSequenceDao {
 
-	incrementCurrentValues(): Promise<void>
+	incrementCurrentValues(
+		context: IContext
+	): Promise<void>
 }
 
 @Injected()
@@ -25,24 +27,28 @@ export class SequenceDao
 			.applicationVersion.entities[0]
 	}
 
-	async incrementCurrentValues(): Promise<void> {
+	async incrementCurrentValues(
+		context: IContext
+	): Promise<void> {
 		const s = Q.Sequence
 		await this.db.updateWhere({
 			update: s,
 			set: {
 				currentValue: plus(s.currentValue, s.incrementBy)
 			}
-		})
+		}, context)
 	}
 
-	async incrementSequence(): Promise<void> {
+	async incrementSequence(
+		context: IContext
+	): Promise<void> {
 		const s = Q.Sequence
 		await this.db.updateWhere({
 			update: s,
 			set: {
 				currentValue: plus(s.currentValue, s.incrementBy)
 			}
-		})
+		}, context)
 	}
 
 }

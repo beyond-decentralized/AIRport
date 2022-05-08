@@ -53,12 +53,6 @@ export enum ClauseType {
 export abstract class SQLWhereBase
 	implements ISqlValueProvider {
 
-	@Inject()
-	validator: IValidator;
-
-	@Inject()
-	subStatementSqlGenerator: ISubStatementSqlGenerator
-
 	public parameterReferences: (string | number)[] = []
 	protected fieldMap: ApplicationMap = new ApplicationMap()
 	protected qEntityMapByAlias: { [entityAlias: string]: IQEntityInternal } = {}
@@ -71,8 +65,10 @@ export abstract class SQLWhereBase
 		protected applicationUtils: IApplicationUtils,
 		protected entityStateManager: IEntityStateManager,
 		protected qMetadataUtils: IQMetadataUtils,
+		protected qValidator: IValidator,
 		protected sqlQueryAdapter: ISQLQueryAdaptor,
 		protected storeDriver: IStoreDriver,
+		protected subStatementSqlGenerator: ISubStatementSqlGenerator,
 		protected utils: IUtils,
 		protected context: IFuelHydrantContext,
 	) {
@@ -137,7 +133,7 @@ export abstract class SQLWhereBase
 		aValue = this.sqlQueryAdapter.getFunctionAdaptor()
 			.getFunctionCalls(
 				aField, aValue, this.qEntityMapByAlias, this, context)
-		this.validator.addFunctionAlias(aField.fa)
+		this.qValidator.addFunctionAlias(aField.fa)
 
 		return aValue
 	}
@@ -185,7 +181,7 @@ export abstract class SQLWhereBase
 			}
 			case <any>JSONClauseObjectType.FIELD: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				this.validator.validateReadQEntityProperty(
+				this.qValidator.validateReadQEntityProperty(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityPropertyColumnName(
 					qEntity, aField.ci, context)
@@ -206,12 +202,12 @@ export abstract class SQLWhereBase
 				if (parameterReferences.length) {
 					this.parameterReferences = this.parameterReferences.concat(parameterReferences)
 				}
-				this.validator.addSubQueryAlias(aField.fa)
+				this.qValidator.addSubQueryAlias(aField.fa)
 				return `(${subQuerySql})`
 			}
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
 				qEntity = this.qEntityMapByAlias[aField.ta]
-				this.validator.validateReadQEntityManyToOneRelation(
+				this.qValidator.validateReadQEntityManyToOneRelation(
 					aField.si, aField.ti, aField.ci)
 				columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context)
 				this.addField(aField.si, aField.ti, aField.ci)

@@ -36,10 +36,12 @@ export interface ISequenceGenerator {
 	): Promise<number[][]>
 
 	initialize(
+		context: IContext,
 		sequences?: DbSequence[]
 	): Promise<void>
 
 	tempInitialize(
+		context: IContext,
 		sequences?: DbSequence[]
 	): Promise<void>
 

@@ -78,6 +78,7 @@ export class SqLiteApplicationBuilder
 
   async buildAllSequences(
     jsonApplications: JsonApplication[],
+    context: IContext
   ): Promise<ISequence[]> {
     console.log('buildAllSequences');
 
@@ -90,7 +91,7 @@ export class SqLiteApplicationBuilder
       }
     }
 
-    await this.sequenceDao.save(allSequences);
+    await this.sequenceDao.save(allSequences, context);
 
     return allSequences;
   }

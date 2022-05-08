@@ -42,6 +42,7 @@ import {
 	SQLDialect,
 	SQLQuery
 } from './core/SQLQuery'
+import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator'
 
 /**
  * Created by Papa on 10/16/2016.
@@ -70,9 +71,10 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 		protected objectResultParserFactory: IObjectResultParserFactory,
 		qMetadataUtils: IQMetadataUtils,
 		qValidator: IValidator,
-		protected relationManager: IRelationManager,
+		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 		protected graphQueryConfiguration?: GraphQueryConfiguration
@@ -82,8 +84,12 @@ export class EntitySQLQuery<IEP extends IEntitySelectProperties>
 			applicationUtils,
 			entityStateManager,
 			qMetadataUtils,
+			qValidator,
+			relationManager,
 			sqlQueryAdapter,
-			storeDriver, utils, context)
+			storeDriver,
+			subStatementSqlGenerator,
+			utils, context)
 
 		if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {
 			throw new Error(`"strict" configuration is not yet implemented for 

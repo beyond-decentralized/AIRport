@@ -9,9 +9,11 @@ import {
 import {
 	DbColumn,
 	DbEntity,
-	ensureChildArray
+	ensureChildArray,
+
 } from '@airport/ground-control';
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -74,6 +76,7 @@ export class SequenceGenerator
 	}
 
 	async initialize(
+		context: IContext,
 		sequences?: ISequence[]
 	): Promise<void> {
 		if (!sequences) {
@@ -81,12 +84,13 @@ export class SequenceGenerator
 		}
 		this.addSequences(sequences);
 
-		await this.sequenceDao.incrementCurrentValues();
+		await this.sequenceDao.incrementCurrentValues(context);
 
 		setSeqGen(this);
 	}
 
 	async tempInitialize(
+		context: IContext,
 		sequences?: ISequence[]
 	): Promise<void> {
 		this.addSequences(sequences);

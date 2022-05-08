@@ -41,7 +41,7 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlSchemaB
     getCreateTableSuffix(jsonApplication, jsonEntity) {
         return ` WITHOUT ROWID`;
     }
-    async buildAllSequences(jsonApplications) {
+    async buildAllSequences(jsonApplications, context) {
         console.log('buildAllSequences');
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
@@ -51,7 +51,7 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlSchemaB
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
         }
-        await this.sequenceDao.save(allSequences);
+        await this.sequenceDao.save(allSequences, context);
         return allSequences;
     }
     stageSequences(jsonApplications, context) {

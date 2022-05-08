@@ -418,9 +418,6 @@ __decorate([
 ], InsertManager.prototype, "historyManager", void 0);
 __decorate([
     Inject()
-], InsertManager.prototype, "insertManager", void 0);
-__decorate([
-    Inject()
 ], InsertManager.prototype, "operationHistoryDuo", void 0);
 __decorate([
     Inject()

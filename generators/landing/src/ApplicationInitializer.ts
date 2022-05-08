@@ -92,7 +92,7 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(ddlObjects);
 
-		await this.sequenceGenerator.initialize();
+		await this.sequenceGenerator.initialize(context);
 	}
 
 	/*
@@ -158,7 +158,7 @@ export abstract class ApplicationInitializer
 		const newSequences = await this.applicationBuilder.buildAllSequences(
 			applicationsWithValidDependencies, context);
 
-		await this.sequenceGenerator.initialize(newSequences);
+		await this.sequenceGenerator.initialize(context, newSequences);
 
 		await this.applicationRecorder.record(allDdlObjects.added, context);
 	}
@@ -202,7 +202,7 @@ export abstract class ApplicationInitializer
 		const newSequences = await this.applicationBuilder.stageSequences(
 			jsonApplications, context);
 
-		await this.sequenceGenerator.tempInitialize(newSequences);
+		await this.sequenceGenerator.tempInitialize(context, newSequences);
 	}
 
 	abstract nativeInitializeApplication(

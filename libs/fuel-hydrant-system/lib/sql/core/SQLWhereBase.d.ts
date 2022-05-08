@@ -22,12 +22,12 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected applicationUtils: IApplicationUtils;
     protected entityStateManager: IEntityStateManager;
     protected qMetadataUtils: IQMetadataUtils;
+    protected qValidator: IValidator;
     protected sqlQueryAdapter: ISQLQueryAdaptor;
     protected storeDriver: IStoreDriver;
+    protected subStatementSqlGenerator: ISubStatementSqlGenerator;
     protected utils: IUtils;
     protected context: IFuelHydrantContext;
-    validator: IValidator;
-    subStatementSqlGenerator: ISubStatementSqlGenerator;
     parameterReferences: (string | number)[];
     protected fieldMap: ApplicationMap;
     protected qEntityMapByAlias: {
@@ -36,7 +36,7 @@ export declare abstract class SQLWhereBase implements ISqlValueProvider {
     protected jsonRelationMapByAlias: {
         [entityAlias: string]: JSONEntityRelation;
     };
-    constructor(dbEntity: DbEntity, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, utils: IUtils, context: IFuelHydrantContext);
+    constructor(dbEntity: DbEntity, dialect: SQLDialect, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementSqlGenerator: ISubStatementSqlGenerator, utils: IUtils, context: IFuelHydrantContext);
     getParameters(parameterMap: {
         [alias: string]: Parameter;
     }, //,

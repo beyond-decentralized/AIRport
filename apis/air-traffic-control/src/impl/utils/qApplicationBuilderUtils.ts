@@ -128,7 +128,8 @@ export function getQEntityConstructor(
 		joinType: JoinType
 	) {
 		(<any>ChildQEntity).base.constructor.call(
-			this, entity, nextChildJoinPosition, dbRelation, joinType)
+			this, entity, applicationUtils, relationManager,
+			nextChildJoinPosition, dbRelation, joinType)
 
 		entity.properties.forEach((
 			property: DbProperty

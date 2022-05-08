@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Inject, Injected } from '@airport/direction-indicator';
+import { Injected } from '@airport/direction-indicator';
 import { JSONClauseObjectType, OperationCategory, ApplicationMap, SqlOperator } from '@airport/ground-control';
 /**
  * Created by Papa on 10/2/2016.
@@ -17,15 +17,17 @@ export var ClauseType;
     ClauseType["FUNCTION_CALL"] = "FUNCTION_CALL";
 })(ClauseType || (ClauseType = {}));
 let SQLWhereBase = class SQLWhereBase {
-    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context) {
+    constructor(dbEntity, dialect, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context) {
         this.dbEntity = dbEntity;
         this.dialect = dialect;
         this.airportDatabase = airportDatabase;
         this.applicationUtils = applicationUtils;
         this.entityStateManager = entityStateManager;
         this.qMetadataUtils = qMetadataUtils;
+        this.qValidator = qValidator;
         this.sqlQueryAdapter = sqlQueryAdapter;
         this.storeDriver = storeDriver;
+        this.subStatementSqlGenerator = subStatementSqlGenerator;
         this.utils = utils;
         this.context = context;
         this.parameterReferences = [];
@@ -77,7 +79,7 @@ let SQLWhereBase = class SQLWhereBase {
         }
         aValue = this.sqlQueryAdapter.getFunctionAdaptor()
             .getFunctionCalls(aField, aValue, this.qEntityMapByAlias, this, context);
-        this.validator.addFunctionAlias(aField.fa);
+        this.qValidator.addFunctionAlias(aField.fa);
         return aValue;
     }
     getFieldValue(clauseField, clauseType, defaultCallback, context) {
@@ -112,7 +114,7 @@ let SQLWhereBase = class SQLWhereBase {
             }
             case JSONClauseObjectType.FIELD: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                this.validator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
+                this.qValidator.validateReadQEntityProperty(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityPropertyColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
@@ -126,12 +128,12 @@ let SQLWhereBase = class SQLWhereBase {
                 if (parameterReferences.length) {
                     this.parameterReferences = this.parameterReferences.concat(parameterReferences);
                 }
-                this.validator.addSubQueryAlias(aField.fa);
+                this.qValidator.addSubQueryAlias(aField.fa);
                 return `(${subQuerySql})`;
             }
             case JSONClauseObjectType.MANY_TO_ONE_RELATION: {
                 qEntity = this.qEntityMapByAlias[aField.ta];
-                this.validator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
+                this.qValidator.validateReadQEntityManyToOneRelation(aField.si, aField.ti, aField.ci);
                 columnName = this.getEntityManyToOneColumnName(qEntity, aField.ci, context);
                 this.addField(aField.si, aField.ti, aField.ci);
                 return this.getComplexColumnFragment(aField, columnName, context);
@@ -274,12 +276,6 @@ let SQLWhereBase = class SQLWhereBase {
         return false;
     }
 };
-__decorate([
-    Inject()
-], SQLWhereBase.prototype, "validator", void 0);
-__decorate([
-    Inject()
-], SQLWhereBase.prototype, "subStatementSqlGenerator", void 0);
 SQLWhereBase = __decorate([
     Injected()
 ], SQLWhereBase);

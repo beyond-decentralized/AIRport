@@ -81,22 +81,25 @@ export class DatabaseManager
 
 		(this.transactionalServer as any).tempActor = new Actor();
 
-		this.transactionManager.nonTransactionalMode = true
+		await this.transactionManager.transactInternal(async (
+			_transaction,
+			context
+		) => {
+			const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
+				.getFullApplicationName(BLUEPRINT[0]),
+				'PACKAGES', context);
 
-		const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-			.getFullApplicationName(BLUEPRINT[0]),
-			'PACKAGES', context);
+			await this.installStarterApplication(false, hydrate, context);
 
-		await this.installStarterApplication(false, hydrate, context);
+			if (!hydrate) {
+				await this.internalRecordManager.initTerminal(domainName, context)
+			}
 
-		if (!hydrate) {
-			await this.internalRecordManager.initTerminal(domainName, context)
-		}
-
-		(this.transactionalServer as any).tempActor = null;
-		this.initialized = true;
-
-		this.transactionManager.nonTransactionalMode = false
+			(this.transactionalServer as any).tempActor = null;
+			this.initialized = true;
+		}, {
+			doNotRecordHistory: true
+		})
 	}
 
 	isInitialized(): boolean {

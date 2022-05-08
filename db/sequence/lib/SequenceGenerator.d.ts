@@ -1,6 +1,7 @@
 import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity } from '@airport/ground-control';
+import { IContext } from '@airport/direction-indicator';
 /**
  * Assumptions: 7/4/2019
  *
@@ -25,8 +26,8 @@ export declare class SequenceGenerator implements ISequenceGenerator {
     protected sequenceBlocks: number[][][];
     protected generatingSequenceNumbers: boolean;
     exists(dbEntity: DbEntity): boolean;
-    initialize(sequences?: ISequence[]): Promise<void>;
-    tempInitialize(sequences?: ISequence[]): Promise<void>;
+    initialize(context: IContext, sequences?: ISequence[]): Promise<void>;
+    tempInitialize(context: IContext, sequences?: ISequence[]): Promise<void>;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
     /**
      * Keeping return value as number[][] in case we ever revert back

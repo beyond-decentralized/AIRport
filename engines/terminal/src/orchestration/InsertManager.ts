@@ -49,9 +49,6 @@ export class InsertManager
 	historyManager: IHistoryManager
 
 	@Inject()
-	insertManager: IInsertManager
-
-	@Inject()
 	operationHistoryDuo: IOperationHistoryDuo
 
 	@Inject()

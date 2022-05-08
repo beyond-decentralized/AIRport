@@ -51,12 +51,6 @@ export const ABSTRACT_SQL_DRIVER = fuelHydrantSystem.token<IStoreDriver>({
     token: 'ABSTRACT_SQL_DRIVER'
 })
 
-export const SQL_WHERE_BASE = fuelHydrantSystem.token<SQLWhereBase>({
-    class: SQLWhereBase,
-    interface: 'class SQLWhereBase',
-    token: 'SQL_WHERE_BASE'
-})
-
 ID_GENERATOR.setDependencies({
     sequenceGenerator: SEQUENCE_GENERATOR
 })
@@ -82,11 +76,6 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
     utils: UTILS
-})
-
-SQL_WHERE_BASE.setDependencies({
-    qValidator: Q_VALIDATOR,
-    subStatementSqlGenerator: SUB_STATEMENT_SQL_GENERATOR
 })
 
 SUB_STATEMENT_SQL_GENERATOR.setDependencies({

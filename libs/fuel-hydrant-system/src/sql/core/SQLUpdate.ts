@@ -20,6 +20,7 @@ import { IValidator } from '../../validation/Validator'
 import { SQLNoJoinQuery } from './SQLNoJoinQuery'
 import { SQLDialect } from './SQLQuery'
 import { ClauseType } from './SQLWhereBase'
+import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -35,10 +36,11 @@ export class SQLUpdate
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
-		protected qValidator: IValidator,
+		qValidator: IValidator,
 		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
@@ -48,9 +50,11 @@ export class SQLUpdate
 			applicationUtils,
 			entityStateManager,
 			qMetadataUtils,
+			qValidator,
 			relationManager,
 			sqlQueryAdapter,
 			storeDriver,
+			subStatementSqlGenerator,
 			utils,
 			context)
 	}

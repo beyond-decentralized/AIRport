@@ -166,7 +166,7 @@ DATABASE_MANAGER.setDependencies({
     internalRecordManager: INTERNAL_RECORD_MANAGER,
     storeDriver: STORE_DRIVER,
     transactionalServer: TRANSACTIONAL_SERVER,
-	transactionManager: TRANSACTION_MANAGER
+    transactionManager: TRANSACTION_MANAGER
 })
 
 DELETE_MANAGER.setDependencies({
@@ -198,6 +198,7 @@ INSERT_MANAGER.setDependencies({
     operationHistoryDuo: OPERATION_HISTORY_DUO,
     recordHistoryDuo: RECORD_HISTORY_DUO,
     repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    sequenceGenerator: SEQUENCE_GENERATOR
 })
 
 INTERNAL_RECORD_MANAGER.setDependencies({

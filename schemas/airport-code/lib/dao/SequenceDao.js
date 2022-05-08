@@ -12,23 +12,23 @@ let SequenceDao = class SequenceDao extends BaseSequenceDao {
         return Q.__dbApplication__ && Q.__dbApplication__.currentVersion[0]
             .applicationVersion.entities[0];
     }
-    async incrementCurrentValues() {
+    async incrementCurrentValues(context) {
         const s = Q.Sequence;
         await this.db.updateWhere({
             update: s,
             set: {
                 currentValue: plus(s.currentValue, s.incrementBy)
             }
-        });
+        }, context);
     }
-    async incrementSequence() {
+    async incrementSequence(context) {
         const s = Q.Sequence;
         await this.db.updateWhere({
             update: s,
             set: {
                 currentValue: plus(s.currentValue, s.incrementBy)
             }
-        });
+        }, context);
     }
 };
 SequenceDao = __decorate([

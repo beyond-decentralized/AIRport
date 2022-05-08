@@ -15,8 +15,8 @@ export interface IIdGeneratorContext extends IContext {
 export interface ISequenceGenerator {
     exists(dbEntity: DbEntity): boolean;
     generateSequenceNumbers(dbColumns: DbColumn[], numSequencesNeeded: number[]): Promise<number[][]>;
-    initialize(sequences?: DbSequence[]): Promise<void>;
-    tempInitialize(sequences?: DbSequence[]): Promise<void>;
+    initialize(context: IContext, sequences?: DbSequence[]): Promise<void>;
+    tempInitialize(context: IContext, sequences?: DbSequence[]): Promise<void>;
 }
 export declare function setSeqGen(sequenceGenerator: ISequenceGenerator): void;
 export declare function diSet(dbApplication: DbApplication, dbEntityId: number): boolean;

@@ -11,7 +11,7 @@ import { AbstractUpdate } from './AbstractUpdate';
 export declare class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends IQEntity> extends AbstractUpdate<IQE, RawUpdate<IEUP, IQE>> {
     constructor(rawUpdate: RawUpdate<IEUP, IQE>);
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonUpdate<JsonEntityUpdateColumns>;
-    protected setToJSON(rawSet: IEUP, queryUtils: IQueryUtils, fieldUtils: IFieldUtils): JsonEntityUpdateColumns;
+    protected setToJSON(rawSet: IEUP, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonEntityUpdateColumns;
     private setEntityFragmentsToJSON;
     private setFragmentToJSON;
     private getPropertyChainDesription;

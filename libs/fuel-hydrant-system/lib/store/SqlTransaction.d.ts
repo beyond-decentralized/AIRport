@@ -19,7 +19,6 @@ export declare abstract class SqlTransaction implements ITransaction {
         objectName: string;
     };
     constructor(driver: IStoreDriver, parentTransaction: ITransaction);
-    saveTransaction(transaction: ITransactionHistory): Promise<any>;
     query(queryType: QueryType, query: string, params: any[], context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;

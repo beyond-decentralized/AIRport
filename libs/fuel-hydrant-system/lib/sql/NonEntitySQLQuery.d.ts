@@ -12,9 +12,6 @@ import { ISubStatementSqlGenerator } from './core/SubStatementSqlGenerator';
  * Created by Papa on 10/28/2016.
  */
 export declare abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery> extends SQLQuery<JNEQ> {
-    protected qValidator: IValidator;
-    protected relationManager: IRelationManager;
-    protected subStatementQueryGenerator: ISubStatementSqlGenerator;
     protected joinTrees: JoinTreeNode[];
     protected orderByParser: INonEntityOrderByParser;
     constructor(jsonQuery: JNEQ, dialect: SQLDialect, queryResultType: QueryResultType, airportDatabase: IAirportDatabase, applicationUtils: IApplicationUtils, entityStateManager: IEntityStateManager, qMetadataUtils: IQMetadataUtils, qValidator: IValidator, relationManager: IRelationManager, sqlQueryAdapter: ISQLQueryAdaptor, storeDriver: IStoreDriver, subStatementQueryGenerator: ISubStatementSqlGenerator, utils: IUtils, context: IFuelHydrantContext);

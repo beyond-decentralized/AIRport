@@ -7,10 +7,7 @@ import { SqlFunctionField } from './SqlFunctionField';
  */
 export class NonEntitySQLQuery extends SQLQuery {
     constructor(jsonQuery, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context) {
-        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
-        this.qValidator = qValidator;
-        this.relationManager = relationManager;
-        this.subStatementQueryGenerator = subStatementQueryGenerator;
+        super(jsonQuery, null, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementQueryGenerator, utils, context);
     }
     addQEntityMapByAlias(sourceMap) {
         for (let alias in sourceMap) {

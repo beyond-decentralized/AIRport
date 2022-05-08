@@ -13,18 +13,18 @@ export class UpdateProperties extends AbstractUpdate {
         return {
             U: this.rawUpdate.update
                 .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
-            S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
+            S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils, relationManager),
             W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
         };
     }
-    setToJSON(rawSet, queryUtils, fieldUtils) {
+    setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
         const jsonSetClause = {};
         const dbEntity = this.rawUpdate.update.__driver__.dbEntity;
         const dbPropertyMap = dbEntity.propertyMap;
-        this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [], queryUtils, fieldUtils);
+        this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, relationManager);
         return jsonSetClause;
     }
-    setEntityFragmentsToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils) {
+    setEntityFragmentsToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, dbPropertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager) {
         const isTopLevelFragment = !dbPropertyMap.length;
         for (const propertyName in rawSetFragment) {
             const dbProperty = dbPropertyMap[propertyName];
@@ -57,10 +57,10 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
             }
             const childDbPropertyChain = [...dbPropertyChain];
             childDbPropertyChain.push(dbProperty);
-            this.setFragmentToJSON(rawSetFragment, jsonSetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils);
+            this.setFragmentToJSON(rawSetFragment, jsonSetClause, childDbPropertyChain, propertyName, childDbRelationChain, queryUtils, fieldUtils, relationManager);
         }
     }
-    setFragmentToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils) {
+    setFragmentToJSON(rawSetFragment, jsonSetClause, dbPropertyChain, propertyName, dbRelationChain, queryUtils, fieldUtils, relationManager) {
         const dbProperty = dbPropertyChain[dbPropertyChain.length - 1];
         const dbEntity = dbProperty.entity;
         let value = rawSetFragment[propertyName];
@@ -106,7 +106,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		which has already been set in this update statement (above).
 				`);
                 }
-                jsonSetClause[dbColumn.name] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils);
+                jsonSetClause[dbColumn.name] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
                 return;
             }
         }
@@ -118,7 +118,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
                 childDbRelationChain.push(dbRelation);
                 switch (dbRelation.relationType) {
                     case EntityRelationType.MANY_TO_ONE: {
-                        this.setEntityFragmentsToJSON(value, jsonSetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils);
+                        this.setEntityFragmentsToJSON(value, jsonSetClause, dbPropertyChain, dbRelation.relationEntity.propertyMap, childDbRelationChain, queryUtils, fieldUtils, relationManager);
                         break;
                     }
                     case EntityRelationType.ONE_TO_MANY:

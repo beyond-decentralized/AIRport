@@ -22,16 +22,18 @@ let DatabaseManager = class DatabaseManager {
     async initWithDb(domainName, context) {
         this.airportDatabase.load();
         this.transactionalServer.tempActor = new Actor();
-        this.transactionManager.nonTransactionalMode = true;
-        const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-            .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
-        await this.installStarterApplication(false, hydrate, context);
-        if (!hydrate) {
-            await this.internalRecordManager.initTerminal(domainName, context);
-        }
-        this.transactionalServer.tempActor = null;
-        this.initialized = true;
-        this.transactionManager.nonTransactionalMode = false;
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
+            const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
+                .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
+            await this.installStarterApplication(false, hydrate, context);
+            if (!hydrate) {
+                await this.internalRecordManager.initTerminal(domainName, context);
+            }
+            this.transactionalServer.tempActor = null;
+            this.initialized = true;
+        }, {
+            doNotRecordHistory: true
+        });
     }
     isInitialized() {
         return this.initialized;

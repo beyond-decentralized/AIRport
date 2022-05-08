@@ -9,10 +9,9 @@ import { SQLQuery } from './core/SQLQuery';
  * Represents SQL String query with Entity tree Select clause.
  */
 export class EntitySQLQuery extends SQLQuery {
-    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, utils, context, graphQueryConfiguration) {
-        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, sqlQueryAdapter, storeDriver, utils, context);
+    constructor(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, objectResultParserFactory, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context, graphQueryConfiguration) {
+        super(jsonQuery, dbEntity, dialect, queryResultType, airportDatabase, applicationUtils, entityStateManager, qMetadataUtils, qValidator, relationManager, sqlQueryAdapter, storeDriver, subStatementSqlGenerator, utils, context);
         this.objectResultParserFactory = objectResultParserFactory;
-        this.relationManager = relationManager;
         this.graphQueryConfiguration = graphQueryConfiguration;
         this.columnAliases = new AliasCache();
         if (graphQueryConfiguration && this.graphQueryConfiguration.strict !== undefined) {

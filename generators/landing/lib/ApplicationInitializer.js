@@ -17,7 +17,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         const ddlObjects = await this.queryObjectInitializer.initialize();
         this.addNewApplicationVersionsToAll(ddlObjects);
         this.setAirDbApplications(ddlObjects);
-        await this.sequenceGenerator.initialize();
+        await this.sequenceGenerator.initialize(context);
     }
     /*
      * Initialization scenarios:
@@ -65,7 +65,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
         const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
-        await this.sequenceGenerator.initialize(newSequences);
+        await this.sequenceGenerator.initialize(context, newSequences);
         await this.applicationRecorder.record(allDdlObjects.added, context);
     }
     async initializeForAIRportApp(jsonApplication) {
@@ -88,7 +88,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(tempDdlObjects);
         this.setAirDbApplications(tempDdlObjects);
         const newSequences = await this.applicationBuilder.stageSequences(jsonApplications, context);
-        await this.sequenceGenerator.tempInitialize(newSequences);
+        await this.sequenceGenerator.tempInitialize(context, newSequences);
     }
     async wait(milliseconds) {
         return new Promise((resolve, _reject) => {

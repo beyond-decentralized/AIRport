@@ -3,7 +3,7 @@ import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
-    this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType, this, applicationUtils, relationManager);
+    this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
 QEntity.prototype.fullJoin = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);

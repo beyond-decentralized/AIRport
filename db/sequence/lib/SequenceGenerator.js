@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { setSeqGen } from '@airport/check-in';
-import { ensureChildArray } from '@airport/ground-control';
+import { ensureChildArray, } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 /**
  * Assumptions: 7/4/2019
@@ -46,15 +46,15 @@ let SequenceGenerator = class SequenceGenerator {
         }
         return generatedColumns.every(dbColumn => !!tableSequences[dbColumn.index]);
     }
-    async initialize(sequences) {
+    async initialize(context, sequences) {
         if (!sequences) {
             sequences = await this.sequenceDao.findAll();
         }
         this.addSequences(sequences);
-        await this.sequenceDao.incrementCurrentValues();
+        await this.sequenceDao.incrementCurrentValues(context);
         setSeqGen(this);
     }
-    async tempInitialize(sequences) {
+    async tempInitialize(context, sequences) {
         this.addSequences(sequences);
         setSeqGen(this);
     }

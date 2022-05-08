@@ -86,8 +86,8 @@ export function QEntity<IEntity>(
 	joinType: JoinType = null,
 	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
 ) {
-	this.__driver__ = new QDriver(dbEntity, fromClausePosition, dbRelation, joinType,
-		this, applicationUtils, relationManager)
+	this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager,
+		fromClausePosition, dbRelation, joinType,this)
 }
 
 QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {

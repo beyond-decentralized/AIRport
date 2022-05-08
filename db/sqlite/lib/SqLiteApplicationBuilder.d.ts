@@ -8,7 +8,7 @@ export declare class SqLiteApplicationBuilder extends SqlSchemaBuilder {
     createApplication(jsonApplication: JsonApplication, context: IContext): Promise<void>;
     getColumnSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity, jsonColumn: JsonApplicationColumn): string;
     getCreateTableSuffix(jsonApplication: JsonApplication, jsonEntity: JsonApplicationEntity): string;
-    buildAllSequences(jsonApplications: JsonApplication[]): Promise<ISequence[]>;
+    buildAllSequences(jsonApplications: JsonApplication[], context: IContext): Promise<ISequence[]>;
     stageSequences(jsonApplications: JsonApplication[], context: IContext): ISequence[];
     buildSequences(dbApplication: DbApplication, jsonEntity: JsonApplicationEntity): ISequence[];
     protected getIndexSql(indexName: string, tableName: string, columnNameList: string[], unique: boolean): string;

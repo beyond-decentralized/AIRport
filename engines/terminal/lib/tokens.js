@@ -167,6 +167,7 @@ INSERT_MANAGER.setDependencies({
     operationHistoryDuo: OPERATION_HISTORY_DUO,
     recordHistoryDuo: RECORD_HISTORY_DUO,
     repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+    sequenceGenerator: SEQUENCE_GENERATOR
 });
 INTERNAL_RECORD_MANAGER.setDependencies({
     actorDao: ACTOR_DAO,

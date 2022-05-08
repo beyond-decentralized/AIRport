@@ -1,7 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import {
-	IRootTransaction,
-	StoreType
+	IRootTransaction
 } from '@airport/ground-control';
 import { ITransaction } from '../transaction/ITransaction';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
@@ -12,6 +11,7 @@ export interface IApiCallContext
 	errorMessage?: string
 }
 export interface ITransactionContext {
+	doNotRecordHistory?: boolean
 	transaction?: ITransaction
 	rootTransaction?: IRootTransaction
 }
@@ -22,8 +22,6 @@ export interface ITransactionalCallback {
 	): Promise<void>
 }
 export interface ITransactionManager {
-
-	nonTransactionalMode: boolean
 
 	initialize(
 		dbName: string,

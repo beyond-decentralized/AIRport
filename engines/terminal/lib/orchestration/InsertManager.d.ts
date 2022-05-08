@@ -6,7 +6,6 @@ import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, Recor
 export declare class InsertManager implements IInsertManager {
     airportDatabase: IAirportDatabase;
     historyManager: IHistoryManager;
-    insertManager: IInsertManager;
     operationHistoryDuo: IOperationHistoryDuo;
     recordHistoryDuo: IRecordHistoryDuo;
     repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;

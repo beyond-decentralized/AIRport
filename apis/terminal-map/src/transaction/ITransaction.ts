@@ -20,6 +20,4 @@ export interface ITransaction
 	parentTransaction: ITransaction
 	transactionHistory: ITransactionHistory
 
-	saveTransaction(transaction: ITransactionHistory): Promise<void>;
-
 }

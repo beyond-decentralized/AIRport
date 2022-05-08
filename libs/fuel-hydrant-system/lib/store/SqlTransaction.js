@@ -17,8 +17,6 @@ export class SqlTransaction {
             parentTransaction.childTransaction = this;
         }
     }
-    async saveTransaction(transaction) {
-    }
     async query(queryType, query, params = [], context, saveTransaction = false) {
         return this.driver.query(queryType, query, params, context, saveTransaction);
     }

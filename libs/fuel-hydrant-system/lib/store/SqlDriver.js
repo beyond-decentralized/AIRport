@@ -101,7 +101,7 @@ let SqlDriver = class SqlDriver {
             let sqlInsertValues = new SQLInsertValues({
                 ...portableQuery.jsonQuery,
                 V
-            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.utils, context);
+            }, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
             let sql = sqlInsertValues.toSQL(context);
             let parameters = sqlInsertValues.getParameters(portableQuery.parameterMap, context);
             numVals += await this.executeNative(sql, parameters, context);
@@ -110,7 +110,7 @@ let SqlDriver = class SqlDriver {
     }
     async deleteWhere(portableQuery, context) {
         let fieldMap = new SyncApplicationMap();
-        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.relationManager, this.sqlQueryAdapter, this, this.utils, context);
+        let sqlDelete = new SQLDelete(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
         let sql = sqlDelete.toSQL(context);
         let parameters = sqlDelete.getParameters(portableQuery.parameterMap, context);
         let numberOfAffectedRecords = await this.executeNative(sql, parameters, context);
@@ -118,7 +118,7 @@ let SqlDriver = class SqlDriver {
         return numberOfAffectedRecords;
     }
     async updateWhere(portableQuery, internalFragments, context) {
-        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.utils, context);
+        let sqlUpdate = new SQLUpdate(portableQuery.jsonQuery, this.getDialect(context), this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
         let sql = sqlUpdate.toSQL(internalFragments, context);
         let parameters = sqlUpdate.getParameters(portableQuery.parameterMap, context);
         return await this.executeNative(sql, parameters, context);
@@ -148,7 +148,7 @@ let SqlDriver = class SqlDriver {
             case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
-                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.utils, context);
+                return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
             case QueryResType.FIELD:
                 return new FieldSQLQuery(jsonQuery, dialect, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
             case QueryResType.SHEET:

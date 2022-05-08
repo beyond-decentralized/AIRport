@@ -56,8 +56,6 @@ export class TransactionManager
 	@Inject()
 	transactionHistoryDuo: ITransactionHistoryDuo
 
-	nonTransactionalMode = false
-
 	/**
 	 * Initializes the EntityManager at server load time.
 	 * @returns {Promise<void>}
@@ -101,7 +99,7 @@ export class TransactionManager
 		transactionalCallback: ITransactionalCallback,
 		context: ITransactionContext,
 	): Promise<void> {
-		if (this.nonTransactionalMode || context.transaction) {
+		if (context.transaction) {
 			// Nested transactal() calls in internal operations
 			// do not create nested transactions 
 			await transactionalCallback(context.transaction, context)
@@ -217,15 +215,11 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
-		if(this.nonTransactionalMode) {
-			return null
-		}
-		
 		let transaction = context.transaction
 		if (!transaction) {
 			if (!credentials.transactionId) {
 				throw new Error(`
-No Transaction Id is passed in Credentials for a Rollback operation.
+No Transaction Id is passed in Credentials for a transactional operation.
 				`)
 			}
 			const transactionManagerStore = this.terminalStore
@@ -276,44 +270,27 @@ parent transactions.
 
 		try {
 			if (parentTransaction) {
-				// Copy transaction history to the parent transaction
-				let childTransactionHistory = transaction.transactionHistory
-				let parentTransactionHistory = parentTransaction.transactionHistory
-				for (const operationHistory of childTransactionHistory.allOperationHistory) {
-					const repositoryId = operationHistory.repositoryTransactionHistory.repository.id
-					const parentRepositoryTransactionRecord = parentTransactionHistory
-						.repositoryTransactionHistoryMap[repositoryId]
-					if (parentRepositoryTransactionRecord) {
-						operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
-					} else {
-						parentTransactionHistory.repositoryTransactionHistoryMap[repositoryId]
-							= operationHistory.repositoryTransactionHistory
-						parentTransactionHistory.repositoryTransactionHistories
-							.push(operationHistory.repositoryTransactionHistory)
-					}
+				if (!context.doNotRecordHistory) {
+					this.copyTransactionHistoryToParentTransaction(
+						transaction, parentTransaction
+					)
 				}
-				parentTransactionHistory.allOperationHistory = parentTransactionHistory
-					.allOperationHistory.concat(childTransactionHistory.allOperationHistory)
-				parentTransactionHistory.allRecordHistory = parentTransactionHistory
-					.allRecordHistory.concat(childTransactionHistory.allRecordHistory)
-				parentTransactionHistory.allRecordHistoryNewValues = parentTransactionHistory
-					.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
-				parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
-					.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
-
 			} else {
 				// This is the root transaction, save it's history, along with any nested transactions
-				await this.saveRepositoryHistory(transaction, context);
-				await transaction.saveTransaction(transaction.transactionHistory);
+				if (!context.doNotRecordHistory) {
+					await this.saveRepositoryHistory(transaction, context);
+				}
 			}
 
 			this.activeQueries.rerunQueries();
 			await transaction.commit(null, context);
 
 			let transactionHistory = transaction.transactionHistory;
-			if (!parentTransaction && transactionHistory.allRecordHistory.length) {
-				await this.synchronizationOutManager.synchronizeOut(
-					transactionHistory.repositoryTransactionHistories)
+			if (!context.doNotRecordHistory) {
+				if (!parentTransaction && transactionHistory.allRecordHistory.length) {
+					await this.synchronizationOutManager.synchronizeOut(
+						transactionHistory.repositoryTransactionHistories)
+				}
 			}
 		} finally {
 			await this.clearTransaction(transaction, parentTransaction, credentials, context);
@@ -322,6 +299,36 @@ parent transactions.
 			// it's transaction or the next 
 			await this.resumeParentOrPendingTransaction(parentTransaction, context)
 		}
+	}
+
+	private copyTransactionHistoryToParentTransaction(
+		transaction: ITransaction,
+		parentTransaction: ITransaction
+	) {
+		let childTransactionHistory = transaction.transactionHistory
+		let parentTransactionHistory = parentTransaction.transactionHistory
+		for (const operationHistory of childTransactionHistory.allOperationHistory) {
+			const repositoryId = operationHistory.repositoryTransactionHistory.repository.id
+			const parentRepositoryTransactionRecord = parentTransactionHistory
+				.repositoryTransactionHistoryMap[repositoryId]
+			if (parentRepositoryTransactionRecord) {
+				operationHistory.repositoryTransactionHistory = parentRepositoryTransactionRecord
+			} else {
+				parentTransactionHistory.repositoryTransactionHistoryMap[repositoryId]
+					= operationHistory.repositoryTransactionHistory
+				parentTransactionHistory.repositoryTransactionHistories
+					.push(operationHistory.repositoryTransactionHistory)
+			}
+		}
+		parentTransactionHistory.allOperationHistory = parentTransactionHistory
+			.allOperationHistory.concat(childTransactionHistory.allOperationHistory)
+		parentTransactionHistory.allRecordHistory = parentTransactionHistory
+			.allRecordHistory.concat(childTransactionHistory.allRecordHistory)
+		parentTransactionHistory.allRecordHistoryNewValues = parentTransactionHistory
+			.allRecordHistoryNewValues.concat(childTransactionHistory.allRecordHistoryNewValues)
+		parentTransactionHistory.allRecordHistoryOldValues = parentTransactionHistory
+			.allRecordHistoryOldValues.concat(childTransactionHistory.allRecordHistoryOldValues)
+
 	}
 
 	private checkForCircularDependencies(
@@ -359,7 +366,9 @@ ${callHerarchy}
 		context.transaction = transaction
 		credentials.transactionId = transaction.id
 
-		transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
+		if (!context.doNotRecordHistory) {
+			transaction.transactionHistory = this.transactionHistoryDuo.getNewRecord();
+		}
 
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
 		if (parentTransaction) {
@@ -368,24 +377,6 @@ ${callHerarchy}
 			transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction)
 		}
 	}
-
-	// @Transactional()
-	// private async recordRepositoryTransactionBlock(
-	// 	transaction: IRepositoryTransactionHistory
-	// ): Promise<void> {
-	// 	if (this.onlineManager.isOnline()) {
-	// 		// let repository = transaction.repository;
-	// 		transaction.serialize();
-	//
-	// 		let deltaStore = this.repositoryManager.getDeltaStore(transaction.repository);
-	// 		await deltaStore.addChanges(deltaStore.config.changeListConfig, [transaction]);
-	//
-	// 		transaction.deserialize(
-	// 			// repository
-	// 		);
-	// 		await this.offlineDeltaStore.markChangesAsSynced(transaction.repository,
-	// [transaction]);
-	// this.queries.markQueriesToRerun(transaction.transactionHistory.applicationMap); } }
 
 	private isSameSource(
 		transaction: ITransaction,

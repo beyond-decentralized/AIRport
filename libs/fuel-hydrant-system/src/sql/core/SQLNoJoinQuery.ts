@@ -16,8 +16,10 @@ import {
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
+import { IValidator } from '../../validation/Validator'
 import { SQLDialect } from './SQLQuery'
 import { SQLWhereBase } from './SQLWhereBase'
+import { ISubStatementSqlGenerator } from './SubStatementSqlGenerator'
 
 /**
  * Created by Papa on 10/2/2016.
@@ -33,9 +35,11 @@ export abstract class SQLNoJoinQuery
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
+		qValidator: IValidator,
 		protected relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
+		subStatementSqlGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
@@ -44,8 +48,10 @@ export abstract class SQLNoJoinQuery
 			applicationUtils,
 			entityStateManager,
 			qMetadataUtils,
+			qValidator,
 			sqlQueryAdapter,
 			storeDriver,
+			subStatementSqlGenerator,
 			utils,
 			context)
 	}

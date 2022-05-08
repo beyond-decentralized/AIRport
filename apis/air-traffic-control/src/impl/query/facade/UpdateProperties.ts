@@ -16,7 +16,7 @@ import {
 import { RawUpdate } from '../../../lingo/query/facade/Update'
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
-import { IRelationManager } from '../../core/entity/RelationManager'
+import { IRelationManager, RelationManager } from '../../core/entity/RelationManager'
 import { wrapPrimitive } from '../../core/field/WrapperFunctions'
 import { AbstractUpdate } from './AbstractUpdate'
 
@@ -44,7 +44,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 				.__driver__.getRelationJson(
 					this.columnAliases,
 					queryUtils, fieldUtils, relationManager),
-			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils),
+			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
 				this.rawUpdate.where, this.columnAliases)
 		}
@@ -53,14 +53,15 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 	protected setToJSON(
 		rawSet: IEUP,
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): JsonEntityUpdateColumns {
 		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
 		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
 		const dbPropertyMap = dbEntity.propertyMap
 
 		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [],
-			dbPropertyMap, [], queryUtils, fieldUtils)
+			dbPropertyMap, [], queryUtils, fieldUtils, relationManager)
 
 		return jsonSetClause
 	}
@@ -72,7 +73,8 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		dbPropertyMap: { [name: string]: DbProperty },
 		childDbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): void {
 		const isTopLevelFragment = !dbPropertyMap.length
 		for (const propertyName in rawSetFragment) {
@@ -110,7 +112,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 			this.setFragmentToJSON(rawSetFragment, jsonSetClause,
 				childDbPropertyChain, propertyName, childDbRelationChain,
-				queryUtils, fieldUtils)
+				queryUtils, fieldUtils, relationManager)
 		}
 
 	}
@@ -122,7 +124,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 		propertyName: string,
 		dbRelationChain: DbRelation[],
 		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils
+		fieldUtils: IFieldUtils,
+		relationManager: IRelationManager
 	): void {
 		const dbProperty: DbProperty = dbPropertyChain[dbPropertyChain.length - 1]
 		const dbEntity = dbProperty.entity
@@ -176,7 +179,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 				`)
 				}
 				jsonSetClause[dbColumn.name] = value.toJSON(
-					this.columnAliases, false, queryUtils, fieldUtils)
+					this.columnAliases, false, queryUtils, fieldUtils, relationManager)
 				return
 			}
 		}
@@ -197,7 +200,8 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 							dbRelation.relationEntity.propertyMap,
 							childDbRelationChain,
 							queryUtils,
-							fieldUtils
+							fieldUtils,
+							relationManager
 						)
 						break
 					}

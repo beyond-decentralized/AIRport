@@ -272,6 +272,7 @@ export abstract class SqlDriver
 				this.relationManager,
 				this.sqlQueryAdapter,
 				this,
+				this.subStatementQueryGenerator,
 				this.utils,
 				context);
 			let sql = sqlInsertValues.toSQL(context);
@@ -294,9 +295,11 @@ export abstract class SqlDriver
 			this.applicationUtils,
 			this.entityStateManager,
 			this.qMetadataUtils,
+			this.qValidator,
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
+			this.subStatementQueryGenerator,
 			this.utils,
 			context);
 		let sql = sqlDelete.toSQL(context);
@@ -322,6 +325,7 @@ export abstract class SqlDriver
 			this.relationManager,
 			this.sqlQueryAdapter,
 			this,
+			this.subStatementQueryGenerator,
 			this.utils,
 			context);
 		let sql = sqlUpdate.toSQL(internalFragments, context);
@@ -379,6 +383,7 @@ export abstract class SqlDriver
 					this.relationManager,
 					this.sqlQueryAdapter,
 					this,
+					this.subStatementQueryGenerator,
 					this.utils,
 					context);
 			case QueryResType.FIELD:

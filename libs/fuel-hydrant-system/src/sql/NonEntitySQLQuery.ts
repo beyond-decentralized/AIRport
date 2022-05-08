@@ -66,11 +66,11 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 		applicationUtils: IApplicationUtils,
 		entityStateManager: IEntityStateManager,
 		qMetadataUtils: IQMetadataUtils,
-		protected qValidator: IValidator,
-		protected relationManager: IRelationManager,
+		qValidator: IValidator,
+		relationManager: IRelationManager,
 		sqlQueryAdapter: ISQLQueryAdaptor,
 		storeDriver: IStoreDriver,
-		protected subStatementQueryGenerator: ISubStatementSqlGenerator,
+		subStatementQueryGenerator: ISubStatementSqlGenerator,
 		utils: IUtils,
 		context: IFuelHydrantContext,
 	) {
@@ -79,8 +79,12 @@ export abstract class NonEntitySQLQuery<JNEQ extends JsonNonEntityQuery>
 			applicationUtils,
 			entityStateManager,
 			qMetadataUtils,
+			qValidator,
+			relationManager,
 			sqlQueryAdapter,
-			storeDriver, utils, context)
+			storeDriver,
+			subStatementQueryGenerator,
+			utils, context)
 	}
 
 	addQEntityMapByAlias(

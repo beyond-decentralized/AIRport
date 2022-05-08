@@ -65,7 +65,7 @@ export function getQRelation(entity, property, q, allQApplications, applicationU
 export function getQEntityConstructor(allQApplications) {
     // ChildQEntity refers to the constructor
     var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
-        ChildQEntity.base.constructor.call(this, entity, nextChildJoinPosition, dbRelation, joinType);
+        ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
         entity.properties.forEach((property) => {
             let qFieldOrRelation;
             if (property.relation && property.relation.length) {
