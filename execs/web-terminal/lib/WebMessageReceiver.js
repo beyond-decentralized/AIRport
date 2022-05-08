@@ -9,7 +9,7 @@ import { IOC } from "@airport/direction-indicator";
 import { TERMINAL_STORE } from "@airport/terminal-map";
 import { BroadcastChannel as SoftBroadcastChannel } from '../node_modules/broadcast-channel/dist/lib/index.es5';
 let WebMesageReceiver = class WebMesageReceiver {
-    constructor() {
+    init() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function';
         const createChannel = () => {
             this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {
@@ -42,9 +42,6 @@ let WebMesageReceiver = class WebMesageReceiver {
     sendMessageToApp() {
     }
 };
-__decorate([
-    Inject()
-], WebMesageReceiver.prototype, "terminalStore", void 0);
 __decorate([
     Inject()
 ], WebMesageReceiver.prototype, "transactionalReceiver", void 0);

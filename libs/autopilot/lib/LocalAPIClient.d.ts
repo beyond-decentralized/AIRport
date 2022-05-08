@@ -18,7 +18,8 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     connectionReady: boolean;
     clientIframe: HTMLIFrameElement;
     messageCallback: (message: any) => void;
-    constructor();
+    init(): void;
+    private initializeForWeb;
     onMessage(callback: (message: any) => void): void;
     private hasValidApplicationInfo;
     invokeApiMethod<T>(token: IDependencyInjectionToken<T>, methodName: string, args: any[]): Promise<any>;

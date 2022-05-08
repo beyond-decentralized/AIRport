@@ -14,46 +14,54 @@ let LocalAPIClient = class LocalAPIClient {
         this.pendingDemoMessageMap = new Map();
         this.demoListenerStarted = false;
         this.connectionReady = false;
+    }
+    init() {
         if (_inDemoMode) {
-            this.clientIframe = document.getElementsByName('AIRportClient');
-            if (this.clientIframe) {
-                this.clientIframe = document.createElement('iframe');
-                this.clientIframe.src = _demoServer + '/client/index.html';
-                this.clientIframe.name = 'AIRportClient';
-                this.clientIframe.style.display = 'none';
-                document.body.appendChild(this.clientIframe);
-            }
-            window.addEventListener("message", event => {
-                const message = event.data;
-                if (message.__received__) {
-                    return;
-                }
-                message.__received__ = true;
-                if (this.messageCallback) {
-                    const receivedDate = new Date();
-                    message.__receivedTime__ = receivedDate.getTime();
-                    this.messageCallback(message);
-                }
-                switch (message.category) {
-                    case 'ConnectionIsReady':
-                        this.connectionReady = true;
-                        break;
-                    case 'ToClientRedirected':
-                        // All requests need to have a application signature
-                        // to know what application is being communicated to/from
-                        if (!this.hasValidApplicationInfo(message)) {
-                            return;
-                        }
-                        let requestDemoMessage = this.pendingDemoMessageMap.get(message.id);
-                        if (requestDemoMessage) {
-                            requestDemoMessage.resolve(message);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }, false);
+            this.initializeForWeb();
         }
+    }
+    initializeForWeb() {
+        const htmlElements = document.getElementsByName('AIRportClient');
+        if (htmlElements.length) {
+            this.clientIframe = htmlElements[0];
+        }
+        else {
+            this.clientIframe = document.createElement('iframe');
+            this.clientIframe.src = _demoServer + '/client/index.html';
+            this.clientIframe.name = 'AIRportClient';
+            this.clientIframe.style.display = 'none';
+            document.body.appendChild(this.clientIframe);
+        }
+        window.addEventListener("message", event => {
+            const message = event.data;
+            if (message.__received__) {
+                return;
+            }
+            message.__received__ = true;
+            if (this.messageCallback) {
+                const receivedDate = new Date();
+                message.__receivedTime__ = receivedDate.getTime();
+                this.messageCallback(message);
+            }
+            switch (message.category) {
+                case 'ConnectionIsReady':
+                    this.connectionReady = true;
+                    break;
+                case 'ToClientRedirected':
+                    // All requests need to have a application signature
+                    // to know what application is being communicated to/from
+                    if (!this.hasValidApplicationInfo(message)) {
+                        return;
+                    }
+                    let requestDemoMessage = this.pendingDemoMessageMap.get(message.id);
+                    if (requestDemoMessage) {
+                        requestDemoMessage.resolve(message);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }, false);
     }
     onMessage(callback) {
         this.messageCallback = callback;

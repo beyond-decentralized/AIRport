@@ -1,11 +1,11 @@
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import { ILocalAPIRequest, ILocalAPIResponse } from "@airport/aviation-communication";
 import { IOC } from "@airport/direction-indicator";
 import { IApiIMI, IIsolateMessage } from "@airport/apron";
-import { ITerminalStore, ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
+import { ITransactionalReceiver, TERMINAL_STORE } from "@airport/terminal-map";
 import {
     BroadcastChannel as SoftBroadcastChannel
 } from '../node_modules/broadcast-channel/dist/lib/index.es5';
@@ -26,15 +26,12 @@ export class WebMesageReceiver
     implements IWebMessageReceiver {
 
     @Inject()
-    terminalStore: ITerminalStore
-
-    @Inject()
     transactionalReceiver: ITransactionalReceiver
 
     communicationChannel: SoftBroadcastChannel
     isNativeBroadcastChannel: boolean
 
-    constructor() {
+    init() {
         this.isNativeBroadcastChannel = typeof BroadcastChannel === 'function'
         const createChannel = () => {
             this.communicationChannel = new SoftBroadcastChannel('clientCommunication', {

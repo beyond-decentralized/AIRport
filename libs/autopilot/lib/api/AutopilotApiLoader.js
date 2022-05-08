@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 let AutopilotApiLoader = class AutopilotApiLoader {
     loadApiAutopilot(token) {
+        let localApiClient = this.localApiClient;
         return new Proxy({}, {
             get(target, methodName) {
                 switch (methodName) {
@@ -16,7 +17,7 @@ let AutopilotApiLoader = class AutopilotApiLoader {
                         return target;
                 }
                 return function (...args) {
-                    return this.localApiClient.invokeApiMethod(token, methodName, args);
+                    return localApiClient.invokeApiMethod(token, methodName, args);
                 };
             }
         });

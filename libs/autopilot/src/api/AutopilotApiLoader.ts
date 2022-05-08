@@ -16,6 +16,7 @@ export class AutopilotApiLoader
     loadApiAutopilot<T>(
         token: IDependencyInjectionToken<T>
     ): T {
+        let localApiClient = this.localApiClient
         return new Proxy({}, {
             get(target, methodName: string) {
                 switch (methodName) {
@@ -25,7 +26,7 @@ export class AutopilotApiLoader
                         return target
                 }
                 return function (...args) {
-                    return this.localApiClient.invokeApiMethod(
+                    return localApiClient.invokeApiMethod(
                         token, methodName, args);
                 };
             }
