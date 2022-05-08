@@ -138,7 +138,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         })
     }
 */
-    async insert(applicationVersions) {
+    async insert(applicationVersions, context) {
         let sv;
         const values = [];
         for (const applicationVersion of applicationVersions) {
@@ -162,7 +162,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                 sv.jsonApplication
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationVersionDao = __decorate([

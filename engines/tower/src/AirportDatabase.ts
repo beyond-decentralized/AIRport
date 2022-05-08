@@ -20,6 +20,7 @@ import {
 	RawInsertValues,
 	RawUpdate,
 	RawUpdateColumns,
+	setQApplicationEntities,
 } from '@airport/air-traffic-control';
 import {
 	Inject,
@@ -27,6 +28,7 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbApplication,
+	IDbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
 
@@ -66,6 +68,9 @@ export class AirportDatabase
 
 	@Inject()
 	databaseStore: IDatabaseState
+
+	@Inject()
+	dbApplicationUtils: IDbApplicationUtils
 
 	@Inject()
 	find: INonEntityFind
@@ -112,6 +117,21 @@ export class AirportDatabase
 
 	async load(): Promise<any> {
 		// Just calling this method, loads the AirpotDatabase object
+	}
+
+	setQApplication(
+		qApplication: QApplication
+	): void {
+		const fullApplicationName = this.dbApplicationUtils
+			.getFullApplicationName(qApplication)
+		const existingQApplication = this.QM[fullApplicationName]
+		if (existingQApplication) {
+			const dbApplication = existingQApplication.__dbApplication__
+			qApplication.__dbApplication__ = dbApplication
+			setQApplicationEntities(dbApplication, qApplication, this.qApplications)
+			this.Q[dbApplication.index] = qApplication
+		}
+		this.QM[fullApplicationName] = qApplication
 	}
 
 	getAccumulator(

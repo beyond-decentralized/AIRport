@@ -38,6 +38,7 @@ export interface ApplicationHub {
     QM: {
         [name: string]: QApplication;
     };
+    setQApplication(qApplication: QApplication): void;
 }
 export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub {
     find: INonEntityFind;

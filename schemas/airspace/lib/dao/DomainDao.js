@@ -54,7 +54,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
             where: d.name.equals(name)
         });
     }
-    async checkAndInsertIfNeeded(domains) {
+    async checkAndInsertIfNeeded(domains, context) {
         const existingDomains = await this.findByIdIn(domains.map(domain => domain.id));
         const existingDomainMap = new Map();
         for (const existingDomain of existingDomains) {
@@ -83,7 +83,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
                 d.name,
             ],
             values
-        });
+        }, context);
     }
     async insert(domains) {
         let d;

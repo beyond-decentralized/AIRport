@@ -1,12 +1,12 @@
-import { Injected } from '@airport/direction-indicator'
-import {ApplicationVersionId}   from '@airport/ground-control'
+import { IContext, Injected } from '@airport/direction-indicator'
+import { ApplicationVersionId } from '@airport/ground-control'
 import {
 	BaseApplicationEntityDao,
 	IBaseApplicationEntityDao,
 	IApplicationEntity,
 	Q,
 	QApplicationEntity,
-}                          from '../generated/generated'
+} from '../generated/generated'
 
 export interface IApplicationEntityDao
 	extends IBaseApplicationEntityDao {
@@ -16,7 +16,8 @@ export interface IApplicationEntityDao
 	): Promise<IApplicationEntity[]>
 
 	insert(
-		applicationEntities: IApplicationEntity[]
+		applicationEntities: IApplicationEntity[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -39,9 +40,10 @@ export class ApplicationEntityDao
 			where: se.applicationVersion.id.in(applicationVersionIds)
 		})
 	}
-	
+
 	async insert(
-		applicationEntities: IApplicationEntity[]
+		applicationEntities: IApplicationEntity[],
+		context: IContext
 	): Promise<void> {
 		let se: QApplicationEntity;
 		const values = []
@@ -71,7 +73,7 @@ export class ApplicationEntityDao
 				se.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

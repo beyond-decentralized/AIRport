@@ -45,8 +45,7 @@ export class WebTransactionalReceiver
 	@Inject()
 	webMessageReciever: IWebMessageReceiver
 
-	constructor() {
-		super()
+	init() {
 		const ownDomain = window.location.hostname
 		const mainDomainFragments = ownDomain.split('.')
 		if (mainDomainFragments[0] === 'www'
@@ -58,7 +57,6 @@ export class WebTransactionalReceiver
 		if (document.domain !== 'localhost') {
 			document.domain = 'random_' + Math.random() + '_' + Math.random() + domainPrefix
 		}
-
 		const webReciever = this.terminalStore.getWebReceiver()
 		webReciever.domainPrefix = domainPrefix
 		webReciever.mainDomainFragments = mainDomainFragments

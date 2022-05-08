@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	DomainId,
 	DomainName
@@ -35,7 +35,8 @@ export interface IDomainDao
 	): Promise<IDomain>
 
 	checkAndInsertIfNeeded(
-		domains: IDomain[]
+		domains: IDomain[],
+		context: IContext
 	): Promise<void>
 
 	insert(
@@ -116,7 +117,8 @@ export class DomainDao
 	}
 
 	async checkAndInsertIfNeeded(
-		domains: IDomain[]
+		domains: IDomain[],
+		context: IContext
 	): Promise<void> {
 		const existingDomains = await this.findByIdIn(domains.map(domain => domain.id))
 		const existingDomainMap: Map<DomainId, IDomain> = new Map()
@@ -146,7 +148,7 @@ export class DomainDao
 				d.name,
 			],
 			values
-		})
+		}, context)
 	}
 
 	async insert(

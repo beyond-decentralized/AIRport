@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator';
+import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	EntityId,
 	undefinedToNull
@@ -19,7 +19,8 @@ export interface IApplicationColumnDao
 	): Promise<IApplicationColumn[]>;
 
 	insert(
-		applicationColumns: IApplicationColumn[]
+		applicationColumns: IApplicationColumn[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -44,20 +45,21 @@ export class ApplicationColumnDao
 	}
 
 	async insert(
-		applicationColumns: IApplicationColumn[]
+		applicationColumns: IApplicationColumn[],
+		context: IContext
 	): Promise<void> {
 		let sc: QApplicationColumn;
 		const values = []
 		for (const applicationColumn of applicationColumns) {
 			values.push([
 				applicationColumn.id, applicationColumn.index,
-				undefinedToNull(applicationColumn.idIndex), 
+				undefinedToNull(applicationColumn.idIndex),
 				applicationColumn.isGenerated,
-				undefinedToNull(applicationColumn.allocationSize), 
+				undefinedToNull(applicationColumn.allocationSize),
 				applicationColumn.name,
-				applicationColumn.notNull, 
+				applicationColumn.notNull,
 				undefinedToNull(applicationColumn.precision),
-				undefinedToNull(applicationColumn.scale), 
+				undefinedToNull(applicationColumn.scale),
 				applicationColumn.type,
 				applicationColumn.entity.id,
 				applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion.id : null,
@@ -84,7 +86,7 @@ export class ApplicationColumnDao
 				sc.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

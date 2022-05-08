@@ -1,11 +1,12 @@
+import { IContext } from '@airport/direction-indicator';
 import { EntityId } from '@airport/ground-control';
 import { BaseApplicationPropertyDao, IBaseApplicationPropertyDao, IApplicationProperty } from '../generated/generated';
 export interface IApplicationPropertyDao extends IBaseApplicationPropertyDao {
     findAllForEntities(entityIds: EntityId[]): Promise<IApplicationProperty[]>;
-    insert(applicationProperties: IApplicationProperty[]): Promise<void>;
+    insert(applicationProperties: IApplicationProperty[], context: IContext): Promise<void>;
 }
 export declare class ApplicationPropertyDao extends BaseApplicationPropertyDao implements IApplicationPropertyDao {
     findAllForEntities(entityIds: EntityId[]): Promise<IApplicationProperty[]>;
-    insert(applicationProperties: IApplicationProperty[]): Promise<void>;
+    insert(applicationProperties: IApplicationProperty[], context: IContext): Promise<void>;
 }
 //# sourceMappingURL=ApplicationPropertyDao.d.ts.map

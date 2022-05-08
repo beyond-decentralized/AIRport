@@ -1,3 +1,4 @@
+import { IContext } from '@airport/direction-indicator';
 import { DomainName, ApplicationIndex, ApplicationName, ApplicationStatus, ApplicationVersionId, FullApplicationName } from '@airport/ground-control';
 import { BaseApplicationDao, IBaseApplicationDao, IApplication } from '../generated/generated';
 export interface IApplicationLookupRecord {
@@ -20,7 +21,7 @@ export interface IApplicationDao extends IBaseApplicationDao {
     findMapByFullNames(fullApplicationNames: FullApplicationName[]): Promise<Map<FullApplicationName, IApplication>>;
     findByDomainNamesAndApplicationNames(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
     findByIndex(index: ApplicationIndex): Promise<IApplication>;
-    insert(applications: IApplication[]): Promise<void>;
+    insert(applications: IApplication[], context: IContext): Promise<void>;
 }
 export declare class ApplicationDao extends BaseApplicationDao implements IApplicationDao {
     findAllActive(): Promise<IApplication[]>;
@@ -32,6 +33,6 @@ export declare class ApplicationDao extends BaseApplicationDao implements IAppli
     findMapByFullNames(fullApplicationNames: FullApplicationName[]): Promise<Map<FullApplicationName, IApplication>>;
     findByDomainNamesAndApplicationNames(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
     findByIndex(index: ApplicationIndex): Promise<IApplication>;
-    insert(applications: IApplication[]): Promise<void>;
+    insert(applications: IApplication[], context: IContext): Promise<void>;
 }
 //# sourceMappingURL=ApplicationDao.d.ts.map

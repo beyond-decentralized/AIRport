@@ -1940,12 +1940,11 @@ class ChildContainer extends Container {
             const dependencyToken = dependencyConfiguration[propertyName];
             Object.defineProperty(object, propertyName, {
                 get() {
-                    this.__container__;
                     return this.__container__.getSync(dependencyToken);
                 }
             });
             object['get' + propertyName + 'Async'] = async function () {
-                await this.get(dependencyToken);
+                return await this.__container__.get(dependencyToken);
             };
         }
     }
@@ -8084,6 +8083,7 @@ const UTILS = airTrafficControl.token({
 AIRPORT_DATABASE.setDependencies({
     databaseFacade: DATABASE_FACADE,
     databaseStore: DATABASE_STORE,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
     find: NON_ENTITY_FIND,
     findOne: NON_ENTITY_FIND_ONE,
     search: NON_ENTITY_SEARCH,
@@ -9487,8 +9487,8 @@ const Q$4 = Q_APPLICATION$4;
 function duoDiSet$4(dbEntityId) {
     return duoDiSet$5(Q$4.__dbApplication__, dbEntityId);
 }
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then(([airDb, dbApplicationUtils]) => {
-    airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION$4)] = Q$4;
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    airportDatabase.setQApplication(Q_APPLICATION$4);
 });
 
 // Application Q object Dependency Injection readiness detection Dao
@@ -10680,8 +10680,8 @@ const Q$3 = Q_APPLICATION$3;
 function duoDiSet$3(dbEntityId) {
     return duoDiSet$5(Q$3.__dbApplication__, dbEntityId);
 }
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then(([airDb, dbApplicationUtils]) => {
-    airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION$3)] = Q$3;
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    airportDatabase.setQApplication(Q_APPLICATION$3);
 });
 
 // Application Q object Dependency Injection readiness detection Dao
@@ -22840,8 +22840,8 @@ const Q$2 = Q_APPLICATION$2;
 function duoDiSet$2(dbEntityId) {
     return duoDiSet$5(Q$2.__dbApplication__, dbEntityId);
 }
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then(([airDb, dbApplicationUtils]) => {
-    airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION$2)] = Q$2;
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    airportDatabase.setQApplication(Q_APPLICATION$2);
 });
 
 // Application Q object Dependency Injection readiness detection Dao
@@ -23100,7 +23100,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
             where: d.name.equals(name)
         });
     }
-    async checkAndInsertIfNeeded(domains) {
+    async checkAndInsertIfNeeded(domains, context) {
         const existingDomains = await this.findByIdIn(domains.map(domain => domain.id));
         const existingDomainMap = new Map();
         for (const existingDomain of existingDomains) {
@@ -23129,7 +23129,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
                 d.name,
             ],
             values
-        });
+        }, context);
     }
     async insert(domains) {
         let d;
@@ -23173,7 +23173,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
             where: c.entity.id.in(entityIds)
         });
     }
-    async insert(applicationColumns) {
+    async insert(applicationColumns, context) {
         let sc;
         const values = [];
         for (const applicationColumn of applicationColumns) {
@@ -23212,7 +23212,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
                 sc.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationColumnDao = __decorate$1a([
@@ -23440,7 +23440,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             where: a.index.equals(index)
         });
     }
-    async insert(applications) {
+    async insert(applications, context) {
         let a;
         const values = [];
         for (const application of applications) {
@@ -23464,7 +23464,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 a.signature
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationDao = __decorate$19([
@@ -23488,7 +23488,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
             where: se.applicationVersion.id.in(applicationVersionIds)
         });
     }
-    async insert(applicationEntities) {
+    async insert(applicationEntities, context) {
         let se;
         const values = [];
         for (const applicationEntity of applicationEntities) {
@@ -23517,7 +23517,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
                 se.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationEntityDao = __decorate$18([
@@ -23541,7 +23541,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
             where: rc.column.id.in(columnIds)
         });
     }
-    async insert(applicationPropertyColumns) {
+    async insert(applicationPropertyColumns, context) {
         let spc;
         const values = [];
         for (const applicationPropertyColumn of applicationPropertyColumns) {
@@ -23562,7 +23562,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
                 spc.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationPropertyColumnDao = __decorate$17([
@@ -23586,7 +23586,7 @@ let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicatio
             where: p.entity.id.in(entityIds)
         });
     }
-    async insert(applicationProperties) {
+    async insert(applicationProperties, context) {
         let sp;
         const values = [];
         for (const applicationProperty of applicationProperties) {
@@ -23612,7 +23612,7 @@ let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicatio
                 sp.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationPropertyDao = __decorate$16([
@@ -23636,7 +23636,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
             where: sr.ownApplicationVersion.id.in(applicationVersionIds)
         });
     }
-    async insert(applicationReferences) {
+    async insert(applicationReferences, context) {
         let sr;
         const values = [];
         for (const applicationReference of applicationReferences) {
@@ -23660,7 +23660,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
                 sr.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationReferenceDao = __decorate$15([
@@ -23684,7 +23684,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
             where: or(rc.oneColumn.id.in(columnIds), rc.manyColumn.id.in(columnIds))
         });
     }
-    async insert(applicationRelationColumns) {
+    async insert(applicationRelationColumns, context) {
         let src;
         const values = [];
         for (const applicationRelationColumn of applicationRelationColumns) {
@@ -23714,7 +23714,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
                 src.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationRelationColumnDao = __decorate$14([
@@ -23738,7 +23738,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
             where: r.property.id.in(propertyIds)
         });
     }
-    async insert(applicationRelations) {
+    async insert(applicationRelations, context) {
         let sr;
         const values = [];
         for (const applicationRelation of applicationRelations) {
@@ -23773,7 +23773,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
                 sr.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationRelationDao = __decorate$13([
@@ -23917,7 +23917,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         })
     }
 */
-    async insert(applicationVersions) {
+    async insert(applicationVersions, context) {
         let sv;
         const values = [];
         for (const applicationVersion of applicationVersions) {
@@ -23941,7 +23941,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                 sv.jsonApplication
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationVersionDao = __decorate$12([
@@ -28480,8 +28480,8 @@ const Q$1 = Q_APPLICATION$1;
 function duoDiSet$1(dbEntityId) {
     return duoDiSet$5(Q$1.__dbApplication__, dbEntityId);
 }
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then(([airDb, dbApplicationUtils]) => {
-    airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION$1)] = Q$1;
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    airportDatabase.setQApplication(Q_APPLICATION$1);
 });
 
 // Application Q object Dependency Injection readiness detection Dao
@@ -31676,6 +31676,18 @@ let AirportDatabase = class AirportDatabase {
     async load() {
         // Just calling this method, loads the AirpotDatabase object
     }
+    setQApplication(qApplication) {
+        const fullApplicationName = this.dbApplicationUtils
+            .getFullApplicationName(qApplication);
+        const existingQApplication = this.QM[fullApplicationName];
+        if (existingQApplication) {
+            const dbApplication = existingQApplication.__dbApplication__;
+            qApplication.__dbApplication__ = dbApplication;
+            setQApplicationEntities(dbApplication, qApplication, this.qApplications);
+            this.Q[dbApplication.index] = qApplication;
+        }
+        this.QM[fullApplicationName] = qApplication;
+    }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
     }
@@ -31744,6 +31756,9 @@ __decorate$o([
 __decorate$o([
     Inject()
 ], AirportDatabase.prototype, "databaseStore", void 0);
+__decorate$o([
+    Inject()
+], AirportDatabase.prototype, "dbApplicationUtils", void 0);
 __decorate$o([
     Inject()
 ], AirportDatabase.prototype, "find", void 0);
@@ -34635,16 +34650,17 @@ let ApplicationRecorder = class ApplicationRecorder {
         await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            await this.domainDao.checkAndInsertIfNeeded(ddlObjects.domains);
-            await this.applicationDao.insert(ddlObjects.applications);
-            await this.applicationVersionDao.insert(ddlObjects.applicationVersions);
-            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences);
-            await this.applicationEntityDao.insert(ddlObjects.entities);
-            await this.applicationPropertyDao.insert(ddlObjects.properties);
-            await this.applicationRelationDao.insert(ddlObjects.relations);
-            await this.applicationColumnDao.insert(ddlObjects.columns);
-            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns);
-            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns);
+            const domainDao = await this.getdomainDaoAsync();
+            await domainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
+            await this.applicationDao.insert(ddlObjects.applications, context);
+            await this.applicationVersionDao.insert(ddlObjects.applicationVersions, context);
+            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences, context);
+            await this.applicationEntityDao.insert(ddlObjects.entities, context);
+            await this.applicationPropertyDao.insert(ddlObjects.properties, context);
+            await this.applicationRelationDao.insert(ddlObjects.relations, context);
+            await this.applicationColumnDao.insert(ddlObjects.columns, context);
+            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns, context);
+            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns, context);
         }, context);
     }
     setDefaultVersioning(ddlObjects) {
@@ -34821,8 +34837,8 @@ const Q = Q_APPLICATION;
 function duoDiSet(dbEntityId) {
     return duoDiSet$5(Q.__dbApplication__, dbEntityId);
 }
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then(([airDb, dbApplicationUtils]) => {
-    airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION)] = Q;
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((airportDatabase) => {
+    airportDatabase.setQApplication(Q_APPLICATION);
 });
 
 // Application Q object Dependency Injection readiness detection Dao
@@ -35735,8 +35751,7 @@ var __decorate$4 = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let WebTransactionalReceiver = class WebTransactionalReceiver extends TransactionalReceiver {
-    constructor() {
-        super();
+    init() {
         const ownDomain = window.location.hostname;
         const mainDomainFragments = ownDomain.split('.');
         if (mainDomainFragments[0] === 'www'

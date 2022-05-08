@@ -17,7 +17,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
             where: se.applicationVersion.id.in(applicationVersionIds)
         });
     }
-    async insert(applicationEntities) {
+    async insert(applicationEntities, context) {
         let se;
         const values = [];
         for (const applicationEntity of applicationEntities) {
@@ -46,7 +46,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
                 se.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationEntityDao = __decorate([

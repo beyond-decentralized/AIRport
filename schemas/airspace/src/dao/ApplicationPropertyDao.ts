@@ -1,12 +1,12 @@
-import { Injected } from '@airport/direction-indicator';
-import {EntityId}            from '@airport/ground-control'
+import { IContext, Injected } from '@airport/direction-indicator';
+import { EntityId } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
 	IApplicationProperty,
 	Q,
 	QApplicationProperty,
-}                            from '../generated/generated'
+} from '../generated/generated'
 
 export interface IApplicationPropertyDao
 	extends IBaseApplicationPropertyDao {
@@ -16,7 +16,8 @@ export interface IApplicationPropertyDao
 	): Promise<IApplicationProperty[]>;
 
 	insert(
-		applicationProperties: IApplicationProperty[]
+		applicationProperties: IApplicationProperty[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -39,9 +40,10 @@ export class ApplicationPropertyDao
 			where: p.entity.id.in(entityIds)
 		})
 	}
-	
+
 	async insert(
-		applicationProperties: IApplicationProperty[]
+		applicationProperties: IApplicationProperty[],
+		context: IContext
 	): Promise<void> {
 		let sp: QApplicationProperty;
 		const values = []
@@ -68,7 +70,7 @@ export class ApplicationPropertyDao
 				sp.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

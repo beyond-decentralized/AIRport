@@ -148,10 +148,10 @@ export function duoDiSet(
 	return ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE, DB_APPLICATION_UTILS).then((
-	[airDb, dbApplicationUtils]
+DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
+	airportDatabase, 
 ) => {
-	airDb.QM[dbApplicationUtils.getFullApplicationName(Q_APPLICATION)] = Q
+	airportDatabase.setQApplication(Q_APPLICATION)
 })
 `;
   }

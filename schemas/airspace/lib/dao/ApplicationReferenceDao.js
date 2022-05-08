@@ -17,7 +17,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
             where: sr.ownApplicationVersion.id.in(applicationVersionIds)
         });
     }
-    async insert(applicationReferences) {
+    async insert(applicationReferences, context) {
         let sr;
         const values = [];
         for (const applicationReference of applicationReferences) {
@@ -41,7 +41,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
                 sr.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationReferenceDao = __decorate([

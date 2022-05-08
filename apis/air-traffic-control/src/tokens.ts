@@ -13,7 +13,7 @@ import { IFieldUtils } from './lingo/utils/FieldUtils'
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
 import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { IApplicationUtils } from './lingo/utils/ApplicationUtils'
-import { ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { Lookup } from './impl/query/api/Lookup'
 import { EntityUtils } from './impl/utils/EntityUtils'
 import { QMetadataUtils } from './impl/utils/QMetadataUtils'
@@ -132,6 +132,7 @@ export const UTILS = airTrafficControl.token<IUtils>({
 AIRPORT_DATABASE.setDependencies({
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DATABASE_STORE,
+	dbApplicationUtils: DB_APPLICATION_UTILS,
 	find: NON_ENTITY_FIND,
 	findOne: NON_ENTITY_FIND_ONE,
 	search: NON_ENTITY_SEARCH,

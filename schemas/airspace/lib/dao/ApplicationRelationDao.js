@@ -18,7 +18,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
             where: r.property.id.in(propertyIds)
         });
     }
-    async insert(applicationRelations) {
+    async insert(applicationRelations, context) {
         let sr;
         const values = [];
         for (const applicationRelation of applicationRelations) {
@@ -53,7 +53,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
                 sr.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationRelationDao = __decorate([

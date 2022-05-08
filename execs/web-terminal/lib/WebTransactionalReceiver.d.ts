@@ -10,7 +10,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     dbApplicationUtils: IDbApplicationUtils;
     terminalStore: ITerminalStore;
     webMessageReciever: IWebMessageReceiver;
-    constructor();
+    init(): void;
     handleClientRequest(message: ILocalAPIRequest): void;
     handleAppRequest(message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse, messageOrigin: string, source: any): void;
     onMessage(callback: (message: any) => void): void;

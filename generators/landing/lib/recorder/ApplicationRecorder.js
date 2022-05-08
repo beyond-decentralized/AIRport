@@ -12,16 +12,17 @@ let ApplicationRecorder = class ApplicationRecorder {
         await this.transactionManager.transactInternal(async () => {
             // FIXME: add support for real application versioning
             this.setDefaultVersioning(ddlObjects);
-            await this.domainDao.checkAndInsertIfNeeded(ddlObjects.domains);
-            await this.applicationDao.insert(ddlObjects.applications);
-            await this.applicationVersionDao.insert(ddlObjects.applicationVersions);
-            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences);
-            await this.applicationEntityDao.insert(ddlObjects.entities);
-            await this.applicationPropertyDao.insert(ddlObjects.properties);
-            await this.applicationRelationDao.insert(ddlObjects.relations);
-            await this.applicationColumnDao.insert(ddlObjects.columns);
-            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns);
-            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns);
+            const domainDao = await this.getdomainDaoAsync();
+            await domainDao.checkAndInsertIfNeeded(ddlObjects.domains, context);
+            await this.applicationDao.insert(ddlObjects.applications, context);
+            await this.applicationVersionDao.insert(ddlObjects.applicationVersions, context);
+            await this.applicationReferenceDao.insert(ddlObjects.applicationReferences, context);
+            await this.applicationEntityDao.insert(ddlObjects.entities, context);
+            await this.applicationPropertyDao.insert(ddlObjects.properties, context);
+            await this.applicationRelationDao.insert(ddlObjects.relations, context);
+            await this.applicationColumnDao.insert(ddlObjects.columns, context);
+            await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns, context);
+            await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns, context);
         }, context);
     }
     setDefaultVersioning(ddlObjects) {

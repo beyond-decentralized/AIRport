@@ -228,7 +228,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             where: a.index.equals(index)
         });
     }
-    async insert(applications) {
+    async insert(applications, context) {
         let a;
         const values = [];
         for (const application of applications) {
@@ -252,7 +252,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 a.signature
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationDao = __decorate([

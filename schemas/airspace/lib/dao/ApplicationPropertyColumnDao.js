@@ -17,7 +17,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
             where: rc.column.id.in(columnIds)
         });
     }
-    async insert(applicationPropertyColumns) {
+    async insert(applicationPropertyColumns, context) {
         let spc;
         const values = [];
         for (const applicationPropertyColumn of applicationPropertyColumns) {
@@ -38,7 +38,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
                 spc.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationPropertyColumnDao = __decorate([

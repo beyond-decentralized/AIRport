@@ -1,12 +1,12 @@
-import { Injected } from '@airport/direction-indicator'
-import {ApplicationVersionId}      from '@airport/ground-control'
+import { IContext, Injected } from '@airport/direction-indicator'
+import { ApplicationVersionId } from '@airport/ground-control'
 import {
 	BaseApplicationReferenceDao,
 	IBaseApplicationReferenceDao,
 	IApplicationReference,
 	Q,
 	QApplicationReference,
-}                             from '../generated/generated'
+} from '../generated/generated'
 
 export interface IApplicationReferenceDao
 	extends IBaseApplicationReferenceDao {
@@ -16,7 +16,8 @@ export interface IApplicationReferenceDao
 	): Promise<IApplicationReference[]>
 
 	insert(
-		applicationReferences: IApplicationReference[]
+		applicationReferences: IApplicationReference[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -41,13 +42,14 @@ export class ApplicationReferenceDao
 	}
 
 	async insert(
-		applicationReferences: IApplicationReference[]
+		applicationReferences: IApplicationReference[],
+		context: IContext
 	): Promise<void> {
 		let sr: QApplicationReference;
 		const values = []
 		for (const applicationReference of applicationReferences) {
 			values.push([
-				applicationReference.ownApplicationVersion.id, 
+				applicationReference.ownApplicationVersion.id,
 				applicationReference.referencedApplicationVersion.id,
 				applicationReference.index,
 				applicationReference.deprecatedSinceVersion ? applicationReference.deprecatedSinceVersion.id : null,
@@ -66,7 +68,7 @@ export class ApplicationReferenceDao
 				sr.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

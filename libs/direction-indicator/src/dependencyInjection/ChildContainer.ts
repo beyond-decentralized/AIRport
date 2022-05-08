@@ -192,13 +192,12 @@ export class ChildContainer
 
             Object.defineProperty(object, propertyName, {
                 get() {
-                    this.__container__
                     return this.__container__.getSync(dependencyToken)
                 }
             });
 
             object['get' + propertyName + 'Async'] = async function () {
-                await this.get(dependencyToken)
+                return await this.__container__.get(dependencyToken)
             }
         }
 

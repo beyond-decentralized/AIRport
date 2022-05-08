@@ -1,12 +1,12 @@
-import { Injected } from '@airport/direction-indicator'
-import {ColumnId}                   from '@airport/ground-control'
+import { IContext, Injected } from '@airport/direction-indicator'
+import { ColumnId } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
 	IBaseApplicationPropertyColumnDao,
 	IApplicationPropertyColumn,
 	Q,
 	QApplicationPropertyColumn,
-}                                   from '../generated/generated'
+} from '../generated/generated'
 
 export interface IApplicationPropertyColumnDao
 	extends IBaseApplicationPropertyColumnDao {
@@ -16,7 +16,8 @@ export interface IApplicationPropertyColumnDao
 	): Promise<IApplicationPropertyColumn[]>
 
 	insert(
-		applicationPropertyColumns: IApplicationPropertyColumn[]
+		applicationPropertyColumns: IApplicationPropertyColumn[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -40,9 +41,10 @@ export class ApplicationPropertyColumnDao
 			where: rc.column.id.in(columnIds)
 		})
 	}
-	
+
 	async insert(
-		applicationPropertyColumns: IApplicationPropertyColumn[]
+		applicationPropertyColumns: IApplicationPropertyColumn[],
+		context: IContext
 	): Promise<void> {
 		let spc: QApplicationPropertyColumn;
 		const values = []
@@ -64,7 +66,7 @@ export class ApplicationPropertyColumnDao
 				spc.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

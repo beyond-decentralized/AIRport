@@ -18,7 +18,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
             where: or(rc.oneColumn.id.in(columnIds), rc.manyColumn.id.in(columnIds))
         });
     }
-    async insert(applicationRelationColumns) {
+    async insert(applicationRelationColumns, context) {
         let src;
         const values = [];
         for (const applicationRelationColumn of applicationRelationColumns) {
@@ -48,7 +48,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
                 src.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationRelationColumnDao = __decorate([

@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	PropertyId,
 	undefinedToNull
@@ -19,7 +19,8 @@ export interface IApplicationRelationDao
 	): Promise<IApplicationRelation[]>
 
 	insert(
-		applicationRelations: IApplicationRelation[]
+		applicationRelations: IApplicationRelation[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -44,7 +45,8 @@ export class ApplicationRelationDao
 	}
 
 	async insert(
-		applicationRelations: IApplicationRelation[]
+		applicationRelations: IApplicationRelation[],
+		context: IContext
 	): Promise<void> {
 		let sr: QApplicationRelation;
 		const values = []
@@ -80,7 +82,7 @@ export class ApplicationRelationDao
 				sr.sinceVersion.id
 			],
 			values
-		})
+		}, context)
 	}
 
 }

@@ -4,6 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { setQApplicationEntities, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 class EntityAccumulator {
     constructor(applicationDomain, applicationName, entityMap) {
@@ -52,6 +53,18 @@ let AirportDatabase = class AirportDatabase {
     }
     async load() {
         // Just calling this method, loads the AirpotDatabase object
+    }
+    setQApplication(qApplication) {
+        const fullApplicationName = this.dbApplicationUtils
+            .getFullApplicationName(qApplication);
+        const existingQApplication = this.QM[fullApplicationName];
+        if (existingQApplication) {
+            const dbApplication = existingQApplication.__dbApplication__;
+            qApplication.__dbApplication__ = dbApplication;
+            setQApplicationEntities(dbApplication, qApplication, this.qApplications);
+            this.Q[dbApplication.index] = qApplication;
+        }
+        this.QM[fullApplicationName] = qApplication;
     }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
@@ -121,6 +134,9 @@ __decorate([
 __decorate([
     Inject()
 ], AirportDatabase.prototype, "databaseStore", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "dbApplicationUtils", void 0);
 __decorate([
     Inject()
 ], AirportDatabase.prototype, "find", void 0);

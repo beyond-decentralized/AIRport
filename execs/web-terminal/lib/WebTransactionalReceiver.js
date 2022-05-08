@@ -9,8 +9,7 @@ import { IsolateMessageType, } from '@airport/apron';
 import { TransactionalReceiver } from '@airport/terminal';
 import { map } from 'rxjs/operators';
 let WebTransactionalReceiver = class WebTransactionalReceiver extends TransactionalReceiver {
-    constructor() {
-        super();
+    init() {
         const ownDomain = window.location.hostname;
         const mainDomainFragments = ownDomain.split('.');
         if (mainDomainFragments[0] === 'www'

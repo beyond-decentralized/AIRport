@@ -18,7 +18,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
             where: c.entity.id.in(entityIds)
         });
     }
-    async insert(applicationColumns) {
+    async insert(applicationColumns, context) {
         let sc;
         const values = [];
         for (const applicationColumn of applicationColumns) {
@@ -57,7 +57,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
                 sc.sinceVersion.id
             ],
             values
-        });
+        }, context);
     }
 };
 ApplicationColumnDao = __decorate([
