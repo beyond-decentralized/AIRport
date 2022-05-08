@@ -22,7 +22,8 @@ import {
 	AllDdlObjects,
 	IApplicationInitializer,
 	IQueryObjectInitializer,
-	ITerminalStore
+	ITerminalStore,
+	ITransactionManager
 } from '@airport/terminal-map';
 import {
 	IApplication,
@@ -70,6 +71,9 @@ export abstract class ApplicationInitializer
 
 	@Inject()
 	terminalStore: ITerminalStore
+
+	@Inject()
+	transactionManager: ITransactionManager
 
 	addNewApplicationVersionsToAll(
 		ddlObjects: AllDdlObjects
@@ -155,12 +159,18 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(allDdlObjects);
 
-		const newSequences = await this.applicationBuilder.buildAllSequences(
-			applicationsWithValidDependencies, context);
+		this.transactionManager.transactInternal(async (
+			_transaction,
+			context
+		) => {
+			const newSequences = await this.applicationBuilder.buildAllSequences(
+				applicationsWithValidDependencies, context);
 
-		await this.sequenceGenerator.initialize(context, newSequences);
+			await this.sequenceGenerator.initialize(context, newSequences);
 
-		await this.applicationRecorder.record(allDdlObjects.added, context);
+			await this.applicationRecorder.record(allDdlObjects.added, context);
+		}, context)
+
 	}
 
 	async initializeForAIRportApp(

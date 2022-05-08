@@ -61,7 +61,7 @@ let AirportDatabase = class AirportDatabase {
         if (existingQApplication) {
             const dbApplication = existingQApplication.__dbApplication__;
             qApplication.__dbApplication__ = dbApplication;
-            setQApplicationEntities(dbApplication, qApplication, this.qApplications);
+            setQApplicationEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
             this.Q[dbApplication.index] = qApplication;
         }
         this.QM[fullApplicationName] = qApplication;
@@ -130,6 +130,9 @@ let AirportDatabase = class AirportDatabase {
 };
 __decorate([
     Inject()
+], AirportDatabase.prototype, "appliationUtils", void 0);
+__decorate([
+    Inject()
 ], AirportDatabase.prototype, "databaseFacade", void 0);
 __decorate([
     Inject()
@@ -143,6 +146,9 @@ __decorate([
 __decorate([
     Inject()
 ], AirportDatabase.prototype, "findOne", void 0);
+__decorate([
+    Inject()
+], AirportDatabase.prototype, "relationManager", void 0);
 __decorate([
     Inject()
 ], AirportDatabase.prototype, "search", void 0);

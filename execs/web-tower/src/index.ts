@@ -30,15 +30,15 @@ async function processMessage(
     }
 }
 
-export function loadIframe() {
-    loadTransactionalConnector().then()
-}
-
-export async function loadTransactionalConnector() {
+async function loadTransactionalConnector() {
     const container = DEPENDENCY_INJECTION.db()
     const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
 
     await transactionalConnector.initializeConnection()
 
     console.log('Iframe loaded')
+}
+
+export function loadIframe() {
+    loadTransactionalConnector().then()
 }

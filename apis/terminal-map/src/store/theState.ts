@@ -26,19 +26,24 @@ export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubjec
         serverUrl: ''
     },
     lastIds: {
-		columns: 0,
-		domains: 0,
-		entities: 0,
-		properties: 0,
-		propertyColumns: 0,
-		relations: 0,
-		relationColumns: 0,
-		applications: 0,
-		applicationVersions: 0
-	},
+        columns: 0,
+        domains: 0,
+        entities: 0,
+        properties: 0,
+        propertyColumns: 0,
+        relations: 0,
+        relationColumns: 0,
+        applications: 0,
+        applicationVersions: 0
+    },
     receiver: {
         initializedApps: new Set(),
         initializingApps: new Set(),
+    },
+    sequenceGenerator: {
+        sequences: [],
+        sequenceBlocks: [],
+        generatingSequenceNumbers: false
     },
     terminal: null,
     transactionManager: {

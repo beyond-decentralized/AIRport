@@ -18,13 +18,13 @@ async function processMessage(message, origin) {
         DEPENDENCY_INJECTION.remove(container);
     }
 }
-export function loadIframe() {
-    loadTransactionalConnector().then();
-}
-export async function loadTransactionalConnector() {
+async function loadTransactionalConnector() {
     const container = DEPENDENCY_INJECTION.db();
     const transactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR);
     await transactionalConnector.initializeConnection();
     console.log('Iframe loaded');
+}
+export function loadIframe() {
+    loadTransactionalConnector().then();
 }
 //# sourceMappingURL=index.js.map

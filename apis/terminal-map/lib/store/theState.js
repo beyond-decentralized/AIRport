@@ -34,6 +34,11 @@ export const internalTerminalState = new BehaviorSubject({
         initializedApps: new Set(),
         initializingApps: new Set(),
     },
+    sequenceGenerator: {
+        sequences: [],
+        sequenceBlocks: [],
+        generatingSequenceNumbers: false
+    },
     terminal: null,
     transactionManager: {
         pendingTransactionQueue: [],

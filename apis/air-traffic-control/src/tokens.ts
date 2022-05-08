@@ -130,11 +130,13 @@ export const UTILS = airTrafficControl.token<IUtils>({
 })
 
 AIRPORT_DATABASE.setDependencies({
+	appliationUtils: APPLICATION_UTILS,
 	databaseFacade: DATABASE_FACADE,
 	databaseStore: DATABASE_STORE,
 	dbApplicationUtils: DB_APPLICATION_UTILS,
 	find: NON_ENTITY_FIND,
 	findOne: NON_ENTITY_FIND_ONE,
+	relationManager: RELATION_MANAGER,
 	search: NON_ENTITY_SEARCH,
 	searchOne: NON_ENTITY_SEARCH_ONE
 })

@@ -64,9 +64,11 @@ let ApplicationInitializer = class ApplicationInitializer {
         this.addNewApplicationVersionsToAll(allDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
-        const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
-        await this.sequenceGenerator.initialize(context, newSequences);
-        await this.applicationRecorder.record(allDdlObjects.added, context);
+        this.transactionManager.transactInternal(async (_transaction, context) => {
+            const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
+            await this.sequenceGenerator.initialize(context, newSequences);
+            await this.applicationRecorder.record(allDdlObjects.added, context);
+        }, context);
     }
     async initializeForAIRportApp(jsonApplication) {
         const applicationsWithValidDependencies = await this.
@@ -170,6 +172,9 @@ __decorate([
 __decorate([
     Inject()
 ], ApplicationInitializer.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], ApplicationInitializer.prototype, "transactionManager", void 0);
 ApplicationInitializer = __decorate([
     Injected()
 ], ApplicationInitializer);

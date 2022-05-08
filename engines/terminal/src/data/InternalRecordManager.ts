@@ -24,8 +24,8 @@ import {
 } from "@airport/travel-document-checkpoint-runtime";
 import { v4 as uuidv4 } from "uuid";
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 
 export interface IInternalRecordManager {
@@ -134,7 +134,8 @@ export class InternalRecordManager
             actor.user = user;
             actor.terminal = terminal;
             actor.uuId = uuidv4();
-            await this.actorDao.save(actor, context);
+            const actorDao = await (this as any).getactorDaoAsync()
+            await actorDao.save(actor, context);
 
             const lastTerminalState = this.terminalStore.getTerminalState()
             this.terminalStore.state.next({

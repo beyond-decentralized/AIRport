@@ -46,7 +46,7 @@ export declare function getQEntityIdRelationConstructor(dbEntity: DbEntity): typ
  *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
  */
 export declare function getQEntityIdFields(addToObject: any, relationEntity: DbEntity, qEntity: IQEntity, parentProperty: DbProperty, relationColumnMap?: Map<DbColumn, DbColumn>): any;
-export declare function setQApplicationEntities(application: DbApplication, qApplication: QApplicationInternal, allQApplications: QApplication[]): void;
+export declare function setQApplicationEntities(application: DbApplication, qApplication: QApplicationInternal, allQApplications: QApplication[], appliationUtils: IApplicationUtils, relationManager: IRelationManager): void;
 export interface DbApplicationWithDependencies {
     application: DbApplication;
     dependencies: Set<ApplicationIndex>;

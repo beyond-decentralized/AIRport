@@ -1,6 +1,7 @@
 import {
 	FunctionsAndOperators,
 	IAirportDatabase,
+	IApplicationUtils,
 	IDatabaseFacade,
 	IDatabaseState,
 	IEntityAccumulator,
@@ -13,6 +14,7 @@ import {
 	INonEntitySearch,
 	INonEntitySearchOne,
 	IQEntity,
+	IRelationManager,
 	OperationName,
 	QApplication,
 	RawDelete,
@@ -64,6 +66,9 @@ export class AirportDatabase
 	implements IAirportDatabase {
 
 	@Inject()
+	appliationUtils: IApplicationUtils
+
+	@Inject()
 	databaseFacade: IDatabaseFacade
 
 	@Inject()
@@ -77,6 +82,9 @@ export class AirportDatabase
 
 	@Inject()
 	findOne: INonEntityFindOne
+
+	@Inject()
+	relationManager: IRelationManager
 
 	@Inject()
 	search: INonEntitySearch
@@ -128,7 +136,8 @@ export class AirportDatabase
 		if (existingQApplication) {
 			const dbApplication = existingQApplication.__dbApplication__
 			qApplication.__dbApplication__ = dbApplication
-			setQApplicationEntities(dbApplication, qApplication, this.qApplications)
+			setQApplicationEntities(dbApplication, qApplication, this.qApplications,
+				this.appliationUtils, this.relationManager)
 			this.Q[dbApplication.index] = qApplication
 		}
 		this.QM[fullApplicationName] = qApplication

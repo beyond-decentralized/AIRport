@@ -28,13 +28,19 @@ let QueryEntityClassCreator = class QueryEntityClassCreator {
             this.airportDatabase.QM[dbApplication.fullName] = qApplication;
         }
         this.airportDatabase.Q[dbApplication.index] = qApplication;
-        setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications);
+        setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.relationManager);
         return qApplication;
     }
 };
 __decorate([
     Inject()
 ], QueryEntityClassCreator.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], QueryEntityClassCreator.prototype, "applicationUtils", void 0);
+__decorate([
+    Inject()
+], QueryEntityClassCreator.prototype, "relationManager", void 0);
 QueryEntityClassCreator = __decorate([
     Injected()
 ], QueryEntityClassCreator);

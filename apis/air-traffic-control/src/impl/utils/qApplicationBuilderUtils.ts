@@ -98,8 +98,8 @@ export function getQRelation(
 			const qIdRelationConstructor
 				= allQApplications[relationApplication.index]
 					.__qIdRelationConstructors__[relationEntity.index]
-			// return new qIdRelationConstructor(relationEntity, property, q)
-			return new qIdRelationConstructor(relation.relationEntity, relation, q)
+			return new qIdRelationConstructor(
+				relation.relationEntity, relation, q, applicationUtils, relationManager)
 		case EntityRelationType.ONE_TO_MANY:
 			if (entity.isRepositoryEntity) {
 				return new QRepositoryEntityOneToManyRelation(relation, q,
@@ -182,8 +182,11 @@ export function getQEntityIdRelationConstructor(
 		entity: DbEntity,
 		relation: DbRelation,
 		qEntity: IQEntityInternal,
+		appliationUtils: IApplicationUtils,
+		relationManager: IRelationManager,
 	) {
-		(<any>QEntityIdRelation).base.constructor.call(this, relation, qEntity)
+		(<any>QEntityIdRelation).base.constructor.call(
+			this, relation, qEntity, appliationUtils, relationManager)
 
 		getQEntityIdFields(this, entity, qEntity, relation.property)
 
@@ -276,7 +279,9 @@ export function getQEntityIdFields(
 export function setQApplicationEntities(
 	application: DbApplication,
 	qApplication: QApplicationInternal,
-	allQApplications: QApplication[]
+	allQApplications: QApplication[],
+	appliationUtils: IApplicationUtils,
+	relationManager: IRelationManager,
 ) {
 	// const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
 	// application)
@@ -336,7 +341,8 @@ export function setQApplicationEntities(
 				propertyName => propertyName === entity.name).length) {
 			Object.defineProperty(qApplication, entity.name, {
 				get: function () {
-					return new this.__qConstructors__[entity.index](entity)
+					return new this.__qConstructors__[entity.index](
+						entity, appliationUtils, relationManager)
 				}
 			})
 		}

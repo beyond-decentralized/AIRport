@@ -5,6 +5,6 @@ import { IRelationManager } from './RelationManager';
 /**
  * Created by Papa on 4/26/2016.
  */
-export declare function QRelation(dbRelation: DbRelation, parentQ: IQEntityInternal, appliationUtils: IApplicationUtils, relationManager: IRelationManager): void;
-export declare function QRepositoryEntityRelation(dbRelation: DbRelation, parentQ: IQEntityInternal): void;
+export declare function QRelation(dbRelation: DbRelation, parentQ: IQEntityInternal, applicationUtils: IApplicationUtils, relationManager: IRelationManager): void;
+export declare function QRepositoryEntityRelation(dbRelation: DbRelation, parentQ: IQEntityInternal, applicationUtils: IApplicationUtils, relationManager: IRelationManager): void;
 //# sourceMappingURL=Relation.d.ts.map

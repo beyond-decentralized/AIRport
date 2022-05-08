@@ -49,8 +49,7 @@ export function getQRelation(entity, property, q, allQApplications, applicationU
             const relationApplication = relationEntity.applicationVersion.application;
             const qIdRelationConstructor = allQApplications[relationApplication.index]
                 .__qIdRelationConstructors__[relationEntity.index];
-            // return new qIdRelationConstructor(relationEntity, property, q)
-            return new qIdRelationConstructor(relation.relationEntity, relation, q);
+            return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
         case EntityRelationType.ONE_TO_MANY:
             if (entity.isRepositoryEntity) {
                 return new QRepositoryEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
@@ -95,8 +94,8 @@ export function addColumnQField(entity, property, q, column) {
     return qFieldOrRelation;
 }
 export function getQEntityIdRelationConstructor(dbEntity) {
-    function QEntityIdRelation(entity, relation, qEntity) {
-        QEntityIdRelation.base.constructor.call(this, relation, qEntity);
+    function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
+        QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
         getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
@@ -165,7 +164,7 @@ export function getQEntityIdFields(addToObject, relationEntity, qEntity, parentP
     });
     return addToObject;
 }
-export function setQApplicationEntities(application, qApplication, allQApplications) {
+export function setQApplicationEntities(application, qApplication, allQApplications, appliationUtils, relationManager) {
     // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
     // application)
     qApplication.__qIdRelationConstructors__ = [];
@@ -213,7 +212,7 @@ export function setQApplicationEntities(application, qApplication, allQApplicati
             .filter(propertyName => propertyName === entity.name).length) {
             Object.defineProperty(qApplication, entity.name, {
                 get: function () {
-                    return new this.__qConstructors__[entity.index](entity);
+                    return new this.__qConstructors__[entity.index](entity, appliationUtils, relationManager);
                 }
             });
         }

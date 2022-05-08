@@ -11,10 +11,10 @@ import { and } from '../operation/LogicalOperation';
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-export function QRelation(dbRelation, parentQ, appliationUtils, relationManager) {
+export function QRelation(dbRelation, parentQ, applicationUtils, relationManager) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
-    this.appliationUtils = appliationUtils;
+    this.applicationUtils = applicationUtils;
     this.relationManager = relationManager;
 }
 QRelation.prototype.innerJoin = function () {
@@ -26,12 +26,12 @@ QRelation.prototype.leftJoin = function () {
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.relationEntity;
     const qEntityConstructor = this.applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
-    let newQEntity = new qEntityConstructor(dbEntity, this.appliationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.appliationUtils, this.relationManager);
+    let newQEntity = new qEntityConstructor(dbEntity, this.applicationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.applicationUtils, this.relationManager);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };
-export function QRepositoryEntityRelation(dbRelation, parentQ) {
-    QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ);
+export function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+    QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
 QRepositoryEntityRelation.prototype.equals = function (entity) {
     let thisRelation = this;

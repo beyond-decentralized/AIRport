@@ -3,7 +3,7 @@ import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
 import { IDbApplicationUtils } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
-import { AllDdlObjects, IApplicationInitializer, IQueryObjectInitializer, ITerminalStore } from '@airport/terminal-map';
+import { AllDdlObjects, IApplicationInitializer, IQueryObjectInitializer, ITerminalStore, ITransactionManager } from '@airport/terminal-map';
 import { IApplicationDao } from '@airport/airspace';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
@@ -22,6 +22,7 @@ export declare abstract class ApplicationInitializer implements IApplicationInit
     queryObjectInitializer: IQueryObjectInitializer;
     sequenceGenerator: ISequenceGenerator;
     terminalStore: ITerminalStore;
+    transactionManager: ITransactionManager;
     addNewApplicationVersionsToAll(ddlObjects: AllDdlObjects): void;
     hydrate(jsonApplications: JsonApplicationWithLastIds[], context: IContext): Promise<void>;
     initialize(jsonApplications: JsonApplicationWithLastIds[], context: IContext, checkDependencies: boolean, loadExistingApplications: boolean): Promise<void>;

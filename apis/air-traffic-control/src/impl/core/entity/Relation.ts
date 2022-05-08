@@ -24,12 +24,12 @@ import { IRelationManager } from './RelationManager'
 export function QRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
-	appliationUtils: IApplicationUtils,
+	applicationUtils: IApplicationUtils,
 	relationManager: IRelationManager
 ) {
 	this.dbRelation = dbRelation
 	this.parentQ = parentQ
-	this.appliationUtils = appliationUtils
+	this.applicationUtils = applicationUtils
 	this.relationManager = relationManager
 }
 
@@ -49,12 +49,12 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 
 	let newQEntity: IQEntityInternal = new qEntityConstructor(
 		dbEntity,
-		this.appliationUtils,
+		this.applicationUtils,
 		this.relationManager,
 		this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__),
 		this.dbRelation,
 		joinType,
-		this.appliationUtils,
+		this.applicationUtils,
 		this.relationManager
 	)
 	newQEntity.__driver__.parentJoinEntity = this.parentQ
@@ -65,8 +65,11 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 export function QRepositoryEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
+	applicationUtils: IApplicationUtils,
+	relationManager: IRelationManager,
 ) {
-	(<any>QRepositoryEntityRelation).base.constructor.call(this, dbRelation, parentQ)
+	(<any>QRepositoryEntityRelation).base.constructor.call(
+		this, dbRelation, parentQ, applicationUtils, relationManager)
 }
 
 QRepositoryEntityRelation.prototype.equals = function <Entity, IQ extends IQEntityInternal>(

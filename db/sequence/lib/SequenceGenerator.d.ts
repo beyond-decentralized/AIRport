@@ -2,6 +2,7 @@ import { ISequence, ISequenceDao } from '@airport/airport-code';
 import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
+import { ITerminalStore } from '../../../apis/terminal-map/lib';
 /**
  * Assumptions: 7/4/2019
  *
@@ -22,9 +23,11 @@ import { IContext } from '@airport/direction-indicator';
  */
 export declare class SequenceGenerator implements ISequenceGenerator {
     sequenceDao: ISequenceDao;
-    protected sequences: ISequence[][][];
-    protected sequenceBlocks: number[][][];
-    protected generatingSequenceNumbers: boolean;
+    terminalStore: ITerminalStore;
+    protected get sequences(): ISequence[][][];
+    protected get sequenceBlocks(): number[][][];
+    protected get generatingSequenceNumbers(): boolean;
+    protected set generatingSequenceNumbers(generatingSequenceNumbers: boolean);
     exists(dbEntity: DbEntity): boolean;
     initialize(context: IContext, sequences?: ISequence[]): Promise<void>;
     tempInitialize(context: IContext, sequences?: ISequence[]): Promise<void>;

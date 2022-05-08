@@ -64,7 +64,8 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
     queryObjectInitializer: QUERY_OBJECT_INITIALIZER,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER
 })
 
 APPLICATION_BUILDER.setDependencies({

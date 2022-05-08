@@ -20,22 +20,16 @@ import {
 	FullApplicationName
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern-runtime';
-import { Subject, Subscription } from 'rxjs';
-import { ITerminalState, ITerminalStateContainer } from './TerminalState';
-import { ITransaction } from '../transaction/ITransaction';
+import { Subject } from 'rxjs';
+import { InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/apron';
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { ISequenceGeneratorState } from '..';
 
-
-export interface InternalConnectorStore {
-	dbName: string
-	internalCredentials: ITransactionCredentials
-	serverUrl: string
-}
 export interface IMessageInRecord {
 	message: ILocalAPIRequest<'FromClientRedirected'>
 	reject
@@ -45,30 +39,6 @@ export interface IPendingTransaction {
 	credentials: ITransactionCredentials
 	reject
 	resolve
-}
-
-export interface IReceiverStore {
-	initializingApps: Set<FullApplicationName>
-	initializedApps: Set<FullApplicationName>
-}
-
-export interface ITransactionManagerStore {
-	pendingTransactionQueue: IPendingTransaction[]
-	transactionInProgressMap: Map<string, ITransaction>
-	rootTransactionInProgressMap: Map<string, ITransaction>
-}
-
-export interface IWebReceiverStore {
-	domainPrefix: string
-	localDomain: string
-	mainDomainFragments: string[]
-	onClientMessageCallback: (
-		message: any
-	) => void
-	pendingApplicationCounts: Map<string, number>
-	pendingHostCounts: Map<string, number>
-	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
-	subsriptionMap: Map<string, Map<string, Subscription>>
 }
 
 export interface ITerminalStore {
@@ -95,7 +65,7 @@ export interface ITerminalStore {
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
-	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
+	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
@@ -106,13 +76,15 @@ export interface ITerminalStore {
 
 	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
 
-	getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>
+	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
+
+	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
-	getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>
+	getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>
 
-	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
+	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
 	tearDown()
 }
@@ -151,7 +123,7 @@ export class TerminalStore
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
-	getInternalConnector: IMemoizedSelector<InternalConnectorStore, ITerminalState>
+	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
@@ -161,13 +133,15 @@ export class TerminalStore
 
 	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
 
-	getReceiver: IMemoizedSelector<IReceiverStore, ITerminalState>
+	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
+
+	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
-	getTransactionManager: IMemoizedSelector<ITransactionManagerStore, ITerminalState>
+	getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>
 
-	getWebReceiver: IMemoizedSelector<IWebReceiverStore, ITerminalState>
+	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
 	async init(): Promise<void> {
 
@@ -317,6 +291,9 @@ export class TerminalStore
 
 		this.getReceiver = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.receiver)
+
+		this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.sequenceGenerator)
 
 		this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.transactionManager)

@@ -1,11 +1,13 @@
-import { FunctionsAndOperators, IAirportDatabase, IDatabaseFacade, IDatabaseState, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-traffic-control';
+import { FunctionsAndOperators, IAirportDatabase, IApplicationUtils, IDatabaseFacade, IDatabaseState, IEntityAccumulator, IEntityContext, IEntityRecord, IEntityUpdateColumns, IEntityUpdateProperties, INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, IQEntity, IRelationManager, OperationName, QApplication, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/air-traffic-control';
 import { DbApplication, IDbApplicationUtils, ISaveResult } from '@airport/ground-control';
 export declare class AirportDatabase implements IAirportDatabase {
+    appliationUtils: IApplicationUtils;
     databaseFacade: IDatabaseFacade;
     databaseStore: IDatabaseState;
     dbApplicationUtils: IDbApplicationUtils;
     find: INonEntityFind;
     findOne: INonEntityFindOne;
+    relationManager: IRelationManager;
     search: INonEntitySearch;
     searchOne: INonEntitySearchOne;
     get entityMap(): Map<any, IEntityRecord>;

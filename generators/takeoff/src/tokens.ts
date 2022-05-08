@@ -1,4 +1,4 @@
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
+import { AIRPORT_DATABASE, APPLICATION_UTILS, RELATION_MANAGER } from '@airport/air-traffic-control'
 import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { lib } from '@airport/direction-indicator'
 import { IDdlObjectLinker, IQueryEntityClassCreator, IQueryObjectInitializer, TERMINAL_STORE } from '@airport/terminal-map'
@@ -54,7 +54,9 @@ DDL_OBJECT_RETRIEVER.setDependencies({
 })
 
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+	applicationUtils: APPLICATION_UTILS,
+	relationManager: RELATION_MANAGER,
 })
 
 QUERY_OBJECT_INITIALIZER.setDependencies({

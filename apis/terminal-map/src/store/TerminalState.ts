@@ -1,3 +1,5 @@
+import { ISequence } from '@airport/airport-code'
+import { IMessageInRecord, LastIds } from '@airport/apron'
 import { Injected } from '@airport/direction-indicator'
 import { IActor } from '@airport/holding-pattern-runtime'
 import type {
@@ -6,14 +8,48 @@ import type {
 } from '@airport/airspace'
 import type { ITerminal } from '@airport/travel-document-checkpoint-runtime'
 import {
-	InternalConnectorStore,
-	IReceiverStore,
-	ITransactionManagerStore,
-	IWebReceiverStore
+	IPendingTransaction,
 } from './TerminalStore'
-import { LastIds } from '@airport/apron'
 import { internalTerminalState } from './theState'
-import { Subject } from 'rxjs'
+import { Subject, Subscription } from 'rxjs'
+import { ITransaction } from '../transaction/ITransaction'
+import { ITransactionCredentials } from '../Credentials'
+import { FullApplicationName } from '@airport/ground-control'
+
+export interface IReceiverState {
+	initializingApps: Set<FullApplicationName>
+	initializedApps: Set<FullApplicationName>
+}
+
+export interface IWebReceiverState {
+	domainPrefix: string
+	localDomain: string
+	mainDomainFragments: string[]
+	onClientMessageCallback: (
+		message: any
+	) => void
+	pendingApplicationCounts: Map<string, number>
+	pendingHostCounts: Map<string, number>
+	pendingInterAppApiCallMessageMap: Map<string, IMessageInRecord>
+	subsriptionMap: Map<string, Map<string, Subscription>>
+}
+
+export interface InternalConnectorState {
+	dbName: string
+	internalCredentials: ITransactionCredentials
+	serverUrl: string
+}
+export interface ITransactionManagerState {
+	pendingTransactionQueue: IPendingTransaction[]
+	transactionInProgressMap: Map<string, ITransaction>
+	rootTransactionInProgressMap: Map<string, ITransaction>
+}
+
+export interface ISequenceGeneratorState {
+	sequences: ISequence[][][]
+	sequenceBlocks: number[][][]
+	generatingSequenceNumbers: boolean
+}
 
 export interface ITerminalState {
 
@@ -21,12 +57,13 @@ export interface ITerminalState {
 	applications: IApplication[]
 	domains: IDomain[]
 	frameworkActor: IActor
-	internalConnector: InternalConnectorStore
+	internalConnector: InternalConnectorState
 	lastIds: LastIds
-	receiver: IReceiverStore
+	receiver: IReceiverState
+	sequenceGenerator: ISequenceGeneratorState
 	terminal: ITerminal
-	transactionManager: ITransactionManagerStore
-	webReceiver: IWebReceiverStore
+	transactionManager: ITransactionManagerState
+	webReceiver: IWebReceiverState
 
 }
 

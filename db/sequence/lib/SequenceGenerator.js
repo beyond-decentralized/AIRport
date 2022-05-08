@@ -26,10 +26,18 @@ import { Inject, Injected } from '@airport/direction-indicator';
  *
  */
 let SequenceGenerator = class SequenceGenerator {
-    constructor() {
-        this.sequences = [];
-        this.sequenceBlocks = [];
-        this.generatingSequenceNumbers = false;
+    get sequences() {
+        return this.terminalStore.getSequenceGenerator().sequences;
+    }
+    get sequenceBlocks() {
+        return this.terminalStore.getSequenceGenerator().sequenceBlocks;
+    }
+    get generatingSequenceNumbers() {
+        return this.terminalStore.getSequenceGenerator().generatingSequenceNumbers;
+    }
+    set generatingSequenceNumbers(generatingSequenceNumbers) {
+        this.terminalStore.getSequenceGenerator().generatingSequenceNumbers
+            = generatingSequenceNumbers;
     }
     exists(dbEntity) {
         const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
@@ -136,6 +144,9 @@ let SequenceGenerator = class SequenceGenerator {
 __decorate([
     Inject()
 ], SequenceGenerator.prototype, "sequenceDao", void 0);
+__decorate([
+    Inject()
+], SequenceGenerator.prototype, "terminalStore", void 0);
 SequenceGenerator = __decorate([
     Injected()
 ], SequenceGenerator);

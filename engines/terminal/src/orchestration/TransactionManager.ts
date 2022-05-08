@@ -29,7 +29,7 @@ import {
 	ITransactionCredentials,
 	ITransactionInitiator,
 	ITransactionManager,
-	ITransactionManagerStore
+	ITransactionManagerState
 } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 
@@ -111,7 +111,8 @@ export class TransactionManager
 			await transactionalCallback(transaction, context);
 			await this.commit(credentials, context);
 		} catch (e) {
-			await this.rollback(credentials, context);
+			console.error(e)
+			await this.rollback(credentials, context)
 			throw e
 		}
 	}
@@ -360,7 +361,7 @@ ${callHerarchy}
 		credentials: ITransactionCredentials,
 		transaction: ITransaction,
 		parentTransaction: ITransaction,
-		transactionManagerStore: ITransactionManagerStore,
+		transactionManagerStore: ITransactionManagerState,
 		context: ITransactionContext,
 	): Promise<void> {
 		context.transaction = transaction

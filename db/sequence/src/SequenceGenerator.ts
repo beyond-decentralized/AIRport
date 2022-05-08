@@ -17,6 +17,7 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { ITerminalStore } from '../../../apis/terminal-map/lib';
 
 /**
  * Assumptions: 7/4/2019
@@ -43,10 +44,26 @@ export class SequenceGenerator
 	@Inject()
 	sequenceDao: ISequenceDao
 
-	protected sequences: ISequence[][][] = [];
-	protected sequenceBlocks: number[][][] = [];
+	@Inject()
+	terminalStore: ITerminalStore
 
-	protected generatingSequenceNumbers = false;
+	protected get sequences(): ISequence[][][] {
+		return this.terminalStore.getSequenceGenerator().sequences
+	}
+	protected get sequenceBlocks(): number[][][] {
+		return this.terminalStore.getSequenceGenerator().sequenceBlocks
+	}
+
+	protected get generatingSequenceNumbers(): boolean {
+		return this.terminalStore.getSequenceGenerator().generatingSequenceNumbers
+	}
+
+	protected set generatingSequenceNumbers(
+		generatingSequenceNumbers: boolean
+	) {
+		this.terminalStore.getSequenceGenerator().generatingSequenceNumbers
+			= generatingSequenceNumbers
+	}
 
 	exists(
 		dbEntity: DbEntity

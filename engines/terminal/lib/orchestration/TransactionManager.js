@@ -46,6 +46,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             await this.commit(credentials, context);
         }
         catch (e) {
+            console.error(e);
             await this.rollback(credentials, context);
             throw e;
         }

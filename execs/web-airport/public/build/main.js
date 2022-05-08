@@ -1,6 +1,6 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-function noop$1() { }
+function noop$2() { }
 function run(fn) {
     return fn();
 }
@@ -167,7 +167,7 @@ function init(component, options, instance, create_fragment, not_equal, props, a
         ctx: null,
         // state
         props,
-        update: noop$1,
+        update: noop$2,
         not_equal,
         bound: blank_object(),
         // lifecycle
@@ -226,7 +226,7 @@ function init(component, options, instance, create_fragment, not_equal, props, a
 class SvelteComponent {
     $destroy() {
         destroy_component(this, 1);
-        this.$destroy = noop$1;
+        this.$destroy = noop$2;
     }
     $on(type, callback) {
         const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
@@ -1528,15 +1528,15 @@ const { console: console_1 } = globals;
 
 function create_fragment(ctx) {
 	const block = {
-		c: noop$1,
+		c: noop$2,
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
-		m: noop$1,
-		p: noop$1,
-		i: noop$1,
-		o: noop$1,
-		d: noop$1
+		m: noop$2,
+		p: noop$2,
+		i: noop$2,
+		o: noop$2,
+		d: noop$2
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
@@ -3269,10 +3269,10 @@ class LogicalOperation extends Operation {
  * When calling:
  *   Q...Relation.base.constructor.call(this, relation, qEntity)
  */
-function QRelation(dbRelation, parentQ, appliationUtils, relationManager) {
+function QRelation(dbRelation, parentQ, applicationUtils, relationManager) {
     this.dbRelation = dbRelation;
     this.parentQ = parentQ;
-    this.appliationUtils = appliationUtils;
+    this.applicationUtils = applicationUtils;
     this.relationManager = relationManager;
 }
 QRelation.prototype.innerJoin = function () {
@@ -3284,12 +3284,12 @@ QRelation.prototype.leftJoin = function () {
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.relationEntity;
     const qEntityConstructor = this.applicationUtils.getQEntityConstructor(this.dbRelation.relationEntity);
-    let newQEntity = new qEntityConstructor(dbEntity, this.appliationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.appliationUtils, this.relationManager);
+    let newQEntity = new qEntityConstructor(dbEntity, this.applicationUtils, this.relationManager, this.relationManager.getNextChildJoinPosition(this.parentQ.__driver__), this.dbRelation, joinType, this.applicationUtils, this.relationManager);
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };
-function QRepositoryEntityRelation(dbRelation, parentQ) {
-    QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ);
+function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+    QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
 QRepositoryEntityRelation.prototype.equals = function (entity) {
     let thisRelation = this;
@@ -3785,8 +3785,7 @@ function getQRelation(entity, property, q, allQApplications, applicationUtils, r
             const relationApplication = relationEntity.applicationVersion.application;
             const qIdRelationConstructor = allQApplications[relationApplication.index]
                 .__qIdRelationConstructors__[relationEntity.index];
-            // return new qIdRelationConstructor(relationEntity, property, q)
-            return new qIdRelationConstructor(relation.relationEntity, relation, q);
+            return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
         case EntityRelationType.ONE_TO_MANY:
             if (entity.isRepositoryEntity) {
                 return new QRepositoryEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
@@ -3831,8 +3830,8 @@ function addColumnQField(entity, property, q, column) {
     return qFieldOrRelation;
 }
 function getQEntityIdRelationConstructor(dbEntity) {
-    function QEntityIdRelation(entity, relation, qEntity) {
-        QEntityIdRelation.base.constructor.call(this, relation, qEntity);
+    function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
+        QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
         getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
@@ -3901,7 +3900,7 @@ function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty
     });
     return addToObject;
 }
-function setQApplicationEntities(application, qApplication, allQApplications) {
+function setQApplicationEntities(application, qApplication, allQApplications, appliationUtils, relationManager) {
     // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
     // application)
     qApplication.__qIdRelationConstructors__ = [];
@@ -3949,7 +3948,7 @@ function setQApplicationEntities(application, qApplication, allQApplications) {
             .filter(propertyName => propertyName === entity.name).length) {
             Object.defineProperty(qApplication, entity.name, {
                 get: function () {
-                    return new this.__qConstructors__[entity.index](entity);
+                    return new this.__qConstructors__[entity.index](entity, appliationUtils, relationManager);
                 }
             });
         }
@@ -5220,17 +5219,17 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
+var extendStatics$1 = function(d, b) {
+    extendStatics$1 = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
         function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-    return extendStatics(d, b);
+    return extendStatics$1(d, b);
 };
 
-function __extends(d, b) {
+function __extends$1(d, b) {
     if (typeof b !== "function" && b !== null)
         throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
+    extendStatics$1(d, b);
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
@@ -5273,7 +5272,7 @@ function __generator(thisArg, body) {
     }
 }
 
-function __values(o) {
+function __values$1(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
     if (o && typeof o.length === "number") return {
@@ -5285,7 +5284,7 @@ function __values(o) {
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
 
-function __read(o, n) {
+function __read$1(o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
     var i = m.call(o), r, ar = [], e;
@@ -5302,7 +5301,7 @@ function __read(o, n) {
     return ar;
 }
 
-function __spreadArray(to, from) {
+function __spreadArray$1(to, from) {
     for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
         to[j] = from[i];
     return to;
@@ -5327,16 +5326,16 @@ function __asyncGenerator(thisArg, _arguments, generator) {
 function __asyncValues(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    return m ? m.call(o) : (o = typeof __values$1 === "function" ? __values$1(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 }
 
-function isFunction(value) {
+function isFunction$1(value) {
     return typeof value === 'function';
 }
 
-function createErrorClass(createImpl) {
+function createErrorClass$1(createImpl) {
     var _super = function (instance) {
         Error.call(instance);
         instance.stack = new Error().stack;
@@ -5347,7 +5346,7 @@ function createErrorClass(createImpl) {
     return ctorFunc;
 }
 
-var UnsubscriptionError = createErrorClass(function (_super) {
+var UnsubscriptionError$1 = createErrorClass$1(function (_super) {
     return function UnsubscriptionErrorImpl(errors) {
         _super(this);
         this.message = errors
@@ -5358,14 +5357,14 @@ var UnsubscriptionError = createErrorClass(function (_super) {
     };
 });
 
-function arrRemove(arr, item) {
+function arrRemove$1(arr, item) {
     if (arr) {
         var index = arr.indexOf(item);
         0 <= index && arr.splice(index, 1);
     }
 }
 
-var Subscription = (function () {
+var Subscription$1 = (function () {
     function Subscription(initialTeardown) {
         this.initialTeardown = initialTeardown;
         this.closed = false;
@@ -5382,7 +5381,7 @@ var Subscription = (function () {
                 this._parentage = null;
                 if (Array.isArray(_parentage)) {
                     try {
-                        for (var _parentage_1 = __values(_parentage), _parentage_1_1 = _parentage_1.next(); !_parentage_1_1.done; _parentage_1_1 = _parentage_1.next()) {
+                        for (var _parentage_1 = __values$1(_parentage), _parentage_1_1 = _parentage_1.next(); !_parentage_1_1.done; _parentage_1_1 = _parentage_1.next()) {
                             var parent_1 = _parentage_1_1.value;
                             parent_1.remove(this);
                         }
@@ -5400,27 +5399,27 @@ var Subscription = (function () {
                 }
             }
             var initialTeardown = this.initialTeardown;
-            if (isFunction(initialTeardown)) {
+            if (isFunction$1(initialTeardown)) {
                 try {
                     initialTeardown();
                 }
                 catch (e) {
-                    errors = e instanceof UnsubscriptionError ? e.errors : [e];
+                    errors = e instanceof UnsubscriptionError$1 ? e.errors : [e];
                 }
             }
             var _teardowns = this._teardowns;
             if (_teardowns) {
                 this._teardowns = null;
                 try {
-                    for (var _teardowns_1 = __values(_teardowns), _teardowns_1_1 = _teardowns_1.next(); !_teardowns_1_1.done; _teardowns_1_1 = _teardowns_1.next()) {
+                    for (var _teardowns_1 = __values$1(_teardowns), _teardowns_1_1 = _teardowns_1.next(); !_teardowns_1_1.done; _teardowns_1_1 = _teardowns_1.next()) {
                         var teardown_1 = _teardowns_1_1.value;
                         try {
-                            execTeardown(teardown_1);
+                            execTeardown$1(teardown_1);
                         }
                         catch (err) {
                             errors = errors !== null && errors !== void 0 ? errors : [];
-                            if (err instanceof UnsubscriptionError) {
-                                errors = __spreadArray(__spreadArray([], __read(errors)), __read(err.errors));
+                            if (err instanceof UnsubscriptionError$1) {
+                                errors = __spreadArray$1(__spreadArray$1([], __read$1(errors)), __read$1(err.errors));
                             }
                             else {
                                 errors.push(err);
@@ -5437,7 +5436,7 @@ var Subscription = (function () {
                 }
             }
             if (errors) {
-                throw new UnsubscriptionError(errors);
+                throw new UnsubscriptionError$1(errors);
             }
         }
     };
@@ -5445,7 +5444,7 @@ var Subscription = (function () {
         var _a;
         if (teardown && teardown !== this) {
             if (this.closed) {
-                execTeardown(teardown);
+                execTeardown$1(teardown);
             }
             else {
                 if (teardown instanceof Subscription) {
@@ -5472,12 +5471,12 @@ var Subscription = (function () {
             this._parentage = null;
         }
         else if (Array.isArray(_parentage)) {
-            arrRemove(_parentage, parent);
+            arrRemove$1(_parentage, parent);
         }
     };
     Subscription.prototype.remove = function (teardown) {
         var _teardowns = this._teardowns;
-        _teardowns && arrRemove(_teardowns, teardown);
+        _teardowns && arrRemove$1(_teardowns, teardown);
         if (teardown instanceof Subscription) {
             teardown._removeParent(this);
         }
@@ -5489,13 +5488,13 @@ var Subscription = (function () {
     })();
     return Subscription;
 }());
-var EMPTY_SUBSCRIPTION = Subscription.EMPTY;
-function isSubscription(value) {
-    return (value instanceof Subscription ||
-        (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe)));
+var EMPTY_SUBSCRIPTION$1 = Subscription$1.EMPTY;
+function isSubscription$1(value) {
+    return (value instanceof Subscription$1 ||
+        (value && 'closed' in value && isFunction$1(value.remove) && isFunction$1(value.add) && isFunction$1(value.unsubscribe)));
 }
-function execTeardown(teardown) {
-    if (isFunction(teardown)) {
+function execTeardown$1(teardown) {
+    if (isFunction$1(teardown)) {
         teardown();
     }
     else {
@@ -5503,7 +5502,7 @@ function execTeardown(teardown) {
     }
 }
 
-var config = {
+var config$1 = {
     onUnhandledError: null,
     onStoppedNotification: null,
     Promise: undefined,
@@ -5511,25 +5510,25 @@ var config = {
     useDeprecatedNextContext: false,
 };
 
-var timeoutProvider = {
+var timeoutProvider$1 = {
     setTimeout: function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
-        var delegate = timeoutProvider.delegate;
-        return ((delegate === null || delegate === void 0 ? void 0 : delegate.setTimeout) || setTimeout).apply(void 0, __spreadArray([], __read(args)));
+        var delegate = timeoutProvider$1.delegate;
+        return ((delegate === null || delegate === void 0 ? void 0 : delegate.setTimeout) || setTimeout).apply(void 0, __spreadArray$1([], __read$1(args)));
     },
     clearTimeout: function (handle) {
-        var delegate = timeoutProvider.delegate;
+        var delegate = timeoutProvider$1.delegate;
         return ((delegate === null || delegate === void 0 ? void 0 : delegate.clearTimeout) || clearTimeout)(handle);
     },
     delegate: undefined,
 };
 
-function reportUnhandledError(err) {
-    timeoutProvider.setTimeout(function () {
-        var onUnhandledError = config.onUnhandledError;
+function reportUnhandledError$1(err) {
+    timeoutProvider$1.setTimeout(function () {
+        var onUnhandledError = config$1.onUnhandledError;
         if (onUnhandledError) {
             onUnhandledError(err);
         }
@@ -5539,7 +5538,7 @@ function reportUnhandledError(err) {
     });
 }
 
-function noop() { }
+function noop$1() { }
 
 var COMPLETE_NOTIFICATION = (function () { return createNotification('C', undefined, undefined); })();
 function errorNotification(error) {
@@ -5556,17 +5555,17 @@ function createNotification(kind, value, error) {
     };
 }
 
-var context = null;
-function errorContext(cb) {
-    if (config.useDeprecatedSynchronousErrorHandling) {
-        var isRoot = !context;
+var context$1 = null;
+function errorContext$1(cb) {
+    if (config$1.useDeprecatedSynchronousErrorHandling) {
+        var isRoot = !context$1;
         if (isRoot) {
-            context = { errorThrown: false, error: null };
+            context$1 = { errorThrown: false, error: null };
         }
         cb();
         if (isRoot) {
-            var _a = context, errorThrown = _a.errorThrown, error = _a.error;
-            context = null;
+            var _a = context$1, errorThrown = _a.errorThrown, error = _a.error;
+            context$1 = null;
             if (errorThrown) {
                 throw error;
             }
@@ -5577,30 +5576,30 @@ function errorContext(cb) {
     }
 }
 function captureError(err) {
-    if (config.useDeprecatedSynchronousErrorHandling && context) {
-        context.errorThrown = true;
-        context.error = err;
+    if (config$1.useDeprecatedSynchronousErrorHandling && context$1) {
+        context$1.errorThrown = true;
+        context$1.error = err;
     }
 }
 
-var Subscriber = (function (_super) {
-    __extends(Subscriber, _super);
+var Subscriber$1 = (function (_super) {
+    __extends$1(Subscriber, _super);
     function Subscriber(destination) {
         var _this = _super.call(this) || this;
         _this.isStopped = false;
         if (destination) {
             _this.destination = destination;
-            if (isSubscription(destination)) {
+            if (isSubscription$1(destination)) {
                 destination.add(_this);
             }
         }
         else {
-            _this.destination = EMPTY_OBSERVER;
+            _this.destination = EMPTY_OBSERVER$1;
         }
         return _this;
     }
     Subscriber.create = function (next, error, complete) {
-        return new SafeSubscriber(next, error, complete);
+        return new SafeSubscriber$1(next, error, complete);
     };
     Subscriber.prototype.next = function (value) {
         if (this.isStopped) {
@@ -5655,19 +5654,19 @@ var Subscriber = (function (_super) {
         }
     };
     return Subscriber;
-}(Subscription));
-var SafeSubscriber = (function (_super) {
-    __extends(SafeSubscriber, _super);
+}(Subscription$1));
+var SafeSubscriber$1 = (function (_super) {
+    __extends$1(SafeSubscriber, _super);
     function SafeSubscriber(observerOrNext, error, complete) {
         var _this = _super.call(this) || this;
         var next;
-        if (isFunction(observerOrNext)) {
+        if (isFunction$1(observerOrNext)) {
             next = observerOrNext;
         }
         else if (observerOrNext) {
             (next = observerOrNext.next, error = observerOrNext.error, complete = observerOrNext.complete);
             var context_1;
-            if (_this && config.useDeprecatedNextContext) {
+            if (_this && config$1.useDeprecatedNextContext) {
                 context_1 = Object.create(observerOrNext);
                 context_1.unsubscribe = function () { return _this.unsubscribe(); };
             }
@@ -5679,56 +5678,56 @@ var SafeSubscriber = (function (_super) {
             complete = complete === null || complete === void 0 ? void 0 : complete.bind(context_1);
         }
         _this.destination = {
-            next: next ? wrapForErrorHandling(next) : noop,
-            error: wrapForErrorHandling(error !== null && error !== void 0 ? error : defaultErrorHandler),
-            complete: complete ? wrapForErrorHandling(complete) : noop,
+            next: next ? wrapForErrorHandling$1(next) : noop$1,
+            error: wrapForErrorHandling$1(error !== null && error !== void 0 ? error : defaultErrorHandler$1),
+            complete: complete ? wrapForErrorHandling$1(complete) : noop$1,
         };
         return _this;
     }
     return SafeSubscriber;
-}(Subscriber));
-function wrapForErrorHandling(handler, instance) {
+}(Subscriber$1));
+function wrapForErrorHandling$1(handler, instance) {
     return function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
         }
         try {
-            handler.apply(void 0, __spreadArray([], __read(args)));
+            handler.apply(void 0, __spreadArray$1([], __read$1(args)));
         }
         catch (err) {
-            if (config.useDeprecatedSynchronousErrorHandling) {
+            if (config$1.useDeprecatedSynchronousErrorHandling) {
                 captureError(err);
             }
             else {
-                reportUnhandledError(err);
+                reportUnhandledError$1(err);
             }
         }
     };
 }
-function defaultErrorHandler(err) {
+function defaultErrorHandler$1(err) {
     throw err;
 }
 function handleStoppedNotification(notification, subscriber) {
-    var onStoppedNotification = config.onStoppedNotification;
-    onStoppedNotification && timeoutProvider.setTimeout(function () { return onStoppedNotification(notification, subscriber); });
+    var onStoppedNotification = config$1.onStoppedNotification;
+    onStoppedNotification && timeoutProvider$1.setTimeout(function () { return onStoppedNotification(notification, subscriber); });
 }
-var EMPTY_OBSERVER = {
+var EMPTY_OBSERVER$1 = {
     closed: true,
-    next: noop,
-    error: defaultErrorHandler,
-    complete: noop,
+    next: noop$1,
+    error: defaultErrorHandler$1,
+    complete: noop$1,
 };
 
-var observable = (function () { return (typeof Symbol === 'function' && Symbol.observable) || '@@observable'; })();
+var observable$1 = (function () { return (typeof Symbol === 'function' && Symbol.observable) || '@@observable'; })();
 
-function identity(x) {
+function identity$1(x) {
     return x;
 }
 
-function pipeFromArray(fns) {
+function pipeFromArray$1(fns) {
     if (fns.length === 0) {
-        return identity;
+        return identity$1;
     }
     if (fns.length === 1) {
         return fns[0];
@@ -5738,7 +5737,7 @@ function pipeFromArray(fns) {
     };
 }
 
-var Observable = (function () {
+var Observable$1 = (function () {
     function Observable(subscribe) {
         if (subscribe) {
             this._subscribe = subscribe;
@@ -5752,8 +5751,8 @@ var Observable = (function () {
     };
     Observable.prototype.subscribe = function (observerOrNext, error, complete) {
         var _this = this;
-        var subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
-        errorContext(function () {
+        var subscriber = isSubscriber$1(observerOrNext) ? observerOrNext : new SafeSubscriber$1(observerOrNext, error, complete);
+        errorContext$1(function () {
             var _a = _this, operator = _a.operator, source = _a.source;
             subscriber.add(operator
                 ?
@@ -5776,7 +5775,7 @@ var Observable = (function () {
     };
     Observable.prototype.forEach = function (next, promiseCtor) {
         var _this = this;
-        promiseCtor = getPromiseCtor(promiseCtor);
+        promiseCtor = getPromiseCtor$1(promiseCtor);
         return new promiseCtor(function (resolve, reject) {
             var subscription;
             subscription = _this.subscribe(function (value) {
@@ -5794,7 +5793,7 @@ var Observable = (function () {
         var _a;
         return (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber);
     };
-    Observable.prototype[observable] = function () {
+    Observable.prototype[observable$1] = function () {
         return this;
     };
     Observable.prototype.pipe = function () {
@@ -5802,11 +5801,11 @@ var Observable = (function () {
         for (var _i = 0; _i < arguments.length; _i++) {
             operations[_i] = arguments[_i];
         }
-        return pipeFromArray(operations)(this);
+        return pipeFromArray$1(operations)(this);
     };
     Observable.prototype.toPromise = function (promiseCtor) {
         var _this = this;
-        promiseCtor = getPromiseCtor(promiseCtor);
+        promiseCtor = getPromiseCtor$1(promiseCtor);
         return new promiseCtor(function (resolve, reject) {
             var value;
             _this.subscribe(function (x) { return (value = x); }, function (err) { return reject(err); }, function () { return resolve(value); });
@@ -5817,19 +5816,19 @@ var Observable = (function () {
     };
     return Observable;
 }());
-function getPromiseCtor(promiseCtor) {
+function getPromiseCtor$1(promiseCtor) {
     var _a;
-    return (_a = promiseCtor !== null && promiseCtor !== void 0 ? promiseCtor : config.Promise) !== null && _a !== void 0 ? _a : Promise;
+    return (_a = promiseCtor !== null && promiseCtor !== void 0 ? promiseCtor : config$1.Promise) !== null && _a !== void 0 ? _a : Promise;
 }
-function isObserver(value) {
-    return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
+function isObserver$1(value) {
+    return value && isFunction$1(value.next) && isFunction$1(value.error) && isFunction$1(value.complete);
 }
-function isSubscriber(value) {
-    return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
+function isSubscriber$1(value) {
+    return (value && value instanceof Subscriber$1) || (isObserver$1(value) && isSubscription$1(value));
 }
 
 function hasLift(source) {
-    return isFunction(source === null || source === void 0 ? void 0 : source.lift);
+    return isFunction$1(source === null || source === void 0 ? void 0 : source.lift);
 }
 function operate(init) {
     return function (source) {
@@ -5848,7 +5847,7 @@ function operate(init) {
 }
 
 var OperatorSubscriber = (function (_super) {
-    __extends(OperatorSubscriber, _super);
+    __extends$1(OperatorSubscriber, _super);
     function OperatorSubscriber(destination, onNext, onComplete, onError, onFinalize) {
         var _this = _super.call(this, destination) || this;
         _this.onFinalize = onFinalize;
@@ -5897,9 +5896,9 @@ var OperatorSubscriber = (function (_super) {
         !closed && ((_a = this.onFinalize) === null || _a === void 0 ? void 0 : _a.call(this));
     };
     return OperatorSubscriber;
-}(Subscriber));
+}(Subscriber$1));
 
-var ObjectUnsubscribedError = createErrorClass(function (_super) {
+var ObjectUnsubscribedError$1 = createErrorClass$1(function (_super) {
     return function ObjectUnsubscribedErrorImpl() {
         _super(this);
         this.name = 'ObjectUnsubscribedError';
@@ -5907,8 +5906,8 @@ var ObjectUnsubscribedError = createErrorClass(function (_super) {
     };
 });
 
-var Subject = (function (_super) {
-    __extends(Subject, _super);
+var Subject$1 = (function (_super) {
+    __extends$1(Subject, _super);
     function Subject() {
         var _this = _super.call(this) || this;
         _this.closed = false;
@@ -5919,24 +5918,24 @@ var Subject = (function (_super) {
         return _this;
     }
     Subject.prototype.lift = function (operator) {
-        var subject = new AnonymousSubject(this, this);
+        var subject = new AnonymousSubject$1(this, this);
         subject.operator = operator;
         return subject;
     };
     Subject.prototype._throwIfClosed = function () {
         if (this.closed) {
-            throw new ObjectUnsubscribedError();
+            throw new ObjectUnsubscribedError$1();
         }
     };
     Subject.prototype.next = function (value) {
         var _this = this;
-        errorContext(function () {
+        errorContext$1(function () {
             var e_1, _a;
             _this._throwIfClosed();
             if (!_this.isStopped) {
                 var copy = _this.observers.slice();
                 try {
-                    for (var copy_1 = __values(copy), copy_1_1 = copy_1.next(); !copy_1_1.done; copy_1_1 = copy_1.next()) {
+                    for (var copy_1 = __values$1(copy), copy_1_1 = copy_1.next(); !copy_1_1.done; copy_1_1 = copy_1.next()) {
                         var observer = copy_1_1.value;
                         observer.next(value);
                     }
@@ -5953,7 +5952,7 @@ var Subject = (function (_super) {
     };
     Subject.prototype.error = function (err) {
         var _this = this;
-        errorContext(function () {
+        errorContext$1(function () {
             _this._throwIfClosed();
             if (!_this.isStopped) {
                 _this.hasError = _this.isStopped = true;
@@ -5967,7 +5966,7 @@ var Subject = (function (_super) {
     };
     Subject.prototype.complete = function () {
         var _this = this;
-        errorContext(function () {
+        errorContext$1(function () {
             _this._throwIfClosed();
             if (!_this.isStopped) {
                 _this.isStopped = true;
@@ -6002,8 +6001,8 @@ var Subject = (function (_super) {
     Subject.prototype._innerSubscribe = function (subscriber) {
         var _a = this, hasError = _a.hasError, isStopped = _a.isStopped, observers = _a.observers;
         return hasError || isStopped
-            ? EMPTY_SUBSCRIPTION
-            : (observers.push(subscriber), new Subscription(function () { return arrRemove(observers, subscriber); }));
+            ? EMPTY_SUBSCRIPTION$1
+            : (observers.push(subscriber), new Subscription$1(function () { return arrRemove$1(observers, subscriber); }));
     };
     Subject.prototype._checkFinalizedStatuses = function (subscriber) {
         var _a = this, hasError = _a.hasError, thrownError = _a.thrownError, isStopped = _a.isStopped;
@@ -6015,17 +6014,17 @@ var Subject = (function (_super) {
         }
     };
     Subject.prototype.asObservable = function () {
-        var observable = new Observable();
+        var observable = new Observable$1();
         observable.source = this;
         return observable;
     };
     Subject.create = function (destination, source) {
-        return new AnonymousSubject(destination, source);
+        return new AnonymousSubject$1(destination, source);
     };
     return Subject;
-}(Observable));
-var AnonymousSubject = (function (_super) {
-    __extends(AnonymousSubject, _super);
+}(Observable$1));
+var AnonymousSubject$1 = (function (_super) {
+    __extends$1(AnonymousSubject, _super);
     function AnonymousSubject(destination, source) {
         var _this = _super.call(this) || this;
         _this.destination = destination;
@@ -6046,56 +6045,23 @@ var AnonymousSubject = (function (_super) {
     };
     AnonymousSubject.prototype._subscribe = function (subscriber) {
         var _a, _b;
-        return (_b = (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber)) !== null && _b !== void 0 ? _b : EMPTY_SUBSCRIPTION;
+        return (_b = (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber)) !== null && _b !== void 0 ? _b : EMPTY_SUBSCRIPTION$1;
     };
     return AnonymousSubject;
-}(Subject));
-
-var BehaviorSubject = (function (_super) {
-    __extends(BehaviorSubject, _super);
-    function BehaviorSubject(_value) {
-        var _this = _super.call(this) || this;
-        _this._value = _value;
-        return _this;
-    }
-    Object.defineProperty(BehaviorSubject.prototype, "value", {
-        get: function () {
-            return this.getValue();
-        },
-        enumerable: false,
-        configurable: true
-    });
-    BehaviorSubject.prototype._subscribe = function (subscriber) {
-        var subscription = _super.prototype._subscribe.call(this, subscriber);
-        !subscription.closed && subscriber.next(this._value);
-        return subscription;
-    };
-    BehaviorSubject.prototype.getValue = function () {
-        var _a = this, hasError = _a.hasError, thrownError = _a.thrownError, _value = _a._value;
-        if (hasError) {
-            throw thrownError;
-        }
-        this._throwIfClosed();
-        return _value;
-    };
-    BehaviorSubject.prototype.next = function (value) {
-        _super.prototype.next.call(this, (this._value = value));
-    };
-    return BehaviorSubject;
-}(Subject));
+}(Subject$1));
 
 var isArrayLike = (function (x) { return x && typeof x.length === 'number' && typeof x !== 'function'; });
 
 function isPromise(value) {
-    return isFunction(value === null || value === void 0 ? void 0 : value.then);
+    return isFunction$1(value === null || value === void 0 ? void 0 : value.then);
 }
 
 function isInteropObservable(input) {
-    return isFunction(input[observable]);
+    return isFunction$1(input[observable$1]);
 }
 
 function isAsyncIterable(obj) {
-    return Symbol.asyncIterator && isFunction(obj === null || obj === void 0 ? void 0 : obj[Symbol.asyncIterator]);
+    return Symbol.asyncIterator && isFunction$1(obj === null || obj === void 0 ? void 0 : obj[Symbol.asyncIterator]);
 }
 
 function createInvalidObservableTypeError(input) {
@@ -6111,7 +6077,7 @@ function getSymbolIterator() {
 var iterator = getSymbolIterator();
 
 function isIterable(input) {
-    return isFunction(input === null || input === void 0 ? void 0 : input[iterator]);
+    return isFunction$1(input === null || input === void 0 ? void 0 : input[iterator]);
 }
 
 function readableStreamLikeToAsyncGenerator(readableStream) {
@@ -6147,11 +6113,11 @@ function readableStreamLikeToAsyncGenerator(readableStream) {
     });
 }
 function isReadableStreamLike(obj) {
-    return isFunction(obj === null || obj === void 0 ? void 0 : obj.getReader);
+    return isFunction$1(obj === null || obj === void 0 ? void 0 : obj.getReader);
 }
 
 function innerFrom(input) {
-    if (input instanceof Observable) {
+    if (input instanceof Observable$1) {
         return input;
     }
     if (input != null) {
@@ -6177,16 +6143,16 @@ function innerFrom(input) {
     throw createInvalidObservableTypeError(input);
 }
 function fromInteropObservable(obj) {
-    return new Observable(function (subscriber) {
-        var obs = obj[observable]();
-        if (isFunction(obs.subscribe)) {
+    return new Observable$1(function (subscriber) {
+        var obs = obj[observable$1]();
+        if (isFunction$1(obs.subscribe)) {
             return obs.subscribe(subscriber);
         }
         throw new TypeError('Provided object does not correctly implement Symbol.observable');
     });
 }
 function fromArrayLike(array) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         for (var i = 0; i < array.length && !subscriber.closed; i++) {
             subscriber.next(array[i]);
         }
@@ -6194,7 +6160,7 @@ function fromArrayLike(array) {
     });
 }
 function fromPromise(promise) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         promise
             .then(function (value) {
             if (!subscriber.closed) {
@@ -6202,14 +6168,14 @@ function fromPromise(promise) {
                 subscriber.complete();
             }
         }, function (err) { return subscriber.error(err); })
-            .then(null, reportUnhandledError);
+            .then(null, reportUnhandledError$1);
     });
 }
 function fromIterable(iterable) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         var e_1, _a;
         try {
-            for (var iterable_1 = __values(iterable), iterable_1_1 = iterable_1.next(); !iterable_1_1.done; iterable_1_1 = iterable_1.next()) {
+            for (var iterable_1 = __values$1(iterable), iterable_1_1 = iterable_1.next(); !iterable_1_1.done; iterable_1_1 = iterable_1.next()) {
                 var value = iterable_1_1.value;
                 subscriber.next(value);
                 if (subscriber.closed) {
@@ -6228,7 +6194,7 @@ function fromIterable(iterable) {
     });
 }
 function fromAsyncIterable(asyncIterable) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         process$1(asyncIterable, subscriber).catch(function (err) { return subscriber.error(err); });
     });
 }
@@ -6322,7 +6288,7 @@ function schedulePromise(input, scheduler) {
 }
 
 function scheduleArray(input, scheduler) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         var i = 0;
         return scheduler.schedule(function () {
             if (i === input.length) {
@@ -6339,7 +6305,7 @@ function scheduleArray(input, scheduler) {
 }
 
 function scheduleIterable(input, scheduler) {
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         var iterator$1;
         executeSchedule(subscriber, scheduler, function () {
             iterator$1 = input[iterator]();
@@ -6362,7 +6328,7 @@ function scheduleIterable(input, scheduler) {
                 }
             }, 0, true);
         });
-        return function () { return isFunction(iterator$1 === null || iterator$1 === void 0 ? void 0 : iterator$1.return) && iterator$1.return(); };
+        return function () { return isFunction$1(iterator$1 === null || iterator$1 === void 0 ? void 0 : iterator$1.return) && iterator$1.return(); };
     });
 }
 
@@ -6370,7 +6336,7 @@ function scheduleAsyncIterable(input, scheduler) {
     if (!input) {
         throw new Error('Iterable cannot be null');
     }
-    return new Observable(function (subscriber) {
+    return new Observable$1(function (subscriber) {
         executeSchedule(subscriber, scheduler, function () {
             var iterator = input[Symbol.asyncIterator]();
             executeSchedule(subscriber, scheduler, function () {
@@ -6429,7 +6395,7 @@ function map(project, thisArg) {
 }
 
 function distinctUntilChanged(comparator, keySelector) {
-    if (keySelector === void 0) { keySelector = identity; }
+    if (keySelector === void 0) { keySelector = identity$1; }
     comparator = comparator !== null && comparator !== void 0 ? comparator : defaultCompare;
     return operate(function (source, subscriber) {
         var previousKey;
@@ -7949,11 +7915,13 @@ const UTILS = airTrafficControl.token({
     token: 'UTILS'
 });
 AIRPORT_DATABASE.setDependencies({
+    appliationUtils: APPLICATION_UTILS,
     databaseFacade: DATABASE_FACADE,
     databaseStore: DATABASE_STORE,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     find: NON_ENTITY_FIND,
     findOne: NON_ENTITY_FIND_ONE,
+    relationManager: RELATION_MANAGER,
     search: NON_ENTITY_SEARCH,
     searchOne: NON_ENTITY_SEARCH_ONE
 });
@@ -8013,6 +7981,715 @@ var RepositoryEntityType;
 })(RepositoryEntityType || (RepositoryEntityType = {}));
 const REPOSITORY_FIELD = 'repository';
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    if (typeof b !== "function" && b !== null)
+        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spreadArray(to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+}
+
+function isFunction(value) {
+    return typeof value === 'function';
+}
+
+function createErrorClass(createImpl) {
+    var _super = function (instance) {
+        Error.call(instance);
+        instance.stack = new Error().stack;
+    };
+    var ctorFunc = createImpl(_super);
+    ctorFunc.prototype = Object.create(Error.prototype);
+    ctorFunc.prototype.constructor = ctorFunc;
+    return ctorFunc;
+}
+
+var UnsubscriptionError = createErrorClass(function (_super) {
+    return function UnsubscriptionErrorImpl(errors) {
+        _super(this);
+        this.message = errors
+            ? errors.length + " errors occurred during unsubscription:\n" + errors.map(function (err, i) { return i + 1 + ") " + err.toString(); }).join('\n  ')
+            : '';
+        this.name = 'UnsubscriptionError';
+        this.errors = errors;
+    };
+});
+
+function arrRemove(arr, item) {
+    if (arr) {
+        var index = arr.indexOf(item);
+        0 <= index && arr.splice(index, 1);
+    }
+}
+
+var Subscription = (function () {
+    function Subscription(initialTeardown) {
+        this.initialTeardown = initialTeardown;
+        this.closed = false;
+        this._parentage = null;
+        this._teardowns = null;
+    }
+    Subscription.prototype.unsubscribe = function () {
+        var e_1, _a, e_2, _b;
+        var errors;
+        if (!this.closed) {
+            this.closed = true;
+            var _parentage = this._parentage;
+            if (_parentage) {
+                this._parentage = null;
+                if (Array.isArray(_parentage)) {
+                    try {
+                        for (var _parentage_1 = __values(_parentage), _parentage_1_1 = _parentage_1.next(); !_parentage_1_1.done; _parentage_1_1 = _parentage_1.next()) {
+                            var parent_1 = _parentage_1_1.value;
+                            parent_1.remove(this);
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (_parentage_1_1 && !_parentage_1_1.done && (_a = _parentage_1.return)) _a.call(_parentage_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                }
+                else {
+                    _parentage.remove(this);
+                }
+            }
+            var initialTeardown = this.initialTeardown;
+            if (isFunction(initialTeardown)) {
+                try {
+                    initialTeardown();
+                }
+                catch (e) {
+                    errors = e instanceof UnsubscriptionError ? e.errors : [e];
+                }
+            }
+            var _teardowns = this._teardowns;
+            if (_teardowns) {
+                this._teardowns = null;
+                try {
+                    for (var _teardowns_1 = __values(_teardowns), _teardowns_1_1 = _teardowns_1.next(); !_teardowns_1_1.done; _teardowns_1_1 = _teardowns_1.next()) {
+                        var teardown_1 = _teardowns_1_1.value;
+                        try {
+                            execTeardown(teardown_1);
+                        }
+                        catch (err) {
+                            errors = errors !== null && errors !== void 0 ? errors : [];
+                            if (err instanceof UnsubscriptionError) {
+                                errors = __spreadArray(__spreadArray([], __read(errors)), __read(err.errors));
+                            }
+                            else {
+                                errors.push(err);
+                            }
+                        }
+                    }
+                }
+                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                finally {
+                    try {
+                        if (_teardowns_1_1 && !_teardowns_1_1.done && (_b = _teardowns_1.return)) _b.call(_teardowns_1);
+                    }
+                    finally { if (e_2) throw e_2.error; }
+                }
+            }
+            if (errors) {
+                throw new UnsubscriptionError(errors);
+            }
+        }
+    };
+    Subscription.prototype.add = function (teardown) {
+        var _a;
+        if (teardown && teardown !== this) {
+            if (this.closed) {
+                execTeardown(teardown);
+            }
+            else {
+                if (teardown instanceof Subscription) {
+                    if (teardown.closed || teardown._hasParent(this)) {
+                        return;
+                    }
+                    teardown._addParent(this);
+                }
+                (this._teardowns = (_a = this._teardowns) !== null && _a !== void 0 ? _a : []).push(teardown);
+            }
+        }
+    };
+    Subscription.prototype._hasParent = function (parent) {
+        var _parentage = this._parentage;
+        return _parentage === parent || (Array.isArray(_parentage) && _parentage.includes(parent));
+    };
+    Subscription.prototype._addParent = function (parent) {
+        var _parentage = this._parentage;
+        this._parentage = Array.isArray(_parentage) ? (_parentage.push(parent), _parentage) : _parentage ? [_parentage, parent] : parent;
+    };
+    Subscription.prototype._removeParent = function (parent) {
+        var _parentage = this._parentage;
+        if (_parentage === parent) {
+            this._parentage = null;
+        }
+        else if (Array.isArray(_parentage)) {
+            arrRemove(_parentage, parent);
+        }
+    };
+    Subscription.prototype.remove = function (teardown) {
+        var _teardowns = this._teardowns;
+        _teardowns && arrRemove(_teardowns, teardown);
+        if (teardown instanceof Subscription) {
+            teardown._removeParent(this);
+        }
+    };
+    Subscription.EMPTY = (function () {
+        var empty = new Subscription();
+        empty.closed = true;
+        return empty;
+    })();
+    return Subscription;
+}());
+var EMPTY_SUBSCRIPTION = Subscription.EMPTY;
+function isSubscription(value) {
+    return (value instanceof Subscription ||
+        (value && 'closed' in value && isFunction(value.remove) && isFunction(value.add) && isFunction(value.unsubscribe)));
+}
+function execTeardown(teardown) {
+    if (isFunction(teardown)) {
+        teardown();
+    }
+    else {
+        teardown.unsubscribe();
+    }
+}
+
+var config = {
+    onUnhandledError: null,
+    onStoppedNotification: null,
+    Promise: undefined,
+    useDeprecatedSynchronousErrorHandling: false,
+    useDeprecatedNextContext: false,
+};
+
+var timeoutProvider = {
+    setTimeout: function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var delegate = timeoutProvider.delegate;
+        return ((delegate === null || delegate === void 0 ? void 0 : delegate.setTimeout) || setTimeout).apply(void 0, __spreadArray([], __read(args)));
+    },
+    clearTimeout: function (handle) {
+        var delegate = timeoutProvider.delegate;
+        return ((delegate === null || delegate === void 0 ? void 0 : delegate.clearTimeout) || clearTimeout)(handle);
+    },
+    delegate: undefined,
+};
+
+function reportUnhandledError(err) {
+    timeoutProvider.setTimeout(function () {
+        {
+            throw err;
+        }
+    });
+}
+
+function noop() { }
+
+var context = null;
+function errorContext(cb) {
+    if (config.useDeprecatedSynchronousErrorHandling) {
+        var isRoot = !context;
+        if (isRoot) {
+            context = { errorThrown: false, error: null };
+        }
+        cb();
+        if (isRoot) {
+            var _a = context, errorThrown = _a.errorThrown, error = _a.error;
+            context = null;
+            if (errorThrown) {
+                throw error;
+            }
+        }
+    }
+    else {
+        cb();
+    }
+}
+
+var Subscriber = (function (_super) {
+    __extends(Subscriber, _super);
+    function Subscriber(destination) {
+        var _this = _super.call(this) || this;
+        _this.isStopped = false;
+        if (destination) {
+            _this.destination = destination;
+            if (isSubscription(destination)) {
+                destination.add(_this);
+            }
+        }
+        else {
+            _this.destination = EMPTY_OBSERVER;
+        }
+        return _this;
+    }
+    Subscriber.create = function (next, error, complete) {
+        return new SafeSubscriber(next, error, complete);
+    };
+    Subscriber.prototype.next = function (value) {
+        if (this.isStopped) ;
+        else {
+            this._next(value);
+        }
+    };
+    Subscriber.prototype.error = function (err) {
+        if (this.isStopped) ;
+        else {
+            this.isStopped = true;
+            this._error(err);
+        }
+    };
+    Subscriber.prototype.complete = function () {
+        if (this.isStopped) ;
+        else {
+            this.isStopped = true;
+            this._complete();
+        }
+    };
+    Subscriber.prototype.unsubscribe = function () {
+        if (!this.closed) {
+            this.isStopped = true;
+            _super.prototype.unsubscribe.call(this);
+            this.destination = null;
+        }
+    };
+    Subscriber.prototype._next = function (value) {
+        this.destination.next(value);
+    };
+    Subscriber.prototype._error = function (err) {
+        try {
+            this.destination.error(err);
+        }
+        finally {
+            this.unsubscribe();
+        }
+    };
+    Subscriber.prototype._complete = function () {
+        try {
+            this.destination.complete();
+        }
+        finally {
+            this.unsubscribe();
+        }
+    };
+    return Subscriber;
+}(Subscription));
+var SafeSubscriber = (function (_super) {
+    __extends(SafeSubscriber, _super);
+    function SafeSubscriber(observerOrNext, error, complete) {
+        var _this = _super.call(this) || this;
+        var next;
+        if (isFunction(observerOrNext)) {
+            next = observerOrNext;
+        }
+        else if (observerOrNext) {
+            (next = observerOrNext.next, error = observerOrNext.error, complete = observerOrNext.complete);
+            var context_1;
+            if (_this && config.useDeprecatedNextContext) {
+                context_1 = Object.create(observerOrNext);
+                context_1.unsubscribe = function () { return _this.unsubscribe(); };
+            }
+            else {
+                context_1 = observerOrNext;
+            }
+            next = next === null || next === void 0 ? void 0 : next.bind(context_1);
+            error = error === null || error === void 0 ? void 0 : error.bind(context_1);
+            complete = complete === null || complete === void 0 ? void 0 : complete.bind(context_1);
+        }
+        _this.destination = {
+            next: next ? wrapForErrorHandling(next) : noop,
+            error: wrapForErrorHandling(error !== null && error !== void 0 ? error : defaultErrorHandler),
+            complete: complete ? wrapForErrorHandling(complete) : noop,
+        };
+        return _this;
+    }
+    return SafeSubscriber;
+}(Subscriber));
+function wrapForErrorHandling(handler, instance) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        try {
+            handler.apply(void 0, __spreadArray([], __read(args)));
+        }
+        catch (err) {
+            {
+                reportUnhandledError(err);
+            }
+        }
+    };
+}
+function defaultErrorHandler(err) {
+    throw err;
+}
+var EMPTY_OBSERVER = {
+    closed: true,
+    next: noop,
+    error: defaultErrorHandler,
+    complete: noop,
+};
+
+var observable = (function () { return (typeof Symbol === 'function' && Symbol.observable) || '@@observable'; })();
+
+function identity(x) {
+    return x;
+}
+
+function pipeFromArray(fns) {
+    if (fns.length === 0) {
+        return identity;
+    }
+    if (fns.length === 1) {
+        return fns[0];
+    }
+    return function piped(input) {
+        return fns.reduce(function (prev, fn) { return fn(prev); }, input);
+    };
+}
+
+var Observable = (function () {
+    function Observable(subscribe) {
+        if (subscribe) {
+            this._subscribe = subscribe;
+        }
+    }
+    Observable.prototype.lift = function (operator) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.operator = operator;
+        return observable;
+    };
+    Observable.prototype.subscribe = function (observerOrNext, error, complete) {
+        var _this = this;
+        var subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
+        errorContext(function () {
+            var _a = _this, operator = _a.operator, source = _a.source;
+            subscriber.add(operator
+                ?
+                    operator.call(subscriber, source)
+                : source
+                    ?
+                        _this._subscribe(subscriber)
+                    :
+                        _this._trySubscribe(subscriber));
+        });
+        return subscriber;
+    };
+    Observable.prototype._trySubscribe = function (sink) {
+        try {
+            return this._subscribe(sink);
+        }
+        catch (err) {
+            sink.error(err);
+        }
+    };
+    Observable.prototype.forEach = function (next, promiseCtor) {
+        var _this = this;
+        promiseCtor = getPromiseCtor(promiseCtor);
+        return new promiseCtor(function (resolve, reject) {
+            var subscription;
+            subscription = _this.subscribe(function (value) {
+                try {
+                    next(value);
+                }
+                catch (err) {
+                    reject(err);
+                    subscription === null || subscription === void 0 ? void 0 : subscription.unsubscribe();
+                }
+            }, reject, resolve);
+        });
+    };
+    Observable.prototype._subscribe = function (subscriber) {
+        var _a;
+        return (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber);
+    };
+    Observable.prototype[observable] = function () {
+        return this;
+    };
+    Observable.prototype.pipe = function () {
+        var operations = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            operations[_i] = arguments[_i];
+        }
+        return pipeFromArray(operations)(this);
+    };
+    Observable.prototype.toPromise = function (promiseCtor) {
+        var _this = this;
+        promiseCtor = getPromiseCtor(promiseCtor);
+        return new promiseCtor(function (resolve, reject) {
+            var value;
+            _this.subscribe(function (x) { return (value = x); }, function (err) { return reject(err); }, function () { return resolve(value); });
+        });
+    };
+    Observable.create = function (subscribe) {
+        return new Observable(subscribe);
+    };
+    return Observable;
+}());
+function getPromiseCtor(promiseCtor) {
+    var _a;
+    return (_a = promiseCtor !== null && promiseCtor !== void 0 ? promiseCtor : config.Promise) !== null && _a !== void 0 ? _a : Promise;
+}
+function isObserver(value) {
+    return value && isFunction(value.next) && isFunction(value.error) && isFunction(value.complete);
+}
+function isSubscriber(value) {
+    return (value && value instanceof Subscriber) || (isObserver(value) && isSubscription(value));
+}
+
+var ObjectUnsubscribedError = createErrorClass(function (_super) {
+    return function ObjectUnsubscribedErrorImpl() {
+        _super(this);
+        this.name = 'ObjectUnsubscribedError';
+        this.message = 'object unsubscribed';
+    };
+});
+
+var Subject = (function (_super) {
+    __extends(Subject, _super);
+    function Subject() {
+        var _this = _super.call(this) || this;
+        _this.closed = false;
+        _this.observers = [];
+        _this.isStopped = false;
+        _this.hasError = false;
+        _this.thrownError = null;
+        return _this;
+    }
+    Subject.prototype.lift = function (operator) {
+        var subject = new AnonymousSubject(this, this);
+        subject.operator = operator;
+        return subject;
+    };
+    Subject.prototype._throwIfClosed = function () {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError();
+        }
+    };
+    Subject.prototype.next = function (value) {
+        var _this = this;
+        errorContext(function () {
+            var e_1, _a;
+            _this._throwIfClosed();
+            if (!_this.isStopped) {
+                var copy = _this.observers.slice();
+                try {
+                    for (var copy_1 = __values(copy), copy_1_1 = copy_1.next(); !copy_1_1.done; copy_1_1 = copy_1.next()) {
+                        var observer = copy_1_1.value;
+                        observer.next(value);
+                    }
+                }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                finally {
+                    try {
+                        if (copy_1_1 && !copy_1_1.done && (_a = copy_1.return)) _a.call(copy_1);
+                    }
+                    finally { if (e_1) throw e_1.error; }
+                }
+            }
+        });
+    };
+    Subject.prototype.error = function (err) {
+        var _this = this;
+        errorContext(function () {
+            _this._throwIfClosed();
+            if (!_this.isStopped) {
+                _this.hasError = _this.isStopped = true;
+                _this.thrownError = err;
+                var observers = _this.observers;
+                while (observers.length) {
+                    observers.shift().error(err);
+                }
+            }
+        });
+    };
+    Subject.prototype.complete = function () {
+        var _this = this;
+        errorContext(function () {
+            _this._throwIfClosed();
+            if (!_this.isStopped) {
+                _this.isStopped = true;
+                var observers = _this.observers;
+                while (observers.length) {
+                    observers.shift().complete();
+                }
+            }
+        });
+    };
+    Subject.prototype.unsubscribe = function () {
+        this.isStopped = this.closed = true;
+        this.observers = null;
+    };
+    Object.defineProperty(Subject.prototype, "observed", {
+        get: function () {
+            var _a;
+            return ((_a = this.observers) === null || _a === void 0 ? void 0 : _a.length) > 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Subject.prototype._trySubscribe = function (subscriber) {
+        this._throwIfClosed();
+        return _super.prototype._trySubscribe.call(this, subscriber);
+    };
+    Subject.prototype._subscribe = function (subscriber) {
+        this._throwIfClosed();
+        this._checkFinalizedStatuses(subscriber);
+        return this._innerSubscribe(subscriber);
+    };
+    Subject.prototype._innerSubscribe = function (subscriber) {
+        var _a = this, hasError = _a.hasError, isStopped = _a.isStopped, observers = _a.observers;
+        return hasError || isStopped
+            ? EMPTY_SUBSCRIPTION
+            : (observers.push(subscriber), new Subscription(function () { return arrRemove(observers, subscriber); }));
+    };
+    Subject.prototype._checkFinalizedStatuses = function (subscriber) {
+        var _a = this, hasError = _a.hasError, thrownError = _a.thrownError, isStopped = _a.isStopped;
+        if (hasError) {
+            subscriber.error(thrownError);
+        }
+        else if (isStopped) {
+            subscriber.complete();
+        }
+    };
+    Subject.prototype.asObservable = function () {
+        var observable = new Observable();
+        observable.source = this;
+        return observable;
+    };
+    Subject.create = function (destination, source) {
+        return new AnonymousSubject(destination, source);
+    };
+    return Subject;
+}(Observable));
+var AnonymousSubject = (function (_super) {
+    __extends(AnonymousSubject, _super);
+    function AnonymousSubject(destination, source) {
+        var _this = _super.call(this) || this;
+        _this.destination = destination;
+        _this.source = source;
+        return _this;
+    }
+    AnonymousSubject.prototype.next = function (value) {
+        var _a, _b;
+        (_b = (_a = this.destination) === null || _a === void 0 ? void 0 : _a.next) === null || _b === void 0 ? void 0 : _b.call(_a, value);
+    };
+    AnonymousSubject.prototype.error = function (err) {
+        var _a, _b;
+        (_b = (_a = this.destination) === null || _a === void 0 ? void 0 : _a.error) === null || _b === void 0 ? void 0 : _b.call(_a, err);
+    };
+    AnonymousSubject.prototype.complete = function () {
+        var _a, _b;
+        (_b = (_a = this.destination) === null || _a === void 0 ? void 0 : _a.complete) === null || _b === void 0 ? void 0 : _b.call(_a);
+    };
+    AnonymousSubject.prototype._subscribe = function (subscriber) {
+        var _a, _b;
+        return (_b = (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber)) !== null && _b !== void 0 ? _b : EMPTY_SUBSCRIPTION;
+    };
+    return AnonymousSubject;
+}(Subject));
+
+var BehaviorSubject = (function (_super) {
+    __extends(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        var _this = _super.call(this) || this;
+        _this._value = _value;
+        return _this;
+    }
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
+        !subscription.closed && subscriber.next(this._value);
+        return subscription;
+    };
+    BehaviorSubject.prototype.getValue = function () {
+        var _a = this, hasError = _a.hasError, thrownError = _a.thrownError, _value = _a._value;
+        if (hasError) {
+            throw thrownError;
+        }
+        this._throwIfClosed();
+        return _value;
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, (this._value = value));
+    };
+    return BehaviorSubject;
+}(Subject));
+
 /**
  * For logic classes to be hot-swappable for quick upgrades all state is contained
  * in one non-reloadable BehaviorSubject.
@@ -8046,6 +8723,11 @@ const internalTerminalState = new BehaviorSubject({
     receiver: {
         initializedApps: new Set(),
         initializingApps: new Set(),
+    },
+    sequenceGenerator: {
+        sequences: [],
+        sequenceBlocks: [],
+        generatingSequenceNumbers: false
     },
     terminal: null,
     transactionManager: {
@@ -8196,6 +8878,7 @@ let TerminalStore = class TerminalStore {
             return allRelations;
         });
         this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
+        this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
         this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
         this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
     }
@@ -11051,7 +11734,8 @@ let InternalRecordManager = class InternalRecordManager {
             actor.user = user;
             actor.terminal = terminal;
             actor.uuId = v4();
-            await this.actorDao.save(actor, context);
+            const actorDao = await this.getactorDaoAsync();
+            await actorDao.save(actor, context);
             const lastTerminalState = this.terminalStore.getTerminalState();
             this.terminalStore.state.next({
                 ...lastTerminalState,
@@ -20312,6 +20996,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             await this.commit(credentials, context);
         }
         catch (e) {
+            console.error(e);
             await this.rollback(credentials, context);
             throw e;
         }
@@ -27012,7 +27697,7 @@ let SqlDriver = class SqlDriver {
         return null;
     }
     search(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject();
+        let resultsSubject = new Subject$1();
         // TODO: Remove the query for the list of cached queries, that are checked every
         //    time a mutation operation is run
         // let resultsSubject                 = new Subject<EntityArray>(() => {
@@ -27037,7 +27722,7 @@ let SqlDriver = class SqlDriver {
         return resultsSubject;
     }
     searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject();
+        let resultsSubject = new Subject$1();
         // TODO: Remove the query for the list of cached queries, that are checked every
         //       time a mutation operation is run
         // let resultsSubject                 = new Subject<E>(() => {
@@ -31683,7 +32368,7 @@ let AirportDatabase = class AirportDatabase {
         if (existingQApplication) {
             const dbApplication = existingQApplication.__dbApplication__;
             qApplication.__dbApplication__ = dbApplication;
-            setQApplicationEntities(dbApplication, qApplication, this.qApplications);
+            setQApplicationEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
             this.Q[dbApplication.index] = qApplication;
         }
         this.QM[fullApplicationName] = qApplication;
@@ -31752,6 +32437,9 @@ let AirportDatabase = class AirportDatabase {
 };
 __decorate$o([
     Inject()
+], AirportDatabase.prototype, "appliationUtils", void 0);
+__decorate$o([
+    Inject()
 ], AirportDatabase.prototype, "databaseFacade", void 0);
 __decorate$o([
     Inject()
@@ -31765,6 +32453,9 @@ __decorate$o([
 __decorate$o([
     Inject()
 ], AirportDatabase.prototype, "findOne", void 0);
+__decorate$o([
+    Inject()
+], AirportDatabase.prototype, "relationManager", void 0);
 __decorate$o([
     Inject()
 ], AirportDatabase.prototype, "search", void 0);
@@ -35303,13 +35994,19 @@ let QueryEntityClassCreator = class QueryEntityClassCreator {
             this.airportDatabase.QM[dbApplication.fullName] = qApplication;
         }
         this.airportDatabase.Q[dbApplication.index] = qApplication;
-        setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications);
+        setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications, this.applicationUtils, this.relationManager);
         return qApplication;
     }
 };
 __decorate$8([
     Inject()
 ], QueryEntityClassCreator.prototype, "airportDatabase", void 0);
+__decorate$8([
+    Inject()
+], QueryEntityClassCreator.prototype, "applicationUtils", void 0);
+__decorate$8([
+    Inject()
+], QueryEntityClassCreator.prototype, "relationManager", void 0);
 QueryEntityClassCreator = __decorate$8([
     Injected()
 ], QueryEntityClassCreator);
@@ -35432,7 +36129,9 @@ DDL_OBJECT_RETRIEVER.setDependencies({
     domainDao: DOMAIN_DAO
 });
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
+    airportDatabase: AIRPORT_DATABASE,
+    applicationUtils: APPLICATION_UTILS,
+    relationManager: RELATION_MANAGER,
 });
 QUERY_OBJECT_INITIALIZER.setDependencies({
     ddlObjectLinker: DDL_OBJECT_LINKER,
@@ -35506,9 +36205,11 @@ let ApplicationInitializer = class ApplicationInitializer {
         this.addNewApplicationVersionsToAll(allDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
-        const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
-        await this.sequenceGenerator.initialize(context, newSequences);
-        await this.applicationRecorder.record(allDdlObjects.added, context);
+        this.transactionManager.transactInternal(async (_transaction, context) => {
+            const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
+            await this.sequenceGenerator.initialize(context, newSequences);
+            await this.applicationRecorder.record(allDdlObjects.added, context);
+        }, context);
     }
     async initializeForAIRportApp(jsonApplication) {
         const applicationsWithValidDependencies = await this.
@@ -35612,6 +36313,9 @@ __decorate$6([
 __decorate$6([
     Inject()
 ], ApplicationInitializer.prototype, "terminalStore", void 0);
+__decorate$6([
+    Inject()
+], ApplicationInitializer.prototype, "transactionManager", void 0);
 ApplicationInitializer = __decorate$6([
     Injected()
 ], ApplicationInitializer);
@@ -35663,7 +36367,8 @@ ABSTRACT_APPLICATION_INITIALIZER.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
     queryObjectInitializer: QUERY_OBJECT_INITIALIZER,
     sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER
 });
 APPLICATION_BUILDER.setDependencies({
     airportDatabase: AIRPORT_DATABASE
@@ -36156,10 +36861,18 @@ var __decorate$3 = (undefined && undefined.__decorate) || function (decorators, 
  *
  */
 let SequenceGenerator = class SequenceGenerator {
-    constructor() {
-        this.sequences = [];
-        this.sequenceBlocks = [];
-        this.generatingSequenceNumbers = false;
+    get sequences() {
+        return this.terminalStore.getSequenceGenerator().sequences;
+    }
+    get sequenceBlocks() {
+        return this.terminalStore.getSequenceGenerator().sequenceBlocks;
+    }
+    get generatingSequenceNumbers() {
+        return this.terminalStore.getSequenceGenerator().generatingSequenceNumbers;
+    }
+    set generatingSequenceNumbers(generatingSequenceNumbers) {
+        this.terminalStore.getSequenceGenerator().generatingSequenceNumbers
+            = generatingSequenceNumbers;
     }
     exists(dbEntity) {
         const generatedColumns = dbEntity.columns.filter(dbColumn => dbColumn.isGenerated);
@@ -36264,6 +36977,9 @@ let SequenceGenerator = class SequenceGenerator {
 __decorate$3([
     Inject()
 ], SequenceGenerator.prototype, "sequenceDao", void 0);
+__decorate$3([
+    Inject()
+], SequenceGenerator.prototype, "terminalStore", void 0);
 SequenceGenerator = __decorate$3([
     Injected()
 ], SequenceGenerator);
@@ -36273,7 +36989,8 @@ function injectSequenceGenerator() {
 
 SEQUENCE_GENERATOR.setClass(SequenceGenerator);
 SEQUENCE_GENERATOR.setDependencies({
-    sequenceDao: SEQUENCE_DAO
+    sequenceDao: SEQUENCE_DAO,
+    terminalStore: TERMINAL_STORE
 });
 
 /**

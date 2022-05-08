@@ -60,7 +60,8 @@ let InternalRecordManager = class InternalRecordManager {
             actor.user = user;
             actor.terminal = terminal;
             actor.uuId = uuidv4();
-            await this.actorDao.save(actor, context);
+            const actorDao = await this.getactorDaoAsync();
+            await actorDao.save(actor, context);
             const lastTerminalState = this.terminalStore.getTerminalState();
             this.terminalStore.state.next({
                 ...lastTerminalState,

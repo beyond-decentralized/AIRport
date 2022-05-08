@@ -1,5 +1,7 @@
 import {
 	IAirportDatabase,
+	IApplicationUtils,
+	IRelationManager,
 	orderApplicationsInOrderOfPrecedence,
 	QApplication,
 	QApplicationInternal,
@@ -19,6 +21,12 @@ export class QueryEntityClassCreator
 
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	applicationUtils: IApplicationUtils
+
+	@Inject()
+	relationManager: IRelationManager
 
 	createAll(
 		applications: IApplication[]
@@ -46,7 +54,9 @@ export class QueryEntityClassCreator
 			this.airportDatabase.QM[dbApplication.fullName] = qApplication
 		}
 		this.airportDatabase.Q[dbApplication.index] = qApplication
-		setQApplicationEntities(dbApplication, qApplication, this.airportDatabase.qApplications)
+		setQApplicationEntities(dbApplication, qApplication,
+			this.airportDatabase.qApplications,
+			this.applicationUtils, this.relationManager)
 
 		return qApplication
 	}
