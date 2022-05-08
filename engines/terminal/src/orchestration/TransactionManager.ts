@@ -100,8 +100,13 @@ export class TransactionManager
 		context: ITransactionContext,
 	): Promise<void> {
 		if (context.transaction) {
-			// Nested transactal() calls in internal operations
+			// Nested transact() calls in internal operations
 			// do not create nested transactions 
+			if (!context.nestedTransactionDepth) {
+				context.nestedTransactionDepth = 1
+			} else {
+				context.nestedTransactionDepth++
+			}
 			await transactionalCallback(context.transaction, context)
 			return
 		}
@@ -207,9 +212,10 @@ Only one concurrent transaction is allowed per application.`)
 
 		let parentTransaction = transaction.parentTransaction
 		await transaction.rollback(null, context);
-		await this.clearTransaction(transaction, parentTransaction, credentials, context);
-
-		await this.resumeParentOrPendingTransaction(parentTransaction, context)
+		if (await this.clearTransaction(
+			transaction, parentTransaction, credentials, context)) {
+			await this.resumeParentOrPendingTransaction(parentTransaction, context)
+		}
 	}
 
 	async getTransactionFromContextOrCredentials(
@@ -294,11 +300,13 @@ parent transactions.
 				}
 			}
 		} finally {
-			await this.clearTransaction(transaction, parentTransaction, credentials, context);
-			// Right now transactions are tied to @Api() calls,
-			// If an @Api() fails to commit the parent @Api() call should resume
-			// it's transaction or the next 
-			await this.resumeParentOrPendingTransaction(parentTransaction, context)
+			if (await this.clearTransaction(
+				transaction, parentTransaction, credentials, context)) {
+				// Right now transactions are tied to @Api() calls,
+				// If an @Api() fails to commit the parent @Api() call should resume
+				// it's transaction or the next 
+				await this.resumeParentOrPendingTransaction(parentTransaction, context)
+			}
 		}
 	}
 
@@ -401,7 +409,11 @@ ${callHerarchy}
 		parentTransaction: ITransaction,
 		credentials: ITransactionCredentials,
 		context: ITransactionContext
-	): Promise<void> {
+	): Promise<boolean> {
+		if (context.nestedTransactionDepth) {
+			context.nestedTransactionDepth--
+			return false
+		}
 		const transactionManagerStore = this.terminalStore
 			.getTransactionManager()
 		transactionManagerStore.transactionInProgressMap.delete(transaction.id)
@@ -411,6 +423,8 @@ ${callHerarchy}
 		}
 		context.transaction = null
 		credentials.transactionId = null
+
+		return true
 	}
 
 	private async saveRepositoryHistory(

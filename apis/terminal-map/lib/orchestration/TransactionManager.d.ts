@@ -7,6 +7,7 @@ export interface IApiCallContext extends IContext {
 }
 export interface ITransactionContext {
     doNotRecordHistory?: boolean;
+    nestedTransactionDepth?: number;
     transaction?: ITransaction;
     rootTransaction?: IRootTransaction;
 }

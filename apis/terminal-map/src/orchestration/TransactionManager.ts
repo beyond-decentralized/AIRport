@@ -12,6 +12,7 @@ export interface IApiCallContext
 }
 export interface ITransactionContext {
 	doNotRecordHistory?: boolean
+	nestedTransactionDepth?: number
 	transaction?: ITransaction
 	rootTransaction?: IRootTransaction
 }

@@ -35,8 +35,14 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
     }
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {
-            // Nested transactal() calls in internal operations
+            // Nested transact() calls in internal operations
             // do not create nested transactions 
+            if (!context.nestedTransactionDepth) {
+                context.nestedTransactionDepth = 1;
+            }
+            else {
+                context.nestedTransactionDepth++;
+            }
             await transactionalCallback(context.transaction, context);
             return;
         }
@@ -121,8 +127,9 @@ Only one concurrent transaction is allowed per application.`)
         const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
         let parentTransaction = transaction.parentTransaction;
         await transaction.rollback(null, context);
-        await this.clearTransaction(transaction, parentTransaction, credentials, context);
-        await this.resumeParentOrPendingTransaction(parentTransaction, context);
+        if (await this.clearTransaction(transaction, parentTransaction, credentials, context)) {
+            await this.resumeParentOrPendingTransaction(parentTransaction, context);
+        }
     }
     async getTransactionFromContextOrCredentials(credentials, context) {
         let transaction = context.transaction;
@@ -187,11 +194,12 @@ parent transactions.
             }
         }
         finally {
-            await this.clearTransaction(transaction, parentTransaction, credentials, context);
-            // Right now transactions are tied to @Api() calls,
-            // If an @Api() fails to commit the parent @Api() call should resume
-            // it's transaction or the next 
-            await this.resumeParentOrPendingTransaction(parentTransaction, context);
+            if (await this.clearTransaction(transaction, parentTransaction, credentials, context)) {
+                // Right now transactions are tied to @Api() calls,
+                // If an @Api() fails to commit the parent @Api() call should resume
+                // it's transaction or the next 
+                await this.resumeParentOrPendingTransaction(parentTransaction, context);
+            }
         }
     }
     copyTransactionHistoryToParentTransaction(transaction, parentTransaction) {
@@ -265,6 +273,10 @@ ${callHerarchy}
         return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`;
     }
     async clearTransaction(transaction, parentTransaction, credentials, context) {
+        if (context.nestedTransactionDepth) {
+            context.nestedTransactionDepth--;
+            return false;
+        }
         const transactionManagerStore = this.terminalStore
             .getTransactionManager();
         transactionManagerStore.transactionInProgressMap.delete(transaction.id);
@@ -273,6 +285,7 @@ ${callHerarchy}
         }
         context.transaction = null;
         credentials.transactionId = null;
+        return true;
     }
     async saveRepositoryHistory(transaction, context) {
         let transactionHistory = transaction.transactionHistory;
