@@ -7,7 +7,6 @@ import {
 } from '@airport/direction-indicator';
 import {
 	INTERNAL_DOMAIN,
-	IOperationContextLoader,
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
@@ -75,9 +74,6 @@ export class TransactionalServer
 	operationManager: IOperationManager
 
 	@Inject()
-	operationContextLoader: IOperationContextLoader
-
-	@Inject()
 	queryManager: IQueryManager
 
 	@Inject()
@@ -104,8 +100,6 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<Repository_Id> {
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -132,8 +126,6 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		await this.ensureContext(context)
-
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
@@ -149,8 +141,6 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Promise<E> {
-		await this.ensureContext(context)
-
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
@@ -166,8 +156,6 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
-		this.ensureContextSync(context)
-
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
@@ -183,8 +171,6 @@ export class TransactionalServer
 		context: IQueryOperationContext & ITransactionContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
-		this.ensureContextSync(context)
-
 		if (credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
@@ -198,7 +184,6 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
-			await this.ensureContext(context)
 			await this.transactionManager.startTransaction(credentials, context)
 			return true
 		} catch (e) {
@@ -213,7 +198,6 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
 		try {
-			await this.ensureContext(context)
 			await this.transactionManager.commit(credentials, context)
 			return true
 		} catch (e) {
@@ -227,11 +211,7 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext & IApiCallContext
 	): Promise<boolean> {
-		if (context.transaction) {
-
-		}
 		try {
-			await this.ensureContext(context)
 			await this.transactionManager.rollback(credentials, context)
 			return true
 		} catch (e) {
@@ -249,8 +229,6 @@ export class TransactionalServer
 		if (!entity) {
 			return null
 		}
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -278,8 +256,6 @@ export class TransactionalServer
 		if (!entity) {
 			return null
 		}
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -306,8 +282,6 @@ export class TransactionalServer
 		context: IOperationContext & ITransactionContext,
 		ensureGeneratedValues?: boolean // for internal use only
 	): Promise<number> {
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -331,8 +305,6 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number[][]> {
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -355,8 +327,6 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -379,8 +349,6 @@ export class TransactionalServer
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
 	): Promise<number> {
-		await this.ensureContext(context)
-
 		this.transactionManager.getTransactionFromContextOrCredentials(
 			credentials, context)
 
@@ -452,18 +420,6 @@ export class TransactionalServer
 		}
 
 		return actor
-	}
-
-	private async ensureContext(
-		context: IOperationContext
-	): Promise<void> {
-		await this.operationContextLoader.ensure(context)
-	}
-
-	private async ensureContextSync(
-		context: IOperationContext
-	): Promise<void> {
-		this.operationContextLoader.ensureSync(context)
 	}
 
 }

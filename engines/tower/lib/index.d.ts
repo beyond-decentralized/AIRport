@@ -10,4 +10,5 @@ export * from './facade/DatabaseFacade';
 export * from './facade/QueryFacade';
 export * from './AirportDatabase';
 export * from './tokens';
+export declare function loadTower(applicationName: string): void;
 //# sourceMappingURL=index.d.ts.map

@@ -23,7 +23,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     startTransaction(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
     private internalStartTransaction;
     rollback(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
-    getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
+    getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): ITransaction;
     private resumeParentOrPendingTransaction;
     commit(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
     private copyTransactionHistoryToParentTransaction;

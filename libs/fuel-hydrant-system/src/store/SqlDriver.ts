@@ -12,7 +12,6 @@ import {
 	IDbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
-	IOperationContextLoader,
 	JsonDelete,
 	JsonEntityQuery,
 	JsonFieldQuery,
@@ -78,9 +77,6 @@ export abstract class SqlDriver
 
 	@Inject()
 	objectResultParserFactory: IObjectResultParserFactory
-
-	@Inject()
-	operationContextLoader: IOperationContextLoader
 
 	@Inject()
 	qMetadataUtils: IQMetadataUtils
@@ -588,10 +584,7 @@ export abstract class SqlDriver
 	protected async ensureContext(
 		context: IFuelHydrantContext
 	): Promise<IFuelHydrantContext> {
-		context = <IFuelHydrantContext>doEnsureContext(context);
-		await this.operationContextLoader.ensure(context);
-
-		return context;
+		return <IFuelHydrantContext>doEnsureContext(context);
 	}
 
 }

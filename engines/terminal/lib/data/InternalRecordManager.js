@@ -10,8 +10,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Inject, Injected } from '@airport/direction-indicator';
 let InternalRecordManager = class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
-        await this.transactionManager.transactInternal(async (_transaction) => {
-            await this.updateDomain(application);
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
+            await this.updateDomain(application, context);
             let actorMapForDomain = this.terminalStore
                 .getApplicationActorMapByDomainAndApplicationNames().get(application.domain);
             let actors;
@@ -32,7 +32,7 @@ let InternalRecordManager = class InternalRecordManager {
                     user: frameworkActor.user,
                     uuId: uuidv4()
                 };
-                await this.actorDao.save(actor);
+                await this.actorDao.save(actor, context);
                 actors = [actor];
             }
             const lastTerminalState = this.terminalStore.getTerminalState();
@@ -70,7 +70,7 @@ let InternalRecordManager = class InternalRecordManager {
             });
         }, context);
     }
-    async updateDomain(application) {
+    async updateDomain(application, context) {
         let domain = this.terminalStore.getDomainMapByName().get(application.domain);
         if (domain && this.entityStateManager.getOriginalValues(domain)) {
             return domain;
@@ -92,7 +92,7 @@ let InternalRecordManager = class InternalRecordManager {
                     id: null,
                     name: application.domain,
                 };
-                await this.domainDao.save(updatedDomain);
+                await this.domainDao.save(updatedDomain, context);
             }
         }
         if (!updatedDomain) {

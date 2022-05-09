@@ -36,13 +36,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
     async transact(credentials, transactionalCallback, context) {
         if (context.transaction) {
             // Nested transact() calls in internal operations
-            // do not create nested transactions 
-            if (!context.nestedTransactionDepth) {
-                context.nestedTransactionDepth = 1;
-            }
-            else {
-                context.nestedTransactionDepth++;
-            }
+            // do not create nested transactions
             await transactionalCallback(context.transaction, context);
             return;
         }
@@ -58,6 +52,9 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
         }
     }
     async startTransaction(credentials, context) {
+        if (context.transaction) {
+            return;
+        }
         const transactionManagerStore = this.terminalStore.getTransactionManager();
         let parentTransaction;
         if (credentials.transactionId) {
@@ -124,14 +121,14 @@ Only one concurrent transaction is allowed per application.`)
         return transaction;
     }
     async rollback(credentials, context) {
-        const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
+        const transaction = this.getTransactionFromContextOrCredentials(credentials, context);
         let parentTransaction = transaction.parentTransaction;
         await transaction.rollback(null, context);
         if (await this.clearTransaction(transaction, parentTransaction, credentials, context)) {
             await this.resumeParentOrPendingTransaction(parentTransaction, context);
         }
     }
-    async getTransactionFromContextOrCredentials(credentials, context) {
+    getTransactionFromContextOrCredentials(credentials, context) {
         let transaction = context.transaction;
         if (!transaction) {
             if (!credentials.transactionId) {
@@ -152,8 +149,8 @@ parent transactions.
             context.transaction = transaction;
         }
         let ancestorTransaction = transaction;
-        while (ancestorTransaction = ancestorTransaction.parentTransaction)
-            ;
+        for (; ancestorTransaction.parentTransaction; ancestorTransaction = ancestorTransaction.parentTransaction) {
+        }
         context.rootTransaction = ancestorTransaction;
         return transaction;
     }
@@ -170,7 +167,7 @@ parent transactions.
         }
     }
     async commit(credentials, context) {
-        const transaction = await this.getTransactionFromContextOrCredentials(credentials, context);
+        const transaction = this.getTransactionFromContextOrCredentials(credentials, context);
         let parentTransaction = transaction.parentTransaction;
         try {
             if (parentTransaction) {
@@ -273,10 +270,6 @@ ${callHerarchy}
         return `${nameContainer.domain}.${nameContainer.application}.${nameContainer.objectName}.${nameContainer.methodName}`;
     }
     async clearTransaction(transaction, parentTransaction, credentials, context) {
-        if (context.nestedTransactionDepth) {
-            context.nestedTransactionDepth--;
-            return false;
-        }
         const transactionManagerStore = this.terminalStore
             .getTransactionManager();
         transactionManagerStore.transactionInProgressMap.delete(transaction.id);

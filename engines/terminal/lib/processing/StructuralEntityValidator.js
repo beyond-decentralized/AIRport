@@ -7,7 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
 let StructuralEntityValidator = class StructuralEntityValidator {
-    async validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
+    validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
+        const missingRepositoryRecords = [];
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
@@ -61,10 +62,15 @@ let StructuralEntityValidator = class StructuralEntityValidator {
                                 }, false);
                                 if (isMissingRepositoryProperty) {
                                     if (!context.newRepository) {
-                                        await this.repositoryManager.createRepository(context.actor, context);
                                         newRepositoryNeeded = true;
+                                        missingRepositoryRecords.push({
+                                            record,
+                                            repositoryPropertyName: dbProperty.name
+                                        });
                                     }
-                                    record[dbProperty.name] = context.newRepository;
+                                    else {
+                                        record[dbProperty.name] = context.newRepository;
+                                    }
                                 }
                             }
                             if (fromOneToMany) {
@@ -129,6 +135,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             } // for (const dbProperty of dbEntity.properties)
             this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
         } // for (const record of entities)
+        return missingRepositoryRecords;
     }
     ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
         if (!dbEntity.isRepositoryEntity) {
@@ -295,9 +302,6 @@ __decorate([
 __decorate([
     Inject()
 ], StructuralEntityValidator.prototype, "entityStateManager", void 0);
-__decorate([
-    Inject()
-], StructuralEntityValidator.prototype, "repositoryManager", void 0);
 StructuralEntityValidator = __decorate([
     Injected()
 ], StructuralEntityValidator);

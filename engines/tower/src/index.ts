@@ -10,3 +10,9 @@ export * from './facade/DatabaseFacade'
 export * from './facade/QueryFacade'
 export * from './AirportDatabase'
 export * from './tokens'
+
+export function loadTower(
+    applicationName: string
+) {
+    console.log('@airport/tower is loaded for Application: ' + applicationName);
+}

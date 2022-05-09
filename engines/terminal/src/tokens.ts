@@ -3,7 +3,7 @@ import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER, SEQUENCE_GENERATOR } from '@airport/check-in'
 import { lib } from '@airport/direction-indicator'
 import { ACTIVE_QUERIES, ID_GENERATOR } from '@airport/fuel-hydrant-system'
-import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport'
 import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern-runtime'
 import {
@@ -44,7 +44,6 @@ import { UpdateManager } from './orchestration/UpdateManager'
 import { CascadeGraphVerifier } from './processing/CascadeGraphVerifier'
 import { DependencyGraphResolver } from './processing/DependencyGraphResolver'
 import { EntityGraphReconstructor } from './processing/EntityGraphReconstructor'
-import { OperationContextLoader } from './processing/OperationContext'
 import { OperationManager } from './processing/OperationManager'
 import { StructuralEntityValidator } from './processing/StructuralEntityValidator'
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
@@ -58,9 +57,8 @@ TRANSACTIONAL_CONNECTOR.setDependencies({
     terminalStore: TERMINAL_STORE,
     transactionalServer: TRANSACTIONAL_SERVER
 })
-TRANSACTIONAL_SERVER.setClass(TransactionalServer);
-TRANSACTION_MANAGER.setClass(TransactionManager);
-OPERATION_CONTEXT_LOADER.setClass(OperationContextLoader)
+TRANSACTIONAL_SERVER.setClass(TransactionalServer)
+TRANSACTION_MANAGER.setClass(TransactionManager)
 QUERY_PARAMETER_DESERIALIZER.setClass(QueryParameterDeserializer)
 QUERY_RESULTS_SERIALIZER.setClass(QueryResultsSerializer)
 
@@ -228,6 +226,7 @@ OPERATION_MANAGER.setDependencies({
     insertManager: INSERT_MANAGER,
     qMetadataUtils: Q_METADATA_UTILS,
     queryFacade: QUERY_FACADE,
+    repositoryManager: REPOSITORY_MANAGER,
     structuralEntityValidator: STRUCTURAL_ENTITY_VALIDATOR,
     updateManager: UPDATE_MANAGER,
     utils: UTILS
@@ -251,7 +250,6 @@ REPOSITORY_MANAGER.setDependencies({
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
-    repositoryManager: REPOSITORY_MANAGER,
 })
 
 TRANSACTION_MANAGER.setDependencies({
@@ -269,7 +267,6 @@ TRANSACTIONAL_RECEIVER.setDependencies({
 TRANSACTIONAL_SERVER.setDependencies({
     deleteManager: DELETE_MANAGER,
     insertManager: INSERT_MANAGER,
-    operationContextLoader: OPERATION_CONTEXT_LOADER,
     operationManager: OPERATION_MANAGER,
     queryManager: QUERY_MANAGER,
     repositoryManager: REPOSITORY_MANAGER,

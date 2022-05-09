@@ -69,9 +69,10 @@ export class InternalRecordManager
         context: IContext
     ): Promise<void> {
         await this.transactionManager.transactInternal(async (
-            _transaction
+            _transaction,
+            context
         ) => {
-            await this.updateDomain(application)
+            await this.updateDomain(application, context)
 
             let actorMapForDomain = this.terminalStore
                 .getApplicationActorMapByDomainAndApplicationNames().get(application.domain)
@@ -95,7 +96,7 @@ export class InternalRecordManager
                     user: frameworkActor.user,
                     uuId: uuidv4()
                 }
-                await this.actorDao.save(actor)
+                await this.actorDao.save(actor, context)
                 actors = [actor]
             }
 
@@ -148,6 +149,7 @@ export class InternalRecordManager
 
     private async updateDomain(
         application: JsonApplicationWithLastIds,
+        context: IContext
     ): Promise<IDomain> {
         let domain = this.terminalStore.getDomainMapByName().get(application.domain)
 
@@ -170,7 +172,7 @@ export class InternalRecordManager
                     id: null,
                     name: application.domain,
                 }
-                await this.domainDao.save(updatedDomain)
+                await this.domainDao.save(updatedDomain, context)
             }
         }
         if (!updatedDomain) {

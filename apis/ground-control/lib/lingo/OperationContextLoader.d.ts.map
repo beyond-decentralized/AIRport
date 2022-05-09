@@ -1,1 +1,0 @@
-{"version":3,"file":"OperationContextLoader.d.ts","sourceRoot":"","sources":["../../src/lingo/OperationContextLoader.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAC;AAExD,MAAM,WAAW,uBAAuB;IAEvC,MAAM,CACL,OAAO,EAAE,QAAQ,GACf,OAAO,CAAC,IAAI,CAAC,CAAA;IAEhB,UAAU,CACT,OAAO,EAAE,QAAQ,GACf,IAAI,CAAA;CAEP"}

@@ -3,7 +3,6 @@ import { DbApplicationUtils } from './impl/query/DbApplicationUtils';
 import { IEntityStateManager } from './lingo/core/operation/EntityStateManager';
 import { IInterAppAPIClient } from './lingo/InterAppAPIClient';
 import { ITransactionalConnector } from './lingo/ITransactionalConnector';
-import { IOperationContextLoader } from './lingo/OperationContextLoader';
 import { IDbApplicationUtils } from './lingo/query/DbApplicationUtils';
 
 const groundControl = lib('ground-control')
@@ -22,11 +21,6 @@ export const INTER_APP_API_CLIENT = groundControl.token<IInterAppAPIClient>({
     class: null,
     interface: 'IInterAppAPIClient',
     token: 'INTER_APP_API_CLIENT'
-})
-export const OPERATION_CONTEXT_LOADER = groundControl.token<IOperationContextLoader>({
-    class: null,
-    interface: 'IOperationContextLoader',
-    token: 'OPERATION_CONTEXT_LOADER'
 })
 export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnector>({
     class: null,

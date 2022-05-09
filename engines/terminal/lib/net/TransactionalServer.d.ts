@@ -1,5 +1,5 @@
 import { IContext } from '@airport/direction-indicator';
-import { IOperationContextLoader, ISaveResult, PortableQuery } from '@airport/ground-control';
+import { ISaveResult, PortableQuery } from '@airport/ground-control';
 import { IActor, Repository_Id } from '@airport/holding-pattern-runtime';
 import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials, ITerminalStore, ITransactionManager, IOperationManager, IInsertManager, IDeleteManager, IQueryManager, IRepositoryManager, IUpdateManager } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
@@ -34,7 +34,6 @@ export declare class TransactionalServer implements ITransactionalServer {
     deleteManager: IDeleteManager;
     insertManager: IInsertManager;
     operationManager: IOperationManager;
-    operationContextLoader: IOperationContextLoader;
     queryManager: IQueryManager;
     repositoryManager: IRepositoryManager;
     terminalStore: ITerminalStore;
@@ -57,8 +56,6 @@ export declare class TransactionalServer implements ITransactionalServer {
     updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number>;
     private getActor;
-    private ensureContext;
-    private ensureContextSync;
 }
 export declare function injectTransactionalServer(): void;
 //# sourceMappingURL=TransactionalServer.d.ts.map

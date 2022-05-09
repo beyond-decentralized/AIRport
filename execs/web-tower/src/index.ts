@@ -2,6 +2,7 @@ import { IIsolateMessageOut } from '@airport/apron'
 import { ILocalAPIRequest } from '@airport/aviation-communication'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { loadTower } from '@airport/tower'
 import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
 
 export * from './DomainRetriever'
@@ -39,6 +40,9 @@ async function loadTransactionalConnector() {
     console.log('Iframe loaded')
 }
 
-export function loadIframe() {
+export function loadIframe(
+    applicationName: string
+) {
+    loadTower(applicationName)
     loadTransactionalConnector().then()
 }

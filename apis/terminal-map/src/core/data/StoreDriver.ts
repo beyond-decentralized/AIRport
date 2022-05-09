@@ -13,7 +13,6 @@ import {
 } from '@airport/ground-control/src/lingo/data/IStoreOperator'
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo'
 import { ITransaction } from '../../transaction/ITransaction'
-import { IOperationContext } from '../../processing/OperationContext'
 import { ITransactionContext } from '../../orchestration/TransactionManager'
 
 /**

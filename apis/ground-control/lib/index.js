@@ -57,6 +57,5 @@ export * from './lingo/application/Property';
 export * from './lingo/application/Application';
 export * from './lingo/InterAppAPIClient';
 export * from './lingo/ITransactionalConnector';
-export * from './lingo/OperationContextLoader';
 export * from './tokens';
 //# sourceMappingURL=index.js.map

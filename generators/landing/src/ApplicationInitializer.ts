@@ -159,7 +159,7 @@ export abstract class ApplicationInitializer
 
 		this.setAirDbApplications(allDdlObjects);
 
-		this.transactionManager.transactInternal(async (
+		await this.transactionManager.transactInternal(async (
 			_transaction,
 			context
 		) => {

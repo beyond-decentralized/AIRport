@@ -64,7 +64,7 @@ let ApplicationInitializer = class ApplicationInitializer {
         this.addNewApplicationVersionsToAll(allDdlObjects);
         this.queryObjectInitializer.generateQObjectsAndPopulateStore(allDdlObjects);
         this.setAirDbApplications(allDdlObjects);
-        this.transactionManager.transactInternal(async (_transaction, context) => {
+        await this.transactionManager.transactInternal(async (_transaction, context) => {
             const newSequences = await this.applicationBuilder.buildAllSequences(applicationsWithValidDependencies, context);
             await this.sequenceGenerator.initialize(context, newSequences);
             await this.applicationRecorder.record(allDdlObjects.added, context);

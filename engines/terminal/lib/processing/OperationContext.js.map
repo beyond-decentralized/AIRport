@@ -1,1 +1,0 @@
-{"version":3,"file":"OperationContext.js","sourceRoot":"","sources":["../../src/processing/OperationContext.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EACN,QAAQ,EACR,MAAM,8BAA8B,CAAA;AASrC,IAAa,sBAAsB,GAAnC,MAAa,sBAAsB;IAGlC,KAAK,CAAC,MAAM,CACX,OAA0B;IAE3B,CAAC;IAED,UAAU,CACT,OAA0B;IAE3B,CAAC;CAED,CAAA;AAbY,sBAAsB;IADlC,QAAQ,EAAE;GACE,sBAAsB,CAalC;SAbY,sBAAsB"}

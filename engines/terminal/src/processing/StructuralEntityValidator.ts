@@ -14,8 +14,8 @@ import {
 } from '@airport/ground-control'
 import { IRepositoryEntity } from '@airport/holding-pattern-runtime'
 import {
+	IMissingRepositoryRecord,
 	IOperationContext,
-	IRepositoryManager,
 	IStructuralEntityValidator
 } from '@airport/terminal-map'
 
@@ -29,10 +29,7 @@ export class StructuralEntityValidator
 	@Inject()
 	entityStateManager: IEntityStateManager
 
-	@Inject()
-	repositoryManager: IRepositoryManager
-
-	async validate<E>(
+	validate<E>(
 		records: E[],
 		operatedOnEntityIndicator: boolean[],
 		context: IOperationContext,
@@ -40,9 +37,10 @@ export class StructuralEntityValidator
 		parentRelationProperty: DbProperty = null,
 		rootRelationRecord = null,
 		parentRelationRecord = null
-	): Promise<void> {
-		const dbEntity = context.dbEntity
+	): IMissingRepositoryRecord[] {
+		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
 
+		const dbEntity = context.dbEntity
 		if (!dbEntity.idColumns.length) {
 			throw new Error(
 				`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
@@ -112,10 +110,14 @@ export class StructuralEntityValidator
 								}, false)
 								if (isMissingRepositoryProperty) {
 									if (!context.newRepository) {
-										await this.repositoryManager.createRepository(context.actor, context)
 										newRepositoryNeeded = true
+										missingRepositoryRecords.push({
+											record,
+											repositoryPropertyName: dbProperty.name
+										})
+									} else {
+										record[dbProperty.name] = context.newRepository
 									}
-									record[dbProperty.name] = context.newRepository
 								}
 							}
 							if (fromOneToMany) {
@@ -180,6 +182,8 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
 				parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
 		} // for (const record of entities)
+
+		return missingRepositoryRecords
 	}
 
 	private ensureRepositoryValidity(

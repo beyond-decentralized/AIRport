@@ -6,7 +6,7 @@ import { IdGenerator } from './store/IdGenerator';
 import { QValidator } from './validation/Validator';
 import { SqlDriver } from './store/SqlDriver';
 import { STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, OPERATION_CONTEXT_LOADER } from '@airport/ground-control';
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER } from '@airport/ground-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, UTILS } from '@airport/air-traffic-control';
 const fuelHydrantSystem = lib('fuel-hydrant-system');
@@ -60,7 +60,6 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
     objectResultParserFactory: OBJECT_RESULT_PARSER_FACTORY,
-    operationContextLoader: OPERATION_CONTEXT_LOADER,
     qMetadataUtils: Q_METADATA_UTILS,
     qValidator: Q_VALIDATOR,
     relationManager: RELATION_MANAGER,

@@ -12,7 +12,6 @@ export interface IApiCallContext
 }
 export interface ITransactionContext {
 	doNotRecordHistory?: boolean
-	nestedTransactionDepth?: number
 	transaction?: ITransaction
 	rootTransaction?: IRootTransaction
 }
@@ -57,7 +56,7 @@ export interface ITransactionManager {
 	getTransactionFromContextOrCredentials(
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
-	): Promise<ITransaction>
+	): ITransaction
 
 	commit(
 		credentials: ITransactionCredentials,

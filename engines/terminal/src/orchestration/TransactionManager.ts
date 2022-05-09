@@ -101,12 +101,7 @@ export class TransactionManager
 	): Promise<void> {
 		if (context.transaction) {
 			// Nested transact() calls in internal operations
-			// do not create nested transactions 
-			if (!context.nestedTransactionDepth) {
-				context.nestedTransactionDepth = 1
-			} else {
-				context.nestedTransactionDepth++
-			}
+			// do not create nested transactions
 			await transactionalCallback(context.transaction, context)
 			return
 		}
@@ -126,6 +121,9 @@ export class TransactionManager
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<ITransaction> {
+		if (context.transaction) {
+			return
+		}
 		const transactionManagerStore = this.terminalStore.getTransactionManager()
 
 		let parentTransaction: ITransaction
@@ -207,7 +205,7 @@ Only one concurrent transaction is allowed per application.`)
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
-		const transaction = await this.getTransactionFromContextOrCredentials(
+		const transaction = this.getTransactionFromContextOrCredentials(
 			credentials, context)
 
 		let parentTransaction = transaction.parentTransaction
@@ -218,10 +216,10 @@ Only one concurrent transaction is allowed per application.`)
 		}
 	}
 
-	async getTransactionFromContextOrCredentials(
+	getTransactionFromContextOrCredentials(
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
-	): Promise<ITransaction> {
+	): ITransaction {
 		let transaction = context.transaction
 		if (!transaction) {
 			if (!credentials.transactionId) {
@@ -242,7 +240,8 @@ parent transactions.
 			context.transaction = transaction
 		}
 		let ancestorTransaction = transaction
-		while (ancestorTransaction = ancestorTransaction.parentTransaction);
+		for (; ancestorTransaction.parentTransaction; ancestorTransaction = ancestorTransaction.parentTransaction) {
+		}
 		context.rootTransaction = ancestorTransaction as any as IRootTransaction
 
 		return transaction
@@ -270,7 +269,7 @@ parent transactions.
 		credentials: ITransactionCredentials,
 		context: ITransactionContext,
 	): Promise<void> {
-		const transaction = await this.getTransactionFromContextOrCredentials(
+		const transaction = this.getTransactionFromContextOrCredentials(
 			credentials, context)
 
 		let parentTransaction = transaction.parentTransaction
@@ -410,10 +409,6 @@ ${callHerarchy}
 		credentials: ITransactionCredentials,
 		context: ITransactionContext
 	): Promise<boolean> {
-		if (context.nestedTransactionDepth) {
-			context.nestedTransactionDepth--
-			return false
-		}
 		const transactionManagerStore = this.terminalStore
 			.getTransactionManager()
 		transactionManagerStore.transactionInProgressMap.delete(transaction.id)

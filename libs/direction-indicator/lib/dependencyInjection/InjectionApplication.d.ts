@@ -5,6 +5,7 @@ export interface IInjectionApplication {
     name: string;
     domain: IInjectionDomain;
     tokenMap: Map<string, IDependencyInjectionToken<any>>;
+    getFullName(): string;
     token<T = GenericDependencyInjectionError>(descriptor: IDependencyInjectionTokenDescriptor, autopilot?: boolean): IDependencyInjectionToken<T>;
 }
 export declare class InjectionApplication implements IInjectionApplication {
@@ -13,6 +14,7 @@ export declare class InjectionApplication implements IInjectionApplication {
     tokenMap: Map<string, IDependencyInjectionToken<any>>;
     autopilot: boolean;
     constructor(name: string, domain: IInjectionDomain);
+    getFullName(): string;
     token<T = GenericDependencyInjectionError>(descriptor: IDependencyInjectionTokenDescriptor): IDependencyInjectionToken<T>;
 }
 export declare function lib(libraryName: string): IInjectionApplication;

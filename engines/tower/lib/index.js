@@ -10,4 +10,7 @@ export * from './facade/DatabaseFacade';
 export * from './facade/QueryFacade';
 export * from './AirportDatabase';
 export * from './tokens';
+export function loadTower(applicationName) {
+    console.log('@airport/tower is loaded for Application: ' + applicationName);
+}
 //# sourceMappingURL=index.js.map

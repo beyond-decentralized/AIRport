@@ -35,7 +35,7 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
             await this.wait(50);
         }
         const command = `SAVEPOINT '${transaction.id}'`;
-        console.log(command);
+        console.warn(command);
         this._db.exec(command);
     }
     async internalCommit(transaction, context) {
@@ -43,7 +43,7 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
             await this.wait(50);
         }
         const command = `RELEASE SAVEPOINT '${transaction.id}'`;
-        console.log(command);
+        console.warn(command);
         this._db.exec(command);
     }
     async internalRollback(transaction, context) {
@@ -51,7 +51,7 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
             await this.wait(50);
         }
         const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`;
-        console.log(command);
+        console.warn(command);
         this._db.exec(command);
     }
     async query(queryType, query, params = [], context, saveTransaction = false) {
@@ -65,8 +65,8 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
                     'TQ_ENTITY_CHANGE', 'TQ_ENTITY_WHERE_CHANGE', 'TQ_TRANSACTION'].some((deltaTableName) => {
                     return query.indexOf(deltaTableName) > -1;
                 })) {
-                    console.log(query);
-                    console.log(params);
+                    console.debug(query);
+                    console.debug(params);
                 }
                 stmt = this._db.prepare(query);
                 stmt.bind(params);
@@ -74,7 +74,7 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
                 while (stmt.step()) {
                     results.push(stmt.get());
                 }
-                console.log(results);
+                console.debug(results);
                 resolve(results);
             }
             catch (error) {

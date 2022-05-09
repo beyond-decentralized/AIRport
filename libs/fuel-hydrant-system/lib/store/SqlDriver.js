@@ -237,9 +237,7 @@ let SqlDriver = class SqlDriver {
         return splitValues;
     }
     async ensureContext(context) {
-        context = doEnsureContext(context);
-        await this.operationContextLoader.ensure(context);
-        return context;
+        return doEnsureContext(context);
     }
 };
 __decorate([
@@ -260,9 +258,6 @@ __decorate([
 __decorate([
     Inject()
 ], SqlDriver.prototype, "objectResultParserFactory", void 0);
-__decorate([
-    Inject()
-], SqlDriver.prototype, "operationContextLoader", void 0);
 __decorate([
     Inject()
 ], SqlDriver.prototype, "qMetadataUtils", void 0);

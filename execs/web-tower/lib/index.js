@@ -1,5 +1,6 @@
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { loadTower } from '@airport/tower';
 export * from './DomainRetriever';
 export * from './IFrameApplicationInitializer';
 export * from './IFrameApplicationLocator';
@@ -24,7 +25,8 @@ async function loadTransactionalConnector() {
     await transactionalConnector.initializeConnection();
     console.log('Iframe loaded');
 }
-export function loadIframe() {
+export function loadIframe(applicationName) {
+    loadTower(applicationName);
     loadTransactionalConnector().then();
 }
 //# sourceMappingURL=index.js.map

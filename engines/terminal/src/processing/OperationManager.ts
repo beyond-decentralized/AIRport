@@ -37,6 +37,7 @@ import {
 	IInsertManager,
 	IOperationContext,
 	IOperationManager,
+	IRepositoryManager,
 	IStructuralEntityValidator,
 	ITransaction,
 	IUpdateManager
@@ -80,6 +81,9 @@ export class OperationManager
 	queryFacade: IQueryFacade
 
 	@Inject()
+	repositoryManager: IRepositoryManager
+
+	@Inject()
 	structuralEntityValidator: IStructuralEntityValidator
 
 	@Inject()
@@ -115,7 +119,16 @@ export class OperationManager
 			entityGraph = this.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
-		await this.structuralEntityValidator.validate(entityGraph, [], context)
+		const missingRepositoryRecords = this.structuralEntityValidator.validate(entityGraph, [], context)
+
+		if (missingRepositoryRecords.length) {
+			const repository = await this.repositoryManager.createRepository(context.actor, context)
+			for (const missingRepositoryRecord of missingRepositoryRecords) {
+				missingRepositoryRecord.record[missingRepositoryRecord.repositoryPropertyName]
+					= repository
+			}
+		}
+
 
 		const operations = this.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)

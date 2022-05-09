@@ -7,7 +7,6 @@ export interface IApiCallContext extends IContext {
 }
 export interface ITransactionContext {
     doNotRecordHistory?: boolean;
-    nestedTransactionDepth?: number;
     transaction?: ITransaction;
     rootTransaction?: IRootTransaction;
 }
@@ -21,7 +20,7 @@ export interface ITransactionManager {
     transactInternal(callback: ITransactionalCallback, context: IContext): Promise<void>;
     startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<ITransaction>;
     rollback(credentials: ITransactionCredentials, context: IContext): Promise<void>;
-    getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): Promise<ITransaction>;
+    getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): ITransaction;
     commit(credentials: ITransactionCredentials, context: IContext): Promise<void>;
 }
 //# sourceMappingURL=TransactionManager.d.ts.map

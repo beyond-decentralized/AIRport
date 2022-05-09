@@ -13,6 +13,8 @@ export interface IInjectionApplication {
 	domain: IInjectionDomain
 	tokenMap: Map<string, IDependencyInjectionToken<any>>
 
+	getFullName(): string
+
 	token<T = GenericDependencyInjectionError>(
 		descriptor: IDependencyInjectionTokenDescriptor,
 		autopilot?: boolean
@@ -30,6 +32,10 @@ export class InjectionApplication
 		public name: string,
 		public domain: IInjectionDomain
 	) {
+	}
+
+	getFullName(): string {
+		return `${this.domain.name}/${this.name}`;
 	}
 
 	token<T = GenericDependencyInjectionError>(

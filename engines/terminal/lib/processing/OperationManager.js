@@ -34,7 +34,14 @@ let OperationManager = class OperationManager {
             entityGraph = this.entityGraphReconstructor
                 .restoreEntityGraph(verifiedTree, context);
         }
-        await this.structuralEntityValidator.validate(entityGraph, [], context);
+        const missingRepositoryRecords = this.structuralEntityValidator.validate(entityGraph, [], context);
+        if (missingRepositoryRecords.length) {
+            const repository = await this.repositoryManager.createRepository(context.actor, context);
+            for (const missingRepositoryRecord of missingRepositoryRecords) {
+                missingRepositoryRecord.record[missingRepositoryRecord.repositoryPropertyName]
+                    = repository;
+            }
+        }
         const operations = this.dependencyGraphResolver
             .getOperationsInOrder(entityGraph, context);
         const rootDbEntity = context.dbEntity;
@@ -378,6 +385,9 @@ __decorate([
 __decorate([
     Inject()
 ], OperationManager.prototype, "queryFacade", void 0);
+__decorate([
+    Inject()
+], OperationManager.prototype, "repositoryManager", void 0);
 __decorate([
     Inject()
 ], OperationManager.prototype, "structuralEntityValidator", void 0);
