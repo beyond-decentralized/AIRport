@@ -13,7 +13,7 @@ let LocalAPIClient = class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();
         this.demoListenerStarted = false;
-        this.connectionReady = false;
+        this.lastConnectionReadyCheck = false;
     }
     init() {
         if (_inDemoMode) {
@@ -45,7 +45,7 @@ let LocalAPIClient = class LocalAPIClient {
             }
             switch (message.category) {
                 case 'ConnectionIsReady':
-                    this.connectionReady = true;
+                    this.lastConnectionReadyCheck = true;
                     break;
                 case 'ToClientRedirected':
                     // All requests need to have a application signature
@@ -117,7 +117,8 @@ let LocalAPIClient = class LocalAPIClient {
         });
     }
     async isConnectionReady(token) {
-        if (this.connectionReady) {
+        if (this.lastConnectionReadyCheck) {
+            this.lastConnectionReadyCheck = false;
             return true;
         }
         let request = {

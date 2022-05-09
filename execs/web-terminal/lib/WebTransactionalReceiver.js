@@ -36,6 +36,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return;
         }
         if (this.webMessageReciever.needMessageSerialization()) {
+            throw new Error("Deserialization is not yet implemented.");
             // FIXME: deserialize message
         }
         const webReciever = this.terminalStore.getWebReceiver();
@@ -162,13 +163,16 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
     async ensureConnectionIsReady(message) {
         const fullApplicationName = this.dbApplicationUtils.
             getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName);
+        const applicationInitializing = this.terminalStore.getApplicationInitializer()
+            .initializingApplicationMap.get(fullApplicationName);
         if (applicationInitializing) {
             return;
         }
-        const applicationWindow = this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        const applicationWindow = this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
         if (!applicationWindow) {
-            this.applicationInitializer.initializingApplicationMap.set(fullApplicationName, true);
+            this.terminalStore.getApplicationInitializer()
+                .initializingApplicationMap.set(fullApplicationName, true);
             await this.applicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
         }
         const connectionIsReadyMessage = {
@@ -276,7 +280,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         if (!fullApplicationName) {
             return false;
         }
-        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
     }
     async messageIsFromValidApp(message, messageOrigin) {
         const applicationDomain = messageOrigin.split('//')[1];
@@ -309,7 +314,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return false;
         }
         // Make sure the application is installed
-        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
     }
     async handleIsolateMessage(message, messageOrigin, source) {
         if (!await this.messageIsFromValidApp(message, messageOrigin)) {

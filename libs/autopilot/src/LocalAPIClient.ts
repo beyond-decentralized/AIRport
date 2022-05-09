@@ -46,7 +46,7 @@ export class LocalAPIClient
 
     demoListenerStarted = false;
 
-    connectionReady = false
+    lastConnectionReadyCheck = false
 
     clientIframe: HTMLIFrameElement
 
@@ -88,7 +88,7 @@ export class LocalAPIClient
 
             switch (message.category) {
                 case 'ConnectionIsReady':
-                    this.connectionReady = true
+                    this.lastConnectionReadyCheck = true
                     break
                 case 'ToClientRedirected':
                     // All requests need to have a application signature
@@ -180,7 +180,8 @@ export class LocalAPIClient
     private async isConnectionReady<T>(
         token: IDependencyInjectionToken<T>
     ): Promise<boolean> {
-        if (this.connectionReady) {
+        if (this.lastConnectionReadyCheck) {
+            this.lastConnectionReadyCheck = false;
             return true
         }
         let request: ILocalAPIRequest = {

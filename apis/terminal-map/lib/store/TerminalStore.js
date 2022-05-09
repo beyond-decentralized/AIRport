@@ -13,6 +13,7 @@ let TerminalStore = class TerminalStore {
     async init() {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
+        this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
         this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsByDomainAndApplicationNames = new Map();
             for (const applicationActor of applicationActors) {

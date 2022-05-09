@@ -8018,6 +8018,10 @@ const REPOSITORY_FIELD = 'repository';
  */
 const internalTerminalState = new BehaviorSubject({
     applicationActors: [],
+    applicationInitializer: {
+        applicationWindowMap: new Map(),
+        initializingApplicationMap: new Map()
+    },
     applications: [],
     domains: [],
     frameworkActor: null,
@@ -8097,6 +8101,7 @@ let TerminalStore = class TerminalStore {
     async init() {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
+        this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
         this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
             const applicationActorsByDomainAndApplicationNames = new Map();
             for (const applicationActor of applicationActors) {
@@ -35753,11 +35758,6 @@ var __decorate$5 = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let WebApplicationInitializer = class WebApplicationInitializer extends ApplicationInitializer {
-    constructor() {
-        super(...arguments);
-        this.applicationWindowMap = new Map();
-        this.initializingApplicationMap = new Map();
-    }
     async nativeInitializeApplication(domain, application, fullApplicationName) {
         if (this.terminalStore.getReceiver().initializedApps
             .has(fullApplicationName)) {
@@ -35777,10 +35777,15 @@ let WebApplicationInitializer = class WebApplicationInitializer extends Applicat
             .has(fullApplicationName)) {
             await this.wait(100);
         }
-        this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);
-        this.initializingApplicationMap.set(fullApplicationName, false);
+        this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);
+        this.terminalStore.getApplicationInitializer()
+            .initializingApplicationMap.set(fullApplicationName, false);
     }
 };
+__decorate$5([
+    Inject()
+], WebApplicationInitializer.prototype, "terminalStore", void 0);
 WebApplicationInitializer = __decorate$5([
     Injected()
 ], WebApplicationInitializer);
@@ -35818,7 +35823,10 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         if (!this.hasValidApplicationInfo(message)) {
             return;
         }
-        if (this.webMessageReciever.needMessageSerialization()) ;
+        if (this.webMessageReciever.needMessageSerialization()) {
+            throw new Error("Deserialization is not yet implemented.");
+            // FIXME: deserialize message
+        }
         const webReciever = this.terminalStore.getWebReceiver();
         if (webReciever.onClientMessageCallback) {
             const receivedDate = new Date();
@@ -35941,13 +35949,16 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
     async ensureConnectionIsReady(message) {
         const fullApplicationName = this.dbApplicationUtils.
             getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName);
+        const applicationInitializing = this.terminalStore.getApplicationInitializer()
+            .initializingApplicationMap.get(fullApplicationName);
         if (applicationInitializing) {
             return;
         }
-        const applicationWindow = this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        const applicationWindow = this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
         if (!applicationWindow) {
-            this.applicationInitializer.initializingApplicationMap.set(fullApplicationName, true);
+            this.terminalStore.getApplicationInitializer()
+                .initializingApplicationMap.set(fullApplicationName, true);
             await this.applicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
         }
         const connectionIsReadyMessage = {
@@ -36051,7 +36062,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         if (!fullApplicationName) {
             return false;
         }
-        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
     }
     async messageIsFromValidApp(message, messageOrigin) {
         const applicationDomain = messageOrigin.split('//')[1];
@@ -36084,7 +36096,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return false;
         }
         // Make sure the application is installed
-        return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName);
+        return !!this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.get(fullApplicationName);
     }
     async handleIsolateMessage(message, messageOrigin, source) {
         if (!await this.messageIsFromValidApp(message, messageOrigin)) {
@@ -36156,6 +36169,9 @@ const WEB_MESSAGE_RECEIVER = webTerminal.token({
     class: WebMesageReceiver,
     interface: 'IWebMessageReceiver',
     token: 'WEB_MESSAGE_RECEIVER'
+});
+APPLICATION_INITIALIZER.setDependencies({
+    terminalStore: TERMINAL_STORE
 });
 WEB_MESSAGE_RECEIVER.setDependencies({
     transactionalReceiver: TRANSACTIONAL_RECEIVER

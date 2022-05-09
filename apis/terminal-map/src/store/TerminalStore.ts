@@ -21,7 +21,7 @@ import {
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject } from 'rxjs';
-import { InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
+import { IApplicationInitializerState, InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/apron';
 import {
@@ -56,6 +56,8 @@ export interface ITerminalStore {
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
+
+	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
 	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
 
@@ -113,6 +115,8 @@ export class TerminalStore
 
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
 
+	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
+
 	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
@@ -144,10 +148,11 @@ export class TerminalStore
 	getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>
 
 	async init(): Promise<void> {
-
 		this.getTerminalState = this.selectorManager.createRootSelector(this.state);
 		this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationActors)
+		this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.applicationInitializer)
 		this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
 				const applicationActorsByDomainAndApplicationNames: Map<DomainName, Map<ApplicationName, IActor[]>> = new Map()

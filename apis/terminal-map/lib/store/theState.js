@@ -6,6 +6,10 @@ import { INTERNAL_DOMAIN } from "@airport/ground-control";
 import { BehaviorSubject } from "rxjs";
 export const internalTerminalState = new BehaviorSubject({
     applicationActors: [],
+    applicationInitializer: {
+        applicationWindowMap: new Map(),
+        initializingApplicationMap: new Map()
+    },
     applications: [],
     domains: [],
     frameworkActor: null,

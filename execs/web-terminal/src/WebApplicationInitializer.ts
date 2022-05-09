@@ -1,5 +1,6 @@
 import {
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import { FullApplicationName } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
@@ -21,11 +22,8 @@ export interface IWebApplicationInitializer
 export class WebApplicationInitializer
     extends ApplicationInitializer {
 
+    @Inject()
     terminalStore: ITerminalStore
-
-    applicationWindowMap: Map<FullApplicationName, Window> = new Map()
-
-    initializingApplicationMap: Map<FullApplicationName, boolean> = new Map()
 
     async nativeInitializeApplication(
         domain: string,
@@ -55,8 +53,10 @@ export class WebApplicationInitializer
             await this.wait(100)
         }
 
-        this.applicationWindowMap.set(fullApplicationName, appIframe.contentWindow)
-        this.initializingApplicationMap.set(fullApplicationName, false)
+        this.terminalStore.getApplicationInitializer()
+            .applicationWindowMap.set(fullApplicationName, appIframe.contentWindow)
+        this.terminalStore.getApplicationInitializer()
+            .initializingApplicationMap.set(fullApplicationName, false)
     }
 }
 

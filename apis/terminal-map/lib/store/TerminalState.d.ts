@@ -37,8 +37,13 @@ export interface ISequenceGeneratorState {
     sequenceBlocks: number[][][];
     generatingSequenceNumbers: boolean;
 }
+export interface IApplicationInitializerState {
+    applicationWindowMap: Map<FullApplicationName, Window>;
+    initializingApplicationMap: Map<FullApplicationName, boolean>;
+}
 export interface ITerminalState {
     applicationActors: IActor[];
+    applicationInitializer: IApplicationInitializerState;
     applications: IApplication[];
     domains: IDomain[];
     frameworkActor: IActor;

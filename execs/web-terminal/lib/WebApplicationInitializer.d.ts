@@ -7,8 +7,6 @@ export interface IWebApplicationInitializer extends IApplicationInitializer {
 }
 export declare class WebApplicationInitializer extends ApplicationInitializer {
     terminalStore: ITerminalStore;
-    applicationWindowMap: Map<FullApplicationName, Window>;
-    initializingApplicationMap: Map<FullApplicationName, boolean>;
     nativeInitializeApplication(domain: string, application: string, fullApplicationName: string): Promise<void>;
 }
 //# sourceMappingURL=WebApplicationInitializer.d.ts.map

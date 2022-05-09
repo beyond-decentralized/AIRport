@@ -12,6 +12,10 @@ import { ITerminalState } from "./TerminalState";
 
 export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubject({
     applicationActors: [],
+    applicationInitializer: {
+        applicationWindowMap: new Map(),
+        initializingApplicationMap: new Map()
+    },
     applications: [],
     domains: [],
     frameworkActor: null,

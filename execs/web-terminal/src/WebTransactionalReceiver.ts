@@ -78,6 +78,7 @@ export class WebTransactionalReceiver
 		}
 
 		if (this.webMessageReciever.needMessageSerialization()) {
+			throw new Error("Deserialization is not yet implemented.")
 			// FIXME: deserialize message
 		}
 
@@ -233,15 +234,18 @@ export class WebTransactionalReceiver
 			getFullApplicationNameFromDomainAndName(
 				message.domain, message.application)
 
-		const applicationInitializing = this.applicationInitializer.initializingApplicationMap.get(fullApplicationName)
+		const applicationInitializing = this.terminalStore.getApplicationInitializer()
+			.initializingApplicationMap.get(fullApplicationName)
 		if (applicationInitializing) {
 			return
 		}
 
-		const applicationWindow = this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
+		const applicationWindow = this.terminalStore.getApplicationInitializer()
+			.applicationWindowMap.get(fullApplicationName)
 
 		if (!applicationWindow) {
-			this.applicationInitializer.initializingApplicationMap.set(fullApplicationName, true)
+			this.terminalStore.getApplicationInitializer()
+				.initializingApplicationMap.set(fullApplicationName, true)
 			await this.applicationInitializer.nativeInitializeApplication(message.domain,
 				message.application, fullApplicationName)
 		}
@@ -388,7 +392,8 @@ export class WebTransactionalReceiver
 			return false
 		}
 
-		return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
+		return !!this.terminalStore.getApplicationInitializer()
+			.applicationWindowMap.get(fullApplicationName)
 	}
 
 	private async messageIsFromValidApp(
@@ -430,7 +435,8 @@ export class WebTransactionalReceiver
 		}
 
 		// Make sure the application is installed
-		return !!this.applicationInitializer.applicationWindowMap.get(fullApplicationName)
+		return !!this.terminalStore.getApplicationInitializer()
+			.applicationWindowMap.get(fullApplicationName)
 	}
 
 	private async handleIsolateMessage(

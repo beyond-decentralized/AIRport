@@ -14,6 +14,9 @@ export const WEB_MESSAGE_RECEIVER = webTerminal.token({
     interface: 'IWebMessageReceiver',
     token: 'WEB_MESSAGE_RECEIVER'
 });
+APPLICATION_INITIALIZER.setDependencies({
+    terminalStore: TERMINAL_STORE
+});
 WEB_MESSAGE_RECEIVER.setDependencies({
     transactionalReceiver: TRANSACTIONAL_RECEIVER
 });

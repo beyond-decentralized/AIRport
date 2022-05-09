@@ -4,7 +4,7 @@ import { IMemoizedSelector, ISelectorManager } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern-runtime';
 import { Subject } from 'rxjs';
-import { InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
+import { IApplicationInitializerState, InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { LastIds } from '@airport/apron';
 import { ISequenceGeneratorState } from '..';
@@ -26,6 +26,7 @@ export interface ITerminalStore {
     getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
+    getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>;
     getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>;
@@ -51,6 +52,7 @@ export declare class TerminalStore implements ITerminalStore {
     getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
     getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
+    getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>;
     getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
