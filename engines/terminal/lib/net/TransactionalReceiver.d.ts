@@ -1,15 +1,17 @@
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { IDbApplicationUtils } from '@airport/ground-control';
 import { IApiIMI, IIsolateMessage, IIsolateMessageOut } from '@airport/apron';
-import { IApiCallContext, IDatabaseManager, ITerminalStore, ITransactionalServer, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
+import { IApiCallContext, IDatabaseManager, ITerminalStore, ITransactionalServer, ITransactionContext, ITransactionCredentials, ITransactionManager } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 export declare abstract class TransactionalReceiver {
     databaseManager: IDatabaseManager;
     dbApplicationUtils: IDbApplicationUtils;
     internalRecordManager: IInternalRecordManager;
     terminalStore: ITerminalStore;
+    transactionManager: ITransactionManager;
     transactionalServer: ITransactionalServer;
     processMessage<ReturnType extends IIsolateMessageOut<any>>(message: IIsolateMessage & IApiIMI): Promise<ReturnType>;
+    private doProcessMessage;
     protected abstract nativeStartApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<boolean>;
     protected abstract nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext): Promise<Result>;
     protected startApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext, nativeHandleCallback: () => void): Promise<boolean>;

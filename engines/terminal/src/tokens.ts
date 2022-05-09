@@ -261,7 +261,11 @@ TRANSACTION_MANAGER.setDependencies({
 
 TRANSACTIONAL_RECEIVER.setDependencies({
     databaseManager: DATABASE_MANAGER,
-    internalRecordManager: INTERNAL_RECORD_MANAGER
+    dbApplicationUtils: DB_APPLICATION_UTILS,
+    internalRecordManager: INTERNAL_RECORD_MANAGER,
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER,
+    transactionalServer: TRANSACTIONAL_SERVER
 })
 
 TRANSACTIONAL_SERVER.setDependencies({

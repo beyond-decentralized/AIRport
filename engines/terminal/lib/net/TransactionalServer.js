@@ -36,7 +36,9 @@ let TransactionalServer = class TransactionalServer {
         return await this.transactionManager.initialize('airport', context);
     }
     async addRepository(credentials, context) {
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         // FIXME: check actor
         let repositoryId = 0;
@@ -49,25 +51,25 @@ let TransactionalServer = class TransactionalServer {
         return repositoryId;
     }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
-        if (credentials.transactionId) {
+        if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         return await this.queryManager.find(portableQuery, context, cachedSqlQueryId);
     }
     async findOne(portableQuery, credentials, context, cachedSqlQueryId) {
-        if (credentials.transactionId) {
+        if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         return await this.queryManager.findOne(portableQuery, context, cachedSqlQueryId);
     }
     search(portableQuery, credentials, context, cachedSqlQueryId) {
-        if (credentials.transactionId) {
+        if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         return this.queryManager.search(portableQuery, context);
     }
     searchOne(portableQuery, credentials, context, cachedSqlQueryId) {
-        if (credentials.transactionId) {
+        if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         return this.queryManager.searchOne(portableQuery, context);
@@ -109,7 +111,9 @@ let TransactionalServer = class TransactionalServer {
         if (!entity) {
             return null;
         }
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
@@ -122,7 +126,9 @@ let TransactionalServer = class TransactionalServer {
         if (!entity) {
             return null;
         }
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         context.actor = actor;
         let saveResult;
@@ -134,7 +140,9 @@ let TransactionalServer = class TransactionalServer {
     }
     async insertValues(portableQuery, credentials, context, ensureGeneratedValues // for internal use only
     ) {
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         let numInsertedRecords;
         await this.transactionManager.transactInternal(async (transaction, context) => {
@@ -143,7 +151,9 @@ let TransactionalServer = class TransactionalServer {
         return numInsertedRecords;
     }
     async insertValuesGetIds(portableQuery, credentials, context) {
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         let ids;
         await this.transactionManager.transactInternal(async (transaction, context) => {
@@ -152,7 +162,9 @@ let TransactionalServer = class TransactionalServer {
         return ids;
     }
     async updateValues(portableQuery, credentials, context) {
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         let numUpdatedRecords;
         await this.transactionManager.transactInternal(async (transaction, context) => {
@@ -161,7 +173,9 @@ let TransactionalServer = class TransactionalServer {
         return numUpdatedRecords;
     }
     async deleteWhere(portableQuery, credentials, context) {
-        this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        if (context.transaction || credentials.transactionId) {
+            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
+        }
         const actor = await this.getActor(credentials);
         let numDeletedRecords;
         await this.transactionManager.transactInternal(async (transaction, context) => {
