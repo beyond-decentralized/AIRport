@@ -1,5 +1,6 @@
 import { IAirportDatabase } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -52,7 +53,8 @@ export interface IStage1SyncedInDataProcessor {
 
 	performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_Id, IActor>
+		actorMayById: Map<Actor_Id, IActor>,
+		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult>;
 
 }
@@ -91,7 +93,8 @@ export class Stage1SyncedInDataProcessor
 	 */
 	async performStage1DataProcessing(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_Id, IActor>
+		actorMayById: Map<Actor_Id, IActor>,
+		context: IContext
 	): Promise<Stage1SyncedInDataProcessingResult> {
 		await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId)
 

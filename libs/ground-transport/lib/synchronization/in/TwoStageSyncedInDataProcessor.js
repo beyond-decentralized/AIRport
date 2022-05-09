@@ -11,10 +11,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    async syncMessages(messages, transaction) {
+    async syncMessages(messages, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
         const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap } = await this.getDataStructures(messages);
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap, context);
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -67,8 +67,8 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             applicationsByApplicationVersionIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap) {
-        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap, context) {
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
@@ -81,10 +81,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         }
         await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap);
         if (allSyncConflicts.length) {
-            await this.synchronizationConflictDao.insert(allSyncConflicts);
+            await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }
         if (allSyncConflictValues.length) {
-            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues);
+            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context);
         }
     }
 };

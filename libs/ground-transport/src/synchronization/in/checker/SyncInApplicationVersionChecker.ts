@@ -4,6 +4,7 @@ import {
 	IApplicationVersionDao
 } from '@airport/airspace'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -18,7 +19,8 @@ export interface IApplicationVersionCheckRecord {
 export interface ISyncInApplicationVersionChecker {
 
 	ensureApplicationVersions(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>;
 
 }
@@ -31,10 +33,11 @@ export class SyncInApplicationVersionChecker
 	applicationVersionDao: IApplicationVersionDao
 
 	async ensureApplicationVersions(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		try {
-			let applicationCheckMap = await this.checkVersionsApplicationsDomains(message);
+			let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
 
 			for (let i = 0; i < message.applicationVersions.length; i++) {
 				const applicationVersion = message.applicationVersions[i]
@@ -51,7 +54,8 @@ export class SyncInApplicationVersionChecker
 	}
 
 	private async checkVersionsApplicationsDomains(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
 		const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message)
 

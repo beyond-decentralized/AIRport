@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	User_UuId,
 	User_Username
@@ -23,7 +23,8 @@ export interface IUserDao
 	): Promise<IUser[]>
 
 	insert(
-		users: IUser[]
+		users: IUser[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -60,7 +61,8 @@ export class UserDao
 	}
 
 	async insert(
-		users: IUser[]
+		users: IUser[],
+		context: IContext
 	): Promise<void> {
 		let u: QUser;
 		const values = []
@@ -76,7 +78,7 @@ export class UserDao
 				u.username
 			],
 			values
-		}) as number[][]
+		}, context) as number[][]
 		for (let i = 0; i < users.length; i++) {
 			const user = users[i]
 			user.id = ids[i][0]

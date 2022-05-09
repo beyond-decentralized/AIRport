@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInActorChecker = class SyncInActorChecker {
-    async ensureActors(message) {
+    async ensureActors(message, context) {
         try {
             let actorUuids = [];
             let messageActorIndexMap = new Map();
@@ -31,7 +31,7 @@ let SyncInActorChecker = class SyncInActorChecker {
             const missingActors = message.actors
                 .filter(messageActor => !messageActor.id);
             if (missingActors.length) {
-                await this.actorDao.insert(missingActors);
+                await this.actorDao.insert(missingActors, context);
             }
         }
         catch (e) {

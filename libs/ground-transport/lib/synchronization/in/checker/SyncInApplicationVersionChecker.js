@@ -6,9 +6,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
-    async ensureApplicationVersions(message) {
+    async ensureApplicationVersions(message, context) {
         try {
-            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message);
+            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
             for (let i = 0; i < message.applicationVersions.length; i++) {
                 const applicationVersion = message.applicationVersions[i];
                 message.applicationVersions[i] = applicationCheckMap
@@ -22,7 +22,7 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
         }
         return true;
     }
-    async checkVersionsApplicationsDomains(message) {
+    async checkVersionsApplicationsDomains(message, context) {
         const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message);
         const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
         let lastDomainName;

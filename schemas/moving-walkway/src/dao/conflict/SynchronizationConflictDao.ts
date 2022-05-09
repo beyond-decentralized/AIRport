@@ -1,4 +1,4 @@
-import { Injected } from '@airport/direction-indicator';
+import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
@@ -11,7 +11,8 @@ export interface ISynchronizationConflictDao
 	extends IBaseSynchronizationConflictDao {
 
 	insert(
-		terminals: ISynchronizationConflict[]
+		terminals: ISynchronizationConflict[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -22,7 +23,8 @@ export class SynchronizationConflictDao
 	implements ISynchronizationConflictDao {
 
 	async insert(
-		synchronizationConflicts: ISynchronizationConflict[]
+		synchronizationConflicts: ISynchronizationConflict[],
+		context: IContext
 	): Promise<void> {
 		let sc: QSynchronizationConflict;
 		const values = []
@@ -45,7 +47,7 @@ export class SynchronizationConflictDao
 				sc.overwritingRecordHistory.id
 			],
 			values
-		})
+		}, context)
 		for (let i = 0; i < synchronizationConflicts.length; i++) {
 			let synchronizationConflict = synchronizationConflicts[i]
 			synchronizationConflict.id = ids[i][0]

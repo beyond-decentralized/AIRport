@@ -176,6 +176,7 @@ SYNC_IN_USER_CHECKER.setDependencies({
 })
 
 SYNC_OUT_DATA_SERIALIZER.setDependencies({
+    actorDao: ACTOR_DAO,
     repositoryDao: REPOSITORY_DAO,
 })
 

@@ -4,11 +4,12 @@ import { ISynchronizationConflictDao, ISynchronizationConflictValuesDao } from '
 import { ITransaction } from '@airport/terminal-map';
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor';
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor';
+import { IContext } from '@airport/direction-indicator';
 /**
  * Synchronizes incoming data and records message conflicts in two processing stages.
  */
 export interface ITwoStageSyncedInDataProcessor {
-    syncMessages(messages: RepositorySynchronizationMessage[], transaction: ITransaction): Promise<void>;
+    syncMessages(messages: RepositorySynchronizationMessage[], transaction: ITransaction, context: IContext): Promise<void>;
 }
 export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInDataProcessor {
     repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
@@ -19,7 +20,7 @@ export declare class TwoStageSyncedInDataProcessor implements ITwoStageSyncedInD
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    syncMessages(messages: RepositorySynchronizationMessage[], transaction: ITransaction): Promise<void>;
+    syncMessages(messages: RepositorySynchronizationMessage[], transaction: ITransaction, context: IContext): Promise<void>;
     private aggregateHistoryRecords;
     private getDataStructures;
     private updateLocalData;

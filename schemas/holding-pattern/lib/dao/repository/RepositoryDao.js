@@ -70,7 +70,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r.uuId.in(uuIds)
         });
     }
-    async insert(repositories) {
+    async insert(repositories, context) {
         let r;
         const values = [];
         for (const repository of repositories) {
@@ -90,7 +90,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 r.owner.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < repositories.length; i++) {
             let repository = repositories[i];
             repository.id = ids[i][0];

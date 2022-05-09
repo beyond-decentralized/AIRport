@@ -30,7 +30,7 @@ import {
 	Q,
 	QActor
 } from '../../generated/generated'
-import { Injected } from '@airport/direction-indicator'
+import { IContext, Injected } from '@airport/direction-indicator'
 
 export interface IActorDao
 	extends IBaseActorDao {
@@ -63,7 +63,8 @@ export interface IActorDao
 	): Promise<IActor[]>
 
 	insert(
-		actors: IActor[]
+		actors: IActor[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -163,7 +164,8 @@ export class ActorDao
 	}
 
 	async insert(
-		actors: IActor[]
+		actors: IActor[],
+		context: IContext
 	): Promise<void> {
 		let t: QActor;
 		const values = []
@@ -181,7 +183,7 @@ export class ActorDao
 				t.terminal.id
 			],
 			values
-		})
+		}, context)
 		for (let i = 0; i < actors.length; i++) {
 			let actor = actors[i]
 			actor.id = ids[i][0]

@@ -11,6 +11,7 @@ import {
 } from '@airport/airspace'
 import { IAirportDatabase } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -28,7 +29,8 @@ import { ITerminalStore } from '@airport/terminal-map'
 export interface ISyncInDataChecker {
 
 	checkData(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>
 
 }
@@ -55,7 +57,8 @@ export class SyncInDataChecker
 	 * @returns {DataCheckResults}
 	 */
 	async checkData(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		const history = message.history
 		try {
@@ -88,7 +91,7 @@ export class SyncInDataChecker
 
 			const applicationEntityMap = await this.populateApplicationEntityMap(message)
 
-			await this.checkOperationHistories(message, applicationEntityMap)
+			await this.checkOperationHistories(message, applicationEntityMap, context)
 		} catch (e) {
 			console.error(e)
 			return false
@@ -124,7 +127,8 @@ export class SyncInDataChecker
 
 	private async checkOperationHistories(
 		message: RepositorySynchronizationMessage,
-		applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>
+		applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>,
+		context: IContext
 	): Promise<void> {
 		const history = message.history
 		if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
@@ -218,7 +222,7 @@ export class SyncInDataChecker
 			}
 
 			await this.checkRecordHistories(operationHistory,
-				actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message)
+				actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context)
 		}
 	}
 
@@ -226,7 +230,8 @@ export class SyncInDataChecker
 		operationHistory: IOperationHistory,
 		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<void> {
 		const recordHistories = operationHistory.recordHistory
 		if (!(recordHistories instanceof Array) || !recordHistories.length) {
@@ -266,9 +271,9 @@ for ChangeType.INSERT_VALUES`)
 			}
 
 			this.checkNewValues(recordHistory, actorIdColumnMapByIndex,
-				repositoryIdColumnMapByIndex, operationHistory, message)
+				repositoryIdColumnMapByIndex, operationHistory, message, context)
 			this.checkOldValues(recordHistory, actorIdColumnMapByIndex,
-				repositoryIdColumnMapByIndex, operationHistory, message)
+				repositoryIdColumnMapByIndex, operationHistory, message, context)
 
 			recordHistory.operationHistory = operationHistory
 
@@ -281,7 +286,8 @@ for ChangeType.INSERT_VALUES`)
 		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:
@@ -342,7 +348,8 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
 		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
 		operationHistory: IOperationHistory,
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): void {
 		switch (operationHistory.changeType) {
 			case ChangeType.DELETE_ROWS:

@@ -34,7 +34,8 @@ let OperationManager = class OperationManager {
             entityGraph = this.entityGraphReconstructor
                 .restoreEntityGraph(verifiedTree, context);
         }
-        const missingRepositoryRecords = this.structuralEntityValidator.validate(entityGraph, [], context);
+        const missingRepositoryRecords = [];
+        this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, context);
         if (missingRepositoryRecords.length) {
             const repository = await this.repositoryManager.createRepository(context.actor, context);
             for (const missingRepositoryRecord of missingRepositoryRecords) {

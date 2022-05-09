@@ -381,8 +381,13 @@ ${callHerarchy}
 		transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction)
 		if (parentTransaction) {
 			transactionManagerStore.transactionInProgressMap.delete(parentTransaction.id)
+			let ancestorTransaction = transaction
+			for (; ancestorTransaction.parentTransaction; ancestorTransaction = ancestorTransaction.parentTransaction) {
+			}
+			context.rootTransaction = (ancestorTransaction as any as IRootTransaction)
 		} else {
 			transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction)
+			context.rootTransaction = (transaction as any as IRootTransaction)
 		}
 	}
 

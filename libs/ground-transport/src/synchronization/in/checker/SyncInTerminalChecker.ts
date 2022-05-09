@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -13,7 +14,8 @@ import {
 export interface ISyncInTerminalChecker {
 
 	ensureTerminals(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>
 
 }
@@ -26,7 +28,8 @@ export class SyncInTerminalChecker
 	terminalDao: ITerminalDao
 
 	async ensureTerminals(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		try {
 			let terminalUuids: string[] = []
@@ -67,7 +70,7 @@ export class SyncInTerminalChecker
 				.filter(messageTerminal => !messageTerminal.id)
 
 			if (missingTerminals.length) {
-				await this.addMissingTerminals(missingTerminals)
+				await this.addMissingTerminals(missingTerminals, context)
 			}
 		} catch (e) {
 			console.error(e)
@@ -78,12 +81,13 @@ export class SyncInTerminalChecker
 	}
 
 	private async addMissingTerminals(
-		missingTerminals: ITerminal[]
+		missingTerminals: ITerminal[],
+		context: IContext
 	): Promise<void> {
 		for (const terminal of missingTerminals) {
 			terminal.isLocal = false
 		}
-		await this.terminalDao.insert(missingTerminals)
+		await this.terminalDao.insert(missingTerminals, context)
 	}
 
 }

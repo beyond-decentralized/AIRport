@@ -1,5 +1,5 @@
 import { and } from '@airport/air-traffic-control'
-import { Injected } from '@airport/direction-indicator';
+import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	User_Id,
 	Terminal_UuId
@@ -25,7 +25,8 @@ export interface ITerminalDao
 	): Promise<ITerminal[]>;
 
 	insert(
-		terminals: ITerminal[]
+		terminals: ITerminal[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -66,7 +67,8 @@ export class TerminalDao
 	}
 
 	async insert(
-		terminals: ITerminal[]
+		terminals: ITerminal[],
+		context: IContext
 	): Promise<void> {
 		let t: QTerminal;
 		const values = []
@@ -83,7 +85,7 @@ export class TerminalDao
 				t.isLocal
 			],
 			values
-		}) as number[][]
+		}, context) as number[][]
 		for (let i = 0; i < terminals.length; i++) {
 			const terminal = terminals[i]
 			terminal.id = ids[i][0]

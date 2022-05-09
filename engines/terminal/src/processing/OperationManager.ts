@@ -35,6 +35,7 @@ import {
 	IDependencyGraphResolver,
 	IEntityGraphReconstructor,
 	IInsertManager,
+	IMissingRepositoryRecord,
 	IOperationContext,
 	IOperationManager,
 	IRepositoryManager,
@@ -119,7 +120,8 @@ export class OperationManager
 			entityGraph = this.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
-		const missingRepositoryRecords = this.structuralEntityValidator.validate(entityGraph, [], context)
+		const missingRepositoryRecords: IMissingRepositoryRecord[] = [] 
+		this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, context)
 
 		if (missingRepositoryRecords.length) {
 			const repository = await this.repositoryManager.createRepository(context.actor, context)

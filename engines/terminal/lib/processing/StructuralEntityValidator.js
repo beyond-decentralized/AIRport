@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType, EntityState, SQLDataType } from '@airport/ground-control';
 let StructuralEntityValidator = class StructuralEntityValidator {
-    validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
-        const missingRepositoryRecords = [];
+    validate(records, operatedOnEntityIndicator, missingRepositoryRecords, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
@@ -112,7 +111,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     if (relatedEntities && relatedEntities.length) {
                         const previousDbEntity = context.dbEntity;
                         context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, rootRelationRecord, record);
+                        this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, context, relationIsOneToMany, dbProperty, rootRelationRecord, record);
                         context.dbEntity = previousDbEntity;
                     }
                 } // if (dbProperty.relation // If is a relation property
@@ -135,7 +134,6 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             } // for (const dbProperty of dbEntity.properties)
             this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
         } // for (const record of entities)
-        return missingRepositoryRecords;
     }
     ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
         if (!dbEntity.isRepositoryEntity) {
@@ -154,13 +152,16 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             }
             return;
         }
+        // If a new repository is created for this record
         if (newRepositoryNeeded) {
-            throw new Error(`Error creating a new repository in a nested record:
-In Entity: ${dbEntity.name}
-That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
-->
-When creating a new repository the top level record should be of the newly created repository.
-`);
+            // 			throw new Error(`Error creating a new repository in a nested record:
+            // In Entity: ${dbEntity.name}
+            // That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
+            // ->
+            // When creating a new repository the top level record should be of the newly created repository.
+            // `)
+            // no further checks needed
+            return;
         }
         // One to many get traversed as well, if it's in the input graph/tree
         // it is assumed to be part of the same repository

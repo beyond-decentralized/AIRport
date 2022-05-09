@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInTerminalChecker = class SyncInTerminalChecker {
-    async ensureTerminals(message) {
+    async ensureTerminals(message, context) {
         try {
             let terminalUuids = [];
             let messageTerminalIndexMap = new Map();
@@ -42,7 +42,7 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
             const missingTerminals = message.terminals
                 .filter(messageTerminal => !messageTerminal.id);
             if (missingTerminals.length) {
-                await this.addMissingTerminals(missingTerminals);
+                await this.addMissingTerminals(missingTerminals, context);
             }
         }
         catch (e) {
@@ -51,11 +51,11 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
         }
         return true;
     }
-    async addMissingTerminals(missingTerminals) {
+    async addMissingTerminals(missingTerminals, context) {
         for (const terminal of missingTerminals) {
             terminal.isLocal = false;
         }
-        await this.terminalDao.insert(missingTerminals);
+        await this.terminalDao.insert(missingTerminals, context);
     }
 };
 __decorate([

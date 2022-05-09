@@ -34,11 +34,12 @@ apis\check-in\src\SequenceGenerator.ts
 engines\tower\src\core\globalScopeUtils.ts
 
 There are also a number of static convenience objects and methods
-that are meant for use in Application DAOs:
+that are meant for use in Application DAOs (and internal logic):
 
 apis\air-traffic-control\src\impl\core\Joins.ts
 apis\air-traffic-control\src\impl\core\operation\LogicalOperation.ts
 apis\air-traffic-control\src\lingo\query\facade\Query.ts
+apis\ground-control\src\lingo\core\entity\Dictionary.ts
 
 (there may be a few more out there).  All internal static methods and
 properties should be moved into @Injected() classes. All externally

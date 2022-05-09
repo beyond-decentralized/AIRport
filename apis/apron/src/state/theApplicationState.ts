@@ -7,7 +7,6 @@ export const applicationState: IApplicationState = {
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (http://localhost:7500)
     hostServer: 'http://localhost:7500',
-    lastIds: null,
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
     observableMessageMap: new Map(),

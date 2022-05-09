@@ -1,9 +1,10 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
 import { IAirportDatabase } from '@airport/air-traffic-control';
+import { IContext } from '@airport/direction-indicator';
 import { ISequenceGenerator } from '@airport/check-in';
 import { ITerminalStore } from '@airport/terminal-map';
 export interface ISyncInDataChecker {
-    checkData(message: RepositorySynchronizationMessage): Promise<boolean>;
+    checkData(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }
 export declare class SyncInDataChecker implements ISyncInDataChecker {
     airportDatabase: IAirportDatabase;
@@ -16,7 +17,7 @@ export declare class SyncInDataChecker implements ISyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
-    checkData(message: RepositorySynchronizationMessage): Promise<boolean>;
+    checkData(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
     private populateApplicationEntityMap;
     private checkOperationHistories;
     private checkRecordHistories;

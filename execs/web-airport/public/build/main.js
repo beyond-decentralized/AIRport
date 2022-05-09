@@ -2781,7 +2781,7 @@ var repositoryEntity;
     repositoryEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';
     repositoryEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
     repositoryEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID';
-    repositoryEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code';
+    repositoryEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code_dash_runtime';
     repositoryEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     repositoryEntity.systemWideOperationId = 'systemWideOperationId';
     repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
@@ -9918,7 +9918,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.uuId.in(uuIds)
         });
     }
-    async insert(actors) {
+    async insert(actors, context) {
         let t;
         const values = [];
         for (const actor of actors) {
@@ -9935,7 +9935,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 t.terminal.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
             actor.id = ids[i][0];
@@ -10057,7 +10057,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r.uuId.in(uuIds)
         });
     }
-    async insert(repositories) {
+    async insert(repositories, context) {
         let r;
         const values = [];
         for (const repository of repositories) {
@@ -10077,7 +10077,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 r.owner.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < repositories.length; i++) {
             let repository = repositories[i];
             repository.id = ids[i][0];
@@ -10842,7 +10842,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             where: d.uuId.in(uuIds)
         });
     }
-    async insert(terminals) {
+    async insert(terminals, context) {
         let t;
         const values = [];
         for (const terminal of terminals) {
@@ -10858,7 +10858,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
                 t.isLocal
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < terminals.length; i++) {
             const terminal = terminals[i];
             terminal.id = ids[i][0];
@@ -10896,7 +10896,7 @@ let UserDao = class UserDao extends BaseUserDao {
             where: u.uuId.in(uuIds)
         });
     }
-    async insert(users) {
+    async insert(users, context) {
         let u;
         const values = [];
         for (const user of users) {
@@ -10911,7 +10911,7 @@ let UserDao = class UserDao extends BaseUserDao {
                 u.username
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
             user.id = ids[i][0];
@@ -11448,7 +11448,6 @@ const applicationState = {
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (http://localhost:7500)
     hostServer: 'http://localhost:7500',
-    lastIds: null,
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
     observableMessageMap: new Map(),
@@ -20530,9 +20529,14 @@ ${callHerarchy}
         transactionManagerStore.transactionInProgressMap.set(transaction.id, transaction);
         if (parentTransaction) {
             transactionManagerStore.transactionInProgressMap.delete(parentTransaction.id);
+            let ancestorTransaction = transaction;
+            for (; ancestorTransaction.parentTransaction; ancestorTransaction = ancestorTransaction.parentTransaction) {
+            }
+            context.rootTransaction = ancestorTransaction;
         }
         else {
             transactionManagerStore.rootTransactionInProgressMap.set(transaction.id, transaction);
+            context.rootTransaction = transaction;
         }
     }
     isSameSource(transaction, credentials) {
@@ -21374,7 +21378,8 @@ let OperationManager = class OperationManager {
             entityGraph = this.entityGraphReconstructor
                 .restoreEntityGraph(verifiedTree, context);
         }
-        const missingRepositoryRecords = this.structuralEntityValidator.validate(entityGraph, [], context);
+        const missingRepositoryRecords = [];
+        this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, context);
         if (missingRepositoryRecords.length) {
             const repository = await this.repositoryManager.createRepository(context.actor, context);
             for (const missingRepositoryRecord of missingRepositoryRecords) {
@@ -21748,8 +21753,7 @@ var __decorate$1r = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let StructuralEntityValidator = class StructuralEntityValidator {
-    validate(records, operatedOnEntityIndicator, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
-        const missingRepositoryRecords = [];
+    validate(records, operatedOnEntityIndicator, missingRepositoryRecords, context, fromOneToMany = false, parentRelationProperty = null, rootRelationRecord = null, parentRelationRecord = null) {
         const dbEntity = context.dbEntity;
         if (!dbEntity.idColumns.length) {
             throw new Error(`Cannot run 'save' for entity '${dbEntity.name}' with no @Id(s).
@@ -21853,7 +21857,7 @@ for ${dbEntity.name}.${dbProperty.name}`);
                     if (relatedEntities && relatedEntities.length) {
                         const previousDbEntity = context.dbEntity;
                         context.dbEntity = dbRelation.relationEntity;
-                        this.validate(relatedEntities, operatedOnEntityIndicator, context, relationIsOneToMany, dbProperty, rootRelationRecord, record);
+                        this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, context, relationIsOneToMany, dbProperty, rootRelationRecord, record);
                         context.dbEntity = previousDbEntity;
                     }
                 } // if (dbProperty.relation // If is a relation property
@@ -21876,7 +21880,6 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             } // for (const dbProperty of dbEntity.properties)
             this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
         } // for (const record of entities)
-        return missingRepositoryRecords;
     }
     ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
         if (!dbEntity.isRepositoryEntity) {
@@ -21895,13 +21898,16 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
             }
             return;
         }
+        // If a new repository is created for this record
         if (newRepositoryNeeded) {
-            throw new Error(`Error creating a new repository in a nested record:
-In Entity: ${dbEntity.name}
-That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
-->
-When creating a new repository the top level record should be of the newly created repository.
-`);
+            // 			throw new Error(`Error creating a new repository in a nested record:
+            // In Entity: ${dbEntity.name}
+            // That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
+            // ->
+            // When creating a new repository the top level record should be of the newly created repository.
+            // `)
+            // no further checks needed
+            return;
         }
         // One to many get traversed as well, if it's in the input graph/tree
         // it is assumed to be part of the same repository
@@ -27417,7 +27423,7 @@ var __decorate$T = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInActorChecker = class SyncInActorChecker {
-    async ensureActors(message) {
+    async ensureActors(message, context) {
         try {
             let actorUuids = [];
             let messageActorIndexMap = new Map();
@@ -27442,7 +27448,7 @@ let SyncInActorChecker = class SyncInActorChecker {
             const missingActors = message.actors
                 .filter(messageActor => !messageActor.id);
             if (missingActors.length) {
-                await this.actorDao.insert(missingActors);
+                await this.actorDao.insert(missingActors, context);
             }
         }
         catch (e) {
@@ -27499,9 +27505,9 @@ var __decorate$S = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInApplicationChecker = class SyncInApplicationChecker {
-    async ensureApplications(message) {
+    async ensureApplications(message, context) {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
             for (let i = 0; i < message.applications.length; i++) {
                 let application = message.applications[i];
                 message.applications[i] = applicationCheckMap
@@ -27515,7 +27521,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
         }
         return true;
     }
-    async checkApplicationsAndDomains(message) {
+    async checkApplicationsAndDomains(message, context) {
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
         const applications = await this.applicationDao
             .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
@@ -27567,7 +27573,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             }
         }
         if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate);
+            await this.applicationDao.insert(applicationsToCreate, context);
         }
         return applicationCheckMap;
     }
@@ -27641,9 +27647,9 @@ var __decorate$R = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
-    async ensureApplicationVersions(message) {
+    async ensureApplicationVersions(message, context) {
         try {
-            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message);
+            let applicationCheckMap = await this.checkVersionsApplicationsDomains(message, context);
             for (let i = 0; i < message.applicationVersions.length; i++) {
                 const applicationVersion = message.applicationVersions[i];
                 message.applicationVersions[i] = applicationCheckMap
@@ -27657,7 +27663,7 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
         }
         return true;
     }
-    async checkVersionsApplicationsDomains(message) {
+    async checkVersionsApplicationsDomains(message, context) {
         const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message);
         const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
         let lastDomainName;
@@ -27751,27 +27757,27 @@ let SyncInChecker = class SyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
-    async checkMessage(message) {
+    async checkMessage(message, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        if (!await this.syncInUserChecker.ensureUsers(message)) {
+        if (!await this.syncInUserChecker.ensureUsers(message, context)) {
             return false;
         }
-        if (!await this.syncInTerminalChecker.ensureTerminals(message)) {
+        if (!await this.syncInTerminalChecker.ensureTerminals(message, context)) {
             return false;
         }
-        if (!await this.syncInApplicationChecker.ensureApplications(message)) {
+        if (!await this.syncInApplicationChecker.ensureApplications(message, context)) {
             return false;
         }
-        if (!await this.syncInActorChecker.ensureActors(message)) {
+        if (!await this.syncInActorChecker.ensureActors(message, context)) {
             return false;
         }
-        if (!await this.syncInRepositoryChecker.ensureRepositories(message)) {
+        if (!await this.syncInRepositoryChecker.ensureRepositories(message, context)) {
             return false;
         }
-        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message)) {
+        if (!await this.syncInApplicationVersionChecker.ensureApplicationVersions(message, context)) {
             return false;
         }
-        if (!await this.syncInDataChecker.checkData(message)) {
+        if (!await this.syncInDataChecker.checkData(message, context)) {
             return false;
         }
         return true;
@@ -27816,7 +27822,7 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
-    async checkData(message) {
+    async checkData(message, context) {
         const history = message.history;
         try {
             if (!history || typeof history !== 'object') {
@@ -27845,7 +27851,7 @@ let SyncInDataChecker = class SyncInDataChecker {
             history.syncTimestamp = message.syncTimestamp;
             delete history.id;
             const applicationEntityMap = await this.populateApplicationEntityMap(message);
-            await this.checkOperationHistories(message, applicationEntityMap);
+            await this.checkOperationHistories(message, applicationEntityMap, context);
         }
         catch (e) {
             console.error(e);
@@ -27874,7 +27880,7 @@ let SyncInDataChecker = class SyncInDataChecker {
         }
         return applicationEntityMap;
     }
-    async checkOperationHistories(message, applicationEntityMap) {
+    async checkOperationHistories(message, applicationEntityMap, context) {
         const history = message.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
             throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
@@ -27951,10 +27957,10 @@ let SyncInDataChecker = class SyncInDataChecker {
                     repositoryIdColumnMapByIndex.set(column.index, column);
                 }
             }
-            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message);
+            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context);
         }
     }
-    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message) {
+    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
@@ -27990,13 +27996,13 @@ for ChangeType.INSERT_VALUES`);
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
-            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
+            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
+            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory.id;
         }
     }
-    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
+    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -28050,7 +28056,7 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
             }
         }
     }
-    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
+    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:
@@ -28120,7 +28126,7 @@ var __decorate$O = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
-    async ensureRepositories(message) {
+    async ensureRepositories(message, context) {
         try {
             let repositoryUuids = [];
             let messageRepositoryIndexMap = new Map();
@@ -28167,7 +28173,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 missingRepositories.push(history.repository);
             }
             if (missingRepositories.length) {
-                await this.repositoryDao.insert(missingRepositories);
+                await this.repositoryDao.insert(missingRepositories, context);
             }
         }
         catch (e) {
@@ -28224,7 +28230,7 @@ var __decorate$N = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInTerminalChecker = class SyncInTerminalChecker {
-    async ensureTerminals(message) {
+    async ensureTerminals(message, context) {
         try {
             let terminalUuids = [];
             let messageTerminalIndexMap = new Map();
@@ -28260,7 +28266,7 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
             const missingTerminals = message.terminals
                 .filter(messageTerminal => !messageTerminal.id);
             if (missingTerminals.length) {
-                await this.addMissingTerminals(missingTerminals);
+                await this.addMissingTerminals(missingTerminals, context);
             }
         }
         catch (e) {
@@ -28269,11 +28275,11 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
         }
         return true;
     }
-    async addMissingTerminals(missingTerminals) {
+    async addMissingTerminals(missingTerminals, context) {
         for (const terminal of missingTerminals) {
             terminal.isLocal = false;
         }
-        await this.terminalDao.insert(missingTerminals);
+        await this.terminalDao.insert(missingTerminals, context);
     }
 };
 __decorate$N([
@@ -28290,7 +28296,7 @@ var __decorate$M = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SyncInUserChecker = class SyncInUserChecker {
-    async ensureUsers(message) {
+    async ensureUsers(message, context) {
         try {
             let userUuids = [];
             let messageUserIndexMap = new Map();
@@ -28314,7 +28320,7 @@ let SyncInUserChecker = class SyncInUserChecker {
             }
             const missingUsers = message.users.filter(messageUser => !messageUser.id);
             if (missingUsers.length) {
-                await this.addMissingUsers(missingUsers);
+                await this.addMissingUsers(missingUsers, context);
             }
         }
         catch (e) {
@@ -28323,13 +28329,13 @@ let SyncInUserChecker = class SyncInUserChecker {
         }
         return true;
     }
-    async addMissingUsers(missingUsers) {
+    async addMissingUsers(missingUsers, context) {
         for (const user of missingUsers) {
             if (!user.username || typeof user.username !== 'string') {
                 throw new Error(`Invalid User.username ${user.username}`);
             }
         }
-        await this.userDao.insert(missingUsers);
+        await this.userDao.insert(missingUsers, context);
     }
 };
 __decorate$M([
@@ -28552,7 +28558,7 @@ var __decorate$I = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
-    async insert(synchronizationConflicts) {
+    async insert(synchronizationConflicts, context) {
         let sc;
         const values = [];
         for (const synchronizationConflict of synchronizationConflicts) {
@@ -28574,7 +28580,7 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
                 sc.overwritingRecordHistory.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < synchronizationConflicts.length; i++) {
             let synchronizationConflict = synchronizationConflicts[i];
             synchronizationConflict.id = ids[i][0];
@@ -28592,7 +28598,7 @@ var __decorate$H = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
-    async insert(synchronizationConflictValues) {
+    async insert(synchronizationConflictValues, context) {
         let scv;
         const values = [];
         for (const synchronizationConflictValue of synchronizationConflictValues) {
@@ -28608,7 +28614,7 @@ let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao ex
                 scv.columnIndex
             ],
             values
-        });
+        }, context);
     }
 };
 SynchronizationConflictValuesDao = __decorate$H([
@@ -28717,7 +28723,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
      * @param {Map<Actor_Id, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById) {
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context) {
         await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest
@@ -29451,7 +29457,7 @@ let SynchronizationInManager = class SynchronizationInManager {
             }
             let processMessage = true;
             await this.transactionManager.transactInternal(async (transaction) => {
-                if (!await this.syncInChecker.checkMessage(message)) {
+                if (!await this.syncInChecker.checkMessage(message, context)) {
                     transaction.rollback(null, context);
                     processMessage = false;
                     return;
@@ -29461,9 +29467,9 @@ let SynchronizationInManager = class SynchronizationInManager {
                 messagesToProcess.push(message);
             }
         }
-        await this.transactionManager.transactInternal(async (transaction) => {
+        await this.transactionManager.transactInternal(async (transaction, context) => {
             transaction.isSync = true;
-            await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction);
+            await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context);
         }, context);
     }
     timeOrderMessages(messageMapByUuId) {
@@ -29555,10 +29561,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**
      * Synchronize the data messages coming to Terminal (new data for this TM)
      */
-    async syncMessages(messages, transaction) {
+    async syncMessages(messages, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
         const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap } = await this.getDataStructures(messages);
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap, context);
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -29611,8 +29617,8 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
             applicationsByApplicationVersionIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap) {
-        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById);
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap, context) {
+        const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
         for (const [_, synchronizationConflicts] of stage1Result.syncConflictMapByRepoId) {
@@ -29625,10 +29631,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         }
         await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap);
         if (allSyncConflicts.length) {
-            await this.synchronizationConflictDao.insert(allSyncConflicts);
+            await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }
         if (allSyncConflictValues.length) {
-            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues);
+            await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context);
         }
     }
 };
@@ -30355,6 +30361,7 @@ SYNC_IN_USER_CHECKER.setDependencies({
     userDao: USER_DAO
 });
 SYNC_OUT_DATA_SERIALIZER.setDependencies({
+    actorDao: ACTOR_DAO,
     repositoryDao: REPOSITORY_DAO,
 });
 SYNCHRONIZATION_ADAPTER_LOADER.setDependencies({

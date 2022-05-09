@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -12,7 +13,8 @@ import {
 export interface ISyncInActorChecker {
 
 	ensureActors(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>
 
 }
@@ -25,7 +27,8 @@ export class SyncInActorChecker
 	actorDao: IActorDao
 
 	async ensureActors(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		try {
 			let actorUuids: string[] = []
@@ -54,7 +57,7 @@ export class SyncInActorChecker
 				.filter(messageActor => !messageActor.id)
 
 			if (missingActors.length) {
-				await this.actorDao.insert(missingActors)
+				await this.actorDao.insert(missingActors, context)
 			}
 		} catch (e) {
 			console.error(e)

@@ -10,7 +10,8 @@ export interface IStructuralEntityValidator {
 	validate<E>(
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
+		missingRepositoryRecords: IMissingRepositoryRecord[],
 		context: IOperationContext,
-	): IMissingRepositoryRecord[]
+	): void
 
 }

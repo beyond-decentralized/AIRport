@@ -32,7 +32,6 @@ import {
 	IReadQueryIMI,
 	IRetrieveDomainIMI,
 	ISaveIMI,
-	LastIds,
 	ICallApiIMI,
 	IApplicationLoader,
 	ILocalAPIServer,
@@ -45,6 +44,7 @@ import {
 	Observer
 } from 'rxjs';
 import { v4 as uuidv4 } from "uuid";
+import { ITerminalStore } from '@airport/terminal-map';
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
@@ -81,6 +81,9 @@ export class IframeTransactionalConnector
 
 	@Inject()
 	localApiServer: ILocalAPIServer
+
+	@Inject()
+	terminalStore: ITerminalStore
 
 	async processMessage(
 		message: IIsolateMessageOut<any> | ILocalAPIRequest,
@@ -146,7 +149,11 @@ export class IframeTransactionalConnector
 				if (message.type === IsolateMessageType.APP_INITIALIZING) {
 					if (this.applicationStore.state.appState === AppState.NOT_INITIALIED) {
 						let initConnectionIMO: IInitConnectionIMO = message
-						this.applicationStore.state.lastIds = initConnectionIMO.result
+						const lastTerminalState = this.terminalStore.getTerminalState()
+						this.terminalStore.state.next({
+							...lastTerminalState,
+							lastIds: initConnectionIMO.result
+						})
 						this.applicationStore.state.appState = AppState.START_INITIALIZING
 					}
 					return
@@ -482,7 +489,7 @@ export class IframeTransactionalConnector
 				return false
 			case AppState.START_INITIALIZING:
 				this.applicationStore.state.appState = AppState.INITIALIZING_IN_PROGRESS
-				await this.applicationLoader.load(this.applicationStore.state.lastIds)
+				await this.applicationLoader.load(this.terminalStore.getLastIds())
 				this.applicationStore.state.appState = AppState.INITIALIZED
 				await this.applicationLoader.initialize()
 				window.parent.postMessage({

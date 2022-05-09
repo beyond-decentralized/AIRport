@@ -4,6 +4,6 @@ export interface IMissingRepositoryRecord {
     repositoryPropertyName: string;
 }
 export interface IStructuralEntityValidator {
-    validate<E>(entities: E[], operatedOnEntityIndicator: boolean[], context: IOperationContext): IMissingRepositoryRecord[];
+    validate<E>(entities: E[], operatedOnEntityIndicator: boolean[], missingRepositoryRecords: IMissingRepositoryRecord[], context: IOperationContext): void;
 }
 //# sourceMappingURL=StructuralEntityValidator.d.ts.map

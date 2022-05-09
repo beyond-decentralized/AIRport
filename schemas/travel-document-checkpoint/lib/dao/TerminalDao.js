@@ -28,7 +28,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             where: d.uuId.in(uuIds)
         });
     }
-    async insert(terminals) {
+    async insert(terminals, context) {
         let t;
         const values = [];
         for (const terminal of terminals) {
@@ -44,7 +44,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
                 t.isLocal
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < terminals.length; i++) {
             const terminal = terminals[i];
             terminal.id = ids[i][0];

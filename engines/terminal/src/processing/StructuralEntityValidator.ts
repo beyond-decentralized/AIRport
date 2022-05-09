@@ -32,13 +32,13 @@ export class StructuralEntityValidator
 	validate<E>(
 		records: E[],
 		operatedOnEntityIndicator: boolean[],
+		missingRepositoryRecords: IMissingRepositoryRecord[],
 		context: IOperationContext,
 		fromOneToMany = false,
 		parentRelationProperty: DbProperty = null,
 		rootRelationRecord = null,
 		parentRelationRecord = null
-	): IMissingRepositoryRecord[] {
-		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
+	): void {
 
 		const dbEntity = context.dbEntity
 		if (!dbEntity.idColumns.length) {
@@ -157,7 +157,7 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					if (relatedEntities && relatedEntities.length) {
 						const previousDbEntity = context.dbEntity
 						context.dbEntity = dbRelation.relationEntity
-						this.validate(relatedEntities, operatedOnEntityIndicator, context,
+						this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, context,
 							relationIsOneToMany, dbProperty, rootRelationRecord, record)
 						context.dbEntity = previousDbEntity
 					}
@@ -182,8 +182,6 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
 				parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
 		} // for (const record of entities)
-
-		return missingRepositoryRecords
 	}
 
 	private ensureRepositoryValidity(
@@ -213,13 +211,16 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 			}
 			return
 		}
+		// If a new repository is created for this record
 		if (newRepositoryNeeded) {
-			throw new Error(`Error creating a new repository in a nested record:
-In Entity: ${dbEntity.name}
-That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
-->
-When creating a new repository the top level record should be of the newly created repository.
-`)
+			// 			throw new Error(`Error creating a new repository in a nested record:
+			// In Entity: ${dbEntity.name}
+			// That is a child of ${parentRelationProperty.entity.name} via ${parentRelationProperty.entity.name}.${parentRelationProperty.name}
+			// ->
+			// When creating a new repository the top level record should be of the newly created repository.
+			// `)
+			// no further checks needed
+			return
 		}
 		// One to many get traversed as well, if it's in the input graph/tree
 		// it is assumed to be part of the same repository

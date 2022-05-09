@@ -1,8 +1,8 @@
-import { INTER_APP_API_CLIENT, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
+import { DB_APPLICATION_UTILS, INTER_APP_API_CLIENT, TRANSACTIONAL_CONNECTOR } from "@airport/ground-control";
 import { APPLICATION_LOCATOR } from "@airport/landing";
 import { OPERATION_SERIALIZER, QUERY_RESULTS_DESERIALIZER } from "@airport/pressurization";
 import { APPLICATION_LOADER, APPLICATION_STORE, LOCAL_API_SERVER } from "@airport/apron";
-import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER } from "@airport/terminal-map";
+import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TERMINAL_STORE } from "@airport/terminal-map";
 import { DomainRetriever } from "./DomainRetriever";
 import { IFrameApplicationInitializer } from "./IFrameApplicationInitializer";
 import { IFrameApplicationLocator } from "./IFrameApplicationLocator";
@@ -24,6 +24,8 @@ TRANSACTIONAL_CONNECTOR.setClass(IframeTransactionalConnector);
 TRANSACTIONAL_CONNECTOR.setDependencies({
     applicationLoader: APPLICATION_LOADER,
     applicationStore: APPLICATION_STORE,
-    localApiServer: LOCAL_API_SERVER
+    dbApplicationUtils: DB_APPLICATION_UTILS,
+    localApiServer: LOCAL_API_SERVER,
+    terminalStore: TERMINAL_STORE
 });
 //# sourceMappingURL=tokens.js.map

@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
-    async ensureRepositories(message) {
+    async ensureRepositories(message, context) {
         try {
             let repositoryUuids = [];
             let messageRepositoryIndexMap = new Map();
@@ -53,7 +53,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 missingRepositories.push(history.repository);
             }
             if (missingRepositories.length) {
-                await this.repositoryDao.insert(missingRepositories);
+                await this.repositoryDao.insert(missingRepositories, context);
             }
         }
         catch (e) {

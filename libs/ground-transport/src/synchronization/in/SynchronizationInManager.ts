@@ -74,7 +74,7 @@ export class SynchronizationInManager
 
 			let processMessage = true
 			await this.transactionManager.transactInternal(async (transaction) => {
-				if (!await this.syncInChecker.checkMessage(message)) {
+				if (!await this.syncInChecker.checkMessage(message, context)) {
 					transaction.rollback(null, context)
 					processMessage = false
 					return
@@ -86,9 +86,9 @@ export class SynchronizationInManager
 		}
 
 
-		await this.transactionManager.transactInternal(async (transaction) => {
+		await this.transactionManager.transactInternal(async (transaction, context) => {
 			transaction.isSync = true
-			await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction)
+			await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context)
 		}, context)
 	}
 

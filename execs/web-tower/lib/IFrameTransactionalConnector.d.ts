@@ -5,6 +5,7 @@ import { IContext } from '@airport/direction-indicator';
 import { DbDomain, DomainName, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
 import { Observable } from 'rxjs';
+import { ITerminalStore } from '@airport/terminal-map';
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
     initializeConnection(): Promise<void>;
@@ -16,6 +17,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     applicationStore: IApplicationStore;
     dbApplicationUtils: IDbApplicationUtils;
     localApiServer: ILocalAPIServer;
+    terminalStore: ITerminalStore;
     processMessage(message: IIsolateMessageOut<any> | ILocalAPIRequest, origin: string): Promise<void>;
     callApi<Request, Response>(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context: IContext): Promise<number>;

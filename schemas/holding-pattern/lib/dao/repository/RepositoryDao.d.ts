@@ -6,7 +6,7 @@ export interface IRepositoryDao extends IBaseRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryUuId: Repository_UuId, context: IContext): Promise<IRepository>;
     findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
-    insert(repositories: IRepository[]): Promise<void>;
+    insert(repositories: IRepository[], context: IContext): Promise<void>;
 }
 export declare type RepositoryIdMap = Map<User_UuId, Map<Terminal_UuId, Map<User_UuId, Map<Actor_UuId, Map<number, Map<Repository_UuId, Repository_Id>>>>>>;
 export declare class RepositoryDao extends BaseRepositoryDao implements IRepositoryDao {
@@ -14,6 +14,6 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
     findReposWithDetailsAndSyncNodeIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByIds(repositoryIds: Repository_Id[]): Promise<IRepository[]>;
     findByUuIds(uuIds: Repository_UuId[]): Promise<IRepository[]>;
-    insert(repositories: IRepository[]): Promise<void>;
+    insert(repositories: IRepository[], context: IContext): Promise<void>;
 }
 //# sourceMappingURL=RepositoryDao.d.ts.map

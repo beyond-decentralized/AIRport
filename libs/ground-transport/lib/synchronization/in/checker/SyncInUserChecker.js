@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInUserChecker = class SyncInUserChecker {
-    async ensureUsers(message) {
+    async ensureUsers(message, context) {
         try {
             let userUuids = [];
             let messageUserIndexMap = new Map();
@@ -30,7 +30,7 @@ let SyncInUserChecker = class SyncInUserChecker {
             }
             const missingUsers = message.users.filter(messageUser => !messageUser.id);
             if (missingUsers.length) {
-                await this.addMissingUsers(missingUsers);
+                await this.addMissingUsers(missingUsers, context);
             }
         }
         catch (e) {
@@ -39,13 +39,13 @@ let SyncInUserChecker = class SyncInUserChecker {
         }
         return true;
     }
-    async addMissingUsers(missingUsers) {
+    async addMissingUsers(missingUsers, context) {
         for (const user of missingUsers) {
             if (!user.username || typeof user.username !== 'string') {
                 throw new Error(`Invalid User.username ${user.username}`);
             }
         }
-        await this.userDao.insert(missingUsers);
+        await this.userDao.insert(missingUsers, context);
     }
 };
 __decorate([

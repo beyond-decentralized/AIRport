@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Injected } from '@airport/direction-indicator';
 import { BaseSynchronizationConflictDao, Q } from '../../generated/generated';
 let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
-    async insert(synchronizationConflicts) {
+    async insert(synchronizationConflicts, context) {
         let sc;
         const values = [];
         for (const synchronizationConflict of synchronizationConflicts) {
@@ -29,7 +29,7 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
                 sc.overwritingRecordHistory.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < synchronizationConflicts.length; i++) {
             let synchronizationConflict = synchronizationConflicts[i];
             synchronizationConflict.id = ids[i][0];

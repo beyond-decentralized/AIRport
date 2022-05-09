@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -11,7 +12,8 @@ import {
 export interface ISyncInUserChecker {
 
 	ensureUsers(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>;
 
 }
@@ -24,7 +26,8 @@ export class SyncInUserChecker
 	userDao: IUserDao
 
 	async ensureUsers(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		try {
 			let userUuids: string[] = []
@@ -52,7 +55,7 @@ export class SyncInUserChecker
 			const missingUsers = message.users.filter(messageUser => !messageUser.id)
 
 			if (missingUsers.length) {
-				await this.addMissingUsers(missingUsers)
+				await this.addMissingUsers(missingUsers, context)
 			}
 		} catch (e) {
 			console.error(e)
@@ -63,14 +66,15 @@ export class SyncInUserChecker
 	}
 
 	private async addMissingUsers(
-		missingUsers: IUser[]
+		missingUsers: IUser[],
+		context: IContext
 	): Promise<void> {
 		for (const user of missingUsers) {
 			if (!user.username || typeof user.username !== 'string') {
 				throw new Error(`Invalid User.username ${user.username}`)
 			}
 		}
-		await this.userDao.insert(missingUsers)
+		await this.userDao.insert(missingUsers, context)
 	}
 
 }

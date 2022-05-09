@@ -1,6 +1,5 @@
 import { Observer } from "rxjs";
 import { IIsolateMessage } from "../isolate/IsolateMessage";
-import { LastIds } from "../LastIds";
 export interface IMessageInRecord {
     message: IIsolateMessage;
     reject: any;
@@ -21,7 +20,6 @@ export interface IApplicationState {
     appState: AppState;
     domain: string;
     hostServer: string;
-    lastIds: LastIds;
     mainDomain: string;
     observableMessageMap: Map<string, IObservableMessageInRecord<any>>;
     pendingMessageMap: Map<string, IMessageInRecord>;

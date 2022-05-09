@@ -43,7 +43,8 @@ export interface IRepositoryDao
 	): Promise<IRepository[]>
 
 	insert(
-		repositories: IRepository[]
+		repositories: IRepository[],
+		context: IContext
 	): Promise<void>
 
 }
@@ -141,7 +142,8 @@ export class RepositoryDao
 	}
 
 	async insert(
-		repositories: IRepository[]
+		repositories: IRepository[],
+		context: IContext
 	): Promise<void> {
 		let r: QRepository;
 		const values = []
@@ -162,7 +164,7 @@ export class RepositoryDao
 				r.owner.id
 			],
 			values
-		})
+		}, context)
 		for (let i = 0; i < repositories.length; i++) {
 			let repository = repositories[i]
 			repository.id = ids[i][0]

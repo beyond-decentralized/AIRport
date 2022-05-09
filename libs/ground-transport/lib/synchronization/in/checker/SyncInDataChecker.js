@@ -16,7 +16,7 @@ let SyncInDataChecker = class SyncInDataChecker {
      * @param {IDataToTM[]} dataMessagesWithCompatibleApplications
      * @returns {DataCheckResults}
      */
-    async checkData(message) {
+    async checkData(message, context) {
         const history = message.history;
         try {
             if (!history || typeof history !== 'object') {
@@ -45,7 +45,7 @@ let SyncInDataChecker = class SyncInDataChecker {
             history.syncTimestamp = message.syncTimestamp;
             delete history.id;
             const applicationEntityMap = await this.populateApplicationEntityMap(message);
-            await this.checkOperationHistories(message, applicationEntityMap);
+            await this.checkOperationHistories(message, applicationEntityMap, context);
         }
         catch (e) {
             console.error(e);
@@ -74,7 +74,7 @@ let SyncInDataChecker = class SyncInDataChecker {
         }
         return applicationEntityMap;
     }
-    async checkOperationHistories(message, applicationEntityMap) {
+    async checkOperationHistories(message, applicationEntityMap, context) {
         const history = message.history;
         if (!(history.operationHistory instanceof Array) || !history.operationHistory.length) {
             throw new Error(`Invalid RepositorySynchronizationMessage.history.operationHistory`);
@@ -155,10 +155,10 @@ let SyncInDataChecker = class SyncInDataChecker {
                     repositoryIdColumnMapByIndex.set(column.index, column);
                 }
             }
-            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message);
+            await this.checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context);
         }
     }
-    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message) {
+    async checkRecordHistories(operationHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, message, context) {
         const recordHistories = operationHistory.recordHistory;
         if (!(recordHistories instanceof Array) || !recordHistories.length) {
             throw new Error(`Inalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory`);
@@ -194,13 +194,13 @@ for ChangeType.INSERT_VALUES`);
             if (recordHistory.operationHistory) {
                 throw new Error(`RepositorySynchronizationMessage.history -> operationHistory.recordHistory.operationHistory cannot be specified`);
             }
-            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
-            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message);
+            this.checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
+            this.checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context);
             recordHistory.operationHistory = operationHistory;
             delete recordHistory.id;
         }
     }
-    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
+    checkNewValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
                 if (recordHistory.newValues) {
@@ -254,7 +254,7 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
             }
         }
     }
-    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message) {
+    checkOldValues(recordHistory, actorIdColumnMapByIndex, repositoryIdColumnMapByIndex, operationHistory, message, context) {
         switch (operationHistory.changeType) {
             case ChangeType.DELETE_ROWS:
             case ChangeType.INSERT_VALUES:

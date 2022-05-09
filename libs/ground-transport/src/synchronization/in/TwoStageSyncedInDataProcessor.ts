@@ -27,6 +27,7 @@ import { ISyncRepoTransHistory } from './SyncInUtils'
 import { IStage1SyncedInDataProcessor } from './Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor } from './Stage2SyncedInDataProcessor'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -38,7 +39,8 @@ export interface ITwoStageSyncedInDataProcessor {
 
 	syncMessages(
 		messages: RepositorySynchronizationMessage[],
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IContext
 	): Promise<void>;
 
 }
@@ -67,7 +69,8 @@ export class TwoStageSyncedInDataProcessor
 	 */
 	async syncMessages(
 		messages: RepositorySynchronizationMessage[],
-		transaction: ITransaction
+		transaction: ITransaction,
+		context: IContext
 	): Promise<void> {
 		this.aggregateHistoryRecords(messages, transaction)
 
@@ -75,7 +78,7 @@ export class TwoStageSyncedInDataProcessor
 			= await this.getDataStructures(messages)
 
 		await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById,
-			applicationsByApplicationVersionIdMap)
+			applicationsByApplicationVersionIdMap, context)
 	}
 
 	private aggregateHistoryRecords(
@@ -155,10 +158,11 @@ export class TwoStageSyncedInDataProcessor
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_Id, IActor>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
+		context: IContext
 	): Promise<void> {
 		const stage1Result
 			= await this.stage1SyncedInDataProcessor.performStage1DataProcessing(
-				repositoryTransactionHistoryMapByRepositoryId, actorMayById)
+				repositoryTransactionHistoryMapByRepositoryId, actorMayById, context)
 
 		let allSyncConflicts: ISynchronizationConflict[] = []
 		let allSyncConflictValues: ISynchronizationConflictValues[] = []
@@ -176,11 +180,11 @@ export class TwoStageSyncedInDataProcessor
 
 
 		if (allSyncConflicts.length) {
-			await this.synchronizationConflictDao.insert(allSyncConflicts)
+			await this.synchronizationConflictDao.insert(allSyncConflicts, context)
 		}
 
 		if (allSyncConflictValues.length) {
-			await this.synchronizationConflictValuesDao.insert(allSyncConflictValues)
+			await this.synchronizationConflictValuesDao.insert(allSyncConflictValues, context)
 		}
 	}
 

@@ -1,4 +1,5 @@
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -11,7 +12,8 @@ import {
 export interface ISyncInRepositoryChecker {
 
 	ensureRepositories(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean>;
 
 }
@@ -24,7 +26,8 @@ export class SyncInRepositoryChecker
 	repositoryDao: IRepositoryDao
 
 	async ensureRepositories(
-		message: RepositorySynchronizationMessage
+		message: RepositorySynchronizationMessage,
+		context: IContext
 	): Promise<boolean> {
 		try {
 			let repositoryUuids: string[] = []
@@ -85,7 +88,7 @@ export class SyncInRepositoryChecker
 			}
 
 			if (missingRepositories.length) {
-				await this.repositoryDao.insert(missingRepositories)
+				await this.repositoryDao.insert(missingRepositories, context)
 			}
 		} catch (e) {
 			console.error(e)

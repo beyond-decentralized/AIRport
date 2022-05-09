@@ -7,8 +7,9 @@ import {
     IApplicationDao
 } from "@airport/airspace";
 import {
-	Inject,
-	Injected
+    IContext,
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 
 export interface IDomainCheckRecord {
@@ -26,7 +27,8 @@ export interface IApplicationCheckRecord {
 export interface ISyncInApplicationChecker {
 
     ensureApplications(
-        message: RepositorySynchronizationMessage
+        message: RepositorySynchronizationMessage,
+        context: IContext
     ): Promise<boolean>
 
 }
@@ -42,10 +44,11 @@ export class SyncInApplicationChecker
     domainDao: IDomainDao
 
     async ensureApplications(
-        message: RepositorySynchronizationMessage
+        message: RepositorySynchronizationMessage,
+        context: IContext
     ): Promise<boolean> {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
 
             for (let i = 0; i < message.applications.length; i++) {
                 let application = message.applications[i]
@@ -62,7 +65,8 @@ export class SyncInApplicationChecker
     }
 
     private async checkApplicationsAndDomains(
-        message: RepositorySynchronizationMessage
+        message: RepositorySynchronizationMessage,
+        context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(message)
@@ -122,7 +126,7 @@ export class SyncInApplicationChecker
         }
 
         if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate)
+            await this.applicationDao.insert(applicationsToCreate, context)
         }
 
         return applicationCheckMap

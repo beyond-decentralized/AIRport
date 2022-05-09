@@ -27,7 +27,7 @@ let UserDao = class UserDao extends BaseUserDao {
             where: u.uuId.in(uuIds)
         });
     }
-    async insert(users) {
+    async insert(users, context) {
         let u;
         const values = [];
         for (const user of users) {
@@ -42,7 +42,7 @@ let UserDao = class UserDao extends BaseUserDao {
                 u.username
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
             user.id = ids[i][0];

@@ -7,9 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { ApplicationStatus } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInApplicationChecker = class SyncInApplicationChecker {
-    async ensureApplications(message) {
+    async ensureApplications(message, context) {
         try {
-            let applicationCheckMap = await this.checkApplicationsAndDomains(message);
+            let applicationCheckMap = await this.checkApplicationsAndDomains(message, context);
             for (let i = 0; i < message.applications.length; i++) {
                 let application = message.applications[i];
                 message.applications[i] = applicationCheckMap
@@ -23,7 +23,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
         }
         return true;
     }
-    async checkApplicationsAndDomains(message) {
+    async checkApplicationsAndDomains(message, context) {
         const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
         const applications = await this.applicationDao
             .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
@@ -75,7 +75,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             }
         }
         if (applicationsToCreate.length) {
-            await this.applicationDao.insert(applicationsToCreate);
+            await this.applicationDao.insert(applicationsToCreate, context);
         }
         return applicationCheckMap;
     }

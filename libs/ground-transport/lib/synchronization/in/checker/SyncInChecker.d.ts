@@ -6,8 +6,9 @@ import { ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
 import { ISyncInUserChecker } from './SyncInUserChecker';
+import { IContext } from '@airport/direction-indicator';
 export interface ISyncInChecker {
-    checkMessage(message: RepositorySynchronizationMessage): Promise<boolean>;
+    checkMessage(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }
 export declare class SyncInChecker implements ISyncInChecker {
     syncInActorChecker: ISyncInActorChecker;
@@ -20,6 +21,6 @@ export declare class SyncInChecker implements ISyncInChecker {
     /**
      * Check the message and load all required auxiliary entities.
      */
-    checkMessage(message: RepositorySynchronizationMessage): Promise<boolean>;
+    checkMessage(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }
 //# sourceMappingURL=SyncInChecker.d.ts.map

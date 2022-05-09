@@ -19,7 +19,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
      * @param {Map<Actor_Id, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById) {
+    async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context) {
         await this.populateSystemWideOperationIds(repositoryTransactionHistoryMapByRepositoryId);
         const changedRecordIds = new Map();
         // query for all local operations on records in a repository (since the earliest

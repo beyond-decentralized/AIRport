@@ -69,7 +69,11 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 if (message.type === IsolateMessageType.APP_INITIALIZING) {
                     if (this.applicationStore.state.appState === AppState.NOT_INITIALIED) {
                         let initConnectionIMO = message;
-                        this.applicationStore.state.lastIds = initConnectionIMO.result;
+                        const lastTerminalState = this.terminalStore.getTerminalState();
+                        this.terminalStore.state.next({
+                            ...lastTerminalState,
+                            lastIds: initConnectionIMO.result
+                        });
                         this.applicationStore.state.appState = AppState.START_INITIALIZING;
                     }
                     return;
@@ -310,7 +314,7 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 return false;
             case AppState.START_INITIALIZING:
                 this.applicationStore.state.appState = AppState.INITIALIZING_IN_PROGRESS;
-                await this.applicationLoader.load(this.applicationStore.state.lastIds);
+                await this.applicationLoader.load(this.terminalStore.getLastIds());
                 this.applicationStore.state.appState = AppState.INITIALIZED;
                 await this.applicationLoader.initialize();
                 window.parent.postMessage({
@@ -357,6 +361,9 @@ __decorate([
 __decorate([
     Inject()
 ], IframeTransactionalConnector.prototype, "localApiServer", void 0);
+__decorate([
+    Inject()
+], IframeTransactionalConnector.prototype, "terminalStore", void 0);
 IframeTransactionalConnector = __decorate([
     Injected()
 ], IframeTransactionalConnector);

@@ -25,7 +25,6 @@ export interface IApplicationState {
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
     // and debugging (http://localhost:7500)
     hostServer: string
-    lastIds: LastIds
     // FIXME: tie this in to the hostServer variable
     mainDomain: string
     observableMessageMap: Map<string, IObservableMessageInRecord<any>>

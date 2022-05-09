@@ -60,7 +60,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.uuId.in(uuIds)
         });
     }
-    async insert(actors) {
+    async insert(actors, context) {
         let t;
         const values = [];
         for (const actor of actors) {
@@ -77,7 +77,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 t.terminal.id
             ],
             values
-        });
+        }, context);
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
             actor.id = ids[i][0];
