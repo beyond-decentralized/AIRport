@@ -1,6 +1,6 @@
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import {
     ILocalAPIRequest,
@@ -51,6 +51,7 @@ export class LocalAPIServer
             objectName: request.objectName,
             protocol: request.protocol,
             payload,
+            transactionId: request.transactionId
         }
 
         return response

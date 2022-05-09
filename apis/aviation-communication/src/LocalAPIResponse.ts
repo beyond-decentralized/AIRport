@@ -10,4 +10,5 @@ export interface ILocalAPIResponse {
     objectName: string
     payload: any
     protocol: string
+    transactionId: string
 }

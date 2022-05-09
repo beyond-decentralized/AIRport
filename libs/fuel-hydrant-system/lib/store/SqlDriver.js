@@ -124,9 +124,6 @@ let SqlDriver = class SqlDriver {
         return await this.executeNative(sql, parameters, context);
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        if (context.transaction) {
-            return await context.transaction.find(portableQuery, internalFragments, context, cachedSqlQueryId);
-        }
         context = await this.ensureContext(context);
         const sqlQuery = this.getSQLQuery(portableQuery, context);
         const sql = sqlQuery.toSQL(internalFragments, context);

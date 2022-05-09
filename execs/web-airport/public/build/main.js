@@ -11442,6 +11442,7 @@ var AppState;
 })(AppState || (AppState = {}));
 
 const applicationState = {
+    api: null,
     application: null,
     appState: AppState.NOT_INITIALIED,
     domain: null,
@@ -11479,7 +11480,7 @@ apron.token({
     interface: 'IApplicationLoader',
     token: 'APPLICATION_LOADER'
 });
-apron.token({
+const APPLICATION_STORE = apron.token({
     class: ApplicationStore,
     interface: 'IApplicationStore',
     token: 'APPLICATION_STORE'
@@ -11536,8 +11537,8 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async doProcessMessage(message, credentials, context) {
-        let theErrorMessage;
-        let theResult;
+        let theErrorMessage = null;
+        let theResult = null;
         switch (message.type) {
             case IsolateMessageType.CALL_API: {
                 const context = {};
@@ -11562,7 +11563,10 @@ let TransactionalReceiver = class TransactionalReceiver {
                 }
                 if (this.terminalStore.getReceiver().initializingApps
                     .has(fullApplicationName)) {
-                    return null;
+                    return {
+                        theErrorMessage,
+                        theResult
+                    };
                 }
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullApplicationName);
@@ -11574,7 +11578,10 @@ let TransactionalReceiver = class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
                 initializedApps.add(message.fullApplicationName);
-                return null;
+                return {
+                    theErrorMessage,
+                    theResult
+                };
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                     .get(message.fullApplicationName);
@@ -11663,7 +11670,10 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             default:
                 // Unexpected IsolateMessageInType
-                return;
+                return {
+                    theErrorMessage,
+                    theResult
+                };
         }
         return {
             theErrorMessage,
@@ -26986,9 +26996,6 @@ let SqlDriver = class SqlDriver {
         return await this.executeNative(sql, parameters, context);
     }
     async find(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        if (context.transaction) {
-            return await context.transaction.find(portableQuery, internalFragments, context, cachedSqlQueryId);
-        }
         context = await this.ensureContext(context);
         const sqlQuery = this.getSQLQuery(portableQuery, context);
         const sql = sqlQuery.toSQL(internalFragments, context);
@@ -30616,14 +30623,12 @@ var __decorate$x = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let ApiRegistry = class ApiRegistry {
-    initialize(
-    // installedApi: InstalledApi
-    applicationApi) {
-        // this.installedApi = installedApi
-        this.applicationApi = applicationApi;
+    initialize(applicationApi) {
+        this.applicationStore.state.api = applicationApi;
     }
     async findApiObjectAndOperation(domainName, applicationName, apiObjectName, methodName) {
-        const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName];
+        const apiObjectDefinition = this.applicationStore.state.api
+            .apiObjectMap[apiObjectName];
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for
         Domain:
@@ -30656,6 +30661,9 @@ let ApiRegistry = class ApiRegistry {
 __decorate$x([
     Inject()
 ], ApiRegistry.prototype, "containerAccessor", void 0);
+__decorate$x([
+    Inject()
+], ApiRegistry.prototype, "applicationStore", void 0);
 ApiRegistry = __decorate$x([
     Injected()
 ], ApiRegistry);
@@ -30709,6 +30717,7 @@ let LocalAPIServer = class LocalAPIServer {
             objectName: request.objectName,
             protocol: request.protocol,
             payload,
+            transactionId: request.transactionId
         };
         return response;
     }
@@ -31811,6 +31820,9 @@ const ENTITY_COPIER = tower.token({
 AIRPORT_DATABASE.setClass(AirportDatabase);
 ENTITY_STATE_MANAGER.setClass(EntityStateManager);
 API_REGISTRY.setClass(ApiRegistry);
+API_REGISTRY.setDependencies({
+    applicationStore: APPLICATION_STORE
+});
 API_VALIDATOR.setClass(ApiValidator);
 LOCAL_API_SERVER.setClass(LocalAPIServer);
 OPERATION_DESERIALIZER.setClass(OperationDeserializer);
@@ -35856,6 +35868,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                     domain: message.domain,
                     methodName: message.methodName,
                     objectName: message.objectName,
+                    transactionId: message.transactionId
                 }, message.errorMessage, context).then((success) => {
                     if (interAppApiCallRequest) {
                         if (!success) {
@@ -35876,11 +35889,12 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                             application: message.application,
                             category: 'ToClientRedirected',
                             domain: message.domain,
-                            errorMessage: null,
+                            errorMessage: message.errorMessage,
                             methodName: message.methodName,
                             objectName: message.objectName,
-                            payload: null,
-                            protocol: null,
+                            payload: message.payload,
+                            protocol: message.protocol,
+                            transactionId: message.transactionId
                         };
                         if (!success) {
                             toClientRedirectedMessage.errorMessage = context.errorMessage;
@@ -35946,6 +35960,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             objectName: message.objectName,
             protocol: window.location.protocol,
             payload: null,
+            transactionId: message.transactionId
         };
         if (this.webMessageReciever.needMessageSerialization()) ;
         this.webMessageReciever.sendMessageToClient(connectionIsReadyMessage);
@@ -35998,6 +36013,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             objectName: message.objectName,
             payload: null,
             protocol: message.protocol,
+            transactionId: message.transactionId
         };
         this.replyToClientRequest(toClientRedirectedMessage);
     }

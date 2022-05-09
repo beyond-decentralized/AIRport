@@ -113,8 +113,8 @@ export abstract class TransactionalReceiver {
         theErrorMessage: string
         theResult: ReturnType
     }> {
-        let theErrorMessage: string
-        let theResult: any
+        let theErrorMessage: string = null
+        let theResult: any = null
         switch (message.type) {
             case IsolateMessageType.CALL_API: {
                 const context: IApiCallContext = {}
@@ -139,7 +139,10 @@ export abstract class TransactionalReceiver {
 
                 if (this.terminalStore.getReceiver().initializingApps
                     .has(fullApplicationName)) {
-                    return null
+                    return {
+                        theErrorMessage,
+                        theResult
+                    }
                 }
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullApplicationName)
@@ -155,7 +158,10 @@ export abstract class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
                 initializedApps.add((message as any as IConnectionInitializedIMI).fullApplicationName)
-                return null
+                return {
+                    theErrorMessage,
+                    theResult
+                }
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                     .get((message as any as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
@@ -287,7 +293,10 @@ export abstract class TransactionalReceiver {
                 break
             default:
                 // Unexpected IsolateMessageInType
-                return
+                return {
+                    theErrorMessage,
+                    theResult
+                }
         }
         return {
             theErrorMessage,

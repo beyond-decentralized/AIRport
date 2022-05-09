@@ -33,6 +33,7 @@ let LocalAPIServer = class LocalAPIServer {
             objectName: request.objectName,
             protocol: request.protocol,
             payload,
+            transactionId: request.transactionId
         };
         return response;
     }

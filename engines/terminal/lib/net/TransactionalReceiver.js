@@ -44,8 +44,8 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async doProcessMessage(message, credentials, context) {
-        let theErrorMessage;
-        let theResult;
+        let theErrorMessage = null;
+        let theResult = null;
         switch (message.type) {
             case IsolateMessageType.CALL_API: {
                 const context = {};
@@ -70,7 +70,10 @@ let TransactionalReceiver = class TransactionalReceiver {
                 }
                 if (this.terminalStore.getReceiver().initializingApps
                     .has(fullApplicationName)) {
-                    return null;
+                    return {
+                        theErrorMessage,
+                        theResult
+                    };
                 }
                 this.terminalStore.getReceiver().initializingApps
                     .add(fullApplicationName);
@@ -82,7 +85,10 @@ let TransactionalReceiver = class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
                 initializedApps.add(message.fullApplicationName);
-                return null;
+                return {
+                    theErrorMessage,
+                    theResult
+                };
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
                 theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
                     .get(message.fullApplicationName);
@@ -171,7 +177,10 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             default:
                 // Unexpected IsolateMessageInType
-                return;
+                return {
+                    theErrorMessage,
+                    theResult
+                };
         }
         return {
             theErrorMessage,

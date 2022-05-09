@@ -7,14 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject } from "@airport/direction-indicator";
 import { Injected } from '@airport/direction-indicator';
 let ApiRegistry = class ApiRegistry {
-    initialize(
-    // installedApi: InstalledApi
-    applicationApi) {
-        // this.installedApi = installedApi
-        this.applicationApi = applicationApi;
+    initialize(applicationApi) {
+        this.applicationStore.state.api = applicationApi;
     }
     async findApiObjectAndOperation(domainName, applicationName, apiObjectName, methodName) {
-        const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName];
+        const apiObjectDefinition = this.applicationStore.state.api
+            .apiObjectMap[apiObjectName];
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for
         Domain:
@@ -47,6 +45,9 @@ let ApiRegistry = class ApiRegistry {
 __decorate([
     Inject()
 ], ApiRegistry.prototype, "containerAccessor", void 0);
+__decorate([
+    Inject()
+], ApiRegistry.prototype, "applicationStore", void 0);
 ApiRegistry = __decorate([
     Injected()
 ], ApiRegistry);

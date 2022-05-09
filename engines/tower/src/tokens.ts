@@ -2,7 +2,7 @@ import { AIRPORT_DATABASE, DATABASE_FACADE, QUERY_FACADE, UPDATE_CACHE_MANAGER }
 import { API_REGISTRY, API_VALIDATOR, OPERATION_DESERIALIZER } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
-import { LOCAL_API_SERVER } from '@airport/apron';
+import { APPLICATION_STORE, LOCAL_API_SERVER } from '@airport/apron';
 import { AirportDatabase } from './AirportDatabase';
 import { ApiRegistry } from './core/api/ApiRegistry';
 import { ApiValidator } from './core/api/ApiValidator';
@@ -25,13 +25,16 @@ export const ENTITY_COPIER = tower.token<IEntityCopier>({
 AIRPORT_DATABASE.setClass(AirportDatabase);
 ENTITY_STATE_MANAGER.setClass(EntityStateManager)
 API_REGISTRY.setClass(ApiRegistry)
+API_REGISTRY.setDependencies({
+    applicationStore: APPLICATION_STORE
+})
 API_VALIDATOR.setClass(ApiValidator)
 LOCAL_API_SERVER.setClass(LocalAPIServer)
 OPERATION_DESERIALIZER.setClass(OperationDeserializer);
 UPDATE_CACHE_MANAGER.setClass(UpdateCacheManager)
 DATABASE_FACADE.setClass(DatabaseFacade)
 DATABASE_FACADE.setDependencies({
-	entityCopier: ENTITY_COPIER,
-	queryFacade: QUERY_FACADE
+    entityCopier: ENTITY_COPIER,
+    queryFacade: QUERY_FACADE
 })
 QUERY_FACADE.setClass(QueryFacade);

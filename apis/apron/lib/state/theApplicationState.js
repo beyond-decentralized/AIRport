@@ -1,5 +1,6 @@
 import { AppState } from "./ApplicationState";
 export const applicationState = {
+    api: null,
     application: null,
     appState: AppState.NOT_INITIALIED,
     domain: null,

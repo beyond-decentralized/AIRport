@@ -87,6 +87,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                     domain: message.domain,
                     methodName: message.methodName,
                     objectName: message.objectName,
+                    transactionId: message.transactionId
                 }, message.errorMessage, context).then((success) => {
                     if (interAppApiCallRequest) {
                         if (!success) {
@@ -107,11 +108,12 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                             application: message.application,
                             category: 'ToClientRedirected',
                             domain: message.domain,
-                            errorMessage: null,
+                            errorMessage: message.errorMessage,
                             methodName: message.methodName,
                             objectName: message.objectName,
-                            payload: null,
-                            protocol: null,
+                            payload: message.payload,
+                            protocol: message.protocol,
+                            transactionId: message.transactionId
                         };
                         if (!success) {
                             toClientRedirectedMessage.errorMessage = context.errorMessage;
@@ -179,6 +181,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             objectName: message.objectName,
             protocol: window.location.protocol,
             payload: null,
+            transactionId: message.transactionId
         };
         if (this.webMessageReciever.needMessageSerialization()) {
             // FIXME: serialize message
@@ -233,6 +236,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             objectName: message.objectName,
             payload: null,
             protocol: message.protocol,
+            transactionId: message.transactionId
         };
         this.replyToClientRequest(toClientRedirectedMessage);
     }

@@ -7,6 +7,7 @@ import {
 import {
     Injected
 } from '@airport/direction-indicator'
+import { IApplicationStore } from "@airport/apron";
 
 @Injected()
 export class ApiRegistry
@@ -15,15 +16,13 @@ export class ApiRegistry
     @Inject()
     containerAccessor: IContainerAccessor
 
-    // installedApi: InstalledApi
-    applicationApi: IApplicationApi
+    @Inject()
+    applicationStore: IApplicationStore
 
     initialize(
-        // installedApi: InstalledApi
         applicationApi: IApplicationApi
     ): void {
-        // this.installedApi = installedApi
-        this.applicationApi = applicationApi
+        this.applicationStore.state.api = applicationApi
     }
 
     async findApiObjectAndOperation(
@@ -35,7 +34,8 @@ export class ApiRegistry
         apiObject: any,
         apiOperation: IApiOperation
     }> {
-        const apiObjectDefinition = this.applicationApi.apiObjectMap[apiObjectName]
+        const apiObjectDefinition = this.applicationStore.state.api
+            .apiObjectMap[apiObjectName]
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for
         Domain:

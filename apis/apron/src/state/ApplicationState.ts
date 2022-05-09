@@ -1,3 +1,4 @@
+import { IApplicationApi } from "@airport/check-in"
 import { Observer } from "rxjs"
 import { IIsolateMessage } from "../isolate/IsolateMessage"
 import { LastIds } from "../LastIds"
@@ -19,6 +20,7 @@ export enum AppState {
 }
 
 export interface IApplicationState {
+    api: IApplicationApi
     application: string
     appState: AppState
     domain: string

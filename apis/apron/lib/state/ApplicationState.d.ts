@@ -1,3 +1,4 @@
+import { IApplicationApi } from "@airport/check-in";
 import { Observer } from "rxjs";
 import { IIsolateMessage } from "../isolate/IsolateMessage";
 export interface IMessageInRecord {
@@ -16,6 +17,7 @@ export declare enum AppState {
     INITIALIZED = "INITIALIZED"
 }
 export interface IApplicationState {
+    api: IApplicationApi;
     application: string;
     appState: AppState;
     domain: string;

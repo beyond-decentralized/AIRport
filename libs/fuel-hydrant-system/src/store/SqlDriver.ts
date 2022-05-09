@@ -336,10 +336,6 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 		cachedSqlQueryId?: number,
 	): Promise<EntityArray> {
-		if (context.transaction) {
-			return await context.transaction.find(
-				portableQuery, internalFragments, context, cachedSqlQueryId)
-		}
 		context = await this.ensureContext(context);
 		const sqlQuery = this.getSQLQuery(portableQuery, context);
 		const sql = sqlQuery.toSQL(internalFragments, context);

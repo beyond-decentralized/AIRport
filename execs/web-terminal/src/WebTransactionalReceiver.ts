@@ -143,6 +143,7 @@ export class WebTransactionalReceiver
 					domain: message.domain,
 					methodName: (message as ILocalAPIResponse).methodName,
 					objectName: (message as ILocalAPIResponse).objectName,
+					transactionId: (message as ILocalAPIResponse).transactionId
 				}, message.errorMessage, context).then((success) => {
 					if (interAppApiCallRequest) {
 						if (!success) {
@@ -160,11 +161,12 @@ export class WebTransactionalReceiver
 							application: message.application,
 							category: 'ToClientRedirected',
 							domain: message.domain,
-							errorMessage: null,
+							errorMessage: message.errorMessage,
 							methodName: (message as ILocalAPIResponse).methodName,
 							objectName: (message as ILocalAPIResponse).objectName,
-							payload: null,
-							protocol: null,
+							payload: message.payload,
+							protocol: message.protocol,
+							transactionId: (message as ILocalAPIResponse).transactionId
 						}
 						if (!success) {
 							toClientRedirectedMessage.errorMessage = context.errorMessage
@@ -254,6 +256,7 @@ export class WebTransactionalReceiver
 			objectName: message.objectName,
 			protocol: window.location.protocol,
 			payload: null,
+			transactionId: message.transactionId
 		};
 
 		if (this.webMessageReciever.needMessageSerialization()) {
@@ -327,6 +330,7 @@ export class WebTransactionalReceiver
 			objectName: message.objectName,
 			payload: null,
 			protocol: message.protocol,
+			transactionId: message.transactionId
 		}
 
 		this.replyToClientRequest(toClientRedirectedMessage)
