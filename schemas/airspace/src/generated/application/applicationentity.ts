@@ -8,14 +8,14 @@ import {
 	IApplicationColumn,
 } from './applicationcolumn';
 import {
-	IApplicationProperty,
-} from './applicationproperty';
-import {
 	IApplicationVersion,
 } from './applicationversion';
 import {
 	IApplicationOperation,
 } from './applicationoperation';
+import {
+	IApplicationProperty,
+} from './applicationproperty';
 import {
 	IApplicationRelation,
 } from './applicationrelation';

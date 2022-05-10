@@ -118,7 +118,7 @@ export namespace repositoryEntity {
 	export const ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID'
 	export const ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID'
 	export const ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID'
-	export const SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code_dash_runtime'
+	export const SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code'
 	export const SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId'
 	export const systemWideOperationId = 'systemWideOperationId'
 	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID'

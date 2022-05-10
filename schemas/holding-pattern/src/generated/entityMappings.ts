@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { RecordHistory } from '../ddl/history/RecordHistory';
 import { Actor } from '../ddl/infrastructure/Actor';
+import { RecordHistoryNewValue } from '../ddl/history/RecordHistoryNewValue';
+import { RecordHistoryOldValue } from '../ddl/history/RecordHistoryOldValue';
+import { RecordHistory } from '../ddl/history/RecordHistory';
 import { Repository } from '../ddl/repository/Repository';
 import { TransactionHistory } from '../ddl/history/TransactionHistory';
 import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransactionHistory';
 import { OperationHistory } from '../ddl/history/OperationHistory';
-import { RecordHistoryNewValue } from '../ddl/history/RecordHistoryNewValue';
-import { RecordHistoryOldValue } from '../ddl/history/RecordHistoryOldValue';
 import { RepositoryEntity } from '../ddl/repository/RepositoryEntity';
 import { RepositoryApplication } from '../ddl/repository/RepositoryApplication';
 import { ChildRepoRow } from '../ddl/traditional/ChildRepoRow';
@@ -21,14 +21,14 @@ import { ReferenceRow } from '../ddl/traditional/ReferenceRow';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'holding-pattern');
-  accumulator.add(RecordHistory, 0);
-  accumulator.add(Actor, 1);
-  accumulator.add(Repository, 2);
-  accumulator.add(TransactionHistory, 3);
-  accumulator.add(RepositoryTransactionHistory, 4);
-  accumulator.add(OperationHistory, 5);
-  accumulator.add(RecordHistoryNewValue, 6);
-  accumulator.add(RecordHistoryOldValue, 7);
+  accumulator.add(Actor, 0);
+  accumulator.add(RecordHistoryNewValue, 1);
+  accumulator.add(RecordHistoryOldValue, 2);
+  accumulator.add(RecordHistory, 3);
+  accumulator.add(Repository, 4);
+  accumulator.add(TransactionHistory, 5);
+  accumulator.add(RepositoryTransactionHistory, 6);
+  accumulator.add(OperationHistory, 7);
   accumulator.add(RepositoryEntity, undefined);
   accumulator.add(RepositoryApplication, 8);
   accumulator.add(ChildRepoRow, undefined);

@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedApplicationObject",
-		"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -90,7 +90,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "ApplicationVersion",
 					"entity": {
 						"type": "ApplicationVersion",
-						"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
+						"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -573,7 +573,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Application",
 									"entity": {
 										"type": "Application",
-										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
+										"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -844,7 +844,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
+														"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1230,7 +1230,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
 														"type": "ApplicationCurrentVersion",
-														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
+														"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1502,7 +1502,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationEntity",
 									"entity": {
 										"type": "ApplicationEntity",
-										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
+										"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationEntity.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -1991,7 +1991,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationColumn",
 													"entity": {
 														"type": "ApplicationColumn",
-														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
+														"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationColumn.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2544,7 +2544,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
 																		"type": "ApplicationPropertyColumn",
-																		"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
+																		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationPropertyColumn.ts",
 																		"parentClassName": "VersionedApplicationObject",
 																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
@@ -2878,7 +2878,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationOperation",
 													"entity": {
 														"type": "ApplicationOperation",
-														"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
+														"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationOperation.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -3295,11 +3295,7 @@ export const MAPPED_SUPERCLASS = [
 													"type": "{ [name: string]: IApplicationColumn; }",
 													"ownerEntity": null,
 													"nonArrayType": "{ [name: string]: IApplicationColumn; }",
-													"isMap": true,
-													"mapValueType": "IApplicationColumn",
-													"mapValueIsPrimitive": false,
-													"mapKeyName": "name",
-													"mapKeyType": "string"
+													"primitive": "Json"
 												},
 												{
 													"decorators": [
@@ -3333,11 +3329,7 @@ export const MAPPED_SUPERCLASS = [
 													"type": "{ [name: string]: IApplicationColumn; }",
 													"ownerEntity": null,
 													"nonArrayType": "{ [name: string]: IApplicationColumn; }",
-													"isMap": true,
-													"mapValueType": "IApplicationColumn",
-													"mapValueIsPrimitive": false,
-													"mapKeyName": "name",
-													"mapKeyType": "string"
+													"primitive": "Json"
 												},
 												{
 													"decorators": [
@@ -3354,11 +3346,7 @@ export const MAPPED_SUPERCLASS = [
 													"type": "{ [name: string]: IApplicationProperty; }",
 													"ownerEntity": null,
 													"nonArrayType": "{ [name: string]: IApplicationProperty; }",
-													"isMap": true,
-													"mapValueType": "IApplicationProperty",
-													"mapValueIsPrimitive": false,
-													"mapKeyName": "name",
-													"mapKeyType": "string"
+													"primitive": "Json"
 												}
 											],
 											"methodSignatures": [],
@@ -3396,7 +3384,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationReference",
 									"entity": {
 										"type": "ApplicationReference",
-										"path": "C:\\Users\\Papa\\code\\AIR\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
+										"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/airspace/src/ddl/application/ApplicationReference.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -3725,11 +3713,7 @@ export const MAPPED_SUPERCLASS = [
 									"type": "{ [entityName: string]: IApplicationEntity; }",
 									"ownerEntity": null,
 									"nonArrayType": "{ [entityName: string]: IApplicationEntity; }",
-									"isMap": true,
-									"mapValueType": "IApplicationEntity",
-									"mapValueIsPrimitive": false,
-									"mapKeyName": "entityName",
-									"mapKeyType": "string"
+									"primitive": "Json"
 								},
 								{
 									"decorators": [
@@ -3746,11 +3730,7 @@ export const MAPPED_SUPERCLASS = [
 									"type": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
 									"nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
-									"isMap": true,
-									"mapValueType": "IApplicationReference",
-									"mapValueIsPrimitive": false,
-									"mapKeyName": "fullApplicationName",
-									"mapKeyType": "string"
+									"primitive": "Json"
 								},
 								{
 									"decorators": [
@@ -3767,11 +3747,7 @@ export const MAPPED_SUPERCLASS = [
 									"type": "{ [fullApplicationName: string]: IApplicationReference; }",
 									"ownerEntity": null,
 									"nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
-									"isMap": true,
-									"mapValueType": "IApplicationReference",
-									"mapValueIsPrimitive": false,
-									"mapKeyName": "fullApplicationName",
-									"mapKeyType": "string"
+									"primitive": "Json"
 								}
 							],
 							"methodSignatures": [],

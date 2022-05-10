@@ -1,17 +1,17 @@
 import {
 	AIRPORT_DATABASE,
 	QApplication as AirportQApplication
-} from '@airport/air-traffic-control'
+}                      from '@airport/air-traffic-control'
 import {
 	diSet as dS,
 	duoDiSet as ddS
-} from '@airport/check-in'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
+}                      from '@airport/check-in'
+import {DEPENDENCY_INJECTION} from '@airport/direction-indicator'
 import {
 	DbApplication,
 	DB_APPLICATION_UTILS,
 	EntityId,
-} from '@airport/ground-control';
+}                      from '@airport/ground-control';
 import { QApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
@@ -26,24 +26,24 @@ import { QApplicationVersion } from './application/qapplicationversion';
 import { QDomain } from './application/qdomain';
 import { QVersionedApplicationObject } from './application/qversionedapplicationobject';
 import {
-	Application,
-	ApplicationColumn,
-	ApplicationCurrentVersion,
-	ApplicationEntity,
-	ApplicationOperation,
-	ApplicationProperty,
-	ApplicationPropertyColumn,
-	ApplicationReference,
-	ApplicationRelation,
-	ApplicationRelationColumn,
-	ApplicationVersion,
-	Domain,
-	VersionedApplicationObject
+  Application,
+  ApplicationColumn,
+  ApplicationCurrentVersion,
+  ApplicationEntity,
+  ApplicationOperation,
+  ApplicationProperty,
+  ApplicationPropertyColumn,
+  ApplicationReference,
+  ApplicationRelation,
+  ApplicationRelationColumn,
+  ApplicationVersion,
+  Domain,
+  VersionedApplicationObject
 } from '../ddl/ddl';
 
 export interface LocalQApplication extends AirportQApplication {
 
-	db: DbApplication;
+  db: DbApplication;
 
 	Application: QApplication;
 	ApplicationColumn: QApplicationColumn;
@@ -78,8 +78,8 @@ const __constructors__ = {
 
 export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
-	domain: 'air',
-	name: '@airport/airspace'
+  domain: 'air',
+  name: '@airport/airspace'
 };
 export const Q: LocalQApplication = Q_APPLICATION
 

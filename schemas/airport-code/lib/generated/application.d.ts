@@ -5,16 +5,7 @@ export declare const APPLICATION: {
     sinceVersion: number;
     versions: {
         api: {
-            apiObjectMap: {
-                IApplicationApi: {
-                    operationMap: {
-                        testApiDefinitionGeneration: {
-                            isAsync: boolean;
-                            parameters: any[];
-                        };
-                    };
-                };
-            };
+            apiObjectMap: {};
         };
         entities: ({
             columns: {

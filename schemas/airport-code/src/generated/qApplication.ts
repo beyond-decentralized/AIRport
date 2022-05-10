@@ -6,7 +6,7 @@ import {
 	diSet as dS,
 	duoDiSet as ddS
 }                      from '@airport/check-in'
-import {DEPENDENCY_INJECTION}            from '@airport/direction-indicator'
+import {DEPENDENCY_INJECTION} from '@airport/direction-indicator'
 import {
 	DbApplication,
 	DB_APPLICATION_UTILS,

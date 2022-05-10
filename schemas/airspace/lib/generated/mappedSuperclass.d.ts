@@ -338,11 +338,6 @@ export declare const MAPPED_SUPERCLASS: {
                         index: number;
                         entity?: undefined;
                         isArray?: undefined;
-                        isMap?: undefined;
-                        mapValueType?: undefined;
-                        mapValueIsPrimitive?: undefined;
-                        mapKeyName?: undefined;
-                        mapKeyType?: undefined;
                     } | {
                         decorators: {
                             name: string;
@@ -364,11 +359,6 @@ export declare const MAPPED_SUPERCLASS: {
                         allocationSize?: undefined;
                         entity?: undefined;
                         isArray?: undefined;
-                        isMap?: undefined;
-                        mapValueType?: undefined;
-                        mapValueIsPrimitive?: undefined;
-                        mapKeyName?: undefined;
-                        mapKeyType?: undefined;
                     } | {
                         decorators: {
                             name: string;
@@ -981,11 +971,6 @@ export declare const MAPPED_SUPERCLASS: {
                         allocationSize?: undefined;
                         primitive?: undefined;
                         isArray?: undefined;
-                        isMap?: undefined;
-                        mapValueType?: undefined;
-                        mapValueIsPrimitive?: undefined;
-                        mapKeyName?: undefined;
-                        mapKeyType?: undefined;
                     } | {
                         decorators: {
                             name: string;
@@ -1300,11 +1285,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     index: number;
                                     entity?: undefined;
                                     isArray?: undefined;
-                                    isMap?: undefined;
-                                    mapValueType?: undefined;
-                                    mapValueIsPrimitive?: undefined;
-                                    mapKeyName?: undefined;
-                                    mapKeyType?: undefined;
                                 } | {
                                     decorators: {
                                         name: string;
@@ -1326,11 +1306,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     index: number;
                                     primitive?: undefined;
                                     isArray?: undefined;
-                                    isMap?: undefined;
-                                    mapValueType?: undefined;
-                                    mapValueIsPrimitive?: undefined;
-                                    mapKeyName?: undefined;
-                                    mapKeyType?: undefined;
                                 } | {
                                     decorators: {
                                         name: string;
@@ -1822,11 +1797,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     };
                                     index: number;
                                     primitive?: undefined;
-                                    isMap?: undefined;
-                                    mapValueType?: undefined;
-                                    mapValueIsPrimitive?: undefined;
-                                    mapKeyName?: undefined;
-                                    mapKeyType?: undefined;
                                 } | {
                                     decorators: {
                                         name: string;
@@ -2077,11 +2047,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     };
                                     index: number;
                                     primitive?: undefined;
-                                    isMap?: undefined;
-                                    mapValueType?: undefined;
-                                    mapValueIsPrimitive?: undefined;
-                                    mapKeyName?: undefined;
-                                    mapKeyType?: undefined;
                                 } | {
                                     decorators: {
                                         name: string;
@@ -2095,12 +2060,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
-                                    isMap: boolean;
-                                    mapValueType: string;
-                                    mapValueIsPrimitive: boolean;
-                                    mapKeyName: string;
-                                    mapKeyType: string;
-                                    primitive?: undefined;
+                                    primitive: string;
                                     index?: undefined;
                                     entity?: undefined;
                                     isArray?: undefined;
@@ -2121,11 +2081,6 @@ export declare const MAPPED_SUPERCLASS: {
                                     primitive?: undefined;
                                     index?: undefined;
                                     entity?: undefined;
-                                    isMap?: undefined;
-                                    mapValueType?: undefined;
-                                    mapValueIsPrimitive?: undefined;
-                                    mapKeyName?: undefined;
-                                    mapKeyType?: undefined;
                                 })[];
                                 methodSignatures: any[];
                                 constructors: {
@@ -2139,11 +2094,6 @@ export declare const MAPPED_SUPERCLASS: {
                         index: number;
                         allocationSize?: undefined;
                         primitive?: undefined;
-                        isMap?: undefined;
-                        mapValueType?: undefined;
-                        mapValueIsPrimitive?: undefined;
-                        mapKeyName?: undefined;
-                        mapKeyType?: undefined;
                     } | {
                         decorators: {
                             name: string;
@@ -2384,11 +2334,6 @@ export declare const MAPPED_SUPERCLASS: {
                         index: number;
                         allocationSize?: undefined;
                         primitive?: undefined;
-                        isMap?: undefined;
-                        mapValueType?: undefined;
-                        mapValueIsPrimitive?: undefined;
-                        mapKeyName?: undefined;
-                        mapKeyType?: undefined;
                     } | {
                         decorators: {
                             name: string;
@@ -2402,13 +2347,8 @@ export declare const MAPPED_SUPERCLASS: {
                         type: string;
                         ownerEntity: any;
                         nonArrayType: string;
-                        isMap: boolean;
-                        mapValueType: string;
-                        mapValueIsPrimitive: boolean;
-                        mapKeyName: string;
-                        mapKeyType: string;
+                        primitive: string;
                         allocationSize?: undefined;
-                        primitive?: undefined;
                         index?: undefined;
                         entity?: undefined;
                         isArray?: undefined;

@@ -1,9 +1,9 @@
 import { IVersionedApplicationObject } from './versionedapplicationobject';
 import { TableConfiguration } from '@airport/air-traffic-control';
 import { IApplicationColumn } from './applicationcolumn';
-import { IApplicationProperty } from './applicationproperty';
 import { IApplicationVersion } from './applicationversion';
 import { IApplicationOperation } from './applicationoperation';
+import { IApplicationProperty } from './applicationproperty';
 import { IApplicationRelation } from './applicationrelation';
 export interface IApplicationEntity extends IVersionedApplicationObject {
     id: number;

@@ -52,8 +52,8 @@ let DbApplicationUtils = class DbApplicationUtils {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
         let fullApplicationName = `${domainPrefix}___${applicationPrefix}`;
-        if (!fullApplicationName.endsWith('_dash_runtime')) {
-            fullApplicationName += '_dash_runtime';
+        if (fullApplicationName.endsWith('_dash_runtime')) {
+            fullApplicationName = fullApplicationName.substring(0, fullApplicationName.length - 13);
         }
         return fullApplicationName;
     }

@@ -2,14 +2,14 @@ import {
 	JsonApplicationWithLastIds,
 } from '@airport/apron';
 import {
+	IApplication,
+} from './application';
+import {
 	IApplicationEntity,
 } from './applicationentity';
 import {
 	IApplicationReference,
 } from './applicationreference';
-import {
-	IApplication,
-} from './application';
 
 
 

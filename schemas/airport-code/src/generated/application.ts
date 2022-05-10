@@ -7,16 +7,7 @@ export const APPLICATION = {
 	"versions": [
 		{
 			"api": {
-				"apiObjectMap": {
-					"IApplicationApi": {
-						"operationMap": {
-							"testApiDefinitionGeneration": {
-								"isAsync": true,
-								"parameters": []
-							}
-						}
-					}
-				}
+				"apiObjectMap": {}
 			},
 			"entities": [
 				{

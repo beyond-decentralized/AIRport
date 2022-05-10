@@ -7,7 +7,7 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "airport-code",
+            "name": "airport-code-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -21,7 +21,21 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "airspace",
+            "name": "airport-code-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/airport-code/node_modules/@airport/runway/lib/index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/airport-code",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airspace-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -30,6 +44,20 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\airspace",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airspace-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/airspace/node_modules/@airport/runway/lib/index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/airspace",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
@@ -63,7 +91,7 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "moving-walkway",
+            "name": "moving-walkway-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -72,6 +100,20 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\schemas\\moving-walkway",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "moving-walkway-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/moving-walkway/node_modules/@airport/runway/lib/index.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/moving-walkway",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
@@ -105,7 +147,7 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "in-memory-server",
+            "name": "in-memory-server-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -114,6 +156,19 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}\\nonhub\\in-memory-server"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "in-memory-server-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/nonhub/in-memory-server/lib/server.js",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/nonhub/in-memory-server"
         }
     ]
 }
