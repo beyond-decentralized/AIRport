@@ -41,10 +41,10 @@ export class InjectionApplication
 	token<T = GenericDependencyInjectionError>(
 		descriptor: IDependencyInjectionTokenDescriptor,
 	): IDependencyInjectionToken<T> {
-		const existingToken = this.tokenMap.get(descriptor.token)
+		const existingToken = this.tokenMap.get(descriptor.interface)
 
 		if (existingToken) {
-			throw new Error(`Token with name '${name}' has already been created`)
+			throw new Error(`Token with name '${descriptor.interface}' has already been created`)
 		}
 
 		const diToken = new DependencyInjectionToken(
@@ -52,7 +52,7 @@ export class InjectionApplication
 			descriptor
 		)
 
-		this.tokenMap.set(descriptor.token, diToken)
+		this.tokenMap.set(descriptor.interface, diToken)
 
 		return diToken
 	}

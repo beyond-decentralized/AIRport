@@ -1,7 +1,7 @@
 import { IApiOperation } from "./ApiOperation";
 export interface IApiRegistry {
     initialize(applicationApi: IApplicationApi): void;
-    findApiObjectAndOperation(domainName: string, applicationName: string, apiObjectName: string, methodName: string): Promise<{
+    findApiObjectAndOperation(domainName: string, applicationName: string, apiInterfaceName: string, methodName: string): Promise<{
         apiObject: any;
         apiOperation: IApiOperation;
     }>;
@@ -18,7 +18,7 @@ export interface IDomainApi {
 }
 export interface IApplicationApi {
     apiObjectMap: {
-        [tokenName: string]: IApiObject;
+        [interfaceName: string]: IApiObject;
     };
 }
 export interface IApiObject {

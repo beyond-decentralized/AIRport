@@ -15,7 +15,7 @@ export declare class LocalAPIClient implements ILocalAPIClient {
     queryResultsDeserializer: IQueryResultsDeserializer;
     pendingDemoMessageMap: Map<string, IRequestRecord>;
     demoListenerStarted: boolean;
-    lastConnectionReadyCheck: boolean;
+    lastConnectionReadyCheckMap: Map<string, Map<string, boolean>>;
     clientIframe: HTMLIFrameElement;
     messageCallback: (message: any) => void;
     init(): void;

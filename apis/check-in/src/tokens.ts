@@ -38,7 +38,7 @@ export const QUERY_PARAMETER_DESERIALIZER = checkIn.token<IQueryParameterDeseria
 });
 export const QUERY_RESULTS_SERIALIZER = checkIn.token<IQueryResultsSerializer>({
     class: null,
-    interface: 'IQueryParameterDeserializer',
+    interface: 'IQueryResultsSerializer',
     token: 'QUERY_RESULTS_SERIALIZER'
 });
 export const SELECTOR_MANAGER = checkIn.token<ISelectorManager>({

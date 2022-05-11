@@ -11,12 +11,12 @@ export class InjectionApplication {
         return `${this.domain.name}/${this.name}`;
     }
     token(descriptor) {
-        const existingToken = this.tokenMap.get(descriptor.token);
+        const existingToken = this.tokenMap.get(descriptor.interface);
         if (existingToken) {
-            throw new Error(`Token with name '${name}' has already been created`);
+            throw new Error(`Token with name '${descriptor.interface}' has already been created`);
         }
         const diToken = new DependencyInjectionToken(this, descriptor);
-        this.tokenMap.set(descriptor.token, diToken);
+        this.tokenMap.set(descriptor.interface, diToken);
         return diToken;
     }
 }

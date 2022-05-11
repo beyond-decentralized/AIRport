@@ -5,6 +5,8 @@ export interface ILocalAPIResponse {
     category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected'
     domain: string // network DNS domain name (or alike) where applcation is hosted
     errorMessage: string
+    hostDomain: string
+    hostProtocol: string
     id: string // UUID
     methodName: string
     objectName: string

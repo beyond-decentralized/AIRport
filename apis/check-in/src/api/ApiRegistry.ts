@@ -10,7 +10,7 @@ export interface IApiRegistry {
     findApiObjectAndOperation(
         domainName: string,
         applicationName: string,
-        apiObjectName: string,
+        apiInterfaceName: string,
         methodName: string
     ): Promise<{
         apiObject: any,
@@ -29,7 +29,7 @@ export interface IDomainApi {
 
 
 export interface IApplicationApi {
-    apiObjectMap: { [tokenName: string]: IApiObject }
+    apiObjectMap: { [interfaceName: string]: IApiObject }
 }
 
 export interface IApiObject {

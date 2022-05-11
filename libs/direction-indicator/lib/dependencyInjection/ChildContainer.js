@@ -146,7 +146,7 @@ export class ChildContainer extends Container {
             };
         }
     }
-    async getByNames(domainName, applicationName, tokenName) {
+    async getByNames(domainName, applicationName, tokenInterface) {
         const injectionDomain = domain(domainName);
         if (!injectionDomain) {
             throw new Error(`Could nof find
@@ -163,9 +163,9 @@ export class ChildContainer extends Container {
 		${applicationName}
 		`);
         }
-        const token = application.tokenMap.get(tokenName);
+        const token = application.tokenMap.get(tokenInterface);
         if (!token) {
-            throw new Error(`Could not find token: ${tokenName}
+            throw new Error(`Could not find token: ${tokenInterface}
 	in Domain:
 		${domainName}
  	Application:

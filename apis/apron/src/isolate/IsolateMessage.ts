@@ -94,7 +94,8 @@ export interface IApiIMI {
 }
 
 export interface ICallApiIMI
-    extends IApiIMI, IIsolateMessage {
+    extends IApiIMI, ILocalAPIRequest<IsolateMessageCategoryType>,
+    IIsolateMessage<IsolateMessageCategoryType> {
     args: Array<boolean | number | string>
 }
 

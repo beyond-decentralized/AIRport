@@ -47,6 +47,8 @@ export class LocalAPIServer
             domain: request.domain,
             errorMessage,
             id: request.id,
+            hostDomain: request.hostDomain,
+            hostProtocol: request.hostProtocol,
             methodName: request.methodName,
             objectName: request.objectName,
             protocol: request.protocol,

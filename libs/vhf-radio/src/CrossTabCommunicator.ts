@@ -39,15 +39,21 @@ export class CrossTabCommunicator
             message.__received__ = true
 
             const messageOriginFragments = event.origin.split('//')
-            const appDomainAndPort = messageOriginFragments[1]
-            if (message.domain !== appDomainAndPort) {
-                return
-            }
+
+            // Limiting message domain to only the host:port of the
+            // calling UI prevents that UI from calling apps of
+            // a different publisher, removing
+            // const appDomainAndPort = messageOriginFragments[1]
+            // if (message.domain !== appDomainAndPort) {
+            //     return
+            // }
 
             if (message.category === 'IsConnectionReady') {
-                this.clientHost = message.domain
+                this.clientHost = messageOriginFragments[1]
                 this.clientProtocol = messageOriginFragments[0]
             }
+            messageCopy.hostDomain = this.clientHost
+            messageCopy.hostProtocol = this.clientProtocol
             this.pendingMessageIdSet.add(message.id)
 
             // FIXME: serialize message if !this.isNativeBroadcastChannel
@@ -68,7 +74,8 @@ export class CrossTabCommunicator
             });
 
             this.communicationChannel.onmessage = (message: ILocalAPIResponse) => {
-                if (!this.clientHost || message.domain !== this.clientHost) {
+                if (!this.clientHost || message.hostDomain !== this.clientHost
+                    || message.hostProtocol !== this.clientProtocol) {
                     return
                 }
                 if (message.__received__) {

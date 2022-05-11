@@ -100,12 +100,12 @@ var app = (function (exports) {
             return `${this.domain.name}/${this.name}`;
         }
         token(descriptor) {
-            const existingToken = this.tokenMap.get(descriptor.token);
+            const existingToken = this.tokenMap.get(descriptor.interface);
             if (existingToken) {
-                throw new Error(`Token with name '${name}' has already been created`);
+                throw new Error(`Token with name '${descriptor.interface}' has already been created`);
             }
             const diToken = new DependencyInjectionToken(this, descriptor);
-            this.tokenMap.set(descriptor.token, diToken);
+            this.tokenMap.set(descriptor.interface, diToken);
             return diToken;
         }
     }
@@ -314,7 +314,7 @@ var app = (function (exports) {
                 };
             }
         }
-        async getByNames(domainName, applicationName, tokenName) {
+        async getByNames(domainName, applicationName, tokenInterface) {
             const injectionDomain = domain(domainName);
             if (!injectionDomain) {
                 throw new Error(`Could nof find
@@ -331,9 +331,9 @@ var app = (function (exports) {
 		${applicationName}
 		`);
             }
-            const token = application.tokenMap.get(tokenName);
+            const token = application.tokenMap.get(tokenInterface);
             if (!token) {
-                throw new Error(`Could not find token: ${tokenName}
+                throw new Error(`Could not find token: ${tokenInterface}
 	in Domain:
 		${domainName}
  	Application:
@@ -2355,14 +2355,19 @@ var app = (function (exports) {
                 };
                 message.__received__ = true;
                 const messageOriginFragments = event.origin.split('//');
-                const appDomainAndPort = messageOriginFragments[1];
-                if (message.domain !== appDomainAndPort) {
-                    return;
-                }
+                // Limiting message domain to only the host:port of the
+                // calling UI prevents that UI from calling apps of
+                // a different publisher, removing
+                // const appDomainAndPort = messageOriginFragments[1]
+                // if (message.domain !== appDomainAndPort) {
+                //     return
+                // }
                 if (message.category === 'IsConnectionReady') {
-                    this.clientHost = message.domain;
+                    this.clientHost = messageOriginFragments[1];
                     this.clientProtocol = messageOriginFragments[0];
                 }
+                messageCopy.hostDomain = this.clientHost;
+                messageCopy.hostProtocol = this.clientProtocol;
                 this.pendingMessageIdSet.add(message.id);
                 // FIXME: serialize message if !this.isNativeBroadcastChannel
                 this.communicationChannel.postMessage(messageCopy);
@@ -2380,7 +2385,8 @@ var app = (function (exports) {
                     },
                 });
                 this.communicationChannel.onmessage = (message) => {
-                    if (!this.clientHost || message.domain !== this.clientHost) {
+                    if (!this.clientHost || message.hostDomain !== this.clientHost
+                        || message.hostProtocol !== this.clientProtocol) {
                         return;
                     }
                     if (message.__received__) {

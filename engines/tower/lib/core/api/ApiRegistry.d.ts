@@ -5,7 +5,7 @@ export declare class ApiRegistry implements IApiRegistry {
     containerAccessor: IContainerAccessor;
     applicationStore: IApplicationStore;
     initialize(applicationApi: IApplicationApi): void;
-    findApiObjectAndOperation(domainName: string, applicationName: string, apiObjectName: string, methodName: string): Promise<{
+    findApiObjectAndOperation(domainName: string, applicationName: string, apiInterfaceName: string, methodName: string): Promise<{
         apiObject: any;
         apiOperation: IApiOperation;
     }>;

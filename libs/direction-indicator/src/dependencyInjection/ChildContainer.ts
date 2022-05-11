@@ -206,7 +206,7 @@ export class ChildContainer
     async getByNames(
         domainName: string,
         applicationName: string,
-        tokenName: string
+        tokenInterface: string
     ): Promise<any> {
         const injectionDomain = domain(domainName)
         if (!injectionDomain) {
@@ -224,10 +224,10 @@ export class ChildContainer
 		${applicationName}
 		`)
         }
-        const token = application.tokenMap.get(tokenName)
+        const token = application.tokenMap.get(tokenInterface)
 
         if (!token) {
-            throw new Error(`Could not find token: ${tokenName}
+            throw new Error(`Could not find token: ${tokenInterface}
 	in Domain:
 		${domainName}
  	Application:

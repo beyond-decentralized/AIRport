@@ -94,7 +94,7 @@ export class IframeTransactionalConnector
 		}
 		message.__received__ = true
 		// Filter out any browser plugin messages
-		if(!message.domain || !message.application) {
+		if (!message.domain || !message.application) {
 			return
 		}
 		if (this.applicationStore.state.messageCallback) {
@@ -150,7 +150,8 @@ export class IframeTransactionalConnector
 				this.applicationStore.state.domain = message.domain
 				this.applicationStore.state.application = message.application
 				if (message.type === IsolateMessageType.APP_INITIALIZING) {
-					if (this.applicationStore.state.appState === AppState.NOT_INITIALIED) {
+					if (this.applicationStore.state.appState === AppState.NOT_INITIALIED
+						&& message.result) {
 						let initConnectionIMO: IInitConnectionIMO = message
 						const lastTerminalState = this.terminalStore.getTerminalState()
 						this.terminalStore.state.next({
@@ -175,7 +176,10 @@ export class IframeTransactionalConnector
 			...this.getCoreFields(),
 			args: apiInput.args,
 			methodName: apiInput.methodName,
+			hostDomain: location.host,
+			hostProtocol: location.protocol,
 			objectName: apiInput.objectName,
+			protocol: location.protocol,
 			type: IsolateMessageType.CALL_API
 		})
 	}

@@ -5,6 +5,8 @@ export interface ILocalAPIResponse {
     category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected';
     domain: string;
     errorMessage: string;
+    hostDomain: string;
+    hostProtocol: string;
     id: string;
     methodName: string;
     objectName: string;

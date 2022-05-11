@@ -12,7 +12,7 @@ export declare class ChildContainer extends Container implements IChildContainer
     private doGet;
     private doGetCore;
     setDependencyGetters(object: any, token: IDependencyInjectionToken<any>): void;
-    getByNames(domainName: string, applicationName: string, tokenName: string): Promise<any>;
+    getByNames(domainName: string, applicationName: string, tokenInterface: string): Promise<any>;
     get<A>(tokenA: IDependencyInjectionToken<A>): Promise<A>;
     get<A, B>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>, tokenC: IDependencyInjectionToken<C>): Promise<[A, B, C]>;

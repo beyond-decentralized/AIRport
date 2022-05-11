@@ -10,6 +10,8 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType> ex
     application: string;
     category: CategoryType;
     domain: string;
+    hostDomain?: string;
+    hostProtocol?: string;
     id: string;
     protocol: string;
     transactionId?: string;

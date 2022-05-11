@@ -14,6 +14,9 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType>
     application: string // name of the application
     category: CategoryType
     domain: string // network DNS domain name (or alike) where applcation is hosted
+    hostDomain?: string // network DNS domain name (or alike) of the client application
+    // (weather the client is a UI or an AIRport application)
+    hostProtocol?: string // protocol (http or https) of the client application
     id: string // UUID
     protocol: string
     transactionId?: string

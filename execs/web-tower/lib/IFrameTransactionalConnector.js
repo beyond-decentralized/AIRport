@@ -71,7 +71,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 this.applicationStore.state.domain = message.domain;
                 this.applicationStore.state.application = message.application;
                 if (message.type === IsolateMessageType.APP_INITIALIZING) {
-                    if (this.applicationStore.state.appState === AppState.NOT_INITIALIED) {
+                    if (this.applicationStore.state.appState === AppState.NOT_INITIALIED
+                        && message.result) {
                         let initConnectionIMO = message;
                         const lastTerminalState = this.terminalStore.getTerminalState();
                         this.terminalStore.state.next({
@@ -93,7 +94,10 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
             ...this.getCoreFields(),
             args: apiInput.args,
             methodName: apiInput.methodName,
+            hostDomain: location.host,
+            hostProtocol: location.protocol,
             objectName: apiInput.objectName,
+            protocol: location.protocol,
             type: IsolateMessageType.CALL_API
         });
     }

@@ -61,7 +61,7 @@ export interface IApiIMI {
     objectName?: string;
     transactionId?: string;
 }
-export interface ICallApiIMI extends IApiIMI, IIsolateMessage {
+export interface ICallApiIMI extends IApiIMI, ILocalAPIRequest<IsolateMessageCategoryType>, IIsolateMessage<IsolateMessageCategoryType> {
     args: Array<boolean | number | string>;
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {

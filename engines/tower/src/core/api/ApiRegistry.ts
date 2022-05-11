@@ -28,22 +28,22 @@ export class ApiRegistry
     async findApiObjectAndOperation(
         domainName: string,
         applicationName: string,
-        apiObjectName: string,
+        apiInterfaceName: string,
         methodName: string
     ): Promise<{
         apiObject: any,
         apiOperation: IApiOperation
     }> {
         const apiObjectDefinition = this.applicationStore.state.api
-            .apiObjectMap[apiObjectName]
+            .apiObjectMap[apiInterfaceName]
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for
         Domain:
             ${domainName}
         Application:
             ${applicationName}
-        Token:
-            ${apiObjectName}`)
+        Interface:
+            ${apiInterfaceName}`)
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName]
         if (!apiOperation) {
@@ -52,14 +52,14 @@ export class ApiRegistry
             ${domainName}
         Application:
             ${applicationName}
-        Token:
-            ${apiObjectName}
+        Interface:
+            ${apiInterfaceName}
         Method name:
             ${methodName}`)
         }
 
         const apiObject = await this.containerAccessor.getContainer(this)
-            .getByNames(domainName, applicationName, apiObjectName);
+            .getByNames(domainName, applicationName, apiInterfaceName);
 
         return {
             apiObject,
