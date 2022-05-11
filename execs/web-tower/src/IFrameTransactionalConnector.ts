@@ -93,7 +93,10 @@ export class IframeTransactionalConnector
 			return
 		}
 		message.__received__ = true
-
+		// Filter out any browser plugin messages
+		if(!message.domain || !message.application) {
+			return
+		}
 		if (this.applicationStore.state.messageCallback) {
 			const receivedDate = new Date()
 			message.__receivedTime__ = receivedDate.getTime()
