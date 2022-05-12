@@ -148,13 +148,19 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         });
     }
     async nativeHandleApiCall(message, context) {
-        if (!await this.nativeStartApiCall(message, context)) {
+        const messageCopy = {
+            ...message
+        };
+        delete messageCopy.__received__;
+        delete messageCopy.__receivedTime__;
+        messageCopy.category = 'FromClientRedirected';
+        if (!await this.nativeStartApiCall(messageCopy, context)) {
             throw new Error(context.errorMessage);
         }
         const webReciever = this.terminalStore.getWebReceiver();
         return new Promise((resolve, reject) => {
-            webReciever.pendingInterAppApiCallMessageMap.set(message.id, {
-                message,
+            webReciever.pendingInterAppApiCallMessageMap.set(messageCopy.id, {
+                message: messageCopy,
                 reject,
                 resolve
             });

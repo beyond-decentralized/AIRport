@@ -1,5 +1,7 @@
 export interface ICoreLocalApiRequest {
+    application: string // name of the application
     args: Array<boolean | number | string>
+    domain: string // network DNS domain name (or alike) where applcation is hostedß
     methodName?: string
     objectName?: string
 }

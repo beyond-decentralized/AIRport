@@ -32,12 +32,12 @@ import {
 	IReadQueryIMI,
 	IRetrieveDomainIMI,
 	ISaveIMI,
-	ICallApiIMI,
 	IApplicationLoader,
 	ILocalAPIServer,
 	IApplicationStore,
 	AppState,
-	IObservableMessageInRecord
+	IObservableMessageInRecord,
+	ICallApiIMI
 } from '@airport/apron';
 import {
 	Observable,
@@ -169,12 +169,14 @@ export class IframeTransactionalConnector
 		}
 	}
 
-	async callApi<Request, Response>(
+	async callApi<Response>(
 		apiInput: ICoreLocalApiRequest
-	): Promise<ILocalAPIResponse> {
-		return await this.sendMessage<ICallApiIMI, ILocalAPIResponse>({
+	): Promise<Response> {
+		return await this.sendMessage<ICallApiIMI, Response>({
 			...this.getCoreFields(),
+			application: apiInput.application,
 			args: apiInput.args,
+			domain: apiInput.domain,
 			methodName: apiInput.methodName,
 			hostDomain: location.host,
 			hostProtocol: location.protocol,

@@ -31,9 +31,9 @@ export class InternalTransactionalConnector
     @Inject()
     transactionalServer: ITransactionalServer
 
-    callApi<Request, Response>(
+    callApi<Response>(
         _: ILocalAPIRequest
-    ): Promise<ILocalAPIResponse> {
+    ): Promise<Response> {
         throw new Error(`InternalTransactionalConnector.callApi should never be called.
 Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`)

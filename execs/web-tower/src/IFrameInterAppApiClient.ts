@@ -53,22 +53,20 @@ export class IFrameInterAppPIClient
         }
 
         const request: ICoreLocalApiRequest = {
+            application: token.application.name,
             args: serializedParams,
+            domain: token.application.domain.name,
             methodName,
             objectName: token.descriptor.interface
         }
-
-        let response = await this.transactionalConnector.callApi(request)
-
-        if (response.errorMessage) {
-            throw new Error(response.errorMessage)
-        }
+            
+        let result = await this.transactionalConnector.callApi<ReturnValue>(request)
 
         if (_inDemoMode) {
-            return response.payload
+            return result
         } else {
             return this.queryResultsDeserializer
-                .deserialize(response.payload)
+                .deserialize(result)
         }
     }
 

@@ -1,5 +1,7 @@
 export interface ICoreLocalApiRequest {
+    application: string;
     args: Array<boolean | number | string>;
+    domain: string;
     methodName?: string;
     objectName?: string;
 }
