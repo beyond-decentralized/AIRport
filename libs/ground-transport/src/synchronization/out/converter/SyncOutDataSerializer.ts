@@ -267,8 +267,10 @@ export class SyncOutDataSerializer
 				message.referencedRepositories[repositoryInMessageIndex] =
 					this.serializeRepository(repository, userInMessageIndex as any)
 			} else {
-				message.history.repository.owner = userInMessageIndex as any
-				message.history.repository.id = repository.id
+				if (typeof message.history.repository !== 'string') {
+					message.history.repository.owner = userInMessageIndex as any
+					message.history.repository.id = repository.id
+				}
 			}
 		}
 	}

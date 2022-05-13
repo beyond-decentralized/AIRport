@@ -251,9 +251,7 @@ let UpdateCacheManager = class UpdateCacheManager {
             processedEntities.add(entity);
             let operationUniqueId = this.entityStateManager.getOperationUniqueId(entity, false, dbEntity);
             let originalValuesObject = {};
-            if (operationUniqueId) {
-                originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, processedEntities, operationUniqueId);
-            }
+            originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult, processedEntities, operationUniqueId);
             this.entityStateManager.setOriginalValues(originalValuesObject, entity);
         }
     }

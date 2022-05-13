@@ -4,6 +4,7 @@ import { ISerializationStateManager } from './SerializationStateManager';
  */
 export interface IQueryResultsDeserializer {
     deserialize<E, T = E | E[]>(entity: T): T;
+    deepCopyProperties<T>(from: T, to: T): void;
 }
 interface IDeserializableOperation {
     lookupTable: any[];
@@ -12,6 +13,7 @@ export declare class QueryResultsDeserializer implements IQueryResultsDeserializ
     serializationStateManager: ISerializationStateManager;
     deserialize<E, T = E | E[]>(entity: T): T;
     doDeserialize<E>(entity: E, operation: IDeserializableOperation): E;
+    deepCopyProperties<T>(from: T, to: T): void;
 }
 export {};
 //# sourceMappingURL=QueryResultsDeserializer.d.ts.map

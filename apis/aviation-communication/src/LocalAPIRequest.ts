@@ -2,8 +2,8 @@ export interface ICoreLocalApiRequest {
     application: string // name of the application
     args: Array<boolean | number | string>
     domain: string // network DNS domain name (or alike) where applcation is hostedß
-    methodName?: string
-    objectName?: string
+    methodName: string
+    objectName: string
 }
 
 export type LocalApiRequestCategoryType =
@@ -13,12 +13,10 @@ export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType>
     extends ICoreLocalApiRequest {
     __received__?: boolean
     __receivedTime__?: number
-    application: string // name of the application
     category: CategoryType
-    domain: string // network DNS domain name (or alike) where applcation is hosted
-    hostDomain?: string // network DNS domain name (or alike) of the client application
+    hostDomain: string // network DNS domain name (or alike) of the client application
     // (weather the client is a UI or an AIRport application)
-    hostProtocol?: string // protocol (http or https) of the client application
+    hostProtocol: string // protocol (http or https) of the client application
     id: string // UUID
     protocol: string
     transactionId?: string

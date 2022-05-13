@@ -56,6 +56,7 @@ export class StructuralEntityValidator
 			const {
 				isCreate,
 				isParentId,
+				isPassThrough,
 				isStub
 			} = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity)
 
@@ -179,8 +180,10 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 				} // else (dbProperty.relation  // If not a relation property
 			} // for (const dbProperty of dbEntity.properties)
 
-			this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
-				parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
+			if (!isPassThrough && !isStub && !isParentId) {
+				this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
+					parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
+			}
 		} // for (const record of entities)
 	}
 

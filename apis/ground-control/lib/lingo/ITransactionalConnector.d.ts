@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest } from '@airport/aviation-communication';
+import { ICoreLocalApiRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { Observable } from 'rxjs';
 import { IAbstractQueryContext } from './query/AbstractQueryContext';
@@ -10,7 +10,7 @@ export interface IRootTransaction {
     numberOfOperations: number;
 }
 export interface ITransactionalConnector {
-    callApi<Response>(apiInput: ICoreLocalApiRequest): Promise<Response>;
+    callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context?: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<E>;

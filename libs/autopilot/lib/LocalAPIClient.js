@@ -91,6 +91,8 @@ let LocalAPIClient = class LocalAPIClient {
             args: serializedParams,
             category: 'FromClient',
             domain: token.application.domain.name,
+            hostDomain: null,
+            hostProtocol: null,
             id: uuidv4(),
             methodName,
             objectName: token.descriptor.interface,
@@ -106,13 +108,19 @@ let LocalAPIClient = class LocalAPIClient {
         if (response.errorMessage) {
             throw new Error(response.errorMessage);
         }
+        let result;
         if (_inDemoMode) {
-            return response.payload;
+            result = response.payload;
         }
         else {
-            return this.queryResultsDeserializer
+            result = this.queryResultsDeserializer
                 .deserialize(response.payload);
         }
+        for (let i = 0; i < args.length; i++) {
+            this.queryResultsDeserializer
+                .deepCopyProperties(response.args[i], args[i]);
+        }
+        return result;
     }
     wait(milliseconds) {
         return new Promise((resolve, _reject) => {
@@ -134,6 +142,8 @@ let LocalAPIClient = class LocalAPIClient {
             args: [],
             category: 'IsConnectionReady',
             domain,
+            hostDomain: null,
+            hostProtocol: null,
             id: null,
             methodName: null,
             objectName: null,

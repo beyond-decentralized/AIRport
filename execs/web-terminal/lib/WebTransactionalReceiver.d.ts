@@ -15,7 +15,7 @@ export declare class WebTransactionalReceiver extends TransactionalReceiver impl
     handleAppRequest(message: (IIsolateMessage & IApiIMI) | ILocalAPIResponse, messageOrigin: string, source: any): void;
     onMessage(callback: (message: any) => void): void;
     protected nativeStartApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext): Promise<boolean>;
-    protected nativeHandleApiCall<Result>(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext): Promise<Result>;
+    protected nativeHandleApiCall(message: ILocalAPIRequest<'FromClientRedirected'>, context: IApiCallContext & ITransactionContext): Promise<ILocalAPIResponse>;
     private ensureConnectionIsReady;
     private hasValidApplicationInfo;
     private handleFromClientRequest;

@@ -2,7 +2,8 @@ export interface ILocalAPIResponse {
     __received__?: boolean;
     __receivedTime__?: number;
     application: string;
-    category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected';
+    args: any[];
+    category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected' | 'FromDb';
     domain: string;
     errorMessage: string;
     hostDomain: string;

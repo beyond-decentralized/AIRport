@@ -91,15 +91,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                     transactionId: message.transactionId
                 }, message.errorMessage, context).then((success) => {
                     if (interAppApiCallRequest) {
-                        if (!success) {
-                            interAppApiCallRequest.reject(message.errorMessage);
-                        }
-                        else if (message.errorMessage) {
-                            interAppApiCallRequest.reject(message.errorMessage);
-                        }
-                        else {
-                            interAppApiCallRequest.resolve(message.payload);
-                        }
+                        interAppApiCallRequest.resolve(message);
                     }
                     else {
                         const toClientRedirectedMessage = {
@@ -107,6 +99,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                             __received__: false,
                             __receivedTime__: null,
                             application: message.application,
+                            args: message.args,
                             category: 'ToClientRedirected',
                             domain: message.domain,
                             errorMessage: message.errorMessage,
@@ -157,14 +150,25 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         if (!await this.nativeStartApiCall(messageCopy, context)) {
             throw new Error(context.errorMessage);
         }
-        const webReciever = this.terminalStore.getWebReceiver();
-        return new Promise((resolve, reject) => {
-            webReciever.pendingInterAppApiCallMessageMap.set(messageCopy.id, {
-                message: messageCopy,
-                reject,
+        const replyMessage = await new Promise((resolve) => {
+            this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
+                message: {
+                    ...messageCopy,
+                    category: 'FromDb',
+                    type: IsolateMessageType.CALL_API
+                },
                 resolve
             });
         });
+        const response = {
+            ...messageCopy,
+            category: 'FromDb',
+            args: replyMessage.args,
+            errorMessage: replyMessage.errorMessage,
+            payload: replyMessage.payload,
+            transactionId: replyMessage.transactionId
+        };
+        return response;
     }
     async ensureConnectionIsReady(message) {
         const fullApplicationName = this.dbApplicationUtils.
@@ -183,6 +187,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         }
         const connectionIsReadyMessage = {
             application: message.application,
+            args: message.args,
             category: 'ConnectionIsReady',
             domain: message.domain,
             errorMessage: null,
@@ -240,6 +245,7 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             __received__: false,
             __receivedTime__: null,
             application: message.application,
+            args: message.args,
             category: 'ToClientRedirected',
             domain: message.domain,
             errorMessage,
@@ -348,30 +354,36 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
                 isolateSubscriptionMap.delete(message.id);
                 return;
         }
-        this.processMessage(message).then(response => {
-            if (!response) {
+        let response;
+        if (message.type === IsolateMessageType.CALL_API) {
+            response = await this.nativeHandleApiCall(message, {
+                startedAt: new Date()
+            });
+        }
+        else {
+            response = await this.processMessage(message);
+        }
+        if (!response) {
+            return;
+        }
+        let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain;
+        switch (message.type) {
+            case IsolateMessageType.SEARCH:
+            case IsolateMessageType.SEARCH_ONE:
+                const observableDataResult = response;
+                observableDataResult.result.pipe(map(value => {
+                    window.postMessage(value, shemaDomainName);
+                }));
+                const subscription = observableDataResult.result.subscribe();
+                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
+                if (!isolateSubscriptionMap) {
+                    isolateSubscriptionMap = new Map();
+                    webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap);
+                }
+                isolateSubscriptionMap.set(message.id, subscription);
                 return;
-            }
-            const webReciever = this.terminalStore.getWebReceiver();
-            let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain;
-            switch (message.type) {
-                case IsolateMessageType.SEARCH:
-                case IsolateMessageType.SEARCH_ONE:
-                    const observableDataResult = response;
-                    observableDataResult.result.pipe(map(value => {
-                        window.postMessage(value, shemaDomainName);
-                    }));
-                    const subscription = observableDataResult.result.subscribe();
-                    let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
-                    if (!isolateSubscriptionMap) {
-                        isolateSubscriptionMap = new Map();
-                        webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap);
-                    }
-                    isolateSubscriptionMap.set(message.id, subscription);
-                    return;
-            }
-            source.postMessage(response, '*');
-        });
+        }
+        source.postMessage(response, '*');
     }
 };
 __decorate([

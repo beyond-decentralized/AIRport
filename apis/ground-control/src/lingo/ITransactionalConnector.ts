@@ -14,9 +14,9 @@ export interface IRootTransaction {
 
 export interface ITransactionalConnector {
 
-	callApi<Response>(
+	callApi(
 		apiInput: ICoreLocalApiRequest
-	): Promise<Response>
+	): Promise<ILocalAPIResponse>
 
 	addRepository(
 		// url: string,

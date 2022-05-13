@@ -13,6 +13,11 @@ export interface IQueryResultsDeserializer {
 		entity: T
 	): T
 
+	deepCopyProperties<T>(
+		from: T,
+		to: T
+	): void
+
 }
 
 interface IDeserializableOperation {
@@ -101,6 +106,32 @@ export class QueryResultsDeserializer
 		delete deserializedEntity[this.serializationStateManager.getUniqueIdFieldName()]
 
 		return deserializedEntity
+	}
+
+	deepCopyProperties<T>(
+		from: T,
+		to: T
+	): void {
+		for (let propertyName in from) {
+			if (!from.hasOwnProperty(propertyName)) {
+				continue
+			}
+			let fromProperty = from[propertyName]
+			let toProperty = to[propertyName]
+			if (fromProperty instanceof Object && toProperty instanceof Object) {
+				this.deepCopyProperties(fromProperty, toProperty)
+			} else {
+				to[propertyName] = from[propertyName]
+			}
+		}
+		for (let propertyName in to) {
+			if (!to.hasOwnProperty(propertyName)) {
+				continue
+			}
+			if (!from.hasOwnProperty(propertyName)) {
+				delete to[propertyName]
+			}
+		}
 	}
 
 }

@@ -140,8 +140,10 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                     this.serializeRepository(repository, userInMessageIndex);
             }
             else {
-                message.history.repository.owner = userInMessageIndex;
-                message.history.repository.id = repository.id;
+                if (typeof message.history.repository !== 'string') {
+                    message.history.repository.owner = userInMessageIndex;
+                    message.history.repository.id = repository.id;
+                }
             }
         }
     }

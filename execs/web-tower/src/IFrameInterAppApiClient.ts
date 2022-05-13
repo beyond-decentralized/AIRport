@@ -1,6 +1,6 @@
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import {
     ICoreLocalApiRequest,
@@ -59,15 +59,23 @@ export class IFrameInterAppPIClient
             methodName,
             objectName: token.descriptor.interface
         }
-            
-        let result = await this.transactionalConnector.callApi<ReturnValue>(request)
 
+        let response = await this.transactionalConnector.callApi(request)
+
+        let payload
         if (_inDemoMode) {
-            return result
+            payload = response.payload
         } else {
-            return this.queryResultsDeserializer
-                .deserialize(result)
+            payload = this.queryResultsDeserializer
+                .deserialize(response.payload)
         }
+
+        for (let i = 0; i < args.length; i++) {
+            this.queryResultsDeserializer
+                .deepCopyProperties(response.args[i], args[i])
+        }
+
+        return payload
     }
 
 }

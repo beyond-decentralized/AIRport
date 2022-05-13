@@ -169,10 +169,10 @@ export class IframeTransactionalConnector
 		}
 	}
 
-	async callApi<Response>(
+	async callApi(
 		apiInput: ICoreLocalApiRequest
-	): Promise<Response> {
-		return await this.sendMessage<ICallApiIMI, Response>({
+	): Promise<ILocalAPIResponse> {
+		return await this.sendMessage<ICallApiIMI, ILocalAPIResponse>({
 			...this.getCoreFields(),
 			application: apiInput.application,
 			args: apiInput.args,
@@ -403,7 +403,9 @@ export class IframeTransactionalConnector
 				return
 		}
 
-		if (message.errorMessage) {
+		if (message.type === IsolateMessageType.CALL_API) {
+			messageRecord.resolve(message)
+		} else if (message.errorMessage) {
 			messageRecord.reject(message.errorMessage)
 		} else {
 			messageRecord.resolve(message.result)

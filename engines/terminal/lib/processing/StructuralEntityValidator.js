@@ -18,7 +18,7 @@ let StructuralEntityValidator = class StructuralEntityValidator {
             if (!haveRootRelationRecord) {
                 rootRelationRecord = record;
             }
-            const { isCreate, isParentId, isStub } = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
+            const { isCreate, isParentId, isPassThrough, isStub } = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity);
             if (isParentId) {
                 // No processing is needed (already covered by id check)
                 continue;
@@ -132,7 +132,9 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
                     this.ensureNonRelationalValue(dbProperty, dbColumn, propertyValue);
                 } // else (dbProperty.relation  // If not a relation property
             } // for (const dbProperty of dbEntity.properties)
-            this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
+            if (!isPassThrough && !isStub && !isParentId) {
+                this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context);
+            }
         } // for (const record of entities)
     }
     ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {

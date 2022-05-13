@@ -25,6 +25,7 @@ let LocalAPIServer = class LocalAPIServer {
         }
         const response = {
             application: request.application,
+            args: request.args,
             category: 'ToClient',
             domain: request.domain,
             errorMessage,

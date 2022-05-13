@@ -47,16 +47,6 @@ let TransactionalReceiver = class TransactionalReceiver {
         let theErrorMessage = null;
         let theResult = null;
         switch (message.type) {
-            case IsolateMessageType.CALL_API: {
-                const context = {};
-                try {
-                    theResult = await this.nativeHandleApiCall(message, context);
-                }
-                catch (e) {
-                    theErrorMessage = e.message;
-                }
-                break;
-            }
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage = message;
                 const application = initConnectionMessage.jsonApplication;

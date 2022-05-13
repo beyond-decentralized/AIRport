@@ -3,7 +3,7 @@ import { Observer } from "rxjs";
 import { IIsolateMessage } from "../isolate/IsolateMessage";
 export interface IMessageInRecord {
     message: IIsolateMessage;
-    reject: any;
+    reject?: any;
     resolve: any;
 }
 export interface IObservableMessageInRecord<T> {

@@ -3,7 +3,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { ILocalAPIRequest } from '@airport/aviation-communication';
+import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import {
     IContext,
 } from '@airport/direction-indicator';
@@ -78,7 +78,6 @@ export abstract class TransactionalReceiver {
             }
             let context: IContext = {}
             context.startedAt = new Date()
-
             const {
                 theErrorMessage,
                 theResult
@@ -106,7 +105,8 @@ export abstract class TransactionalReceiver {
     }
 
     private async doProcessMessage<ReturnType extends IIsolateMessageOut<any>>(
-        message: IIsolateMessage & IApiIMI,
+        message: IIsolateMessage & IApiIMI
+            | IPortableQueryIMI | ISaveIMI<any, any>,
         credentials: ITransactionCredentials,
         context: IContext
     ): Promise<{
@@ -116,15 +116,6 @@ export abstract class TransactionalReceiver {
         let theErrorMessage: string = null
         let theResult: any = null
         switch (message.type) {
-            case IsolateMessageType.CALL_API: {
-                const context: IApiCallContext = {}
-                try {
-                    theResult = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, context)
-                } catch (e) {
-                    theErrorMessage = e.message
-                }
-                break
-            }
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage: IInitConnectionIMI = message as any
                 const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
@@ -309,10 +300,10 @@ export abstract class TransactionalReceiver {
         context: IApiCallContext
     ): Promise<boolean>
 
-    protected abstract nativeHandleApiCall<Result>(
+    protected abstract nativeHandleApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
         context: IApiCallContext
-    ): Promise<Result>
+    ): Promise<ILocalAPIResponse>
 
     protected async startApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,

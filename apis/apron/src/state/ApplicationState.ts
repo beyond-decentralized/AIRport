@@ -4,7 +4,7 @@ import { IIsolateMessage } from "../isolate/IsolateMessage"
 import { LastIds } from "../LastIds"
 export interface IMessageInRecord {
     message: IIsolateMessage
-    reject
+    reject?
     resolve
 }
 

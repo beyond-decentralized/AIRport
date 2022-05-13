@@ -251,7 +251,10 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 this.applicationStore.state.pendingMessageMap.delete(message.id);
                 return;
         }
-        if (message.errorMessage) {
+        if (message.type === IsolateMessageType.CALL_API) {
+            messageRecord.resolve(message);
+        }
+        else if (message.errorMessage) {
             messageRecord.reject(message.errorMessage);
         }
         else {

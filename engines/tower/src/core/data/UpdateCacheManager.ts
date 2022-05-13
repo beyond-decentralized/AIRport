@@ -3,8 +3,8 @@ import {
     IUpdateCacheManager
 } from "@airport/air-traffic-control";
 import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import {
     DbEntity,
@@ -297,10 +297,8 @@ export class UpdateCacheManager
 
             let operationUniqueId = this.entityStateManager.getOperationUniqueId(entity, false, dbEntity)
             let originalValuesObject = {}
-            if (operationUniqueId) {
-                originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult,
-                    processedEntities, operationUniqueId)
-            }
+            originalValuesObject = this.doUpdateOriginalValuesAfterSave(entity, dbEntity, saveResult,
+                processedEntities, operationUniqueId)
             this.entityStateManager.setOriginalValues(originalValuesObject, entity);
         }
     }

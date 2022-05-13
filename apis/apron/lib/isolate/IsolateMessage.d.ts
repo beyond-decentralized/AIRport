@@ -57,8 +57,8 @@ export interface ITransactionEndIMI extends IApiIMI, IIsolateMessage {
 export interface IAddRepositoryIMI extends IIsolateMessage {
 }
 export interface IApiIMI {
-    methodName?: string;
-    objectName?: string;
+    methodName: string;
+    objectName: string;
     transactionId?: string;
 }
 export interface ICallApiIMI extends IApiIMI, ILocalAPIRequest<IsolateMessageCategoryType>, IIsolateMessage<IsolateMessageCategoryType> {
@@ -66,7 +66,7 @@ export interface ICallApiIMI extends IApiIMI, ILocalAPIRequest<IsolateMessageCat
 }
 export interface INumberIMO extends IIsolateMessageOut<number> {
 }
-export interface IPortableQueryIMI extends IApiIMI, IIsolateMessage {
+export interface IPortableQueryIMI extends IIsolateMessage {
     portableQuery: PortableQuery;
 }
 export interface IReadQueryIMI extends IPortableQueryIMI {
@@ -81,7 +81,7 @@ export interface IDataIMO<T> extends IIsolateMessageOut<T> {
 }
 export interface IObservableDataIMO<T> extends IIsolateMessageOut<Observable<T>> {
 }
-export interface ISaveIMI<E, T = E | E[]> extends IApiIMI, IIsolateMessage {
+export interface ISaveIMI<E, T = E | E[]> extends IIsolateMessage {
     dbEntity: {
         id: number;
         applicationVersionId: number;

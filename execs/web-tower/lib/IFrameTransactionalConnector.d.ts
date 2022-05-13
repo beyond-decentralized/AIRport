@@ -1,6 +1,6 @@
 import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { IApplicationVersion } from '@airport/airspace';
-import { ICoreLocalApiRequest, ILocalAPIRequest } from '@airport/aviation-communication';
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { DbDomain, DomainName, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
@@ -19,7 +19,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     localApiServer: ILocalAPIServer;
     terminalStore: ITerminalStore;
     processMessage(message: IIsolateMessageOut<any> | ILocalAPIRequest, origin: string): Promise<void>;
-    callApi<Response>(apiInput: ICoreLocalApiRequest): Promise<Response>;
+    callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;

@@ -2,7 +2,8 @@ export interface ILocalAPIResponse {
     __received__?: boolean
     __receivedTime__?: number
     application: string //  name of the application
-    category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected'
+    args: any[]
+    category: 'ConnectionIsReady' | 'ToClient' | 'ToClientRedirected' | 'FromDb'
     domain: string // network DNS domain name (or alike) where applcation is hosted
     errorMessage: string
     hostDomain: string

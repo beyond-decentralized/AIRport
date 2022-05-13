@@ -9,6 +9,7 @@ import {
 import {
 	IApiIMI,
 	IIsolateMessage,
+	ILocalAPIRequestIMI,
 	IObservableDataIMO,
 	IsolateMessageType,
 } from '@airport/apron'
@@ -147,19 +148,14 @@ export class WebTransactionalReceiver
 					transactionId: (message as ILocalAPIResponse).transactionId
 				}, message.errorMessage, context).then((success) => {
 					if (interAppApiCallRequest) {
-						if (!success) {
-							interAppApiCallRequest.reject(message.errorMessage)
-						} else if (message.errorMessage) {
-							interAppApiCallRequest.reject(message.errorMessage)
-						} else {
-							interAppApiCallRequest.resolve(message.payload)
-						}
+						interAppApiCallRequest.resolve(message)
 					} else {
 						const toClientRedirectedMessage: ILocalAPIResponse = {
 							...message,
 							__received__: false,
 							__receivedTime__: null,
 							application: message.application,
+							args: message.args,
 							category: 'ToClientRedirected',
 							domain: message.domain,
 							errorMessage: message.errorMessage,
@@ -208,10 +204,10 @@ export class WebTransactionalReceiver
 		})
 	}
 
-	protected async nativeHandleApiCall<Result>(
+	protected async nativeHandleApiCall(
 		message: ILocalAPIRequest<'FromClientRedirected'>,
 		context: IApiCallContext & ITransactionContext
-	): Promise<Result> {
+	): Promise<ILocalAPIResponse> {
 		const messageCopy: ILocalAPIRequest<'FromClientRedirected'> = {
 			...message
 		}
@@ -222,15 +218,27 @@ export class WebTransactionalReceiver
 			throw new Error(context.errorMessage)
 		}
 
-		const webReciever = this.terminalStore.getWebReceiver()
-
-		return new Promise((resolve, reject) => {
-			webReciever.pendingInterAppApiCallMessageMap.set(messageCopy.id, {
-				message: messageCopy,
-				reject,
+		const replyMessage: ILocalAPIResponse = await new Promise((resolve) => {
+			this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
+				message: {
+					...messageCopy,
+					category: 'FromDb',
+					type: IsolateMessageType.CALL_API
+				},
 				resolve
 			})
 		})
+
+		const response: ILocalAPIResponse = {
+			...messageCopy,
+			category: 'FromDb',
+			args: replyMessage.args,
+			errorMessage: replyMessage.errorMessage,
+			payload: replyMessage.payload,
+			transactionId: replyMessage.transactionId
+		}
+
+		return response;
 	}
 
 	private async ensureConnectionIsReady(
@@ -258,6 +266,7 @@ export class WebTransactionalReceiver
 
 		const connectionIsReadyMessage: ILocalAPIResponse = {
 			application: message.application,
+			args: message.args,
 			category: 'ConnectionIsReady',
 			domain: message.domain,
 			errorMessage: null,
@@ -334,6 +343,7 @@ export class WebTransactionalReceiver
 			__received__: false,
 			__receivedTime__: null,
 			application: message.application,
+			args: message.args,
 			category: 'ToClientRedirected',
 			domain: message.domain,
 			errorMessage,
@@ -477,35 +487,37 @@ export class WebTransactionalReceiver
 				isolateSubscriptionMap.delete(message.id)
 				return;
 		}
+		let response
+		if (message.type === IsolateMessageType.CALL_API) {
+			response = await this.nativeHandleApiCall(message as any as ILocalAPIRequestIMI, {
+				startedAt: new Date()
+			})
+		} else {
+			response = await this.processMessage(message)
+		}
+		if (!response) {
+			return
+		}
 
-		this.processMessage(message).then(response => {
-			if (!response) {
+		let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain
+		switch (message.type) {
+			case IsolateMessageType.SEARCH:
+			case IsolateMessageType.SEARCH_ONE:
+				const observableDataResult = <IObservableDataIMO<any>>response
+				observableDataResult.result.pipe(
+					map(value => {
+						window.postMessage(value, shemaDomainName)
+					})
+				)
+				const subscription = observableDataResult.result.subscribe()
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
+				if (!isolateSubscriptionMap) {
+					isolateSubscriptionMap = new Map()
+					webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
+				}
+				isolateSubscriptionMap.set(message.id, subscription)
 				return
-			}
-
-			const webReciever = this.terminalStore.getWebReceiver()
-
-			let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain
-			switch (message.type) {
-				case IsolateMessageType.SEARCH:
-				case IsolateMessageType.SEARCH_ONE:
-					const observableDataResult = <IObservableDataIMO<any>>response
-					observableDataResult.result.pipe(
-						map(value => {
-							window.postMessage(value, shemaDomainName)
-						})
-					)
-					const subscription = observableDataResult.result.subscribe()
-					let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
-					if (!isolateSubscriptionMap) {
-						isolateSubscriptionMap = new Map()
-						webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
-					}
-					isolateSubscriptionMap.set(message.id, subscription)
-					return
-			}
-			source.postMessage(response, '*')
-		})
+		}
+		source.postMessage(response, '*')
 	}
-
 }

@@ -88,8 +88,8 @@ export interface IAddRepositoryIMI
 }
 
 export interface IApiIMI {
-    methodName?: string
-    objectName?: string
+    methodName: string
+    objectName: string
     transactionId?: string
 }
 
@@ -104,7 +104,7 @@ export interface INumberIMO
 }
 
 export interface IPortableQueryIMI
-    extends IApiIMI, IIsolateMessage {
+    extends IIsolateMessage {
     portableQuery: PortableQuery
 }
 
@@ -127,7 +127,7 @@ export interface IObservableDataIMO<T>
 }
 
 export interface ISaveIMI<E, T = E | E[]>
-    extends IApiIMI, IIsolateMessage {
+    extends IIsolateMessage {
     dbEntity: {
         id: number,
         applicationVersionId: number
