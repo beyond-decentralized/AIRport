@@ -8437,8 +8437,36 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    findById(entityId, context, cacheForUpdate = false) {
-        throw new Error(`Not implemented`);
+    async findById(repositoryEntityId, context, cacheForUpdate = false) {
+        if (!this.db.dbEntity.isRepositoryEntity) {
+            throw new Error(`Dao.findById can only be called for Repository Entities.`);
+        }
+        if (!repositoryEntityId.repository
+            || !repositoryEntityId.repository.id
+            || typeof repositoryEntityId.repository.id !== 'number'
+            || !repositoryEntityId.actor
+            || !repositoryEntityId.actor.id
+            || typeof repositoryEntityId.actor.id !== 'number'
+            || !repositoryEntityId.actorRecordId
+            || typeof repositoryEntityId.actorRecordId !== 'number') {
+            throw new Error(`Invalid Repository Entity Id.  Expecting:
+				interface RepositoryEntityId {
+					repository: {
+						id: number
+					},
+					actor: {
+						id: number
+					},
+					actorRecordId: number
+				}
+				`);
+        }
+        let q;
+        return await this.db.findOne.graph({
+            select: {},
+            from: [q = this.db.from],
+            where: and(q.repository.id.equals(repositoryEntityId.repository.id), q.actor.id.equals(repositoryEntityId.actor.id), q.actorRecordId.equals(repositoryEntityId.actorRecordId))
+        }, context);
     }
     async save(entity, context) {
         return await this.db.save(entity, this.ensureContext(context));

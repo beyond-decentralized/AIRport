@@ -10,13 +10,22 @@ import {
 	IEntityUpdateProperties,
 	IQEntity
 } from '../core/entity/Entity'
-import { IDatabaseFacade, IQueryFacade } from '../core/repository/DatabaseFacade'
+import { IDatabaseFacade } from '../core/repository/DatabaseFacade'
 import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade'
 import { IUpdateCacheManager } from '../core/UpdateCacheManager'
-import { IEntityUtils } from '../utils/EntityUtils'
 import { ILookup } from './api/Lookup'
 
 export type OperationName = string
+
+export interface RepositoryEntityId {
+	repository: {
+		id: number
+	},
+	actor: {
+		id: number
+	},
+	actorRecordId: number
+}
 
 /**
  * Data access object.
@@ -59,7 +68,7 @@ export interface IDao<Entity,
 	): Promise<Entity[]>;
 
 	findById(
-		entityId: EntityId,
+		repositoryEntityId: RepositoryEntityId,
 		context?: IContext
 	): Promise<Entity>;
 

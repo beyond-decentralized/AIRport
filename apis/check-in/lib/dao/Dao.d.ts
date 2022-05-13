@@ -1,4 +1,4 @@
-import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, QApplication } from '@airport/air-traffic-control';
+import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, QApplication, RepositoryEntityId } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';
@@ -32,7 +32,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     };
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findById(entityId: EntityId, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
+    findById(repositoryEntityId: RepositoryEntityId, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     private ensureContext;
