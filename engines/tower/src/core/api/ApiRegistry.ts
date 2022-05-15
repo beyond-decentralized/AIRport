@@ -43,7 +43,11 @@ export class ApiRegistry
         Application:
             ${applicationName}
         Interface:
-            ${apiInterfaceName}`)
+            ${apiInterfaceName}
+            
+            ---===<<<((( Please remember, generator must be run after API modifications )))>>>===---
+
+            `)
         }
         const apiOperation = apiObjectDefinition.operationMap[methodName]
         if (!apiOperation) {
@@ -55,7 +59,11 @@ export class ApiRegistry
         Interface:
             ${apiInterfaceName}
         Method name:
-            ${methodName}`)
+            ${methodName}
+            
+            ---===<<<((( Please remember, generator must be run after API modifications )))>>>===---
+
+            `)
         }
 
         const apiObject = await this.containerAccessor.getContainer(this)

@@ -36,6 +36,7 @@ export interface IMessageInRecord {
 	resolve
 }
 export interface IPendingTransaction {
+	context,
 	credentials: ITransactionCredentials
 	reject
 	resolve

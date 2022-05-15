@@ -113,7 +113,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                 const findOneMessage = message;
                 theResult = await this.transactionalServer.findOne(findOneMessage.portableQuery, credentials, {
                     ...context,
-                    repository: findMessage.repository,
+                    repository: findOneMessage.repository,
                 });
                 break;
             case IsolateMessageType.INSERT_VALUES:
@@ -151,14 +151,14 @@ let TransactionalReceiver = class TransactionalReceiver {
                 const searchMessage = message;
                 theResult = await this.transactionalServer.search(searchMessage.portableQuery, credentials, {
                     ...context,
-                    repository: findMessage.repository,
+                    repository: searchMessage.repository,
                 });
                 break;
             case IsolateMessageType.SEARCH_ONE:
                 const searchOneMessage = message;
                 theResult = await this.transactionalServer.search(searchOneMessage.portableQuery, credentials, {
                     ...context,
-                    repository: findMessage.repository,
+                    repository: searchOneMessage.repository,
                 });
                 break;
             case IsolateMessageType.UPDATE_VALUES:

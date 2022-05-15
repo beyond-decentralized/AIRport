@@ -200,7 +200,7 @@ export abstract class TransactionalReceiver {
                     credentials,
                     {
                         ...context as any,
-                        repository: findMessage.repository,
+                        repository: findOneMessage.repository,
                     } as IQueryOperationContext
                 )
                 break
@@ -259,7 +259,7 @@ export abstract class TransactionalReceiver {
                     credentials,
                     {
                         ...context as any,
-                        repository: findMessage.repository,
+                        repository: searchMessage.repository,
                     } as IQueryOperationContext
                 )
                 break
@@ -270,7 +270,7 @@ export abstract class TransactionalReceiver {
                     credentials,
                     {
                         ...context as any,
-                        repository: findMessage.repository,
+                        repository: searchOneMessage.repository,
                     } as IQueryOperationContext
                 )
                 break

@@ -14,6 +14,7 @@ export interface IMessageInRecord {
     resolve: any;
 }
 export interface IPendingTransaction {
+    context: any;
     credentials: ITransactionCredentials;
     reject: any;
     resolve: any;

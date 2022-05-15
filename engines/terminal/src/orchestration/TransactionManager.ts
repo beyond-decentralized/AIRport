@@ -167,6 +167,7 @@ Only one concurrent transaction is allowed per application.`)
 				return new Promise((resolve, reject) => {
 					// Add the transaction to the queue of pending transactions
 					transactionManagerStore.pendingTransactionQueue.unshift({
+						context,
 						credentials,
 						reject,
 						resolve
@@ -251,8 +252,7 @@ parent transactions.
 		parentTransaction: ITransaction,
 		context: ITransactionContext,
 	): Promise<void> {
-		const transactionManagerStore = this.terminalStore
-			.getTransactionManager()
+		const transactionManagerStore = this.terminalStore.getTransactionManager()
 		if (parentTransaction) {
 			await this.setupTransaction(parentTransaction.credentials, parentTransaction,
 				parentTransaction.parentTransaction, transactionManagerStore,
@@ -260,7 +260,7 @@ parent transactions.
 		} else if (transactionManagerStore.pendingTransactionQueue.length) {
 			const pendingTransaction = transactionManagerStore.pendingTransactionQueue.pop()
 			const transaction = await this.internalStartTransaction(pendingTransaction.credentials,
-				null, context)
+				null, pendingTransaction.context)
 			pendingTransaction.resolve(transaction)
 		}
 	}

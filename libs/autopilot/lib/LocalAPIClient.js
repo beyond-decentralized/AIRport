@@ -134,7 +134,11 @@ let LocalAPIClient = class LocalAPIClient {
         const application = token.application.name;
         if (this.lastConnectionReadyCheckMap.get(domain)
             && this.lastConnectionReadyCheckMap.get(domain).get(application)) {
-            this.lastConnectionReadyCheckMap.get(domain).delete(application);
+            // FXIME: checking every time breaks in inconsistent ways,
+            // The whole 'IsConnectionReady' check needs to be done internally
+            // in the framework, without sending messages around (that is
+            // done on every request). 
+            // this.lastConnectionReadyCheckMap.get(domain).delete(application)
             return true;
         }
         let request = {
