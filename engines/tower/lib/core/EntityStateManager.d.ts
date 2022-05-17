@@ -9,7 +9,9 @@ export declare class EntityStateManager implements IEntityStateManager {
     static STATE_FIELD: string;
     static OPERATION_UNIQUE_ID_FIELD: string;
     isStub<T>(entity: T): boolean;
-    isParentId<T>(entity: T): boolean;
+    isParentSchemaId<T>(entity: T): boolean;
+    isPassThrough<T>(entity: T): boolean;
+    markAsOfParentSchema<T>(entity: T): void;
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;
     markToUpdate<T>(entity: T): void;

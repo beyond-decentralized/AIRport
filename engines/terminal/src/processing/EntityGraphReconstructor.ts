@@ -30,7 +30,8 @@ export class EntityGraphReconstructor
 		const entitiesByOperationIndex = []
 		const processedEntitySet = new Set()
 		const rootCopy =
-			this.linkEntityGraph(root, entitiesByOperationIndex, processedEntitySet, context)
+			this.linkEntityGraph(root, entitiesByOperationIndex, processedEntitySet,
+				false, context)
 
 		for (let i = 1; i < entitiesByOperationIndex.length; i++) {
 			const entity = entitiesByOperationIndex[i]
@@ -48,6 +49,7 @@ export class EntityGraphReconstructor
 		currentEntities: T[],
 		entitiesByOperationIndex: any[],
 		processedEntitySet: Set<Object>,
+		isParentEntity: boolean,
 		context: IOperationContext
 	): T[] {
 		const dbEntity = context.dbEntity
@@ -79,8 +81,8 @@ export class EntityGraphReconstructor
 			 * entity stubs that are needed structurally to get to
 			 * other entities.
 			 */
-			const {
-				isParentId,
+			let {
+				isParentSchemaId,
 				isStub
 			} = this.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
@@ -109,12 +111,18 @@ for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
 					= entityCopy
 			}
 
+			if (isParentEntity) {
+				this.entityStateManager.markAsOfParentSchema(entityCopy)
+				isParentSchemaId = true
+			}
+
 			for (const dbProperty of dbEntity.properties) {
 				let propertyValue: any = entity[dbProperty.name]
 				if (propertyValue === undefined) {
 					continue
 				}
 				if (dbProperty.relation && dbProperty.relation.length) {
+					let isParentRelation = false
 					const dbRelation = dbProperty.relation[0]
 					let relatedEntities = propertyValue
 					let isManyToOne = false
@@ -127,7 +135,7 @@ for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							this.assertOneToManyIsArray(propertyValue, dbProperty)
-							if (isParentId) {
+							if (isParentSchemaId) {
 								throw new Error(`Parent Ids may not contain any @OneToMany relations`)
 							}
 							break
@@ -143,23 +151,24 @@ for ${dbEntity.name}.${dbProperty.name}`)
 						// If a child entity is in a different application it won't be processed
 						// the calling application should call the API of the other application
 						// explicitly so that the application logic may be run
-						continue
+						isParentRelation = true
 					}
 					context.dbEntity = dbRelation.relationEntity
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities,
-							entitiesByOperationIndex, processedEntitySet, context)
+							entitiesByOperationIndex, processedEntitySet, isParentRelation, context)
 						if (isManyToOne) {
 							propertyCopyValue = propertyCopyValue[0]
-							if (isParentId) {
-								if (!this.entityStateManager.isParentId(propertyCopyValue)) {
+							if (isParentSchemaId) {
+								if (!this.entityStateManager.isParentSchemaId(propertyCopyValue)
+									&& !this.entityStateManager.isPassThrough(propertyCopyValue)) {
 									throw new Error(`Parent Ids may only contain @ManyToOne relations
-that are themselves Parent Ids.`)
+that are themselves Parent Ids or Pass-Though objects.`)
 								}
 							}
 						} else {
-							if (isParentId) {
+							if (isParentSchemaId) {
 								throw new Error(`Parent Ids may NOT contain @OneToMany colletions.`)
 							}
 						}// if (isManyToOne
@@ -169,10 +178,14 @@ that are themselves Parent Ids.`)
 					context.dbEntity = previousDbEntity
 				} // if (dbProperty.relation
 				else {
-					if ((isParentId || isStub) && !dbProperty.isId) {
-						// TODO: can a ParentId comprise of fields that are not part of it's own Id
-						// but are a part of Parent's Id?
-						throw new Error(`Deletes, ParentIds and Stubs may only contain @Id properties or relations.`)
+					if (!dbProperty.isId) {
+						if (isStub) {
+							throw new Error(`Deletes and Stubs may only contain @Id properties or relations.`)
+						} else if (isParentSchemaId || isParentEntity) {
+							// Do not add non-id entities to operation specific copies of objects
+							// if this entity is a PARENT_SCHEMA_ID (is from another schema)
+							continue
+						}
 					}
 				} // else (dbProperty.relation
 				entityCopy[dbProperty.name] = propertyValue

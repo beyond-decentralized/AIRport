@@ -69,7 +69,7 @@ export class DependencyGraphResolver
 			const {
 				isCreate,
 				isDelete,
-				isParentId,
+				isParentSchemaId,
 				isPassThrough,
 				isStub,
 				isUpdate
@@ -100,7 +100,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 				let isExistingNode = false
 				if (dependencyGraphNode) {
 					isExistingNode = true
-				} else if (!isParentId && !deleteByCascade) {
+				} else if (!isParentSchemaId && !deleteByCascade) {
 					dependencyGraphNode = {
 						circleTraversedFor: {},
 						dbEntity,
@@ -113,7 +113,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 					allProcessedNodes.push(dependencyGraphNode)
 					operatedOnEntities[operationUniqueId] = dependencyGraphNode
 				}
-				if (!isParentId && !isDelete) {
+				if (!isParentSchemaId && !isDelete) {
 					if (dependsOn && !isDelete) {
 						const dependsOnOUID = this.entityStateManager.getOperationUniqueId(dependsOn.entity)
 						if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
@@ -163,7 +163,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 
 						const parentState = this.entityStateManager
 							.getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity)
-						if (parentState.isParentId) {
+						if (parentState.isParentSchemaId) {
 							continue
 						}
 						if (parentState.isDelete) {
@@ -208,7 +208,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 					const childDependencyLinkedNodes = this.getEntitiesToPersist(
 						relatedEntities, operatedOnEntities, operatedOnPassThroughs,
 						context, fromDependencyForChild,
-						!isParentId && !isDelete && isDependency ? dependencyGraphNode : null,
+						!isParentSchemaId && !isDelete && isDependency ? dependencyGraphNode : null,
 						childDeleteByCascade)
 					allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes)
 					context.dbEntity = previousDbEntity

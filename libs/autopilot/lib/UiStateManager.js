@@ -11,7 +11,7 @@ export var EntityState;
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
-    EntityState["PARENT_ID"] = "PARENT_ID";
+    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_ID";
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
 })(EntityState || (EntityState = {}));
@@ -19,8 +19,8 @@ let UiStateManager = UiStateManager_1 = class UiStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;
     }
-    isParentId(entity) {
-        return this.getEntityState(entity) === EntityState.PARENT_ID;
+    isParentSchemaId(entity) {
+        return this.getEntityState(entity) === EntityState.PARENT_SCHEMA_ID;
     }
     markForDeletion(entity, arrayToRemoveFrom) {
         entity[UiStateManager_1.STATE_FIELD] = EntityState.DELETE;

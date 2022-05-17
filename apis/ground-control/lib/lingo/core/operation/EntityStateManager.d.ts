@@ -3,7 +3,7 @@ export declare enum EntityState {
     CREATE = "CREATE",
     DATE = "DATE",
     DELETE = "DELETE",
-    PARENT_ID = "PARENT_ID",
+    PARENT_SCHEMA_ID = "PARENT_SCHEMA_ID",
     PASS_THROUGH = "PASS_THROUGH",
     STUB = "STUB",
     UPDATE = "UPDATE"
@@ -11,7 +11,7 @@ export declare enum EntityState {
 export interface IEntityStateAsFlags {
     isCreate: boolean;
     isDelete: boolean;
-    isParentId: boolean;
+    isParentSchemaId: boolean;
     isPassThrough: boolean;
     isResultDate: boolean;
     isStub: boolean;
@@ -19,10 +19,12 @@ export interface IEntityStateAsFlags {
 }
 export interface IEntityStateManager {
     isStub<T>(entity: T): boolean;
-    isParentId<T>(entity: T): boolean;
+    isParentSchemaId<T>(entity: T): boolean;
+    isPassThrough<T>(entity: T): boolean;
     getOperationUniqueId<T>(entity: T, throwIfNotFound?: boolean, dbEntity?: DbEntity): number;
     copyOperationUniqueId<T>(entity: T, entityCopy: T): void;
     markAsStub<T>(entity: T): void;
+    markAsOfParentSchema<T>(entity: T): void;
     markForDeletion<T>(entity: T): void;
     markToCreate<T>(entity: T): void;
     markToUpdate<T>(entity: T): void;

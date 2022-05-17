@@ -11,8 +11,16 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
     isStub(entity) {
         return this.getEntityState(entity) === EntityState.STUB;
     }
-    isParentId(entity) {
-        return this.getEntityState(entity) === EntityState.PARENT_ID;
+    isParentSchemaId(entity) {
+        return this.getEntityState(entity) ===
+            EntityState.PARENT_SCHEMA_ID;
+    }
+    isPassThrough(entity) {
+        return this.getEntityState(entity) === EntityState.PASS_THROUGH;
+    }
+    markAsOfParentSchema(entity) {
+        entity[EntityStateManager_1.STATE_FIELD] =
+            EntityState.PARENT_SCHEMA_ID;
     }
     markForDeletion(entity) {
         entity[EntityStateManager_1.STATE_FIELD] = EntityState.DELETE;
@@ -42,7 +50,7 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
         return EntityStateManager_1.STATE_FIELD;
     }
     getEntityStateTypeAsFlags(entity, dbEntity) {
-        let isCreate, isDelete, isParentId, isPassThrough, isResult, isResultDate, isResultJson, isStub, isUpdate;
+        let isCreate, isDelete, isParentSchemaId, isPassThrough, isResult, isResultDate, isResultJson, isStub, isUpdate;
         const entityState = this.getEntityState(entity);
         switch (entityState) {
             case EntityState.CREATE:
@@ -51,8 +59,8 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
             case EntityState.DELETE:
                 isDelete = true;
                 break;
-            case EntityState.PARENT_ID:
-                isParentId = true;
+            case EntityState.PARENT_SCHEMA_ID:
+                isParentSchemaId = true;
                 break;
             case EntityState.PASS_THROUGH:
                 isPassThrough = true;
@@ -79,7 +87,7 @@ let EntityStateManager = EntityStateManager_1 = class EntityStateManager {
         return {
             isCreate,
             isDelete,
-            isParentId,
+            isParentSchemaId,
             isPassThrough,
             // isResult,
             isResultDate,

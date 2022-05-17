@@ -32,7 +32,7 @@ let DependencyGraphResolver = class DependencyGraphResolver {
              * has no associated operations or child entities of
              * it's own).
              */
-            const { isCreate, isDelete, isParentId, isPassThrough, isStub, isUpdate } = this.entityStateManager
+            const { isCreate, isDelete, isParentSchemaId, isPassThrough, isStub, isUpdate } = this.entityStateManager
                 .getEntityStateTypeAsFlags(entity, dbEntity);
             if (isStub) {
                 // No processing is needed
@@ -59,7 +59,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                 if (dependencyGraphNode) {
                     isExistingNode = true;
                 }
-                else if (!isParentId && !deleteByCascade) {
+                else if (!isParentSchemaId && !deleteByCascade) {
                     dependencyGraphNode = {
                         circleTraversedFor: {},
                         dbEntity,
@@ -72,7 +72,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     allProcessedNodes.push(dependencyGraphNode);
                     operatedOnEntities[operationUniqueId] = dependencyGraphNode;
                 }
-                if (!isParentId && !isDelete) {
+                if (!isParentSchemaId && !isDelete) {
                     if (dependsOn && !isDelete) {
                         const dependsOnOUID = this.entityStateManager.getOperationUniqueId(dependsOn.entity);
                         if (!dependencyGraphNode.dependsOnByOUID[dependsOnOUID]
@@ -118,7 +118,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                         }
                         const parentState = this.entityStateManager
                             .getEntityStateTypeAsFlags(propertyValue, dbRelation.relationEntity);
-                        if (parentState.isParentId) {
+                        if (parentState.isParentSchemaId) {
                             continue;
                         }
                         if (parentState.isDelete) {
@@ -162,7 +162,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     const dbEntity = dbRelation.relationEntity;
                     const previousDbEntity = context.dbEntity;
                     context.dbEntity = dbEntity;
-                    const childDependencyLinkedNodes = this.getEntitiesToPersist(relatedEntities, operatedOnEntities, operatedOnPassThroughs, context, fromDependencyForChild, !isParentId && !isDelete && isDependency ? dependencyGraphNode : null, childDeleteByCascade);
+                    const childDependencyLinkedNodes = this.getEntitiesToPersist(relatedEntities, operatedOnEntities, operatedOnPassThroughs, context, fromDependencyForChild, !isParentSchemaId && !isDelete && isDependency ? dependencyGraphNode : null, childDeleteByCascade);
                     allProcessedNodes = allProcessedNodes.concat(childDependencyLinkedNodes);
                     context.dbEntity = previousDbEntity;
                 }

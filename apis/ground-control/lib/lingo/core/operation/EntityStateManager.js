@@ -3,9 +3,18 @@ export var EntityState;
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
-    // TODO: PARENT_ID is currently not implemented.  It is meant for @ManyToOne()
-    // references when nothing is returned except for the id fields of the relation
-    EntityState["PARENT_ID"] = "PARENT_ID";
+    // Originally it was PARENT_ID and was meant for @ManyToOne() references when
+    // nothing is returned except for the id fields of the relation, however this
+    // schenario was sufficiently covered by STUB - id's only stub.  Now it's
+    // PARENT_SCHEMA_ID and currently used only for save operations
+    // when the entity referenced via the relation belongs to another application.
+    // This is because save does not allow to peristance of records across application
+    // boundaries (that should be done via an @Api() which will run validation and
+    // other logic).
+    // In that case we want to keep the ID of the record from another application
+    // so that it can be saved in the record of the current application that is
+    // referencing it.
+    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_ID";
     // A "Pass through object" is an existing that is present in the object graph
     // but no operations are performed on it
     EntityState["PASS_THROUGH"] = "PASS_THROUGH";

@@ -37,7 +37,7 @@ export class LocalAPIServer
                 payload = result
             }
         } catch (e) {
-            errorMessage = e.message
+            errorMessage = e.message ? e.message : e
             console.error(e)
         }
 

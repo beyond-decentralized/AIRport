@@ -55,12 +55,12 @@ export class StructuralEntityValidator
 			}
 			const {
 				isCreate,
-				isParentId,
+				isParentSchemaId,
 				isPassThrough,
 				isStub
 			} = this.entityStateManager.getEntityStateTypeAsFlags(record, dbEntity)
 
-			if (isParentId) {
+			if (isParentSchemaId) {
 				// No processing is needed (already covered by id check)
 				continue
 			}
@@ -169,9 +169,9 @@ for ${dbEntity.name}.${dbProperty.name}`)
 						const isIdColumnEmpty = this.applicationUtils.isIdEmpty(propertyValue)
 						this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty)
 					} else {
-						if (isStub || isParentId) {
+						if (isStub || isParentSchemaId) {
 							if (propertyValue !== undefined) {
-								throw new Error(`Unexpected non-@Id value Stub|ParentId|Deleted record.
+								throw new Error(`Unexpected non-@Id value Stub|ParentSchemaId|Deleted record.
 Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId}`)
 							}
 						}
@@ -180,7 +180,7 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 				} // else (dbProperty.relation  // If not a relation property
 			} // for (const dbProperty of dbEntity.properties)
 
-			if (!isPassThrough && !isStub && !isParentId) {
+			if (!isPassThrough && !isStub && !isParentSchemaId) {
 				this.ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity,
 					parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context)
 			}
