@@ -1,4 +1,5 @@
 import { DbRelation } from "@airport/ground-control";
+import { RepositoryEntityId } from "../../query/Dao";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import { IQEntity, IQEntityInternal } from './Entity';
 /**
@@ -13,7 +14,7 @@ export interface IQRelation<IQ extends IQEntity> {
  * A concrete ORM relation on a Repository Entity
  */
 export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity> extends IQRelation<IQ> {
-    equals(entity: Entity | IQRepositoryEntityRelation<Entity, IQ>): JSONLogicalOperation;
+    equals(entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId): JSONLogicalOperation;
 }
 export interface IQInternalRelation<IQ extends IQEntity> extends IQRelation<IQ> {
     dbRelation: DbRelation;

@@ -1,5 +1,6 @@
 import { DbRelation } from "@airport/ground-control";
 import { DeepPartial } from "../../DeepPartial";
+import { RepositoryEntityId } from "../../query/Dao";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
 	IQEntity,
@@ -30,7 +31,7 @@ export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
 
 	equals(
-		entity: Entity | IQRepositoryEntityRelation<Entity, IQ>
+		entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId
 	): JSONLogicalOperation
 
 }

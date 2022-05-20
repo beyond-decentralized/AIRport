@@ -23,6 +23,11 @@ export class QPropertyBuilder {
         let propertyType = prop.primitive;
         if (propertyType === 'Json') {
             propertyType = prop.type;
+            let trimmedPropertyType = propertyType.trim();
+            if (trimmedPropertyType.startsWith('{') || trimmedPropertyType.startsWith('[')
+                || trimmedPropertyType.endsWith('}') || trimmedPropertyType.endsWith(']')) {
+                throw new Error(`@Json() type must be an imported interface.  It cannot be an inplace type definition`);
+            }
             const moduleImport = this.propertyDocEntry.ownerEntity.docEntry.fileImports.importMapByObjectAsName[propertyType];
             let relativePathToImport = moduleImport.path;
             if (moduleImport.path.indexOf('.') === 0) {

@@ -45,6 +45,11 @@ export class QPropertyBuilder
 		let propertyType: string = prop.primitive
 		if (propertyType === 'Json') {
 			propertyType       = prop.type
+			let trimmedPropertyType = propertyType.trim()
+			if(trimmedPropertyType.startsWith('{') || trimmedPropertyType.startsWith('[')
+			|| trimmedPropertyType.endsWith('}') || trimmedPropertyType.endsWith(']')) {
+				throw new Error(`@Json() type must be an imported interface.  It cannot be an inplace type definition`)
+			}
 			const moduleImport = this.propertyDocEntry.ownerEntity.docEntry.fileImports.importMapByObjectAsName[propertyType]
 
 			let relativePathToImport = moduleImport.path
@@ -63,8 +68,8 @@ export class QPropertyBuilder
 				propertyType = prop.type
 			}
 		}
-		return `${name}${optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`
 
+		return `${name}${optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`
 	}
 
 }
