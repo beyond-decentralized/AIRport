@@ -1,3 +1,4 @@
+import { RepositoryEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { IEntityStateManager, ISaveResult } from '@airport/ground-control';
 import { IAirportDatabase } from '../AirportDatabase';
@@ -7,15 +8,6 @@ import { IEntityDatabaseFacade } from '../core/repository/EntityDatabaseFacade';
 import { IUpdateCacheManager } from '../core/UpdateCacheManager';
 import { ILookup } from './api/Lookup';
 export declare type OperationName = string;
-export interface RepositoryEntityId {
-    repository: {
-        id: number;
-    };
-    actor: {
-        id: number;
-    };
-    actorRecordId: number;
-}
 /**
  * Data access object.
  */
@@ -30,7 +22,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
-    findById(repositoryEntityId: RepositoryEntityId, context?: IContext): Promise<Entity>;
+    findById(repositoryEntityId: RepositoryEntityId | string, context?: IContext): Promise<Entity>;
     /**
      * Either creates or updates the entity based entity
      * state flag.  Cascades.

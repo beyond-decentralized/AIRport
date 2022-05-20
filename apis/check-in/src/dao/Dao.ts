@@ -16,9 +16,12 @@ import {
 	IQEntity,
 	IUpdateCacheManager,
 	QApplication,
-	RepositoryEntityId,
 	Y
 } from '@airport/air-traffic-control';
+import {
+	parseId,
+	RepositoryEntityId
+} from '@airport/aviation-communication';
 import {
 	Inject,
 	Injected
@@ -154,10 +157,13 @@ export abstract class Dao<Entity,
 	}
 
 	async findById(
-		repositoryEntityId: RepositoryEntityId,
+		repositoryEntityId: RepositoryEntityId | string,
 		context?: IContext,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity> {
+		if (typeof repositoryEntityId === 'string') {
+			repositoryEntityId = parseId(repositoryEntityId)
+		}
 		if (!this.db.dbEntity.isRepositoryEntity) {
 			throw new Error(`Dao.findById can only be called for Repository Entities.`)
 		}

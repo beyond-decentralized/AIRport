@@ -1,3 +1,4 @@
+import { RepositoryEntityId } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { IEntityStateManager, ISaveResult } from '@airport/ground-control'
 import { IAirportDatabase } from '../AirportDatabase'
@@ -16,16 +17,6 @@ import { IUpdateCacheManager } from '../core/UpdateCacheManager'
 import { ILookup } from './api/Lookup'
 
 export type OperationName = string
-
-export interface RepositoryEntityId {
-	repository: {
-		id: number
-	},
-	actor: {
-		id: number
-	},
-	actorRecordId: number
-}
 
 /**
  * Data access object.
@@ -68,7 +59,7 @@ export interface IDao<Entity,
 	): Promise<Entity[]>;
 
 	findById(
-		repositoryEntityId: RepositoryEntityId,
+		repositoryEntityId: RepositoryEntityId | string,
 		context?: IContext
 	): Promise<Entity>;
 

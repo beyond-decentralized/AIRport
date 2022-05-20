@@ -1,3 +1,4 @@
+import { parseId, RepositoryEntityId } from '@airport/aviation-communication'
 import {
 	DbRelation,
 	JoinType
@@ -73,8 +74,11 @@ export function QRepositoryEntityRelation(
 }
 
 QRepositoryEntityRelation.prototype.equals = function <Entity, IQ extends IQEntityInternal>(
-	entity: Entity | IQRepositoryEntityRelation<Entity, IQ>
+	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
 ): JSONLogicalOperation {
+	if (typeof entity === 'string') {
+		entity = parseId(entity)
+	}
 	let thisRelation = this as any
 	let other = entity as any
 	return and(

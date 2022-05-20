@@ -6,15 +6,18 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-}                                      from '@airport/air-traffic-control'
-import {Actor}                         from '../infrastructure/Actor'
-import {SystemWideOperationId}         from '../common'
-import {Repository}                    from './Repository'
+} from '@airport/air-traffic-control'
+import {
+	encodeId,
+	setId
+} from '@airport/aviation-communication'
+import { Actor } from '../infrastructure/Actor'
+import { SystemWideOperationId } from '../common'
+import { Repository } from './Repository'
 
 /**
  * Created by Papa on 2/17/2017.
  */
-
 export type RepositoryEntity_ActorRecordId = number
 export type RepositoryEntity_AgeSuitability = 0 | 7 | 13 | 18
 export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
@@ -39,11 +42,11 @@ export abstract class RepositoryEntity {
 	actor: Actor
 
 	@Id()
-	@Column({name: 'ACTOR_RECORD_ID', nullable: false})
+	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@GeneratedValue()
 	actorRecordId: RepositoryEntity_ActorRecordId
 
-	@Column({name: 'AGE_SUITABILITY', nullable: false})
+	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
 	ageSuitability: RepositoryEntity_AgeSuitability
 
@@ -51,7 +54,7 @@ export abstract class RepositoryEntity {
 	// It is needed for bulk updates of repository records, where there is now way to find out
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
 	// a marker to find the new values after the update (and before saving them to history).
-	@Column({name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false})
+	@Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
 	systemWideOperationId: RepositoryEntity_SystemWideOperationId
 
 	// A record may actually be copied from another repository
@@ -70,8 +73,18 @@ export abstract class RepositoryEntity {
 	})
 	originalActor: Actor
 
-	@Column({name: 'ORIGINAL_ACTOR_RECORD_ID'})
+	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
 	originalActorRecordId: RepositoryEntity_ActorRecordId
+
+	get id(): string {
+		return encodeId(this)
+	}
+
+	set id(
+		idString: string
+	) {
+		setId(idString, this)
+	}
 
 	/*
 		@OneToMany()

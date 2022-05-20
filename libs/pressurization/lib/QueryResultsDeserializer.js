@@ -73,6 +73,17 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
         return deserializedEntity;
     }
     deepCopyProperties(from, to) {
+        if (from instanceof Array) {
+            for (let i = 0; i < from.length; i++) {
+                this.deepCopyProperties(from[i], to[i]);
+            }
+        }
+        if (!(from instanceof Object)) {
+            return;
+        }
+        if (from instanceof Date) {
+            return;
+        }
         for (let propertyName in from) {
             if (!from.hasOwnProperty(propertyName)) {
                 continue;

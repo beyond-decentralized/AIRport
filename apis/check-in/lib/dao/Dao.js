@@ -5,6 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { and, doEnsureContext, Y } from '@airport/air-traffic-control';
+import { parseId } from '@airport/aviation-communication';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
@@ -64,6 +65,9 @@ let Dao = class Dao {
         }, context);
     }
     async findById(repositoryEntityId, context, cacheForUpdate = false) {
+        if (typeof repositoryEntityId === 'string') {
+            repositoryEntityId = parseId(repositoryEntityId);
+        }
         if (!this.db.dbEntity.isRepositoryEntity) {
             throw new Error(`Dao.findById can only be called for Repository Entities.`);
         }
