@@ -45,7 +45,8 @@ export class WebApplicationInitializer
             appIframe.name = fullApplicationName
             appIframe.style.display = 'none'
             document.body.appendChild(appIframe)
-
+        } else {
+            appIframe = appIframes[0] as HTMLIFrameElement
         }
 
         while (!this.terminalStore.getReceiver().initializedApps

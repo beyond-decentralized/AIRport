@@ -22,6 +22,9 @@ let WebApplicationInitializer = class WebApplicationInitializer extends Applicat
             appIframe.style.display = 'none';
             document.body.appendChild(appIframe);
         }
+        else {
+            appIframe = appIframes[0];
+        }
         while (!this.terminalStore.getReceiver().initializedApps
             .has(fullApplicationName)) {
             await this.wait(100);
