@@ -328,8 +328,13 @@ export function QTree(
 	(<any>QTree).base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver)
 	this.__driver__.subQuery = subQuery
 }
+const qTreeMethods = {
+	/*
+	yourMethodName: function() {},
+	*/
+}
 
-extend(QEntity, QTree, {})
+extend(QEntity, QTree, qTreeMethods)
 
 export interface IQTreeDriver
 	extends IQEntityDriver {

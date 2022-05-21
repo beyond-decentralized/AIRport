@@ -1,4 +1,4 @@
-import { AliasCache, isID, isN, isY, JoinTreeNode, Y } from '@airport/air-traffic-control';
+import { AliasCache, getErrorMessageSelectStatement, isID, isN, isY, JoinTreeNode, Y } from '@airport/air-traffic-control';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
 import { SQLQuery } from './core/SQLQuery';
@@ -421,6 +421,16 @@ ${fromFragment}${whereFragment}${orderByFragment}`;
         let currentRelation = currentTree.jsonRelation;
         let currentAlias = this.relationManager.getAlias(currentRelation);
         let qEntity = this.qEntityMapByAlias[currentAlias];
+        if (!qEntity) {
+            throw new Error(`Select clause doesn't match the from clause.
+Please make sure that all entities present in the select: {...} clause
+are specified in the from: [...] clause, with the SAME nesting pattern as
+in the select: {...} clause.  The non-matching select clause is:
+
+${getErrorMessageSelectStatement(this.jsonQuery.S)}
+
+`);
+        }
         let tableName = this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context);
         if (!parentTree) {
             fromFragment += `${tableName} ${currentAlias}`;

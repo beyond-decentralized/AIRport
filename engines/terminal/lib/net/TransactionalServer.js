@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
-import { Actor } from '@airport/holding-pattern-runtime';
 /**
  * Keeps track of transactions, per client and validates that a given
  * transaction belongs to the provided client.  If the connection
@@ -188,7 +187,7 @@ let TransactionalServer = class TransactionalServer {
             return this.tempActor;
         }
         if (credentials.domain === INTERNAL_DOMAIN) {
-            return new Actor();
+            return this.terminalStore.getFrameworkActor();
         }
         let actors;
         const actorMapForDomain = this.terminalStore

@@ -148,7 +148,12 @@ export function QTree(fromClausePosition = [], subQuery) {
     QTree.base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver);
     this.__driver__.subQuery = subQuery;
 }
-extend(QEntity, QTree, {});
+const qTreeMethods = {
+/*
+yourMethodName: function() {},
+*/
+};
+extend(QEntity, QTree, qTreeMethods);
 export class QTreeDriver extends QEntityDriver {
     getInstance() {
         let instance = super.getInstance();

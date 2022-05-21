@@ -34,13 +34,15 @@ QRelation.prototype.getNewQEntity = function (joinType) {
 export function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
     QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
-QRepositoryEntityRelation.prototype.equals = function (entity) {
-    if (typeof entity === 'string') {
-        entity = parseId(entity);
+export const qRepositoryEntityRelationMethods = {
+    equals: function (entity) {
+        if (typeof entity === 'string') {
+            entity = parseId(entity);
+        }
+        let thisRelation = this;
+        let other = entity;
+        return and(thisRelation.repository.id.equals(other.repository.id), thisRelation.actor.id.equals(other.actor.id), thisRelation.actorRecordId.equals(other.actorRecordId));
     }
-    let thisRelation = this;
-    let other = entity;
-    return and(thisRelation.actor.id.equals(other.actor.id), thisRelation.actorRecordId.equals(other.actorRecordId), thisRelation.id.equals(other.repository.id));
 };
-extend(QRelation, QRepositoryEntityRelation, {});
+extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods);
 //# sourceMappingURL=Relation.js.map

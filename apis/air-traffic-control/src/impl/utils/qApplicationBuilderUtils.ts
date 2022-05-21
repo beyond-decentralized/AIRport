@@ -28,7 +28,7 @@ import { IQUntypedField } from '../../lingo/core/field/UntypedField'
 import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils'
 import { QEntity } from '../core/entity/Entity'
 import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
-import { QRelation, QRepositoryEntityRelation } from '../core/entity/Relation'
+import { QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods } from '../core/entity/Relation'
 import { IRelationManager } from '../core/entity/RelationManager'
 import { QBooleanField } from '../core/field/BooleanField'
 import { QDateField } from '../core/field/DateField'
@@ -150,8 +150,13 @@ export function getQEntityConstructor(
 		})
 		// entity.__qConstructor__ = ChildQEntity
 	}
+	const childQEntityMethods = {
+		/*
+		yourMethodName: function() {},
+		*/
+	}
 
-	extend(QEntity, ChildQEntity, {})
+	extend(QEntity, ChildQEntity, childQEntityMethods)
 
 
 	return <any>ChildQEntity
@@ -192,11 +197,16 @@ export function getQEntityIdRelationConstructor(
 
 		// (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
 	}
+	const qEntityIdRelationMethods = {
+		/*
+		yourMethodName: function() {},
+		*/
+	}
 
 	if (dbEntity.isRepositoryEntity) {
-		extend(QRepositoryEntityRelation, QEntityIdRelation, {})
+		extend(QRepositoryEntityRelation, QEntityIdRelation, qEntityIdRelationMethods)
 	} else {
-		extend(QRelation, QEntityIdRelation, {})
+		extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods)
 	}
 
 	return <any>QEntityIdRelation

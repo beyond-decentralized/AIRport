@@ -73,18 +73,21 @@ export function QRepositoryEntityRelation(
 		this, dbRelation, parentQ, applicationUtils, relationManager)
 }
 
-QRepositoryEntityRelation.prototype.equals = function <Entity, IQ extends IQEntityInternal>(
-	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
-): JSONLogicalOperation {
-	if (typeof entity === 'string') {
-		entity = parseId(entity)
+export const qRepositoryEntityRelationMethods = {
+	equals: function <Entity, IQ extends IQEntityInternal>(
+		entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+	): JSONLogicalOperation {
+		if (typeof entity === 'string') {
+			entity = parseId(entity)
+		}
+		let thisRelation = this as any
+		let other = entity as any
+		return and(
+			thisRelation.repository.id.equals(other.repository.id),
+			thisRelation.actor.id.equals(other.actor.id),
+			thisRelation.actorRecordId.equals(other.actorRecordId)
+		)
+
 	}
-	let thisRelation = this as any
-	let other = entity as any
-	return and(
-		thisRelation.actor.id.equals(other.actor.id),
-		thisRelation.actorRecordId.equals(other.actorRecordId),
-		thisRelation.id.equals(other.repository.id)
-	)
 }
-extend(QRelation, QRepositoryEntityRelation, {})
+extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods)

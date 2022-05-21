@@ -25,7 +25,12 @@ export function QOneToManyRelation(
 	(<any>QOneToManyRelation).base.constructor.call(this,
 		dbRelation, parentQ, applicationUtils, repationManager)
 }
-extend(QRelation, QOneToManyRelation, {})
+const qOneToManyRelationMethods = {
+	/*
+	yourMethodName: function() {},
+	*/
+}
+extend(QRelation, QOneToManyRelation, qOneToManyRelationMethods)
 
 export function QRepositoryEntityOneToManyRelation(
 	dbRelation: DbRelation,
@@ -36,4 +41,10 @@ export function QRepositoryEntityOneToManyRelation(
 	(<any>QRepositoryEntityOneToManyRelation).base.constructor.call(this,
 		dbRelation, parentQ, applicationUtils, repationManager)
 }
-extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, {})
+const qRepositoryEntityOneToManyRelationMethods = {
+	/*
+	yourMethodName: function() {},
+	*/
+}
+extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation,
+	qRepositoryEntityOneToManyRelationMethods)

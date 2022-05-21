@@ -1,5 +1,6 @@
 import {
 	AliasCache,
+	getErrorMessageSelectStatement,
 	IAirportDatabase,
 	IApplicationUtils,
 	IEntitySelectProperties,
@@ -407,7 +408,7 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		selectClauseFragment: any,
 		dbEntity: DbEntity,
 		context: IFuelHydrantContext,
-		parentDbProperty?: DbProperty
+		parentDbProperty?: DbProperty,
 	): any {
 		let retrieveAllOwnFields: boolean = true
 		let selectFragment
@@ -456,12 +457,13 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 			// Need to differentiate between properties that contain only
 			// foreign key ids and properties
 			if (dbProperty.relation && dbProperty.relation.length) {
-				selectFragment[propertyName] = this.setupSelectFields(value, dbProperty.relation[0].relationEntity, context, dbProperty)
+				selectFragment[propertyName] = this.setupSelectFields(
+					value, dbProperty.relation[0].relationEntity,
+					context, dbProperty)
 				// } else {
 				// 	//  At least one non-relational field is in the original select clause
 				// 	retrieveAllOwnFields = false
 			} else if (!isY(value)) {
-
 				selectFragment[propertyName] = Y
 			}
 		}
@@ -566,6 +568,17 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		let currentRelation = currentTree.jsonRelation
 		let currentAlias = this.relationManager.getAlias(currentRelation)
 		let qEntity = this.qEntityMapByAlias[currentAlias]
+		if (!qEntity) {
+			throw new Error(`Select clause doesn't match the from clause.
+Please make sure that all entities present in the select: {...} clause
+are specified in the from: [...] clause, with the SAME nesting pattern as
+in the select: {...} clause.  The non-matching select clause is:
+
+${getErrorMessageSelectStatement(this.jsonQuery.S)}
+
+`)
+
+		}
 		let tableName = this.storeDriver.getEntityTableName(qEntity.__driver__.dbEntity, context)
 
 		if (!parentTree) {

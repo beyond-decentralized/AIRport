@@ -24,7 +24,8 @@ export function isN(object) {
     return object && object.airportSelectField === false;
 }
 export const I = {
-    insert: true
+    insert: true,
+    null: false
 };
 export const INSERT = I;
 export function isInsert(object) {
@@ -80,5 +81,34 @@ export function convertToID(object) {
 }
 export function isID(object) {
     return object && object.airportSelectField === 'ID';
+}
+function cleanErrorMessageSelectStatement(errorMessageSelectStatement) {
+    for (let propertyName in errorMessageSelectStatement) {
+        let property = errorMessageSelectStatement[propertyName];
+        if (!(property instanceof Object)) {
+            continue;
+        }
+        if (property.hasOwnProperty("airportSelectField")) {
+            switch (property.airportSelectField) {
+                case "ID":
+                    errorMessageSelectStatement[propertyName] = "ID";
+                    break;
+                case true:
+                    errorMessageSelectStatement[propertyName] = "Y";
+                    break;
+                case false:
+                    errorMessageSelectStatement[propertyName] = "N";
+                    break;
+            }
+        }
+        else {
+            cleanErrorMessageSelectStatement(property);
+        }
+    }
+}
+export function getErrorMessageSelectStatement(jsonSelectClause) {
+    const errorMessageSelectStatement = JSON.parse(JSON.stringify(jsonSelectClause));
+    cleanErrorMessageSelectStatement(errorMessageSelectStatement);
+    return JSON.stringify(errorMessageSelectStatement, null, 4);
 }
 //# sourceMappingURL=Query.js.map

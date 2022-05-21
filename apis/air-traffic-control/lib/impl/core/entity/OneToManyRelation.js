@@ -13,9 +13,19 @@ import { QRelation, QRepositoryEntityRelation } from './Relation';
 export function QOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
     QOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
 }
-extend(QRelation, QOneToManyRelation, {});
+const qOneToManyRelationMethods = {
+/*
+yourMethodName: function() {},
+*/
+};
+extend(QRelation, QOneToManyRelation, qOneToManyRelationMethods);
 export function QRepositoryEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
     QRepositoryEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
 }
-extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, {});
+const qRepositoryEntityOneToManyRelationMethods = {
+/*
+yourMethodName: function() {},
+*/
+};
+extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, qRepositoryEntityOneToManyRelationMethods);
 //# sourceMappingURL=OneToManyRelation.js.map

@@ -57,4 +57,5 @@ export declare const isUpsert: typeof isInsertOrUpdateOrNull;
 export declare const ID: any;
 export declare function convertToID(object: any): void;
 export declare function isID(object: any): boolean;
+export declare function getErrorMessageSelectStatement(jsonSelectClause: any): any;
 //# sourceMappingURL=Query.d.ts.map

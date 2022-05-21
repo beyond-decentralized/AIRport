@@ -84,7 +84,8 @@ export function isN(
 }
 
 export const I: any = {
-	insert: true
+	insert: true,
+	null: false
 };
 
 export const INSERT = I;
@@ -180,4 +181,40 @@ export function isID(
 	object: any
 ): boolean {
 	return object && object.airportSelectField === 'ID';
+}
+
+function cleanErrorMessageSelectStatement(
+	errorMessageSelectStatement: any
+) {
+	for (let propertyName in errorMessageSelectStatement) {
+		let property = errorMessageSelectStatement[propertyName]
+		if (!(property instanceof Object)) {
+			continue;
+		}
+		if (property.hasOwnProperty("airportSelectField")) {
+			switch (property.airportSelectField) {
+				case "ID":
+					errorMessageSelectStatement[propertyName] = "ID"
+					break
+				case true:
+					errorMessageSelectStatement[propertyName] = "Y"
+					break
+				case false:
+					errorMessageSelectStatement[propertyName] = "N"
+					break;
+			}
+		} else {
+			cleanErrorMessageSelectStatement(property)
+		}
+	}
+}
+
+export function getErrorMessageSelectStatement(
+	jsonSelectClause: any
+): any {
+	const errorMessageSelectStatement = JSON.parse(JSON.stringify(jsonSelectClause))
+
+	cleanErrorMessageSelectStatement(errorMessageSelectStatement)
+
+	return JSON.stringify(errorMessageSelectStatement, null, 4)
 }

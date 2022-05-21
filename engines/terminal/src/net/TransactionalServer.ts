@@ -387,7 +387,7 @@ export class TransactionalServer
 			return this.tempActor;
 		}
 		if (credentials.domain === INTERNAL_DOMAIN) {
-			return new Actor()
+			return this.terminalStore.getFrameworkActor()
 		}
 		let actors: IActor[]
 		const actorMapForDomain = this.terminalStore

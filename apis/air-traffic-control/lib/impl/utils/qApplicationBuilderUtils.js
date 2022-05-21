@@ -80,7 +80,12 @@ export function getQEntityConstructor(allQApplications) {
         });
         // entity.__qConstructor__ = ChildQEntity
     };
-    extend(QEntity, ChildQEntity, {});
+    const childQEntityMethods = {
+    /*
+    yourMethodName: function() {},
+    */
+    };
+    extend(QEntity, ChildQEntity, childQEntityMethods);
     return ChildQEntity;
 }
 export function addColumnQField(entity, property, q, column) {
@@ -99,11 +104,16 @@ export function getQEntityIdRelationConstructor(dbEntity) {
         getQEntityIdFields(this, entity, qEntity, relation.property);
         // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
     }
+    const qEntityIdRelationMethods = {
+    /*
+    yourMethodName: function() {},
+    */
+    };
     if (dbEntity.isRepositoryEntity) {
-        extend(QRepositoryEntityRelation, QEntityIdRelation, {});
+        extend(QRepositoryEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
     }
     else {
-        extend(QRelation, QEntityIdRelation, {});
+        extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods);
     }
     return QEntityIdRelation;
 }
