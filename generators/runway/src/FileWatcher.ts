@@ -9,7 +9,7 @@ import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { currentApplicationApi } from './api/parser/ApiGenerator';
+import { currentApiFileSignatures, currentApplicationApi } from './api/parser/ApiGenerator';
 import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { ApplicationQueryGenerator } from './dao/parser/ApplicationQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
@@ -26,6 +26,8 @@ import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSupercla
 import { Configuration } from './ddl/options/Options';
 import { EntityCandidate } from './ddl/parser/EntityCandidate';
 import { generateDefinitions } from './FileProcessor';
+import { ApiBuilder } from './ddl/builder/ApiBuilder';
+import { ApiIndexBuilder } from './ddl/builder/ApiIndexBuilder';
 
 // TODO: figure out if this is needed
 (AirportDatabase as any).bogus = 'loaded for application generation';
@@ -124,6 +126,11 @@ export async function watchFiles(
 			fs.mkdirSync(generatedDirPath);
 		}
 
+		const generatedApiDirPath = generatedDirPath + '/api'
+		if (!fs.existsSync(generatedApiDirPath)) {
+			fs.mkdirSync(generatedApiDirPath);
+		}
+
 		let applicationString;
 		if (fs.existsSync(applicationPath)) {
 			applicationString = fs.readFileSync(applicationPath, 'utf8');
@@ -145,6 +152,16 @@ export async function watchFiles(
 		const daoBuilder = new DaoBuilder(pathBuilder);
 		const duoBuilder = new DuoBuilder(pathBuilder);
 		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
+
+		if (currentApiFileSignatures.length) {
+			const apiIndexBuilder = new ApiIndexBuilder(pathBuilder)
+			for (const apiFileSignature of currentApiFileSignatures) {
+				const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature)
+				fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
+				apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
+			}
+			fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
+		}
 
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName];

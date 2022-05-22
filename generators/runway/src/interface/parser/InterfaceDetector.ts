@@ -1,16 +1,11 @@
 import {
-    IApiObject,
-    IApplicationApi
+    IApiObject
 } from '@airport/check-in';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { forEach } from '../../ParserUtils';
 import { getRelativePath } from '../../resolve/pathResolver';
 import { projectInterfaces } from '../InterfaceRegistry';
 
-export const currentApplicationApi: IApplicationApi = {
-    apiObjectMap: {}
-}
 /**
  * Detecting interfaces is not really needed as long as interfaces
  * are generated for the API classes.  The interfaces themselves

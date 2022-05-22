@@ -4,11 +4,33 @@ import {
 } from '@airport/check-in';
 import * as ts from 'typescript';
 import tsc from 'typescript';
+import { FileImports } from '../../ddl/parser/FileImports';
+import { ImportManager } from '../../ddl/parser/ImportManager';
 import { forEach } from '../../ParserUtils';
+
+export interface IApiSignature {
+    isAsync: boolean
+    name: string,
+    parameters: string[]
+    returnType: string
+}
+
+export interface IApiFileForGeneration {
+    className: string
+    apiSignatures: IApiSignature[]
+    imports: FileImports,
+}
 
 export const currentApplicationApi: IApplicationApi = {
     apiObjectMap: {}
 }
+
+export const currentApiFileSignatures: IApiFileForGeneration[] = []
+
+const printer = tsc.createPrinter({
+    newLine: tsc.NewLineKind.LineFeed,
+    removeComments: true
+})
 
 export function visitApiFile(
     node: ts.Node,
@@ -23,29 +45,47 @@ export function visitApiFile(
     const symbol = globalThis.checker.getSymbolAtLocation(classNode.name)
     const className = classNode.name.escapedText as string
 
-    const apiObject = serializeClass(symbol, className)
+    const {
+        apiObject,
+        signatureObject
+    } = serializeClass(symbol, className, path)
 
     if (apiObject) {
         currentApplicationApi.apiObjectMap['I' + className] = apiObject
+        currentApiFileSignatures.push(signatureObject)
     }
 }
 
 function serializeClass(
     symbol: ts.Symbol,
-    className: string
-): IApiObject {
+    className: string,
+    path: string
+): {
+    apiObject?: IApiObject,
+    signatureObject?: IApiFileForGeneration
+} {
 
     const apiObject: IApiObject = {
         operationMap: {}
     }
+
+    const imports = ImportManager
+        .resolveImports(symbol.valueDeclaration.parent, path)
+
+    const signatureObject: IApiFileForGeneration = {
+        className,
+        imports,
+        apiSignatures: []
+    }
+
     let numApiMethods = 0
 
     forEach(symbol.members, (
         memberName,
         member
     ) => {
-        if(!member.valueDeclaration) {
-            return
+        if (!member.valueDeclaration) {
+            return {}
         }
         switch (member.valueDeclaration.kind) {
             case tsc.SyntaxKind.MethodDeclaration:
@@ -57,6 +97,12 @@ function serializeClass(
                         isAsync: methodDescriptor.isAsync,
                         parameters: []
                     }
+                    signatureObject.apiSignatures.push({
+                        isAsync: methodDescriptor.isAsync,
+                        name: methodDescriptor.name,
+                        parameters: methodDescriptor.parameters,
+                        returnType: methodDescriptor.returnType
+                    })
                 }
                 break;
             default:
@@ -64,17 +110,23 @@ function serializeClass(
         }
     });
 
-    return numApiMethods ? apiObject : null
+    return numApiMethods ? {
+        apiObject,
+        signatureObject
+    } : {}
 }
 
 function serializeMethod(
     symbol: ts.Symbol,
     className: string,
-    memberName: string,
+    name: string,
     member: ts.Symbol,
 ): {
     isApiMethod: boolean,
-    isAsync: boolean
+    isAsync: boolean,
+    name: string,
+    returnType: string,
+    parameters: string[]
 } {
     if (!member.valueDeclaration.decorators) {
         return
@@ -109,9 +161,25 @@ function serializeMethod(
                 break;
         }
     });
+    if (!isApiMethod) {
+        return
+    }
+
+    // const name: string = member.escapedName as any;
+    const declaration = member.valueDeclaration as any
+    const parameters: string[] = [];
+    for (const parameter of declaration.parameters) {
+        parameters.push(printer.printNode(
+            tsc.EmitHint.Unspecified, parameter, globalThis.currentSourceFile))
+    }
+    const returnType = printer.printNode(
+        tsc.EmitHint.Unspecified, declaration.type, globalThis.currentSourceFile)
 
     return {
         isApiMethod,
-        isAsync
+        isAsync,
+        name,
+        parameters,
+        returnType
     }
 }

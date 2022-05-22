@@ -1,9 +1,6 @@
 import tsc from 'typescript';
 import { getRelativePath } from '../../resolve/pathResolver';
 import { projectInterfaces } from '../InterfaceRegistry';
-export const currentApplicationApi = {
-    apiObjectMap: {}
-};
 /**
  * Detecting interfaces is not really needed as long as interfaces
  * are generated for the API classes.  The interfaces themselves

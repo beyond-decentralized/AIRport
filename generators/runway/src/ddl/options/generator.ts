@@ -1,21 +1,21 @@
-import * as fs           from 'fs';
-import path              from 'path';
+import * as fs from 'fs';
+import path from 'path';
 import { Configuration } from './Options';
 /**
  * Created by Papa on 4/24/2016.
  */
-import { parseFlags }    from './parser';
+import { parseFlags } from './parser';
 
 export function readConfiguration(
 	projectPath: string,
 	programArguments: string[]
 ): Configuration {
 
-	let flags          = parseFlags(programArguments);
+	let flags = parseFlags(programArguments);
 	let configFilePath = projectPath + '/' + flags.optionsFilePath;
 
-	let configFile            = fs.readFileSync(configFilePath);
-	let configString          = configFile.toString();
+	let configFile = fs.readFileSync(configFilePath);
+	let configString = configFile.toString();
 	let config: Configuration = JSON.parse(configString);
 	verifyConfiguration(config);
 
@@ -55,12 +55,17 @@ function verifyConfiguration(
 	}
 	options.airport.daoDir = path.normalize(options.airport.daoDir);
 
+	if (!options.airport.apiDir) {
+		options.airport.apiDir = 'src/api';
+	}
+	options.airport.apiDir = path.normalize(options.airport.apiDir);
+
 	if (!options.airport.cacheGeneratedPaths && options.airport.cacheGeneratedPaths !== false) {
 		options.airport.cacheGeneratedPaths = false;
 	}
 	let node_modulesLinks = options.airport.node_modulesLinks;
 	if (!node_modulesLinks) {
-		node_modulesLinks                 = <any>{};
+		node_modulesLinks = <any>{};
 		options.airport.node_modulesLinks = node_modulesLinks;
 	}
 	// if (!node_modulesLinks.pathToProject) {

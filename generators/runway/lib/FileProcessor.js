@@ -54,7 +54,8 @@ function visit(node) {
     else if (path.indexOf(globalThis.configuration.airport.ddlDir) > 0) {
         visitEntityFile(node, path);
     }
-    else {
+    else if (globalThis.configuration.airport.apiDir
+        && path.indexOf(globalThis.configuration.airport.apiDir) > 0) {
         visitApiFile(node, path);
     }
     // not needed as long as classes with APIS are referenced in

@@ -1,8 +1,14 @@
 import tsc from 'typescript';
+import { ImportManager } from '../../ddl/parser/ImportManager';
 import { forEach } from '../../ParserUtils';
 export const currentApplicationApi = {
     apiObjectMap: {}
 };
+export const currentApiFileSignatures = [];
+const printer = tsc.createPrinter({
+    newLine: tsc.NewLineKind.LineFeed,
+    removeComments: true
+});
 export function visitApiFile(node, path) {
     if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
         return;
@@ -11,19 +17,27 @@ export function visitApiFile(node, path) {
     // This is a top level class, get its symbol
     const symbol = globalThis.checker.getSymbolAtLocation(classNode.name);
     const className = classNode.name.escapedText;
-    const apiObject = serializeClass(symbol, className);
+    const { apiObject, signatureObject } = serializeClass(symbol, className, path);
     if (apiObject) {
         currentApplicationApi.apiObjectMap['I' + className] = apiObject;
+        currentApiFileSignatures.push(signatureObject);
     }
 }
-function serializeClass(symbol, className) {
+function serializeClass(symbol, className, path) {
     const apiObject = {
         operationMap: {}
+    };
+    const imports = ImportManager
+        .resolveImports(symbol.valueDeclaration.parent, path);
+    const signatureObject = {
+        className,
+        imports,
+        apiSignatures: []
     };
     let numApiMethods = 0;
     forEach(symbol.members, (memberName, member) => {
         if (!member.valueDeclaration) {
-            return;
+            return {};
         }
         switch (member.valueDeclaration.kind) {
             case tsc.SyntaxKind.MethodDeclaration:
@@ -34,15 +48,24 @@ function serializeClass(symbol, className) {
                         isAsync: methodDescriptor.isAsync,
                         parameters: []
                     };
+                    signatureObject.apiSignatures.push({
+                        isAsync: methodDescriptor.isAsync,
+                        name: methodDescriptor.name,
+                        parameters: methodDescriptor.parameters,
+                        returnType: methodDescriptor.returnType
+                    });
                 }
                 break;
             default:
                 break;
         }
     });
-    return numApiMethods ? apiObject : null;
+    return numApiMethods ? {
+        apiObject,
+        signatureObject
+    } : {};
 }
-function serializeMethod(symbol, className, memberName, member) {
+function serializeMethod(symbol, className, name, member) {
     if (!member.valueDeclaration.decorators) {
         return;
     }
@@ -76,9 +99,22 @@ function serializeMethod(symbol, className, memberName, member) {
                 break;
         }
     });
+    if (!isApiMethod) {
+        return;
+    }
+    // const name: string = member.escapedName as any;
+    const declaration = member.valueDeclaration;
+    const parameters = [];
+    for (const parameter of declaration.parameters) {
+        parameters.push(printer.printNode(tsc.EmitHint.Unspecified, parameter, globalThis.currentSourceFile));
+    }
+    const returnType = printer.printNode(tsc.EmitHint.Unspecified, declaration.type, globalThis.currentSourceFile);
     return {
         isApiMethod,
-        isAsync
+        isAsync,
+        name,
+        parameters,
+        returnType
     };
 }
 //# sourceMappingURL=ApiGenerator.js.map

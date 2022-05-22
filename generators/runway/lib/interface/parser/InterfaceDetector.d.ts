@@ -1,6 +1,5 @@
-import { IApiObject, IApplicationApi } from '@airport/check-in';
+import { IApiObject } from '@airport/check-in';
 import * as ts from 'typescript';
-export declare const currentApplicationApi: IApplicationApi;
 /**
  * Detecting interfaces is not really needed as long as interfaces
  * are generated for the API classes.  The interfaces themselves

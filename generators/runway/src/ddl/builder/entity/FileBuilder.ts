@@ -1,8 +1,6 @@
 import {Configuration}   from '../../options/Options'
 import {EntityCandidate} from '../../parser/EntityCandidate'
 import {PathBuilder}     from '../PathBuilder'
-import {SIndexedEntity}           from '../application/SEntity'
-import {IQEntityInterfaceBuilder} from './IQEntityInterfaceBuilder'
 
 export abstract class FileBuilder {
 

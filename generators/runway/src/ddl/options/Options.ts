@@ -7,6 +7,7 @@ export interface Configuration {
 	name: string
 
 	airport: {
+		apiDir?: string
 		cacheGeneratedPaths: boolean
 		daoDir?: string
 		ddlDir: string

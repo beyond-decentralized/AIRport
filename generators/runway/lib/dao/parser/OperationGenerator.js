@@ -32,8 +32,6 @@ export function visitDaoFile(node, path) {
     let daoName = classNode.name.escapedText;
     let entityName;
     let extendedBaseClass;
-    let implementedDaoInterfaces = [];
-    let interfaceName;
     for (const heritageClause of classNode.heritageClauses) {
         switch (heritageClause.token) {
             case tsc.SyntaxKind.ExtendsKeyword: {
@@ -44,23 +42,14 @@ export function visitDaoFile(node, path) {
                 entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
                 break;
             }
-            case tsc.SyntaxKind.ImplementsKeyword: {
-                interfaceName = heritageClause.types[0].expression.escapedText;
-                if (interfaceName.startsWith('I') && interfaceName.endsWith('Dao')) {
-                    implementedDaoInterfaces.push(interfaceName);
-                }
-                break;
-            }
+            // case tsc.SyntaxKind.ImplementsKeyword: {
+            // 	const interfaceName = (heritageClause.types[0].expression as any).escapedText;
+            // 	break;
+            // }
         }
     }
     if (!entityName) {
         throw new Error(`The '${daoName}' Dao must extend the Base{EntityName}Dao class.`);
-    }
-    if (!implementedDaoInterfaces.length) {
-        throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
-    }
-    if (!implementedDaoInterfaces.filter(interfaceName => interfaceName === `I${entityName}Dao`).length) {
-        throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
     }
     if (file.hasDao) {
         throw new Error(`Cannot declare more than one DAO per file

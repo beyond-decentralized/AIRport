@@ -7,9 +7,9 @@ import {
 	QueryInput,
 	QueryInputKind,
 	QueryParameterType
-}                  from '@airport/ground-control';
-import * as ts     from 'typescript';
-import tsc         from 'typescript';
+} from '@airport/ground-control';
+import * as ts from 'typescript';
+import tsc from 'typescript';
 import { DaoFile } from '../../ddl/parser/FileImports';
 import { forEach } from '../../ParserUtils';
 
@@ -29,7 +29,7 @@ export const entityOperationPaths: {
 
 // let currentFileImports
 const daoFileMap: { [classPath: string]: DaoFile } = {};
-const daoMap: { [name: string]: boolean }          = {};
+const daoMap: { [name: string]: boolean } = {};
 
 // const fileImportsMapByFilePath: { [path: string]: FileImports } = {}
 
@@ -39,7 +39,7 @@ export function visitDaoFile(
 ) {
 	let file = daoFileMap[path];
 	if (!file) {
-		file             = {
+		file = {
 			path,
 			hasDao: false
 		};
@@ -63,11 +63,9 @@ export function visitDaoFile(
 	let symbol = globalThis.checker
 		.getSymbolAtLocation(classNode.name);
 
-	let daoName                            = classNode.name.escapedText as string;
+	let daoName = classNode.name.escapedText as string;
 	let entityName: string;
 	let extendedBaseClass: string;
-	let implementedDaoInterfaces: string[] = [];
-	let interfaceName: string;
 	for (const heritageClause of classNode.heritageClauses) {
 		switch (heritageClause.token) {
 			case tsc.SyntaxKind.ExtendsKeyword: {
@@ -78,27 +76,15 @@ export function visitDaoFile(
 				entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
 				break;
 			}
-			case tsc.SyntaxKind.ImplementsKeyword: {
-				interfaceName = (heritageClause.types[0].expression as any).escapedText;
-				if (interfaceName.startsWith('I') && interfaceName.endsWith('Dao')) {
-					implementedDaoInterfaces.push(interfaceName);
-				}
-				break;
-			}
+			// case tsc.SyntaxKind.ImplementsKeyword: {
+			// 	const interfaceName = (heritageClause.types[0].expression as any).escapedText;
+			// 	break;
+			// }
 		}
 	}
 
 	if (!entityName) {
 		throw new Error(`The '${daoName}' Dao must extend the Base{EntityName}Dao class.`);
-	}
-
-	if (!implementedDaoInterfaces.length) {
-		throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
-	}
-
-	if (!implementedDaoInterfaces.filter(interfaceName =>
-		interfaceName === `I${entityName}Dao`).length) {
-		throw new Error(`The '${daoName}' Dao must implement the 'I${entityName}Dao' interface.`);
 	}
 
 	if (file.hasDao) {
@@ -112,7 +98,7 @@ export function visitDaoFile(
 	}
 	daoMap[daoName] = true;
 
-	entityOperationMap[entityName]   = serializeClass(symbol, daoName, entityName);
+	entityOperationMap[entityName] = serializeClass(symbol, daoName, entityName);
 	entityOperationPaths[entityName] = path;
 }
 
@@ -192,7 +178,7 @@ function serializeProperty(
 
 
 	if (!member.valueDeclaration.decorators) {
-			throw new Error(`${daoName}.${memberName} is not decorated.  Every DAO
+		throw new Error(`${daoName}.${memberName} is not decorated.  Every DAO
 			member property must be decorated with a supported decorator.
 Following decorators are currently supported for ${daoName}:
   @${daoName}.Delete
@@ -212,7 +198,7 @@ Following decorators are currently supported for ${daoName}:
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
 		let decoratorNameExpression = decorator.expression.expression;
-		const decoratorNameParts    = [];
+		const decoratorNameParts = [];
 		while (decoratorNameExpression) {
 			if (decoratorNameExpression.escapedText) {
 				decoratorNameParts.unshift(decoratorNameExpression.escapedText);
@@ -365,9 +351,9 @@ function serializeRules(
 		index
 	) => {
 		const rule = serializeRule(property.initializer as any, {});
-		let name   = property.name as ts.Identifier;
+		let name = property.name as ts.Identifier;
 		parentRule.subRules[name.escapedText as string]
-		           = rule;
+			= rule;
 	});
 }
 
@@ -399,7 +385,7 @@ function serializeRule(
 	} else if (initializer.kind === tsc.SyntaxKind.ObjectLiteralExpression) {
 		serializeRules(initializer, rule);
 	} else if (initializer.kind === tsc.SyntaxKind.ArrayLiteralExpression) {
-		rule.isArray  = true;
+		rule.isArray = true;
 		// serializeRules(initializer, rule)
 		rule.subRules = [];
 		initializer.elements.forEach((
@@ -457,7 +443,7 @@ function serializeSave(
 
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
 	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
-	const operationRule: JsonPersistRule    = {
+	const operationRule: JsonPersistRule = {
 		type: OperationType.SAVE
 	};
 	serializeRules(rules, operationRule);
@@ -672,7 +658,7 @@ function serializeDelete(
 
 	// decorator.expression.arguments[0].kind = 193 ObjectLiteralExpression
 	const rules: ts.ObjectLiteralExpression = decorator.expression.arguments[0];
-	const operationRule: JsonPersistRule    = {
+	const operationRule: JsonPersistRule = {
 		type: OperationType.DELETE
 	};
 	serializeRules(rules, operationRule);
@@ -712,20 +698,20 @@ function getTypeInfo(
 	};
 	switch (typeRef.kind) {
 		case tsc.SyntaxKind.BooleanKeyword: {
-			returnType.clazz         = 'boolean';
-			returnType.type          = QueryInputKind.PARAMETER;
+			returnType.clazz = 'boolean';
+			returnType.type = QueryInputKind.PARAMETER;
 			returnType.parameterType = QueryParameterType.BOOLEAN;
 			break;
 		}
 		case tsc.SyntaxKind.NumberKeyword: {
-			returnType.clazz         = 'number';
-			returnType.type          = QueryInputKind.PARAMETER;
+			returnType.clazz = 'number';
+			returnType.type = QueryInputKind.PARAMETER;
 			returnType.parameterType = QueryParameterType.NUMBER;
 			break;
 		}
 		case tsc.SyntaxKind.StringKeyword: {
-			returnType.clazz         = 'string';
-			returnType.type          = QueryInputKind.PARAMETER;
+			returnType.clazz = 'string';
+			returnType.type = QueryInputKind.PARAMETER;
 			returnType.parameterType = QueryParameterType.STRING;
 			break;
 		}
@@ -744,7 +730,7 @@ function getTypeInfo(
 							
 							`);
 			}
-			returnType         = getTypeInfo(
+			returnType = getTypeInfo(
 				typeRef.elementType, daoName, decoratorName, memberName, index, name, false);
 			returnType.isArray = true;
 			break;
@@ -781,7 +767,7 @@ function getTypeReferenceInfo(
 ): void {
 	typeInfo.clazz = typeRef.typeName.escapedText;
 	if (typeInfo.clazz === 'Date') {
-		typeInfo.type          = QueryInputKind.PARAMETER;
+		typeInfo.type = QueryInputKind.PARAMETER;
 		typeInfo.parameterType = QueryParameterType.DATE;
 	} else if (typeInfo.clazz === 'LocalQApplication') {
 		typeInfo.type = QueryInputKind.Q;

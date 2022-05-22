@@ -1,3 +1,10 @@
+export const NEW_RECORD_FIELDS = {
+    actor: null,
+    actorRecordId: null,
+    originalActor: null,
+    originalActorRecordId: null,
+    originalRepository: null,
+};
 export function ANOTHER(a, b) {
 }
 ;

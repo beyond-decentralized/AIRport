@@ -42,8 +42,8 @@ ${baseClassDefinitions}`;
     addImports() {
         this.entityNames.forEach(entityName => {
             this.addImport([
-                `I${entityName}`
-            ], `${this.generatedPathMapByEntityName[entityName]}`);
+                `${entityName}`
+            ], `${this.ddlPathMapByEntityName[entityName]}`);
             this.addImport([
                 `${entityName}ESelect`,
                 `${entityName}ECreateColumns`,
@@ -82,11 +82,11 @@ ${baseClassDefinitions}`;
     buildBaseClassDefinitions() {
         return this.entityNames.map(entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
+  extends I${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}> {
 }
 
 export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<I${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
+  extends SQDI${this.classSuffix}<${entityName}, ${entityName}ESelect, ${entityName}ECreateProperties, ${entityName}EUpdateColumns, ${entityName}EUpdateProperties, ${entityName}EId, ${entityName}Graph, Q${entityName}>
 	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
 
 	static diSet(): boolean {

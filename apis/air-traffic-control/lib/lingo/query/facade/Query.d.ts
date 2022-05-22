@@ -23,6 +23,13 @@ export interface RawLimitedQuery {
 export interface IQuery {
     toJSON(queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JsonQuery;
 }
+export declare const NEW_RECORD_FIELDS: {
+    actor: any;
+    actorRecordId: any;
+    originalActor: any;
+    originalActorRecordId: any;
+    originalRepository: any;
+};
 export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;
 export declare const ALL_FIELDS: any;

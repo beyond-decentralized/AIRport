@@ -422,7 +422,7 @@ export default WhereJoinTableFunction`;
                 */
                 // For now allow only and, or & not functions and everything from
                 // airport reference (and nothing else)
-                const typescriptDefinition = printer.printNode(ts.EmitHint.Expression, initializer, globalThis.currentSourceFile);
+                const typescriptDefinition = printer.printNode(tsc.EmitHint.Expression, initializer, globalThis.currentSourceFile);
                 const compilerOptions = { module: ts.ModuleKind.CommonJS };
                 const transpilationResult = tsc.transpileModule(typescriptDefinition, {
                     compilerOptions: compilerOptions,

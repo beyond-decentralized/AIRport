@@ -41,6 +41,10 @@ function verifyConfiguration(options) {
         options.airport.daoDir = 'src/dao';
     }
     options.airport.daoDir = path.normalize(options.airport.daoDir);
+    if (!options.airport.apiDir) {
+        options.airport.apiDir = 'src/api';
+    }
+    options.airport.apiDir = path.normalize(options.airport.apiDir);
     if (!options.airport.cacheGeneratedPaths && options.airport.cacheGeneratedPaths !== false) {
         options.airport.cacheGeneratedPaths = false;
     }
