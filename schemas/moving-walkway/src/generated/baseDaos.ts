@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	IRecordUpdateStage,
-} from './recordupdatestage';
+	RecordUpdateStage,
+} from '../ddl/recordupdatestage';
 import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QRecordUpdateStage,
 } from './qrecordupdatestage';
 import {
-	ISynchronizationConflict,
-} from './conflict/synchronizationconflict';
+	SynchronizationConflict,
+} from '../ddl/conflict/synchronizationconflict';
 import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QSynchronizationConflict,
 } from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictValues,
-} from './conflict/synchronizationconflictvalues';
+	SynchronizationConflictValues,
+} from '../ddl/conflict/synchronizationconflictvalues';
 import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
@@ -88,11 +88,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseRecordUpdateStageDao
-  extends IDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
+  extends IDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
 
 export class BaseRecordUpdateStageDao
-  extends SQDIDao<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
+  extends SQDIDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDao {
 	
 	static Find      = new DaoQueryDecorators<RecordUpdateStageESelect>();
@@ -116,11 +116,11 @@ export class BaseRecordUpdateStageDao
 
 
 export interface IBaseSynchronizationConflictDao
-  extends IDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
+  extends IDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
 }
 
 export class BaseSynchronizationConflictDao
-  extends SQDIDao<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
+  extends SQDIDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDao {
 	
 	static Find      = new DaoQueryDecorators<SynchronizationConflictESelect>();
@@ -144,11 +144,11 @@ export class BaseSynchronizationConflictDao
 
 
 export interface IBaseSynchronizationConflictValuesDao
-  extends IDao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
+  extends IDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
 }
 
 export class BaseSynchronizationConflictValuesDao
-  extends SQDIDao<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
+  extends SQDIDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDao {
 	
 	static Find      = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();

@@ -1,1 +1,0 @@
-export * from '@airport/travel-document-checkpoint/lib/generated/application'

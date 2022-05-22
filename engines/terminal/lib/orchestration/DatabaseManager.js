@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { Actor, } from '@airport/holding-pattern-runtime';
+import { Actor, } from '@airport/holding-pattern';
 import { BLUEPRINT } from '@airport/blueprint';
 let DatabaseManager = class DatabaseManager {
     constructor() {

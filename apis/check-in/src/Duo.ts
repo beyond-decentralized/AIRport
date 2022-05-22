@@ -1,3 +1,4 @@
+import { QApplication } from '@airport/aviation-communication'
 import {
   IDuo,
   IEntityCascadeGraph,
@@ -8,7 +9,6 @@ import {
   IEntityUpdateProperties,
   IFieldsSelect,
   IQEntity,
-  QApplication,
   Y,
 } from '@airport/air-traffic-control';
 import { DbEntity, EntityId as DbEntityId, EntityRelationType } from '@airport/ground-control';

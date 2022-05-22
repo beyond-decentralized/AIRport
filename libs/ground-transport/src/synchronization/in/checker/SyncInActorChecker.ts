@@ -7,8 +7,11 @@ import {
 	RepositorySynchronizationMessage,
 } from '@airport/arrivals-n-departures'
 import {
-	IActor, IActorDao
-} from '@airport/holding-pattern-runtime'
+	IActor
+} from '@airport/holding-pattern'
+import {
+	IActorDao
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 
 export interface ISyncInActorChecker {
 

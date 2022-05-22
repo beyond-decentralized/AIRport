@@ -10,13 +10,13 @@ import {
 	QDateFunction,
 	QNumberArrayFunction,
 	QNumberFunction,
-	QApplication,
 	QApplicationInternal,
 	QStringArrayFunction,
 	QStringFunction,
 	QUERY_FACADE,
 	Y
 } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator';
 import {
 	IApplicationQuery,

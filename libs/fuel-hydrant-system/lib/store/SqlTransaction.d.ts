@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern-runtime';
+import { ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare abstract class SqlTransaction implements ITransaction {

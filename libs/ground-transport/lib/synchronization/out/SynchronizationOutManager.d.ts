@@ -1,4 +1,4 @@
-import { IRepositoryDao, IRepositoryTransactionHistory, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern-runtime';
+import { IRepositoryDao, IRepositoryTransactionHistory, IRepositoryTransactionHistoryDao } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader';
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer';
 export interface ISynchronizationOutManager {

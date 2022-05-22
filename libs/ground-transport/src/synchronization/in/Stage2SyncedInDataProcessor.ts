@@ -26,7 +26,7 @@ import {
 	Actor_Id,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
-} from '@airport/holding-pattern-runtime'
+} from '@airport/holding-pattern'
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues

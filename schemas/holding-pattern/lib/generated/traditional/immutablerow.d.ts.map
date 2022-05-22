@@ -1,1 +1,1 @@
-{"version":3,"file":"immutablerow.d.ts","sourceRoot":"","sources":["../../../src/generated/traditional/immutablerow.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,KAAK,EACL,MAAM,6CAA6C,CAAC;AAQrD,MAAM,WAAW,aAAa;IAO7B,SAAS,CAAC,EAAE,IAAI,CAAC;IAGjB,IAAI,CAAC,EAAE,KAAK,CAAC;CAMb"}
+{"version":3,"file":"immutablerow.d.ts","sourceRoot":"","sources":["../../../src/generated/traditional/immutablerow.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,KAAK,EACL,MAAM,qCAAqC,CAAC;AAQ7C,MAAM,WAAW,aAAa;IAO7B,SAAS,CAAC,EAAE,IAAI,CAAC;IAGjB,IAAI,CAAC,EAAE,KAAK,CAAC;CAMb"}

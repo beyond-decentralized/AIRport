@@ -1,5 +1,6 @@
+import { QApplication } from "@airport/aviation-communication";
 import { DbApplication } from "@airport/ground-control";
-import { IEntityRecord, QApplication } from "./AirportDatabase";
+import { IEntityRecord } from "./AirportDatabase";
 import { FunctionsAndOperators } from "./core/FunctionsAndOperators";
 export interface IDatabaseState {
     applications: DbApplication[];

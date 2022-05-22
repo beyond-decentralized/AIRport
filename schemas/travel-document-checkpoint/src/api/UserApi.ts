@@ -1,6 +1,6 @@
 import { Api } from "@airport/check-in";
 import { v4 as uuidv4 } from "uuid";
-import { IUser } from "../generated/generated";
+import { IUser } from "../generated/user";
 import { UserDao } from "../dao/UserDao";
 import { Injected } from "@airport/direction-indicator";
 

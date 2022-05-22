@@ -1,7 +1,8 @@
+import { QApplication } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
 import { DbApplication } from "@airport/ground-control";
 import { databaseState as theDatabaseState } from "./databaseState";
-import { IEntityRecord, QApplication } from "../lingo/AirportDatabase";
+import { IEntityRecord } from "../lingo/AirportDatabase";
 import { FunctionsAndOperators } from "../lingo/core/FunctionsAndOperators";
 import { IDatabaseState } from "../lingo/DatabaseState";
 

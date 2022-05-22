@@ -1,4 +1,4 @@
-import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
 import { QOperationHistory } from './history/qoperationhistory';
@@ -9,7 +9,7 @@ import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QApplication {
     db: DbApplication;
     Actor: QActor;
     OperationHistory: QOperationHistory;

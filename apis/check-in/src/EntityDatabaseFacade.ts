@@ -16,12 +16,12 @@ import {
   IEntityUpdateProperties,
   IQEntity,
   MappedEntityArray,
-  QApplication,
   RawDelete,
   RawInsertColumnValues,
   RawInsertValues,
   RawUpdate,
 } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication'
 import {
   DbEntity,
   ISaveResult

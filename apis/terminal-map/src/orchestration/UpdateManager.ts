@@ -2,7 +2,7 @@ import { IRootTransaction, PortableQuery } from "@airport/ground-control";
 import {
     IActor,
     IRecordHistory
-} from "@airport/holding-pattern-runtime";
+} from "@airport/holding-pattern";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 

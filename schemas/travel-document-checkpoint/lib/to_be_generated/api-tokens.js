@@ -1,5 +1,5 @@
 import { INTER_APP_API_CLIENT } from '@airport/ground-control';
-import { UserApi } from './api-wrappers/UserApi';
+import { UserApi } from '../generated/api/api';
 import { USER_API } from './common-tokens';
 USER_API.setClass(UserApi);
 USER_API.setDependencies({

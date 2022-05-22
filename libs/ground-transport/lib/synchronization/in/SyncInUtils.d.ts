@@ -1,5 +1,5 @@
 import { ColumnIndex, EntityId, ApplicationIndex, ApplicationVersionId } from '@airport/ground-control';
-import { Actor_Id, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern-runtime';
+import { Actor_Id, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { ISynchronizationConflict } from '@airport/moving-walkway';
 export declare type RemoteApplicationIndex = ApplicationIndex;
 export declare type RemoteApplicationVersionId = ApplicationVersionId;

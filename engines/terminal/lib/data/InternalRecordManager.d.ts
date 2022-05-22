@@ -1,6 +1,6 @@
 import { IContext } from "@airport/direction-indicator";
 import { DomainName, IEntityStateManager } from "@airport/ground-control";
-import { IActorDao } from "@airport/holding-pattern-runtime";
+import { IActorDao } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import { IDomainDao, IApplicationDao } from "@airport/airspace";

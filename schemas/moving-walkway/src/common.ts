@@ -2,7 +2,7 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryTransactionHistory
-}                from "@airport/holding-pattern-runtime";
+}                from "@airport/holding-pattern";
 import {
 	IDomain,
 	IApplication,
@@ -11,7 +11,7 @@ import {
 import {
 	ITerminal,
 	IUser
-}                from '@airport/travel-document-checkpoint-runtime'
+}                from '@airport/travel-document-checkpoint'
 
 export interface RepositoryTransactionBlockData {
 	actors: IActor[];

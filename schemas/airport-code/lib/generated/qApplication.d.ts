@@ -1,9 +1,9 @@
-import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QSequence } from './qsequence';
 import { QSystemWideOperationId } from './qsystemwideoperationid';
 import { QTerminalRun } from './qterminalrun';
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QApplication {
     db: DbApplication;
     Sequence: QSequence;
     SystemWideOperationId: QSystemWideOperationId;

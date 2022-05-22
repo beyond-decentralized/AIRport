@@ -1,26 +1,26 @@
-import { IApplication } from './application/application';
+import { Application } from '../ddl/application/application';
 import { ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication } from './application/qapplication';
-import { IApplicationColumn } from './application/applicationcolumn';
+import { ApplicationColumn } from '../ddl/application/applicationcolumn';
 import { ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn } from './application/qapplicationcolumn';
-import { IApplicationCurrentVersion } from './application/applicationcurrentversion';
+import { ApplicationCurrentVersion } from '../ddl/application/applicationcurrentversion';
 import { ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
-import { IApplicationEntity } from './application/applicationentity';
+import { ApplicationEntity } from '../ddl/application/applicationentity';
 import { ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity } from './application/qapplicationentity';
-import { IApplicationOperation } from './application/applicationoperation';
+import { ApplicationOperation } from '../ddl/application/applicationoperation';
 import { ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation } from './application/qapplicationoperation';
-import { IApplicationProperty } from './application/applicationproperty';
+import { ApplicationProperty } from '../ddl/application/applicationproperty';
 import { ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty } from './application/qapplicationproperty';
-import { IApplicationPropertyColumn } from './application/applicationpropertycolumn';
+import { ApplicationPropertyColumn } from '../ddl/application/applicationpropertycolumn';
 import { ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn } from './application/qapplicationpropertycolumn';
-import { IApplicationReference } from './application/applicationreference';
+import { ApplicationReference } from '../ddl/application/applicationreference';
 import { ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference } from './application/qapplicationreference';
-import { IApplicationRelation } from './application/applicationrelation';
+import { ApplicationRelation } from '../ddl/application/applicationrelation';
 import { ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation } from './application/qapplicationrelation';
-import { IApplicationRelationColumn } from './application/applicationrelationcolumn';
+import { ApplicationRelationColumn } from '../ddl/application/applicationrelationcolumn';
 import { ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
-import { IApplicationVersion } from './application/applicationversion';
+import { ApplicationVersion } from '../ddl/application/applicationversion';
 import { ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion } from './application/qapplicationversion';
-import { IDomain } from './application/domain';
+import { Domain } from '../ddl/application/domain';
 import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './application/qdomain';
 import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-traffic-control';
 import { Dao, DaoQueryDecorators } from '@airport/check-in';
@@ -28,9 +28,9 @@ import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
 }
-export interface IBaseApplicationDao extends IDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
+export interface IBaseApplicationDao extends IDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
-export declare class BaseApplicationDao extends SQDIDao<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> implements IBaseApplicationDao {
+export declare class BaseApplicationDao extends SQDIDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> implements IBaseApplicationDao {
     static Find: DaoQueryDecorators<ApplicationESelect>;
     static FindOne: DaoQueryDecorators<ApplicationESelect>;
     static Search: DaoQueryDecorators<ApplicationESelect>;
@@ -39,9 +39,9 @@ export declare class BaseApplicationDao extends SQDIDao<IApplication, Applicatio
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationColumnDao extends IDao<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
+export interface IBaseApplicationColumnDao extends IDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
 }
-export declare class BaseApplicationColumnDao extends SQDIDao<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> implements IBaseApplicationColumnDao {
+export declare class BaseApplicationColumnDao extends SQDIDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> implements IBaseApplicationColumnDao {
     static Find: DaoQueryDecorators<ApplicationColumnESelect>;
     static FindOne: DaoQueryDecorators<ApplicationColumnESelect>;
     static Search: DaoQueryDecorators<ApplicationColumnESelect>;
@@ -50,9 +50,9 @@ export declare class BaseApplicationColumnDao extends SQDIDao<IApplicationColumn
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationCurrentVersionDao extends IDao<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
+export interface IBaseApplicationCurrentVersionDao extends IDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
 }
-export declare class BaseApplicationCurrentVersionDao extends SQDIDao<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> implements IBaseApplicationCurrentVersionDao {
+export declare class BaseApplicationCurrentVersionDao extends SQDIDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> implements IBaseApplicationCurrentVersionDao {
     static Find: DaoQueryDecorators<ApplicationCurrentVersionESelect>;
     static FindOne: DaoQueryDecorators<ApplicationCurrentVersionESelect>;
     static Search: DaoQueryDecorators<ApplicationCurrentVersionESelect>;
@@ -61,9 +61,9 @@ export declare class BaseApplicationCurrentVersionDao extends SQDIDao<IApplicati
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationEntityDao extends IDao<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
+export interface IBaseApplicationEntityDao extends IDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
 }
-export declare class BaseApplicationEntityDao extends SQDIDao<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> implements IBaseApplicationEntityDao {
+export declare class BaseApplicationEntityDao extends SQDIDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> implements IBaseApplicationEntityDao {
     static Find: DaoQueryDecorators<ApplicationEntityESelect>;
     static FindOne: DaoQueryDecorators<ApplicationEntityESelect>;
     static Search: DaoQueryDecorators<ApplicationEntityESelect>;
@@ -72,9 +72,9 @@ export declare class BaseApplicationEntityDao extends SQDIDao<IApplicationEntity
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationOperationDao extends IDao<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
+export interface IBaseApplicationOperationDao extends IDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
 }
-export declare class BaseApplicationOperationDao extends SQDIDao<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> implements IBaseApplicationOperationDao {
+export declare class BaseApplicationOperationDao extends SQDIDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> implements IBaseApplicationOperationDao {
     static Find: DaoQueryDecorators<ApplicationOperationESelect>;
     static FindOne: DaoQueryDecorators<ApplicationOperationESelect>;
     static Search: DaoQueryDecorators<ApplicationOperationESelect>;
@@ -83,9 +83,9 @@ export declare class BaseApplicationOperationDao extends SQDIDao<IApplicationOpe
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationPropertyDao extends IDao<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
+export interface IBaseApplicationPropertyDao extends IDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
 }
-export declare class BaseApplicationPropertyDao extends SQDIDao<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> implements IBaseApplicationPropertyDao {
+export declare class BaseApplicationPropertyDao extends SQDIDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> implements IBaseApplicationPropertyDao {
     static Find: DaoQueryDecorators<ApplicationPropertyESelect>;
     static FindOne: DaoQueryDecorators<ApplicationPropertyESelect>;
     static Search: DaoQueryDecorators<ApplicationPropertyESelect>;
@@ -94,9 +94,9 @@ export declare class BaseApplicationPropertyDao extends SQDIDao<IApplicationProp
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationPropertyColumnDao extends IDao<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
+export interface IBaseApplicationPropertyColumnDao extends IDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
 }
-export declare class BaseApplicationPropertyColumnDao extends SQDIDao<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> implements IBaseApplicationPropertyColumnDao {
+export declare class BaseApplicationPropertyColumnDao extends SQDIDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> implements IBaseApplicationPropertyColumnDao {
     static Find: DaoQueryDecorators<ApplicationPropertyColumnESelect>;
     static FindOne: DaoQueryDecorators<ApplicationPropertyColumnESelect>;
     static Search: DaoQueryDecorators<ApplicationPropertyColumnESelect>;
@@ -105,9 +105,9 @@ export declare class BaseApplicationPropertyColumnDao extends SQDIDao<IApplicati
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationReferenceDao extends IDao<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
+export interface IBaseApplicationReferenceDao extends IDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
 }
-export declare class BaseApplicationReferenceDao extends SQDIDao<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> implements IBaseApplicationReferenceDao {
+export declare class BaseApplicationReferenceDao extends SQDIDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> implements IBaseApplicationReferenceDao {
     static Find: DaoQueryDecorators<ApplicationReferenceESelect>;
     static FindOne: DaoQueryDecorators<ApplicationReferenceESelect>;
     static Search: DaoQueryDecorators<ApplicationReferenceESelect>;
@@ -116,9 +116,9 @@ export declare class BaseApplicationReferenceDao extends SQDIDao<IApplicationRef
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationRelationDao extends IDao<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
+export interface IBaseApplicationRelationDao extends IDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
 }
-export declare class BaseApplicationRelationDao extends SQDIDao<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> implements IBaseApplicationRelationDao {
+export declare class BaseApplicationRelationDao extends SQDIDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> implements IBaseApplicationRelationDao {
     static Find: DaoQueryDecorators<ApplicationRelationESelect>;
     static FindOne: DaoQueryDecorators<ApplicationRelationESelect>;
     static Search: DaoQueryDecorators<ApplicationRelationESelect>;
@@ -127,9 +127,9 @@ export declare class BaseApplicationRelationDao extends SQDIDao<IApplicationRela
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationRelationColumnDao extends IDao<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
+export interface IBaseApplicationRelationColumnDao extends IDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
 }
-export declare class BaseApplicationRelationColumnDao extends SQDIDao<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> implements IBaseApplicationRelationColumnDao {
+export declare class BaseApplicationRelationColumnDao extends SQDIDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> implements IBaseApplicationRelationColumnDao {
     static Find: DaoQueryDecorators<ApplicationRelationColumnESelect>;
     static FindOne: DaoQueryDecorators<ApplicationRelationColumnESelect>;
     static Search: DaoQueryDecorators<ApplicationRelationColumnESelect>;
@@ -138,9 +138,9 @@ export declare class BaseApplicationRelationColumnDao extends SQDIDao<IApplicati
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationVersionDao extends IDao<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
+export interface IBaseApplicationVersionDao extends IDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
 }
-export declare class BaseApplicationVersionDao extends SQDIDao<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> implements IBaseApplicationVersionDao {
+export declare class BaseApplicationVersionDao extends SQDIDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> implements IBaseApplicationVersionDao {
     static Find: DaoQueryDecorators<ApplicationVersionESelect>;
     static FindOne: DaoQueryDecorators<ApplicationVersionESelect>;
     static Search: DaoQueryDecorators<ApplicationVersionESelect>;
@@ -149,9 +149,9 @@ export declare class BaseApplicationVersionDao extends SQDIDao<IApplicationVersi
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseDomainDao extends IDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+export interface IBaseDomainDao extends IDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
 }
-export declare class BaseDomainDao extends SQDIDao<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> implements IBaseDomainDao {
+export declare class BaseDomainDao extends SQDIDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> implements IBaseDomainDao {
     static Find: DaoQueryDecorators<DomainESelect>;
     static FindOne: DaoQueryDecorators<DomainESelect>;
     static Search: DaoQueryDecorators<DomainESelect>;

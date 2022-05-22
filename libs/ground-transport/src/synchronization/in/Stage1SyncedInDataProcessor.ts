@@ -31,7 +31,7 @@ import {
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
 	IRepositoryTransactionHistoryDuo,
-} from '@airport/holding-pattern-runtime'
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import {
 	ISynchronizationConflict,
 	SynchronizationConflict_Type

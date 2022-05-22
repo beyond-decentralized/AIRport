@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	IApplication,
-} from './application/application';
+	Application,
+} from '../ddl/application/application';
 import {
 	ApplicationESelect,
 	ApplicationECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QApplication,
 } from './application/qapplication';
 import {
-	IApplicationColumn,
-} from './application/applicationcolumn';
+	ApplicationColumn,
+} from '../ddl/application/applicationcolumn';
 import {
 	ApplicationColumnESelect,
 	ApplicationColumnECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QApplicationColumn,
 } from './application/qapplicationcolumn';
 import {
-	IApplicationCurrentVersion,
-} from './application/applicationcurrentversion';
+	ApplicationCurrentVersion,
+} from '../ddl/application/applicationcurrentversion';
 import {
 	ApplicationCurrentVersionESelect,
 	ApplicationCurrentVersionECreateColumns,
@@ -39,8 +39,8 @@ import {
 	QApplicationCurrentVersion,
 } from './application/qapplicationcurrentversion';
 import {
-	IApplicationEntity,
-} from './application/applicationentity';
+	ApplicationEntity,
+} from '../ddl/application/applicationentity';
 import {
 	ApplicationEntityESelect,
 	ApplicationEntityECreateColumns,
@@ -52,8 +52,8 @@ import {
 	QApplicationEntity,
 } from './application/qapplicationentity';
 import {
-	IApplicationOperation,
-} from './application/applicationoperation';
+	ApplicationOperation,
+} from '../ddl/application/applicationoperation';
 import {
 	ApplicationOperationESelect,
 	ApplicationOperationECreateColumns,
@@ -65,8 +65,8 @@ import {
 	QApplicationOperation,
 } from './application/qapplicationoperation';
 import {
-	IApplicationProperty,
-} from './application/applicationproperty';
+	ApplicationProperty,
+} from '../ddl/application/applicationproperty';
 import {
 	ApplicationPropertyESelect,
 	ApplicationPropertyECreateColumns,
@@ -78,8 +78,8 @@ import {
 	QApplicationProperty,
 } from './application/qapplicationproperty';
 import {
-	IApplicationPropertyColumn,
-} from './application/applicationpropertycolumn';
+	ApplicationPropertyColumn,
+} from '../ddl/application/applicationpropertycolumn';
 import {
 	ApplicationPropertyColumnESelect,
 	ApplicationPropertyColumnECreateColumns,
@@ -91,8 +91,8 @@ import {
 	QApplicationPropertyColumn,
 } from './application/qapplicationpropertycolumn';
 import {
-	IApplicationReference,
-} from './application/applicationreference';
+	ApplicationReference,
+} from '../ddl/application/applicationreference';
 import {
 	ApplicationReferenceESelect,
 	ApplicationReferenceECreateColumns,
@@ -104,8 +104,8 @@ import {
 	QApplicationReference,
 } from './application/qapplicationreference';
 import {
-	IApplicationRelation,
-} from './application/applicationrelation';
+	ApplicationRelation,
+} from '../ddl/application/applicationrelation';
 import {
 	ApplicationRelationESelect,
 	ApplicationRelationECreateColumns,
@@ -117,8 +117,8 @@ import {
 	QApplicationRelation,
 } from './application/qapplicationrelation';
 import {
-	IApplicationRelationColumn,
-} from './application/applicationrelationcolumn';
+	ApplicationRelationColumn,
+} from '../ddl/application/applicationrelationcolumn';
 import {
 	ApplicationRelationColumnESelect,
 	ApplicationRelationColumnECreateColumns,
@@ -130,8 +130,8 @@ import {
 	QApplicationRelationColumn,
 } from './application/qapplicationrelationcolumn';
 import {
-	IApplicationVersion,
-} from './application/applicationversion';
+	ApplicationVersion,
+} from '../ddl/application/applicationversion';
 import {
 	ApplicationVersionESelect,
 	ApplicationVersionECreateColumns,
@@ -143,8 +143,8 @@ import {
 	QApplicationVersion,
 } from './application/qapplicationversion';
 import {
-	IDomain,
-} from './application/domain';
+	Domain,
+} from '../ddl/application/domain';
 import {
 	DomainESelect,
 	DomainECreateColumns,
@@ -204,11 +204,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseApplicationDuo
-  extends IDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
+  extends IDuo<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
 
 export class BaseApplicationDuo
-  extends SQDIDuo<IApplication, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
+  extends SQDIDuo<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
 	implements IBaseApplicationDuo {
 
 	static diSet(): boolean {
@@ -222,11 +222,11 @@ export class BaseApplicationDuo
 
 
 export interface IBaseApplicationColumnDuo
-  extends IDuo<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
+  extends IDuo<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
 }
 
 export class BaseApplicationColumnDuo
-  extends SQDIDuo<IApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn>
+  extends SQDIDuo<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn>
 	implements IBaseApplicationColumnDuo {
 
 	static diSet(): boolean {
@@ -240,11 +240,11 @@ export class BaseApplicationColumnDuo
 
 
 export interface IBaseApplicationCurrentVersionDuo
-  extends IDuo<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
+  extends IDuo<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
 }
 
 export class BaseApplicationCurrentVersionDuo
-  extends SQDIDuo<IApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion>
+  extends SQDIDuo<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion>
 	implements IBaseApplicationCurrentVersionDuo {
 
 	static diSet(): boolean {
@@ -258,11 +258,11 @@ export class BaseApplicationCurrentVersionDuo
 
 
 export interface IBaseApplicationEntityDuo
-  extends IDuo<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
+  extends IDuo<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
 }
 
 export class BaseApplicationEntityDuo
-  extends SQDIDuo<IApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity>
+  extends SQDIDuo<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity>
 	implements IBaseApplicationEntityDuo {
 
 	static diSet(): boolean {
@@ -276,11 +276,11 @@ export class BaseApplicationEntityDuo
 
 
 export interface IBaseApplicationOperationDuo
-  extends IDuo<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
+  extends IDuo<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
 }
 
 export class BaseApplicationOperationDuo
-  extends SQDIDuo<IApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation>
+  extends SQDIDuo<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation>
 	implements IBaseApplicationOperationDuo {
 
 	static diSet(): boolean {
@@ -294,11 +294,11 @@ export class BaseApplicationOperationDuo
 
 
 export interface IBaseApplicationPropertyDuo
-  extends IDuo<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
+  extends IDuo<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
 }
 
 export class BaseApplicationPropertyDuo
-  extends SQDIDuo<IApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty>
+  extends SQDIDuo<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty>
 	implements IBaseApplicationPropertyDuo {
 
 	static diSet(): boolean {
@@ -312,11 +312,11 @@ export class BaseApplicationPropertyDuo
 
 
 export interface IBaseApplicationPropertyColumnDuo
-  extends IDuo<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
+  extends IDuo<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
 }
 
 export class BaseApplicationPropertyColumnDuo
-  extends SQDIDuo<IApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn>
+  extends SQDIDuo<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn>
 	implements IBaseApplicationPropertyColumnDuo {
 
 	static diSet(): boolean {
@@ -330,11 +330,11 @@ export class BaseApplicationPropertyColumnDuo
 
 
 export interface IBaseApplicationReferenceDuo
-  extends IDuo<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
+  extends IDuo<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
 }
 
 export class BaseApplicationReferenceDuo
-  extends SQDIDuo<IApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference>
+  extends SQDIDuo<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference>
 	implements IBaseApplicationReferenceDuo {
 
 	static diSet(): boolean {
@@ -348,11 +348,11 @@ export class BaseApplicationReferenceDuo
 
 
 export interface IBaseApplicationRelationDuo
-  extends IDuo<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
+  extends IDuo<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
 }
 
 export class BaseApplicationRelationDuo
-  extends SQDIDuo<IApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation>
+  extends SQDIDuo<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation>
 	implements IBaseApplicationRelationDuo {
 
 	static diSet(): boolean {
@@ -366,11 +366,11 @@ export class BaseApplicationRelationDuo
 
 
 export interface IBaseApplicationRelationColumnDuo
-  extends IDuo<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
+  extends IDuo<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
 }
 
 export class BaseApplicationRelationColumnDuo
-  extends SQDIDuo<IApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn>
+  extends SQDIDuo<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn>
 	implements IBaseApplicationRelationColumnDuo {
 
 	static diSet(): boolean {
@@ -384,11 +384,11 @@ export class BaseApplicationRelationColumnDuo
 
 
 export interface IBaseApplicationVersionDuo
-  extends IDuo<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
+  extends IDuo<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
 }
 
 export class BaseApplicationVersionDuo
-  extends SQDIDuo<IApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion>
+  extends SQDIDuo<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion>
 	implements IBaseApplicationVersionDuo {
 
 	static diSet(): boolean {
@@ -402,11 +402,11 @@ export class BaseApplicationVersionDuo
 
 
 export interface IBaseDomainDuo
-  extends IDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+  extends IDuo<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
 }
 
 export class BaseDomainDuo
-  extends SQDIDuo<IDomain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
+  extends SQDIDuo<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
 	implements IBaseDomainDuo {
 
 	static diSet(): boolean {

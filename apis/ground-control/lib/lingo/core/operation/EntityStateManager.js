@@ -3,9 +3,9 @@ export var EntityState;
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
-    // Originally it was PARENT_ID and was meant for @ManyToOne() references when
-    // nothing is returned except for the id fields of the relation, however this
-    // schenario was sufficiently covered by STUB - id's only stub.  Now it's
+    // Originally it was PARENT_SCHEMA_ID and was meant for @ManyToOne() references
+    // when nothing is returned except for the id fields of the relation, however
+    // this schenario was sufficiently covered by STUB - id's only stub.  Now it's
     // PARENT_SCHEMA_ID and currently used only for save operations
     // when the entity referenced via the relation belongs to another application.
     // This is because save does not allow to peristance of records across application

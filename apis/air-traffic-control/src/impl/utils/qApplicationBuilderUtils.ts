@@ -1,3 +1,4 @@
+import { QApplication } from '@airport/aviation-communication'
 import {
 	DbColumn,
 	DbEntity,
@@ -11,7 +12,6 @@ import {
 	TableIndex
 } from '@airport/ground-control'
 import {
-	QApplication,
 	QApplicationInternal
 } from '../../lingo/AirportDatabase'
 import {

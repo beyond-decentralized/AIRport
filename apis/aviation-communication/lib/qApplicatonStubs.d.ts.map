@@ -1,0 +1,1 @@
+{"version":3,"file":"qApplicatonStubs.d.ts","sourceRoot":"","sources":["../src/qApplicatonStubs.ts"],"names":[],"mappings":"AAAA,eAAO,MAAM,MAAM;oCAEG,YAAY;6CAId,MAAM,KACnB,OAAO;8CAGM,MAAM,KACnB,OAAO;CACb,CAAA;AAED,MAAM,WAAW,YAAY;IACzB,iBAAiB,CAAC,MAAA;IAClB,MAAM,EAAE,MAAM,CAAC;IACf,IAAI,EAAE,MAAM,CAAC;IAEb,CAAC,IAAI,EAAE,MAAM,GAAG,GAAG,CAAC;CACvB"}

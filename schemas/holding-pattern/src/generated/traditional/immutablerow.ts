@@ -1,6 +1,6 @@
 import {
 	IUser,
-} from '@airport/travel-document-checkpoint-runtime';
+} from '@airport/travel-document-checkpoint';
 
 
 

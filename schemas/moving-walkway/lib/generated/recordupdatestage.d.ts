@@ -1,5 +1,5 @@
 import { IApplicationVersion, IApplicationEntity, IApplicationColumn } from '@airport/airspace';
-import { IRepository, IActor } from '@airport/holding-pattern-runtime';
+import { IRepository, IActor } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
     id: number;
     actorRecordId?: number;

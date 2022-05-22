@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	IActor,
-} from './infrastructure/actor';
+	Actor,
+} from '../ddl/infrastructure/actor';
 import {
 	ActorESelect,
 	ActorECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QActor,
 } from './infrastructure/qactor';
 import {
-	IOperationHistory,
-} from './history/operationhistory';
+	OperationHistory,
+} from '../ddl/history/operationhistory';
 import {
 	OperationHistoryESelect,
 	OperationHistoryECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QOperationHistory,
 } from './history/qoperationhistory';
 import {
-	IRecordHistory,
-} from './history/recordhistory';
+	RecordHistory,
+} from '../ddl/history/recordhistory';
 import {
 	RecordHistoryESelect,
 	RecordHistoryECreateColumns,
@@ -39,8 +39,8 @@ import {
 	QRecordHistory,
 } from './history/qrecordhistory';
 import {
-	IRecordHistoryNewValue,
-} from './history/recordhistorynewvalue';
+	RecordHistoryNewValue,
+} from '../ddl/history/recordhistorynewvalue';
 import {
 	RecordHistoryNewValueESelect,
 	RecordHistoryNewValueECreateColumns,
@@ -52,8 +52,8 @@ import {
 	QRecordHistoryNewValue,
 } from './history/qrecordhistorynewvalue';
 import {
-	IRecordHistoryOldValue,
-} from './history/recordhistoryoldvalue';
+	RecordHistoryOldValue,
+} from '../ddl/history/recordhistoryoldvalue';
 import {
 	RecordHistoryOldValueESelect,
 	RecordHistoryOldValueECreateColumns,
@@ -65,8 +65,8 @@ import {
 	QRecordHistoryOldValue,
 } from './history/qrecordhistoryoldvalue';
 import {
-	IRepository,
-} from './repository/repository';
+	Repository,
+} from '../ddl/repository/repository';
 import {
 	RepositoryESelect,
 	RepositoryECreateColumns,
@@ -78,8 +78,8 @@ import {
 	QRepository,
 } from './repository/qrepository';
 import {
-	IRepositoryApplication,
-} from './repository/repositoryapplication';
+	RepositoryApplication,
+} from '../ddl/repository/repositoryapplication';
 import {
 	RepositoryApplicationESelect,
 	RepositoryApplicationECreateColumns,
@@ -91,8 +91,8 @@ import {
 	QRepositoryApplication,
 } from './repository/qrepositoryapplication';
 import {
-	IRepositoryTransactionHistory,
-} from './history/repositorytransactionhistory';
+	RepositoryTransactionHistory,
+} from '../ddl/history/repositorytransactionhistory';
 import {
 	RepositoryTransactionHistoryESelect,
 	RepositoryTransactionHistoryECreateColumns,
@@ -104,8 +104,8 @@ import {
 	QRepositoryTransactionHistory,
 } from './history/qrepositorytransactionhistory';
 import {
-	ITransactionHistory,
-} from './history/transactionhistory';
+	TransactionHistory,
+} from '../ddl/history/transactionhistory';
 import {
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -166,11 +166,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseActorDao
-  extends IDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorGraph, QActor> {
+  extends IDao<Actor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorGraph, QActor> {
 }
 
 export class BaseActorDao
-  extends SQDIDao<IActor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorGraph, QActor>
+  extends SQDIDao<Actor, ActorESelect, ActorECreateProperties, ActorEUpdateColumns, ActorEUpdateProperties, ActorEId, ActorGraph, QActor>
 	implements IBaseActorDao {
 	
 	static Find      = new DaoQueryDecorators<ActorESelect>();
@@ -194,11 +194,11 @@ export class BaseActorDao
 
 
 export interface IBaseOperationHistoryDao
-  extends IDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryGraph, QOperationHistory> {
+  extends IDao<OperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryGraph, QOperationHistory> {
 }
 
 export class BaseOperationHistoryDao
-  extends SQDIDao<IOperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryGraph, QOperationHistory>
+  extends SQDIDao<OperationHistory, OperationHistoryESelect, OperationHistoryECreateProperties, OperationHistoryEUpdateColumns, OperationHistoryEUpdateProperties, OperationHistoryEId, OperationHistoryGraph, QOperationHistory>
 	implements IBaseOperationHistoryDao {
 	
 	static Find      = new DaoQueryDecorators<OperationHistoryESelect>();
@@ -222,11 +222,11 @@ export class BaseOperationHistoryDao
 
 
 export interface IBaseRecordHistoryDao
-  extends IDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryGraph, QRecordHistory> {
+  extends IDao<RecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryGraph, QRecordHistory> {
 }
 
 export class BaseRecordHistoryDao
-  extends SQDIDao<IRecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryGraph, QRecordHistory>
+  extends SQDIDao<RecordHistory, RecordHistoryESelect, RecordHistoryECreateProperties, RecordHistoryEUpdateColumns, RecordHistoryEUpdateProperties, RecordHistoryEId, RecordHistoryGraph, QRecordHistory>
 	implements IBaseRecordHistoryDao {
 	
 	static Find      = new DaoQueryDecorators<RecordHistoryESelect>();
@@ -250,11 +250,11 @@ export class BaseRecordHistoryDao
 
 
 export interface IBaseRecordHistoryNewValueDao
-  extends IDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueGraph, QRecordHistoryNewValue> {
+  extends IDao<RecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueGraph, QRecordHistoryNewValue> {
 }
 
 export class BaseRecordHistoryNewValueDao
-  extends SQDIDao<IRecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueGraph, QRecordHistoryNewValue>
+  extends SQDIDao<RecordHistoryNewValue, RecordHistoryNewValueESelect, RecordHistoryNewValueECreateProperties, RecordHistoryNewValueEUpdateColumns, RecordHistoryNewValueEUpdateProperties, RecordHistoryNewValueEId, RecordHistoryNewValueGraph, QRecordHistoryNewValue>
 	implements IBaseRecordHistoryNewValueDao {
 	
 	static Find      = new DaoQueryDecorators<RecordHistoryNewValueESelect>();
@@ -278,11 +278,11 @@ export class BaseRecordHistoryNewValueDao
 
 
 export interface IBaseRecordHistoryOldValueDao
-  extends IDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue> {
+  extends IDao<RecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue> {
 }
 
 export class BaseRecordHistoryOldValueDao
-  extends SQDIDao<IRecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue>
+  extends SQDIDao<RecordHistoryOldValue, RecordHistoryOldValueESelect, RecordHistoryOldValueECreateProperties, RecordHistoryOldValueEUpdateColumns, RecordHistoryOldValueEUpdateProperties, RecordHistoryOldValueEId, RecordHistoryOldValueGraph, QRecordHistoryOldValue>
 	implements IBaseRecordHistoryOldValueDao {
 	
 	static Find      = new DaoQueryDecorators<RecordHistoryOldValueESelect>();
@@ -306,11 +306,11 @@ export class BaseRecordHistoryOldValueDao
 
 
 export interface IBaseRepositoryDao
-  extends IDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository> {
+  extends IDao<Repository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository> {
 }
 
 export class BaseRepositoryDao
-  extends SQDIDao<IRepository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository>
+  extends SQDIDao<Repository, RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository>
 	implements IBaseRepositoryDao {
 	
 	static Find      = new DaoQueryDecorators<RepositoryESelect>();
@@ -334,11 +334,11 @@ export class BaseRepositoryDao
 
 
 export interface IBaseRepositoryApplicationDao
-  extends IDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
+  extends IDao<RepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication> {
 }
 
 export class BaseRepositoryApplicationDao
-  extends SQDIDao<IRepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
+  extends SQDIDao<RepositoryApplication, RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication>
 	implements IBaseRepositoryApplicationDao {
 	
 	static Find      = new DaoQueryDecorators<RepositoryApplicationESelect>();
@@ -362,11 +362,11 @@ export class BaseRepositoryApplicationDao
 
 
 export interface IBaseRepositoryTransactionHistoryDao
-  extends IDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory> {
+  extends IDao<RepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory> {
 }
 
 export class BaseRepositoryTransactionHistoryDao
-  extends SQDIDao<IRepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory>
+  extends SQDIDao<RepositoryTransactionHistory, RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory>
 	implements IBaseRepositoryTransactionHistoryDao {
 	
 	static Find      = new DaoQueryDecorators<RepositoryTransactionHistoryESelect>();
@@ -390,11 +390,11 @@ export class BaseRepositoryTransactionHistoryDao
 
 
 export interface IBaseTransactionHistoryDao
-  extends IDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory> {
+  extends IDao<TransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory> {
 }
 
 export class BaseTransactionHistoryDao
-  extends SQDIDao<ITransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory>
+  extends SQDIDao<TransactionHistory, TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory>
 	implements IBaseTransactionHistoryDao {
 	
 	static Find      = new DaoQueryDecorators<TransactionHistoryESelect>();

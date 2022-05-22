@@ -75,15 +75,15 @@ export abstract class RepositoryEntity {
 	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
 	originalActorRecordId: RepositoryEntity_ActorRecordId
 
-	get id(): string {
-		return encodeId(this)
-	}
+	// get id(): string {
+	// 	return encodeId(this)
+	// }
 
-	set id(
-		idString: string
-	) {
-		setId(idString, this)
-	}
+	// set id(
+	// 	idString: string
+	// ) {
+	// 	setId(idString, this)
+	// }
 
 	/*
 		@OneToMany()

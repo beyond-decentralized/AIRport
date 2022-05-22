@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	ISequence,
-} from './sequence';
+	Sequence,
+} from '../ddl/sequence';
 import {
 	SequenceESelect,
 	SequenceECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QSequence,
 } from './qsequence';
 import {
-	ISystemWideOperationId,
-} from './systemwideoperationid';
+	SystemWideOperationId,
+} from '../ddl/systemwideoperationid';
 import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QSystemWideOperationId,
 } from './qsystemwideoperationid';
 import {
-	ITerminalRun,
-} from './terminalrun';
+	TerminalRun,
+} from '../ddl/terminalrun';
 import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -87,11 +87,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseSequenceDuo
-  extends IDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
+  extends IDuo<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
 }
 
 export class BaseSequenceDuo
-  extends SQDIDuo<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
+  extends SQDIDuo<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
 	implements IBaseSequenceDuo {
 
 	static diSet(): boolean {
@@ -105,11 +105,11 @@ export class BaseSequenceDuo
 
 
 export interface IBaseSystemWideOperationIdDuo
-  extends IDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
+  extends IDuo<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDuo
-  extends SQDIDuo<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
+  extends SQDIDuo<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDuo {
 
 	static diSet(): boolean {
@@ -123,11 +123,11 @@ export class BaseSystemWideOperationIdDuo
 
 
 export interface IBaseTerminalRunDuo
-  extends IDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
+  extends IDuo<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
 }
 
 export class BaseTerminalRunDuo
-  extends SQDIDuo<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
+  extends SQDIDuo<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
 	implements IBaseTerminalRunDuo {
 
 	static diSet(): boolean {

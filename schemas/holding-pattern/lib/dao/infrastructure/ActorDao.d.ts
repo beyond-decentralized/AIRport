@@ -1,5 +1,5 @@
 import { ApplicationName, DomainName } from '@airport/ground-control';
-import { TmTerminal_Id, User_Id } from '@airport/travel-document-checkpoint-runtime';
+import { TmTerminal_Id, User_Id } from '@airport/travel-document-checkpoint';
 import { Actor_Id, Actor_UuId } from '../../ddl/ddl';
 import { BaseActorDao, IActor, IBaseActorDao } from '../../generated/generated';
 import { IContext } from '@airport/direction-indicator';

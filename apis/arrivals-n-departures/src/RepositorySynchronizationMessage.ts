@@ -2,11 +2,11 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryTransactionHistory
-} from "@airport/holding-pattern-runtime";
+} from "@airport/holding-pattern";
 import type {
 	ITerminal,
 	IUser
-} from "@airport/travel-document-checkpoint-runtime";
+} from "@airport/travel-document-checkpoint";
 import {
 	IApplication,
 	IApplicationVersion

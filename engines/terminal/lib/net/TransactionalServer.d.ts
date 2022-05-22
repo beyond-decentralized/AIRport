@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
-import { IActor, Repository_Id } from '@airport/holding-pattern-runtime';
+import { IActor, Repository_Id } from '@airport/holding-pattern';
 import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials, ITerminalStore, ITransactionManager, IOperationManager, IInsertManager, IDeleteManager, IQueryManager, IRepositoryManager, IUpdateManager } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {

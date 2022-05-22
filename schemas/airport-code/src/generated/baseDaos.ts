@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	ISequence,
-} from './sequence';
+	Sequence,
+} from '../ddl/sequence';
 import {
 	SequenceESelect,
 	SequenceECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QSequence,
 } from './qsequence';
 import {
-	ISystemWideOperationId,
-} from './systemwideoperationid';
+	SystemWideOperationId,
+} from '../ddl/systemwideoperationid';
 import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QSystemWideOperationId,
 } from './qsystemwideoperationid';
 import {
-	ITerminalRun,
-} from './terminalrun';
+	TerminalRun,
+} from '../ddl/terminalrun';
 import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -88,11 +88,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseSequenceDao
-  extends IDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
+  extends IDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
 }
 
 export class BaseSequenceDao
-  extends SQDIDao<ISequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
+  extends SQDIDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
 	implements IBaseSequenceDao {
 	
 	static Find      = new DaoQueryDecorators<SequenceESelect>();
@@ -116,11 +116,11 @@ export class BaseSequenceDao
 
 
 export interface IBaseSystemWideOperationIdDao
-  extends IDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
+  extends IDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDao
-  extends SQDIDao<ISystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
+  extends SQDIDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDao {
 	
 	static Find      = new DaoQueryDecorators<SystemWideOperationIdESelect>();
@@ -144,11 +144,11 @@ export class BaseSystemWideOperationIdDao
 
 
 export interface IBaseTerminalRunDao
-  extends IDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
+  extends IDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
 }
 
 export class BaseTerminalRunDao
-  extends SQDIDao<ITerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
+  extends SQDIDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
 	implements IBaseTerminalRunDao {
 	
 	static Find      = new DaoQueryDecorators<TerminalRunESelect>();

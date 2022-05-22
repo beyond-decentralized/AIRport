@@ -20,3 +20,8 @@ export * from './EntityDatabaseFacade';
 export * from './Selector';
 export * from './SequenceGenerator';
 export * from './tokens';
+
+import { airApi } from '@airport/aviation-communication'
+import { diSet, duoDiSet } from './SequenceGenerator';
+airApi.dS = diSet
+airApi.ddS = duoDiSet

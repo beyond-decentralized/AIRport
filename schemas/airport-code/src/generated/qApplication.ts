@@ -1,16 +1,10 @@
 import {
-	AIRPORT_DATABASE,
-	QApplication as AirportQApplication
-}                      from '@airport/air-traffic-control'
+    airApi,
+    QApplication
+} from '@airport/aviation-communication'
 import {
-	diSet as dS,
-	duoDiSet as ddS
-}                      from '@airport/check-in'
-import {DEPENDENCY_INJECTION} from '@airport/direction-indicator'
-import {
-	DbApplication,
-	DB_APPLICATION_UTILS,
-	EntityId,
+    DbApplication,
+    EntityId,
 }                      from '@airport/ground-control';
 import { QSequence } from './qsequence';
 import { QSystemWideOperationId } from './qsystemwideoperationid';
@@ -21,11 +15,11 @@ import {
   TerminalRun
 } from '../ddl/ddl';
 
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QApplication {
 
-  db: DbApplication;
+    db: DbApplication;
 
-	Sequence: QSequence;
+  Sequence: QSequence;
 	SystemWideOperationId: QSystemWideOperationId;
 	TerminalRun: QTerminalRun;
 
@@ -47,17 +41,13 @@ export const Q: LocalQApplication = Q_APPLICATION
 export function diSet(
 	dbEntityId: EntityId
 ): boolean {
-	return dS(Q.__dbApplication__, dbEntityId)
+	return airApi.dS(Q.__dbApplication__, dbEntityId)
 }
 
 export function duoDiSet(
 	dbEntityId: EntityId
 ): boolean {
-	return ddS(Q.__dbApplication__, dbEntityId)
+	return airApi.ddS(Q.__dbApplication__, dbEntityId)
 }
 
-DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
-	airportDatabase, 
-) => {
-	airportDatabase.setQApplication(Q_APPLICATION)
-})
+airApi.setQApplication(Q_APPLICATION)

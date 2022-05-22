@@ -9,7 +9,7 @@ import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository
-} from '@airport/holding-pattern-runtime'
+} from '@airport/holding-pattern'
 import { UpdateState } from '../core/UpdateState'
 
 export interface IRepositoryManager {

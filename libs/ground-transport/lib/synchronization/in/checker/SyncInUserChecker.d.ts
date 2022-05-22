@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IUserDao } from '@airport/travel-document-checkpoint-runtime';
+import { IUserDao } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 export interface ISyncInUserChecker {
     ensureUsers(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }

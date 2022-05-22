@@ -9,7 +9,7 @@ import {
 import {
 	ITerminal,
 	ITerminalDao
-} from '@airport/travel-document-checkpoint-runtime'
+} from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
 
 export interface ISyncInTerminalChecker {
 

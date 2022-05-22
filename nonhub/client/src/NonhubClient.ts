@@ -9,7 +9,7 @@ import {
 import { Injected } from '@airport/direction-indicator';
 import type {
     RepositoryTransactionHistory_SyncTimestamp
-} from '@airport/holding-pattern-runtime';
+} from '@airport/holding-pattern';
 
 export interface INonhubClient {
 

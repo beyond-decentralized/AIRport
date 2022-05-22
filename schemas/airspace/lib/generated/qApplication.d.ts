@@ -1,4 +1,4 @@
-import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
+import { QApplication as AirportQApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';

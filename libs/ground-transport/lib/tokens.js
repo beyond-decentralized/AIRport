@@ -18,9 +18,9 @@ import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDa
 import { AIRPORT_DATABASE, DATABASE_FACADE, UTILS } from '@airport/air-traffic-control';
 import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
-import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint-runtime';
+import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace';
-import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern-runtime';
+import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/moving-walkway';
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter';
 import { NONHUB_CLIENT } from '@airport/nonhub-client';

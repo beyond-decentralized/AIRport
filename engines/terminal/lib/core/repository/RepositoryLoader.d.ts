@@ -1,7 +1,7 @@
 import { IRepositoryLoader } from "@airport/air-traffic-control";
 import { IContext } from "@airport/direction-indicator";
 import { ISynchronizationAdapterLoader, ISynchronizationInManager } from "@airport/ground-transport";
-import { IRepositoryDao } from "@airport/holding-pattern-runtime";
+import { IRepositoryDao } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { ITransactionContext } from "@airport/terminal-map";
 export declare class RepositoryLoader implements IRepositoryLoader {
     repositoryDao: IRepositoryDao;

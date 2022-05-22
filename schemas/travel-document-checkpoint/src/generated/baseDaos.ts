@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	IAgt,
-} from './agt';
+	Agt,
+} from '../ddl/agt';
 import {
 	AgtESelect,
 	AgtECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QAgt,
 } from './qagt';
 import {
-	IContinent,
-} from './continent';
+	Continent,
+} from '../ddl/continent';
 import {
 	ContinentESelect,
 	ContinentECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QContinent,
 } from './qcontinent';
 import {
-	ICountry,
-} from './country';
+	Country,
+} from '../ddl/country';
 import {
 	CountryESelect,
 	CountryECreateColumns,
@@ -39,8 +39,8 @@ import {
 	QCountry,
 } from './qcountry';
 import {
-	ITerminal,
-} from './terminal';
+	Terminal,
+} from '../ddl/terminal';
 import {
 	TerminalESelect,
 	TerminalECreateColumns,
@@ -52,8 +52,8 @@ import {
 	QTerminal,
 } from './qterminal';
 import {
-	ITerminalAgt,
-} from './terminalagt';
+	TerminalAgt,
+} from '../ddl/terminalagt';
 import {
 	TerminalAgtESelect,
 	TerminalAgtECreateColumns,
@@ -65,8 +65,8 @@ import {
 	QTerminalAgt,
 } from './qterminalagt';
 import {
-	IUser,
-} from './user';
+	User,
+} from '../ddl/user';
 import {
 	UserESelect,
 	UserECreateColumns,
@@ -78,8 +78,8 @@ import {
 	QUser,
 } from './quser';
 import {
-	IUserTerminal,
-} from './userterminal';
+	UserTerminal,
+} from '../ddl/userterminal';
 import {
 	UserTerminalESelect,
 	UserTerminalECreateColumns,
@@ -91,8 +91,8 @@ import {
 	QUserTerminal,
 } from './quserterminal';
 import {
-	IUserTerminalAgt,
-} from './userterminalagt';
+	UserTerminalAgt,
+} from '../ddl/userterminalagt';
 import {
 	UserTerminalAgtESelect,
 	UserTerminalAgtECreateColumns,
@@ -153,11 +153,11 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseAgtDao
-  extends IDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
+  extends IDao<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
 }
 
 export class BaseAgtDao
-  extends SQDIDao<IAgt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
+  extends SQDIDao<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
 	implements IBaseAgtDao {
 	
 	static Find      = new DaoQueryDecorators<AgtESelect>();
@@ -181,11 +181,11 @@ export class BaseAgtDao
 
 
 export interface IBaseContinentDao
-  extends IDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+  extends IDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
 
 export class BaseContinentDao
-  extends SQDIDao<IContinent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
+  extends SQDIDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
 	implements IBaseContinentDao {
 	
 	static Find      = new DaoQueryDecorators<ContinentESelect>();
@@ -209,11 +209,11 @@ export class BaseContinentDao
 
 
 export interface IBaseCountryDao
-  extends IDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+  extends IDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
 }
 
 export class BaseCountryDao
-  extends SQDIDao<ICountry, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
+  extends SQDIDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
 	implements IBaseCountryDao {
 	
 	static Find      = new DaoQueryDecorators<CountryESelect>();
@@ -237,11 +237,11 @@ export class BaseCountryDao
 
 
 export interface IBaseTerminalDao
-  extends IDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
+  extends IDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 
 export class BaseTerminalDao
-  extends SQDIDao<ITerminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
+  extends SQDIDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
 	implements IBaseTerminalDao {
 	
 	static Find      = new DaoQueryDecorators<TerminalESelect>();
@@ -265,11 +265,11 @@ export class BaseTerminalDao
 
 
 export interface IBaseTerminalAgtDao
-  extends IDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
+  extends IDao<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
 }
 
 export class BaseTerminalAgtDao
-  extends SQDIDao<ITerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
+  extends SQDIDao<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
 	implements IBaseTerminalAgtDao {
 	
 	static Find      = new DaoQueryDecorators<TerminalAgtESelect>();
@@ -293,11 +293,11 @@ export class BaseTerminalAgtDao
 
 
 export interface IBaseUserDao
-  extends IDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
+  extends IDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
 }
 
 export class BaseUserDao
-  extends SQDIDao<IUser, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
+  extends SQDIDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
 	implements IBaseUserDao {
 	
 	static Find      = new DaoQueryDecorators<UserESelect>();
@@ -321,11 +321,11 @@ export class BaseUserDao
 
 
 export interface IBaseUserTerminalDao
-  extends IDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
+  extends IDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
 }
 
 export class BaseUserTerminalDao
-  extends SQDIDao<IUserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
+  extends SQDIDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
 	implements IBaseUserTerminalDao {
 	
 	static Find      = new DaoQueryDecorators<UserTerminalESelect>();
@@ -349,11 +349,11 @@ export class BaseUserTerminalDao
 
 
 export interface IBaseUserTerminalAgtDao
-  extends IDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
+  extends IDao<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
 }
 
 export class BaseUserTerminalAgtDao
-  extends SQDIDao<IUserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
+  extends SQDIDao<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
 	implements IBaseUserTerminalAgtDao {
 	
 	static Find      = new DaoQueryDecorators<UserTerminalAgtESelect>();

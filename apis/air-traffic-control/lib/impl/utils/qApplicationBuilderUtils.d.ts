@@ -1,5 +1,6 @@
+import { QApplication } from '@airport/aviation-communication';
 import { DbColumn, DbEntity, DbProperty, DbApplication, ApplicationIndex, TableIndex } from '@airport/ground-control';
-import { QApplication, QApplicationInternal } from '../../lingo/AirportDatabase';
+import { QApplicationInternal } from '../../lingo/AirportDatabase';
 import { IQEntity, IQEntityInternal } from '../../lingo/core/entity/Entity';
 import { IQRelation } from '../../lingo/core/entity/Relation';
 import { IQBooleanField } from '../../lingo/core/field/BooleanField';

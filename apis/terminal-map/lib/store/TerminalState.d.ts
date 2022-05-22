@@ -1,8 +1,8 @@
 import { ISequence } from '@airport/airport-code';
 import { IMessageInRecord, LastIds } from '@airport/apron';
-import { IActor } from '@airport/holding-pattern-runtime';
+import { IActor } from '@airport/holding-pattern';
 import type { IDomain, IApplication } from '@airport/airspace';
-import type { ITerminal } from '@airport/travel-document-checkpoint-runtime';
+import type { ITerminal } from '@airport/travel-document-checkpoint';
 import { IPendingTransaction } from './TerminalStore';
 import { Subject, Subscription } from 'rxjs';
 import { ITransaction } from '../transaction/ITransaction';

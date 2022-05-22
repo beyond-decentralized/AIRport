@@ -1,6 +1,6 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IQueryFacade, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, IRootTransaction, ISaveResult } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern-runtime';
+import { IActor } from '@airport/holding-pattern';
 import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IOperationContext, IOperationManager, IRepositoryManager, IStructuralEntityValidator, ITransaction, IUpdateManager } from '@airport/terminal-map';
 /**
  * Created by Papa on 11/15/2016.

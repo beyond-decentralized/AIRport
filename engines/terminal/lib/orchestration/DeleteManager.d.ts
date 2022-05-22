@@ -1,7 +1,7 @@
 import { IAirportDatabase, IApplicationUtils, IUtils } from '@airport/air-traffic-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { IRootTransaction, PortableQuery } from '@airport/ground-control';
-import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern-runtime';
+import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { IDeleteManager, IHistoryManager, IOperationContext, ITransaction } from '@airport/terminal-map';
 export declare class DeleteManager implements IDeleteManager {
     airportDatabase: IAirportDatabase;

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
-	IRecordUpdateStage,
-} from './recordupdatestage';
+	RecordUpdateStage,
+} from '../ddl/recordupdatestage';
 import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
@@ -13,8 +13,8 @@ import {
 	QRecordUpdateStage,
 } from './qrecordupdatestage';
 import {
-	ISynchronizationConflict,
-} from './conflict/synchronizationconflict';
+	SynchronizationConflict,
+} from '../ddl/conflict/synchronizationconflict';
 import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
@@ -26,8 +26,8 @@ import {
 	QSynchronizationConflict,
 } from './conflict/qsynchronizationconflict';
 import {
-	ISynchronizationConflictValues,
-} from './conflict/synchronizationconflictvalues';
+	SynchronizationConflictValues,
+} from '../ddl/conflict/synchronizationconflictvalues';
 import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
@@ -87,11 +87,11 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseRecordUpdateStageDuo
-  extends IDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
+  extends IDuo<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
 
 export class BaseRecordUpdateStageDuo
-  extends SQDIDuo<IRecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
+  extends SQDIDuo<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDuo {
 
 	static diSet(): boolean {
@@ -105,11 +105,11 @@ export class BaseRecordUpdateStageDuo
 
 
 export interface IBaseSynchronizationConflictDuo
-  extends IDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
+  extends IDuo<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
 }
 
 export class BaseSynchronizationConflictDuo
-  extends SQDIDuo<ISynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
+  extends SQDIDuo<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDuo {
 
 	static diSet(): boolean {
@@ -123,11 +123,11 @@ export class BaseSynchronizationConflictDuo
 
 
 export interface IBaseSynchronizationConflictValuesDuo
-  extends IDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
+  extends IDuo<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
 }
 
 export class BaseSynchronizationConflictValuesDuo
-  extends SQDIDuo<ISynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
+  extends SQDIDuo<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDuo {
 
 	static diSet(): boolean {

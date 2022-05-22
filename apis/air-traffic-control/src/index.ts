@@ -125,3 +125,17 @@ export * from './lingo/DeepPartial';
 export * from './lingo/DatabaseState';
 export * from './lingo/Utils';
 export * from './tokens';
+
+import { airApi, QApplication } from '@airport/aviation-communication'
+import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
+import { AIRPORT_DATABASE } from './tokens';
+
+airApi.setQApplication = function(
+    qApplication: QApplication
+) {
+    DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
+        airportDatabase, 
+    ) => {
+        airportDatabase.setQApplication(qApplication)
+    })
+}

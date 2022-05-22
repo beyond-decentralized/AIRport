@@ -1,5 +1,5 @@
-import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern-runtime";
-import type { ITerminal, IUser } from "@airport/travel-document-checkpoint-runtime";
+import { IActor, IRepository, IRepositoryTransactionHistory } from "@airport/holding-pattern";
+import type { ITerminal, IUser } from "@airport/travel-document-checkpoint";
 import { IApplication, IApplicationVersion } from "@airport/airspace";
 export interface RepositorySynchronizationMessage {
     actors: IActor[];

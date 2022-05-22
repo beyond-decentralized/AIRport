@@ -32,7 +32,7 @@ import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo,
-} from '@airport/holding-pattern-runtime'
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import {
 	IDeleteManager,
 	IHistoryManager,

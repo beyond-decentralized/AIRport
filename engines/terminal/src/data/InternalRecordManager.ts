@@ -9,7 +9,7 @@ import {
     Actor,
     IActor,
     IActorDao,
-} from "@airport/holding-pattern-runtime";
+} from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
@@ -21,7 +21,7 @@ import {
 import {
     Terminal,
     User
-} from "@airport/travel-document-checkpoint-runtime";
+} from "@airport/travel-document-checkpoint";
 import { v4 as uuidv4 } from "uuid";
 import {
     Inject,

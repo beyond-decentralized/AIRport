@@ -6,7 +6,7 @@
     "@airport/direction-indicator": "0.0.1",
     "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/holding-pattern-runtime": "0.0.1",
+    "@airport/holding-pattern": "0.0.1",
     "@airport/sequence": "0.0.1",
     "@airport/sqlite": "0.0.1",
     "@airport/terminal": "0.0.1",

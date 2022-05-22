@@ -71,7 +71,7 @@ import {
 	QActorQId,
 	QActorQRelation,
 	IActor,
-} from '@airport/holding-pattern-runtime';
+} from '@airport/holding-pattern';
 import {
 	IRecordUpdateStage,
 } from './recordupdatestage';

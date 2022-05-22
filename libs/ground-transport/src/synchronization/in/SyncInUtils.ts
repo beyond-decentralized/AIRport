@@ -17,7 +17,7 @@ import {
 	RecordHistoryId,
 	RepositoryEntity_ActorRecordId,
 	Repository_Id
-} from '@airport/holding-pattern-runtime'
+} from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict
 } from '@airport/moving-walkway'

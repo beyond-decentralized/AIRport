@@ -1,4 +1,4 @@
-export * from './api-wrappers/api-wrappers';
+export * from '../generated/api/api';
 export * from '../ddl/ddl';
 export * from '../generated/qApplication';
 export * from '../generated/qInterfaces';

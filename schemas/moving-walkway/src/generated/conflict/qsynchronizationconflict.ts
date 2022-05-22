@@ -42,7 +42,7 @@ import {
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
 	IRecordHistory,
-} from '@airport/holding-pattern-runtime';
+} from '@airport/holding-pattern';
 import {
 	SynchronizationConflictValuesGraph,
 	SynchronizationConflictValuesEId,

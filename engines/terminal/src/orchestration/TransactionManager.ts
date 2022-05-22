@@ -19,7 +19,7 @@ import { ISynchronizationOutManager } from '@airport/ground-transport';
 import {
 	ITransactionHistoryDuo,
 	Q
-} from '@airport/holding-pattern-runtime';
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import {
 	IStoreDriver,
 	ITerminalStore,

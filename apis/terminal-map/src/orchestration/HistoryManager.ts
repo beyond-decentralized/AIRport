@@ -4,7 +4,7 @@ import type {
     IRepositoryTransactionHistory,
     ITransactionHistory,
     Repository_Id
-} from "@airport/holding-pattern-runtime";
+} from "@airport/holding-pattern";
 import { IOperationContext } from "../processing/OperationContext";
 
 export interface IHistoryManager {

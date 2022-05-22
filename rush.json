@@ -206,16 +206,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/holding-pattern-client",
-      "projectFolder": "schemas/holding-pattern/client",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/holding-pattern-runtime",
-      "projectFolder": "schemas/holding-pattern/runtime",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/moving-walkway",
       "projectFolder": "schemas/moving-walkway",
       "shouldPublish": true
@@ -228,16 +218,6 @@
     {
       "packageName": "@airport/travel-document-checkpoint",
       "projectFolder": "schemas/travel-document-checkpoint",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/travel-document-checkpoint-client",
-      "projectFolder": "schemas/travel-document-checkpoint/client",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/travel-document-checkpoint-runtime",
-      "projectFolder": "schemas/travel-document-checkpoint/runtime",
       "shouldPublish": true
     }
   ]

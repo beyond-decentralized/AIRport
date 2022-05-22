@@ -5,14 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass } from '@airport/air-traffic-control';
-import { encodeId, setId } from '@airport/aviation-communication';
 let RepositoryEntity = class RepositoryEntity {
-    get id() {
-        return encodeId(this);
-    }
-    set id(idString) {
-        setId(idString, this);
-    }
 };
 __decorate([
     Id(),

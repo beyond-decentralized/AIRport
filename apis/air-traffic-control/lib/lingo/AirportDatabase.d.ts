@@ -1,3 +1,4 @@
+import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, ISaveResult } from '@airport/ground-control';
 import { QEntityConstructor } from '../impl/core/entity/Entity';
 import { QRelation } from '../impl/core/entity/Relation';
@@ -94,11 +95,6 @@ export interface IAirportDatabase extends ApplicationHub, FunctionAndOperatorHub
     updateWhere<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>(rawUpdate: RawUpdate<IEntityUpdateProperties, IQE> | {
         (...args: any[]): RawUpdate<IEUP, IQE>;
     }, context?: IEntityContext): Promise<number>;
-}
-export interface QApplication {
-    domain: string;
-    name: string;
-    [name: string]: any;
 }
 export interface QApplicationInternal extends QApplication {
     __constructors__?: {

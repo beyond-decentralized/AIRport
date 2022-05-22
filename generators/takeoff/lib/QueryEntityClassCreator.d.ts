@@ -1,4 +1,5 @@
-import { IAirportDatabase, IApplicationUtils, IRelationManager, QApplication } from '@airport/air-traffic-control';
+import { IAirportDatabase, IApplicationUtils, IRelationManager } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication';
 import { IApplication } from '@airport/airspace';
 import { DbApplication } from '@airport/ground-control';
 import { IQueryEntityClassCreator } from '@airport/terminal-map';

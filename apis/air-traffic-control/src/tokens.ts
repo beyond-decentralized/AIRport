@@ -1,5 +1,5 @@
 import { lib } from '@airport/direction-indicator'
-import { IRepositoryLoader } from '.'
+import { IRepositoryLoader } from './lingo/core/repository/RepositoryLoader'
 import { IRelationManager, RelationManager } from './impl/core/entity/RelationManager'
 import { IAirportDatabase } from './lingo/AirportDatabase'
 import {

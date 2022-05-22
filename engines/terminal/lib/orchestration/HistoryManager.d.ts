@@ -1,5 +1,5 @@
 import { TransactionType } from '@airport/ground-control';
-import { IRepositoryTransactionHistory, ITransactionHistory, ITransactionHistoryDuo, Repository_Id } from '@airport/holding-pattern-runtime';
+import { IRepositoryTransactionHistory, ITransactionHistory, ITransactionHistoryDuo, Repository_Id } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { IHistoryManager, IOperationContext } from '@airport/terminal-map';
 export declare class HistoryManager implements IHistoryManager {
     transactionHistoryDuo: ITransactionHistoryDuo;

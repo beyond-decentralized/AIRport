@@ -1,4 +1,4 @@
-import { IUser } from "../generated/generated";
+import { IUser } from "../generated/user";
 import { UserDao } from "../dao/UserDao";
 export declare enum AddUserErrorCodes {
     EMAIL_TAKEN = "EMAIL_TAKEN",

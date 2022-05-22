@@ -1,8 +1,8 @@
 import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_Id } from "@airport/ground-control";
-import { Actor_Id, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern-runtime";
-import { User_Id } from "@airport/travel-document-checkpoint-runtime";
+import { Actor_Id, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+import { User_Id } from "@airport/travel-document-checkpoint";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
         historiesToSend: IRepositoryTransactionHistory[];

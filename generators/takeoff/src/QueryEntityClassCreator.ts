@@ -3,10 +3,12 @@ import {
 	IApplicationUtils,
 	IRelationManager,
 	orderApplicationsInOrderOfPrecedence,
-	QApplication,
 	QApplicationInternal,
 	setQApplicationEntities
 } from '@airport/air-traffic-control'
+import {
+	QApplication
+} from '@airport/aviation-communication'
 import {
 	Inject,
 	Injected

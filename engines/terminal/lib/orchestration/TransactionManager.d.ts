@@ -1,7 +1,7 @@
 import { IContext } from '@airport/direction-indicator';
 import { IActiveQueries, IIdGenerator } from '@airport/fuel-hydrant-system';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
-import { ITransactionHistoryDuo } from '@airport/holding-pattern-runtime';
+import { ITransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { IStoreDriver, ITerminalStore, ITransaction, ITransactionalCallback, ITransactionContext, ITransactionCredentials, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {

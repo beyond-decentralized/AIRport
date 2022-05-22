@@ -15,10 +15,10 @@ import {
 	ILookup,
 	IQEntity,
 	IUpdateCacheManager,
-	QApplication,
 	Y
 } from '@airport/air-traffic-control';
 import {
+	QApplication,
 	parseId,
 	RepositoryEntityId
 } from '@airport/aviation-communication';

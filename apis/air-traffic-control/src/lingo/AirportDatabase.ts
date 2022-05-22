@@ -1,4 +1,7 @@
 import {
+  QApplication
+} from '@airport/aviation-communication';
+import {
   DbApplication,
   ISaveResult,
 } from '@airport/ground-control';
@@ -174,13 +177,6 @@ export interface IAirportDatabase
     context?: IEntityContext,
   ): Promise<number>;
 
-}
-
-export interface QApplication {
-  domain: string;
-  name: string;
-
-  [name: string]: any;
 }
 
 export interface QApplicationInternal

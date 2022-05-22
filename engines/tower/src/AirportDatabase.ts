@@ -16,7 +16,6 @@ import {
 	IQEntity,
 	IRelationManager,
 	OperationName,
-	QApplication,
 	RawDelete,
 	RawInsertColumnValues,
 	RawInsertValues,
@@ -24,6 +23,7 @@ import {
 	RawUpdateColumns,
 	setQApplicationEntities,
 } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication'
 import {
 	Inject,
 	Injected

@@ -6,7 +6,7 @@ import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponse
 import {
     Repository_Source,
     Repository_UuId
-} from "@airport/holding-pattern-runtime";
+} from "@airport/holding-pattern";
 import { INonhubClient } from "@airport/nonhub-client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 

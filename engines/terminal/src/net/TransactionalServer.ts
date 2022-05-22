@@ -10,7 +10,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, Repository_Id } from '@airport/holding-pattern-runtime';
+import { Actor, IActor, Repository_Id } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,

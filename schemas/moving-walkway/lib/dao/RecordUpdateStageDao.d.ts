@@ -1,5 +1,5 @@
 import { ColumnIndex, ApplicationIndex, ApplicationVersionId, TableIndex } from '@airport/ground-control';
-import { Actor_Id, RecordHistoryActorRecordId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern-runtime';
+import { Actor_Id, RecordHistoryActorRecordId, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { BaseRecordUpdateStageDao, IBaseRecordUpdateStageDao } from '../generated/generated';
 export declare type RecordUpdateStageValue = any;
 export declare type RecordUpdateStageValues = [

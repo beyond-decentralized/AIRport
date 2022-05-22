@@ -1,4 +1,4 @@
-import { IUser, ITerminal } from '@airport/travel-document-checkpoint-runtime';
+import { IUser, ITerminal } from '@airport/travel-document-checkpoint';
 import { IApplication } from '@airport/airspace';
 export interface IActor {
     id: number;

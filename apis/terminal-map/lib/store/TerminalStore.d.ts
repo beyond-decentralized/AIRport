@@ -2,7 +2,7 @@ import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplica
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { IMemoizedSelector, ISelectorManager } from '@airport/check-in';
 import { DomainName, JsonApplicationName, ApplicationName, FullApplicationName } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern-runtime';
+import { IActor } from '@airport/holding-pattern';
 import { Subject } from 'rxjs';
 import { IApplicationInitializerState, InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';

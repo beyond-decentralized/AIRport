@@ -42,7 +42,7 @@
       "@airport/tower": [
         "libs/tower/src"
       ],
-      "@airport/holding-pattern-runtime": [
+      "@airport/holding-pattern": [
         "applications/holding-pattern/src"
       ],
       "@airport/airspace": [

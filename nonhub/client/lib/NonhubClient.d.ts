@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from '@airport/arrivals-n-departures';
-import type { RepositoryTransactionHistory_SyncTimestamp } from '@airport/holding-pattern-runtime';
+import type { RepositoryTransactionHistory_SyncTimestamp } from '@airport/holding-pattern';
 export interface INonhubClient {
     getRepositoryTransactions(location: string, repositoryUuid: string, sinceSyncTimestamp?: number): Promise<RepositorySynchronizationReadResponseFragment[]>;
     sendRepositoryTransactions(location: string, repositoryUuId: string, messages: RepositorySynchronizationMessage[]): Promise<RepositoryTransactionHistory_SyncTimestamp>;

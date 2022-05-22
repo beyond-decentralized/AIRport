@@ -1,5 +1,6 @@
+import { QApplication } from "@airport/aviation-communication";
 import { DbApplication } from "@airport/ground-control";
-import { IEntityRecord, QApplication } from "../lingo/AirportDatabase";
+import { IEntityRecord } from "../lingo/AirportDatabase";
 import { FunctionsAndOperators } from "../lingo/core/FunctionsAndOperators";
 import { IDatabaseState } from "../lingo/DatabaseState";
 export declare class DatabaseStore implements IDatabaseState {

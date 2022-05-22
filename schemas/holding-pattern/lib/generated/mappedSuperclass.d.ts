@@ -104,6 +104,24 @@ export declare const MAPPED_SUPERCLASS: ({
                 JoinColumn: any;
                 ManyToOne: any;
                 MappedSuperclass: any;
+                encodeId: {
+                    fileImports: any;
+                    isLocal: boolean;
+                    objectMapByAsName: {
+                        encodeId: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
+                        setId: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
+                    };
+                    path: string;
+                };
+                setId: any;
                 Actor: {
                     fileImports: any;
                     isLocal: boolean;
@@ -147,11 +165,12 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
+                "@airport/aviation-communication": any;
                 "../infrastructure/Actor": any;
                 "../common": any;
                 "./Repository": any;
                 "../repository/RepositoryEntity"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -293,6 +312,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -303,10 +324,11 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "../repository/RepositoryEntity": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -425,6 +447,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     JoinColumn: any;
                     ManyToOne: any;
                     MappedSuperclass: any;
+                    encodeId: {
+                        fileImports: any;
+                        isLocal: boolean;
+                        objectMapByAsName: {
+                            encodeId: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                            setId: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                        };
+                        path: string;
+                    };
+                    setId: any;
                     Actor: {
                         fileImports: any;
                         isLocal: boolean;
@@ -466,11 +506,12 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
+                    "@airport/aviation-communication": any;
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
                     "../repository/RepositoryEntity"?: undefined;
-                    "@airport/travel-document-checkpoint-runtime"?: undefined;
+                    "@airport/travel-document-checkpoint"?: undefined;
                 };
             };
             properties: ({
@@ -599,6 +640,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -609,11 +652,12 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -689,6 +733,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -699,10 +745,11 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "../repository/RepositoryEntity": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -838,6 +885,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     JoinColumn: any;
                     ManyToOne: any;
                     MappedSuperclass: any;
+                    encodeId: {
+                        fileImports: any;
+                        isLocal: boolean;
+                        objectMapByAsName: {
+                            encodeId: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                            setId: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                        };
+                        path: string;
+                    };
+                    setId: any;
                     Actor: {
                         fileImports: any;
                         isLocal: boolean;
@@ -879,11 +944,12 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
+                    "@airport/aviation-communication": any;
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
                     "../repository/RepositoryEntity"?: undefined;
-                    "@airport/travel-document-checkpoint-runtime"?: undefined;
+                    "@airport/travel-document-checkpoint"?: undefined;
                 };
             };
             properties: ({
@@ -1042,6 +1108,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 DbNumber?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1051,7 +1119,8 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
-                "@airport/travel-document-checkpoint-runtime": any;
+                "@airport/travel-document-checkpoint": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -1253,6 +1322,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1263,11 +1334,12 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "./ImmutableRepoRow": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
         };
@@ -1356,6 +1428,8 @@ export declare const MAPPED_SUPERCLASS: ({
                     Id?: undefined;
                     JoinColumn?: undefined;
                     ManyToOne?: undefined;
+                    encodeId?: undefined;
+                    setId?: undefined;
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
@@ -1364,10 +1438,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
                     "../repository/RepositoryEntity": any;
+                    "@airport/aviation-communication"?: undefined;
                     "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "./Repository"?: undefined;
-                    "@airport/travel-document-checkpoint-runtime"?: undefined;
+                    "@airport/travel-document-checkpoint"?: undefined;
                 };
             };
             properties: {
@@ -1501,6 +1576,24 @@ export declare const MAPPED_SUPERCLASS: ({
                         JoinColumn: any;
                         ManyToOne: any;
                         MappedSuperclass: any;
+                        encodeId: {
+                            fileImports: any;
+                            isLocal: boolean;
+                            objectMapByAsName: {
+                                encodeId: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
+                                setId: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
+                            };
+                            path: string;
+                        };
+                        setId: any;
                         Actor: {
                             fileImports: any;
                             isLocal: boolean;
@@ -1540,6 +1633,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     importMapByModulePath: {
                         "@airport/air-traffic-control": any;
+                        "@airport/aviation-communication": any;
                         "../infrastructure/Actor": any;
                         "../common": any;
                         "./Repository": any;
@@ -1694,6 +1788,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
+                encodeId?: undefined;
+                setId?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1704,11 +1800,12 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "./ImmutableRow": any;
+                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
                 "../repository/RepositoryEntity"?: undefined;
-                "@airport/travel-document-checkpoint-runtime"?: undefined;
+                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
             };
         };
@@ -1804,6 +1901,8 @@ export declare const MAPPED_SUPERCLASS: ({
                     DbNumber?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
+                    encodeId?: undefined;
+                    setId?: undefined;
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
@@ -1811,7 +1910,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
-                    "@airport/travel-document-checkpoint-runtime": any;
+                    "@airport/travel-document-checkpoint": any;
+                    "@airport/aviation-communication"?: undefined;
                     "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "./Repository"?: undefined;

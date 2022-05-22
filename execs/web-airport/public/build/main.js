@@ -19610,7 +19610,7 @@ const APPLICATION = {
                 {
                     "domain": "air",
                     "index": 0,
-                    "name": "@airport/holding-pattern-runtime",
+                    "name": "@airport/holding-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {

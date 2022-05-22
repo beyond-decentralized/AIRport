@@ -1,5 +1,5 @@
-import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, QApplication } from '@airport/air-traffic-control';
-import { RepositoryEntityId } from '@airport/aviation-communication';
+import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager } from '@airport/air-traffic-control';
+import { QApplication, RepositoryEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
 import { DaoStub } from './DaoStub';

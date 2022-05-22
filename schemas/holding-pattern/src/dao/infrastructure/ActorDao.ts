@@ -18,7 +18,7 @@ import {
 	QUser,
 	TmTerminal_Id,
 	User_Id
-} from '@airport/travel-document-checkpoint-runtime'
+} from '@airport/travel-document-checkpoint'
 import {
 	Actor_Id,
 	Actor_UuId,

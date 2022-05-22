@@ -1,9 +1,9 @@
-import { QApplication as AirportQApplication } from '@airport/air-traffic-control';
+import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QRecordUpdateStage } from './qrecordupdatestage';
 import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
 import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QApplication {
     db: DbApplication;
     RecordUpdateStage: QRecordUpdateStage;
     SynchronizationConflict: QSynchronizationConflict;

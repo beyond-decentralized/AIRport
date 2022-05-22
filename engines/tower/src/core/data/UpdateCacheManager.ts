@@ -15,7 +15,7 @@ import {
     SQLDataType,
     DbColumn
 } from "@airport/ground-control"
-import { IRepositoryEntity } from "@airport/holding-pattern-runtime";
+import { IRepositoryEntity } from "@airport/holding-pattern";
 
 @Injected()
 export class UpdateCacheManager
