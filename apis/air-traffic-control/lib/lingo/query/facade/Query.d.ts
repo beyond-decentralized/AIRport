@@ -26,9 +26,12 @@ export interface IQuery {
 export declare const NEW_RECORD_FIELDS: {
     actor: any;
     actorRecordId: any;
+    ageSuitability: number;
+    id: any;
     originalActor: any;
     originalActorRecordId: any;
     originalRepository: any;
+    systemWideOperationId: any;
 };
 export declare function ANOTHER(a: number, b?: number): any;
 export declare const Y: any;

@@ -3147,6 +3147,55 @@ function parseId(idString) {
         actorRecordId: parseInt(idStringFragments[2])
     };
 }
+// FIXME: switch to UUID lookup for URLs to work across AIRport databases
+function encodeId(idObject) {
+    if (!idObject.repository) {
+        throw Error(`Id object does not have a "repository" member object.`);
+    }
+    if (!idObject.repository.id) {
+        throw Error(`Id object does not have a "repository.id" property.`);
+    }
+    if (typeof idObject.repository.id !== 'number') {
+        throw Error(`Type of "repository.id" property is not a number.`);
+    }
+    if (!idObject.actor) {
+        throw Error(`Id object does not have an "actor" member object.`);
+    }
+    if (!idObject.actor.id) {
+        throw Error(`Id object does not have an "actor.id" property.`);
+    }
+    if (typeof idObject.actor.id !== 'number') {
+        throw Error(`Type of "actor.id" property is not a number.`);
+    }
+    if (!idObject.actorRecordId) {
+        throw Error(`Id object does not have an "actorRecordId" property.`);
+    }
+    if (typeof idObject.actorRecordId !== 'number') {
+        throw Error(`Type of "actorRecordId" property is not a number.`);
+    }
+    return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId;
+}
+// FIXME: switch to UUID lookup for URLs to work across AIRport databases
+function setId(idString, repositoryEntity) {
+    let repositoryEntityId = parseId(idString);
+    if (!repositoryEntity.repository) {
+        repositoryEntity.repository = {
+            id: repositoryEntityId.repository.id
+        };
+    }
+    else {
+        repositoryEntity.repository.id = repositoryEntityId.repository.id;
+    }
+    if (!repositoryEntity.actor) {
+        repositoryEntity.actor = {
+            id: repositoryEntityId.repository.id
+        };
+    }
+    else {
+        repositoryEntity.actor.id = repositoryEntityId.actor.id;
+    }
+    repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
+}
 
 /**
  * Created by Papa on 4/21/2016.
@@ -9420,6 +9469,12 @@ var __decorate$2c = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let RepositoryEntity = class RepositoryEntity {
+    get id() {
+        return encodeId(this);
+    }
+    set id(idString) {
+        setId(idString, this);
+    }
 };
 __decorate$2c([
     Id(),

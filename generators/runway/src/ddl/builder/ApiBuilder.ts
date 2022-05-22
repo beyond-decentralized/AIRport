@@ -109,7 +109,7 @@ export class ${this.apiFile.className} {
         let returnPrefix = ''
         if (apiSignature.returnType !== 'Promise<void>'
             && apiSignature.returnType !== 'void'
-            && !apiSignature.returnType) {
+            && apiSignature.returnType) {
             returnPrefix = 'return '
         }
 

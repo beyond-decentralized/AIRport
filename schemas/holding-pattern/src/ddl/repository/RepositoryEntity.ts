@@ -19,7 +19,6 @@ import { Repository } from './Repository'
  * Created by Papa on 2/17/2017.
  */
 export type RepositoryEntity_ActorRecordId = number
-export type RepositoryEntity_AgeSuitability = 0 | 7 | 13 | 18
 export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
@@ -48,7 +47,7 @@ export abstract class RepositoryEntity {
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability: RepositoryEntity_AgeSuitability
+	ageSuitability: number
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	// It is needed for bulk updates of repository records, where there is now way to find out
