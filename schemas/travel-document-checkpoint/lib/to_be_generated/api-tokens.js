@@ -1,4 +1,4 @@
-import { INTER_APP_API_CLIENT } from '@airport/ground-control';
+import { INTER_APP_API_CLIENT } from '@airport/direction-indicator';
 import { UserApi } from '../generated/api/api';
 import { USER_API } from './common-tokens';
 USER_API.setClass(UserApi);

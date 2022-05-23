@@ -55,7 +55,6 @@ export * from './lingo/application/DatabaseRelationConfiguration';
 export * from './lingo/application/Entity';
 export * from './lingo/application/Property';
 export * from './lingo/application/Application';
-export * from './lingo/InterAppAPIClient';
 export * from './lingo/ITransactionalConnector';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

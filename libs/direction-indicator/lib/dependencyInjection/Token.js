@@ -52,5 +52,8 @@ export class DependencyInjectionToken {
         }
         return returnedDependencyConfiguration;
     }
+    getClass() {
+        return this.descriptor.class;
+    }
 }
 //# sourceMappingURL=Token.js.map

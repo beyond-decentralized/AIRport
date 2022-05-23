@@ -1,4 +1,4 @@
-import { IDependencyInjectionToken } from "@airport/direction-indicator"
+import { IDependencyInjectionToken } from "./Token";
 
 export interface IInterAppAPIClient {
 

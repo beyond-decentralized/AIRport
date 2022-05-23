@@ -11,4 +11,9 @@ export const CONTAINER_ACCESSOR = directionIndicator.token({
     interface: 'IContainerAccessor',
     token: 'CONTAINER_ACCESSOR'
 });
+export const INTER_APP_API_CLIENT = directionIndicator.token({
+    class: null,
+    interface: 'IInterAppAPIClient',
+    token: 'INTER_APP_API_CLIENT'
+});
 //# sourceMappingURL=tokens.js.map

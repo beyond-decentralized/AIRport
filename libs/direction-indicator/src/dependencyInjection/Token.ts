@@ -31,6 +31,8 @@ export interface IDependencyInjectionToken<Injected> {
 		aClass: any
 	): void
 
+	getClass(): any
+
 }
 
 export class DependencyInjectionToken<Injected>
@@ -102,6 +104,10 @@ export class DependencyInjectionToken<Injected>
 		}
 
 		return returnedDependencyConfiguration
+	}
+
+	getClass(): any {
+		return this.descriptor.class
 	}
 
 }

@@ -1,6 +1,7 @@
+import { IInterAppAPIClient } from '@airport/direction-indicator';
 import { ILocalAPIRequest } from "@airport/aviation-communication";
 import { IDependencyInjectionToken } from "@airport/direction-indicator";
-import { IInterAppAPIClient, ITransactionalConnector } from "@airport/ground-control";
+import { ITransactionalConnector } from "@airport/ground-control";
 import { IOperationSerializer, IQueryResultsDeserializer } from "@airport/pressurization";
 export interface IRequestRecord {
     request: ILocalAPIRequest;

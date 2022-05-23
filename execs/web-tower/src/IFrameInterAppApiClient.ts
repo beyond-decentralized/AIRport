@@ -1,4 +1,5 @@
 import {
+    IInterAppAPIClient,
     Inject,
     Injected
 } from '@airport/direction-indicator'
@@ -10,7 +11,6 @@ import {
     IDependencyInjectionToken
 } from "@airport/direction-indicator";
 import {
-    IInterAppAPIClient,
     ITransactionalConnector
 } from "@airport/ground-control";
 import {

@@ -87,6 +87,9 @@ var app = (function (exports) {
             }
             return returnedDependencyConfiguration;
         }
+        getClass() {
+            return this.descriptor.class;
+        }
     }
 
     class InjectionApplication {
@@ -167,6 +170,11 @@ var app = (function (exports) {
         class: ContainerAccessor,
         interface: 'IContainerAccessor',
         token: 'CONTAINER_ACCESSOR'
+    });
+    directionIndicator.token({
+        class: null,
+        interface: 'IInterAppAPIClient',
+        token: 'INTER_APP_API_CLIENT'
     });
 
     class ChildContainer extends Container {

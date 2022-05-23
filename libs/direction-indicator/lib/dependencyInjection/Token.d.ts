@@ -16,6 +16,7 @@ export interface IDependencyInjectionToken<Injected> {
     getPath(): string;
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
     setClass(aClass: any): void;
+    getClass(): any;
 }
 export declare class DependencyInjectionToken<Injected> implements IDependencyInjectionToken<Injected> {
     application: IInjectionApplication;
@@ -27,6 +28,7 @@ export declare class DependencyInjectionToken<Injected> implements IDependencyIn
     setDependencies(dependencyConfiguration: ITokenDependencyConfiguration): void;
     setClass(aClass: any): void;
     private getInheritedDependencyConfiguration;
+    getClass(): any;
 }
 export interface GenericDependencyInjectionError {
     DependencyInjectionTokenMustBeGenerisizedWithTypeOfInjectedObject(): void;

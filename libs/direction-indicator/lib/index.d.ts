@@ -12,6 +12,7 @@ export * from './dependencyInjection/decorators';
 export * from './dependencyInjection/Injected';
 export * from './dependencyInjection/InjectionApplication';
 export * from './dependencyInjection/InjectionDomain';
+export * from './dependencyInjection/InterAppAPIClient';
 export * from './dependencyInjection/InversionOfControl';
 export * from './dependencyInjection/RootContainer';
 export * from './dependencyInjection/Token';
