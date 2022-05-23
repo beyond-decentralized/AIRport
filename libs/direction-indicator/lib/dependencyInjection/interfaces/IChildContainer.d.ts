@@ -4,6 +4,7 @@ import { IContainer } from "./IContainer";
 export interface IChildContainer extends IContainer {
     context: IInjectionContext;
     objectMap: Map<string, any>;
+    manualInject<T>(object: T, token: IDependencyInjectionToken<T>): void;
     get<A>(tokenA: IDependencyInjectionToken<A>): Promise<A>;
     get<A, B>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>): Promise<[A, B]>;
     get<A, B, C>(tokenA: IDependencyInjectionToken<A>, tokenB: IDependencyInjectionToken<B>, tokenC: IDependencyInjectionToken<C>): Promise<[A, B, C]>;

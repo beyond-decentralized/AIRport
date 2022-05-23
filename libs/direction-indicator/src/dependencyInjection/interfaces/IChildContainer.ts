@@ -8,6 +8,11 @@ export interface IChildContainer
     context: IInjectionContext
     objectMap: Map<string, any>
 
+    manualInject<T>(
+        object: T,
+        token: IDependencyInjectionToken<T>
+    ): void
+
     get<A>(
         tokenA: IDependencyInjectionToken<A>
     ): Promise<A>

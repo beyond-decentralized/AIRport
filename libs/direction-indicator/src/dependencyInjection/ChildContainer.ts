@@ -176,6 +176,14 @@ export class ChildContainer
         };
     }
 
+    manualInject<T>(
+        object: T,
+        token: IDependencyInjectionToken<T>
+    ): void {
+        (object as any).__container__ = this
+        this.setDependencyGetters(object, token)
+    }
+
     setDependencyGetters(
         object,
         token: IDependencyInjectionToken<any>

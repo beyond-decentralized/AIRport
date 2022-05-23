@@ -11,6 +11,7 @@ export declare class ChildContainer extends Container implements IChildContainer
     private doEventuallyGet;
     private doGet;
     private doGetCore;
+    manualInject<T>(object: T, token: IDependencyInjectionToken<T>): void;
     setDependencyGetters(object: any, token: IDependencyInjectionToken<any>): void;
     getByNames(domainName: string, applicationName: string, tokenInterface: string): Promise<any>;
     get<A>(tokenA: IDependencyInjectionToken<A>): Promise<A>;

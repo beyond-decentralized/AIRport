@@ -128,6 +128,10 @@ export class ChildContainer extends Container {
             objects
         };
     }
+    manualInject(object, token) {
+        object.__container__ = this;
+        this.setDependencyGetters(object, token);
+    }
     setDependencyGetters(object, token) {
         if (!token.dependencyConfiguration) {
             return;
