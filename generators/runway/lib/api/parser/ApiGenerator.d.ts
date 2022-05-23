@@ -7,12 +7,19 @@ export interface IApiSignature {
     parameters: string[];
     returnType: string;
 }
-export interface IApiFileForGeneration {
+export interface IApiClass {
     className: string;
     apiSignatures: IApiSignature[];
+}
+export interface IApiFileForGeneration {
+    apiClasses: IApiClass[];
+    fileName: string;
     imports: FileImports;
+    otherMemberDefinitions: string[];
 }
 export declare const currentApplicationApi: IApplicationApi;
-export declare const currentApiFileSignatures: IApiFileForGeneration[];
+export declare const currentApiFileSignatureMap: {
+    [filePath: string]: IApiFileForGeneration;
+};
 export declare function visitApiFile(node: ts.Node, path: string): IApiObject;
 //# sourceMappingURL=ApiGenerator.d.ts.map

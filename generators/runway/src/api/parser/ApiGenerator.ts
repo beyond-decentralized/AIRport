@@ -2,6 +2,7 @@ import {
     IApiObject,
     IApplicationApi
 } from '@airport/check-in';
+import { stringify } from 'querystring';
 import * as ts from 'typescript';
 import tsc from 'typescript';
 import { FileImports } from '../../ddl/parser/FileImports';
@@ -15,17 +16,25 @@ export interface IApiSignature {
     returnType: string
 }
 
-export interface IApiFileForGeneration {
+export interface IApiClass {
     className: string
     apiSignatures: IApiSignature[]
+}
+
+export interface IApiFileForGeneration {
+    apiClasses: IApiClass[]
+    fileName: string
     imports: FileImports,
+    otherMemberDefinitions: string[]
 }
 
 export const currentApplicationApi: IApplicationApi = {
     apiObjectMap: {}
 }
 
-export const currentApiFileSignatures: IApiFileForGeneration[] = []
+export const currentApiFileSignatureMap: {
+    [filePath: string]: IApiFileForGeneration
+} = {}
 
 const printer = tsc.createPrinter({
     newLine: tsc.NewLineKind.LineFeed,
@@ -36,23 +45,43 @@ export function visitApiFile(
     node: ts.Node,
     path: string
 ): IApiObject {
-    if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
-        return
+
+    let fileObject = currentApiFileSignatureMap[path]
+
+    if (!fileObject) {
+        const pathFragments = path.split('/')
+        fileObject = {
+            apiClasses: [],
+            fileName: pathFragments[pathFragments.length - 1],
+            imports: null,
+            otherMemberDefinitions: []
+        }
+        currentApiFileSignatureMap[path] = fileObject
     }
 
-    const classNode = <ts.ClassDeclaration>node
-    // This is a top level class, get its symbol
-    const symbol = globalThis.checker.getSymbolAtLocation(classNode.name)
-    const className = classNode.name.escapedText as string
-
-    const {
-        apiObject,
-        signatureObject
-    } = serializeClass(symbol, className, path)
-
-    if (apiObject) {
-        currentApplicationApi.apiObjectMap['I' + className] = apiObject
-        currentApiFileSignatures.push(signatureObject)
+    switch (node.kind) {
+        case tsc.SyntaxKind.ClassDeclaration:
+            const classNode = <ts.ClassDeclaration>node
+            const symbol = globalThis.checker.getSymbolAtLocation(classNode.name)
+            if (!fileObject.imports) {
+                fileObject.imports = ImportManager
+                    .resolveImports(symbol.valueDeclaration.parent, path)
+            }
+            // This is a top level class, get its symbol
+            const className = classNode.name.escapedText as string
+            const apiArtifacts = serializeClass(symbol, className, path)
+            if (apiArtifacts) {
+                currentApplicationApi.apiObjectMap['I' + className] = apiArtifacts.apiObject
+                fileObject.apiClasses.push(apiArtifacts.apiClass)
+            }
+            break;
+        case tsc.SyntaxKind.EnumDeclaration:
+        case tsc.SyntaxKind.InterfaceDeclaration:
+            fileObject.otherMemberDefinitions.push(printer.printNode(
+                tsc.EmitHint.Unspecified, node, globalThis.currentSourceFile))
+            break
+        default:
+            return
     }
 }
 
@@ -61,20 +90,16 @@ function serializeClass(
     className: string,
     path: string
 ): {
-    apiObject?: IApiObject,
-    signatureObject?: IApiFileForGeneration
+    apiClass: IApiClass
+    apiObject: IApiObject
 } {
 
     const apiObject: IApiObject = {
         operationMap: {}
     }
 
-    const imports = ImportManager
-        .resolveImports(symbol.valueDeclaration.parent, path)
-
-    const signatureObject: IApiFileForGeneration = {
+    const apiClass: IApiClass = {
         className,
-        imports,
         apiSignatures: []
     }
 
@@ -97,7 +122,7 @@ function serializeClass(
                         isAsync: methodDescriptor.isAsync,
                         parameters: []
                     }
-                    signatureObject.apiSignatures.push({
+                    apiClass.apiSignatures.push({
                         isAsync: methodDescriptor.isAsync,
                         name: methodDescriptor.name,
                         parameters: methodDescriptor.parameters,
@@ -111,9 +136,9 @@ function serializeClass(
     });
 
     return numApiMethods ? {
-        apiObject,
-        signatureObject
-    } : {}
+        apiClass,
+        apiObject
+    } : null
 }
 
 function serializeMethod(

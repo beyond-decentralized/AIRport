@@ -4,34 +4,53 @@ import { forEach } from '../../ParserUtils';
 export const currentApplicationApi = {
     apiObjectMap: {}
 };
-export const currentApiFileSignatures = [];
+export const currentApiFileSignatureMap = {};
 const printer = tsc.createPrinter({
     newLine: tsc.NewLineKind.LineFeed,
     removeComments: true
 });
 export function visitApiFile(node, path) {
-    if (node.kind !== tsc.SyntaxKind.ClassDeclaration) {
-        return;
+    let fileObject = currentApiFileSignatureMap[path];
+    if (!fileObject) {
+        const pathFragments = path.split('/');
+        fileObject = {
+            apiClasses: [],
+            fileName: pathFragments[pathFragments.length - 1],
+            imports: null,
+            otherMemberDefinitions: []
+        };
+        currentApiFileSignatureMap[path] = fileObject;
     }
-    const classNode = node;
-    // This is a top level class, get its symbol
-    const symbol = globalThis.checker.getSymbolAtLocation(classNode.name);
-    const className = classNode.name.escapedText;
-    const { apiObject, signatureObject } = serializeClass(symbol, className, path);
-    if (apiObject) {
-        currentApplicationApi.apiObjectMap['I' + className] = apiObject;
-        currentApiFileSignatures.push(signatureObject);
+    switch (node.kind) {
+        case tsc.SyntaxKind.ClassDeclaration:
+            const classNode = node;
+            const symbol = globalThis.checker.getSymbolAtLocation(classNode.name);
+            if (!fileObject.imports) {
+                fileObject.imports = ImportManager
+                    .resolveImports(symbol.valueDeclaration.parent, path);
+            }
+            // This is a top level class, get its symbol
+            const className = classNode.name.escapedText;
+            const apiArtifacts = serializeClass(symbol, className, path);
+            if (apiArtifacts) {
+                currentApplicationApi.apiObjectMap['I' + className] = apiArtifacts.apiObject;
+                fileObject.apiClasses.push(apiArtifacts.apiClass);
+            }
+            break;
+        case tsc.SyntaxKind.EnumDeclaration:
+        case tsc.SyntaxKind.InterfaceDeclaration:
+            fileObject.otherMemberDefinitions.push(printer.printNode(tsc.EmitHint.Unspecified, node, globalThis.currentSourceFile));
+            break;
+        default:
+            return;
     }
 }
 function serializeClass(symbol, className, path) {
     const apiObject = {
         operationMap: {}
     };
-    const imports = ImportManager
-        .resolveImports(symbol.valueDeclaration.parent, path);
-    const signatureObject = {
+    const apiClass = {
         className,
-        imports,
         apiSignatures: []
     };
     let numApiMethods = 0;
@@ -48,7 +67,7 @@ function serializeClass(symbol, className, path) {
                         isAsync: methodDescriptor.isAsync,
                         parameters: []
                     };
-                    signatureObject.apiSignatures.push({
+                    apiClass.apiSignatures.push({
                         isAsync: methodDescriptor.isAsync,
                         name: methodDescriptor.name,
                         parameters: methodDescriptor.parameters,
@@ -61,9 +80,9 @@ function serializeClass(symbol, className, path) {
         }
     });
     return numApiMethods ? {
-        apiObject,
-        signatureObject
-    } : {};
+        apiClass,
+        apiObject
+    } : null;
 }
 function serializeMethod(symbol, className, name, member) {
     if (!member.valueDeclaration.decorators) {

@@ -1,8 +1,7 @@
-import { AirportDatabase } from '@airport/tower';
 import * as fs from 'fs';
 import * as ts from 'typescript';
 import tsc from 'typescript';
-import { currentApiFileSignatures, currentApplicationApi } from './api/parser/ApiGenerator';
+import { currentApiFileSignatureMap, currentApplicationApi } from './api/parser/ApiGenerator';
 import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { ApplicationQueryGenerator } from './dao/parser/ApplicationQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
@@ -19,8 +18,6 @@ import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSupercla
 import { generateDefinitions } from './FileProcessor';
 import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
-// TODO: figure out if this is needed
-AirportDatabase.bogus = 'loaded for application generation';
 /**
  * Created by Papa on 3/30/2016.
  */
@@ -104,13 +101,19 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const daoBuilder = new DaoBuilder(pathBuilder);
         const duoBuilder = new DuoBuilder(pathBuilder);
         const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
-        if (currentApiFileSignatures.length) {
-            const apiIndexBuilder = new ApiIndexBuilder(pathBuilder);
-            for (const apiFileSignature of currentApiFileSignatures) {
-                const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature);
-                fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
-                apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath);
+        const apiIndexBuilder = new ApiIndexBuilder(pathBuilder);
+        let numApiFiles = 0;
+        for (const apiFilePath in currentApiFileSignatureMap) {
+            let apiFileSignature = currentApiFileSignatureMap[apiFilePath];
+            if (!apiFileSignature.apiClasses.length) {
+                continue;
             }
+            numApiFiles++;
+            const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature);
+            fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
+            apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath);
+        }
+        if (numApiFiles) {
             fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
         }
         for (const entityName in entityMapByName) {

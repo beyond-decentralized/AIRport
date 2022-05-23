@@ -4,10 +4,10 @@ import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
 import { PathBuilder } from "../../ddl/builder/PathBuilder";
 export declare class ApiBuilder extends FileBuilder implements IBuilder {
     private apiFile;
-    private tokenName;
     constructor(pathBuilder: PathBuilder, apiFile: IApiFileForGeneration);
     addImports(): void;
     build(): string;
+    private buildClassDefinition;
     private buildApiMethodStubFragment;
     private buildApiMethodStub;
 }

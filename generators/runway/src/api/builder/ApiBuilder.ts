@@ -1,4 +1,4 @@
-import { IApiFileForGeneration, IApiSignature } from "../parser/ApiGenerator";
+import { IApiClass, IApiFileForGeneration, IApiSignature } from "../parser/ApiGenerator";
 import { getFullPathFromRelativePath, resolveRelativePath } from "../../resolve/pathResolver";
 import { IBuilder } from "../../ddl/builder/Builder";
 import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
@@ -9,16 +9,13 @@ export class ApiBuilder
     extends FileBuilder
     implements IBuilder {
 
-    private tokenName
-
     constructor(
         pathBuilder: PathBuilder,
         private apiFile: IApiFileForGeneration
     ) {
         super(null, null, pathBuilder, null);
         this.fullGenerationPath = pathBuilder.fullGeneratedDirPath
-            + `/api/${this.apiFile.className}.ts`;
-        this.tokenName = TokenBuilder.getTokenNameFromClassName(this.apiFile.className)
+            + `/api/${this.apiFile.fileName}`;
     }
 
     addImports() {
@@ -27,9 +24,6 @@ export class ApiBuilder
             'Inject',
             'Injected'
         ], '@airport/direction-indicator');
-        this.addImport([
-            this.tokenName
-        ], '../../to_be_generated/common-tokens');
 
         for (const objectAsName in this.apiFile.imports.importMapByObjectAsName) {
             const moduleImport = this.apiFile.imports
@@ -48,34 +42,58 @@ export class ApiBuilder
     }
 
     build(): string {
+        let enumAndInterfaceDefinitionCode = ''
+        for (let enumOrInterfaceCode of this.apiFile.otherMemberDefinitions) {
+            enumAndInterfaceDefinitionCode += `
+${enumOrInterfaceCode}`
+        }
+
+        let apiClassDefinitionCode = ''
+
+        let tokenNames = []
+        for (let apiClass of this.apiFile.apiClasses) {
+            const tokenName = TokenBuilder.getTokenNameFromClassName(apiClass.className)
+            tokenNames.push(tokenName)
+            apiClassDefinitionCode += this.buildClassDefinition(apiClass, tokenName)
+        }
+
+        this.addImport(tokenNames, '../../to_be_generated/common-tokens')
         const imports = this.buildImports();
 
-
-        let proxyName = this.apiFile.className
-        proxyName = proxyName[0].toLowerCase() + proxyName.substring(1)
-
         return `${imports}
-
-// An API stub for other Applications and UIs to use
-@Injected()
-export class ${this.apiFile.className} {
-
-    constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, ${this.tokenName})
+${enumAndInterfaceDefinitionCode}
+${apiClassDefinitionCode}`
     }
 
+    private buildClassDefinition(
+        apiClass: IApiClass,
+        tokenName: string
+    ) {
+        let proxyName = apiClass.className
+        proxyName = proxyName[0].toLowerCase() + proxyName.substring(1)
+
+        return `
+// An API stub for other Applications and UIs to use
+@Injected()
+export class ${apiClass.className} {
+
+    constructor() {
+        DEPENDENCY_INJECTION.db().manualInject(this, ${tokenName})
+    }
+        
     @Inject()
-    ${proxyName}: ${this.apiFile.className}
-    ${this.buildApiMethodStubFragment(proxyName)}
+    ${proxyName}: ${apiClass.className}
+            ${this.buildApiMethodStubFragment(apiClass, proxyName)}
 }
 `
     }
 
     private buildApiMethodStubFragment(
+        apiClass: IApiClass,
         apiObjectName: string
     ): string {
         let methodStubFragment = ''
-        for (const apiSignature of this.apiFile.apiSignatures) {
+        for (const apiSignature of apiClass.apiSignatures) {
             methodStubFragment += `
     ${this.buildApiMethodStub(apiObjectName, apiSignature)}
 `
