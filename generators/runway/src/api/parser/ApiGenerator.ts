@@ -71,7 +71,7 @@ export function visitApiFile(
             const className = classNode.name.escapedText as string
             const apiArtifacts = serializeClass(symbol, className, path)
             if (apiArtifacts) {
-                currentApplicationApi.apiObjectMap['I' + className] = apiArtifacts.apiObject
+                currentApplicationApi.apiObjectMap[className] = apiArtifacts.apiObject
                 fileObject.apiClasses.push(apiArtifacts.apiClass)
             }
             break;

@@ -12,10 +12,6 @@ export interface IAddUserResponse {
     errorCode?: AddUserErrorCodes;
     user?: IUser;
 }
-export interface IUserApi {
-    addUser(username: string, email: string): Promise<IAddUserResponse>;
-    findUser(privateId: string): Promise<IUser>;
-}
 export declare class UserApi {
     userDao: UserDao;
     addUser(username: string, email: string): Promise<IAddUserResponse>;

@@ -7,7 +7,7 @@
 		{
 			"api": {
 				"apiObjectMap": {
-					"IUserApi": {
+					"UserApi": {
 						"operationMap": {
 							"addUser": {
 								"isAsync": true,

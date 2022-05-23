@@ -19,7 +19,11 @@ export class ApiIndexBuilder extends FileBuilder {
             exports += `export * from '${relativePathToImport}'
 `;
         }
-        return exports;
+        return `${exports}
+import { loadAutopilot } from '@airport/autopilot'
+       
+loadAutopilot()
+`;
     }
 }
 //# sourceMappingURL=ApiIndexBuilder.js.map

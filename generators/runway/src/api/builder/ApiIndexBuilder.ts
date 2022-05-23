@@ -34,6 +34,10 @@ export class ApiIndexBuilder
             exports += `export * from '${relativePathToImport}'
 `
         }
-        return exports
+        return `${exports}
+import { loadAutopilot } from '@airport/autopilot'
+       
+loadAutopilot()
+`
     }
 }

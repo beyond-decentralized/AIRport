@@ -18,19 +18,6 @@ export interface IAddUserResponse {
     user?: IUser
 }
 
-export interface IUserApi {
-
-    addUser(
-        username: string,
-        email: string,
-    ): Promise<IAddUserResponse>
-
-    findUser(
-        privateId: string
-    ): Promise<IUser>
-
-}
-
 @Injected()
 export class UserApi {
 

@@ -33,7 +33,7 @@ export function visitApiFile(node, path) {
             const className = classNode.name.escapedText;
             const apiArtifacts = serializeClass(symbol, className, path);
             if (apiArtifacts) {
-                currentApplicationApi.apiObjectMap['I' + className] = apiArtifacts.apiObject;
+                currentApplicationApi.apiObjectMap[className] = apiArtifacts.apiObject;
                 fileObject.apiClasses.push(apiArtifacts.apiClass);
             }
             break;

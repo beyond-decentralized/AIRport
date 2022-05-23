@@ -6,7 +6,7 @@ export declare const APPLICATION: {
     versions: {
         api: {
             apiObjectMap: {
-                IUserApi: {
+                UserApi: {
                     operationMap: {
                         addUser: {
                             isAsync: boolean;

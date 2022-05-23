@@ -32,10 +32,6 @@ export interface IAddUserResponse {
     errorCode?: AddUserErrorCodes;
     user?: IUser;
 }
-export interface IUserApi {
-    addUser(username: string, email: string): Promise<IAddUserResponse>;
-    findUser(privateId: string): Promise<IUser>;
-}
 
 // An API stub for other Applications and UIs to use
 @Injected()

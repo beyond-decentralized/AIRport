@@ -1,10 +1,10 @@
 import { lib } from '@airport/direction-indicator'
-import type { IUserApi } from '../api/UserApi'
+import type { UserApi } from '../generated/api/api'
 
 export const travelDocumentCheckpoint = lib('travel-document-checkpoint')
 
-export const USER_API = travelDocumentCheckpoint.token<IUserApi>({
+export const USER_API = travelDocumentCheckpoint.token<UserApi>({
     class: null,
-    interface: 'IUserApi',
+    interface: 'UserApi',
     token: 'USER_API'
 })

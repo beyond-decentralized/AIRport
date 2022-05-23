@@ -8,7 +8,7 @@ export const APPLICATION = {
         {
             "api": {
                 "apiObjectMap": {
-                    "IUserApi": {
+                    "UserApi": {
                         "operationMap": {
                             "addUser": {
                                 "isAsync": true,
