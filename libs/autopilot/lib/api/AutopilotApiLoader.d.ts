@@ -1,6 +1,7 @@
-import { IAutopilotApiLoader, IDependencyInjectionToken } from '@airport/direction-indicator';
+import { IAutopilotApiLoader, IDependencyInjectionToken, IInterAppAPIClient } from '@airport/direction-indicator';
 import { ILocalAPIClient } from '../LocalAPIClient';
 export declare class AutopilotApiLoader implements IAutopilotApiLoader {
+    interAppApiClient: IInterAppAPIClient;
     localApiClient: ILocalAPIClient;
     loadApiAutopilot<T>(token: IDependencyInjectionToken<T>): T;
 }
