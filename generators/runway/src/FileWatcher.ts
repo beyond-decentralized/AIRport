@@ -26,8 +26,8 @@ import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSupercla
 import { Configuration } from './ddl/options/Options';
 import { EntityCandidate } from './ddl/parser/EntityCandidate';
 import { generateDefinitions } from './FileProcessor';
-import { ApiBuilder } from './ddl/builder/ApiBuilder';
-import { ApiIndexBuilder } from './ddl/builder/ApiIndexBuilder';
+import { ApiBuilder } from './api/builder/ApiBuilder';
+import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 
 // TODO: figure out if this is needed
 (AirportDatabase as any).bogus = 'loaded for application generation';

@@ -1,7 +1,7 @@
 import { resolveRelativePath } from "../../resolve/pathResolver";
-import { IBuilder } from "./Builder";
-import { FileBuilder } from "./entity/FileBuilder";
-import { PathBuilder } from "./PathBuilder";
+import { IBuilder } from "../../ddl/builder/Builder";
+import { FileBuilder } from "../../ddl/builder/entity/FileBuilder";
+import { PathBuilder } from "../../ddl/builder/PathBuilder";
 
 export class ApiIndexBuilder
     extends FileBuilder

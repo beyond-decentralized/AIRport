@@ -17,8 +17,8 @@ import { QApplicationBuilder } from './ddl/builder/QApplicationBuilder';
 import { JsonApplicationBuilder } from './ddl/builder/application/JsonApplicationBuilder';
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { generateDefinitions } from './FileProcessor';
-import { ApiBuilder } from './ddl/builder/ApiBuilder';
-import { ApiIndexBuilder } from './ddl/builder/ApiIndexBuilder';
+import { ApiBuilder } from './api/builder/ApiBuilder';
+import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 // TODO: figure out if this is needed
 AirportDatabase.bogus = 'loaded for application generation';
 /**
