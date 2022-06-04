@@ -12,7 +12,7 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
 /**
  * Created by Papa on 11/12/2016.
  */
-export declare class EntityFindOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFindOne<Entity, IESP>, EntityFindOne<Entity, IESP>, IESP> implements IEntityFindOneInternal<Entity, IESP> {
+export declare class EntityFindOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntityFindOne<Entity, IESP>, IESP> implements IEntityFindOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, context?: IContext): Promise<Entity>;
@@ -22,7 +22,6 @@ export declare class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
     findOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, context?: IContext): Promise<Entity>;
-    map(isMapped?: boolean): EntityFindOne<Entity, IESP>;
     noCache(): EntityFindOne<Entity, IESP>;
 }
 //# sourceMappingURL=EntityFindOne.d.ts.map

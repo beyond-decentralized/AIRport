@@ -1,7 +1,6 @@
 import {
 	IApplicationUtils,
 	IUtils,
-	MappedEntityArray,
 	ReferencedColumnData
 } from '@airport/air-traffic-control'
 import {
@@ -113,7 +112,7 @@ export interface IEntityResultParser {
 		parsedResults: any[],
 		selectClauseFragment: any,
 		context: IFuelHydrantContext,
-	): any[] | MappedEntityArray<any>;
+	): any[];
 
 }
 

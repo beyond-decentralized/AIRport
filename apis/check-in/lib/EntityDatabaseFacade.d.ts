@@ -1,4 +1,4 @@
-import { IDao, IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, MappedEntityArray, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-traffic-control';
+import { IDao, IDatabaseFacade, IDuo, IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityDatabaseFacade, IEntityFind, IEntityFindOne, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/air-traffic-control';
 import { QApplication } from '@airport/aviation-communication';
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 /**
@@ -9,7 +9,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     private Q;
     protected dao: IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
     duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
-    find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+    find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QApplication, dao: IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>);
     get from(): IQ;

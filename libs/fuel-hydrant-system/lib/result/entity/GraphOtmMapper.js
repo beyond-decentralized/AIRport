@@ -19,28 +19,17 @@ export class GraphOtmMapper {
         // Add into mtoEntityReferenceMap
         const otmDbEntity = mtoStubReference.otmDbEntity;
         let mtoEntityReferenceMapForEntity = ensureChildMap(ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index), otmDbEntity.index);
-        // TODO: MappedEntityArray is not serializable, make it so before using
-        // let mtoEntityReferenceMapForEntity: {
-        // 	[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
-        // }                 = ensureChildMap(
-        // 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
-        // 	otmDbEntity.index
-        // )
-        // let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
         let mapForOtmEntity = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId];
         if (!mapForOtmEntity) {
             mapForOtmEntity = {};
             mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity;
         }
-        // let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
         let mtoCollection = mapForOtmEntity[mtoStubReference.otmEntityField];
         if (!mtoCollection) {
-            // mtoCollection = newMappedEntityArray<any>(this.applicationUtils, dbEntity)
             mtoCollection = [];
             mapForOtmEntity[mtoStubReference.otmEntityField]
                 = mtoCollection;
         }
-        // mtoCollection.put(mtoStubReference.mtoParentObject)
         mtoCollection.push(mtoStubReference.mtoParentObject);
     }
     addOtmReference(otmStubReference, otmEntityIdValue) {
@@ -54,7 +43,7 @@ export class GraphOtmMapper {
         }
         otmRecordByPropertyName[otmStubReference.otmPropertyName] = otmStubReference.otmObject;
     }
-    populateOtms(entityMap, keepMappedEntityArrays) {
+    populateOtms(entityMap) {
         for (const applicationIndex in this.mtoEntityReferenceMap) {
             const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex];
             for (const entityIndex in mtoEntityReferenceMapForApplication) {
@@ -90,18 +79,18 @@ export class GraphOtmMapper {
                         if (!otmEntity) {
                             continue;
                         }
-                        let referencedEntityMap = referencedEntitiesByPropertyMap[otmProperty];
+                        let referencedEntityArray = referencedEntitiesByPropertyMap[otmProperty];
                         let otmCollection = otmEntity[otmProperty];
                         // If @OneToMany isn't set yet
                         if (!otmCollection) {
-                            otmEntity[otmProperty] = referencedEntityMap;
+                            otmEntity[otmProperty] = referencedEntityArray;
                         }
                         else {
-                            otmCollection.putAll(referencedEntityMap);
+                            for (let referencedEntity of referencedEntityArray) {
+                                otmCollection.push(referencedEntity);
+                            }
                         }
-                        if (!keepMappedEntityArrays) {
-                            otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice();
-                        }
+                        otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice();
                     }
                 }
             }

@@ -8,11 +8,7 @@ import {ILookup}         from './Lookup'
 /**
  * Common parent for all entity retrieval operations.
  */
-export interface IEntityLookup<Child, MappedChild>
+export interface IEntityLookup
 	extends ILookup {
-
-	map(
-		isMapped?: boolean
-	): MappedChild;
 
 }

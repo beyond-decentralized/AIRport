@@ -10,7 +10,6 @@ import { IEntityQueryContext }          from '../../../lingo/core/EntityContext'
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IEntitySearch }           from '../../../lingo/query/api/EntitySearch';
 import { RawEntityQuery }          from '../../../lingo/query/facade/EntityQuery';
-import { MappedEntityArray }       from '../../../lingo/query/MappedEntityArray';
 import { EntityLookup }            from './EntityLookup';
 
 export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>,
@@ -29,8 +28,7 @@ export interface IEntitySearchInternal<Entity, EntityArray extends Array<Entity>
  * Created by Papa on 11/12/2016.
  */
 export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties>
-	extends EntityLookup<EntitySearch<Entity, Array<Entity>, IESP>,
-		EntitySearch<Entity, MappedEntityArray<Entity>, IESP>, IESP>
+	extends EntityLookup<EntitySearch<Entity, Array<Entity>, IESP>, IESP>
 	implements IEntitySearchInternal<Entity, EntityArray, IESP> {
 
 	graph(
@@ -54,12 +52,6 @@ export class EntitySearch<Entity, EntityArray extends Array<Entity>, IESP extend
 	): Promise<EntityArray> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
 			true, false, this.ensureContext(context) as IEntityQueryContext);
-	}
-
-	map(
-		isMapped?: boolean
-	): EntitySearch<Entity, MappedEntityArray<Entity>, IESP> {
-		return this.setMap(EntitySearch, isMapped);
 	}
 
 	noCache(): EntitySearch<Entity, Entity[], IESP> {

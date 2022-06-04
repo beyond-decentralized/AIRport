@@ -12,9 +12,5 @@ export var QueryResultType;
     QueryResultType["FIELD"] = "FIELD";
     // Raw result, returned by a SQL string query
     QueryResultType["RAW"] = "RAW";
-    // ENTITY_GRAPH with all arrays returned as a MappedEntityArray
-    QueryResultType["MAPPED_ENTITY_GRAPH"] = "MAPPED_ENTITY_GRAPH";
-    // ENTITY_TREE with all arrays returned as a MappedEntityArray
-    QueryResultType["MAPPED_ENTITY_TREE"] = "MAPPED_ENTITY_TREE";
 })(QueryResultType || (QueryResultType = {}));
 //# sourceMappingURL=QueryResultType.js.map

@@ -7,7 +7,7 @@ import {IEntityLookup}           from './EntityLookup'
  * Entity 'findOne' API.
  */
 export interface IEntityFindOne<Entity, IESP extends IEntitySelectProperties>
-	extends IEntityLookup<IEntityFindOne<Entity, IESP>, IEntityFindOne<Entity, IESP>> {
+	extends IEntityLookup {
 
 	/**
 	 * Returns a Promise for a fully interlinked entity graph.

@@ -1,6 +1,6 @@
 import { JSONEntityFieldInOrderBy } from '../../core/field/FieldInOrderBy';
 import { JSONEntityRelation } from '../../core/entity/Relation';
-import {JsonQuery, JsonLimitedQuery} from './Query';
+import { JsonQuery, JsonLimitedQuery } from './Query';
 
 /**
  * Marker interface behind the SELECT clause.
@@ -8,7 +8,7 @@ import {JsonQuery, JsonLimitedQuery} from './Query';
 export interface JsonEntityProperties {
 	// When specified with value of null selects all fields in current
 	// entity
-	'*'?: null | undefined;
+	'*'?: true | any;
 }
 
 /**

@@ -31,15 +31,28 @@ export class UpdateCacheManager
         entity: T,
         dbEntity: DbEntity
     ): any {
+        this.doSaveOriginalValues(entity, dbEntity, new Set())
+    }
+
+
+    doSaveOriginalValues<E, T = E | E[]>(
+        entity: T,
+        dbEntity: DbEntity,
+        processedEntities: Set<any>
+    ): any {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
-                this.saveOriginalValues(entity[i], dbEntity)
+                this.doSaveOriginalValues(entity[i], dbEntity, processedEntities)
             }
             return
         }
         if (!entity) {
             return
         }
+        if (processedEntities.has(entity)) {
+            return
+        }
+        processedEntities.add(entity)
         const originalValuesObject: any = {}
         this.entityStateManager.setOriginalValues(originalValuesObject, entity);
         for (let dbProperty of dbEntity.properties) {
@@ -79,7 +92,7 @@ export class UpdateCacheManager
                         }
                     });
                 }
-                this.saveOriginalValues(property, dbProperty.relation[0].relationEntity)
+                this.doSaveOriginalValues(property, dbProperty.relation[0].relationEntity, processedEntities)
             } else {
                 originalValuesObject[dbProperty.name] = entity[dbProperty.name]
             }

@@ -164,7 +164,7 @@ export class ApplicationQueryGenerator {
 			.versions[qApplication.__dbApplication__.versions.length - 1];
 		context.dbEntity = dbApplicationVersion.entityMapByName[entityName];
 		await queryFacade.ensureContext(context);
-		const queryResultType = this.getQueryResultType(queryDefinition.type, false);
+		const queryResultType = this.getQueryResultType(queryDefinition.type);
 
 		const portableQuery = queryFacade.getPortableQuery(
 			new LimitedEntityQuery(rawQuery), queryResultType, context);
@@ -273,25 +273,18 @@ export class ApplicationQueryGenerator {
 	}
 
 	private getQueryResultType(
-		operationType: OperationType,
-		mapResults: boolean
+		operationType: OperationType
 	): QueryResultType {
 		switch (operationType) {
 			case OperationType.FIND_ONE_GRAPH:
 			case OperationType.FIND_GRAPH:
 			case OperationType.SEARCH_ONE_GRAPH:
 			case OperationType.SEARCH_GRAPH:
-				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_GRAPH;
-				}
 				return QueryResultType.ENTITY_GRAPH;
 			case OperationType.FIND_ONE_TREE:
 			case OperationType.FIND_TREE:
 			case OperationType.SEARCH_ONE_TREE:
 			case OperationType.SEARCH_TREE:
-				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_TREE;
-				}
 				return QueryResultType.ENTITY_TREE;
 			default:
 				throw new Error(`Unexpected OperationType: '${operationType}'.`);

@@ -8,15 +8,22 @@ import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType, EntityState, SQLDataType } from "@airport/ground-control";
 let UpdateCacheManager = class UpdateCacheManager {
     saveOriginalValues(entity, dbEntity) {
+        this.doSaveOriginalValues(entity, dbEntity, new Set());
+    }
+    doSaveOriginalValues(entity, dbEntity, processedEntities) {
         if (entity instanceof Array) {
             for (let i = 0; i < entity.length; i++) {
-                this.saveOriginalValues(entity[i], dbEntity);
+                this.doSaveOriginalValues(entity[i], dbEntity, processedEntities);
             }
             return;
         }
         if (!entity) {
             return;
         }
+        if (processedEntities.has(entity)) {
+            return;
+        }
+        processedEntities.add(entity);
         const originalValuesObject = {};
         this.entityStateManager.setOriginalValues(originalValuesObject, entity);
         for (let dbProperty of dbEntity.properties) {
@@ -55,7 +62,7 @@ let UpdateCacheManager = class UpdateCacheManager {
                         }
                     });
                 }
-                this.saveOriginalValues(property, dbProperty.relation[0].relationEntity);
+                this.doSaveOriginalValues(property, dbProperty.relation[0].relationEntity, processedEntities);
             }
             else {
                 originalValuesObject[dbProperty.name] = entity[dbProperty.name];

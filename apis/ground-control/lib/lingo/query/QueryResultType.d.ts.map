@@ -1,1 +1,1 @@
-{"version":3,"file":"QueryResultType.d.ts","sourceRoot":"","sources":["../../../src/lingo/query/QueryResultType.ts"],"names":[],"mappings":"AAAA,oBAAY,eAAe;IAE1B,YAAY,iBAAiB;IAE7B,WAAW,gBAAgB;IAE3B,IAAI,SAAS;IAEb,KAAK,UAAU;IAEf,KAAK,UAAU;IAEf,GAAG,QAAQ;IAEX,mBAAmB,wBAAwB;IAE3C,kBAAkB,uBAAuB;CACzC"}
+{"version":3,"file":"QueryResultType.d.ts","sourceRoot":"","sources":["../../../src/lingo/query/QueryResultType.ts"],"names":[],"mappings":"AAAA,oBAAY,eAAe;IAE1B,YAAY,iBAAiB;IAE7B,WAAW,gBAAgB;IAE3B,IAAI,SAAS;IAEb,KAAK,UAAU;IAEf,KAAK,UAAU;IAEf,GAAG,QAAQ;CACX"}

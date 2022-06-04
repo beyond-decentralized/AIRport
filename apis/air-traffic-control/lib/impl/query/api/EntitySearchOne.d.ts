@@ -13,7 +13,7 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
 /**
  * Created by Papa on 11/12/2016.
  */
-export declare class EntitySearchOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntitySearchOne<Entity, IESP>, EntitySearchOne<Entity, IESP>, IESP> implements IEntitySearchOneInternal<Entity, IESP> {
+export declare class EntitySearchOne<Entity, IESP extends IEntitySelectProperties> extends EntityLookup<EntitySearchOne<Entity, IESP>, IESP> implements IEntitySearchOneInternal<Entity, IESP> {
     graph(rawGraphQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, context?: IContext): Observable<Entity>;
@@ -23,6 +23,5 @@ export declare class EntitySearchOne<Entity, IESP extends IEntitySelectPropertie
     searchOne(rawEntityQuery: RawEntityQuery<IESP> | {
         (...args: any[]): RawEntityQuery<IESP>;
     }, queryResultType: QueryResultType, context?: IContext): Promise<Entity>;
-    map(isMapped?: boolean): EntitySearchOne<Entity, IESP>;
 }
 //# sourceMappingURL=EntitySearchOne.d.ts.map

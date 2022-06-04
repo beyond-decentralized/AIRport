@@ -4,7 +4,6 @@ import { IEntityQueryContext } from '../../../lingo/core/EntityContext'
 import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityFind } from '../../../lingo/query/api/EntityFind'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
-import { MappedEntityArray } from '../../../lingo/query/MappedEntityArray'
 import { EntityLookup } from './EntityLookup'
 
 export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>,
@@ -22,8 +21,7 @@ export interface IEntityFindInternal<Entity, EntityArray extends Array<Entity>,
  * Created by Papa on 11/12/2016.
  */
 export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties>
-	extends EntityLookup<EntityFind<Entity, Array<Entity>, IESP>,
-	EntityFind<Entity, MappedEntityArray<Entity>, IESP>, IESP>
+	extends EntityLookup<EntityFind<Entity, Array<Entity>, IESP>, IESP>
 	implements IEntityFindInternal<Entity, EntityArray, IESP> {
 
 	async graph(
@@ -48,12 +46,6 @@ export class EntityFind<Entity, EntityArray extends Array<Entity>, IESP extends 
 		return await this.entityLookup(rawEntityQuery, queryResultType,
 			false, false,
 			this.ensureContext(context) as IEntityQueryContext)
-	}
-
-	map(
-		isMapped?: boolean
-	): EntityFind<Entity, MappedEntityArray<Entity>, IESP> {
-		return this.setMap(EntityFind, isMapped)
 	}
 
 	noCache(): EntityFind<Entity, Entity[], IESP> {

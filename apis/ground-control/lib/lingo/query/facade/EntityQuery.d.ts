@@ -5,7 +5,7 @@ import { JsonQuery, JsonLimitedQuery } from './Query';
  * Marker interface behind the SELECT clause.
  */
 export interface JsonEntityProperties {
-    '*'?: null | undefined;
+    '*'?: true | any;
 }
 /**
  * Entity queries are serialized in this format.

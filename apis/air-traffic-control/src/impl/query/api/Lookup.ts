@@ -71,8 +71,7 @@ export class Lookup
 		search: boolean,
 		one: boolean,
 		QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery,
-		context: IQueryContext,
-		mapResults?: boolean
+		context: IQueryContext
 	): Promise<any> {
 		let query: IAbstractQuery;
 		if (QueryClass) {
@@ -80,7 +79,6 @@ export class Lookup
 			query = new QueryClass(rawNonEntityQuery);
 		} else {
 			query = this.entityUtils.getEntityQuery(rawQuery);
-			queryResultType = this.getQueryResultType(queryResultType, mapResults);
 		}
 		let queryMethod;
 		if (search) {
@@ -98,37 +96,12 @@ export class Lookup
 		}
 
 		let result = await queryMethod.call(this.queryFacade, query,
-			this.getQueryResultType(queryResultType, mapResults), context);
+			queryResultType, context);
 		if (!one && !result) {
 			result = []
 		}
 
 		return result
-	}
-
-	private getQueryResultType(
-		baseQueryResultType: QueryResultType,
-		mapResults: boolean
-	): QueryResultType {
-		switch (baseQueryResultType) {
-			case QueryResultType.ENTITY_GRAPH:
-				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_GRAPH;
-				}
-				return QueryResultType.ENTITY_GRAPH;
-			case QueryResultType.ENTITY_TREE:
-				if (mapResults) {
-					return QueryResultType.MAPPED_ENTITY_TREE;
-				}
-				return QueryResultType.ENTITY_TREE;
-			case QueryResultType.FIELD:
-			case QueryResultType.RAW:
-			case QueryResultType.TREE:
-			case QueryResultType.SHEET:
-				return baseQueryResultType
-			default:
-				throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
-		}
 	}
 
 }

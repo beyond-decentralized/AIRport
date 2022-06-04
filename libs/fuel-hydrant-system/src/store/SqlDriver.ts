@@ -345,7 +345,6 @@ export abstract class SqlDriver
 		results = await sqlQuery.parseQueryResults(
 			results, internalFragments, portableQuery.queryResultType, context);
 
-		// FIXME: convert to MappedEntityArray if needed
 		return <EntityArray>results;
 	}
 
@@ -360,8 +359,6 @@ export abstract class SqlDriver
 		switch (resultType) {
 			case QueryResType.ENTITY_GRAPH:
 			case QueryResType.ENTITY_TREE:
-			case QueryResType.MAPPED_ENTITY_GRAPH:
-			case QueryResType.MAPPED_ENTITY_TREE:
 				const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 					.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
 				return new EntitySQLQuery(<JsonEntityQuery<any>>jsonQuery,
@@ -475,7 +472,6 @@ export abstract class SqlDriver
 			runQuery: () => {
 				this.find(portableQuery, internalFragments, context)
 					.then((results: E[]) => {
-						// FIXME: convert to MappedEntityArray if needed
 						resultsSubject.next(<EntityArray>results);
 					});
 			}

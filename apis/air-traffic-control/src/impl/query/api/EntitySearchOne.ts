@@ -25,8 +25,7 @@ export interface IEntitySearchOneInternal<Entity, IESP extends IEntitySelectProp
  * Created by Papa on 11/12/2016.
  */
 export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
-	extends EntityLookup<EntitySearchOne<Entity, IESP>,
-	EntitySearchOne<Entity, IESP>, IESP>
+	extends EntityLookup<EntitySearchOne<Entity, IESP>, IESP>
 	implements IEntitySearchOneInternal<Entity, IESP> {
 
 	graph(
@@ -52,12 +51,6 @@ export class EntitySearchOne<Entity, IESP extends IEntitySelectProperties>
 	): Promise<Entity> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
 			true, true, this.ensureContext(context) as IEntityQueryContext);
-	}
-
-	map(
-		isMapped?: boolean
-	): EntitySearchOne<Entity, IESP> {
-		return this.setMap(EntitySearchOne, isMapped);
 	}
 
 }

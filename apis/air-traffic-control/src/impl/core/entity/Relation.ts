@@ -3,7 +3,7 @@ import {
 	DbRelation,
 	JoinType
 } from '@airport/ground-control'
-import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { IQEntity, IQEntityInternal } from '../../../lingo/core/entity/Entity'
 import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
@@ -75,7 +75,8 @@ export function QRepositoryEntityRelation(
 
 export const qRepositoryEntityRelationMethods = {
 	equals: function <Entity, IQ extends IQEntityInternal>(
-		entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+		entity: Entity | IQEntity |
+			IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
 	): JSONLogicalOperation {
 		if (typeof entity === 'string') {
 			entity = parseId(entity)

@@ -16,8 +16,5 @@ export class EntitySearchOne extends EntityLookup {
     async searchOne(rawEntityQuery, queryResultType, context) {
         return await this.entityLookup(rawEntityQuery, queryResultType, true, true, this.ensureContext(context));
     }
-    map(isMapped) {
-        return this.setMap(EntitySearchOne, isMapped);
-    }
 }
 //# sourceMappingURL=EntitySearchOne.js.map

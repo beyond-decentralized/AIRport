@@ -12,10 +12,8 @@ let ObjectResultParserFactory = class ObjectResultParserFactory {
     getObjectResultParser(queryResultType, config, rootDbEntity) {
         switch (queryResultType) {
             case QueryResultType.ENTITY_GRAPH:
-            case QueryResultType.MAPPED_ENTITY_GRAPH:
                 return new EntityGraphResultParser(config, rootDbEntity, this.applicationUtils, this.entityStateManager, this.utils);
             case QueryResultType.ENTITY_TREE:
-            case QueryResultType.MAPPED_ENTITY_TREE:
                 return new EntityTreeResultParser(this.applicationUtils, this.entityStateManager, this.utils);
             default:
                 throw new Error(`ObjectQueryParser not supported for QueryResultType: ${queryResultType}`);

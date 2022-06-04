@@ -66,7 +66,7 @@ export const Y: any = {
 
 export const ALL_FIELDS: any = {
 	__allFields__: true
-}
+} as any
 
 export const YES = Y;
 

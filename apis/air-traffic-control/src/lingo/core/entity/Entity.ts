@@ -4,16 +4,17 @@ import {
 	JoinType,
 	JSONBaseOperation,
 	JSONRelation
-}                                from '@airport/ground-control'
-import {IAirportDatabase}        from '../../AirportDatabase'
-import {IFieldUtils}             from '../../utils/FieldUtils'
-import {IQueryUtils}             from '../../utils/QueryUtils'
-import {IApplicationUtils}            from '../../utils/ApplicationUtils'
-import {IQOperableFieldInternal} from '../field/OperableField'
-import {IFieldColumnAliases}     from './Aliases'
-import {IJoinFields}             from './Joins'
-import {IQInternalRelation}      from './Relation'
+} from '@airport/ground-control'
+import { IFieldUtils } from '../../utils/FieldUtils'
+import { IQueryUtils } from '../../utils/QueryUtils'
+import { IQOperableFieldInternal } from '../field/OperableField'
+import { IFieldColumnAliases } from './Aliases'
+import { IJoinFields } from './Joins'
+import { IQInternalRelation, IQRepositoryEntityRelation } from './Relation'
 import { IRelationManager } from '../../../impl/core/entity/RelationManager'
+import { RepositoryEntityId } from '@airport/aviation-communication'
+import { JSONLogicalOperation } from '../operation/LogicalOperation'
+import { Y } from '../../query/facade/Query'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -29,6 +30,7 @@ export interface IEntityIdProperties {
  * extension must list all of the properties of the entity as optional.
  */
 export interface IEntitySelectProperties {
+	'*'?: boolean | any
 }
 
 /**
@@ -74,6 +76,7 @@ export interface IEntityUpdateProperties {
  * of Repository Entities).
  */
 export interface IEntityCascadeGraph {
+	'*'?: boolean | any
 }
 
 export interface EntityConstructor {
@@ -139,6 +142,11 @@ export interface IEntityRelationFrom {
  * A concrete Generated Query Entity.
  */
 export interface IQEntity {
+
+	equals<Entity, IQ extends IQEntityInternal>(
+		entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ>
+			| RepositoryEntityId | string
+	): JSONLogicalOperation;
 
 	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 

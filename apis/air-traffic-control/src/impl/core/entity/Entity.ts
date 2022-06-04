@@ -24,7 +24,7 @@ import {
 } from '../../../lingo/core/entity/Entity'
 import { IJoinFields } from '../../../lingo/core/entity/Joins'
 import { OneToManyElements } from '../../../lingo/core/entity/metadata/ColumnDecorators'
-import { IQInternalRelation } from '../../../lingo/core/entity/Relation'
+import { IQInternalRelation, IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField'
 import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade'
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
@@ -36,6 +36,9 @@ import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
 import { FieldColumnAliases } from './Aliases'
 import { IRelationManager } from './RelationManager'
+import { parseId, RepositoryEntityId } from '@airport/aviation-communication'
+import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
+import { and } from '../operation/LogicalOperation'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -87,7 +90,7 @@ export function QEntity<IEntity>(
 	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
 ) {
 	this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager,
-		fromClausePosition, dbRelation, joinType,this)
+		fromClausePosition, dbRelation, joinType, this)
 }
 
 QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
@@ -104,6 +107,21 @@ QEntity.prototype.leftJoin = function <IF extends IFrom>(right: IF): IJoinFields
 
 QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
+}
+
+QEntity.prototype.equals = function <Entity, IQ extends IQEntityInternal>(
+	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+): JSONLogicalOperation {
+	if (typeof entity === 'string') {
+		entity = parseId(entity)
+	}
+	let thisRelation = this as any
+	let other = entity as any
+	return and(
+		thisRelation.repository.id.equals(other.repository.id),
+		thisRelation.actor.id.equals(other.actor.id),
+		thisRelation.actorRecordId.equals(other.actorRecordId)
+	)
 }
 
 export class QEntityDriver

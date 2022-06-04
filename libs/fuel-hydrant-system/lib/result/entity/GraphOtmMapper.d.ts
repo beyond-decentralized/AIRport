@@ -1,4 +1,3 @@
-import { MappedEntityArray } from '@airport/air-traffic-control';
 import { DbEntity } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { ManyToOneStubReference } from './GraphMtoMapper';
@@ -13,7 +12,7 @@ export interface OneToManyStubReference {
 export declare class GraphOtmMapper {
     mtoEntityReferenceMap: {
         [otmReferenceId: string]: {
-            [otmProperty: string]: MappedEntityArray<any>;
+            [otmProperty: string]: Array<any>;
         };
     }[][];
     otmEntityReferenceMap: {
@@ -23,6 +22,6 @@ export declare class GraphOtmMapper {
     addOtmReference(otmStubReference: OneToManyStubReference, otmEntityIdValue: string): void;
     populateOtms(entityMap: {
         [entityId: string]: any;
-    }[][], keepMappedEntityArrays: boolean): void;
+    }[][]): void;
 }
 //# sourceMappingURL=GraphOtmMapper.d.ts.map

@@ -1,8 +1,4 @@
 import {
-	MappedEntityArray,
-	newMappedEntityArray
-} from '@airport/air-traffic-control'
-import {
 	DbEntity,
 	ensureChildArray,
 	ensureChildMap
@@ -29,7 +25,7 @@ export class GraphOtmMapper {
 		// Id of OTM reference facade
 		[otmReferenceId: string]: {
 			// Name of the property of OtM reference
-			[otmProperty: string]: MappedEntityArray<any>
+			[otmProperty: string]: Array<any>
 		}
 	}[][] = []
 
@@ -60,29 +56,18 @@ export class GraphOtmMapper {
 			ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
 			otmDbEntity.index
 		)
-		// TODO: MappedEntityArray is not serializable, make it so before using
-		// let mtoEntityReferenceMapForEntity: {
-		// 	[otmReferenceId: string]: { [otmProperty: string]: MappedEntityArray<any> }
-		// }                 = ensureChildMap(
-		// 	ensureChildArray(this.mtoEntityReferenceMap, otmDbEntity.applicationVersion.application.index),
-		// 	otmDbEntity.index
-		// )
 
-		// let mapForOtmEntity: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
 		let mapForOtmEntity: { [otmProperty: string]: Array<any> } = mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId]
 		if (!mapForOtmEntity) {
 			mapForOtmEntity = {}
 			mtoEntityReferenceMapForEntity[mtoStubReference.otmEntityId] = mapForOtmEntity
 		}
-		// let mtoCollection: MappedEntityArray<any> = mapForOtmEntity[mtoStubReference.otmEntityField]
 		let mtoCollection: any[] = mapForOtmEntity[mtoStubReference.otmEntityField]
 		if (!mtoCollection) {
-			// mtoCollection = newMappedEntityArray<any>(this.applicationUtils, dbEntity)
 			mtoCollection = []
 			mapForOtmEntity[mtoStubReference.otmEntityField]
 				= mtoCollection
 		}
-		// mtoCollection.put(mtoStubReference.mtoParentObject)
 
 		mtoCollection.push(mtoStubReference.mtoParentObject)
 	}
@@ -110,8 +95,7 @@ export class GraphOtmMapper {
 	}
 
 	populateOtms(
-		entityMap: { [entityId: string]: any }[][],
-		keepMappedEntityArrays: boolean
+		entityMap: { [entityId: string]: any }[][]
 	) {
 		for (const applicationIndex in this.mtoEntityReferenceMap) {
 			const mtoEntityReferenceMapForApplication = this.mtoEntityReferenceMap[applicationIndex]
@@ -137,7 +121,7 @@ export class GraphOtmMapper {
 					continue
 				}
 				for (let otmEntityId in mtoEntityReferenceMapForEntity) {
-					let referencedEntitiesByPropertyMap: { [otmProperty: string]: MappedEntityArray<any> } = mtoEntityReferenceMapForEntity[otmEntityId]
+					let referencedEntitiesByPropertyMap: { [otmProperty: string]: Array<any> } = mtoEntityReferenceMapForEntity[otmEntityId]
 					let otmRecordByPropertyName = entityWithOtmMap[otmEntityId]
 					// If there are no OtMs for this entity, no mapping needs to happen
 					if (!otmRecordByPropertyName) {
@@ -149,18 +133,18 @@ export class GraphOtmMapper {
 						if (!otmEntity) {
 							continue
 						}
-						let referencedEntityMap: MappedEntityArray<any> = referencedEntitiesByPropertyMap[otmProperty]
+						let referencedEntityArray: Array<any> = referencedEntitiesByPropertyMap[otmProperty]
 
-						let otmCollection: MappedEntityArray<any> = otmEntity[otmProperty]
+						let otmCollection: Array<any> = otmEntity[otmProperty]
 						// If @OneToMany isn't set yet
 						if (!otmCollection) {
-							otmEntity[otmProperty] = referencedEntityMap
+							otmEntity[otmProperty] = referencedEntityArray
 						} else {
-							otmCollection.putAll(referencedEntityMap)
+							for (let referencedEntity of referencedEntityArray) {
+								otmCollection.push(referencedEntity)
+							}
 						}
-						if (!keepMappedEntityArrays) {
-							otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice()
-						}
+						otmRecordByPropertyName[otmProperty] = otmEntity[otmProperty].slice()
 					}
 				}
 			}

@@ -29,8 +29,7 @@ export declare class Lookup implements ILookup {
     ensureContext<C extends IContext = IContext>(context?: C): C;
     lookup(rawQuery: RawQuery | {
         (...args: any[]): RawQuery;
-    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, context: IQueryContext, mapResults?: boolean): Promise<any>;
-    private getQueryResultType;
+    }, queryResultType: QueryResultType, search: boolean, one: boolean, QueryClass: new (rawNonEntityQuery: RawQuery) => IAbstractQuery, context: IQueryContext): Promise<any>;
 }
 export declare function doEnsureContext<C extends IContext = IContext>(context?: C): C;
 //# sourceMappingURL=Lookup.d.ts.map

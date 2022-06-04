@@ -13,9 +13,6 @@ export class EntityFind extends EntityLookup {
     async find(rawEntityQuery, queryResultType, context) {
         return await this.entityLookup(rawEntityQuery, queryResultType, false, false, this.ensureContext(context));
     }
-    map(isMapped) {
-        return this.setMap(EntityFind, isMapped);
-    }
     noCache() {
         return this.setNoCache(EntityFind);
     }

@@ -1,7 +1,8 @@
-import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager } from '@airport/air-traffic-control';
+import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, RawEntityQuery } from '@airport/air-traffic-control';
 import { QApplication, RepositoryEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
+import { Observable } from 'rxjs';
 import { DaoStub } from './DaoStub';
 /**
  * Created by Papa on 8/26/2017.
@@ -19,7 +20,12 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
-    protected repositoryId(): {
+    findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
+    findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
+    findById(repositoryEntityId: RepositoryEntityId | string, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
+    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
+    markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
+    protected _repositoryId(): {
         actor: {
             id: any;
             uuId: any;
@@ -31,11 +37,30 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
             uuId: any;
         };
     };
-    findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findById(repositoryEntityId: RepositoryEntityId | string, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
-    save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
-    markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
+    /**
+     * The Promise based API for all Entity 'find' (find many) queries.
+     */
+    protected _find(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, ctx?: IContext): Promise<Array<Entity>>;
+    /**
+     * The Promise based API for all Entity 'findOne' queries.
+     */
+    protected _findOne(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, ctx?: IContext): Promise<Entity>;
+    /**
+     * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
+     */
+    protected _search(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, ctx?: IContext): Observable<Array<Entity>>;
+    /**
+     * The Observable based API for all Entity 'searchOne' queries.
+     */
+    protected _searchOne(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, ctx?: IContext): Observable<Entity>;
     private ensureContext;
 }
 //# sourceMappingURL=Dao.d.ts.map

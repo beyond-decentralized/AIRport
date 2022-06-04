@@ -5,7 +5,6 @@ import { IDuo } from '../../query/Duo';
 import { RawDelete } from '../../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../../query/facade/Update';
-import { MappedEntityArray } from '../../query/MappedEntityArray';
 import { IEntityContext } from '../EntityContext';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../entity/Entity';
 /**
@@ -17,7 +16,7 @@ export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySele
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */
-    find: IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+    find: IEntityFind<IEntity, Array<IEntity>, EntitySelect>;
     /**
      * The Promise based API for all Entity 'findOne' queries.
      */

@@ -32,20 +32,6 @@ let Dao = class Dao {
     exists(entityId, context) {
         throw new Error(`Not Implemented`);
     }
-    repositoryId() {
-        return {
-            actor: {
-                id: Y,
-                uuId: Y
-            },
-            actorRecordId: Y,
-            ageSuitability: Y,
-            repository: {
-                id: Y,
-                uuId: Y
-            }
-        };
-    }
     async findAll(entityIds, context, cacheForUpdate = false) {
         if (entityIds) {
             throw new Error(`Not implemented`);
@@ -110,6 +96,44 @@ let Dao = class Dao {
         else {
             this.entityStateManager.markForDeletion(entityIdInfo);
         }
+    }
+    _repositoryId() {
+        return {
+            actor: {
+                id: Y,
+                uuId: Y
+            },
+            actorRecordId: Y,
+            ageSuitability: Y,
+            repository: {
+                id: Y,
+                uuId: Y
+            }
+        };
+    }
+    /**
+     * The Promise based API for all Entity 'find' (find many) queries.
+     */
+    async _find(rawGraphQuery, ctx) {
+        return await this.db.find.graph(rawGraphQuery, ctx);
+    }
+    /**
+     * The Promise based API for all Entity 'findOne' queries.
+     */
+    async _findOne(rawGraphQuery, ctx) {
+        return await this.db.findOne.graph(rawGraphQuery, ctx);
+    }
+    /**
+     * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
+     */
+    _search(rawGraphQuery, ctx) {
+        throw new Error('Not implemented');
+    }
+    /**
+     * The Observable based API for all Entity 'searchOne' queries.
+     */
+    _searchOne(rawGraphQuery, ctx) {
+        throw new Error('Not implemented');
     }
     ensureContext(context) {
         return doEnsureContext(context);

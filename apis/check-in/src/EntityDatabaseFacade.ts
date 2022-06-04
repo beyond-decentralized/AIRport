@@ -15,7 +15,6 @@ import {
   IEntityUpdateColumns,
   IEntityUpdateProperties,
   IQEntity,
-  MappedEntityArray,
   RawDelete,
   RawInsertColumnValues,
   RawInsertValues,
@@ -48,11 +47,11 @@ export class EntityDatabaseFacade<Entity,
     EntityUpdateColumns, EntityUpdateProperties, EntityId,
     EntityCascadeGraph, IQ>;
 
-  find: IEntityFind<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+  find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
 
   findOne: IEntityFindOne<Entity, EntitySelect>;
 
-  // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+  // search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;
 
   // searchOne: IEntitySearchOne<Entity, EntitySelect>;
 

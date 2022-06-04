@@ -14,30 +14,6 @@ is specified as a JSON object tree.
 Entity Graph Query returns fully interlinked graphs of objects. The
 returned graph will not contain duplicates since all objects are
 referenced directly.
-It also modifies every array and gives is a map-like interface.
-
-## Map interface
-
-For convenience all arrays returned by Graph Queries are also maps.
-Here is the [API](../../../spec/query/facade/MappedEntityArray.ts)
-for the datastructure (compond with standard array API).
-
-### Brief
-
-A brief API listing:
-
-```ts
-export interface MappedEntityArray<E> extends Array<E> {
-	dataMap: {[id: string]: E};
-	keyField: string | number;
-	clear(): void;
-	putAll( values: E[] ): void;
-	put( value: E ): E;
-	get( key: string | number ): E;
-	delete( key: string | number ): E;
-	toArray(): E[];
-}
-```
 
 ## Usage
 

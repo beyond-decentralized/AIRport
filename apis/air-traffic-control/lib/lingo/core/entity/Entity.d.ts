@@ -4,8 +4,10 @@ import { IQueryUtils } from '../../utils/QueryUtils';
 import { IQOperableFieldInternal } from '../field/OperableField';
 import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
-import { IQInternalRelation } from './Relation';
+import { IQInternalRelation, IQRepositoryEntityRelation } from './Relation';
 import { IRelationManager } from '../../../impl/core/entity/RelationManager';
+import { RepositoryEntityId } from '@airport/aviation-communication';
+import { JSONLogicalOperation } from '../operation/LogicalOperation';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
  * Used for DELETE statements.  Must list all @Id properties.
@@ -18,6 +20,7 @@ export interface IEntityIdProperties {
  * extension must list all of the properties of the entity as optional.
  */
 export interface IEntitySelectProperties {
+    '*'?: boolean | any;
 }
 /**
  * Marker interface with all @Id columns as required and all other columns
@@ -56,6 +59,7 @@ export interface IEntityUpdateProperties {
  * of Repository Entities).
  */
 export interface IEntityCascadeGraph {
+    '*'?: boolean | any;
 }
 export interface EntityConstructor {
     new (...args: any[]): any;
@@ -94,6 +98,7 @@ export interface IEntityRelationFrom {
  * A concrete Generated Query Entity.
  */
 export interface IQEntity {
+    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string): JSONLogicalOperation;
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;

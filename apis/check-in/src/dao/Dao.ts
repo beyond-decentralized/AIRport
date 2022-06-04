@@ -15,6 +15,7 @@ import {
 	ILookup,
 	IQEntity,
 	IUpdateCacheManager,
+	RawEntityQuery,
 	Y
 } from '@airport/air-traffic-control';
 import {
@@ -34,6 +35,7 @@ import {
 	IEntityStateManager,
 	ISaveResult
 } from '@airport/ground-control';
+import { Observable } from 'rxjs';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 
@@ -111,21 +113,6 @@ export abstract class Dao<Entity,
 		context?: IContext,
 	): Promise<boolean> {
 		throw new Error(`Not Implemented`);
-	}
-
-	protected repositoryId() {
-		return {
-			actor: {
-				id: Y,
-				uuId: Y
-			},
-			actorRecordId: Y,
-			ageSuitability: Y,
-			repository: {
-				id: Y,
-				uuId: Y
-			}
-		}
 	}
 
 	async findAll(
@@ -218,6 +205,63 @@ export abstract class Dao<Entity,
 		} else {
 			this.entityStateManager.markForDeletion(entityIdInfo);
 		}
+	}
+
+	protected _repositoryId() {
+		return {
+			actor: {
+				id: Y,
+				uuId: Y
+			},
+			actorRecordId: Y,
+			ageSuitability: Y,
+			repository: {
+				id: Y,
+				uuId: Y
+			}
+		}
+	}
+
+	/**
+	 * The Promise based API for all Entity 'find' (find many) queries.
+	 */
+	protected async _find(
+		rawGraphQuery: RawEntityQuery<EntitySelect>
+			| { (...args: any[]): RawEntityQuery<EntitySelect> },
+		ctx?: IContext
+	): Promise<Array<Entity>> {
+		return await this.db.find.graph(rawGraphQuery, ctx)
+	}
+
+	/**
+	 * The Promise based API for all Entity 'findOne' queries.
+	 */
+	protected async _findOne(
+		rawGraphQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> },
+		ctx?: IContext
+	): Promise<Entity> {
+		return await this.db.findOne.graph(rawGraphQuery, ctx)
+	}
+
+	/**
+	 * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
+	 */
+	protected _search(
+		rawGraphQuery: RawEntityQuery<EntitySelect>
+			| { (...args: any[]): RawEntityQuery<EntitySelect> },
+		ctx?: IContext
+	): Observable<Array<Entity>> {
+		throw new Error('Not implemented')
+	}
+
+	/**
+	 * The Observable based API for all Entity 'searchOne' queries.
+	 */
+	protected _searchOne(
+		rawGraphQuery: RawEntityQuery<EntitySelect> | { (...args: any[]): RawEntityQuery<EntitySelect> },
+		ctx?: IContext
+	): Observable<Entity> {
+		throw new Error('Not implemented')
 	}
 
 	private ensureContext(

@@ -130,7 +130,6 @@ let SqlDriver = class SqlDriver {
         const parameters = sqlQuery.getParameters(portableQuery.parameterMap, context);
         let results = await this.findNative(sql, parameters, context);
         results = await sqlQuery.parseQueryResults(results, internalFragments, portableQuery.queryResultType, context);
-        // FIXME: convert to MappedEntityArray if needed
         return results;
     }
     getSQLQuery(portableQuery, context) {
@@ -141,8 +140,6 @@ let SqlDriver = class SqlDriver {
         switch (resultType) {
             case QueryResType.ENTITY_GRAPH:
             case QueryResType.ENTITY_TREE:
-            case QueryResType.MAPPED_ENTITY_GRAPH:
-            case QueryResType.MAPPED_ENTITY_TREE:
                 const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
                     .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
                 return new EntitySQLQuery(jsonQuery, dbEntity, dialect, resultType, this.airportDatabase, this.applicationUtils, this.entityStateManager, this.objectResultParserFactory, this.qMetadataUtils, this.qValidator, this.relationManager, this.sqlQueryAdapter, this, this.subStatementQueryGenerator, this.utils, context);
@@ -183,7 +180,6 @@ let SqlDriver = class SqlDriver {
             runQuery: () => {
                 this.find(portableQuery, internalFragments, context)
                     .then((results) => {
-                    // FIXME: convert to MappedEntityArray if needed
                     resultsSubject.next(results);
                 });
             }

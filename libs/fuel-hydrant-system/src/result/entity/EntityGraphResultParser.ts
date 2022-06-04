@@ -148,10 +148,6 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): void {
 		this.bufferOneToMany(otmDbEntity, propertyName)
-		// TODO: MappedEntityArray is not serializable, make it so before using
-		// let childResultsArray = newMappedEntityArray(this.applicationUtils, relationDbEntity)
-		// childResultsArray.put(childResultObject)
-		// resultObject[propertyName] = childResultsArray
 		resultObject[propertyName] = [childResultObject]
 	}
 
@@ -163,8 +159,6 @@ export class EntityGraphResultParser
 		relationDbEntity: DbEntity,
 		context: IFuelHydrantContext,
 	): void {
-		// TODO: MappedEntityArray is not serializable, make it so before using
-		// resultObject[propertyName] = newMappedEntityArray<any>(this.applicationUtils, relationDbEntity)
 		resultObject[propertyName] = []
 	}
 
@@ -198,16 +192,9 @@ export class EntityGraphResultParser
 		context: IFuelHydrantContext,
 	): any[] {
 		this.mtoMapper.populateMtos(this.entityMapByApplicationAndTableIndexes)
-		this.otmMapper.populateOtms(this.entityMapByApplicationAndTableIndexes, !this.config || this.config.mapped)
+		this.otmMapper.populateOtms(this.entityMapByApplicationAndTableIndexes)
 
 		// merge any out of order entity references (there shouldn't be any)
-		// TODO: MappedEntityArray is not serializable, make it so before using
-		// let resultMEA = newMappedEntityArray(this.applicationUtils, this.rootDbEntity)
-		// resultMEA.putAll(parsedResults)
-		// if (!this.config || this.config.mapped) {
-		// 	return resultMEA
-		// }
-		// return resultMEA.toArray()
 
 		return parsedResults
 	}
@@ -386,12 +373,14 @@ export class EntityGraphResultParser
 									// If target child array has a value that source doesn't
 									if (!sourceSet[targetChildIdValue]) {
 										// add it to source (preserve order)
-										sourceArray.put(targetChild)
+										sourceArray.push(targetChild)
 									}
 								})
 							}
 							// So instead just do
-							// sourceArray.putAll(targetArray);
+							// for(let targetObject in targetArray) {
+							//		sourceArray.push(targetArray)
+							//}
 							break
 						default:
 							throw new Error(`Unknown relation type '${dbRelation.relationType}' for 

@@ -2,6 +2,8 @@ import { JoinType, JSONRelationType } from '@airport/ground-control';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
+import { parseId } from '@airport/aviation-communication';
+import { and } from '../operation/LogicalOperation';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
@@ -16,6 +18,14 @@ QEntity.prototype.leftJoin = function (right) {
 };
 QEntity.prototype.rightJoin = function (right) {
     return this.__driver__.join(right, JoinType.RIGHT_JOIN);
+};
+QEntity.prototype.equals = function (entity) {
+    if (typeof entity === 'string') {
+        entity = parseId(entity);
+    }
+    let thisRelation = this;
+    let other = entity;
+    return and(thisRelation.repository.id.equals(other.repository.id), thisRelation.actor.id.equals(other.actor.id), thisRelation.actorRecordId.equals(other.actorRecordId));
 };
 export class QEntityDriver {
     constructor(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {

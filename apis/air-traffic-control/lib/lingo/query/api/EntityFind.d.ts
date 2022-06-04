@@ -1,12 +1,11 @@
 import { IContext } from '@airport/direction-indicator';
 import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
-import { MappedEntityArray } from '../MappedEntityArray';
 import { IEntityLookup } from './EntityLookup';
 /**
  * Entity 'find' (find many) API.
  */
-export interface IEntityFind<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntityLookup<IEntityFind<Entity, Array<Entity>, IESP>, IEntityFind<Entity, MappedEntityArray<Entity>, IESP>> {
+export interface IEntityFind<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntityLookup {
     /**
      * Returns a Promise for a list of fully interlinked entity graphs.
      */

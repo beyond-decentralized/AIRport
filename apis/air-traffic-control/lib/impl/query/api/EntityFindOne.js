@@ -15,9 +15,6 @@ export class EntityFindOne extends EntityLookup {
     async findOne(rawEntityQuery, queryResultType, context) {
         return await this.entityLookup(rawEntityQuery, queryResultType, false, true, this.ensureContext(context));
     }
-    map(isMapped) {
-        return this.setMap(EntityFindOne, isMapped);
-    }
     noCache() {
         return this.setNoCache(EntityFindOne);
     }

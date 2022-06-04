@@ -1,4 +1,4 @@
-import { IApplicationUtils, IUtils, MappedEntityArray, ReferencedColumnData } from '@airport/air-traffic-control';
+import { IApplicationUtils, IUtils, ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 /**
@@ -20,7 +20,7 @@ export interface IEntityResultParser {
     bufferBlankOneToMany(entityAlias: string, resultObject: any, otmEntityName: string, propertyName: string, relationDbEntity: DbEntity, context: IFuelHydrantContext): void;
     flushEntity(entityAlias: string, dbEntity: DbEntity, selectClauseFragment: any, idValue: any, resultObject: any, context: IFuelHydrantContext): any;
     flushRow(): void;
-    bridge(parsedResults: any[], selectClauseFragment: any, context: IFuelHydrantContext): any[] | MappedEntityArray<any>;
+    bridge(parsedResults: any[], selectClauseFragment: any, context: IFuelHydrantContext): any[];
 }
 export declare abstract class AbstractObjectResultParser {
     protected applicationUtils: IApplicationUtils;

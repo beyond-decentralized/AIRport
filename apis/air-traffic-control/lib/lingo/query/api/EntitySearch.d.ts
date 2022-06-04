@@ -2,12 +2,11 @@ import { IContext } from '@airport/direction-indicator';
 import { Observable } from 'rxjs';
 import { IEntitySelectProperties } from '../../core/entity/Entity';
 import { RawEntityQuery } from '../facade/EntityQuery';
-import { MappedEntityArray } from '../MappedEntityArray';
 import { IEntityLookup } from './EntityLookup';
 /**
  * Entity 'searchOne' (searchOne many) API.
  */
-export interface IEntitySearch<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntityLookup<IEntitySearch<Entity, Array<Entity>, IESP>, IEntitySearch<Entity, MappedEntityArray<Entity>, IESP>> {
+export interface IEntitySearch<Entity, EntityArray extends Array<Entity>, IESP extends IEntitySelectProperties> extends IEntityLookup {
     /**
      * Returns an Observable of a list of fully interlinked entity graphs.
      */

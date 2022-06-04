@@ -1,10 +1,10 @@
-import {IContext}                from '@airport/direction-indicator'
-import {QueryResultType}         from '@airport/ground-control'
-import {IEntityQueryContext}          from '../../../lingo/core/EntityContext'
-import {IEntitySelectProperties} from '../../../lingo/core/entity/Entity'
-import {IEntityFindOne}          from '../../../lingo/query/api/EntityFindOne'
-import {RawEntityQuery}          from '../../../lingo/query/facade/EntityQuery'
-import {EntityLookup}            from './EntityLookup'
+import { IContext } from '@airport/direction-indicator'
+import { QueryResultType } from '@airport/ground-control'
+import { IEntityQueryContext } from '../../../lingo/core/EntityContext'
+import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
+import { IEntityFindOne } from '../../../lingo/query/api/EntityFindOne'
+import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
+import { EntityLookup } from './EntityLookup'
 
 export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProperties>
 	extends IEntityFindOne<Entity, IESP> {
@@ -21,8 +21,7 @@ export interface IEntityFindOneInternal<Entity, IESP extends IEntitySelectProper
  * Created by Papa on 11/12/2016.
  */
 export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
-	extends EntityLookup<EntityFindOne<Entity, IESP>,
-		EntityFindOne<Entity, IESP>, IESP>
+	extends EntityLookup<EntityFindOne<Entity, IESP>, IESP>
 	implements IEntityFindOneInternal<Entity, IESP> {
 
 	async graph(
@@ -48,12 +47,6 @@ export class EntityFindOne<Entity, IESP extends IEntitySelectProperties>
 	): Promise<Entity> {
 		return await this.entityLookup(rawEntityQuery, queryResultType,
 			false, true, this.ensureContext(context) as IEntityQueryContext)
-	}
-
-	map(
-		isMapped?: boolean
-	): EntityFindOne<Entity, IESP> {
-		return this.setMap(EntityFindOne, isMapped)
 	}
 
 	noCache(): EntityFindOne<Entity, IESP> {

@@ -3,7 +3,7 @@ import { EntityFind, EntityFindOne, } from '@airport/air-traffic-control';
  * Created by Papa on 12/11/2016.
  */
 export class EntityDatabaseFacade {
-    // search: IEntitySearch<Entity, Array<Entity> | MappedEntityArray<Entity>, EntitySelect>;
+    // search: IEntitySearch<Entity, Array<Entity>, EntitySelect>;
     // searchOne: IEntitySearchOne<Entity, EntitySelect>;
     constructor(dbEntity, Q, dao) {
         this.dbEntity = dbEntity;

@@ -5,9 +5,6 @@ export class EntityLookup extends LookupProxy {
         this.dbEntity = dbEntity;
         this.mapResults = mapResults;
     }
-    setMap(MappedChildClass, isMapped = true) {
-        return new MappedChildClass(this.dbEntity, this.dao, isMapped);
-    }
     setNoCache(ChildClass) {
         return new ChildClass(this.dbEntity, this.dao, this.mapResults);
     }

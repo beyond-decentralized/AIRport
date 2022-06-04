@@ -11,9 +11,9 @@ import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
 import { IDaoStub, LookupProxy } from './Lookup'
 
-export interface IEntityLookupInternal<Child, MappedChild,
+export interface IEntityLookupInternal<Child,
 	IESP extends IEntitySelectProperties>
-	extends IEntityLookup<Child, MappedChild> {
+	extends IEntityLookup {
 
 	entityLookup(
 		rawEntityQuery: RawEntityQuery<IESP> | { (...args: any[]): RawEntityQuery<IESP> },
@@ -22,15 +22,6 @@ export interface IEntityLookupInternal<Child, MappedChild,
 		one: boolean,
 		context: IEntityContext
 	): Promise<any>
-
-	setMap(
-		MappedChildClass: new (
-			dbEntity: DbEntity,
-			dao: IDaoStub,
-			mapResults: boolean
-		) => MappedChild,
-		isMapped: boolean
-	): MappedChild
 
 	setNoCache(
 		ChildClass: new (
@@ -42,10 +33,10 @@ export interface IEntityLookupInternal<Child, MappedChild,
 
 }
 
-export abstract class EntityLookup<Child, MappedChild,
+export abstract class EntityLookup<Child,
 	IESP extends IEntitySelectProperties>
 	extends LookupProxy
-	implements IEntityLookupInternal<Child, MappedChild, IESP> {
+	implements IEntityLookupInternal<Child, IESP> {
 
 	static mapResults = false
 
@@ -55,21 +46,6 @@ export abstract class EntityLookup<Child, MappedChild,
 		protected mapResults = EntityLookup.mapResults,
 	) {
 		super(dao)
-	}
-
-	abstract map(
-		isMapped?: boolean
-	): MappedChild
-
-	setMap(
-		MappedChildClass: new (
-			dbEntity: DbEntity,
-			dao: IDaoStub,
-			mapResults: boolean
-		) => MappedChild,
-		isMapped = true
-	): MappedChild {
-		return new MappedChildClass(this.dbEntity, this.dao, isMapped)
 	}
 
 	setNoCache(

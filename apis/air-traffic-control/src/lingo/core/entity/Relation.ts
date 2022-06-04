@@ -30,7 +30,8 @@ export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
 
 	equals(
-		entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+		entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ>
+			| RepositoryEntityId | string
 	): JSONLogicalOperation
 
 }

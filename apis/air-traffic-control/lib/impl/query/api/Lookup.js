@@ -4,7 +4,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { QueryResultType } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 export class LookupProxy {
     constructor(dao) {
@@ -21,7 +20,7 @@ let Lookup = class Lookup {
     ensureContext(context) {
         return doEnsureContext(context);
     }
-    async lookup(rawQuery, queryResultType, search, one, QueryClass, context, mapResults) {
+    async lookup(rawQuery, queryResultType, search, one, QueryClass, context) {
         let query;
         if (QueryClass) {
             const rawNonEntityQuery = this.entityUtils.getQuery(rawQuery);
@@ -29,7 +28,6 @@ let Lookup = class Lookup {
         }
         else {
             query = this.entityUtils.getEntityQuery(rawQuery);
-            queryResultType = this.getQueryResultType(queryResultType, mapResults);
         }
         let queryMethod;
         if (search) {
@@ -48,32 +46,11 @@ let Lookup = class Lookup {
                 queryMethod = this.queryFacade.find;
             }
         }
-        let result = await queryMethod.call(this.queryFacade, query, this.getQueryResultType(queryResultType, mapResults), context);
+        let result = await queryMethod.call(this.queryFacade, query, queryResultType, context);
         if (!one && !result) {
             result = [];
         }
         return result;
-    }
-    getQueryResultType(baseQueryResultType, mapResults) {
-        switch (baseQueryResultType) {
-            case QueryResultType.ENTITY_GRAPH:
-                if (mapResults) {
-                    return QueryResultType.MAPPED_ENTITY_GRAPH;
-                }
-                return QueryResultType.ENTITY_GRAPH;
-            case QueryResultType.ENTITY_TREE:
-                if (mapResults) {
-                    return QueryResultType.MAPPED_ENTITY_TREE;
-                }
-                return QueryResultType.ENTITY_TREE;
-            case QueryResultType.FIELD:
-            case QueryResultType.RAW:
-            case QueryResultType.TREE:
-            case QueryResultType.SHEET:
-                return baseQueryResultType;
-            default:
-                throw new Error(`Unexpected Base Query ResultType: '${baseQueryResultType}'.`);
-        }
     }
 };
 __decorate([

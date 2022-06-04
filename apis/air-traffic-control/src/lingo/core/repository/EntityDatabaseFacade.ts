@@ -4,8 +4,6 @@ import {
 }          from '@airport/ground-control'
 import {IEntityFind}       from '../../query/api/EntityFind'
 import {IEntityFindOne}    from '../../query/api/EntityFindOne'
-import {IEntitySearch}     from '../../query/api/EntitySearch'
-import {IEntitySearchOne}  from '../../query/api/EntitySearchOne'
 import {IDuo}              from '../../query/Duo'
 import {RawDelete}         from '../../query/facade/Delete'
 import {
@@ -16,7 +14,6 @@ import {
 	RawUpdate,
 	RawUpdateColumns
 }                          from '../../query/facade/Update'
-import {MappedEntityArray} from '../../query/MappedEntityArray'
 import {IEntityContext}    from '../EntityContext'
 import {
 	IEntityCascadeGraph,
@@ -49,7 +46,7 @@ export interface IEntityDatabaseFacade<IEntity,
 	/**
 	 * The Promise based API for all Entity 'find' (find many) queries.
 	 */
-	find: IEntityFind<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+	find: IEntityFind<IEntity, Array<IEntity>, EntitySelect>;
 
 	/**
 	 * The Promise based API for all Entity 'findOne' queries.
@@ -59,7 +56,7 @@ export interface IEntityDatabaseFacade<IEntity,
 	/**
 	 * The Observable based API for all Entity 'searchOne' (searchOne many) queries.
 	 */
-	// search: IEntitySearch<IEntity, Array<IEntity> | MappedEntityArray<IEntity>, EntitySelect>;
+	// search: IEntitySearch<IEntity, Array<IEntity>, EntitySelect>;
 
 	/**
 	 * The Observable based API for all Entity 'searchOne' queries.

@@ -4,8 +4,6 @@ export declare enum QueryResultType {
     TREE = "TREE",
     SHEET = "SHEET",
     FIELD = "FIELD",
-    RAW = "RAW",
-    MAPPED_ENTITY_GRAPH = "MAPPED_ENTITY_GRAPH",
-    MAPPED_ENTITY_TREE = "MAPPED_ENTITY_TREE"
+    RAW = "RAW"
 }
 //# sourceMappingURL=QueryResultType.d.ts.map

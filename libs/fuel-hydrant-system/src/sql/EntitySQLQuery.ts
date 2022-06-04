@@ -426,9 +426,11 @@ ${fromFragment}${whereFragment}${orderByFragment}`
 		}
 
 		let allFieldsSpecified = false
-		if (selectFragment.__allFields__ === true) {
+		if (selectFragment.__allFields__ === true || selectFragment['*'] === true
+			|| (selectFragment['*'] && selectFragment['*'].airportSelectField === true)) {
 			allFieldsSpecified = true
 			delete selectFragment.__allFields__
+			delete selectFragment['*']
 		}
 
 		const entityDefinitionHasIds = !!dbEntity.idColumns.length
