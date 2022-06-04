@@ -28,7 +28,7 @@ import {
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor } from '@airport/holding-pattern'
+import { IActor, IRepositoryEntity, RepositoryEntity } from '@airport/holding-pattern'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,
@@ -99,8 +99,8 @@ export class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	async performSave<E>(
-		entities: E | E[],
+	async performSave<E extends IRepositoryEntity, T = E | E[]>(
+		entities: T,
 		actor: IActor,
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
@@ -120,7 +120,7 @@ export class OperationManager
 			entityGraph = this.entityGraphReconstructor
 				.restoreEntityGraph(verifiedTree, context)
 		}
-		const missingRepositoryRecords: IMissingRepositoryRecord[] = [] 
+		const missingRepositoryRecords: IMissingRepositoryRecord[] = []
 		this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, context)
 
 		if (missingRepositoryRecords.length) {
@@ -184,7 +184,7 @@ export class OperationManager
 		return saveResult
 	}
 
-	protected async internalCreate<E>(
+	protected async internalCreate<E extends IRepositoryEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
@@ -209,6 +209,10 @@ export class OperationManager
 		) => {
 			columnIndexesInValues[qField.dbColumn.index] = index
 		})
+
+		for (const entity of entities) {
+			entity.createdAt = new Date()
+		}
 
 		for (const entity of entities) {
 			let valuesFragment: any = []
@@ -298,7 +302,7 @@ export class OperationManager
 	 *  ManyToOne:
 	 *    Cascades do not travel across ManyToOne
 	 */
-	protected async internalUpdate<E>(
+	protected async internalUpdate<E extends IRepositoryEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
@@ -419,7 +423,7 @@ export class OperationManager
 		}
 	}
 
-	protected async internalDelete<E>(
+	protected async internalDelete<E extends IRepositoryEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,

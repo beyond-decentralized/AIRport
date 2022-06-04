@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRepositoryEntityRelation } from '@airport/air-traffic-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQDateField, IQNumberField, IQStringField, IQEntity, IQRepositoryEntityRelation } from '@airport/air-traffic-control';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 import { ActorGraph, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActorQRelation } from '../infrastructure/qactor';
 /**
@@ -6,6 +6,8 @@ import { ActorGraph, ActorEId, ActorEOptionalId, ActorESelect, QActorQId, QActor
  */
 export interface RepositoryEntityESelect extends IEntitySelectProperties, RepositoryEntityEOptionalId {
     ageSuitability?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    createdBy?: string | IQStringField;
     systemWideOperationId?: number | IQNumberField;
     originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryESelect;
@@ -34,6 +36,8 @@ export interface RepositoryEntityEOptionalId {
  */
 export interface RepositoryEntityEUpdateProperties extends IEntityUpdateProperties {
     ageSuitability?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    createdBy?: string | IQStringField;
     systemWideOperationId?: number | IQNumberField;
     originalActorRecordId?: number | IQNumberField;
     originalRepository?: RepositoryEOptionalId;
@@ -44,6 +48,8 @@ export interface RepositoryEntityEUpdateProperties extends IEntityUpdateProperti
  */
 export interface RepositoryEntityGraph extends RepositoryEntityEOptionalId, IEntityCascadeGraph {
     ageSuitability?: number | IQNumberField;
+    createdAt?: Date | IQDateField;
+    createdBy?: string | IQStringField;
     systemWideOperationId?: number | IQNumberField;
     originalActorRecordId?: number | IQNumberField;
     repository?: RepositoryGraph;
@@ -74,6 +80,8 @@ export interface QRepositoryEntity extends IQEntity {
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
     ageSuitability: IQNumberField;
+    createdAt: IQDateField;
+    createdBy: IQStringField;
     systemWideOperationId: IQNumberField;
     originalActorRecordId: IQNumberField;
     originalRepository: QRepositoryQRelation;

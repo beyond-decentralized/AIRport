@@ -11,9 +11,12 @@ export declare abstract class RepositoryEntity {
     actor: Actor;
     actorRecordId: RepositoryEntity_ActorRecordId;
     ageSuitability: number;
+    createdAt: Date;
+    createdBy: string;
     systemWideOperationId: RepositoryEntity_SystemWideOperationId;
     originalRepository: Repository;
     originalActor: Actor;
     originalActorRecordId: RepositoryEntity_ActorRecordId;
+    id: string;
 }
 //# sourceMappingURL=RepositoryEntity.d.ts.map

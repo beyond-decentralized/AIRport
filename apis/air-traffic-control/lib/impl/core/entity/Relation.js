@@ -1,4 +1,5 @@
-import { parseId } from '@airport/aviation-communication';
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
+import { IOC } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { and } from '../operation/LogicalOperation';
@@ -37,7 +38,7 @@ export function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils,
 export const qRepositoryEntityRelationMethods = {
     equals: function (entity) {
         if (typeof entity === 'string') {
-            entity = parseId(entity);
+            entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
         }
         let thisRelation = this;
         let other = entity;

@@ -4,6 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { SerializationState } from './SerializationStateManager';
 let QueryResultsDeserializer = class QueryResultsDeserializer {
@@ -104,6 +105,52 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
             if (!from.hasOwnProperty(propertyName)) {
                 delete to[propertyName];
             }
+        }
+    }
+    setPropertyDescriptors(object) {
+        if (object instanceof Array) {
+            for (let i = 0; i < object.length; i++) {
+                this.setPropertyDescriptors(object[i]);
+            }
+        }
+        if (!(object instanceof Object)) {
+            return;
+        }
+        if (object instanceof Date) {
+            return;
+        }
+        for (let propertyName in object) {
+            if (!object.hasOwnProperty(propertyName)) {
+                continue;
+            }
+            let property = object[propertyName];
+            if (property instanceof Object) {
+                this.setPropertyDescriptors(property);
+            }
+        }
+        let objectPrototype = Object.getPrototypeOf(object);
+        if (!object.id
+            && !Object.getOwnPropertyDescriptor(object, 'id')
+            && (!objectPrototype
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+            Object.defineProperty(object, 'id', {
+                get() {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeId(this);
+                },
+                set(idString) {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setId(idString, this);
+                }
+            });
+        }
+        if (!object.createdBy
+            && !Object.getOwnPropertyDescriptor(object, 'createdBy')
+            && (!objectPrototype
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
+            Object.defineProperty(object, 'createdBy', {
+                get() {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).getCreatedBy(this);
+                }
+            });
         }
     }
 };

@@ -1,6 +1,7 @@
 import { DbEntity } from '@airport/ground-control'
+import { IRepositoryEntity } from '@airport/holding-pattern'
 
-export interface IDependencyGraphNode<E> {
+export interface IDependencyGraphNode<E extends IRepositoryEntity> {
 	circleTraversedFor: { [entityOUId: number]: boolean }
 	dbEntity: DbEntity
 	dependsOnByOUID: IDependencyGraphNode<any>[]
@@ -10,7 +11,7 @@ export interface IDependencyGraphNode<E> {
 	isDelete: boolean
 }
 
-export interface IOperationNode<E> {
+export interface IOperationNode<E extends IRepositoryEntity> {
 	dbEntity: DbEntity
 	entities: E[]
 	isCreate: boolean

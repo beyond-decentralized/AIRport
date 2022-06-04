@@ -4,6 +4,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control'
+import { IRepositoryEntity } from '@airport/holding-pattern'
 import { Observable } from 'rxjs'
 import { IQueryOperationContext } from '..'
 import {
@@ -69,15 +70,15 @@ export interface ITransactionalServer {
 		context: IContext
 	): Promise<boolean>
 
-	save<E>(
-		entity: E,
+	save<E extends IRepositoryEntity, T = E | E[]>(
+		entity: T,
 		credentials: ITransactionCredentials,
 		context: IEntityContext,
 	): Promise<ISaveResult>
 
-	saveToDestination<E>(
+	saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
 		repositoryDestination: string,
-		entity: E,
+		entity: T,
 		credentials: ITransactionCredentials,
 		context: IEntityContext,
 	): Promise<ISaveResult>

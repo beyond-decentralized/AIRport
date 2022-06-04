@@ -1774,7 +1774,7 @@ const Inject = function () {
     };
 };
 
-var __decorate$2M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -1793,7 +1793,7 @@ let ContainerAccessor = class ContainerAccessor {
         return iocContainer;
     }
 };
-ContainerAccessor = __decorate$2M([
+ContainerAccessor = __decorate$2N([
     Injected()
 ], ContainerAccessor);
 
@@ -2091,7 +2091,7 @@ if (typeof window !== 'undefined') {
 }
 const IOC = new InversionOfControl();
 
-var __decorate$2L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -2162,16 +2162,16 @@ let RepositoryLoader = class RepositoryLoader {
         }
     }
 };
-__decorate$2L([
+__decorate$2M([
     Inject()
 ], RepositoryLoader.prototype, "repositoryDao", void 0);
-__decorate$2L([
+__decorate$2M([
     Inject()
 ], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$2L([
+__decorate$2M([
     Inject()
 ], RepositoryLoader.prototype, "synchronizationInManager", void 0);
-RepositoryLoader = __decorate$2L([
+RepositoryLoader = __decorate$2M([
     Injected()
 ], RepositoryLoader);
 
@@ -2440,7 +2440,7 @@ class ColumnMap {
     }
 }
 
-var __decorate$2K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -2502,7 +2502,7 @@ let DbApplicationUtils = class DbApplicationUtils {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-DbApplicationUtils = __decorate$2K([
+DbApplicationUtils = __decorate$2L([
     Injected()
 ], DbApplicationUtils);
 
@@ -3141,21 +3141,92 @@ const airApi = {
     ddS: function (__dbApplication__, dbEntityId) { return true; }
 };
 
-function parseId(idString) {
-    const idStringFragments = idString.split('-');
-    if (idStringFragments.length !== 3) {
-        throw new Error('Invalid Repository Entity Id, expecting {repositoryId}-{actorId}-{actorRecordId}');
+var __decorate$2K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryEntityUtils = class RepositoryEntityUtils {
+    getCreatedBy(repositoryEntity) {
+        return repositoryEntity.actor.user.username;
     }
-    return {
-        repository: {
-            id: parseInt(idStringFragments[0])
-        },
-        actor: {
-            id: parseInt(idStringFragments[1])
-        },
-        actorRecordId: parseInt(idStringFragments[2])
-    };
-}
+    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    encodeId(idObject) {
+        if (!idObject.repository) {
+            throw Error(`Id object does not have a "repository" member object.`);
+        }
+        if (!idObject.repository.id) {
+            throw Error(`Id object does not have a "repository.id" property.`);
+        }
+        if (typeof idObject.repository.id !== 'number') {
+            throw Error(`Type of "repository.id" property is not a number.`);
+        }
+        if (!idObject.actor) {
+            throw Error(`Id object does not have an "actor" member object.`);
+        }
+        if (!idObject.actor.id) {
+            throw Error(`Id object does not have an "actor.id" property.`);
+        }
+        if (typeof idObject.actor.id !== 'number') {
+            throw Error(`Type of "actor.id" property is not a number.`);
+        }
+        if (!idObject.actorRecordId) {
+            throw Error(`Id object does not have an "actorRecordId" property.`);
+        }
+        if (typeof idObject.actorRecordId !== 'number') {
+            throw Error(`Type of "actorRecordId" property is not a number.`);
+        }
+        return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId;
+    }
+    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    parseId(idString) {
+        const idStringFragments = idString.split('-');
+        if (idStringFragments.length !== 3) {
+            throw new Error('Invalid Repository Entity Id, expecting {repositoryId}-{actorId}-{actorRecordId}');
+        }
+        return {
+            repository: {
+                id: parseInt(idStringFragments[0])
+            },
+            actor: {
+                id: parseInt(idStringFragments[1])
+            },
+            actorRecordId: parseInt(idStringFragments[2])
+        };
+    }
+    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    setId(idString, repositoryEntity) {
+        let repositoryEntityId = this.parseId(idString);
+        if (!repositoryEntity.repository) {
+            repositoryEntity.repository = {
+                id: repositoryEntityId.repository.id
+            };
+        }
+        else {
+            repositoryEntity.repository.id = repositoryEntityId.repository.id;
+        }
+        if (!repositoryEntity.actor) {
+            repositoryEntity.actor = {
+                id: repositoryEntityId.repository.id
+            };
+        }
+        else {
+            repositoryEntity.actor.id = repositoryEntityId.actor.id;
+        }
+        repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
+    }
+};
+RepositoryEntityUtils = __decorate$2K([
+    Injected()
+], RepositoryEntityUtils);
+
+const aviationCommunication = lib$1('aviation-communication');
+const REPOSITORY_ENTITY_UTILS = aviationCommunication.token({
+    class: RepositoryEntityUtils,
+    interface: 'IRepositoryEntityUtils',
+    token: 'REPOSITORY_ENTITY_UTILS'
+});
 
 /**
  * Created by Papa on 4/21/2016.
@@ -3329,7 +3400,7 @@ function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relati
 const qRepositoryEntityRelationMethods = {
     equals: function (entity) {
         if (typeof entity === 'string') {
-            entity = parseId(entity);
+            entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
         }
         let thisRelation = this;
         let other = entity;
@@ -4848,7 +4919,7 @@ QEntity.prototype.rightJoin = function (right) {
 };
 QEntity.prototype.equals = function (entity) {
     if (typeof entity === 'string') {
-        entity = parseId(entity);
+        entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
     }
     let thisRelation = this;
     let other = entity;
@@ -8501,7 +8572,8 @@ let Dao = class Dao {
     }
     async findById(repositoryEntityId, context, cacheForUpdate = false) {
         if (typeof repositoryEntityId === 'string') {
-            repositoryEntityId = parseId(repositoryEntityId);
+            repositoryEntityId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
+                .parseId(repositoryEntityId);
         }
         if (!this.db.dbEntity.isRepositoryEntity) {
             throw new Error(`Dao.findById can only be called for Repository Entities.`);
@@ -9474,6 +9546,14 @@ __decorate$2j([
     DbNumber()
 ], RepositoryEntity.prototype, "ageSuitability", void 0);
 __decorate$2j([
+    Column(),
+    DbDate()
+], RepositoryEntity.prototype, "createdAt", void 0);
+__decorate$2j([
+    Column(),
+    DbString()
+], RepositoryEntity.prototype, "createdBy", void 0);
+__decorate$2j([
     Column()
 ], RepositoryEntity.prototype, "systemWideOperationId", void 0);
 __decorate$2j([
@@ -9487,6 +9567,9 @@ __decorate$2j([
 __decorate$2j([
     Column()
 ], RepositoryEntity.prototype, "originalActorRecordId", void 0);
+__decorate$2j([
+    Transient()
+], RepositoryEntity.prototype, "id", void 0);
 RepositoryEntity = __decorate$2j([
     MappedSuperclass()
 ], RepositoryEntity);
@@ -10687,15 +10770,18 @@ let LocalAPIClient = class LocalAPIClient {
         if (response.errorMessage) {
             throw new Error(response.errorMessage);
         }
-        let result;
+        let payload;
         {
-            result = response.payload;
+            payload = response.payload;
+        }
+        if (payload) {
+            this.queryResultsDeserializer.setPropertyDescriptors(payload);
         }
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer
                 .deepCopyProperties(response.args[i], args[i]);
         }
-        return result;
+        return payload;
     }
     wait(milliseconds) {
         return new Promise((resolve, _reject) => {
@@ -11127,6 +11213,52 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
             if (!from.hasOwnProperty(propertyName)) {
                 delete to[propertyName];
             }
+        }
+    }
+    setPropertyDescriptors(object) {
+        if (object instanceof Array) {
+            for (let i = 0; i < object.length; i++) {
+                this.setPropertyDescriptors(object[i]);
+            }
+        }
+        if (!(object instanceof Object)) {
+            return;
+        }
+        if (object instanceof Date) {
+            return;
+        }
+        for (let propertyName in object) {
+            if (!object.hasOwnProperty(propertyName)) {
+                continue;
+            }
+            let property = object[propertyName];
+            if (property instanceof Object) {
+                this.setPropertyDescriptors(property);
+            }
+        }
+        let objectPrototype = Object.getPrototypeOf(object);
+        if (!object.id
+            && !Object.getOwnPropertyDescriptor(object, 'id')
+            && (!objectPrototype
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+            Object.defineProperty(object, 'id', {
+                get() {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeId(this);
+                },
+                set(idString) {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setId(idString, this);
+                }
+            });
+        }
+        if (!object.createdBy
+            && !Object.getOwnPropertyDescriptor(object, 'createdBy')
+            && (!objectPrototype
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
+            Object.defineProperty(object, 'createdBy', {
+                get() {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).getCreatedBy(this);
+                }
+            });
         }
     }
 };
@@ -21987,6 +22119,9 @@ let OperationManager = class OperationManager {
         rawInsert.columns.forEach((qField, index) => {
             columnIndexesInValues[qField.dbColumn.index] = index;
         });
+        for (const entity of entities) {
+            entity.createdAt = new Date();
+        }
         for (const entity of entities) {
             let valuesFragment = [];
             for (const dbProperty of context.dbEntity.properties) {

@@ -1,3 +1,4 @@
+import { IOC } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbRelation,
@@ -36,7 +37,7 @@ import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
 import { FieldColumnAliases } from './Aliases'
 import { IRelationManager } from './RelationManager'
-import { parseId, RepositoryEntityId } from '@airport/aviation-communication'
+import { RepositoryEntityId, REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { and } from '../operation/LogicalOperation'
 
@@ -113,7 +114,7 @@ QEntity.prototype.equals = function <Entity, IQ extends IQEntityInternal>(
 	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
 ): JSONLogicalOperation {
 	if (typeof entity === 'string') {
-		entity = parseId(entity)
+		entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity)
 	}
 	let thisRelation = this as any
 	let other = entity as any

@@ -68,6 +68,8 @@ export interface RepositoryEntityESelect
     extends IEntitySelectProperties, RepositoryEntityEOptionalId {
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	createdBy?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 	originalActorRecordId?: number | IQNumberField;
 
@@ -115,6 +117,8 @@ export interface RepositoryEntityEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	createdBy?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 	originalActorRecordId?: number | IQNumberField;
 
@@ -133,6 +137,8 @@ export interface RepositoryEntityGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	ageSuitability?: number | IQNumberField;
+	createdAt?: Date | IQDateField;
+	createdBy?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 	originalActorRecordId?: number | IQNumberField;
 
@@ -188,6 +194,8 @@ export interface QRepositoryEntity extends IQEntity
 
 	// Non-Id Fields
 	ageSuitability: IQNumberField;
+	createdAt: IQDateField;
+	createdBy: IQStringField;
 	systemWideOperationId: IQNumberField;
 	originalActorRecordId: IQNumberField;
 

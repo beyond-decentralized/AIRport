@@ -20,6 +20,7 @@ import {
 } from '@airport/ground-control';
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
+import { IRepositoryEntity } from '@airport/holding-pattern';
 
 @Injected()
 export class InternalTransactionalConnector
@@ -123,7 +124,7 @@ they are internal to the AIRport framework).`)
         );
     }
 
-    async save<E, T = E | E[]>(
+    async save<E extends IRepositoryEntity, T = E | E[]>(
         entity: T,
         context: IEntityContext,
     ): Promise<ISaveResult> {
@@ -134,7 +135,7 @@ they are internal to the AIRport framework).`)
         });
     }
 
-    async saveToDestination<E, T = E | E[]>(
+    async saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
         repositoryDestination: string,
         entity: T,
         context?: IContext,

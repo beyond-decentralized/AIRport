@@ -28,8 +28,13 @@ let IFrameInterAppPIClient = class IFrameInterAppPIClient {
             payload = response.payload;
         }
         else {
-            payload = this.queryResultsDeserializer
-                .deserialize(response.payload);
+            if (response.payload) {
+                payload = this.queryResultsDeserializer
+                    .deserialize(response.payload);
+            }
+        }
+        if (payload) {
+            this.queryResultsDeserializer.setPropertyDescriptors(payload);
         }
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer

@@ -20,16 +20,15 @@ import {
 } from '@airport/air-traffic-control';
 import {
 	QApplication,
-	parseId,
-	RepositoryEntityId
+	RepositoryEntityId,
+	REPOSITORY_ENTITY_UTILS
 } from '@airport/aviation-communication';
 import {
+	IContext,
 	Inject,
-	Injected
+	Injected,
+	IOC
 } from '@airport/direction-indicator'
-import {
-	IContext
-} from '@airport/direction-indicator';
 import {
 	EntityId as DbEntityId,
 	IEntityStateManager,
@@ -149,7 +148,8 @@ export abstract class Dao<Entity,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity> {
 		if (typeof repositoryEntityId === 'string') {
-			repositoryEntityId = parseId(repositoryEntityId)
+			repositoryEntityId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
+				.parseId(repositoryEntityId)
 		}
 		if (!this.db.dbEntity.isRepositoryEntity) {
 			throw new Error(`Dao.findById can only be called for Repository Entities.`)

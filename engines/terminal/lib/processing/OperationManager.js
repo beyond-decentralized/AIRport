@@ -104,6 +104,9 @@ let OperationManager = class OperationManager {
             columnIndexesInValues[qField.dbColumn.index] = index;
         });
         for (const entity of entities) {
+            entity.createdAt = new Date();
+        }
+        for (const entity of entities) {
             let valuesFragment = [];
             for (const dbProperty of context.dbEntity.properties) {
                 let newValue = entity[dbProperty.name];

@@ -65,7 +65,17 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbDate: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
                         DbNumber: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
+                        DbString: {
                             asName: string;
                             moduleImport: any;
                             sourceName: string;
@@ -95,33 +105,23 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        Transient: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
                     };
                     path: string;
                 };
+                DbDate: any;
                 DbNumber: any;
+                DbString: any;
                 GeneratedValue: any;
                 Id: any;
                 JoinColumn: any;
                 ManyToOne: any;
                 MappedSuperclass: any;
-                encodeId: {
-                    fileImports: any;
-                    isLocal: boolean;
-                    objectMapByAsName: {
-                        encodeId: {
-                            asName: string;
-                            moduleImport: any;
-                            sourceName: string;
-                        };
-                        setId: {
-                            asName: string;
-                            moduleImport: any;
-                            sourceName: string;
-                        };
-                    };
-                    path: string;
-                };
-                setId: any;
+                Transient: any;
                 Actor: {
                     fileImports: any;
                     isLocal: boolean;
@@ -165,7 +165,6 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
-                "@airport/aviation-communication": any;
                 "../infrastructure/Actor": any;
                 "../common": any;
                 "./Repository": any;
@@ -219,6 +218,24 @@ export declare const MAPPED_SUPERCLASS: ({
                 name: string;
                 values: {
                     name: string;
+                }[];
+            }[];
+            isGenerated: boolean;
+            isId: boolean;
+            isMappedSuperclass: boolean;
+            isTransient: boolean;
+            name: string;
+            type: string;
+            ownerEntity: any;
+            nonArrayType: string;
+            primitive: string;
+            index: number;
+            entity?: undefined;
+        } | {
+            decorators: {
+                name: string;
+                values: {
+                    name: string;
                     referencedColumnName: string;
                 }[];
             }[];
@@ -236,9 +253,7 @@ export declare const MAPPED_SUPERCLASS: ({
         } | {
             decorators: {
                 name: string;
-                values: {
-                    name: string;
-                }[];
+                values: any[];
             }[];
             isGenerated: boolean;
             isId: boolean;
@@ -249,8 +264,8 @@ export declare const MAPPED_SUPERCLASS: ({
             ownerEntity: any;
             nonArrayType: string;
             primitive: string;
-            index: number;
             entity?: undefined;
+            index?: undefined;
         })[];
         methodSignatures: any[];
         constructors: {
@@ -307,13 +322,14 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 Column?: undefined;
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -324,7 +340,6 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "../repository/RepositoryEntity": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -408,7 +423,17 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbDate: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                             DbNumber: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                            DbString: {
                                 asName: string;
                                 moduleImport: any;
                                 sourceName: string;
@@ -438,33 +463,23 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            Transient: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                         };
                         path: string;
                     };
+                    DbDate: any;
                     DbNumber: any;
+                    DbString: any;
                     GeneratedValue: any;
                     Id: any;
                     JoinColumn: any;
                     ManyToOne: any;
                     MappedSuperclass: any;
-                    encodeId: {
-                        fileImports: any;
-                        isLocal: boolean;
-                        objectMapByAsName: {
-                            encodeId: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
-                            setId: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
-                        };
-                        path: string;
-                    };
-                    setId: any;
+                    Transient: any;
                     Actor: {
                         fileImports: any;
                         isLocal: boolean;
@@ -506,7 +521,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
-                    "@airport/aviation-communication": any;
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
@@ -558,6 +572,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     name: string;
                     values: {
                         name: string;
+                    }[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                primitive: string;
+                index: number;
+                entity?: undefined;
+            } | {
+                decorators: {
+                    name: string;
+                    values: {
+                        name: string;
                         referencedColumnName: string;
                     }[];
                 }[];
@@ -575,9 +607,7 @@ export declare const MAPPED_SUPERCLASS: ({
             } | {
                 decorators: {
                     name: string;
-                    values: {
-                        name: string;
-                    }[];
+                    values: any[];
                 }[];
                 isGenerated: boolean;
                 isId: boolean;
@@ -588,8 +618,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 ownerEntity: any;
                 nonArrayType: string;
                 primitive: string;
-                index: number;
                 entity?: undefined;
+                index?: undefined;
             })[];
             methodSignatures: any[];
             constructors: {
@@ -635,13 +665,14 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 Column?: undefined;
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -652,7 +683,6 @@ export declare const MAPPED_SUPERCLASS: ({
             };
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -707,11 +737,14 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbDate?: undefined;
                         DbNumber?: undefined;
+                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
                         ManyToOne?: undefined;
+                        Transient?: undefined;
                     };
                     path: string;
                 };
@@ -728,13 +761,14 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -745,7 +779,6 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "../repository/RepositoryEntity": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -846,7 +879,17 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbDate: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                             DbNumber: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                            DbString: {
                                 asName: string;
                                 moduleImport: any;
                                 sourceName: string;
@@ -876,33 +919,23 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            Transient: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
                         };
                         path: string;
                     };
+                    DbDate: any;
                     DbNumber: any;
+                    DbString: any;
                     GeneratedValue: any;
                     Id: any;
                     JoinColumn: any;
                     ManyToOne: any;
                     MappedSuperclass: any;
-                    encodeId: {
-                        fileImports: any;
-                        isLocal: boolean;
-                        objectMapByAsName: {
-                            encodeId: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
-                            setId: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
-                        };
-                        path: string;
-                    };
-                    setId: any;
+                    Transient: any;
                     Actor: {
                         fileImports: any;
                         isLocal: boolean;
@@ -944,7 +977,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
-                    "@airport/aviation-communication": any;
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
@@ -996,6 +1028,24 @@ export declare const MAPPED_SUPERCLASS: ({
                     name: string;
                     values: {
                         name: string;
+                    }[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                primitive: string;
+                index: number;
+                entity?: undefined;
+            } | {
+                decorators: {
+                    name: string;
+                    values: {
+                        name: string;
                         referencedColumnName: string;
                     }[];
                 }[];
@@ -1013,9 +1063,7 @@ export declare const MAPPED_SUPERCLASS: ({
             } | {
                 decorators: {
                     name: string;
-                    values: {
-                        name: string;
-                    }[];
+                    values: any[];
                 }[];
                 isGenerated: boolean;
                 isId: boolean;
@@ -1026,8 +1074,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 ownerEntity: any;
                 nonArrayType: string;
                 primitive: string;
-                index: number;
                 entity?: undefined;
+                index?: undefined;
             })[];
             methodSignatures: any[];
             constructors: {
@@ -1084,9 +1132,12 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbDate?: undefined;
                         DbNumber?: undefined;
+                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
+                        Transient?: undefined;
                     };
                     path: string;
                 };
@@ -1105,11 +1156,12 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1120,7 +1172,6 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "@airport/travel-document-checkpoint": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -1296,11 +1347,14 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbDate?: undefined;
                         DbNumber?: undefined;
+                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
                         ManyToOne?: undefined;
+                        Transient?: undefined;
                     };
                     path: string;
                 };
@@ -1317,13 +1371,14 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1334,7 +1389,6 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "./ImmutableRepoRow": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -1402,11 +1456,14 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbDate?: undefined;
                             DbNumber?: undefined;
+                            DbString?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
                             JoinColumn?: undefined;
                             ManyToOne?: undefined;
+                            Transient?: undefined;
                         };
                         path: string;
                     };
@@ -1423,13 +1480,14 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbDate?: undefined;
                     DbNumber?: undefined;
+                    DbString?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
                     JoinColumn?: undefined;
                     ManyToOne?: undefined;
-                    encodeId?: undefined;
-                    setId?: undefined;
+                    Transient?: undefined;
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
@@ -1438,7 +1496,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
                     "../repository/RepositoryEntity": any;
-                    "@airport/aviation-communication"?: undefined;
                     "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "./Repository"?: undefined;
@@ -1537,7 +1594,17 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                DbDate: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
                                 DbNumber: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
+                                DbString: {
                                     asName: string;
                                     moduleImport: any;
                                     sourceName: string;
@@ -1567,33 +1634,23 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
+                                Transient: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
                             };
                             path: string;
                         };
+                        DbDate: any;
                         DbNumber: any;
+                        DbString: any;
                         GeneratedValue: any;
                         Id: any;
                         JoinColumn: any;
                         ManyToOne: any;
                         MappedSuperclass: any;
-                        encodeId: {
-                            fileImports: any;
-                            isLocal: boolean;
-                            objectMapByAsName: {
-                                encodeId: {
-                                    asName: string;
-                                    moduleImport: any;
-                                    sourceName: string;
-                                };
-                                setId: {
-                                    asName: string;
-                                    moduleImport: any;
-                                    sourceName: string;
-                                };
-                            };
-                            path: string;
-                        };
-                        setId: any;
+                        Transient: any;
                         Actor: {
                             fileImports: any;
                             isLocal: boolean;
@@ -1633,7 +1690,6 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     importMapByModulePath: {
                         "@airport/air-traffic-control": any;
-                        "@airport/aviation-communication": any;
                         "../infrastructure/Actor": any;
                         "../common": any;
                         "./Repository": any;
@@ -1683,6 +1739,24 @@ export declare const MAPPED_SUPERCLASS: ({
                         name: string;
                         values: {
                             name: string;
+                        }[];
+                    }[];
+                    isGenerated: boolean;
+                    isId: boolean;
+                    isMappedSuperclass: boolean;
+                    isTransient: boolean;
+                    name: string;
+                    type: string;
+                    ownerEntity: any;
+                    nonArrayType: string;
+                    primitive: string;
+                    index: number;
+                    entity?: undefined;
+                } | {
+                    decorators: {
+                        name: string;
+                        values: {
+                            name: string;
                             referencedColumnName: string;
                         }[];
                     }[];
@@ -1700,9 +1774,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 } | {
                     decorators: {
                         name: string;
-                        values: {
-                            name: string;
-                        }[];
+                        values: any[];
                     }[];
                     isGenerated: boolean;
                     isId: boolean;
@@ -1713,8 +1785,8 @@ export declare const MAPPED_SUPERCLASS: ({
                     ownerEntity: any;
                     nonArrayType: string;
                     primitive: string;
-                    index: number;
                     entity?: undefined;
+                    index?: undefined;
                 })[];
                 methodSignatures: any[];
                 constructors: {
@@ -1762,11 +1834,14 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
+                        DbDate?: undefined;
                         DbNumber?: undefined;
+                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
                         ManyToOne?: undefined;
+                        Transient?: undefined;
                     };
                     path: string;
                 };
@@ -1783,13 +1858,14 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                DbDate?: undefined;
                 DbNumber?: undefined;
+                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
                 ManyToOne?: undefined;
-                encodeId?: undefined;
-                setId?: undefined;
+                Transient?: undefined;
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
@@ -1800,7 +1876,6 @@ export declare const MAPPED_SUPERCLASS: ({
             importMapByModulePath: {
                 "@airport/air-traffic-control": any;
                 "./ImmutableRow": any;
-                "@airport/aviation-communication"?: undefined;
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
@@ -1877,9 +1952,12 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
+                            DbDate?: undefined;
                             DbNumber?: undefined;
+                            DbString?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
+                            Transient?: undefined;
                         };
                         path: string;
                     };
@@ -1898,11 +1976,12 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    DbDate?: undefined;
                     DbNumber?: undefined;
+                    DbString?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
-                    encodeId?: undefined;
-                    setId?: undefined;
+                    Transient?: undefined;
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
@@ -1911,7 +1990,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
                     "@airport/travel-document-checkpoint": any;
-                    "@airport/aviation-communication"?: undefined;
                     "../infrastructure/Actor"?: undefined;
                     "../common"?: undefined;
                     "./Repository"?: undefined;

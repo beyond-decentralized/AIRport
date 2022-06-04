@@ -1,3 +1,4 @@
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
@@ -16,6 +17,10 @@ export interface IQueryResultsDeserializer {
 	deepCopyProperties<T>(
 		from: T,
 		to: T
+	): void
+
+	setPropertyDescriptors(
+		object: any
 	): void
 
 }
@@ -142,6 +147,58 @@ export class QueryResultsDeserializer
 			if (!from.hasOwnProperty(propertyName)) {
 				delete to[propertyName]
 			}
+		}
+	}
+
+	setPropertyDescriptors(
+		object: any
+	): void {
+		if (object instanceof Array) {
+			for (let i = 0; i < object.length; i++) {
+				this.setPropertyDescriptors(object[i])
+			}
+		}
+		if (!(object instanceof Object)) {
+			return
+		}
+		if (object instanceof Date) {
+			return
+		}
+
+		for (let propertyName in object) {
+			if (!object.hasOwnProperty(propertyName)) {
+				continue
+			}
+			let property = object[propertyName]
+			if (property instanceof Object) {
+				this.setPropertyDescriptors(property)
+			}
+		}
+		let objectPrototype = Object.getPrototypeOf(object)
+		if (!object.id
+			&& !Object.getOwnPropertyDescriptor(object, 'id')
+			&& (!objectPrototype
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+			Object.defineProperty(object, 'id', {
+				get() {
+					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeId(this)
+				},
+				set(
+					idString: string
+				) {
+					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setId(idString, this)
+				}
+			});
+		}
+		if (!object.createdBy
+			&& !Object.getOwnPropertyDescriptor(object, 'createdBy')
+			&& (!objectPrototype
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
+			Object.defineProperty(object, 'createdBy', {
+				get() {
+					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).getCreatedBy(this)
+				}
+			});
 		}
 	}
 

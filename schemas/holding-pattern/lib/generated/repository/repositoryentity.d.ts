@@ -5,9 +5,12 @@ export interface IRepositoryEntity {
     repository: IRepository;
     actor: IActor;
     ageSuitability?: number;
+    createdAt?: Date;
+    createdBy?: string;
     systemWideOperationId?: number;
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
+    id?: string;
 }
 //# sourceMappingURL=repositoryentity.d.ts.map

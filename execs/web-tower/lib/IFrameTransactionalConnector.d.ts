@@ -6,6 +6,7 @@ import { DbDomain, DomainName, IDbApplicationUtils, ISaveResult, ITransactionalC
 import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
 import { Observable } from 'rxjs';
 import { ITerminalStore } from '@airport/terminal-map';
+import { IRepositoryEntity } from '@airport/ground-control/src';
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
     getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
     initializeConnection(): Promise<void>;
@@ -25,8 +26,8 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Observable<E>;
-    save<E, T = E | E[]>(entity: T, context: IEntityContext): Promise<ISaveResult>;
-    saveToDestination<E, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
+    save<E extends IRepositoryEntity, T = E | E[]>(entity: T, context: IEntityContext): Promise<ISaveResult>;
+    saveToDestination<E extends IRepositoryEntity, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;

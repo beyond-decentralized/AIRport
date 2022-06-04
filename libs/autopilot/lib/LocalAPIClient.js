@@ -108,19 +108,24 @@ let LocalAPIClient = class LocalAPIClient {
         if (response.errorMessage) {
             throw new Error(response.errorMessage);
         }
-        let result;
+        let payload;
         if (_inDemoMode) {
-            result = response.payload;
+            payload = response.payload;
         }
         else {
-            result = this.queryResultsDeserializer
-                .deserialize(response.payload);
+            if (response.payload) {
+                payload = this.queryResultsDeserializer
+                    .deserialize(response.payload);
+            }
+        }
+        if (payload) {
+            this.queryResultsDeserializer.setPropertyDescriptors(payload);
         }
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer
                 .deepCopyProperties(response.args[i], args[i]);
         }
-        return result;
+        return payload;
     }
     wait(milliseconds) {
         return new Promise((resolve, _reject) => {

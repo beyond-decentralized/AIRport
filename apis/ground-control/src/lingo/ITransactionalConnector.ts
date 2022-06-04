@@ -12,6 +12,93 @@ export interface IRootTransaction {
 	numberOfOperations: number
 }
 
+export interface IUser {
+	
+	// Id Properties
+	id: number;
+
+	// Id Relations
+
+	// Non-Id Properties
+	email?: string;
+	passwordHash?: string;
+	username?: string;
+	uuId?: string;
+
+	// Non-Id Relations
+
+	// Transient Properties
+
+	// Public Methods
+	
+}
+
+export interface IActor {
+	
+	// Id Properties
+	id: number;
+
+	// Id Relations
+
+	// Non-Id Properties
+	uuId?: string;
+
+	// Non-Id Relations
+	user?: IUser;
+
+	// Transient Properties
+
+	// Public Methods
+	
+}
+
+export interface IRepository {
+	
+	// Id Properties
+	id: number;
+
+	// Id Relations
+
+	// Non-Id Properties
+	ageSuitability?: number;
+	createdAt?: Date;
+	immutable?: boolean;
+	source?: string;
+	uuId?: string;
+
+	// Non-Id Relations
+	owner?: IUser;
+
+	// Transient Properties
+
+	// Public Methods
+	
+}
+
+export interface IRepositoryEntity {
+	// Id Properties
+	actorRecordId: number;
+
+	// Id Relations
+	repository: IRepository;
+	actor: IActor;
+
+	// Non-Id Properties
+	ageSuitability?: number;
+	createdAt?: Date;
+	createdBy?: string;
+	systemWideOperationId?: number;
+	originalActorRecordId?: number;
+
+	// Non-Id Relations
+	originalRepository?: IRepository;
+	originalActor?: IActor;
+
+	// Transient Properties
+
+	// Public Methods
+}
+
 export interface ITransactionalConnector {
 
 	callApi(
@@ -50,12 +137,12 @@ export interface ITransactionalConnector {
 		cachedSqlQueryId?: number,
 	): Observable<E>
 
-	save<E, T = E | E[]>(
+	save<E extends IRepositoryEntity, T = E | E[]>(
 		entity: T,
 		context?: IContext,
 	): Promise<ISaveResult>
 
-	saveToDestination<E, T = E | E[]>(
+	saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
 		repositoryDestination: string,
 		entity: T,
 		context?: IContext,

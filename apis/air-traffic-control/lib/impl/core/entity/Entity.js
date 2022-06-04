@@ -1,8 +1,9 @@
+import { IOC } from '@airport/direction-indicator';
 import { JoinType, JSONRelationType } from '@airport/ground-control';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
-import { parseId } from '@airport/aviation-communication';
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
 import { and } from '../operation/LogicalOperation';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
@@ -21,7 +22,7 @@ QEntity.prototype.rightJoin = function (right) {
 };
 QEntity.prototype.equals = function (entity) {
     if (typeof entity === 'string') {
-        entity = parseId(entity);
+        entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
     }
     let thisRelation = this;
     let other = entity;

@@ -1,9 +1,10 @@
+import { IRepositoryEntity } from "@airport/holding-pattern";
 import { IOperationNode } from "./DependencyGraphNode";
 import { IOperationContext } from "./OperationContext";
 
 export interface IDependencyGraphResolver {
 
-    getOperationsInOrder<E>(
+    getOperationsInOrder<E extends IRepositoryEntity>(
         entities: E[],
         context: IOperationContext,
     ): IOperationNode<E>[]

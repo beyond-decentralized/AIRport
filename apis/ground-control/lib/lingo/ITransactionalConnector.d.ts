@@ -9,6 +9,39 @@ export declare const INTERNAL_DOMAIN = "internal://domain";
 export interface IRootTransaction {
     numberOfOperations: number;
 }
+export interface IUser {
+    id: number;
+    email?: string;
+    passwordHash?: string;
+    username?: string;
+    uuId?: string;
+}
+export interface IActor {
+    id: number;
+    uuId?: string;
+    user?: IUser;
+}
+export interface IRepository {
+    id: number;
+    ageSuitability?: number;
+    createdAt?: Date;
+    immutable?: boolean;
+    source?: string;
+    uuId?: string;
+    owner?: IUser;
+}
+export interface IRepositoryEntity {
+    actorRecordId: number;
+    repository: IRepository;
+    actor: IActor;
+    ageSuitability?: number;
+    createdAt?: Date;
+    createdBy?: string;
+    systemWideOperationId?: number;
+    originalActorRecordId?: number;
+    originalRepository?: IRepository;
+    originalActor?: IActor;
+}
 export interface ITransactionalConnector {
     callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
     addRepository(context?: IContext): Promise<number>;
@@ -16,8 +49,8 @@ export interface ITransactionalConnector {
     findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Observable<E>;
-    save<E, T = E | E[]>(entity: T, context?: IContext): Promise<ISaveResult>;
-    saveToDestination<E, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
+    save<E extends IRepositoryEntity, T = E | E[]>(entity: T, context?: IContext): Promise<ISaveResult>;
+    saveToDestination<E extends IRepositoryEntity, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context?: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, context?: IContext): Promise<number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, context?: IContext): Promise<number>;

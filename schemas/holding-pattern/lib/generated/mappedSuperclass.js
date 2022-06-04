@@ -126,10 +126,20 @@ export const MAPPED_SUPERCLASS = [
                                 "moduleImport": null,
                                 "sourceName": "Column"
                             },
+                            "DbDate": {
+                                "asName": "DbDate",
+                                "moduleImport": null,
+                                "sourceName": "DbDate"
+                            },
                             "DbNumber": {
                                 "asName": "DbNumber",
                                 "moduleImport": null,
                                 "sourceName": "DbNumber"
+                            },
+                            "DbString": {
+                                "asName": "DbString",
+                                "moduleImport": null,
+                                "sourceName": "DbString"
                             },
                             "GeneratedValue": {
                                 "asName": "GeneratedValue",
@@ -155,34 +165,24 @@ export const MAPPED_SUPERCLASS = [
                                 "asName": "MappedSuperclass",
                                 "moduleImport": null,
                                 "sourceName": "MappedSuperclass"
+                            },
+                            "Transient": {
+                                "asName": "Transient",
+                                "moduleImport": null,
+                                "sourceName": "Transient"
                             }
                         },
                         "path": "@airport/air-traffic-control"
                     },
+                    "DbDate": null,
                     "DbNumber": null,
+                    "DbString": null,
                     "GeneratedValue": null,
                     "Id": null,
                     "JoinColumn": null,
                     "ManyToOne": null,
                     "MappedSuperclass": null,
-                    "encodeId": {
-                        "fileImports": null,
-                        "isLocal": false,
-                        "objectMapByAsName": {
-                            "encodeId": {
-                                "asName": "encodeId",
-                                "moduleImport": null,
-                                "sourceName": "encodeId"
-                            },
-                            "setId": {
-                                "asName": "setId",
-                                "moduleImport": null,
-                                "sourceName": "setId"
-                            }
-                        },
-                        "path": "@airport/aviation-communication"
-                    },
-                    "setId": null,
+                    "Transient": null,
                     "Actor": {
                         "fileImports": null,
                         "isLocal": true,
@@ -222,7 +222,6 @@ export const MAPPED_SUPERCLASS = [
                 },
                 "importMapByModulePath": {
                     "@airport/air-traffic-control": null,
-                    "@airport/aviation-communication": null,
                     "../infrastructure/Actor": null,
                     "../common": null,
                     "./Repository": null
@@ -357,6 +356,58 @@ export const MAPPED_SUPERCLASS = [
                             "name": "Column",
                             "values": [
                                 {
+                                    "name": "CREATED_AT"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "DbDate",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": false,
+                    "name": "createdAt",
+                    "type": "Date",
+                    "ownerEntity": null,
+                    "nonArrayType": "Date",
+                    "primitive": "Date",
+                    "index": 4
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Column",
+                            "values": [
+                                {
+                                    "name": "CREATED_BY"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "DbString",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": false,
+                    "name": "createdBy",
+                    "type": "string",
+                    "ownerEntity": null,
+                    "nonArrayType": "string",
+                    "primitive": "string",
+                    "index": 5
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Column",
+                            "values": [
+                                {
                                     "name": "SYSTEM_WIDE_OPERATION_ID",
                                     "nullable": false
                                 }
@@ -372,7 +423,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "number",
                     "primitive": "number",
-                    "index": 4
+                    "index": 6
                 },
                 {
                     "decorators": [
@@ -399,7 +450,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "Repository",
                     "entity": null,
-                    "index": 5
+                    "index": 7
                 },
                 {
                     "decorators": [
@@ -426,7 +477,7 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "Actor",
                     "entity": null,
-                    "index": 6
+                    "index": 8
                 },
                 {
                     "decorators": [
@@ -448,7 +499,24 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "number",
                     "primitive": "number",
-                    "index": 7
+                    "index": 9
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": true,
+                    "name": "id",
+                    "type": "string",
+                    "ownerEntity": null,
+                    "nonArrayType": "string",
+                    "primitive": "string"
                 }
             ],
             "methodSignatures": [],
@@ -650,10 +718,20 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "Column"
                                 },
+                                "DbDate": {
+                                    "asName": "DbDate",
+                                    "moduleImport": null,
+                                    "sourceName": "DbDate"
+                                },
                                 "DbNumber": {
                                     "asName": "DbNumber",
                                     "moduleImport": null,
                                     "sourceName": "DbNumber"
+                                },
+                                "DbString": {
+                                    "asName": "DbString",
+                                    "moduleImport": null,
+                                    "sourceName": "DbString"
                                 },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
@@ -679,34 +757,24 @@ export const MAPPED_SUPERCLASS = [
                                     "asName": "MappedSuperclass",
                                     "moduleImport": null,
                                     "sourceName": "MappedSuperclass"
+                                },
+                                "Transient": {
+                                    "asName": "Transient",
+                                    "moduleImport": null,
+                                    "sourceName": "Transient"
                                 }
                             },
                             "path": "@airport/air-traffic-control"
                         },
+                        "DbDate": null,
                         "DbNumber": null,
+                        "DbString": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
                         "ManyToOne": null,
                         "MappedSuperclass": null,
-                        "encodeId": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "encodeId": {
-                                    "asName": "encodeId",
-                                    "moduleImport": null,
-                                    "sourceName": "encodeId"
-                                },
-                                "setId": {
-                                    "asName": "setId",
-                                    "moduleImport": null,
-                                    "sourceName": "setId"
-                                }
-                            },
-                            "path": "@airport/aviation-communication"
-                        },
-                        "setId": null,
+                        "Transient": null,
                         "Actor": {
                             "fileImports": null,
                             "isLocal": true,
@@ -746,7 +814,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
-                        "@airport/aviation-communication": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
                         "./Repository": null
@@ -881,6 +948,58 @@ export const MAPPED_SUPERCLASS = [
                                 "name": "Column",
                                 "values": [
                                     {
+                                        "name": "CREATED_AT"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "DbDate",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "createdAt",
+                        "type": "Date",
+                        "ownerEntity": null,
+                        "nonArrayType": "Date",
+                        "primitive": "Date",
+                        "index": 4
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
+                                        "name": "CREATED_BY"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "DbString",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "createdBy",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string",
+                        "index": 5
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
                                         "name": "SYSTEM_WIDE_OPERATION_ID",
                                         "nullable": false
                                     }
@@ -896,7 +1015,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 4
+                        "index": 6
                     },
                     {
                         "decorators": [
@@ -923,7 +1042,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "Repository",
                         "entity": null,
-                        "index": 5
+                        "index": 7
                     },
                     {
                         "decorators": [
@@ -950,7 +1069,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "Actor",
                         "entity": null,
-                        "index": 6
+                        "index": 8
                     },
                     {
                         "decorators": [
@@ -972,7 +1091,24 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 7
+                        "index": 9
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "id",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
                     }
                 ],
                 "methodSignatures": [],
@@ -1255,10 +1391,20 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "Column"
                                 },
+                                "DbDate": {
+                                    "asName": "DbDate",
+                                    "moduleImport": null,
+                                    "sourceName": "DbDate"
+                                },
                                 "DbNumber": {
                                     "asName": "DbNumber",
                                     "moduleImport": null,
                                     "sourceName": "DbNumber"
+                                },
+                                "DbString": {
+                                    "asName": "DbString",
+                                    "moduleImport": null,
+                                    "sourceName": "DbString"
                                 },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
@@ -1284,34 +1430,24 @@ export const MAPPED_SUPERCLASS = [
                                     "asName": "MappedSuperclass",
                                     "moduleImport": null,
                                     "sourceName": "MappedSuperclass"
+                                },
+                                "Transient": {
+                                    "asName": "Transient",
+                                    "moduleImport": null,
+                                    "sourceName": "Transient"
                                 }
                             },
                             "path": "@airport/air-traffic-control"
                         },
+                        "DbDate": null,
                         "DbNumber": null,
+                        "DbString": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
                         "ManyToOne": null,
                         "MappedSuperclass": null,
-                        "encodeId": {
-                            "fileImports": null,
-                            "isLocal": false,
-                            "objectMapByAsName": {
-                                "encodeId": {
-                                    "asName": "encodeId",
-                                    "moduleImport": null,
-                                    "sourceName": "encodeId"
-                                },
-                                "setId": {
-                                    "asName": "setId",
-                                    "moduleImport": null,
-                                    "sourceName": "setId"
-                                }
-                            },
-                            "path": "@airport/aviation-communication"
-                        },
-                        "setId": null,
+                        "Transient": null,
                         "Actor": {
                             "fileImports": null,
                             "isLocal": true,
@@ -1351,7 +1487,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
-                        "@airport/aviation-communication": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
                         "./Repository": null
@@ -1486,6 +1621,58 @@ export const MAPPED_SUPERCLASS = [
                                 "name": "Column",
                                 "values": [
                                     {
+                                        "name": "CREATED_AT"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "DbDate",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "createdAt",
+                        "type": "Date",
+                        "ownerEntity": null,
+                        "nonArrayType": "Date",
+                        "primitive": "Date",
+                        "index": 4
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
+                                        "name": "CREATED_BY"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "DbString",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": false,
+                        "name": "createdBy",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string",
+                        "index": 5
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Column",
+                                "values": [
+                                    {
                                         "name": "SYSTEM_WIDE_OPERATION_ID",
                                         "nullable": false
                                     }
@@ -1501,7 +1688,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 4
+                        "index": 6
                     },
                     {
                         "decorators": [
@@ -1528,7 +1715,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "Repository",
                         "entity": null,
-                        "index": 5
+                        "index": 7
                     },
                     {
                         "decorators": [
@@ -1555,7 +1742,7 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "Actor",
                         "entity": null,
-                        "index": 6
+                        "index": 8
                     },
                     {
                         "decorators": [
@@ -1577,7 +1764,24 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "number",
                         "primitive": "number",
-                        "index": 7
+                        "index": 9
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "id",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
                     }
                 ],
                 "methodSignatures": [],
@@ -2254,10 +2458,20 @@ export const MAPPED_SUPERCLASS = [
                                         "moduleImport": null,
                                         "sourceName": "Column"
                                     },
+                                    "DbDate": {
+                                        "asName": "DbDate",
+                                        "moduleImport": null,
+                                        "sourceName": "DbDate"
+                                    },
                                     "DbNumber": {
                                         "asName": "DbNumber",
                                         "moduleImport": null,
                                         "sourceName": "DbNumber"
+                                    },
+                                    "DbString": {
+                                        "asName": "DbString",
+                                        "moduleImport": null,
+                                        "sourceName": "DbString"
                                     },
                                     "GeneratedValue": {
                                         "asName": "GeneratedValue",
@@ -2283,34 +2497,24 @@ export const MAPPED_SUPERCLASS = [
                                         "asName": "MappedSuperclass",
                                         "moduleImport": null,
                                         "sourceName": "MappedSuperclass"
+                                    },
+                                    "Transient": {
+                                        "asName": "Transient",
+                                        "moduleImport": null,
+                                        "sourceName": "Transient"
                                     }
                                 },
                                 "path": "@airport/air-traffic-control"
                             },
+                            "DbDate": null,
                             "DbNumber": null,
+                            "DbString": null,
                             "GeneratedValue": null,
                             "Id": null,
                             "JoinColumn": null,
                             "ManyToOne": null,
                             "MappedSuperclass": null,
-                            "encodeId": {
-                                "fileImports": null,
-                                "isLocal": false,
-                                "objectMapByAsName": {
-                                    "encodeId": {
-                                        "asName": "encodeId",
-                                        "moduleImport": null,
-                                        "sourceName": "encodeId"
-                                    },
-                                    "setId": {
-                                        "asName": "setId",
-                                        "moduleImport": null,
-                                        "sourceName": "setId"
-                                    }
-                                },
-                                "path": "@airport/aviation-communication"
-                            },
-                            "setId": null,
+                            "Transient": null,
                             "Actor": {
                                 "fileImports": null,
                                 "isLocal": true,
@@ -2350,7 +2554,6 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "importMapByModulePath": {
                             "@airport/air-traffic-control": null,
-                            "@airport/aviation-communication": null,
                             "../infrastructure/Actor": null,
                             "../common": null,
                             "./Repository": null
@@ -2485,6 +2688,58 @@ export const MAPPED_SUPERCLASS = [
                                     "name": "Column",
                                     "values": [
                                         {
+                                            "name": "CREATED_AT"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "DbDate",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": false,
+                            "name": "createdAt",
+                            "type": "Date",
+                            "ownerEntity": null,
+                            "nonArrayType": "Date",
+                            "primitive": "Date",
+                            "index": 4
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Column",
+                                    "values": [
+                                        {
+                                            "name": "CREATED_BY"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "DbString",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": false,
+                            "name": "createdBy",
+                            "type": "string",
+                            "ownerEntity": null,
+                            "nonArrayType": "string",
+                            "primitive": "string",
+                            "index": 5
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Column",
+                                    "values": [
+                                        {
                                             "name": "SYSTEM_WIDE_OPERATION_ID",
                                             "nullable": false
                                         }
@@ -2500,7 +2755,7 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "number",
                             "primitive": "number",
-                            "index": 4
+                            "index": 6
                         },
                         {
                             "decorators": [
@@ -2527,7 +2782,7 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "Repository",
                             "entity": null,
-                            "index": 5
+                            "index": 7
                         },
                         {
                             "decorators": [
@@ -2554,7 +2809,7 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "Actor",
                             "entity": null,
-                            "index": 6
+                            "index": 8
                         },
                         {
                             "decorators": [
@@ -2576,7 +2831,24 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "number",
                             "primitive": "number",
-                            "index": 7
+                            "index": 9
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Transient",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": true,
+                            "name": "id",
+                            "type": "string",
+                            "ownerEntity": null,
+                            "nonArrayType": "string",
+                            "primitive": "string"
                         }
                     ],
                     "methodSignatures": [],

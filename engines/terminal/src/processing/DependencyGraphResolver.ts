@@ -7,6 +7,7 @@ import {
 	EntityRelationType,
 	IEntityStateManager
 } from '@airport/ground-control'
+import { IRepositoryEntity } from '@airport/holding-pattern'
 import {
 	IDependencyGraphNode,
 	IDependencyGraphResolver,
@@ -28,7 +29,7 @@ export class DependencyGraphResolver
 	@Inject()
 	entityStateManager: IEntityStateManager
 
-	getOperationsInOrder<E>(
+	getOperationsInOrder<E extends IRepositoryEntity>(
 		entities: E[],
 		context: IOperationContext,
 	): IOperationNode<E>[] {
@@ -45,7 +46,7 @@ export class DependencyGraphResolver
 		return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context)
 	}
 
-	protected getEntitiesToPersist<E>(
+	protected getEntitiesToPersist<E extends IRepositoryEntity>(
 		entities: E[],
 		operatedOnEntities: IDependencyGraphNode<any>[],
 		operatedOnPassThroughs: boolean[],
@@ -300,7 +301,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	}
 
 	// Group alike operations together, where possible
-	protected optimizePersistOperations<E>(
+	protected optimizePersistOperations<E extends IRepositoryEntity>(
 		orderedDependencies: IDependencyGraphNode<any>[],
 		context: IOperationContext,
 	): IOperationNode<E>[] {
@@ -379,7 +380,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	 * @param operationNodes
 	 * @param context
 	 */
-	ensureUpdatesAreGroupedCorrectly<E>(
+	ensureUpdatesAreGroupedCorrectly<E extends IRepositoryEntity>(
 		operationNodes: IOperationNode<E>[],
 		context: IOperationContext
 	): IOperationNode<E>[] {
