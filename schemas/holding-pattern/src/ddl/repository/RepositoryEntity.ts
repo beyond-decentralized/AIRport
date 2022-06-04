@@ -51,7 +51,7 @@ export abstract class RepositoryEntity {
 
 	@Column({ name: 'CREATED_AT' })
 	@DbDate()
-	createdAt: Date
+	createdAt?: Date
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	// It is needed for bulk updates of repository records, where there is now way to find out
@@ -80,9 +80,9 @@ export abstract class RepositoryEntity {
 	originalActorRecordId: RepositoryEntity_ActorRecordId
 
 	@Transient()
-	id: string
+	id?: string
 
 	@Transient()
-	createdBy: User
+	createdBy?: User
 
 }

@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "RepositoryEntity",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [
@@ -535,7 +535,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ChildRepoRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
 		"parentClassName": "RepositoryEntity",
 		"location": "../repository/RepositoryEntity",
 		"isSuperclass": true,
@@ -597,7 +597,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "RepositoryEntity",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+			"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [
@@ -1132,7 +1132,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ChildRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -1182,7 +1182,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ImmutableRepoRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
 		"parentClassName": "RepositoryEntity",
 		"location": "../repository/RepositoryEntity",
 		"isSuperclass": true,
@@ -1273,7 +1273,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "RepositoryEntity",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+			"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [
@@ -1808,7 +1808,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ImmutableRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -2197,7 +2197,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "MutableRepoRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
 		"parentClassName": "ImmutableRepoRow",
 		"location": "./ImmutableRepoRow",
 		"isSuperclass": true,
@@ -2288,7 +2288,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "ImmutableRepoRow",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+			"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
 			"parentClassName": "RepositoryEntity",
 			"location": "../repository/RepositoryEntity",
 			"isSuperclass": true,
@@ -2379,7 +2379,7 @@ export const MAPPED_SUPERCLASS = [
 			"implementedInterfaceNames": [],
 			"parentEntity": {
 				"type": "RepositoryEntity",
-				"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+				"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/repository/RepositoryEntity.ts",
 				"parentClassName": null,
 				"isSuperclass": true,
 				"ids": [
@@ -2916,7 +2916,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "MutableRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
 		"parentClassName": "ImmutableRow",
 		"location": "./ImmutableRow",
 		"isSuperclass": true,
@@ -3007,7 +3007,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "ImmutableRow",
-			"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+			"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [],
@@ -3398,7 +3398,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ReferenceRow",
-		"path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
+		"path": "/Users/mama/Documents/code/AIR/AIRport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
