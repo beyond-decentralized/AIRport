@@ -7,6 +7,7 @@ export declare class User {
     id: User_Id;
     email: User_Email;
     passwordHash: User_PasswordHash;
+    ranking: number;
     username: User_Username;
     uuId: User_UuId;
 }

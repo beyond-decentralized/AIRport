@@ -35,6 +35,10 @@ export class User {
 	@DbString()
 	passwordHash: User_PasswordHash
 
+	@Column({ name: "RANKING" })
+	@DbNumber()
+	ranking: number
+
 	@Column({ name: "USERNAME" })
 	@DbString()
 	username: User_Username;

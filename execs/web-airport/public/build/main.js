@@ -3149,7 +3149,7 @@ var __decorate$2K = (undefined && undefined.__decorate) || function (decorators,
 };
 let RepositoryEntityUtils = class RepositoryEntityUtils {
     getCreatedBy(repositoryEntity) {
-        return repositoryEntity.actor.user.username;
+        return repositoryEntity.actor.user;
     }
     // FIXME: switch to UUID lookup for URLs to work across AIRport databases
     encodeId(idObject) {
@@ -9550,10 +9550,6 @@ __decorate$2j([
     DbDate()
 ], RepositoryEntity.prototype, "createdAt", void 0);
 __decorate$2j([
-    Column(),
-    DbString()
-], RepositoryEntity.prototype, "createdBy", void 0);
-__decorate$2j([
     Column()
 ], RepositoryEntity.prototype, "systemWideOperationId", void 0);
 __decorate$2j([
@@ -9570,6 +9566,9 @@ __decorate$2j([
 __decorate$2j([
     Transient()
 ], RepositoryEntity.prototype, "id", void 0);
+__decorate$2j([
+    Transient()
+], RepositoryEntity.prototype, "createdBy", void 0);
 RepositoryEntity = __decorate$2j([
     MappedSuperclass()
 ], RepositoryEntity);
@@ -11214,6 +11213,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 delete to[propertyName];
             }
         }
+        this.doSetPropertyDescriptors(to);
     }
     setPropertyDescriptors(object) {
         if (object instanceof Array) {
@@ -11236,6 +11236,9 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 this.setPropertyDescriptors(property);
             }
         }
+        this.doSetPropertyDescriptors(object);
+    }
+    doSetPropertyDescriptors(object) {
         let objectPrototype = Object.getPrototypeOf(object);
         if (!object.id
             && !Object.getOwnPropertyDescriptor(object, 'id')
@@ -11540,6 +11543,10 @@ __decorate$1P([
     Column(),
     DbString()
 ], User.prototype, "passwordHash", void 0);
+__decorate$1P([
+    Column(),
+    DbNumber()
+], User.prototype, "ranking", void 0);
 __decorate$1P([
     Column(),
     DbString()
@@ -18954,7 +18961,7 @@ const APPLICATION$1 = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "USERNAME",
+                            "name": "RANKING",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -18962,17 +18969,31 @@ const APPLICATION$1 = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "STRING"
+                            "type": "NUMBER"
                         },
                         {
                             "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "USERNAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "UUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
-                                    "index": 4
+                                    "index": 5
                                 }
                             ],
                             "sinceVersion": 1,
@@ -19022,7 +19043,7 @@ const APPLICATION$1 = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "username",
+                            "name": "ranking",
                             "sinceVersion": 1
                         },
                         {
@@ -19030,6 +19051,15 @@ const APPLICATION$1 = {
                                 "index": 4
                             },
                             "index": 4,
+                            "isId": false,
+                            "name": "username",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 5
+                            },
+                            "index": 5,
                             "isId": false,
                             "name": "uuId",
                             "sinceVersion": 1

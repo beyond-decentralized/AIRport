@@ -106,6 +106,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 delete to[propertyName];
             }
         }
+        this.doSetPropertyDescriptors(to);
     }
     setPropertyDescriptors(object) {
         if (object instanceof Array) {
@@ -128,6 +129,9 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 this.setPropertyDescriptors(property);
             }
         }
+        this.doSetPropertyDescriptors(object);
+    }
+    doSetPropertyDescriptors(object) {
         let objectPrototype = Object.getPrototypeOf(object);
         if (!object.id
             && !Object.getOwnPropertyDescriptor(object, 'id')

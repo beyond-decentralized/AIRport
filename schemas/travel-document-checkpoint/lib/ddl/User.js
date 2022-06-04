@@ -21,6 +21,10 @@ __decorate([
     DbString()
 ], User.prototype, "passwordHash", void 0);
 __decorate([
+    Column({ name: "RANKING" }),
+    DbNumber()
+], User.prototype, "ranking", void 0);
+__decorate([
     Column({ name: "USERNAME" }),
     DbString()
 ], User.prototype, "username", void 0);

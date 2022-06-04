@@ -1,3 +1,11 @@
+export interface IUser {
+    id: number;
+    email?: string;
+    passwordHash?: string;
+    ranking?: number;
+    username?: string;
+    uuId?: string;
+}
 export interface RepositoryEntityId {
     repository: {
         id?: number;
@@ -6,20 +14,18 @@ export interface RepositoryEntityId {
     actor: {
         id?: number;
         uuId?: string;
-        user?: {
-            username: string;
-        };
+        user?: IUser;
     };
     actorRecordId: number;
 }
 export interface IRepositoryEntityUtils {
-    getCreatedBy(idObject: RepositoryEntityId): string;
+    getCreatedBy(idObject: RepositoryEntityId): IUser;
     encodeId(idObject: RepositoryEntityId): string;
     parseId(idString: string): RepositoryEntityId;
     setId(idString: string, repositoryEntity: RepositoryEntityId): void;
 }
 export declare class RepositoryEntityUtils implements IRepositoryEntityUtils {
-    getCreatedBy(repositoryEntity: RepositoryEntityId): string;
+    getCreatedBy(repositoryEntity: RepositoryEntityId): IUser;
     encodeId(idObject: RepositoryEntityId): string;
     parseId(idString: string): RepositoryEntityId;
     setId(idString: string, repositoryEntity: RepositoryEntityId): void;

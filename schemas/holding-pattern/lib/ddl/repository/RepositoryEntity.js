@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbDate, DbNumber, DbString, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/air-traffic-control';
+import { Column, DbDate, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/air-traffic-control';
 let RepositoryEntity = class RepositoryEntity {
 };
 __decorate([
@@ -37,10 +37,6 @@ __decorate([
     DbDate()
 ], RepositoryEntity.prototype, "createdAt", void 0);
 __decorate([
-    Column({ name: 'CREATED_BY' }),
-    DbString()
-], RepositoryEntity.prototype, "createdBy", void 0);
-__decorate([
     Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
 ], RepositoryEntity.prototype, "systemWideOperationId", void 0);
 __decorate([
@@ -61,6 +57,9 @@ __decorate([
 __decorate([
     Transient()
 ], RepositoryEntity.prototype, "id", void 0);
+__decorate([
+    Transient()
+], RepositoryEntity.prototype, "createdBy", void 0);
 RepositoryEntity = __decorate([
     MappedSuperclass()
 ], RepositoryEntity);

@@ -16,6 +16,7 @@ export declare class QueryResultsDeserializer implements IQueryResultsDeserializ
     doDeserialize<E>(entity: E, operation: IDeserializableOperation): E;
     deepCopyProperties<T>(from: T, to: T): void;
     setPropertyDescriptors(object: any): void;
+    private doSetPropertyDescriptors;
 }
 export {};
 //# sourceMappingURL=QueryResultsDeserializer.d.ts.map

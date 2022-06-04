@@ -43,6 +43,7 @@ export interface UserESelect
 	// Non-Id Properties
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
 	uuId?: string | IQStringField;
 
@@ -83,6 +84,7 @@ export interface UserEUpdateProperties
 	// Non-Id Properties
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
 	uuId?: string | IQStringField;
 
@@ -100,6 +102,7 @@ export interface UserGraph
 	// Non-Id Properties
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
 	uuId?: string | IQStringField;
 
@@ -115,6 +118,7 @@ export interface UserEUpdateColumns
 	// Non-Id Columns
 	EMAIL?: string | IQStringField;
 	PASSWORD_HASH?: string | IQStringField;
+	RANKING?: number | IQNumberField;
 	USERNAME?: string | IQStringField;
 	UUID?: string | IQStringField;
 
@@ -154,6 +158,7 @@ export interface QUser extends IQEntity
 	// Non-Id Fields
 	email: IQStringField;
 	passwordHash: IQStringField;
+	ranking: IQNumberField;
 	username: IQStringField;
 	uuId: IQStringField;
 

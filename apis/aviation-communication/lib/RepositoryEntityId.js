@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Injected } from '@airport/direction-indicator';
 let RepositoryEntityUtils = class RepositoryEntityUtils {
     getCreatedBy(repositoryEntity) {
-        return repositoryEntity.actor.user.username;
+        return repositoryEntity.actor.user;
     }
     // FIXME: switch to UUID lookup for URLs to work across AIRport databases
     encodeId(idObject) {

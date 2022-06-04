@@ -158,6 +158,18 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
+                User: {
+                    fileImports: any;
+                    isLocal: boolean;
+                    objectMapByAsName: {
+                        User: {
+                            asName: string;
+                            moduleImport: any;
+                            sourceName: string;
+                        };
+                    };
+                    path: string;
+                };
                 RepositoryEntity?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
@@ -168,8 +180,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 "../infrastructure/Actor": any;
                 "../common": any;
                 "./Repository": any;
+                "@airport/travel-document-checkpoint": any;
                 "../repository/RepositoryEntity"?: undefined;
-                "@airport/travel-document-checkpoint"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -266,6 +278,22 @@ export declare const MAPPED_SUPERCLASS: ({
             primitive: string;
             entity?: undefined;
             index?: undefined;
+        } | {
+            decorators: {
+                name: string;
+                values: any[];
+            }[];
+            isGenerated: boolean;
+            isId: boolean;
+            isMappedSuperclass: boolean;
+            isTransient: boolean;
+            name: string;
+            type: string;
+            ownerEntity: any;
+            nonArrayType: string;
+            entity?: undefined;
+            index?: undefined;
+            primitive?: undefined;
         })[];
         methodSignatures: any[];
         constructors: {
@@ -333,6 +361,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
@@ -516,6 +545,18 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    User: {
+                        fileImports: any;
+                        isLocal: boolean;
+                        objectMapByAsName: {
+                            User: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                        };
+                        path: string;
+                    };
                     RepositoryEntity?: undefined;
                     IUser?: undefined;
                 };
@@ -524,8 +565,8 @@ export declare const MAPPED_SUPERCLASS: ({
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
+                    "@airport/travel-document-checkpoint": any;
                     "../repository/RepositoryEntity"?: undefined;
-                    "@airport/travel-document-checkpoint"?: undefined;
                 };
             };
             properties: ({
@@ -620,6 +661,22 @@ export declare const MAPPED_SUPERCLASS: ({
                 primitive: string;
                 entity?: undefined;
                 index?: undefined;
+            } | {
+                decorators: {
+                    name: string;
+                    values: any[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                entity?: undefined;
+                index?: undefined;
+                primitive?: undefined;
             })[];
             methodSignatures: any[];
             constructors: {
@@ -676,6 +733,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 RepositoryEntity?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
@@ -686,8 +744,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
-                "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
+                "../repository/RepositoryEntity"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
@@ -772,6 +830,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
@@ -972,6 +1031,18 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
+                    User: {
+                        fileImports: any;
+                        isLocal: boolean;
+                        objectMapByAsName: {
+                            User: {
+                                asName: string;
+                                moduleImport: any;
+                                sourceName: string;
+                            };
+                        };
+                        path: string;
+                    };
                     RepositoryEntity?: undefined;
                     IUser?: undefined;
                 };
@@ -980,8 +1051,8 @@ export declare const MAPPED_SUPERCLASS: ({
                     "../infrastructure/Actor": any;
                     "../common": any;
                     "./Repository": any;
+                    "@airport/travel-document-checkpoint": any;
                     "../repository/RepositoryEntity"?: undefined;
-                    "@airport/travel-document-checkpoint"?: undefined;
                 };
             };
             properties: ({
@@ -1076,6 +1147,22 @@ export declare const MAPPED_SUPERCLASS: ({
                 primitive: string;
                 entity?: undefined;
                 index?: undefined;
+            } | {
+                decorators: {
+                    name: string;
+                    values: any[];
+                }[];
+                isGenerated: boolean;
+                isId: boolean;
+                isMappedSuperclass: boolean;
+                isTransient: boolean;
+                name: string;
+                type: string;
+                ownerEntity: any;
+                nonArrayType: string;
+                entity?: undefined;
+                index?: undefined;
+                primitive?: undefined;
             })[];
             methodSignatures: any[];
             constructors: {
@@ -1165,6 +1252,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 RepositoryEntity?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
@@ -1382,6 +1470,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 RepositoryEntity?: undefined;
                 IUser?: undefined;
                 ImmutableRow?: undefined;
@@ -1392,8 +1481,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
-                "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
+                "../repository/RepositoryEntity"?: undefined;
                 "./ImmutableRow"?: undefined;
             };
         };
@@ -1491,6 +1580,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
+                    User?: undefined;
                     IUser?: undefined;
                 };
                 importMapByModulePath: {
@@ -1687,12 +1777,25 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
+                        User: {
+                            fileImports: any;
+                            isLocal: boolean;
+                            objectMapByAsName: {
+                                User: {
+                                    asName: string;
+                                    moduleImport: any;
+                                    sourceName: string;
+                                };
+                            };
+                            path: string;
+                        };
                     };
                     importMapByModulePath: {
                         "@airport/air-traffic-control": any;
                         "../infrastructure/Actor": any;
                         "../common": any;
                         "./Repository": any;
+                        "@airport/travel-document-checkpoint": any;
                     };
                 };
                 properties: ({
@@ -1787,6 +1890,22 @@ export declare const MAPPED_SUPERCLASS: ({
                     primitive: string;
                     entity?: undefined;
                     index?: undefined;
+                } | {
+                    decorators: {
+                        name: string;
+                        values: any[];
+                    }[];
+                    isGenerated: boolean;
+                    isId: boolean;
+                    isMappedSuperclass: boolean;
+                    isTransient: boolean;
+                    name: string;
+                    type: string;
+                    ownerEntity: any;
+                    nonArrayType: string;
+                    entity?: undefined;
+                    index?: undefined;
+                    primitive?: undefined;
                 })[];
                 methodSignatures: any[];
                 constructors: {
@@ -1869,6 +1988,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
+                User?: undefined;
                 RepositoryEntity?: undefined;
                 IUser?: undefined;
                 ImmutableRepoRow?: undefined;
@@ -1879,8 +1999,8 @@ export declare const MAPPED_SUPERCLASS: ({
                 "../infrastructure/Actor"?: undefined;
                 "../common"?: undefined;
                 "./Repository"?: undefined;
-                "../repository/RepositoryEntity"?: undefined;
                 "@airport/travel-document-checkpoint"?: undefined;
+                "../repository/RepositoryEntity"?: undefined;
                 "./ImmutableRepoRow"?: undefined;
             };
         };
@@ -1985,6 +2105,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
+                    User?: undefined;
                     RepositoryEntity?: undefined;
                 };
                 importMapByModulePath: {

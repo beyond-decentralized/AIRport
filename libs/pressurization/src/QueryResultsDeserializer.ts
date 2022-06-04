@@ -148,6 +148,7 @@ export class QueryResultsDeserializer
 				delete to[propertyName]
 			}
 		}
+		this.doSetPropertyDescriptors(to)
 	}
 
 	setPropertyDescriptors(
@@ -174,6 +175,12 @@ export class QueryResultsDeserializer
 				this.setPropertyDescriptors(property)
 			}
 		}
+		this.doSetPropertyDescriptors(object)
+	}
+
+	private doSetPropertyDescriptors(
+		object: any
+	): void {
 		let objectPrototype = Object.getPrototypeOf(object)
 		if (!object.id
 			&& !Object.getOwnPropertyDescriptor(object, 'id')

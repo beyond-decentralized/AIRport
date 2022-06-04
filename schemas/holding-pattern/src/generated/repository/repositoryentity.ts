@@ -1,4 +1,7 @@
 import {
+	User,
+} from '@airport/travel-document-checkpoint';
+import {
 	IRepository,
 } from './repository';
 import {
@@ -23,7 +26,6 @@ export interface IRepositoryEntity {
 	// Non-Id Properties
 	ageSuitability?: number;
 	createdAt?: Date;
-	createdBy?: string;
 	systemWideOperationId?: number;
 	originalActorRecordId?: number;
 
@@ -33,6 +35,7 @@ export interface IRepositoryEntity {
 
 	// Transient Properties
 	id?: string;
+	createdBy?: User;
 
 	// Public Methods
 	

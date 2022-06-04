@@ -15,6 +15,7 @@ export interface IUser {
 	// Non-Id Properties
 	email?: string;
 	passwordHash?: string;
+	ranking?: number;
 	username?: string;
 	uuId?: string;
 

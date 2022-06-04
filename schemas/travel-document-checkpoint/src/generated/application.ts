@@ -642,7 +642,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "USERNAME",
+							"name": "RANKING",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -650,17 +650,31 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
+							"type": "NUMBER"
 						},
 						{
 							"index": 4,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "USERNAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "UUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 4
+									"index": 5
 								}
 							],
 							"sinceVersion": 1,
@@ -710,7 +724,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": false,
-							"name": "username",
+							"name": "ranking",
 							"sinceVersion": 1
 						},
 						{
@@ -718,6 +732,15 @@ export const APPLICATION = {
 								"index": 4
 							},
 							"index": 4,
+							"isId": false,
+							"name": "username",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 5
+							},
+							"index": 5,
 							"isId": false,
 							"name": "uuId",
 							"sinceVersion": 1

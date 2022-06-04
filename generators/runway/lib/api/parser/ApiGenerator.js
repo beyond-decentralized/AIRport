@@ -1,6 +1,7 @@
 import tsc from 'typescript';
 import { ImportManager } from '../../ddl/parser/ImportManager';
 import { forEach } from '../../ParserUtils';
+import { normalizePath } from '../../resolve/pathResolver';
 export const currentApplicationApi = {
     apiObjectMap: {}
 };
@@ -12,7 +13,7 @@ const printer = tsc.createPrinter({
 export function visitApiFile(node, path) {
     let fileObject = currentApiFileSignatureMap[path];
     if (!fileObject) {
-        const pathFragments = path.split('/');
+        const pathFragments = normalizePath(path).split('/');
         fileObject = {
             apiClasses: [],
             fileName: pathFragments[pathFragments.length - 1],

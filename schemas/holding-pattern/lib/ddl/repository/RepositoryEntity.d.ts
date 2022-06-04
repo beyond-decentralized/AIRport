@@ -1,6 +1,7 @@
 import { Actor } from '../infrastructure/Actor';
 import { SystemWideOperationId } from '../common';
 import { Repository } from './Repository';
+import { User } from '@airport/travel-document-checkpoint';
 /**
  * Created by Papa on 2/17/2017.
  */
@@ -12,11 +13,11 @@ export declare abstract class RepositoryEntity {
     actorRecordId: RepositoryEntity_ActorRecordId;
     ageSuitability: number;
     createdAt: Date;
-    createdBy: string;
     systemWideOperationId: RepositoryEntity_SystemWideOperationId;
     originalRepository: Repository;
     originalActor: Actor;
     originalActorRecordId: RepositoryEntity_ActorRecordId;
     id: string;
+    createdBy: User;
 }
 //# sourceMappingURL=RepositoryEntity.d.ts.map

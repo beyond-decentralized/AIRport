@@ -8,6 +8,7 @@ import tsc from 'typescript';
 import { FileImports } from '../../ddl/parser/FileImports';
 import { ImportManager } from '../../ddl/parser/ImportManager';
 import { forEach } from '../../ParserUtils';
+import { normalizePath } from '../../resolve/pathResolver';
 
 export interface IApiSignature {
     isAsync: boolean
@@ -49,7 +50,7 @@ export function visitApiFile(
     let fileObject = currentApiFileSignatureMap[path]
 
     if (!fileObject) {
-        const pathFragments = path.split('/')
+        const pathFragments = normalizePath(path).split('/')
         fileObject = {
             apiClasses: [],
             fileName: pathFragments[pathFragments.length - 1],

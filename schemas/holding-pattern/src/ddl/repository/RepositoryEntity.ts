@@ -13,6 +13,7 @@ import {
 import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
+import { User } from '@airport/travel-document-checkpoint'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -52,10 +53,6 @@ export abstract class RepositoryEntity {
 	@DbDate()
 	createdAt: Date
 
-	@Column({ name: 'CREATED_BY' })
-	@DbString()
-	createdBy: string
-
 	// This field is local to the device only, when copied to new device this value is re-created
 	// It is needed for bulk updates of repository records, where there is now way to find out
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
@@ -84,5 +81,8 @@ export abstract class RepositoryEntity {
 
 	@Transient()
 	id: string
+
+	@Transient()
+	createdBy: User
 
 }

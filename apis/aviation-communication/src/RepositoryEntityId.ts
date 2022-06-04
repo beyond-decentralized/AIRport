@@ -1,5 +1,28 @@
 import { Injected } from '@airport/direction-indicator'
 
+
+export interface IUser {
+
+    // Id Properties
+    id: number;
+
+    // Id Relations
+
+    // Non-Id Properties
+    email?: string;
+    passwordHash?: string;
+    ranking?: number;
+    username?: string;
+    uuId?: string;
+
+    // Non-Id Relations
+
+    // Transient Properties
+
+    // Public Methods
+
+}
+
 export interface RepositoryEntityId {
 
     repository: {
@@ -9,9 +32,7 @@ export interface RepositoryEntityId {
     actor: {
         id?: number
         uuId?: string,
-        user?: {
-            username: string
-        }
+        user?: IUser
     },
     actorRecordId: number
 
@@ -21,7 +42,7 @@ export interface IRepositoryEntityUtils {
 
     getCreatedBy(
         idObject: RepositoryEntityId
-    ): string
+    ): IUser
 
     encodeId(
         idObject: RepositoryEntityId
@@ -44,8 +65,8 @@ export class RepositoryEntityUtils
 
     getCreatedBy(
         repositoryEntity: RepositoryEntityId
-    ): string {
-        return repositoryEntity.actor.user.username
+    ): IUser {
+        return repositoryEntity.actor.user
     }
 
     // FIXME: switch to UUID lookup for URLs to work across AIRport databases

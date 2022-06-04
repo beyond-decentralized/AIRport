@@ -5,6 +5,7 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
+    ranking?: number | IQNumberField;
     username?: string | IQStringField;
     uuId?: string | IQStringField;
 }
@@ -26,6 +27,7 @@ export interface UserEOptionalId {
 export interface UserEUpdateProperties extends IEntityUpdateProperties {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
+    ranking?: number | IQNumberField;
     username?: string | IQStringField;
     uuId?: string | IQStringField;
 }
@@ -35,6 +37,7 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
+    ranking?: number | IQNumberField;
     username?: string | IQStringField;
     uuId?: string | IQStringField;
 }
@@ -44,6 +47,7 @@ export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
     EMAIL?: string | IQStringField;
     PASSWORD_HASH?: string | IQStringField;
+    RANKING?: number | IQNumberField;
     USERNAME?: string | IQStringField;
     UUID?: string | IQStringField;
 }
@@ -64,6 +68,7 @@ export interface QUser extends IQEntity {
     id: IQNumberField;
     email: IQStringField;
     passwordHash: IQStringField;
+    ranking: IQNumberField;
     username: IQStringField;
     uuId: IQStringField;
 }
