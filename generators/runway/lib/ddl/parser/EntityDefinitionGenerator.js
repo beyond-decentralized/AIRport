@@ -138,7 +138,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
                 // Just the any keyword
             }
             else {
-                throw new Error(`Unsupported type: ${type}`);
+                throw new Error(`Unsupported type for ''${getSymbolLocationString(symbol, parent)}': ${type} (implicit if 'any')`);
             }
         }
         else if (type.match(/^\s*any\[\]\s*$/)) {
@@ -148,7 +148,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
                 type = declaration.type.elementType.typeName.escapedText + '[]';
             }
             else {
-                throw new Error(`Unsupported array type: ${type}`);
+                throw new Error(`Unsupported array type for '${getSymbolLocationString(symbol, parent)}': ${type}`);
             }
         }
         else if (type.match(/\]\s*:\s*any\s*;*\s*\}\s*$/)) {
@@ -160,11 +160,11 @@ function serializeSymbol(symbol, parent = symbol.parent) {
                 type = type.replace(/any\s*;*\s*\}\s*$/, declaration.type.members[0].type.typeName.escapedText + '}');
             }
             else {
-                throw new Error(`Unsupported map type: ${type}`);
+                throw new Error(`Unsupported map type for '${getSymbolLocationString(symbol, parent)}': ${type}`);
             }
         }
         else if (type.match(/^\s*any\s*$/)) {
-            throw new Error(`Unsupported type: ${type}`);
+            throw new Error(`Unsupported type for '${getSymbolLocationString(symbol, parent)}': ${type}`);
         }
     }
     return {
@@ -179,6 +179,16 @@ function serializeSymbol(symbol, parent = symbol.parent) {
         // tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
         type
     };
+}
+function getSymbolLocationString(symbol, parent) {
+    let parentPrefix = 'unknown';
+    if (parent.fileName) {
+        parentPrefix = parent.fileName;
+    }
+    else if (parent.getName) {
+        parentPrefix = parent.getName();
+    }
+    return `${parentPrefix} -> ${symbol.getName()}`;
 }
 function serializeMethodDefinition(symbol) {
     const name = symbol.getName();

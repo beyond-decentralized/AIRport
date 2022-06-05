@@ -180,7 +180,7 @@ function serializeSymbol(
 				&& declaration.type.kind === tsc.SyntaxKind.AnyKeyword) {
 				// Just the any keyword
 			} else {
-				throw new Error(`Unsupported type: ${type}`)
+				throw new Error(`Unsupported type for ''${getSymbolLocationString(symbol, parent)}': ${type} (implicit if 'any')`)
 			}
 		} else if (type.match(/^\s*any\[\]\s*$/)) {
 			if (declaration.type
@@ -188,7 +188,7 @@ function serializeSymbol(
 				&& declaration.type.elementType.typeName) {
 				type = declaration.type.elementType.typeName.escapedText + '[]'
 			} else {
-				throw new Error(`Unsupported array type: ${type}`)
+				throw new Error(`Unsupported array type for '${getSymbolLocationString(symbol, parent)}': ${type}`)
 			}
 		} else if (type.match(/\]\s*:\s*any\s*;*\s*\}\s*$/)) {
 			if (declaration.type
@@ -198,10 +198,10 @@ function serializeSymbol(
 				&& declaration.type.members[0].type.typeName) {
 				type = type.replace(/any\s*;*\s*\}\s*$/, declaration.type.members[0].type.typeName.escapedText + '}')
 			} else {
-				throw new Error(`Unsupported map type: ${type}`)
+				throw new Error(`Unsupported map type for '${getSymbolLocationString(symbol, parent)}': ${type}`)
 			}
 		} else if (type.match(/^\s*any\s*$/)) {
-			throw new Error(`Unsupported type: ${type}`)
+			throw new Error(`Unsupported type for '${getSymbolLocationString(symbol, parent)}': ${type}`)
 		}
 	}
 
@@ -217,6 +217,19 @@ function serializeSymbol(
 		// tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
 		type
 	}
+}
+
+function getSymbolLocationString(
+	symbol: ts.Symbol,
+	parent
+) {
+	let parentPrefix = 'unknown'
+	if (parent.fileName) {
+		parentPrefix = parent.fileName
+	} else if (parent.getName) {
+		parentPrefix = parent.getName()
+	}
+	return `${parentPrefix} -> ${symbol.getName()}`
 }
 
 function serializeMethodDefinition(
