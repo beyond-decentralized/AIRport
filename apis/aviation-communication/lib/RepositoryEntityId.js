@@ -37,7 +37,31 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId;
     }
     encodeUuId(idObject) {
-        throw new Error('Not Implemented');
+        if (!idObject.repository) {
+            throw Error(`Id object does not have a "repository" member object.`);
+        }
+        if (!idObject.repository.uuId) {
+            throw Error(`Id object does not have a "repository.id" property.`);
+        }
+        if (typeof idObject.repository.uuId !== 'string') {
+            throw Error(`Type of "repository.uuId" property is not a string.`);
+        }
+        if (!idObject.actor) {
+            throw Error(`Id object does not have an "actor" member object.`);
+        }
+        if (!idObject.actor.uuId) {
+            throw Error(`Id object does not have an "actor.uuId" property.`);
+        }
+        if (typeof idObject.actor.uuId !== 'number') {
+            throw Error(`Type of "actor.uuId" property is not a string.`);
+        }
+        if (!idObject.actorRecordId) {
+            throw Error(`Id object does not have an "actorRecordId" property.`);
+        }
+        if (typeof idObject.actorRecordId !== 'number') {
+            throw Error(`Type of "actorRecordId" property is not a number.`);
+        }
+        return idObject.repository.uuId + '-' + idObject.actor.uuId + '-' + idObject.actorRecordId;
     }
     parseId(idString) {
         const idStringFragments = idString.split('-');
@@ -55,7 +79,27 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         };
     }
     parseUuId(idString) {
-        throw new Error('Not Implemented');
+        const idStringFragments = idString.split('-');
+        if (idStringFragments.length !== 11) {
+            throw new Error('Invalid Repository Entity Id, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
+        }
+        const repositoryUuIdFragments = [];
+        for (let i = 0; i < 5; i++) {
+            repositoryUuIdFragments.push(idStringFragments[i]);
+        }
+        const actorUuIdFragments = [];
+        for (let i = 5; i < 10; i++) {
+            actorUuIdFragments.push(idStringFragments[i]);
+        }
+        return {
+            repository: {
+                uuId: repositoryUuIdFragments.join('-')
+            },
+            actor: {
+                uuId: actorUuIdFragments.join('-')
+            },
+            actorRecordId: parseInt(idStringFragments[11])
+        };
     }
     setId(idString, repositoryEntity) {
         let repositoryEntityId = this.parseId(idString);
@@ -78,7 +122,24 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
     }
     setUuId(idString, repositoryEntity) {
-        throw new Error('Not Implemented');
+        let repositoryEntityId = this.parseUuId(idString);
+        if (!repositoryEntity.repository) {
+            repositoryEntity.repository = {
+                uuId: repositoryEntityId.repository.uuId
+            };
+        }
+        else {
+            repositoryEntity.repository.uuId = repositoryEntityId.repository.uuId;
+        }
+        if (!repositoryEntity.actor) {
+            repositoryEntity.actor = {
+                uuId: repositoryEntityId.repository.uuId
+            };
+        }
+        else {
+            repositoryEntity.actor.uuId = repositoryEntityId.actor.uuId;
+        }
+        repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
     }
 };
 RepositoryEntityUtils = __decorate([
