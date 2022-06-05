@@ -9,7 +9,6 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
     getCreatedBy(repositoryEntity) {
         return repositoryEntity.actor.user;
     }
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
     encodeId(idObject) {
         if (!idObject.repository) {
             throw Error(`Id object does not have a "repository" member object.`);
@@ -37,7 +36,9 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         }
         return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId;
     }
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    encodeUuId(idObject) {
+        throw new Error('Not Implemented');
+    }
     parseId(idString) {
         const idStringFragments = idString.split('-');
         if (idStringFragments.length !== 3) {
@@ -53,7 +54,9 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
             actorRecordId: parseInt(idStringFragments[2])
         };
     }
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    parseUuId(idString) {
+        throw new Error('Not Implemented');
+    }
     setId(idString, repositoryEntity) {
         let repositoryEntityId = this.parseId(idString);
         if (!repositoryEntity.repository) {
@@ -73,6 +76,9 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
             repositoryEntity.actor.id = repositoryEntityId.actor.id;
         }
         repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
+    }
+    setUuId(idString, repositoryEntity) {
+        throw new Error('Not Implemented');
     }
 };
 RepositoryEntityUtils = __decorate([

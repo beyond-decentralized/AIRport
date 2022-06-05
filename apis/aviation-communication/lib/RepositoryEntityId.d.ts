@@ -21,13 +21,19 @@ export interface RepositoryEntityId {
 export interface IRepositoryEntityUtils {
     getCreatedBy(idObject: RepositoryEntityId): IUser;
     encodeId(idObject: RepositoryEntityId): string;
+    encodeUuId(idObject: RepositoryEntityId): string;
     parseId(idString: string): RepositoryEntityId;
+    parseUuId(idString: string): RepositoryEntityId;
     setId(idString: string, repositoryEntity: RepositoryEntityId): void;
+    setUuId(idString: string, repositoryEntity: RepositoryEntityId): void;
 }
 export declare class RepositoryEntityUtils implements IRepositoryEntityUtils {
     getCreatedBy(repositoryEntity: RepositoryEntityId): IUser;
     encodeId(idObject: RepositoryEntityId): string;
+    encodeUuId(idObject: RepositoryEntityId): string;
     parseId(idString: string): RepositoryEntityId;
+    parseUuId(idString: string): RepositoryEntityId;
     setId(idString: string, repositoryEntity: RepositoryEntityId): void;
+    setUuId(idString: string, repositoryEntity: RepositoryEntityId): void;
 }
 //# sourceMappingURL=RepositoryEntityId.d.ts.map

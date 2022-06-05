@@ -516,6 +516,23 @@ export const MAPPED_SUPERCLASS = [
                     "isId": false,
                     "isMappedSuperclass": false,
                     "isTransient": true,
+                    "name": "uuId",
+                    "type": "string",
+                    "ownerEntity": null,
+                    "nonArrayType": "string",
+                    "primitive": "string"
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": true,
                     "name": "createdBy",
                     "type": "User",
                     "ownerEntity": null,
@@ -1095,6 +1112,23 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": true,
                         "name": "id",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "uuId",
                         "type": "string",
                         "ownerEntity": null,
                         "nonArrayType": "string",
@@ -1771,6 +1805,23 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": true,
                         "name": "id",
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "uuId",
                         "type": "string",
                         "ownerEntity": null,
                         "nonArrayType": "string",
@@ -2877,6 +2928,23 @@ export const MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": true,
                             "name": "id",
+                            "type": "string",
+                            "ownerEntity": null,
+                            "nonArrayType": "string",
+                            "primitive": "string"
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Transient",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": true,
+                            "name": "uuId",
                             "type": "string",
                             "ownerEntity": null,
                             "nonArrayType": "string",

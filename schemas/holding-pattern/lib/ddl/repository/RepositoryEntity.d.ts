@@ -18,6 +18,7 @@ export declare abstract class RepositoryEntity {
     originalActor: Actor;
     originalActorRecordId: RepositoryEntity_ActorRecordId;
     id?: string;
+    uuId?: string;
     createdBy?: User;
 }
 //# sourceMappingURL=RepositoryEntity.d.ts.map

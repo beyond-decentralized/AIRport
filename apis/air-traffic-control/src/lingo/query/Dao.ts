@@ -63,6 +63,11 @@ export interface IDao<Entity,
 		context?: IContext
 	): Promise<Entity>;
 
+	findByUuId(
+		repositoryEntityUuId: RepositoryEntityId | string,
+		context?: IContext
+	): Promise<Entity>;
+
 	/**
 	 * Either creates or updates the entity based entity
 	 * state flag.  Cascades.

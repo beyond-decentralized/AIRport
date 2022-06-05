@@ -35,6 +35,7 @@ export interface IRepositoryEntity {
 
 	// Transient Properties
 	id?: string;
+	uuId?: string;
 	createdBy?: User;
 
 	// Public Methods

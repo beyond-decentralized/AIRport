@@ -48,11 +48,24 @@ export interface IRepositoryEntityUtils {
         idObject: RepositoryEntityId
     ): string
 
+    encodeUuId(
+        idObject: RepositoryEntityId
+    ): string
+
     parseId(
         idString: string
     ): RepositoryEntityId
 
+    parseUuId(
+        idString: string
+    ): RepositoryEntityId
+
     setId(
+        idString: string,
+        repositoryEntity: RepositoryEntityId
+    ): void
+
+    setUuId(
         idString: string,
         repositoryEntity: RepositoryEntityId
     ): void
@@ -69,7 +82,6 @@ export class RepositoryEntityUtils
         return repositoryEntity.actor.user
     }
 
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
     encodeId(
         idObject: RepositoryEntityId
     ): string {
@@ -100,7 +112,12 @@ export class RepositoryEntityUtils
         return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId
     }
 
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    encodeUuId(
+        idObject: RepositoryEntityId
+    ): string {
+        throw new Error('Not Implemented')
+    }
+
     parseId(
         idString: string
     ): RepositoryEntityId {
@@ -119,7 +136,12 @@ export class RepositoryEntityUtils
         }
     }
 
-    // FIXME: switch to UUID lookup for URLs to work across AIRport databases
+    parseUuId(
+        idString: string
+    ): RepositoryEntityId {
+        throw new Error('Not Implemented')
+    }
+
     setId(
         idString: string,
         repositoryEntity: RepositoryEntityId
@@ -142,6 +164,13 @@ export class RepositoryEntityUtils
         }
 
         repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId
+    }
+
+    setUuId(
+        idString: string,
+        repositoryEntity: RepositoryEntityId
+    ): void {
+        throw new Error('Not Implemented')
     }
 
 }

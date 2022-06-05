@@ -85,6 +85,46 @@ let Dao = class Dao {
             where: and(q.repository.id.equals(repositoryEntityId.repository.id), q.actor.id.equals(repositoryEntityId.actor.id), q.actorRecordId.equals(repositoryEntityId.actorRecordId))
         }, context);
     }
+    async findByUuId(repositoryEntityUuId, context) {
+        if (typeof repositoryEntityUuId === 'string') {
+            repositoryEntityUuId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
+                .parseUuId(repositoryEntityUuId);
+        }
+        if (!this.db.dbEntity.isRepositoryEntity) {
+            throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
+        }
+        const idObject = repositoryEntityUuId;
+        if (!idObject.repository
+            || !idObject.repository.uuId
+            || typeof idObject.repository.uuId !== 'string'
+            || !idObject.actor
+            || !idObject.actor.uuId
+            || typeof idObject.actor.uuId !== 'number'
+            || !idObject.actorRecordId
+            || typeof idObject.actorRecordId !== 'number') {
+            throw new Error(`Invalid Repository Entity Id.  Expecting:
+				interface RepositoryEntityId {
+					repository: {
+						uuId: string
+					},
+					actor: {
+						uuId: string
+					},
+					actorRecordId: number
+				}
+				`);
+        }
+        let q, r, a;
+        return await this.db.findOne.graph({
+            select: {},
+            from: [
+                q = this.db.from,
+                r = q.repository.leftJoin(),
+                a = q.actor.leftJoin()
+            ],
+            where: and(r.uuId.equals(idObject.repository.uuId), a.uuId.equals(idObject.actor.uuId), q.actorRecordId.equals(idObject.actorRecordId))
+        }, context);
+    }
     async save(entity, context) {
         return await this.db.save(entity, this.ensureContext(context));
     }

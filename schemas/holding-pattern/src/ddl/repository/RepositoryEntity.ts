@@ -83,6 +83,9 @@ export abstract class RepositoryEntity {
 	id?: string
 
 	@Transient()
+	uuId?: string
+
+	@Transient()
 	createdBy?: User
 
 }

@@ -59,6 +59,9 @@ __decorate([
 ], RepositoryEntity.prototype, "id", void 0);
 __decorate([
     Transient()
+], RepositoryEntity.prototype, "uuId", void 0);
+__decorate([
+    Transient()
 ], RepositoryEntity.prototype, "createdBy", void 0);
 RepositoryEntity = __decorate([
     MappedSuperclass()

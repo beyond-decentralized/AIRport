@@ -145,6 +145,14 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                     return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setId(idString, this);
                 }
             });
+            Object.defineProperty(object, 'uuId', {
+                get() {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeUuId(this);
+                },
+                set(idString) {
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setUuId(idString, this);
+                }
+            });
         }
         if (!object.createdBy
             && !Object.getOwnPropertyDescriptor(object, 'createdBy')

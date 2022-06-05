@@ -12,6 +12,7 @@ export interface IRepositoryEntity {
     originalRepository?: IRepository;
     originalActor?: IActor;
     id?: string;
+    uuId?: string;
     createdBy?: User;
 }
 //# sourceMappingURL=repositoryentity.d.ts.map
