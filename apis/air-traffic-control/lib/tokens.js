@@ -13,6 +13,7 @@ import { NonEntitySearch } from './impl/query/api/NonEntitySearch';
 import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne';
 import { DatabaseStore } from './impl/DatabaseStore';
 import { Utils } from './impl/Utils';
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
 const airTrafficControl = lib('air-traffic-control');
 export const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,
@@ -144,7 +145,8 @@ QUERY_FACADE.setDependencies({
 });
 QUERY_UTILS.setDependencies({
     fieldUtils: FIELD_UTILS,
-    relationManager: RELATION_MANAGER
+    relationManager: RELATION_MANAGER,
+    repositoryEntityUtils: REPOSITORY_ENTITY_UTILS
 });
 RELATION_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS

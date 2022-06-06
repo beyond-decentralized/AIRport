@@ -1,8 +1,7 @@
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
 import { IOC } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
+import { QUERY_UTILS } from '../../../tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
-import { and } from '../operation/LogicalOperation';
 /**
  * Created by Papa on 4/26/2016.
  */
@@ -37,12 +36,7 @@ export function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils,
 }
 export const qRepositoryEntityRelationMethods = {
     equals: function (entity) {
-        if (typeof entity === 'string') {
-            entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
-        }
-        let thisRelation = this;
-        let other = entity;
-        return and(thisRelation.repository.id.equals(other.repository.id), thisRelation.actor.id.equals(other.actor.id), thisRelation.actorRecordId.equals(other.actorRecordId));
+        return IOC.getSync(QUERY_UTILS).equals(entity, this);
     }
 };
 extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods);

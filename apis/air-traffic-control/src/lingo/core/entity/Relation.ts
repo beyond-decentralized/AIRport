@@ -5,6 +5,8 @@ import {
 	IQEntity,
 	IQEntityInternal
 } from './Entity';
+import { IQNumberField } from "../field/NumberField";
+import { IQStringField } from "../field/StringField";
 
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since
@@ -33,6 +35,18 @@ export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity>
 		entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ>
 			| RepositoryEntityId | string
 	): JSONLogicalOperation
+
+	repository: {
+		id: IQNumberField,
+		uuId: IQStringField
+	}
+
+	actor: {
+		id: IQNumberField,
+		uuId: IQStringField,
+	}
+
+	actorRecordId: IQNumberField
 
 }
 

@@ -2,6 +2,7 @@ import { IOC } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbRelation,
+	IRepositoryEntity,
 	JoinType,
 	JSONBaseOperation,
 	JSONEntityRelation,
@@ -37,9 +38,9 @@ import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
 import { FieldColumnAliases } from './Aliases'
 import { IRelationManager } from './RelationManager'
-import { RepositoryEntityId, REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
+import { RepositoryEntityId } from '@airport/aviation-communication'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
-import { and } from '../operation/LogicalOperation'
+import { QUERY_UTILS } from '../../../tokens'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -110,19 +111,10 @@ QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinField
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 
-QEntity.prototype.equals = function <Entity, IQ extends IQEntityInternal>(
+QEntity.prototype.equals = function <Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
 	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
 ): JSONLogicalOperation {
-	if (typeof entity === 'string') {
-		entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity)
-	}
-	let thisRelation = this as any
-	let other = entity as any
-	return and(
-		thisRelation.repository.id.equals(other.repository.id),
-		thisRelation.actor.id.equals(other.actor.id),
-		thisRelation.actorRecordId.equals(other.actorRecordId)
-	)
+	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 }
 
 export class QEntityDriver

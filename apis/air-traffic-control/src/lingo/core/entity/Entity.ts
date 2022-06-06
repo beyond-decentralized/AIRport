@@ -15,6 +15,8 @@ import { IRelationManager } from '../../../impl/core/entity/RelationManager'
 import { RepositoryEntityId } from '@airport/aviation-communication'
 import { JSONLogicalOperation } from '../operation/LogicalOperation'
 import { Y } from '../../query/facade/Query'
+import { IQNumberField } from '../field/NumberField'
+import { IQStringField } from '../field/StringField'
 
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -155,6 +157,23 @@ export interface IQEntity {
 	leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
 	rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+
+}
+
+export interface IQRepositoryEntity
+	extends IQEntity {
+
+	repository: {
+		id: IQNumberField,
+		uuId: IQStringField
+	}
+
+	actor: {
+		id: IQNumberField,
+		uuId: IQStringField,
+	}
+
+	actorRecordId: IQNumberField
 
 }
 

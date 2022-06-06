@@ -3,8 +3,7 @@ import { JoinType, JSONRelationType } from '@airport/ground-control';
 import { TreeQuery } from '../../query/facade/TreeQuery';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 import { JoinFields } from '../Joins';
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
-import { and } from '../operation/LogicalOperation';
+import { QUERY_UTILS } from '../../../tokens';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
@@ -21,12 +20,7 @@ QEntity.prototype.rightJoin = function (right) {
     return this.__driver__.join(right, JoinType.RIGHT_JOIN);
 };
 QEntity.prototype.equals = function (entity) {
-    if (typeof entity === 'string') {
-        entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
-    }
-    let thisRelation = this;
-    let other = entity;
-    return and(thisRelation.repository.id.equals(other.repository.id), thisRelation.actor.id.equals(other.actor.id), thisRelation.actorRecordId.equals(other.actorRecordId));
+    return IOC.getSync(QUERY_UTILS).equals(entity, this);
 };
 export class QEntityDriver {
     constructor(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {

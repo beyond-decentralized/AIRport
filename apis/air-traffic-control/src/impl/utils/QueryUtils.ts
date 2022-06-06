@@ -1,4 +1,5 @@
 import {
+	IRepositoryEntity,
 	JSONBaseOperation,
 	JSONValueOperation,
 	OperationCategory,
@@ -16,6 +17,10 @@ import { QOperableField } from '../core/field/OperableField'
 import { wrapPrimitive } from '../core/field/WrapperFunctions'
 import { Inject, Injected } from '@airport/direction-indicator'
 import { TreeQuery } from '../query/facade/TreeQuery'
+import { IQEntityInternal, IQRepositoryEntity } from '../../lingo/core/entity/Entity'
+import { IQRepositoryEntityRelation } from '../../lingo/core/entity/Relation'
+import { IRepositoryEntityUtils, RepositoryEntityId } from '@airport/aviation-communication'
+import { and } from '../core/operation/LogicalOperation'
 
 @Injected()
 export class QueryUtils
@@ -25,6 +30,45 @@ export class QueryUtils
 	fieldUtils: IFieldUtils
 	@Inject()
 	relationManager: IRelationManager
+	@Inject()
+	repositoryEntityUtils: IRepositoryEntityUtils
+
+	equals<Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
+		entityOrIdOrUuId: Entity | IQRepositoryEntity
+			| IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string,
+		toObject
+	): JSONLogicalOperation {
+		if (!entityOrIdOrUuId) {
+			throw new Error(`null entity/Id/UuId is passed into equals method`)
+		}
+		let entityId: RepositoryEntityId
+		let entityUuId: RepositoryEntityId
+		if (typeof entityOrIdOrUuId === 'string') {
+			if (entityOrIdOrUuId.split('-').length == 3) {
+				entityId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
+			} else {
+				entityUuId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
+			}
+		} else if (entityOrIdOrUuId.repository.uuId
+			&& entityOrIdOrUuId.actor.uuId) {
+			entityUuId = entityOrIdOrUuId as RepositoryEntityId
+		} else {
+			entityId = entityOrIdOrUuId as RepositoryEntityId
+		}
+		if (entityId) {
+			return and(
+				toObject.repository.id.equals(entityId.repository.id),
+				toObject.actor.id.equals(entityId.actor.id),
+				toObject.actorRecordId.equals(entityId.actorRecordId)
+			)
+		} else {
+			return and(
+				toObject.repository.id.equals(entityUuId.repository.uuId),
+				toObject.actor.id.equals(entityUuId.actor.uuId),
+				toObject.actorRecordId.equals(entityUuId.actorRecordId)
+			)
+		}
+	}
 
 	whereClauseToJSON(
 		whereClause: JSONBaseOperation,

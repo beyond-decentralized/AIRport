@@ -1,15 +1,16 @@
-import { RepositoryEntityId, REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
+import { RepositoryEntityId } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
+	IRepositoryEntity,
 	JoinType
 } from '@airport/ground-control'
-import { IQEntity, IQEntityInternal } from '../../../lingo/core/entity/Entity'
+import { IQEntityInternal, IQRepositoryEntity } from '../../../lingo/core/entity/Entity'
 import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
+import { QUERY_UTILS } from '../../../tokens'
 import { extend } from '../../utils/qApplicationBuilderUtils'
-import { and } from '../operation/LogicalOperation'
 import { IRelationManager } from './RelationManager'
 
 /**
@@ -75,21 +76,11 @@ export function QRepositoryEntityRelation(
 }
 
 export const qRepositoryEntityRelationMethods = {
-	equals: function <Entity, IQ extends IQEntityInternal>(
-		entity: Entity | IQEntity |
+	equals: function <Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
+		entity: Entity | IQRepositoryEntity |
 			IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
 	): JSONLogicalOperation {
-		if (typeof entity === 'string') {
-			entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity)
-		}
-		let thisRelation = this as any
-		let other = entity as any
-		return and(
-			thisRelation.repository.id.equals(other.repository.id),
-			thisRelation.actor.id.equals(other.actor.id),
-			thisRelation.actorRecordId.equals(other.actorRecordId)
-		)
-
+		return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	}
 }
 extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods)

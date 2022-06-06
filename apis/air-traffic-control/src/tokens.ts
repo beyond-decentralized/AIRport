@@ -32,6 +32,7 @@ import { IDatabaseState } from './lingo/DatabaseState'
 import { DatabaseStore } from './impl/DatabaseStore'
 import { IUtils } from './lingo/Utils'
 import { Utils } from './impl/Utils'
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
 
 const airTrafficControl = lib('air-traffic-control')
 
@@ -169,7 +170,8 @@ QUERY_FACADE.setDependencies({
 })
 QUERY_UTILS.setDependencies({
 	fieldUtils: FIELD_UTILS,
-	relationManager: RELATION_MANAGER
+	relationManager: RELATION_MANAGER,
+	repositoryEntityUtils: REPOSITORY_ENTITY_UTILS
 })
 RELATION_MANAGER.setDependencies({
 	applicationUtils: APPLICATION_UTILS
