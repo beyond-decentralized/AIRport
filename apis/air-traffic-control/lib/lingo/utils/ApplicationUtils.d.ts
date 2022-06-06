@@ -1,5 +1,5 @@
 import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, SQLDataType, TableIndex } from '@airport/ground-control';
-import { QEntityConstructor } from '../../impl/core/entity/Entity';
+import type { QEntityConstructor } from '../../impl/core/entity/Entity';
 import { IEntityIdProperties, IQEntity } from '../core/entity/Entity';
 import { IQFieldInternal } from '../core/field/Field';
 export interface ManyToOneColumnMapping {

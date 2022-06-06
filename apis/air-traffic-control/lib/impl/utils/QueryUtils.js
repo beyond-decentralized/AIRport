@@ -4,12 +4,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { Inject, Injected, IOC } from '@airport/direction-indicator';
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
 import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
-import { Inject, Injected } from '@airport/direction-indicator';
-import { TreeQuery } from '../query/facade/TreeQuery';
 import { and } from '../core/operation/LogicalOperation';
+import { ENTITY_UTILS } from '../../core-tokens';
 let QueryUtils = class QueryUtils {
     equals(entityOrIdOrUuId, toObject) {
         if (!entityOrIdOrUuId) {
@@ -17,6 +17,7 @@ let QueryUtils = class QueryUtils {
         }
         let entityId;
         let entityUuId;
+        let entityOrId = entityOrIdOrUuId;
         if (typeof entityOrIdOrUuId === 'string') {
             if (entityOrIdOrUuId.split('-').length == 3) {
                 entityId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId);
@@ -25,8 +26,8 @@ let QueryUtils = class QueryUtils {
                 entityUuId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId);
             }
         }
-        else if (entityOrIdOrUuId.repository.uuId
-            && entityOrIdOrUuId.actor.uuId) {
+        else if (entityOrId.repository.uuId
+            && entityOrId.actor.uuId) {
             entityUuId = entityOrIdOrUuId;
         }
         else {
@@ -68,7 +69,7 @@ let QueryUtils = class QueryUtils {
                 // TODO: verify that cast of Q object is valid
                 let functionOperation = operation;
                 let query = functionOperation.getQuery();
-                let jsonQuery = new TreeQuery(query, columnAliases.entityAliases).toJSON(this, this.fieldUtils, this.relationManager);
+                let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(query, columnAliases.entityAliases).toJSON(this, this.fieldUtils, this.relationManager);
                 jsonOperation = functionOperation.toJSON(jsonQuery);
                 break;
             case OperationCategory.BOOLEAN:

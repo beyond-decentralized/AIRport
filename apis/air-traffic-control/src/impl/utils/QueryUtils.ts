@@ -1,3 +1,5 @@
+import { IRepositoryEntityUtils, RepositoryEntityId } from '@airport/aviation-communication'
+import { Inject, Injected, IOC } from '@airport/direction-indicator'
 import {
 	IRepositoryEntity,
 	JSONBaseOperation,
@@ -6,6 +8,8 @@ import {
 	SqlOperator
 } from '@airport/ground-control'
 import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
+import { IQEntityInternal, IQRepositoryEntity } from '../../lingo/core/entity/Entity'
+import { IQRepositoryEntityRelation } from '../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
 import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
 import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
@@ -15,12 +19,8 @@ import { IRelationManager } from '../core/entity/RelationManager'
 import { QExistsFunction } from '../core/field/Functions'
 import { QOperableField } from '../core/field/OperableField'
 import { wrapPrimitive } from '../core/field/WrapperFunctions'
-import { Inject, Injected } from '@airport/direction-indicator'
-import { TreeQuery } from '../query/facade/TreeQuery'
-import { IQEntityInternal, IQRepositoryEntity } from '../../lingo/core/entity/Entity'
-import { IQRepositoryEntityRelation } from '../../lingo/core/entity/Relation'
-import { IRepositoryEntityUtils, RepositoryEntityId } from '@airport/aviation-communication'
 import { and } from '../core/operation/LogicalOperation'
+import { ENTITY_UTILS } from '../../core-tokens'
 
 @Injected()
 export class QueryUtils
@@ -43,14 +43,15 @@ export class QueryUtils
 		}
 		let entityId: RepositoryEntityId
 		let entityUuId: RepositoryEntityId
+		let entityOrId: RepositoryEntityId = entityOrIdOrUuId as RepositoryEntityId
 		if (typeof entityOrIdOrUuId === 'string') {
 			if (entityOrIdOrUuId.split('-').length == 3) {
 				entityId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
 			} else {
 				entityUuId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
 			}
-		} else if (entityOrIdOrUuId.repository.uuId
-			&& entityOrIdOrUuId.actor.uuId) {
+		} else if (entityOrId.repository.uuId
+			&& entityOrId.actor.uuId) {
 			entityUuId = entityOrIdOrUuId as RepositoryEntityId
 		} else {
 			entityId = entityOrIdOrUuId as RepositoryEntityId
@@ -105,7 +106,7 @@ export class QueryUtils
 				// TODO: verify that cast of Q object is valid
 				let functionOperation: QExistsFunction<any> = <QExistsFunction<any>><any>operation
 				let query = functionOperation.getQuery()
-				let jsonQuery = new TreeQuery(
+				let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(
 					query, columnAliases.entityAliases).toJSON(this,
 						this.fieldUtils, this.relationManager)
 				jsonOperation = functionOperation.toJSON(jsonQuery)

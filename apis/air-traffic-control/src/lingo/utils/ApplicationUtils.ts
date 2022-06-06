@@ -8,7 +8,7 @@ import {
   SQLDataType,
   TableIndex,
 } from '@airport/ground-control';
-import { QEntityConstructor } from '../../impl/core/entity/Entity';
+import type { QEntityConstructor } from '../../impl/core/entity/Entity';
 import {
   IEntityIdProperties,
   IQEntity,
@@ -78,13 +78,13 @@ export interface IApplicationUtils {
     dbColumn: DbColumn,
   ): boolean;
 
-	isActorId(
-		columnName: string
-	): boolean
-  
+  isActorId(
+    columnName: string
+  ): boolean
+
   isActorRecordId(
-		columnName: string
-	): boolean
+    columnName: string
+  ): boolean
 
   isRepositoryId(
     columnName: string,

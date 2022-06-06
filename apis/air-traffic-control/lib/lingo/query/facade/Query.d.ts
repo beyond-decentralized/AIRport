@@ -3,7 +3,7 @@ import { IFieldUtils } from '../../utils/FieldUtils';
 import { IQueryUtils } from '../../utils/QueryUtils';
 import { IEntityRelationFrom, IFrom } from '../../core/entity/Entity';
 import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
-import { IRelationManager } from '../../../impl/core/entity/RelationManager';
+import type { IRelationManager } from '../../../impl/core/entity/RelationManager';
 /**
  * Query input format, as specified by the user. All queries extend this format.
  */

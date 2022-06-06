@@ -1,3 +1,4 @@
+import { IOC } from '@airport/direction-indicator'
 import {
 	JSONFieldInGroupBy,
 	JSONFieldInOrderBy,
@@ -27,12 +28,9 @@ import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery'
 import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery'
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
 import { EntityAliases, } from '../../core/entity/Aliases'
-import {
-	QEntity,
-	QTree
-} from '../../core/entity/Entity'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
-import { IRelationManager } from '../../core/entity/RelationManager'
+import type { IRelationManager } from '../../core/entity/RelationManager'
+import { ENTITY_UTILS } from '../../../core-tokens'
 
 /**
  * Created by Papa on 10/27/2016.
@@ -101,11 +99,11 @@ export abstract class AbstractQuery
 			}
 		}
 		return fromClause.map((fromEntity) => {
-			if (!(fromEntity instanceof QEntity)) {
+			if (!(IOC.getSync(ENTITY_UTILS).isQEntity(fromEntity))) {
 				throw new Error(`FROM clause can contain only Views or Entities.`)
 			}
 			if (this.isEntityQuery) {
-				if (fromEntity instanceof QTree) {
+				if (IOC.getSync(ENTITY_UTILS).isQTree(fromEntity)) {
 					throw new Error(`Entity FROM clauses can contain only Entities.`)
 				}
 			}

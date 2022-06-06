@@ -4,7 +4,7 @@ import { IQEntityInternal, IQRepositoryEntity } from '../../../lingo/core/entity
 import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation';
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation';
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils';
-import { IRelationManager } from './RelationManager';
+import type { IRelationManager } from './RelationManager';
 /**
  * Created by Papa on 4/26/2016.
  */

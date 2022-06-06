@@ -1,5 +1,5 @@
-import { QEntity, QTree } from "./entity/Entity";
-import { QField } from "./field/Field";
+import { IOC } from '@airport/direction-indicator';
+import { ENTITY_UTILS } from '../../core-tokens';
 /**
  * Created by Papa on 10/25/2016.
  */
@@ -11,7 +11,7 @@ export function tree(query) {
     else {
         queryDefinition = query;
     }
-    let view = new QTree([], queryDefinition);
+    let view = IOC.getSync(ENTITY_UTILS).getQTree([], queryDefinition);
     let customEntity = queryDefinition.select;
     view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
     return view;
@@ -21,7 +21,7 @@ function convertMappedEntitySelect(customEntity, queryDefinition, view, selectPr
     for (let property in customEntity) {
         let alias = `${fieldPrefix}${++fieldIndex}`;
         let value = customEntity[property];
-        if (value instanceof QField) {
+        if (IOC.getSync(ENTITY_UTILS).isQField(value)) {
             let field = value.getInstance(view);
             field.alias = alias;
             field.q = view;
@@ -59,7 +59,7 @@ export function field(query) {
 export class JoinFields {
     constructor(joinTo) {
         this.joinTo = joinTo;
-        if (!(this.joinTo instanceof QEntity)) {
+        if (!(IOC.getSync(ENTITY_UTILS).isQEntity(this.joinTo))) {
             throw new Error(`Right value in join must be a View or an Entity`);
         }
     }

@@ -1,6 +1,6 @@
-import { lib } from '@airport/direction-indicator'
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
 import { IRepositoryLoader } from './lingo/core/repository/RepositoryLoader'
-import { IRelationManager, RelationManager } from './impl/core/entity/RelationManager'
 import { IAirportDatabase } from './lingo/AirportDatabase'
 import {
 	IDatabaseFacade,
@@ -8,33 +8,26 @@ import {
 } from './lingo/core/repository/DatabaseFacade'
 import { IUpdateCacheManager } from './lingo/core/UpdateCacheManager'
 import { ILookup } from './lingo/query/api/Lookup'
-import { IEntityUtils } from './lingo/utils/EntityUtils'
+import { INonEntityFind } from './lingo/query/api/NonEntityFind'
+import { INonEntityFindOne } from './lingo/query/api/NonEntityFindOne'
+import { INonEntitySearch } from './lingo/query/api/NonEntitySearch'
+import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne'
 import { IFieldUtils } from './lingo/utils/FieldUtils'
 import { IQMetadataUtils } from './lingo/utils/QMetadataUtils'
-import { IQueryUtils } from './lingo/utils/QueryUtils'
 import { IApplicationUtils } from './lingo/utils/ApplicationUtils'
-import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
+import { IDatabaseState } from './lingo/DatabaseState'
+import { IRelationManager, RelationManager } from './impl/core/entity/RelationManager'
 import { Lookup } from './impl/query/api/Lookup'
-import { EntityUtils } from './impl/utils/EntityUtils'
+import { NonEntityFind } from './impl/query/api/NonEntityFind'
+import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne'
+import { NonEntitySearch } from './impl/query/api/NonEntitySearch'
+import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne'
 import { QMetadataUtils } from './impl/utils/QMetadataUtils'
-import { QueryUtils } from './impl/utils/QueryUtils'
 import { ApplicationUtils } from './impl/utils/ApplicationUtils'
 import { FieldUtils } from './impl/utils/FieldUtils'
-import { INonEntityFind } from './lingo/query/api/NonEntityFind'
-import { NonEntityFind } from './impl/query/api/NonEntityFind'
-import { INonEntityFindOne } from './lingo/query/api/NonEntityFindOne'
-import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne'
-import { INonEntitySearch } from './lingo/query/api/NonEntitySearch'
-import { NonEntitySearch } from './impl/query/api/NonEntitySearch'
-import { INonEntitySearchOne } from './lingo/query/api/NonEntitySearchOne'
-import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne'
-import { IDatabaseState } from './lingo/DatabaseState'
 import { DatabaseStore } from './impl/DatabaseStore'
-import { IUtils } from './lingo/Utils'
-import { Utils } from './impl/Utils'
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
-
-const airTrafficControl = lib('air-traffic-control')
+import { ENTITY_UTILS, QUERY_UTILS, UTILS } from './core-tokens'
+import { airTrafficControl } from './library'
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>({
 	class: null,
@@ -55,11 +48,6 @@ export const DATABASE_STORE = airTrafficControl.token<IDatabaseState>({
 	class: DatabaseStore,
 	interface: 'IDatabaseState',
 	token: 'DATABASE_STORE'
-})
-export const ENTITY_UTILS = airTrafficControl.token<IEntityUtils>({
-	class: EntityUtils,
-	interface: 'IEntityUtils',
-	token: 'ENTITY_UTILS'
 })
 export const FIELD_UTILS = airTrafficControl.token<IFieldUtils>({
 	class: FieldUtils,
@@ -103,12 +91,6 @@ export const QUERY_FACADE = airTrafficControl.token<IQueryFacade>({
 	token: 'QUERY_FACADE'
 })
 
-export const QUERY_UTILS = airTrafficControl.token<IQueryUtils>({
-	class: QueryUtils,
-	interface: 'IQueryUtils',
-	token: 'QUERY_UTILS'
-})
-
 export const RELATION_MANAGER = airTrafficControl.token<IRelationManager>({
 	class: RelationManager,
 	interface: 'IRelationManager',
@@ -123,11 +105,6 @@ export const UPDATE_CACHE_MANAGER = airTrafficControl.token<IUpdateCacheManager>
 	class: null,
 	interface: 'IUpdateCacheManager',
 	token: 'UPDATE_CACHE_MANAGER'
-})
-export const UTILS = airTrafficControl.token<IUtils>({
-	class: Utils,
-	interface: 'IUtils',
-	token: 'UTILS'
 })
 
 AIRPORT_DATABASE.setDependencies({
@@ -151,9 +128,6 @@ DATABASE_FACADE.setDependencies({
 	entityStateManager: ENTITY_STATE_MANAGER,
 	transactionalConnector: TRANSACTIONAL_CONNECTOR,
 	updateCacheManager: UPDATE_CACHE_MANAGER
-})
-ENTITY_UTILS.setDependencies({
-	utils: UTILS
 })
 FIELD_UTILS.setDependencies({
 	relationManager: RELATION_MANAGER

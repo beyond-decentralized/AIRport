@@ -1,20 +1,17 @@
-import { lib } from '@airport/direction-indicator';
-import { RelationManager } from './impl/core/entity/RelationManager';
+import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { RelationManager } from './impl/core/entity/RelationManager';
 import { Lookup } from './impl/query/api/Lookup';
-import { EntityUtils } from './impl/utils/EntityUtils';
-import { QMetadataUtils } from './impl/utils/QMetadataUtils';
-import { QueryUtils } from './impl/utils/QueryUtils';
-import { ApplicationUtils } from './impl/utils/ApplicationUtils';
-import { FieldUtils } from './impl/utils/FieldUtils';
 import { NonEntityFind } from './impl/query/api/NonEntityFind';
 import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne';
 import { NonEntitySearch } from './impl/query/api/NonEntitySearch';
 import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne';
+import { QMetadataUtils } from './impl/utils/QMetadataUtils';
+import { ApplicationUtils } from './impl/utils/ApplicationUtils';
+import { FieldUtils } from './impl/utils/FieldUtils';
 import { DatabaseStore } from './impl/DatabaseStore';
-import { Utils } from './impl/Utils';
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
-const airTrafficControl = lib('air-traffic-control');
+import { ENTITY_UTILS, QUERY_UTILS, UTILS } from './core-tokens';
+import { airTrafficControl } from './library';
 export const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,
     interface: 'IAirportDatabase',
@@ -34,11 +31,6 @@ export const DATABASE_STORE = airTrafficControl.token({
     class: DatabaseStore,
     interface: 'IDatabaseState',
     token: 'DATABASE_STORE'
-});
-export const ENTITY_UTILS = airTrafficControl.token({
-    class: EntityUtils,
-    interface: 'IEntityUtils',
-    token: 'ENTITY_UTILS'
 });
 export const FIELD_UTILS = airTrafficControl.token({
     class: FieldUtils,
@@ -80,11 +72,6 @@ export const QUERY_FACADE = airTrafficControl.token({
     interface: 'IQueryFacade',
     token: 'QUERY_FACADE'
 });
-export const QUERY_UTILS = airTrafficControl.token({
-    class: QueryUtils,
-    interface: 'IQueryUtils',
-    token: 'QUERY_UTILS'
-});
 export const RELATION_MANAGER = airTrafficControl.token({
     class: RelationManager,
     interface: 'IRelationManager',
@@ -99,11 +86,6 @@ export const UPDATE_CACHE_MANAGER = airTrafficControl.token({
     class: null,
     interface: 'IUpdateCacheManager',
     token: 'UPDATE_CACHE_MANAGER'
-});
-export const UTILS = airTrafficControl.token({
-    class: Utils,
-    interface: 'IUtils',
-    token: 'UTILS'
 });
 AIRPORT_DATABASE.setDependencies({
     appliationUtils: APPLICATION_UTILS,
@@ -126,9 +108,6 @@ DATABASE_FACADE.setDependencies({
     entityStateManager: ENTITY_STATE_MANAGER,
     transactionalConnector: TRANSACTIONAL_CONNECTOR,
     updateCacheManager: UPDATE_CACHE_MANAGER
-});
-ENTITY_UTILS.setDependencies({
-    utils: UTILS
 });
 FIELD_UTILS.setDependencies({
     relationManager: RELATION_MANAGER

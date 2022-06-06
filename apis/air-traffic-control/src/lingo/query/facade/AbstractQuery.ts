@@ -5,7 +5,7 @@ import {
 import {
 	IQueryUtils
 } from '../../../lingo/utils/QueryUtils'
-import { IRelationManager } from '../../../impl/core/entity/RelationManager'
+import type { IRelationManager } from '../../../impl/core/entity/RelationManager'
 import { Parameter } from '../../core/entity/Aliases'
 
 export interface IAbstractQuery {

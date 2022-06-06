@@ -1,5 +1,6 @@
+import { IOC } from '@airport/direction-indicator';
 import { EntityAliases, } from '../../core/entity/Aliases';
-import { QEntity, QTree } from '../../core/entity/Entity';
+import { ENTITY_UTILS } from '../../../core-tokens';
 /**
  * Created by Papa on 10/27/2016.
  */
@@ -37,11 +38,11 @@ export class AbstractQuery {
             }
         }
         return fromClause.map((fromEntity) => {
-            if (!(fromEntity instanceof QEntity)) {
+            if (!(IOC.getSync(ENTITY_UTILS).isQEntity(fromEntity))) {
                 throw new Error(`FROM clause can contain only Views or Entities.`);
             }
             if (this.isEntityQuery) {
-                if (fromEntity instanceof QTree) {
+                if (IOC.getSync(ENTITY_UTILS).isQTree(fromEntity)) {
                     throw new Error(`Entity FROM clauses can contain only Entities.`);
                 }
             }

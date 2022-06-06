@@ -1,9 +1,7 @@
 import { IOC } from '@airport/direction-indicator';
-import { JoinType, JSONRelationType } from '@airport/ground-control';
-import { TreeQuery } from '../../query/facade/TreeQuery';
-import { extend } from '../../utils/qApplicationBuilderUtils';
+import { JoinType, JSONRelationType, } from '@airport/ground-control';
 import { JoinFields } from '../Joins';
-import { QUERY_UTILS } from '../../../tokens';
+import { ENTITY_UTILS, QUERY_UTILS } from '../../../core-tokens';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
@@ -122,7 +120,9 @@ export class QEntityDriver {
         // jsonRelation;
     }
     getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
-        jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
+        jsonRelation.rt = IOC.getSync(ENTITY_UTILS)
+            // Removes circular dependency at code initialization time 
+            .isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT;
         return jsonRelation;
     }
     getQ() {
@@ -147,41 +147,6 @@ export class QEntityDriver {
             rootEntity = rootEntity.__driver__.parentJoinEntity;
         }
         return rootEntity;
-    }
-}
-export function QTree(fromClausePosition = [], subQuery) {
-    QTree.base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver);
-    this.__driver__.subQuery = subQuery;
-}
-const qTreeMethods = {
-/*
-yourMethodName: function() {},
-*/
-};
-extend(QEntity, QTree, qTreeMethods);
-export class QTreeDriver extends QEntityDriver {
-    getInstance() {
-        let instance = super.getInstance();
-        instance.__driver__
-            .subQuery = this.subQuery;
-        return instance;
-    }
-    // getRelationPropertyName(): string {
-    // 	throw new Error(`not implemented`);
-    // }
-    getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
-        jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON;
-        jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-            .toJSON(queryUtils, fieldUtils, relationManager);
-        return jsonRelation;
-    }
-    getRootRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager) {
-        jsonRelation = super.getJoinRelationJson(jsonRelation, columnAliases, queryUtils, fieldUtils, relationManager);
-        jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT;
-        jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-            .toJSON(queryUtils, fieldUtils, relationManager);
-        return jsonRelation;
     }
 }
 //# sourceMappingURL=Entity.js.map

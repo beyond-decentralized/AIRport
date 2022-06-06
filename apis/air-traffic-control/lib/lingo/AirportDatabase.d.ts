@@ -1,7 +1,7 @@
 import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, ISaveResult } from '@airport/ground-control';
-import { QEntityConstructor } from '../impl/core/entity/Entity';
-import { QRelation } from '../impl/core/entity/Relation';
+import type { QEntityConstructor } from '../impl/core/entity/Entity';
+import type { QRelation } from '../impl/core/entity/Relation';
 import { IEntityContext } from './core/EntityContext';
 import { EntityConstructor, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from './core/entity/Entity';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';

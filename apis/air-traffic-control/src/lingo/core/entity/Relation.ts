@@ -36,18 +36,6 @@ export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity>
 			| RepositoryEntityId | string
 	): JSONLogicalOperation
 
-	repository: {
-		id: IQNumberField,
-		uuId: IQStringField
-	}
-
-	actor: {
-		id: IQNumberField,
-		uuId: IQStringField,
-	}
-
-	actorRecordId: IQNumberField
-
 }
 
 export interface IQInternalRelation<IQ extends IQEntity>

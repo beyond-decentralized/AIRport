@@ -1,6 +1,9 @@
-import { EntityQuery } from "../../impl/query/facade/EntityQuery";
+import { IEntityAliases } from "../core/entity/Aliases";
+import { IEntityRelationFrom, IFrom, IQEntity, IQEntityDriver, IQTree } from "../core/entity/Entity";
+import { IAbstractQuery } from "../query/facade/AbstractQuery";
 import { RawEntityQuery } from "../query/facade/EntityQuery";
-import { RawQuery } from "../query/facade/Query";
+import { IQuery, RawQuery } from "../query/facade/Query";
+import { ITreeEntity, RawTreeQuery } from "../query/facade/TreeQuery";
 export interface IEntityUtils {
     getObjectClassName(object: any): string;
     getClassName(clazz: Function): string;
@@ -14,6 +17,11 @@ export interface IEntityUtils {
     }): RawQuery;
     getEntityQuery(rawGraphQuery: RawEntityQuery<any> | {
         (...args: any[]): RawEntityQuery<any>;
-    }): EntityQuery<any>;
+    }): IAbstractQuery;
+    getTreeQuery<ITE extends ITreeEntity>(rawQuery: RawTreeQuery<ITE>, entityAliases: IEntityAliases): IQuery;
+    isQEntity<IF extends IFrom>(qEntity: IF | IEntityRelationFrom | RawTreeQuery<any>): boolean;
+    isQTree<IF extends IFrom>(qEntity: IQEntityDriver | IF | IEntityRelationFrom | RawTreeQuery<any>): boolean;
+    getQTree(fromClausePosition: number[], subQuery: RawTreeQuery<any>): IQTree;
+    isQField(qEntity: IQEntity): boolean;
 }
 //# sourceMappingURL=EntityUtils.d.ts.map

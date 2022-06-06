@@ -1,6 +1,6 @@
 import { IOC } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
-import { QUERY_UTILS } from '../../../tokens';
+import { QUERY_UTILS } from '../../../core-tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 /**
  * Created by Papa on 4/26/2016.

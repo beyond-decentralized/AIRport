@@ -5,11 +5,9 @@ import { IQOperableFieldInternal } from '../field/OperableField';
 import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
 import { IQInternalRelation, IQRepositoryEntityRelation } from './Relation';
-import { IRelationManager } from '../../../impl/core/entity/RelationManager';
+import type { IRelationManager } from '../../../impl/core/entity/RelationManager';
 import { RepositoryEntityId } from '@airport/aviation-communication';
 import { JSONLogicalOperation } from '../operation/LogicalOperation';
-import { IQNumberField } from '../field/NumberField';
-import { IQStringField } from '../field/StringField';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
  * Used for DELETE statements.  Must list all @Id properties.
@@ -107,15 +105,6 @@ export interface IQEntity {
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
 export interface IQRepositoryEntity extends IQEntity {
-    repository: {
-        id: IQNumberField;
-        uuId: IQStringField;
-    };
-    actor: {
-        id: IQNumberField;
-        uuId: IQStringField;
-    };
-    actorRecordId: IQNumberField;
 }
 export interface IQTree extends IQEntity {
 }

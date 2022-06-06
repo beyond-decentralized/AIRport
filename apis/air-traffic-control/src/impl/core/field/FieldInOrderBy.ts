@@ -2,11 +2,11 @@ import {
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
-}                            from "@airport/ground-control";
-import {IFieldColumnAliases} from "../../../lingo/core/entity/Aliases";
-import {IQOrderableField}    from "../../../lingo/core/field/Field";
-import {IFieldInOrderBy}     from "../../../lingo/core/field/FieldInOrderBy";
-import {QField}              from "./Field";
+} from "@airport/ground-control";
+import { IFieldColumnAliases } from "../../../lingo/core/entity/Aliases";
+import { IQOrderableField } from "../../../lingo/core/field/Field";
+import { IFieldInOrderBy } from "../../../lingo/core/field/FieldInOrderBy";
+import type { QField } from "./Field";
 
 /**
  * Created by Papa on 10/16/2016.

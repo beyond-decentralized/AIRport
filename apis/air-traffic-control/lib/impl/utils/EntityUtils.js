@@ -4,9 +4,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { QOperableField } from '../core/field/OperableField';
 import { Inject, Injected } from '@airport/direction-indicator';
+import { QOperableField } from '../core/field/OperableField';
 import { EntityQuery } from '../query/facade/EntityQuery';
+import { TreeQuery } from '../query/facade/TreeQuery';
+import { QTree, QTreeDriver } from '../core/entity/Tree';
+import { QEntity } from '../core/entity/Entity';
+import { QField } from '../core/field/Field';
+import { ENTITY_UTILS } from '../../core-tokens';
 /**
  * Created by Papa on 6/14/2016.
  */
@@ -61,8 +66,29 @@ let EntityUtils = class EntityUtils {
             return rawQuery;
         }
     }
+    // Removes circular dependency at code initialization time
     getEntityQuery(rawGraphQuery) {
         return new EntityQuery(this.getRawQuery(rawGraphQuery));
+    }
+    // Removes circular dependency at code initialization time
+    getTreeQuery(rawQuery, entityAliases) {
+        return new TreeQuery(rawQuery, entityAliases);
+    }
+    // Removes circular dependency at code initialization time
+    isQEntity(qEntity) {
+        return qEntity instanceof QEntity;
+    }
+    // Removes circular dependency at code initialization time
+    isQTree(qEntity) {
+        return qEntity instanceof QTreeDriver;
+    }
+    // Removes circular dependency at code initialization time
+    getQTree(fromClausePosition, subQuery) {
+        return new QTree(fromClausePosition, subQuery);
+    }
+    // Removes circular dependency at code initialization time
+    isQField(qEntity) {
+        return qEntity instanceof QField;
     }
 };
 __decorate([
@@ -72,4 +98,5 @@ EntityUtils = __decorate([
     Injected()
 ], EntityUtils);
 export { EntityUtils };
+ENTITY_UTILS.setClass(EntityUtils);
 //# sourceMappingURL=EntityUtils.js.map

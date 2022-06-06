@@ -1,16 +1,14 @@
-import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation, JSONViewJoinRelation } from '@airport/ground-control';
+import { DbEntity, DbRelation, JoinType, JSONBaseOperation, JSONEntityRelation, JSONJoinRelation, JSONRelation } from '@airport/ground-control';
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal } from '../../../lingo/core/entity/Entity';
 import { IJoinFields } from '../../../lingo/core/entity/Joins';
 import { IQInternalRelation } from '../../../lingo/core/entity/Relation';
 import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField';
 import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade';
-import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils';
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils';
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils';
-import { FieldColumnAliases } from './Aliases';
-import { IRelationManager } from './RelationManager';
+import type { IRelationManager } from './RelationManager';
 /**
  * Created by Papa on 4/21/2016.
  */
@@ -66,15 +64,5 @@ export declare class QEntityDriver implements IQEntityDriver {
     join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
     isRootEntity(): boolean;
     getRootJoinEntity(): IQEntityInternal;
-}
-export declare function QTree(fromClausePosition: number[], subQuery: RawTreeQuery<any>): void;
-export interface IQTreeDriver extends IQEntityDriver {
-    subQuery: RawTreeQuery<any>;
-}
-export declare class QTreeDriver extends QEntityDriver implements IQTreeDriver {
-    subQuery: RawTreeQuery<any>;
-    getInstance(): IQEntityInternal;
-    getJoinRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONViewJoinRelation;
-    getRootRelationJson(jsonRelation: JSONViewJoinRelation, columnAliases: FieldColumnAliases, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONViewJoinRelation;
 }
 //# sourceMappingURL=Entity.d.ts.map

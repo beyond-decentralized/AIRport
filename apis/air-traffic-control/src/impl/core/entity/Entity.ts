@@ -1,3 +1,4 @@
+import { RepositoryEntityId } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator'
 import {
 	DbEntity,
@@ -9,7 +10,6 @@ import {
 	JSONJoinRelation,
 	JSONRelation,
 	JSONRelationType,
-	JSONViewJoinRelation
 } from '@airport/ground-control'
 import { IFieldColumnAliases } from '../../../lingo/core/entity/Aliases'
 import {
@@ -28,19 +28,14 @@ import { IJoinFields } from '../../../lingo/core/entity/Joins'
 import { OneToManyElements } from '../../../lingo/core/entity/metadata/ColumnDecorators'
 import { IQInternalRelation, IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
 import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField'
+import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade'
-import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery'
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
-import { TreeQuery } from '../../query/facade/TreeQuery'
-import { extend } from '../../utils/qApplicationBuilderUtils'
 import { JoinFields } from '../Joins'
-import { FieldColumnAliases } from './Aliases'
-import { IRelationManager } from './RelationManager'
-import { RepositoryEntityId } from '@airport/aviation-communication'
-import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
-import { QUERY_UTILS } from '../../../tokens'
+import type { IRelationManager } from './RelationManager'
+import { ENTITY_UTILS, QUERY_UTILS } from '../../../core-tokens'
 
 /**
  * Created by Papa on 4/21/2016.
@@ -262,7 +257,9 @@ export class QEntityDriver
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JSONJoinRelation {
-		jsonRelation.rt = (this instanceof QTreeDriver) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
+		jsonRelation.rt = IOC.getSync(ENTITY_UTILS)
+			// Removes circular dependency at code initialization time 
+			.isQTree(this) ? JSONRelationType.SUB_QUERY_ROOT : JSONRelationType.ENTITY_ROOT
 
 		return jsonRelation
 	}
@@ -332,78 +329,3 @@ export class QEntityDriver
 
 }
 
-export function QTree(
-	fromClausePosition: number[] = [],
-	subQuery: RawTreeQuery<any>
-) {
-	(<any>QTree).base.constructor.call(this, null, fromClausePosition, null, null, QTreeDriver)
-	this.__driver__.subQuery = subQuery
-}
-const qTreeMethods = {
-	/*
-	yourMethodName: function() {},
-	*/
-}
-
-extend(QEntity, QTree, qTreeMethods)
-
-export interface IQTreeDriver
-	extends IQEntityDriver {
-
-	subQuery: RawTreeQuery<any>;
-
-}
-
-export class QTreeDriver
-	extends QEntityDriver
-	implements IQTreeDriver {
-
-	subQuery: RawTreeQuery<any>
-
-	getInstance(): IQEntityInternal {
-		let instance = super.getInstance();
-		(<IQTreeDriver>instance.__driver__)
-			.subQuery = this.subQuery
-
-		return instance
-	}
-
-	// getRelationPropertyName(): string {
-	// 	throw new Error(`not implemented`);
-	// }
-
-	getJoinRelationJson(
-		jsonRelation: JSONViewJoinRelation,
-		columnAliases: IFieldColumnAliases<any>,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONViewJoinRelation {
-		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-			jsonRelation, columnAliases,
-			queryUtils, fieldUtils, relationManager)
-		jsonRelation.rt = JSONRelationType.SUB_QUERY_JOIN_ON
-		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-			.toJSON(queryUtils, fieldUtils, relationManager)
-
-		return jsonRelation
-	}
-
-	getRootRelationJson(
-		jsonRelation: JSONViewJoinRelation,
-		columnAliases: FieldColumnAliases,
-		queryUtils: IQueryUtils,
-		fieldUtils: IFieldUtils,
-		relationManager: IRelationManager
-	): JSONViewJoinRelation {
-		jsonRelation = <JSONViewJoinRelation>super.getJoinRelationJson(
-			jsonRelation, columnAliases,
-			queryUtils, fieldUtils, relationManager)
-		jsonRelation.rt = JSONRelationType.SUB_QUERY_ROOT
-		jsonRelation.subQuery = new TreeQuery(this.subQuery, columnAliases.entityAliases)
-			.toJSON(queryUtils, fieldUtils, relationManager)
-
-		return jsonRelation
-	}
-
-}

@@ -8,7 +8,7 @@ import { IQOperableField } from '../../../lingo/core/field/OperableField';
 import { IAbstractQuery } from '../../../lingo/query/facade/AbstractQuery';
 import { RawNonEntityQuery } from '../../../lingo/query/facade/NonEntityQuery';
 import { RawTreeQuery } from '../../../lingo/query/facade/TreeQuery';
-import { IRelationManager } from '../../core/entity/RelationManager';
+import type { IRelationManager } from '../../core/entity/RelationManager';
 /**
  * Created by Papa on 10/27/2016.
  */
