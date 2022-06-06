@@ -36,11 +36,13 @@ export interface IRepositoryEntity {
     actor: IActor;
     ageSuitability?: number;
     createdAt?: Date;
-    createdBy?: string;
     systemWideOperationId?: number;
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
+    createdBy?: IUser;
+    id?: string;
+    uuId?: string;
 }
 export interface ITransactionalConnector {
     callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;

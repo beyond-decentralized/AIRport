@@ -1,6 +1,6 @@
 import { RepositoryEntityId } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
-import { IEntityStateManager, ISaveResult } from '@airport/ground-control'
+import { IEntityStateManager, IRepositoryEntity, ISaveResult } from '@airport/ground-control'
 import { IAirportDatabase } from '../AirportDatabase'
 import {
 	IEntityCascadeGraph,
@@ -38,6 +38,10 @@ export interface IDao<Entity,
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
+
+	mapByUuId(
+		entities: (Entity & IRepositoryEntity)[]
+	): Map<string, Entity>
 
 	count(
 		context?: IContext

@@ -26,6 +26,13 @@ let Dao = class Dao {
             // No runtime logic required.
         };
     }
+    mapByUuId(entities) {
+        const map = new Map();
+        for (const entity of entities) {
+            map.set(entity.uuId, entity);
+        }
+        return map;
+    }
     async count(context) {
         throw new Error(`Not Implemented`);
     }

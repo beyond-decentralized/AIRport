@@ -86,7 +86,6 @@ export interface IRepositoryEntity {
 	// Non-Id Properties
 	ageSuitability?: number;
 	createdAt?: Date;
-	createdBy?: string;
 	systemWideOperationId?: number;
 	originalActorRecordId?: number;
 
@@ -95,6 +94,9 @@ export interface IRepositoryEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
+	createdBy?: IUser
+	id?: string
+	uuId?: string
 
 	// Public Methods
 }

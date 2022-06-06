@@ -102,6 +102,17 @@ export abstract class Dao<Entity,
 				dbEntity, Q, this);
 	}
 
+	mapByUuId(
+		entities: (Entity & IRepositoryEntity)[]
+	): Map<string, Entity> {
+		const map = new Map()
+		for (const entity of entities) {
+			map.set(entity.uuId, entity)
+		}
+
+		return map
+	}
+
 	async count(
 		context?: IContext,
 	): Promise<number> {

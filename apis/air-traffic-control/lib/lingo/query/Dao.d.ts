@@ -1,6 +1,6 @@
 import { RepositoryEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { IEntityStateManager, ISaveResult } from '@airport/ground-control';
+import { IEntityStateManager, IRepositoryEntity, ISaveResult } from '@airport/ground-control';
 import { IAirportDatabase } from '../AirportDatabase';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '../core/entity/Entity';
 import { IDatabaseFacade } from '../core/repository/DatabaseFacade';
@@ -18,6 +18,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>;
+    mapByUuId(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
