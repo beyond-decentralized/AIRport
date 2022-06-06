@@ -283,14 +283,16 @@ export abstract class Dao<Entity,
 	}
 
 	/**
-	 * The Promise based API for all Entity 'find' (find many) queries.
+	 * The Promise based API for all Entity 'findOne' that also
+	 * ensures that the record is unique.  If multiple records
+	 * are found the ones with older createdAt values are deleted.
 	 */
-	protected async _findUnique<E extends IRepositoryEntity>(
+	protected async _findUnique<E extends IRepositoryEntity & Entity>(
 		rawGraphQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
 		ctx?: IContext
 	): Promise<E> {
-		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as any
+		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as E[]
 
 		if (!records.length) {
 			return null

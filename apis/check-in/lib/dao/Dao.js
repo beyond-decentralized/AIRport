@@ -159,7 +159,9 @@ let Dao = class Dao {
         return await this.db.find.graph(rawGraphQuery, ctx);
     }
     /**
-     * The Promise based API for all Entity 'find' (find many) queries.
+     * The Promise based API for all Entity 'findOne' that also
+     * ensures that the record is unique.  If multiple records
+     * are found the ones with older createdAt values are deleted.
      */
     async _findUnique(rawGraphQuery, ctx) {
         const records = await this.db.find.graph(rawGraphQuery, ctx);

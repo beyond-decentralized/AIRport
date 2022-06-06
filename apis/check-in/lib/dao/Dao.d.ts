@@ -45,9 +45,11 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
         (...args: any[]): RawEntityQuery<EntitySelect>;
     }, ctx?: IContext): Promise<Array<Entity>>;
     /**
-     * The Promise based API for all Entity 'find' (find many) queries.
+     * The Promise based API for all Entity 'findOne' that also
+     * ensures that the record is unique.  If multiple records
+     * are found the ones with older createdAt values are deleted.
      */
-    protected _findUnique<E extends IRepositoryEntity>(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+    protected _findUnique<E extends IRepositoryEntity & Entity>(rawGraphQuery: RawEntityQuery<EntitySelect> | {
         (...args: any[]): RawEntityQuery<EntitySelect>;
     }, ctx?: IContext): Promise<E>;
     /**
