@@ -44,6 +44,7 @@ export * from './impl/query/facade/EntityQuery';
 export * from './impl/query/facade/FieldQuery';
 export * from './impl/query/facade/InsertColumnValues';
 export * from './impl/query/facade/InsertValues';
+export * from './impl/query/facade/MappableQuery';
 export * from './impl/query/facade/NonEntityQuery';
 export * from './impl/query/facade/SheetQuery';
 export * from './impl/query/facade/TreeQuery';
@@ -128,11 +129,11 @@ import { airApi, QApplication } from '@airport/aviation-communication'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { AIRPORT_DATABASE } from './tokens';
 
-airApi.setQApplication = function(
+airApi.setQApplication = function (
     qApplication: QApplication
 ) {
     DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
-        airportDatabase, 
+        airportDatabase,
     ) => {
         airportDatabase.setQApplication(qApplication)
     })

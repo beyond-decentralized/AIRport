@@ -44,6 +44,7 @@ export * from './impl/query/facade/EntityQuery';
 export * from './impl/query/facade/FieldQuery';
 export * from './impl/query/facade/InsertColumnValues';
 export * from './impl/query/facade/InsertValues';
+export * from './impl/query/facade/MappableQuery';
 export * from './impl/query/facade/NonEntityQuery';
 export * from './impl/query/facade/SheetQuery';
 export * from './impl/query/facade/TreeQuery';

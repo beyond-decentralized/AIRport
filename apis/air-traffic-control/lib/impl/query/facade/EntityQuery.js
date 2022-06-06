@@ -1,5 +1,5 @@
 import { QField } from '../../core/field/Field';
-import { MappableQuery } from './TreeQuery';
+import { MappableQuery } from './MappableQuery';
 /**
  * Created by Papa on 10/24/2016.
  */

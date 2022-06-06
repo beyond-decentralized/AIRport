@@ -5,7 +5,7 @@ import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity';
 import { IFieldInOrderBy } from '../../../lingo/core/field/FieldInOrderBy';
 import { RawEntityQuery, RawLimitedEntityQuery } from '../../../lingo/query/facade/EntityQuery';
 import { IQuery } from '../../../lingo/query/facade/Query';
-import { MappableQuery } from './TreeQuery';
+import { MappableQuery } from './MappableQuery';
 import { IRelationManager } from '../../core/entity/RelationManager';
 /**
  * Created by Papa on 10/24/2016.

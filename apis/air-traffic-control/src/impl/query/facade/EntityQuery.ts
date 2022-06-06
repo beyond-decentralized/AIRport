@@ -19,7 +19,7 @@ import {
 import { IQuery } from '../../../lingo/query/facade/Query'
 import { QField } from '../../core/field/Field'
 import { FieldInOrderBy } from '../../core/field/FieldInOrderBy'
-import { MappableQuery } from './TreeQuery'
+import { MappableQuery } from './MappableQuery'
 import { IRelationManager } from '../../core/entity/RelationManager'
 
 /**
