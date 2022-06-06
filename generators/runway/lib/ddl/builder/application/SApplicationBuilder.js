@@ -88,6 +88,27 @@ export class SApplicationBuilder {
                     break;
                 }
                 case file.TABLE: {
+                    const tableName = decorator.values[0].name;
+                    if (!/^[A-Z]/.test(tableName)) {
+                        throw new Error(`
+Table name does not start with an uppercase letter:
+
+@Entity()
+@Table({ name: "${tableName}"})
+class ${entityCandidate.docEntry.name}
+
+`);
+                    }
+                    else if (!/^[0-9A-Z_]+$/.test(tableName)) {
+                        throw new Error(`
+Table name contains characters other than uppercase letters, numbers and underscores:
+
+@Entity()
+@Table({ name: "${tableName}"})
+class ${entityCandidate.docEntry.name}
+
+`);
+                    }
                     tableConfig = {
                         ...decorator.values[0]
                     };
@@ -505,6 +526,30 @@ export class SApplicationBuilder {
                     if (decorator.values.length) {
                         const columnDecoratorDefs = decorator.values[0];
                         columnName = columnDecoratorDefs.name;
+                        if (!/^[A-Z]/.test(columnName)) {
+                            throw new Error(`
+Column name does not start with an uppercase letter:
+
+@Entity()
+class ${entity.name}
+
+	@Column({ name: "${columnName}")
+	${aProperty.name}
+	
+	`);
+                        }
+                        else if (!/^[0-9A-Z_]+$/.test(columnName)) {
+                            throw new Error(`
+Column name contains characters other than uppercase letters, numbers and underscores:
+
+@Entity()
+class ${entity.name}
+
+	@Column({ name: "${columnName}")
+	${aProperty.name}
+	
+	`);
+                        }
                         if (columnDecoratorDefs.nullable === false) {
                             notNull = true;
                         }

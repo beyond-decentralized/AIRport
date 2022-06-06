@@ -136,7 +136,8 @@ class ${className}
         ${parameter.name.escapedText}
         ...
     )
-        `);
+
+`);
         }
         parameters.push(printer.printNode(tsc.EmitHint.Unspecified, parameter, globalThis.currentSourceFile));
     }
@@ -146,7 +147,8 @@ class ${className}
 class ${className}
     @Api()
     ${name}
-        `);
+
+`);
     }
     const returnType = printer.printNode(tsc.EmitHint.Unspecified, declaration.type, globalThis.currentSourceFile);
     return {
