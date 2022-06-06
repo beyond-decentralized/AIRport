@@ -1,7 +1,7 @@
 import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, RawEntityQuery } from '@airport/air-traffic-control';
 import { QApplication, RepositoryEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { EntityId as DbEntityId, IEntityStateManager, ISaveResult } from '@airport/ground-control';
+import { EntityId as DbEntityId, IEntityStateManager, IRepositoryEntity, ISaveResult } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { DaoStub } from './DaoStub';
 /**
@@ -44,6 +44,12 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     protected _find(rawGraphQuery: RawEntityQuery<EntitySelect> | {
         (...args: any[]): RawEntityQuery<EntitySelect>;
     }, ctx?: IContext): Promise<Array<Entity>>;
+    /**
+     * The Promise based API for all Entity 'find' (find many) queries.
+     */
+    protected _findUnique<E extends IRepositoryEntity>(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, ctx?: IContext): Promise<E>;
     /**
      * The Promise based API for all Entity 'findOne' queries.
      */

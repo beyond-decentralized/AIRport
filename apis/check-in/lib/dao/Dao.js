@@ -159,6 +159,24 @@ let Dao = class Dao {
         return await this.db.find.graph(rawGraphQuery, ctx);
     }
     /**
+     * The Promise based API for all Entity 'find' (find many) queries.
+     */
+    async _findUnique(rawGraphQuery, ctx) {
+        const records = await this.db.find.graph(rawGraphQuery, ctx);
+        if (!records.length) {
+            return null;
+        }
+        if (records.length > 1) {
+            // Remove older agreement records
+            records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            for (let i = 1; i < records.length; i++) {
+                this.markForDeletion(records[i]);
+            }
+            await this.save(records);
+        }
+        return records[0];
+    }
+    /**
      * The Promise based API for all Entity 'findOne' queries.
      */
     async _findOne(rawGraphQuery, ctx) {

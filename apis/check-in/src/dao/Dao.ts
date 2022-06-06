@@ -32,6 +32,7 @@ import {
 import {
 	EntityId as DbEntityId,
 	IEntityStateManager,
+	IRepositoryEntity,
 	ISaveResult
 } from '@airport/ground-control';
 import { Observable } from 'rxjs';
@@ -279,6 +280,32 @@ export abstract class Dao<Entity,
 		ctx?: IContext
 	): Promise<Array<Entity>> {
 		return await this.db.find.graph(rawGraphQuery, ctx)
+	}
+
+	/**
+	 * The Promise based API for all Entity 'find' (find many) queries.
+	 */
+	protected async _findUnique<E extends IRepositoryEntity>(
+		rawGraphQuery: RawEntityQuery<EntitySelect>
+			| { (...args: any[]): RawEntityQuery<EntitySelect> },
+		ctx?: IContext
+	): Promise<E> {
+		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as any
+
+		if (!records.length) {
+			return null
+		}
+
+		if (records.length > 1) {
+			// Remove older agreement records
+			records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+			for (let i = 1; i < records.length; i++) {
+				this.markForDeletion(records[i] as any)
+			}
+			await this.save(records as any)
+		}
+
+		return records[0];
 	}
 
 	/**
