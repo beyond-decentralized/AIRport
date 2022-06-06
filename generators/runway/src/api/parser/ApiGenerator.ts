@@ -195,8 +195,30 @@ function serializeMethod(
     const declaration = member.valueDeclaration as any
     const parameters: string[] = [];
     for (const parameter of declaration.parameters) {
+        if (!parameter.type) {
+            throw new Error(`Parameter type is not specified for:
+
+class ${className}
+    @Api()
+    ${name}(
+        ...
+        ${parameter.name.escapedText}
+        ...
+    )
+
+`)
+        }
         parameters.push(printer.printNode(
             tsc.EmitHint.Unspecified, parameter, globalThis.currentSourceFile))
+    }
+    if (!declaration.type) {
+        throw new Error(`Return type is not specified for:
+
+class ${className}
+    @Api()
+    ${name}
+
+`)
     }
     const returnType = printer.printNode(
         tsc.EmitHint.Unspecified, declaration.type, globalThis.currentSourceFile)
