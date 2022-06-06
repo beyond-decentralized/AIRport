@@ -26,6 +26,13 @@ let Dao = class Dao {
             // No runtime logic required.
         };
     }
+    mapById(entities) {
+        const map = new Map();
+        for (const entity of entities) {
+            map.set(entity.id, entity);
+        }
+        return map;
+    }
     mapByUuId(entities) {
         const map = new Map();
         for (const entity of entities) {

@@ -18,6 +18,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>;
+    mapById(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     mapByUuId(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;

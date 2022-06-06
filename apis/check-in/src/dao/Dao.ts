@@ -102,6 +102,17 @@ export abstract class Dao<Entity,
 				dbEntity, Q, this);
 	}
 
+	mapById(
+		entities: (Entity & IRepositoryEntity)[]
+	): Map<string, Entity> {
+		const map = new Map()
+		for (const entity of entities) {
+			map.set(entity.id, entity)
+		}
+
+		return map
+	}
+
 	mapByUuId(
 		entities: (Entity & IRepositoryEntity)[]
 	): Map<string, Entity> {

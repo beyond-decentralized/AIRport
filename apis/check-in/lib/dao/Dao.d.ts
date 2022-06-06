@@ -18,6 +18,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
+    mapById(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     mapByUuId(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
