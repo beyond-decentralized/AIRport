@@ -9,25 +9,6 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
     getCreatedBy(repositoryEntity) {
         return repositoryEntity.actor.user;
     }
-    encodeId(idObject) {
-        if (!idObject.repository
-            || !idObject.repository.id
-            || !idObject.actor
-            || !idObject.actor.id
-            || !idObject.actorRecordId) {
-            return null;
-        }
-        if (typeof idObject.repository.id !== 'number') {
-            throw Error(`Type of "repository.id" property is not a number.`);
-        }
-        if (typeof idObject.actor.id !== 'number') {
-            throw Error(`Type of "actor.id" property is not a number.`);
-        }
-        if (typeof idObject.actorRecordId !== 'number') {
-            throw Error(`Type of "actorRecordId" property is not a number.`);
-        }
-        return idObject.repository.id + '-' + idObject.actor.id + '-' + idObject.actorRecordId;
-    }
     encodeUuId(idObject) {
         if (!idObject.repository
             || !idObject.repository.uuId
@@ -46,21 +27,6 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
             throw Error(`Type of "actorRecordId" property is not a number.`);
         }
         return idObject.repository.uuId + '-' + idObject.actor.uuId + '-' + idObject.actorRecordId;
-    }
-    parseId(idString) {
-        const idStringFragments = idString.split('-');
-        if (idStringFragments.length !== 3) {
-            throw new Error('Invalid Repository Entity Id, expecting {repositoryId}-{actorId}-{actorRecordId}');
-        }
-        return {
-            repository: {
-                id: parseInt(idStringFragments[0])
-            },
-            actor: {
-                id: parseInt(idStringFragments[1])
-            },
-            actorRecordId: parseInt(idStringFragments[2])
-        };
     }
     parseUuId(idString) {
         const idStringFragments = idString.split('-');
@@ -84,26 +50,6 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
             },
             actorRecordId: parseInt(idStringFragments[11])
         };
-    }
-    setId(idString, repositoryEntity) {
-        let repositoryEntityId = this.parseId(idString);
-        if (!repositoryEntity.repository) {
-            repositoryEntity.repository = {
-                id: repositoryEntityId.repository.id
-            };
-        }
-        else {
-            repositoryEntity.repository.id = repositoryEntityId.repository.id;
-        }
-        if (!repositoryEntity.actor) {
-            repositoryEntity.actor = {
-                id: repositoryEntityId.repository.id
-            };
-        }
-        else {
-            repositoryEntity.actor.id = repositoryEntityId.actor.id;
-        }
-        repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
     }
     setUuId(idString, repositoryEntity) {
         let repositoryEntityId = this.parseUuId(idString);

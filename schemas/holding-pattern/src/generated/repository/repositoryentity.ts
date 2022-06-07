@@ -34,7 +34,6 @@ export interface IRepositoryEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	id?: string;
 	uuId?: string;
 	createdBy?: User;
 

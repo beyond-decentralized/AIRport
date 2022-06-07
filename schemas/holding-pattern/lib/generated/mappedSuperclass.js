@@ -136,11 +136,6 @@ export const MAPPED_SUPERCLASS = [
                                 "moduleImport": null,
                                 "sourceName": "DbNumber"
                             },
-                            "DbString": {
-                                "asName": "DbString",
-                                "moduleImport": null,
-                                "sourceName": "DbString"
-                            },
                             "GeneratedValue": {
                                 "asName": "GeneratedValue",
                                 "moduleImport": null,
@@ -176,7 +171,6 @@ export const MAPPED_SUPERCLASS = [
                     },
                     "DbDate": null,
                     "DbNumber": null,
-                    "DbString": null,
                     "GeneratedValue": null,
                     "Id": null,
                     "JoinColumn": null,
@@ -499,23 +493,6 @@ export const MAPPED_SUPERCLASS = [
                     "isId": false,
                     "isMappedSuperclass": false,
                     "isTransient": true,
-                    "name": "id",
-                    "type": "string",
-                    "ownerEntity": null,
-                    "nonArrayType": "string",
-                    "primitive": "string"
-                },
-                {
-                    "decorators": [
-                        {
-                            "name": "Transient",
-                            "values": []
-                        }
-                    ],
-                    "isGenerated": false,
-                    "isId": false,
-                    "isMappedSuperclass": false,
-                    "isTransient": true,
                     "name": "uuId",
                     "type": "string",
                     "ownerEntity": null,
@@ -748,11 +725,6 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "DbNumber"
                                 },
-                                "DbString": {
-                                    "asName": "DbString",
-                                    "moduleImport": null,
-                                    "sourceName": "DbString"
-                                },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
                                     "moduleImport": null,
@@ -788,7 +760,6 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "DbDate": null,
                         "DbNumber": null,
-                        "DbString": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
@@ -1099,23 +1070,6 @@ export const MAPPED_SUPERCLASS = [
                         "nonArrayType": "number",
                         "primitive": "number",
                         "index": 8
-                    },
-                    {
-                        "decorators": [
-                            {
-                                "name": "Transient",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": true,
-                        "name": "id",
-                        "type": "string",
-                        "ownerEntity": null,
-                        "nonArrayType": "string",
-                        "primitive": "string"
                     },
                     {
                         "decorators": [
@@ -1441,11 +1395,6 @@ export const MAPPED_SUPERCLASS = [
                                     "moduleImport": null,
                                     "sourceName": "DbNumber"
                                 },
-                                "DbString": {
-                                    "asName": "DbString",
-                                    "moduleImport": null,
-                                    "sourceName": "DbString"
-                                },
                                 "GeneratedValue": {
                                     "asName": "GeneratedValue",
                                     "moduleImport": null,
@@ -1481,7 +1430,6 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "DbDate": null,
                         "DbNumber": null,
-                        "DbString": null,
                         "GeneratedValue": null,
                         "Id": null,
                         "JoinColumn": null,
@@ -1792,23 +1740,6 @@ export const MAPPED_SUPERCLASS = [
                         "nonArrayType": "number",
                         "primitive": "number",
                         "index": 8
-                    },
-                    {
-                        "decorators": [
-                            {
-                                "name": "Transient",
-                                "values": []
-                            }
-                        ],
-                        "isGenerated": false,
-                        "isId": false,
-                        "isMappedSuperclass": false,
-                        "isTransient": true,
-                        "name": "id",
-                        "type": "string",
-                        "ownerEntity": null,
-                        "nonArrayType": "string",
-                        "primitive": "string"
                     },
                     {
                         "decorators": [
@@ -2564,11 +2495,6 @@ export const MAPPED_SUPERCLASS = [
                                         "moduleImport": null,
                                         "sourceName": "DbNumber"
                                     },
-                                    "DbString": {
-                                        "asName": "DbString",
-                                        "moduleImport": null,
-                                        "sourceName": "DbString"
-                                    },
                                     "GeneratedValue": {
                                         "asName": "GeneratedValue",
                                         "moduleImport": null,
@@ -2604,7 +2530,6 @@ export const MAPPED_SUPERCLASS = [
                             },
                             "DbDate": null,
                             "DbNumber": null,
-                            "DbString": null,
                             "GeneratedValue": null,
                             "Id": null,
                             "JoinColumn": null,
@@ -2915,23 +2840,6 @@ export const MAPPED_SUPERCLASS = [
                             "nonArrayType": "number",
                             "primitive": "number",
                             "index": 8
-                        },
-                        {
-                            "decorators": [
-                                {
-                                    "name": "Transient",
-                                    "values": []
-                                }
-                            ],
-                            "isGenerated": false,
-                            "isId": false,
-                            "isMappedSuperclass": false,
-                            "isTransient": true,
-                            "name": "id",
-                            "type": "string",
-                            "ownerEntity": null,
-                            "nonArrayType": "string",
-                            "primitive": "string"
                         },
                         {
                             "decorators": [

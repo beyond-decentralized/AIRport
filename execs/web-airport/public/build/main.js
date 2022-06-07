@@ -3151,7 +3151,7 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
     getCreatedBy(repositoryEntity) {
         return repositoryEntity.actor.user;
     }
-    encodeId(idObject) {
+    encodeLocalId(idObject) {
         if (!idObject.repository
             || !idObject.repository.id
             || !idObject.actor
@@ -3189,7 +3189,7 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         }
         return idObject.repository.uuId + '-' + idObject.actor.uuId + '-' + idObject.actorRecordId;
     }
-    parseId(idString) {
+    parseLocalId(idString) {
         const idStringFragments = idString.split('-');
         if (idStringFragments.length !== 3) {
             throw new Error('Invalid Repository Entity Id, expecting {repositoryId}-{actorId}-{actorRecordId}');
@@ -3228,7 +3228,7 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
         };
     }
     setId(idString, repositoryEntity) {
-        let repositoryEntityId = this.parseId(idString);
+        let repositoryEntityId = this.parseLocalId(idString);
         if (!repositoryEntity.repository) {
             repositoryEntity.repository = {
                 id: repositoryEntityId.repository.id
@@ -3451,7 +3451,7 @@ function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relati
 const qRepositoryEntityRelationMethods = {
     equals: function (entity) {
         if (typeof entity === 'string') {
-            entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
+            entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseLocalId(entity);
         }
         let thisRelation = this;
         let other = entity;
@@ -4970,7 +4970,7 @@ QEntity.prototype.rightJoin = function (right) {
 };
 QEntity.prototype.equals = function (entity) {
     if (typeof entity === 'string') {
-        entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseId(entity);
+        entity = IOC.getSync(REPOSITORY_ENTITY_UTILS).parseLocalId(entity);
     }
     let thisRelation = this;
     let other = entity;
@@ -8621,13 +8621,13 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    async findById(repositoryEntityId, context, cacheForUpdate = false) {
+    async findByUuId(repositoryEntityId, context, cacheForUpdate = false) {
         if (typeof repositoryEntityId === 'string') {
             repositoryEntityId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
-                .parseId(repositoryEntityId);
+                .parseLocalId(repositoryEntityId);
         }
         if (!this.db.dbEntity.isRepositoryEntity) {
-            throw new Error(`Dao.findById can only be called for Repository Entities.`);
+            throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
         }
         if (!repositoryEntityId.repository
             || !repositoryEntityId.repository.id
@@ -11340,7 +11340,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
             Object.defineProperty(object, 'id', {
                 get() {
-                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeId(this);
+                    return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeLocalId(this);
                 },
                 set(idString) {
                     return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setId(idString, this);

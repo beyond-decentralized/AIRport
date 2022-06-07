@@ -102,23 +102,12 @@ export abstract class Dao<Entity,
 				dbEntity, Q, this);
 	}
 
-	mapById(
-		entities: (Entity & IRepositoryEntity)[]
-	): Map<string, Entity> {
-		const map = new Map()
-		for (const entity of entities) {
-			map.set(entity.id, entity)
-		}
-
-		return map
-	}
-
 	mapByUuId(
 		entities: (Entity & IRepositoryEntity)[]
 	): Map<string, Entity> {
 		const map = new Map()
 		for (const entity of entities) {
-			map.set(entity.uuId, entity)
+			map.set(entity.id, entity)
 		}
 
 		return map
@@ -163,50 +152,6 @@ export abstract class Dao<Entity,
 			select: <any>{},
 			from: [this.db.from],
 		}, context);
-	}
-
-	async findById(
-		repositoryEntityId: RepositoryEntityId | string,
-		context?: IContext,
-		cacheForUpdate: boolean = false,
-	): Promise<Entity> {
-		if (typeof repositoryEntityId === 'string') {
-			repositoryEntityId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
-				.parseId(repositoryEntityId)
-		}
-		if (!this.db.dbEntity.isRepositoryEntity) {
-			throw new Error(`Dao.findById can only be called for Repository Entities.`)
-		}
-		if (!repositoryEntityId.repository
-			|| !repositoryEntityId.repository.id
-			|| typeof repositoryEntityId.repository.id !== 'number'
-			|| !repositoryEntityId.actor
-			|| !repositoryEntityId.actor.id
-			|| typeof repositoryEntityId.actor.id !== 'number'
-			|| !repositoryEntityId.actorRecordId
-			|| typeof repositoryEntityId.actorRecordId !== 'number') {
-			throw new Error(`Invalid Repository Entity Id.  Expecting:
-				interface RepositoryEntityId {
-					repository: {
-						id: number
-					},
-					actor: {
-						id: number
-					},
-					actorRecordId: number
-				}
-				`)
-		}
-		let q
-		return await this.db.findOne.graph({
-			select: <any>{},
-			from: [q = this.db.from],
-			where: and(
-				q.repository.id.equals(repositoryEntityId.repository.id),
-				q.actor.id.equals(repositoryEntityId.actor.id),
-				q.actorRecordId.equals(repositoryEntityId.actorRecordId),
-			)
-		}, context)
 	}
 
 	async findByUuId(

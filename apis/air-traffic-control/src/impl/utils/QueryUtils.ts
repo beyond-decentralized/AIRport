@@ -34,41 +34,28 @@ export class QueryUtils
 	repositoryEntityUtils: IRepositoryEntityUtils
 
 	equals<Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
-		entityOrIdOrUuId: Entity | IQRepositoryEntity
+		entityOrUuId: Entity | IQRepositoryEntity
 			| IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string,
 		toObject
 	): JSONLogicalOperation {
-		if (!entityOrIdOrUuId) {
+		if (!entityOrUuId) {
 			throw new Error(`null entity/Id/UuId is passed into equals method`)
 		}
-		let entityId: RepositoryEntityId
 		let entityUuId: RepositoryEntityId
-		let entityOrId: RepositoryEntityId = entityOrIdOrUuId as RepositoryEntityId
-		if (typeof entityOrIdOrUuId === 'string') {
-			if (entityOrIdOrUuId.split('-').length == 3) {
-				entityId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
-			} else {
-				entityUuId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId)
-			}
+		let entityOrId: RepositoryEntityId = entityOrUuId as RepositoryEntityId
+		if (typeof entityOrUuId === 'string') {
+			entityUuId = this.repositoryEntityUtils.parseUuId(entityOrUuId)
 		} else if (entityOrId.repository.uuId
 			&& entityOrId.actor.uuId) {
-			entityUuId = entityOrIdOrUuId as RepositoryEntityId
+			entityUuId = entityOrUuId as RepositoryEntityId
 		} else {
-			entityId = entityOrIdOrUuId as RepositoryEntityId
+			throw new Error(`Expecting either string id or an object tree with uuIds`)
 		}
-		if (entityId) {
-			return and(
-				toObject.repository.id.equals(entityId.repository.id),
-				toObject.actor.id.equals(entityId.actor.id),
-				toObject.actorRecordId.equals(entityId.actorRecordId)
-			)
-		} else {
-			return and(
-				toObject.repository.id.equals(entityUuId.repository.uuId),
-				toObject.actor.id.equals(entityUuId.actor.uuId),
-				toObject.actorRecordId.equals(entityUuId.actorRecordId)
-			)
-		}
+		return and(
+			toObject.repository.id.equals(entityUuId.repository.uuId),
+			toObject.actor.id.equals(entityUuId.actor.uuId),
+			toObject.actorRecordId.equals(entityUuId.actorRecordId)
+		)
 	}
 
 	whereClauseToJSON(

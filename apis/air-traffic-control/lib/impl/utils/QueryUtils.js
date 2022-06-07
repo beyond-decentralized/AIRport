@@ -11,34 +11,23 @@ import { wrapPrimitive } from '../core/field/WrapperFunctions';
 import { and } from '../core/operation/LogicalOperation';
 import { ENTITY_UTILS } from '../../core-tokens';
 let QueryUtils = class QueryUtils {
-    equals(entityOrIdOrUuId, toObject) {
-        if (!entityOrIdOrUuId) {
+    equals(entityOrUuId, toObject) {
+        if (!entityOrUuId) {
             throw new Error(`null entity/Id/UuId is passed into equals method`);
         }
-        let entityId;
         let entityUuId;
-        let entityOrId = entityOrIdOrUuId;
-        if (typeof entityOrIdOrUuId === 'string') {
-            if (entityOrIdOrUuId.split('-').length == 3) {
-                entityId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId);
-            }
-            else {
-                entityUuId = this.repositoryEntityUtils.parseId(entityOrIdOrUuId);
-            }
+        let entityOrId = entityOrUuId;
+        if (typeof entityOrUuId === 'string') {
+            entityUuId = this.repositoryEntityUtils.parseUuId(entityOrUuId);
         }
         else if (entityOrId.repository.uuId
             && entityOrId.actor.uuId) {
-            entityUuId = entityOrIdOrUuId;
+            entityUuId = entityOrUuId;
         }
         else {
-            entityId = entityOrIdOrUuId;
+            throw new Error(`Expecting either string id or an object tree with uuIds`);
         }
-        if (entityId) {
-            return and(toObject.repository.id.equals(entityId.repository.id), toObject.actor.id.equals(entityId.actor.id), toObject.actorRecordId.equals(entityId.actorRecordId));
-        }
-        else {
-            return and(toObject.repository.id.equals(entityUuId.repository.uuId), toObject.actor.id.equals(entityUuId.actor.uuId), toObject.actorRecordId.equals(entityUuId.actorRecordId));
-        }
+        return and(toObject.repository.id.equals(entityUuId.repository.uuId), toObject.actor.id.equals(entityUuId.actor.uuId), toObject.actorRecordId.equals(entityUuId.actorRecordId));
     }
     whereClauseToJSON(whereClause, columnAliases) {
         if (!whereClause) {

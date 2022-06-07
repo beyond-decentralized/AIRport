@@ -11,7 +11,6 @@ export interface IRepositoryEntity {
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    id?: string;
     uuId?: string;
     createdBy?: User;
 }

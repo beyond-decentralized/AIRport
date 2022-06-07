@@ -11,7 +11,7 @@ export declare class QueryUtils implements IQueryUtils {
     fieldUtils: IFieldUtils;
     relationManager: IRelationManager;
     repositoryEntityUtils: IRepositoryEntityUtils;
-    equals<Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(entityOrIdOrUuId: Entity | IQRepositoryEntity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string, toObject: any): JSONLogicalOperation;
+    equals<Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(entityOrUuId: Entity | IQRepositoryEntity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string, toObject: any): JSONLogicalOperation;
     whereClauseToJSON(whereClause: JSONBaseOperation, columnAliases: IFieldColumnAliases<any>): JSONBaseOperation;
     private convertLRValue;
 }

@@ -75,11 +75,6 @@ export declare const MAPPED_SUPERCLASS: ({
                             moduleImport: any;
                             sourceName: string;
                         };
-                        DbString: {
-                            asName: string;
-                            moduleImport: any;
-                            sourceName: string;
-                        };
                         GeneratedValue: {
                             asName: string;
                             moduleImport: any;
@@ -115,7 +110,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 DbDate: any;
                 DbNumber: any;
-                DbString: any;
                 GeneratedValue: any;
                 Id: any;
                 JoinColumn: any;
@@ -352,7 +346,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 Column?: undefined;
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
@@ -462,11 +455,6 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
-                            DbString: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
                             GeneratedValue: {
                                 asName: string;
                                 moduleImport: any;
@@ -502,7 +490,6 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     DbDate: any;
                     DbNumber: any;
-                    DbString: any;
                     GeneratedValue: any;
                     Id: any;
                     JoinColumn: any;
@@ -724,7 +711,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 Column?: undefined;
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
@@ -797,7 +783,6 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         DbDate?: undefined;
                         DbNumber?: undefined;
-                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
@@ -821,7 +806,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
@@ -948,11 +932,6 @@ export declare const MAPPED_SUPERCLASS: ({
                                 moduleImport: any;
                                 sourceName: string;
                             };
-                            DbString: {
-                                asName: string;
-                                moduleImport: any;
-                                sourceName: string;
-                            };
                             GeneratedValue: {
                                 asName: string;
                                 moduleImport: any;
@@ -988,7 +967,6 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     DbDate: any;
                     DbNumber: any;
-                    DbString: any;
                     GeneratedValue: any;
                     Id: any;
                     JoinColumn: any;
@@ -1221,7 +1199,6 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         DbDate?: undefined;
                         DbNumber?: undefined;
-                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         Transient?: undefined;
@@ -1245,7 +1222,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 Transient?: undefined;
@@ -1437,7 +1413,6 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         DbDate?: undefined;
                         DbNumber?: undefined;
-                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
@@ -1461,7 +1436,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
@@ -1547,7 +1521,6 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             DbDate?: undefined;
                             DbNumber?: undefined;
-                            DbString?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
                             JoinColumn?: undefined;
@@ -1571,7 +1544,6 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     DbDate?: undefined;
                     DbNumber?: undefined;
-                    DbString?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
                     JoinColumn?: undefined;
@@ -1694,11 +1666,6 @@ export declare const MAPPED_SUPERCLASS: ({
                                     moduleImport: any;
                                     sourceName: string;
                                 };
-                                DbString: {
-                                    asName: string;
-                                    moduleImport: any;
-                                    sourceName: string;
-                                };
                                 GeneratedValue: {
                                     asName: string;
                                     moduleImport: any;
@@ -1734,7 +1701,6 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         DbDate: any;
                         DbNumber: any;
-                        DbString: any;
                         GeneratedValue: any;
                         Id: any;
                         JoinColumn: any;
@@ -1955,7 +1921,6 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         DbDate?: undefined;
                         DbNumber?: undefined;
-                        DbString?: undefined;
                         GeneratedValue?: undefined;
                         Id?: undefined;
                         JoinColumn?: undefined;
@@ -1979,7 +1944,6 @@ export declare const MAPPED_SUPERCLASS: ({
                 };
                 DbDate?: undefined;
                 DbNumber?: undefined;
-                DbString?: undefined;
                 GeneratedValue?: undefined;
                 Id?: undefined;
                 JoinColumn?: undefined;
@@ -2074,7 +2038,6 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             DbDate?: undefined;
                             DbNumber?: undefined;
-                            DbString?: undefined;
                             GeneratedValue?: undefined;
                             Id?: undefined;
                             Transient?: undefined;
@@ -2098,7 +2061,6 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     DbDate?: undefined;
                     DbNumber?: undefined;
-                    DbString?: undefined;
                     GeneratedValue?: undefined;
                     Id?: undefined;
                     Transient?: undefined;

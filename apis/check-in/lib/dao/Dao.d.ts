@@ -18,13 +18,11 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
-    mapById(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     mapByUuId(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findById(repositoryEntityId: RepositoryEntityId | string, context?: IContext, cacheForUpdate?: boolean): Promise<Entity>;
     findByUuId(repositoryEntityUuId: RepositoryEntityId | string, context?: IContext): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;

@@ -2,7 +2,6 @@ import {
 	Column,
 	DbDate,
 	DbNumber,
-	DbString,
 	GeneratedValue,
 	Id,
 	JoinColumn,
@@ -78,9 +77,6 @@ export abstract class RepositoryEntity {
 
 	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
 	originalActorRecordId: RepositoryEntity_ActorRecordId
-
-	@Transient()
-	id?: string
 
 	@Transient()
 	uuId?: string

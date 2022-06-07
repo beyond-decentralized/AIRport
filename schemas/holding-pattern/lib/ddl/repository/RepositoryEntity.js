@@ -56,9 +56,6 @@ __decorate([
 ], RepositoryEntity.prototype, "originalActorRecordId", void 0);
 __decorate([
     Transient()
-], RepositoryEntity.prototype, "id", void 0);
-__decorate([
-    Transient()
 ], RepositoryEntity.prototype, "uuId", void 0);
 __decorate([
     Transient()

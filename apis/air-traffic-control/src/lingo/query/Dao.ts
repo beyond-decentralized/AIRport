@@ -39,10 +39,6 @@ export interface IDao<Entity,
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
 
-	mapById(
-		entities: (Entity & IRepositoryEntity)[]
-	): Map<string, Entity>
-
 	mapByUuId(
 		entities: (Entity & IRepositoryEntity)[]
 	): Map<string, Entity>
@@ -66,13 +62,8 @@ export interface IDao<Entity,
 		context?: IContext
 	): Promise<Entity[]>;
 
-	findById(
-		repositoryEntityId: RepositoryEntityId | string,
-		context?: IContext
-	): Promise<Entity>;
-
 	findByUuId(
-		repositoryEntityUuId: RepositoryEntityId | string,
+		repositoryEntityId: RepositoryEntityId | string,
 		context?: IContext
 	): Promise<Entity>;
 
