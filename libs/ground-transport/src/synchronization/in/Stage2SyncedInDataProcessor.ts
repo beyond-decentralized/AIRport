@@ -18,13 +18,13 @@ import {
 	ApplicationIndex,
 	ApplicationVersionId,
 	TableIndex,
-	repositoryEntity,
+	airEntity,
 	DbColumn,
 	DbEntity
 } from '@airport/ground-control'
 import {
 	Actor_Id,
-	RepositoryEntity_ActorRecordId,
+	AirEntity_ActorRecordId,
 	Repository_Id
 } from '@airport/holding-pattern'
 import {
@@ -62,7 +62,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>> {
+	extends Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ColumnIndex, any];
@@ -113,7 +113,7 @@ export class Stage2SyncedInDataProcessor
 	async performCreates(
 		recordCreations: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -204,9 +204,9 @@ export class Stage2SyncedInDataProcessor
 		const nonIdColumns = []
 		for (const column of dbEntity.columns) {
 			switch (column.name) {
-				case repositoryEntity.ACTOR_ID:
-				case repositoryEntity.ACTOR_RECORD_ID:
-				case repositoryEntity.REPOSITORY_ID:
+				case airEntity.ACTOR_ID:
+				case airEntity.ACTOR_RECORD_ID:
+				case airEntity.REPOSITORY_ID:
 					continue
 			}
 			nonIdColumns.push(column)
@@ -224,7 +224,7 @@ export class Stage2SyncedInDataProcessor
 	async performUpdates(
 		recordUpdates: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -284,7 +284,7 @@ export class Stage2SyncedInDataProcessor
 	async performDeletes(
 		recordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Set<RepositoryEntity_ActorRecordId>>>>>,
+				Set<AirEntity_ActorRecordId>>>>>,
 		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
 		context: IOperationContext
 	): Promise<void> {
@@ -332,7 +332,7 @@ export class Stage2SyncedInDataProcessor
 
 	/**
 	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
-	 * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+	 * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
 	 * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
 	 * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

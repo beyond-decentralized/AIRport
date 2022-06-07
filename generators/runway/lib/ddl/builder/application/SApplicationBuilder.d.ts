@@ -43,9 +43,9 @@ export declare class SApplicationBuilder {
      */
     private processRelationColumn;
 }
-export declare function entityExtendsRepositoryEntity(//
+export declare function entityExtendsAirEntity(//
 entityCandidate: EntityCandidate): [boolean, boolean];
-export declare function entityExtendsOrIsRepositoryEntity(//
+export declare function entityExtendsOrIsAirEntity(//
 entityCandidate: EntityCandidate): [boolean, boolean];
 export declare function isManyToOnePropertyNotNull(aProperty: PropertyDocEntry): boolean;
 export declare function getManyToOneDecorator(aProperty: PropertyDocEntry): Decorator;

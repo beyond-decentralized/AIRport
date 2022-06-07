@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { repositoryEntity } from "@airport/ground-control";
+import { airEntity } from "@airport/ground-control";
 import { RepositoryTransactionType } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 export const WITH_ID = {};
 export const WITH_RECORD_HISTORY = {};
@@ -323,11 +323,11 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         let value = valueRecord[valueFieldName];
         let serailizedValue = value;
         switch (dbColumn.name) {
-            case repositoryEntity.ORIGINAL_ACTOR_ID: {
+            case airEntity.ORIGINAL_ACTOR_ID: {
                 serailizedValue = this.getActorInMessageIndexById(value, lookups);
                 break;
             }
-            case repositoryEntity.ORIGINAL_REPOSITORY_ID: {
+            case airEntity.ORIGINAL_REPOSITORY_ID: {
                 serailizedValue = this.getSerializedRepositoryId(value, lookups);
                 break;
             }

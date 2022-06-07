@@ -1,1 +1,1 @@
-{"version":3,"file":"ChildRepoRow.d.ts","sourceRoot":"","sources":["../../../src/ddl/traditional/ChildRepoRow.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,gBAAgB,EAAC,MAAM,gCAAgC,CAAA;AAE/D,8BACsB,YACrB,SAAQ,gBAAgB;CAExB"}
+{"version":3,"file":"ChildRepoRow.d.ts","sourceRoot":"","sources":["../../../src/ddl/traditional/ChildRepoRow.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,SAAS,EAAC,MAAM,yBAAyB,CAAA;AAEjD,8BACsB,YACrB,SAAQ,SAAS;CAEjB"}

@@ -1,6 +1,6 @@
 import { PropertyDocEntry } from '../../parser/DocEntry'
 import { EntityCandidate } from '../../parser/EntityCandidate'
-import { entityExtendsOrIsRepositoryEntity } from '../application/SApplicationBuilder';
+import { entityExtendsOrIsAirEntity } from '../application/SApplicationBuilder';
 import {
 	IBuilder,
 	IQCoreEntityBuilder
@@ -53,8 +53,8 @@ export class QRelationBuilder
 			+ (this.buildRelationInstance ? 'QRelation' : 'QId')
 		if (this.entityProperty.isArray) {
 			let interfaceName = 'IQOneToManyRelation';
-			if (entityExtendsOrIsRepositoryEntity(this.parentBuilder.entity)[0]) {
-				interfaceName = 'IQRepositoryEntityOneToManyRelation'
+			if (entityExtendsOrIsAirEntity(this.parentBuilder.entity)[0]) {
+				interfaceName = 'IQAirEntityOneToManyRelation'
 				type = `${interfaceName}<I${entityType}, Q${entityType}>`
 			} else {
 				type = `${interfaceName}<Q${entityType}>`

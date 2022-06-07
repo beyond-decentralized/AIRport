@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbDate, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/air-traffic-control';
-let RepositoryEntity = class RepositoryEntity {
+let AirEntity = class AirEntity {
 };
 __decorate([
     Id(),
@@ -14,7 +14,7 @@ __decorate([
         name: 'REPOSITORY_ID', referencedColumnName: 'ID',
         nullable: false
     })
-], RepositoryEntity.prototype, "repository", void 0);
+], AirEntity.prototype, "repository", void 0);
 __decorate([
     Id(),
     ManyToOne(),
@@ -22,46 +22,46 @@ __decorate([
         name: 'ACTOR_ID', referencedColumnName: 'ID',
         nullable: false
     })
-], RepositoryEntity.prototype, "actor", void 0);
+], AirEntity.prototype, "actor", void 0);
 __decorate([
     Id(),
     Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     GeneratedValue()
-], RepositoryEntity.prototype, "actorRecordId", void 0);
+], AirEntity.prototype, "actorRecordId", void 0);
 __decorate([
     Column({ name: 'AGE_SUITABILITY', nullable: false }),
     DbNumber()
-], RepositoryEntity.prototype, "ageSuitability", void 0);
+], AirEntity.prototype, "ageSuitability", void 0);
 __decorate([
     Column({ name: 'CREATED_AT' }),
     DbDate()
-], RepositoryEntity.prototype, "createdAt", void 0);
+], AirEntity.prototype, "createdAt", void 0);
 __decorate([
     Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
-], RepositoryEntity.prototype, "systemWideOperationId", void 0);
+], AirEntity.prototype, "systemWideOperationId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
         name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
     })
-], RepositoryEntity.prototype, "originalRepository", void 0);
+], AirEntity.prototype, "originalRepository", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
         name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
     })
-], RepositoryEntity.prototype, "originalActor", void 0);
+], AirEntity.prototype, "originalActor", void 0);
 __decorate([
     Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
-], RepositoryEntity.prototype, "originalActorRecordId", void 0);
+], AirEntity.prototype, "originalActorRecordId", void 0);
 __decorate([
     Transient()
-], RepositoryEntity.prototype, "uuId", void 0);
+], AirEntity.prototype, "uuId", void 0);
 __decorate([
     Transient()
-], RepositoryEntity.prototype, "createdBy", void 0);
-RepositoryEntity = __decorate([
+], AirEntity.prototype, "createdBy", void 0);
+AirEntity = __decorate([
     MappedSuperclass()
-], RepositoryEntity);
-export { RepositoryEntity };
-//# sourceMappingURL=RepositoryEntity.js.map
+], AirEntity);
+export { AirEntity };
+//# sourceMappingURL=AirEntity.js.map

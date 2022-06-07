@@ -491,7 +491,7 @@ export class ApplicationComposer
 				index: index++,
 				applicationVersion,
 				isLocal: jsonEntity.isLocal,
-				isRepositoryEntity: jsonEntity.isRepositoryEntity,
+				isAirEntity: jsonEntity.isAirEntity,
 				name: jsonEntity.name,
 				tableConfig: jsonEntity.tableConfig,
 				// columns: [],

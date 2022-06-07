@@ -17,11 +17,11 @@ import { User } from '@airport/travel-document-checkpoint'
 /**
  * Created by Papa on 2/17/2017.
  */
-export type RepositoryEntity_ActorRecordId = number
-export type RepositoryEntity_SystemWideOperationId = SystemWideOperationId
+export type AirEntity_ActorRecordId = number
+export type AirEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
-export abstract class RepositoryEntity {
+export abstract class AirEntity {
 
 	@Id()
 	@ManyToOne()
@@ -42,7 +42,7 @@ export abstract class RepositoryEntity {
 	@Id()
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@GeneratedValue()
-	actorRecordId: RepositoryEntity_ActorRecordId
+	actorRecordId: AirEntity_ActorRecordId
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
@@ -57,7 +57,7 @@ export abstract class RepositoryEntity {
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
 	// a marker to find the new values after the update (and before saving them to history).
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
-	systemWideOperationId: RepositoryEntity_SystemWideOperationId
+	systemWideOperationId: AirEntity_SystemWideOperationId
 
 	// A record may actually be copied from another repository
 	// via a @ManytoOne dependency.  If that is the case
@@ -76,7 +76,7 @@ export abstract class RepositoryEntity {
 	originalActor: Actor
 
 	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
-	originalActorRecordId: RepositoryEntity_ActorRecordId
+	originalActorRecordId: AirEntity_ActorRecordId
 
 	@Transient()
 	uuId?: string

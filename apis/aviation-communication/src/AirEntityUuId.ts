@@ -23,7 +23,7 @@ export interface IUser {
 
 }
 
-export interface RepositoryEntityId {
+export interface AirEntityUuId {
 
     repository: {
         uuId?: string
@@ -36,39 +36,39 @@ export interface RepositoryEntityId {
 
 }
 
-export interface IRepositoryEntityUtils {
+export interface IAirEntityUtils {
 
     getCreatedBy(
-        idObject: RepositoryEntityId
+        idObject: AirEntityUuId
     ): IUser
 
     encodeUuId(
-        idObject: RepositoryEntityId
+        idObject: AirEntityUuId
     ): string
 
     parseUuId(
         idString: string
-    ): RepositoryEntityId
+    ): AirEntityUuId
 
     setUuId(
         idString: string,
-        repositoryEntity: RepositoryEntityId
+        airEntity: AirEntityUuId
     ): void
 
 }
 
 @Injected()
-export class RepositoryEntityUtils
-    implements IRepositoryEntityUtils {
+export class AirEntityUtils
+    implements IAirEntityUtils {
 
     getCreatedBy(
-        repositoryEntity: RepositoryEntityId
+        airEntity: AirEntityUuId
     ): IUser {
-        return repositoryEntity.actor.user
+        return airEntity.actor.user
     }
 
     encodeUuId(
-        idObject: RepositoryEntityId
+        idObject: AirEntityUuId
     ): string {
         if (!idObject.repository
             || !idObject.repository.uuId
@@ -91,10 +91,10 @@ export class RepositoryEntityUtils
 
     parseUuId(
         idString: string
-    ): RepositoryEntityId {
+    ): AirEntityUuId {
         const idStringFragments = idString.split('-')
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid Repository Entity Id, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
+            throw new Error('Invalid AirEntity UuId, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
         }
         const repositoryUuIdFragments: string[] = []
         for (let i = 0; i < 5; i++) {
@@ -117,26 +117,26 @@ export class RepositoryEntityUtils
 
     setUuId(
         idString: string,
-        repositoryEntity: RepositoryEntityId
+        airEntity: AirEntityUuId
     ): void {
-        let repositoryEntityId = this.parseUuId(idString)
-        if (!repositoryEntity.repository) {
-            repositoryEntity.repository = {
-                uuId: repositoryEntityId.repository.uuId
+        let airEntityId = this.parseUuId(idString)
+        if (!airEntity.repository) {
+            airEntity.repository = {
+                uuId: airEntityId.repository.uuId
             }
         } else {
-            repositoryEntity.repository.uuId = repositoryEntityId.repository.uuId
+            airEntity.repository.uuId = airEntityId.repository.uuId
         }
 
-        if (!repositoryEntity.actor) {
-            repositoryEntity.actor = {
-                uuId: repositoryEntityId.repository.uuId
+        if (!airEntity.actor) {
+            airEntity.actor = {
+                uuId: airEntityId.repository.uuId
             }
         } else {
-            repositoryEntity.actor.uuId = repositoryEntityId.actor.uuId
+            airEntity.actor.uuId = airEntityId.actor.uuId
         }
 
-        repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId
+        airEntity.actorRecordId = airEntityId.actorRecordId
     }
 
 }

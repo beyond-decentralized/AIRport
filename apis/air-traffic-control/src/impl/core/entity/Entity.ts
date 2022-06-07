@@ -1,9 +1,9 @@
-import { RepositoryEntityId } from '@airport/aviation-communication'
+import { AirEntityUuId } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	DbRelation,
-	IRepositoryEntity,
+	IAirEntity,
 	JoinType,
 	JSONBaseOperation,
 	JSONEntityRelation,
@@ -26,7 +26,7 @@ import {
 } from '../../../lingo/core/entity/Entity'
 import { IJoinFields } from '../../../lingo/core/entity/Joins'
 import { OneToManyElements } from '../../../lingo/core/entity/metadata/ColumnDecorators'
-import { IQInternalRelation, IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
+import { IQInternalRelation, IQAirEntityRelation } from '../../../lingo/core/entity/Relation'
 import { IQOperableFieldInternal } from '../../../lingo/core/field/OperableField'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IEntityDatabaseFacade } from '../../../lingo/core/repository/EntityDatabaseFacade'
@@ -106,8 +106,8 @@ QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinField
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 
-QEntity.prototype.equals = function <Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
-	entity: Entity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+QEntity.prototype.equals = function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+	entity: Entity | IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
 ): JSONLogicalOperation {
 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 }

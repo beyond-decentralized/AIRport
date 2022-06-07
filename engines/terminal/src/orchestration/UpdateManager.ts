@@ -28,14 +28,14 @@ import {
 	JsonUpdate,
 	PortableQuery,
 	QueryResultType,
-	repositoryEntity,
+	airEntity,
 } from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo,
-	RepositoryEntity_SystemWideOperationId,
+	AirEntity_SystemWideOperationId,
 	SystemWideOperationId
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import {
@@ -157,9 +157,9 @@ export class UpdateManager
 		RecordHistoryMap,
 		RepositorySheetSelectInfo
 	]> {
-		if (!context.dbEntity.isRepositoryEntity) {
+		if (!context.dbEntity.isAirEntity) {
 			throw new Error(errorPrefix +
-				`Cannot add update history for a non-RepositoryEntity`)
+				`Cannot add update history for a non-AirEntity`)
 		}
 
 		const qEntity = this.airportDatabase
@@ -245,7 +245,7 @@ export class UpdateManager
 	private async addNewValueHistory(
 		jsonUpdate: JsonUpdate<any>,
 		recordHistoryMapByRecordId: RecordHistoryMap,
-		systemWideOperationId: RepositoryEntity_SystemWideOperationId,
+		systemWideOperationId: AirEntity_SystemWideOperationId,
 		repositorySheetSelectInfo: RepositorySheetSelectInfo,
 		errorPrefix: string,
 		transaction: ITransaction,
@@ -259,7 +259,7 @@ export class UpdateManager
 				qEntity
 			],
 			select: [],
-			where: qEntity[repositoryEntity.systemWideOperationId]
+			where: qEntity[airEntity.systemWideOperationId]
 				.equals(systemWideOperationId)
 		})
 

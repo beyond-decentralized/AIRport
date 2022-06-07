@@ -113,7 +113,7 @@
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Actor",
 					"properties": [
 						{
@@ -267,7 +267,7 @@
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RecordHistoryNewValue",
 					"properties": [
 						{
@@ -381,7 +381,7 @@
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RecordHistoryOldValue",
 					"properties": [
 						{
@@ -515,7 +515,7 @@
 					],
 					"index": 3,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RecordHistory",
 					"properties": [
 						{
@@ -751,7 +751,7 @@
 					],
 					"index": 4,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Repository",
 					"properties": [
 						{
@@ -899,7 +899,7 @@
 					],
 					"index": 5,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "TransactionHistory",
 					"properties": [
 						{
@@ -1092,7 +1092,7 @@
 					],
 					"index": 6,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RepositoryTransactionHistory",
 					"properties": [
 						{
@@ -1353,7 +1353,7 @@
 					],
 					"index": 7,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "OperationHistory",
 					"properties": [
 						{
@@ -1544,7 +1544,7 @@
 					],
 					"index": 8,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RepositoryApplication",
 					"properties": [
 						{

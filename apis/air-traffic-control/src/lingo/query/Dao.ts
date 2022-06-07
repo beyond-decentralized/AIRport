@@ -1,6 +1,6 @@
-import { RepositoryEntityId } from '@airport/aviation-communication'
+import { AirEntityUuId } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
-import { IEntityStateManager, IRepositoryEntity, ISaveResult } from '@airport/ground-control'
+import { IEntityStateManager, IAirEntity, ISaveResult } from '@airport/ground-control'
 import { IAirportDatabase } from '../AirportDatabase'
 import {
 	IEntityCascadeGraph,
@@ -40,7 +40,7 @@ export interface IDao<Entity,
 		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
 
 	mapByUuId(
-		entities: (Entity & IRepositoryEntity)[]
+		entities: (Entity & IAirEntity)[]
 	): Map<string, Entity>
 
 	count(
@@ -63,7 +63,7 @@ export interface IDao<Entity,
 	): Promise<Entity[]>;
 
 	findByUuId(
-		repositoryEntityId: RepositoryEntityId | string,
+		airEntityId: AirEntityUuId | string,
 		context?: IContext
 	): Promise<Entity>;
 

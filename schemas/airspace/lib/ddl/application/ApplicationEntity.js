@@ -47,9 +47,9 @@ __decorate([
     DbBoolean()
 ], ApplicationEntity.prototype, "isLocal", void 0);
 __decorate([
-    Column({ name: 'IS_REPOSITORY_ENTITY', nullable: false }),
+    Column({ name: 'IS_AIR_ENTITY', nullable: false }),
     DbBoolean()
-], ApplicationEntity.prototype, "isRepositoryEntity", void 0);
+], ApplicationEntity.prototype, "isAirEntity", void 0);
 __decorate([
     Column({ name: 'NAME', nullable: false }),
     DbString()

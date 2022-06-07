@@ -7,7 +7,7 @@ import {
 import { IContext } from "@airport/direction-indicator";
 import type {
     IActor,
-    RepositoryEntity,
+    AirEntity,
     Repository_Id
 } from "@airport/holding-pattern";
 import { ITransaction } from "../transaction/ITransaction";
@@ -25,4 +25,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<ApplicationIndex, Map<EntityId, Map<Repository_Id, RepositoryEntity[]>>>
+    Map<ApplicationIndex, Map<EntityId, Map<Repository_Id, AirEntity[]>>>

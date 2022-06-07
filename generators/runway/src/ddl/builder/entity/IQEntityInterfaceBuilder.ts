@@ -1,6 +1,6 @@
 import {EntityCandidate} from '../../parser/EntityCandidate'
 import {
-	entityExtendsRepositoryEntity,
+	entityExtendsAirEntity,
 	getManyToOneDecorator
 }                        from '../application/SApplicationBuilder'
 import {IBuilder}         from '../Builder'
@@ -107,10 +107,10 @@ export class IQEntityInterfaceBuilder
 			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
 		})
 
-		const [isRepositoryEntity, isLocal]
-			                           = entityExtendsRepositoryEntity(this.entity)
+		const [isAirEntity, isLocal]
+			                           = entityExtendsAirEntity(this.entity)
 		let relationsForCascadeGraph = ``
-		if (!isRepositoryEntity) {
+		if (!isAirEntity) {
 			this.idRelationBuilders.forEach((
 				builder: QRelationBuilder
 			) => {

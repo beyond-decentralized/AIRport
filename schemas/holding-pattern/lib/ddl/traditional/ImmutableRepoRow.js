@@ -5,8 +5,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, MappedSuperclass } from '@airport/air-traffic-control';
-import { RepositoryEntity } from '../repository/RepositoryEntity';
-let ImmutableRepoRow = class ImmutableRepoRow extends RepositoryEntity {
+import { AirEntity } from '../repository/AirEntity';
+let ImmutableRepoRow = class ImmutableRepoRow extends AirEntity {
 };
 __decorate([
     Column({ name: 'CREATED_AT' })

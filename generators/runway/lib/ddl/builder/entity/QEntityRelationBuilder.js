@@ -1,4 +1,4 @@
-import { entityExtendsOrIsRepositoryEntity } from '../application/SApplicationBuilder';
+import { entityExtendsOrIsAirEntity } from '../application/SApplicationBuilder';
 import { QCoreEntityBuilder } from '../Builder';
 export class QEntityRelationBuilder extends QCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName) {
@@ -11,14 +11,14 @@ export class QEntityRelationBuilder extends QCoreEntityBuilder {
         });
         let genericType = '';
         let entity = this.entity.docEntry.name;
-        const [isRepositoryEntity, _] = entityExtendsOrIsRepositoryEntity(this.entity);
+        const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity);
         let parentInterfaceType = 'IQRelation';
-        if (isRepositoryEntity) {
-            parentInterfaceType = 'IQRepositoryEntityRelation';
+        if (isAirEntity) {
+            parentInterfaceType = 'IQAirEntityRelation';
         }
         let parentEntityQType = `${parentInterfaceType}<${qName}>`;
         if (isMappedSuperclass) {
-            if (isRepositoryEntity) {
+            if (isAirEntity) {
                 genericType = '<SubType, SubQType extends IQEntity>';
                 parentEntityQType = `${parentInterfaceType}<SubType, SubQType>`;
             }
@@ -33,7 +33,7 @@ export class QEntityRelationBuilder extends QCoreEntityBuilder {
                 iqEntity = 'SubQType';
                 entity = 'SubType';
             }
-            if (isRepositoryEntity) {
+            if (isAirEntity) {
                 let entityType = entity;
                 if (!isMappedSuperclass) {
                     entityType = 'I' + entityType;

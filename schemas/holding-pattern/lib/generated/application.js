@@ -114,7 +114,7 @@ export const APPLICATION = {
                     ],
                     "index": 0,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Actor",
                     "properties": [
                         {
@@ -268,7 +268,7 @@ export const APPLICATION = {
                     ],
                     "index": 1,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "RecordHistoryNewValue",
                     "properties": [
                         {
@@ -382,7 +382,7 @@ export const APPLICATION = {
                     ],
                     "index": 2,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "RecordHistoryOldValue",
                     "properties": [
                         {
@@ -516,7 +516,7 @@ export const APPLICATION = {
                     ],
                     "index": 3,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "RecordHistory",
                     "properties": [
                         {
@@ -752,7 +752,7 @@ export const APPLICATION = {
                     ],
                     "index": 4,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Repository",
                     "properties": [
                         {
@@ -900,7 +900,7 @@ export const APPLICATION = {
                     ],
                     "index": 5,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "TransactionHistory",
                     "properties": [
                         {
@@ -1093,7 +1093,7 @@ export const APPLICATION = {
                     ],
                     "index": 6,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "RepositoryTransactionHistory",
                     "properties": [
                         {
@@ -1354,7 +1354,7 @@ export const APPLICATION = {
                     ],
                     "index": 7,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "OperationHistory",
                     "properties": [
                         {
@@ -1545,7 +1545,7 @@ export const APPLICATION = {
                     ],
                     "index": 8,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "RepositoryApplication",
                     "properties": [
                         {

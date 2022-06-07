@@ -49,7 +49,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -141,7 +141,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -216,7 +216,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {

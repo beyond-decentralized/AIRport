@@ -1,7 +1,7 @@
 import { EntityRelationType, SQLDataType } from '@airport/ground-control';
 import { QEntity } from '../core/entity/Entity';
-import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation';
-import { QRelation, QRepositoryEntityRelation } from '../core/entity/Relation';
+import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../core/entity/OneToManyRelation';
+import { QRelation, QAirEntityRelation } from '../core/entity/Relation';
 import { QBooleanField } from '../core/field/BooleanField';
 import { QDateField } from '../core/field/DateField';
 import { QNumberField } from '../core/field/NumberField';
@@ -51,8 +51,8 @@ export function getQRelation(entity, property, q, allQApplications, applicationU
                 .__qIdRelationConstructors__[relationEntity.index];
             return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
         case EntityRelationType.ONE_TO_MANY:
-            if (entity.isRepositoryEntity) {
-                return new QRepositoryEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
+            if (entity.isAirEntity) {
+                return new QAirEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
             }
             else {
                 return new QOneToManyRelation(relation, q, applicationUtils, relationManager);
@@ -109,8 +109,8 @@ export function getQEntityIdRelationConstructor(dbEntity) {
     yourMethodName: function() {},
     */
     };
-    if (dbEntity.isRepositoryEntity) {
-        extend(QRepositoryEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
+    if (dbEntity.isAirEntity) {
+        extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
     }
     else {
         extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods);

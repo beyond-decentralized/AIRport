@@ -5,7 +5,7 @@ export * from './core/QueryEntityClassCreator';
 export * from './core/QueryObjectInitializer';
 export * from './core/UpdateState';
 export * from './core/data/StoreDriver';
-export * from './metadata/RepositoryEntityType';
+export * from './metadata/AirEntityType';
 export * from './orchestration/DatabaseManager';
 export * from './orchestration/DeleteManager';
 export * from './orchestration/HistoryManager';

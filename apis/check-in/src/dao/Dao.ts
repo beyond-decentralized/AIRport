@@ -20,8 +20,8 @@ import {
 } from '@airport/air-traffic-control';
 import {
 	QApplication,
-	RepositoryEntityId,
-	REPOSITORY_ENTITY_UTILS
+	AirEntityUuId,
+	AIR_ENTITY_UTILS
 } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -32,7 +32,7 @@ import {
 import {
 	EntityId as DbEntityId,
 	IEntityStateManager,
-	IRepositoryEntity,
+	IAirEntity,
 	ISaveResult
 } from '@airport/ground-control';
 import { Observable } from 'rxjs';
@@ -103,7 +103,7 @@ export abstract class Dao<Entity,
 	}
 
 	mapByUuId(
-		entities: (Entity & IRepositoryEntity)[]
+		entities: (Entity & IAirEntity)[]
 	): Map<string, Entity> {
 		const map = new Map()
 		for (const entity of entities) {
@@ -155,17 +155,17 @@ export abstract class Dao<Entity,
 	}
 
 	async findByUuId(
-		repositoryEntityUuId: RepositoryEntityId | string,
+		airEntityUuId: AirEntityUuId | string,
 		context?: IContext
 	): Promise<Entity> {
-		if (typeof repositoryEntityUuId === 'string') {
-			repositoryEntityUuId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
-				.parseUuId(repositoryEntityUuId)
+		if (typeof airEntityUuId === 'string') {
+			airEntityUuId = IOC.getSync(AIR_ENTITY_UTILS)
+				.parseUuId(airEntityUuId)
 		}
-		if (!this.db.dbEntity.isRepositoryEntity) {
+		if (!this.db.dbEntity.isAirEntity) {
 			throw new Error(`Dao.findByUuId can only be called for Repository Entities.`)
 		}
-		const idObject: RepositoryEntityId = repositoryEntityUuId as RepositoryEntityId
+		const idObject: AirEntityUuId = airEntityUuId as AirEntityUuId
 		if (!idObject.repository
 			|| !idObject.repository.uuId
 			|| typeof idObject.repository.uuId !== 'string'
@@ -174,8 +174,8 @@ export abstract class Dao<Entity,
 			|| typeof idObject.actor.uuId !== 'number'
 			|| !idObject.actorRecordId
 			|| typeof idObject.actorRecordId !== 'number') {
-			throw new Error(`Invalid Repository Entity Id.  Expecting:
-				interface RepositoryEntityId {
+			throw new Error(`Invalid AirEntity Id.  Expecting:
+				interface AirEntityUuId {
 					repository: {
 						uuId: string
 					},
@@ -254,7 +254,7 @@ export abstract class Dao<Entity,
 	 * ensures that the record is unique.  If multiple records
 	 * are found the ones with older createdAt values are deleted.
 	 */
-	protected async _findUnique<E extends IRepositoryEntity & Entity>(
+	protected async _findUnique<E extends IAirEntity & Entity>(
 		rawGraphQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
 		ctx?: IContext

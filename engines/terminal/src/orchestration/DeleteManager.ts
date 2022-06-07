@@ -25,7 +25,7 @@ import {
 	JsonEntityQuery,
 	PortableQuery,
 	QueryResultType,
-	repositoryEntity,
+	airEntity,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -258,8 +258,8 @@ export class DeleteManager
 											switch (dbColumn.name) {
 												// Do not add Actor or Repository the are recorded
 												// at record history level
-												case repositoryEntity.ACTOR_ID:
-												case repositoryEntity.REPOSITORY_ID:
+												case airEntity.ACTOR_ID:
+												case airEntity.REPOSITORY_ID:
 													break;
 												default:
 													this.recordHistoryDuo.addOldValue(recordHistory, dbColumn,

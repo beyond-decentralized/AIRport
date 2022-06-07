@@ -213,7 +213,7 @@
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationRelationColumn",
 					"properties": [
 						{
@@ -630,7 +630,7 @@
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationRelation",
 					"properties": [
 						{
@@ -1019,7 +1019,7 @@
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationProperty",
 					"properties": [
 						{
@@ -1313,7 +1313,7 @@
 					],
 					"index": 3,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationPropertyColumn",
 					"properties": [
 						{
@@ -1660,7 +1660,7 @@
 					],
 					"index": 4,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationColumn",
 					"properties": [
 						{
@@ -2060,7 +2060,7 @@
 					],
 					"index": 5,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationOperation",
 					"properties": [
 						{
@@ -2298,7 +2298,7 @@
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "IS_REPOSITORY_ENTITY",
+							"name": "IS_AIR_ENTITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2367,7 +2367,7 @@
 					],
 					"index": 6,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationEntity",
 					"properties": [
 						{
@@ -2430,7 +2430,7 @@
 							},
 							"index": 6,
 							"isId": false,
-							"name": "isRepositoryEntity",
+							"name": "isAirEntity",
 							"sinceVersion": 1
 						},
 						{
@@ -2759,7 +2759,7 @@
 					],
 					"index": 7,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationReference",
 					"properties": [
 						{
@@ -3008,7 +3008,7 @@
 					],
 					"index": 8,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationVersion",
 					"properties": [
 						{
@@ -3227,7 +3227,7 @@
 					],
 					"index": 9,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationCurrentVersion",
 					"properties": [
 						{
@@ -3394,7 +3394,7 @@
 					],
 					"index": 10,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Application",
 					"properties": [
 						{
@@ -3562,7 +3562,7 @@
 					],
 					"index": 11,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Domain",
 					"properties": [
 						{

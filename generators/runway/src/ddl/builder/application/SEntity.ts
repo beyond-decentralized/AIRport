@@ -12,14 +12,14 @@ import {
 export interface SEntity {
 
 	/*
-	 * Is this entity local-only (does not extend RepositoryEntity)
+	 * Is this entity local-only (does not extend AirEntity)
 	 */
 	isLocal: boolean;
 
 	/**
-	 * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isRepositoryEntity: boolean;
+	isAirEntity: boolean;
 
 	/**
 	 * Name of the entity.

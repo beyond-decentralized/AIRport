@@ -18,21 +18,21 @@ import {
 	IQUntypedField,
 	IQEntity,
 	IQRelation,
-	IQRepositoryEntityOneToManyRelation,
-	IQRepositoryEntityRelation,
+	IQAirEntityOneToManyRelation,
+	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	RepositoryEntityGraph,
-	RepositoryEntityEId,
-	RepositoryEntityEUpdateColumns,
-	RepositoryEntityEUpdateProperties,
-	RepositoryEntityESelect,
-	QRepositoryEntityQId,
-	QRepositoryEntityQRelation,
-	QRepositoryEntity,
-} from '../repository/qrepositoryentity';
+	AirEntityGraph,
+	AirEntityEId,
+	AirEntityEUpdateColumns,
+	AirEntityEUpdateProperties,
+	AirEntityESelect,
+	QAirEntityQId,
+	QAirEntityQRelation,
+	QAirEntity,
+} from '../repository/qairentity';
 import {
 	IChildRepoRow,
 } from './childreporow';
@@ -49,7 +49,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ChildRepoRowESelect
-    extends RepositoryEntityESelect, ChildRepoRowEOptionalId {
+    extends AirEntityESelect, ChildRepoRowEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
@@ -62,7 +62,7 @@ export interface ChildRepoRowESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ChildRepoRowEId
-    extends RepositoryEntityEId {
+    extends AirEntityEId {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -83,7 +83,7 @@ export interface ChildRepoRowEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ChildRepoRowEUpdateProperties
-	extends RepositoryEntityEUpdateProperties {
+	extends AirEntityEUpdateProperties {
 	// Non-Id Properties
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -94,7 +94,7 @@ export interface ChildRepoRowEUpdateProperties
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ChildRepoRowGraph
-	extends ChildRepoRowEOptionalId, RepositoryEntityGraph {
+	extends ChildRepoRowEOptionalId, AirEntityGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -107,7 +107,7 @@ export interface ChildRepoRowGraph
  * UPDATE - non-id columns (optional).
  */
 export interface ChildRepoRowEUpdateColumns
-	extends RepositoryEntityEUpdateColumns {
+	extends AirEntityEUpdateColumns {
 	// Non-Id Columns
 
 }
@@ -136,7 +136,7 @@ extends ChildRepoRowEId, ChildRepoRowEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.EntityName).
  */
-export interface QChildRepoRow extends QRepositoryEntity
+export interface QChildRepoRow extends QAirEntity
 {
 	// Id Fields
 
@@ -150,7 +150,7 @@ export interface QChildRepoRow extends QRepositoryEntity
 
 
 // Entity Id Interface
-export interface QChildRepoRowQId extends QRepositoryEntityQId
+export interface QChildRepoRowQId extends QAirEntityQId
 {
 	
 	// Id Fields
@@ -162,6 +162,6 @@ export interface QChildRepoRowQId extends QRepositoryEntityQId
 
 // Entity Relation Interface
 export interface QChildRepoRowQRelation<SubType, SubQType extends IQEntity>
-	extends QRepositoryEntityQRelation<SubType, SubQType>, QChildRepoRowQId {
+	extends QAirEntityQRelation<SubType, SubQType>, QChildRepoRowQId {
 }
 

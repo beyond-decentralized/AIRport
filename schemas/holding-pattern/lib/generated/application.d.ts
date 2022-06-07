@@ -31,7 +31,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -125,7 +125,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -203,7 +203,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -293,7 +293,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -399,7 +399,7 @@ export declare const APPLICATION: {
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {

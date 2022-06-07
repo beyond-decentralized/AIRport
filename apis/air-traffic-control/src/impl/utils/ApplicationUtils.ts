@@ -5,7 +5,7 @@ import {
 	DbProperty,
 	DbRelation,
 	EntityRelationType,
-	repositoryEntity,
+	airEntity,
 	ApplicationIndex,
 	TableIndex,
 	IEntityStateManager
@@ -63,19 +63,19 @@ export class ApplicationUtils
 	isActorId(
 		columnName: string
 	): boolean {
-		return columnName === repositoryEntity.ACTOR_ID
+		return columnName === airEntity.ACTOR_ID
 	}
 
 	isActorRecordId(
 		columnName: string
 	): boolean {
-		return columnName === repositoryEntity.ACTOR_RECORD_ID
+		return columnName === airEntity.ACTOR_RECORD_ID
 	}
 
 	isRepositoryId(
 		columnName: string
 	): boolean {
-		return columnName === repositoryEntity.REPOSITORY_ID
+		return columnName === airEntity.REPOSITORY_ID
 	}
 
 	doCascade(
@@ -379,16 +379,16 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 			const inQueryColumnIndex = selectClause.length - 1
 
 			switch (dbColumn.name) {
-				case repositoryEntity.ACTOR_ID:
+				case airEntity.ACTOR_ID:
 					actorIdColumnIndex = inQueryColumnIndex
 					break
-				case repositoryEntity.ACTOR_RECORD_ID:
+				case airEntity.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
-				case repositoryEntity.REPOSITORY_ID:
+				case airEntity.REPOSITORY_ID:
 					repositoryIdColumnIndex = inQueryColumnIndex
 					break
-				case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+				case airEntity.SYSTEM_WIDE_OPERATION_ID:
 					if (nonIdColumnSet) {
 						throw new Error(errorPrefix +
 							`Cannot update 'systemWideOperationId' of Repository Entities.`)

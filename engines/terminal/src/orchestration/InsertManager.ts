@@ -14,7 +14,7 @@ import {
 	IRootTransaction,
 	JsonInsertValues,
 	PortableQuery,
-	repositoryEntity,
+	airEntity,
 } from '@airport/ground-control'
 import {
 	IActor,
@@ -152,8 +152,8 @@ appears more than once in the Columns clause`)
 
 		const insertValues = <JsonInsertValues>portableQuery.jsonQuery
 
-		if (dbEntity.isRepositoryEntity) {
-			columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity,
+		if (dbEntity.isAirEntity) {
+			columnsToPopulate = this.ensureAirEntityUuIdValues(actor, dbEntity,
 				insertValues, errorPrefix, transaction, context)
 		}
 
@@ -289,8 +289,8 @@ appears more than once in the Columns clause`)
 			}
 		}
 
-		// if (dbEntity.isRepositoryEntity) {
-		// 	const repositoryColumn  = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY]
+		// if (dbEntity.isAirEntity) {
+		// 	const repositoryColumn  = dbEntity.columnMap[airEntity.FOREIGN_KEY]
 		// 	const repositoryIdIndex = repositoryColumn.index
 		// 	for (const entityValues of values) {
 		// 		const repositoryId = entityValues[repositoryIdIndex]
@@ -392,7 +392,7 @@ appears more than once in the Columns clause`)
 		return allIds
 	}
 
-	private ensureRepositoryEntityIdValues(
+	private ensureAirEntityUuIdValues(
 		actor: IActor,
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,
@@ -400,10 +400,10 @@ appears more than once in the Columns clause`)
 		transaction: ITransaction,
 		context: IOperationContext
 	): ColumnsToPopulate {
-		const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID]
-		const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID]
-		const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID]
-		const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID]
+		const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_ID]
+		const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID]
+		const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_ID]
+		const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID]
 
 		let repositoryIdColumnQueryIndex
 
@@ -535,9 +535,9 @@ and cannot have NULL values.`)
 		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
-		const repositoryIdIndex = dbEntity.columnMap[repositoryEntity.REPOSITORY_ID].index
-		const actorIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_ID].index
-		const actorRecordIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_RECORD_ID].index
+		const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_ID].index
+		const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_ID].index
+		const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index
 
 		let repositoryIdColumnNumber
 		let actorIdColumnNumber

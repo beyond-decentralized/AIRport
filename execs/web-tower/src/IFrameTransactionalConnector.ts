@@ -45,7 +45,7 @@ import {
 } from 'rxjs';
 import { v4 as uuidv4 } from "uuid";
 import { ITerminalStore } from '@airport/terminal-map';
-import { IRepositoryEntity } from '@airport/ground-control/src';
+import { IAirEntity } from '@airport/ground-control/src';
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
@@ -258,7 +258,7 @@ export class IframeTransactionalConnector
 		);
 	}
 
-	async save<E extends IRepositoryEntity, T = E | E[]>(
+	async save<E extends IAirEntity, T = E | E[]>(
 		entity: T,
 		context: IEntityContext,
 	): Promise<ISaveResult> {
@@ -274,7 +274,7 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
+	async saveToDestination<E extends IAirEntity, T = E | E[]>(
 		repositoryDestination: string,
 		entity: T,
 		context?: IContext,

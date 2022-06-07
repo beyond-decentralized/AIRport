@@ -1,7 +1,7 @@
 import {
 	DbEntity,
 	JSONBaseOperation,
-	repositoryEntity
+	airEntity
 } from '@airport/ground-control'
 import { IAirportDatabase } from '../../lingo/AirportDatabase'
 import { IQEntityInternal } from '../../lingo/core/entity/Entity'
@@ -32,9 +32,9 @@ export class QMetadataUtils
 			if (qField.dbColumn.isGenerated) {
 				return false
 			}
-			if (qEntity.__driver__.dbEntity.isRepositoryEntity) {
+			if (qEntity.__driver__.dbEntity.isAirEntity) {
 				switch (qField.dbColumn.name) {
-					case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+					case airEntity.SYSTEM_WIDE_OPERATION_ID:
 						return false
 				}
 			}

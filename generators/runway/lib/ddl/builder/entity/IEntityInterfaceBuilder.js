@@ -36,8 +36,8 @@ export class IEntityInterfaceBuilder {
                 nonIdRelations += `\t${nonIdRelation}\n`;
             }
         });
-        // const [isRepositoryEntity, isLocal]
-        // 	                           = entityExtendsRepositoryEntity(this.entity)
+        // const [isAirEntity, isLocal]
+        // 	                           = entityExtendsAirEntity(this.entity)
         let transientProperties = ``;
         this.transientPropertyBuilders.forEach((builder) => {
             transientProperties += `\t${builder.buildInterfaceDefinition()}\n`;

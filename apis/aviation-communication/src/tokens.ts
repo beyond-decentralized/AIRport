@@ -1,10 +1,10 @@
 import { lib } from "@airport/direction-indicator"
-import { IRepositoryEntityUtils, RepositoryEntityUtils } from "./RepositoryEntityId"
+import { IAirEntityUtils, AirEntityUtils } from "./AirEntityUuId"
 
 const aviationCommunication = lib('aviation-communication')
 
-export const REPOSITORY_ENTITY_UTILS = aviationCommunication.token<IRepositoryEntityUtils>({
-    class: RepositoryEntityUtils,
-    interface: 'IRepositoryEntityUtils',
-    token: 'REPOSITORY_ENTITY_UTILS'
+export const AIR_ENTITY_UTILS = aviationCommunication.token<IAirEntityUtils>({
+    class: AirEntityUtils,
+    interface: 'IAirEntityUtils',
+    token: 'AIR_ENTITY_UTILS'
 })

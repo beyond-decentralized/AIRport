@@ -36,7 +36,7 @@ export interface IApplicationEntity extends IVersionedApplicationObject {
 	// Non-Id Properties
 	index?: number;
 	isLocal?: boolean;
-	isRepositoryEntity?: boolean;
+	isAirEntity?: boolean;
 	name?: string;
 	tableConfig?: TableConfiguration;
 

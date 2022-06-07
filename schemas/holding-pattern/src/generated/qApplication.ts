@@ -7,6 +7,7 @@ import {
     EntityId,
 }                      from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
+import { QAirEntity } from './repository/qairentity';
 import { QChildRepoRow } from './traditional/qchildreporow';
 import { QChildRow } from './traditional/qchildrow';
 import { QImmutableRepoRow } from './traditional/qimmutablereporow';
@@ -20,11 +21,11 @@ import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QReferenceRow } from './traditional/qreferencerow';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
-import { QRepositoryEntity } from './repository/qrepositoryentity';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import {
   Actor,
+  AirEntity,
   ChildRepoRow,
   ChildRow,
   ImmutableRepoRow,
@@ -38,7 +39,6 @@ import {
   ReferenceRow,
   Repository,
   RepositoryApplication,
-  RepositoryEntity,
   RepositoryTransactionHistory,
   TransactionHistory
 } from '../ddl/ddl';
@@ -61,6 +61,7 @@ export interface LocalQApplication extends QApplication {
 
 const __constructors__ = {
 	Actor: Actor,
+	AirEntity: AirEntity,
 	ChildRepoRow: ChildRepoRow,
 	ChildRow: ChildRow,
 	ImmutableRepoRow: ImmutableRepoRow,
@@ -74,7 +75,6 @@ const __constructors__ = {
 	ReferenceRow: ReferenceRow,
 	Repository: Repository,
 	RepositoryApplication: RepositoryApplication,
-	RepositoryEntity: RepositoryEntity,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
 	TransactionHistory: TransactionHistory
 };

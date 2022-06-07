@@ -60,7 +60,7 @@
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Continent",
 					"properties": [
 						{
@@ -173,7 +173,7 @@
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Country",
 					"properties": [
 						{
@@ -301,7 +301,7 @@
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "UserTerminal",
 					"properties": [
 						{
@@ -478,7 +478,7 @@
 					],
 					"index": 3,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "UserTerminalAgt",
 					"properties": [
 						{
@@ -687,7 +687,7 @@
 					],
 					"index": 4,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "User",
 					"properties": [
 						{
@@ -826,7 +826,7 @@
 					],
 					"index": 5,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Terminal",
 					"properties": [
 						{
@@ -962,7 +962,7 @@
 					],
 					"index": 6,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "TerminalAgt",
 					"properties": [
 						{
@@ -1081,7 +1081,7 @@
 					],
 					"index": 7,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Agt",
 					"properties": [
 						{

@@ -10,9 +10,9 @@ import { IQueryUtils } from '../../utils/QueryUtils'
 import { IQOperableFieldInternal } from '../field/OperableField'
 import { IFieldColumnAliases } from './Aliases'
 import { IJoinFields } from './Joins'
-import { IQInternalRelation, IQRepositoryEntityRelation } from './Relation'
+import { IQInternalRelation, IQAirEntityRelation } from './Relation'
 import type { IRelationManager } from '../../../impl/core/entity/RelationManager'
-import { RepositoryEntityId } from '@airport/aviation-communication'
+import { AirEntityUuId } from '@airport/aviation-communication'
 import { JSONLogicalOperation } from '../operation/LogicalOperation'
 
 /**
@@ -143,8 +143,8 @@ export interface IEntityRelationFrom {
 export interface IQEntity {
 
 	equals<Entity, IQ extends IQEntityInternal>(
-		entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ>
-			| RepositoryEntityId | string
+		entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
+			| AirEntityUuId | string
 	): JSONLogicalOperation;
 
 	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
@@ -157,7 +157,7 @@ export interface IQEntity {
 
 }
 
-export interface IQRepositoryEntity
+export interface IQAirEntity
 	extends IQEntity {
 
 }

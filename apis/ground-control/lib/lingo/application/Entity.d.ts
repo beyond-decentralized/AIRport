@@ -5,7 +5,7 @@ import { DatabaseObject, DbApplicationVersion, JsonDatabaseObject } from './Appl
 export declare type EntityId = number;
 export declare type EntityName = string;
 export declare type EntityIsLocal = boolean;
-export declare type EntityIsRepositoryEntity = boolean;
+export declare type EntityIsAirEntity = boolean;
 export declare type TableIndex = number;
 export declare type IdColumnOnlyIndex = number;
 /**
@@ -23,9 +23,9 @@ export interface JsonApplicationEntity extends ApplicationReferenceByIndex<Table
     idColumnRefs: ApplicationReferenceByIndex<IdColumnOnlyIndex>[];
     isLocal: EntityIsLocal;
     /**
-     * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+     * Does this entity extend AirEntity or LocalAirEntity
      */
-    isRepositoryEntity: EntityIsRepositoryEntity;
+    isAirEntity: EntityIsAirEntity;
     /**
      * Name of the entity.
      */
@@ -74,9 +74,9 @@ export interface DbEntity extends ApplicationReferenceByIndex<TableIndex>, Datab
     idColumns: DbColumn[];
     isLocal: EntityIsLocal;
     /**
-     * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+     * Does this entity extend AirEntity or LocalAirEntity
      */
-    isRepositoryEntity: EntityIsRepositoryEntity;
+    isAirEntity: EntityIsAirEntity;
     /**
      * Name of the entity.
      */

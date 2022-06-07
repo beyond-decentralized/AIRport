@@ -1,6 +1,6 @@
 import {
-	IRepositoryEntity,
-} from '../repository/repositoryentity';
+	IAirEntity,
+} from '../repository/airentity';
 
 
 
@@ -8,7 +8,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IChildRepoRow extends IRepositoryEntity {
+export interface IChildRepoRow extends IAirEntity {
 	
 	// Id Properties
 

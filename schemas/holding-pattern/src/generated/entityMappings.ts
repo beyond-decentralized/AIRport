@@ -9,7 +9,7 @@ import { Repository } from '../ddl/repository/Repository';
 import { TransactionHistory } from '../ddl/history/TransactionHistory';
 import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransactionHistory';
 import { OperationHistory } from '../ddl/history/OperationHistory';
-import { RepositoryEntity } from '../ddl/repository/RepositoryEntity';
+import { AirEntity } from '../ddl/repository/AirEntity';
 import { RepositoryApplication } from '../ddl/repository/RepositoryApplication';
 import { ChildRepoRow } from '../ddl/traditional/ChildRepoRow';
 import { ChildRow } from '../ddl/traditional/ChildRow';
@@ -29,7 +29,7 @@ DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
   accumulator.add(TransactionHistory, 5);
   accumulator.add(RepositoryTransactionHistory, 6);
   accumulator.add(OperationHistory, 7);
-  accumulator.add(RepositoryEntity, undefined);
+  accumulator.add(AirEntity, undefined);
   accumulator.add(RepositoryApplication, 8);
   accumulator.add(ChildRepoRow, undefined);
   accumulator.add(ChildRow, undefined);

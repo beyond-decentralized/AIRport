@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { and, or } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { ensureChildJsMap, ensureChildJsSet, repositoryEntity } from '@airport/ground-control';
+import { ensureChildJsMap, ensureChildJsSet, airEntity } from '@airport/ground-control';
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap) {
         const context = {};
@@ -107,9 +107,9 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         const nonIdColumns = [];
         for (const column of dbEntity.columns) {
             switch (column.name) {
-                case repositoryEntity.ACTOR_ID:
-                case repositoryEntity.ACTOR_RECORD_ID:
-                case repositoryEntity.REPOSITORY_ID:
+                case airEntity.ACTOR_ID:
+                case airEntity.ACTOR_RECORD_ID:
+                case airEntity.REPOSITORY_ID:
                     continue;
             }
             nonIdColumns.push(column);
@@ -198,7 +198,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     }
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
-     * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+     * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

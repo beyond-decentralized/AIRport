@@ -25,7 +25,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: {
                 columnRef: {
@@ -61,7 +61,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: {
                 columnRef: {
@@ -117,7 +117,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -211,7 +211,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -289,7 +289,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -379,7 +379,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -485,7 +485,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -615,7 +615,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -707,7 +707,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -782,7 +782,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -845,7 +845,7 @@ export declare const BLUEPRINT: ({
     versions: {
         api: {
             apiObjectMap: {
-                IUserApi: {
+                UserApi: {
                     operationMap: {
                         addUser: {
                             isAsync: boolean;
@@ -891,7 +891,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -947,7 +947,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: {
                 columnRef: {
@@ -990,7 +990,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -1073,7 +1073,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -1142,7 +1142,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {
@@ -1221,7 +1221,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 index: number;
@@ -1282,7 +1282,7 @@ export declare const BLUEPRINT: ({
             }[];
             index: number;
             isLocal: boolean;
-            isRepositoryEntity: boolean;
+            isAirEntity: boolean;
             name: string;
             properties: ({
                 columnRef: {

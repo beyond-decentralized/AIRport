@@ -10,7 +10,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, IRepositoryEntity, Repository_Id } from '@airport/holding-pattern';
+import { Actor, IActor, IAirEntity, Repository_Id } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
@@ -223,7 +223,7 @@ export class TransactionalServer
 		}
 	}
 
-	async save<E extends IRepositoryEntity, T = E | E[]>(
+	async save<E extends IAirEntity, T = E | E[]>(
 		entity: T,
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext,
@@ -251,7 +251,7 @@ export class TransactionalServer
 		return saveResult
 	}
 
-	async saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
+	async saveToDestination<E extends IAirEntity, T = E | E[]>(
 		repositoryDestination: string,
 		entity: T,
 		credentials: ITransactionCredentials,

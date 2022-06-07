@@ -1,5 +1,5 @@
-import { RepositoryEntity } from '../repository/RepositoryEntity';
-export declare abstract class ImmutableRepoRow extends RepositoryEntity {
+import { AirEntity } from '../repository/AirEntity';
+export declare abstract class ImmutableRepoRow extends AirEntity {
     createdAt: Date;
 }
 //# sourceMappingURL=ImmutableRepoRow.d.ts.map

@@ -26,7 +26,7 @@ import {
 	IRecordHistory,
 	RecordHistoryActorRecordId,
 	RecordHistoryId,
-	RepositoryEntity_ActorRecordId,
+	AirEntity_ActorRecordId,
 	Repository_Id,
 	IActorDao,
 	IRepositoryTransactionHistoryDao,
@@ -186,13 +186,13 @@ export class Stage1SyncedInDataProcessor
 
 		const recordCreations: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>> = new Map()
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>> = new Map()
 		const recordUpdates: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map()
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>> = new Map()
 		const recordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Set<RepositoryEntity_ActorRecordId>>>>> = new Map()
+				Set<AirEntity_ActorRecordId>>>>> = new Map()
 
 		const syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]> = new Map()
 
@@ -261,8 +261,8 @@ export class Stage1SyncedInDataProcessor
 
 	ensureRecordHistoryId(
 		recordHistory: IRecordHistory,
-		actorRecordIdSetByActor: Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>,
-		actorRecordId: RepositoryEntity_ActorRecordId = recordHistory.actorRecordId
+		actorRecordIdSetByActor: Map<Actor_Id, Map<AirEntity_ActorRecordId, RecordHistoryId>>,
+		actorRecordId: AirEntity_ActorRecordId = recordHistory.actorRecordId
 	): void {
 		ensureChildJsMap(
 			actorRecordIdSetByActor, recordHistory.actor.id)
@@ -274,9 +274,9 @@ export class Stage1SyncedInDataProcessor
 		repositoryTransactionHistoryMapByRepoId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		isLocal = false
 	): Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-		Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> {
+		Map<AirEntity_ActorRecordId, RecordHistoryId>>>>> {
 		const recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-			Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>> = new Map()
+			Map<AirEntity_ActorRecordId, RecordHistoryId>>>>> = new Map()
 		for (const [repositoryId, repoTransHistories] of repositoryTransactionHistoryMapByRepoId) {
 			this.mergeArraysInMap(allRepoTransHistoryMapByRepoId, repositoryId, repoTransHistories)
 			for (const repoTransHistory of repoTransHistories) {
@@ -321,19 +321,19 @@ export class Stage1SyncedInDataProcessor
 		isLocal: boolean,
 		recordCreations: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		recordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Set<RepositoryEntity_ActorRecordId>>>>>,
+				Set<AirEntity_ActorRecordId>>>>>,
 		allRemoteRecordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
+				Map<AirEntity_ActorRecordId, RecordHistoryId>>>>>,
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
+				Map<AirEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 	): void {
 
@@ -422,16 +422,16 @@ export class Stage1SyncedInDataProcessor
 		isLocal: boolean,
 		recordCreations: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
 		allRemoteRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
+				Map<AirEntity_ActorRecordId, RecordHistoryId>>>>>,
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
+				Map<AirEntity_ActorRecordId, RecordHistoryId>>>>>,
 		syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 	): void {
 		const recordCreationsForRepoInTable
@@ -558,16 +558,16 @@ export class Stage1SyncedInDataProcessor
 		operationHistory: IOperationHistory,
 		recordCreations: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordUpdates: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
+				Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
 		recordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Set<RepositoryEntity_ActorRecordId>>>>>,
+				Set<AirEntity_ActorRecordId>>>>>,
 		allLocalRecordDeletions: Map<ApplicationVersionId,
 			Map<TableIndex, Map<Repository_Id, Map<Actor_Id,
-				Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>>>>,
+				Map<AirEntity_ActorRecordId, RecordHistoryId>>>>>,
 	): void {
 		const recordCreationsForRepoInTable
 			= this.getRecordsForRepoInTable(repositoryId, operationHistory, recordCreations)
@@ -639,7 +639,7 @@ export class Stage1SyncedInDataProcessor
 	private getRecord(
 		recordHistory: IRecordHistory,
 		recordMapByActor:
-			Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>
+			Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>
 	): Map<ColumnIndex, any> {
 		let recordsForActor = this.getRecordsForActor(recordHistory, recordMapByActor)
 		if (!recordsForActor) {
@@ -651,7 +651,7 @@ export class Stage1SyncedInDataProcessor
 	private hasRecordId(
 		recordHistory: IRecordHistory,
 		actorRecordIdSetByActor:
-			Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>
+			Map<Actor_Id, Set<AirEntity_ActorRecordId>>
 	): boolean {
 		let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordIdSetByActor)
 		if (!actorRecordIdsForActor) {
@@ -663,7 +663,7 @@ export class Stage1SyncedInDataProcessor
 	private getRecordHistoryId(
 		recordHistory: IRecordHistory,
 		actorRecordIdSetByActor:
-			Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>
+			Map<Actor_Id, Map<AirEntity_ActorRecordId, RecordHistoryId>>
 	): RecordHistoryId {
 		let actorRecordIdsForActor = this.getRecordsForActor(recordHistory, actorRecordIdSetByActor)
 		if (!actorRecordIdsForActor) {
@@ -735,7 +735,7 @@ export class Stage1SyncedInDataProcessor
 
 	private ensureColumnValueMap(
 		recordHistory: IRecordHistory,
-		dataMap: Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>
+		dataMap: Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>
 	): Map<ColumnIndex, any> {
 		return <any>ensureChildJsMap(
 			ensureChildJsMap(
@@ -747,7 +747,7 @@ export class Stage1SyncedInDataProcessor
 	private ensureRecord(
 		recordHistory: IRecordHistory,
 		recordMapByActor:
-			Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>
+			Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>
 	): Map<ColumnIndex, any> {
 		return <any>ensureChildJsMap(
 			ensureChildJsMap(

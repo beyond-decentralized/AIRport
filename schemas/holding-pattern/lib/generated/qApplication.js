@@ -1,7 +1,8 @@
 import { airApi } from '@airport/aviation-communication';
-import { Actor, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryApplication, RepositoryEntity, RepositoryTransactionHistory, TransactionHistory } from '../ddl/ddl';
+import { Actor, AirEntity, ChildRepoRow, ChildRow, ImmutableRepoRow, ImmutableRow, MutableRepoRow, MutableRow, OperationHistory, RecordHistory, RecordHistoryNewValue, RecordHistoryOldValue, ReferenceRow, Repository, RepositoryApplication, RepositoryTransactionHistory, TransactionHistory } from '../ddl/ddl';
 const __constructors__ = {
     Actor: Actor,
+    AirEntity: AirEntity,
     ChildRepoRow: ChildRepoRow,
     ChildRow: ChildRow,
     ImmutableRepoRow: ImmutableRepoRow,
@@ -15,7 +16,6 @@ const __constructors__ = {
     ReferenceRow: ReferenceRow,
     Repository: Repository,
     RepositoryApplication: RepositoryApplication,
-    RepositoryEntity: RepositoryEntity,
     RepositoryTransactionHistory: RepositoryTransactionHistory,
     TransactionHistory: TransactionHistory
 };

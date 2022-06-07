@@ -2,7 +2,7 @@ import {
 	DbColumn,
 	DbEntity,
 	EntityRelationType,
-	repositoryEntity,
+	airEntity,
 	SQLDataType
 } from '@airport/ground-control'
 import { SIndexedEntity } from './SEntity'
@@ -19,8 +19,8 @@ export class ApplicationRelationResolver {
 	): void {
 		for (const entityName in indexedApplication.entityMapByName) {
 			const indexedEntity = indexedApplication.entityMapByName[entityName]
-			if (indexedEntity.entity.isRepositoryEntity) {
-				if (indexedEntity.idColumns[0].name !== repositoryEntity.FOREIGN_KEY) {
+			if (indexedEntity.entity.isAirEntity) {
+				if (indexedEntity.idColumns[0].name !== airEntity.FOREIGN_KEY) {
 					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_ID'`)
 				}
 			}

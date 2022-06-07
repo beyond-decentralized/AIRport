@@ -6,7 +6,7 @@ import {
 	EntityRelationType,
 	file,
 	property,
-	repositoryEntity,
+	airEntity,
 } from '@airport/ground-control';
 import {
 	canBeInterface,
@@ -104,7 +104,7 @@ export class SApplicationBuilder {
 		entity: SEntity,
 		columnName: string
 	) {
-		if (!entity.isRepositoryEntity) {
+		if (!entity.isAirEntity) {
 			return entity.numIdColumns++;
 		}
 
@@ -119,7 +119,7 @@ export class SApplicationBuilder {
 				return 2;
 			default:
 				throw new Error(
-					`Repository Entity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
+					`AirEntity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
 		}
 
 	}
@@ -128,7 +128,7 @@ export class SApplicationBuilder {
 		entity: SEntity,
 		idIndex: number | undefined
 	) {
-		if (!entity.isRepositoryEntity) {
+		if (!entity.isAirEntity) {
 			return entity.numColumns++;
 		}
 
@@ -197,12 +197,12 @@ class ${entityCandidate.docEntry.name}
 			};
 		}
 
-		const [isRepositoryEntity, isLocal]
-			= entityExtendsRepositoryEntity(entityCandidate);
+		const [isAirEntity, isLocal]
+			= entityExtendsAirEntity(entityCandidate);
 
 		let entity: SEntity = {
 			isLocal,
-			isRepositoryEntity,
+			isAirEntity,
 			name: entityCandidate.docEntry.name,
 			numColumns: 0,
 			numIdColumns: 0,
@@ -227,7 +227,7 @@ class ${entityCandidate.docEntry.name}
 			return prop1.index - prop2.index;
 		});
 
-		if (entity.isRepositoryEntity) {
+		if (entity.isAirEntity) {
 			if (entity.numIdColumns !== 3) {
 				throw new Error(`Repository entity '${entity.name}' must have 3 id columns 
 				and has ${entity.numIdColumns}.`);
@@ -356,10 +356,10 @@ class ${entityCandidate.docEntry.name}
 					isId = true;
 					break;
 				// case property.R_JOIN_COLUMN:
-				// 	if (!entity.isRepositoryEntity) {
+				// 	if (!entity.isAirEntity) {
 				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumn `
-				// 		+ `- ${entity.name} does not extend RepositoryEntity or
-				// LocalRepositoryEntity.`); } repositoryJoin = true;
+				// 		+ `- ${entity.name} does not extend AirEntity or
+				// LocalAirEntity.`); } repositoryJoin = true;
 				case property.JOIN_COLUMN:
 					if (columnsDefined) {
 						throw new Error(`Columns are defined more than once 
@@ -370,10 +370,10 @@ class ${entityCandidate.docEntry.name}
 					columnRelationDefs.push(decorator.values[0]);
 					break;
 				// case property.R_JOIN_COLUMNS:
-				// 	if (!entity.isRepositoryEntity) {
+				// 	if (!entity.isAirEntity) {
 				// 		throw new Error(`${entity.name}.${aProperty.name} cannot be @RJoinColumns `
-				// 		+ `- ${entity.name} does not extend RepositoryEntity or
-				// LocalRepositoryEntity.`); } repositoryJoin = true;
+				// 		+ `- ${entity.name} does not extend AirEntity or
+				// LocalAirEntity.`); } repositoryJoin = true;
 				case property.JOIN_COLUMNS:
 					if (columnsDefined) {
 						throw new Error(`Columns are defined more than once 
@@ -487,12 +487,12 @@ class ${entityCandidate.docEntry.name}
 				case EntityRelationType.MANY_TO_ONE: {
 					let extendsEntity, isLocal
 					if (aProperty.entity) {
-						const extendsRepoEntityResult = entityExtendsRepositoryEntity(aProperty.entity)
+						const extendsRepoEntityResult = entityExtendsAirEntity(aProperty.entity)
 						extendsEntity = extendsRepoEntityResult[0]
 						isLocal = extendsRepoEntityResult[1]
 					} else if (aProperty.otherApplicationDbEntity) {
 						const otherAppDbEntity = aProperty.otherApplicationDbEntity
-						if (otherAppDbEntity.isRepositoryEntity) {
+						if (otherAppDbEntity.isAirEntity) {
 							extendsEntity = true
 							isLocal = false
 						} else if (isLocal) {
@@ -508,7 +508,7 @@ class ${entityCandidate.docEntry.name}
 					}
 					if (!extendsEntity || isLocal) {
 						throw new Error(`@JoinColumn(s) must be specified for @ManyToOne
-					in ${entity.name}.${aProperty.name} for non-repository entities.  Did you forget 'extends RepositoryEntity'?`);
+					in ${entity.name}.${aProperty.name} for non-repository entities.  Did you forget 'extends AirEntity'?`);
 					}
 					let relatedTableName
 					if (aProperty.entity) {
@@ -945,27 +945,27 @@ class ${entity.name}
 
 }
 
-export function entityExtendsRepositoryEntity( //
+export function entityExtendsAirEntity( //
 	entityCandidate: EntityCandidate //
 ): [boolean, boolean] {
-	return entityExtendsOrIsRepositoryEntity(entityCandidate.parentEntity)
+	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity)
 }
 
 
 
-export function entityExtendsOrIsRepositoryEntity( //
+export function entityExtendsOrIsAirEntity( //
 	entityCandidate: EntityCandidate //
 ): [boolean, boolean] {
 	if (!entityCandidate) {
 		return [false, true];
 	}
-	if (entityCandidate.docEntry.name === repositoryEntity.ENTITY_NAME) {
+	if (entityCandidate.docEntry.name === airEntity.ENTITY_NAME) {
 		return [true, false];
 	}
-	if (entityCandidate.docEntry.name === repositoryEntity.LOCAL_ENTITY_NAME) {
+	if (entityCandidate.docEntry.name === airEntity.LOCAL_ENTITY_NAME) {
 		return [true, true];
 	}
-	return entityExtendsOrIsRepositoryEntity(entityCandidate.parentEntity);
+	return entityExtendsOrIsAirEntity(entityCandidate.parentEntity);
 }
 
 export function isManyToOnePropertyNotNull(

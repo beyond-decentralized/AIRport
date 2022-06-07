@@ -108,12 +108,12 @@ export namespace table {
  * Name of the RepositoryId column
  * @type {string}
  */
-export namespace repositoryEntity {
+export namespace airEntity {
 	export const ACTOR_ID = 'ACTOR_ID'
 	export const ACTOR_RECORD_ID = 'ACTOR_RECORD_ID'
-	export const ENTITY_NAME = 'RepositoryEntity'
+	export const ENTITY_NAME = 'AirEntity'
 	export const FOREIGN_KEY = 'REPOSITORY_ID'
-	export const LOCAL_ENTITY_NAME = 'LocalRepositoryEntity'
+	export const LOCAL_ENTITY_NAME = 'LocalAirEntity'
 	export const REPOSITORY_ID = 'REPOSITORY_ID'
 	export const ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID'
 	export const ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID'

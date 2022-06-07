@@ -1,5 +1,5 @@
 import { EntityCandidate } from '../../parser/EntityCandidate'
-import { entityExtendsOrIsRepositoryEntity, entityExtendsRepositoryEntity } from '../application/SApplicationBuilder'
+import { entityExtendsOrIsAirEntity, entityExtendsAirEntity } from '../application/SApplicationBuilder'
 import { QCoreEntityBuilder } from '../Builder'
 import { QEntityFileBuilder } from './QEntityFileBuilder'
 
@@ -25,14 +25,14 @@ export class QEntityRelationBuilder
 
 		let genericType = ''
 		let entity = this.entity.docEntry.name
-		const [isRepositoryEntity, _] = entityExtendsOrIsRepositoryEntity(this.entity)
+		const [isAirEntity, _] = entityExtendsOrIsAirEntity(this.entity)
 		let parentInterfaceType = 'IQRelation'
-		if (isRepositoryEntity) {
-			parentInterfaceType = 'IQRepositoryEntityRelation'
+		if (isAirEntity) {
+			parentInterfaceType = 'IQAirEntityRelation'
 		}
 		let parentEntityQType = `${parentInterfaceType}<${qName}>`
 		if (isMappedSuperclass) {
-			if (isRepositoryEntity) {
+			if (isAirEntity) {
 				genericType = '<SubType, SubQType extends IQEntity>'
 				parentEntityQType = `${parentInterfaceType}<SubType, SubQType>`
 			} else {
@@ -47,7 +47,7 @@ export class QEntityRelationBuilder
 				iqEntity = 'SubQType'
 				entity = 'SubType'
 			}
-			if (isRepositoryEntity) {
+			if (isAirEntity) {
 				let entityType = entity
 				if(!isMappedSuperclass) {
 					entityType = 'I' + entityType

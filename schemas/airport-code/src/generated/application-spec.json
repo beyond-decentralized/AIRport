@@ -95,7 +95,7 @@
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Sequence",
 					"properties": [
 						{
@@ -176,7 +176,7 @@
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "SystemWideOperationId",
 					"properties": [
 						{
@@ -248,7 +248,7 @@
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "TerminalRun",
 					"properties": [
 						{

@@ -9,7 +9,7 @@ import {
 	IApplicationVersion
 } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Application_Id, ColumnIndex, repositoryEntity } from "@airport/ground-control";
+import { Application_Id, ColumnIndex, airEntity } from "@airport/ground-control";
 import {
 	Actor_Id,
 	IActor,
@@ -525,11 +525,11 @@ export class SyncOutDataSerializer
 		let value = valueRecord[valueFieldName]
 		let serailizedValue = value
 		switch (dbColumn.name) {
-			case repositoryEntity.ORIGINAL_ACTOR_ID: {
+			case airEntity.ORIGINAL_ACTOR_ID: {
 				serailizedValue = this.getActorInMessageIndexById(value, lookups)
 				break
 			}
-			case repositoryEntity.ORIGINAL_REPOSITORY_ID: {
+			case airEntity.ORIGINAL_REPOSITORY_ID: {
 				serailizedValue = this.getSerializedRepositoryId(value, lookups)
 				break
 			}

@@ -21,7 +21,7 @@ import {
 export type EntityId = number;
 export type EntityName = string;
 export type EntityIsLocal = boolean;
-export type EntityIsRepositoryEntity = boolean;
+export type EntityIsAirEntity = boolean;
 export type TableIndex = number;
 export type IdColumnOnlyIndex = number;
 
@@ -44,14 +44,14 @@ export interface JsonApplicationEntity
 	idColumnRefs: ApplicationReferenceByIndex<IdColumnOnlyIndex>[];
 
 	/*
-	 * Is this entity local-only (does not extend RepositoryEntity)
+	 * Is this entity local-only (does not extend AirEntity)
 	 */
 	isLocal: EntityIsLocal;
 
 	/**
-	 * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isRepositoryEntity: EntityIsRepositoryEntity;
+	isAirEntity: EntityIsAirEntity;
 
 	/**
 	 * Name of the entity.
@@ -110,14 +110,14 @@ export interface DbEntity
 	idColumns: DbColumn[];
 
 	/*
-	 * Is this entity local-only (does not extend RepositoryEntity)
+	 * Is this entity local-only (does not extend AirEntity)
 	 */
 	isLocal: EntityIsLocal;
 
 	/**
-	 * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isRepositoryEntity: EntityIsRepositoryEntity;
+	isAirEntity: EntityIsAirEntity;
 
 	/**
 	 * Name of the entity.

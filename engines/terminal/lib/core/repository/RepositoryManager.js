@@ -55,7 +55,7 @@ already contains a new repository.`);
     }
     ensureRepositoryScopeOnInsertValues(repository, rawInsertValues) {
         let qEntity = rawInsertValues.insertInto;
-        if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+        if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return rawInsertValues;
         }
         let columns = rawInsertValues.columns.slice();
@@ -77,7 +77,7 @@ already contains a new repository.`);
         };
     }
     ensureRepositoryLinkOnUpdateWhere(qEntity, repository, rawUpdate) {
-        if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+        if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return;
         }
         return {
@@ -87,7 +87,7 @@ already contains a new repository.`);
         };
     }
     ensureRepositoryScopeOnDeleteWhere(qEntity, repository, rawDelete) {
-        if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+        if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return;
         }
         return {

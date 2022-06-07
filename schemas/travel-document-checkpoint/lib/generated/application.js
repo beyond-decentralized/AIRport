@@ -61,7 +61,7 @@ export const APPLICATION = {
                     ],
                     "index": 0,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Continent",
                     "properties": [
                         {
@@ -174,7 +174,7 @@ export const APPLICATION = {
                     ],
                     "index": 1,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Country",
                     "properties": [
                         {
@@ -302,7 +302,7 @@ export const APPLICATION = {
                     ],
                     "index": 2,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "UserTerminal",
                     "properties": [
                         {
@@ -479,7 +479,7 @@ export const APPLICATION = {
                     ],
                     "index": 3,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "UserTerminalAgt",
                     "properties": [
                         {
@@ -688,7 +688,7 @@ export const APPLICATION = {
                     ],
                     "index": 4,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "User",
                     "properties": [
                         {
@@ -827,7 +827,7 @@ export const APPLICATION = {
                     ],
                     "index": 5,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Terminal",
                     "properties": [
                         {
@@ -963,7 +963,7 @@ export const APPLICATION = {
                     ],
                     "index": 6,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "TerminalAgt",
                     "properties": [
                         {
@@ -1082,7 +1082,7 @@ export const APPLICATION = {
                     ],
                     "index": 7,
                     "isLocal": true,
-                    "isRepositoryEntity": false,
+                    "isAirEntity": false,
                     "name": "Agt",
                     "properties": [
                         {

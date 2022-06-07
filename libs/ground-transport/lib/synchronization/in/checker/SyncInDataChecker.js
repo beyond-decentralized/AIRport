@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ChangeType, repositoryEntity } from '@airport/ground-control';
+import { ChangeType, airEntity } from '@airport/ground-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpIds } from '@airport/check-in';
 import { RepositoryTransactionType } from '@airport/holding-pattern';
@@ -137,11 +137,11 @@ let SyncInDataChecker = class SyncInDataChecker {
             let repositoryIdColumnMapByIndex = new Map();
             for (const column of operationHistory.entity.columns) {
                 switch (column.name) {
-                    case repositoryEntity.ORIGINAL_ACTOR_ID:
+                    case airEntity.ORIGINAL_ACTOR_ID:
                         actorIdColumnMapByIndex.set(column.index, column);
                         originalActorColumnIndex = column.index;
                         break;
-                    case repositoryEntity.ORIGINAL_REPOSITORY_ID:
+                    case airEntity.ORIGINAL_REPOSITORY_ID:
                         repositoryIdColumnMapByIndex.set(column.index, column);
                         originalRepositoryColumnIndex = column.index;
                         break;

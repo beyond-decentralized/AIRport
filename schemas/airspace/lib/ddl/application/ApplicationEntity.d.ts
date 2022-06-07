@@ -1,5 +1,5 @@
 import { TableConfiguration } from '@airport/air-traffic-control';
-import { EntityId, EntityIsLocal, EntityIsRepositoryEntity, EntityName, TableIndex } from '@airport/ground-control';
+import { EntityId, EntityIsLocal, EntityIsAirEntity, EntityName, TableIndex } from '@airport/ground-control';
 import { ApplicationColumn } from './ApplicationColumn';
 import { ApplicationOperation } from './ApplicationOperation';
 import { ApplicationProperty } from './ApplicationProperty';
@@ -12,7 +12,7 @@ export declare class ApplicationEntity extends VersionedApplicationObject {
     id: EntityId;
     index: TableIndex;
     isLocal: EntityIsLocal;
-    isRepositoryEntity: EntityIsRepositoryEntity;
+    isAirEntity: EntityIsAirEntity;
     name: EntityName;
     tableConfig: TableConfiguration;
     applicationVersion: ApplicationVersion;

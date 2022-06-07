@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { ISequenceGenerator } from '@airport/check-in';
-import { Actor_Id, IActor, IRecordHistory, RecordHistoryId, RepositoryEntity_ActorRecordId, Repository_Id, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { Actor_Id, IActor, IRecordHistory, RecordHistoryId, AirEntity_ActorRecordId, Repository_Id, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { ISyncInUtils, ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to
@@ -31,7 +31,7 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
      */
     performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>, context: IContext): Promise<Stage1SyncedInDataProcessingResult>;
     private populateSystemWideOperationIds;
-    ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: RepositoryEntity_ActorRecordId): void;
+    ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<Actor_Id, Map<AirEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: AirEntity_ActorRecordId): void;
     private getDeletedRecordIdsAndPopulateAllHistoryMap;
     private mergeArraysInMap;
     private processCreation;

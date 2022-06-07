@@ -27,8 +27,8 @@ import { IQStringField } from '../../lingo/core/field/StringField'
 import { IQUntypedField } from '../../lingo/core/field/UntypedField'
 import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils'
 import { QEntity } from '../core/entity/Entity'
-import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
-import { QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods } from '../core/entity/Relation'
+import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
+import { QRelation, QAirEntityRelation, qAirEntityRelationMethods } from '../core/entity/Relation'
 import { IRelationManager } from '../core/entity/RelationManager'
 import { QBooleanField } from '../core/field/BooleanField'
 import { QDateField } from '../core/field/DateField'
@@ -101,8 +101,8 @@ export function getQRelation(
 			return new qIdRelationConstructor(
 				relation.relationEntity, relation, q, applicationUtils, relationManager)
 		case EntityRelationType.ONE_TO_MANY:
-			if (entity.isRepositoryEntity) {
-				return new QRepositoryEntityOneToManyRelation(relation, q,
+			if (entity.isAirEntity) {
+				return new QAirEntityOneToManyRelation(relation, q,
 					applicationUtils, relationManager)
 			} else {
 				return new QOneToManyRelation(relation, q,
@@ -203,8 +203,8 @@ export function getQEntityIdRelationConstructor(
 		*/
 	}
 
-	if (dbEntity.isRepositoryEntity) {
-		extend(QRepositoryEntityRelation, QEntityIdRelation, qEntityIdRelationMethods)
+	if (dbEntity.isAirEntity) {
+		extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods)
 	} else {
 		extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods)
 	}

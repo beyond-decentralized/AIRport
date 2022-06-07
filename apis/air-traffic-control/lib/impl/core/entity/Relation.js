@@ -31,13 +31,13 @@ QRelation.prototype.getNewQEntity = function (joinType) {
     newQEntity.__driver__.parentJoinEntity = this.parentQ;
     return newQEntity;
 };
-export function QRepositoryEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
-    QRepositoryEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
+export function QAirEntityRelation(dbRelation, parentQ, applicationUtils, relationManager) {
+    QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
-export const qRepositoryEntityRelationMethods = {
+export const qAirEntityRelationMethods = {
     equals: function (entity) {
         return IOC.getSync(QUERY_UTILS).equals(entity, this);
     }
 };
-extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods);
+extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);
 //# sourceMappingURL=Relation.js.map

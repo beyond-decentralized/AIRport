@@ -1,6 +1,6 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IQueryFacade, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, IRootTransaction, ISaveResult } from '@airport/ground-control';
-import { IActor, IRepositoryEntity } from '@airport/holding-pattern';
+import { IActor, IAirEntity } from '@airport/holding-pattern';
 import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IOperationContext, IOperationManager, IRepositoryManager, IStructuralEntityValidator, ITransaction, IUpdateManager } from '@airport/terminal-map';
 /**
  * Created by Papa on 11/15/2016.
@@ -26,8 +26,8 @@ export declare class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    performSave<E extends IRepositoryEntity, T = E | E[]>(entities: T, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<ISaveResult>;
-    protected internalCreate<E extends IRepositoryEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
+    performSave<E extends IAirEntity, T = E | E[]>(entities: T, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<ISaveResult>;
+    protected internalCreate<E extends IAirEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
     /**
      * On an update operation, can a nested create contain an update?
      * Via:
@@ -36,7 +36,7 @@ export declare class OperationManager implements IOperationManager {
      *  ManyToOne:
      *    Cascades do not travel across ManyToOne
      */
-    protected internalUpdate<E extends IRepositoryEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
-    protected internalDelete<E extends IRepositoryEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalUpdate<E extends IAirEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
+    protected internalDelete<E extends IAirEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext): Promise<void>;
 }
 //# sourceMappingURL=OperationManager.d.ts.map

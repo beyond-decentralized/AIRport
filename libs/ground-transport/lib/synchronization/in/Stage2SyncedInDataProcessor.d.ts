@@ -1,6 +1,6 @@
 import { IAirportDatabase, IDatabaseFacade, IUtils } from '@airport/air-traffic-control';
 import { ColumnIndex, ApplicationVersionId, TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
-import { Actor_Id, RepositoryEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
+import { Actor_Id, AirEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
 import { IRecordUpdateStageDao } from '@airport/moving-walkway';
 import { IApplication } from '@airport/airspace';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
@@ -30,13 +30,13 @@ export declare class Stage2SyncedInDataProcessor implements IStage2SyncedInDataP
      *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
      *  structure is passed in.
      */
-    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
+    performCreates(recordCreations: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
     getNonIdColumnsInIndexOrder(dbEntity: DbEntity): DbColumn[];
-    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<RepositoryEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
-    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
+    performUpdates(recordUpdates: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
+    performDeletes(recordDeletions: Map<ApplicationVersionId, Map<TableIndex, Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>>>, applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>, context: IOperationContext): Promise<void>;
     /**
      * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
-     * -> RepositoryEntity_ActorRecordId) for the recordUpdateMap (the specified combination
+     * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var ApplicationUtils_1;
-import { CRUDOperation, EntityRelationType, repositoryEntity } from '@airport/ground-control';
+import { CRUDOperation, EntityRelationType, airEntity } from '@airport/ground-control';
 import { convertToY, isY } from '../../lingo/query/facade/Query';
 import { Inject, Injected } from '@airport/direction-indicator';
 let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
@@ -14,13 +14,13 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
             .applicationVersion.entities[tableIndex];
     }
     isActorId(columnName) {
-        return columnName === repositoryEntity.ACTOR_ID;
+        return columnName === airEntity.ACTOR_ID;
     }
     isActorRecordId(columnName) {
-        return columnName === repositoryEntity.ACTOR_RECORD_ID;
+        return columnName === airEntity.ACTOR_RECORD_ID;
     }
     isRepositoryId(columnName) {
-        return columnName === repositoryEntity.REPOSITORY_ID;
+        return columnName === airEntity.REPOSITORY_ID;
     }
     doCascade(dbRelation, crudOperation) {
         if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
@@ -213,16 +213,16 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             }
             const inQueryColumnIndex = selectClause.length - 1;
             switch (dbColumn.name) {
-                case repositoryEntity.ACTOR_ID:
+                case airEntity.ACTOR_ID:
                     actorIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.ACTOR_RECORD_ID:
+                case airEntity.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.REPOSITORY_ID:
+                case airEntity.REPOSITORY_ID:
                     repositoryIdColumnIndex = inQueryColumnIndex;
                     break;
-                case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+                case airEntity.SYSTEM_WIDE_OPERATION_ID:
                     if (nonIdColumnSet) {
                         throw new Error(errorPrefix +
                             `Cannot update 'systemWideOperationId' of Repository Entities.`);

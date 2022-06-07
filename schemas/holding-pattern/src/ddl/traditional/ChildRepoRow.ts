@@ -1,8 +1,8 @@
 import {MappedSuperclass} from '@airport/air-traffic-control'
-import {RepositoryEntity} from '../repository/RepositoryEntity'
+import {AirEntity} from '../repository/AirEntity'
 
 @MappedSuperclass()
 export abstract class ChildRepoRow
-	extends RepositoryEntity {
+	extends AirEntity {
 
 }

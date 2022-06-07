@@ -111,7 +111,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     case EntityRelationType.MANY_TO_ONE:
                         childDeleteByCascade = false;
                         // TODO: see if there is a cleaner way to escape nested Actor and Repository records
-                        if (dbEntity.isRepositoryEntity && (dbProperty.name === 'repository'
+                        if (dbEntity.isAirEntity && (dbProperty.name === 'repository'
                             || dbProperty.name === 'actor')
                             && !propertyValue[this.entityStateManager.getStateFieldName()]) {
                             continue;

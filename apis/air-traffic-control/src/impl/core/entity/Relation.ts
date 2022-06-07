@@ -1,12 +1,12 @@
-import { RepositoryEntityId } from '@airport/aviation-communication'
+import { AirEntityUuId } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
-	IRepositoryEntity,
+	IAirEntity,
 	JoinType
 } from '@airport/ground-control'
-import { IQEntityInternal, IQRepositoryEntity } from '../../../lingo/core/entity/Entity'
-import { IQRepositoryEntityRelation } from '../../../lingo/core/entity/Relation'
+import { IQEntityInternal, IQAirEntity } from '../../../lingo/core/entity/Entity'
+import { IQAirEntityRelation } from '../../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import { QUERY_UTILS } from '../../../core-tokens'
@@ -65,22 +65,22 @@ QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinT
 }
 
 
-export function QRepositoryEntityRelation(
+export function QAirEntityRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	relationManager: IRelationManager,
 ) {
-	(<any>QRepositoryEntityRelation).base.constructor.call(
+	(<any>QAirEntityRelation).base.constructor.call(
 		this, dbRelation, parentQ, applicationUtils, relationManager)
 }
 
-export const qRepositoryEntityRelationMethods = {
-	equals: function <Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
-		entity: Entity | IQRepositoryEntity |
-			IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string
+export const qAirEntityRelationMethods = {
+	equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+		entity: Entity | IQAirEntity |
+			IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
 	): JSONLogicalOperation {
 		return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	}
 }
-extend(QRelation, QRepositoryEntityRelation, qRepositoryEntityRelationMethods)
+extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods)

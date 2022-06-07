@@ -2,7 +2,7 @@ import { DbRelation } from '@airport/ground-control'
 import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
 import { extend } from '../../utils/qApplicationBuilderUtils'
-import { QRelation, QRepositoryEntityRelation } from './Relation'
+import { QRelation, QAirEntityRelation } from './Relation'
 import { IRelationManager } from './RelationManager'
 
 /**
@@ -32,19 +32,19 @@ const qOneToManyRelationMethods = {
 }
 extend(QRelation, QOneToManyRelation, qOneToManyRelationMethods)
 
-export function QRepositoryEntityOneToManyRelation(
+export function QAirEntityOneToManyRelation(
 	dbRelation: DbRelation,
 	parentQ: IQEntityInternal,
 	applicationUtils: IApplicationUtils,
 	repationManager: IRelationManager,
 ) {
-	(<any>QRepositoryEntityOneToManyRelation).base.constructor.call(this,
+	(<any>QAirEntityOneToManyRelation).base.constructor.call(this,
 		dbRelation, parentQ, applicationUtils, repationManager)
 }
-const qRepositoryEntityOneToManyRelationMethods = {
+const qAirEntityOneToManyRelationMethods = {
 	/*
 	yourMethodName: function() {},
 	*/
 }
-extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation,
-	qRepositoryEntityOneToManyRelationMethods)
+extend(QAirEntityRelation, QAirEntityOneToManyRelation,
+	qAirEntityOneToManyRelationMethods)

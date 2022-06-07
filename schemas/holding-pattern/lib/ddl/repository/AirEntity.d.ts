@@ -5,19 +5,19 @@ import { User } from '@airport/travel-document-checkpoint';
 /**
  * Created by Papa on 2/17/2017.
  */
-export declare type RepositoryEntity_ActorRecordId = number;
-export declare type RepositoryEntity_SystemWideOperationId = SystemWideOperationId;
-export declare abstract class RepositoryEntity {
+export declare type AirEntity_ActorRecordId = number;
+export declare type AirEntity_SystemWideOperationId = SystemWideOperationId;
+export declare abstract class AirEntity {
     repository: Repository;
     actor: Actor;
-    actorRecordId: RepositoryEntity_ActorRecordId;
+    actorRecordId: AirEntity_ActorRecordId;
     ageSuitability: number;
     createdAt?: Date;
-    systemWideOperationId: RepositoryEntity_SystemWideOperationId;
+    systemWideOperationId: AirEntity_SystemWideOperationId;
     originalRepository: Repository;
     originalActor: Actor;
-    originalActorRecordId: RepositoryEntity_ActorRecordId;
+    originalActorRecordId: AirEntity_ActorRecordId;
     uuId?: string;
     createdBy?: User;
 }
-//# sourceMappingURL=RepositoryEntity.d.ts.map
+//# sourceMappingURL=AirEntity.d.ts.map

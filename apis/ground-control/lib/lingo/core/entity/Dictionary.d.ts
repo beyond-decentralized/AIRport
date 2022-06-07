@@ -89,12 +89,12 @@ export declare namespace table {
  * Name of the RepositoryId column
  * @type {string}
  */
-export declare namespace repositoryEntity {
+export declare namespace airEntity {
     const ACTOR_ID = "ACTOR_ID";
     const ACTOR_RECORD_ID = "ACTOR_RECORD_ID";
-    const ENTITY_NAME = "RepositoryEntity";
+    const ENTITY_NAME = "AirEntity";
     const FOREIGN_KEY = "REPOSITORY_ID";
-    const LOCAL_ENTITY_NAME = "LocalRepositoryEntity";
+    const LOCAL_ENTITY_NAME = "LocalAirEntity";
     const REPOSITORY_ID = "REPOSITORY_ID";
     const ORIGINAL_ACTOR_ID = "ORIGINAL_ACTOR_ID";
     const ORIGINAL_ACTOR_RECORD_ID = "ORIGINAL_ACTOR_RECORD_ID";

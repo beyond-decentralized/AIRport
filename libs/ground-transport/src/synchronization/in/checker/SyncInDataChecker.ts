@@ -2,7 +2,7 @@ import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures
 import {
 	ChangeType,
 	ColumnIndex,
-	repositoryEntity,
+	airEntity,
 	TableIndex
 } from '@airport/ground-control'
 import {
@@ -202,11 +202,11 @@ export class SyncInDataChecker
 			let repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn> = new Map()
 			for (const column of operationHistory.entity.columns) {
 				switch (column.name) {
-					case repositoryEntity.ORIGINAL_ACTOR_ID:
+					case airEntity.ORIGINAL_ACTOR_ID:
 						actorIdColumnMapByIndex.set(column.index, column)
 						originalActorColumnIndex = column.index
 						break
-					case repositoryEntity.ORIGINAL_REPOSITORY_ID:
+					case airEntity.ORIGINAL_REPOSITORY_ID:
 						repositoryIdColumnMapByIndex.set(column.index, column)
 						originalRepositoryColumnIndex = column.index
 						break

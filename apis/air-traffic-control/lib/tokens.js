@@ -1,4 +1,4 @@
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { RelationManager } from './impl/core/entity/RelationManager';
 import { Lookup } from './impl/query/api/Lookup';
@@ -125,7 +125,7 @@ QUERY_FACADE.setDependencies({
 QUERY_UTILS.setDependencies({
     fieldUtils: FIELD_UTILS,
     relationManager: RELATION_MANAGER,
-    repositoryEntityUtils: REPOSITORY_ENTITY_UTILS
+    airEntityUtils: AIR_ENTITY_UTILS
 });
 RELATION_MANAGER.setDependencies({
     applicationUtils: APPLICATION_UTILS

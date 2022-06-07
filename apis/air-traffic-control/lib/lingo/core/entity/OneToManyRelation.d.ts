@@ -1,13 +1,13 @@
 import { IQEntity } from './Entity';
-import { IQRelation, IQRepositoryEntityRelation } from './Relation';
+import { IQRelation, IQAirEntityRelation } from './Relation';
 /**
  * A concrete One-To-Many relation.
  */
 export interface IQOneToManyRelation<IQ extends IQEntity> extends IQRelation<IQ> {
 }
 /**
- * A concrete One-To-Many relation on a RepositoryEntity.
+ * A concrete One-To-Many relation on a AirEntity.
  */
-export interface IQRepositoryEntityOneToManyRelation<Entity, IQ extends IQEntity> extends IQRepositoryEntityRelation<Entity, IQ> {
+export interface IQAirEntityOneToManyRelation<Entity, IQ extends IQEntity> extends IQAirEntityRelation<Entity, IQ> {
 }
 //# sourceMappingURL=OneToManyRelation.d.ts.map

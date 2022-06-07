@@ -11,7 +11,7 @@ import { ApplicationRelationGraph, ApplicationRelationESelect, QApplicationRelat
 export interface ApplicationEntityESelect extends VersionedApplicationObjectESelect, ApplicationEntityEOptionalId {
     index?: number | IQNumberField;
     isLocal?: boolean | IQBooleanField;
-    isRepositoryEntity?: boolean | IQBooleanField;
+    isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionESelect;
@@ -39,7 +39,7 @@ export interface ApplicationEntityEOptionalId {
 export interface ApplicationEntityEUpdateProperties extends VersionedApplicationObjectEUpdateProperties {
     index?: number | IQNumberField;
     isLocal?: boolean | IQBooleanField;
-    isRepositoryEntity?: boolean | IQBooleanField;
+    isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionEOptionalId;
@@ -50,7 +50,7 @@ export interface ApplicationEntityEUpdateProperties extends VersionedApplication
 export interface ApplicationEntityGraph extends ApplicationEntityEOptionalId, VersionedApplicationObjectGraph {
     index?: number | IQNumberField;
     isLocal?: boolean | IQBooleanField;
-    isRepositoryEntity?: boolean | IQBooleanField;
+    isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
     tableConfig?: TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionGraph;
@@ -69,7 +69,7 @@ export interface ApplicationEntityEUpdateColumns extends VersionedApplicationObj
     SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
     TABLE_INDEX?: number | IQNumberField;
     IS_LOCAL?: boolean | IQBooleanField;
-    IS_REPOSITORY_ENTITY?: boolean | IQBooleanField;
+    IS_AIR_ENTITY?: boolean | IQBooleanField;
     NAME?: string | IQStringField;
     TABLE_CONFIGURATION?: string | IQStringField;
     APPLICATION_VERSION_ID?: number | IQNumberField;
@@ -91,7 +91,7 @@ export interface QApplicationEntity extends QVersionedApplicationObject {
     id: IQNumberField;
     index: IQNumberField;
     isLocal: IQBooleanField;
-    isRepositoryEntity: IQBooleanField;
+    isAirEntity: IQBooleanField;
     name: IQStringField;
     tableConfig: IQStringField;
     applicationVersion: QApplicationVersionQRelation;

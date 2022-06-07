@@ -1,5 +1,5 @@
 import { extend } from '../../utils/qApplicationBuilderUtils';
-import { QRelation, QRepositoryEntityRelation } from './Relation';
+import { QRelation, QAirEntityRelation } from './Relation';
 /**
  * Created by Papa on 10/25/2016.
  */
@@ -19,13 +19,13 @@ yourMethodName: function() {},
 */
 };
 extend(QRelation, QOneToManyRelation, qOneToManyRelationMethods);
-export function QRepositoryEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
-    QRepositoryEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
+export function QAirEntityOneToManyRelation(dbRelation, parentQ, applicationUtils, repationManager) {
+    QAirEntityOneToManyRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, repationManager);
 }
-const qRepositoryEntityOneToManyRelationMethods = {
+const qAirEntityOneToManyRelationMethods = {
 /*
 yourMethodName: function() {},
 */
 };
-extend(QRepositoryEntityRelation, QRepositoryEntityOneToManyRelation, qRepositoryEntityOneToManyRelationMethods);
+extend(QAirEntityRelation, QAirEntityOneToManyRelation, qAirEntityOneToManyRelationMethods);
 //# sourceMappingURL=OneToManyRelation.js.map

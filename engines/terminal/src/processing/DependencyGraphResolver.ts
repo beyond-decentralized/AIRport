@@ -7,7 +7,7 @@ import {
 	EntityRelationType,
 	IEntityStateManager
 } from '@airport/ground-control'
-import { IRepositoryEntity } from '@airport/holding-pattern'
+import { IAirEntity } from '@airport/holding-pattern'
 import {
 	IDependencyGraphNode,
 	IDependencyGraphResolver,
@@ -29,7 +29,7 @@ export class DependencyGraphResolver
 	@Inject()
 	entityStateManager: IEntityStateManager
 
-	getOperationsInOrder<E extends IRepositoryEntity>(
+	getOperationsInOrder<E extends IAirEntity>(
 		entities: E[],
 		context: IOperationContext,
 	): IOperationNode<E>[] {
@@ -46,7 +46,7 @@ export class DependencyGraphResolver
 		return this.ensureUpdatesAreGroupedCorrectly(operationNodes, context)
 	}
 
-	protected getEntitiesToPersist<E extends IRepositoryEntity>(
+	protected getEntitiesToPersist<E extends IAirEntity>(
 		entities: E[],
 		operatedOnEntities: IDependencyGraphNode<any>[],
 		operatedOnPassThroughs: boolean[],
@@ -155,7 +155,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 						childDeleteByCascade = false
 
 						// TODO: see if there is a cleaner way to escape nested Actor and Repository records
-						if (dbEntity.isRepositoryEntity && (
+						if (dbEntity.isAirEntity && (
 							dbProperty.name === 'repository'
 							|| dbProperty.name === 'actor')
 							&& !propertyValue[this.entityStateManager.getStateFieldName()]) {
@@ -301,7 +301,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	}
 
 	// Group alike operations together, where possible
-	protected optimizePersistOperations<E extends IRepositoryEntity>(
+	protected optimizePersistOperations<E extends IAirEntity>(
 		orderedDependencies: IDependencyGraphNode<any>[],
 		context: IOperationContext,
 	): IOperationNode<E>[] {
@@ -380,7 +380,7 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	 * @param operationNodes
 	 * @param context
 	 */
-	ensureUpdatesAreGroupedCorrectly<E extends IRepositoryEntity>(
+	ensureUpdatesAreGroupedCorrectly<E extends IAirEntity>(
 		operationNodes: IOperationNode<E>[],
 		context: IOperationContext
 	): IOperationNode<E>[] {

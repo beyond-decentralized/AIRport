@@ -1,4 +1,4 @@
-import { entityExtendsRepositoryEntity } from '../application/SApplicationBuilder';
+import { entityExtendsAirEntity } from '../application/SApplicationBuilder';
 /**
  * Created by Papa on 5/20/2016.
  */
@@ -59,9 +59,9 @@ export class IQEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
-        const [isRepositoryEntity, isLocal] = entityExtendsRepositoryEntity(this.entity);
+        const [isAirEntity, isLocal] = entityExtendsAirEntity(this.entity);
         let relationsForCascadeGraph = ``;
-        if (!isRepositoryEntity) {
+        if (!isAirEntity) {
             this.idRelationBuilders.forEach((builder) => {
                 // if (getManyToOneDecorator(builder.entityProperty)) {
                 // 	// Do NOT cascade @ManyToOne's

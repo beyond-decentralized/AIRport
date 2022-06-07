@@ -7,7 +7,7 @@ import {
 	DbEntity,
 	DbApplication,
 	DbSequence,
-	repositoryEntity
+	airEntity
 } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
 
@@ -95,9 +95,9 @@ export async function getSysWideOpIds(
 		return []
 	}
 	const sysWideOpIdGeneratedColumn
-		= (airportDatabase.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION] as QApplicationInternal)
+		= (airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION] as QApplicationInternal)
 			.__dbApplication__.currentVersion[0].applicationVersion
-			.entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
+			.entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(

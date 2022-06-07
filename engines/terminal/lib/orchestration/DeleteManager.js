@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Y } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpId } from '@airport/check-in';
-import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, repositoryEntity, } from '@airport/ground-control';
+import { ChangeType, ensureChildArray, ensureChildJsMap, EntityRelationType, QueryResultType, airEntity, } from '@airport/ground-control';
 let DeleteManager = class DeleteManager {
     async deleteWhere(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase
@@ -132,8 +132,8 @@ let DeleteManager = class DeleteManager {
                                             switch (dbColumn.name) {
                                                 // Do not add Actor or Repository the are recorded
                                                 // at record history level
-                                                case repositoryEntity.ACTOR_ID:
-                                                case repositoryEntity.REPOSITORY_ID:
+                                                case airEntity.ACTOR_ID:
+                                                case airEntity.REPOSITORY_ID:
                                                     break;
                                                 default:
                                                     this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);

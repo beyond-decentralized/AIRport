@@ -566,7 +566,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         Transient?: undefined;
                                         EntityId?: undefined;
                                         EntityIsLocal?: undefined;
-                                        EntityIsRepositoryEntity?: undefined;
+                                        EntityIsAirEntity?: undefined;
                                         EntityName?: undefined;
                                         TableIndex?: undefined;
                                         ApplicationColumn?: undefined;
@@ -1122,7 +1122,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                EntityIsRepositoryEntity: {
+                                                EntityIsAirEntity: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -1141,7 +1141,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             path: string;
                                         };
                                         EntityIsLocal: any;
-                                        EntityIsRepositoryEntity: any;
+                                        EntityIsAirEntity: any;
                                         EntityName: any;
                                         TableIndex: any;
                                         ApplicationColumn: {
@@ -2257,7 +2257,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         Transient?: undefined;
                                         EntityId?: undefined;
                                         EntityIsLocal?: undefined;
-                                        EntityIsRepositoryEntity?: undefined;
+                                        EntityIsAirEntity?: undefined;
                                         EntityName?: undefined;
                                         TableIndex?: undefined;
                                         ApplicationColumn?: undefined;

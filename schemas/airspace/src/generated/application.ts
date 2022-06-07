@@ -214,7 +214,7 @@ export const APPLICATION = {
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationRelationColumn",
 					"properties": [
 						{
@@ -631,7 +631,7 @@ export const APPLICATION = {
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationRelation",
 					"properties": [
 						{
@@ -1020,7 +1020,7 @@ export const APPLICATION = {
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationProperty",
 					"properties": [
 						{
@@ -1314,7 +1314,7 @@ export const APPLICATION = {
 					],
 					"index": 3,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationPropertyColumn",
 					"properties": [
 						{
@@ -1661,7 +1661,7 @@ export const APPLICATION = {
 					],
 					"index": 4,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationColumn",
 					"properties": [
 						{
@@ -2061,7 +2061,7 @@ export const APPLICATION = {
 					],
 					"index": 5,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationOperation",
 					"properties": [
 						{
@@ -2299,7 +2299,7 @@ export const APPLICATION = {
 							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "IS_REPOSITORY_ENTITY",
+							"name": "IS_AIR_ENTITY",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2368,7 +2368,7 @@ export const APPLICATION = {
 					],
 					"index": 6,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationEntity",
 					"properties": [
 						{
@@ -2431,7 +2431,7 @@ export const APPLICATION = {
 							},
 							"index": 6,
 							"isId": false,
-							"name": "isRepositoryEntity",
+							"name": "isAirEntity",
 							"sinceVersion": 1
 						},
 						{
@@ -2760,7 +2760,7 @@ export const APPLICATION = {
 					],
 					"index": 7,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationReference",
 					"properties": [
 						{
@@ -3009,7 +3009,7 @@ export const APPLICATION = {
 					],
 					"index": 8,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationVersion",
 					"properties": [
 						{
@@ -3228,7 +3228,7 @@ export const APPLICATION = {
 					],
 					"index": 9,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "ApplicationCurrentVersion",
 					"properties": [
 						{
@@ -3395,7 +3395,7 @@ export const APPLICATION = {
 					],
 					"index": 10,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Application",
 					"properties": [
 						{
@@ -3563,7 +3563,7 @@ export const APPLICATION = {
 					],
 					"index": 11,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Domain",
 					"properties": [
 						{

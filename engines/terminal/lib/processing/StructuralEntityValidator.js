@@ -138,19 +138,19 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
         } // for (const record of entities)
     }
     ensureRepositoryValidity(record, rootRelationRecord, parentRelationRecord, dbEntity, parentRelationProperty, isCreate, fromOneToMany, newRepositoryNeeded, context) {
-        if (!dbEntity.isRepositoryEntity) {
+        if (!dbEntity.isAirEntity) {
             return;
         }
         if (!parentRelationRecord) {
             const originalValues = this.entityStateManager.getOriginalValues(record);
             if (newRepositoryNeeded && originalValues && originalValues.repository
                 && originalValues.actor && originalValues.actorRecordId) {
-                const repositoryEntity = record;
-                repositoryEntity.originalRepository = originalValues.repository;
-                this.entityStateManager.markAsStub(repositoryEntity.originalRepository);
-                repositoryEntity.originalActor = originalValues.actor;
-                this.entityStateManager.markAsStub(repositoryEntity.originalActor);
-                repositoryEntity.originalActorRecordId = originalValues.actorRecordId;
+                const airEntity = record;
+                airEntity.originalRepository = originalValues.repository;
+                this.entityStateManager.markAsStub(airEntity.originalRepository);
+                airEntity.originalActor = originalValues.actor;
+                this.entityStateManager.markAsStub(airEntity.originalActor);
+                airEntity.originalActorRecordId = originalValues.actorRecordId;
             }
             return;
         }
@@ -170,17 +170,17 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
         // if (fromOneToMany) {
         // 	return
         // }
-        let repositoryEntity = record;
+        let airEntity = record;
         // If the repositories of parent record and child record match
-        if (rootRelationRecord.repository.id === repositoryEntity.repository.id) {
+        if (rootRelationRecord.repository.id === airEntity.repository.id) {
             // no further checks needed
             return;
         }
         if (isCreate) {
-            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
-is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
+is being assigned to repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
 	This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-	from a record of repository id ${repositoryEntity.repository.id} (UUID: ${repositoryEntity.repository.id})
+	from a record of repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
 	
 	If you are manually creating a copy of a record in another repository, there is no need,
 	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified
@@ -190,18 +190,18 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         }
         // If it doesn't then it is a reference to another repository - switch
         // the record to the parent repository and set the originalRepositoryValue
-        repositoryEntity.originalRepository = repositoryEntity.repository;
-        repositoryEntity.repository = rootRelationRecord.repository;
+        airEntity.originalRepository = airEntity.repository;
+        airEntity.repository = rootRelationRecord.repository;
         // Aslo set originalActor and originalActorRecordId to look up the original record
-        repositoryEntity.originalActor = repositoryEntity.actor;
-        repositoryEntity.originalActorRecordId = repositoryEntity.actorRecordId;
+        airEntity.originalActor = airEntity.actor;
+        airEntity.originalActorRecordId = airEntity.actorRecordId;
         // reset 'actor' and clear 'actorRecordId' to prevents unique constraint
         // violation if multiple databases flip to the same exact record (independently)
-        repositoryEntity.actor = context.actor;
-        delete repositoryEntity.actorRecordId;
+        airEntity.actor = context.actor;
+        delete airEntity.actorRecordId;
         // Flip the state of this record to EntityState.CREATE this record now
         // has to be created in the referencing repository
-        repositoryEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE;
+        airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE;
         // NOTE: If the child record is not provided and it's an optional
         // @ManyToOne() it will be treated as if no record is there.  That is
         // probaby the only correct way to handle it and a warning is
@@ -212,7 +212,7 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
             return;
         }
         const isIdColumnEmpty = this.applicationUtils.isIdEmpty(columnValue);
-        if (!dbEntity.isRepositoryEntity) {
+        if (!dbEntity.isAirEntity) {
             this.ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty);
             return false;
         }
@@ -239,7 +239,7 @@ is being assigned to repository id ${repositoryEntity.repository.id} (UUID: ${re
         else if (this.applicationUtils.isActorRecordId(dbColumn.name)) {
             return false;
         }
-        throw new Error(`Unexpected @Id column '${dbColumn.name}' in a Repository Entity.`);
+        throw new Error(`Unexpected @Id column '${dbColumn.name}' in a AirEntity.`);
     }
     ensureIdValue(dbEntity, dbProperty, dbColumn, isCreate, isIdColumnEmpty) {
         if (dbColumn.isGenerated) {

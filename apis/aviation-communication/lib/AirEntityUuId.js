@@ -5,9 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Injected } from '@airport/direction-indicator';
-let RepositoryEntityUtils = class RepositoryEntityUtils {
-    getCreatedBy(repositoryEntity) {
-        return repositoryEntity.actor.user;
+let AirEntityUtils = class AirEntityUtils {
+    getCreatedBy(airEntity) {
+        return airEntity.actor.user;
     }
     encodeUuId(idObject) {
         if (!idObject.repository
@@ -31,7 +31,7 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
     parseUuId(idString) {
         const idStringFragments = idString.split('-');
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid Repository Entity Id, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
+            throw new Error('Invalid AirEntity UuId, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
         }
         const repositoryUuIdFragments = [];
         for (let i = 0; i < 5; i++) {
@@ -51,29 +51,29 @@ let RepositoryEntityUtils = class RepositoryEntityUtils {
             actorRecordId: parseInt(idStringFragments[11])
         };
     }
-    setUuId(idString, repositoryEntity) {
-        let repositoryEntityId = this.parseUuId(idString);
-        if (!repositoryEntity.repository) {
-            repositoryEntity.repository = {
-                uuId: repositoryEntityId.repository.uuId
+    setUuId(idString, airEntity) {
+        let airEntityId = this.parseUuId(idString);
+        if (!airEntity.repository) {
+            airEntity.repository = {
+                uuId: airEntityId.repository.uuId
             };
         }
         else {
-            repositoryEntity.repository.uuId = repositoryEntityId.repository.uuId;
+            airEntity.repository.uuId = airEntityId.repository.uuId;
         }
-        if (!repositoryEntity.actor) {
-            repositoryEntity.actor = {
-                uuId: repositoryEntityId.repository.uuId
+        if (!airEntity.actor) {
+            airEntity.actor = {
+                uuId: airEntityId.repository.uuId
             };
         }
         else {
-            repositoryEntity.actor.uuId = repositoryEntityId.actor.uuId;
+            airEntity.actor.uuId = airEntityId.actor.uuId;
         }
-        repositoryEntity.actorRecordId = repositoryEntityId.actorRecordId;
+        airEntity.actorRecordId = airEntityId.actorRecordId;
     }
 };
-RepositoryEntityUtils = __decorate([
+AirEntityUtils = __decorate([
     Injected()
-], RepositoryEntityUtils);
-export { RepositoryEntityUtils };
-//# sourceMappingURL=RepositoryEntityId.js.map
+], AirEntityUtils);
+export { AirEntityUtils };
+//# sourceMappingURL=AirEntityUuId.js.map

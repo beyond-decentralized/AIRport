@@ -1,5 +1,5 @@
 import { DbRelation } from "@airport/ground-control";
-import { RepositoryEntityId } from "@airport/aviation-communication";
+import { AirEntityUuId } from "@airport/aviation-communication";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
 	IQEntity,
@@ -26,14 +26,14 @@ export interface IQRelation<IQ extends IQEntity> {
 	 */
 }
 /**
- * A concrete ORM relation on a Repository Entity
+ * A concrete ORM relation on a AirEntity
  */
-export interface IQRepositoryEntityRelation<Entity, IQ extends IQEntity>
+export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
 
 	equals(
-		entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ>
-			| RepositoryEntityId | string
+		entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
+			| AirEntityUuId | string
 	): JSONLogicalOperation
 
 }

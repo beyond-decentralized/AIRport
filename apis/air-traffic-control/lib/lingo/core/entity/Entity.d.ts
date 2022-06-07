@@ -4,9 +4,9 @@ import { IQueryUtils } from '../../utils/QueryUtils';
 import { IQOperableFieldInternal } from '../field/OperableField';
 import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
-import { IQInternalRelation, IQRepositoryEntityRelation } from './Relation';
+import { IQInternalRelation, IQAirEntityRelation } from './Relation';
 import type { IRelationManager } from '../../../impl/core/entity/RelationManager';
-import { RepositoryEntityId } from '@airport/aviation-communication';
+import { AirEntityUuId } from '@airport/aviation-communication';
 import { JSONLogicalOperation } from '../operation/LogicalOperation';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -98,13 +98,13 @@ export interface IEntityRelationFrom {
  * A concrete Generated Query Entity.
  */
 export interface IQEntity {
-    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string): JSONLogicalOperation;
+    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string): JSONLogicalOperation;
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
-export interface IQRepositoryEntity extends IQEntity {
+export interface IQAirEntity extends IQEntity {
 }
 export interface IQTree extends IQEntity {
 }

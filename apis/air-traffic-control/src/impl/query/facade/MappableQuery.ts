@@ -1,6 +1,6 @@
 import { IFieldUtils } from '../../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../../lingo/utils/QueryUtils'
-import { QOneToManyRelation, QRepositoryEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
+import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../../core/entity/OneToManyRelation'
 import { IRelationManager } from '../../core/entity/RelationManager'
 import { QField } from '../../core/field/Field'
 import {
@@ -43,7 +43,7 @@ export abstract class MappableQuery
 					this.columnAliases, true,
 					queryUtils, fieldUtils, relationManager)
 			} else if (value instanceof QOneToManyRelation
-				|| value instanceof QRepositoryEntityOneToManyRelation) {
+				|| value instanceof QAirEntityOneToManyRelation) {
 				throw new Error(`@OneToMany relation objects can cannot be used in SELECT clauses`)
 			} // Must be a primitive
 			else {

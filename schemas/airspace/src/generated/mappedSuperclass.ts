@@ -1651,10 +1651,10 @@ export const MAPPED_SUPERCLASS = [
 																"moduleImport": null,
 																"sourceName": "EntityIsLocal"
 															},
-															"EntityIsRepositoryEntity": {
-																"asName": "EntityIsRepositoryEntity",
+															"EntityIsAirEntity": {
+																"asName": "EntityIsAirEntity",
 																"moduleImport": null,
-																"sourceName": "EntityIsRepositoryEntity"
+																"sourceName": "EntityIsAirEntity"
 															},
 															"EntityName": {
 																"asName": "EntityName",
@@ -1670,7 +1670,7 @@ export const MAPPED_SUPERCLASS = [
 														"path": "@airport/ground-control"
 													},
 													"EntityIsLocal": null,
-													"EntityIsRepositoryEntity": null,
+													"EntityIsAirEntity": null,
 													"EntityName": null,
 													"TableIndex": null,
 													"ApplicationColumn": {
@@ -1866,7 +1866,7 @@ export const MAPPED_SUPERCLASS = [
 															"name": "Column",
 															"values": [
 																{
-																	"name": "IS_REPOSITORY_ENTITY",
+																	"name": "IS_AIR_ENTITY",
 																	"nullable": false
 																}
 															]
@@ -1880,10 +1880,10 @@ export const MAPPED_SUPERCLASS = [
 													"isId": false,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "isRepositoryEntity",
-													"type": "EntityIsRepositoryEntity",
+													"name": "isAirEntity",
+													"type": "EntityIsAirEntity",
 													"ownerEntity": null,
-													"nonArrayType": "EntityIsRepositoryEntity",
+													"nonArrayType": "EntityIsAirEntity",
 													"primitive": "boolean",
 													"index": 3
 												},

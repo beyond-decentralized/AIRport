@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { SheetQuery } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpId } from '@airport/check-in';
-import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, repositoryEntity, } from '@airport/ground-control';
+import { ChangeType, ensureChildArray, ensureChildMap, QueryResultType, airEntity, } from '@airport/ground-control';
 let UpdateManager = class UpdateManager {
     async updateValues(portableQuery, actor, transaction, rootTransaction, context) {
         const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
@@ -49,9 +49,9 @@ let UpdateManager = class UpdateManager {
         return numUpdatedRows;
     }
     async addUpdateHistory(portableQuery, actor, systemWideOperationId, errorPrefix, transaction, rootTransaction, context) {
-        if (!context.dbEntity.isRepositoryEntity) {
+        if (!context.dbEntity.isAirEntity) {
             throw new Error(errorPrefix +
-                `Cannot add update history for a non-RepositoryEntity`);
+                `Cannot add update history for a non-AirEntity`);
         }
         const qEntity = this.airportDatabase
             .qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
@@ -112,7 +112,7 @@ let UpdateManager = class UpdateManager {
                 qEntity
             ],
             select: [],
-            where: qEntity[repositoryEntity.systemWideOperationId]
+            where: qEntity[airEntity.systemWideOperationId]
                 .equals(systemWideOperationId)
         });
         let portableSelect = this.queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);

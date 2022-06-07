@@ -28,7 +28,7 @@ import {
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor, IRepositoryEntity, RepositoryEntity } from '@airport/holding-pattern'
+import { IActor, IAirEntity, AirEntity } from '@airport/holding-pattern'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,
@@ -99,7 +99,7 @@ export class OperationManager
 	 * @param qEntity
 	 * @param entity
 	 */
-	async performSave<E extends IRepositoryEntity, T = E | E[]>(
+	async performSave<E extends IAirEntity, T = E | E[]>(
 		entities: T,
 		actor: IActor,
 		transaction: ITransaction,
@@ -184,7 +184,7 @@ export class OperationManager
 		return saveResult
 	}
 
-	protected async internalCreate<E extends IRepositoryEntity>(
+	protected async internalCreate<E extends IAirEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
@@ -302,7 +302,7 @@ export class OperationManager
 	 *  ManyToOne:
 	 *    Cascades do not travel across ManyToOne
 	 */
-	protected async internalUpdate<E extends IRepositoryEntity>(
+	protected async internalUpdate<E extends IAirEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,
@@ -423,7 +423,7 @@ export class OperationManager
 		}
 	}
 
-	protected async internalDelete<E extends IRepositoryEntity>(
+	protected async internalDelete<E extends IAirEntity>(
 		entities: E[],
 		actor: IActor,
 		transaction: ITransaction,

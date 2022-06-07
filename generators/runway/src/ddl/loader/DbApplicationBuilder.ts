@@ -266,7 +266,7 @@ export class DbApplicationBuilder
 			id: null,
 			index: jsonEntity.index,
 			isLocal: jsonEntity.isLocal,
-			isRepositoryEntity: jsonEntity.isRepositoryEntity,
+			isAirEntity: jsonEntity.isAirEntity,
 			name: jsonEntity.name,
 			propertyMap,
 			properties,

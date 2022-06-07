@@ -7,7 +7,7 @@ import {
 import { SystemWideOperationId } from '../../ddl/common'
 import {
 	Actor_Id,
-	RepositoryEntity_ActorRecordId
+	AirEntity_ActorRecordId
 } from '../../ddl/ddl'
 import {
 	BaseOperationHistoryDuo,
@@ -39,7 +39,7 @@ export interface IOperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: RepositoryEntity_ActorRecordId
+		actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory;
 
 }
@@ -91,7 +91,7 @@ export class OperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: RepositoryEntity_ActorRecordId
+		actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory {
 		const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, actorRecordId)
 

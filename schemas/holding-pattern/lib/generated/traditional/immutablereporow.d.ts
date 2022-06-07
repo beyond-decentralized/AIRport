@@ -1,5 +1,5 @@
-import { IRepositoryEntity } from '../repository/repositoryentity';
-export interface IImmutableRepoRow extends IRepositoryEntity {
+import { IAirEntity } from '../repository/airentity';
+export interface IImmutableRepoRow extends IAirEntity {
     createdAt?: Date;
 }
 //# sourceMappingURL=immutablereporow.d.ts.map

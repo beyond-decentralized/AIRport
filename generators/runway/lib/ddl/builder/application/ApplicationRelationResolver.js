@@ -1,10 +1,10 @@
-import { EntityRelationType, repositoryEntity, SQLDataType } from '@airport/ground-control';
+import { EntityRelationType, airEntity, SQLDataType } from '@airport/ground-control';
 export class ApplicationRelationResolver {
     resolveAllRelationLinks(indexedApplication) {
         for (const entityName in indexedApplication.entityMapByName) {
             const indexedEntity = indexedApplication.entityMapByName[entityName];
-            if (indexedEntity.entity.isRepositoryEntity) {
-                if (indexedEntity.idColumns[0].name !== repositoryEntity.FOREIGN_KEY) {
+            if (indexedEntity.entity.isAirEntity) {
+                if (indexedEntity.idColumns[0].name !== airEntity.FOREIGN_KEY) {
                     throw new Error(`@Id Column at index 0, must be 'REPOSITORY_ID'`);
                 }
             }

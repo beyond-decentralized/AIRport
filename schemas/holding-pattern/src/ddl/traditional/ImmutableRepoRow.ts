@@ -2,11 +2,11 @@ import {
 	Column,
 	MappedSuperclass
 }                         from '@airport/air-traffic-control'
-import {RepositoryEntity} from '../repository/RepositoryEntity'
+import {AirEntity} from '../repository/AirEntity'
 
 @MappedSuperclass()
 export abstract class ImmutableRepoRow
-	extends RepositoryEntity {
+	extends AirEntity {
 
 	@Column({name: 'CREATED_AT'})
 	createdAt: Date

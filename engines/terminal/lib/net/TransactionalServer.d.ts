@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
-import { IActor, IRepositoryEntity, Repository_Id } from '@airport/holding-pattern';
+import { IActor, IAirEntity, Repository_Id } from '@airport/holding-pattern';
 import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials, ITerminalStore, ITransactionManager, IOperationManager, IInsertManager, IDeleteManager, IQueryManager, IRepositoryManager, IUpdateManager } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
@@ -49,8 +49,8 @@ export declare class TransactionalServer implements ITransactionalServer {
     startTransaction(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     commit(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
     rollback(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext & IApiCallContext): Promise<boolean>;
-    save<E extends IRepositoryEntity, T = E | E[]>(entity: T, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
-    saveToDestination<E extends IRepositoryEntity, T = E | E[]>(repositoryDestination: string, entity: T, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
+    save<E extends IAirEntity, T = E | E[]>(entity: T, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
+    saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<number>;

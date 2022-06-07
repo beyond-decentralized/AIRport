@@ -103,20 +103,20 @@ export var table;
  * Name of the RepositoryId column
  * @type {string}
  */
-export var repositoryEntity;
-(function (repositoryEntity) {
-    repositoryEntity.ACTOR_ID = 'ACTOR_ID';
-    repositoryEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
-    repositoryEntity.ENTITY_NAME = 'RepositoryEntity';
-    repositoryEntity.FOREIGN_KEY = 'REPOSITORY_ID';
-    repositoryEntity.LOCAL_ENTITY_NAME = 'LocalRepositoryEntity';
-    repositoryEntity.REPOSITORY_ID = 'REPOSITORY_ID';
-    repositoryEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';
-    repositoryEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
-    repositoryEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID';
-    repositoryEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code';
-    repositoryEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
-    repositoryEntity.systemWideOperationId = 'systemWideOperationId';
-    repositoryEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
-})(repositoryEntity || (repositoryEntity = {}));
+export var airEntity;
+(function (airEntity) {
+    airEntity.ACTOR_ID = 'ACTOR_ID';
+    airEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
+    airEntity.ENTITY_NAME = 'AirEntity';
+    airEntity.FOREIGN_KEY = 'REPOSITORY_ID';
+    airEntity.LOCAL_ENTITY_NAME = 'LocalAirEntity';
+    airEntity.REPOSITORY_ID = 'REPOSITORY_ID';
+    airEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';
+    airEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
+    airEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID';
+    airEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code';
+    airEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
+    airEntity.systemWideOperationId = 'systemWideOperationId';
+    airEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
+})(airEntity || (airEntity = {}));
 //# sourceMappingURL=Dictionary.js.map

@@ -144,7 +144,7 @@ export class JsonApplicationBuilder {
 					idColumnRefs: this.getIdColumnReferences(sIndexedEntity),
 					index: sEntity.tableIndex,
 					isLocal: sEntity.isLocal,
-					isRepositoryEntity: sEntity.isRepositoryEntity,
+					isAirEntity: sEntity.isAirEntity,
 					name: sEntity.name,
 					properties: properties,
 					relations: relations,

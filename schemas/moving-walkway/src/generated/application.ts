@@ -59,7 +59,7 @@ export const APPLICATION = {
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "SynchronizationConflictValues",
 					"properties": [
 						{
@@ -218,7 +218,7 @@ export const APPLICATION = {
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "SynchronizationConflict",
 					"properties": [
 						{
@@ -502,7 +502,7 @@ export const APPLICATION = {
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "RecordUpdateStage",
 					"properties": [
 						{

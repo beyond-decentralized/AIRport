@@ -16,7 +16,7 @@ import {
 	IActor,
 	IRepository,
 	IRepositoryDao,
-	QRepositoryEntity
+	QAirEntity
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import {
 	IOperationContext,
@@ -120,7 +120,7 @@ already contains a new repository.`)
 		rawInsertValues: RawInsertValues<IQE>
 	): RawInsertValues<IQE> {
 		let qEntity = rawInsertValues.insertInto
-		if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+		if (!qEntity.__driver__.dbEntity.isAirEntity) {
 			return rawInsertValues
 		}
 
@@ -153,13 +153,13 @@ already contains a new repository.`)
 		repository: IRepository,
 		rawUpdate: RawUpdate<IEUP, IQE>
 	): RawUpdate<IEUP, IQE> {
-		if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+		if (!qEntity.__driver__.dbEntity.isAirEntity) {
 			return
 		}
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawUpdate.where, (<QAirEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 
@@ -168,12 +168,12 @@ already contains a new repository.`)
 		repository: IRepository,
 		rawDelete: RawDelete<IQE>
 	): RawDelete<IQE> {
-		if (!qEntity.__driver__.dbEntity.isRepositoryEntity) {
+		if (!qEntity.__driver__.dbEntity.isAirEntity) {
 			return
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QRepositoryEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawDelete.where, (<QAirEntity><any>qEntity).repository.id.equals(repository.id))
 		}
 	}
 

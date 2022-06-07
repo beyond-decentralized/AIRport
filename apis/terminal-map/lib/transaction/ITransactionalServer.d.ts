@@ -1,7 +1,7 @@
 import { IEntityContext } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
-import { IRepositoryEntity } from '@airport/holding-pattern';
+import { IAirEntity } from '@airport/holding-pattern';
 import { Observable } from 'rxjs';
 import { IQueryOperationContext } from '..';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
@@ -15,8 +15,8 @@ export interface ITransactionalServer {
     startTransaction(credentials: ITransactionCredentials, context: IContext): Promise<boolean>;
     commit(credentials: ITransactionCredentials, context: IContext): Promise<boolean>;
     rollback(credentials: ITransactionCredentials, context: IContext): Promise<boolean>;
-    save<E extends IRepositoryEntity, T = E | E[]>(entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
-    saveToDestination<E extends IRepositoryEntity, T = E | E[]>(repositoryDestination: string, entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
+    save<E extends IAirEntity, T = E | E[]>(entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
+    saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
     insertValuesGetIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number>;

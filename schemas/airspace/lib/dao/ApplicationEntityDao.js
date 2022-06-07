@@ -23,7 +23,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
         for (const applicationEntity of applicationEntities) {
             values.push([
                 applicationEntity.id, applicationEntity.index,
-                applicationEntity.isLocal, applicationEntity.isRepositoryEntity,
+                applicationEntity.isLocal, applicationEntity.isAirEntity,
                 applicationEntity.name, applicationEntity.tableConfig,
                 applicationEntity.applicationVersion.id,
                 applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion.id : null,
@@ -37,7 +37,7 @@ let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEnt
                 se.id,
                 se.index,
                 se.isLocal,
-                se.isRepositoryEntity,
+                se.isAirEntity,
                 se.name,
                 se.tableConfig,
                 se.applicationVersion.id,

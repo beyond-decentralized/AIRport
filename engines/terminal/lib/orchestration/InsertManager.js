@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpId } from '@airport/check-in';
-import { ChangeType, repositoryEntity, } from '@airport/ground-control';
+import { ChangeType, airEntity, } from '@airport/ground-control';
 let InsertManager = class InsertManager {
     async insertValues(portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues);
@@ -59,8 +59,8 @@ appears more than once in the Columns clause`);
         }
         let columnsToPopulate;
         const insertValues = portableQuery.jsonQuery;
-        if (dbEntity.isRepositoryEntity) {
-            columnsToPopulate = this.ensureRepositoryEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
+        if (dbEntity.isAirEntity) {
+            columnsToPopulate = this.ensureAirEntityUuIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
         if (!transaction.isSync || context.generateOnSync) {
@@ -154,8 +154,8 @@ appears more than once in the Columns clause`);
                 idValues[idColumn.index] = idValue;
             }
         }
-        // if (dbEntity.isRepositoryEntity) {
-        // 	const repositoryColumn  = dbEntity.columnMap[repositoryEntity.FOREIGN_KEY]
+        // if (dbEntity.isAirEntity) {
+        // 	const repositoryColumn  = dbEntity.columnMap[airEntity.FOREIGN_KEY]
         // 	const repositoryIdIndex = repositoryColumn.index
         // 	for (const entityValues of values) {
         // 		const repositoryId = entityValues[repositoryIdIndex]
@@ -240,11 +240,11 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureRepositoryEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
-        const actorIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_ID];
-        const actorRecordIdColumn = dbEntity.idColumnMap[repositoryEntity.ACTOR_RECORD_ID];
-        const repositoryIdColumn = dbEntity.idColumnMap[repositoryEntity.REPOSITORY_ID];
-        const sysWideOperationIdColumn = dbEntity.columnMap[repositoryEntity.SYSTEM_WIDE_OPERATION_ID];
+    ensureAirEntityUuIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
+        const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_ID];
+        const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID];
+        const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_ID];
+        const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID];
         let repositoryIdColumnQueryIndex;
         let foundActorIdColumn = false;
         let foundActorRecordIdColumn = false;
@@ -353,9 +353,9 @@ and cannot have NULL values.`);
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const repositoryIdIndex = dbEntity.columnMap[repositoryEntity.REPOSITORY_ID].index;
-        const actorIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_ID].index;
-        const actorRecordIdIndex = dbEntity.columnMap[repositoryEntity.ACTOR_RECORD_ID].index;
+        const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_ID].index;
+        const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_ID].index;
+        const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index;
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
         let actorRecordIdColumnNumber;

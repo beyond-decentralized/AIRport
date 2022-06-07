@@ -16,7 +16,7 @@ import {
 import {
 	EntityId,
 	EntityIsLocal,
-	EntityIsRepositoryEntity,
+	EntityIsAirEntity,
 	EntityName,
 	TableIndex
 }                              from '@airport/ground-control'
@@ -57,9 +57,9 @@ export class ApplicationEntity
 	@DbBoolean()
 	isLocal: EntityIsLocal
 
-	@Column({name: 'IS_REPOSITORY_ENTITY', nullable: false})
+	@Column({name: 'IS_AIR_ENTITY', nullable: false})
 	@DbBoolean()
-	isRepositoryEntity: EntityIsRepositoryEntity
+	isAirEntity: EntityIsAirEntity
 
 	@Column({name: 'NAME', nullable: false})
 	@DbString()

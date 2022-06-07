@@ -9,7 +9,7 @@ export interface IApplicationEntity extends IVersionedApplicationObject {
     id: number;
     index?: number;
     isLocal?: boolean;
-    isRepositoryEntity?: boolean;
+    isAirEntity?: boolean;
     name?: string;
     tableConfig?: TableConfiguration;
     applicationVersion?: IApplicationVersion;

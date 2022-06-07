@@ -1,15 +1,15 @@
-import { IRepositoryEntityUtils, RepositoryEntityId } from '@airport/aviation-communication'
+import { IAirEntityUtils, AirEntityUuId } from '@airport/aviation-communication'
 import { Inject, Injected, IOC } from '@airport/direction-indicator'
 import {
-	IRepositoryEntity,
+	IAirEntity,
 	JSONBaseOperation,
 	JSONValueOperation,
 	OperationCategory,
 	SqlOperator
 } from '@airport/ground-control'
 import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
-import { IQEntityInternal, IQRepositoryEntity } from '../../lingo/core/entity/Entity'
-import { IQRepositoryEntityRelation } from '../../lingo/core/entity/Relation'
+import { IQEntityInternal, IQAirEntity } from '../../lingo/core/entity/Entity'
+import { IQAirEntityRelation } from '../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
 import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
 import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
@@ -31,23 +31,23 @@ export class QueryUtils
 	@Inject()
 	relationManager: IRelationManager
 	@Inject()
-	repositoryEntityUtils: IRepositoryEntityUtils
+	airEntityUtils: IAirEntityUtils
 
-	equals<Entity extends IRepositoryEntity, IQ extends IQEntityInternal>(
-		entityOrUuId: Entity | IQRepositoryEntity
-			| IQRepositoryEntityRelation<Entity, IQ> | RepositoryEntityId | string,
+	equals<Entity extends IAirEntity, IQ extends IQEntityInternal>(
+		entityOrUuId: Entity | IQAirEntity
+			| IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string,
 		toObject
 	): JSONLogicalOperation {
 		if (!entityOrUuId) {
 			throw new Error(`null entity/Id/UuId is passed into equals method`)
 		}
-		let entityUuId: RepositoryEntityId
-		let entityOrId: RepositoryEntityId = entityOrUuId as RepositoryEntityId
+		let entityUuId: AirEntityUuId
+		let entityOrId: AirEntityUuId = entityOrUuId as AirEntityUuId
 		if (typeof entityOrUuId === 'string') {
-			entityUuId = this.repositoryEntityUtils.parseUuId(entityOrUuId)
+			entityUuId = this.airEntityUtils.parseUuId(entityOrUuId)
 		} else if (entityOrId.repository.uuId
 			&& entityOrId.actor.uuId) {
-			entityUuId = entityOrUuId as RepositoryEntityId
+			entityUuId = entityOrUuId as AirEntityUuId
 		} else {
 			throw new Error(`Expecting either string id or an object tree with uuIds`)
 		}

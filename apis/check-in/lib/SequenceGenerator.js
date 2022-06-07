@@ -1,4 +1,4 @@
-import { repositoryEntity } from '@airport/ground-control';
+import { airEntity } from '@airport/ground-control';
 export function setSeqGen(sequenceGenerator) {
     SEQ_GEN = sequenceGenerator;
 }
@@ -25,9 +25,9 @@ export async function getSysWideOpIds(numSequencesNeeded, airportDatabase, seque
     if (!numSequencesNeeded) {
         return [];
     }
-    const sysWideOpIdGeneratedColumn = airportDatabase.QM[repositoryEntity.SYS_WIDE_OP_ID_APPLICATION]
+    const sysWideOpIdGeneratedColumn = airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION]
         .__dbApplication__.currentVersion[0].applicationVersion
-        .entityMapByName[repositoryEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
+        .entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
     const generatedNumWrapper = await sequenceGenerator
         .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
     return generatedNumWrapper[0];

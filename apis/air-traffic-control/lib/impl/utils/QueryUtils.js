@@ -18,7 +18,7 @@ let QueryUtils = class QueryUtils {
         let entityUuId;
         let entityOrId = entityOrUuId;
         if (typeof entityOrUuId === 'string') {
-            entityUuId = this.repositoryEntityUtils.parseUuId(entityOrUuId);
+            entityUuId = this.airEntityUtils.parseUuId(entityOrUuId);
         }
         else if (entityOrId.repository.uuId
             && entityOrId.actor.uuId) {
@@ -108,7 +108,7 @@ __decorate([
 ], QueryUtils.prototype, "relationManager", void 0);
 __decorate([
     Inject()
-], QueryUtils.prototype, "repositoryEntityUtils", void 0);
+], QueryUtils.prototype, "airEntityUtils", void 0);
 QueryUtils = __decorate([
     Injected()
 ], QueryUtils);

@@ -1,8 +1,8 @@
 /* eslint-disable */
 export const MAPPED_SUPERCLASS = [
     {
-        "type": "RepositoryEntity",
-        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+        "type": "AirEntity",
+        "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [
@@ -113,8 +113,8 @@ export const MAPPED_SUPERCLASS = [
             "isId": false,
             "isMappedSuperclass": true,
             "isTransient": false,
-            "name": "RepositoryEntity",
-            "type": "typeof RepositoryEntity",
+            "name": "AirEntity",
+            "type": "typeof AirEntity",
             "fileImports": {
                 "importMapByObjectAsName": {
                     "Column": {
@@ -520,7 +520,7 @@ export const MAPPED_SUPERCLASS = [
             "constructors": [
                 {
                     "parameters": [],
-                    "returnType": "RepositoryEntity"
+                    "returnType": "AirEntity"
                 }
             ]
         },
@@ -530,8 +530,8 @@ export const MAPPED_SUPERCLASS = [
     {
         "type": "ChildRepoRow",
         "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
-        "parentClassName": "RepositoryEntity",
-        "location": "../repository/RepositoryEntity",
+        "parentClassName": "AirEntity",
+        "location": "../repository/AirEntity",
         "isSuperclass": true,
         "ids": [],
         "docEntry": {
@@ -561,22 +561,22 @@ export const MAPPED_SUPERCLASS = [
                         },
                         "path": "@airport/air-traffic-control"
                     },
-                    "RepositoryEntity": {
+                    "AirEntity": {
                         "fileImports": null,
                         "isLocal": true,
                         "objectMapByAsName": {
-                            "RepositoryEntity": {
-                                "asName": "RepositoryEntity",
+                            "AirEntity": {
+                                "asName": "AirEntity",
                                 "moduleImport": null,
-                                "sourceName": "RepositoryEntity"
+                                "sourceName": "AirEntity"
                             }
                         },
-                        "path": "../repository/RepositoryEntity"
+                        "path": "../repository/AirEntity"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-traffic-control": null,
-                    "../repository/RepositoryEntity": null
+                    "../repository/AirEntity": null
                 }
             },
             "properties": [],
@@ -590,8 +590,8 @@ export const MAPPED_SUPERCLASS = [
         },
         "implementedInterfaceNames": [],
         "parentEntity": {
-            "type": "RepositoryEntity",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "type": "AirEntity",
+            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -702,8 +702,8 @@ export const MAPPED_SUPERCLASS = [
                 "isId": false,
                 "isMappedSuperclass": true,
                 "isTransient": false,
-                "name": "RepositoryEntity",
-                "type": "typeof RepositoryEntity",
+                "name": "AirEntity",
+                "type": "typeof AirEntity",
                 "fileImports": {
                     "importMapByObjectAsName": {
                         "Column": {
@@ -1109,7 +1109,7 @@ export const MAPPED_SUPERCLASS = [
                 "constructors": [
                     {
                         "parameters": [],
-                        "returnType": "RepositoryEntity"
+                        "returnType": "AirEntity"
                     }
                 ]
             },
@@ -1171,8 +1171,8 @@ export const MAPPED_SUPERCLASS = [
     {
         "type": "ImmutableRepoRow",
         "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
-        "parentClassName": "RepositoryEntity",
-        "location": "../repository/RepositoryEntity",
+        "parentClassName": "AirEntity",
+        "location": "../repository/AirEntity",
         "isSuperclass": true,
         "ids": [],
         "docEntry": {
@@ -1208,22 +1208,22 @@ export const MAPPED_SUPERCLASS = [
                         "path": "@airport/air-traffic-control"
                     },
                     "MappedSuperclass": null,
-                    "RepositoryEntity": {
+                    "AirEntity": {
                         "fileImports": null,
                         "isLocal": true,
                         "objectMapByAsName": {
-                            "RepositoryEntity": {
-                                "asName": "RepositoryEntity",
+                            "AirEntity": {
+                                "asName": "AirEntity",
                                 "moduleImport": null,
-                                "sourceName": "RepositoryEntity"
+                                "sourceName": "AirEntity"
                             }
                         },
-                        "path": "../repository/RepositoryEntity"
+                        "path": "../repository/AirEntity"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-traffic-control": null,
-                    "../repository/RepositoryEntity": null
+                    "../repository/AirEntity": null
                 }
             },
             "properties": [
@@ -1260,8 +1260,8 @@ export const MAPPED_SUPERCLASS = [
         },
         "implementedInterfaceNames": [],
         "parentEntity": {
-            "type": "RepositoryEntity",
-            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+            "type": "AirEntity",
+            "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -1372,8 +1372,8 @@ export const MAPPED_SUPERCLASS = [
                 "isId": false,
                 "isMappedSuperclass": true,
                 "isTransient": false,
-                "name": "RepositoryEntity",
-                "type": "typeof RepositoryEntity",
+                "name": "AirEntity",
+                "type": "typeof AirEntity",
                 "fileImports": {
                     "importMapByObjectAsName": {
                         "Column": {
@@ -1779,7 +1779,7 @@ export const MAPPED_SUPERCLASS = [
                 "constructors": [
                     {
                         "parameters": [],
-                        "returnType": "RepositoryEntity"
+                        "returnType": "AirEntity"
                     }
                 ]
             },
@@ -2034,7 +2034,7 @@ export const MAPPED_SUPERCLASS = [
                         "id": null,
                         "index": 4,
                         "isLocal": true,
-                        "isRepositoryEntity": false,
+                        "isAirEntity": false,
                         "name": "User",
                         "propertyMap": null,
                         "properties": [
@@ -2271,8 +2271,8 @@ export const MAPPED_SUPERCLASS = [
         "parentEntity": {
             "type": "ImmutableRepoRow",
             "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
-            "parentClassName": "RepositoryEntity",
-            "location": "../repository/RepositoryEntity",
+            "parentClassName": "AirEntity",
+            "location": "../repository/AirEntity",
             "isSuperclass": true,
             "ids": [],
             "docEntry": {
@@ -2308,22 +2308,22 @@ export const MAPPED_SUPERCLASS = [
                             "path": "@airport/air-traffic-control"
                         },
                         "MappedSuperclass": null,
-                        "RepositoryEntity": {
+                        "AirEntity": {
                             "fileImports": null,
                             "isLocal": true,
                             "objectMapByAsName": {
-                                "RepositoryEntity": {
-                                    "asName": "RepositoryEntity",
+                                "AirEntity": {
+                                    "asName": "AirEntity",
                                     "moduleImport": null,
-                                    "sourceName": "RepositoryEntity"
+                                    "sourceName": "AirEntity"
                                 }
                             },
-                            "path": "../repository/RepositoryEntity"
+                            "path": "../repository/AirEntity"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
-                        "../repository/RepositoryEntity": null
+                        "../repository/AirEntity": null
                     }
                 },
                 "properties": [
@@ -2360,8 +2360,8 @@ export const MAPPED_SUPERCLASS = [
             },
             "implementedInterfaceNames": [],
             "parentEntity": {
-                "type": "RepositoryEntity",
-                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\RepositoryEntity.ts",
+                "type": "AirEntity",
+                "path": "D:\\code\\AIR\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [
@@ -2472,8 +2472,8 @@ export const MAPPED_SUPERCLASS = [
                     "isId": false,
                     "isMappedSuperclass": true,
                     "isTransient": false,
-                    "name": "RepositoryEntity",
-                    "type": "typeof RepositoryEntity",
+                    "name": "AirEntity",
+                    "type": "typeof AirEntity",
                     "fileImports": {
                         "importMapByObjectAsName": {
                             "Column": {
@@ -2879,7 +2879,7 @@ export const MAPPED_SUPERCLASS = [
                     "constructors": [
                         {
                             "parameters": [],
-                            "returnType": "RepositoryEntity"
+                            "returnType": "AirEntity"
                         }
                     ]
                 },
@@ -3227,7 +3227,7 @@ export const MAPPED_SUPERCLASS = [
                             "id": null,
                             "index": 4,
                             "isLocal": true,
-                            "isRepositoryEntity": false,
+                            "isAirEntity": false,
                             "name": "User",
                             "propertyMap": null,
                             "properties": [

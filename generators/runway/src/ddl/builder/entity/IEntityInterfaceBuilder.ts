@@ -2,7 +2,7 @@ import {TypeOrParamDocEntry} from '../../parser/DocEntry'
 import {EntityCandidate}     from '../../parser/EntityCandidate'
 import {addImportForType}    from '../../../resolve/pathResolver'
 import {
-	entityExtendsRepositoryEntity,
+	entityExtendsAirEntity,
 	getManyToOneDecorator
 }                            from '../application/SApplicationBuilder'
 import {IBuilder}            from '../Builder'
@@ -72,8 +72,8 @@ export class IEntityInterfaceBuilder
 			}
 		})
 
-		// const [isRepositoryEntity, isLocal]
-		// 	                           = entityExtendsRepositoryEntity(this.entity)
+		// const [isAirEntity, isLocal]
+		// 	                           = entityExtendsAirEntity(this.entity)
 
 		let transientProperties = ``
 		this.transientPropertyBuilders.forEach((

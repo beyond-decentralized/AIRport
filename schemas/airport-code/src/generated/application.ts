@@ -96,7 +96,7 @@ export const APPLICATION = {
 					],
 					"index": 0,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "Sequence",
 					"properties": [
 						{
@@ -177,7 +177,7 @@ export const APPLICATION = {
 					],
 					"index": 1,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "SystemWideOperationId",
 					"properties": [
 						{
@@ -249,7 +249,7 @@ export const APPLICATION = {
 					],
 					"index": 2,
 					"isLocal": true,
-					"isRepositoryEntity": false,
+					"isAirEntity": false,
 					"name": "TerminalRun",
 					"properties": [
 						{

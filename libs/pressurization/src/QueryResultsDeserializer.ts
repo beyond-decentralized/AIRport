@@ -1,4 +1,4 @@
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication'
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
@@ -188,12 +188,12 @@ export class QueryResultsDeserializer
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'uuId'))) {
 			Object.defineProperty(object, 'uuId', {
 				get() {
-					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).encodeUuId(this)
+					return this.__container__.getSync(AIR_ENTITY_UTILS).encodeUuId(this)
 				},
 				set(
 					idString: string
 				) {
-					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).setUuId(idString, this)
+					return this.__container__.getSync(AIR_ENTITY_UTILS).setUuId(idString, this)
 				}
 			});
 		}
@@ -203,7 +203,7 @@ export class QueryResultsDeserializer
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
 			Object.defineProperty(object, 'createdBy', {
 				get() {
-					return this.__container__.getSync(REPOSITORY_ENTITY_UTILS).getCreatedBy(this)
+					return this.__container__.getSync(AIR_ENTITY_UTILS).getCreatedBy(this)
 				}
 			});
 		}

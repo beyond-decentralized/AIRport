@@ -1,7 +1,7 @@
 import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, RawEntityQuery } from '@airport/air-traffic-control';
-import { QApplication, RepositoryEntityId } from '@airport/aviation-communication';
+import { QApplication, AirEntityUuId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { EntityId as DbEntityId, IEntityStateManager, IRepositoryEntity, ISaveResult } from '@airport/ground-control';
+import { EntityId as DbEntityId, IEntityStateManager, IAirEntity, ISaveResult } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { DaoStub } from './DaoStub';
 /**
@@ -18,12 +18,12 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
-    mapByUuId(entities: (Entity & IRepositoryEntity)[]): Map<string, Entity>;
+    mapByUuId(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findByUuId(repositoryEntityUuId: RepositoryEntityId | string, context?: IContext): Promise<Entity>;
+    findByUuId(airEntityUuId: AirEntityUuId | string, context?: IContext): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     protected _repositoryId(): {
@@ -49,7 +49,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
      * ensures that the record is unique.  If multiple records
      * are found the ones with older createdAt values are deleted.
      */
-    protected _findUnique<E extends IRepositoryEntity & Entity>(rawGraphQuery: RawEntityQuery<EntitySelect> | {
+    protected _findUnique<E extends IAirEntity & Entity>(rawGraphQuery: RawEntityQuery<EntitySelect> | {
         (...args: any[]): RawEntityQuery<EntitySelect>;
     }, ctx?: IContext): Promise<E>;
     /**

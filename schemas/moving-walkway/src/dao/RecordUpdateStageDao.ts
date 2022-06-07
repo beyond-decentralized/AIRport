@@ -14,7 +14,7 @@ import {
 import {
 	Actor_Id,
 	RecordHistoryActorRecordId,
-	RepositoryEntity_ActorRecordId,
+	AirEntity_ActorRecordId,
 	Repository_Id
 } from '@airport/holding-pattern'
 import {
@@ -47,7 +47,7 @@ export interface IRecordUpdateStageDao
 		applicationIndex: ApplicationIndex,
 		applicationVersionId: ApplicationVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
+		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void>;
 
@@ -91,7 +91,7 @@ export class RecordUpdateStageDao
 		applicationIndex: ApplicationIndex,
 		applicationVersionId: ApplicationVersionId,
 		tableIndex: TableIndex,
-		idMap: Map<Repository_Id, Map<Actor_Id, Set<RepositoryEntity_ActorRecordId>>>,
+		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ColumnIndex[]
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]

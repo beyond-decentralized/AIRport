@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { repositoryEntity } from '@airport/ground-control';
+import { airEntity } from '@airport/ground-control';
 import { Injected } from '@airport/direction-indicator';
 let QMetadataUtils = class QMetadataUtils {
     getAllColumns(qEntity) {
@@ -18,9 +18,9 @@ let QMetadataUtils = class QMetadataUtils {
             if (qField.dbColumn.isGenerated) {
                 return false;
             }
-            if (qEntity.__driver__.dbEntity.isRepositoryEntity) {
+            if (qEntity.__driver__.dbEntity.isAirEntity) {
                 switch (qField.dbColumn.name) {
-                    case repositoryEntity.SYSTEM_WIDE_OPERATION_ID:
+                    case airEntity.SYSTEM_WIDE_OPERATION_ID:
                         return false;
                 }
             }

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { and, doEnsureContext, Y } from '@airport/air-traffic-control';
-import { REPOSITORY_ENTITY_UTILS } from '@airport/aviation-communication';
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 import { Inject, Injected, IOC } from '@airport/direction-indicator';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
@@ -57,15 +57,15 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    async findByUuId(repositoryEntityUuId, context) {
-        if (typeof repositoryEntityUuId === 'string') {
-            repositoryEntityUuId = IOC.getSync(REPOSITORY_ENTITY_UTILS)
-                .parseUuId(repositoryEntityUuId);
+    async findByUuId(airEntityUuId, context) {
+        if (typeof airEntityUuId === 'string') {
+            airEntityUuId = IOC.getSync(AIR_ENTITY_UTILS)
+                .parseUuId(airEntityUuId);
         }
-        if (!this.db.dbEntity.isRepositoryEntity) {
+        if (!this.db.dbEntity.isAirEntity) {
             throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
         }
-        const idObject = repositoryEntityUuId;
+        const idObject = airEntityUuId;
         if (!idObject.repository
             || !idObject.repository.uuId
             || typeof idObject.repository.uuId !== 'string'
@@ -74,8 +74,8 @@ let Dao = class Dao {
             || typeof idObject.actor.uuId !== 'number'
             || !idObject.actorRecordId
             || typeof idObject.actorRecordId !== 'number') {
-            throw new Error(`Invalid Repository Entity Id.  Expecting:
-				interface RepositoryEntityId {
+            throw new Error(`Invalid AirEntity Id.  Expecting:
+				interface AirEntityUuId {
 					repository: {
 						uuId: string
 					},

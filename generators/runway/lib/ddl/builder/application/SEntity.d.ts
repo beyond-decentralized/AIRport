@@ -6,9 +6,9 @@ import { SColumn, SProperty, SRelation } from "./SProperty";
 export interface SEntity {
     isLocal: boolean;
     /**
-     * Does this entity extend RepositoryEntity or LocalRepositoryEntity
+     * Does this entity extend AirEntity or LocalAirEntity
      */
-    isRepositoryEntity: boolean;
+    isAirEntity: boolean;
     /**
      * Name of the entity.
      */

@@ -269,12 +269,12 @@ let UpdateCacheManager = class UpdateCacheManager {
                 for (const generatedPropertyName in createdRecord) {
                     entity[generatedPropertyName] = createdRecord[generatedPropertyName];
                 }
-                if (dbEntity.isRepositoryEntity) {
-                    let repositoryEntity = entity;
-                    if (!repositoryEntity.repository || !repositoryEntity.repository.id) {
-                        repositoryEntity.repository = saveResult.newRepository;
+                if (dbEntity.isAirEntity) {
+                    let airEntity = entity;
+                    if (!airEntity.repository || !airEntity.repository.id) {
+                        airEntity.repository = saveResult.newRepository;
                     }
-                    repositoryEntity.actor = saveResult.actor;
+                    airEntity.actor = saveResult.actor;
                 }
             }
         }

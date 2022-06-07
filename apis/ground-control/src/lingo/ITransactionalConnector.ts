@@ -75,7 +75,7 @@ export interface IRepository {
 	
 }
 
-export interface IRepositoryEntity {
+export interface IAirEntity {
 	// Id Properties
 	actorRecordId: number;
 
@@ -139,12 +139,12 @@ export interface ITransactionalConnector {
 		cachedSqlQueryId?: number,
 	): Observable<E>
 
-	save<E extends IRepositoryEntity, T = E | E[]>(
+	save<E extends IAirEntity, T = E | E[]>(
 		entity: T,
 		context?: IContext,
 	): Promise<ISaveResult>
 
-	saveToDestination<E extends IRepositoryEntity, T = E | E[]>(
+	saveToDestination<E extends IAirEntity, T = E | E[]>(
 		repositoryDestination: string,
 		entity: T,
 		context?: IContext,

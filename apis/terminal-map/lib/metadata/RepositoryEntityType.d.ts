@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 4/16/2017.
  */
-export declare enum RepositoryEntityType {
+export declare enum AirEntityType {
     NOT_REPOSITORY_ENTITY = "NOT_REPOSITORY_ENTITY",
     REPOSITORY_ENTITY = "REPOSITORY_ENTITY"
 }
