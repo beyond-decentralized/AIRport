@@ -1,3 +1,4 @@
+import { IOC } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	QueryResultType
@@ -10,6 +11,7 @@ import { IEntitySelectProperties } from '../../../lingo/core/entity/Entity'
 import { IEntityLookup } from '../../../lingo/query/api/EntityLookup'
 import { RawEntityQuery } from '../../../lingo/query/facade/EntityQuery'
 import { IDaoStub, LookupProxy } from './Lookup'
+import { ENTITY_UTILS } from '../../../core-tokens'
 
 export interface IEntityLookupInternal<Child,
 	IESP extends IEntitySelectProperties>
@@ -66,6 +68,9 @@ export abstract class EntityLookup<Child,
 		context: IEntityQueryContext
 	): Promise<any> {
 		context.dbEntity = this.dbEntity
+
+		rawEntityQuery = IOC.getSync(ENTITY_UTILS)
+			.ensureUuid(rawEntityQuery, this.dbEntity)
 
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)

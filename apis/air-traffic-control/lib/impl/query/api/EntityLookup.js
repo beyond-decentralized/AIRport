@@ -1,4 +1,6 @@
+import { IOC } from '@airport/direction-indicator';
 import { LookupProxy } from './Lookup';
+import { ENTITY_UTILS } from '../../../core-tokens';
 export class EntityLookup extends LookupProxy {
     constructor(dbEntity, dao, mapResults = EntityLookup.mapResults) {
         super(dao);
@@ -10,6 +12,8 @@ export class EntityLookup extends LookupProxy {
     }
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
+        rawEntityQuery = IOC.getSync(ENTITY_UTILS)
+            .ensureUuid(rawEntityQuery, this.dbEntity);
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
         if (search) {
             throw new Error(`Search operations are not yet supported`);

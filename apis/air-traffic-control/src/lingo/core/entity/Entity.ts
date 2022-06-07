@@ -30,6 +30,7 @@ export interface IEntityIdProperties {
  */
 export interface IEntitySelectProperties {
 	'*'?: boolean | any
+	uuId?: boolean | any
 }
 
 /**
@@ -76,6 +77,7 @@ export interface IEntityUpdateProperties {
  */
 export interface IEntityCascadeGraph {
 	'*'?: boolean | any
+	uuId?: boolean | any
 }
 
 export interface EntityConstructor {

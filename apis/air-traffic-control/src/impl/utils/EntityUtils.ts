@@ -9,10 +9,11 @@ import { TreeQuery } from '../query/facade/TreeQuery'
 import { ITreeEntity, RawTreeQuery } from '../../lingo/query/facade/TreeQuery'
 import { IEntityAliases } from '../../lingo/core/entity/Aliases'
 import { QTree, QTreeDriver } from '../core/entity/Tree'
-import { IEntityRelationFrom, IFrom, IQEntity, IQEntityDriver, IQTree } from '../../lingo/core/entity/Entity'
+import { IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity, IQEntityDriver, IQEntityInternal, IQTree } from '../../lingo/core/entity/Entity'
 import { QEntity } from '../core/entity/Entity'
 import { QField } from '../core/field/Field'
 import { ENTITY_UTILS } from '../../core-tokens'
+import { DbEntity } from '@airport/ground-control'
 
 /**
  * Created by Papa on 6/14/2016.
@@ -76,6 +77,41 @@ export class EntityUtils
 		return <Q><any>this.getRawQuery(<any>query)
 	}
 
+	ensureUuid<EntitySelect extends IEntitySelectProperties>(
+		rawEntityQuery: RawEntityQuery<EntitySelect>
+			| { (...args: any[]): RawEntityQuery<EntitySelect> },
+		dbEntity: DbEntity
+	): RawEntityQuery<EntitySelect> {
+		let theRawEntityQuery = this.getRawQuery(rawEntityQuery) as RawEntityQuery<EntitySelect>
+
+		this.ensureUuIdAtLevel(
+			theRawEntityQuery.select, dbEntity,
+			theRawEntityQuery.from[0] as IQEntityInternal, rawEntityQuery
+		)
+
+		return theRawEntityQuery
+	}
+
+	private ensureUuIdAtLevel<EntitySelect extends IEntitySelectProperties>(
+		selectClauseFragment: any,
+		dbEntity: DbEntity,
+		qEntity: IQEntityInternal,
+		rawGraphQuery: RawEntityQuery<EntitySelect>
+			| { (...args: any[]): RawEntityQuery<EntitySelect> }
+	) {
+		if (selectClauseFragment.uuId) {
+			qEntity.__driver__.parentJoinEntity
+		}
+		console.log('qEntity: ' + qEntity)
+	}
+
+	private findRepositoryQEntity() {
+	}
+
+	private findActorQEntity() {
+	}
+
+	// Removes circular dependency at code initialization time
 	getRawQuery(
 		rawQuery: RawQuery | { (...args: any[]): RawQuery }
 	): RawQuery {

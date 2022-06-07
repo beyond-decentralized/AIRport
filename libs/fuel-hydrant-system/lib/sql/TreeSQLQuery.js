@@ -56,6 +56,9 @@ export class TreeSQLQuery extends NonEntitySQLQuery {
             if (propertyName === '*') {
                 throw new Error(`'*' operator isn't yet implemented in mapped queries`);
             }
+            if (propertyName === 'uuId') {
+                throw new Error(`'uuId' operator isn't yet implemented in mapped queries`);
+            }
             numProperties++;
         }
         if (numProperties === 0) {

@@ -5,7 +5,8 @@ import { IUtils } from '../../lingo/Utils';
 import { EntityQuery } from '../query/facade/EntityQuery';
 import { ITreeEntity, RawTreeQuery } from '../../lingo/query/facade/TreeQuery';
 import { IEntityAliases } from '../../lingo/core/entity/Aliases';
-import { IEntityRelationFrom, IFrom, IQEntity, IQEntityDriver, IQTree } from '../../lingo/core/entity/Entity';
+import { IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity, IQEntityDriver, IQTree } from '../../lingo/core/entity/Entity';
+import { DbEntity } from '@airport/ground-control';
 /**
  * Created by Papa on 6/14/2016.
  */
@@ -18,6 +19,12 @@ export declare class EntityUtils implements IEntityUtils {
     getQuery<Q>(query: Q | {
         (...args: any[]): Q;
     }): Q;
+    ensureUuid<EntitySelect extends IEntitySelectProperties>(rawEntityQuery: RawEntityQuery<EntitySelect> | {
+        (...args: any[]): RawEntityQuery<EntitySelect>;
+    }, dbEntity: DbEntity): RawEntityQuery<EntitySelect>;
+    private ensureUuIdAtLevel;
+    private findRepositoryQEntity;
+    private findActorQEntity;
     getRawQuery(rawQuery: RawQuery | {
         (...args: any[]): RawQuery;
     }): RawQuery;

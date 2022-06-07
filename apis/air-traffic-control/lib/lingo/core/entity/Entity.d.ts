@@ -21,6 +21,7 @@ export interface IEntityIdProperties {
  */
 export interface IEntitySelectProperties {
     '*'?: boolean | any;
+    uuId?: boolean | any;
 }
 /**
  * Marker interface with all @Id columns as required and all other columns
@@ -60,6 +61,7 @@ export interface IEntityUpdateProperties {
  */
 export interface IEntityCascadeGraph {
     '*'?: boolean | any;
+    uuId?: boolean | any;
 }
 export interface EntityConstructor {
     new (...args: any[]): any;

@@ -58,6 +58,22 @@ let EntityUtils = class EntityUtils {
     getQuery(query) {
         return this.getRawQuery(query);
     }
+    ensureUuid(rawEntityQuery, dbEntity) {
+        let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
+        this.ensureUuIdAtLevel(theRawEntityQuery.select, dbEntity, theRawEntityQuery.from[0], rawEntityQuery);
+        return theRawEntityQuery;
+    }
+    ensureUuIdAtLevel(selectClauseFragment, dbEntity, qEntity, rawGraphQuery) {
+        if (selectClauseFragment.uuId) {
+            qEntity.__driver__.parentJoinEntity;
+        }
+        console.log('qEntity: ' + qEntity);
+    }
+    findRepositoryQEntity() {
+    }
+    findActorQEntity() {
+    }
+    // Removes circular dependency at code initialization time
     getRawQuery(rawQuery) {
         if (rawQuery instanceof Function) {
             return rawQuery();
