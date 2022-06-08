@@ -37,11 +37,17 @@ export function QRelation(
 }
 
 QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal>(): IQ {
-	return this.getNewQEntity(JoinType.INNER_JOIN)
+	const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN)
+	this.parentQ.__driver__.childQEntities.push(newQEntity)
+
+	return newQEntity
 }
 
 QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
-	return this.getNewQEntity(JoinType.LEFT_JOIN)
+	const newQEntity = this.getNewQEntity(JoinType.LEFT_JOIN)
+	this.parentQ.__driver__.childQEntities.push(newQEntity)
+
+	return newQEntity
 }
 
 QRelation.prototype.getNewQEntity = function <IQ extends IQEntityInternal>(joinType: JoinType): IQ {

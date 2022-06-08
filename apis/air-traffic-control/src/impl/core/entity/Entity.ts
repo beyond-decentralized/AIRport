@@ -115,6 +115,7 @@ QEntity.prototype.equals = function <Entity extends IAirEntity, IQ extends IQEnt
 export class QEntityDriver
 	implements IQEntityDriver {
 
+	childQEntities: IQEntityInternal[] = []
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
 	entityRelations: IQInternalRelation<any>[] = []
 	entityRelationMapByIndex: { [relationPropertyIndex: number]: IQInternalRelation<any> }
@@ -280,6 +281,7 @@ export class QEntityDriver
 		joinChild.__driver__.fromClausePosition = nextChildPosition
 		joinChild.__driver__.joinType = joinType
 		joinChild.__driver__.parentJoinEntity = this.qEntity
+		this.qEntity.__driver__.childQEntities.push(joinChild)
 
 		return new JoinFields<IF>(<any>joinChild)
 	}

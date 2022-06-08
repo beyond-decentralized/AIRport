@@ -21,8 +21,7 @@ export interface IEntityUtils {
 
 	ensureUuid<EntitySelect extends IEntitySelectProperties>(
 		rawEntityQuery: RawEntityQuery<EntitySelect>
-			| { (...args: any[]): RawEntityQuery<EntitySelect> },
-		dbEntity: DbEntity
+			| { (...args: any[]): RawEntityQuery<EntitySelect> }
 	): RawEntityQuery<EntitySelect>
 
 	getRawQuery(
