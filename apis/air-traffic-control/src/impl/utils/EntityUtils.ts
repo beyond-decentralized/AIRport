@@ -92,69 +92,81 @@ export class EntityUtils
 	private ensureUuIdAtLevel<EntitySelect extends IEntitySelectProperties>(
 		selectClauseFragment: any,
 		qEntity: IQEntityInternal
-	) {
-		for(const propertyName in selectClauseFragment) {
+	): void {
+		for (const propertyName in selectClauseFragment) {
 			const subFragment = selectClauseFragment[propertyName]
-			if(subFragment instanceof Object
+			if (subFragment instanceof Object
 				&& typeof subFragment.airportSelectField !== 'boolean'
 				&& !subFragment.__allFields__) {
 
-					let matchingQEntity
-					for(const childQEntity of qEntity.__driver__.childQEntities) {
-						if(childQEntity.__driver__.dbRelation.property.name === propertyName) {
-							matchingQEntity = childQEntity
-							break
-						}
-					}
-					if(matchingQEntity) {
-						this.ensureUuIdAtLevel(subFragment, matchingQEntity)
+				let matchingQEntity
+				for (const childQEntity of qEntity.__driver__.childQEntities) {
+					if (childQEntity.__driver__.dbRelation.property.name === propertyName) {
+						matchingQEntity = childQEntity
+						break
 					}
 				}
-		}
-		if (selectClauseFragment.uuId) {
-			let repository = selectClauseFragment.repository
-			if (repository) {
-				if (!(repository instanceof Object)) {
-					throw new Error(`uuId queries must include a repository object in the select clause.
-It must be an Object with the uuId property.`)
+				if (matchingQEntity) {
+					this.ensureUuIdAtLevel(subFragment, matchingQEntity)
 				}
-				repository.uuId = Y
-
-			}
-			let actor = selectClauseFragment.actor
-			if (actor) {
-				if (!(actor instanceof Object)) {
-					throw new Error(`uuId queries must include an actor object in the select clause.
-It must be an Object with the uuId property.`)
-				}
-				actor.uuId = Y
-
-			}
-			selectClauseFragment.actorRecordId = Y
-
-			let repositoryJoinFound = false
-			for(const childQEntity of qEntity.__driver__.childQEntities) {
-				if(childQEntity.__driver__.dbRelation.property.name === 'repository') {
-					repositoryJoinFound = true
-				}
-			}
-			if(!repositoryJoinFound) {
-				(qEntity as any).repository.leftJoin()
-			}
-
-			let actorJoinFound = false
-			for(const childQEntity of qEntity.__driver__.childQEntities) {
-				if(childQEntity.__driver__.dbRelation.property.name === 'actor') {
-					actorJoinFound = true
-				}
-			}
-			if(!actorJoinFound) {
-				(qEntity as any).actor.leftJoin()
 			}
 		}
+		if (!selectClauseFragment.uuId) {
+			return
+		}
+		let repository = selectClauseFragment.repository
+		if (repository) {
+			if (!(repository instanceof Object)) {
+				throw new Error(`uuId queries must include a repository object in the select clause.
+It must be an Object with the uuId property.`)
+			}
+			repository.uuId = Y
+
+		}
+		let actor = selectClauseFragment.actor
+		if (actor) {
+			if (!(actor instanceof Object)) {
+				throw new Error(`uuId queries must include an actor object in the select clause.
+It must be an Object with the uuId property.`)
+			}
+			actor.uuId = Y
+
+		}
+		selectClauseFragment.actorRecordId = Y
+		this.ensureRepositoryAndActorJoin(qEntity)
 	}
 
-	private findRepositoryQEntity() {
+	ensureRepositoryAndActorJoin(
+		qEntity: IQEntityInternal
+	): {
+		qActor,
+		qRepository
+	} {
+		let qActor, qRepository
+		let repositoryJoinFound = false
+		let actorJoinFound = false
+		for (const childQEntity of qEntity.__driver__.childQEntities) {
+			if (childQEntity.__driver__.dbRelation.property.name === 'actor') {
+				actorJoinFound = true
+				qActor = childQEntity
+			}
+			if (childQEntity.__driver__.dbRelation.property.name === 'repository') {
+				repositoryJoinFound = true
+				qRepository = childQEntity
+			}
+		}
+
+		if (!actorJoinFound) {
+			qActor = (qEntity as any).actor.leftJoin()
+		}
+		if (!repositoryJoinFound) {
+			qRepository = (qEntity as any).repository.leftJoin()
+		}
+
+		return {
+			qActor,
+			qRepository
+		}
 	}
 
 	private findActorQEntity() {

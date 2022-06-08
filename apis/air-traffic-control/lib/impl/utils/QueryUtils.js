@@ -6,28 +6,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected, IOC } from '@airport/direction-indicator';
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
+import { ENTITY_UTILS } from '../../core-tokens';
 import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
 import { and } from '../core/operation/LogicalOperation';
-import { ENTITY_UTILS } from '../../core-tokens';
 let QueryUtils = class QueryUtils {
-    equals(entityOrUuId, toObject) {
+    equals(entityOrUuId, toObject
+    // | IQRelation<IQ>
+    ) {
         if (!entityOrUuId) {
             throw new Error(`null entity/Id/UuId is passed into equals method`);
         }
+        // if(entityOrUuId instanceof QEntity) {
         let entityUuId;
         let entityOrId = entityOrUuId;
         if (typeof entityOrUuId === 'string') {
             entityUuId = this.airEntityUtils.parseUuId(entityOrUuId);
         }
-        else if (entityOrId.repository.uuId
-            && entityOrId.actor.uuId) {
+        else {
+            if (!entityOrId.repository
+                || !entityOrId.repository.uuId
+                || typeof entityOrId.repository.uuId !== 'string'
+                || !entityOrId.actor
+                || !entityOrId.actor.uuId
+                || typeof entityOrId.actor.uuId !== 'number'
+                || !entityOrId.actorRecordId
+                || typeof entityOrId.actorRecordId !== 'number') {
+                throw new Error(`Passed in AirEntity does not have
+				the necessary fields to query by uuId.  Expecting:
+					interface AnInterface extends AirEntity {
+						repository: {
+							uuId: string
+						},
+						actor: {
+							uuId: string
+						},
+						actorRecordId: number
+					}
+					`);
+            }
             entityUuId = entityOrUuId;
         }
-        else {
-            throw new Error(`Expecting either string id or an object tree with uuIds`);
-        }
-        return and(toObject.repository.id.equals(entityUuId.repository.uuId), toObject.actor.id.equals(entityUuId.actor.uuId), toObject.actorRecordId.equals(entityUuId.actorRecordId));
+        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
+        return and(qRepository.uuId.equals(entityUuId.repository.uuId), qActor.uuId.equals(entityUuId.actor.uuId), toObject.actorRecordId.equals(entityUuId.actorRecordId));
+        // } else {
+        // Relations can only be joined by a local Id, implement if necessary
+        // only, as this might confuse users and won't work properly in
+        // distributed environments (for @CrossRepository() queries, if
+        // the referenced repository is not yet loaded) without additional
+        // logic to join against the UuIds of the object (anyway).
+        // return and(
+        // 	toObject.repository.id.equals(entityUuId.repository.id),
+        // 	toObject.actor.id.equals(entityUuId.actor.id),
+        // 	toObject.actorRecordId.equals(entityUuId.actorRecordId)
+        // )
+        // }
     }
     whereClauseToJSON(whereClause, columnAliases) {
         if (!whereClause) {
@@ -100,6 +133,9 @@ let QueryUtils = class QueryUtils {
         }
     }
 };
+__decorate([
+    Inject()
+], QueryUtils.prototype, "entityUtils", void 0);
 __decorate([
     Inject()
 ], QueryUtils.prototype, "fieldUtils", void 0);

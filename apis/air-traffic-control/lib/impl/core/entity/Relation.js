@@ -1,6 +1,4 @@
-import { IOC } from '@airport/direction-indicator';
 import { JoinType } from '@airport/ground-control';
-import { QUERY_UTILS } from '../../../core-tokens';
 import { extend } from '../../utils/qApplicationBuilderUtils';
 /**
  * Created by Papa on 4/26/2016.
@@ -19,10 +17,14 @@ export function QRelation(dbRelation, parentQ, applicationUtils, relationManager
     this.relationManager = relationManager;
 }
 QRelation.prototype.innerJoin = function () {
-    return this.getNewQEntity(JoinType.INNER_JOIN);
+    const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN);
+    this.parentQ.__driver__.childQEntities.push(newQEntity);
+    return newQEntity;
 };
 QRelation.prototype.leftJoin = function () {
-    return this.getNewQEntity(JoinType.LEFT_JOIN);
+    const newQEntity = this.getNewQEntity(JoinType.LEFT_JOIN);
+    this.parentQ.__driver__.childQEntities.push(newQEntity);
+    return newQEntity;
 };
 QRelation.prototype.getNewQEntity = function (joinType) {
     const dbEntity = this.dbRelation.relationEntity;
@@ -35,9 +37,12 @@ export function QAirEntityRelation(dbRelation, parentQ, applicationUtils, relati
     QAirEntityRelation.base.constructor.call(this, dbRelation, parentQ, applicationUtils, relationManager);
 }
 export const qAirEntityRelationMethods = {
-    equals: function (entity) {
-        return IOC.getSync(QUERY_UTILS).equals(entity, this);
-    }
+// equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+// 	entity: Entity | IQAirEntity |
+// 		IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
+// ): JSONLogicalOperation {
+// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
+// }
 };
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);
 //# sourceMappingURL=Relation.js.map

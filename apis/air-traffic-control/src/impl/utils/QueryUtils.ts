@@ -1,4 +1,4 @@
-import { IAirEntityUtils, AirEntityUuId } from '@airport/aviation-communication'
+import { AirEntityUuId, IAirEntityUtils } from '@airport/aviation-communication'
 import { Inject, Injected, IOC } from '@airport/direction-indicator'
 import {
 	IAirEntity,
@@ -7,12 +7,14 @@ import {
 	OperationCategory,
 	SqlOperator
 } from '@airport/ground-control'
+import { ENTITY_UTILS } from '../../core-tokens'
 import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
-import { IQEntityInternal, IQAirEntity } from '../../lingo/core/entity/Entity'
+import { IQAirEntity, IQEntityInternal } from '../../lingo/core/entity/Entity'
 import { IQAirEntityRelation } from '../../lingo/core/entity/Relation'
 import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
 import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
 import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
+import { IEntityUtils } from '../../lingo/utils/EntityUtils'
 import { IFieldUtils } from '../../lingo/utils/FieldUtils'
 import { IQueryUtils } from '../../lingo/utils/QueryUtils'
 import { IRelationManager } from '../core/entity/RelationManager'
@@ -20,12 +22,13 @@ import { QExistsFunction } from '../core/field/Functions'
 import { QOperableField } from '../core/field/OperableField'
 import { wrapPrimitive } from '../core/field/WrapperFunctions'
 import { and } from '../core/operation/LogicalOperation'
-import { ENTITY_UTILS } from '../../core-tokens'
 
 @Injected()
 export class QueryUtils
 	implements IQueryUtils {
 
+	@Inject()
+	entityUtils: IEntityUtils
 	@Inject()
 	fieldUtils: IFieldUtils
 	@Inject()
@@ -33,29 +36,68 @@ export class QueryUtils
 	@Inject()
 	airEntityUtils: IAirEntityUtils
 
-	equals<Entity extends IAirEntity, IQ extends IQEntityInternal>(
+	equals<Entity extends IAirEntity, IQ extends IQAirEntity>(
 		entityOrUuId: Entity | IQAirEntity
-			| IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string,
-		toObject
+			| IQAirEntityRelation<Entity, IQ> 
+			| AirEntityUuId | string,
+		toObject: IQ
+		// | IQRelation<IQ>
 	): JSONLogicalOperation {
 		if (!entityOrUuId) {
 			throw new Error(`null entity/Id/UuId is passed into equals method`)
 		}
+		// if(entityOrUuId instanceof QEntity) {
 		let entityUuId: AirEntityUuId
 		let entityOrId: AirEntityUuId = entityOrUuId as AirEntityUuId
 		if (typeof entityOrUuId === 'string') {
 			entityUuId = this.airEntityUtils.parseUuId(entityOrUuId)
-		} else if (entityOrId.repository.uuId
-			&& entityOrId.actor.uuId) {
+		} else  {
+			if (!entityOrId.repository
+				|| !entityOrId.repository.uuId
+				|| typeof entityOrId.repository.uuId !== 'string'
+				|| !entityOrId.actor
+				|| !entityOrId.actor.uuId
+				|| typeof entityOrId.actor.uuId !== 'number'
+				|| !entityOrId.actorRecordId
+				|| typeof entityOrId.actorRecordId !== 'number') {
+				throw new Error(`Passed in AirEntity does not have
+				the necessary fields to query by uuId.  Expecting:
+					interface AnInterface extends AirEntity {
+						repository: {
+							uuId: string
+						},
+						actor: {
+							uuId: string
+						},
+						actorRecordId: number
+					}
+					`)
+			}
 			entityUuId = entityOrUuId as AirEntityUuId
-		} else {
-			throw new Error(`Expecting either string id or an object tree with uuIds`)
 		}
+
+		const {
+			qActor,
+			qRepository
+		} = this.entityUtils.ensureRepositoryAndActorJoin(toObject as any as IQEntityInternal)
+
 		return and(
-			toObject.repository.id.equals(entityUuId.repository.uuId),
-			toObject.actor.id.equals(entityUuId.actor.uuId),
-			toObject.actorRecordId.equals(entityUuId.actorRecordId)
+			qRepository.uuId.equals(entityUuId.repository.uuId),
+			qActor.uuId.equals(entityUuId.actor.uuId),
+			(toObject as any).actorRecordId.equals(entityUuId.actorRecordId)
 		)
+		// } else {
+		// Relations can only be joined by a local Id, implement if necessary
+		// only, as this might confuse users and won't work properly in
+		// distributed environments (for @CrossRepository() queries, if
+		// the referenced repository is not yet loaded) without additional
+		// logic to join against the UuIds of the object (anyway).
+		// return and(
+		// 	toObject.repository.id.equals(entityUuId.repository.id),
+		// 	toObject.actor.id.equals(entityUuId.actor.id),
+		// 	toObject.actorRecordId.equals(entityUuId.actorRecordId)
+		// )
+		// }
 	}
 
 	whereClauseToJSON(

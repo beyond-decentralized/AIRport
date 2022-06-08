@@ -123,6 +123,7 @@ QUERY_FACADE.setDependencies({
     transactionalConnector: TRANSACTIONAL_CONNECTOR
 });
 QUERY_UTILS.setDependencies({
+    entityUtils: ENTITY_UTILS,
     fieldUtils: FIELD_UTILS,
     relationManager: RELATION_MANAGER,
     airEntityUtils: AIR_ENTITY_UTILS

@@ -4,9 +4,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, doEnsureContext, Y } from '@airport/air-traffic-control';
-import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
-import { Inject, Injected, IOC } from '@airport/direction-indicator';
+import { doEnsureContext, Y } from '@airport/air-traffic-control';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityDatabaseFacade } from '../EntityDatabaseFacade';
 import { DaoStub } from './DaoStub';
 /**
@@ -58,43 +57,20 @@ let Dao = class Dao {
         }, context);
     }
     async findByUuId(airEntityUuId, context) {
-        if (typeof airEntityUuId === 'string') {
-            airEntityUuId = IOC.getSync(AIR_ENTITY_UTILS)
-                .parseUuId(airEntityUuId);
-        }
         if (!this.db.dbEntity.isAirEntity) {
             throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
         }
         const idObject = airEntityUuId;
-        if (!idObject.repository
-            || !idObject.repository.uuId
-            || typeof idObject.repository.uuId !== 'string'
-            || !idObject.actor
-            || !idObject.actor.uuId
-            || typeof idObject.actor.uuId !== 'number'
-            || !idObject.actorRecordId
-            || typeof idObject.actorRecordId !== 'number') {
-            throw new Error(`Invalid AirEntity Id.  Expecting:
-				interface AirEntityUuId {
-					repository: {
-						uuId: string
-					},
-					actor: {
-						uuId: string
-					},
-					actorRecordId: number
-				}
-				`);
-        }
-        let q, r, a;
+        let q;
         return await this.db.findOne.graph({
-            select: {},
+            select: {
+                '*': Y,
+                uuId: Y
+            },
             from: [
-                q = this.db.from,
-                r = q.repository.leftJoin(),
-                a = q.actor.leftJoin()
+                q = this.db.from
             ],
-            where: and(r.uuId.equals(idObject.repository.uuId), a.uuId.equals(idObject.actor.uuId), q.actorRecordId.equals(idObject.actorRecordId))
+            where: q.equals(idObject)
         }, context);
     }
     async save(entity, context) {

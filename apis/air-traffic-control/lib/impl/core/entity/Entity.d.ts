@@ -39,6 +39,7 @@ export declare class QEntityDriver implements IQEntityDriver {
     dbRelation: DbRelation;
     joinType: JoinType;
     private qEntity;
+    childQEntities: IQEntityInternal[];
     entityFieldMap: {
         [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any>;
     };

@@ -12,6 +12,7 @@ import { QTree, QTreeDriver } from '../core/entity/Tree';
 import { QEntity } from '../core/entity/Entity';
 import { QField } from '../core/field/Field';
 import { ENTITY_UTILS } from '../../core-tokens';
+import { Y } from '../../lingo/query/facade/Query';
 /**
  * Created by Papa on 6/14/2016.
  */
@@ -58,18 +59,75 @@ let EntityUtils = class EntityUtils {
     getQuery(query) {
         return this.getRawQuery(query);
     }
-    ensureUuid(rawEntityQuery, dbEntity) {
+    ensureUuid(rawEntityQuery) {
         let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
-        this.ensureUuIdAtLevel(theRawEntityQuery.select, dbEntity, theRawEntityQuery.from[0], rawEntityQuery);
+        this.ensureUuIdAtLevel(theRawEntityQuery.select, theRawEntityQuery.from[0]);
         return theRawEntityQuery;
     }
-    ensureUuIdAtLevel(selectClauseFragment, dbEntity, qEntity, rawGraphQuery) {
-        if (selectClauseFragment.uuId) {
-            qEntity.__driver__.parentJoinEntity;
+    ensureUuIdAtLevel(selectClauseFragment, qEntity) {
+        for (const propertyName in selectClauseFragment) {
+            const subFragment = selectClauseFragment[propertyName];
+            if (subFragment instanceof Object
+                && typeof subFragment.airportSelectField !== 'boolean'
+                && !subFragment.__allFields__) {
+                let matchingQEntity;
+                for (const childQEntity of qEntity.__driver__.childQEntities) {
+                    if (childQEntity.__driver__.dbRelation.property.name === propertyName) {
+                        matchingQEntity = childQEntity;
+                        break;
+                    }
+                }
+                if (matchingQEntity) {
+                    this.ensureUuIdAtLevel(subFragment, matchingQEntity);
+                }
+            }
         }
-        console.log('qEntity: ' + qEntity);
+        if (!selectClauseFragment.uuId) {
+            return;
+        }
+        let repository = selectClauseFragment.repository;
+        if (repository) {
+            if (!(repository instanceof Object)) {
+                throw new Error(`uuId queries must include a repository object in the select clause.
+It must be an Object with the uuId property.`);
+            }
+            repository.uuId = Y;
+        }
+        let actor = selectClauseFragment.actor;
+        if (actor) {
+            if (!(actor instanceof Object)) {
+                throw new Error(`uuId queries must include an actor object in the select clause.
+It must be an Object with the uuId property.`);
+            }
+            actor.uuId = Y;
+        }
+        selectClauseFragment.actorRecordId = Y;
+        this.ensureRepositoryAndActorJoin(qEntity);
     }
-    findRepositoryQEntity() {
+    ensureRepositoryAndActorJoin(qEntity) {
+        let qActor, qRepository;
+        let repositoryJoinFound = false;
+        let actorJoinFound = false;
+        for (const childQEntity of qEntity.__driver__.childQEntities) {
+            if (childQEntity.__driver__.dbRelation.property.name === 'actor') {
+                actorJoinFound = true;
+                qActor = childQEntity;
+            }
+            if (childQEntity.__driver__.dbRelation.property.name === 'repository') {
+                repositoryJoinFound = true;
+                qRepository = childQEntity;
+            }
+        }
+        if (!actorJoinFound) {
+            qActor = qEntity.actor.leftJoin();
+        }
+        if (!repositoryJoinFound) {
+            qRepository = qEntity.repository.leftJoin();
+        }
+        return {
+            qActor,
+            qRepository
+        };
     }
     findActorQEntity() {
     }

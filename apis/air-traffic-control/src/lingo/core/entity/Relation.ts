@@ -31,10 +31,10 @@ export interface IQRelation<IQ extends IQEntity> {
 export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	extends IQRelation<IQ> {
 
-	equals(
-		entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
-			| AirEntityUuId | string
-	): JSONLogicalOperation
+	// equals(
+	// 	entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
+	// 		| AirEntityUuId | string
+	// ): JSONLogicalOperation
 
 }
 

@@ -158,47 +158,21 @@ export abstract class Dao<Entity,
 		airEntityUuId: AirEntityUuId | string,
 		context?: IContext
 	): Promise<Entity> {
-		if (typeof airEntityUuId === 'string') {
-			airEntityUuId = IOC.getSync(AIR_ENTITY_UTILS)
-				.parseUuId(airEntityUuId)
-		}
 		if (!this.db.dbEntity.isAirEntity) {
 			throw new Error(`Dao.findByUuId can only be called for Repository Entities.`)
 		}
 		const idObject: AirEntityUuId = airEntityUuId as AirEntityUuId
-		if (!idObject.repository
-			|| !idObject.repository.uuId
-			|| typeof idObject.repository.uuId !== 'string'
-			|| !idObject.actor
-			|| !idObject.actor.uuId
-			|| typeof idObject.actor.uuId !== 'number'
-			|| !idObject.actorRecordId
-			|| typeof idObject.actorRecordId !== 'number') {
-			throw new Error(`Invalid AirEntity Id.  Expecting:
-				interface AirEntityUuId {
-					repository: {
-						uuId: string
-					},
-					actor: {
-						uuId: string
-					},
-					actorRecordId: number
-				}
-				`)
-		}
-		let q, r, a
+		
+		let q
 		return await this.db.findOne.graph({
-			select: <any>{},
+			select: <any>{
+				'*': Y,
+				uuId: Y
+			},
 			from: [
-				q = this.db.from,
-				r = q.repository.leftJoin(),
-				a = q.actor.leftJoin()
+				q = this.db.from
 			],
-			where: and(
-				r.uuId.equals(idObject.repository.uuId),
-				a.uuId.equals(idObject.actor.uuId),
-				q.actorRecordId.equals(idObject.actorRecordId),
-			)
+			where: q.equals(idObject)
 		}, context)
 	}
 

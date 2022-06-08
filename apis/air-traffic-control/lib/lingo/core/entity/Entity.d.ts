@@ -115,6 +115,7 @@ export interface IQEntityInternal extends IQEntity {
 }
 export interface IQEntityDriver {
     allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
+    childQEntities: IQEntityInternal[];
     currentChildIndex: number;
     dbEntity: DbEntity;
     dbRelation: DbRelation;

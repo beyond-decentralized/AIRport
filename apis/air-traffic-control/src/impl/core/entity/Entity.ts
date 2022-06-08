@@ -107,7 +107,9 @@ QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinField
 }
 
 QEntity.prototype.equals = function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
-	entity: Entity | IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
+	entity: Entity 
+	| IQAirEntityRelation<Entity, IQ> 
+	| AirEntityUuId | string
 ): JSONLogicalOperation {
 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 }

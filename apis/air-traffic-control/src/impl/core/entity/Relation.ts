@@ -82,11 +82,11 @@ export function QAirEntityRelation(
 }
 
 export const qAirEntityRelationMethods = {
-	equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
-		entity: Entity | IQAirEntity |
-			IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
-	): JSONLogicalOperation {
-		return IOC.getSync(QUERY_UTILS).equals(entity, this)
-	}
+	// equals: function <Entity extends IAirEntity, IQ extends IQEntityInternal>(
+	// 	entity: Entity | IQAirEntity |
+	// 		IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string
+	// ): JSONLogicalOperation {
+	// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
+	// }
 }
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods)

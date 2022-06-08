@@ -1,6 +1,6 @@
-import { DbEntity } from "@airport/ground-control";
 import { IEntityAliases } from "../core/entity/Aliases";
-import { IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity, IQEntityDriver, IQTree } from "../core/entity/Entity";
+import { IEntityRelationFrom, IEntitySelectProperties, IFrom, IQEntity,
+IQEntityInternal, IQEntityDriver, IQTree } from "../core/entity/Entity";
 import { IAbstractQuery } from "../query/facade/AbstractQuery";
 import { RawEntityQuery } from "../query/facade/EntityQuery";
 import { IQuery, RawQuery } from "../query/facade/Query";
@@ -23,6 +23,13 @@ export interface IEntityUtils {
 		rawEntityQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> }
 	): RawEntityQuery<EntitySelect>
+
+	ensureRepositoryAndActorJoin(
+		qEntity: IQEntityInternal
+	): {
+		qActor,
+		qRepository
+	}
 
 	getRawQuery(
 		rawQuery: RawQuery | { (...args: any[]): RawQuery }

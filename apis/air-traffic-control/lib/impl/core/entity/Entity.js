@@ -29,6 +29,7 @@ export class QEntityDriver {
         this.dbRelation = dbRelation;
         this.joinType = joinType;
         this.qEntity = qEntity;
+        this.childQEntities = [];
         this.entityFieldMap = {};
         this.entityRelations = [];
         this.idColumns = [];
@@ -136,6 +137,7 @@ export class QEntityDriver {
         joinChild.__driver__.fromClausePosition = nextChildPosition;
         joinChild.__driver__.joinType = joinType;
         joinChild.__driver__.parentJoinEntity = this.qEntity;
+        this.qEntity.__driver__.childQEntities.push(joinChild);
         return new JoinFields(joinChild);
     }
     isRootEntity() {
