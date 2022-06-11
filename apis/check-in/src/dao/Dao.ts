@@ -1,5 +1,4 @@
 import {
-	and,
 	doEnsureContext,
 	IAirportDatabase,
 	IDao,
@@ -20,14 +19,12 @@ import {
 } from '@airport/air-traffic-control';
 import {
 	QApplication,
-	AirEntityUuId,
-	AIR_ENTITY_UTILS
+	AirEntityUuId
 } from '@airport/aviation-communication';
 import {
 	IContext,
 	Inject,
-	Injected,
-	IOC
+	Injected
 } from '@airport/direction-indicator'
 import {
 	EntityId as DbEntityId,
