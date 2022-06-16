@@ -1,4 +1,4 @@
-import { QApplication as AirportQApplication } from '@airport/aviation-communication';
+import { QApplication as QAirportApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
 import { QApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
@@ -12,7 +12,7 @@ import { QApplicationRelation } from './application/qapplicationrelation';
 import { QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
 import { QApplicationVersion } from './application/qapplicationversion';
 import { QDomain } from './application/qdomain';
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QAirportApplication {
     db: DbApplication;
     Application: QApplication;
     ApplicationColumn: QApplicationColumn;

@@ -15,7 +15,7 @@ import {
 export interface IActor {
 	
 	// Id Properties
-	id: number;
+	id?: number;
 
 	// Id Relations
 

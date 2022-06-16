@@ -14,7 +14,7 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
  * DELETE - Ids fields and relations only (required).
  */
 export interface ActorEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    id?: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).

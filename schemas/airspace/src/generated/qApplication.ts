@@ -1,6 +1,6 @@
 import {
     airApi,
-    QApplication as AirportQApplication
+    QApplication as QAirportApplication
 } from '@airport/aviation-communication'
 import {
     DbApplication,
@@ -35,7 +35,7 @@ import {
   VersionedApplicationObject
 } from '../ddl/ddl';
 
-export interface LocalQApplication extends AirportQApplication {
+export interface LocalQApplication extends QAirportApplication {
 
     db: DbApplication;
 

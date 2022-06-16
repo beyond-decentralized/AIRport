@@ -106,11 +106,11 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(2)
+		super(0)
 	}
 }
 
@@ -134,11 +134,11 @@ export class BaseSynchronizationConflictDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -162,10 +162,10 @@ export class BaseSynchronizationConflictValuesDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }

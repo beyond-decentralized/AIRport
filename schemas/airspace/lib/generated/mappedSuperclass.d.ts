@@ -14,6 +14,7 @@ export declare const MAPPED_SUPERCLASS: {
         isMappedSuperclass: boolean;
         isTransient: boolean;
         name: string;
+        optional: boolean;
         type: string;
         fileImports: {
             importMapByObjectAsName: {
@@ -72,6 +73,7 @@ export declare const MAPPED_SUPERCLASS: {
             isMappedSuperclass: boolean;
             isTransient: boolean;
             name: string;
+            optional: boolean;
             type: string;
             ownerEntity: any;
             nonArrayType: string;
@@ -93,6 +95,7 @@ export declare const MAPPED_SUPERCLASS: {
                     isMappedSuperclass: boolean;
                     isTransient: boolean;
                     name: string;
+                    optional: boolean;
                     type: string;
                     ownerEntity: any;
                     nonArrayType: string;
@@ -111,6 +114,7 @@ export declare const MAPPED_SUPERCLASS: {
                     isMappedSuperclass: boolean;
                     isTransient: boolean;
                     name: string;
+                    optional: boolean;
                     type: string;
                     fileImports: {
                         importMapByObjectAsName: {
@@ -331,6 +335,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         nonArrayType: string;
@@ -351,6 +356,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         nonArrayType: string;
@@ -372,6 +378,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         nonArrayType: string;
@@ -393,6 +400,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 ownerEntity: any;
                                 nonArrayType: string;
@@ -411,6 +419,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 fileImports: {
                                     importMapByObjectAsName: {
@@ -606,6 +615,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -627,6 +637,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -645,6 +656,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             ownerEntity: any;
                                             nonArrayType: string;
@@ -663,6 +675,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             fileImports: {
                                                 importMapByObjectAsName: {
@@ -759,6 +772,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -778,6 +792,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 isArray: boolean;
@@ -809,6 +824,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     isArray: boolean;
@@ -832,6 +848,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             ownerEntity: any;
                                             nonArrayType: string;
@@ -850,6 +867,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             fileImports: {
                                                 importMapByObjectAsName: {
@@ -940,6 +958,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -983,6 +1002,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         isArray: boolean;
@@ -1003,6 +1023,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 ownerEntity: any;
                                 nonArrayType: string;
@@ -1021,6 +1042,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 fileImports: {
                                     importMapByObjectAsName: {
@@ -1278,6 +1300,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -1299,6 +1322,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -1318,6 +1342,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     isArray: boolean;
@@ -1338,6 +1363,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             ownerEntity: any;
                                             nonArrayType: string;
@@ -1356,6 +1382,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             fileImports: {
                                                 importMapByObjectAsName: {
@@ -1570,6 +1597,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -1589,6 +1617,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -1610,6 +1639,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -1629,6 +1659,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 isArray: boolean;
@@ -1653,6 +1684,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                         isMappedSuperclass: boolean;
                                                         isTransient: boolean;
                                                         name: string;
+                                                        optional: boolean;
                                                         type: string;
                                                         ownerEntity: any;
                                                         nonArrayType: string;
@@ -1671,6 +1703,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                         isMappedSuperclass: boolean;
                                                         isTransient: boolean;
                                                         name: string;
+                                                        optional: boolean;
                                                         type: string;
                                                         fileImports: {
                                                             importMapByObjectAsName: {
@@ -1768,6 +1801,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                             isMappedSuperclass: boolean;
                                                             isTransient: boolean;
                                                             name: string;
+                                                            optional: boolean;
                                                             type: string;
                                                             ownerEntity: any;
                                                             nonArrayType: string;
@@ -1809,6 +1843,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     isArray: boolean;
@@ -1829,6 +1864,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             ownerEntity: any;
                                             nonArrayType: string;
@@ -1847,6 +1883,7 @@ export declare const MAPPED_SUPERCLASS: {
                                             isMappedSuperclass: boolean;
                                             isTransient: boolean;
                                             name: string;
+                                            optional: boolean;
                                             type: string;
                                             fileImports: {
                                                 importMapByObjectAsName: {
@@ -2009,6 +2046,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -2029,6 +2067,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                 isMappedSuperclass: boolean;
                                                 isTransient: boolean;
                                                 name: string;
+                                                optional: boolean;
                                                 type: string;
                                                 ownerEntity: any;
                                                 nonArrayType: string;
@@ -2057,6 +2096,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -2074,6 +2114,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     isArray: boolean;
@@ -2106,6 +2147,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         isArray: boolean;
@@ -2130,6 +2172,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 ownerEntity: any;
                                 nonArrayType: string;
@@ -2148,6 +2191,7 @@ export declare const MAPPED_SUPERCLASS: {
                                 isMappedSuperclass: boolean;
                                 isTransient: boolean;
                                 name: string;
+                                optional: boolean;
                                 type: string;
                                 fileImports: {
                                     importMapByObjectAsName: {
@@ -2296,6 +2340,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -2315,6 +2360,7 @@ export declare const MAPPED_SUPERCLASS: {
                                     isMappedSuperclass: boolean;
                                     isTransient: boolean;
                                     name: string;
+                                    optional: boolean;
                                     type: string;
                                     ownerEntity: any;
                                     nonArrayType: string;
@@ -2344,6 +2390,7 @@ export declare const MAPPED_SUPERCLASS: {
                         isMappedSuperclass: boolean;
                         isTransient: boolean;
                         name: string;
+                        optional: boolean;
                         type: string;
                         ownerEntity: any;
                         nonArrayType: string;
@@ -2376,6 +2423,7 @@ export declare const MAPPED_SUPERCLASS: {
             isMappedSuperclass: boolean;
             isTransient: boolean;
             name: string;
+            optional: boolean;
             type: string;
             ownerEntity: any;
             nonArrayType: string;

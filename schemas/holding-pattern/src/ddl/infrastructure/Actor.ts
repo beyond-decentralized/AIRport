@@ -24,11 +24,11 @@ export class Actor {
 	@GeneratedValue()
 	@DbNumber()
 	@Column({ name: 'ID' })
-	id: Actor_Id
+	id?: Actor_Id
 
 	@Column({ name: 'UU_ID', nullable: false })
 	@DbString()
-	uuId: Actor_UuId
+	uuId?: Actor_UuId
 
 	@ManyToOne()
 	@JoinColumn({
@@ -42,10 +42,10 @@ export class Actor {
 		name: 'TERMINAL_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	terminal: Terminal
+	terminal?: Terminal
 
 	@ManyToOne()
 	@JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
-	application: Application
+	application?: Application
 
 }
