@@ -4,7 +4,7 @@ import { Injected } from '@airport/direction-indicator'
 export interface IUser {
 
     // Id Properties
-    id: number;
+    id?: number;
 
     // Id Relations
 
