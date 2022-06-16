@@ -18,7 +18,7 @@ export interface AirEntityESelect extends IEntitySelectProperties, AirEntityEOpt
  * DELETE - Ids fields and relations only (required).
  */
 export interface AirEntityEId extends IEntityIdProperties {
-    actorRecordId: number | IQNumberField;
+    actorRecordId?: number | IQNumberField;
     repository: RepositoryEId;
     actor: ActorEId;
 }

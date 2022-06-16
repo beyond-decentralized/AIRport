@@ -57,9 +57,6 @@ __decorate([
 __decorate([
     Transient()
 ], AirEntity.prototype, "uuId", void 0);
-__decorate([
-    Transient()
-], AirEntity.prototype, "createdBy", void 0);
 AirEntity = __decorate([
     MappedSuperclass()
 ], AirEntity);

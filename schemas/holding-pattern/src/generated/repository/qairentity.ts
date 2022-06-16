@@ -88,7 +88,7 @@ export interface AirEntityESelect
 export interface AirEntityEId
     extends IEntityIdProperties {
 	// Id Properties
-	actorRecordId: number | IQNumberField;
+	actorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository: RepositoryEId;

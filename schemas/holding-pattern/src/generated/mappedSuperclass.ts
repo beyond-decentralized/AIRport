@@ -32,7 +32,7 @@ export const MAPPED_SUPERCLASS = [
 				"isMappedSuperclass": false,
 				"isTransient": false,
 				"name": "repository",
-				"optional": false,
+				"optional": true,
 				"type": "Repository",
 				"ownerEntity": null,
 				"nonArrayType": "Repository",
@@ -65,7 +65,7 @@ export const MAPPED_SUPERCLASS = [
 				"isMappedSuperclass": false,
 				"isTransient": false,
 				"name": "actor",
-				"optional": false,
+				"optional": true,
 				"type": "Actor",
 				"ownerEntity": null,
 				"nonArrayType": "Actor",
@@ -97,7 +97,7 @@ export const MAPPED_SUPERCLASS = [
 				"isMappedSuperclass": false,
 				"isTransient": false,
 				"name": "actorRecordId",
-				"optional": false,
+				"optional": true,
 				"type": "number",
 				"ownerEntity": null,
 				"nonArrayType": "number",
@@ -216,26 +216,13 @@ export const MAPPED_SUPERCLASS = [
 							}
 						},
 						"path": "./Repository"
-					},
-					"User": {
-						"fileImports": null,
-						"isLocal": false,
-						"objectMapByAsName": {
-							"User": {
-								"asName": "User",
-								"moduleImport": null,
-								"sourceName": "User"
-							}
-						},
-						"path": "@airport/travel-document-checkpoint"
 					}
 				},
 				"importMapByModulePath": {
 					"@airport/air-traffic-control": null,
 					"../infrastructure/Actor": null,
 					"../common": null,
-					"./Repository": null,
-					"@airport/travel-document-checkpoint": null
+					"./Repository": null
 				}
 			},
 			"properties": [
@@ -265,7 +252,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "repository",
-					"optional": false,
+					"optional": true,
 					"type": "Repository",
 					"ownerEntity": null,
 					"nonArrayType": "Repository",
@@ -298,7 +285,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actor",
-					"optional": false,
+					"optional": true,
 					"type": "Actor",
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
@@ -330,7 +317,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actorRecordId",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -358,7 +345,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "ageSuitability",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -409,7 +396,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "systemWideOperationId",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -437,7 +424,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "originalRepository",
-					"optional": false,
+					"optional": true,
 					"type": "Repository",
 					"ownerEntity": null,
 					"nonArrayType": "Repository",
@@ -465,7 +452,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "originalActor",
-					"optional": false,
+					"optional": true,
 					"type": "Actor",
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
@@ -488,7 +475,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "originalActorRecordId",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -512,23 +499,6 @@ export const MAPPED_SUPERCLASS = [
 					"ownerEntity": null,
 					"nonArrayType": "string",
 					"primitive": "string"
-				},
-				{
-					"decorators": [
-						{
-							"name": "Transient",
-							"values": []
-						}
-					],
-					"isGenerated": false,
-					"isId": false,
-					"isMappedSuperclass": false,
-					"isTransient": true,
-					"name": "createdBy",
-					"optional": true,
-					"type": "User",
-					"ownerEntity": null,
-					"nonArrayType": "User"
 				}
 			],
 			"methodSignatures": [],
@@ -637,7 +607,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "repository",
-					"optional": false,
+					"optional": true,
 					"type": "Repository",
 					"ownerEntity": null,
 					"nonArrayType": "Repository",
@@ -670,7 +640,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actor",
-					"optional": false,
+					"optional": true,
 					"type": "Actor",
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
@@ -702,7 +672,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actorRecordId",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -821,26 +791,13 @@ export const MAPPED_SUPERCLASS = [
 								}
 							},
 							"path": "./Repository"
-						},
-						"User": {
-							"fileImports": null,
-							"isLocal": false,
-							"objectMapByAsName": {
-								"User": {
-									"asName": "User",
-									"moduleImport": null,
-									"sourceName": "User"
-								}
-							},
-							"path": "@airport/travel-document-checkpoint"
 						}
 					},
 					"importMapByModulePath": {
 						"@airport/air-traffic-control": null,
 						"../infrastructure/Actor": null,
 						"../common": null,
-						"./Repository": null,
-						"@airport/travel-document-checkpoint": null
+						"./Repository": null
 					}
 				},
 				"properties": [
@@ -870,7 +827,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "repository",
-						"optional": false,
+						"optional": true,
 						"type": "Repository",
 						"ownerEntity": null,
 						"nonArrayType": "Repository",
@@ -903,7 +860,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actor",
-						"optional": false,
+						"optional": true,
 						"type": "Actor",
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
@@ -935,7 +892,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actorRecordId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -963,7 +920,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "ageSuitability",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1014,7 +971,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "systemWideOperationId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1042,7 +999,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalRepository",
-						"optional": false,
+						"optional": true,
 						"type": "Repository",
 						"ownerEntity": null,
 						"nonArrayType": "Repository",
@@ -1070,7 +1027,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalActor",
-						"optional": false,
+						"optional": true,
 						"type": "Actor",
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
@@ -1093,7 +1050,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalActorRecordId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1117,23 +1074,6 @@ export const MAPPED_SUPERCLASS = [
 						"ownerEntity": null,
 						"nonArrayType": "string",
 						"primitive": "string"
-					},
-					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
-						"isTransient": true,
-						"name": "createdBy",
-						"optional": true,
-						"type": "User",
-						"ownerEntity": null,
-						"nonArrayType": "User"
 					}
 				],
 				"methodSignatures": [],
@@ -1325,7 +1265,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "repository",
-					"optional": false,
+					"optional": true,
 					"type": "Repository",
 					"ownerEntity": null,
 					"nonArrayType": "Repository",
@@ -1358,7 +1298,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actor",
-					"optional": false,
+					"optional": true,
 					"type": "Actor",
 					"ownerEntity": null,
 					"nonArrayType": "Actor",
@@ -1390,7 +1330,7 @@ export const MAPPED_SUPERCLASS = [
 					"isMappedSuperclass": false,
 					"isTransient": false,
 					"name": "actorRecordId",
-					"optional": false,
+					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
 					"nonArrayType": "number",
@@ -1509,26 +1449,13 @@ export const MAPPED_SUPERCLASS = [
 								}
 							},
 							"path": "./Repository"
-						},
-						"User": {
-							"fileImports": null,
-							"isLocal": false,
-							"objectMapByAsName": {
-								"User": {
-									"asName": "User",
-									"moduleImport": null,
-									"sourceName": "User"
-								}
-							},
-							"path": "@airport/travel-document-checkpoint"
 						}
 					},
 					"importMapByModulePath": {
 						"@airport/air-traffic-control": null,
 						"../infrastructure/Actor": null,
 						"../common": null,
-						"./Repository": null,
-						"@airport/travel-document-checkpoint": null
+						"./Repository": null
 					}
 				},
 				"properties": [
@@ -1558,7 +1485,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "repository",
-						"optional": false,
+						"optional": true,
 						"type": "Repository",
 						"ownerEntity": null,
 						"nonArrayType": "Repository",
@@ -1591,7 +1518,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actor",
-						"optional": false,
+						"optional": true,
 						"type": "Actor",
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
@@ -1623,7 +1550,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actorRecordId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1651,7 +1578,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "ageSuitability",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1702,7 +1629,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "systemWideOperationId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1730,7 +1657,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalRepository",
-						"optional": false,
+						"optional": true,
 						"type": "Repository",
 						"ownerEntity": null,
 						"nonArrayType": "Repository",
@@ -1758,7 +1685,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalActor",
-						"optional": false,
+						"optional": true,
 						"type": "Actor",
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
@@ -1781,7 +1708,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "originalActorRecordId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -1805,23 +1732,6 @@ export const MAPPED_SUPERCLASS = [
 						"ownerEntity": null,
 						"nonArrayType": "string",
 						"primitive": "string"
-					},
-					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
-						"isTransient": true,
-						"name": "createdBy",
-						"optional": true,
-						"type": "User",
-						"ownerEntity": null,
-						"nonArrayType": "User"
 					}
 				],
 				"methodSignatures": [],
@@ -2447,7 +2357,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "repository",
-						"optional": false,
+						"optional": true,
 						"type": "Repository",
 						"ownerEntity": null,
 						"nonArrayType": "Repository",
@@ -2480,7 +2390,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actor",
-						"optional": false,
+						"optional": true,
 						"type": "Actor",
 						"ownerEntity": null,
 						"nonArrayType": "Actor",
@@ -2512,7 +2422,7 @@ export const MAPPED_SUPERCLASS = [
 						"isMappedSuperclass": false,
 						"isTransient": false,
 						"name": "actorRecordId",
-						"optional": false,
+						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
 						"nonArrayType": "number",
@@ -2631,26 +2541,13 @@ export const MAPPED_SUPERCLASS = [
 									}
 								},
 								"path": "./Repository"
-							},
-							"User": {
-								"fileImports": null,
-								"isLocal": false,
-								"objectMapByAsName": {
-									"User": {
-										"asName": "User",
-										"moduleImport": null,
-										"sourceName": "User"
-									}
-								},
-								"path": "@airport/travel-document-checkpoint"
 							}
 						},
 						"importMapByModulePath": {
 							"@airport/air-traffic-control": null,
 							"../infrastructure/Actor": null,
 							"../common": null,
-							"./Repository": null,
-							"@airport/travel-document-checkpoint": null
+							"./Repository": null
 						}
 					},
 					"properties": [
@@ -2680,7 +2577,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "repository",
-							"optional": false,
+							"optional": true,
 							"type": "Repository",
 							"ownerEntity": null,
 							"nonArrayType": "Repository",
@@ -2713,7 +2610,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "actor",
-							"optional": false,
+							"optional": true,
 							"type": "Actor",
 							"ownerEntity": null,
 							"nonArrayType": "Actor",
@@ -2745,7 +2642,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "actorRecordId",
-							"optional": false,
+							"optional": true,
 							"type": "number",
 							"ownerEntity": null,
 							"nonArrayType": "number",
@@ -2773,7 +2670,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "ageSuitability",
-							"optional": false,
+							"optional": true,
 							"type": "number",
 							"ownerEntity": null,
 							"nonArrayType": "number",
@@ -2824,7 +2721,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "systemWideOperationId",
-							"optional": false,
+							"optional": true,
 							"type": "number",
 							"ownerEntity": null,
 							"nonArrayType": "number",
@@ -2852,7 +2749,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "originalRepository",
-							"optional": false,
+							"optional": true,
 							"type": "Repository",
 							"ownerEntity": null,
 							"nonArrayType": "Repository",
@@ -2880,7 +2777,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "originalActor",
-							"optional": false,
+							"optional": true,
 							"type": "Actor",
 							"ownerEntity": null,
 							"nonArrayType": "Actor",
@@ -2903,7 +2800,7 @@ export const MAPPED_SUPERCLASS = [
 							"isMappedSuperclass": false,
 							"isTransient": false,
 							"name": "originalActorRecordId",
-							"optional": false,
+							"optional": true,
 							"type": "number",
 							"ownerEntity": null,
 							"nonArrayType": "number",
@@ -2927,23 +2824,6 @@ export const MAPPED_SUPERCLASS = [
 							"ownerEntity": null,
 							"nonArrayType": "string",
 							"primitive": "string"
-						},
-						{
-							"decorators": [
-								{
-									"name": "Transient",
-									"values": []
-								}
-							],
-							"isGenerated": false,
-							"isId": false,
-							"isMappedSuperclass": false,
-							"isTransient": true,
-							"name": "createdBy",
-							"optional": true,
-							"type": "User",
-							"ownerEntity": null,
-							"nonArrayType": "User"
 						}
 					],
 					"methodSignatures": [],

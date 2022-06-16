@@ -12,7 +12,6 @@ import {
 import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
-import { User } from '@airport/travel-document-checkpoint'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -29,7 +28,7 @@ export abstract class AirEntity {
 		name: 'REPOSITORY_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	repository: Repository
+	repository?: Repository
 
 	@Id()
 	@ManyToOne()
@@ -37,16 +36,16 @@ export abstract class AirEntity {
 		name: 'ACTOR_ID', referencedColumnName: 'ID',
 		nullable: false
 	})
-	actor: Actor
+	actor?: Actor
 
 	@Id()
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@GeneratedValue()
-	actorRecordId: AirEntity_ActorRecordId
+	actorRecordId?: AirEntity_ActorRecordId
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability: number
+	ageSuitability?: number
 
 	@Column({ name: 'CREATED_AT' })
 	@DbDate()
@@ -57,7 +56,7 @@ export abstract class AirEntity {
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
 	// a marker to find the new values after the update (and before saving them to history).
 	@Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
-	systemWideOperationId: AirEntity_SystemWideOperationId
+	systemWideOperationId?: AirEntity_SystemWideOperationId
 
 	// A record may actually be copied from another repository
 	// via a @ManytoOne dependency.  If that is the case
@@ -67,21 +66,18 @@ export abstract class AirEntity {
 	@JoinColumn({
 		name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
 	})
-	originalRepository: Repository
+	originalRepository?: Repository
 
 	@ManyToOne()
 	@JoinColumn({
 		name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
 	})
-	originalActor: Actor
+	originalActor?: Actor
 
 	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
-	originalActorRecordId: AirEntity_ActorRecordId
+	originalActorRecordId?: AirEntity_ActorRecordId
 
 	@Transient()
 	uuId?: string
-
-	@Transient()
-	createdBy?: User
 
 }

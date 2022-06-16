@@ -1,7 +1,4 @@
 import {
-	User,
-} from '@airport/travel-document-checkpoint';
-import {
 	IRepository,
 } from './repository';
 import {
@@ -17,7 +14,7 @@ import {
 export interface IAirEntity {
 	
 	// Id Properties
-	actorRecordId: number;
+	actorRecordId?: number;
 
 	// Id Relations
 	repository: IRepository;
@@ -35,7 +32,6 @@ export interface IAirEntity {
 
 	// Transient Properties
 	uuId?: string;
-	createdBy?: User;
 
 	// Public Methods
 	
