@@ -10,14 +10,14 @@ export interface IRootTransaction {
     numberOfOperations: number;
 }
 export interface IUser {
-    id: number;
+    id?: number;
     email?: string;
     passwordHash?: string;
     username?: string;
     uuId?: string;
 }
 export interface IActor {
-    id: number;
+    id?: number;
     uuId?: string;
     user?: IUser;
 }

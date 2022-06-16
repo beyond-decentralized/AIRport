@@ -15,7 +15,7 @@ export interface IRootTransaction {
 export interface IUser {
 	
 	// Id Properties
-	id: number;
+	id?: number;
 
 	// Id Relations
 
@@ -36,7 +36,7 @@ export interface IUser {
 export interface IActor {
 	
 	// Id Properties
-	id: number;
+	id?: number;
 
 	// Id Relations
 
