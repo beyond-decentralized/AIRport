@@ -7,14 +7,14 @@ export interface IUser {
     uuId?: string;
 }
 export interface AirEntityUuId {
-    repository: {
+    repository?: {
         uuId?: string;
     };
-    actor: {
+    actor?: {
         uuId?: string;
         user?: IUser;
     };
-    actorRecordId: number;
+    actorRecordId?: number;
 }
 export interface IAirEntityUtils {
     getCreatedBy(idObject: AirEntityUuId): IUser;

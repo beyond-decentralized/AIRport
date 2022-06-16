@@ -25,14 +25,14 @@ export interface IUser {
 
 export interface AirEntityUuId {
 
-    repository: {
+    repository?: {
         uuId?: string
     },
-    actor: {
+    actor?: {
         uuId?: string,
         user?: IUser
     },
-    actorRecordId: number
+    actorRecordId?: number
 
 }
 
