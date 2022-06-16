@@ -1,18 +1,5 @@
 /* eslint-disable */
 import {
-	Agt,
-} from '../ddl/agt';
-import {
-	AgtESelect,
-	AgtECreateColumns,
-	AgtECreateProperties,
-	AgtEUpdateColumns,
-	AgtEUpdateProperties,
-	AgtEId,
-	AgtGraph,
-	QAgt,
-} from './qagt';
-import {
 	Continent,
 } from '../ddl/continent';
 import {
@@ -52,19 +39,6 @@ import {
 	QTerminal,
 } from './qterminal';
 import {
-	TerminalAgt,
-} from '../ddl/terminalagt';
-import {
-	TerminalAgtESelect,
-	TerminalAgtECreateColumns,
-	TerminalAgtECreateProperties,
-	TerminalAgtEUpdateColumns,
-	TerminalAgtEUpdateProperties,
-	TerminalAgtEId,
-	TerminalAgtGraph,
-	QTerminalAgt,
-} from './qterminalagt';
-import {
 	User,
 } from '../ddl/user';
 import {
@@ -90,19 +64,6 @@ import {
 	UserTerminalGraph,
 	QUserTerminal,
 } from './quserterminal';
-import {
-	UserTerminalAgt,
-} from '../ddl/userterminalagt';
-import {
-	UserTerminalAgtESelect,
-	UserTerminalAgtECreateColumns,
-	UserTerminalAgtECreateProperties,
-	UserTerminalAgtEUpdateColumns,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtEId,
-	UserTerminalAgtGraph,
-	QUserTerminalAgt,
-} from './quserterminalagt';
 import {
 	IDao,
 	IEntityCascadeGraph,
@@ -152,34 +113,6 @@ export class SQDIDao<Entity,
 }
 
 
-export interface IBaseAgtDao
-  extends IDao<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
-}
-
-export class BaseAgtDao
-  extends SQDIDao<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
-	implements IBaseAgtDao {
-	
-	static Find      = new DaoQueryDecorators<AgtESelect>();
-	static FindOne   = new DaoQueryDecorators<AgtESelect>();
-	static Search    = new DaoQueryDecorators<AgtESelect>();
-	static SearchOne = new DaoQueryDecorators<AgtESelect>();
-	static Save(
-		config: AgtGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<AgtGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(7)
-	}
-	
-	constructor() {
-		super(7)
-	}
-}
-
-
 export interface IBaseContinentDao
   extends IDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
@@ -199,11 +132,11 @@ export class BaseContinentDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(0)
+		super(2)
 	}
 }
 
@@ -255,39 +188,11 @@ export class BaseTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(5)
-	}
-}
-
-
-export interface IBaseTerminalAgtDao
-  extends IDao<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
-}
-
-export class BaseTerminalAgtDao
-  extends SQDIDao<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
-	implements IBaseTerminalAgtDao {
-	
-	static Find      = new DaoQueryDecorators<TerminalAgtESelect>();
-	static FindOne   = new DaoQueryDecorators<TerminalAgtESelect>();
-	static Search    = new DaoQueryDecorators<TerminalAgtESelect>();
-	static SearchOne = new DaoQueryDecorators<TerminalAgtESelect>();
-	static Save(
-		config: TerminalAgtGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<TerminalAgtGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(6)
-	}
-	
-	constructor() {
-		super(6)
+		super(3)
 	}
 }
 
@@ -311,11 +216,11 @@ export class BaseUserDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(4)
+		super(0)
 	}
 }
 
@@ -339,38 +244,10 @@ export class BaseUserTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseUserTerminalAgtDao
-  extends IDao<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
-}
-
-export class BaseUserTerminalAgtDao
-  extends SQDIDao<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
-	implements IBaseUserTerminalAgtDao {
-	
-	static Find      = new DaoQueryDecorators<UserTerminalAgtESelect>();
-	static FindOne   = new DaoQueryDecorators<UserTerminalAgtESelect>();
-	static Search    = new DaoQueryDecorators<UserTerminalAgtESelect>();
-	static SearchOne = new DaoQueryDecorators<UserTerminalAgtESelect>();
-	static Save(
-		config: UserTerminalAgtGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<UserTerminalAgtGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(3)
-	}
-	
-	constructor() {
-		super(3)
+		super(4)
 	}
 }

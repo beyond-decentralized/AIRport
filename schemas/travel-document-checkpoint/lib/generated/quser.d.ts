@@ -13,7 +13,7 @@ export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
  * DELETE - Ids fields and relations only (required).
  */
 export interface UserEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    id?: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).

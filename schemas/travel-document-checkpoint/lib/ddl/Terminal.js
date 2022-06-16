@@ -13,12 +13,6 @@ import { Column, DbBoolean, DbNumber, DbString, Entity, GeneratedValue, Id, Join
 let Terminal = class Terminal {
     constructor() {
         this.isLocal = false;
-        // @OneToMany({ mappedBy: 'terminal' })
-        // terminalAgts: TerminalAgt[]
-        // @OneToMany({ mappedBy: 'terminal' })
-        // userTerminal: UserTerminal[]
-        // @OneToMany({ mappedBy: 'terminal' })
-        // userTerminalAgt: UserTerminalAgt[]
     }
 };
 __decorate([

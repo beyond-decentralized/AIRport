@@ -69,7 +69,7 @@ export class QPropertyBuilder
 			}
 		}
 
-		return `${name}${optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`
+		return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`
 	}
 
 }

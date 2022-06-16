@@ -59,7 +59,7 @@ export interface UserESelect
 export interface UserEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
 

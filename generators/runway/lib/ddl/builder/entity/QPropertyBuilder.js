@@ -46,7 +46,7 @@ export class QPropertyBuilder {
                 propertyType = prop.type;
             }
         }
-        return `${name}${optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`;
+        return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`;
     }
 }
 //# sourceMappingURL=QPropertyBuilder.js.map

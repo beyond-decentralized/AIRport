@@ -93,6 +93,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
     let isTransient = false;
     const decorators = [];
     let declaration;
+    let optional;
     if (declarations && declarations.length === 1) {
         declaration = symbol.declarations[0];
         const tsDecorators = declaration.decorators;
@@ -128,6 +129,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
     // if (flags & 64 /* WriteTypeArgumentsOfSignature */) {
     let type = globalThis.checker.typeToString(globalThis.checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration), parent);
     if (declaration) {
+        optional = !!declaration.questionToken;
         if (type === 'any' && declaration) {
             if (declaration.type
                 && declaration.type.typeName) {
@@ -175,6 +177,7 @@ function serializeSymbol(symbol, parent = symbol.parent) {
         isMappedSuperclass,
         isTransient,
         name: symbol.getName(),
+        optional,
         // documentation:
         // tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
         type

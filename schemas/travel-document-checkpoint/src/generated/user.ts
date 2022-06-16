@@ -8,7 +8,7 @@
 export interface IUser {
 	
 	// Id Properties
-	id: number;
+	id?: number;
 
 	// Id Relations
 

@@ -1,14 +1,11 @@
 import { airApi } from '@airport/aviation-communication';
-import { Agt, Continent, Country, Terminal, TerminalAgt, User, UserTerminal, UserTerminalAgt } from '../ddl/ddl';
+import { Continent, Country, Terminal, User, UserTerminal } from '../ddl/ddl';
 const __constructors__ = {
-    Agt: Agt,
     Continent: Continent,
     Country: Country,
     Terminal: Terminal,
-    TerminalAgt: TerminalAgt,
     User: User,
-    UserTerminal: UserTerminal,
-    UserTerminalAgt: UserTerminalAgt
+    UserTerminal: UserTerminal
 };
 export const Q_APPLICATION = {
     __constructors__,

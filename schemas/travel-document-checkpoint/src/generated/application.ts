@@ -43,577 +43,6 @@ export const APPLICATION = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						}
-					],
-					"index": 0,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "Continent",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "name",
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"name": "countries",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "continent"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 2
-							},
-							"relationTableIndex": 1,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "CONTINENTS",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
-									"oneRelationIndex": 0,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "CONTINENT_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						}
-					],
-					"index": 1,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "Country",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "name",
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"name": "continent",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"name": "users",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 2
-							},
-							"relationTableIndex": 0,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "country"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 3
-							},
-							"relationTableIndex": 4,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "COUNTRIES",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "USER_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 5,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "TERMINAL_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						},
-						{
-							"index": 1
-						}
-					],
-					"index": 2,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "UserTerminal",
-					"properties": [
-						{
-							"index": 0,
-							"isId": true,
-							"name": "user",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"name": "terminal",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 0
-							},
-							"relationTableIndex": 4,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 1
-							},
-							"relationTableIndex": 5,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "USER_TERMINAL",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 2,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 7,
-									"oneRelationIndex": 1,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								},
-								{
-									"manyRelationIndex": 3,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 6,
-									"oneRelationIndex": 2,
-									"oneColumnIndex": 2,
-									"sinceVersion": 1
-								}
-							],
-							"name": "AGT_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "PASSWORD",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 2
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 3,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 0,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "USER_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 3
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 4,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 5,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								},
-								{
-									"manyRelationIndex": 3,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 6,
-									"oneRelationIndex": 2,
-									"oneColumnIndex": 1,
-									"sinceVersion": 1
-								}
-							],
-							"name": "TERMINAL_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 4
-								},
-								{
-									"index": 6
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						},
-						{
-							"index": 1
-						}
-					],
-					"index": 3,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "UserTerminalAgt",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": true,
-							"name": "agtId",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 2
-							},
-							"index": 2,
-							"isId": false,
-							"name": "password",
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"name": "user",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 4,
-							"isId": false,
-							"name": "terminal",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 5,
-							"isId": false,
-							"name": "agt",
-							"relationRef": {
-								"index": 2
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 6,
-							"isId": false,
-							"name": "terminalAgt",
-							"relationRef": {
-								"index": 3
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 3
-							},
-							"relationTableIndex": 4,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 4
-							},
-							"relationTableIndex": 5,
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 5
-							},
-							"relationTableIndex": 7,
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 6
-							},
-							"relationTableIndex": 6,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "USER_TERMINAL_AGT",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
 							"name": "EMAIL",
 							"notNull": false,
 							"propertyRefs": [
@@ -686,7 +115,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 4,
+					"index": 0,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "User",
@@ -773,6 +202,228 @@ export const APPLICATION = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 2,
+									"oneRelationIndex": 0,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "CONTINENT_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 1,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "Country",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "name",
+							"sinceVersion": 1
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"name": "continent",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 3,
+							"isId": false,
+							"name": "users",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 2
+							},
+							"relationTableIndex": 2,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "country"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 3
+							},
+							"relationTableIndex": 0,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "COUNTRIES",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": true,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 2,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "Continent",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "name",
+							"sinceVersion": 1
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"name": "countries",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "continent"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 2
+							},
+							"relationTableIndex": 1,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "CONTINENTS",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": true,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
 							"name": "UUID",
 							"notNull": true,
 							"propertyRefs": [
@@ -804,7 +455,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -825,7 +476,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 5,
+					"index": 3,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "Terminal",
@@ -875,7 +526,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						}
 					],
@@ -896,25 +547,33 @@ export const APPLICATION = {
 						{
 							"index": 0,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "PASSWORD",
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 0,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "USER_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 2
+									"index": 0
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
+							"type": "NUMBER"
 						},
 						{
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 0,
+									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 5,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -923,199 +582,39 @@ export const APPLICATION = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 2,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 1,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 7,
-									"oneRelationIndex": 0,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "AGT_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
 									"index": 1
 								}
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 1
-						},
-						{
-							"index": 2
-						}
-					],
-					"index": 6,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "TerminalAgt",
-					"properties": [
-						{
-							"index": 0,
-							"isId": true,
-							"name": "terminal",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"name": "agt",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 2,
-							"isId": false,
-							"name": "password",
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"name": "userTerminalAgts",
-							"relationRef": {
-								"index": 2
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 0
-							},
-							"relationTableIndex": 5,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": true,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 1
-							},
-							"relationTableIndex": 7,
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "terminalAgt"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 3
-							},
-							"relationTableIndex": 3,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "TERMINAL_AGTS",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "ADDRESS",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
 						{
 							"index": 0
+						},
+						{
+							"index": 1
 						}
 					],
-					"index": 7,
+					"index": 4,
 					"isLocal": true,
 					"isAirEntity": false,
-					"name": "Agt",
+					"name": "UserTerminal",
 					"properties": [
 						{
-							"columnRef": {
-								"index": 0
-							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "address",
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"name": "terminalAgts",
+							"name": "user",
 							"relationRef": {
 								"index": 0
 							},
 							"sinceVersion": 1
 						},
 						{
-							"index": 3,
-							"isId": false,
-							"name": "userTerminalAgts",
+							"index": 1,
+							"isId": true,
+							"name": "terminal",
 							"relationRef": {
 								"index": 1
 							},
@@ -1125,26 +624,20 @@ export const APPLICATION = {
 					"relations": [
 						{
 							"index": 0,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "agt"
-							},
-							"relationType": "ONE_TO_MANY",
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 2
+								"index": 0
 							},
-							"relationTableIndex": 6,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						},
 						{
 							"index": 1,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "agt"
-							},
-							"relationType": "ONE_TO_MANY",
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 3
+								"index": 1
 							},
 							"relationTableIndex": 3,
 							"sinceVersion": 1
@@ -1152,6 +645,7 @@ export const APPLICATION = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
+						"name": "USER_TERMINAL",
 						"columnIndexes": []
 					}
 				}

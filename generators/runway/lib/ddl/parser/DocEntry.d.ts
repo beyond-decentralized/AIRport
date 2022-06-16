@@ -19,6 +19,7 @@ export interface DocEntry {
     isMappedSuperclass?: boolean;
     isTransient?: boolean;
     name?: string;
+    optional?: boolean;
     parameters?: DocEntry[];
     properties?: PropertyDocEntry[];
     returnType?: string;

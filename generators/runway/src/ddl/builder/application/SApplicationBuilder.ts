@@ -156,7 +156,24 @@ export class SApplicationBuilder {
 					break;
 				}
 				case file.TABLE: {
-					const tableName = decorator.values[0].name
+					const decoratorValue = decorator.values[0];
+					if (!decoratorValue) {
+						throw new Error(`@Table decorator is missing property definition object:
+@Entity()
+@Table({ name: "YOUR_TABLE_NAME"})
+class ${entityCandidate.docEntry.name}
+						
+`)
+					}
+					const tableName = decoratorValue.name
+					if (!decoratorValue) {
+						throw new Error(`@Table decorator is missing name property:
+@Entity()
+@Table({ name: "YOUR_TABLE_NAME"})
+class ${entityCandidate.docEntry.name}
+						
+`)
+					}
 					if (!/^[A-Z]/.test(tableName)) {
 						throw new Error(`
 Table name does not start with an uppercase letter:
@@ -637,6 +654,7 @@ class ${entityCandidate.docEntry.name}
 			index: propertyIndex,
 			isId: isIdProperty,
 			name: aProperty.name,
+			optional: aProperty.optional,
 			relation
 		});
 	}
@@ -685,6 +703,7 @@ class ${entityCandidate.docEntry.name}
 				index: propertyIndex,
 				isId: isIdProperty,
 				name: aProperty.name,
+				optional: aProperty.optional,
 				relation: undefined
 			});
 		}

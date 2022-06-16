@@ -1,18 +1,5 @@
 /* eslint-disable */
 import {
-	Agt,
-} from '../ddl/agt';
-import {
-	AgtESelect,
-	AgtECreateColumns,
-	AgtECreateProperties,
-	AgtEUpdateColumns,
-	AgtEUpdateProperties,
-	AgtEId,
-	AgtGraph,
-	QAgt,
-} from './qagt';
-import {
 	Continent,
 } from '../ddl/continent';
 import {
@@ -52,19 +39,6 @@ import {
 	QTerminal,
 } from './qterminal';
 import {
-	TerminalAgt,
-} from '../ddl/terminalagt';
-import {
-	TerminalAgtESelect,
-	TerminalAgtECreateColumns,
-	TerminalAgtECreateProperties,
-	TerminalAgtEUpdateColumns,
-	TerminalAgtEUpdateProperties,
-	TerminalAgtEId,
-	TerminalAgtGraph,
-	QTerminalAgt,
-} from './qterminalagt';
-import {
 	User,
 } from '../ddl/user';
 import {
@@ -90,19 +64,6 @@ import {
 	UserTerminalGraph,
 	QUserTerminal,
 } from './quserterminal';
-import {
-	UserTerminalAgt,
-} from '../ddl/userterminalagt';
-import {
-	UserTerminalAgtESelect,
-	UserTerminalAgtECreateColumns,
-	UserTerminalAgtECreateProperties,
-	UserTerminalAgtEUpdateColumns,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtEId,
-	UserTerminalAgtGraph,
-	QUserTerminalAgt,
-} from './quserterminalagt';
 import {
 	IDuo,
 	IEntityCascadeGraph,
@@ -151,24 +112,6 @@ export class SQDIDuo<Entity,
 }
 
 
-export interface IBaseAgtDuo
-  extends IDuo<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt> {
-}
-
-export class BaseAgtDuo
-  extends SQDIDuo<Agt, AgtESelect, AgtECreateProperties, AgtEUpdateColumns, AgtEUpdateProperties, AgtEId, AgtGraph, QAgt>
-	implements IBaseAgtDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(7)
-	}
-	
-	constructor() {
-		super(7)
-	}
-}
-
-
 export interface IBaseContinentDuo
   extends IDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
@@ -178,11 +121,11 @@ export class BaseContinentDuo
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(0)
+		super(2)
 	}
 }
 
@@ -214,29 +157,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(5)
-	}
-}
-
-
-export interface IBaseTerminalAgtDuo
-  extends IDuo<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt> {
-}
-
-export class BaseTerminalAgtDuo
-  extends SQDIDuo<TerminalAgt, TerminalAgtESelect, TerminalAgtECreateProperties, TerminalAgtEUpdateColumns, TerminalAgtEUpdateProperties, TerminalAgtEId, TerminalAgtGraph, QTerminalAgt>
-	implements IBaseTerminalAgtDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(6)
-	}
-	
-	constructor() {
-		super(6)
+		super(3)
 	}
 }
 
@@ -250,11 +175,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(4)
+		super(0)
 	}
 }
 
@@ -268,28 +193,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
-	}
-}
-
-
-export interface IBaseUserTerminalAgtDuo
-  extends IDuo<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt> {
-}
-
-export class BaseUserTerminalAgtDuo
-  extends SQDIDuo<UserTerminalAgt, UserTerminalAgtESelect, UserTerminalAgtECreateProperties, UserTerminalAgtEUpdateColumns, UserTerminalAgtEUpdateProperties, UserTerminalAgtEId, UserTerminalAgtGraph, QUserTerminalAgt>
-	implements IBaseUserTerminalAgtDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(3)
-	}
-	
-	constructor() {
-		super(3)
+		super(4)
 	}
 }

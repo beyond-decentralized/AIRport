@@ -34,6 +34,11 @@ export interface SProperty {
 	name: string;
 
 	/**
+	 * Is the property optional (does it have the ? character next to it's name)
+	 */
+	optional: boolean;
+
+	/**
 	 * Relation (if any) represented by the property.
 	 */
 	relation?: SRelation | undefined;

@@ -129,6 +129,7 @@ function serializeSymbol(
 	let isTransient = false
 	const decorators = []
 	let declaration
+	let optional
 	if (declarations && declarations.length === 1) {
 		declaration = symbol.declarations[0]
 		const tsDecorators = declaration.decorators
@@ -172,6 +173,7 @@ function serializeSymbol(
 	)
 
 	if (declaration) {
+		optional = !!declaration.questionToken
 		if (type === 'any' && declaration) {
 			if (declaration.type
 				&& declaration.type.typeName) {
@@ -213,6 +215,7 @@ function serializeSymbol(
 		isMappedSuperclass,
 		isTransient,
 		name: symbol.getName(),
+		optional,
 		// documentation:
 		// tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
 		type

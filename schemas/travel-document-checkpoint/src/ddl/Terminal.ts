@@ -11,10 +11,7 @@ import {
 	OneToMany,
 	Table
 } from '@airport/air-traffic-control'
-import { TerminalAgt } from './TerminalAgt'
 import { User } from './User'
-import { UserTerminal } from './UserTerminal'
-import { UserTerminalAgt } from './UserTerminalAgt'
 
 export type TmTerminal_Id = number;
 export type Terminal_IsLocal = boolean;
@@ -51,14 +48,5 @@ export class Terminal {
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
 	isLocal: Terminal_IsLocal = false
-
-	// @OneToMany({ mappedBy: 'terminal' })
-	// terminalAgts: TerminalAgt[]
-
-	// @OneToMany({ mappedBy: 'terminal' })
-	// userTerminal: UserTerminal[]
-
-	// @OneToMany({ mappedBy: 'terminal' })
-	// userTerminalAgt: UserTerminalAgt[]
 
 }

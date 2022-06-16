@@ -9,9 +9,6 @@ import {
 	ManyToOne,
 	OneToMany
 } from '@airport/air-traffic-control'
-import { Country } from './Country';
-import { UserTerminal } from './UserTerminal'
-import { UserTerminalAgt } from './UserTerminalAgt'
 
 export type User_Id = number;
 export type User_UuId = string;
@@ -25,7 +22,7 @@ export class User {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: User_Id;
+	id?: User_Id;
 
 	@Column({ name: "EMAIL" })
 	@DbString()
@@ -33,11 +30,11 @@ export class User {
 
 	@Column({ name: "PASSWORD_HASH" })
 	@DbString()
-	passwordHash: User_PasswordHash
+	passwordHash?: User_PasswordHash
 
 	@Column({ name: "RANKING" })
 	@DbNumber()
-	ranking: number
+	ranking?: number
 
 	@Column({ name: "USERNAME" })
 	@DbString()
@@ -45,12 +42,6 @@ export class User {
 
 	@Column({ name: "UUID", nullable: false })
 	@DbString()
-	uuId: User_UuId;
-
-	// @OneToMany({ mappedBy: 'user' })
-	// userTerminal: UserTerminal[]
-
-	// @OneToMany({ mappedBy: 'user' })
-	// userTerminalAgts: UserTerminalAgt[]
+	uuId?: User_UuId;
 
 }
