@@ -31,16 +31,15 @@ export interface IRepository {
     owner?: IUser;
 }
 export interface IAirEntity {
-    actorRecordId: number;
-    repository: IRepository;
-    actor: IActor;
+    actorRecordId?: number;
+    repository?: IRepository;
+    actor?: IActor;
     ageSuitability?: number;
     createdAt?: Date;
     systemWideOperationId?: number;
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    createdBy?: IUser;
     id?: string;
     uuId?: string;
 }

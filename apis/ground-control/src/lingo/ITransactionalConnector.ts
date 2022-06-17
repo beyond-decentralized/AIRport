@@ -77,11 +77,11 @@ export interface IRepository {
 
 export interface IAirEntity {
 	// Id Properties
-	actorRecordId: number;
+	actorRecordId?: number;
 
 	// Id Relations
-	repository: IRepository;
-	actor: IActor;
+	repository?: IRepository;
+	actor?: IActor;
 
 	// Non-Id Properties
 	ageSuitability?: number;
@@ -94,7 +94,6 @@ export interface IAirEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	createdBy?: IUser
 	id?: string
 	uuId?: string
 
