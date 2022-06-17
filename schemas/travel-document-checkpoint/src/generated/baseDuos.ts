@@ -1,5 +1,18 @@
 /* eslint-disable */
 import {
+	Client,
+} from '../ddl/client';
+import {
+	ClientESelect,
+	ClientECreateColumns,
+	ClientECreateProperties,
+	ClientEUpdateColumns,
+	ClientEUpdateProperties,
+	ClientEId,
+	ClientGraph,
+	QClient,
+} from './qclient';
+import {
 	Continent,
 } from '../ddl/continent';
 import {
@@ -112,6 +125,24 @@ export class SQDIDuo<Entity,
 }
 
 
+export interface IBaseClientDuo
+  extends IDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
+}
+
+export class BaseClientDuo
+  extends SQDIDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient>
+	implements IBaseClientDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
 export interface IBaseContinentDuo
   extends IDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
@@ -121,11 +152,11 @@ export class BaseContinentDuo
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(2)
+		super(3)
 	}
 }
 
@@ -139,11 +170,11 @@ export class BaseCountryDuo
 	implements IBaseCountryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -157,11 +188,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -175,11 +206,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }
 
@@ -193,10 +224,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }

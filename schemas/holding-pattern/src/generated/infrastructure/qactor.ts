@@ -42,6 +42,15 @@ import {
 	QTerminalQId,
 	QTerminalQRelation,
 	ITerminal,
+	ClientGraph,
+	ClientEId,
+	ClientEOptionalId,
+	ClientEUpdateProperties,
+	ClientESelect,
+	QClient,
+	QClientQId,
+	QClientQRelation,
+	IClient,
 } from '@airport/travel-document-checkpoint';
 import {
 	ApplicationGraph,
@@ -80,6 +89,7 @@ export interface ActorESelect
 	user?: UserESelect;
 	terminal?: TerminalESelect;
 	application?: ApplicationESelect;
+	client?: ClientESelect;
 
 }
 
@@ -118,6 +128,7 @@ export interface ActorEUpdateProperties
 	user?: UserEOptionalId;
 	terminal?: TerminalEOptionalId;
 	application?: ApplicationEOptionalId;
+	client?: ClientEOptionalId;
 
 }
 
@@ -135,6 +146,7 @@ export interface ActorGraph
 	user?: UserGraph;
 	terminal?: TerminalGraph;
 	application?: ApplicationGraph;
+	client?: ClientGraph;
 
 }
 
@@ -148,6 +160,7 @@ export interface ActorEUpdateColumns
 	USER_ID?: number | IQNumberField;
 	TERMINAL_ID?: number | IQNumberField;
 	APPLICATION_INDEX?: number | IQNumberField;
+	CLIENT_ID?: number | IQNumberField;
 
 }
 
@@ -189,6 +202,7 @@ export interface QActor extends IQEntity
 	user: QUserQRelation;
 	terminal: QTerminalQRelation;
 	application: QApplicationQRelation;
+	client: QClientQRelation;
 
 }
 

@@ -35,6 +35,13 @@ __decorate([
     ManyToOne(),
     JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
 ], Actor.prototype, "application", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: 'CLIENT_ID', referencedColumnName: 'ID',
+        nullable: true
+    })
+], Actor.prototype, "client", void 0);
 Actor = __decorate([
     Entity()
 ], Actor);

@@ -6,12 +6,14 @@ import {
     DbApplication,
     EntityId,
 }                      from '@airport/ground-control';
+import { QClient } from './qclient';
 import { QContinent } from './qcontinent';
 import { QCountry } from './qcountry';
 import { QTerminal } from './qterminal';
 import { QUser } from './quser';
 import { QUserTerminal } from './quserterminal';
 import {
+  Client,
   Continent,
   Country,
   Terminal,
@@ -23,7 +25,8 @@ export interface LocalQApplication extends QApplication {
 
     db: DbApplication;
 
-  Continent: QContinent;
+  Client: QClient;
+	Continent: QContinent;
 	Country: QCountry;
 	Terminal: QTerminal;
 	User: QUser;
@@ -32,6 +35,7 @@ export interface LocalQApplication extends QApplication {
 }
 
 const __constructors__ = {
+	Client: Client,
 	Continent: Continent,
 	Country: Country,
 	Terminal: Terminal,

@@ -6,31 +6,7 @@ export class SQDIDuo extends Duo {
         super(dbEntityId, Q);
     }
 }
-export class BaseContinentDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(2);
-    }
-    constructor() {
-        super(2);
-    }
-}
-export class BaseCountryDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(1);
-    }
-    constructor() {
-        super(1);
-    }
-}
-export class BaseTerminalDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(3);
-    }
-    constructor() {
-        super(3);
-    }
-}
-export class BaseUserDuo extends SQDIDuo {
+export class BaseClientDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(0);
     }
@@ -38,12 +14,44 @@ export class BaseUserDuo extends SQDIDuo {
         super(0);
     }
 }
-export class BaseUserTerminalDuo extends SQDIDuo {
+export class BaseContinentDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+export class BaseCountryDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
+    }
+}
+export class BaseTerminalDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(4);
     }
     constructor() {
         super(4);
+    }
+}
+export class BaseUserDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+export class BaseUserTerminalDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(5);
+    }
+    constructor() {
+        super(5);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

@@ -27,6 +27,95 @@ export const APPLICATION = {
                     "columns": [
                         {
                             "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "DOMAIN",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "UUID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 0,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "Client",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "id",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 1,
+                            "isId": false,
+                            "name": "domain",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 2,
+                            "isId": false,
+                            "name": "uuId",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
                             "name": "ID",
@@ -115,7 +204,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 0,
+                    "index": 1,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "User",
@@ -219,7 +308,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 3,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -241,7 +330,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 1,
+                    "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Country",
@@ -291,7 +380,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 3,
                             "sinceVersion": 1
                         },
                         {
@@ -304,7 +393,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -350,7 +439,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 3,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Continent",
@@ -394,7 +483,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 2,
                             "sinceVersion": 1
                         }
                     ],
@@ -455,7 +544,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -476,7 +565,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 3,
+                    "index": 4,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Terminal",
@@ -526,7 +615,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -551,7 +640,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -573,7 +662,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -597,7 +686,7 @@ export const APPLICATION = {
                             "index": 1
                         }
                     ],
-                    "index": 4,
+                    "index": 5,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "UserTerminal",
@@ -629,7 +718,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         },
                         {
@@ -639,7 +728,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],

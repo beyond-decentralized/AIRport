@@ -1,5 +1,6 @@
 import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
+import { QClient } from './qclient';
 import { QContinent } from './qcontinent';
 import { QCountry } from './qcountry';
 import { QTerminal } from './qterminal';
@@ -7,6 +8,7 @@ import { QUser } from './quser';
 import { QUserTerminal } from './quserterminal';
 export interface LocalQApplication extends QApplication {
     db: DbApplication;
+    Client: QClient;
     Continent: QContinent;
     Country: QCountry;
     Terminal: QTerminal;

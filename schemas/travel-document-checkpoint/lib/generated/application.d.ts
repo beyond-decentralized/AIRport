@@ -56,6 +56,43 @@ export declare const APPLICATION: {
                 name?: undefined;
                 propertyIndexes?: undefined;
             };
+            operations?: undefined;
+        } | {
+            columns: {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: any[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            }[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isAirEntity: boolean;
+            name: string;
+            properties: {
+                columnRef: {
+                    index: number;
+                };
+                index: number;
+                isId: boolean;
+                name: string;
+                sinceVersion: number;
+            }[];
+            relations: any[];
+            sinceVersion: number;
+            tableConfig: {
+                columnIndexes: any[];
+                name?: undefined;
+                propertyIndexes?: undefined;
+            };
             operations: {};
         } | {
             columns: {

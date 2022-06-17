@@ -1,3 +1,4 @@
+export * from './client';
 export * from './continent';
 export * from './country';
 export * from './terminal';

@@ -9,6 +9,7 @@ import {
 	ManyToOne,
 } from '@airport/air-traffic-control'
 import {
+	Client,
 	Terminal,
 	User
 } from '@airport/travel-document-checkpoint'
@@ -47,5 +48,12 @@ export class Actor {
 	@ManyToOne()
 	@JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
 	application?: Application
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'CLIENT_ID', referencedColumnName: 'ID',
+		nullable: true
+	})
+	client?: Client
 
 }

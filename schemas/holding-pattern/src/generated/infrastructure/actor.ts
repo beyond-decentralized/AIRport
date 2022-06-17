@@ -1,6 +1,7 @@
 import {
 	IUser,
 	ITerminal,
+	IClient,
 } from '@airport/travel-document-checkpoint';
 import {
 	IApplication,
@@ -26,6 +27,7 @@ export interface IActor {
 	user?: IUser;
 	terminal?: ITerminal;
 	application?: IApplication;
+	client?: IClient;
 
 	// Transient Properties
 
