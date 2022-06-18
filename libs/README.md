@@ -8,7 +8,7 @@ A thin shim to make API calls.
 [blueprint](./blueprint)
 Aggregation of core [schemas](../schemas) needed for AIRport to operate.
 
-[direction-indicator](./di)
+[direction-indicator](./direction-indicator)
 Dependency injection.
 
 [fuel-hydrant-system](./fuel-hydrant-system)
