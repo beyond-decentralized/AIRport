@@ -267,17 +267,16 @@ export class ParentApi {
 ## Directory Structure
 
 [apis](/apis)
-Various internal and external APIs used by for AIRport entity definitions,
-query and persistence definitions and various communication modules.
+Internal and external APIs.
 
 [engines](/engines)
-Core Logic needed for AIRport to work.
+Core Logic of AIRport.
 
 [databases](/databases)
 Database adapters.
 
 [generators](/generators)
-Various code generators needed for AIRport projects to work.
+Code generators.
 
 [libs](/libs)
 Libraries.
@@ -286,7 +285,7 @@ Libraries.
 Platform adaptors for Web and Native.
 
 [schemas](/schemas)
-Internal database schemas needed for AIRport to operate.
+Internal AIRport schemas.
 
 ## License
 AIRport is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
