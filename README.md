@@ -7,7 +7,8 @@
   * [The Solution](#solution)
 * [Blockchain](#blockchain)
 * [Storage](#storage)
-* [Application Collaboration](#app-collaboration)
+* [Access Control](#access-control)
+* [Data Reuse](#data-reuse)
 * [Developer Experience](#developer-experience)
 * [Technical Details](#tech-details)
 
@@ -99,7 +100,7 @@ AIRport uses [IPFS](https://github.com/ipfs/js-ipfs) for permanent storage of Re
   their Repositories.
 * Applications controls sharing schemas with other Applications.
 
-## Data Reuse
+## Data Reuse<a name="data-reuse"></a>
 If data already exists in a repository new App can use it,
 without requiring the user to enter it (again, as it was done
 for first App).
