@@ -42,30 +42,30 @@
       "projectFolder": "apis/terminal-map",
       "shouldPublish": true
     },
-    // "db" folder (alphabetical order)
+    // "databases" folder (alphabetical order)
     {
       "packageName": "@airport/mysql",
-      "projectFolder": "db/mysql",
+      "projectFolder": "databases/mysql",
       "shouldPublish": true
     },
     {
       "packageName": "@airport/postgres",
-      "projectFolder": "db/postgres",
+      "projectFolder": "databases/postgres",
       "shouldPublish": true
     },
     {
       "packageName": "@airport/sequence",
-      "projectFolder": "db/sequence",
+      "projectFolder": "databases/sequence",
       "shouldPublish": true
     },
     {
       "packageName": "@airport/sqlite",
-      "projectFolder": "db/sqlite",
+      "projectFolder": "databases/sqlite",
       "shouldPublish": true
     },
     {
       "packageName": "@airport/sqljs",
-      "projectFolder": "db/sqljs",
+      "projectFolder": "databases/sqljs",
       "shouldPublish": true
     },
     // "engines" folder (alphabetical order)
@@ -77,22 +77,6 @@
     {
       "packageName": "@airport/tower",
       "projectFolder": "engines/tower",
-      "shouldPublish": true
-    },
-    // "execs" folder (alphabetical order)
-    {
-      "packageName": "@airport/web-airport",
-      "projectFolder": "execs/web-airport",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/web-terminal",
-      "projectFolder": "execs/web-terminal",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/web-tower",
-      "projectFolder": "execs/web-tower",
       "shouldPublish": true
     },
     // "generators" folder (alphabetical order)
@@ -194,7 +178,23 @@
       "projectFolder": "nonhub/processor-common",
       "shouldPublish": true
     },
-    // "applications" folder (alphabetical order)
+    // "platforms" folder (alphabetical order)
+    {
+      "packageName": "@airport/web-airport",
+      "projectFolder": "platforms/web-airport",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-terminal",
+      "projectFolder": "platforms/web-terminal",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-tower",
+      "projectFolder": "platforms/web-tower",
+      "shouldPublish": true
+    },
+    // "schemas" folder (alphabetical order)
     {
       "packageName": "@airport/airport-code",
       "projectFolder": "schemas/airport-code",
