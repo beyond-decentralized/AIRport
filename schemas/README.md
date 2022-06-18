@@ -4,7 +4,7 @@ Internal database schemas needed for AIRport to operate.
 [airport-code](./airport-code)
 Utility functionality schema (Sequences, System-Wide-Operation-Ids).
 
-[airspace](./territory)
+[airspace](./airspace)
 Schema for recording AIRport schemas themselves.
 
 [holding-pattern](./holding-pattern)
