@@ -17,5 +17,6 @@ export declare abstract class AirEntity {
     originalActor?: Actor;
     originalActorRecordId?: AirEntity_ActorRecordId;
     uuId?: string;
+    isNew?: boolean;
 }
 //# sourceMappingURL=AirEntity.d.ts.map

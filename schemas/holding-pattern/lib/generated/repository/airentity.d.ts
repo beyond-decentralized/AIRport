@@ -11,5 +11,6 @@ export interface IAirEntity {
     originalRepository?: IRepository;
     originalActor?: IActor;
     uuId?: string;
+    isNew?: boolean;
 }
 //# sourceMappingURL=airentity.d.ts.map

@@ -499,6 +499,24 @@ export const MAPPED_SUPERCLASS = [
                     "ownerEntity": null,
                     "nonArrayType": "string",
                     "primitive": "string"
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": true,
+                    "name": "isNew",
+                    "optional": true,
+                    "type": "boolean",
+                    "ownerEntity": null,
+                    "nonArrayType": "boolean",
+                    "primitive": "boolean"
                 }
             ],
             "methodSignatures": [],
@@ -1074,6 +1092,24 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "string",
                         "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "isNew",
+                        "optional": true,
+                        "type": "boolean",
+                        "ownerEntity": null,
+                        "nonArrayType": "boolean",
+                        "primitive": "boolean"
                     }
                 ],
                 "methodSignatures": [],
@@ -1732,6 +1768,24 @@ export const MAPPED_SUPERCLASS = [
                         "ownerEntity": null,
                         "nonArrayType": "string",
                         "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "isNew",
+                        "optional": true,
+                        "type": "boolean",
+                        "ownerEntity": null,
+                        "nonArrayType": "boolean",
+                        "primitive": "boolean"
                     }
                 ],
                 "methodSignatures": [],
@@ -2824,6 +2878,24 @@ export const MAPPED_SUPERCLASS = [
                             "ownerEntity": null,
                             "nonArrayType": "string",
                             "primitive": "string"
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Transient",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": true,
+                            "name": "isNew",
+                            "optional": true,
+                            "type": "boolean",
+                            "ownerEntity": null,
+                            "nonArrayType": "boolean",
+                            "primitive": "boolean"
                         }
                     ],
                     "methodSignatures": [],

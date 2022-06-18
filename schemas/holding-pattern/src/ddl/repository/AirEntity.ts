@@ -80,4 +80,7 @@ export abstract class AirEntity {
 	@Transient()
 	uuId?: string
 
+	@Transient()
+	isNew?: boolean
+
 }
