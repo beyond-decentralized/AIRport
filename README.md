@@ -24,18 +24,11 @@ Decentralized Applications (DApps) lack an easy-to-use database layer.
 
 Right now there is no easy way to write DApps that rely on complex relational
 schemas for data storage.  There is also no way for DApps to share data in
-relational schemas and no way to generate synergies between DApps (from schema
-sharing point of view).  And therefore there is no way to share CRUD logic
-for relational schemas and no way to share business logic.
+relational schemas.  And there is no way to share CRUD and business logic.
 
 ### The solution: <a name="solution"></a>
 
-AIRport is a decentralized relational database of Repositories.  Repositories
-are virtual databases, each with its own transaction log.  Each Repository has
-a globally unique identifier that allows to distinguish it from other
-repositories in the same relational database. For two Users to share a 
-Repository it must be present on their devices, and the schemas used by that
-repository must be installed in AIRport databases on those devices.
+Repositories are virtual databases.
 
     AIRport database contains 2 schemas,
     one from App A and one from App B.  App A Schema contains table A__TABLE_II
@@ -52,13 +45,12 @@ Records in AIRport tables are always identified by 3 columns:
 * ACTOR_RECORD_ID - The id of the record, unique to Repository and Actor
 
 Actor is a combination of User, using a Particular application on a particular
-device. Combination of these Ids allows for globally unique record identifiers within AIRport tables.
+device. Combination of these Ids is globally unique.
 
-Each device/phone contains a single AIRport database that is shared by all
-applications on that device.  The composition of the applications on each
-device can be different.  The composition of the schemas installed in each
-AIRport database on each device can be different as well.  Each database
-contains only the Repositories the user of that device decides to keep on it.
+AIRport database runs on user devices.  The composition of Apps on each
+device is different.  The composition of schemas in AIRport database on 
+each device can be different.  Each database contains only the Repositories
+the user keeps on it.
 
 ![AIR across devices](presentations/images/AIRport_diagram_1.png)
 
@@ -72,36 +64,27 @@ contains only the Repositories the user of that device decides to keep on it.
 
 Each repository is completely autonomous and can be added to a host relational
 database or removed from it (at any time) without affecting other
-repositories.  Repositories can have references to each other thus depending
-on data that other repository contains, but must be usable without referenced
-repositories.
+repositories.  Repositories can have references to each other.
 
-Repositories are both Autonomous and Interdependent. When new foreign keys
-are saved if those foreign keys point to other repositories the records 
-they point to are copied into the referencing repository.  Queries can run
+Repositories are both Autonomous and Interdependent. If foreign keys
+point to other repositories the records they point to are copied into 
+the referencing repository.  Queries can run
 either against a single repository or across repositories (pulling them from
-the network as needed). This is acomplished by keeping foreign keys to the 
-original records in other repositories and the copies of those records in
-the same repository.
+the network as needed). This is acomplished by keeping foreign keys to record
+copies in the same reostiroies and to original records in the other
+repositories.
 
 ## Blockchain<a name="blockchain"></a>
 
 AIRport Repositories have blockchain based transaction logs.  Each Repository
-is a private blockchain.  Each transaction
-log entry is a block. AIRport is fully functional off-line: transaction commits 
-are made locally and are added to the "longest chain" once a device is back on-line.
-Each Repository transaction log is a separate chain and itself can consist of 
-sub-chains if the Repository goes out of sync on multiple devices (if Users modify
-the repository at the same time, without syncing). Repository transaction log
+is a private blockchain.  Repository transaction log
 is a Directed Acyclic Graph with each commit being a separate block. All 
-sub-chains (sub graphs) are resolved to the "longest chain" via timestamp based
-conflict resolution mechanism. 
+sub-chains are resolved to the "longest chain" via timestamps. 
 
-    For example, if Alice modifies record 1 while being offline and Charlie
+    If Alice modifies record 1 while being offline and Charlie
     modifies the same record also offline but at a later time then both
-    with be notified of the conflict and automatic conflict resolution
-    will pick the latest column values while still allowing for manual conflict
-    resolution.
+    with be notified of the conflict.  Automatic conflict resolution
+    will pick the latest column values.
 
 ![AIR Transaction Log](presentations/images/AIRPort_Transaction_Log.png)
 
@@ -110,23 +93,18 @@ conflict resolution mechanism.
 
 AIRport uses [IPFS](https://github.com/ipfs/js-ipfs) for permanent storage of Repositories and [Arweave](https://github.com/ArweaveTeam/arweave-js) for permanent storage.
 
-## Application collaboration<a name="app-collaboration"></a>
+## Access Control<a name="access-control"></a>
 
-* Usera are in control of their data. They allow applications to access 
-  their private Repositories.
-* Applications are in control of sharing schemas with other Applications.
+* Usera are in control of their data. They control Application access 
+  their Repositories.
+* Applications controls sharing schemas with other Applications.
 
-New applications don't have to worry about tedious data entry by users
-(usually that data is already present in existing Repositories).  This
-leads to data reuse and data normalization. It allows Apps to be more
-integrated with each other.
+## Data Reuse
+If data already exists in a repository new App can use it,
+without requiring the user to enter it (again, as it was done
+for first App).
 
-The applications interact with the on-device database, making AIRport
-fully operational in offline-mode.  The database is in charge of maintaining the
-repositories contained in it.
-
-
-## Developer Experience<a name="api"></a>
+## Developer Experience<a name="developer-experience"></a>
 AIRport offers:
 
 * Simplified JPA annotations (tracking updates via hidden state - no session)
@@ -135,56 +113,48 @@ AIRport offers:
 * Automatic schema generation and installation
 
 This reduces the development effort and allows
-App creators to focus on business logic (instead mechanics of storing data).
-Developers define their entities and write
-queries that return complete object trees (or fully interlinked object
-graphs).
+App creators to focus on business logic, instead mechanics of storing data.
+AIRport queries return object trees or fully interlinked object
+graphs.
 
 ## Technical details<a name="tech-details"></a>
 
-### Installation
+### Application VMs
 
-The process of using AIRport is:
+Application run in their own VMs.  In Web mode these VMs
+are IFrames (isolated from each other because they are from different domains).
+Application VMs interoperate via the parent AIRport frame.
+External aplications (in other browser tabs) access these Application VMs
+also through the AIRport tab.
+
+In Native Application mode Application run in V8 VMs.
+
+### Installation
 
 *  User navigates to a web page that uses AIRport and saves/retrieves data.
 *  A new tab is opened in the background with AIRport framework in it
 *  User continues to use the app as normal, Apps in other tabs use the
 same AIRport tab.
 
-If AIRport is installed as a Native Application it is used instead of a
-browser tab.
-
-### Application VMs
-
-Application run in their own isolated VMs.  In Web mode these VMs
-are IFrames (isolated because they are from different domains).
-Application VMs interoperate with each other via the parent AIRport frame.
-External aplications (in other browser tabs) access these Application VMs
-also through the AIRport tab.
-
-In Native Application mode Application run in V8 VMs.
+Browser tab is not used if AIRport is installed natively.
 
 ### Queries
-Applications can define entities which depend on entities in other
-Applications (via @ManyToOne() relations).  When querying for data
-Applications can build joins that include entities from other
-Applications.
+Apps can define entities which depend on entities in other
+Apps, via @ManyToOne() relations.  Apps can build joins that include 
+entities from other Apps.
 
 ### APIs
-Application annotates methods with @Api() decorator.  These becomes the
-public API of an Application.  Applications (running in VMs) can
-invoke @Api() methods of other Applications.
+Public API methods are annotated with @Api() decorator.  Apps can
+invoke @Api() methods of other Apps.
 
 #### Nested Persistence Operations
-When persisting data, the referenced objects must be saved first. @Api()
-calls are used to run validation logic and persist entities. When saving
+@Api() calls are used to run validation logic and persist entities. When saving
 entities, Application must first call the @Api() methods
 of the Applications with the objects it depends on.   
 
 
 ### Entity Definitions
 
-Entity definitions stick as much as possible to Java's JPA syntax:
 "
 ```typescript
 @Entity()
@@ -207,8 +177,6 @@ export class Child extends AirEntity {
 ```
 
 ### Data Access Objects (DAOs)
-
-Data access is done in DAO objects
 
 ```typescript
 @Injected()
@@ -237,8 +205,6 @@ export class ParentDao
 ```
 
 ### APIs
-
-API methods allow external access
 
 ```typescript
 @Injected()
