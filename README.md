@@ -114,11 +114,10 @@ AIRport uses [IPFS](https://github.com/ipfs/js-ipfs) for permanent storage of Re
 
 * Usera are in control of their data. They allow applications to access 
   their private Repositories.
-* Applications are in control of sharing schemas with other Applications
-- they can allow or deny access to their schemas.
+* Applications are in control of sharing schemas with other Applications.
 
 New applications don't have to worry about tedious data entry by users
-(that data is already present in the AIRport database).  This
+(usually that data is already present in existing Repositories).  This
 leads to data reuse and data normalization. It allows Apps to be more
 integrated with each other.
 
@@ -143,15 +142,14 @@ graphs).
 
 ## Technical details<a name="tech-details"></a>
 
-### Usage process
+### Installation
 
 The process of using AIRport is:
 
 *  User navigates to a web page that uses AIRport and saves/retrieves data.
 *  A new tab is opened in the background with AIRport framework in it
-*  The consumer application creates the private Repository and prompts
-   to add other participating users
-*  Creating user shares the Repository, and the App notifies new users
+*  User continues to use the app as normal, Apps in other tabs use the
+same AIRport tab.
 
 If AIRport is installed as a Native Application it is used instead of a
 browser tab.
@@ -159,7 +157,7 @@ browser tab.
 ### Application VMs
 
 Application run in their own isolated VMs.  In Web mode these VMs
-are IFrames (isolated by the fact that they run from a different domain).
+are IFrames (isolated because they are from different domains).
 Application VMs interoperate with each other via the parent AIRport frame.
 External aplications (in other browser tabs) access these Application VMs
 also through the AIRport tab.
@@ -179,9 +177,9 @@ invoke @Api() methods of other Applications.
 
 #### Nested Persistence Operations
 When persisting data, the referenced objects must be saved first. @Api()
-calls can be used to run validation logic on and persist entities. An
-Application that is saving an object must first call the @Api() method
-of the Application with the objects it depends on.   
+calls are used to run validation logic and persist entities. When saving
+entities, Application must first call the @Api() methods
+of the Applications with the objects it depends on.   
 
 
 ### Entity Definitions
@@ -267,7 +265,6 @@ export class ParentApi {
 ```
 
 ## Directory Structure
-Internal directory structure of the AIRport meta-repository.
 
 [apis](/apis)
 Various internal and external APIs used by for AIRport entity definitions,
