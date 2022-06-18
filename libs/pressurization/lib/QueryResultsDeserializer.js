@@ -146,7 +146,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 }
             });
         }
-        if (!object.createdBy
+        if (!object.isNew
             && !Object.getOwnPropertyDescriptor(object, 'isNew')
             && (!objectPrototype
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))) {
