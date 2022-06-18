@@ -147,12 +147,12 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
             });
         }
         if (!object.createdBy
-            && !Object.getOwnPropertyDescriptor(object, 'createdBy')
+            && !Object.getOwnPropertyDescriptor(object, 'isNew')
             && (!objectPrototype
-                || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
-            Object.defineProperty(object, 'createdBy', {
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))) {
+            Object.defineProperty(object, 'isNew', {
                 get() {
-                    return this.__container__.getSync(AIR_ENTITY_UTILS).getCreatedBy(this);
+                    return !!this.actorRecordId;
                 }
             });
         }
