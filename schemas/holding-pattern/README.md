@@ -1,3 +1,5 @@
 # Holding Pattern
 
-The way data is held
+"A path taken by an aircraft waiting to land."
+
+Core repository schema.

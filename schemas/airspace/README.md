@@ -1,3 +1,5 @@
-# traffic-pattern
-Airfield traffic pattern (schema metadata) is a standard 
-path followed by aircraft (applications) when taking off or landing.
+# Airspace
+
+"Local Airport Advisory (LAA) service is provided within 10 statute miles of an airport where a Flight Service Station is located and a control tower is not operating."
+
+Schema for recording AIRport schemas themselves.

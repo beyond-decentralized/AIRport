@@ -19,7 +19,7 @@ Internal Request and Response APIs.
 Data Access Object (DAO) and serialization APIs.
 
 [ground-control](./ground-control)
-Internal communication APIs.
+Core internal  APIs.
 
 [terminal-map](./terminal-map)
 Core AIRport logic APIs.

@@ -1,5 +1,7 @@
 # check-in
 
-Airport check-in is the process whereby passengers (data entities)
+"Airport check-in is the process whereby passengers (data entities)
 are accepted by an airline (your application) at the airport prior
-to travel (running of the application).
+to travel (running of the application)."
+
+Data Access Object (DAO) and serialization APIs.

@@ -1,4 +1,5 @@
-# Security check
+# Apron
 
-Provides an API for security check functionality
-to be used in client schemas.
+"Airport Apron connects runways and taxiways to the terminal".
+
+Application state and state transfer APIs.

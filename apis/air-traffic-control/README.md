@@ -1,9 +1,10 @@
-# Air Control
+# Air Traffic Control
 
-Air Control - controls how an airplane (your application) lands
-and takes off (persists and retrieves data) from the airport. 
+"Air Control - controls how an airplane (your application) lands
+and takes off (persists and retrieves data) from the airport."
 
-Air Control is performed in TypeScript.
+## Internal and external query APIs.
+
 
 Main goals of it are:
 

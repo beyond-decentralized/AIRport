@@ -1,3 +1,3 @@
 # web-airport
 
-The web harness for the AIRport framework.
+Deployable AIRport tab for the Web.

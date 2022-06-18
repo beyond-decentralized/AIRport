@@ -1,3 +1,5 @@
-# Holding Pattern
+# Airport Code
 
-All airplanes must be capable of holding a pattern (structuring data) in the airport airspace (database).
+"An IATA airport code, also known as an IATA location identifier, IATA station code, or simply a location identifier, is a three-character alphanumeric geocode designating many airports and metropolitan areas around the world, defined by the International Air Transport Association (IATA)."
+
+Utility functionality schema (Sequences, System-Wide-Operation-Ids).
