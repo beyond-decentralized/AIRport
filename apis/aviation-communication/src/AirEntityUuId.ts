@@ -94,7 +94,7 @@ export class AirEntityUtils
     ): AirEntityUuId {
         const idStringFragments = idString.split('-')
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid AirEntity UuId, expecting {repositoryUuId}-{actorUuId}-{actorRecordId}');
+            throw new Error('Invalid AirEntity UuId, expecting ${repository.uuId}-${actor.uuId}-${actorRecordId}');
         }
         const repositoryUuIdFragments: string[] = []
         for (let i = 0; i < 5; i++) {
