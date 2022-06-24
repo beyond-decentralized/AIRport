@@ -19,6 +19,9 @@ database and an API framework.
 AIRport data is stored in repositories that work in isolation but can be automatically
 retrieved and joined together.
 
+End goal of AIRport is to move "[beyond decentralized](https://beyond-decentralized.world/2022/Beyond_Decentralized.html)" to an internet of databases.
+
+
 ### The problem: <a name="problem"></a>
 
 Decentralized Applications (DApps) lack an easy-to-use database layer.
@@ -253,6 +256,9 @@ Platform adaptors for Web and Native.
 
 [schemas](/schemas)
 Internal AIRport schemas.
+
+## Latest
+Find out about the latest developments at the [AIRport blog](https://beyond-decentralized.world/)
 
 ## License
 AIRport is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
