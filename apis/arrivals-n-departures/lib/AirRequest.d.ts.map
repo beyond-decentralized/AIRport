@@ -1,1 +1,1 @@
-{"version":3,"file":"AirRequest.d.ts","sourceRoot":"","sources":["../src/AirRequest.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,0BAA0B,CAAC;AAClD,OAAO,EAAE,IAAI,EAAE,MAAM,qCAAqC,CAAC;AAE3D,MAAM,WAAW,UAAU;IACvB,KAAK,EAAE,MAAM,CAAA;IACb,IAAI,EAAE,IAAI,CAAA;CACb"}
+{"version":3,"file":"AirRequest.d.ts","sourceRoot":"","sources":["../src/AirRequest.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,0BAA0B,CAAC;AACjD,OAAO,EAAE,IAAI,EAAE,MAAM,qCAAqC,CAAC;AAE3D,MAAM,WAAW,UAAU;IACvB,KAAK,EAAE,KAAK,CAAA;IACZ,IAAI,EAAE,IAAI,CAAA;CACb"}
