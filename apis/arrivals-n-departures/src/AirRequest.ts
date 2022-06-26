@@ -1,7 +1,7 @@
 import { IActor } from "@airport/holding-pattern";
 import { User } from "@airport/travel-document-checkpoint";
 
-export interface Request {
+export interface AirRequest {
     actor: IActor
     user: User
 }
