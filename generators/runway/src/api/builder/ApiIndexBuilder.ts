@@ -20,7 +20,9 @@ export class ApiIndexBuilder
     addApiFilePath(
         filePath: string
     ): void {
-        this.apiFilePaths.push(filePath.split('.')[0])
+        const filePathFragments = filePath.split('.')
+        filePathFragments.pop()
+        this.apiFilePaths.push(filePathFragments.join('.'))
     }
 
     addImports() {

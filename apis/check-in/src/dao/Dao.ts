@@ -164,7 +164,7 @@ export abstract class Dao<Entity,
 		return await this.db.findOne.graph({
 			select: <any>{
 				'*': Y,
-				uuId: Y,
+				uuId: Y
 			},
 			from: [
 				q = this.db.from

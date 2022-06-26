@@ -8,7 +8,9 @@ export class ApiIndexBuilder extends FileBuilder {
             + `/api/api.ts`;
     }
     addApiFilePath(filePath) {
-        this.apiFilePaths.push(filePath.split('.')[0]);
+        const filePathFragments = filePath.split('.');
+        filePathFragments.pop();
+        this.apiFilePaths.push(filePathFragments.join('.'));
     }
     addImports() {
     }
