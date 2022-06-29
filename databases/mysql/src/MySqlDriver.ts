@@ -1,12 +1,14 @@
 
 import {
-	Injected
+  Injected
 } from '@airport/direction-indicator'
 import {
   SQLDialect,
   SqlDriver
 } from '@airport/fuel-hydrant-system';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
 import {
+  JsonQuery,
   QueryType,
   SQLDataType
 } from '@airport/ground-control';
@@ -118,6 +120,16 @@ and TABLE_NAME = '${tableName}';`,
     context: IOperationContext,
   ): Promise<any> {
     return await this.query(QueryType.SELECT, sqlQuery, parameters, context);
+  }
+
+  getSelectQuerySuffix(
+    jsonQuery: JsonQuery,
+    context: IFuelHydrantContext
+  ): string {
+    if (jsonQuery.forUpdate) {
+      return 'FOR UPDATE'
+    }
+    return ''
   }
 
   protected async executeNative(

@@ -127,7 +127,8 @@ ${this.orderByParser.getOrderByFragment(this.joinTree, this.qEntityMapByAlias, c
 		return `SELECT
 	${selectFragment}
 FROM
-${fromFragment}${whereFragment}${orderByFragment}`
+${fromFragment}${whereFragment}${orderByFragment}
+${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	}
 
 	/**

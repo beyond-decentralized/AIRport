@@ -1,6 +1,6 @@
-import {JSONRelation}       from '../../core/entity/Relation'
-import {JSONFieldInOrderBy} from '../../core/field/FieldInOrderBy'
-import {JSONBaseOperation}  from '../../core/operation/Operation'
+import { JSONRelation } from '../../core/entity/Relation'
+import { JSONFieldInOrderBy } from '../../core/field/FieldInOrderBy'
+import { JSONBaseOperation } from '../../core/operation/Operation'
 
 export enum JsonStatementType {
 	ENTITY_QUERY = 'ENTITY_QUERY',
@@ -30,6 +30,7 @@ export interface JsonQuery
 	 * FROM
 	 */
 	F?: JSONRelation[];
+	forUpdate?: boolean;
 	/**
 	 * ORDER BY
 	 */

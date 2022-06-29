@@ -55,7 +55,8 @@ export class SheetQuery
 			queryUtils, fieldUtils, relationManager)
 
 		let jsonFieldQuery: JsonSheetQuery = {
-			S: select
+			S: select,
+			forUpdate: this.rawQuery.forUpdate
 		}
 
 		return <JsonSheetQuery>this.getNonEntityQuery(

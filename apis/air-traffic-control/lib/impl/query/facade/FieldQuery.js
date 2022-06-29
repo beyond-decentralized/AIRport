@@ -32,6 +32,7 @@ export class FieldQuery extends DistinguishableQuery {
         let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
             S: select,
+            forUpdate: this.rawQuery.forUpdate,
             ot: JSONClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };

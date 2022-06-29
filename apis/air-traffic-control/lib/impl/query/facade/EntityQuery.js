@@ -14,6 +14,7 @@ export class EntityQuery extends MappableQuery {
         return {
             S: this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager),
             F: this.fromClauseToJSON(this.rawQuery.from, queryUtils, fieldUtils, relationManager),
+            forUpdate: this.rawQuery.forUpdate,
             W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases),
             OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
         };

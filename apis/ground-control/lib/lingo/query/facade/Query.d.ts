@@ -25,6 +25,7 @@ export interface JsonQuery extends JsonStatement {
      * FROM
      */
     F?: JSONRelation[];
+    forUpdate?: boolean;
     /**
      * ORDER BY
      */

@@ -23,6 +23,9 @@ WHERE
 	AND tbl_name = '${applicationName}__${tableName}'`, [], context);
         return this.getNumberOfRows(matchingTableNames) === 1;
     }
+    getSelectQuerySuffix(jsonQuery, context) {
+        return '';
+    }
     getNumberOfRows(result) {
         return this.getRows(result).length;
     }

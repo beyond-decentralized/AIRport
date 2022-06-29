@@ -16,6 +16,7 @@ import {
 	JsonEntityQuery,
 	JsonFieldQuery,
 	JsonInsertValues,
+	JsonQuery,
 	JsonSheetQuery,
 	JsonUpdate,
 	PortableQuery,
@@ -116,6 +117,11 @@ export abstract class SqlDriver
 	): string {
 		return this.getTableName(dbEntity.applicationVersion.application, dbEntity, context);
 	}
+
+	abstract getSelectQuerySuffix(
+		jsonQuery: JsonQuery,
+		context: IFuelHydrantContext,
+	): string
 
 	getTableName(
 		application: {

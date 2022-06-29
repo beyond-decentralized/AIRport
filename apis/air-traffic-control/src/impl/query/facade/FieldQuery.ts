@@ -70,6 +70,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 
 		let jsonFieldQuery: JsonFieldQuery = {
 			S: select,
+			forUpdate: this.rawQuery.forUpdate,
 			ot: JSONClauseObjectType.FIELD_QUERY,
 			dt: this.getClauseDataType()
 		}

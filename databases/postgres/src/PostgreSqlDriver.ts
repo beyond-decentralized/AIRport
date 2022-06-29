@@ -1,4 +1,4 @@
-import { QueryType, SQLDataType, } from '@airport/ground-control'
+import { JsonQuery, QueryType, SQLDataType, } from '@airport/ground-control'
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system'
 import pg from 'pg'
 import pgConnectionString from 'pg-connection-string'
@@ -7,6 +7,7 @@ import { IOperationContext } from '@airport/terminal-map'
 import {
 	Injected
 } from '@airport/direction-indicator'
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse
@@ -61,6 +62,16 @@ export class PostgreSqlDriver
 	): Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value))
 		return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context)
+	}
+
+	getSelectQuerySuffix(
+		jsonQuery: JsonQuery,
+		context: IFuelHydrantContext
+	): string {
+		if (jsonQuery.forUpdate) {
+			return 'FOR UPDATE'
+		}
+		return ''
 	}
 
 	protected async executeNative(

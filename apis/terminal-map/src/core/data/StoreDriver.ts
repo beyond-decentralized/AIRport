@@ -14,6 +14,7 @@ import {
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo'
 import { ITransaction } from '../../transaction/ITransaction'
 import { ITransactionContext } from '../../orchestration/TransactionManager'
+import { JsonQuery } from '@airport/ground-control'
 
 /**
  * Created by Papa on 6/10/2016.
@@ -40,6 +41,11 @@ export interface IStoreDriver
 
 	getEntityTableName(
 		dbEntity: DbEntity,
+		context: IContext,
+	): string
+
+	getSelectQuerySuffix(
+		jsonQuery: JsonQuery,
 		context: IContext,
 	): string
 

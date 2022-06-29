@@ -8,6 +8,7 @@ export class TreeQuery extends MappableQuery {
     toJSON(queryUtils, fieldUtils, relationManager) {
         let jsonMappedQuery = this.getNonEntityQuery(this.rawQuery, {}, (jsonQuery) => {
             jsonQuery.S = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
+            jsonQuery.forUpdate = this.rawQuery.forUpdate;
         }, queryUtils, fieldUtils, relationManager);
         return jsonMappedQuery;
     }

@@ -1,6 +1,7 @@
-import { QueryType, SQLDataType } from '@airport/ground-control';
+import { JsonQuery, QueryType, SQLDataType } from '@airport/ground-control';
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { IOperationContext } from '@airport/terminal-map';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
 /**
  * Created by Papa on 11/27/2016.
  */
@@ -8,6 +9,7 @@ export declare abstract class SqLiteDriver extends SqlDriver {
     constructor();
     composeTableName(applicationName: string, tableName: string): string;
     doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IFuelHydrantContext): string;
     protected getNumberOfRows(result: any): number;
     protected abstract getRows(result: any): any;
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;

@@ -23,7 +23,8 @@ export class SheetQuery extends DistinguishableQuery {
     toJSON(queryUtils, fieldUtils, relationManager) {
         let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
-            S: select
+            S: select,
+            forUpdate: this.rawQuery.forUpdate
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }

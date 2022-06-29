@@ -7,6 +7,7 @@ import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/l
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
 import { ITransaction } from '../../transaction/ITransaction';
 import { ITransactionContext } from '../../orchestration/TransactionManager';
+import { JsonQuery } from '@airport/ground-control';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -16,6 +17,7 @@ export interface IStoreDriver extends IStoreOperator {
     doesTableExist(applicationName: string, tableName: string, context: IContext): Promise<boolean>;
     dropTable(applicationName: string, tableName: string, context: IContext): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity, context: IContext): string;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IContext): string;
     getTableName(application: {
         domain: DomainName | {
             name: DomainName;

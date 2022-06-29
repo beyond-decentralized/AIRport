@@ -29,6 +29,9 @@ export class SqlTransaction {
     getEntityTableName(dbEntity, context) {
         return this.driver.getEntityTableName(dbEntity, context);
     }
+    getSelectQuerySuffix(jsonQuery, context) {
+        return this.driver.getSelectQuerySuffix(jsonQuery, context);
+    }
     getTableName(application, table, context) {
         return this.driver.getTableName(application, table, context);
     }

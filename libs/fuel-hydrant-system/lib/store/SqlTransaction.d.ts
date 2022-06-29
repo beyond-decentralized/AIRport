@@ -1,5 +1,5 @@
 import { IContext } from '@airport/direction-indicator';
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { ApplicationName, DbEntity, DomainName, FullApplicationName, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
@@ -23,6 +23,7 @@ export declare abstract class SqlTransaction implements ITransaction {
     doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     getEntityTableName(dbEntity: DbEntity, context: IContext): string;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IContext): string;
     getTableName(application: {
         domain: DomainName | {
             name: DomainName;

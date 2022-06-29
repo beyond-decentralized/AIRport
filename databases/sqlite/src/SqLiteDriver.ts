@@ -1,4 +1,5 @@
 import {
+	JsonQuery,
 	QueryType,
 	SQLDataType
 } from '@airport/ground-control'
@@ -7,6 +8,8 @@ import {
 	SqlDriver
 } from '@airport/fuel-hydrant-system'
 import { IOperationContext } from '@airport/terminal-map';
+import { IContext } from '@airport/direction-indicator';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
 
 /**
  * Created by Papa on 11/27/2016.
@@ -45,6 +48,13 @@ WHERE
 		)
 
 		return this.getNumberOfRows(matchingTableNames) === 1
+	}
+
+	getSelectQuerySuffix(
+		jsonQuery: JsonQuery,
+		context: IFuelHydrantContext
+	): string {
+		return ''
 	}
 
 	protected getNumberOfRows(
@@ -114,7 +124,7 @@ WHERE
 	isValueValid(
 		value: any,
 		sqlDataType: SQLDataType,
-        context: IOperationContext,
+		context: IOperationContext,
 	): boolean {
 		throw new Error('Method not implemented.');
 		// switch (sqlDataType) {

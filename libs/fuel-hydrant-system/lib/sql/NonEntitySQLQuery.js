@@ -55,7 +55,8 @@ ORDER BY
         return `SELECT
 	${selectFragment}
 FROM
-${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}`;
+${fromFragment}${whereFragment}${groupByFragment}${havingFragment}${orderByFragment}${offsetFragment}${limitFragment}
+${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
     }
     buildFromJoinTree(joinRelations, joinNodeMap, context) {
         let jsonTrees = [];

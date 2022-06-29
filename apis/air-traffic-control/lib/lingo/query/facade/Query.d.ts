@@ -8,6 +8,7 @@ import type { IRelationManager } from '../../../impl/core/entity/RelationManager
  * Query input format, as specified by the user. All queries extend this format.
  */
 export interface RawQuery {
+    forUpdate?: boolean;
     from?: (IFrom | IEntityRelationFrom)[];
     orderBy?: IFieldInOrderBy<any>[];
     select: any;

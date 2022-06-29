@@ -50,6 +50,7 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 			F: <JSONEntityRelation[]>this.fromClauseToJSON(
 				this.rawQuery.from,
 				queryUtils, fieldUtils, relationManager),
+			forUpdate: this.rawQuery.forUpdate,
 			W: queryUtils.whereClauseToJSON(
 				this.rawQuery.where, this.columnAliases),
 			OB: this.orderByClauseToJSON(this.rawQuery.orderBy)

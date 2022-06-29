@@ -8,6 +8,7 @@ import {
     DomainName,
     FullApplicationName,
     InternalFragments,
+    JsonQuery,
     PortableQuery,
     QueryType,
     SQLDataType,
@@ -86,6 +87,14 @@ export abstract class SqlTransaction
         context: IContext,
     ): string {
         return this.driver.getEntityTableName(dbEntity, context)
+    }
+
+    getSelectQuerySuffix(
+        jsonQuery: JsonQuery,
+        context: IContext,
+    ): string {
+
+        return this.driver.getSelectQuerySuffix(jsonQuery, context)
     }
 
     getTableName(
