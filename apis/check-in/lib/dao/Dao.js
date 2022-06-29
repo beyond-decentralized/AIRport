@@ -56,7 +56,7 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    async findByUuId(airEntityUuId, context) {
+    async findByUuId(airEntityUuId, forUpdate = false, context) {
         if (!this.db.dbEntity.isAirEntity) {
             throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
         }
@@ -67,6 +67,7 @@ let Dao = class Dao {
                 '*': Y,
                 uuId: Y
             },
+            forUpdate,
             from: [
                 q = this.db.from
             ],

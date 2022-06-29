@@ -153,19 +153,21 @@ export abstract class Dao<Entity,
 
 	async findByUuId(
 		airEntityUuId: AirEntityUuId | string,
+		forUpdate: boolean = false,
 		context?: IContext
 	): Promise<Entity> {
 		if (!this.db.dbEntity.isAirEntity) {
 			throw new Error(`Dao.findByUuId can only be called for Repository Entities.`)
 		}
 		const idObject: AirEntityUuId = airEntityUuId as AirEntityUuId
-		
+
 		let q
 		return await this.db.findOne.graph({
 			select: <any>{
 				'*': Y,
 				uuId: Y
 			},
+			forUpdate,
 			from: [
 				q = this.db.from
 			],
