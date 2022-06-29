@@ -1,4 +1,5 @@
 import { DbRelation } from "@airport/ground-control";
+import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import { IQEntity, IQEntityInternal } from './Entity';
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since
@@ -12,6 +13,8 @@ export interface IQRelation<IQ extends IQEntity> {
  * A concrete ORM relation on a AirEntity
  */
 export interface IQAirEntityRelation<Entity, IQ extends IQEntity> extends IQRelation<IQ> {
+    isNull(): JSONLogicalOperation;
+    isNotNull(): JSONLogicalOperation;
 }
 export interface IQInternalRelation<IQ extends IQEntity> extends IQRelation<IQ> {
     dbRelation: DbRelation;

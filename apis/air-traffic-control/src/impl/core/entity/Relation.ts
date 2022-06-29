@@ -1,16 +1,13 @@
-import { AirEntityUuId } from '@airport/aviation-communication'
-import { IOC } from '@airport/direction-indicator'
 import {
 	DbRelation,
-	IAirEntity,
-	JoinType
+	JoinType,
+	JSONBaseOperation
 } from '@airport/ground-control'
-import { IQEntityInternal, IQAirEntity } from '../../../lingo/core/entity/Entity'
-import { IQAirEntityRelation } from '../../../lingo/core/entity/Relation'
+import { IQEntityInternal } from '../../../lingo/core/entity/Entity'
 import { JSONLogicalOperation } from '../../../lingo/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../lingo/utils/ApplicationUtils'
-import { QUERY_UTILS } from '../../../core-tokens'
 import { extend } from '../../utils/qApplicationBuilderUtils'
+import { and, or } from '../operation/LogicalOperation'
 import type { IRelationManager } from './RelationManager'
 
 /**
@@ -88,5 +85,20 @@ export const qAirEntityRelationMethods = {
 	// ): JSONLogicalOperation {
 	// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	// }
+
+	isNull(): JSONLogicalOperation {
+		return or(
+			this.actor.id.isNull(),
+			this.repository.id.isNull(),
+			this.actorRecordId.isNull(),
+		)
+	},
+	isNotNull(): JSONLogicalOperation {
+		return and(
+			this.actor.id.isNotNull(),
+			this.repository.id.isNotNull(),
+			this.actorRecordId.isNotNull(),
+		)
+	}
 }
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods)

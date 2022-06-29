@@ -1,12 +1,9 @@
 import { DbRelation } from "@airport/ground-control";
-import { AirEntityUuId } from "@airport/aviation-communication";
 import { JSONLogicalOperation } from "../operation/LogicalOperation";
 import {
 	IQEntity,
 	IQEntityInternal
 } from './Entity';
-import { IQNumberField } from "../field/NumberField";
-import { IQStringField } from "../field/StringField";
 
 /**
  * A concrete ORM relation, limited to INNER and LEFT joins since
@@ -35,6 +32,10 @@ export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	// 	entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
 	// 		| AirEntityUuId | string
 	// ): JSONLogicalOperation
+
+	isNull(): JSONLogicalOperation
+
+	isNotNull(): JSONLogicalOperation
 
 }
 
