@@ -3,13 +3,13 @@ export interface ISaveUser {
 }
 export interface ISaveActor {
     id: number;
-    uuId?: string;
+    GUID?: string;
     user?: ISaveUser;
 }
 export interface ISaveRepository {
     id: number;
     createdAt?: Date;
-    uuId?: string;
+    GUID?: string;
     ageSuitability?: number;
     source?: string;
     ownerActor?: ISaveActor;
@@ -36,11 +36,16 @@ export interface IUpdateResultRecords {
 export interface IDeleteResultRecords {
     [operationUniqueId: string]: boolean;
 }
+export interface IRepositoryIdParts {
+    source: string;
+    GUID: string;
+}
 export interface ISaveResult {
     actor: ISaveActor;
     created: ICreateResultRecords;
     deleted: IDeleteResultRecords;
     newRepository: ISaveRepository;
+    repositoryIdParts: IRepositoryIdParts;
     updated: IUpdateResultRecords;
 }
 //# sourceMappingURL=SaveResult.d.ts.map

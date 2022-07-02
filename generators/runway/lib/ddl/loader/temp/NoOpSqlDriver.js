@@ -39,6 +39,9 @@ export class NoOpSqlDriver extends SqlDriver {
     async setupTransaction(context, parentTransaction) {
         return Promise.resolve(undefined);
     }
+    getSelectQuerySuffix(jsonQuery, context) {
+        return '';
+    }
     executeNative(sql, parameters, context) {
         return Promise.resolve(0);
     }

@@ -6,14 +6,14 @@ import {
 import { IContext, Injected } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
-	Terminal_UuId,
-	User_UuId
+	Terminal_GUID,
+	User_GUID
 } from '@airport/travel-document-checkpoint'
 import {
-	Actor_UuId,
+	Actor_GUID,
 	Repository_Id,
 	Repository_Source,
-	Repository_UuId,
+	Repository_GUID,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryDao,
@@ -30,7 +30,7 @@ export interface IRepositoryDao
 
 	getRepositoryLoadInfo(
 		repositorySource: Repository_Source,
-		repositoryUuId: Repository_UuId,
+		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository>
 
@@ -38,8 +38,8 @@ export interface IRepositoryDao
 		repositoryIds: Repository_Id[]
 	): Promise<IRepository[]>;
 
-	findByUuIds(
-		uuIds: Repository_UuId[],
+	findByGUIDs(
+		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]>
 
 	insert(
@@ -49,10 +49,10 @@ export interface IRepositoryDao
 
 }
 
-export type RepositoryIdMap = Map<User_UuId,
-	Map<Terminal_UuId, Map<User_UuId,
-		Map<Actor_UuId, Map<number,
-			Map<Repository_UuId, Repository_Id>>>>>>;
+export type RepositoryIdMap = Map<User_GUID,
+	Map<Terminal_GUID, Map<User_GUID,
+		Map<Actor_GUID, Map<number,
+			Map<Repository_GUID, Repository_Id>>>>>>;
 
 @Injected()
 export class RepositoryDao
@@ -61,7 +61,7 @@ export class RepositoryDao
 
 	async getRepositoryLoadInfo(
 		repositorySource: Repository_Source,
-		repositoryUuId: Repository_UuId,
+		repositoryGUID: Repository_GUID,
 		context: IContext
 	): Promise<IRepository> {
 
@@ -83,7 +83,7 @@ export class RepositoryDao
 			],
 			where: and(
 				r.source.equals(repositorySource),
-				r.uuId.equals(repositoryUuId),
+				r.GUID.equals(repositoryGUID),
 				th.transactionType.equals(TransactionType.REMOTE_SYNC)
 			)
 		}, context)
@@ -128,8 +128,8 @@ export class RepositoryDao
 		})
 	}
 
-	async findByUuIds(
-		uuIds: Repository_UuId[],
+	async findByGUIDs(
+		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
@@ -137,7 +137,7 @@ export class RepositoryDao
 			from: [
 				r = Q.Repository
 			],
-			where: r.uuId.in(uuIds)
+			where: r.GUID.in(repositoryGUIDs)
 		})
 	}
 
@@ -149,7 +149,7 @@ export class RepositoryDao
 		const values = []
 		for (const repository of repositories) {
 			values.push([
-				repository.createdAt, repository.uuId, repository.ageSuitability,
+				repository.createdAt, repository.GUID, repository.ageSuitability,
 				repository.source, repository.immutable, repository.owner.id,
 			])
 		}
@@ -157,7 +157,7 @@ export class RepositoryDao
 			insertInto: r = Q.Repository,
 			columns: [
 				r.createdAt,
-				r.uuId,
+				r.GUID,
 				r.ageSuitability,
 				r.source,
 				r.immutable,

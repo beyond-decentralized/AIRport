@@ -6,7 +6,7 @@ import {
   SQLDialect,
   SqlDriver
 } from '@airport/fuel-hydrant-system';
-import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 import {
   JsonQuery,
   QueryType,

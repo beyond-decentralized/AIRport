@@ -5,7 +5,7 @@ import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicat
  * SELECT - All fields and relations (optional).
  */
 export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     user?: UserESelect;
     terminal?: TerminalESelect;
     application?: ApplicationESelect;
@@ -27,7 +27,7 @@ export interface ActorEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ActorEUpdateProperties extends IEntityUpdateProperties {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     user?: UserEOptionalId;
     terminal?: TerminalEOptionalId;
     application?: ApplicationEOptionalId;
@@ -37,7 +37,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     user?: UserGraph;
     terminal?: TerminalGraph;
     application?: ApplicationGraph;
@@ -47,7 +47,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface ActorEUpdateColumns extends IEntityUpdateColumns {
-    UU_ID?: string | IQStringField;
+    GUID?: string | IQStringField;
     USER_ID?: number | IQNumberField;
     TERMINAL_ID?: number | IQNumberField;
     APPLICATION_INDEX?: number | IQNumberField;
@@ -68,7 +68,7 @@ export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
  */
 export interface QActor extends IQEntity {
     id: IQNumberField;
-    uuId: IQStringField;
+    GUID: IQStringField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
     application: QApplicationQRelation;

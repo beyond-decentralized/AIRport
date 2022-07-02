@@ -1,20 +1,20 @@
 export interface ISaveUser {
-	id: number;
+    id: number;
 }
 
 export interface ISaveActor {
     id: number;
-    uuId?: string;
+    GUID?: string;
     user?: ISaveUser;
 }
 
 export interface ISaveRepository {
-	id: number;
-	createdAt?: Date;
-	uuId?: string;
-	ageSuitability?: number;
-	source?: string;
-	ownerActor?: ISaveActor;
+    id: number;
+    createdAt?: Date;
+    GUID?: string;
+    ageSuitability?: number;
+    source?: string;
+    ownerActor?: ISaveActor;
 }
 
 /**
@@ -43,10 +43,16 @@ export interface IDeleteResultRecords {
     [operationUniqueId: string]: boolean
 }
 
+export interface IRepositoryIdParts {
+    source: string
+    GUID: string
+}
+
 export interface ISaveResult {
     actor: ISaveActor
     created: ICreateResultRecords
     deleted: IDeleteResultRecords
     newRepository: ISaveRepository
+    repositoryIdParts: IRepositoryIdParts
     updated: IUpdateResultRecords
 }

@@ -14,7 +14,7 @@ import {
 } from "@airport/ground-transport";
 import {
     IRepositoryDao,
-    RepositoryTransactionHistory_UuId,
+    RepositoryTransactionHistory_GUID,
 } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
@@ -96,13 +96,13 @@ export class RepositoryLoader
             // message for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
 
-            const messageMapByUuId: Map<RepositoryTransactionHistory_UuId, RepositorySynchronizationMessage>
+            const messageMapByGUID: Map<RepositoryTransactionHistory_GUID, RepositorySynchronizationMessage>
                 = new Map()
             for (const message of messages) {
-                messageMapByUuId.set(message.history.uuId, message)
+                messageMapByGUID.set(message.history.GUID, message)
             }
 
-            await this.synchronizationInManager.receiveMessages(messageMapByUuId, context)
+            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context)
         } catch (e) {
             console.error(e)
             return

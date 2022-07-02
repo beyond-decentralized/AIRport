@@ -8,24 +8,24 @@ import { and } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
 import { BaseTerminalDao, Q } from '../generated/generated';
 let TerminalDao = class TerminalDao extends BaseTerminalDao {
-    async findByOwnerIdsAndUuIds(ownerIds, uuIds) {
-        let d;
+    async findByOwnerIdsAndGUIDs(ownerIds, GUIDs) {
+        let t;
         return await this.db.find.tree({
             select: {},
             from: [
-                d = Q.Terminal
+                t = Q.Terminal
             ],
-            where: and(d.owner.id.in(ownerIds), d.uuId.in(uuIds))
+            where: and(t.owner.id.in(ownerIds), t.GUID.in(GUIDs))
         });
     }
-    async findByUuIds(uuIds) {
-        let d;
+    async findByGUIDs(GUIDs) {
+        let t;
         return await this.db.find.tree({
             select: {},
             from: [
-                d = Q.Terminal
+                t = Q.Terminal
             ],
-            where: d.uuId.in(uuIds)
+            where: t.GUID.in(GUIDs)
         });
     }
     async insert(terminals, context) {
@@ -33,13 +33,13 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         const values = [];
         for (const terminal of terminals) {
             values.push([
-                terminal.uuId, terminal.owner.id, false,
+                terminal.GUID, terminal.owner.id, false,
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
             insertInto: t = Q.Terminal,
             columns: [
-                t.uuId,
+                t.GUID,
                 t.owner.id,
                 t.isLocal
             ],

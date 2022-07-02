@@ -1,7 +1,8 @@
-import { QueryType, SQLDataType } from '@airport/ground-control';
+import { JsonQuery, QueryType, SQLDataType } from '@airport/ground-control';
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
 import pg from 'pg';
 import { IOperationContext } from '@airport/terminal-map';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/27/2016.
  */
@@ -11,6 +12,7 @@ export declare class PostgreSqlDriver extends SqlDriver {
     doesTableExist(applicationName: string, tableName: string): Promise<boolean>;
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IFuelHydrantContext): string;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected convertValueIn(value: any): number | string;
     isValueValid(value: any, sqlDataType: SQLDataType, context: IOperationContext): boolean;

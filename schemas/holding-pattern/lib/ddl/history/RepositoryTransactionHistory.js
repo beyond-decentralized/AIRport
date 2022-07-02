@@ -38,9 +38,9 @@ __decorate([
     DbNumber()
 ], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
 __decorate([
-    Column({ name: "UUID", nullable: false }),
+    Column({ name: "GUID", nullable: false }),
     DbString()
-], RepositoryTransactionHistory.prototype, "uuId", void 0);
+], RepositoryTransactionHistory.prototype, "GUID", void 0);
 __decorate([
     Column({ name: "IS_REPOSITORY_CREATION", nullable: false }),
     DbBoolean()

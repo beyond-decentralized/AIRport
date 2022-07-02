@@ -1,5 +1,6 @@
 import { SqlDriver } from '@airport/fuel-hydrant-system';
-import { QueryType, SQLDataType } from '@airport/ground-control';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
+import { JsonQuery, QueryType, SQLDataType } from '@airport/ground-control';
 import { IOperationContext } from '@airport/terminal-map';
 import { FieldPacket, OkPacket, QueryOptions, ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Pool } from 'mysql2/promise';
@@ -32,6 +33,7 @@ export declare class MySqlDriver extends SqlDriver {
     doesTableExist(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any>;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IFuelHydrantContext): string;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected convertValueIn(value: any): any;
     isValueValid(value: any, sqlDataType: SQLDataType): boolean;

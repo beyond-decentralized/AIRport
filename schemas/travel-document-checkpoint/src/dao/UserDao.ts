@@ -1,6 +1,6 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
-	User_UuId,
+	User_GUID,
 	User_Username
 } from '../ddl/ddl'
 import {
@@ -18,8 +18,8 @@ export interface IUserDao
 		usernames: User_Username[]
 	): Promise<IUser[]>
 
-	findByUuIds(
-		uuIds: User_UuId[]
+	findByGUIDs(
+		GUIDs: User_GUID[]
 	): Promise<IUser[]>
 
 	insert(
@@ -47,8 +47,8 @@ export class UserDao
 		})
 	}
 
-	async findByUuIds(
-		uuIds: User_UuId[]
+	async findByGUIDs(
+		GUIDs: User_GUID[]
 	): Promise<IUser[]> {
 		let u: QUser
 		return await this.db.find.tree({
@@ -56,7 +56,7 @@ export class UserDao
 			from: [
 				u = Q.User
 			],
-			where: u.uuId.in(uuIds)
+			where: u.GUID.in(GUIDs)
 		})
 	}
 
@@ -68,13 +68,13 @@ export class UserDao
 		const values = []
 		for (const user of users) {
 			values.push([
-				user.uuId, user.username
+				user.GUID, user.username
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: u = Q.User,
 			columns: [
-				u.uuId,
+				u.GUID,
 				u.username
 			],
 			values

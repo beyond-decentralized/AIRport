@@ -28,7 +28,7 @@ import {
 	JSONValueOperation,
 	PortableQuery
 } from '@airport/ground-control'
-import { IActor, IAirEntity, AirEntity } from '@airport/holding-pattern'
+import { IActor, IAirEntity } from '@airport/holding-pattern'
 import {
 	ICascadeGraphVerifier,
 	IDeleteManager,
@@ -131,13 +131,12 @@ export class OperationManager
 			}
 		}
 
-
 		const operations = this.dependencyGraphResolver
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
 		let saveActor: ISaveActor = {
 			id: actor.id,
-			uuId: actor.uuId,
+			GUID: actor.GUID,
 			user: actor.user ? {
 				id: actor.user.id
 			} : null
@@ -147,12 +146,12 @@ export class OperationManager
 			newRepository = {
 				id: context.newRepository.id,
 				createdAt: context.newRepository.createdAt,
-				uuId: context.newRepository.uuId,
+				GUID: context.newRepository.GUID,
 				ageSuitability: context.newRepository.ageSuitability,
 				source: context.newRepository.source,
 				ownerActor: {
 					id: actor.id,
-					uuId: actor.uuId,
+					GUID: actor.GUID,
 					user: actor.user ? {
 						id: actor.user.id
 					} : null
@@ -162,21 +161,28 @@ export class OperationManager
 		const saveResult: ISaveResult = {
 			actor: saveActor,
 			created: {},
-			newRepository,
 			deleted: {},
+			newRepository,
+			repositoryIdParts: {
+				source: newRepository.source,
+				GUID: newRepository.GUID
+			},
 			updated: {},
 		}
 		for (const operation of operations) {
 			context.dbEntity = operation.dbEntity
 			if (operation.isCreate) {
 				await this.internalCreate(
-					operation.entities, actor, transaction, rootTransaction, saveResult, context, true)
+					operation.entities, actor, transaction, rootTransaction,
+					saveResult, context, true)
 			} else if (operation.isDelete) {
 				await this.internalDelete(
-					operation.entities, actor, transaction, rootTransaction, saveResult, context)
+					operation.entities, actor, transaction, rootTransaction,
+					saveResult, context)
 			} else {
 				await this.internalUpdate(
-					operation.entities, actor, transaction, rootTransaction, saveResult, context)
+					operation.entities, actor, transaction, rootTransaction,
+					saveResult, context)
 			}
 		}
 		context.dbEntity = rootDbEntity

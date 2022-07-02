@@ -16,7 +16,7 @@ import {
 import { Application } from '@airport/airspace';
 
 export type Actor_Id = number;
-export type Actor_UuId = string;
+export type Actor_GUID = string;
 
 @Entity()
 export class Actor {
@@ -27,9 +27,9 @@ export class Actor {
 	@Column({ name: 'ID' })
 	id?: Actor_Id
 
-	@Column({ name: 'UU_ID', nullable: false })
+	@Column({ name: 'GUID', nullable: false })
 	@DbString()
-	uuId?: Actor_UuId
+	GUID?: Actor_GUID
 
 	@ManyToOne()
 	@JoinColumn({

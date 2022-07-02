@@ -7,7 +7,7 @@ import { IOperationContext } from '@airport/terminal-map'
 import {
 	Injected
 } from '@airport/direction-indicator'
-import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext'
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system'
 
 const Pool = pg.Pool
 const parse = pgConnectionString.parse

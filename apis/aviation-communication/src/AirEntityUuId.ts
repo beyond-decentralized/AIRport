@@ -13,7 +13,7 @@ export interface IUser {
     passwordHash?: string;
     ranking?: number;
     username?: string;
-    uuId?: string;
+    GUID?: string;
 
     // Non-Id Relations
 
@@ -26,10 +26,10 @@ export interface IUser {
 export interface AirEntityUuId {
 
     repository?: {
-        uuId?: string
+        GUID?: string
     },
     actor?: {
-        uuId?: string,
+        GUID?: string,
         user?: IUser
     },
     actorRecordId?: number
@@ -46,7 +46,7 @@ export interface IAirEntityUtils {
         idObject: AirEntityUuId
     ): string
 
-    parseUuId(
+    parseEGUID(
         idString: string
     ): AirEntityUuId
 
@@ -71,30 +71,30 @@ export class AirEntityUtils
         idObject: AirEntityUuId
     ): string {
         if (!idObject.repository
-            || !idObject.repository.uuId
+            || !idObject.repository.GUID
             || !idObject.actor
-            || !idObject.actor.uuId
+            || !idObject.actor.GUID
             || !idObject.actorRecordId) {
             return null
         }
-        if (typeof idObject.repository.uuId !== 'string') {
+        if (typeof idObject.repository.GUID !== 'string') {
             throw Error(`Type of "repository.uuId" property is not a string.`)
         }
-        if (typeof idObject.actor.uuId !== 'string') {
+        if (typeof idObject.actor.GUID !== 'string') {
             throw Error(`Type of "actor.uuId" property is not a string.`)
         }
         if (typeof idObject.actorRecordId !== 'number') {
             throw Error(`Type of "actorRecordId" property is not a number.`)
         }
-        return idObject.repository.uuId + '-' + idObject.actor.uuId + '-' + idObject.actorRecordId
+        return idObject.repository.GUID + '-' + idObject.actor.GUID + '-' + idObject.actorRecordId
     }
 
-    parseUuId(
+    parseEGUID(
         idString: string
     ): AirEntityUuId {
         const idStringFragments = idString.split('-')
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid AirEntity UuId, expecting ${repository.uuId}-${actor.uuId}-${actorRecordId}');
+            throw new Error('Invalid Entity GUID, expecting ${repository.uuId}-${actor.uuId}-${actorRecordId}');
         }
         const repositoryUuIdFragments: string[] = []
         for (let i = 0; i < 5; i++) {
@@ -106,10 +106,10 @@ export class AirEntityUtils
         }
         return {
             repository: {
-                uuId: repositoryUuIdFragments.join('-')
+                GUID: repositoryUuIdFragments.join('-')
             },
             actor: {
-                uuId: actorUuIdFragments.join('-')
+                GUID: actorUuIdFragments.join('-')
             },
             actorRecordId: parseInt(idStringFragments[11])
         }
@@ -119,21 +119,21 @@ export class AirEntityUtils
         idString: string,
         airEntity: AirEntityUuId
     ): void {
-        let airEntityId = this.parseUuId(idString)
+        let airEntityId = this.parseEGUID(idString)
         if (!airEntity.repository) {
             airEntity.repository = {
-                uuId: airEntityId.repository.uuId
+                GUID: airEntityId.repository.GUID
             }
         } else {
-            airEntity.repository.uuId = airEntityId.repository.uuId
+            airEntity.repository.GUID = airEntityId.repository.GUID
         }
 
         if (!airEntity.actor) {
             airEntity.actor = {
-                uuId: airEntityId.repository.uuId
+                GUID: airEntityId.repository.GUID
             }
         } else {
-            airEntity.actor.uuId = airEntityId.actor.uuId
+            airEntity.actor.GUID = airEntityId.actor.GUID
         }
 
         airEntity.actorRecordId = airEntityId.actorRecordId

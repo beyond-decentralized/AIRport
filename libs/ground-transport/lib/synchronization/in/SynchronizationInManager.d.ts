@@ -7,7 +7,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
  * The manager for synchronizing data coming in  to Terminal (TM)
  */
 export interface ISynchronizationInManager {
-    receiveMessages(messageMapByUuId: Map<string, RepositorySynchronizationMessage>, context: ITransactionContext): Promise<void>;
+    receiveMessages(messageMapByGUID: Map<string, RepositorySynchronizationMessage>, context: ITransactionContext): Promise<void>;
 }
 /**
  * Synchronization in Manager implementation.
@@ -17,7 +17,7 @@ export declare class SynchronizationInManager implements ISynchronizationInManag
     syncInChecker: ISyncInChecker;
     transactionManager: ITransactionManager;
     twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor;
-    receiveMessages(messageMapByUuId: Map<string, RepositorySynchronizationMessage>, context: ITransactionContext): Promise<void>;
+    receiveMessages(messageMapByGUID: Map<string, RepositorySynchronizationMessage>, context: ITransactionContext): Promise<void>;
     private timeOrderMessages;
     private isValidLastChangeTime;
 }

@@ -82,7 +82,7 @@ async function serveReadRequest(
     let query = `
     SELECT data FROM votecube.transaction_logs tl
     WHERE
-        repository_uuid = ?`;
+        Repository_GUID = ?`;
     let params: any[] = [readRequest.repositoryUuId];
 
     if (readRequest.transactionLogEntryTime) {
@@ -137,7 +137,7 @@ async function serveWriteRequest(
     let transactionLogEntryTime = new Date().getTime()
 
     let query = `
-    INSERT INTO votecube.transaction_logs (repository_uuid, transaction_log_entry_time, data)
+    INSERT INTO votecube.transaction_logs (Repository_GUID, transaction_log_entry_time, data)
     VALUES (?, ?, ?)`;
 
     const params = [writeRequest.repositoryUuId, transactionLogEntryTime, writeRequest.data];

@@ -9,6 +9,6 @@ export class Client {
     domain: string
 
     @DbString()
-    uuId: string
+    GUID: string
 
 }

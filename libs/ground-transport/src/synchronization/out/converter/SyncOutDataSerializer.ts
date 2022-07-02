@@ -176,7 +176,7 @@ export class SyncOutDataSerializer
 				application: applicationInMessageIndex as any,
 				terminal: terminalInMessageIndexesById.get(actor.terminal.id) as any,
 				user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id) as any,
-				uuId: actor.uuId
+				GUID: actor.GUID
 			}
 		}
 
@@ -199,7 +199,7 @@ export class SyncOutDataSerializer
 			terminalInMessageIndexesById.set(terminal.id, terminalInMessageIndex)
 			message.terminals[terminalInMessageIndex] = {
 				...WITH_ID,
-				uuId: terminal.uuId,
+				GUID: terminal.GUID,
 				owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id) as any
 			}
 		}
@@ -228,7 +228,7 @@ export class SyncOutDataSerializer
 		message.users[userInMessageIndex] = {
 			...WITH_ID,
 			username: user.username,
-			uuId: user.uuId
+			GUID: user.GUID
 		}
 
 		return userInMessageIndex
@@ -351,7 +351,7 @@ export class SyncOutDataSerializer
 				repositoryTransactionHistory, message, inMessageUserLookup),
 			operationHistory: serializedOperationHistory,
 			saveTimestamp: repositoryTransactionHistory.saveTimestamp,
-			uuId: repositoryTransactionHistory.uuId
+			GUID: repositoryTransactionHistory.GUID
 		}
 	}
 
@@ -371,7 +371,7 @@ export class SyncOutDataSerializer
 			// the repository should already be loaded in the target database
 			// if it's not then it's missing the repositoryTransactionHistory
 			// with isRepositoryCreation === true
-			return repositoryTransactionHistory.repository.uuId as any
+			return repositoryTransactionHistory.repository.GUID as any
 		}
 	}
 
@@ -578,7 +578,7 @@ export class SyncOutDataSerializer
 			immutable: repository.immutable,
 			owner,
 			source: repository.source,
-			uuId: repository.uuId
+			GUID: repository.GUID
 		}
 	}
 

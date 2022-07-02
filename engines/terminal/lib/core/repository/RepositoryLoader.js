@@ -58,11 +58,11 @@ let RepositoryLoader = class RepositoryLoader {
             // each message is signed with the private key and the initial
             // message for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
-            const messageMapByUuId = new Map();
+            const messageMapByGUID = new Map();
             for (const message of messages) {
-                messageMapByUuId.set(message.history.uuId, message);
+                messageMapByGUID.set(message.history.GUID, message);
             }
-            await this.synchronizationInManager.receiveMessages(messageMapByUuId, context);
+            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context);
         }
         catch (e) {
             console.error(e);

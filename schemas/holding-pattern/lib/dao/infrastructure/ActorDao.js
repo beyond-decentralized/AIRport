@@ -12,16 +12,16 @@ let ActorDao = class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
     }
-    async findMapsWithDetailsByGlobalIds(uuIds, userIds, terminalIds, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(uuIds, userIds, terminalIds);
+    async findMapsWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds);
         for (const actor of actors) {
             ensureChildJsMap(actorMap, actor.user.id)
                 .set(actor.terminal.id, actor);
             actorMapById.set(actor.id, actor);
         }
     }
-    async findWithDetailsByGlobalIds(uuIds, userIds, terminalIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.uuId.in(uuIds), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
+    async findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.GUID.in(actorGUIDs), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
     }
     async findByDomainAndApplicationNames(domainName, applicationName) {
         let act;
@@ -50,31 +50,31 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: and(domain.name.equals(domainName), application.name.equals(applicationName))
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(actorGUIDs) {
         let a;
         return await this.db.find.tree({
             select: {},
             from: [
                 a = Q.Actor
             ],
-            where: a.uuId.in(uuIds)
+            where: a.GUID.in(actorGUIDs)
         });
     }
     async insert(actors, context) {
-        let t;
+        let a;
         const values = [];
         for (const actor of actors) {
             values.push([
-                actor.uuId, actor.application.index, actor.user.id, actor.terminal.id,
+                actor.GUID, actor.application.index, actor.user.id, actor.terminal.id,
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            insertInto: t = Q.Actor,
+            insertInto: a = Q.Actor,
             columns: [
-                t.uuId,
-                t.application.index,
-                t.user.id,
-                t.terminal.id
+                a.GUID,
+                a.application.index,
+                a.user.id,
+                a.terminal.id
             ],
             values
         }, context);
@@ -89,7 +89,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         let t;
         const id = Y;
         const username = Y;
-        const uuId = Y;
+        const GUID = Y;
         return await this.db.find.tree({
             select: {
                 ...ALL_FIELDS,
@@ -102,17 +102,17 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 },
                 terminal: {
                     id,
-                    uuId,
+                    GUID,
                     owner: {
                         id,
                         username,
-                        uuId,
+                        GUID,
                     }
                 },
                 user: {
                     id,
                     username,
-                    uuId,
+                    GUID,
                 }
             },
             from: [

@@ -25,7 +25,7 @@ export type Repository_CreatedAt = Date;
 export type Repository_Id = number;
 export type Repository_Immutable = boolean;
 export type Repository_Source = string;
-export type Repository_UuId = string;
+export type Repository_GUID = string;
 
 @Entity()
 @Table({
@@ -54,9 +54,9 @@ export class Repository {
 	@DbString()
 	source: Repository_Source
 
-	@Column({ name: "UU_ID", nullable: false })
+	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	uuId: Repository_UuId;
+	GUID: Repository_GUID;
 
 	@ManyToOne()
 	@JoinColumn({

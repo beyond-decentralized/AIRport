@@ -1,7 +1,7 @@
 import { IUser } from './user';
 export interface ITerminal {
     id: number;
-    uuId?: string;
+    GUID?: string;
     isLocal?: boolean;
     owner?: IUser;
 }

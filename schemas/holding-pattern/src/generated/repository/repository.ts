@@ -23,7 +23,7 @@ export interface IRepository {
 	createdAt?: Date;
 	immutable?: boolean;
 	source?: string;
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 	owner?: IUser;

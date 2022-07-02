@@ -152,7 +152,7 @@ export abstract class Dao<Entity,
 	}
 
 	async findByUuId(
-		airEntityUuId: AirEntityUuId | string,
+		airEntityUuId: Entity | AirEntityUuId | string,
 		forUpdate: boolean = false,
 		context?: IContext
 	): Promise<Entity> {
@@ -167,11 +167,11 @@ export abstract class Dao<Entity,
 				'*': Y,
 				uuId: Y
 			},
-			forUpdate,
 			from: [
 				q = this.db.from
 			],
-			where: q.equals(idObject)
+			where: q.equals(idObject),
+			forUpdate
 		}, context)
 	}
 

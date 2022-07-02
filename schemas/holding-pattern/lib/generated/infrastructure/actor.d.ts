@@ -2,7 +2,7 @@ import { IUser, ITerminal, IClient } from '@airport/travel-document-checkpoint';
 import { IApplication } from '@airport/airspace';
 export interface IActor {
     id?: number;
-    uuId?: string;
+    GUID?: string;
     user?: IUser;
     terminal?: ITerminal;
     application?: IApplication;

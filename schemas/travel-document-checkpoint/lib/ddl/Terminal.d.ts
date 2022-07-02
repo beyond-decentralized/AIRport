@@ -1,7 +1,7 @@
 import { User } from './User';
 export declare type TmTerminal_Id = number;
 export declare type Terminal_IsLocal = boolean;
-export declare type Terminal_UuId = string;
+export declare type Terminal_GUID = string;
 /**
  *
  * DEPRECATED - syncing will now be done via IPFS/Peergos
@@ -9,7 +9,7 @@ export declare type Terminal_UuId = string;
  */
 export declare class Terminal {
     id: TmTerminal_Id;
-    uuId: Terminal_UuId;
+    GUID: Terminal_GUID;
     owner: User;
     isLocal: Terminal_IsLocal;
 }

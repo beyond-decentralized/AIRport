@@ -2,7 +2,7 @@ import { and } from '@airport/air-traffic-control'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	User_Id,
-	Terminal_UuId
+	Terminal_GUID
 } from '../ddl/ddl'
 import {
 	BaseTerminalDao,
@@ -15,13 +15,13 @@ import {
 export interface ITerminalDao
 	extends IBaseTerminalDao {
 
-	findByOwnerIdsAndUuIds(
+	findByOwnerIdsAndGUIDs(
 		ownerIds: User_Id[],
-		uuIds: Terminal_UuId[]
+		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]>;
 
-	findByUuIds(
-		uuIds: Terminal_UuId[]
+	findByGUIDs(
+		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]>;
 
 	insert(
@@ -36,33 +36,33 @@ export class TerminalDao
 	extends BaseTerminalDao
 	implements ITerminalDao {
 
-	async findByOwnerIdsAndUuIds(
+	async findByOwnerIdsAndGUIDs(
 		ownerIds: User_Id[],
-		uuIds: Terminal_UuId[]
+		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]> {
-		let d: QTerminal
+		let t: QTerminal
 		return await this.db.find.tree({
 			select: {},
 			from: [
-				d = Q.Terminal
+				t = Q.Terminal
 			],
 			where: and(
-				d.owner.id.in(ownerIds),
-				d.uuId.in(uuIds)
+				t.owner.id.in(ownerIds),
+				t.GUID.in(GUIDs)
 			)
 		})
 	}
 
-	async findByUuIds(
-		uuIds: Terminal_UuId[],
+	async findByGUIDs(
+		GUIDs: Terminal_GUID[],
 	): Promise<ITerminal[]> {
-		let d: QTerminal
+		let t: QTerminal
 		return await this.db.find.tree({
 			select: {},
 			from: [
-				d = Q.Terminal
+				t = Q.Terminal
 			],
-			where: d.uuId.in(uuIds)
+			where: t.GUID.in(GUIDs)
 		})
 	}
 
@@ -74,13 +74,13 @@ export class TerminalDao
 		const values = []
 		for (const terminal of terminals) {
 			values.push([
-				terminal.uuId, terminal.owner.id, false,
+				terminal.GUID, terminal.owner.id, false,
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
 			insertInto: t = Q.Terminal,
 			columns: [
-				t.uuId,
+				t.GUID,
 				t.owner.id,
 				t.isLocal
 			],

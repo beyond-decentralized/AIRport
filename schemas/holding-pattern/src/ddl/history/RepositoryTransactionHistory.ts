@@ -27,7 +27,7 @@ export type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
 export type RepositoryTransactionHistory_BlockId = number;
 export type RepositoryTransactionHistory_SaveTimestamp = number;
 export type RepositoryTransactionHistory_SyncTimestamp = number;
-export type RepositoryTransactionHistory_UuId = string;
+export type RepositoryTransactionHistory_GUID = string;
 
 @Entity()
 @Table({ name: 'REPOSITORY_TRANSACTION_HISTORY' })
@@ -50,9 +50,9 @@ export class RepositoryTransactionHistory {
 	@DbNumber()
 	syncTimestamp: RepositoryTransactionHistory_SyncTimestamp
 
-	@Column({ name: "UUID", nullable: false })
+	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	uuId: RepositoryTransactionHistory_UuId
+	GUID: RepositoryTransactionHistory_GUID
 
 	@Column({ name: "IS_REPOSITORY_CREATION", nullable: false })
 	@DbBoolean()

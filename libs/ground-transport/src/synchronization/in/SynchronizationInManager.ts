@@ -14,7 +14,7 @@ import { ITwoStageSyncedInDataProcessor } from './TwoStageSyncedInDataProcessor'
 export interface ISynchronizationInManager {
 
 	receiveMessages(
-		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
+		messageMapByGUID: Map<string, RepositorySynchronizationMessage>,
 		context: ITransactionContext
 	): Promise<void>;
 
@@ -40,24 +40,24 @@ export class SynchronizationInManager
 	twoStageSyncedInDataProcessor: ITwoStageSyncedInDataProcessor
 
 	async receiveMessages(
-		messageMapByUuId: Map<string, RepositorySynchronizationMessage>,
+		messageMapByGUID: Map<string, RepositorySynchronizationMessage>,
 		context: ITransactionContext
 	): Promise<void> {
 		const syncTimestamp = new Date().getTime()
 
 		const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-			.findWhereUuIdsIn([...messageMapByUuId.keys()])
+			.findWhereGUIDsIn([...messageMapByGUID.keys()])
 		for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-			messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId)
+			messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID)
 		}
 
-		if (!messageMapByUuId.size) {
+		if (!messageMapByGUID.size) {
 			return
 		}
 
 		let messagesToProcess: RepositorySynchronizationMessage[] = []
 
-		const orderedMessages = this.timeOrderMessages(messageMapByUuId)
+		const orderedMessages = this.timeOrderMessages(messageMapByGUID)
 
 		// Split up messages by type
 		for (const message of orderedMessages) {
@@ -93,9 +93,9 @@ export class SynchronizationInManager
 	}
 
 	private timeOrderMessages(
-		messageMapByUuId: Map<string, RepositorySynchronizationMessage>
+		messageMapByGUID: Map<string, RepositorySynchronizationMessage>
 	): RepositorySynchronizationMessage[] {
-		const messages: RepositorySynchronizationMessage[] = [...messageMapByUuId.values()]
+		const messages: RepositorySynchronizationMessage[] = [...messageMapByGUID.values()]
 
 		messages.sort((message1, message2) => {
 			if (message1.syncTimestamp < message2.syncTimestamp) {

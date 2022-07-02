@@ -9,18 +9,18 @@ import { Inject, Injected } from '@airport/direction-indicator';
  * Synchronization in Manager implementation.
  */
 let SynchronizationInManager = class SynchronizationInManager {
-    async receiveMessages(messageMapByUuId, context) {
+    async receiveMessages(messageMapByGUID, context) {
         const syncTimestamp = new Date().getTime();
         const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereUuIdsIn([...messageMapByUuId.keys()]);
+            .findWhereGUIDsIn([...messageMapByGUID.keys()]);
         for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-            messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId);
+            messageMapByGUID.delete(existingRepositoryTransactionHistory.GUID);
         }
-        if (!messageMapByUuId.size) {
+        if (!messageMapByGUID.size) {
             return;
         }
         let messagesToProcess = [];
-        const orderedMessages = this.timeOrderMessages(messageMapByUuId);
+        const orderedMessages = this.timeOrderMessages(messageMapByGUID);
         // Split up messages by type
         for (const message of orderedMessages) {
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
@@ -46,8 +46,8 @@ let SynchronizationInManager = class SynchronizationInManager {
             await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context);
         }, context);
     }
-    timeOrderMessages(messageMapByUuId) {
-        const messages = [...messageMapByUuId.values()];
+    timeOrderMessages(messageMapByGUID) {
+        const messages = [...messageMapByGUID.values()];
         messages.sort((message1, message2) => {
             if (message1.syncTimestamp < message2.syncTimestamp) {
                 return -1;

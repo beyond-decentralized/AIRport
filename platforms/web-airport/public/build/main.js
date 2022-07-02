@@ -10237,7 +10237,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: and(domain.name.equals(domainName), application.name.equals(applicationName))
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(uuIds) {
         let a;
         return await this.db.find.tree({
             select: {},
@@ -10376,7 +10376,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(uuIds) {
         let r;
         return await this.db.find.tree({
             select: {},
@@ -28296,7 +28296,7 @@ let SyncInActorChecker = class SyncInActorChecker {
                 // Make sure id field is not in the input
                 delete actor.id;
             }
-            const actors = await this.actorDao.findByUuIds(actorUuids);
+            const actors = await this.actorDao.findByGUIDs(actorUuids);
             for (const actor of actors) {
                 const messageUserIndex = messageActorIndexMap.get(actor.uuId);
                 message.actors[messageUserIndex] = actor;
@@ -29004,7 +29004,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 }
                 repositoryUuids.push(history.repository);
             }
-            const repositories = await this.repositoryDao.findByUuIds(repositoryUuids);
+            const repositories = await this.repositoryDao.findByGUIDs(repositoryUuids);
             for (const repository of repositories) {
                 const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
                 if (messageUserIndex || messageUserIndex === 0) {
@@ -29114,7 +29114,7 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
                 // Make sure id field is not in the input
                 delete terminal.id;
             }
-            const terminals = await this.terminalDao.findByUuIds(terminalUuids);
+            const terminals = await this.terminalDao.findByGUIDs(terminalUuids);
             for (const terminal of terminals) {
                 const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId);
                 message.terminals[messageUserIndex] = terminal;
@@ -29169,7 +29169,7 @@ let SyncInUserChecker = class SyncInUserChecker {
                 // Make sure id field is not in the input
                 delete user.id;
             }
-            const users = await this.userDao.findByUuIds(userUuids);
+            const users = await this.userDao.findByGUIDs(userUuids);
             for (const user of users) {
                 const messageUserIndex = messageUserIndexMap.get(user.uuId);
                 message.users[messageUserIndex] = user;
@@ -31138,7 +31138,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             where: and(d.owner.id.in(ownerIds), d.uuId.in(uuIds))
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(uuIds) {
         let d;
         return await this.db.find.tree({
             select: {},
@@ -31192,7 +31192,7 @@ let UserDao = class UserDao extends BaseUserDao {
             where: u.username.in(usernames)
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(uuIds) {
         let u;
         return await this.db.find.tree({
             select: {},
@@ -31264,7 +31264,7 @@ let UserApi = class UserApi {
         };
     }
     async findUser(privateId) {
-        const users = await this.userDao.findByUuIds([privateId]);
+        const users = await this.userDao.findByGUIDs([privateId]);
         if (users.length) {
             return users[0];
         }

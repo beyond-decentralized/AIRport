@@ -41,6 +41,12 @@ let PostgreSqlDriver = class PostgreSqlDriver extends SqlDriver {
         let nativeParameters = parameters.map((value) => this.convertValueIn(value));
         return await this.query(QueryType.SELECT, sqlQuery, nativeParameters, context);
     }
+    getSelectQuerySuffix(jsonQuery, context) {
+        if (jsonQuery.forUpdate) {
+            return 'FOR UPDATE';
+        }
+        return '';
+    }
     async executeNative(sql, parameters, context) {
         return await this.query(QueryType.MUTATE, sql, parameters, context);
     }

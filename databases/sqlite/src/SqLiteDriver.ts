@@ -9,7 +9,7 @@ import {
 } from '@airport/fuel-hydrant-system'
 import { IOperationContext } from '@airport/terminal-map';
 import { IContext } from '@airport/direction-indicator';
-import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 
 /**
  * Created by Papa on 11/27/2016.

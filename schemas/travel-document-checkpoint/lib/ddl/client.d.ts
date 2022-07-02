@@ -1,6 +1,6 @@
 export declare class Client {
     id: number;
     domain: string;
-    uuId: string;
+    GUID: string;
 }
 //# sourceMappingURL=Client.d.ts.map

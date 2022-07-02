@@ -14,7 +14,7 @@ import {
 	IRepositoryTransactionHistoryDao,
 	Repository_Id,
 	Repository_Source,
-	Repository_UuId
+	Repository_GUID
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
@@ -100,7 +100,7 @@ export class SynchronizationOutManager
 
 		for (const repositoryTransactionHistory of repositoryTransactionHistories) {
 			const repository = repositoryTransactionHistory.repository
-			if (!repository.source || !repository.uuId) {
+			if (!repository.source || !repository.GUID) {
 				repositoryIdsToLookup.add(repository.id)
 			} else {
 				repositoryMapById.set(repository.id, repository)
@@ -119,10 +119,10 @@ export class SynchronizationOutManager
 		}
 		for (const message of messages) {
 			const repository = message.history.repository
-			if (!repository.source || !repository.uuId) {
+			if (!repository.source || !repository.GUID) {
 				const foundRepository = repositoryMapById.get(repository.id)
 				repository.source = foundRepository.source
-				repository.uuId = foundRepository.uuId
+				repository.GUID = foundRepository.GUID
 				delete repository.id
 			}
 		}
@@ -131,15 +131,15 @@ export class SynchronizationOutManager
 	private groupMessagesBySourceAndRepository(
 		messages: RepositorySynchronizationMessage[],
 		historiesToSend: IRepositoryTransactionHistory[]
-	): Map<Repository_Source, Map<Repository_UuId, RepositorySynchronizationMessage[]>> {
-		const groupMessageMap: Map<Repository_Source, Map<Repository_UuId, RepositorySynchronizationMessage[]>>
+	): Map<Repository_Source, Map<Repository_GUID, RepositorySynchronizationMessage[]>> {
+		const groupMessageMap: Map<Repository_Source, Map<Repository_GUID, RepositorySynchronizationMessage[]>>
 			= new Map()
 
 		for (let i = 0; i < messages.length; i++) {
 			const repository = historiesToSend[i].repository
 			ensureChildArray(
 				ensureChildJsMap(groupMessageMap, repository.source),
-				repository.uuId).push(messages[i])
+				repository.GUID).push(messages[i])
 		}
 
 		return groupMessageMap

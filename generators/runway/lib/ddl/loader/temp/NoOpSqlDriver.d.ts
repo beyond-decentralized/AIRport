@@ -1,4 +1,6 @@
 import { SQLDialect, SqlDriver } from '@airport/fuel-hydrant-system';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
+import { JsonQuery } from '@airport/ground-control';
 import { IOperationContext, ITransaction, ITransactionContext } from '@airport/terminal-map';
 export declare class NoOpSqlDriver extends SqlDriver {
     composeTableName(applicationName: string, tableName: string, context: IOperationContext): string;
@@ -14,6 +16,7 @@ export declare class NoOpSqlDriver extends SqlDriver {
     internalRollback(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
     internalStartTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;
     setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
+    getSelectQuerySuffix(jsonQuery: JsonQuery, context: IFuelHydrantContext): string;
     protected executeNative(sql: string, parameters: any[], context: IOperationContext): Promise<number>;
     protected getDialect(context: IOperationContext): SQLDialect;
 }

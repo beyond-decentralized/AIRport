@@ -4,7 +4,7 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
  */
 export interface ClientESelect extends IEntitySelectProperties, ClientEOptionalId {
     domain?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -23,21 +23,21 @@ export interface ClientEOptionalId {
  */
 export interface ClientEUpdateProperties extends IEntityUpdateProperties {
     domain?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ClientGraph extends ClientEOptionalId, IEntityCascadeGraph {
     domain?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface ClientEUpdateColumns extends IEntityUpdateColumns {
     DOMAIN?: string | IQStringField;
-    UUID?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -55,7 +55,7 @@ export interface ClientECreateColumns extends ClientEId, ClientEUpdateColumns {
 export interface QClient extends IQEntity {
     id: IQNumberField;
     domain: IQStringField;
-    uuId: IQStringField;
+    GUID: IQStringField;
 }
 export interface QClientQId {
     id: IQNumberField;

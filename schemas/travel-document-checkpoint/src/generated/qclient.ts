@@ -42,7 +42,7 @@ export interface ClientESelect
     extends IEntitySelectProperties, ClientEOptionalId {
 	// Non-Id Properties
 	domain?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -80,7 +80,7 @@ export interface ClientEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	domain?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -95,7 +95,7 @@ export interface ClientGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	domain?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Relations
 
@@ -108,7 +108,7 @@ export interface ClientEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	DOMAIN?: string | IQStringField;
-	UUID?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 }
 
@@ -145,7 +145,7 @@ export interface QClient extends IQEntity
 
 	// Non-Id Fields
 	domain: IQStringField;
-	uuId: IQStringField;
+	GUID: IQStringField;
 
 	// Non-Id Relations
 

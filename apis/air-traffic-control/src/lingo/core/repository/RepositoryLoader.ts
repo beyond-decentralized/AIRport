@@ -4,7 +4,7 @@ export interface IRepositoryLoader {
 
     loadRepository(
         repositorySource: string,
-        repositoryUuid: string,
+        repositoryGUID: string,
         context: IContext
     ): Promise<void>
 

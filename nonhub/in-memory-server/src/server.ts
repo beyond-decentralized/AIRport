@@ -4,7 +4,7 @@ import type {
     RepositorySynchronizationReadResponse,
     RepositorySynchronizationWriteRequest,
 } from '@airport/arrivals-n-departures';
-import type { Repository_UuId } from '@airport/holding-pattern';
+import type { Repository_GUID } from '@airport/holding-pattern';
 import type {
     SearchRequest,
     UserRequest,
@@ -30,7 +30,7 @@ export interface ITransactionLogEntry {
     syncTimestamp: number
 }
 
-const transactionLogs: Map<Repository_UuId, ITransactionLogEntry[]>
+const transactionLogs: Map<Repository_GUID, ITransactionLogEntry[]>
     = new Map()
 
 server.fastify.register(require('fastify-cors'), {

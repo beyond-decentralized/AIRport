@@ -2,7 +2,7 @@ import { EntityId } from '@airport/ground-control';
 import { Actor_Id, RecordHistoryActorRecordId, Repository_Id } from '../../ddl/ddl';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory } from '../../generated/generated';
 export interface IRepositoryTransactionHistoryDao {
-    findWhereUuIdsIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
+    findWhereGUIDsIn(GUIDs: string[]): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     updateSyncTimestamp(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<void>;
 }
@@ -11,7 +11,7 @@ export interface IChangedRecordIdsForRepository {
     firstChangeTime: number;
 }
 export declare class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao implements IRepositoryTransactionHistoryDao {
-    findWhereUuIdsIn(uuIds: string[]): Promise<IRepositoryTransactionHistory[]>;
+    findWhereGUIDsIn(GUIDs: string[]): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
     updateSyncTimestamp(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<void>;
 }

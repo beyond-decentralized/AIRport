@@ -9,7 +9,7 @@ export interface RepositoryTransactionHistoryESelect extends IEntitySelectProper
     repositoryTransactionType?: string | IQStringField;
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryESelect;
     transactionHistory?: TransactionHistoryESelect;
@@ -34,7 +34,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties extends IEntityUp
     repositoryTransactionType?: string | IQStringField;
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryEOptionalId;
     transactionHistory?: TransactionHistoryEOptionalId;
@@ -46,7 +46,7 @@ export interface RepositoryTransactionHistoryGraph extends RepositoryTransaction
     repositoryTransactionType?: string | IQStringField;
     saveTimestamp?: number | IQNumberField;
     syncTimestamp?: number | IQNumberField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isRepositoryCreation?: boolean | IQBooleanField;
     repository?: RepositoryGraph;
     transactionHistory?: TransactionHistoryGraph;
@@ -59,7 +59,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdat
     REPOSITORY_TRANSACTION_TYPE?: string | IQStringField;
     SAVE_TIMESTAMP?: number | IQNumberField;
     SYNC_TIMESTAMP?: number | IQNumberField;
-    UUID?: string | IQStringField;
+    GUID?: string | IQStringField;
     IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
     REPOSITORY_ID?: number | IQNumberField;
     TRANSACTION_HISTORY_ID?: number | IQNumberField;
@@ -82,7 +82,7 @@ export interface QRepositoryTransactionHistory extends IQEntity {
     repositoryTransactionType: IQStringField;
     saveTimestamp: IQNumberField;
     syncTimestamp: IQNumberField;
-    uuId: IQStringField;
+    GUID: IQStringField;
     isRepositoryCreation: IQBooleanField;
     repository: QRepositoryQRelation;
     transactionHistory: QTransactionHistoryQRelation;

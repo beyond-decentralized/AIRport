@@ -23,16 +23,16 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         })
     }
     */
-    async findWhereUuIdsIn(uuIds) {
+    async findWhereGUIDsIn(GUIDs) {
         let rth;
         return await this.db.find.tree({
             select: {
-                uuId: Y
+                GUID: Y
             },
             from: [
                 rth = Q.RepositoryTransactionHistory
             ],
-            where: rth.uuId.in(uuIds)
+            where: rth.GUID.in(GUIDs)
         });
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {

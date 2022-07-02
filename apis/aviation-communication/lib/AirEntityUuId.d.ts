@@ -4,14 +4,14 @@ export interface IUser {
     passwordHash?: string;
     ranking?: number;
     username?: string;
-    uuId?: string;
+    GUID?: string;
 }
 export interface AirEntityUuId {
     repository?: {
-        uuId?: string;
+        GUID?: string;
     };
     actor?: {
-        uuId?: string;
+        GUID?: string;
         user?: IUser;
     };
     actorRecordId?: number;
@@ -19,13 +19,13 @@ export interface AirEntityUuId {
 export interface IAirEntityUtils {
     getCreatedBy(idObject: AirEntityUuId): IUser;
     encodeUuId(idObject: AirEntityUuId): string;
-    parseUuId(idString: string): AirEntityUuId;
+    parseEGUID(idString: string): AirEntityUuId;
     setUuId(idString: string, airEntity: AirEntityUuId): void;
 }
 export declare class AirEntityUtils implements IAirEntityUtils {
     getCreatedBy(airEntity: AirEntityUuId): IUser;
     encodeUuId(idObject: AirEntityUuId): string;
-    parseUuId(idString: string): AirEntityUuId;
+    parseEGUID(idString: string): AirEntityUuId;
     setUuId(idString: string, airEntity: AirEntityUuId): void;
 }
 //# sourceMappingURL=AirEntityUuId.d.ts.map

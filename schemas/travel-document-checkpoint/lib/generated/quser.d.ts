@@ -3,11 +3,13 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
  * SELECT - All fields and relations (optional).
  */
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
+    origin?: string | IQStringField;
+    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -25,31 +27,37 @@ export interface UserEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserEUpdateProperties extends IEntityUpdateProperties {
+    origin?: string | IQStringField;
+    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
+    origin?: string | IQStringField;
+    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
+    ORIGIN?: string | IQStringField;
+    ORIGIN_ID?: string | IQStringField;
     EMAIL?: string | IQStringField;
     PASSWORD_HASH?: string | IQStringField;
     RANKING?: number | IQNumberField;
     USERNAME?: string | IQStringField;
-    UUID?: string | IQStringField;
+    GUID?: string | IQStringField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -66,11 +74,13 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
  */
 export interface QUser extends IQEntity {
     id: IQNumberField;
+    origin: IQStringField;
+    originId: IQStringField;
     email: IQStringField;
     passwordHash: IQStringField;
     ranking: IQNumberField;
     username: IQStringField;
-    uuId: IQStringField;
+    GUID: IQStringField;
 }
 export interface QUserQId {
     id: IQNumberField;

@@ -21,9 +21,9 @@ __decorate([
     DbNumber()
 ], Terminal.prototype, "id", void 0);
 __decorate([
-    Column({ name: 'UUID', nullable: false }),
+    Column({ name: 'GUID', nullable: false }),
     DbString()
-], Terminal.prototype, "uuId", void 0);
+], Terminal.prototype, "GUID", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID' })
@@ -37,7 +37,7 @@ Terminal = __decorate([
     Table({
         name: 'TERMINAL',
         indexes: (t) => [{
-                property: t.uuId,
+                property: t.GUID,
                 unique: true
             }]
     })

@@ -8,14 +8,13 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
-	OneToMany,
 	Table
 } from '@airport/air-traffic-control'
 import { User } from './User'
 
 export type TmTerminal_Id = number;
 export type Terminal_IsLocal = boolean;
-export type Terminal_UuId = string;
+export type Terminal_GUID = string;
 
 /**
  * 
@@ -26,7 +25,7 @@ export type Terminal_UuId = string;
 @Table({
 	name: 'TERMINAL',
 	indexes: (t: Terminal) => [{
-		property: t.uuId,
+		property: t.GUID,
 		unique: true
 	}]
 })
@@ -37,9 +36,9 @@ export class Terminal {
 	@DbNumber()
 	id: TmTerminal_Id
 
-	@Column({ name: 'UUID', nullable: false })
+	@Column({ name: 'GUID', nullable: false })
 	@DbString()
-	uuId: Terminal_UuId
+	GUID: Terminal_GUID
 
 	@ManyToOne()
 	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID' })

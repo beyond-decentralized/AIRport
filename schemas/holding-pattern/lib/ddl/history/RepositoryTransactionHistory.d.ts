@@ -10,13 +10,13 @@ export declare type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
 export declare type RepositoryTransactionHistory_BlockId = number;
 export declare type RepositoryTransactionHistory_SaveTimestamp = number;
 export declare type RepositoryTransactionHistory_SyncTimestamp = number;
-export declare type RepositoryTransactionHistory_UuId = string;
+export declare type RepositoryTransactionHistory_GUID = string;
 export declare class RepositoryTransactionHistory {
     id: RepositoryTransactionHistory_Id;
     repositoryTransactionType: RepositoryTransactionType;
     saveTimestamp: RepositoryTransactionHistory_SaveTimestamp;
     syncTimestamp: RepositoryTransactionHistory_SyncTimestamp;
-    uuId: RepositoryTransactionHistory_UuId;
+    GUID: RepositoryTransactionHistory_GUID;
     isRepositoryCreation: RepositoryTransactionHistory_IsRepositoryCreation;
     repository: Repository;
     transactionHistory: TransactionHistory;

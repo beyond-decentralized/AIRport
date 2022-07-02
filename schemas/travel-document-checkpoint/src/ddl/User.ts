@@ -5,16 +5,15 @@ import {
 	Entity,
 	GeneratedValue,
 	Id,
-	JoinColumn,
-	ManyToOne,
-	OneToMany
 } from '@airport/air-traffic-control'
 
 export type User_Id = number;
-export type User_UuId = string;
+export type User_GUID = string;
 export type User_Email = string;
 export type User_PasswordHash = string;
 export type User_Username = string;
+export type User_Origin = string;
+export type User_OriginId = string;
 
 @Entity()
 export class User {
@@ -23,6 +22,14 @@ export class User {
 	@GeneratedValue()
 	@DbNumber()
 	id?: User_Id;
+
+	@Column({ name: "ORIGIN" })
+	@DbString()
+	origin: User_Origin
+
+	@Column({ name: "ORIGIN_ID" })
+	@DbString()
+	originId: User_OriginId
 
 	@Column({ name: "EMAIL" })
 	@DbString()
@@ -40,8 +47,8 @@ export class User {
 	@DbString()
 	username: User_Username;
 
-	@Column({ name: "UUID", nullable: false })
+	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	uuId?: User_UuId;
+	GUID?: User_GUID;
 
 }

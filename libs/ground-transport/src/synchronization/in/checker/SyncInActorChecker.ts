@@ -34,25 +34,25 @@ export class SyncInActorChecker
 		context: IContext
 	): Promise<boolean> {
 		try {
-			let actorUuids: string[] = []
+			let actorGUIDs: string[] = []
 			let messageActorIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.actors.length; i++) {
 				const actor = message.actors[i]
-				if (typeof actor.uuId !== 'string' || actor.uuId.length !== 36) {
+				if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
 					throw new Error(`Invalid 'terminal.uuid'`)
 				}
 				this.checkActorApplication(actor, message)
 				this.checkActorTerminal(actor, message)
 				this.checkActorUser(actor, message)
-				actorUuids.push(actor.uuId)
-				messageActorIndexMap.set(actor.uuId, i)
+				actorGUIDs.push(actor.GUID)
+				messageActorIndexMap.set(actor.GUID, i)
 				// Make sure id field is not in the input
 				delete actor.id
 			}
 
-			const actors = await this.actorDao.findByUuIds(actorUuids)
+			const actors = await this.actorDao.findByGUIDs(actorGUIDs)
 			for (const actor of actors) {
-				const messageUserIndex = messageActorIndexMap.get(actor.uuId)
+				const messageUserIndex = messageActorIndexMap.get(actor.GUID)
 				message.actors[messageUserIndex] = actor
 			}
 

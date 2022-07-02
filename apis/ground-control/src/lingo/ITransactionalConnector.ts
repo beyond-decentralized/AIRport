@@ -23,7 +23,7 @@ export interface IUser {
 	email?: string;
 	passwordHash?: string;
 	username?: string;
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 
@@ -41,7 +41,7 @@ export interface IActor {
 	// Id Relations
 
 	// Non-Id Properties
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 	user?: IUser;
@@ -64,7 +64,7 @@ export interface IRepository {
 	createdAt?: Date;
 	immutable?: boolean;
 	source?: string;
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 	owner?: IUser;

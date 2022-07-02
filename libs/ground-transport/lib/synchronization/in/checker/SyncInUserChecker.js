@@ -8,24 +8,24 @@ import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInUserChecker = class SyncInUserChecker {
     async ensureUsers(message, context) {
         try {
-            let userUuids = [];
+            let userGUIDs = [];
             let messageUserIndexMap = new Map();
             for (let i = 0; i < message.users.length; i++) {
                 const user = message.users[i];
-                if (typeof user.uuId !== 'string' || user.uuId.length !== 36) {
-                    throw new Error(`Invalid 'user.uuid'`);
+                if (typeof user.GUID !== 'string' || user.GUID.length !== 36) {
+                    throw new Error(`Invalid 'user.GUID'`);
                 }
                 if (typeof user.username !== 'string' || user.username.length < 3) {
                     throw new Error(`Invalid 'user.username'`);
                 }
-                userUuids.push(user.uuId);
-                messageUserIndexMap.set(user.uuId, i);
+                userGUIDs.push(user.GUID);
+                messageUserIndexMap.set(user.GUID, i);
                 // Make sure id field is not in the input
                 delete user.id;
             }
-            const users = await this.userDao.findByUuIds(userUuids);
+            const users = await this.userDao.findByGUIDs(userGUIDs);
             for (const user of users) {
-                const messageUserIndex = messageUserIndexMap.get(user.uuId);
+                const messageUserIndex = messageUserIndexMap.get(user.GUID);
                 message.users[messageUserIndex] = user;
             }
             const missingUsers = message.users.filter(messageUser => !messageUser.id);

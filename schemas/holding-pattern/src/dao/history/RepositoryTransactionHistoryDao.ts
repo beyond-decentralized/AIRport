@@ -31,8 +31,8 @@ import { Injected } from '@airport/direction-indicator'
 
 export interface IRepositoryTransactionHistoryDao {
 
-	findWhereUuIdsIn(
-		uuIds: string[]
+	findWhereGUIDsIn(
+		GUIDs: string[]
 	): Promise<IRepositoryTransactionHistory[]>
 
 	findAllLocalChangesForRecordIds(
@@ -69,18 +69,18 @@ export class RepositoryTransactionHistoryDao
 	}
 	*/
 
-	async findWhereUuIdsIn(
-		uuIds: string[]
+	async findWhereGUIDsIn(
+		GUIDs: string[]
 	): Promise<IRepositoryTransactionHistory[]> {
 		let rth: QRepositoryTransactionHistory
 		return await this.db.find.tree({
 			select: {
-				uuId: Y
+				GUID: Y
 			},
 			from: [
 				rth = Q.RepositoryTransactionHistory
 			],
-			where: rth.uuId.in(uuIds)
+			where: rth.GUID.in(GUIDs)
 		})
 	}
 

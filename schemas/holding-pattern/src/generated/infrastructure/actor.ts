@@ -21,7 +21,7 @@ export interface IActor {
 	// Id Relations
 
 	// Non-Id Properties
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 	user?: IUser;

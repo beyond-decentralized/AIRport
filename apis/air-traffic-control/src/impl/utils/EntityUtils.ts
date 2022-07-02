@@ -120,7 +120,7 @@ export class EntityUtils
 				throw new Error(`uuId queries must include a repository object in the select clause.
 It must be an Object with the uuId property.`)
 			}
-			repository.uuId = Y
+			repository.GUID = Y
 
 		}
 		let actor = selectClauseFragment.actor
@@ -129,7 +129,7 @@ It must be an Object with the uuId property.`)
 				throw new Error(`uuId queries must include an actor object in the select clause.
 It must be an Object with the uuId property.`)
 			}
-			actor.uuId = Y
+			actor.GUID = Y
 
 		}
 		selectClauseFragment.actorRecordId = Y

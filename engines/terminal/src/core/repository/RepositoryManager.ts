@@ -98,7 +98,7 @@ already contains a new repository.`)
 			// platformConfig: null,
 			repositoryTransactionHistory: [],
 			source: 'localhost:9000',
-			uuId: uuidv4(),
+			GUID: uuidv4(),
 		}
 
 		return repository

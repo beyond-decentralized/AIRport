@@ -63,7 +63,7 @@ export interface IDao<Entity,
 	): Promise<Entity[]>;
 
 	findByUuId(
-		airEntityId: AirEntityUuId | string,
+		airEntityId: Entity | AirEntityUuId | string,
 		forUpdate?: boolean,
 		context?: IContext
 	): Promise<Entity>;

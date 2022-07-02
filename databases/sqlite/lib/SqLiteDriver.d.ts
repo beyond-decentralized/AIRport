@@ -1,7 +1,7 @@
 import { JsonQuery, QueryType, SQLDataType } from '@airport/ground-control';
 import { SqlDriver } from '@airport/fuel-hydrant-system';
 import { IOperationContext } from '@airport/terminal-map';
-import { IFuelHydrantContext } from '@airport/fuel-hydrant-system/lib/FuelHydrantContext';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
 /**
  * Created by Papa on 11/27/2016.
  */

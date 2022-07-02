@@ -17,14 +17,14 @@ let UserDao = class UserDao extends BaseUserDao {
             where: u.username.in(usernames)
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(GUIDs) {
         let u;
         return await this.db.find.tree({
             select: {},
             from: [
                 u = Q.User
             ],
-            where: u.uuId.in(uuIds)
+            where: u.GUID.in(GUIDs)
         });
     }
     async insert(users, context) {
@@ -32,13 +32,13 @@ let UserDao = class UserDao extends BaseUserDao {
         const values = [];
         for (const user of users) {
             values.push([
-                user.uuId, user.username
+                user.GUID, user.username
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
             insertInto: u = Q.User,
             columns: [
-                u.uuId,
+                u.GUID,
                 u.username
             ],
             values

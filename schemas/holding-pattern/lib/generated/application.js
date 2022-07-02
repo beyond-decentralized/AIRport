@@ -30,7 +30,7 @@ export const APPLICATION = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UU_ID",
+                            "name": "GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -154,7 +154,7 @@ export const APPLICATION = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
@@ -754,7 +754,7 @@ export const APPLICATION = {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UU_ID",
+                            "name": "GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -848,7 +848,7 @@ export const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {
@@ -1057,7 +1057,7 @@ export const APPLICATION = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UUID",
+                            "name": "GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -1180,7 +1180,7 @@ export const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {

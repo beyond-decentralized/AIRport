@@ -48,7 +48,7 @@ let OperationManager = class OperationManager {
         const rootDbEntity = context.dbEntity;
         let saveActor = {
             id: actor.id,
-            uuId: actor.uuId,
+            GUID: actor.GUID,
             user: actor.user ? {
                 id: actor.user.id
             } : null
@@ -58,12 +58,12 @@ let OperationManager = class OperationManager {
             newRepository = {
                 id: context.newRepository.id,
                 createdAt: context.newRepository.createdAt,
-                uuId: context.newRepository.uuId,
+                GUID: context.newRepository.GUID,
                 ageSuitability: context.newRepository.ageSuitability,
                 source: context.newRepository.source,
                 ownerActor: {
                     id: actor.id,
-                    uuId: actor.uuId,
+                    GUID: actor.GUID,
                     user: actor.user ? {
                         id: actor.user.id
                     } : null
@@ -73,8 +73,12 @@ let OperationManager = class OperationManager {
         const saveResult = {
             actor: saveActor,
             created: {},
-            newRepository,
             deleted: {},
+            newRepository,
+            repositoryIdParts: {
+                source: newRepository.source,
+                GUID: newRepository.GUID
+            },
             updated: {},
         };
         for (const operation of operations) {

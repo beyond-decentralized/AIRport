@@ -38,7 +38,7 @@ export class UserApi {
         }
         const user: IUser = {
             id: null,
-            uuId: uuidv4(),
+            GUID: uuidv4(),
             username
         }
         await this.userDao.save(user)
@@ -52,7 +52,7 @@ export class UserApi {
     async findUser(
         privateId: string
     ): Promise<IUser> {
-        const users = await this.userDao.findByUuIds([privateId])
+        const users = await this.userDao.findByGUIDs([privateId])
 
         if (users.length) {
             return users[0]

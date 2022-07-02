@@ -79,7 +79,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                 application: applicationInMessageIndex,
                 terminal: terminalInMessageIndexesById.get(actor.terminal.id),
                 user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id),
-                uuId: actor.uuId
+                GUID: actor.GUID
             };
         }
         return inMessageApplicationLookup;
@@ -96,7 +96,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             terminalInMessageIndexesById.set(terminal.id, terminalInMessageIndex);
             message.terminals[terminalInMessageIndex] = {
                 ...WITH_ID,
-                uuId: terminal.uuId,
+                GUID: terminal.GUID,
                 owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id)
             };
         }
@@ -113,7 +113,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         message.users[userInMessageIndex] = {
             ...WITH_ID,
             username: user.username,
-            uuId: user.uuId
+            GUID: user.GUID
         };
         return userInMessageIndex;
     }
@@ -199,7 +199,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
-            uuId: repositoryTransactionHistory.uuId
+            GUID: repositoryTransactionHistory.GUID
         };
     }
     serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup) {
@@ -213,7 +213,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             // the repository should already be loaded in the target database
             // if it's not then it's missing the repositoryTransactionHistory
             // with isRepositoryCreation === true
-            return repositoryTransactionHistory.repository.uuId;
+            return repositoryTransactionHistory.repository.GUID;
         }
     }
     serializeOperationHistory(operationHistory, lookups) {
@@ -366,7 +366,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             immutable: repository.immutable,
             owner,
             source: repository.source,
-            uuId: repository.uuId
+            GUID: repository.GUID
         };
     }
 };

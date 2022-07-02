@@ -32,6 +32,12 @@ and TABLE_NAME = '${tableName}';`, [], context);
     async findNative(sqlQuery, parameters, context) {
         return await this.query(QueryType.SELECT, sqlQuery, parameters, context);
     }
+    getSelectQuerySuffix(jsonQuery, context) {
+        if (jsonQuery.forUpdate) {
+            return 'FOR UPDATE';
+        }
+        return '';
+    }
     async executeNative(sql, parameters, context) {
         return await this.query(QueryType.MUTATE, sql, parameters, context);
     }

@@ -12,7 +12,7 @@ __decorate([
 ], Client.prototype, "id", void 0);
 __decorate([
     DbString()
-], Client.prototype, "uuId", void 0);
+], Client.prototype, "GUID", void 0);
 Client = __decorate([
     Entity()
 ], Client);

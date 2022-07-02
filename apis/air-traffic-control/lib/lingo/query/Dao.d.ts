@@ -23,7 +23,7 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     exists(entityId: EntityId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
     findAllAsTrees(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
-    findByUuId(airEntityId: AirEntityUuId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
+    findByUuId(airEntityId: Entity | AirEntityUuId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
     /**
      * Either creates or updates the entity based entity
      * state flag.  Cascades.

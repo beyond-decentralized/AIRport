@@ -32,5 +32,6 @@ export * from './store/RecordState';
 export * from './store/SqlDriver';
 export * from './store/SqlTransaction';
 export * from './validation/Validator';
+export * from './FuelHydrantContext';
 export * from './tokens';
 //# sourceMappingURL=index.d.ts.map

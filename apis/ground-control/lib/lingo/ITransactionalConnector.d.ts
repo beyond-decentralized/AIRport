@@ -14,11 +14,11 @@ export interface IUser {
     email?: string;
     passwordHash?: string;
     username?: string;
-    uuId?: string;
+    GUID?: string;
 }
 export interface IActor {
     id?: number;
-    uuId?: string;
+    GUID?: string;
     user?: IUser;
 }
 export interface IRepository {
@@ -27,7 +27,7 @@ export interface IRepository {
     createdAt?: Date;
     immutable?: boolean;
     source?: string;
-    uuId?: string;
+    GUID?: string;
     owner?: IUser;
 }
 export interface IAirEntity {

@@ -1,6 +1,6 @@
 export interface IClient {
     id: number;
     domain?: string;
-    uuId?: string;
+    GUID?: string;
 }
 //# sourceMappingURL=client.d.ts.map

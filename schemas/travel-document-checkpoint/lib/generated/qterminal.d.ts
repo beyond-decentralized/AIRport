@@ -4,7 +4,7 @@ import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserESelect;
 }
@@ -24,7 +24,7 @@ export interface TerminalEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserEOptionalId;
 }
@@ -32,7 +32,7 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph {
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserGraph;
 }
@@ -40,7 +40,7 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
  * UPDATE - non-id columns (optional).
  */
 export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
-    UUID?: string | IQStringField;
+    GUID?: string | IQStringField;
     IS_LOCAL?: boolean | IQBooleanField;
     OWNER_USER_ID?: number | IQNumberField;
 }
@@ -59,7 +59,7 @@ export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColu
  */
 export interface QTerminal extends IQEntity {
     id: IQNumberField;
-    uuId: IQStringField;
+    GUID: IQStringField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
 }

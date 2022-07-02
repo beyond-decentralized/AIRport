@@ -14,7 +14,7 @@ export interface IClient {
 
 	// Non-Id Properties
 	domain?: string;
-	uuId?: string;
+	GUID?: string;
 
 	// Non-Id Relations
 

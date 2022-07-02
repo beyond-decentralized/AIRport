@@ -65,7 +65,7 @@ export class SyncInDataChecker
 			if (!history || typeof history !== 'object') {
 				throw new Error(`Invalid RepositorySynchronizationMessage.history`)
 			}
-			if (typeof history.uuId !== 'string' || history.uuId.length !== 36) {
+			if (typeof history.GUID !== 'string' || history.GUID.length !== 36) {
 				return false
 			}
 			if (!history.operationHistory || !(history.operationHistory instanceof Array)) {

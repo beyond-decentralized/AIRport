@@ -57,7 +57,7 @@ export const APPLICATION = {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UUID",
+                            "name": "GUID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -102,7 +102,7 @@ export const APPLICATION = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "GUID",
                             "sinceVersion": 1
                         }
                     ],
@@ -132,7 +132,7 @@ export const APPLICATION = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "EMAIL",
+                            "name": "ORIGIN",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -146,7 +146,7 @@ export const APPLICATION = {
                             "index": 2,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "PASSWORD_HASH",
+                            "name": "ORIGIN_ID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -160,7 +160,7 @@ export const APPLICATION = {
                             "index": 3,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "RANKING",
+                            "name": "EMAIL",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -168,13 +168,13 @@ export const APPLICATION = {
                                 }
                             ],
                             "sinceVersion": 1,
-                            "type": "NUMBER"
+                            "type": "STRING"
                         },
                         {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "USERNAME",
+                            "name": "PASSWORD_HASH",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -188,11 +188,39 @@ export const APPLICATION = {
                             "index": 5,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UUID",
-                            "notNull": true,
+                            "name": "RANKING",
+                            "notNull": false,
                             "propertyRefs": [
                                 {
                                     "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "USERNAME",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "STRING"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "GUID",
+                            "notNull": true,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
                                 }
                             ],
                             "sinceVersion": 1,
@@ -224,7 +252,7 @@ export const APPLICATION = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "email",
+                            "name": "origin",
                             "sinceVersion": 1
                         },
                         {
@@ -233,7 +261,7 @@ export const APPLICATION = {
                             },
                             "index": 2,
                             "isId": false,
-                            "name": "passwordHash",
+                            "name": "originId",
                             "sinceVersion": 1
                         },
                         {
@@ -242,7 +270,7 @@ export const APPLICATION = {
                             },
                             "index": 3,
                             "isId": false,
-                            "name": "ranking",
+                            "name": "email",
                             "sinceVersion": 1
                         },
                         {
@@ -251,7 +279,7 @@ export const APPLICATION = {
                             },
                             "index": 4,
                             "isId": false,
-                            "name": "username",
+                            "name": "passwordHash",
                             "sinceVersion": 1
                         },
                         {
@@ -260,7 +288,25 @@ export const APPLICATION = {
                             },
                             "index": 5,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "ranking",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 6
+                            },
+                            "index": 6,
+                            "isId": false,
+                            "name": "username",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 7
+                            },
+                            "index": 7,
+                            "isId": false,
+                            "name": "GUID",
                             "sinceVersion": 1
                         }
                     ],
@@ -513,7 +559,7 @@ export const APPLICATION = {
                             "index": 1,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "UUID",
+                            "name": "GUID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -585,7 +631,7 @@ export const APPLICATION = {
                             },
                             "index": 1,
                             "isId": false,
-                            "name": "uuId",
+                            "name": "GUID",
                             "sinceVersion": 1
                         },
                         {

@@ -32,9 +32,9 @@ __decorate([
     DbString()
 ], Repository.prototype, "source", void 0);
 __decorate([
-    Column({ name: "UU_ID", nullable: false }),
+    Column({ name: "GUID", nullable: false }),
     DbString()
-], Repository.prototype, "uuId", void 0);
+], Repository.prototype, "GUID", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

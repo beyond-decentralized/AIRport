@@ -21,25 +21,25 @@ let QueryUtils = class QueryUtils {
         let entityUuId;
         let entityOrId = entityOrUuId;
         if (typeof entityOrUuId === 'string') {
-            entityUuId = this.airEntityUtils.parseUuId(entityOrUuId);
+            entityUuId = this.airEntityUtils.parseEGUID(entityOrUuId);
         }
         else {
             if (!entityOrId.repository
-                || !entityOrId.repository.uuId
-                || typeof entityOrId.repository.uuId !== 'string'
+                || !entityOrId.repository.GUID
+                || typeof entityOrId.repository.GUID !== 'string'
                 || !entityOrId.actor
-                || !entityOrId.actor.uuId
-                || typeof entityOrId.actor.uuId !== 'number'
+                || !entityOrId.actor.GUID
+                || typeof entityOrId.actor.GUID !== 'number'
                 || !entityOrId.actorRecordId
                 || typeof entityOrId.actorRecordId !== 'number') {
                 throw new Error(`Passed in AirEntity does not have
 				the necessary fields to query by uuId.  Expecting:
 					interface AnInterface extends AirEntity {
 						repository: {
-							uuId: string
+							GUID: string
 						},
 						actor: {
-							uuId: string
+							GUID: string
 						},
 						actorRecordId: number
 					}
@@ -48,7 +48,7 @@ let QueryUtils = class QueryUtils {
             entityUuId = entityOrUuId;
         }
         const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        return and(qRepository.uuId.equals(entityUuId.repository.uuId), qActor.uuId.equals(entityUuId.actor.uuId), toObject.actorRecordId.equals(entityUuId.actorRecordId));
+        return and(qRepository.GUID.equals(entityUuId.repository.GUID), qActor.GUID.equals(entityUuId.actor.GUID), toObject.actorRecordId.equals(entityUuId.actorRecordId));
         // } else {
         // Relations can only be joined by a local Id, implement if necessary
         // only, as this might confuse users and won't work properly in

@@ -123,18 +123,18 @@ export class InternalRecordManager
             _transaction
         ) => {
             const user = new User();
-            user.uuId = 'AIRportA-demo-demo-demo-functionalty';
+            user.GUID = 'AIRportA-demo-demo-demo-functionalty';
             user.username = "internalUser";
 
             const terminal = new Terminal();
             terminal.owner = user;
             terminal.isLocal = true;
-            terminal.uuId = uuidv4();
+            terminal.GUID = uuidv4();
 
             const actor = new Actor();
             actor.user = user;
             actor.terminal = terminal;
-            actor.uuId = uuidv4();
+            actor.GUID = uuidv4();
             const actorDao = await (this as any).getactorDaoAsync()
             await actorDao.save(actor, context);
 

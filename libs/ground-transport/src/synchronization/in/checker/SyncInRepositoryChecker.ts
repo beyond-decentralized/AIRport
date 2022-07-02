@@ -30,13 +30,13 @@ export class SyncInRepositoryChecker
 		context: IContext
 	): Promise<boolean> {
 		try {
-			let repositoryUuids: string[] = []
+			let repositoryGUIDs: string[] = []
 			let messageRepositoryIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.referencedRepositories.length; i++) {
 				this.checkRepository(
 					message.referencedRepositories[i],
 					i,
-					repositoryUuids,
+					repositoryGUIDs,
 					messageRepositoryIndexMap,
 					message
 				)
@@ -50,7 +50,7 @@ export class SyncInRepositoryChecker
 				this.checkRepository(
 					history.repository,
 					null,
-					repositoryUuids,
+					repositoryGUIDs,
 					messageRepositoryIndexMap,
 					message
 				)
@@ -59,12 +59,12 @@ export class SyncInRepositoryChecker
 					throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
 	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`)
 				}
-				repositoryUuids.push(history.repository as any)
+				repositoryGUIDs.push(history.repository as any)
 			}
 
-			const repositories = await this.repositoryDao.findByUuIds(repositoryUuids)
+			const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
 			for (const repository of repositories) {
-				const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId)
+				const messageUserIndex = messageRepositoryIndexMap.get(repository.GUID)
 				if (messageUserIndex || messageUserIndex === 0) {
 					message.referencedRepositories[messageUserIndex] = repository
 				} else {
@@ -101,7 +101,7 @@ export class SyncInRepositoryChecker
 	private checkRepository(
 		repository: IRepository,
 		repositoryIndex: number,
-		repositoryUuids: string[],
+		repositoryGUIDs: string[],
 		messageRepositoryIndexMap: Map<string, number>,
 		message: RepositorySynchronizationMessage
 	): void {
@@ -118,8 +118,8 @@ export class SyncInRepositoryChecker
 		if (!repository.source || typeof repository.source !== 'string') {
 			throw new Error(`Invalid 'repository.source'`)
 		}
-		if (typeof repository.uuId !== 'string' || repository.uuId.length !== 36) {
-			throw new Error(`Invalid 'repository.uuid'`)
+		if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
+			throw new Error(`Invalid 'repository.GUID'`)
 		}
 		if (typeof repository.owner !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
@@ -132,9 +132,9 @@ export class SyncInRepositoryChecker
 		}
 		repository.owner = user
 
-		repositoryUuids.push(repository.uuId)
+		repositoryGUIDs.push(repository.GUID)
 		if (typeof repositoryIndex === 'number') {
-			messageRepositoryIndexMap.set(repository.uuId, repositoryIndex)
+			messageRepositoryIndexMap.set(repository.GUID, repositoryIndex)
 		}
 		// Make sure id field is not in the input
 		delete repository.id

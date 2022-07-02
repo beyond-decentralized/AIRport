@@ -65,7 +65,7 @@ export class RepositoryTransactionHistoryDuo
 		let saveTimestamp = new Date().getTime()
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
-		repositoryTransactionHistory.uuId = uuidv4()
+		repositoryTransactionHistory.GUID = uuidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository.id = repositoryId

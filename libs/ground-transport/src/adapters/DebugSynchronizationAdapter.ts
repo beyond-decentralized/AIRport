@@ -5,7 +5,7 @@ import {
 import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponseFragment } from "@airport/arrivals-n-departures";
 import {
     Repository_Source,
-    Repository_UuId
+    Repository_GUID
 } from "@airport/holding-pattern";
 import { INonhubClient } from "@airport/nonhub-client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
@@ -19,7 +19,7 @@ export class DebugSynchronizationAdapter
 
     async getTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_UuId,
+        repositoryUuId: Repository_GUID,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
         const response: RepositorySynchronizationReadResponseFragment[]
@@ -47,7 +47,7 @@ export class DebugSynchronizationAdapter
 
     async sendTransactions(
         repositorySource: Repository_Source,
-        messagesByRepository: Map<Repository_UuId, RepositorySynchronizationMessage[]>
+        messagesByRepository: Map<Repository_GUID, RepositorySynchronizationMessage[]>
     ): Promise<boolean> {
         let allSent = true
         for (const [repositoryUuid, messages] of messagesByRepository) {
@@ -67,7 +67,7 @@ export class DebugSynchronizationAdapter
 
     async sendTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_UuId,
+        repositoryUuId: Repository_GUID,
         messages: RepositorySynchronizationMessage[]
     ): Promise<boolean> {
         if (!messages || !messages.length) {

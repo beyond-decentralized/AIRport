@@ -2,6 +2,8 @@ import {
 	SQLDialect,
 	SqlDriver
 } from '@airport/fuel-hydrant-system';
+import { IFuelHydrantContext } from '@airport/fuel-hydrant-system';
+import { JsonQuery } from '@airport/ground-control';
 import {
 	IOperationContext,
 	ITransaction,
@@ -91,7 +93,7 @@ export class NoOpSqlDriver
 	): Promise<void> {
 		return Promise.resolve(undefined)
 	}
-	
+
 	async internalStartTransaction(
 		transaction: ITransaction,
 		context?: ITransactionContext,
@@ -105,6 +107,14 @@ export class NoOpSqlDriver
 	): Promise<ITransaction> {
 		return Promise.resolve(undefined)
 	}
+
+	getSelectQuerySuffix(
+		jsonQuery: JsonQuery,
+		context: IFuelHydrantContext
+	): string {
+		return ''
+	}
+
 
 	protected executeNative(
 		sql: string,

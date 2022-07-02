@@ -28,7 +28,7 @@ let UserApi = class UserApi {
         }
         const user = {
             id: null,
-            uuId: uuidv4(),
+            GUID: uuidv4(),
             username
         };
         await this.userDao.save(user);
@@ -37,7 +37,7 @@ let UserApi = class UserApi {
         };
     }
     async findUser(privateId) {
-        const users = await this.userDao.findByUuIds([privateId]);
+        const users = await this.userDao.findByGUIDs([privateId]);
         if (users.length) {
             return users[0];
         }

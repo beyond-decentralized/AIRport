@@ -1,10 +1,10 @@
 import { lib } from "@airport/direction-indicator";
-import { IRequestManager } from "./RequestManager";
+import { RequestManager } from "./RequestManager";
 
 export const arrivalsNDepartures = lib('arrivals-n-departures')
 
-export const REQUEST_MANAGER = arrivalsNDepartures.token<IRequestManager>({
+export const REQUEST_MANAGER = arrivalsNDepartures.token<RequestManager>({
     class: null,
-    interface: 'IRequestManager',
+    interface: 'RequestManager',
     token: 'REQUEST_MANAGER'
 })

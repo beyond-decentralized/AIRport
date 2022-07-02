@@ -41,11 +41,13 @@ declare function require(moduleName: string): any;
 export interface UserESelect
     extends IEntitySelectProperties, UserEOptionalId {
 	// Non-Id Properties
+	origin?: string | IQStringField;
+	originId?: string | IQStringField;
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -82,11 +84,13 @@ export interface UserEOptionalId {
 export interface UserEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	origin?: string | IQStringField;
+	originId?: string | IQStringField;
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -100,11 +104,13 @@ export interface UserGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	origin?: string | IQStringField;
+	originId?: string | IQStringField;
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	uuId?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 	// Relations
 
@@ -116,11 +122,13 @@ export interface UserGraph
 export interface UserEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	ORIGIN?: string | IQStringField;
+	ORIGIN_ID?: string | IQStringField;
 	EMAIL?: string | IQStringField;
 	PASSWORD_HASH?: string | IQStringField;
 	RANKING?: number | IQNumberField;
 	USERNAME?: string | IQStringField;
-	UUID?: string | IQStringField;
+	GUID?: string | IQStringField;
 
 }
 
@@ -156,11 +164,13 @@ export interface QUser extends IQEntity
 	// Id Relations
 
 	// Non-Id Fields
+	origin: IQStringField;
+	originId: IQStringField;
 	email: IQStringField;
 	passwordHash: IQStringField;
 	ranking: IQNumberField;
 	username: IQStringField;
-	uuId: IQStringField;
+	GUID: IQStringField;
 
 	// Non-Id Relations
 

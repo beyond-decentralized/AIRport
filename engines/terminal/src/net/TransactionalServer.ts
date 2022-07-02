@@ -419,7 +419,7 @@ export class TransactionalServer
 
 		let actor: IActor
 		for (const anActor of actors) {
-			if (anActor.terminal.uuId === localTerminal.uuId) {
+			if (anActor.terminal.GUID === localTerminal.GUID) {
 				actor = anActor
 				break
 			}

@@ -14,9 +14,9 @@ __decorate([
     Column({ name: 'ID' })
 ], Actor.prototype, "id", void 0);
 __decorate([
-    Column({ name: 'UU_ID', nullable: false }),
+    Column({ name: 'GUID', nullable: false }),
     DbString()
-], Actor.prototype, "uuId", void 0);
+], Actor.prototype, "GUID", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

@@ -21,7 +21,7 @@ import {
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_Id,
-	Actor_UuId,
+	Actor_GUID,
 } from '../../ddl/ddl'
 import {
 	BaseActorDao,
@@ -40,13 +40,13 @@ export interface IActorDao
 	): Promise<IActor[]>;
 
 	findWithDetailsByGlobalIds(
-		uuIds: Actor_UuId[],
+		actorGUIDs: Actor_GUID[],
 		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
-		uuIds: Actor_UuId[],
+		actorGUIDs: Actor_GUID[],
 		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[],
 		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
@@ -58,8 +58,8 @@ export interface IActorDao
 		applicationName: ApplicationName
 	): Promise<IActor[]>
 
-	findByUuIds(
-		uuIds: Actor_UuId[],
+	findByGUIDs(
+		actorGUIDs: Actor_GUID[],
 	): Promise<IActor[]>
 
 	insert(
@@ -83,14 +83,14 @@ export class ActorDao
 	}
 
 	async findMapsWithDetailsByGlobalIds(
-		uuIds: Actor_UuId[],
+		actorGUIDs: Actor_GUID[],
 		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[],
 		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
-			uuIds,
+			actorGUIDs,
 			userIds,
 			terminalIds
 		)
@@ -103,14 +103,14 @@ export class ActorDao
 	}
 
 	async findWithDetailsByGlobalIds(
-		uuIds: Actor_UuId[],
+		actorGUIDs: Actor_GUID[],
 		userIds: User_Id[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
 		) => and(
-			a.uuId.in(uuIds),
+			a.GUID.in(actorGUIDs),
 			a.terminal.id.in(terminalIds),
 			a.user.id.in(userIds)
 		))
@@ -150,8 +150,8 @@ export class ActorDao
 		})
 	}
 
-	async findByUuIds(
-		uuIds: Actor_UuId[],
+	async findByGUIDs(
+		actorGUIDs: Actor_GUID[],
 	): Promise<IActor[]> {
 		let a: QActor
 		return await this.db.find.tree({
@@ -159,7 +159,7 @@ export class ActorDao
 			from: [
 				a = Q.Actor
 			],
-			where: a.uuId.in(uuIds)
+			where: a.GUID.in(actorGUIDs)
 		})
 	}
 
@@ -167,20 +167,20 @@ export class ActorDao
 		actors: IActor[],
 		context: IContext
 	): Promise<void> {
-		let t: QActor;
+		let a: QActor;
 		const values = []
 		for (const actor of actors) {
 			values.push([
-				actor.uuId, actor.application.index, actor.user.id, actor.terminal.id,
+				actor.GUID, actor.application.index, actor.user.id, actor.terminal.id,
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
-			insertInto: t = Q.Actor,
+			insertInto: a = Q.Actor,
 			columns: [
-				t.uuId,
-				t.application.index,
-				t.user.id,
-				t.terminal.id
+				a.GUID,
+				a.application.index,
+				a.user.id,
+				a.terminal.id
 			],
 			values
 		}, context)
@@ -200,7 +200,7 @@ export class ActorDao
 		let t: QTerminal
 		const id = Y
 		const username = Y
-		const uuId = Y
+		const GUID = Y
 		return await this.db.find.tree({
 			select: {
 				...ALL_FIELDS,
@@ -213,17 +213,17 @@ export class ActorDao
 				},
 				terminal: {
 					id,
-					uuId,
+					GUID,
 					owner: {
 						id,
 						username,
-						uuId,
+						GUID,
 					}
 				},
 				user: {
 					id,
 					username,
-					uuId,
+					GUID,
 				}
 			},
 			from: [

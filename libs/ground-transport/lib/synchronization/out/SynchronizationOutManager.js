@@ -43,7 +43,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         const repositoryMapById = new Map();
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
             const repository = repositoryTransactionHistory.repository;
-            if (!repository.source || !repository.uuId) {
+            if (!repository.source || !repository.GUID) {
                 repositoryIdsToLookup.add(repository.id);
             }
             else {
@@ -61,10 +61,10 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         }
         for (const message of messages) {
             const repository = message.history.repository;
-            if (!repository.source || !repository.uuId) {
+            if (!repository.source || !repository.GUID) {
                 const foundRepository = repositoryMapById.get(repository.id);
                 repository.source = foundRepository.source;
-                repository.uuId = foundRepository.uuId;
+                repository.GUID = foundRepository.GUID;
                 delete repository.id;
             }
         }
@@ -73,7 +73,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         const groupMessageMap = new Map();
         for (let i = 0; i < messages.length; i++) {
             const repository = historiesToSend[i].repository;
-            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.uuId).push(messages[i]);
+            ensureChildArray(ensureChildJsMap(groupMessageMap, repository.source), repository.GUID).push(messages[i]);
         }
         return groupMessageMap;
     }

@@ -9,7 +9,7 @@ import { Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
 let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
-    async getRepositoryLoadInfo(repositorySource, repositoryUuId, context) {
+    async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
         let r;
         let rth;
         let th;
@@ -25,7 +25,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 rth = r.repositoryTransactionHistory.innerJoin(),
                 th = rth.transactionHistory.innerJoin()
             ],
-            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), th.transactionType.equals(TransactionType.REMOTE_SYNC))
+            where: and(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         }, context);
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -60,14 +60,14 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findByUuIds(uuIds) {
+    async findByGUIDs(repositoryGUIDs) {
         let r;
         return await this.db.find.tree({
             select: {},
             from: [
                 r = Q.Repository
             ],
-            where: r.uuId.in(uuIds)
+            where: r.GUID.in(repositoryGUIDs)
         });
     }
     async insert(repositories, context) {
@@ -75,7 +75,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         const values = [];
         for (const repository of repositories) {
             values.push([
-                repository.createdAt, repository.uuId, repository.ageSuitability,
+                repository.createdAt, repository.GUID, repository.ageSuitability,
                 repository.source, repository.immutable, repository.owner.id,
             ]);
         }
@@ -83,7 +83,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             insertInto: r = Q.Repository,
             columns: [
                 r.createdAt,
-                r.uuId,
+                r.GUID,
                 r.ageSuitability,
                 r.source,
                 r.immutable,

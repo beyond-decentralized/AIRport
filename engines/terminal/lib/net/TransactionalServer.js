@@ -215,7 +215,7 @@ let TransactionalServer = class TransactionalServer {
         }
         let actor;
         for (const anActor of actors) {
-            if (anActor.terminal.uuId === localTerminal.uuId) {
+            if (anActor.terminal.GUID === localTerminal.GUID) {
                 actor = anActor;
                 break;
             }

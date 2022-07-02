@@ -67,11 +67,11 @@ let Dao = class Dao {
                 '*': Y,
                 uuId: Y
             },
-            forUpdate,
             from: [
                 q = this.db.from
             ],
-            where: q.equals(idObject)
+            where: q.equals(idObject),
+            forUpdate
         }, context);
     }
     async save(entity, context) {

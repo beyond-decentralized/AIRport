@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id } from '@airport/air-traffic-control';
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, } from '@airport/air-traffic-control';
 let User = class User {
 };
 __decorate([
@@ -12,6 +12,14 @@ __decorate([
     GeneratedValue(),
     DbNumber()
 ], User.prototype, "id", void 0);
+__decorate([
+    Column({ name: "ORIGIN" }),
+    DbString()
+], User.prototype, "origin", void 0);
+__decorate([
+    Column({ name: "ORIGIN_ID" }),
+    DbString()
+], User.prototype, "originId", void 0);
 __decorate([
     Column({ name: "EMAIL" }),
     DbString()
@@ -29,9 +37,9 @@ __decorate([
     DbString()
 ], User.prototype, "username", void 0);
 __decorate([
-    Column({ name: "UUID", nullable: false }),
+    Column({ name: "GUID", nullable: false }),
     DbString()
-], User.prototype, "uuId", void 0);
+], User.prototype, "GUID", void 0);
 User = __decorate([
     Entity()
 ], User);

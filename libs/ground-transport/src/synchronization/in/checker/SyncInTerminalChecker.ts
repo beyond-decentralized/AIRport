@@ -32,7 +32,7 @@ export class SyncInTerminalChecker
 		context: IContext
 	): Promise<boolean> {
 		try {
-			let terminalUuids: string[] = []
+			let terminalGUIDs: string[] = []
 			let messageTerminalIndexMap: Map<string, number> = new Map()
 			for (let i = 0; i < message.terminals.length; i++) {
 				const terminal = message.terminals[i]
@@ -40,7 +40,7 @@ export class SyncInTerminalChecker
 					throw new Error(`Expecting "in-message index" (number)
 					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`)
 				}
-				if (typeof terminal.uuId !== 'string' || terminal.uuId.length !== 36) {
+				if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
 					throw new Error(`Invalid 'terminal.uuid' in RepositorySynchronizationMessage.terminals`)
 				}
 				if (terminal.isLocal !== undefined) {
@@ -54,15 +54,15 @@ export class SyncInTerminalChecker
 						for RepositorySynchronizationMessage.terminals`);
 				}
 				terminal.owner = owner
-				terminalUuids.push(terminal.uuId)
-				messageTerminalIndexMap.set(terminal.uuId, i)
+				terminalGUIDs.push(terminal.GUID)
+				messageTerminalIndexMap.set(terminal.GUID, i)
 				// Make sure id field is not in the input
 				delete terminal.id
 			}
 
-			const terminals = await this.terminalDao.findByUuIds(terminalUuids)
+			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs)
 			for (const terminal of terminals) {
-				const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId)
+				const messageUserIndex = messageTerminalIndexMap.get(terminal.GUID)
 				message.terminals[messageUserIndex] = terminal
 			}
 

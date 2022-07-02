@@ -8,10 +8,10 @@ import { Inject, Injected } from '@airport/direction-indicator';
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
     async ensureRepositories(message, context) {
         try {
-            let repositoryUuids = [];
+            let repositoryGUIDs = [];
             let messageRepositoryIndexMap = new Map();
             for (let i = 0; i < message.referencedRepositories.length; i++) {
-                this.checkRepository(message.referencedRepositories[i], i, repositoryUuids, messageRepositoryIndexMap, message);
+                this.checkRepository(message.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, message);
             }
             const history = message.history;
             if (history.isRepositoryCreation) {
@@ -19,18 +19,18 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                     throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
 	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`);
                 }
-                this.checkRepository(history.repository, null, repositoryUuids, messageRepositoryIndexMap, message);
+                this.checkRepository(history.repository, null, repositoryGUIDs, messageRepositoryIndexMap, message);
             }
             else {
                 if (typeof history.repository !== 'string') {
                     throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
 	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`);
                 }
-                repositoryUuids.push(history.repository);
+                repositoryGUIDs.push(history.repository);
             }
-            const repositories = await this.repositoryDao.findByUuIds(repositoryUuids);
+            const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
             for (const repository of repositories) {
-                const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
+                const messageUserIndex = messageRepositoryIndexMap.get(repository.GUID);
                 if (messageUserIndex || messageUserIndex === 0) {
                     message.referencedRepositories[messageUserIndex] = repository;
                 }
@@ -62,7 +62,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         }
         return true;
     }
-    checkRepository(repository, repositoryIndex, repositoryUuids, messageRepositoryIndexMap, message) {
+    checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
         if (typeof repository.ageSuitability !== 'number') {
             throw new Error(`Invalid 'repository.ageSuitability'`);
         }
@@ -76,8 +76,8 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         if (!repository.source || typeof repository.source !== 'string') {
             throw new Error(`Invalid 'repository.source'`);
         }
-        if (typeof repository.uuId !== 'string' || repository.uuId.length !== 36) {
-            throw new Error(`Invalid 'repository.uuid'`);
+        if (typeof repository.GUID !== 'string' || repository.GUID.length !== 36) {
+            throw new Error(`Invalid 'repository.GUID'`);
         }
         if (typeof repository.owner !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
@@ -88,9 +88,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             throw new Error(`Did not find repository.owner (User) with "in-message index" ${repository.owner}`);
         }
         repository.owner = user;
-        repositoryUuids.push(repository.uuId);
+        repositoryGUIDs.push(repository.GUID);
         if (typeof repositoryIndex === 'number') {
-            messageRepositoryIndexMap.set(repository.uuId, repositoryIndex);
+            messageRepositoryIndexMap.set(repository.GUID, repositoryIndex);
         }
         // Make sure id field is not in the input
         delete repository.id;

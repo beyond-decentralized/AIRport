@@ -9,7 +9,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     owner?: UserESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 }
@@ -33,7 +33,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     owner?: UserEOptionalId;
 }
 /**
@@ -44,7 +44,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    uuId?: string | IQStringField;
+    GUID?: string | IQStringField;
     owner?: UserGraph;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 }
@@ -56,7 +56,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     CREATED_AT?: Date | IQDateField;
     IMMUTABLE?: boolean | IQBooleanField;
     SOURCE?: string | IQStringField;
-    UU_ID?: string | IQStringField;
+    GUID?: string | IQStringField;
     OWNER_USER_ID?: number | IQNumberField;
 }
 /**
@@ -78,7 +78,7 @@ export interface QRepository extends IQEntity {
     createdAt: IQDateField;
     immutable: IQBooleanField;
     source: IQStringField;
-    uuId: IQStringField;
+    GUID: IQStringField;
     owner: QUserQRelation;
     repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
 }

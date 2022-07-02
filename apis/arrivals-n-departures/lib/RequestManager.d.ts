@@ -1,5 +1,9 @@
+import { Actor } from "@airport/holding-pattern";
+import { User } from "@airport/travel-document-checkpoint";
 import { AirRequest } from "./AirRequest";
-export interface IRequestManager {
-    getRequest(): Promise<AirRequest>;
+export interface RequestManager {
+    getRequest(): AirRequest;
+    getUser(): User;
+    getActor(): Actor;
 }
 //# sourceMappingURL=RequestManager.d.ts.map
