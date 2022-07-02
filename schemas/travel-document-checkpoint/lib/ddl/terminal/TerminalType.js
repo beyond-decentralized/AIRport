@@ -4,16 +4,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Entity, Id, Table } from '@airport/air-traffic-control';
+import { Entity, Id, JoinColumn, ManyToOne, Table } from '@airport/air-traffic-control';
 let TerminalType = class TerminalType {
 };
 __decorate([
-    Id()
-], TerminalType.prototype, "id", void 0);
+    Id(),
+    ManyToOne(),
+    JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+], TerminalType.prototype, "terminal", void 0);
+__decorate([
+    Id(),
+    ManyToOne(),
+    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+], TerminalType.prototype, "type", void 0);
 TerminalType = __decorate([
     Entity(),
     Table({
-        name: 'TERMINAL_TYPE'
+        name: 'TERMINAL_TYPES'
     })
 ], TerminalType);
 export { TerminalType };

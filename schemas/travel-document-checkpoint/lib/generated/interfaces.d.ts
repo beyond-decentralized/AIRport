@@ -1,5 +1,7 @@
 export * from './client/client';
 export * from './client/clienttype';
+export * from './database/database';
+export * from './database/databasetype';
 export * from './locality/continent';
 export * from './locality/country';
 export * from './locality/metroarea';
@@ -8,5 +10,8 @@ export * from './locality/state';
 export * from './terminal/terminal';
 export * from './terminal/terminaltype';
 export * from './terminal/userterminal';
+export * from './type/classification';
+export * from './type/type';
+export * from './type/typeclassification';
 export * from './user';
 //# sourceMappingURL=interfaces.d.ts.map

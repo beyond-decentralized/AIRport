@@ -1,3 +1,5 @@
+import { Classification } from '../ddl/type/classification';
+import { ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification } from './type/qclassification';
 import { Client } from '../ddl/client/client';
 import { ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient } from './client/qclient';
 import { ClientType } from '../ddl/client/clienttype';
@@ -6,6 +8,10 @@ import { Continent } from '../ddl/locality/continent';
 import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './locality/qcontinent';
 import { Country } from '../ddl/locality/country';
 import { CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry } from './locality/qcountry';
+import { Database } from '../ddl/database/database';
+import { DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase } from './database/qdatabase';
+import { DatabaseType } from '../ddl/database/databasetype';
+import { DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType } from './database/qdatabasetype';
 import { MetroArea } from '../ddl/locality/metroarea';
 import { MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea } from './locality/qmetroarea';
 import { MetroAreaState } from '../ddl/locality/metroareastate';
@@ -16,6 +22,10 @@ import { Terminal } from '../ddl/terminal/terminal';
 import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './terminal/qterminal';
 import { TerminalType } from '../ddl/terminal/terminaltype';
 import { TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType } from './terminal/qterminaltype';
+import { Type } from '../ddl/type/type';
+import { TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType } from './type/qtype';
+import { TypeClassification } from '../ddl/type/typeclassification';
+import { TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification } from './type/qtypeclassification';
 import { User } from '../ddl/user';
 import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './quser';
 import { UserTerminal } from '../ddl/terminal/userterminal';
@@ -25,6 +35,12 @@ import { Duo } from '@airport/check-in';
 import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Duo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
+}
+export interface IBaseClassificationDuo extends IDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
+}
+export declare class BaseClassificationDuo extends SQDIDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> implements IBaseClassificationDuo {
+    static diSet(): boolean;
+    constructor();
 }
 export interface IBaseClientDuo extends IDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
 }
@@ -47,6 +63,18 @@ export declare class BaseContinentDuo extends SQDIDuo<Continent, ContinentESelec
 export interface IBaseCountryDuo extends IDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
 }
 export declare class BaseCountryDuo extends SQDIDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> implements IBaseCountryDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseDatabaseDuo extends IDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
+}
+export declare class BaseDatabaseDuo extends SQDIDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> implements IBaseDatabaseDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseDatabaseTypeDuo extends IDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
+}
+export declare class BaseDatabaseTypeDuo extends SQDIDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> implements IBaseDatabaseTypeDuo {
     static diSet(): boolean;
     constructor();
 }
@@ -77,6 +105,18 @@ export declare class BaseTerminalDuo extends SQDIDuo<Terminal, TerminalESelect, 
 export interface IBaseTerminalTypeDuo extends IDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
 }
 export declare class BaseTerminalTypeDuo extends SQDIDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> implements IBaseTerminalTypeDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseTypeDuo extends IDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
+}
+export declare class BaseTypeDuo extends SQDIDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> implements IBaseTypeDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseTypeClassificationDuo extends IDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
+}
+export declare class BaseTypeClassificationDuo extends SQDIDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> implements IBaseTypeClassificationDuo {
     static diSet(): boolean;
     constructor();
 }

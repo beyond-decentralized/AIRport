@@ -1,5 +1,2 @@
-//////////////////////////////
-//     ENTITY INTERFACE     //
-//////////////////////////////
 export {};
 //# sourceMappingURL=terminaltype.js.map

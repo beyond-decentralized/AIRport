@@ -24,19 +24,6 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	ClientTypeGraph,
-	ClientTypeEId,
-	ClientTypeEOptionalId,
-	ClientTypeEUpdateProperties,
-	ClientTypeESelect,
-	QClientType,
-	QClientTypeQId,
-	QClientTypeQRelation,
-} from './qclienttype';
-import {
-	IClientType,
-} from './clienttype';
-import {
 	ContinentGraph,
 	ContinentEId,
 	ContinentEOptionalId,
@@ -89,6 +76,19 @@ import {
 	IMetroArea,
 } from '../locality/metroarea';
 import {
+	ClientTypeGraph,
+	ClientTypeEId,
+	ClientTypeEOptionalId,
+	ClientTypeEUpdateProperties,
+	ClientTypeESelect,
+	QClientType,
+	QClientTypeQId,
+	QClientTypeQRelation,
+} from './qclienttype';
+import {
+	IClientType,
+} from './clienttype';
+import {
 	IClient,
 } from './client';
 
@@ -112,11 +112,11 @@ export interface ClientESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	clienType?: ClientTypeESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
+	clientTypes?: ClientTypeESelect;
 
 }
 
@@ -153,7 +153,6 @@ export interface ClientEUpdateProperties
 	GUID?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	clienType?: ClientTypeEOptionalId;
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
 	state?: StateEOptionalId;
@@ -173,11 +172,11 @@ export interface ClientGraph
 	GUID?: string | IQStringField;
 
 	// Relations
-	clienType?: ClientTypeGraph;
 	continent?: ContinentGraph;
 	country?: CountryGraph;
 	state?: StateGraph;
 	metroArea?: MetroAreaGraph;
+	clientTypes?: ClientTypeGraph[];
 
 }
 
@@ -189,7 +188,6 @@ export interface ClientEUpdateColumns
 	// Non-Id Columns
 	DOMAIN?: string | IQStringField;
 	GUID?: string | IQStringField;
-	CLIENT_TYPE_ID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -233,11 +231,11 @@ export interface QClient extends IQEntity
 	GUID: IQStringField;
 
 	// Non-Id Relations
-	clienType: QClientTypeQRelation;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;
 	state: QStateQRelation;
 	metroArea: QMetroAreaQRelation;
+	clientTypes: IQOneToManyRelation<QClientType>;
 
 }
 

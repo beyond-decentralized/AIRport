@@ -1,3 +1,9 @@
+import {
+	ITerminal,
+} from './terminal';
+import {
+	IType,
+} from '../type/type';
 
 
 
@@ -8,12 +14,12 @@
 export interface ITerminalType {
 	
 	// Id Properties
-	id: number;
 
 	// Id Relations
+	terminal: ITerminal;
+	type: IType;
 
 	// Non-Id Properties
-	name?: string;
 
 	// Non-Id Relations
 

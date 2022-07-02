@@ -24,6 +24,32 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
+	ClientGraph,
+	ClientEId,
+	ClientEOptionalId,
+	ClientEUpdateProperties,
+	ClientESelect,
+	QClient,
+	QClientQId,
+	QClientQRelation,
+} from './qclient';
+import {
+	IClient,
+} from './client';
+import {
+	TypeGraph,
+	TypeEId,
+	TypeEOptionalId,
+	TypeEUpdateProperties,
+	TypeESelect,
+	QType,
+	QTypeQId,
+	QTypeQRelation,
+} from '../type/qtype';
+import {
+	IType,
+} from '../type/type';
+import {
 	IClientType,
 } from './clienttype';
 
@@ -41,9 +67,10 @@ declare function require(moduleName: string): any;
 export interface ClientTypeESelect
     extends IEntitySelectProperties, ClientTypeEOptionalId {
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
+	client?: ClientESelect;
+	type?: TypeESelect;
 
   // Non-Id relations (including OneToMany's)
 
@@ -55,9 +82,10 @@ export interface ClientTypeESelect
 export interface ClientTypeEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
 
 	// Id Relations - Ids only
+	client: ClientEId;
+	type: TypeEId;
 
 }
 
@@ -66,9 +94,10 @@ export interface ClientTypeEId
  */
 export interface ClientTypeEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
+	client?: ClientEOptionalId;
+	type?: TypeEOptionalId;
 
 }
 
@@ -78,7 +107,6 @@ export interface ClientTypeEOptionalId {
 export interface ClientTypeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -92,9 +120,10 @@ export interface ClientTypeGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Relations
+	client?: ClientGraph;
+	type?: TypeGraph;
 
 }
 
@@ -104,7 +133,6 @@ export interface ClientTypeGraph
 export interface ClientTypeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	NAME?: string | IQStringField;
 
 }
 
@@ -135,12 +163,12 @@ extends ClientTypeEId, ClientTypeEUpdateColumns {
 export interface QClientType extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	client: QClientQRelation;
+	type: QTypeQRelation;
 
 	// Non-Id Fields
-	name: IQStringField;
 
 	// Non-Id Relations
 
@@ -152,9 +180,10 @@ export interface QClientTypeQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	client: QClientQId;
+	type: QTypeQId;
 
 
 }

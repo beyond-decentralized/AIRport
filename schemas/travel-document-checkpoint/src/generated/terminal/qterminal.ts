@@ -24,19 +24,6 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	TerminalTypeGraph,
-	TerminalTypeEId,
-	TerminalTypeEOptionalId,
-	TerminalTypeEUpdateProperties,
-	TerminalTypeESelect,
-	QTerminalType,
-	QTerminalTypeQId,
-	QTerminalTypeQRelation,
-} from './qterminaltype';
-import {
-	ITerminalType,
-} from './terminaltype';
-import {
 	UserGraph,
 	UserEId,
 	UserEOptionalId,
@@ -75,6 +62,19 @@ import {
 import {
 	ICountry,
 } from '../locality/country';
+import {
+	TerminalTypeGraph,
+	TerminalTypeEId,
+	TerminalTypeEOptionalId,
+	TerminalTypeEUpdateProperties,
+	TerminalTypeESelect,
+	QTerminalType,
+	QTerminalTypeQId,
+	QTerminalTypeQRelation,
+} from './qterminaltype';
+import {
+	ITerminalType,
+} from './terminaltype';
 import {
 	StateGraph,
 	StateEId,
@@ -125,10 +125,10 @@ export interface TerminalESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	terminalType?: TerminalTypeESelect;
 	owner?: UserESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
+	terminalTypes?: TerminalTypeESelect;
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
 
@@ -167,7 +167,6 @@ export interface TerminalEUpdateProperties
 	isLocal?: boolean | IQBooleanField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	terminalType?: TerminalTypeEOptionalId;
 	owner?: UserEOptionalId;
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
@@ -188,10 +187,10 @@ export interface TerminalGraph
 	isLocal?: boolean | IQBooleanField;
 
 	// Relations
-	terminalType?: TerminalTypeGraph;
 	owner?: UserGraph;
 	continent?: ContinentGraph;
 	country?: CountryGraph;
+	terminalTypes?: TerminalTypeGraph[];
 	state?: StateGraph;
 	metroArea?: MetroAreaGraph;
 
@@ -205,7 +204,6 @@ export interface TerminalEUpdateColumns
 	// Non-Id Columns
 	GUID?: string | IQStringField;
 	IS_LOCAL?: boolean | IQBooleanField;
-	TERMINAL_TYPE_ID?: number | IQNumberField;
 	OWNER_USER_ID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
@@ -250,10 +248,10 @@ export interface QTerminal extends IQEntity
 	isLocal: IQBooleanField;
 
 	// Non-Id Relations
-	terminalType: QTerminalTypeQRelation;
 	owner: QUserQRelation;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;
+	terminalTypes: IQOneToManyRelation<QTerminalType>;
 	state: QStateQRelation;
 	metroArea: QMetroAreaQRelation;
 

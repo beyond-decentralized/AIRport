@@ -1,3 +1,9 @@
+import {
+	IClient,
+} from './client';
+import {
+	IType,
+} from '../type/type';
 
 
 
@@ -8,12 +14,12 @@
 export interface IClientType {
 	
 	// Id Properties
-	id: number;
 
 	// Id Relations
+	client: IClient;
+	type: IType;
 
 	// Non-Id Properties
-	name?: string;
 
 	// Non-Id Relations
 

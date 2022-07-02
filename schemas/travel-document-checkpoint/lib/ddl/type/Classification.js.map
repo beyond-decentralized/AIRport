@@ -1,0 +1,1 @@
+{"version":3,"file":"Classification.js","sourceRoot":"","sources":["../../../src/ddl/type/Classification.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EACH,MAAM,EACN,EAAE,EACF,KAAK,EACR,MAAM,8BAA8B,CAAA;AAMrC,IAAa,cAAc,GAA3B,MAAa,cAAc;CAO1B,CAAA;AAJG;IADC,EAAE,EAAE;0CACK;AAHD,cAAc;IAJ1B,MAAM,EAAE;IACR,KAAK,CAAC;QACH,IAAI,EAAE,iBAAiB;KAC1B,CAAC;GACW,cAAc,CAO1B;SAPY,cAAc"}

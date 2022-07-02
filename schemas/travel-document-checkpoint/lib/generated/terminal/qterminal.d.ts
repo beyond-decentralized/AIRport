@@ -1,8 +1,8 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
-import { TerminalTypeGraph, TerminalTypeEOptionalId, TerminalTypeESelect, QTerminalTypeQRelation } from './qterminaltype';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '../quser';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from '../locality/qcontinent';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from '../locality/qcountry';
+import { TerminalTypeGraph, TerminalTypeESelect, QTerminalType } from './qterminaltype';
 import { StateGraph, StateEOptionalId, StateESelect, QStateQRelation } from '../locality/qstate';
 import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '../locality/qmetroarea';
 /**
@@ -11,10 +11,10 @@ import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRela
 export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptionalId {
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
-    terminalType?: TerminalTypeESelect;
     owner?: UserESelect;
     continent?: ContinentESelect;
     country?: CountryESelect;
+    terminalTypes?: TerminalTypeESelect;
     state?: StateESelect;
     metroArea?: MetroAreaESelect;
 }
@@ -36,7 +36,6 @@ export interface TerminalEOptionalId {
 export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
-    terminalType?: TerminalTypeEOptionalId;
     owner?: UserEOptionalId;
     continent?: ContinentEOptionalId;
     country?: CountryEOptionalId;
@@ -49,10 +48,10 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
 export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph {
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
-    terminalType?: TerminalTypeGraph;
     owner?: UserGraph;
     continent?: ContinentGraph;
     country?: CountryGraph;
+    terminalTypes?: TerminalTypeGraph[];
     state?: StateGraph;
     metroArea?: MetroAreaGraph;
 }
@@ -62,7 +61,6 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
 export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
     IS_LOCAL?: boolean | IQBooleanField;
-    TERMINAL_TYPE_ID?: number | IQNumberField;
     OWNER_USER_ID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
@@ -86,10 +84,10 @@ export interface QTerminal extends IQEntity {
     id: IQNumberField;
     GUID: IQStringField;
     isLocal: IQBooleanField;
-    terminalType: QTerminalTypeQRelation;
     owner: QUserQRelation;
     continent: QContinentQRelation;
     country: QCountryQRelation;
+    terminalTypes: IQOneToManyRelation<QTerminalType>;
     state: QStateQRelation;
     metroArea: QMetroAreaQRelation;
 }

@@ -24,6 +24,32 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
+	TerminalGraph,
+	TerminalEId,
+	TerminalEOptionalId,
+	TerminalEUpdateProperties,
+	TerminalESelect,
+	QTerminal,
+	QTerminalQId,
+	QTerminalQRelation,
+} from './qterminal';
+import {
+	ITerminal,
+} from './terminal';
+import {
+	TypeGraph,
+	TypeEId,
+	TypeEOptionalId,
+	TypeEUpdateProperties,
+	TypeESelect,
+	QType,
+	QTypeQId,
+	QTypeQRelation,
+} from '../type/qtype';
+import {
+	IType,
+} from '../type/type';
+import {
 	ITerminalType,
 } from './terminaltype';
 
@@ -41,9 +67,10 @@ declare function require(moduleName: string): any;
 export interface TerminalTypeESelect
     extends IEntitySelectProperties, TerminalTypeEOptionalId {
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
+	terminal?: TerminalESelect;
+	type?: TypeESelect;
 
   // Non-Id relations (including OneToMany's)
 
@@ -55,9 +82,10 @@ export interface TerminalTypeESelect
 export interface TerminalTypeEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
 
 	// Id Relations - Ids only
+	terminal: TerminalEId;
+	type: TypeEId;
 
 }
 
@@ -66,9 +94,10 @@ export interface TerminalTypeEId
  */
 export interface TerminalTypeEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
+	terminal?: TerminalEOptionalId;
+	type?: TypeEOptionalId;
 
 }
 
@@ -78,7 +107,6 @@ export interface TerminalTypeEOptionalId {
 export interface TerminalTypeEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -92,9 +120,10 @@ export interface TerminalTypeGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	name?: string | IQStringField;
 
 	// Relations
+	terminal?: TerminalGraph;
+	type?: TypeGraph;
 
 }
 
@@ -104,7 +133,6 @@ export interface TerminalTypeGraph
 export interface TerminalTypeEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	NAME?: string | IQStringField;
 
 }
 
@@ -135,12 +163,12 @@ extends TerminalTypeEId, TerminalTypeEUpdateColumns {
 export interface QTerminalType extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	terminal: QTerminalQRelation;
+	type: QTypeQRelation;
 
 	// Non-Id Fields
-	name: IQStringField;
 
 	// Non-Id Relations
 
@@ -152,9 +180,10 @@ export interface QTerminalTypeQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	terminal: QTerminalQId;
+	type: QTypeQId;
 
 
 }

@@ -1,5 +1,7 @@
+import { IClient } from './client';
+import { IType } from '../type/type';
 export interface IClientType {
-    id: number;
-    name?: string;
+    client: IClient;
+    type: IType;
 }
 //# sourceMappingURL=clienttype.d.ts.map

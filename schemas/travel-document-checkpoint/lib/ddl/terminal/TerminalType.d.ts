@@ -1,5 +1,7 @@
+import { Type } from '../type/Type';
+import { Terminal } from './Terminal';
 export declare class TerminalType {
-    id: number;
-    name: string;
+    terminal: Terminal;
+    type: Type;
 }
 //# sourceMappingURL=TerminalType.d.ts.map

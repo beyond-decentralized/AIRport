@@ -1,5 +1,18 @@
 /* eslint-disable */
 import {
+	Classification,
+} from '../ddl/type/classification';
+import {
+	ClassificationESelect,
+	ClassificationECreateColumns,
+	ClassificationECreateProperties,
+	ClassificationEUpdateColumns,
+	ClassificationEUpdateProperties,
+	ClassificationEId,
+	ClassificationGraph,
+	QClassification,
+} from './type/qclassification';
+import {
 	Client,
 } from '../ddl/client/client';
 import {
@@ -51,6 +64,32 @@ import {
 	CountryGraph,
 	QCountry,
 } from './locality/qcountry';
+import {
+	Database,
+} from '../ddl/database/database';
+import {
+	DatabaseESelect,
+	DatabaseECreateColumns,
+	DatabaseECreateProperties,
+	DatabaseEUpdateColumns,
+	DatabaseEUpdateProperties,
+	DatabaseEId,
+	DatabaseGraph,
+	QDatabase,
+} from './database/qdatabase';
+import {
+	DatabaseType,
+} from '../ddl/database/databasetype';
+import {
+	DatabaseTypeESelect,
+	DatabaseTypeECreateColumns,
+	DatabaseTypeECreateProperties,
+	DatabaseTypeEUpdateColumns,
+	DatabaseTypeEUpdateProperties,
+	DatabaseTypeEId,
+	DatabaseTypeGraph,
+	QDatabaseType,
+} from './database/qdatabasetype';
 import {
 	MetroArea,
 } from '../ddl/locality/metroarea';
@@ -116,6 +155,32 @@ import {
 	TerminalTypeGraph,
 	QTerminalType,
 } from './terminal/qterminaltype';
+import {
+	Type,
+} from '../ddl/type/type';
+import {
+	TypeESelect,
+	TypeECreateColumns,
+	TypeECreateProperties,
+	TypeEUpdateColumns,
+	TypeEUpdateProperties,
+	TypeEId,
+	TypeGraph,
+	QType,
+} from './type/qtype';
+import {
+	TypeClassification,
+} from '../ddl/type/typeclassification';
+import {
+	TypeClassificationESelect,
+	TypeClassificationECreateColumns,
+	TypeClassificationECreateProperties,
+	TypeClassificationEUpdateColumns,
+	TypeClassificationEUpdateProperties,
+	TypeClassificationEId,
+	TypeClassificationGraph,
+	QTypeClassification,
+} from './type/qtypeclassification';
 import {
 	User,
 } from '../ddl/user';
@@ -190,6 +255,24 @@ export class SQDIDuo<Entity,
 }
 
 
+export interface IBaseClassificationDuo
+  extends IDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
+}
+
+export class BaseClassificationDuo
+  extends SQDIDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification>
+	implements IBaseClassificationDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
 export interface IBaseClientDuo
   extends IDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
 }
@@ -199,11 +282,11 @@ export class BaseClientDuo
 	implements IBaseClientDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(7)
+		super(10)
 	}
 }
 
@@ -217,11 +300,11 @@ export class BaseClientTypeDuo
 	implements IBaseClientTypeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
 	}
 }
 
@@ -235,11 +318,11 @@ export class BaseContinentDuo
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(4)
+		super(0)
 	}
 }
 
@@ -253,11 +336,47 @@ export class BaseCountryDuo
 	implements IBaseCountryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
+	}
+}
+
+
+export interface IBaseDatabaseDuo
+  extends IDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
+}
+
+export class BaseDatabaseDuo
+  extends SQDIDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase>
+	implements IBaseDatabaseDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(15)
+	}
+	
+	constructor() {
+		super(15)
+	}
+}
+
+
+export interface IBaseDatabaseTypeDuo
+  extends IDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
+}
+
+export class BaseDatabaseTypeDuo
+  extends SQDIDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType>
+	implements IBaseDatabaseTypeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(14)
+	}
+	
+	constructor() {
+		super(14)
 	}
 }
 
@@ -271,11 +390,11 @@ export class BaseMetroAreaDuo
 	implements IBaseMetroAreaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(2)
+		super(3)
 	}
 }
 
@@ -307,11 +426,11 @@ export class BaseStateDuo
 	implements IBaseStateDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -325,11 +444,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(9)
+		super(12)
 	}
 }
 
@@ -343,11 +462,47 @@ export class BaseTerminalTypeDuo
 	implements IBaseTerminalTypeDuo {
 
 	static diSet(): boolean {
+		return duoDiSet(11)
+	}
+	
+	constructor() {
+		super(11)
+	}
+}
+
+
+export interface IBaseTypeDuo
+  extends IDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
+}
+
+export class BaseTypeDuo
+  extends SQDIDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType>
+	implements IBaseTypeDuo {
+
+	static diSet(): boolean {
 		return duoDiSet(8)
 	}
 	
 	constructor() {
 		super(8)
+	}
+}
+
+
+export interface IBaseTypeClassificationDuo
+  extends IDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
+}
+
+export class BaseTypeClassificationDuo
+  extends SQDIDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification>
+	implements IBaseTypeClassificationDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(7)
+	}
+	
+	constructor() {
+		super(7)
 	}
 }
 
@@ -361,11 +516,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -379,10 +534,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(10)
+		super(13)
 	}
 }

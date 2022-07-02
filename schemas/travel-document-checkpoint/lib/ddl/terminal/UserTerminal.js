@@ -5,11 +5,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Entity, Id, JoinColumn, ManyToOne, Table } from '@airport/air-traffic-control';
-/**
- *
- * DEPRECATED - syncing will now be done via IPFS/Peergos
- *
- */
 let UserTerminal = class UserTerminal {
 };
 __decorate([

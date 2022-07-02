@@ -1,3 +1,5 @@
+import { Classification } from '../ddl/type/classification';
+import { ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification } from './type/qclassification';
 import { Client } from '../ddl/client/client';
 import { ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient } from './client/qclient';
 import { ClientType } from '../ddl/client/clienttype';
@@ -6,6 +8,10 @@ import { Continent } from '../ddl/locality/continent';
 import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './locality/qcontinent';
 import { Country } from '../ddl/locality/country';
 import { CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry } from './locality/qcountry';
+import { Database } from '../ddl/database/database';
+import { DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase } from './database/qdatabase';
+import { DatabaseType } from '../ddl/database/databasetype';
+import { DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType } from './database/qdatabasetype';
 import { MetroArea } from '../ddl/locality/metroarea';
 import { MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea } from './locality/qmetroarea';
 import { MetroAreaState } from '../ddl/locality/metroareastate';
@@ -16,6 +22,10 @@ import { Terminal } from '../ddl/terminal/terminal';
 import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './terminal/qterminal';
 import { TerminalType } from '../ddl/terminal/terminaltype';
 import { TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType } from './terminal/qterminaltype';
+import { Type } from '../ddl/type/type';
+import { TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType } from './type/qtype';
+import { TypeClassification } from '../ddl/type/typeclassification';
+import { TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification } from './type/qtypeclassification';
 import { User } from '../ddl/user';
 import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './quser';
 import { UserTerminal } from '../ddl/terminal/userterminal';
@@ -25,6 +35,17 @@ import { Dao, DaoQueryDecorators } from '@airport/check-in';
 import { EntityId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
+}
+export interface IBaseClassificationDao extends IDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
+}
+export declare class BaseClassificationDao extends SQDIDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> implements IBaseClassificationDao {
+    static Find: DaoQueryDecorators<ClassificationESelect>;
+    static FindOne: DaoQueryDecorators<ClassificationESelect>;
+    static Search: DaoQueryDecorators<ClassificationESelect>;
+    static SearchOne: DaoQueryDecorators<ClassificationESelect>;
+    static Save(config: ClassificationGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
 }
 export interface IBaseClientDao extends IDao<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
 }
@@ -67,6 +88,28 @@ export declare class BaseCountryDao extends SQDIDao<Country, CountryESelect, Cou
     static Search: DaoQueryDecorators<CountryESelect>;
     static SearchOne: DaoQueryDecorators<CountryESelect>;
     static Save(config: CountryGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseDatabaseDao extends IDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
+}
+export declare class BaseDatabaseDao extends SQDIDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> implements IBaseDatabaseDao {
+    static Find: DaoQueryDecorators<DatabaseESelect>;
+    static FindOne: DaoQueryDecorators<DatabaseESelect>;
+    static Search: DaoQueryDecorators<DatabaseESelect>;
+    static SearchOne: DaoQueryDecorators<DatabaseESelect>;
+    static Save(config: DatabaseGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseDatabaseTypeDao extends IDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
+}
+export declare class BaseDatabaseTypeDao extends SQDIDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> implements IBaseDatabaseTypeDao {
+    static Find: DaoQueryDecorators<DatabaseTypeESelect>;
+    static FindOne: DaoQueryDecorators<DatabaseTypeESelect>;
+    static Search: DaoQueryDecorators<DatabaseTypeESelect>;
+    static SearchOne: DaoQueryDecorators<DatabaseTypeESelect>;
+    static Save(config: DatabaseTypeGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -122,6 +165,28 @@ export declare class BaseTerminalTypeDao extends SQDIDao<TerminalType, TerminalT
     static Search: DaoQueryDecorators<TerminalTypeESelect>;
     static SearchOne: DaoQueryDecorators<TerminalTypeESelect>;
     static Save(config: TerminalTypeGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseTypeDao extends IDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
+}
+export declare class BaseTypeDao extends SQDIDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> implements IBaseTypeDao {
+    static Find: DaoQueryDecorators<TypeESelect>;
+    static FindOne: DaoQueryDecorators<TypeESelect>;
+    static Search: DaoQueryDecorators<TypeESelect>;
+    static SearchOne: DaoQueryDecorators<TypeESelect>;
+    static Save(config: TypeGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseTypeClassificationDao extends IDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
+}
+export declare class BaseTypeClassificationDao extends SQDIDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> implements IBaseTypeClassificationDao {
+    static Find: DaoQueryDecorators<TypeClassificationESelect>;
+    static FindOne: DaoQueryDecorators<TypeClassificationESelect>;
+    static Search: DaoQueryDecorators<TypeClassificationESelect>;
+    static SearchOne: DaoQueryDecorators<TypeClassificationESelect>;
+    static Save(config: TypeClassificationGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

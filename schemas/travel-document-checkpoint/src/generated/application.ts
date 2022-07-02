@@ -52,6 +52,118 @@ export const APPLICATION = {
 							],
 							"sinceVersion": 1,
 							"type": "STRING"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 0,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "Continent",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "name",
+							"sinceVersion": 1
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"name": "countries",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 3,
+							"isId": false,
+							"name": "users",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "continent"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 2
+							},
+							"relationTableIndex": 1,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "continent"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 3
+							},
+							"relationTableIndex": 4,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "CONTINENTS",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": true,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
 						},
 						{
 							"index": 2,
@@ -60,7 +172,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
+									"oneTableIndex": 0,
 									"oneRelationIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -82,7 +194,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 0,
+					"index": 1,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "Country",
@@ -132,7 +244,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						},
 						{
@@ -145,7 +257,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						}
 					],
@@ -192,7 +304,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -213,7 +325,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 1,
+					"index": 2,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "State",
@@ -272,7 +384,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
@@ -285,7 +397,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -298,7 +410,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						}
 					],
@@ -345,7 +457,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -366,7 +478,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 2,
+					"index": 3,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "MetroArea",
@@ -425,7 +537,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
@@ -438,7 +550,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -451,7 +563,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						}
 					],
@@ -582,7 +694,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
+									"oneTableIndex": 0,
 									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -605,7 +717,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
+									"oneTableIndex": 1,
 									"oneRelationIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -628,7 +740,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 2,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -651,7 +763,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 3,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 2,
+									"oneTableIndex": 3,
 									"oneRelationIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
@@ -673,7 +785,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 3,
+					"index": 4,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "User",
@@ -795,7 +907,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 8
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						},
 						{
@@ -805,7 +917,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 9
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
@@ -815,7 +927,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 10
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -825,7 +937,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 11
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 3,
 							"sinceVersion": 1
 						}
 					],
@@ -839,124 +951,12 @@ export const APPLICATION = {
 					"columns": [
 						{
 							"index": 0,
-							"isGenerated": true,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 0
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 1,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "NAME",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 1
-								}
-							],
-							"sinceVersion": 1,
-							"type": "STRING"
-						}
-					],
-					"idColumnRefs": [
-						{
-							"index": 0
-						}
-					],
-					"index": 4,
-					"isLocal": true,
-					"isAirEntity": false,
-					"name": "Continent",
-					"properties": [
-						{
-							"columnRef": {
-								"index": 0
-							},
-							"index": 0,
-							"isId": true,
-							"name": "id",
-							"sinceVersion": 1
-						},
-						{
-							"columnRef": {
-								"index": 1
-							},
-							"index": 1,
-							"isId": false,
-							"name": "name",
-							"sinceVersion": 1
-						},
-						{
-							"index": 2,
-							"isId": false,
-							"name": "countries",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"name": "users",
-							"relationRef": {
-								"index": 1
-							},
-							"sinceVersion": 1
-						}
-					],
-					"relations": [
-						{
-							"index": 0,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "continent"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 2
-							},
-							"relationTableIndex": 0,
-							"sinceVersion": 1
-						},
-						{
-							"index": 1,
-							"isId": false,
-							"oneToManyElems": {
-								"mappedBy": "continent"
-							},
-							"relationType": "ONE_TO_MANY",
-							"propertyRef": {
-								"index": 3
-							},
-							"relationTableIndex": 3,
-							"sinceVersion": 1
-						}
-					],
-					"sinceVersion": 1,
-					"tableConfig": {
-						"name": "CONTINENTS",
-						"columnIndexes": []
-					}
-				},
-				{
-					"columns": [
-						{
-							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -978,7 +978,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 2,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1034,7 +1034,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 0
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -1044,7 +1044,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 3,
 							"sinceVersion": 1
 						}
 					],
@@ -1093,7 +1093,7 @@ export const APPLICATION = {
 					"index": 6,
 					"isLocal": true,
 					"isAirEntity": false,
-					"name": "ClientType",
+					"name": "Classification",
 					"properties": [
 						{
 							"columnRef": {
@@ -1117,7 +1117,313 @@ export const APPLICATION = {
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "CLIENT_TYPE",
+						"name": "CLASSIFICATIONS",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 6,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "CLASSIFICATION_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 8,
+									"oneRelationIndex": 0,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TYPE_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						},
+						{
+							"index": 1
+						}
+					],
+					"index": 7,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "TypeClassification",
+					"properties": [
+						{
+							"index": 0,
+							"isId": true,
+							"name": "classification",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"name": "type",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 0
+							},
+							"relationTableIndex": 6,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 1
+							},
+							"relationTableIndex": 8,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "TYPE_CLASSIFICATIONS",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "NAME",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 8,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "Type",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "name",
+							"sinceVersion": 1
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"name": "typeClassifications",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "type"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 2
+							},
+							"relationTableIndex": 7,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "TYPES",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 10,
+									"oneRelationIndex": 4,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "CLIENT_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 8,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TYPE_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						},
+						{
+							"index": 1
+						}
+					],
+					"index": 9,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "ClientType",
+					"properties": [
+						{
+							"index": 0,
+							"isId": true,
+							"name": "client",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"name": "type",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 0
+							},
+							"relationTableIndex": 10,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 1
+							},
+							"relationTableIndex": 8,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "CLIENT_TYPES",
 						"columnIndexes": []
 					}
 				},
@@ -1172,12 +1478,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 6,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "CLIENT_TYPE_ID",
+							"name": "CONTINENT_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1194,12 +1500,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "CONTINENT_ID",
+							"name": "COUNTRY_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1216,12 +1522,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 2,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "COUNTRY_ID",
+							"name": "STATE_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1238,29 +1544,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 3,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 1,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "STATE_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 6
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 7,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 4,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 2,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1269,7 +1553,7 @@ export const APPLICATION = {
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 7
+									"index": 6
 								}
 							],
 							"sinceVersion": 1,
@@ -1281,7 +1565,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 7,
+					"index": 10,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "Client",
@@ -1316,7 +1600,7 @@ export const APPLICATION = {
 						{
 							"index": 3,
 							"isId": false,
-							"name": "clienType",
+							"name": "continent",
 							"relationRef": {
 								"index": 0
 							},
@@ -1325,7 +1609,7 @@ export const APPLICATION = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "continent",
+							"name": "country",
 							"relationRef": {
 								"index": 1
 							},
@@ -1334,7 +1618,7 @@ export const APPLICATION = {
 						{
 							"index": 5,
 							"isId": false,
-							"name": "country",
+							"name": "state",
 							"relationRef": {
 								"index": 2
 							},
@@ -1343,7 +1627,7 @@ export const APPLICATION = {
 						{
 							"index": 6,
 							"isId": false,
-							"name": "state",
+							"name": "metroArea",
 							"relationRef": {
 								"index": 3
 							},
@@ -1352,7 +1636,7 @@ export const APPLICATION = {
 						{
 							"index": 7,
 							"isId": false,
-							"name": "metroArea",
+							"name": "clientTypes",
 							"relationRef": {
 								"index": 4
 							},
@@ -1367,7 +1651,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 6,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						},
 						{
@@ -1377,7 +1661,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 4
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
@@ -1387,7 +1671,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -1397,22 +1681,26 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 6
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 3,
 							"sinceVersion": 1
 						},
 						{
 							"index": 4,
 							"isId": false,
-							"relationType": "MANY_TO_ONE",
+							"oneToManyElems": {
+								"mappedBy": "client"
+							},
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 7
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 9,
 							"sinceVersion": 1
 						}
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
+						"name": "CLIENTS",
 						"columnIndexes": []
 					}
 				},
@@ -1421,8 +1709,17 @@ export const APPLICATION = {
 						{
 							"index": 0,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "ID",
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 12,
+									"oneRelationIndex": 3,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TERMINAL_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1435,8 +1732,16 @@ export const APPLICATION = {
 						{
 							"index": 1,
 							"isGenerated": false,
-							"manyRelationColumnRefs": [],
-							"name": "NAME",
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 8,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TYPE_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1444,42 +1749,66 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "STRING"
+							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
 						{
 							"index": 0
+						},
+						{
+							"index": 1
 						}
 					],
-					"index": 8,
+					"index": 11,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "TerminalType",
 					"properties": [
 						{
-							"columnRef": {
-								"index": 0
-							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "terminal",
+							"relationRef": {
+								"index": 0
+							},
 							"sinceVersion": 1
 						},
 						{
-							"columnRef": {
+							"index": 1,
+							"isId": true,
+							"name": "type",
+							"relationRef": {
 								"index": 1
 							},
-							"index": 1,
-							"isId": false,
-							"name": "name",
 							"sinceVersion": 1
 						}
 					],
-					"relations": [],
+					"relations": [
+						{
+							"index": 0,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 0
+							},
+							"relationTableIndex": 12,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 1
+							},
+							"relationTableIndex": 8,
+							"sinceVersion": 1
+						}
+					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "TERMINAL_TYPE",
+						"name": "TERMINAL_TYPES",
 						"columnIndexes": []
 					}
 				},
@@ -1521,7 +1850,7 @@ export const APPLICATION = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 4
+									"index": 3
 								}
 							],
 							"sinceVersion": 1,
@@ -1534,12 +1863,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 8,
+									"oneTableIndex": 4,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "TERMINAL_TYPE_ID",
+							"name": "OWNER_USER_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1556,16 +1885,16 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 3,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "OWNER_USER_ID",
+							"name": "CONTINENT_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
-									"index": 3
+									"index": 4
 								}
 							],
 							"sinceVersion": 1,
@@ -1578,12 +1907,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 2,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 4,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "CONTINENT_ID",
+							"name": "COUNTRY_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1598,31 +1927,9 @@ export const APPLICATION = {
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
-									"manyRelationIndex": 3,
-									"oneApplicationIndex": null,
-									"oneTableIndex": 0,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "COUNTRY_ID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 6
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
-						},
-						{
-							"index": 7,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
 									"manyRelationIndex": 4,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 1,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1638,13 +1945,13 @@ export const APPLICATION = {
 							"type": "NUMBER"
 						},
 						{
-							"index": 8,
+							"index": 7,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
 									"manyRelationIndex": 5,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 2,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1665,7 +1972,7 @@ export const APPLICATION = {
 							"index": 0
 						}
 					],
-					"index": 9,
+					"index": 12,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "Terminal",
@@ -1691,18 +1998,9 @@ export const APPLICATION = {
 						{
 							"index": 2,
 							"isId": false,
-							"name": "terminalType",
-							"relationRef": {
-								"index": 0
-							},
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
 							"name": "owner",
 							"relationRef": {
-								"index": 1
+								"index": 0
 							},
 							"sinceVersion": 1
 						},
@@ -1710,15 +2008,24 @@ export const APPLICATION = {
 							"columnRef": {
 								"index": 2
 							},
-							"index": 4,
+							"index": 3,
 							"isId": false,
 							"name": "isLocal",
 							"sinceVersion": 1
 						},
 						{
-							"index": 5,
+							"index": 4,
 							"isId": false,
 							"name": "continent",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 5,
+							"isId": false,
+							"name": "country",
 							"relationRef": {
 								"index": 2
 							},
@@ -1727,7 +2034,7 @@ export const APPLICATION = {
 						{
 							"index": 6,
 							"isId": false,
-							"name": "country",
+							"name": "terminalTypes",
 							"relationRef": {
 								"index": 3
 							},
@@ -1760,7 +2067,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 8,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						},
 						{
@@ -1768,9 +2075,9 @@ export const APPLICATION = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 3
+								"index": 4
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 0,
 							"sinceVersion": 1
 						},
 						{
@@ -1780,17 +2087,20 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 1,
 							"sinceVersion": 1
 						},
 						{
 							"index": 3,
 							"isId": false,
-							"relationType": "MANY_TO_ONE",
+							"oneToManyElems": {
+								"mappedBy": "terminal"
+							},
+							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
 								"index": 6
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 11,
 							"sinceVersion": 1
 						},
 						{
@@ -1800,7 +2110,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 7
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 2,
 							"sinceVersion": 1
 						},
 						{
@@ -1810,13 +2120,13 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 8
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 3,
 							"sinceVersion": 1
 						}
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "TERMINAL",
+						"name": "TERMINALS",
 						"propertyIndexes": [
 							{
 								"propertyIndex": 1,
@@ -1835,7 +2145,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 3,
+									"oneTableIndex": 4,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1857,7 +2167,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplicationIndex": null,
-									"oneTableIndex": 9,
+									"oneTableIndex": 12,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1881,7 +2191,7 @@ export const APPLICATION = {
 							"index": 1
 						}
 					],
-					"index": 10,
+					"index": 13,
 					"isLocal": true,
 					"isAirEntity": false,
 					"name": "UserTerminal",
@@ -1913,7 +2223,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 0
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 4,
 							"sinceVersion": 1
 						},
 						{
@@ -1923,13 +2233,398 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 9,
+							"relationTableIndex": 12,
 							"sinceVersion": 1
 						}
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
 						"name": "USER_TERMINAL",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 15,
+									"oneRelationIndex": 4,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "DATABASE_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 8,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "TYPE_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						},
+						{
+							"index": 1
+						}
+					],
+					"index": 14,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "DatabaseType",
+					"properties": [
+						{
+							"index": 0,
+							"isId": true,
+							"name": "database",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"name": "type",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 0
+							},
+							"relationTableIndex": 15,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": true,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 1
+							},
+							"relationTableIndex": 8,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "DATABASE_TYPE",
+						"columnIndexes": []
+					}
+				},
+				{
+					"columns": [
+						{
+							"index": 0,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 0
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 1,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "DOMAIN",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
+							"name": "GUID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 2
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 3,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 0,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 0,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "CONTINENT_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 3
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 4,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 1,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 1,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "COUNTRY_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 4
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 5,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 2,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 2,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "STATE_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 5
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						},
+						{
+							"index": 6,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [
+								{
+									"manyRelationIndex": 3,
+									"oneApplicationIndex": null,
+									"oneTableIndex": 3,
+									"oneColumnIndex": 0,
+									"sinceVersion": 1
+								}
+							],
+							"name": "METRO_AREA_ID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 6
+								}
+							],
+							"sinceVersion": 1,
+							"type": "NUMBER"
+						}
+					],
+					"idColumnRefs": [
+						{
+							"index": 0
+						}
+					],
+					"index": 15,
+					"isLocal": true,
+					"isAirEntity": false,
+					"name": "Database",
+					"properties": [
+						{
+							"columnRef": {
+								"index": 0
+							},
+							"index": 0,
+							"isId": true,
+							"name": "id",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 1
+							},
+							"index": 1,
+							"isId": false,
+							"name": "domain",
+							"sinceVersion": 1
+						},
+						{
+							"columnRef": {
+								"index": 2
+							},
+							"index": 2,
+							"isId": false,
+							"name": "GUID",
+							"sinceVersion": 1
+						},
+						{
+							"index": 3,
+							"isId": false,
+							"name": "continent",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 4,
+							"isId": false,
+							"name": "country",
+							"relationRef": {
+								"index": 1
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 5,
+							"isId": false,
+							"name": "state",
+							"relationRef": {
+								"index": 2
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 6,
+							"isId": false,
+							"name": "metroArea",
+							"relationRef": {
+								"index": 3
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 7,
+							"isId": false,
+							"name": "databaseTypes",
+							"relationRef": {
+								"index": 4
+							},
+							"sinceVersion": 1
+						}
+					],
+					"relations": [
+						{
+							"index": 0,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 3
+							},
+							"relationTableIndex": 0,
+							"sinceVersion": 1
+						},
+						{
+							"index": 1,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 4
+							},
+							"relationTableIndex": 1,
+							"sinceVersion": 1
+						},
+						{
+							"index": 2,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 5
+							},
+							"relationTableIndex": 2,
+							"sinceVersion": 1
+						},
+						{
+							"index": 3,
+							"isId": false,
+							"relationType": "MANY_TO_ONE",
+							"propertyRef": {
+								"index": 6
+							},
+							"relationTableIndex": 3,
+							"sinceVersion": 1
+						},
+						{
+							"index": 4,
+							"isId": false,
+							"oneToManyElems": {
+								"mappedBy": "database"
+							},
+							"relationType": "ONE_TO_MANY",
+							"propertyRef": {
+								"index": 7
+							},
+							"relationTableIndex": 14,
+							"sinceVersion": 1
+						}
+					],
+					"sinceVersion": 1,
+					"tableConfig": {
+						"name": "DATABASES",
 						"columnIndexes": []
 					}
 				}

@@ -10,11 +10,11 @@ export declare type Terminal_GUID = string;
 export declare class Terminal {
     id: TmTerminal_Id;
     GUID: Terminal_GUID;
-    terminalType: TerminalType;
     owner?: User;
     isLocal: Terminal_IsLocal;
     continent?: Continent;
     country?: Country;
+    terminalTypes: TerminalType[];
     state?: State;
     metroArea?: MetroArea;
 }

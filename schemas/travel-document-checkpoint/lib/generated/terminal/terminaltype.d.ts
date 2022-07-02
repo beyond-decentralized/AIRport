@@ -1,5 +1,7 @@
+import { ITerminal } from './terminal';
+import { IType } from '../type/type';
 export interface ITerminalType {
-    id: number;
-    name?: string;
+    terminal: ITerminal;
+    type: IType;
 }
 //# sourceMappingURL=terminaltype.d.ts.map

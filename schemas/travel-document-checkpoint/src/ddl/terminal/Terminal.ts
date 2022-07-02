@@ -8,15 +8,15 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 	Table
 } from '@airport/air-traffic-control'
-import { ClientType } from '../client/ClientType';
-import { Continent } from '../locality/Continent';
-import { Country } from '../locality/Country';
-import { MetroArea } from '../locality/MetroArea';
-import { State } from '../locality/State';
+import { Continent } from '../locality/Continent'
+import { Country } from '../locality/Country'
+import { MetroArea } from '../locality/MetroArea'
+import { State } from '../locality/State'
 import { User } from '../User'
-import { TerminalType } from './TerminalType';
+import { TerminalType } from './TerminalType'
 
 export type TmTerminal_Id = number;
 export type Terminal_IsLocal = boolean;
@@ -24,7 +24,7 @@ export type Terminal_GUID = string;
 
 @Entity()
 @Table({
-	name: 'TERMINAL',
+	name: 'TERMINALS',
 	indexes: (t: Terminal) => [{
 		property: t.GUID,
 		unique: true
@@ -42,10 +42,6 @@ export class Terminal {
 	GUID: Terminal_GUID
 
 	@ManyToOne()
-	@JoinColumn({ name: 'TERMINAL_TYPE_ID', referencedColumnName: 'ID' })
-	terminalType: TerminalType
-
-	@ManyToOne()
 	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID', nullable: true })
 	owner?: User
 
@@ -60,6 +56,9 @@ export class Terminal {
 	@ManyToOne()
 	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
 	country?: Country
+
+	@OneToMany({ mappedBy: 'terminal' })
+	terminalTypes: TerminalType[]
 
 	@ManyToOne()
 	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })

@@ -1,15 +1,20 @@
 import { airApi } from '@airport/aviation-communication';
-import { Client, ClientType, Continent, Country, MetroArea, MetroAreaState, State, Terminal, TerminalType, User, UserTerminal } from '../ddl/ddl';
+import { Classification, Client, ClientType, Continent, Country, Database, DatabaseType, MetroArea, MetroAreaState, State, Terminal, TerminalType, Type, TypeClassification, User, UserTerminal } from '../ddl/ddl';
 const __constructors__ = {
+    Classification: Classification,
     Client: Client,
     ClientType: ClientType,
     Continent: Continent,
     Country: Country,
+    Database: Database,
+    DatabaseType: DatabaseType,
     MetroArea: MetroArea,
     MetroAreaState: MetroAreaState,
     State: State,
     Terminal: Terminal,
     TerminalType: TerminalType,
+    Type: Type,
+    TypeClassification: TypeClassification,
     User: User,
     UserTerminal: UserTerminal
 };

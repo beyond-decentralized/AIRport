@@ -1,7 +1,4 @@
 import {
-	IClientType,
-} from './clienttype';
-import {
 	IContinent,
 } from '../locality/continent';
 import {
@@ -13,6 +10,9 @@ import {
 import {
 	IMetroArea,
 } from '../locality/metroarea';
+import {
+	IClientType,
+} from './clienttype';
 
 
 
@@ -32,11 +32,11 @@ export interface IClient {
 	GUID?: string;
 
 	// Non-Id Relations
-	clienType?: IClientType;
 	continent?: IContinent;
 	country?: ICountry;
 	state?: IState;
 	metroArea?: IMetroArea;
+	clientTypes?: IClientType[];
 
 	// Transient Properties
 

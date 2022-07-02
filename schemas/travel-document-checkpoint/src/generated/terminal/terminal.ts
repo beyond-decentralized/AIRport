@@ -1,7 +1,4 @@
 import {
-	ITerminalType,
-} from './terminaltype';
-import {
 	IUser,
 } from '../user';
 import {
@@ -10,6 +7,9 @@ import {
 import {
 	ICountry,
 } from '../locality/country';
+import {
+	ITerminalType,
+} from './terminaltype';
 import {
 	IState,
 } from '../locality/state';
@@ -35,10 +35,10 @@ export interface ITerminal {
 	isLocal?: boolean;
 
 	// Non-Id Relations
-	terminalType?: ITerminalType;
 	owner?: IUser;
 	continent?: IContinent;
 	country?: ICountry;
+	terminalTypes?: ITerminalType[];
 	state?: IState;
 	metroArea?: IMetroArea;
 

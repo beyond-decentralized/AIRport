@@ -7,10 +7,10 @@ export declare class Client {
     id: number;
     domain: string;
     GUID: string;
-    clienType: ClientType;
     continent?: Continent;
     country?: Country;
     state?: State;
     metroArea?: MetroArea;
+    clientTypes: ClientType[];
 }
 //# sourceMappingURL=Client.d.ts.map
