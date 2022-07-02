@@ -3298,6 +3298,20 @@ export const APPLICATION = {
 							"index": 1,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
+							"name": "GUID",
+							"notNull": false,
+							"propertyRefs": [
+								{
+									"index": 1
+								}
+							],
+							"sinceVersion": 1,
+							"type": "STRING"
+						},
+						{
+							"index": 2,
+							"isGenerated": false,
+							"manyRelationColumnRefs": [],
 							"name": "SCOPE",
 							"notNull": true,
 							"propertyRefs": [
@@ -3309,7 +3323,7 @@ export const APPLICATION = {
 							"type": "STRING"
 						},
 						{
-							"index": 2,
+							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "APPLICATION_NAME",
@@ -3323,7 +3337,7 @@ export const APPLICATION = {
 							"type": "STRING"
 						},
 						{
-							"index": 3,
+							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "FULL_APPLICATION_NAME",
@@ -3337,7 +3351,7 @@ export const APPLICATION = {
 							"type": "STRING"
 						},
 						{
-							"index": 4,
+							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "STATUS",
@@ -3351,7 +3365,7 @@ export const APPLICATION = {
 							"type": "STRING"
 						},
 						{
-							"index": 5,
+							"index": 6,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
 							"name": "SIGNATURE",
@@ -3365,7 +3379,7 @@ export const APPLICATION = {
 							"type": "STRING"
 						},
 						{
-							"index": 6,
+							"index": 7,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [
 								{
@@ -3381,7 +3395,7 @@ export const APPLICATION = {
 							"notNull": true,
 							"propertyRefs": [
 								{
-									"index": 1
+									"index": 7
 								}
 							],
 							"sinceVersion": 1,
@@ -3408,17 +3422,17 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
+							"columnRef": {
+								"index": 1
+							},
 							"index": 1,
 							"isId": false,
-							"name": "domain",
-							"relationRef": {
-								"index": 0
-							},
+							"name": "GUID",
 							"sinceVersion": 1
 						},
 						{
 							"columnRef": {
-								"index": 1
+								"index": 2
 							},
 							"index": 2,
 							"isId": false,
@@ -3427,7 +3441,7 @@ export const APPLICATION = {
 						},
 						{
 							"columnRef": {
-								"index": 2
+								"index": 3
 							},
 							"index": 3,
 							"isId": false,
@@ -3436,7 +3450,7 @@ export const APPLICATION = {
 						},
 						{
 							"columnRef": {
-								"index": 3
+								"index": 4
 							},
 							"index": 4,
 							"isId": false,
@@ -3445,7 +3459,7 @@ export const APPLICATION = {
 						},
 						{
 							"columnRef": {
-								"index": 4
+								"index": 5
 							},
 							"index": 5,
 							"isId": false,
@@ -3454,7 +3468,7 @@ export const APPLICATION = {
 						},
 						{
 							"columnRef": {
-								"index": 5
+								"index": 6
 							},
 							"index": 6,
 							"isId": false,
@@ -3464,6 +3478,15 @@ export const APPLICATION = {
 						{
 							"index": 7,
 							"isId": false,
+							"name": "domain",
+							"relationRef": {
+								"index": 0
+							},
+							"sinceVersion": 1
+						},
+						{
+							"index": 8,
+							"isId": false,
 							"name": "versions",
 							"relationRef": {
 								"index": 1
@@ -3471,7 +3494,7 @@ export const APPLICATION = {
 							"sinceVersion": 1
 						},
 						{
-							"index": 8,
+							"index": 9,
 							"isId": false,
 							"name": "currentVersion",
 							"relationRef": {
@@ -3486,7 +3509,7 @@ export const APPLICATION = {
 							"isId": false,
 							"relationType": "MANY_TO_ONE",
 							"propertyRef": {
-								"index": 1
+								"index": 7
 							},
 							"relationTableIndex": 11,
 							"sinceVersion": 1
@@ -3499,7 +3522,7 @@ export const APPLICATION = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 7
+								"index": 8
 							},
 							"relationTableIndex": 8,
 							"sinceVersion": 1
@@ -3512,7 +3535,7 @@ export const APPLICATION = {
 							},
 							"relationType": "ONE_TO_MANY",
 							"propertyRef": {
-								"index": 8
+								"index": 9
 							},
 							"relationTableIndex": 9,
 							"sinceVersion": 1

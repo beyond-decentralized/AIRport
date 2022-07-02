@@ -91,6 +91,45 @@ import {
 	QRepositoryApplication,
 } from './repository/qrepositoryapplication';
 import {
+	RepositoryClient,
+} from '../ddl/repository/repositoryclient';
+import {
+	RepositoryClientESelect,
+	RepositoryClientECreateColumns,
+	RepositoryClientECreateProperties,
+	RepositoryClientEUpdateColumns,
+	RepositoryClientEUpdateProperties,
+	RepositoryClientEId,
+	RepositoryClientGraph,
+	QRepositoryClient,
+} from './repository/qrepositoryclient';
+import {
+	RepositoryDatabase,
+} from '../ddl/repository/repositorydatabase';
+import {
+	RepositoryDatabaseESelect,
+	RepositoryDatabaseECreateColumns,
+	RepositoryDatabaseECreateProperties,
+	RepositoryDatabaseEUpdateColumns,
+	RepositoryDatabaseEUpdateProperties,
+	RepositoryDatabaseEId,
+	RepositoryDatabaseGraph,
+	QRepositoryDatabase,
+} from './repository/qrepositorydatabase';
+import {
+	RepositoryTerminal,
+} from '../ddl/repository/repositoryterminal';
+import {
+	RepositoryTerminalESelect,
+	RepositoryTerminalECreateColumns,
+	RepositoryTerminalECreateProperties,
+	RepositoryTerminalEUpdateColumns,
+	RepositoryTerminalEUpdateProperties,
+	RepositoryTerminalEId,
+	RepositoryTerminalGraph,
+	QRepositoryTerminal,
+} from './repository/qrepositoryterminal';
+import {
 	RepositoryTransactionHistory,
 } from '../ddl/history/repositorytransactionhistory';
 import {
@@ -225,11 +264,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(8)
+		super(12)
 	}
 }
 
@@ -337,11 +376,11 @@ export class BaseRepositoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(5)
+		super(9)
 	}
 }
 
@@ -365,11 +404,95 @@ export class BaseRepositoryApplicationDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
+	}
+}
+
+
+export interface IBaseRepositoryClientDao
+  extends IDao<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient> {
+}
+
+export class BaseRepositoryClientDao
+  extends SQDIDao<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient>
+	implements IBaseRepositoryClientDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryClientESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryClientESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryClientESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryClientESelect>();
+	static Save(
+		config: RepositoryClientGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryClientGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
+export interface IBaseRepositoryDatabaseDao
+  extends IDao<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase> {
+}
+
+export class BaseRepositoryDatabaseDao
+  extends SQDIDao<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase>
+	implements IBaseRepositoryDatabaseDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryDatabaseESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryDatabaseESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryDatabaseESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryDatabaseESelect>();
+	static Save(
+		config: RepositoryDatabaseGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryDatabaseGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(5)
+	}
+	
+	constructor() {
+		super(5)
+	}
+}
+
+
+export interface IBaseRepositoryTerminalDao
+  extends IDao<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal> {
+}
+
+export class BaseRepositoryTerminalDao
+  extends SQDIDao<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal>
+	implements IBaseRepositoryTerminalDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryTerminalESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryTerminalESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryTerminalESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryTerminalESelect>();
+	static Save(
+		config: RepositoryTerminalGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryTerminalGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(7)
+	}
+	
+	constructor() {
+		super(7)
 	}
 }
 
@@ -393,11 +516,11 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(7)
+		super(11)
 	}
 }
 
@@ -449,10 +572,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(6)
+		super(10)
 	}
 }

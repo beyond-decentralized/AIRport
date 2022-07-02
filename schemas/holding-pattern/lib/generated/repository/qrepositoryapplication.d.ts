@@ -1,44 +1,43 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { ApplicationGraph, ApplicationEId, ApplicationEOptionalId, ApplicationESelect, QApplicationQId, QApplicationQRelation } from '@airport/airspace';
 import { RepositoryGraph, RepositoryEId, RepositoryEOptionalId, RepositoryESelect, QRepositoryQId, QRepositoryQRelation } from './qrepository';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryApplicationESelect extends IEntitySelectProperties, RepositoryApplicationEOptionalId {
-    applicationIndex?: number | IQNumberField;
+    application?: ApplicationESelect;
     repository?: RepositoryESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryApplicationEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    application: ApplicationEId;
     repository: RepositoryEId;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RepositoryApplicationEOptionalId {
-    id?: number | IQNumberField;
+    application?: ApplicationEOptionalId;
     repository?: RepositoryEOptionalId;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryApplicationEUpdateProperties extends IEntityUpdateProperties {
-    applicationIndex?: number | IQNumberField;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryApplicationGraph extends RepositoryApplicationEOptionalId, IEntityCascadeGraph {
-    applicationIndex?: number | IQNumberField;
+    application?: ApplicationGraph;
     repository?: RepositoryGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryApplicationEUpdateColumns extends IEntityUpdateColumns {
-    APPLICATION_INDEX?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -54,12 +53,11 @@ export interface RepositoryApplicationECreateColumns extends RepositoryApplicati
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QRepositoryApplication extends IQEntity {
-    id: IQNumberField;
+    application: QApplicationQRelation;
     repository: QRepositoryQRelation;
-    applicationIndex: IQNumberField;
 }
 export interface QRepositoryApplicationQId {
-    id: IQNumberField;
+    application: QApplicationQId;
     repository: QRepositoryQId;
 }
 export interface QRepositoryApplicationQRelation extends IQRelation<QRepositoryApplication>, QRepositoryApplicationQId {

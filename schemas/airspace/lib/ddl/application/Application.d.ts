@@ -4,12 +4,13 @@ import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
 import { ApplicationVersion } from './ApplicationVersion';
 export declare class Application {
     index: ApplicationIndex;
-    domain: Domain;
+    GUID: string;
     scope: ApplicationScope;
     name: ApplicationName;
     fullName: FullApplicationName;
     status: ApplicationStatus;
     signature: string;
+    domain: Domain;
     versions: ApplicationVersion[];
     currentVersion: ApplicationCurrentVersion[];
 }

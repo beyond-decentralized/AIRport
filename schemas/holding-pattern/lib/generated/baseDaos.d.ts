@@ -12,6 +12,12 @@ import { Repository } from '../ddl/repository/repository';
 import { RepositoryESelect, RepositoryECreateProperties, RepositoryEUpdateColumns, RepositoryEUpdateProperties, RepositoryEId, RepositoryGraph, QRepository } from './repository/qrepository';
 import { RepositoryApplication } from '../ddl/repository/repositoryapplication';
 import { RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication } from './repository/qrepositoryapplication';
+import { RepositoryClient } from '../ddl/repository/repositoryclient';
+import { RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient } from './repository/qrepositoryclient';
+import { RepositoryDatabase } from '../ddl/repository/repositorydatabase';
+import { RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase } from './repository/qrepositorydatabase';
+import { RepositoryTerminal } from '../ddl/repository/repositoryterminal';
+import { RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal } from './repository/qrepositoryterminal';
 import { RepositoryTransactionHistory } from '../ddl/history/repositorytransactionhistory';
 import { RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { RepositoryType } from '../ddl/repository/repositorytype';
@@ -98,6 +104,39 @@ export declare class BaseRepositoryApplicationDao extends SQDIDao<RepositoryAppl
     static Search: DaoQueryDecorators<RepositoryApplicationESelect>;
     static SearchOne: DaoQueryDecorators<RepositoryApplicationESelect>;
     static Save(config: RepositoryApplicationGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseRepositoryClientDao extends IDao<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient> {
+}
+export declare class BaseRepositoryClientDao extends SQDIDao<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient> implements IBaseRepositoryClientDao {
+    static Find: DaoQueryDecorators<RepositoryClientESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryClientESelect>;
+    static Search: DaoQueryDecorators<RepositoryClientESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryClientESelect>;
+    static Save(config: RepositoryClientGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseRepositoryDatabaseDao extends IDao<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase> {
+}
+export declare class BaseRepositoryDatabaseDao extends SQDIDao<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase> implements IBaseRepositoryDatabaseDao {
+    static Find: DaoQueryDecorators<RepositoryDatabaseESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryDatabaseESelect>;
+    static Search: DaoQueryDecorators<RepositoryDatabaseESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryDatabaseESelect>;
+    static Save(config: RepositoryDatabaseGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseRepositoryTerminalDao extends IDao<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal> {
+}
+export declare class BaseRepositoryTerminalDao extends SQDIDao<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal> implements IBaseRepositoryTerminalDao {
+    static Find: DaoQueryDecorators<RepositoryTerminalESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryTerminalESelect>;
+    static Search: DaoQueryDecorators<RepositoryTerminalESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryTerminalESelect>;
+    static Save(config: RepositoryTerminalGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

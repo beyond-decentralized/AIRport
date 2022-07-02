@@ -63,6 +63,18 @@ __decorate([
 ], Repository.prototype, "metroArea", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })
+], Repository.prototype, "repositoryApplications", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'repository' })
+], Repository.prototype, "repositoryClients", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'repository' })
+], Repository.prototype, "repositoryDatabases", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'repository' })
+], Repository.prototype, "repositoryTerminals", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTypes", void 0);
 Repository = __decorate([
     Entity(),

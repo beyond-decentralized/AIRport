@@ -3,6 +3,7 @@ import { IApplicationVersion } from './applicationversion';
 import { IApplicationCurrentVersion } from './applicationcurrentversion';
 export interface IApplication {
     index: number;
+    GUID?: string;
     scope?: string;
     name?: string;
     fullName?: string;

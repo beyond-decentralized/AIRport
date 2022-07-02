@@ -8,9 +8,7 @@ import {
 	ManyToOne,
 	Table
 }                   from "@airport/air-traffic-control";
-import {
-	ApplicationIndex,
-}                   from "@airport/ground-control";
+import { Application } from "@airport/airspace";
 import {Repository} from './Repository'
 
 export type RepositoryApplicationId = number;
@@ -22,18 +20,13 @@ export type RepositoryApplicationId = number;
 export class RepositoryApplication {
 
 	@Id()
-	@Column({name: "REPOSITORY_APPLICATION_ID"})
-	@GeneratedValue()
-	@DbNumber()
-	id: RepositoryApplicationId;
+	@ManyToOne()
+	@JoinColumn({name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX"})
+	application: Application;
 
 	@Id()
 	@ManyToOne()
 	@JoinColumn({name: "REPOSITORY_ID", referencedColumnName: "ID"})
 	repository: Repository;
-
-	@Column({name: "APPLICATION_INDEX", nullable: false})
-	@DbNumber()
-	applicationIndex: ApplicationIndex;
 
 }

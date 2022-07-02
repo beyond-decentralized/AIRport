@@ -33,9 +33,7 @@ export class Application {
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })
 	index: ApplicationIndex;
 
-	@ManyToOne()
-	@JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
-	domain: Domain;
+	GUID: string
 
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
@@ -64,6 +62,10 @@ export class Application {
 	@Column({ name: 'SIGNATURE', nullable: false })
 	@DbString()
 	signature: string;
+
+	@ManyToOne()
+	@JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
+	domain: Domain;
 
 	@OneToMany({ mappedBy: 'application' })
 	versions: ApplicationVersion[] = [];

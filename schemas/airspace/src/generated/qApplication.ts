@@ -1,12 +1,12 @@
 import {
     airApi,
-    QApplication as QAirportApplication
+    QApplication
 } from '@airport/aviation-communication'
 import {
     DbApplication,
     EntityId,
 }                      from '@airport/ground-control';
-import { QApplication } from './application/qapplication';
+import { QApplication as QSchemaApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
 import { QApplicationEntity } from './application/qapplicationentity';
@@ -35,11 +35,11 @@ import {
   VersionedApplicationObject
 } from '../ddl/ddl';
 
-export interface LocalQApplication extends QAirportApplication {
+export interface LocalQApplication extends QApplication {
 
     db: DbApplication;
 
-  Application: QApplication;
+  Application: QSchemaApplication;
 	ApplicationColumn: QApplicationColumn;
 	ApplicationCurrentVersion: QApplicationCurrentVersion;
 	ApplicationEntity: QApplicationEntity;

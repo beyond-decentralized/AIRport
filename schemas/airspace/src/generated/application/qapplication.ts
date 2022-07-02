@@ -80,6 +80,7 @@ declare function require(moduleName: string): any;
 export interface ApplicationESelect
     extends IEntitySelectProperties, ApplicationEOptionalId {
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
@@ -124,6 +125,7 @@ export interface ApplicationEOptionalId {
 export interface ApplicationEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
@@ -143,6 +145,7 @@ export interface ApplicationGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	scope?: string | IQStringField;
 	name?: string | IQStringField;
 	fullName?: string | IQStringField;
@@ -162,6 +165,7 @@ export interface ApplicationGraph
 export interface ApplicationEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	GUID?: string | IQStringField;
 	SCOPE?: string | IQStringField;
 	APPLICATION_NAME?: string | IQStringField;
 	FULL_APPLICATION_NAME?: string | IQStringField;
@@ -203,6 +207,7 @@ export interface QApplication extends IQEntity
 	// Id Relations
 
 	// Non-Id Fields
+	GUID: IQStringField;
 	scope: IQStringField;
 	name: IQStringField;
 	fullName: IQStringField;

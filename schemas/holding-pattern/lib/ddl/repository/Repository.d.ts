@@ -1,6 +1,10 @@
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
 import { Continent, Country, MetroArea, State, User } from "@airport/travel-document-checkpoint";
 import { RepositoryType } from "./RepositoryType";
+import { RepositoryDatabase } from "./RepositoryDatabase";
+import { RepositoryClient } from "./RepositoryClient";
+import { RepositoryTerminal } from "./RepositoryTerminal";
+import { RepositoryApplication } from "./RepositoryApplication";
 /**
  * Created by Papa on 2/9/2017.
  */
@@ -23,6 +27,10 @@ export declare class Repository {
     country?: Country;
     state?: State;
     metroArea?: MetroArea;
+    repositoryApplications: RepositoryApplication[];
+    repositoryClients: RepositoryClient[];
+    repositoryDatabases: RepositoryDatabase[];
+    repositoryTerminals: RepositoryTerminal[];
     repositoryTypes: RepositoryType[];
 }
 //# sourceMappingURL=Repository.d.ts.map

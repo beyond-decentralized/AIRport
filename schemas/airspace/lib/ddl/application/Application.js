@@ -17,10 +17,6 @@ __decorate([
     Column({ name: 'APPLICATION_INDEX', nullable: false })
 ], Application.prototype, "index", void 0);
 __decorate([
-    ManyToOne(),
-    JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
-], Application.prototype, "domain", void 0);
-__decorate([
     Column({ name: 'SCOPE', nullable: false }),
     DbString()
 ], Application.prototype, "scope", void 0);
@@ -40,6 +36,10 @@ __decorate([
     Column({ name: 'SIGNATURE', nullable: false }),
     DbString()
 ], Application.prototype, "signature", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
+], Application.prototype, "domain", void 0);
 __decorate([
     OneToMany({ mappedBy: 'application' })
 ], Application.prototype, "versions", void 0);

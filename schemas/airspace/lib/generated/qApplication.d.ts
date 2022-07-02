@@ -1,6 +1,6 @@
-import { QApplication as QAirportApplication } from '@airport/aviation-communication';
+import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
-import { QApplication } from './application/qapplication';
+import { QApplication as QSchemaApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
 import { QApplicationEntity } from './application/qapplicationentity';
@@ -12,9 +12,9 @@ import { QApplicationRelation } from './application/qapplicationrelation';
 import { QApplicationRelationColumn } from './application/qapplicationrelationcolumn';
 import { QApplicationVersion } from './application/qapplicationversion';
 import { QDomain } from './application/qdomain';
-export interface LocalQApplication extends QAirportApplication {
+export interface LocalQApplication extends QApplication {
     db: DbApplication;
-    Application: QApplication;
+    Application: QSchemaApplication;
     ApplicationColumn: QApplicationColumn;
     ApplicationCurrentVersion: QApplicationCurrentVersion;
     ApplicationEntity: QApplicationEntity;

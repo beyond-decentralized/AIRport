@@ -1,7 +1,7 @@
+import { IApplication } from '@airport/airspace';
 import { IRepository } from './repository';
 export interface IRepositoryApplication {
-    id: number;
+    application: IApplication;
     repository: IRepository;
-    applicationIndex?: number;
 }
 //# sourceMappingURL=repositoryapplication.d.ts.map

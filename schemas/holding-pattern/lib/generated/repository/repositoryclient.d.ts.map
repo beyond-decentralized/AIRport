@@ -1,0 +1,1 @@
+{"version":3,"file":"repositoryclient.d.ts","sourceRoot":"","sources":["../../../src/generated/repository/repositoryclient.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,WAAW,EACX,MAAM,cAAc,CAAC;AACtB,OAAO,EACN,OAAO,EACP,MAAM,qCAAqC,CAAC;AAQ7C,MAAM,WAAW,iBAAiB;IAKjC,UAAU,EAAE,WAAW,CAAC;IACxB,MAAM,EAAE,OAAO,CAAC;CAUhB"}

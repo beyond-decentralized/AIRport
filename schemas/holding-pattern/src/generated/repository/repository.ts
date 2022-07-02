@@ -9,6 +9,18 @@ import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
 import {
+	IRepositoryApplication,
+} from './repositoryapplication';
+import {
+	IRepositoryClient,
+} from './repositoryclient';
+import {
+	IRepositoryDatabase,
+} from './repositorydatabase';
+import {
+	IRepositoryTerminal,
+} from './repositoryterminal';
+import {
 	IRepositoryType,
 } from './repositorytype';
 
@@ -39,6 +51,10 @@ export interface IRepository {
 	country?: ICountry;
 	state?: IState;
 	metroArea?: IMetroArea;
+	repositoryApplications?: IRepositoryApplication[];
+	repositoryClients?: IRepositoryClient[];
+	repositoryDatabases?: IRepositoryDatabase[];
+	repositoryTerminals?: IRepositoryTerminal[];
 	repositoryTypes?: IRepositoryType[];
 
 	// Transient Properties

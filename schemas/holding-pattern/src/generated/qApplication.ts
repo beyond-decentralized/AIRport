@@ -21,6 +21,9 @@ import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QReferenceRow } from './traditional/qreferencerow';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
+import { QRepositoryClient } from './repository/qrepositoryclient';
+import { QRepositoryDatabase } from './repository/qrepositorydatabase';
+import { QRepositoryTerminal } from './repository/qrepositoryterminal';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
 import { QRepositoryType } from './repository/qrepositorytype';
 import { QTransactionHistory } from './history/qtransactionhistory';
@@ -40,6 +43,9 @@ import {
   ReferenceRow,
   Repository,
   RepositoryApplication,
+  RepositoryClient,
+  RepositoryDatabase,
+  RepositoryTerminal,
   RepositoryTransactionHistory,
   RepositoryType,
   TransactionHistory
@@ -56,6 +62,9 @@ export interface LocalQApplication extends QApplication {
 	RecordHistoryOldValue: QRecordHistoryOldValue;
 	Repository: QRepository;
 	RepositoryApplication: QRepositoryApplication;
+	RepositoryClient: QRepositoryClient;
+	RepositoryDatabase: QRepositoryDatabase;
+	RepositoryTerminal: QRepositoryTerminal;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
 	RepositoryType: QRepositoryType;
 	TransactionHistory: QTransactionHistory;
@@ -78,6 +87,9 @@ const __constructors__ = {
 	ReferenceRow: ReferenceRow,
 	Repository: Repository,
 	RepositoryApplication: RepositoryApplication,
+	RepositoryClient: RepositoryClient,
+	RepositoryDatabase: RepositoryDatabase,
+	RepositoryTerminal: RepositoryTerminal,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
 	RepositoryType: RepositoryType,
 	TransactionHistory: TransactionHistory

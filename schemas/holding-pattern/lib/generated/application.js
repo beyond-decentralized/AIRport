@@ -534,7 +534,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 8,
+                                    "oneTableIndex": 12,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -634,7 +634,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 12,
                             "sinceVersion": 1
                         },
                         {
@@ -687,8 +687,8 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 5,
-                                    "oneRelationIndex": 6,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -766,7 +766,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
@@ -784,6 +784,442 @@ export const APPLICATION = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY_TYPES",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplicationIndex": 0,
+                                    "oneTableIndex": 15,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "DATABASE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 5,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryDatabase",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "database",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 15,
+                            "relationTableApplicationIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_DATABASES",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 7,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplicationIndex": 0,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "CLIENT_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 6,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryClient",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "client",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableApplicationIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_CLIENTS",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 9,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplicationIndex": 0,
+                                    "oneTableIndex": 12,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TERMINAL_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 7,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryTerminal",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "terminal",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 12,
+                            "relationTableApplicationIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_TERMINALS",
+                        "columnIndexes": []
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": 1,
+                                    "oneTableIndex": 10,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_INDEX",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 9,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 8,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryApplication",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "application",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 10,
+                            "relationTableApplicationIndex": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 9,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_APPLICATIONS",
                         "columnIndexes": []
                     }
                 },
@@ -989,7 +1425,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 5,
+                    "index": 9,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Repository",
@@ -1105,9 +1541,45 @@ export const APPLICATION = {
                         {
                             "index": 12,
                             "isId": false,
-                            "name": "repositoryTypes",
+                            "name": "repositoryApplications",
                             "relationRef": {
                                 "index": 6
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 13,
+                            "isId": false,
+                            "name": "repositoryClients",
+                            "relationRef": {
+                                "index": 7
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 14,
+                            "isId": false,
+                            "name": "repositoryDatabases",
+                            "relationRef": {
+                                "index": 8
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 15,
+                            "isId": false,
+                            "name": "repositoryTerminals",
+                            "relationRef": {
+                                "index": 9
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 16,
+                            "isId": false,
+                            "name": "repositoryTypes",
+                            "relationRef": {
+                                "index": 10
                             },
                             "sinceVersion": 1
                         }
@@ -1134,7 +1606,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -1191,6 +1663,58 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 12
                             },
+                            "relationTableIndex": 8,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 7,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 13
+                            },
+                            "relationTableIndex": 6,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 8,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 14
+                            },
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 9,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 15
+                            },
+                            "relationTableIndex": 7,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 10,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 16
+                            },
                             "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
@@ -1239,7 +1763,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 6,
+                    "index": 10,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "TransactionHistory",
@@ -1283,7 +1807,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         }
                     ],
@@ -1387,7 +1911,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 9,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1410,7 +1934,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 6,
+                                    "oneTableIndex": 10,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1432,7 +1956,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 7,
+                    "index": 11,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryTransactionHistory",
@@ -1527,7 +2051,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 9,
                             "sinceVersion": 1
                         },
                         {
@@ -1537,7 +2061,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 10,
                             "sinceVersion": 1
                         },
                         {
@@ -1550,7 +2074,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 8,
+                            "relationTableIndex": 12,
                             "sinceVersion": 1
                         }
                     ],
@@ -1671,7 +2195,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 11,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1693,7 +2217,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 8,
+                    "index": 12,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "OperationHistory",
@@ -1800,7 +2324,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 11,
                             "sinceVersion": 1
                         },
                         {
@@ -1820,118 +2344,6 @@ export const APPLICATION = {
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "REPOSITORY_OPERATION_HISTORY",
-                        "columnIndexes": []
-                    }
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "REPOSITORY_APPLICATION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "APPLICATION_INDEX",
-                            "notNull": true,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 5,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        },
-                        {
-                            "index": 2
-                        }
-                    ],
-                    "index": 9,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RepositoryApplication",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": true,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 2,
-                            "isId": false,
-                            "name": "applicationIndex",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": true,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 5,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "REPOSITORY_APPLICATIONS",
                         "columnIndexes": []
                     }
                 }

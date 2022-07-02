@@ -22,6 +22,10 @@ import {
 	User
 } from "@airport/travel-document-checkpoint";
 import { RepositoryType } from "./RepositoryType";
+import { RepositoryDatabase } from "./RepositoryDatabase";
+import { RepositoryClient } from "./RepositoryClient";
+import { RepositoryTerminal } from "./RepositoryTerminal";
+import { RepositoryApplication } from "./RepositoryApplication";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -90,6 +94,18 @@ export class Repository {
 	@ManyToOne()
 	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryApplications: RepositoryApplication[]
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryClients: RepositoryClient[]
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryDatabases: RepositoryDatabase[]
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryTerminals: RepositoryTerminal[]
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTypes: RepositoryType[]

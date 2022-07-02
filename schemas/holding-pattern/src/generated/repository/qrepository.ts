@@ -84,6 +84,58 @@ import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
 import {
+	RepositoryApplicationGraph,
+	RepositoryApplicationEId,
+	RepositoryApplicationEOptionalId,
+	RepositoryApplicationEUpdateProperties,
+	RepositoryApplicationESelect,
+	QRepositoryApplication,
+	QRepositoryApplicationQId,
+	QRepositoryApplicationQRelation,
+} from './qrepositoryapplication';
+import {
+	IRepositoryApplication,
+} from './repositoryapplication';
+import {
+	RepositoryClientGraph,
+	RepositoryClientEId,
+	RepositoryClientEOptionalId,
+	RepositoryClientEUpdateProperties,
+	RepositoryClientESelect,
+	QRepositoryClient,
+	QRepositoryClientQId,
+	QRepositoryClientQRelation,
+} from './qrepositoryclient';
+import {
+	IRepositoryClient,
+} from './repositoryclient';
+import {
+	RepositoryDatabaseGraph,
+	RepositoryDatabaseEId,
+	RepositoryDatabaseEOptionalId,
+	RepositoryDatabaseEUpdateProperties,
+	RepositoryDatabaseESelect,
+	QRepositoryDatabase,
+	QRepositoryDatabaseQId,
+	QRepositoryDatabaseQRelation,
+} from './qrepositorydatabase';
+import {
+	IRepositoryDatabase,
+} from './repositorydatabase';
+import {
+	RepositoryTerminalGraph,
+	RepositoryTerminalEId,
+	RepositoryTerminalEOptionalId,
+	RepositoryTerminalEUpdateProperties,
+	RepositoryTerminalESelect,
+	QRepositoryTerminal,
+	QRepositoryTerminalQId,
+	QRepositoryTerminalQRelation,
+} from './qrepositoryterminal';
+import {
+	IRepositoryTerminal,
+} from './repositoryterminal';
+import {
 	RepositoryTypeGraph,
 	RepositoryTypeEId,
 	RepositoryTypeEOptionalId,
@@ -129,6 +181,10 @@ export interface RepositoryESelect
 	country?: CountryESelect;
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
+	repositoryApplications?: RepositoryApplicationESelect;
+	repositoryClients?: RepositoryClientESelect;
+	repositoryDatabases?: RepositoryDatabaseESelect;
+	repositoryTerminals?: RepositoryTerminalESelect;
 	repositoryTypes?: RepositoryTypeESelect;
 
 }
@@ -198,6 +254,10 @@ export interface RepositoryGraph
 	country?: CountryGraph;
 	state?: StateGraph;
 	metroArea?: MetroAreaGraph;
+	repositoryApplications?: RepositoryApplicationGraph[];
+	repositoryClients?: RepositoryClientGraph[];
+	repositoryDatabases?: RepositoryDatabaseGraph[];
+	repositoryTerminals?: RepositoryTerminalGraph[];
 	repositoryTypes?: RepositoryTypeGraph[];
 
 }
@@ -266,6 +326,10 @@ export interface QRepository extends IQEntity
 	country: QCountryQRelation;
 	state: QStateQRelation;
 	metroArea: QMetroAreaQRelation;
+	repositoryApplications: IQOneToManyRelation<QRepositoryApplication>;
+	repositoryClients: IQOneToManyRelation<QRepositoryClient>;
+	repositoryDatabases: IQOneToManyRelation<QRepositoryDatabase>;
+	repositoryTerminals: IQOneToManyRelation<QRepositoryTerminal>;
 	repositoryTypes: IQOneToManyRelation<QRepositoryType>;
 
 }

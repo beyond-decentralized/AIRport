@@ -91,6 +91,45 @@ import {
 	QRepositoryApplication,
 } from './repository/qrepositoryapplication';
 import {
+	RepositoryClient,
+} from '../ddl/repository/repositoryclient';
+import {
+	RepositoryClientESelect,
+	RepositoryClientECreateColumns,
+	RepositoryClientECreateProperties,
+	RepositoryClientEUpdateColumns,
+	RepositoryClientEUpdateProperties,
+	RepositoryClientEId,
+	RepositoryClientGraph,
+	QRepositoryClient,
+} from './repository/qrepositoryclient';
+import {
+	RepositoryDatabase,
+} from '../ddl/repository/repositorydatabase';
+import {
+	RepositoryDatabaseESelect,
+	RepositoryDatabaseECreateColumns,
+	RepositoryDatabaseECreateProperties,
+	RepositoryDatabaseEUpdateColumns,
+	RepositoryDatabaseEUpdateProperties,
+	RepositoryDatabaseEId,
+	RepositoryDatabaseGraph,
+	QRepositoryDatabase,
+} from './repository/qrepositorydatabase';
+import {
+	RepositoryTerminal,
+} from '../ddl/repository/repositoryterminal';
+import {
+	RepositoryTerminalESelect,
+	RepositoryTerminalECreateColumns,
+	RepositoryTerminalECreateProperties,
+	RepositoryTerminalEUpdateColumns,
+	RepositoryTerminalEUpdateProperties,
+	RepositoryTerminalEId,
+	RepositoryTerminalGraph,
+	QRepositoryTerminal,
+} from './repository/qrepositoryterminal';
+import {
 	RepositoryTransactionHistory,
 } from '../ddl/history/repositorytransactionhistory';
 import {
@@ -204,11 +243,11 @@ export class BaseOperationHistoryDuo
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(8)
+		super(12)
 	}
 }
 
@@ -276,11 +315,11 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(5)
+		super(9)
 	}
 }
 
@@ -294,11 +333,65 @@ export class BaseRepositoryApplicationDuo
 	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
+	}
+}
+
+
+export interface IBaseRepositoryClientDuo
+  extends IDuo<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient> {
+}
+
+export class BaseRepositoryClientDuo
+  extends SQDIDuo<RepositoryClient, RepositoryClientESelect, RepositoryClientECreateProperties, RepositoryClientEUpdateColumns, RepositoryClientEUpdateProperties, RepositoryClientEId, RepositoryClientGraph, QRepositoryClient>
+	implements IBaseRepositoryClientDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
+	}
+}
+
+
+export interface IBaseRepositoryDatabaseDuo
+  extends IDuo<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase> {
+}
+
+export class BaseRepositoryDatabaseDuo
+  extends SQDIDuo<RepositoryDatabase, RepositoryDatabaseESelect, RepositoryDatabaseECreateProperties, RepositoryDatabaseEUpdateColumns, RepositoryDatabaseEUpdateProperties, RepositoryDatabaseEId, RepositoryDatabaseGraph, QRepositoryDatabase>
+	implements IBaseRepositoryDatabaseDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(5)
+	}
+	
+	constructor() {
+		super(5)
+	}
+}
+
+
+export interface IBaseRepositoryTerminalDuo
+  extends IDuo<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal> {
+}
+
+export class BaseRepositoryTerminalDuo
+  extends SQDIDuo<RepositoryTerminal, RepositoryTerminalESelect, RepositoryTerminalECreateProperties, RepositoryTerminalEUpdateColumns, RepositoryTerminalEUpdateProperties, RepositoryTerminalEId, RepositoryTerminalGraph, QRepositoryTerminal>
+	implements IBaseRepositoryTerminalDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(7)
+	}
+	
+	constructor() {
+		super(7)
 	}
 }
 
@@ -312,11 +405,11 @@ export class BaseRepositoryTransactionHistoryDuo
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(7)
+		super(11)
 	}
 }
 
@@ -348,10 +441,10 @@ export class BaseTransactionHistoryDuo
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(6)
+		super(10)
 	}
 }

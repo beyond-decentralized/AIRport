@@ -22,6 +22,7 @@ export interface IApplication {
 	// Id Relations
 
 	// Non-Id Properties
+	GUID?: string;
 	scope?: string;
 	name?: string;
 	fullName?: string;

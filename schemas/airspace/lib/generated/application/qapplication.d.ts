@@ -6,6 +6,7 @@ import { ApplicationCurrentVersionGraph, ApplicationCurrentVersionESelect, QAppl
  * SELECT - All fields and relations (optional).
  */
 export interface ApplicationESelect extends IEntitySelectProperties, ApplicationEOptionalId {
+    GUID?: string | IQStringField;
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
@@ -31,6 +32,7 @@ export interface ApplicationEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
+    GUID?: string | IQStringField;
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
@@ -42,6 +44,7 @@ export interface ApplicationEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascadeGraph {
+    GUID?: string | IQStringField;
     scope?: string | IQStringField;
     name?: string | IQStringField;
     fullName?: string | IQStringField;
@@ -55,6 +58,7 @@ export interface ApplicationGraph extends ApplicationEOptionalId, IEntityCascade
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
+    GUID?: string | IQStringField;
     SCOPE?: string | IQStringField;
     APPLICATION_NAME?: string | IQStringField;
     FULL_APPLICATION_NAME?: string | IQStringField;
@@ -77,6 +81,7 @@ export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEU
  */
 export interface QApplication extends IQEntity {
     index: IQNumberField;
+    GUID: IQStringField;
     scope: IQStringField;
     name: IQStringField;
     fullName: IQStringField;

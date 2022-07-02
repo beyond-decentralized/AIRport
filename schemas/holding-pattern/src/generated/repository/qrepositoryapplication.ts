@@ -24,6 +24,17 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
+	ApplicationGraph,
+	ApplicationEId,
+	ApplicationEOptionalId,
+	ApplicationEUpdateProperties,
+	ApplicationESelect,
+	QApplication,
+	QApplicationQId,
+	QApplicationQRelation,
+	IApplication,
+} from '@airport/airspace';
+import {
 	RepositoryGraph,
 	RepositoryEId,
 	RepositoryEOptionalId,
@@ -54,9 +65,9 @@ declare function require(moduleName: string): any;
 export interface RepositoryApplicationESelect
     extends IEntitySelectProperties, RepositoryApplicationEOptionalId {
 	// Non-Id Properties
-	applicationIndex?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
+	application?: ApplicationESelect;
 	repository?: RepositoryESelect;
 
   // Non-Id relations (including OneToMany's)
@@ -69,9 +80,9 @@ export interface RepositoryApplicationESelect
 export interface RepositoryApplicationEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
 
 	// Id Relations - Ids only
+	application: ApplicationEId;
 	repository: RepositoryEId;
 
 }
@@ -81,9 +92,9 @@ export interface RepositoryApplicationEId
  */
 export interface RepositoryApplicationEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
 
 	// Id Relations - Ids only
+	application?: ApplicationEOptionalId;
 	repository?: RepositoryEOptionalId;
 
 }
@@ -94,7 +105,6 @@ export interface RepositoryApplicationEOptionalId {
 export interface RepositoryApplicationEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	applicationIndex?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 
@@ -108,9 +118,9 @@ export interface RepositoryApplicationGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	applicationIndex?: number | IQNumberField;
 
 	// Relations
+	application?: ApplicationGraph;
 	repository?: RepositoryGraph;
 
 }
@@ -121,7 +131,6 @@ export interface RepositoryApplicationGraph
 export interface RepositoryApplicationEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	APPLICATION_INDEX?: number | IQNumberField;
 
 }
 
@@ -152,13 +161,12 @@ extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
 export interface QRepositoryApplication extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	application: QApplicationQRelation;
 	repository: QRepositoryQRelation;
 
 	// Non-Id Fields
-	applicationIndex: IQNumberField;
 
 	// Non-Id Relations
 
@@ -170,9 +178,9 @@ export interface QRepositoryApplicationQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
 
 	// Id Relations
+	application: QApplicationQId;
 	repository: QRepositoryQId;
 
 

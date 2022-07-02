@@ -1,4 +1,7 @@
 import {
+	IApplication,
+} from '@airport/airspace';
+import {
 	IRepository,
 } from './repository';
 
@@ -11,13 +14,12 @@ import {
 export interface IRepositoryApplication {
 	
 	// Id Properties
-	id: number;
 
 	// Id Relations
+	application: IApplication;
 	repository: IRepository;
 
 	// Non-Id Properties
-	applicationIndex?: number;
 
 	// Non-Id Relations
 
