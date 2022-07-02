@@ -21,6 +21,7 @@ import {
 	State,
 	User
 } from "@airport/travel-document-checkpoint";
+import { RepositoryType } from "./RepositoryType";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -89,5 +90,8 @@ export class Repository {
 	@ManyToOne()
 	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
 	metroArea?: MetroArea
+
+	@OneToMany({ mappedBy: 'repository' })
+	repositoryTypes: RepositoryType[]
 
 }

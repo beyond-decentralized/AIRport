@@ -14,6 +14,8 @@ import { RepositoryApplication } from '../ddl/repository/repositoryapplication';
 import { RepositoryApplicationESelect, RepositoryApplicationECreateProperties, RepositoryApplicationEUpdateColumns, RepositoryApplicationEUpdateProperties, RepositoryApplicationEId, RepositoryApplicationGraph, QRepositoryApplication } from './repository/qrepositoryapplication';
 import { RepositoryTransactionHistory } from '../ddl/history/repositorytransactionhistory';
 import { RepositoryTransactionHistoryESelect, RepositoryTransactionHistoryECreateProperties, RepositoryTransactionHistoryEUpdateColumns, RepositoryTransactionHistoryEUpdateProperties, RepositoryTransactionHistoryEId, RepositoryTransactionHistoryGraph, QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { RepositoryType } from '../ddl/repository/repositorytype';
+import { RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType } from './repository/qrepositorytype';
 import { TransactionHistory } from '../ddl/history/transactionhistory';
 import { TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory } from './history/qtransactionhistory';
 import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-traffic-control';
@@ -107,6 +109,17 @@ export declare class BaseRepositoryTransactionHistoryDao extends SQDIDao<Reposit
     static Search: DaoQueryDecorators<RepositoryTransactionHistoryESelect>;
     static SearchOne: DaoQueryDecorators<RepositoryTransactionHistoryESelect>;
     static Save(config: RepositoryTransactionHistoryGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseRepositoryTypeDao extends IDao<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType> {
+}
+export declare class BaseRepositoryTypeDao extends SQDIDao<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType> implements IBaseRepositoryTypeDao {
+    static Find: DaoQueryDecorators<RepositoryTypeESelect>;
+    static FindOne: DaoQueryDecorators<RepositoryTypeESelect>;
+    static Search: DaoQueryDecorators<RepositoryTypeESelect>;
+    static SearchOne: DaoQueryDecorators<RepositoryTypeESelect>;
+    static Save(config: RepositoryTypeGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

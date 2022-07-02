@@ -104,6 +104,19 @@ import {
 	QRepositoryTransactionHistory,
 } from './history/qrepositorytransactionhistory';
 import {
+	RepositoryType,
+} from '../ddl/repository/repositorytype';
+import {
+	RepositoryTypeESelect,
+	RepositoryTypeECreateColumns,
+	RepositoryTypeECreateProperties,
+	RepositoryTypeEUpdateColumns,
+	RepositoryTypeEUpdateProperties,
+	RepositoryTypeEId,
+	RepositoryTypeGraph,
+	QRepositoryType,
+} from './repository/qrepositorytype';
+import {
 	TransactionHistory,
 } from '../ddl/history/transactionhistory';
 import {
@@ -212,11 +225,11 @@ export class BaseOperationHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(7)
+		super(8)
 	}
 }
 
@@ -324,11 +337,11 @@ export class BaseRepositoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }
 
@@ -352,11 +365,11 @@ export class BaseRepositoryApplicationDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(8)
+		super(9)
 	}
 }
 
@@ -380,11 +393,39 @@ export class BaseRepositoryTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
+	}
+}
+
+
+export interface IBaseRepositoryTypeDao
+  extends IDao<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType> {
+}
+
+export class BaseRepositoryTypeDao
+  extends SQDIDao<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType>
+	implements IBaseRepositoryTypeDao {
+	
+	static Find      = new DaoQueryDecorators<RepositoryTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<RepositoryTypeESelect>();
+	static Search    = new DaoQueryDecorators<RepositoryTypeESelect>();
+	static SearchOne = new DaoQueryDecorators<RepositoryTypeESelect>();
+	static Save(
+		config: RepositoryTypeGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<RepositoryTypeGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(4)
+	}
+	
+	constructor() {
+		super(4)
 	}
 }
 
@@ -408,10 +449,10 @@ export class BaseTransactionHistoryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(5)
+		super(6)
 	}
 }

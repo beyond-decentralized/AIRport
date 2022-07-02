@@ -8,6 +8,7 @@ import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { QRepositoryType } from './repository/qrepositorytype';
 import { QTransactionHistory } from './history/qtransactionhistory';
 export interface LocalQApplication extends QApplication {
     db: DbApplication;
@@ -19,6 +20,7 @@ export interface LocalQApplication extends QApplication {
     Repository: QRepository;
     RepositoryApplication: QRepositoryApplication;
     RepositoryTransactionHistory: QRepositoryTransactionHistory;
+    RepositoryType: QRepositoryType;
     TransactionHistory: QTransactionHistory;
 }
 export declare const Q_APPLICATION: LocalQApplication;

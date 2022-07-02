@@ -8,6 +8,7 @@ export * from './infrastructure/actor';
 export * from './repository/airentity';
 export * from './repository/repository';
 export * from './repository/repositoryapplication';
+export * from './repository/repositorytype';
 export * from './traditional/childreporow';
 export * from './traditional/childrow';
 export * from './traditional/immutablereporow';

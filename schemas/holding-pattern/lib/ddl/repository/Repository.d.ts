@@ -1,5 +1,6 @@
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
 import { Continent, Country, MetroArea, State, User } from "@airport/travel-document-checkpoint";
+import { RepositoryType } from "./RepositoryType";
 /**
  * Created by Papa on 2/9/2017.
  */
@@ -22,5 +23,6 @@ export declare class Repository {
     country?: Country;
     state?: State;
     metroArea?: MetroArea;
+    repositoryTypes: RepositoryType[];
 }
 //# sourceMappingURL=Repository.d.ts.map

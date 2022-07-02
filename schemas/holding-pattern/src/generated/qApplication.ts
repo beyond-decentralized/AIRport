@@ -22,6 +22,7 @@ import { QReferenceRow } from './traditional/qreferencerow';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositoryTransactionHistory } from './history/qrepositorytransactionhistory';
+import { QRepositoryType } from './repository/qrepositorytype';
 import { QTransactionHistory } from './history/qtransactionhistory';
 import {
   Actor,
@@ -40,6 +41,7 @@ import {
   Repository,
   RepositoryApplication,
   RepositoryTransactionHistory,
+  RepositoryType,
   TransactionHistory
 } from '../ddl/ddl';
 
@@ -55,6 +57,7 @@ export interface LocalQApplication extends QApplication {
 	Repository: QRepository;
 	RepositoryApplication: QRepositoryApplication;
 	RepositoryTransactionHistory: QRepositoryTransactionHistory;
+	RepositoryType: QRepositoryType;
 	TransactionHistory: QTransactionHistory;
 
 }
@@ -76,6 +79,7 @@ const __constructors__ = {
 	Repository: Repository,
 	RepositoryApplication: RepositoryApplication,
 	RepositoryTransactionHistory: RepositoryTransactionHistory,
+	RepositoryType: RepositoryType,
 	TransactionHistory: TransactionHistory
 };
 

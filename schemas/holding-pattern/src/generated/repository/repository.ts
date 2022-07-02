@@ -8,6 +8,9 @@ import {
 import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
+import {
+	IRepositoryType,
+} from './repositorytype';
 
 
 
@@ -36,6 +39,7 @@ export interface IRepository {
 	country?: ICountry;
 	state?: IState;
 	metroArea?: IMetroArea;
+	repositoryTypes?: IRepositoryType[];
 
 	// Transient Properties
 

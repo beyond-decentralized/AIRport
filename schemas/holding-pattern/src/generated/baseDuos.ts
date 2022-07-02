@@ -104,6 +104,19 @@ import {
 	QRepositoryTransactionHistory,
 } from './history/qrepositorytransactionhistory';
 import {
+	RepositoryType,
+} from '../ddl/repository/repositorytype';
+import {
+	RepositoryTypeESelect,
+	RepositoryTypeECreateColumns,
+	RepositoryTypeECreateProperties,
+	RepositoryTypeEUpdateColumns,
+	RepositoryTypeEUpdateProperties,
+	RepositoryTypeEId,
+	RepositoryTypeGraph,
+	QRepositoryType,
+} from './repository/qrepositorytype';
+import {
 	TransactionHistory,
 } from '../ddl/history/transactionhistory';
 import {
@@ -191,11 +204,11 @@ export class BaseOperationHistoryDuo
 	implements IBaseOperationHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(7)
+		super(8)
 	}
 }
 
@@ -263,11 +276,11 @@ export class BaseRepositoryDuo
 	implements IBaseRepositoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }
 
@@ -281,11 +294,11 @@ export class BaseRepositoryApplicationDuo
 	implements IBaseRepositoryApplicationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(8)
+		super(9)
 	}
 }
 
@@ -299,11 +312,29 @@ export class BaseRepositoryTransactionHistoryDuo
 	implements IBaseRepositoryTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
+	}
+}
+
+
+export interface IBaseRepositoryTypeDuo
+  extends IDuo<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType> {
+}
+
+export class BaseRepositoryTypeDuo
+  extends SQDIDuo<RepositoryType, RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeEUpdateColumns, RepositoryTypeEUpdateProperties, RepositoryTypeEId, RepositoryTypeGraph, QRepositoryType>
+	implements IBaseRepositoryTypeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(4)
+	}
+	
+	constructor() {
+		super(4)
 	}
 }
 
@@ -317,10 +348,10 @@ export class BaseTransactionHistoryDuo
 	implements IBaseTransactionHistoryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(5)
+		super(6)
 	}
 }

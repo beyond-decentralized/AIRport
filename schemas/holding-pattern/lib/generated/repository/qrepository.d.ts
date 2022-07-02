@@ -1,6 +1,7 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation, CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation, StateGraph, StateEOptionalId, StateESelect, QStateQRelation, MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '@airport/travel-document-checkpoint';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
+import { RepositoryTypeGraph, RepositoryTypeESelect, QRepositoryType } from './qrepositorytype';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -16,6 +17,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     country?: CountryESelect;
     state?: StateESelect;
     metroArea?: MetroAreaESelect;
+    repositoryTypes?: RepositoryTypeESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -59,6 +61,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     country?: CountryGraph;
     state?: StateGraph;
     metroArea?: MetroAreaGraph;
+    repositoryTypes?: RepositoryTypeGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -101,6 +104,7 @@ export interface QRepository extends IQEntity {
     country: QCountryQRelation;
     state: QStateQRelation;
     metroArea: QMetroAreaQRelation;
+    repositoryTypes: IQOneToManyRelation<QRepositoryType>;
 }
 export interface QRepositoryQId {
     id: IQNumberField;

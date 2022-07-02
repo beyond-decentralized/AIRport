@@ -61,6 +61,9 @@ __decorate([
     ManyToOne(),
     JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
 ], Repository.prototype, "metroArea", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'repository' })
+], Repository.prototype, "repositoryTypes", void 0);
 Repository = __decorate([
     Entity(),
     Table({

@@ -8,6 +8,7 @@ export * from './infrastructure/qactor';
 export * from './repository/qairentity';
 export * from './repository/qrepository';
 export * from './repository/qrepositoryapplication';
+export * from './repository/qrepositorytype';
 export * from './traditional/qchildreporow';
 export * from './traditional/qchildrow';
 export * from './traditional/qimmutablereporow';

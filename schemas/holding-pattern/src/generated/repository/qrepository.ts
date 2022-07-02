@@ -84,6 +84,19 @@ import {
 	IRepositoryTransactionHistory,
 } from '../history/repositorytransactionhistory';
 import {
+	RepositoryTypeGraph,
+	RepositoryTypeEId,
+	RepositoryTypeEOptionalId,
+	RepositoryTypeEUpdateProperties,
+	RepositoryTypeESelect,
+	QRepositoryType,
+	QRepositoryTypeQId,
+	QRepositoryTypeQRelation,
+} from './qrepositorytype';
+import {
+	IRepositoryType,
+} from './repositorytype';
+import {
 	IRepository,
 } from './repository';
 
@@ -116,6 +129,7 @@ export interface RepositoryESelect
 	country?: CountryESelect;
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
+	repositoryTypes?: RepositoryTypeESelect;
 
 }
 
@@ -184,6 +198,7 @@ export interface RepositoryGraph
 	country?: CountryGraph;
 	state?: StateGraph;
 	metroArea?: MetroAreaGraph;
+	repositoryTypes?: RepositoryTypeGraph[];
 
 }
 
@@ -251,6 +266,7 @@ export interface QRepository extends IQEntity
 	country: QCountryQRelation;
 	state: QStateQRelation;
 	metroArea: QMetroAreaQRelation;
+	repositoryTypes: IQOneToManyRelation<QRepositoryType>;
 
 }
 

@@ -47,7 +47,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -69,7 +69,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 6,
+                                    "oneTableIndex": 12,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -113,7 +113,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 10,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -202,7 +202,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 4,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -213,7 +213,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 12,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -235,7 +235,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 5
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 10,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         }
@@ -534,7 +534,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 7,
+                                    "oneTableIndex": 8,
                                     "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -634,7 +634,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         },
                         {
@@ -676,6 +676,115 @@ export const APPLICATION = {
                                 "unique": false
                             }
                         ]
+                    }
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplicationIndex": null,
+                                    "oneTableIndex": 5,
+                                    "oneRelationIndex": 6,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplicationIndex": 0,
+                                    "oneTableIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "TYPE_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        },
+                        {
+                            "index": 1
+                        }
+                    ],
+                    "index": 4,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RepositoryType",
+                    "properties": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "name": "type",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 0
+                            },
+                            "relationTableIndex": 5,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": true,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 8,
+                            "relationTableApplicationIndex": 0,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "REPOSITORY_TYPES",
+                        "columnIndexes": []
                     }
                 },
                 {
@@ -771,7 +880,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 3,
+                                    "oneTableIndex": 4,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -793,7 +902,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -815,7 +924,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 3,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 0,
+                                    "oneTableIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -837,7 +946,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 4,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 1,
+                                    "oneTableIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -859,7 +968,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 5,
                                     "oneApplicationIndex": 0,
-                                    "oneTableIndex": 2,
+                                    "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -880,7 +989,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 4,
+                    "index": 5,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "Repository",
@@ -992,6 +1101,15 @@ export const APPLICATION = {
                                 "index": 5
                             },
                             "sinceVersion": 1
+                        },
+                        {
+                            "index": 12,
+                            "isId": false,
+                            "name": "repositoryTypes",
+                            "relationRef": {
+                                "index": 6
+                            },
+                            "sinceVersion": 1
                         }
                     ],
                     "relations": [
@@ -1002,7 +1120,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 3,
+                            "relationTableIndex": 4,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -1016,7 +1134,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -1026,7 +1144,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 0,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -1037,7 +1155,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 9
                             },
-                            "relationTableIndex": 0,
+                            "relationTableIndex": 1,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -1048,7 +1166,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 10
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 2,
                             "relationTableApplicationIndex": 0,
                             "sinceVersion": 1
                         },
@@ -1059,8 +1177,21 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 11
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 3,
                             "relationTableApplicationIndex": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "oneToManyElems": {
+                                "mappedBy": "repository"
+                            },
+                            "relationType": "ONE_TO_MANY",
+                            "propertyRef": {
+                                "index": 12
+                            },
+                            "relationTableIndex": 4,
                             "sinceVersion": 1
                         }
                     ],
@@ -1108,7 +1239,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 5,
+                    "index": 6,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "TransactionHistory",
@@ -1152,7 +1283,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 2
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         }
                     ],
@@ -1256,7 +1387,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 5,
                                     "oneRelationIndex": 1,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1279,7 +1410,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 1,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 5,
+                                    "oneTableIndex": 6,
                                     "oneRelationIndex": 0,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1301,7 +1432,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 6,
+                    "index": 7,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryTransactionHistory",
@@ -1396,7 +1527,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         },
                         {
@@ -1406,7 +1537,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 7
                             },
-                            "relationTableIndex": 5,
+                            "relationTableIndex": 6,
                             "sinceVersion": 1
                         },
                         {
@@ -1419,7 +1550,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 8
                             },
-                            "relationTableIndex": 7,
+                            "relationTableIndex": 8,
                             "sinceVersion": 1
                         }
                     ],
@@ -1540,7 +1671,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 2,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 6,
+                                    "oneTableIndex": 7,
                                     "oneRelationIndex": 2,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
@@ -1562,7 +1693,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 7,
+                    "index": 8,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "OperationHistory",
@@ -1669,7 +1800,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 6,
+                            "relationTableIndex": 7,
                             "sinceVersion": 1
                         },
                         {
@@ -1729,7 +1860,7 @@ export const APPLICATION = {
                                 {
                                     "manyRelationIndex": 0,
                                     "oneApplicationIndex": null,
-                                    "oneTableIndex": 4,
+                                    "oneTableIndex": 5,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
@@ -1753,7 +1884,7 @@ export const APPLICATION = {
                             "index": 2
                         }
                     ],
-                    "index": 8,
+                    "index": 9,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "RepositoryApplication",
@@ -1794,7 +1925,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 1
                             },
-                            "relationTableIndex": 4,
+                            "relationTableIndex": 5,
                             "sinceVersion": 1
                         }
                     ],
