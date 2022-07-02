@@ -7,8 +7,11 @@ import {
     EntityId,
 }                      from '@airport/ground-control';
 import { QClient } from './qclient';
-import { QContinent } from './qcontinent';
-import { QCountry } from './qcountry';
+import { QContinent } from './locality/qcontinent';
+import { QCountry } from './locality/qcountry';
+import { QMetroArea } from './locality/qmetroarea';
+import { QMetroAreaState } from './locality/qmetroareastate';
+import { QState } from './locality/qstate';
 import { QTerminal } from './qterminal';
 import { QUser } from './quser';
 import { QUserTerminal } from './quserterminal';
@@ -16,6 +19,9 @@ import {
   Client,
   Continent,
   Country,
+  MetroArea,
+  MetroAreaState,
+  State,
   Terminal,
   User,
   UserTerminal
@@ -28,6 +34,9 @@ export interface LocalQApplication extends QApplication {
   Client: QClient;
 	Continent: QContinent;
 	Country: QCountry;
+	MetroArea: QMetroArea;
+	MetroAreaState: QMetroAreaState;
+	State: QState;
 	Terminal: QTerminal;
 	User: QUser;
 	UserTerminal: QUserTerminal;
@@ -38,6 +47,9 @@ const __constructors__ = {
 	Client: Client,
 	Continent: Continent,
 	Country: Country,
+	MetroArea: MetroArea,
+	MetroAreaState: MetroAreaState,
+	State: State,
 	Terminal: Terminal,
 	User: User,
 	UserTerminal: UserTerminal

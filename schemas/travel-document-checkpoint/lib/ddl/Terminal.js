@@ -32,6 +32,22 @@ __decorate([
     Column({ name: 'IS_LOCAL', nullable: false }),
     DbBoolean()
 ], Terminal.prototype, "isLocal", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+], Terminal.prototype, "continent", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+], Terminal.prototype, "country", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+], Terminal.prototype, "state", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+], Terminal.prototype, "metroArea", void 0);
 Terminal = __decorate([
     Entity(),
     Table({

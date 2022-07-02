@@ -1,19 +1,25 @@
 /* eslint-disable */
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
-import { Client } from '../ddl/Client';
+import { Country } from '../ddl/locality/Country';
+import { State } from '../ddl/locality/State';
+import { MetroArea } from '../ddl/locality/MetroArea';
 import { User } from '../ddl/User';
-import { Country } from '../ddl/Country';
-import { Continent } from '../ddl/Continent';
+import { Continent } from '../ddl/locality/Continent';
+import { Client } from '../ddl/Client';
 import { Terminal } from '../ddl/Terminal';
 import { UserTerminal } from '../ddl/UserTerminal';
+import { MetroAreaState } from '../ddl/locality/MetroAreaState';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
-  accumulator.add(Client, 0);
-  accumulator.add(User, 1);
-  accumulator.add(Country, 2);
-  accumulator.add(Continent, 3);
-  accumulator.add(Terminal, 4);
-  accumulator.add(UserTerminal, 5);
+  accumulator.add(Country, 0);
+  accumulator.add(State, 1);
+  accumulator.add(MetroArea, 2);
+  accumulator.add(User, 3);
+  accumulator.add(Continent, 4);
+  accumulator.add(Client, 5);
+  accumulator.add(Terminal, 6);
+  accumulator.add(UserTerminal, 7);
+  accumulator.add(MetroAreaState, 8);
 });

@@ -1,3 +1,7 @@
+import { Country } from './locality/Country';
+import { Continent } from './locality/Continent';
+import { MetroArea } from './locality/MetroArea';
+import { State } from './locality/State';
 export declare type User_Id = number;
 export declare type User_GUID = string;
 export declare type User_Email = string;
@@ -14,5 +18,9 @@ export declare class User {
     ranking?: number;
     username: User_Username;
     GUID?: User_GUID;
+    continent?: Continent;
+    country?: Country;
+    state?: State;
+    metroArea?: MetroArea;
 }
 //# sourceMappingURL=User.d.ts.map

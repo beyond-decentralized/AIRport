@@ -33,6 +33,42 @@ import {
 	QUserQId,
 	QUserQRelation,
 	IUser,
+	ContinentGraph,
+	ContinentEId,
+	ContinentEOptionalId,
+	ContinentEUpdateProperties,
+	ContinentESelect,
+	QContinent,
+	QContinentQId,
+	QContinentQRelation,
+	IContinent,
+	CountryGraph,
+	CountryEId,
+	CountryEOptionalId,
+	CountryEUpdateProperties,
+	CountryESelect,
+	QCountry,
+	QCountryQId,
+	QCountryQRelation,
+	ICountry,
+	StateGraph,
+	StateEId,
+	StateEOptionalId,
+	StateEUpdateProperties,
+	StateESelect,
+	QState,
+	QStateQId,
+	QStateQRelation,
+	IState,
+	MetroAreaGraph,
+	MetroAreaEId,
+	MetroAreaEOptionalId,
+	MetroAreaEUpdateProperties,
+	MetroAreaESelect,
+	QMetroArea,
+	QMetroAreaQId,
+	QMetroAreaQRelation,
+	IMetroArea,
 } from '@airport/travel-document-checkpoint';
 import {
 	RepositoryTransactionHistoryGraph,
@@ -76,6 +112,10 @@ export interface RepositoryESelect
   // Non-Id relations (including OneToMany's)
 	owner?: UserESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
+	continent?: ContinentESelect;
+	country?: CountryESelect;
+	state?: StateESelect;
+	metroArea?: MetroAreaESelect;
 
 }
 
@@ -116,6 +156,10 @@ export interface RepositoryEUpdateProperties
 
 	// Non-Id Relations - ids only & no OneToMany's
 	owner?: UserEOptionalId;
+	continent?: ContinentEOptionalId;
+	country?: CountryEOptionalId;
+	state?: StateEOptionalId;
+	metroArea?: MetroAreaEOptionalId;
 
 }
 
@@ -136,6 +180,10 @@ export interface RepositoryGraph
 	// Relations
 	owner?: UserGraph;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
+	continent?: ContinentGraph;
+	country?: CountryGraph;
+	state?: StateGraph;
+	metroArea?: MetroAreaGraph;
 
 }
 
@@ -151,6 +199,10 @@ export interface RepositoryEUpdateColumns
 	SOURCE?: string | IQStringField;
 	GUID?: string | IQStringField;
 	OWNER_USER_ID?: number | IQNumberField;
+	CONTINENT_ID?: number | IQNumberField;
+	COUNTRY_ID?: number | IQNumberField;
+	STATE_ID?: number | IQNumberField;
+	METRO_AREA_ID?: number | IQNumberField;
 
 }
 
@@ -195,6 +247,10 @@ export interface QRepository extends IQEntity
 	// Non-Id Relations
 	owner: QUserQRelation;
 	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
+	continent: QContinentQRelation;
+	country: QCountryQRelation;
+	state: QStateQRelation;
+	metroArea: QMetroAreaQRelation;
 
 }
 

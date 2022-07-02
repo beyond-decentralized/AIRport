@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
-import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '@airport/travel-document-checkpoint';
+import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation, CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation, StateGraph, StateEOptionalId, StateESelect, QStateQRelation, MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '@airport/travel-document-checkpoint';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 /**
  * SELECT - All fields and relations (optional).
@@ -12,6 +12,10 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     GUID?: string | IQStringField;
     owner?: UserESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
+    continent?: ContinentESelect;
+    country?: CountryESelect;
+    state?: StateESelect;
+    metroArea?: MetroAreaESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -35,6 +39,10 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     source?: string | IQStringField;
     GUID?: string | IQStringField;
     owner?: UserEOptionalId;
+    continent?: ContinentEOptionalId;
+    country?: CountryEOptionalId;
+    state?: StateEOptionalId;
+    metroArea?: MetroAreaEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -47,6 +55,10 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     GUID?: string | IQStringField;
     owner?: UserGraph;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
+    continent?: ContinentGraph;
+    country?: CountryGraph;
+    state?: StateGraph;
+    metroArea?: MetroAreaGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -58,6 +70,10 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     SOURCE?: string | IQStringField;
     GUID?: string | IQStringField;
     OWNER_USER_ID?: number | IQNumberField;
+    CONTINENT_ID?: number | IQNumberField;
+    COUNTRY_ID?: number | IQNumberField;
+    STATE_ID?: number | IQNumberField;
+    METRO_AREA_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -81,6 +97,10 @@ export interface QRepository extends IQEntity {
     GUID: IQStringField;
     owner: QUserQRelation;
     repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
+    continent: QContinentQRelation;
+    country: QCountryQRelation;
+    state: QStateQRelation;
+    metroArea: QMetroAreaQRelation;
 }
 export interface QRepositoryQId {
     id: IQNumberField;

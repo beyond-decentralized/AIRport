@@ -2060,6 +2060,86 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "sinceVersion": null,
                                 "type": "STRING"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 8,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "CONTINENT_ID",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 9,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "COUNTRY_ID",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 10,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "STATE_ID",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "id": null,
+                                "index": 11,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "METRO_AREA_ID",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
                             }
                         ],
                         "idColumns": [
@@ -2087,7 +2167,7 @@ export const MAPPED_SUPERCLASS = [
                         ],
                         "idColumnMap": null,
                         "id": null,
-                        "index": 1,
+                        "index": 3,
                         "isLocal": true,
                         "isAirEntity": false,
                         "name": "User",
@@ -2220,10 +2300,167 @@ export const MAPPED_SUPERCLASS = [
                                 "name": "GUID",
                                 "relation": null,
                                 "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 8,
+                                "isId": false,
+                                "name": "continent",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "id": null,
+                                        "index": 0,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 9,
+                                "isId": false,
+                                "name": "country",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "id": null,
+                                        "index": 1,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 10,
+                                "isId": false,
+                                "name": "state",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "id": null,
+                                        "index": 2,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "id": null,
+                                "index": 11,
+                                "isId": false,
+                                "name": "metroArea",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "id": null,
+                                        "index": 3,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null
                             }
                         ],
                         "relationReferences": [],
-                        "relations": [],
+                        "relations": [
+                            {
+                                "isId": false,
+                                "relationType": "MANY_TO_ONE",
+                                "id": null,
+                                "index": 0,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "isId": false,
+                                "relationType": "MANY_TO_ONE",
+                                "id": null,
+                                "index": 1,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "isId": false,
+                                "relationType": "MANY_TO_ONE",
+                                "id": null,
+                                "index": 2,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "isId": false,
+                                "relationType": "MANY_TO_ONE",
+                                "id": null,
+                                "index": 3,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            }
+                        ],
                         "applicationVersion": null,
                         "sinceVersion": null,
                         "tableConfig": null
@@ -3337,6 +3574,86 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "sinceVersion": null,
                                     "type": "STRING"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 8,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "CONTINENT_ID",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 9,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "COUNTRY_ID",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 10,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "STATE_ID",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
+                                },
+                                {
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 11,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "METRO_AREA_ID",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
                                 }
                             ],
                             "idColumns": [
@@ -3364,7 +3681,7 @@ export const MAPPED_SUPERCLASS = [
                             ],
                             "idColumnMap": null,
                             "id": null,
-                            "index": 1,
+                            "index": 3,
                             "isLocal": true,
                             "isAirEntity": false,
                             "name": "User",
@@ -3497,10 +3814,167 @@ export const MAPPED_SUPERCLASS = [
                                     "name": "GUID",
                                     "relation": null,
                                     "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 8,
+                                    "isId": false,
+                                    "name": "continent",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "id": null,
+                                            "index": 0,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 9,
+                                    "isId": false,
+                                    "name": "country",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "id": null,
+                                            "index": 1,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 10,
+                                    "isId": false,
+                                    "name": "state",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "id": null,
+                                            "index": 2,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "id": null,
+                                    "index": 11,
+                                    "isId": false,
+                                    "name": "metroArea",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "id": null,
+                                            "index": 3,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null
                                 }
                             ],
                             "relationReferences": [],
-                            "relations": [],
+                            "relations": [
+                                {
+                                    "isId": false,
+                                    "relationType": "MANY_TO_ONE",
+                                    "id": null,
+                                    "index": 0,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "isId": false,
+                                    "relationType": "MANY_TO_ONE",
+                                    "id": null,
+                                    "index": 1,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "isId": false,
+                                    "relationType": "MANY_TO_ONE",
+                                    "id": null,
+                                    "index": 2,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "isId": false,
+                                    "relationType": "MANY_TO_ONE",
+                                    "id": null,
+                                    "index": 3,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                }
+                            ],
                             "applicationVersion": null,
                             "sinceVersion": null,
                             "tableConfig": null

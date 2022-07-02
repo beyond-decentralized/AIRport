@@ -1278,11 +1278,31 @@ export declare const MAPPED_SUPERCLASS: ({
                     index: number;
                     isId: boolean;
                     name: string;
-                    relation: any;
+                    relation: {
+                        isId: boolean;
+                        relationType: string;
+                        id: any;
+                        index: number;
+                        property: any;
+                        manyRelationColumns: any[];
+                        oneRelationColumns: any[];
+                        relationEntity: any;
+                        sinceVersion: any;
+                    }[];
                     sinceVersion: any;
                 }[];
                 relationReferences: any[];
-                relations: any[];
+                relations: {
+                    isId: boolean;
+                    relationType: string;
+                    id: any;
+                    index: number;
+                    property: any;
+                    manyRelationColumns: any[];
+                    oneRelationColumns: any[];
+                    relationEntity: any;
+                    sinceVersion: any;
+                }[];
                 applicationVersion: any;
                 sinceVersion: any;
                 tableConfig: any;
@@ -2097,11 +2117,31 @@ export declare const MAPPED_SUPERCLASS: ({
                         index: number;
                         isId: boolean;
                         name: string;
-                        relation: any;
+                        relation: {
+                            isId: boolean;
+                            relationType: string;
+                            id: any;
+                            index: number;
+                            property: any;
+                            manyRelationColumns: any[];
+                            oneRelationColumns: any[];
+                            relationEntity: any;
+                            sinceVersion: any;
+                        }[];
                         sinceVersion: any;
                     }[];
                     relationReferences: any[];
-                    relations: any[];
+                    relations: {
+                        isId: boolean;
+                        relationType: string;
+                        id: any;
+                        index: number;
+                        property: any;
+                        manyRelationColumns: any[];
+                        oneRelationColumns: any[];
+                        relationEntity: any;
+                        sinceVersion: any;
+                    }[];
                     applicationVersion: any;
                     sinceVersion: any;
                     tableConfig: any;

@@ -14,7 +14,13 @@ import {
 import {
 	RepositoryTransactionHistory
 } from '../history/RepositoryTransactionHistory'
-import { User } from "@airport/travel-document-checkpoint";
+import {
+	Continent,
+	Country,
+	MetroArea,
+	State,
+	User
+} from "@airport/travel-document-checkpoint";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -67,5 +73,21 @@ export class Repository {
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
+
+	@ManyToOne()
+	@JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+	continent?: Continent
+
+	@ManyToOne()
+	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+	country?: Country
+
+	@ManyToOne()
+	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+	state?: State
+
+	@ManyToOne()
+	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+	metroArea?: MetroArea
 
 }

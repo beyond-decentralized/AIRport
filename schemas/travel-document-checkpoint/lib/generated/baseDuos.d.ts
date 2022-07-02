@@ -1,9 +1,15 @@
 import { Client } from '../ddl/client';
 import { ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient } from './qclient';
-import { Continent } from '../ddl/continent';
-import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './qcontinent';
-import { Country } from '../ddl/country';
-import { CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry } from './qcountry';
+import { Continent } from '../ddl/locality/continent';
+import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './locality/qcontinent';
+import { Country } from '../ddl/locality/country';
+import { CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry } from './locality/qcountry';
+import { MetroArea } from '../ddl/locality/metroarea';
+import { MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea } from './locality/qmetroarea';
+import { MetroAreaState } from '../ddl/locality/metroareastate';
+import { MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState } from './locality/qmetroareastate';
+import { State } from '../ddl/locality/state';
+import { StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState } from './locality/qstate';
 import { Terminal } from '../ddl/terminal';
 import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './qterminal';
 import { User } from '../ddl/user';
@@ -31,6 +37,24 @@ export declare class BaseContinentDuo extends SQDIDuo<Continent, ContinentESelec
 export interface IBaseCountryDuo extends IDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
 }
 export declare class BaseCountryDuo extends SQDIDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> implements IBaseCountryDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseMetroAreaDuo extends IDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
+}
+export declare class BaseMetroAreaDuo extends SQDIDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> implements IBaseMetroAreaDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseMetroAreaStateDuo extends IDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
+}
+export declare class BaseMetroAreaStateDuo extends SQDIDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> implements IBaseMetroAreaStateDuo {
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseStateDuo extends IDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
+}
+export declare class BaseStateDuo extends SQDIDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> implements IBaseStateDuo {
     static diSet(): boolean;
     constructor();
 }

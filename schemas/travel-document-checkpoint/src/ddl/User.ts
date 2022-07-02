@@ -5,7 +5,13 @@ import {
 	Entity,
 	GeneratedValue,
 	Id,
+	JoinColumn,
+	ManyToOne,
 } from '@airport/air-traffic-control'
+import { Country } from './locality/Country';
+import { Continent } from './locality/Continent';
+import { MetroArea } from './locality/MetroArea';
+import { State } from './locality/State';
 
 export type User_Id = number;
 export type User_GUID = string;
@@ -51,4 +57,19 @@ export class User {
 	@DbString()
 	GUID?: User_GUID;
 
+	@ManyToOne()
+	@JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+	continent?: Continent
+
+	@ManyToOne()
+	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+	country?: Country
+
+	@ManyToOne()
+	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+	state?: State
+
+	@ManyToOne()
+	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+	metroArea?: MetroArea
 }

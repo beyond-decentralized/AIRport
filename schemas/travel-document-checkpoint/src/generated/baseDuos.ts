@@ -14,7 +14,7 @@ import {
 } from './qclient';
 import {
 	Continent,
-} from '../ddl/continent';
+} from '../ddl/locality/continent';
 import {
 	ContinentESelect,
 	ContinentECreateColumns,
@@ -24,10 +24,10 @@ import {
 	ContinentEId,
 	ContinentGraph,
 	QContinent,
-} from './qcontinent';
+} from './locality/qcontinent';
 import {
 	Country,
-} from '../ddl/country';
+} from '../ddl/locality/country';
 import {
 	CountryESelect,
 	CountryECreateColumns,
@@ -37,7 +37,46 @@ import {
 	CountryEId,
 	CountryGraph,
 	QCountry,
-} from './qcountry';
+} from './locality/qcountry';
+import {
+	MetroArea,
+} from '../ddl/locality/metroarea';
+import {
+	MetroAreaESelect,
+	MetroAreaECreateColumns,
+	MetroAreaECreateProperties,
+	MetroAreaEUpdateColumns,
+	MetroAreaEUpdateProperties,
+	MetroAreaEId,
+	MetroAreaGraph,
+	QMetroArea,
+} from './locality/qmetroarea';
+import {
+	MetroAreaState,
+} from '../ddl/locality/metroareastate';
+import {
+	MetroAreaStateESelect,
+	MetroAreaStateECreateColumns,
+	MetroAreaStateECreateProperties,
+	MetroAreaStateEUpdateColumns,
+	MetroAreaStateEUpdateProperties,
+	MetroAreaStateEId,
+	MetroAreaStateGraph,
+	QMetroAreaState,
+} from './locality/qmetroareastate';
+import {
+	State,
+} from '../ddl/locality/state';
+import {
+	StateESelect,
+	StateECreateColumns,
+	StateECreateProperties,
+	StateEUpdateColumns,
+	StateEUpdateProperties,
+	StateEId,
+	StateGraph,
+	QState,
+} from './locality/qstate';
 import {
 	Terminal,
 } from '../ddl/terminal';
@@ -134,11 +173,11 @@ export class BaseClientDuo
 	implements IBaseClientDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -152,11 +191,11 @@ export class BaseContinentDuo
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -170,11 +209,65 @@ export class BaseCountryDuo
 	implements IBaseCountryDuo {
 
 	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseMetroAreaDuo
+  extends IDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
+}
+
+export class BaseMetroAreaDuo
+  extends SQDIDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
+	implements IBaseMetroAreaDuo {
+
+	static diSet(): boolean {
 		return duoDiSet(2)
 	}
 	
 	constructor() {
 		super(2)
+	}
+}
+
+
+export interface IBaseMetroAreaStateDuo
+  extends IDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
+}
+
+export class BaseMetroAreaStateDuo
+  extends SQDIDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
+	implements IBaseMetroAreaStateDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(8)
+	}
+	
+	constructor() {
+		super(8)
+	}
+}
+
+
+export interface IBaseStateDuo
+  extends IDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
+}
+
+export class BaseStateDuo
+  extends SQDIDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
+	implements IBaseStateDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }
 
@@ -188,11 +281,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(4)
+		super(6)
 	}
 }
 
@@ -206,11 +299,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(1)
+		super(3)
 	}
 }
 
@@ -224,10 +317,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
 	}
 }

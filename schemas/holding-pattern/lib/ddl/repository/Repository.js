@@ -45,6 +45,22 @@ __decorate([
 __decorate([
     OneToMany({ mappedBy: 'repository' })
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+], Repository.prototype, "continent", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+], Repository.prototype, "country", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+], Repository.prototype, "state", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+], Repository.prototype, "metroArea", void 0);
 Repository = __decorate([
     Entity(),
     Table({

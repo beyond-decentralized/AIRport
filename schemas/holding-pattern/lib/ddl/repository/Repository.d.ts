@@ -1,5 +1,5 @@
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
-import { User } from "@airport/travel-document-checkpoint";
+import { Continent, Country, MetroArea, State, User } from "@airport/travel-document-checkpoint";
 /**
  * Created by Papa on 2/9/2017.
  */
@@ -18,5 +18,9 @@ export declare class Repository {
     GUID: Repository_GUID;
     owner: User;
     repositoryTransactionHistory: RepositoryTransactionHistory[];
+    continent?: Continent;
+    country?: Country;
+    state?: State;
+    metroArea?: MetroArea;
 }
 //# sourceMappingURL=Repository.d.ts.map

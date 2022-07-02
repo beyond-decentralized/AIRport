@@ -14,7 +14,7 @@ import {
 } from './qclient';
 import {
 	Continent,
-} from '../ddl/continent';
+} from '../ddl/locality/continent';
 import {
 	ContinentESelect,
 	ContinentECreateColumns,
@@ -24,10 +24,10 @@ import {
 	ContinentEId,
 	ContinentGraph,
 	QContinent,
-} from './qcontinent';
+} from './locality/qcontinent';
 import {
 	Country,
-} from '../ddl/country';
+} from '../ddl/locality/country';
 import {
 	CountryESelect,
 	CountryECreateColumns,
@@ -37,7 +37,46 @@ import {
 	CountryEId,
 	CountryGraph,
 	QCountry,
-} from './qcountry';
+} from './locality/qcountry';
+import {
+	MetroArea,
+} from '../ddl/locality/metroarea';
+import {
+	MetroAreaESelect,
+	MetroAreaECreateColumns,
+	MetroAreaECreateProperties,
+	MetroAreaEUpdateColumns,
+	MetroAreaEUpdateProperties,
+	MetroAreaEId,
+	MetroAreaGraph,
+	QMetroArea,
+} from './locality/qmetroarea';
+import {
+	MetroAreaState,
+} from '../ddl/locality/metroareastate';
+import {
+	MetroAreaStateESelect,
+	MetroAreaStateECreateColumns,
+	MetroAreaStateECreateProperties,
+	MetroAreaStateEUpdateColumns,
+	MetroAreaStateEUpdateProperties,
+	MetroAreaStateEId,
+	MetroAreaStateGraph,
+	QMetroAreaState,
+} from './locality/qmetroareastate';
+import {
+	State,
+} from '../ddl/locality/state';
+import {
+	StateESelect,
+	StateECreateColumns,
+	StateECreateProperties,
+	StateEUpdateColumns,
+	StateEUpdateProperties,
+	StateEId,
+	StateGraph,
+	QState,
+} from './locality/qstate';
 import {
 	Terminal,
 } from '../ddl/terminal';
@@ -145,11 +184,11 @@ export class BaseClientDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -173,11 +212,11 @@ export class BaseContinentDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -201,11 +240,95 @@ export class BaseCountryDao
   }
 
 	static diSet(): boolean {
+		return duoDiSet(0)
+	}
+	
+	constructor() {
+		super(0)
+	}
+}
+
+
+export interface IBaseMetroAreaDao
+  extends IDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
+}
+
+export class BaseMetroAreaDao
+  extends SQDIDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
+	implements IBaseMetroAreaDao {
+	
+	static Find      = new DaoQueryDecorators<MetroAreaESelect>();
+	static FindOne   = new DaoQueryDecorators<MetroAreaESelect>();
+	static Search    = new DaoQueryDecorators<MetroAreaESelect>();
+	static SearchOne = new DaoQueryDecorators<MetroAreaESelect>();
+	static Save(
+		config: MetroAreaGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<MetroAreaGraph>(config);
+  }
+
+	static diSet(): boolean {
 		return duoDiSet(2)
 	}
 	
 	constructor() {
 		super(2)
+	}
+}
+
+
+export interface IBaseMetroAreaStateDao
+  extends IDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
+}
+
+export class BaseMetroAreaStateDao
+  extends SQDIDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
+	implements IBaseMetroAreaStateDao {
+	
+	static Find      = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static FindOne   = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static Search    = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static SearchOne = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static Save(
+		config: MetroAreaStateGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<MetroAreaStateGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(8)
+	}
+	
+	constructor() {
+		super(8)
+	}
+}
+
+
+export interface IBaseStateDao
+  extends IDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
+}
+
+export class BaseStateDao
+  extends SQDIDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
+	implements IBaseStateDao {
+	
+	static Find      = new DaoQueryDecorators<StateESelect>();
+	static FindOne   = new DaoQueryDecorators<StateESelect>();
+	static Search    = new DaoQueryDecorators<StateESelect>();
+	static SearchOne = new DaoQueryDecorators<StateESelect>();
+	static Save(
+		config: StateGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<StateGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(1)
+	}
+	
+	constructor() {
+		super(1)
 	}
 }
 
@@ -229,11 +352,11 @@ export class BaseTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(4)
+		super(6)
 	}
 }
 
@@ -257,11 +380,11 @@ export class BaseUserDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(1)
+		super(3)
 	}
 }
 
@@ -285,10 +408,10 @@ export class BaseUserTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
 	}
 }

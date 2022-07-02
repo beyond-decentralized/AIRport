@@ -1,5 +1,9 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from './quser';
+import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from './locality/qcontinent';
+import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './locality/qcountry';
+import { StateGraph, StateEOptionalId, StateESelect, QStateQRelation } from './locality/qstate';
+import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from './locality/qmetroarea';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -7,6 +11,10 @@ export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptio
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserESelect;
+    continent?: ContinentESelect;
+    country?: CountryESelect;
+    state?: StateESelect;
+    metroArea?: MetroAreaESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -27,6 +35,10 @@ export interface TerminalEUpdateProperties extends IEntityUpdateProperties {
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserEOptionalId;
+    continent?: ContinentEOptionalId;
+    country?: CountryEOptionalId;
+    state?: StateEOptionalId;
+    metroArea?: MetroAreaEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -35,6 +47,10 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
     GUID?: string | IQStringField;
     isLocal?: boolean | IQBooleanField;
     owner?: UserGraph;
+    continent?: ContinentGraph;
+    country?: CountryGraph;
+    state?: StateGraph;
+    metroArea?: MetroAreaGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -43,6 +59,10 @@ export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
     IS_LOCAL?: boolean | IQBooleanField;
     OWNER_USER_ID?: number | IQNumberField;
+    CONTINENT_ID?: number | IQNumberField;
+    COUNTRY_ID?: number | IQNumberField;
+    STATE_ID?: number | IQNumberField;
+    METRO_AREA_ID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -62,6 +82,10 @@ export interface QTerminal extends IQEntity {
     GUID: IQStringField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
+    continent: QContinentQRelation;
+    country: QCountryQRelation;
+    state: QStateQRelation;
+    metroArea: QMetroAreaQRelation;
 }
 export interface QTerminalQId {
     id: IQNumberField;

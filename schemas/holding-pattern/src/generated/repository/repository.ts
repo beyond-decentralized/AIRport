@@ -1,5 +1,9 @@
 import {
 	IUser,
+	IContinent,
+	ICountry,
+	IState,
+	IMetroArea,
 } from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryTransactionHistory,
@@ -28,6 +32,10 @@ export interface IRepository {
 	// Non-Id Relations
 	owner?: IUser;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
+	continent?: IContinent;
+	country?: ICountry;
+	state?: IState;
+	metroArea?: IMetroArea;
 
 	// Transient Properties
 
