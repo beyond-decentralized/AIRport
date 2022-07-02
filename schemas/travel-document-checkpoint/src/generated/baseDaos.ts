@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Client,
-} from '../ddl/client';
+} from '../ddl/client/client';
 import {
 	ClientESelect,
 	ClientECreateColumns,
@@ -11,7 +11,20 @@ import {
 	ClientEId,
 	ClientGraph,
 	QClient,
-} from './qclient';
+} from './client/qclient';
+import {
+	ClientType,
+} from '../ddl/client/clienttype';
+import {
+	ClientTypeESelect,
+	ClientTypeECreateColumns,
+	ClientTypeECreateProperties,
+	ClientTypeEUpdateColumns,
+	ClientTypeEUpdateProperties,
+	ClientTypeEId,
+	ClientTypeGraph,
+	QClientType,
+} from './client/qclienttype';
 import {
 	Continent,
 } from '../ddl/locality/continent';
@@ -79,7 +92,7 @@ import {
 } from './locality/qstate';
 import {
 	Terminal,
-} from '../ddl/terminal';
+} from '../ddl/terminal/terminal';
 import {
 	TerminalESelect,
 	TerminalECreateColumns,
@@ -89,7 +102,20 @@ import {
 	TerminalEId,
 	TerminalGraph,
 	QTerminal,
-} from './qterminal';
+} from './terminal/qterminal';
+import {
+	TerminalType,
+} from '../ddl/terminal/terminaltype';
+import {
+	TerminalTypeESelect,
+	TerminalTypeECreateColumns,
+	TerminalTypeECreateProperties,
+	TerminalTypeEUpdateColumns,
+	TerminalTypeEUpdateProperties,
+	TerminalTypeEId,
+	TerminalTypeGraph,
+	QTerminalType,
+} from './terminal/qterminaltype';
 import {
 	User,
 } from '../ddl/user';
@@ -105,7 +131,7 @@ import {
 } from './quser';
 import {
 	UserTerminal,
-} from '../ddl/userterminal';
+} from '../ddl/terminal/userterminal';
 import {
 	UserTerminalESelect,
 	UserTerminalECreateColumns,
@@ -115,7 +141,7 @@ import {
 	UserTerminalEId,
 	UserTerminalGraph,
 	QUserTerminal,
-} from './quserterminal';
+} from './terminal/quserterminal';
 import {
 	IDao,
 	IEntityCascadeGraph,
@@ -184,11 +210,39 @@ export class BaseClientDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
+	}
+}
+
+
+export interface IBaseClientTypeDao
+  extends IDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
+}
+
+export class BaseClientTypeDao
+  extends SQDIDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
+	implements IBaseClientTypeDao {
+	
+	static Find      = new DaoQueryDecorators<ClientTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<ClientTypeESelect>();
+	static Search    = new DaoQueryDecorators<ClientTypeESelect>();
+	static SearchOne = new DaoQueryDecorators<ClientTypeESelect>();
+	static Save(
+		config: ClientTypeGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<ClientTypeGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
 	}
 }
 
@@ -296,11 +350,11 @@ export class BaseMetroAreaStateDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(8)
+		super(5)
 	}
 }
 
@@ -352,11 +406,39 @@ export class BaseTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
+	}
+}
+
+
+export interface IBaseTerminalTypeDao
+  extends IDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
+}
+
+export class BaseTerminalTypeDao
+  extends SQDIDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
+	implements IBaseTerminalTypeDao {
+	
+	static Find      = new DaoQueryDecorators<TerminalTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<TerminalTypeESelect>();
+	static Search    = new DaoQueryDecorators<TerminalTypeESelect>();
+	static SearchOne = new DaoQueryDecorators<TerminalTypeESelect>();
+	static Save(
+		config: TerminalTypeGraph
+	): PropertyDecorator {
+		return Dao.BaseSave<TerminalTypeGraph>(config);
+  }
+
+	static diSet(): boolean {
+		return duoDiSet(8)
+	}
+	
+	constructor() {
+		super(8)
 	}
 }
 
@@ -408,10 +490,10 @@ export class BaseUserTerminalDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(7)
+		super(10)
 	}
 }

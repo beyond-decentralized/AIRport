@@ -1,4 +1,4 @@
-import { Continent } from './locality/Continent';
+import { Continent } f../User/locality/Continent';
 import { Country } from './locality/Country';
 import { MetroArea } from './locality/MetroArea';
 import { State } from './locality/State';

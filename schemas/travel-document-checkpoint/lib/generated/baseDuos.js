@@ -8,10 +8,18 @@ export class SQDIDuo extends Duo {
 }
 export class BaseClientDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(7);
     }
     constructor() {
-        super(5);
+        super(7);
+    }
+}
+export class BaseClientTypeDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(6);
+    }
+    constructor() {
+        super(6);
     }
 }
 export class BaseContinentDuo extends SQDIDuo {
@@ -40,10 +48,10 @@ export class BaseMetroAreaDuo extends SQDIDuo {
 }
 export class BaseMetroAreaStateDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(8);
+        return duoDiSet(5);
     }
     constructor() {
-        super(8);
+        super(5);
     }
 }
 export class BaseStateDuo extends SQDIDuo {
@@ -56,10 +64,18 @@ export class BaseStateDuo extends SQDIDuo {
 }
 export class BaseTerminalDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(6);
+        return duoDiSet(9);
     }
     constructor() {
-        super(6);
+        super(9);
+    }
+}
+export class BaseTerminalTypeDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(8);
+    }
+    constructor() {
+        super(8);
     }
 }
 export class BaseUserDuo extends SQDIDuo {
@@ -72,10 +88,10 @@ export class BaseUserDuo extends SQDIDuo {
 }
 export class BaseUserTerminalDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(7);
+        return duoDiSet(10);
     }
     constructor() {
-        super(7);
+        super(10);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

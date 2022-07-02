@@ -10,21 +10,18 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/air-traffic-control'
-import { Continent } from './locality/Continent';
-import { Country } from './locality/Country';
-import { MetroArea } from './locality/MetroArea';
-import { State } from './locality/State';
-import { User } from './User'
+import { ClientType } from '../client/ClientType';
+import { Continent } from '../locality/Continent';
+import { Country } from '../locality/Country';
+import { MetroArea } from '../locality/MetroArea';
+import { State } from '../locality/State';
+import { User } from '../User'
+import { TerminalType } from './TerminalType';
 
 export type TmTerminal_Id = number;
 export type Terminal_IsLocal = boolean;
 export type Terminal_GUID = string;
 
-/**
- * 
- * DEPRECATED - syncing will now be done via IPFS/Peergos
- * 
- */
 @Entity()
 @Table({
 	name: 'TERMINAL',
@@ -45,8 +42,12 @@ export class Terminal {
 	GUID: Terminal_GUID
 
 	@ManyToOne()
-	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID' })
-	owner: User
+	@JoinColumn({ name: 'TERMINAL_TYPE_ID', referencedColumnName: 'ID' })
+	terminalType: TerminalType
+
+	@ManyToOne()
+	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID', nullable: true })
+	owner?: User
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()

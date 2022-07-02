@@ -6,7 +6,7 @@ import {
 	Table
 }                 from '@airport/air-traffic-control'
 import {Terminal} from './Terminal'
-import {User}     from './User'
+import {User}     from '../User'
 
 /**
  * 

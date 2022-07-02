@@ -1,5 +1,7 @@
-import { Client } from '../ddl/client';
-import { ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient } from './qclient';
+import { Client } from '../ddl/client/client';
+import { ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient } from './client/qclient';
+import { ClientType } from '../ddl/client/clienttype';
+import { ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType } from './client/qclienttype';
 import { Continent } from '../ddl/locality/continent';
 import { ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent } from './locality/qcontinent';
 import { Country } from '../ddl/locality/country';
@@ -10,12 +12,14 @@ import { MetroAreaState } from '../ddl/locality/metroareastate';
 import { MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState } from './locality/qmetroareastate';
 import { State } from '../ddl/locality/state';
 import { StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState } from './locality/qstate';
-import { Terminal } from '../ddl/terminal';
-import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './qterminal';
+import { Terminal } from '../ddl/terminal/terminal';
+import { TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal } from './terminal/qterminal';
+import { TerminalType } from '../ddl/terminal/terminaltype';
+import { TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType } from './terminal/qterminaltype';
 import { User } from '../ddl/user';
 import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './quser';
-import { UserTerminal } from '../ddl/userterminal';
-import { UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal } from './quserterminal';
+import { UserTerminal } from '../ddl/terminal/userterminal';
+import { UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal } from './terminal/quserterminal';
 import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-traffic-control';
 import { Dao, DaoQueryDecorators } from '@airport/check-in';
 import { EntityId as DbEntityId } from '@airport/ground-control';
@@ -30,6 +34,17 @@ export declare class BaseClientDao extends SQDIDao<Client, ClientESelect, Client
     static Search: DaoQueryDecorators<ClientESelect>;
     static SearchOne: DaoQueryDecorators<ClientESelect>;
     static Save(config: ClientGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseClientTypeDao extends IDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
+}
+export declare class BaseClientTypeDao extends SQDIDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> implements IBaseClientTypeDao {
+    static Find: DaoQueryDecorators<ClientTypeESelect>;
+    static FindOne: DaoQueryDecorators<ClientTypeESelect>;
+    static Search: DaoQueryDecorators<ClientTypeESelect>;
+    static SearchOne: DaoQueryDecorators<ClientTypeESelect>;
+    static Save(config: ClientTypeGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }
@@ -96,6 +111,17 @@ export declare class BaseTerminalDao extends SQDIDao<Terminal, TerminalESelect, 
     static Search: DaoQueryDecorators<TerminalESelect>;
     static SearchOne: DaoQueryDecorators<TerminalESelect>;
     static Save(config: TerminalGraph): PropertyDecorator;
+    static diSet(): boolean;
+    constructor();
+}
+export interface IBaseTerminalTypeDao extends IDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
+}
+export declare class BaseTerminalTypeDao extends SQDIDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> implements IBaseTerminalTypeDao {
+    static Find: DaoQueryDecorators<TerminalTypeESelect>;
+    static FindOne: DaoQueryDecorators<TerminalTypeESelect>;
+    static Search: DaoQueryDecorators<TerminalTypeESelect>;
+    static SearchOne: DaoQueryDecorators<TerminalTypeESelect>;
+    static Save(config: TerminalTypeGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

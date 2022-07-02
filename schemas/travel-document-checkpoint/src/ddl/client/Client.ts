@@ -1,9 +1,10 @@
 import { DbString, Entity, Id, JoinColumn, ManyToOne } from "@airport/air-traffic-control";
 
-import { Continent } from './locality/Continent';
-import { Country } from './locality/Country';
-import { MetroArea } from './locality/MetroArea';
-import { State } from './locality/State';
+import { Continent } from '../locality/Continent';
+import { Country } from '../locality/Country';
+import { MetroArea } from '../locality/MetroArea';
+import { State } from '../locality/State';
+import { ClientType } from "./ClientType";
 
 @Entity()
 export class Client {
@@ -15,6 +16,10 @@ export class Client {
 
     @DbString()
     GUID: string
+
+    @ManyToOne()
+    @JoinColumn({ name: 'CLIENT_TYPE_ID', referencedColumnName: 'ID' })
+    clienType: ClientType
 
     @ManyToOne()
     @JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })

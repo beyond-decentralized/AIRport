@@ -1,23 +1,27 @@
 import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, EntityId } from '@airport/ground-control';
-import { QClient } from './qclient';
+import { QClient } from './client/qclient';
+import { QClientType } from './client/qclienttype';
 import { QContinent } from './locality/qcontinent';
 import { QCountry } from './locality/qcountry';
 import { QMetroArea } from './locality/qmetroarea';
 import { QMetroAreaState } from './locality/qmetroareastate';
 import { QState } from './locality/qstate';
-import { QTerminal } from './qterminal';
+import { QTerminal } from './terminal/qterminal';
+import { QTerminalType } from './terminal/qterminaltype';
 import { QUser } from './quser';
-import { QUserTerminal } from './quserterminal';
+import { QUserTerminal } from './terminal/quserterminal';
 export interface LocalQApplication extends QApplication {
     db: DbApplication;
     Client: QClient;
+    ClientType: QClientType;
     Continent: QContinent;
     Country: QCountry;
     MetroArea: QMetroArea;
     MetroAreaState: QMetroAreaState;
     State: QState;
     Terminal: QTerminal;
+    TerminalType: QTerminalType;
     User: QUser;
     UserTerminal: QUserTerminal;
 }

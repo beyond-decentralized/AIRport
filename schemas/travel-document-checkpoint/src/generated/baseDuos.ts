@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Client,
-} from '../ddl/client';
+} from '../ddl/client/client';
 import {
 	ClientESelect,
 	ClientECreateColumns,
@@ -11,7 +11,20 @@ import {
 	ClientEId,
 	ClientGraph,
 	QClient,
-} from './qclient';
+} from './client/qclient';
+import {
+	ClientType,
+} from '../ddl/client/clienttype';
+import {
+	ClientTypeESelect,
+	ClientTypeECreateColumns,
+	ClientTypeECreateProperties,
+	ClientTypeEUpdateColumns,
+	ClientTypeEUpdateProperties,
+	ClientTypeEId,
+	ClientTypeGraph,
+	QClientType,
+} from './client/qclienttype';
 import {
 	Continent,
 } from '../ddl/locality/continent';
@@ -79,7 +92,7 @@ import {
 } from './locality/qstate';
 import {
 	Terminal,
-} from '../ddl/terminal';
+} from '../ddl/terminal/terminal';
 import {
 	TerminalESelect,
 	TerminalECreateColumns,
@@ -89,7 +102,20 @@ import {
 	TerminalEId,
 	TerminalGraph,
 	QTerminal,
-} from './qterminal';
+} from './terminal/qterminal';
+import {
+	TerminalType,
+} from '../ddl/terminal/terminaltype';
+import {
+	TerminalTypeESelect,
+	TerminalTypeECreateColumns,
+	TerminalTypeECreateProperties,
+	TerminalTypeEUpdateColumns,
+	TerminalTypeEUpdateProperties,
+	TerminalTypeEId,
+	TerminalTypeGraph,
+	QTerminalType,
+} from './terminal/qterminaltype';
 import {
 	User,
 } from '../ddl/user';
@@ -105,7 +131,7 @@ import {
 } from './quser';
 import {
 	UserTerminal,
-} from '../ddl/userterminal';
+} from '../ddl/terminal/userterminal';
 import {
 	UserTerminalESelect,
 	UserTerminalECreateColumns,
@@ -115,7 +141,7 @@ import {
 	UserTerminalEId,
 	UserTerminalGraph,
 	QUserTerminal,
-} from './quserterminal';
+} from './terminal/quserterminal';
 import {
 	IDuo,
 	IEntityCascadeGraph,
@@ -173,11 +199,29 @@ export class BaseClientDuo
 	implements IBaseClientDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(5)
+		super(7)
+	}
+}
+
+
+export interface IBaseClientTypeDuo
+  extends IDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
+}
+
+export class BaseClientTypeDuo
+  extends SQDIDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
+	implements IBaseClientTypeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(6)
+	}
+	
+	constructor() {
+		super(6)
 	}
 }
 
@@ -245,11 +289,11 @@ export class BaseMetroAreaStateDuo
 	implements IBaseMetroAreaStateDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(8)
+		super(5)
 	}
 }
 
@@ -281,11 +325,29 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(6)
+		super(9)
+	}
+}
+
+
+export interface IBaseTerminalTypeDuo
+  extends IDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
+}
+
+export class BaseTerminalTypeDuo
+  extends SQDIDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
+	implements IBaseTerminalTypeDuo {
+
+	static diSet(): boolean {
+		return duoDiSet(8)
+	}
+	
+	constructor() {
+		super(8)
 	}
 }
 
@@ -317,10 +379,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(7)
+		super(10)
 	}
 }
