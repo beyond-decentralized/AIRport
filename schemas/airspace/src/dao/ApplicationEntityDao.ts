@@ -1,5 +1,5 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ApplicationVersionId } from '@airport/ground-control'
+import { ApplicationVersion_LocalId } from '@airport/ground-control'
 import {
 	BaseApplicationEntityDao,
 	IBaseApplicationEntityDao,
@@ -12,7 +12,7 @@ export interface IApplicationEntityDao
 	extends IBaseApplicationEntityDao {
 
 	findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersionId[]
+		applicationVersionIds: ApplicationVersion_LocalId[]
 	): Promise<IApplicationEntity[]>
 
 	insert(
@@ -28,7 +28,7 @@ export class ApplicationEntityDao
 	implements IApplicationEntityDao {
 
 	async findAllForApplicationVersions(
-		applicationVersionIds: ApplicationVersionId[]
+		applicationVersionIds: ApplicationVersion_LocalId[]
 	): Promise<IApplicationEntity[]> {
 		let se: QApplicationEntity
 

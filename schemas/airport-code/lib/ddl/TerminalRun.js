@@ -12,8 +12,9 @@ let TerminalRun = class TerminalRun {
 };
 __decorate([
     Id(),
-    GeneratedValue()
-], TerminalRun.prototype, "id", void 0);
+    GeneratedValue(),
+    Column({ name: 'TERMINAL_RUN_LID' })
+], TerminalRun.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'CREATE_TIMESTAMP', nullable: false })
 ], TerminalRun.prototype, "createTimestamp", void 0);

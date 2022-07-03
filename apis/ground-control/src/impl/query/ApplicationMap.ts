@@ -1,9 +1,9 @@
 import {
 	DbEntity,
-	TableIndex
+	ApplicationEntity_TableIndex
 } from "../../lingo/application/Entity";
-import { ColumnIndex } from "../../lingo/application/Property";
-import { ApplicationIndex } from "../../lingo/application/Application";
+import { ApplicationColumn_Index } from "../../lingo/application/Property";
+import { Application_Index } from "../../lingo/application/Application";
 import { ColumnMap } from "./ColumnMap";
 import { TableMap } from "./TableMap";
 
@@ -23,8 +23,8 @@ export class ApplicationMap {
 	}
 
 	ensure(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false,
 		TableMapConstructor = TableMap
 	): ColumnMap {
@@ -38,9 +38,9 @@ export class ApplicationMap {
 	}
 
 	existsByStructure(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index
 	): boolean {
 		let tableMap = this.applicationMap[applicationIndex];
 		if (!tableMap) {

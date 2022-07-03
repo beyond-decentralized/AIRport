@@ -21,7 +21,7 @@ export class ApplicationRelationResolver {
 			const indexedEntity = indexedApplication.entityMapByName[entityName]
 			if (indexedEntity.entity.isAirEntity) {
 				if (indexedEntity.idColumns[0].name !== airEntity.FOREIGN_KEY) {
-					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_ID'`)
+					throw new Error(`@Id Column at index 0, must be 'REPOSITORY_LID'`)
 				}
 			}
 			this.resolveEntityRelationLinks(indexedApplication, indexedEntity)
@@ -60,10 +60,10 @@ export class ApplicationRelationResolver {
 			let relationEntityIsLocal
 			let relationIndexedEntity: SIndexedEntity | DbEntity
 			let relationEntityName: string
-			let crossApplication = aRelation.referencedApplicationIndex || aRelation.referencedApplicationIndex === 0
+			let crossApplication = aRelation.referencedApplication_Index || aRelation.referencedApplication_Index === 0
 			if (crossApplication) {
 				relationIndexedEntity = indexedApplication.application
-					.referencedApplications[aRelation.referencedApplicationIndex].dbApplication.currentVersion[0]
+					.referencedApplications[aRelation.referencedApplication_Index].dbApplication.currentVersion[0]
 					.applicationVersion.entityMapByName[aRelation.entityName]
 				relationEntityName = relationIndexedEntity.name
 				relationEntityIsLocal = relationIndexedEntity.isLocal

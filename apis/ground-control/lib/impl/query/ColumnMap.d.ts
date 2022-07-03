@@ -1,11 +1,11 @@
-import { TableIndex } from "../../lingo/application/Entity";
-import { ColumnIndex } from "../../lingo/application/Property";
+import { ApplicationEntity_TableIndex } from "../../lingo/application/Entity";
+import { ApplicationColumn_Index } from "../../lingo/application/Property";
 export declare class ColumnMap {
-    tableIndex: TableIndex;
+    tableIndex: ApplicationEntity_TableIndex;
     columnMap: {
         [columnIndex: string]: boolean;
     };
-    constructor(tableIndex: TableIndex, allColumns?: boolean);
-    ensure(columnIndex: ColumnIndex): void;
+    constructor(tableIndex: ApplicationEntity_TableIndex, allColumns?: boolean);
+    ensure(columnIndex: ApplicationColumn_Index): void;
 }
 //# sourceMappingURL=ColumnMap.d.ts.map

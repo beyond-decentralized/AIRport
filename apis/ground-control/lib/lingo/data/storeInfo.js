@@ -10,6 +10,6 @@ export var StoreType;
 })(StoreType || (StoreType = {}));
 export var IdGeneration;
 (function (IdGeneration) {
-    IdGeneration["ENTITY_CHANGE_ID"] = "ENTITY_CHANGE_ID";
+    IdGeneration["ENTITY_CHANGE_ID"] = "ENTITY_CHANGE_LID";
 })(IdGeneration || (IdGeneration = {}));
 //# sourceMappingURL=storeInfo.js.map

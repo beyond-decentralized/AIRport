@@ -1,16 +1,17 @@
 import {
+	Column,
 	Entity,
 	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
-}                              from '@airport/air-traffic-control'
-import {ApplicationColumn}          from './ApplicationColumn'
-import {ApplicationRelation}        from './ApplicationRelation'
-import {VersionedApplicationObject} from './VersionedApplicationObject'
+} from '@airport/air-traffic-control'
+import { ApplicationColumn } from './ApplicationColumn'
+import { ApplicationRelation } from './ApplicationRelation'
+import { VersionedApplicationObject } from './VersionedApplicationObject'
 
-export type ApplicationRelationColumnId = number;
+export type ApplicationRelationColumn_LocalId = number;
 
 @Entity()
 @Table({
@@ -20,30 +21,43 @@ export class ApplicationRelationColumn
 	extends VersionedApplicationObject {
 
 	@Id()
-	id: ApplicationRelationColumnId
+	@Column({ name: 'APPLICATION_RELATION_COLUMN_LID' })
+	_localId: ApplicationRelationColumn_LocalId
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'MANY_APPLICATION_COLUMN_ID',
-		referencedColumnName: 'ID',
+		name: 'MANY_APPLICATION_COLUMN_LID',
+		referencedColumnName: 'APPLICATION_COLUMN_LID',
 		nullable: false
 	})
 	manyColumn: ApplicationColumn
 
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_APPLICATION_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({
+		name: 'ONE_APPLICATION_COLUMN_LID',
+		referencedColumnName: 'APPLICATION_COLUMN_LID', nullable: false
+	})
 	oneColumn: ApplicationColumn
 
 	@ManyToOne()
-	@JoinColumn({name: 'MANY_APPLICATION_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'MANY_APPLICATION_RELATION_LID',
+		referencedColumnName: 'APPLICATION_RELATION_LID'
+	})
 	manyRelation?: ApplicationRelation
 
 	@ManyToOne()
-	@JoinColumn({name: 'ONE_APPLICATION_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'ONE_APPLICATION_RELATION_LID',
+		referencedColumnName: 'APPLICATION_RELATION_LID'
+	})
 	oneRelation?: ApplicationRelation
 
 	@ManyToOne()
-	@JoinColumn({name: 'PARENT_RELATION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'PARENT_RELATION_LID',
+		referencedColumnName: 'APPLICATION_RELATION_LID'
+	})
 	parentRelation: ApplicationRelation
 
 }

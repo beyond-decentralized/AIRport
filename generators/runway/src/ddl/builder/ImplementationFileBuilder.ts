@@ -1,4 +1,4 @@
-import { EntityId }            from '@airport/ground-control';
+import { ApplicationEntity_LocalId }            from '@airport/ground-control';
 import { resolveRelativePath } from '../../resolve/pathResolver';
 import { IBuilder }            from './Builder';
 import { FileBuilder }         from './entity/FileBuilder';
@@ -10,7 +10,7 @@ export abstract class ImplementationFileBuilder
 
 	public daoListingFilePath;
 
-	protected entityIdMapByName: { [entityName: string]: EntityId }          = {};
+	protected entityIdMapByName: { [entityName: string]: ApplicationEntity_LocalId }          = {};
 	protected entityNames: string[]
 	                                                                         = [];
 	protected ddlPathMapByEntityName: { [entityName: string]: string }       = {};
@@ -25,7 +25,7 @@ export abstract class ImplementationFileBuilder
 	}
 
 	addFileNameAndPaths(
-		entityId: EntityId,
+		entityId: ApplicationEntity_LocalId,
 		entityName: string,
 		fullDdlPath: string,
 		fullGenerationPath: string,

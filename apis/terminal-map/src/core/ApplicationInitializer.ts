@@ -22,7 +22,7 @@ export interface IApplicationInitializer {
     nativeInitializeApplication(
         domain: string,
         application: string,
-        fullApplicationName: string,
+        fullApplication_Name: string,
     ): Promise<void>
 
     stage(

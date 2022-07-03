@@ -9,7 +9,7 @@ import {
 	IApplicationVersion
 } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Application_Id, ColumnIndex, airEntity } from "@airport/ground-control";
+import { Application_LocalId, ApplicationColumn_Index, airEntity } from "@airport/ground-control";
 import {
 	Actor_Id,
 	IActor,
@@ -24,7 +24,7 @@ import {
 	RepositoryTransactionType,
 	Repository_Id
 } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { IUser, TmTerminal_Id, User_Id } from "@airport/travel-document-checkpoint";
+import { IUser, TmTerminal_Id, User_LocalId } from "@airport/travel-document-checkpoint";
 
 export interface ISyncOutDataSerializer {
 
@@ -63,11 +63,11 @@ export interface InMessageLookupStructures {
 }
 
 export interface InMessageApplicationLookup {
-	inMessageIndexesById: Map<Application_Id, number>
+	inMessageIndexesById: Map<Application_LocalId, number>
 	lastInMessageIndex: number
 }
 export interface InMessageUserLookup {
-	inMessageIndexesById: Map<User_Id, number>
+	inMessageIndexesById: Map<User_LocalId, number>
 	lastInMessageIndex: number
 }
 
@@ -170,7 +170,7 @@ export class SyncOutDataSerializer
 			const applicationInMessageIndex = this.serializeApplication(
 				actor.application, inMessageApplicationLookup, message)
 
-			const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor.id)
+			const actorInMessageIndex = lookups.actorInMessageIndexesById.get(actor._localId)
 			message.actors[actorInMessageIndex] = {
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
@@ -262,14 +262,14 @@ export class SyncOutDataSerializer
 
 		for (const repository of repositories) {
 			let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup)
-			if (lookups.repositoryInMessageIndexesById.has(repository.id)) {
-				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository.id)
+			if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
+				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId)
 				message.referencedRepositories[repositoryInMessageIndex] =
 					this.serializeRepository(repository, userInMessageIndex as any)
 			} else {
 				if (typeof message.history.repository !== 'string') {
 					message.history.repository.owner = userInMessageIndex as any
-					message.history.repository.id = repository.id
+					message.history.repository._localId = repository._localId
 				}
 			}
 		}
@@ -431,7 +431,7 @@ export class SyncOutDataSerializer
 		dbEntity: IApplicationEntity,
 		lookups: InMessageLookupStructures
 	): IRecordHistory {
-		const dbColumMapByIndex: Map<ColumnIndex, IApplicationColumn> = new Map()
+		const dbColumMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
 		for (const dbColumn of dbEntity.columns) {
 			dbColumMapByIndex.set(dbColumn.index, dbColumn)
 		}
@@ -459,7 +459,7 @@ export class SyncOutDataSerializer
 		} = {
 			...WITH_ID,
 		}
-		if (actor.id !== operationHistory.actor.id) {
+		if (actor._localId !== operationHistory.actor._localId) {
 			baseObject.actor = this.getActorInMessageIndex(actor, lookups)
 		}
 		if (newValues.length) {
@@ -471,7 +471,7 @@ export class SyncOutDataSerializer
 
 		return {
 			...baseObject,
-			actorRecordId: recordHistory.actorRecordId,
+			_actorRecordId: recordHistory._actorRecordId,
 		}
 	}
 
@@ -482,7 +482,7 @@ export class SyncOutDataSerializer
 		if (!actor) {
 			return null
 		}
-		return this.getActorInMessageIndexById(actor.id, lookups) as any as IActor
+		return this.getActorInMessageIndexById(actor._localId, lookups) as any as IActor
 	}
 
 	private getActorInMessageIndexById(

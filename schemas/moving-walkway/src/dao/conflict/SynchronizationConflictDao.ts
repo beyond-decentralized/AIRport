@@ -32,7 +32,7 @@ export class SynchronizationConflictDao
 			values.push([
 				synchronizationConflict.type,
 				synchronizationConflict.acknowledged,
-				synchronizationConflict.repository.id,
+				synchronizationConflict.repository._localId,
 				synchronizationConflict.overwrittenRecordHistory.id,
 				synchronizationConflict.overwritingRecordHistory.id
 			])
@@ -42,7 +42,7 @@ export class SynchronizationConflictDao
 			columns: [
 				sc.type,
 				sc.acknowledged,
-				sc.repository.id,
+				sc.repository._localId,
 				sc.overwrittenRecordHistory.id,
 				sc.overwritingRecordHistory.id
 			],

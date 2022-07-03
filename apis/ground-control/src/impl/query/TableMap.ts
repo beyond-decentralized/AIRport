@@ -1,6 +1,6 @@
-import {TableIndex}      from "../../lingo/application/Entity";
-import {ColumnIndex}     from "../../lingo/application/Property";
-import {ApplicationVersionId} from "../../lingo/application/Application";
+import {ApplicationEntity_TableIndex}      from "../../lingo/application/Entity";
+import {ApplicationColumn_Index}     from "../../lingo/application/Property";
+import {ApplicationVersion_LocalId} from "../../lingo/application/Application";
 import {ColumnMap}       from "./ColumnMap";
 
 /**
@@ -12,13 +12,13 @@ export const ALL_TABLE_COLUMNS = 'A';
 export class TableMap {
 
 	constructor(
-		public applicationVersionId: ApplicationVersionId,
+		public applicationVersionId: ApplicationVersion_LocalId,
 		public tableMap: { [tableIndex: string]: ColumnMap } = {}
 	) {
 	}
 
 	ensure(
-		tableIndex: TableIndex,
+		tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false,
 		ColumnMapConstructor = ColumnMap,
 	): ColumnMap {
@@ -32,8 +32,8 @@ export class TableMap {
 	}
 
 	existsByStructure(
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index
 	): boolean {
 		let tableColumnMap = this.tableMap[tableIndex];
 		if (!tableColumnMap) {

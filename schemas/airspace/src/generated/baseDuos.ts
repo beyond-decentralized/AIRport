@@ -169,7 +169,7 @@ import {
 	Duo,
 } from '@airport/check-in';
 import {
-	EntityId as DbEntityId,
+	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
 	Q,
@@ -183,7 +183,7 @@ export class SQDIDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
@@ -191,7 +191,7 @@ export class SQDIDuo<Entity,
 		EntityCreate,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
-		EntityId,
+		ApplicationEntity_LocalId,
 		EntityCascadeGraph,
 		IQE> {
 

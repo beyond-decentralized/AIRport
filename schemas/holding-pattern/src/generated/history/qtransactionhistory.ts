@@ -145,7 +145,7 @@ extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTransactionHistory extends IQEntity
 {

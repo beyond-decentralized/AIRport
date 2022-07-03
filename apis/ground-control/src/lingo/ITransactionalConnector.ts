@@ -77,7 +77,7 @@ export interface IRepository {
 
 export interface IAirEntity {
 	// Id Properties
-	actorRecordId?: number;
+	_actorRecordId?: number;
 
 	// Id Relations
 	repository?: IRepository;
@@ -94,7 +94,6 @@ export interface IAirEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	id?: string
 	uuId?: string
 
 	// Public Methods

@@ -8,7 +8,7 @@ export interface ILocalAPIResponse {
     errorMessage: string
     hostDomain: string
     hostProtocol: string
-    id: string // UUID
+    id: string // GUID
     methodName: string
     objectName: string
     payload: any

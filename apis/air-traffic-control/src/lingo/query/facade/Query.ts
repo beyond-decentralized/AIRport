@@ -44,9 +44,8 @@ export interface IQuery {
 
 export const NEW_RECORD_FIELDS = {
 	actor: null,
-	actorRecordId: null,
+	_actorRecordId: null,
 	ageSuitability: 0,
-	id: null,
 	originalActor: null,
 	originalActorRecordId: null,
 	originalRepository: null,
@@ -205,8 +204,8 @@ function cleanErrorMessageSelectStatement(
 		}
 		if (property.hasOwnProperty("airportSelectField")) {
 			switch (property.airportSelectField) {
-				case "ID":
-					errorMessageSelectStatement[propertyName] = "ID"
+				case "LID":
+					errorMessageSelectStatement[propertyName] = "LID"
 					break
 				case true:
 					errorMessageSelectStatement[propertyName] = "Y"

@@ -18,7 +18,7 @@ import { State } from '../locality/State'
 import { User } from '../User'
 import { TerminalType } from './TerminalType'
 
-export type TmTerminal_Id = number;
+export type Terminal_LocalId = number;
 export type Terminal_IsLocal = boolean;
 export type Terminal_GUID = string;
 
@@ -35,14 +35,18 @@ export class Terminal {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id: TmTerminal_Id
+	@Column({ name: 'TERMINAL_LID' })
+	_localId: Terminal_LocalId
 
 	@Column({ name: 'GUID', nullable: false })
 	@DbString()
 	GUID: Terminal_GUID
 
 	@ManyToOne()
-	@JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'OWNER_USER_LID',
+		referencedColumnName: 'OWNER_USER_LID', nullable: true
+	})
 	owner?: User
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
@@ -50,22 +54,34 @@ export class Terminal {
 	isLocal: Terminal_IsLocal = false
 
 	@ManyToOne()
-	@JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'CONTINENT_LID',
+		referencedColumnName: 'CONTINENT_LID', nullable: true
+	})
 	continent?: Continent
 
 	@ManyToOne()
-	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'COUNTRY_LID',
+		referencedColumnName: 'COUNTRY_LID', nullable: true
+	})
 	country?: Country
 
 	@OneToMany({ mappedBy: 'terminal' })
 	terminalTypes: TerminalType[]
 
 	@ManyToOne()
-	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'STATE_LID',
+		referencedColumnName: 'STATE_LID', nullable: true
+	})
 	state?: State
 
 	@ManyToOne()
-	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'METRO_AREA_LID',
+		referencedColumnName: 'METRO_AREA_LID', nullable: true
+	})
 	metroArea?: MetroArea
 
 }

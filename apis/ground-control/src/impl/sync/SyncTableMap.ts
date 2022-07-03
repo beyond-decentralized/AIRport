@@ -1,5 +1,5 @@
-import {TableIndex}      from "../../lingo/application/Entity";
-import {ApplicationIndex} from "../../lingo/application/Application";
+import {ApplicationEntity_TableIndex}      from "../../lingo/application/Entity";
+import {Application_Index} from "../../lingo/application/Application";
 import {ColumnMap}       from "../query/ColumnMap";
 import {
 	ALL_TABLE_COLUMNS,
@@ -15,14 +15,14 @@ export class SyncTableMap
 	extends TableMap {
 
 	constructor(
-		applicationIndex: ApplicationIndex,
+		applicationIndex: Application_Index,
 		tableMap: { [tableIndex: string]: ColumnMap }
 	) {
 		super(applicationIndex, tableMap);
 	}
 
 	ensureEntity(
-		tableIndex: TableIndex,
+		tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false
 	): SyncColumnMap {
 		return super.ensure(tableIndex, allColumns, SyncColumnMap);

@@ -132,7 +132,7 @@ export class OnlineManager
     repository: IRepository,
     repositoryManager: IRepositoryManager,
   ): Promise<void> {
-    let deltaStore = repositoryManager.deltaStore[repository.id];
+    let deltaStore = repositoryManager.deltaStore[repository._localId];
 
     let remoteChangesSinceInitialGoOnline = [];
 

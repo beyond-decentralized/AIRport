@@ -158,7 +158,7 @@
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "ID",
+							"name": "SYSTEM_WIDE_OPERATION_LID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -185,14 +185,14 @@
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						}
 					],
 					"relations": [],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "SYSTEM_WIDE_OPERATION_IDS",
+						"name": "SYSTEM_WIDE_OPERATION_LIDS",
 						"columnIndexes": []
 					}
 				},
@@ -202,7 +202,7 @@
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "ID",
+							"name": "TERMINAL_RUN_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -257,7 +257,7 @@
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{

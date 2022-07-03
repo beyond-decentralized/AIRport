@@ -83,7 +83,7 @@ export class SyncInRepositoryChecker
 	This RepositorySynchronizationMessage is for an existing repository and that
 	repository must already be loaded in this database for this message to be
 	processed.`)
-			} else if (!history.repository.id) {
+			} else if (!history.repository._localId) {
 				missingRepositories.push(history.repository)
 			}
 
@@ -137,7 +137,7 @@ export class SyncInRepositoryChecker
 			messageRepositoryIndexMap.set(repository.GUID, repositoryIndex)
 		}
 		// Make sure id field is not in the input
-		delete repository.id
+		delete repository._localId
 	}
 
 }

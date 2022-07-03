@@ -45,10 +45,10 @@ export const qAirEntityRelationMethods = {
     // 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
     // }
     isNull() {
-        return or(this.actor.id.isNull(), this.repository.id.isNull(), this.actorRecordId.isNull());
+        return or(this.actor._localId.isNull(), this.repository._localId.isNull(), this._actorRecordId.isNull());
     },
     isNotNull() {
-        return and(this.actor.id.isNotNull(), this.repository.id.isNotNull(), this.actorRecordId.isNotNull());
+        return and(this.actor._localId.isNotNull(), this.repository._localId.isNotNull(), this._actorRecordId.isNotNull());
     }
 };
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);

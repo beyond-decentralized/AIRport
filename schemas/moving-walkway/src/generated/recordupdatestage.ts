@@ -22,7 +22,7 @@ export interface IRecordUpdateStage {
 	// Id Relations
 
 	// Non-Id Properties
-	actorRecordId?: number;
+	_actorRecordId?: number;
 	updatedValue?: any;
 
 	// Non-Id Relations

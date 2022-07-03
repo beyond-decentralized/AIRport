@@ -331,7 +331,7 @@ export class UpdateCacheManager
                 }
                 if (dbEntity.isAirEntity) {
                     let airEntity = entity as any as IAirEntity
-                    if (!airEntity.repository || !airEntity.repository.id) {
+                    if (!airEntity.repository || !airEntity.repository._localId) {
                         airEntity.repository = saveResult.newRepository
                     }
                     airEntity.actor = saveResult.actor

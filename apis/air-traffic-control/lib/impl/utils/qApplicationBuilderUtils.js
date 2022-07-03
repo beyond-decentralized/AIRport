@@ -255,11 +255,11 @@ export function orderApplicationsInOrderOfPrecedence(applications) {
     });
     return applicationsWithDeps.map(applicationWithDeps => applicationWithDeps.application);
 }
-export function applicationDependsOn(dependantApplication, dependsOnApplicationIndex, applicationWithDepsMap) {
-    if (dependantApplication.dependencies.has(dependsOnApplicationIndex)) {
+export function applicationDependsOn(dependantApplication, dependsOnApplication_Index, applicationWithDepsMap) {
+    if (dependantApplication.dependencies.has(dependsOnApplication_Index)) {
         return true;
     }
-    // for(const dependencyApplicationIndex of dependantApplication.dependencies) {
+    // for(const dependencyApplication_Index of dependantApplication.dependencies) {
     //
     // }
     return false;

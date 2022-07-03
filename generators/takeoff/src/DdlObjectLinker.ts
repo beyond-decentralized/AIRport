@@ -16,11 +16,11 @@ import type {
 	IApplicationVersion
 } from '@airport/airspace'
 import type {
-	ColumnId,
-	DomainId,
-	PropertyId,
-	RelationId,
-	ApplicationIndex
+	ApplicationColumn_LocalId,
+	Domain_LocalId,
+	ApplicationProperty_LocalId,
+	ApplicationRelation_LocalId,
+	Application_Index
 } from '@airport/ground-control'
 import type { AllDdlObjects, IDdlObjectLinker, ITerminalStore } from '@airport/terminal-map'
 
@@ -63,12 +63,12 @@ export class DdlObjectLinker
 		latestApplicationVersions: IApplicationVersion[],
 		applicationReferences: IApplicationReference[]
 	): void {
-		const domainMapById: Map<DomainId, IDomain> = new Map()
+		const domainMapById: Map<Domain_LocalId, IDomain> = new Map()
 		domains.forEach((domain: IDomain) => {
 			domainMapById.set(domain.id, domain)
 		})
 
-		const applicationMapByIndex: Map<ApplicationIndex, IApplication> = new Map()
+		const applicationMapByIndex: Map<Application_Index, IApplication> = new Map()
 		applications.forEach((application: IApplication) => {
 			applicationMapByIndex.set(application.index, application)
 			const domain = domainMapById.get(application.domain.id)
@@ -147,9 +147,9 @@ export class DdlObjectLinker
 		relations: IApplicationRelation[],
 		entityArrayById: IApplicationEntity[]
 	): {
-		propertyMapById: Map<PropertyId, IApplicationProperty>, relationMapById: Map<RelationId, IApplicationRelation>
+		propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty>, relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation>
 	} {
-		const propertyMapById: Map<PropertyId, IApplicationProperty> = new Map()
+		const propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty> = new Map()
 
 		properties.forEach((property: IApplicationProperty) => {
 			// Entity is already property wired in
@@ -164,7 +164,7 @@ export class DdlObjectLinker
 			propertyMapById.set(property.id, property)
 		})
 
-		const relationMapById: Map<RelationId, IApplicationRelation> = new Map()
+		const relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation> = new Map()
 		relations.forEach((relation: IApplicationRelation) => {
 			const entity = entityArrayById[relation.entity.id]
 			entity.relations[relation.index] = relation
@@ -193,12 +193,12 @@ export class DdlObjectLinker
 	}
 
 	private linkColumns(
-		propertyMapById: Map<PropertyId, IApplicationProperty>,
-		relationMapById: Map<RelationId, IApplicationRelation>,
+		propertyMapById: Map<ApplicationProperty_LocalId, IApplicationProperty>,
+		relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation>,
 		allDdlObjects: AllDdlObjects,
 		entityArrayById: IApplicationEntity[]
 	) {
-		const columnMapById: Map<ColumnId, IApplicationColumn> = new Map()
+		const columnMapById: Map<ApplicationColumn_LocalId, IApplicationColumn> = new Map()
 		allDdlObjects.all.columns.forEach((column: IApplicationColumn) => {
 			columnMapById.set(column.id, column)
 		})

@@ -177,7 +177,7 @@ extends TerminalAgtEId, TerminalAgtEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTerminalAgt extends IQEntity
 {

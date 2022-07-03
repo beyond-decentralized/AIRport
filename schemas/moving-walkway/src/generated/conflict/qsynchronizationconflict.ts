@@ -153,7 +153,7 @@ export interface SynchronizationConflictEUpdateColumns
 	// Non-Id Columns
 	TYPE?: string | IQStringField;
 	ACKNOWLEDGED?: boolean | IQBooleanField;
-	REPOSITORY_ID?: number | IQNumberField;
+	REPOSITORY_LID?: number | IQNumberField;
 	OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
 	OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
 
@@ -181,7 +181,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QSynchronizationConflict extends IQEntity
 {

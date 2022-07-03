@@ -88,16 +88,16 @@ export const qAirEntityRelationMethods = {
 
 	isNull(): JSONLogicalOperation {
 		return or(
-			this.actor.id.isNull(),
-			this.repository.id.isNull(),
-			this.actorRecordId.isNull(),
+			this.actor._localId.isNull(),
+			this.repository._localId.isNull(),
+			this._actorRecordId.isNull(),
 		)
 	},
 	isNotNull(): JSONLogicalOperation {
 		return and(
-			this.actor.id.isNotNull(),
-			this.repository.id.isNotNull(),
-			this.actorRecordId.isNotNull(),
+			this.actor._localId.isNotNull(),
+			this.repository._localId.isNotNull(),
+			this._actorRecordId.isNotNull(),
 		)
 	}
 }

@@ -12,7 +12,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ColumnIndex,
+	ApplicationColumn_Index,
 	DbColumn,
 	DbEntity,
 	JSONBaseOperation,
@@ -25,10 +25,10 @@ import {
 	JsonTreeQuery,
 	JSONValueOperation,
 	OperationCategory,
-	ApplicationIndex,
+	Application_Index,
 	ApplicationMap,
 	SqlOperator,
-	TableIndex,
+	ApplicationEntity_TableIndex,
 	IEntityStateManager
 } from '@airport/ground-control'
 import { IStoreDriver } from '@airport/terminal-map'
@@ -312,9 +312,9 @@ export abstract class SQLWhereBase
 	}
 
 	protected addField(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index,
 	): void {
 		this.fieldMap.ensure(applicationIndex, tableIndex)
 			.ensure(columnIndex)

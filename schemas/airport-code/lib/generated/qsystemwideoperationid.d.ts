@@ -8,13 +8,13 @@ export interface SystemWideOperationIdESelect extends IEntitySelectProperties, S
  * DELETE - Ids fields and relations only (required).
  */
 export interface SystemWideOperationIdEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SystemWideOperationIdEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -45,10 +45,10 @@ export interface SystemWideOperationIdECreateColumns extends SystemWideOperation
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QSystemWideOperationId extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QSystemWideOperationIdQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QSystemWideOperationIdQRelation extends IQRelation<QSystemWideOperationId>, QSystemWideOperationIdQId {
 }

@@ -39,7 +39,7 @@ export interface IOperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory;
 
 }
@@ -64,7 +64,7 @@ export class OperationHistoryDuo
 			actor,
 			changeType: entityChangeType,
 			entity: dbEntity,
-			id: undefined,
+			_localId: undefined,
 			orderNumber: ++rootTransaction.numberOfOperations,
 			recordHistory: [],
 			repositoryTransactionHistory: repositoryTransactionHistory,
@@ -91,9 +91,9 @@ export class OperationHistoryDuo
 	startRecordHistory(
 		operationHistory: IOperationHistory,
 		actorId: Actor_Id,
-		actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory {
-		const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, actorRecordId)
+		const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, _actorRecordId)
 
 		recordHistory.operationHistory = operationHistory
 

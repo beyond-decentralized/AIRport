@@ -130,9 +130,9 @@ export class AirportDatabase
 	setQApplication(
 		qApplication: QApplication
 	): void {
-		const fullApplicationName = this.dbApplicationUtils
-			.getFullApplicationName(qApplication)
-		const existingQApplication = this.QM[fullApplicationName]
+		const fullApplication_Name = this.dbApplicationUtils
+			.getFullApplication_Name(qApplication)
+		const existingQApplication = this.QM[fullApplication_Name]
 		if (existingQApplication) {
 			const dbApplication = existingQApplication.__dbApplication__
 			qApplication.__dbApplication__ = dbApplication
@@ -140,7 +140,7 @@ export class AirportDatabase
 				this.appliationUtils, this.relationManager)
 			this.Q[dbApplication.index] = qApplication
 		}
-		this.QM[fullApplicationName] = qApplication
+		this.QM[fullApplication_Name] = qApplication
 	}
 
 	getAccumulator(

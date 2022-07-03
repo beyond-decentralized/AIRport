@@ -1,7 +1,7 @@
 import {
-    EntityId,
+    ApplicationEntity_LocalId,
     PortableQuery,
-    ApplicationIndex,
+    Application_Index,
     IRootTransaction
 } from "@airport/ground-control";
 import { IContext } from "@airport/direction-indicator";
@@ -25,4 +25,4 @@ export interface IDeleteManager {
 }
 
 export type RecordsToDelete =
-    Map<ApplicationIndex, Map<EntityId, Map<Repository_Id, AirEntity[]>>>
+    Map<Application_Index, Map<ApplicationEntity_LocalId, Map<Repository_Id, AirEntity[]>>>

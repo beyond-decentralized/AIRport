@@ -124,7 +124,7 @@ export class DeleteManager
 		repositoryIdSet: Set<number>,
 		applicationUtils: IApplicationUtils
 	): void {
-		const repositoryId = treeToDelete.repository.id
+		const repositoryId = treeToDelete.repository._localId
 		repositoryIdSet.add(repositoryId)
 
 		const recordsToDeleteForApplication
@@ -242,8 +242,8 @@ export class DeleteManager
 
 					for (const recordToDelete of entityRecordsToDeleteForRepo) {
 						const recordHistory = this.operationHistoryDuo.startRecordHistory(
-							operationHistory, recordToDelete.actor.id,
-							recordToDelete.actorRecordId)
+							operationHistory, recordToDelete.actor._localId,
+							recordToDelete._actorRecordId)
 						for (const dbProperty of dbEntity.properties) {
 							if (dbProperty.relation && dbProperty.relation.length) {
 								const dbRelation = dbProperty.relation[0]
@@ -258,8 +258,8 @@ export class DeleteManager
 											switch (dbColumn.name) {
 												// Do not add Actor or Repository the are recorded
 												// at record history level
-												case airEntity.ACTOR_ID:
-												case airEntity.REPOSITORY_ID:
+												case airEntity.ACTOR_LID:
+												case airEntity.REPOSITORY_LID:
 													break;
 												default:
 													this.recordHistoryDuo.addOldValue(recordHistory, dbColumn,

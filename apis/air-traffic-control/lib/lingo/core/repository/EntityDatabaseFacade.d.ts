@@ -10,9 +10,9 @@ import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEnt
 /**
  * Facade for all DB operations related to a particular Entity.
  */
-export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
+export interface IEntityDatabaseFacade<IEntity, EntitySelect extends IEntitySelectProperties, EntityCreateProperties extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQ extends IQEntity> {
     dbEntity: DbEntity;
-    duo: IDuo<IEntity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQ>;
+    duo: IDuo<IEntity, EntitySelect, EntityCreateProperties, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQ>;
     /**
      * The Promise based API for all Entity 'find' (find many) queries.
      */

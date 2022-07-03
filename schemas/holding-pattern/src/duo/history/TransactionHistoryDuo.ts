@@ -1,7 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control'
 import {
-	Repository_Id,
+	Repository_LocalId,
 	TransactionHistory
 } from '../../ddl/ddl'
 import {
@@ -19,7 +19,7 @@ export interface ITransactionHistoryDuo {
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repositoryId: Repository_Id,
+		repositoryId: Repository_LocalId,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory
 
@@ -45,7 +45,7 @@ export class TransactionHistoryDuo
 
 	getRepositoryTransaction(
 		transactionHistory: ITransactionHistory,
-		repositoryId: Repository_Id,
+		repositoryId: Repository_LocalId,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId]

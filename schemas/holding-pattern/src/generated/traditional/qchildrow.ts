@@ -124,7 +124,7 @@ extends ChildRowEId, ChildRowEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QChildRow extends IQEntity
 {

@@ -159,7 +159,7 @@ export const APPLICATION = {
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "ID",
+                            "name": "SYSTEM_WIDE_OPERATION_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -186,14 +186,14 @@ export const APPLICATION = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id",
+                            "name": "_localId",
                             "sinceVersion": 1
                         }
                     ],
                     "relations": [],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "SYSTEM_WIDE_OPERATION_IDS",
+                        "name": "SYSTEM_WIDE_OPERATION_LIDS",
                         "columnIndexes": []
                     }
                 },
@@ -203,7 +203,7 @@ export const APPLICATION = {
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "ID",
+                            "name": "TERMINAL_RUN_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -258,7 +258,7 @@ export const APPLICATION = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id",
+                            "name": "_localId",
                             "sinceVersion": 1
                         },
                         {

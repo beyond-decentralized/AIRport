@@ -1,4 +1,4 @@
-import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, SQLDataType, TableIndex } from '@airport/ground-control';
+import { ChangeType, CRUDOperation, DbColumn, DbEntity, DbRelation, Application_Index, SQLDataType, ApplicationEntity_TableIndex } from '@airport/ground-control';
 import type { QEntityConstructor } from '../../impl/core/entity/Entity';
 import { IEntityIdProperties, IQEntity } from '../core/entity/Entity';
 import { IQFieldInternal } from '../core/field/Field';
@@ -36,7 +36,7 @@ export interface RepositorySheetSelectInfo {
     selectClauseColumns?: DbColumn[];
 }
 export interface IApplicationUtils {
-    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex): DbEntity;
+    getDbEntity(applicationIndex: Application_Index, tableIndex: ApplicationEntity_TableIndex): DbEntity;
     getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
     getEntityConstructor(dbEntity: DbEntity): any;
     getNewEntity(dbEntity: DbEntity): any;

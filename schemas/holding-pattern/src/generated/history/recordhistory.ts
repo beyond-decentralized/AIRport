@@ -28,7 +28,7 @@ export interface IRecordHistory {
 	// Id Relations
 
 	// Non-Id Properties
-	actorRecordId?: number;
+	_actorRecordId?: number;
 
 	// Non-Id Relations
 	actor?: IActor;

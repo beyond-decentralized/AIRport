@@ -16,12 +16,18 @@ export class DatabaseType {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'DATABASE_ID', referencedColumnName: 'ID', nullable: true })
+    @JoinColumn({
+        name: 'DATABASE_LID',
+        referencedColumnName: 'DATABASE_LID', nullable: true
+    })
     database: Database
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID', nullable: true })
+    @JoinColumn({
+        name: 'TYPE_LID',
+        referencedColumnName: 'TYPE_LID', nullable: true
+    })
     type: Type
 
 }

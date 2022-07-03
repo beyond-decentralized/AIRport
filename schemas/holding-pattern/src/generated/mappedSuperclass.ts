@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "AirEntity",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [
@@ -20,8 +20,8 @@ export const MAPPED_SUPERCLASS = [
 						"name": "JoinColumn",
 						"values": [
 							{
-								"name": "REPOSITORY_ID",
-								"referencedColumnName": "ID",
+								"name": "REPOSITORY_LID",
+								"referencedColumnName": "LID",
 								"nullable": false
 							}
 						]
@@ -53,8 +53,8 @@ export const MAPPED_SUPERCLASS = [
 						"name": "JoinColumn",
 						"values": [
 							{
-								"name": "ACTOR_ID",
-								"referencedColumnName": "ID",
+								"name": "ACTOR_LID",
+								"referencedColumnName": "LID",
 								"nullable": false
 							}
 						]
@@ -96,7 +96,7 @@ export const MAPPED_SUPERCLASS = [
 				"isId": true,
 				"isMappedSuperclass": false,
 				"isTransient": false,
-				"name": "actorRecordId",
+				"name": "_actorRecordId",
 				"optional": true,
 				"type": "number",
 				"ownerEntity": null,
@@ -240,8 +240,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "REPOSITORY_ID",
-									"referencedColumnName": "ID",
+									"name": "REPOSITORY_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -273,8 +273,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "ACTOR_ID",
-									"referencedColumnName": "ID",
+									"name": "ACTOR_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -316,7 +316,7 @@ export const MAPPED_SUPERCLASS = [
 					"isId": true,
 					"isMappedSuperclass": false,
 					"isTransient": false,
-					"name": "actorRecordId",
+					"name": "_actorRecordId",
 					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
@@ -385,7 +385,7 @@ export const MAPPED_SUPERCLASS = [
 							"name": "Column",
 							"values": [
 								{
-									"name": "SYSTEM_WIDE_OPERATION_ID",
+									"name": "SYSTEM_WIDE_OPERATION_LID",
 									"nullable": false
 								}
 							]
@@ -413,8 +413,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "ORIGINAL_REPOSITORY_ID",
-									"referencedColumnName": "ID"
+									"name": "ORIGINAL_REPOSITORY_LID",
+									"referencedColumnName": "LID"
 								}
 							]
 						}
@@ -441,8 +441,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "ORIGINAL_ACTOR_ID",
-									"referencedColumnName": "ID"
+									"name": "ORIGINAL_ACTOR_LID",
+									"referencedColumnName": "LID"
 								}
 							]
 						}
@@ -532,7 +532,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ChildRepoRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
 		"parentClassName": "AirEntity",
 		"location": "../repository/AirEntity",
 		"isSuperclass": true,
@@ -595,7 +595,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "AirEntity",
-			"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+			"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [
@@ -613,8 +613,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "REPOSITORY_ID",
-									"referencedColumnName": "ID",
+									"name": "REPOSITORY_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -646,8 +646,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "ACTOR_ID",
-									"referencedColumnName": "ID",
+									"name": "ACTOR_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -689,7 +689,7 @@ export const MAPPED_SUPERCLASS = [
 					"isId": true,
 					"isMappedSuperclass": false,
 					"isTransient": false,
-					"name": "actorRecordId",
+					"name": "_actorRecordId",
 					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
@@ -833,8 +833,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "REPOSITORY_ID",
-										"referencedColumnName": "ID",
+										"name": "REPOSITORY_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -866,8 +866,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ACTOR_ID",
-										"referencedColumnName": "ID",
+										"name": "ACTOR_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -909,7 +909,7 @@ export const MAPPED_SUPERCLASS = [
 						"isId": true,
 						"isMappedSuperclass": false,
 						"isTransient": false,
-						"name": "actorRecordId",
+						"name": "_actorRecordId",
 						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
@@ -978,7 +978,7 @@ export const MAPPED_SUPERCLASS = [
 								"name": "Column",
 								"values": [
 									{
-										"name": "SYSTEM_WIDE_OPERATION_ID",
+										"name": "SYSTEM_WIDE_OPERATION_LID",
 										"nullable": false
 									}
 								]
@@ -1006,8 +1006,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ORIGINAL_REPOSITORY_ID",
-										"referencedColumnName": "ID"
+										"name": "ORIGINAL_REPOSITORY_LID",
+										"referencedColumnName": "LID"
 									}
 								]
 							}
@@ -1034,8 +1034,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ORIGINAL_ACTOR_ID",
-										"referencedColumnName": "ID"
+										"name": "ORIGINAL_ACTOR_LID",
+										"referencedColumnName": "LID"
 									}
 								]
 							}
@@ -1127,7 +1127,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ChildRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -1178,7 +1178,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ImmutableRepoRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
 		"parentClassName": "AirEntity",
 		"location": "../repository/AirEntity",
 		"isSuperclass": true,
@@ -1271,7 +1271,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "AirEntity",
-			"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+			"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [
@@ -1289,8 +1289,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "REPOSITORY_ID",
-									"referencedColumnName": "ID",
+									"name": "REPOSITORY_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -1322,8 +1322,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "ACTOR_ID",
-									"referencedColumnName": "ID",
+									"name": "ACTOR_LID",
+									"referencedColumnName": "LID",
 									"nullable": false
 								}
 							]
@@ -1365,7 +1365,7 @@ export const MAPPED_SUPERCLASS = [
 					"isId": true,
 					"isMappedSuperclass": false,
 					"isTransient": false,
-					"name": "actorRecordId",
+					"name": "_actorRecordId",
 					"optional": true,
 					"type": "number",
 					"ownerEntity": null,
@@ -1509,8 +1509,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "REPOSITORY_ID",
-										"referencedColumnName": "ID",
+										"name": "REPOSITORY_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -1542,8 +1542,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ACTOR_ID",
-										"referencedColumnName": "ID",
+										"name": "ACTOR_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -1585,7 +1585,7 @@ export const MAPPED_SUPERCLASS = [
 						"isId": true,
 						"isMappedSuperclass": false,
 						"isTransient": false,
-						"name": "actorRecordId",
+						"name": "_actorRecordId",
 						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
@@ -1654,7 +1654,7 @@ export const MAPPED_SUPERCLASS = [
 								"name": "Column",
 								"values": [
 									{
-										"name": "SYSTEM_WIDE_OPERATION_ID",
+										"name": "SYSTEM_WIDE_OPERATION_LID",
 										"nullable": false
 									}
 								]
@@ -1682,8 +1682,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ORIGINAL_REPOSITORY_ID",
-										"referencedColumnName": "ID"
+										"name": "ORIGINAL_REPOSITORY_LID",
+										"referencedColumnName": "LID"
 									}
 								]
 							}
@@ -1710,8 +1710,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ORIGINAL_ACTOR_ID",
-										"referencedColumnName": "ID"
+										"name": "ORIGINAL_ACTOR_LID",
+										"referencedColumnName": "LID"
 									}
 								]
 							}
@@ -1803,7 +1803,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ImmutableRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -1882,7 +1882,7 @@ export const MAPPED_SUPERCLASS = [
 							"name": "JoinColumn",
 							"values": [
 								{
-									"name": "USER_ACCOUNT_ID"
+									"name": "USER_ACCOUNT_LID"
 								}
 							]
 						}
@@ -1906,7 +1906,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 0,
 								"isGenerated": true,
 								"manyRelationColumns": [],
-								"name": "ID",
+								"name": "LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -1947,7 +1947,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 2,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "ORIGIN_ID",
+								"name": "ORIGIN_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2067,7 +2067,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 8,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "CONTINENT_ID",
+								"name": "CONTINENT_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2087,7 +2087,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 9,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "COUNTRY_ID",
+								"name": "COUNTRY_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2107,7 +2107,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 10,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "STATE_ID",
+								"name": "STATE_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2127,7 +2127,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 11,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "METRO_AREA_ID",
+								"name": "METRO_AREA_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2149,7 +2149,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 0,
 								"isGenerated": true,
 								"manyRelationColumns": [],
-								"name": "ID",
+								"name": "LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2504,7 +2504,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "MutableRepoRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
 		"parentClassName": "ImmutableRepoRow",
 		"location": "./ImmutableRepoRow",
 		"isSuperclass": true,
@@ -2597,7 +2597,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "ImmutableRepoRow",
-			"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
+			"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
 			"parentClassName": "AirEntity",
 			"location": "../repository/AirEntity",
 			"isSuperclass": true,
@@ -2690,7 +2690,7 @@ export const MAPPED_SUPERCLASS = [
 			"implementedInterfaceNames": [],
 			"parentEntity": {
 				"type": "AirEntity",
-				"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+				"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
 				"parentClassName": null,
 				"isSuperclass": true,
 				"ids": [
@@ -2708,8 +2708,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "REPOSITORY_ID",
-										"referencedColumnName": "ID",
+										"name": "REPOSITORY_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -2741,8 +2741,8 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "ACTOR_ID",
-										"referencedColumnName": "ID",
+										"name": "ACTOR_LID",
+										"referencedColumnName": "LID",
 										"nullable": false
 									}
 								]
@@ -2784,7 +2784,7 @@ export const MAPPED_SUPERCLASS = [
 						"isId": true,
 						"isMappedSuperclass": false,
 						"isTransient": false,
-						"name": "actorRecordId",
+						"name": "_actorRecordId",
 						"optional": true,
 						"type": "number",
 						"ownerEntity": null,
@@ -2928,8 +2928,8 @@ export const MAPPED_SUPERCLASS = [
 									"name": "JoinColumn",
 									"values": [
 										{
-											"name": "REPOSITORY_ID",
-											"referencedColumnName": "ID",
+											"name": "REPOSITORY_LID",
+											"referencedColumnName": "LID",
 											"nullable": false
 										}
 									]
@@ -2961,8 +2961,8 @@ export const MAPPED_SUPERCLASS = [
 									"name": "JoinColumn",
 									"values": [
 										{
-											"name": "ACTOR_ID",
-											"referencedColumnName": "ID",
+											"name": "ACTOR_LID",
+											"referencedColumnName": "LID",
 											"nullable": false
 										}
 									]
@@ -3004,7 +3004,7 @@ export const MAPPED_SUPERCLASS = [
 							"isId": true,
 							"isMappedSuperclass": false,
 							"isTransient": false,
-							"name": "actorRecordId",
+							"name": "_actorRecordId",
 							"optional": true,
 							"type": "number",
 							"ownerEntity": null,
@@ -3073,7 +3073,7 @@ export const MAPPED_SUPERCLASS = [
 									"name": "Column",
 									"values": [
 										{
-											"name": "SYSTEM_WIDE_OPERATION_ID",
+											"name": "SYSTEM_WIDE_OPERATION_LID",
 											"nullable": false
 										}
 									]
@@ -3101,8 +3101,8 @@ export const MAPPED_SUPERCLASS = [
 									"name": "JoinColumn",
 									"values": [
 										{
-											"name": "ORIGINAL_REPOSITORY_ID",
-											"referencedColumnName": "ID"
+											"name": "ORIGINAL_REPOSITORY_LID",
+											"referencedColumnName": "LID"
 										}
 									]
 								}
@@ -3129,8 +3129,8 @@ export const MAPPED_SUPERCLASS = [
 									"name": "JoinColumn",
 									"values": [
 										{
-											"name": "ORIGINAL_ACTOR_ID",
-											"referencedColumnName": "ID"
+											"name": "ORIGINAL_ACTOR_LID",
+											"referencedColumnName": "LID"
 										}
 									]
 								}
@@ -3224,7 +3224,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "MutableRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
 		"parentClassName": "ImmutableRow",
 		"location": "./ImmutableRow",
 		"isSuperclass": true,
@@ -3317,7 +3317,7 @@ export const MAPPED_SUPERCLASS = [
 		"implementedInterfaceNames": [],
 		"parentEntity": {
 			"type": "ImmutableRow",
-			"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
+			"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
 			"parentClassName": null,
 			"isSuperclass": true,
 			"ids": [],
@@ -3396,7 +3396,7 @@ export const MAPPED_SUPERCLASS = [
 								"name": "JoinColumn",
 								"values": [
 									{
-										"name": "USER_ACCOUNT_ID"
+										"name": "USER_ACCOUNT_LID"
 									}
 								]
 							}
@@ -3420,7 +3420,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 0,
 									"isGenerated": true,
 									"manyRelationColumns": [],
-									"name": "ID",
+									"name": "LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3461,7 +3461,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 2,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "ORIGIN_ID",
+									"name": "ORIGIN_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3581,7 +3581,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 8,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "CONTINENT_ID",
+									"name": "CONTINENT_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3601,7 +3601,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 9,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "COUNTRY_ID",
+									"name": "COUNTRY_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3621,7 +3621,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 10,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "STATE_ID",
+									"name": "STATE_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3641,7 +3641,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 11,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "METRO_AREA_ID",
+									"name": "METRO_AREA_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3663,7 +3663,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 0,
 									"isGenerated": true,
 									"manyRelationColumns": [],
-									"name": "ID",
+									"name": "LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -4020,7 +4020,7 @@ export const MAPPED_SUPERCLASS = [
 	},
 	{
 		"type": "ReferenceRow",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],

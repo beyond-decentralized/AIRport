@@ -2,7 +2,7 @@ import {
 	RepositorySynchronizationMessage
 } from '@airport/arrivals-n-departures'
 import {
-	ApplicationVersionId,
+	ApplicationVersion_LocalId,
 	TransactionType
 } from '@airport/ground-control'
 import {
@@ -74,11 +74,11 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<void> {
 		this.aggregateHistoryRecords(messages, transaction)
 
-		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap }
+		const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap }
 			= await this.getDataStructures(messages)
 
 		await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById,
-			applicationsByApplicationVersionIdMap, context)
+			applicationsByApplicationVersion_LocalIdMap, context)
 	}
 
 	private aggregateHistoryRecords(
@@ -124,21 +124,21 @@ export class TwoStageSyncedInDataProcessor
 	): Promise<{
 		actorMapById: Map<number, IActor>
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
-		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
 	}> {
 		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
 			= new Map()
-		const applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication> = new Map()
+		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 		const actorMapById: Map<number, IActor> = new Map()
 		const repoTransHistories: IRepositoryTransactionHistory[] = []
 		for (const message of messages) {
 			repoTransHistories.push(message.history)
-			repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository.id, repoTransHistories)
+			repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository._localId, repoTransHistories)
 			for (const actor of message.actors) {
-				actorMapById.set(actor.id, actor)
+				actorMapById.set(actor._localId, actor)
 			}
 			for (const applicationVersion of message.applicationVersions) {
-				applicationsByApplicationVersionIdMap.set(applicationVersion.id, applicationVersion.application)
+				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion.id, applicationVersion.application)
 			}
 		}
 
@@ -150,14 +150,14 @@ export class TwoStageSyncedInDataProcessor
 		return {
 			actorMapById,
 			repositoryTransactionHistoryMapByRepositoryId,
-			applicationsByApplicationVersionIdMap
+			applicationsByApplicationVersion_LocalIdMap
 		}
 	}
 
 	private async updateLocalData(
 		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
 		actorMayById: Map<Actor_Id, IActor>,
-		applicationsByApplicationVersionIdMap: Map<ApplicationVersionId, IApplication>,
+		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IContext
 	): Promise<void> {
 		const stage1Result
@@ -176,7 +176,7 @@ export class TwoStageSyncedInDataProcessor
 		}
 
 		await this.stage2SyncedInDataProcessor.applyChangesToDb(
-			stage1Result, applicationsByApplicationVersionIdMap)
+			stage1Result, applicationsByApplicationVersion_LocalIdMap)
 
 
 		if (allSyncConflicts.length) {

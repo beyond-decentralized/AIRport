@@ -4,10 +4,10 @@ import { AirRequest } from "./AirRequest";
 
 export interface RequestManager {
 
-    getRequest(): AirRequest
+    request: AirRequest
 
-    getUser(): User
+    user: User
 
-    getActor(): Actor
+    actor: Actor
 
 }

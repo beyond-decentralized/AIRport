@@ -14,7 +14,7 @@ import {
 export interface IAirEntity {
 	
 	// Id Properties
-	actorRecordId?: number;
+	_actorRecordId?: number;
 
 	// Id Relations
 	repository: IRepository;

@@ -1,6 +1,6 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
-	PropertyId,
+	ApplicationProperty_LocalId,
 	undefinedToNull
 } from '@airport/ground-control'
 import {
@@ -15,7 +15,7 @@ export interface IApplicationRelationDao
 	extends IBaseApplicationRelationDao {
 
 	findAllForProperties(
-		propertyIds: PropertyId[]
+		propertyIds: ApplicationProperty_LocalId[]
 	): Promise<IApplicationRelation[]>
 
 	insert(
@@ -31,7 +31,7 @@ export class ApplicationRelationDao
 	implements IApplicationRelationDao {
 
 	async findAllForProperties(
-		propertyIds: PropertyId[]
+		propertyIds: ApplicationProperty_LocalId[]
 	): Promise<IApplicationRelation[]> {
 		let r: QApplicationRelation
 

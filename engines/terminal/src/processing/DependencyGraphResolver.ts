@@ -307,11 +307,11 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 	): IOperationNode<E>[] {
 		let operationNodes: IOperationNode<any>[] = []
 		let processedNodes: IDependencyGraphNode<any>[] = []
-		let operationsByApplicationIndex: IOperationsForEntity[][] = []
+		let operationsByApplication_Index: IOperationsForEntity[][] = []
 
 		for (const node of orderedDependencies) {
 			const dbEntity = node.dbEntity
-			const applicationOperationNodes = ensureChildArray(operationsByApplicationIndex,
+			const applicationOperationNodes = ensureChildArray(operationsByApplication_Index,
 				dbEntity.applicationVersion.application.index)
 
 			let entityOperations = applicationOperationNodes[dbEntity.index]

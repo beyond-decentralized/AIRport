@@ -12,11 +12,11 @@ import {
 } from '@airport/air-traffic-control';
 import {
 	PackageName,
-	ApplicationIndex,
-	FullApplicationName,
-	ApplicationScope,
+	Application_Index,
+	FullApplication_Name,
+	Application_Scope,
 	ApplicationStatus,
-	ApplicationName
+	Application_Name
 } from '@airport/ground-control';
 import { Domain } from './Domain';
 import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
@@ -31,29 +31,21 @@ export class Application {
 	@Id()
 	@DbNumber()
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })
-	index: ApplicationIndex;
+	index: Application_Index;
 
 	GUID: string
 
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
-	scope: ApplicationScope;
+	scope: Application_Scope;
 
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()
-	name: ApplicationName;
+	name: Application_Name;
 
 	@Column({ name: 'FULL_APPLICATION_NAME', nullable: false })
 	@DbString()
-	fullName: FullApplicationName;
-
-	// @ManyToOne()
-	// @JoinColumn({ name: 'PACKAGE_ID', referencedColumnName: 'ID', nullable: false })
-	// package: Package;
-
-	// @Column({ name: 'PACKAGE_NAME', nullable: false })
-	// @DbString()
-	// packageName: PackageName;
+	fullName: FullApplication_Name;
 
 	@Column({ name: 'STATUS', nullable: false })
 	@DbString()
@@ -64,7 +56,7 @@ export class Application {
 	signature: string;
 
 	@ManyToOne()
-	@JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
+	@JoinColumn({ name: 'DOMAIN_LID', referencedColumnName: 'DOMAIN_LID', nullable: false })
 	domain: Domain;
 
 	@OneToMany({ mappedBy: 'application' })

@@ -30,7 +30,7 @@ export type TransactionHistoryNumberOfOperations = number;
  * Created by Papa on 5/1/2017./
  */
 
-export type TransactionHistoryId = number
+export type TransactionHistory_LocalId = number
 
 @Entity()
 @Table({ name: 'TRANSACTION_HISTORY' })
@@ -40,7 +40,8 @@ export class TransactionHistory
 	@GeneratedValue()
 	@Id()
 	@SequenceGenerator({ allocationSize: 100 })
-	id: TransactionHistoryId
+	@Column({ name: 'TRANSACTION_HISTORY_LID' })
+	_localId: TransactionHistory_LocalId
 
 	@Column({ name: 'TRANSACTION_TYPE', nullable: false })
 	@DbString()

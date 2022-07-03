@@ -10,25 +10,25 @@ import {
 }                      from '../../index';
 import {
 	DbEntity,
-	TableIndex
+	ApplicationEntity_TableIndex
 }                      from './Entity';
-import { ApplicationIndex } from './Application';
+import { Application_Index } from './Application';
 
-export type ColumnId = number;
-export type ColumnIndex = number;
-export type ColumnName = string;
-export type ColumnNotNull = boolean;
-export type ColumnPrecision = number;
-export type ColumnScale = number;
+export type ApplicationColumn_LocalId = number;
+export type ApplicationColumn_Index = number;
+export type ApplicationColumn_Name = string;
+export type ApplicationColumn_NotNull = boolean;
+export type ApplicationColumn_Precision = number;
+export type ApplicationColumn_Scale = number;
 // export type ColumnDefinition = string;
-export type PropertyId = number;
-export type PropertyIndex = number;
-export type PropertyIsId = boolean;
-export type PropertyName = string;
-export type RelationId = number;
-export type RelationIndex = number;
-export type ApplicationColumnIsGenerated = boolean
-export type ApplicationColumnAllocationSize = number
+export type ApplicationProperty_LocalId = number;
+export type ApplicationProperty_Index = number;
+export type ApplicationProperty_IsId = boolean;
+export type ApplicationProperty_Name = string;
+export type ApplicationRelation_LocalId = number;
+export type ApplicationRelation_Index = number;
+export type ApplicationColumn_IsGenerated = boolean
+export type ApplicationColumn_AllocationSize = number
 
 /**
  * A property of an object in a application.
@@ -36,39 +36,39 @@ export type ApplicationColumnAllocationSize = number
  * and are the first entries.
  */
 export interface JsonApplicationProperty
-	extends ApplicationReferenceByIndex<PropertyIndex>,
+	extends ApplicationReferenceByIndex<ApplicationProperty_Index>,
 	        JsonDatabaseObject {
 
 	/**
 	 * Does this property consist of @Id columns?
 	 */
-	isId: PropertyIsId;
+	isId: ApplicationProperty_IsId;
 
 	/**
 	 * Name of the property.
 	 */
-	name: PropertyName;
+	name: ApplicationProperty_Name;
 
 	/**
 	 * Column represented by the property.
 	 */
-	columnRef?: ApplicationReferenceByIndex<ColumnIndex>;
+	columnRef?: ApplicationReferenceByIndex<ApplicationColumn_Index>;
 
 	/**
 	 * A Relation that is represented by the property (if any).
 	 */
-	relationRef?: ApplicationReferenceByIndex<RelationIndex>;
+	relationRef?: ApplicationReferenceByIndex<ApplicationRelation_Index>;
 
 }
 
 export interface DbProperty
-	extends ApplicationReferenceByIndex<PropertyIndex>,
+	extends ApplicationReferenceByIndex<ApplicationProperty_Index>,
 	        DatabaseObject {
 
-	id: PropertyId
+	id: ApplicationProperty_LocalId
 	entity: DbEntity;
-	name: PropertyName;
-	isId: PropertyIsId;
+	name: ApplicationProperty_Name;
+	isId: ApplicationProperty_IsId;
 	propertyColumns: DbPropertyColumn[];
 	relation: DbRelation[];
 
@@ -86,7 +86,7 @@ export class DbPropertyColumn {
  * A column in a application table.
  */
 export interface JsonApplicationColumn
-	extends ApplicationReferenceByIndex<ColumnIndex>,
+	extends ApplicationReferenceByIndex<ApplicationColumn_Index>,
 	        JsonDatabaseObject {
 
 	/**
@@ -99,12 +99,12 @@ export interface JsonApplicationColumn
 	/**
 	 * Is it column a generated value?
 	 */
-	isGenerated?: ApplicationColumnIsGenerated;
+	isGenerated?: ApplicationColumn_IsGenerated;
 
 	/**
 	 * How many ids to allocate at a time
 	 */
-	allocationSize?: ApplicationColumnAllocationSize;
+	allocationSize?: ApplicationColumn_AllocationSize;
 
 	/**
 	 * One-to-Many relations that are mapped to this column.
@@ -114,9 +114,9 @@ export interface JsonApplicationColumn
 	/**
 	 * Name of the column.
 	 */
-	name: ColumnName;
+	name: ApplicationColumn_Name;
 
-	notNull: ColumnNotNull
+	notNull: ApplicationColumn_NotNull
 
 	// The precision of a decimal (total digits)
 	precision?: number;
@@ -141,30 +141,30 @@ export interface IdKeyArrayByIdColumnIndex
 }
 
 export interface DbColumn
-	extends ApplicationReferenceByIndex<ColumnIndex>,
+	extends ApplicationReferenceByIndex<ApplicationColumn_Index>,
 	        DatabaseObject {
 
-	allocationSize?: ApplicationColumnAllocationSize
+	allocationSize?: ApplicationColumn_AllocationSize
 
 	entity: DbEntity
 
-	id: ColumnId
+	id: ApplicationColumn_LocalId
 
 	/**
 	 * Id index of this column (if it's an ID column).
 	 */
-	idIndex?: ColumnIndex
+	idIndex?: ApplicationColumn_Index
 
-	isGenerated: ApplicationColumnIsGenerated
+	isGenerated: ApplicationColumn_IsGenerated
 
 	/**
 	 * In which ManyToOne relations is this column present.
 	 */
 	manyRelationColumns: DbRelationColumn[]
 
-	name: ColumnName
+	name: ApplicationColumn_Name
 
-	notNull: ColumnNotNull
+	notNull: ApplicationColumn_NotNull
 
 	/**
 	 * In which OneToMany relations is this column present.
@@ -197,7 +197,7 @@ export interface ApplicationReferenceByIndex<ID extends number> {
 }
 
 export interface PropertyReference
-	extends ApplicationReferenceByIndex<PropertyIndex> {
+	extends ApplicationReferenceByIndex<ApplicationProperty_Index> {
 
 }
 
@@ -205,7 +205,7 @@ export interface PropertyReference
  * A application relation.
  */
 export interface JsonApplicationRelation
-	extends ApplicationReferenceByIndex<RelationIndex>,
+	extends ApplicationReferenceByIndex<ApplicationRelation_Index>,
 	        JsonDatabaseObject {
 
 	/**
@@ -234,7 +234,7 @@ export interface JsonApplicationRelation
 	propertyRef: PropertyReference;
 
 	/**
-	 * True if join automatically includes REPOSITORY_ID.
+	 * True if join automatically includes REPOSITORY_LID.
 	 * Not needed - all joins to and from Repository entities are automatically repository
 	 * joins
 	 */
@@ -248,12 +248,12 @@ export interface JsonApplicationRelation
 	/**
 	 * Related table's application index (as defined in application-local application references).
 	 */
-	relationTableApplicationIndex?: ApplicationIndex;
+	relationTableApplication_Index?: Application_Index;
 
 	/**
 	 * Related table index.
 	 */
-	relationTableIndex: TableIndex;
+	relationTableIndex: ApplicationEntity_TableIndex;
 
 	/**
 	 * Serialized function to add to the join.
@@ -270,10 +270,10 @@ export interface JsonApplicationRelation
 }
 
 export interface DbRelation
-	extends ApplicationReferenceByIndex<RelationIndex>,
+	extends ApplicationReferenceByIndex<ApplicationRelation_Index>,
 	        DatabaseObject {
 
-	id: RelationId
+	id: ApplicationRelation_LocalId
 
 	entity: DbEntity
 	foreignKey: DatabaseForeignKey
@@ -305,11 +305,11 @@ export interface DbRelation
 export interface JsonApplicationRelationColumn
 	extends JsonDatabaseObject {
 
-	manyRelationIndex: RelationIndex;
-	oneApplicationIndex: ApplicationIndex;
-	oneTableIndex: TableIndex;
-	oneRelationIndex?: RelationIndex;
-	oneColumnIndex: ColumnIndex;
+	manyRelationIndex: ApplicationRelation_Index;
+	oneApplication_Index: Application_Index;
+	oneTableIndex: ApplicationEntity_TableIndex;
+	oneRelationIndex?: ApplicationRelation_Index;
+	oneColumnIndex: ApplicationColumn_Index;
 
 }
 

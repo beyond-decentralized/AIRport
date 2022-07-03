@@ -33,7 +33,7 @@ import { RepositoryApplication } from "./RepositoryApplication";
 
 export type Repository_AgeSuitability = 0 | 7 | 13 | 18
 export type Repository_CreatedAt = Date;
-export type Repository_Id = number;
+export type Repository_LocalId = number;
 export type Repository_Immutable = boolean;
 export type Repository_Source = string;
 export type Repository_GUID = string;
@@ -44,11 +44,15 @@ export type Repository_GUID = string;
 })
 export class Repository {
 
-	@Column({ name: "ID" })
+	@Column({ name: "REPOSITORY_LID" })
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	id: Repository_Id;
+	_localId: Repository_LocalId;
+
+	@Column({ name: "GUID", nullable: false })
+	@DbString()
+	GUID: Repository_GUID;
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
@@ -65,13 +69,9 @@ export class Repository {
 	@DbString()
 	source: Repository_Source
 
-	@Column({ name: "GUID", nullable: false })
-	@DbString()
-	GUID: Repository_GUID;
-
 	@ManyToOne()
 	@JoinColumn({
-		name: "OWNER_USER_ID", referencedColumnName: "ID",
+		name: 'OWNER_USER_LID', referencedColumnName: 'USER_LID',
 		nullable: false
 	})
 	owner: User;
@@ -80,19 +80,31 @@ export class Repository {
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];
 
 	@ManyToOne()
-	@JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'CONTINENT_LID',
+		referencedColumnName: 'CONTINENT_LID', nullable: true
+	})
 	continent?: Continent
 
 	@ManyToOne()
-	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'COUNTRY_LID',
+		referencedColumnName: 'COUNTRY_LID', nullable: true
+	})
 	country?: Country
 
 	@ManyToOne()
-	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'STATE_LID',
+		referencedColumnName: 'STATE_LID', nullable: true
+	})
 	state?: State
 
 	@ManyToOne()
-	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'METRO_AREA_LID',
+		referencedColumnName: 'METRO_AREA_LID', nullable: true
+	})
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'repository' })

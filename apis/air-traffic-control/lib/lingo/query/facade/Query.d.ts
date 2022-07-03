@@ -26,9 +26,8 @@ export interface IQuery {
 }
 export declare const NEW_RECORD_FIELDS: {
     actor: any;
-    actorRecordId: any;
+    _actorRecordId: any;
     ageSuitability: number;
-    id: any;
     originalActor: any;
     originalActorRecordId: any;
     originalRepository: any;

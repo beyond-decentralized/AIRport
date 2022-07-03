@@ -7,9 +7,9 @@ import {
 	ManyToOne,
 	Table
 } from '@airport/air-traffic-control'
-import {ApplicationReferenceIndex}  from '@airport/ground-control'
-import {ApplicationVersion}         from './ApplicationVersion'
-import {VersionedApplicationObject} from './VersionedApplicationObject'
+import { ApplicationReference_Index } from '@airport/ground-control'
+import { ApplicationVersion } from './ApplicationVersion'
+import { VersionedApplicationObject } from './VersionedApplicationObject'
 
 @Entity()
 @Table({
@@ -20,16 +20,22 @@ export class ApplicationReference
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'OWN_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({
+		name: 'OWN_APPLICATION_VERSION_LID',
+		referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+	})
 	ownApplicationVersion: ApplicationVersion
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'REFERENCED_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({
+		name: 'REFERENCED_APPLICATION_VERSION_LID',
+		referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+	})
 	referencedApplicationVersion: ApplicationVersion
 
-	@Column({name: 'APPLICATION_REFERENCE_INDEX', nullable: false})
+	@Column({ name: 'APPLICATION_REFERENCE_INDEX', nullable: false })
 	@DbNumber()
-	index: ApplicationReferenceIndex
+	index: ApplicationReference_Index
 
 }

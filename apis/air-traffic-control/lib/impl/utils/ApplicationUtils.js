@@ -14,13 +14,13 @@ let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
             .applicationVersion.entities[tableIndex];
     }
     isActorId(columnName) {
-        return columnName === airEntity.ACTOR_ID;
+        return columnName === airEntity.ACTOR_LID;
     }
     isActorRecordId(columnName) {
         return columnName === airEntity.ACTOR_RECORD_ID;
     }
     isRepositoryId(columnName) {
-        return columnName === airEntity.REPOSITORY_ID;
+        return columnName === airEntity.REPOSITORY_LID;
     }
     doCascade(dbRelation, crudOperation) {
         if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
@@ -213,13 +213,13 @@ of property '${dbEntity.name}.${dbProperty.name}'.`);
             }
             const inQueryColumnIndex = selectClause.length - 1;
             switch (dbColumn.name) {
-                case airEntity.ACTOR_ID:
+                case airEntity.ACTOR_LID:
                     actorIdColumnIndex = inQueryColumnIndex;
                     break;
                 case airEntity.ACTOR_RECORD_ID:
                     actorRecordIdColumnIndex = inQueryColumnIndex;
                     break;
-                case airEntity.REPOSITORY_ID:
+                case airEntity.REPOSITORY_LID:
                     repositoryIdColumnIndex = inQueryColumnIndex;
                     break;
                 case airEntity.SYSTEM_WIDE_OPERATION_ID:

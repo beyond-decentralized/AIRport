@@ -90,7 +90,7 @@ declare function require(moduleName: string): any;
 export interface RecordUpdateStageESelect
     extends IEntitySelectProperties, RecordUpdateStageEOptionalId {
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
 	// Id Relations - full property interfaces
@@ -133,7 +133,7 @@ export interface RecordUpdateStageEOptionalId {
 export interface RecordUpdateStageEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
 	// Non-Id Relations - ids only & no OneToMany's
@@ -153,7 +153,7 @@ export interface RecordUpdateStageGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
 	// Relations
@@ -175,8 +175,8 @@ export interface RecordUpdateStageEUpdateColumns
 	UPDATED_VALUE?: any | IQUntypedField;
 	APPLICATION_VERSION_ID?: number | IQNumberField;
 	APPLICATION_ENTITY_ID?: number | IQNumberField;
-	REPOSITORY_ID?: number | IQNumberField;
-	ACTOR_ID?: number | IQNumberField;
+	REPOSITORY_LID?: number | IQNumberField;
+	ACTOR_LID?: number | IQNumberField;
 	APPLICATION_COLUMN_ID?: number | IQNumberField;
 
 }
@@ -203,7 +203,7 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRecordUpdateStage extends IQEntity
 {
@@ -213,7 +213,7 @@ export interface QRecordUpdateStage extends IQEntity
 	// Id Relations
 
 	// Non-Id Fields
-	actorRecordId: IQNumberField;
+	_actorRecordId: IQNumberField;
 	updatedValue: IQUntypedField;
 
 	// Non-Id Relations

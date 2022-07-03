@@ -1,20 +1,20 @@
-import { TableIndex } from "../../lingo/application/Entity";
-import { ColumnIndex } from "../../lingo/application/Property";
-import { ApplicationVersionId } from "../../lingo/application/Application";
+import { ApplicationEntity_TableIndex } from "../../lingo/application/Entity";
+import { ApplicationColumn_Index } from "../../lingo/application/Property";
+import { ApplicationVersion_LocalId } from "../../lingo/application/Application";
 import { ColumnMap } from "./ColumnMap";
 /**
  * Created by Papa on 9/10/2016.
  */
 export declare const ALL_TABLE_COLUMNS = "A";
 export declare class TableMap {
-    applicationVersionId: ApplicationVersionId;
+    applicationVersionId: ApplicationVersion_LocalId;
     tableMap: {
         [tableIndex: string]: ColumnMap;
     };
-    constructor(applicationVersionId: ApplicationVersionId, tableMap?: {
+    constructor(applicationVersionId: ApplicationVersion_LocalId, tableMap?: {
         [tableIndex: string]: ColumnMap;
     });
-    ensure(tableIndex: TableIndex, allColumns?: boolean, ColumnMapConstructor?: typeof ColumnMap): ColumnMap;
-    existsByStructure(tableIndex: TableIndex, columnIndex: ColumnIndex): boolean;
+    ensure(tableIndex: ApplicationEntity_TableIndex, allColumns?: boolean, ColumnMapConstructor?: typeof ColumnMap): ColumnMap;
+    existsByStructure(tableIndex: ApplicationEntity_TableIndex, columnIndex: ApplicationColumn_Index): boolean;
 }
 //# sourceMappingURL=TableMap.d.ts.map

@@ -61,7 +61,7 @@ export interface IInitConnectionIMI
 
 export interface IConnectionInitializedIMI
     extends IIsolateMessage {
-    fullApplicationName: string
+    fullApplication_Name: string
 }
 
 export interface IInitConnectionIMO
@@ -145,9 +145,9 @@ export interface ISaveToDestinationIMI<E, T = E | E[]>
     repositoryDestination: string
 }
 
-export interface IGetLatestApplicationVersionByApplicationNameIMI
+export interface IGetLatestApplicationVersionByApplication_NameIMI
     extends IIsolateMessage {
-    fullApplicationName: string
+    fullApplication_Name: string
 }
 
 export interface IRetrieveDomainIMI

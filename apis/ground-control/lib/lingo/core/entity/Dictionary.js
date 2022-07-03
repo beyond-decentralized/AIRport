@@ -105,18 +105,18 @@ export var table;
  */
 export var airEntity;
 (function (airEntity) {
-    airEntity.ACTOR_ID = 'ACTOR_ID';
+    airEntity.ACTOR_LID = 'ACTOR_LID';
     airEntity.ACTOR_RECORD_ID = 'ACTOR_RECORD_ID';
     airEntity.ENTITY_NAME = 'AirEntity';
-    airEntity.FOREIGN_KEY = 'REPOSITORY_ID';
+    airEntity.FOREIGN_KEY = 'REPOSITORY_LID';
     airEntity.LOCAL_ENTITY_NAME = 'LocalAirEntity';
-    airEntity.REPOSITORY_ID = 'REPOSITORY_ID';
-    airEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID';
+    airEntity.REPOSITORY_LID = 'REPOSITORY_LID';
+    airEntity.ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_LID';
     airEntity.ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID';
-    airEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID';
+    airEntity.ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_LID';
     airEntity.SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code';
     airEntity.SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId';
     airEntity.systemWideOperationId = 'systemWideOperationId';
-    airEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID';
+    airEntity.SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_LID';
 })(airEntity || (airEntity = {}));
 //# sourceMappingURL=Dictionary.js.map

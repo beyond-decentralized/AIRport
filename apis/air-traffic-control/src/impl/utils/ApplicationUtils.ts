@@ -6,8 +6,8 @@ import {
 	DbRelation,
 	EntityRelationType,
 	airEntity,
-	ApplicationIndex,
-	TableIndex,
+	Application_Index,
+	ApplicationEntity_TableIndex,
 	IEntityStateManager
 } from '@airport/ground-control'
 import {
@@ -53,8 +53,8 @@ export class ApplicationUtils
 	utils: IUtils
 
 	getDbEntity(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex
 	): DbEntity {
 		return this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
@@ -63,7 +63,7 @@ export class ApplicationUtils
 	isActorId(
 		columnName: string
 	): boolean {
-		return columnName === airEntity.ACTOR_ID
+		return columnName === airEntity.ACTOR_LID
 	}
 
 	isActorRecordId(
@@ -75,7 +75,7 @@ export class ApplicationUtils
 	isRepositoryId(
 		columnName: string
 	): boolean {
-		return columnName === airEntity.REPOSITORY_ID
+		return columnName === airEntity.REPOSITORY_LID
 	}
 
 	doCascade(
@@ -379,13 +379,13 @@ of property '${dbEntity.name}.${dbProperty.name}'.`)
 			const inQueryColumnIndex = selectClause.length - 1
 
 			switch (dbColumn.name) {
-				case airEntity.ACTOR_ID:
+				case airEntity.ACTOR_LID:
 					actorIdColumnIndex = inQueryColumnIndex
 					break
 				case airEntity.ACTOR_RECORD_ID:
 					actorRecordIdColumnIndex = inQueryColumnIndex
 					break
-				case airEntity.REPOSITORY_ID:
+				case airEntity.REPOSITORY_LID:
 					repositoryIdColumnIndex = inQueryColumnIndex
 					break
 				case airEntity.SYSTEM_WIDE_OPERATION_ID:

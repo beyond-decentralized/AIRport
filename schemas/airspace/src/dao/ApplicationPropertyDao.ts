@@ -1,5 +1,5 @@
 import { IContext, Injected } from '@airport/direction-indicator';
-import { EntityId } from '@airport/ground-control'
+import { ApplicationEntity_LocalId } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
@@ -12,7 +12,7 @@ export interface IApplicationPropertyDao
 	extends IBaseApplicationPropertyDao {
 
 	findAllForEntities(
-		entityIds: EntityId[]
+		entityIds: ApplicationEntity_LocalId[]
 	): Promise<IApplicationProperty[]>;
 
 	insert(
@@ -28,7 +28,7 @@ export class ApplicationPropertyDao
 	implements IApplicationPropertyDao {
 
 	async findAllForEntities(
-		entityIds: EntityId[]
+		entityIds: ApplicationEntity_LocalId[]
 	): Promise<IApplicationProperty[]> {
 		let p: QApplicationProperty
 

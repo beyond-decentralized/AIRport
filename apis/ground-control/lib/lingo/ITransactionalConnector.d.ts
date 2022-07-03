@@ -31,7 +31,7 @@ export interface IRepository {
     owner?: IUser;
 }
 export interface IAirEntity {
-    actorRecordId?: number;
+    _actorRecordId?: number;
     repository?: IRepository;
     actor?: IActor;
     ageSuitability?: number;
@@ -40,7 +40,6 @@ export interface IAirEntity {
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    id?: string;
     uuId?: string;
 }
 export interface ITransactionalConnector {

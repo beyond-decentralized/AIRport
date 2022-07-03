@@ -175,7 +175,7 @@ export interface OperationHistoryEUpdateColumns
 	CHANGE_TYPE?: string | IQStringField;
 	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
 	ENTITY_ID?: number | IQNumberField;
-	ACTOR_ID?: number | IQNumberField;
+	ACTOR_LID?: number | IQNumberField;
 	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
@@ -202,7 +202,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QOperationHistory extends IQEntity
 {

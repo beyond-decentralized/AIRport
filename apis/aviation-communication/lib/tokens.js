@@ -1,5 +1,5 @@
 import { lib } from "@airport/direction-indicator";
-import { AirEntityUtils } from "./AirEntityUuId";
+import { AirEntityUtils } from "./AirEntityUtils";
 const aviationCommunication = lib('aviation-communication');
 export const AIR_ENTITY_UTILS = aviationCommunication.token({
     class: AirEntityUtils,

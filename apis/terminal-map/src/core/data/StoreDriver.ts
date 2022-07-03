@@ -3,9 +3,9 @@ import { Observable } from 'rxjs'
 import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery'
 import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity'
 import {
-	ApplicationName,
-	DomainName,
-	FullApplicationName
+	Application_Name,
+	Domain_Name,
+	FullApplication_Name
 } from '@airport/ground-control/src/lingo/application/Application'
 import {
 	InternalFragments,
@@ -51,9 +51,9 @@ export interface IStoreDriver
 
 	getTableName(
 		application: {
-			domain: DomainName | {
-				name: DomainName
-			}; name: ApplicationName; fullName?: FullApplicationName;
+			domain: Domain_Name | {
+				name: Domain_Name
+			}; name: Application_Name; fullName?: FullApplication_Name;
 		},
 		table: {
 			name: string, tableConfig?: {

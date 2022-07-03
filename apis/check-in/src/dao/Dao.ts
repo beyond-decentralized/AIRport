@@ -27,7 +27,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	EntityId as DbEntityId,
+	ApplicationEntity_LocalId as DbEntityId,
 	IEntityStateManager,
 	IAirEntity,
 	ISaveResult
@@ -45,11 +45,11 @@ export abstract class Dao<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	QE extends IQEntity>
 	implements IDao<Entity, EntitySelect, EntityCreate,
-	EntityUpdateColumns, EntityUpdateProperties, EntityId,
+	EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
 	EntityCascadeGraph, QE> {
 
 	static BaseSave<EntitySelect extends IEntitySelectProperties>(
@@ -79,7 +79,7 @@ export abstract class Dao<Entity,
 	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId,
+		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
 		EntityCascadeGraph, QE>;
 
 	stub = new DaoStub<Entity, EntityCreate>();
@@ -94,7 +94,7 @@ export abstract class Dao<Entity,
 		// TODO: figure out how to inject EntityDatabaseFacade and dependencies
 		this.db = new EntityDatabaseFacade<Entity,
 			EntitySelect, EntityCreate,
-			EntityUpdateColumns, EntityUpdateProperties, EntityId,
+			EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
 			EntityCascadeGraph, QE>(
 				dbEntity, Q, this);
 	}
@@ -117,14 +117,14 @@ export abstract class Dao<Entity,
 	}
 
 	exists(
-		entityId: EntityId,
+		entityId: ApplicationEntity_LocalId,
 		context?: IContext,
 	): Promise<boolean> {
 		throw new Error(`Not Implemented`);
 	}
 
 	async findAll(
-		entityIds?: EntityId[],
+		entityIds?: ApplicationEntity_LocalId[],
 		context?: IContext,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity[]> {
@@ -138,7 +138,7 @@ export abstract class Dao<Entity,
 	}
 
 	async findAllAsTrees(
-		entityIds?: EntityId[],
+		entityIds?: ApplicationEntity_LocalId[],
 		context?: IContext,
 		cacheForUpdate: boolean = false,
 	): Promise<Entity[]> {
@@ -202,7 +202,7 @@ export abstract class Dao<Entity,
 				id: Y,
 				uuId: Y
 			},
-			actorRecordId: Y,
+			_actorRecordId: Y,
 			ageSuitability: Y,
 			repository: {
 				id: Y,

@@ -2,17 +2,17 @@ import { DatabaseObjectConfiguration, JsonDatabaseObjectConfiguration } from './
 import { DbOperation, JsonOperations } from './Operation';
 import { DbColumn, DbProperty, DbRelation, JsonApplicationColumn, JsonApplicationProperty, JsonApplicationRelation, ApplicationReferenceByIndex } from './Property';
 import { DatabaseObject, DbApplicationVersion, JsonDatabaseObject } from './Application';
-export declare type EntityId = number;
-export declare type EntityName = string;
-export declare type EntityIsLocal = boolean;
-export declare type EntityIsAirEntity = boolean;
-export declare type TableIndex = number;
-export declare type IdColumnOnlyIndex = number;
+export declare type ApplicationEntity_LocalId = number;
+export declare type ApplicationEntity_Name = string;
+export declare type ApplicationEntity_IsLocal = boolean;
+export declare type ApplicationEntity_IsAirEntity = boolean;
+export declare type ApplicationEntity_TableIndex = number;
+export declare type ApplicationColumn_IdIndex = number;
 /**
  * An entity in a application.
  * Indexed on per application basis.
  */
-export interface JsonApplicationEntity extends ApplicationReferenceByIndex<TableIndex>, JsonDatabaseObject {
+export interface JsonApplicationEntity extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>, JsonDatabaseObject {
     /**
      * Columns by their table column indexes.
      */
@@ -20,16 +20,16 @@ export interface JsonApplicationEntity extends ApplicationReferenceByIndex<Table
     /**
      * References to ID columns.
      */
-    idColumnRefs: ApplicationReferenceByIndex<IdColumnOnlyIndex>[];
-    isLocal: EntityIsLocal;
+    idColumnRefs: ApplicationReferenceByIndex<ApplicationColumn_IdIndex>[];
+    isLocal: ApplicationEntity_IsLocal;
     /**
      * Does this entity extend AirEntity or LocalAirEntity
      */
-    isAirEntity: EntityIsAirEntity;
+    isAirEntity: ApplicationEntity_IsAirEntity;
     /**
      * Name of the entity.
      */
-    name: EntityName;
+    name: ApplicationEntity_Name;
     /**
      * Mutation operations on the entity (and child entities)
      */
@@ -50,8 +50,8 @@ export interface JsonApplicationEntity extends ApplicationReferenceByIndex<Table
 /**
  * Application Entity with additional indexes (maps).
  */
-export interface DbEntity extends ApplicationReferenceByIndex<TableIndex>, DatabaseObject {
-    id: EntityId;
+export interface DbEntity extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>, DatabaseObject {
+    id: ApplicationEntity_LocalId;
     /**
      * Map of all columns in the entity by name.
      */
@@ -72,15 +72,15 @@ export interface DbEntity extends ApplicationReferenceByIndex<TableIndex>, Datab
      * Array of all @Id() columns in the entity by index.
      */
     idColumns: DbColumn[];
-    isLocal: EntityIsLocal;
+    isLocal: ApplicationEntity_IsLocal;
     /**
      * Does this entity extend AirEntity or LocalAirEntity
      */
-    isAirEntity: EntityIsAirEntity;
+    isAirEntity: ApplicationEntity_IsAirEntity;
     /**
      * Name of the entity.
      */
-    name: EntityName;
+    name: ApplicationEntity_Name;
     /**
      * Operations that can be peformed on this entity.
      */

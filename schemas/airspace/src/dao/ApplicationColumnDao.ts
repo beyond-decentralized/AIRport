@@ -1,6 +1,6 @@
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
-	EntityId,
+	ApplicationEntity_LocalId,
 	undefinedToNull
 } from '@airport/ground-control'
 import {
@@ -15,7 +15,7 @@ export interface IApplicationColumnDao
 	extends IBaseApplicationColumnDao {
 
 	findAllForEntities(
-		entityIds: EntityId[]
+		entityIds: ApplicationEntity_LocalId[]
 	): Promise<IApplicationColumn[]>;
 
 	insert(
@@ -31,7 +31,7 @@ export class ApplicationColumnDao
 	implements IApplicationColumnDao {
 
 	async findAllForEntities(
-		entityIds: EntityId[]
+		entityIds: ApplicationEntity_LocalId[]
 	): Promise<IApplicationColumn[]> {
 		let c: QApplicationColumn
 

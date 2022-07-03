@@ -14,7 +14,7 @@ export interface AirEntityUuId {
         GUID?: string;
         user?: IUser;
     };
-    actorRecordId?: number;
+    _actorRecordId?: number;
 }
 export interface IAirEntityUtils {
     getCreatedBy(idObject: AirEntityUuId): IUser;
@@ -28,4 +28,4 @@ export declare class AirEntityUtils implements IAirEntityUtils {
     parseEGUID(idString: string): AirEntityUuId;
     setUuId(idString: string, airEntity: AirEntityUuId): void;
 }
-//# sourceMappingURL=AirEntityUuId.d.ts.map
+//# sourceMappingURL=AirEntityUtils.d.ts.map

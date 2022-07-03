@@ -166,11 +166,11 @@ declare function require(moduleName: string): any;
 export interface RepositoryESelect
     extends IEntitySelectProperties, RepositoryEOptionalId {
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -195,7 +195,7 @@ export interface RepositoryESelect
 export interface RepositoryEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -206,7 +206,7 @@ export interface RepositoryEId
  */
 export interface RepositoryEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -218,11 +218,11 @@ export interface RepositoryEOptionalId {
 export interface RepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	owner?: UserEOptionalId;
@@ -241,11 +241,11 @@ export interface RepositoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	GUID?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Relations
 	owner?: UserGraph;
@@ -268,11 +268,11 @@ export interface RepositoryGraph
 export interface RepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	GUID?: string | IQStringField;
 	AGE_SUITABILITY?: number | IQNumberField;
 	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
 	SOURCE?: string | IQStringField;
-	GUID?: string | IQStringField;
 	OWNER_USER_ID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
@@ -303,21 +303,21 @@ extends RepositoryEId, RepositoryEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRepository extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
 	// Non-Id Fields
+	GUID: IQStringField;
 	ageSuitability: IQNumberField;
 	createdAt: IQDateField;
 	immutable: IQBooleanField;
 	source: IQStringField;
-	GUID: IQStringField;
 
 	// Non-Id Relations
 	owner: QUserQRelation;
@@ -340,7 +340,7 @@ export interface QRepositoryQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

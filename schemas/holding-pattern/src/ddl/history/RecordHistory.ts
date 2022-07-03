@@ -23,8 +23,8 @@ import { RecordHistoryOldValue } from './RecordHistoryOldValue';
  * Entity Changes are always local-only, so a sequence for id will do.
  */
 
-export type RecordHistoryId = number;
-export type RecordHistoryActorRecordId = number;
+export type RecordHistory_LocalId = number;
+export type RecordHistory_ActorRecordId = number;
 
 @Entity()
 @Table({
@@ -32,7 +32,7 @@ export type RecordHistoryActorRecordId = number;
 	indexes: [{
 		name: 'RCRD_HSTR_TO_OPRTN_HSTR_FX',
 		columnList: [
-			'REPOSITORY_OPERATION_HISTORY_ID'
+			'REPOSITORY_OPERATION_HISTORY_LID'
 		],
 		unique: false
 	}]
@@ -42,21 +42,24 @@ export class RecordHistory {
 	@Id()
 	@GeneratedValue()
 	@SequenceGenerator({ allocationSize: 2000 })
-	id: RecordHistoryId
+	@Column({ name: 'RECORD_HISTORY_LID' })
+	_localId: RecordHistory_LocalId
 
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@DbNumber()
-	actorRecordId: RecordHistoryActorRecordId
+	_actorRecordId: RecordHistory_ActorRecordId
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false
+		name: 'ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID', nullable: false
 	})
 	actor: Actor
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+		name: 'OPERATION_HISTORY_LID',
+		referencedColumnName: 'OPERATION_HISTORY_LID',
 		nullable: false
 	})
 	operationHistory: OperationHistory

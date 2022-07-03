@@ -12,13 +12,13 @@ let SystemWideOperationId = class SystemWideOperationId {
 };
 __decorate([
     Id(),
-    Column({ name: 'ID', nullable: false }),
+    Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false }),
     DbNumber(),
     GeneratedValue()
-], SystemWideOperationId.prototype, "id", void 0);
+], SystemWideOperationId.prototype, "_localId", void 0);
 SystemWideOperationId = __decorate([
     Entity(),
-    Table({ name: 'SYSTEM_WIDE_OPERATION_IDS' })
+    Table({ name: 'SYSTEM_WIDE_OPERATION_LIDS' })
 ], SystemWideOperationId);
 export { SystemWideOperationId };
 //# sourceMappingURL=SystemWideOperationId.js.map

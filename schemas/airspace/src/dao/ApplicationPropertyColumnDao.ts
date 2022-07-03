@@ -1,5 +1,5 @@
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ColumnId } from '@airport/ground-control'
+import { ApplicationColumn_LocalId } from '@airport/ground-control'
 import {
 	BaseApplicationPropertyColumnDao,
 	IBaseApplicationPropertyColumnDao,
@@ -12,7 +12,7 @@ export interface IApplicationPropertyColumnDao
 	extends IBaseApplicationPropertyColumnDao {
 
 	findAllForColumns(
-		columnIds: ColumnId[]
+		columnIds: ApplicationColumn_LocalId[]
 	): Promise<IApplicationPropertyColumn[]>
 
 	insert(
@@ -29,7 +29,7 @@ export class ApplicationPropertyColumnDao
 
 
 	async findAllForColumns(
-		columnIds: ColumnId[]
+		columnIds: ApplicationColumn_LocalId[]
 	): Promise<IApplicationPropertyColumn[]> {
 		let rc: QApplicationPropertyColumn
 

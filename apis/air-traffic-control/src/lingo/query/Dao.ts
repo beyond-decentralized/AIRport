@@ -26,7 +26,7 @@ export interface IDao<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
@@ -37,7 +37,7 @@ export interface IDao<Entity,
 	updateCacheManager: IUpdateCacheManager
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>
+		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE>
 
 	mapByUuId(
 		entities: (Entity & IAirEntity)[]
@@ -48,17 +48,17 @@ export interface IDao<Entity,
 	): Promise<number>;
 
 	exists(
-		entityId: EntityId,
+		entityId: ApplicationEntity_LocalId,
 		context?: IContext
 	): Promise<boolean>;
 
 	findAll(
-		entityIds?: EntityId[],
+		entityIds?: ApplicationEntity_LocalId[],
 		context?: IContext
 	): Promise<Entity[]>;
 
 	findAllAsTrees(
-		entityIds?: EntityId[],
+		entityIds?: ApplicationEntity_LocalId[],
 		context?: IContext
 	): Promise<Entity[]>;
 

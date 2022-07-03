@@ -16,14 +16,20 @@ import { Repository } from "./Repository";
 })
 export class RepositoryType {
 
-    @Id()
+	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
+	})
 	repository: Repository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'TYPE_LID',
+		referencedColumnName: 'TYPE_LID'
+	})
 	type: Type
 
 }

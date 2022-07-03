@@ -2,7 +2,7 @@ import {
     IContext
 } from "@airport/direction-indicator";
 import {
-    DomainName,
+    Domain_Name,
     IEntityStateManager
 } from "@airport/ground-control";
 import {
@@ -36,7 +36,7 @@ export interface IInternalRecordManager {
     ): Promise<void>
 
     initTerminal(
-        domainName: DomainName,
+        domainName: Domain_Name,
         context: IContext
     ): Promise<void>
 
@@ -75,7 +75,7 @@ export class InternalRecordManager
             await this.updateDomain(application, context)
 
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndApplicationNames().get(application.domain)
+                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain)
             let actors: IActor[]
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name)
@@ -84,7 +84,7 @@ export class InternalRecordManager
                 }
             }
 
-            actors = await this.actorDao.findByDomainAndApplicationNames(application.domain, application.name)
+            actors = await this.actorDao.findByDomainAndApplication_Names(application.domain, application.name)
             let anApplication: IApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
@@ -116,7 +116,7 @@ export class InternalRecordManager
     }
 
     async initTerminal(
-        domainName: DomainName,
+        domainName: Domain_Name,
         context: IContext
     ): Promise<void> {
         await this.transactionManager.transactInternal(async (

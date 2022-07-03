@@ -9,17 +9,17 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-}                              from '@airport/air-traffic-control'
+} from '@airport/air-traffic-control'
 import {
-	PropertyId,
-	PropertyIndex,
-	PropertyIsId,
-	PropertyName
-}                              from '@airport/ground-control'
-import {ApplicationEntity}          from './ApplicationEntity'
-import {ApplicationPropertyColumn}  from './ApplicationPropertyColumn'
-import {ApplicationRelation}        from './ApplicationRelation'
-import {VersionedApplicationObject} from './VersionedApplicationObject'
+	ApplicationProperty_LocalId,
+	ApplicationProperty_Index,
+	ApplicationProperty_IsId,
+	ApplicationProperty_Name
+} from '@airport/ground-control'
+import { ApplicationEntity } from './ApplicationEntity'
+import { ApplicationPropertyColumn } from './ApplicationPropertyColumn'
+import { ApplicationRelation } from './ApplicationRelation'
+import { VersionedApplicationObject } from './VersionedApplicationObject'
 
 @Entity()
 @Table({
@@ -30,30 +30,32 @@ export class ApplicationProperty
 
 	@DbNumber()
 	@Id()
-	id: PropertyId
+	@Column({ name: 'APPLICATION_PROPERTY_LID' })
+	_localId: ApplicationProperty_LocalId
 
 	@DbNumber()
-	@Column({name: 'PROPERTY_INDEX', nullable: false})
-	index: PropertyIndex
+	@Column({ name: 'PROPERTY_INDEX', nullable: false })
+	index: ApplicationProperty_Index
 
 	@DbString()
-	@Column({name: 'NAME', nullable: false})
-	name: PropertyName
+	@Column({ name: 'NAME', nullable: false })
+	name: ApplicationProperty_Name
 
 	@DbBoolean()
-	@Column({name: 'IS_ID', nullable: false})
-	isId: PropertyIsId
+	@Column({ name: 'IS_LID', nullable: false })
+	isId: ApplicationProperty_IsId
 
 	@ManyToOne()
-	@JoinColumn(
-		{name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false}
-	)
+	@JoinColumn({
+		name: 'APPLICATION_ENTITY_LID',
+		referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+	})
 	entity: ApplicationEntity
 
-	@OneToMany({mappedBy: 'property'})
+	@OneToMany({ mappedBy: 'property' })
 	propertyColumns: ApplicationPropertyColumn[] = []
 
-	@OneToMany({mappedBy: 'property'})
+	@OneToMany({ mappedBy: 'property' })
 	relation: ApplicationRelation[] = []
 
 }

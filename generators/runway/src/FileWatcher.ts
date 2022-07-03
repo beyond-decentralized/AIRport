@@ -1,6 +1,6 @@
 import {
 	DbApplication,
-	EntityId,
+	ApplicationEntity_LocalId,
 } from '@airport/ground-control';
 import {
 	JsonApplicationWithApi
@@ -186,7 +186,7 @@ export async function watchFiles(
 
 			const sIndexedEntity = indexedApplication.entityMapByName[entityName];
 
-			let tableIndex: EntityId;
+			let tableIndex: ApplicationEntity_LocalId;
 			if (sIndexedEntity) {
 				tableIndex = sIndexedEntity.entity.tableIndex;
 			}

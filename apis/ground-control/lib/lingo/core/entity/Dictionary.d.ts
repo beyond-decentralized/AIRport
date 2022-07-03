@@ -90,18 +90,18 @@ export declare namespace table {
  * @type {string}
  */
 export declare namespace airEntity {
-    const ACTOR_ID = "ACTOR_ID";
+    const ACTOR_LID = "ACTOR_LID";
     const ACTOR_RECORD_ID = "ACTOR_RECORD_ID";
     const ENTITY_NAME = "AirEntity";
-    const FOREIGN_KEY = "REPOSITORY_ID";
+    const FOREIGN_KEY = "REPOSITORY_LID";
     const LOCAL_ENTITY_NAME = "LocalAirEntity";
-    const REPOSITORY_ID = "REPOSITORY_ID";
-    const ORIGINAL_ACTOR_ID = "ORIGINAL_ACTOR_ID";
+    const REPOSITORY_LID = "REPOSITORY_LID";
+    const ORIGINAL_ACTOR_ID = "ORIGINAL_ACTOR_LID";
     const ORIGINAL_ACTOR_RECORD_ID = "ORIGINAL_ACTOR_RECORD_ID";
-    const ORIGINAL_REPOSITORY_ID = "ORIGINAL_REPOSITORY_ID";
+    const ORIGINAL_REPOSITORY_ID = "ORIGINAL_REPOSITORY_LID";
     const SYS_WIDE_OP_ID_APPLICATION = "air____at_airport_slash_airport_dash_code";
     const SYS_WIDE_OP_ID_ENTITY = "SystemWideOperationId";
     const systemWideOperationId = "systemWideOperationId";
-    const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_ID";
+    const SYSTEM_WIDE_OPERATION_ID = "SYSTEM_WIDE_OPERATION_LID";
 }
 //# sourceMappingURL=Dictionary.d.ts.map

@@ -54,7 +54,7 @@ export interface SystemWideOperationIdESelect
 export interface SystemWideOperationIdEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -65,7 +65,7 @@ export interface SystemWideOperationIdEId
  */
 export interface SystemWideOperationIdEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -131,7 +131,7 @@ extends SystemWideOperationIdEId, SystemWideOperationIdEUpdateColumns {
 export interface QSystemWideOperationId extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -147,7 +147,7 @@ export interface QSystemWideOperationIdQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

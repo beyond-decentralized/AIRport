@@ -135,7 +135,7 @@ export class OperationManager
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
 		let saveActor: ISaveActor = {
-			id: actor.id,
+			id: actor._localId,
 			GUID: actor.GUID,
 			user: actor.user ? {
 				id: actor.user.id
@@ -150,7 +150,7 @@ export class OperationManager
 				ageSuitability: context.newRepository.ageSuitability,
 				source: context.newRepository.source,
 				ownerActor: {
-					id: actor.id,
+					id: actor._localId,
 					GUID: actor.GUID,
 					user: actor.user ? {
 						id: actor.user.id

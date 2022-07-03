@@ -19,7 +19,7 @@ import {
 	IApplicationVersion
 } from '@airport/airspace'
 
-export type RecordUpdateStageId = number;
+export type RecordUpdateStage_LocalId = number;
 
 /**
  * Used to temporarily store updates during application remotely synced updates
@@ -27,43 +27,59 @@ export type RecordUpdateStageId = number;
  * are applied.
  */
 @Entity()
-@Table({name: 'RECORD_UPDATE_STAGE'})
+@Table({ name: 'RECORD_UPDATE_STAGE' })
 export class RecordUpdateStage {
 
 	@Id()
 	@GeneratedValue()
-	id: RecordUpdateStageId
+	@Column({ name: 'RECORD_UPDATE_STAGE_LID' })
+	_localId: RecordUpdateStage_LocalId
 
 	@ManyToOne()
-	@JoinColumn({name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'APPLICATION_VERSION_LID',
+		referencedColumnName: 'APPLICATION_VERSION_LID'
+	})
 	applicationVersion: IApplicationVersion
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'APPLICATION_ENTITY_LID',
+		referencedColumnName: 'APPLICATION_ENTITY_LID'
+	})
 	entity: IApplicationEntity
 
 	@ManyToOne()
-	@JoinColumn({name: 'REPOSITORY_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
+	})
 	repository: IRepository
 
 	@ManyToOne()
-	@JoinColumn({name: 'ACTOR_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID'
+	})
 	actor: IActor
 
-	@Column({name: 'ACTOR_RECORD_ID'})
+	@Column({ name: 'ACTOR_RECORD_ID' })
 	@DbNumber()
-	actorRecordId: RecordHistoryActorRecordId
+	_actorRecordId: RecordHistoryActorRecordId
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized
 	// repository ledger (and hence, that using local ids is safe)
-	@JoinColumn({name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID'})
+	@JoinColumn({
+		name: 'APPLICATION_COLUMN_LID',
+		referencedColumnName: 'APPLICATION_COLUMN_LID'
+	})
 	column: IApplicationColumn
 
 
-	@Column({name: 'UPDATED_VALUE'})
+	@Column({ name: 'UPDATED_VALUE' })
 	updatedValue: any
 
 }

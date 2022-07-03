@@ -30,8 +30,8 @@ let QueryUtils = class QueryUtils {
                 || !entityOrId.actor
                 || !entityOrId.actor.GUID
                 || typeof entityOrId.actor.GUID !== 'number'
-                || !entityOrId.actorRecordId
-                || typeof entityOrId.actorRecordId !== 'number') {
+                || !entityOrId._actorRecordId
+                || typeof entityOrId._actorRecordId !== 'number') {
                 throw new Error(`Passed in AirEntity does not have
 				the necessary fields to query by uuId.  Expecting:
 					interface AnInterface extends AirEntity {
@@ -41,14 +41,14 @@ let QueryUtils = class QueryUtils {
 						actor: {
 							GUID: string
 						},
-						actorRecordId: number
+						_actorRecordId: number
 					}
 					`);
             }
             entityUuId = entityOrUuId;
         }
         const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        return and(qRepository.GUID.equals(entityUuId.repository.GUID), qActor.GUID.equals(entityUuId.actor.GUID), toObject.actorRecordId.equals(entityUuId.actorRecordId));
+        return and(qRepository.GUID.equals(entityUuId.repository.GUID), qActor.GUID.equals(entityUuId.actor.GUID), toObject._actorRecordId.equals(entityUuId._actorRecordId));
         // } else {
         // Relations can only be joined by a local Id, implement if necessary
         // only, as this might confuse users and won't work properly in
@@ -56,9 +56,9 @@ let QueryUtils = class QueryUtils {
         // the referenced repository is not yet loaded) without additional
         // logic to join against the UuIds of the object (anyway).
         // return and(
-        // 	toObject.repository.id.equals(entityUuId.repository.id),
-        // 	toObject.actor.id.equals(entityUuId.actor.id),
-        // 	toObject.actorRecordId.equals(entityUuId.actorRecordId)
+        // 	toObject.repository._localId.equals(entityUuId.repository._localId),
+        // 	toObject.actor._localId.equals(entityUuId.actor._localId),
+        // 	toObject._actorRecordId.equals(entityUuId._actorRecordId)
         // )
         // }
     }

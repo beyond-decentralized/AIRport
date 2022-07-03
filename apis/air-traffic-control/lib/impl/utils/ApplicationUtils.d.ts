@@ -1,4 +1,4 @@
-import { CRUDOperation, DbColumn, DbEntity, DbRelation, ApplicationIndex, TableIndex, IEntityStateManager } from '@airport/ground-control';
+import { CRUDOperation, DbColumn, DbEntity, DbRelation, Application_Index, ApplicationEntity_TableIndex, IEntityStateManager } from '@airport/ground-control';
 import { IAirportDatabase } from '../../lingo/AirportDatabase';
 import { IEntityIdProperties, IQEntity } from '../../lingo/core/entity/Entity';
 import { IdKeysByIdColumnIndex, IApplicationUtils, RepositorySheetSelectInfo } from '../../lingo/utils/ApplicationUtils';
@@ -9,7 +9,7 @@ export declare class ApplicationUtils implements IApplicationUtils {
     airportDatabase: IAirportDatabase;
     entityStateManager: IEntityStateManager;
     utils: IUtils;
-    getDbEntity(applicationIndex: ApplicationIndex, tableIndex: TableIndex): DbEntity;
+    getDbEntity(applicationIndex: Application_Index, tableIndex: ApplicationEntity_TableIndex): DbEntity;
     isActorId(columnName: string): boolean;
     isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;

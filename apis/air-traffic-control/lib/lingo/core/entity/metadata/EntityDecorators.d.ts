@@ -11,13 +11,13 @@ export interface IndexConfiguration extends DatabaseIndexConfiguration {
 /**
  * SQL Table configuration
  */
-export interface TableConfiguration extends DatabaseObjectConfiguration<IndexConfiguration> {
+export interface ApplicationEntity_TableConfiguration extends DatabaseObjectConfiguration<IndexConfiguration> {
 }
 /**
  * Marks an object as a SQL table.
  */
 export interface TableDecorator {
-    (tableConfiguration?: TableConfiguration): ClassDecorator;
+    (tableConfiguration?: ApplicationEntity_TableConfiguration): ClassDecorator;
 }
 /**
  * Marks an object as a superclass of ORM entities.

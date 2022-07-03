@@ -1,60 +1,47 @@
 import { DbEntity, JsonApplicationEntity } from './Entity';
 import { ApplicationReferenceByIndex } from './Property';
 import { ApplicationStatus } from './ApplicationStatus';
-export declare type Application_Id = number;
-export declare type ApplicationName = string;
-export declare type ApplicationSignature = string;
-export declare type ApplicationPackageId = number;
-export declare type DatabaseIndex = number;
-export declare type DomainId = number;
-export declare type DomainName = string;
-export declare type FullApplicationName = string;
-export declare type JsonApplicationName = string;
-export declare type PackageId = number;
-export declare type PackageName = string;
-export declare type ApplicationIndex = number;
-export declare type ApplicationReferenceIndex = number;
-export declare type ApplicationScope = 'private' | 'public' | null;
-export declare type ApplicationVersionId = number;
-export declare type ApplicationVersionInteger = number;
-export declare type ApplicationVersionMajor = number;
-export declare type ApplicationVersionMinor = number;
-export declare type ApplicationVersionPatch = number;
-export declare type ApplicationVersionString = string;
-export interface DbPackage {
-    id: PackageId;
-    name: PackageName;
-    applicationPackages: DbApplicationPackage[];
-}
-export interface DbApplicationPackage {
-    application: DbApplication;
-    id: ApplicationPackageId;
-    package: DbPackage;
-}
+export declare type Application_LocalId = number;
+export declare type Application_Name = string;
+export declare type Application_Signature = string;
+export declare type ApplicationPackage_LocalId = number;
+export declare type Database_Index = number;
+export declare type Domain_LocalId = number;
+export declare type Domain_Name = string;
+export declare type FullApplication_Name = string;
+export declare type JsonApplication_Name = string;
+export declare type Application_Index = number;
+export declare type ApplicationReference_Index = number;
+export declare type Application_Scope = 'private' | 'public' | null;
+export declare type ApplicationVersion_LocalId = number;
+export declare type ApplicationVersion_IntegerVersion = number;
+export declare type ApplicationVersion_MajorVersion = number;
+export declare type ApplicationVersion_MinorVersion = number;
+export declare type ApplicationVersion_PatchVersion = number;
+export declare type ApplicationVersion_VersionString = string;
 export interface DbApplication {
-    applicationPackages: DbApplicationPackage[];
     domain: DbDomain;
-    id: Application_Id;
-    name: ApplicationName;
-    signature: ApplicationSignature;
+    id: Application_LocalId;
+    name: Application_Name;
+    signature: Application_Signature;
 }
 export interface DbDomain {
-    id: DomainId;
-    name: DomainName;
+    id: Domain_LocalId;
+    name: Domain_Name;
     applications: DbApplication[];
 }
 /**
  * A application.
  */
-export interface JsonApplication extends ApplicationReferenceByIndex<ApplicationIndex>, JsonDatabaseObject {
+export interface JsonApplication extends ApplicationReferenceByIndex<Application_Index>, JsonDatabaseObject {
     /**
      * Domain of the application ('public' if published).
      */
-    domain: DomainName;
+    domain: Domain_Name;
     /**
      * Name of the application
      */
-    name: JsonApplicationName;
+    name: JsonApplication_Name;
     /**
      * Versions by integer version
      */
@@ -63,15 +50,15 @@ export interface JsonApplication extends ApplicationReferenceByIndex<Application
 /**
  * A application with additional indexes (maps).
  */
-export interface DbApplication extends ApplicationReferenceByIndex<ApplicationIndex>, DatabaseObject {
+export interface DbApplication extends ApplicationReferenceByIndex<Application_Index>, DatabaseObject {
     currentVersion: DbApplicationCurrentVersion[];
     /**
      * Domain of the application ('public' if published).
      */
     domain: DbDomain;
-    name: ApplicationName;
-    fullName: FullApplicationName;
-    scope: ApplicationScope;
+    name: Application_Name;
+    fullName: FullApplication_Name;
+    scope: Application_Scope;
     status: ApplicationStatus;
     /**
      * Versions by integer version
@@ -79,21 +66,21 @@ export interface DbApplication extends ApplicationReferenceByIndex<ApplicationIn
     versions: DbApplicationVersion[];
 }
 export interface JsonDatabaseObject {
-    deprecatedSinceVersion?: ApplicationVersionInteger;
-    removedInVersion?: ApplicationVersionInteger;
-    sinceVersion: ApplicationVersionInteger;
+    deprecatedSinceVersion?: ApplicationVersion_IntegerVersion;
+    removedInVersion?: ApplicationVersion_IntegerVersion;
+    sinceVersion: ApplicationVersion_IntegerVersion;
 }
 export interface JsonApplicationVersionReference {
     /**
      * Integer version of the application
      */
-    integerVersion: ApplicationVersionInteger;
+    integerVersion: ApplicationVersion_IntegerVersion;
 }
 export interface JsonApplicationVersion extends JsonApplicationVersionReference {
     /**
      * Semantic version of the application.
      */
-    versionString: ApplicationVersionString;
+    versionString: ApplicationVersion_VersionString;
     /**
      * Entities by their application table indexes.
      */
@@ -109,7 +96,7 @@ export interface DatabaseObject {
     sinceVersion: DbApplicationVersion;
 }
 export interface DbApplicationVersionReference {
-    integerVersion: ApplicationVersionInteger;
+    integerVersion: ApplicationVersion_IntegerVersion;
 }
 /**
  * A application with additional indexes (maps).
@@ -122,7 +109,7 @@ export interface DbApplicationCurrentVersion {
  * A application with additional indexes (maps).
  */
 export interface DbApplicationVersion extends DbApplicationVersionReference {
-    id: ApplicationVersionId;
+    id: ApplicationVersion_LocalId;
     /**
      * Entities by their application table indexes.
      */
@@ -155,15 +142,15 @@ export interface DbApplicationVersion extends DbApplicationVersionReference {
     referencedByMapByName?: {
         [applicationName: string]: DbApplicationReference;
     };
-    integerVersion: ApplicationVersionInteger;
-    versionString: ApplicationVersionString;
-    majorVersion: ApplicationVersionMajor;
-    minorVersion: ApplicationVersionMinor;
-    patchVersion: ApplicationVersionPatch;
+    integerVersion: ApplicationVersion_IntegerVersion;
+    versionString: ApplicationVersion_VersionString;
+    majorVersion: ApplicationVersion_MajorVersion;
+    minorVersion: ApplicationVersion_MinorVersion;
+    patchVersion: ApplicationVersion_PatchVersion;
     application: DbApplication;
 }
 export interface DbApplicationReference extends DatabaseObject {
-    index: ApplicationReferenceIndex;
+    index: ApplicationReference_Index;
     ownApplicationVersion: DbApplicationVersion;
     referencedApplicationVersion: DbApplicationVersion;
 }

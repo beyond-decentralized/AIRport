@@ -158,7 +158,7 @@ extends TypeClassificationEId, TypeClassificationEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTypeClassification extends IQEntity
 {

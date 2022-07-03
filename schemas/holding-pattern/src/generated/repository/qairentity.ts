@@ -88,7 +88,7 @@ export interface AirEntityESelect
 export interface AirEntityEId
     extends IEntityIdProperties {
 	// Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository: RepositoryEId;
@@ -101,7 +101,7 @@ export interface AirEntityEId
  */
 export interface AirEntityEOptionalId {
 	// Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 	repository?: RepositoryEOptionalId;
@@ -178,12 +178,12 @@ extends AirEntityEId, AirEntityEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QAirEntity extends IQEntity
 {
 	// Id Fields
-	actorRecordId: IQNumberField;
+	_actorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQRelation;
@@ -207,7 +207,7 @@ export interface QAirEntityQId
 {
 	
 	// Id Fields
-	actorRecordId: IQNumberField;
+	_actorRecordId: IQNumberField;
 
 	// Id Relations
 	repository: QRepositoryQId;

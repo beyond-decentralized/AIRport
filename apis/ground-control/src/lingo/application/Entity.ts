@@ -18,19 +18,19 @@ import {
 	JsonDatabaseObject
 }                                    from './Application'
 
-export type EntityId = number;
-export type EntityName = string;
-export type EntityIsLocal = boolean;
-export type EntityIsAirEntity = boolean;
-export type TableIndex = number;
-export type IdColumnOnlyIndex = number;
+export type ApplicationEntity_LocalId = number;
+export type ApplicationEntity_Name = string;
+export type ApplicationEntity_IsLocal = boolean;
+export type ApplicationEntity_IsAirEntity = boolean;
+export type ApplicationEntity_TableIndex = number;
+export type ApplicationColumn_IdIndex = number;
 
 /**
  * An entity in a application.
  * Indexed on per application basis.
  */
 export interface JsonApplicationEntity
-	extends ApplicationReferenceByIndex<TableIndex>,
+	extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>,
 	        JsonDatabaseObject {
 
 	/**
@@ -41,22 +41,22 @@ export interface JsonApplicationEntity
 	/**
 	 * References to ID columns.
 	 */
-	idColumnRefs: ApplicationReferenceByIndex<IdColumnOnlyIndex>[];
+	idColumnRefs: ApplicationReferenceByIndex<ApplicationColumn_IdIndex>[];
 
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
 	 */
-	isLocal: EntityIsLocal;
+	isLocal: ApplicationEntity_IsLocal;
 
 	/**
 	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isAirEntity: EntityIsAirEntity;
+	isAirEntity: ApplicationEntity_IsAirEntity;
 
 	/**
 	 * Name of the entity.
 	 */
-	name: EntityName;
+	name: ApplicationEntity_Name;
 
 	/**
 	 * Mutation operations on the entity (and child entities)
@@ -84,10 +84,10 @@ export interface JsonApplicationEntity
  * Application Entity with additional indexes (maps).
  */
 export interface DbEntity
-	extends ApplicationReferenceByIndex<TableIndex>,
+	extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>,
 	        DatabaseObject {
 
-	id: EntityId
+	id: ApplicationEntity_LocalId
 
 	/**
 	 * Map of all columns in the entity by name.
@@ -112,17 +112,17 @@ export interface DbEntity
 	/*
 	 * Is this entity local-only (does not extend AirEntity)
 	 */
-	isLocal: EntityIsLocal;
+	isLocal: ApplicationEntity_IsLocal;
 
 	/**
 	 * Does this entity extend AirEntity or LocalAirEntity
 	 */
-	isAirEntity: EntityIsAirEntity;
+	isAirEntity: ApplicationEntity_IsAirEntity;
 
 	/**
 	 * Name of the entity.
 	 */
-	name: EntityName;
+	name: ApplicationEntity_Name;
 
 	/**
 	 * Operations that can be peformed on this entity.

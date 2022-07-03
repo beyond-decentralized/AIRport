@@ -6,25 +6,26 @@ import {
 	Table
 } from '@airport/air-traffic-control'
 
-export type TerminalRunId = number
-export type TerminalRunCreateTimestamp = number
-export type TerminalRunRandomNumber = number
+export type TerminalRun_LocalId = number
+export type TerminalRun_CreateTimestamp = number
+export type TerminalRun_RandomNumber = number
 
 /**
  * A record of the Terminal running (being up at a given point in time)
  */
 @Entity()
-@Table({name: 'TERMINAL_RUNS'})
+@Table({ name: 'TERMINAL_RUNS' })
 export class TerminalRun {
 
 	@Id()
 	@GeneratedValue()
-	id: TerminalRunId
+	@Column({ name: 'TERMINAL_RUN_LID' })
+	_localId: TerminalRun_LocalId
 
-	@Column({name: 'CREATE_TIMESTAMP', nullable: false})
-	createTimestamp: TerminalRunCreateTimestamp
+	@Column({ name: 'CREATE_TIMESTAMP', nullable: false })
+	createTimestamp: TerminalRun_CreateTimestamp
 
-	@Column({name: 'RANDOM_NUMBER', nullable: false})
-	randomNumber: TerminalRunRandomNumber
+	@Column({ name: 'RANDOM_NUMBER', nullable: false })
+	randomNumber: TerminalRun_RandomNumber
 
 }

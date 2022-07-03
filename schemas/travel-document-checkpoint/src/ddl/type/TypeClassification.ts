@@ -16,12 +16,18 @@ export class TypeClassification {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'CLASSIFICATION_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'CLASSIFICATION_LID',
+        referencedColumnName: 'CLASSIFICATION_LID'
+    })
     classification: Classification
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'TYPE_LID',
+        referencedColumnName: 'TYPE_LID'
+    })
     type: Type
 
 }

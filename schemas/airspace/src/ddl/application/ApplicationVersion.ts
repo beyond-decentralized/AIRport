@@ -13,12 +13,12 @@ import {
 	Transient
 } from '@airport/air-traffic-control'
 import {
-	ApplicationVersionId,
-	ApplicationVersionInteger,
-	ApplicationVersionMajor,
-	ApplicationVersionMinor,
-	ApplicationVersionPatch,
-	ApplicationVersionString
+	ApplicationVersion_LocalId,
+	ApplicationVersion_IntegerVersion,
+	ApplicationVersion_MajorVersion,
+	ApplicationVersion_MinorVersion,
+	ApplicationVersion_PatchVersion,
+	ApplicationVersion_VersionString
 } from '@airport/ground-control'
 import { Application } from './Application'
 import { ApplicationEntity } from './ApplicationEntity'
@@ -35,27 +35,28 @@ export class ApplicationVersion {
 	@DbNumber()
 	@Id()
 	@SequenceGenerator({ allocationSize: 100 })
-	id: ApplicationVersionId
+	@Column({ name: 'APPLICATION_VERSION_LID' })
+	_localId: ApplicationVersion_LocalId
 
 	@Column({ name: 'INTEGER_VERSION', nullable: false })
 	@DbNumber()
-	integerVersion: ApplicationVersionInteger
+	integerVersion: ApplicationVersion_IntegerVersion
 
 	@Column({ name: 'VERSION_STRING', nullable: false })
 	@DbString()
-	versionString: ApplicationVersionString
+	versionString: ApplicationVersion_VersionString
 
 	@Column({ name: 'MAJOR_VERSION', nullable: false })
 	@DbNumber()
-	majorVersion: ApplicationVersionMajor
+	majorVersion: ApplicationVersion_MajorVersion
 
 	@Column({ name: 'MINOR_VERSION', nullable: false })
 	@DbNumber()
-	minorVersion: ApplicationVersionMinor
+	minorVersion: ApplicationVersion_MinorVersion
 
 	@Column({ name: 'PATCH_VERSION', nullable: false })
 	@DbNumber()
-	patchVersion: ApplicationVersionPatch
+	patchVersion: ApplicationVersion_PatchVersion
 
 	// FIXME: keep track of applications by signature also
 	// FIXME: revisit application tracking when versioning is implemented
@@ -81,9 +82,9 @@ export class ApplicationVersion {
 	entityMapByName?: { [entityName: string]: IApplicationEntity } = {}
 
 	@Transient()
-	referencesMapByName?: { [fullApplicationName: string]: IApplicationReference } = {}
+	referencesMapByName?: { [fullApplication_Name: string]: IApplicationReference } = {}
 
 	@Transient()
-	referencedByMapByName?: { [fullApplicationName: string]: IApplicationReference } = {}
+	referencedByMapByName?: { [fullApplication_Name: string]: IApplicationReference } = {}
 
 }

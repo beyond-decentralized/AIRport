@@ -21,7 +21,7 @@ export interface IUpdateManager {
 export interface RecordHistoryMap {
     [repositoryId: number]: {
         [actorId: number]: {
-            [actorRecordId: number]: IRecordHistory
+            [_actorRecordId: number]: IRecordHistory
         }
     };
 }

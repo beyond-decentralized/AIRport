@@ -1,9 +1,9 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures'
 import {
 	ChangeType,
-	ColumnIndex,
+	ApplicationColumn_Index,
 	airEntity,
-	TableIndex
+	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 import {
 	IApplicationEntity,
@@ -102,9 +102,9 @@ export class SyncInDataChecker
 
 	private async populateApplicationEntityMap(
 		message: RepositorySynchronizationMessage
-	): Promise<Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>> {
+	): Promise<Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>> {
 		const applicationVersionsByIds = this.terminalStore.getAllApplicationVersionsByIds()
-		const applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>> = new Map()
+		const applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>> = new Map()
 		for (const messageApplicationVersion of message.applicationVersions) {
 			const applicationVersion = applicationVersionsByIds[messageApplicationVersion.id]
 			for (const applicationEntity of applicationVersion.entities) {
@@ -127,7 +127,7 @@ export class SyncInDataChecker
 
 	private async checkOperationHistories(
 		message: RepositorySynchronizationMessage,
-		applicationEntityMap: Map<string, Map<string, Map<TableIndex, IApplicationEntity>>>,
+		applicationEntityMap: Map<string, Map<string, Map<ApplicationEntity_TableIndex, IApplicationEntity>>>,
 		context: IContext
 	): Promise<void> {
 		const history = message.history
@@ -196,10 +196,10 @@ export class SyncInDataChecker
 
 			delete operationHistory.id
 
-			let originalRepositoryColumnIndex: ColumnIndex
-			let originalActorColumnIndex: ColumnIndex
-			let actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn> = new Map()
-			let repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn> = new Map()
+			let originalRepositoryColumnIndex: ApplicationColumn_Index
+			let originalActorColumnIndex: ApplicationColumn_Index
+			let actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
+			let repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn> = new Map()
 			for (const column of operationHistory.entity.columns) {
 				switch (column.name) {
 					case airEntity.ORIGINAL_ACTOR_ID:
@@ -228,8 +228,8 @@ export class SyncInDataChecker
 
 	private async checkRecordHistories(
 		operationHistory: IOperationHistory,
-		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
-		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
+		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<void> {
@@ -239,8 +239,8 @@ export class SyncInDataChecker
 		}
 
 		for (const recordHistory of recordHistories) {
-			if (!recordHistory.actorRecordId || typeof recordHistory.actorRecordId !== 'number') {
-				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory.actorRecordId`)
+			if (!recordHistory._actorRecordId || typeof recordHistory._actorRecordId !== 'number') {
+				throw new Error(`Invalid RepositorySynchronizationMessage.history -> operationHistory.recordHistory._actorRecordId`)
 			}
 			switch (operationHistory.changeType) {
 				case ChangeType.INSERT_VALUES:
@@ -283,8 +283,8 @@ for ChangeType.INSERT_VALUES`)
 
 	private checkNewValues(
 		recordHistory: IRecordHistory,
-		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
-		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
+		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage,
 		context: IContext
@@ -330,7 +330,7 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 			const repositoryIdColumn = repositoryIdColumnMapByIndex.get(newValue.columnIndex)
 			if (repositoryIdColumn) {
 				if (newValue.newValue === -1) {
-					newValue.newValue = message.history.repository.id
+					newValue.newValue = message.history.repository._localId
 				} else {
 					const originalRepository = message.referencedRepositories[newValue.newValue]
 					if (!originalRepository) {
@@ -345,8 +345,8 @@ Value is for ${actorIdColumn.name} and could find RepositorySynchronizationMessa
 
 	private checkOldValues(
 		recordHistory: IRecordHistory,
-		actorIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
-		repositoryIdColumnMapByIndex: Map<ColumnIndex, IApplicationColumn>,
+		actorIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
+		repositoryIdColumnMapByIndex: Map<ApplicationColumn_Index, IApplicationColumn>,
 		operationHistory: IOperationHistory,
 		message: RepositorySynchronizationMessage,
 		context: IContext

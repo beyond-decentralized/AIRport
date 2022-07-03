@@ -93,7 +93,7 @@ declare function require(moduleName: string): any;
 export interface RecordHistoryESelect
     extends IEntitySelectProperties, RecordHistoryEOptionalId {
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 
@@ -134,7 +134,7 @@ export interface RecordHistoryEOptionalId {
 export interface RecordHistoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	actor?: ActorEOptionalId;
@@ -150,7 +150,7 @@ export interface RecordHistoryGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	actorRecordId?: number | IQNumberField;
+	_actorRecordId?: number | IQNumberField;
 
 	// Relations
 	actor?: ActorGraph;
@@ -167,7 +167,7 @@ export interface RecordHistoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
-	ACTOR_ID?: number | IQNumberField;
+	ACTOR_LID?: number | IQNumberField;
 	REPOSITORY_OPERATION_HISTORY_ID?: number | IQNumberField;
 
 }
@@ -194,7 +194,7 @@ extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRecordHistory extends IQEntity
 {
@@ -204,7 +204,7 @@ export interface QRecordHistory extends IQEntity
 	// Id Relations
 
 	// Non-Id Fields
-	actorRecordId: IQNumberField;
+	_actorRecordId: IQNumberField;
 
 	// Non-Id Relations
 	actor: QActorQRelation;

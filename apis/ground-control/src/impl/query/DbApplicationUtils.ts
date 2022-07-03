@@ -1,10 +1,10 @@
 import { Injected } from '@airport/direction-indicator';
-import { ColumnName } from '../../lingo/application/Property';
+import { ApplicationColumn_Name } from '../../lingo/application/Property';
 
 @Injected()
 export class DbApplicationUtils {
 
-	getFullApplicationName({
+	getFullApplication_Name({
 		domain,
 		name,
 	}: {
@@ -21,10 +21,10 @@ export class DbApplicationUtils {
 			}).name;
 		}
 
-		return this.getFullApplicationNameFromDomainAndName(domain as string, name);
+		return this.getFullApplication_NameFromDomainAndName(domain as string, name);
 	}
 
-	getFullApplicationNameFromDomainAndName(
+	getFullApplication_NameFromDomainAndName(
 		domainName: string,
 		applicationName: string,
 	): string {
@@ -77,18 +77,18 @@ export class DbApplicationUtils {
 			throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
 		}
 
-		let fullApplicationName = `${domainPrefix}___${applicationPrefix}`
+		let fullApplication_Name = `${domainPrefix}___${applicationPrefix}`
 
-		if (fullApplicationName.endsWith('_dash_runtime')) {
-			fullApplicationName = fullApplicationName.substring(0, fullApplicationName.length - 13)
+		if (fullApplication_Name.endsWith('_dash_runtime')) {
+			fullApplication_Name = fullApplication_Name.substring(0, fullApplication_Name.length - 13)
 		}
 
-		return fullApplicationName;
+		return fullApplication_Name;
 	}
 
 	getSequenceName(
 		prefixedTableName: string,
-		columnName: ColumnName,
+		columnName: ApplicationColumn_Name,
 	): string {
 		return `${prefixedTableName}_${columnName}__SEQUENCE`;
 	}

@@ -15,7 +15,7 @@ import {
 } from '@airport/travel-document-checkpoint'
 import { Application } from '@airport/airspace';
 
-export type Actor_Id = number;
+export type Actor_LocalId = number;
 export type Actor_GUID = string;
 
 @Entity()
@@ -24,8 +24,8 @@ export class Actor {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	@Column({ name: 'ID' })
-	id?: Actor_Id
+	@Column({ name: 'ACTOR_LID' })
+	_localId?: Actor_LocalId
 
 	@Column({ name: 'GUID', nullable: false })
 	@DbString()
@@ -33,25 +33,31 @@ export class Actor {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'USER_ID', referencedColumnName: 'ID',
+		name: 'USER_LID',
+		referencedColumnName: 'USER_LID',
 		nullable: false
 	})
 	user: User
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TERMINAL_ID', referencedColumnName: 'ID',
+		name: 'TERMINAL_LID',
+		referencedColumnName: 'TERMINAL_LID',
 		nullable: false
 	})
 	terminal?: Terminal
 
 	@ManyToOne()
-	@JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
+	@JoinColumn({
+		name: "APPLICATION_INDEX",
+		referencedColumnName: "APPLICATION_INDEX"
+	})
 	application?: Application
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'CLIENT_ID', referencedColumnName: 'ID',
+		name: 'CLIENT_LID',
+		referencedColumnName: 'CLIENT_LID',
 		nullable: true
 	})
 	client?: Client

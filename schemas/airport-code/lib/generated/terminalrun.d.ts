@@ -1,5 +1,5 @@
 export interface ITerminalRun {
-    id: number;
+    _localId: number;
     createTimestamp?: number;
     randomNumber?: number;
 }

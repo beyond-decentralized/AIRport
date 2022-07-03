@@ -13,7 +13,7 @@ import {
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
-	FullApplicationName,
+	FullApplication_Name,
 	IDbApplicationUtils,
 	JsonApplication
 } from '@airport/ground-control';
@@ -117,7 +117,7 @@ export abstract class ApplicationInitializer
 		const applicationsWithValidDependencies = await this.
 			getApplicationsWithValidDependencies(jsonApplications, checkDependencies)
 
-		const existingApplicationMap: Map<FullApplicationName, IApplication> = new Map()
+		const existingApplicationMap: Map<FullApplication_Name, IApplication> = new Map()
 		if (loadExistingApplications) {
 			const applications = await this.applicationDao.findAllWithJson()
 			for (const application of applications) {
@@ -128,19 +128,19 @@ export abstract class ApplicationInitializer
 		const newJsonApplicationMap: Map<string, JsonApplicationWithLastIds> = new Map()
 		for (const jsonApplication of jsonApplications) {
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getFullApplicationName(jsonApplication))
+				getFullApplication_Name(jsonApplication))
 			if (existingApplication) {
 				jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds
 			} else {
 				newJsonApplicationMap.set(this.dbApplicationUtils.
-					getFullApplicationName(jsonApplication), jsonApplication);
+					getFullApplication_Name(jsonApplication), jsonApplication);
 			}
 		}
 
 		let checkedApplicationsWithValidDependencies = []
 		for (const jsonApplication of applicationsWithValidDependencies) {
 			const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-				getFullApplicationName(jsonApplication))
+				getFullApplication_Name(jsonApplication))
 			if (!existingApplication) {
 				checkedApplicationsWithValidDependencies.push(jsonApplication)
 				await this.applicationBuilder.build(
@@ -218,7 +218,7 @@ export abstract class ApplicationInitializer
 	abstract nativeInitializeApplication(
 		domain: string,
 		application: string,
-		fullApplicationName: string,
+		fullApplication_Name: string,
 	): Promise<void>
 
 	protected async wait(
@@ -259,11 +259,11 @@ export abstract class ApplicationInitializer
 				// const
 				for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
 					const neededDependency = applicationReferenceCheckResults.neededDependencies[i]
-					const fullApplicationName = this.dbApplicationUtils.
-						getFullApplicationName(neededDependency)
+					const fullApplication_Name = this.dbApplicationUtils.
+						getFullApplication_Name(neededDependency)
 
 					await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name,
-						fullApplicationName)
+						fullApplication_Name)
 				}
 			}
 			applicationsWithValidDependencies = [

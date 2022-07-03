@@ -316,7 +316,7 @@ parent transactions.
 		let childTransactionHistory = transaction.transactionHistory
 		let parentTransactionHistory = parentTransaction.transactionHistory
 		for (const operationHistory of childTransactionHistory.allOperationHistory) {
-			const repositoryId = operationHistory.repositoryTransactionHistory.repository.id
+			const repositoryId = operationHistory.repositoryTransactionHistory.repository._localId
 			const parentRepositoryTransactionRecord = parentTransactionHistory
 				.repositoryTransactionHistoryMap[repositoryId]
 			if (parentRepositoryTransactionRecord) {

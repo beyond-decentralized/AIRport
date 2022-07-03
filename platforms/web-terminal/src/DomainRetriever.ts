@@ -3,7 +3,7 @@ import {
 } from '@airport/direction-indicator'
 import {
     DbDomain,
-    DomainName
+    Domain_Name
 } from '@airport/ground-control'
 import {
     IDomainRetriever
@@ -14,7 +14,7 @@ export class DomainRetriever
     implements IDomainRetriever {
 
     async retrieveDomain(
-        domainName: DomainName,
+        domainName: Domain_Name,
         domainNameMapByName: Map<string, DbDomain>,
         allDomains: DbDomain[],
         newDomains: DbDomain[]

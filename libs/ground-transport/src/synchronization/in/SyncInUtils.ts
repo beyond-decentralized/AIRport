@@ -2,11 +2,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ColumnIndex,
+	ApplicationColumn_Index,
 	ensureChildJsMap,
-	EntityId,
-	ApplicationIndex,
-	ApplicationVersionId
+	ApplicationEntity_LocalId,
+	Application_Index,
+	ApplicationVersion_LocalId
 } from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -22,8 +22,8 @@ import {
 	ISynchronizationConflict
 } from '@airport/moving-walkway'
 
-export type RemoteApplicationIndex = ApplicationIndex;
-export type RemoteApplicationVersionId = ApplicationVersionId;
+export type RemoteApplication_Index = Application_Index;
+export type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;
 export type RemoteActorId = Actor_Id;
 
 /**
@@ -54,7 +54,7 @@ export interface ISyncOperationHistory
 
 export interface ISyncRecordHistory
 	extends IRecordHistory {
-	newValueMap?: Map<ColumnIndex, ISyncNewValue>;
+	newValueMap?: Map<ApplicationColumn_Index, ISyncNewValue>;
 }
 
 export interface ISyncNewValue
@@ -73,22 +73,22 @@ export interface ISyncInUtils {
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordMapByApplicationTableAndRepository: Map<ApplicationVersionId,
-			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
+			Map<ApplicationEntity_LocalId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V>;
 
 }
 
 export interface Stage1SyncedInDataProcessingResult {
-	recordCreations: Map<ApplicationVersionId,
-		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-			Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>,
-	recordDeletions: Map<ApplicationVersionId,
-		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
+	recordCreations: Map<ApplicationVersion_LocalId,
+		Map<ApplicationEntity_LocalId, Map<Repository_Id, Map<Actor_Id,
+			Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
+	recordDeletions: Map<ApplicationVersion_LocalId,
+		Map<ApplicationEntity_LocalId, Map<Repository_Id, Map<Actor_Id,
 			Set<AirEntity_ActorRecordId>>>>>,
-	recordUpdates: Map<ApplicationVersionId,
-		Map<EntityId, Map<Repository_Id, Map<Actor_Id,
-			Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>,
+	recordUpdates: Map<ApplicationVersion_LocalId,
+		Map<ApplicationEntity_LocalId, Map<Repository_Id, Map<Actor_Id,
+			Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 	syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>
 }
 
@@ -99,8 +99,8 @@ export class SyncInUtils
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
 		repositoryId: Repository_Id,
 		operationHistory: IOperationHistory,
-		recordMapByApplicationTableAndRepository: Map<ApplicationVersionId,
-			Map<EntityId, Map<Repository_Id, Map<CI, V>>>>
+		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
+			Map<ApplicationEntity_LocalId, Map<Repository_Id, Map<CI, V>>>>
 	): Map<CI, V> {
 		return <any>ensureChildJsMap(
 			ensureChildJsMap(

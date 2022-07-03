@@ -18,7 +18,7 @@ import {
 } from '@airport/check-in'
 import {
 	ChangeType,
-	ColumnIndex,
+	ApplicationColumn_Index,
 	DbColumn,
 	ensureChildArray,
 	ensureChildMap,
@@ -218,11 +218,11 @@ export class UpdateManager
 				const recordHistoryMapForActor =
 					ensureChildMap(recordHistoryMapForRepository, actorId)
 
-				const actorRecordId = recordToUpdate[
+				const _actorRecordId = recordToUpdate[
 					getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex]
 				const recordHistory = this.operationHistoryDuo.startRecordHistory(
-					operationHistory, actorId, actorRecordId)
-				recordHistoryMapForActor[actorRecordId] = recordHistory
+					operationHistory, actorId, _actorRecordId)
+				recordHistoryMapForActor[_actorRecordId] = recordHistory
 
 				for (let i = 0; i < recordToUpdate.length; i++) {
 					switch (i) {
@@ -266,7 +266,7 @@ export class UpdateManager
 		let portableSelect = this.queryFacade.getPortableQuery(
 			sheetQuery, QueryResultType.SHEET, context)
 
-		const resultSetIndexByColumnIndex: Map<ColumnIndex, number> = new Map()
+		const resultSetIndexByColumnIndex: Map<ApplicationColumn_Index, number> = new Map()
 
 		const selectDbColumns: DbColumn[] = []
 		let i = 0
@@ -297,10 +297,10 @@ export class UpdateManager
 					repositorySheetSelectInfo.repositoryIdColumnIndex)]
 				const actorId = updatedRecord[resultSetIndexByColumnIndex.get(
 					repositorySheetSelectInfo.actorIdColumnIndex)]
-				const actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(
+				const _actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(
 					repositorySheetSelectInfo.actorRecordIdColumnIndex)]
 				const recordHistory = recordHistoryMapByRecordId
-				[repositoryId][actorId][actorRecordId]
+				[repositoryId][actorId][_actorRecordId]
 				for (const columnName in jsonUpdate.S) {
 					const dbColumn = context.dbEntity.columnMap[columnName]
 					const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)]

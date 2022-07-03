@@ -17,12 +17,18 @@ export class TerminalType {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID'
+    })
     terminal: Terminal
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'TYPE_LID',
+        referencedColumnName: 'TYPE_LID'
+    })
     type: Type
 
 }

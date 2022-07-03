@@ -5,67 +5,44 @@ import {
 import { ApplicationReferenceByIndex } from './Property';
 import { ApplicationStatus } from './ApplicationStatus';
 
-export type Application_Id = number;
-export type ApplicationName = string; // Just the name of the application, without the Domain Name
-export type ApplicationSignature = string;
-export type ApplicationPackageId = number;
-export type DatabaseIndex = number;
-export type DomainId = number;
-export type DomainName = string;
-export type FullApplicationName = string; // Domain & Application Names
-export type JsonApplicationName = string;
-export type PackageId = number;
-export type PackageName = string;
-export type ApplicationIndex = number;
-// NOTE: ApplicationName contains DomainName as a prefix DOMAIN_NAME___APPLICATION_NAME
-export type ApplicationReferenceIndex = number;
-export type ApplicationScope = 'private' | 'public' | null;
-export type ApplicationVersionId = number;
-export type ApplicationVersionInteger = number;
-export type ApplicationVersionMajor = number;
-export type ApplicationVersionMinor = number;
-export type ApplicationVersionPatch = number;
-export type ApplicationVersionString = string;
+export type Application_LocalId = number;
+export type Application_Name = string; // Just the name of the application, without the Domain Name
+export type Application_Signature = string;
+export type ApplicationPackage_LocalId = number;
+export type Database_Index = number;
+export type Domain_LocalId = number;
+export type Domain_Name = string;
+export type FullApplication_Name = string; // Domain & Application Names
+export type JsonApplication_Name = string;
+export type Application_Index = number;
+// NOTE: Application_Name contains Domain_Name as a prefix DOMAIN_NAME___APPLICATION_NAME
+export type ApplicationReference_Index = number;
+export type Application_Scope = 'private' | 'public' | null;
+export type ApplicationVersion_LocalId = number;
+export type ApplicationVersion_IntegerVersion = number;
+export type ApplicationVersion_MajorVersion = number;
+export type ApplicationVersion_MinorVersion = number;
+export type ApplicationVersion_PatchVersion = number;
+export type ApplicationVersion_VersionString = string;
 
-export interface DbPackage {
-
-	id: PackageId
-
-	name: PackageName
-
-	applicationPackages: DbApplicationPackage[]
-
-}
-
-export interface DbApplicationPackage {
-
-	application: DbApplication
-
-	id: ApplicationPackageId
-
-	package: DbPackage
-
-}
 
 export interface DbApplication {
 
-	applicationPackages: DbApplicationPackage[]
-
 	domain: DbDomain
 
-	id: Application_Id
+	id: Application_LocalId
 
-	name: ApplicationName
+	name: Application_Name
 
-	signature: ApplicationSignature
+	signature: Application_Signature
 
 }
 
 export interface DbDomain {
 
-	id: DomainId
+	id: Domain_LocalId
 
-	name: DomainName
+	name: Domain_Name
 
 	applications: DbApplication[]
 }
@@ -74,18 +51,18 @@ export interface DbDomain {
  * A application.
  */
 export interface JsonApplication
-	extends ApplicationReferenceByIndex<ApplicationIndex>,
+	extends ApplicationReferenceByIndex<Application_Index>,
 	JsonDatabaseObject {
 
 	/**
 	 * Domain of the application ('public' if published).
 	 */
-	domain: DomainName;
+	domain: Domain_Name;
 
 	/**
 	 * Name of the application
 	 */
-	name: JsonApplicationName;
+	name: JsonApplication_Name;
 
 	/**
 	 * Versions by integer version
@@ -98,7 +75,7 @@ export interface JsonApplication
  * A application with additional indexes (maps).
  */
 export interface DbApplication
-	extends ApplicationReferenceByIndex<ApplicationIndex>,
+	extends ApplicationReferenceByIndex<Application_Index>,
 	DatabaseObject {
 
 	currentVersion: DbApplicationCurrentVersion[];
@@ -108,11 +85,11 @@ export interface DbApplication
 	 */
 	domain: DbDomain;
 
-	name: ApplicationName;
+	name: Application_Name;
 
-	fullName: FullApplicationName
+	fullName: FullApplication_Name
 
-	scope: ApplicationScope;
+	scope: Application_Scope;
 
 	status: ApplicationStatus
 
@@ -125,9 +102,9 @@ export interface DbApplication
 
 export interface JsonDatabaseObject {
 
-	deprecatedSinceVersion?: ApplicationVersionInteger
-	removedInVersion?: ApplicationVersionInteger
-	sinceVersion: ApplicationVersionInteger
+	deprecatedSinceVersion?: ApplicationVersion_IntegerVersion
+	removedInVersion?: ApplicationVersion_IntegerVersion
+	sinceVersion: ApplicationVersion_IntegerVersion
 
 }
 
@@ -136,7 +113,7 @@ export interface JsonApplicationVersionReference {
 	/**
 	 * Integer version of the application
 	 */
-	integerVersion: ApplicationVersionInteger;
+	integerVersion: ApplicationVersion_IntegerVersion;
 
 }
 
@@ -146,7 +123,7 @@ export interface JsonApplicationVersion
 	/**
 	 * Semantic version of the application.
 	 */
-	versionString: ApplicationVersionString;
+	versionString: ApplicationVersion_VersionString;
 
 	/**
 	 * Entities by their application table indexes.
@@ -170,7 +147,7 @@ export interface DatabaseObject {
 
 export interface DbApplicationVersionReference {
 
-	integerVersion: ApplicationVersionInteger;
+	integerVersion: ApplicationVersion_IntegerVersion;
 
 }
 
@@ -191,7 +168,7 @@ export interface DbApplicationCurrentVersion {
 export interface DbApplicationVersion
 	extends DbApplicationVersionReference {
 
-	id: ApplicationVersionId;
+	id: ApplicationVersion_LocalId;
 
 	/**
 	 * Entities by their application table indexes.
@@ -225,15 +202,15 @@ export interface DbApplicationVersion
 	 */
 	referencedByMapByName?: { [applicationName: string]: DbApplicationReference };
 
-	integerVersion: ApplicationVersionInteger
+	integerVersion: ApplicationVersion_IntegerVersion
 
-	versionString: ApplicationVersionString;
+	versionString: ApplicationVersion_VersionString;
 
-	majorVersion: ApplicationVersionMajor;
+	majorVersion: ApplicationVersion_MajorVersion;
 
-	minorVersion: ApplicationVersionMinor;
+	minorVersion: ApplicationVersion_MinorVersion;
 
-	patchVersion: ApplicationVersionPatch;
+	patchVersion: ApplicationVersion_PatchVersion;
 
 	application: DbApplication;
 
@@ -242,7 +219,7 @@ export interface DbApplicationVersion
 export interface DbApplicationReference
 	extends DatabaseObject {
 
-	index: ApplicationReferenceIndex;
+	index: ApplicationReference_Index;
 	ownApplicationVersion: DbApplicationVersion;
 	referencedApplicationVersion: DbApplicationVersion;
 

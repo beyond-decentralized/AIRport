@@ -17,8 +17,8 @@ import {
 	IApplicationVersionDao
 } from '@airport/airspace'
 import {
-	DomainId,
-	ApplicationIndex,
+	Domain_LocalId,
+	Application_Index,
 } from '@airport/ground-control'
 import type { LastIds } from '@airport/apron'
 import { DdlObjects, ITerminalStore } from '@airport/terminal-map'
@@ -69,8 +69,8 @@ export class DdlObjectRetriever
 
 	async retrieveDdlObjects(): Promise<DdlObjects> {
 		const applications = await this.applicationDao.findAllActive()
-		const applicationIndexes: ApplicationIndex[] = []
-		const domainIdSet: Set<DomainId> = new Set()
+		const applicationIndexes: Application_Index[] = []
+		const domainIdSet: Set<Domain_LocalId> = new Set()
 		applications.forEach(
 			application => {
 				applicationIndexes.push(application.index)
@@ -86,29 +86,29 @@ export class DdlObjectRetriever
 		const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet))
 
 		const allApplicationVersions = await this.applicationVersionDao
-			.findAllActiveOrderByApplicationIndexAndId()
+			.findAllActiveOrderByApplication_IndexAndId()
 
-		let lastApplicationIndex: ApplicationIndex
+		let lastApplication_Index: Application_Index
 		// const allApplicationVersionsByIds: IApplicationVersion[] = []
 		const latestApplicationVersions: IApplicationVersion[] = []
 		const applicationVersions: IApplicationVersion[] = []
 		for (const applicationVersion of allApplicationVersions) {
-			if (applicationVersion.application.index !== lastApplicationIndex) {
+			if (applicationVersion.application.index !== lastApplication_Index) {
 				latestApplicationVersions.push(applicationVersion)
 			}
 			// allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
-			lastApplicationIndex = applicationVersion.application.index
+			lastApplication_Index = applicationVersion.application.index
 			applicationVersions.push(applicationVersion)
 		}
 
-		const latestApplicationVersionIds = latestApplicationVersions.map(
+		const latestApplicationVersion_LocalIds = latestApplicationVersions.map(
 			applicationVersion => applicationVersion.id)
 
 		const applicationReferences = await this.applicationReferenceDao
-			.findAllForApplicationVersions(latestApplicationVersionIds)
+			.findAllForApplicationVersions(latestApplicationVersion_LocalIds)
 
 		const entities = await this.applicationEntityDao
-			.findAllForApplicationVersions(latestApplicationVersionIds)
+			.findAllForApplicationVersions(latestApplicationVersion_LocalIds)
 		const entityIds = entities.map(
 			entity => entity.id)
 		/*

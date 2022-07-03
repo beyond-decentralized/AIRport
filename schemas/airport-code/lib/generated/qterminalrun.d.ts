@@ -10,13 +10,13 @@ export interface TerminalRunESelect extends IEntitySelectProperties, TerminalRun
  * DELETE - Ids fields and relations only (required).
  */
 export interface TerminalRunEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface TerminalRunEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -53,12 +53,12 @@ export interface TerminalRunECreateColumns extends TerminalRunEId, TerminalRunEU
  * Query Entity Query Definition (used for Q.EntityName).
  */
 export interface QTerminalRun extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     createTimestamp: IQNumberField;
     randomNumber: IQNumberField;
 }
 export interface QTerminalRunQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QTerminalRunQRelation extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }

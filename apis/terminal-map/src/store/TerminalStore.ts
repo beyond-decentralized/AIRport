@@ -12,12 +12,12 @@ import {
 	ISelectorManager
 } from '@airport/check-in';
 import {
-	ApplicationSignature,
-	DomainName,
+	Application_Signature,
+	Domain_Name,
 	ensureChildJsMap,
-	JsonApplicationName,
-	ApplicationName,
-	FullApplicationName
+	JsonApplication_Name,
+	Application_Name,
+	FullApplication_Name
 } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { Subject } from 'rxjs';
@@ -60,11 +60,11 @@ export interface ITerminalStore {
 
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
-	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
+	getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>
 
-	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
@@ -72,12 +72,12 @@ export interface ITerminalStore {
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
-	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>
+	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>
 
 	// Application name contains the domain name as a prefix + '___'
-	getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>
+	getLatestApplicationVersionMapByFullApplication_Name: IMemoizedSelector<Map<FullApplication_Name, IApplicationVersion>, ITerminalState>
 
-	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
+	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>
 
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
@@ -118,13 +118,13 @@ export class TerminalStore
 
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
-	getApplicationActorMapByDomainAndApplicationNames: IMemoizedSelector<Map<DomainName, Map<ApplicationName, IActor[]>>, ITerminalState>
+	getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
 
 	getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
 
-	getDomainMapByName: IMemoizedSelector<Map<DomainName, IDomain>, ITerminalState>
+	getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>
 
 	getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>
 
@@ -132,11 +132,11 @@ export class TerminalStore
 
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
-	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>, ITerminalState>;
+	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>;
 
-	getLatestApplicationVersionMapByFullApplicationName: IMemoizedSelector<Map<FullApplicationName, IApplicationVersion>, ITerminalState>;
+	getLatestApplicationVersionMapByFullApplication_Name: IMemoizedSelector<Map<FullApplication_Name, IApplicationVersion>, ITerminalState>;
 
-	getLatestApplicationVersionsByApplicationIndexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
+	getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
 
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
@@ -154,11 +154,11 @@ export class TerminalStore
 			terminal => terminal.applicationActors)
 		this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applicationInitializer)
-		this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors,
+		this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors,
 			applicationActors => {
-				const applicationActorsByDomainAndApplicationNames: Map<DomainName, Map<ApplicationName, IActor[]>> = new Map()
+				const applicationActorsByDomainAndApplication_Names: Map<Domain_Name, Map<Application_Name, IActor[]>> = new Map()
 				for (const applicationActor of applicationActors) {
-					const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplicationNames,
+					const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names,
 						applicationActor.application.domain.name)
 					let actorsForApplication = applicationActorMapForDomain
 						.get(applicationActor.application.name)
@@ -169,13 +169,13 @@ export class TerminalStore
 					}
 					actorsForApplication.push(applicationActor)
 				}
-				return applicationActorsByDomainAndApplicationNames
+				return applicationActorsByDomainAndApplication_Names
 			})
 		this.getDomains = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.domains);
 		this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const domainsByName: Map<ApplicationSignature, IDomain> = new Map()
+				const domainsByName: Map<Application_Signature, IDomain> = new Map()
 				for (const domain of domains) {
 					domainsByName.set(domain.name, domain)
 				}
@@ -189,7 +189,7 @@ export class TerminalStore
 			terminalState => terminalState.lastIds)
 		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const latestApplicationVersionMapByNames: Map<DomainName, Map<ApplicationName, IApplicationVersion>> = new Map();
+				const latestApplicationVersionMapByNames: Map<Domain_Name, Map<Application_Name, IApplicationVersion>> = new Map();
 
 				for (const domain of domains) {
 					const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
@@ -201,19 +201,19 @@ export class TerminalStore
 				return latestApplicationVersionMapByNames;
 			});
 
-		this.getLatestApplicationVersionMapByFullApplicationName = this.selectorManager.createSelector(
+		this.getLatestApplicationVersionMapByFullApplication_Name = this.selectorManager.createSelector(
 			this.getLatestApplicationVersionMapByNames, (
-				latestApplicationVersionMapByNames: Map<DomainName, Map<JsonApplicationName, IApplicationVersion>>
+				latestApplicationVersionMapByNames: Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>
 			) => {
-			const latestApplicationVersionMapByFullApplicationName: Map<FullApplicationName, IApplicationVersion> = new Map();
+			const latestApplicationVersionMapByFullApplication_Name: Map<FullApplication_Name, IApplicationVersion> = new Map();
 
-			for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
-				for (const applicationVersion of applicationVersionsForDomainName.values()) {
-					latestApplicationVersionMapByFullApplicationName.set(applicationVersion.application.fullName, applicationVersion);
+			for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
+				for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
+					latestApplicationVersionMapByFullApplication_Name.set(applicationVersion.application.fullName, applicationVersion);
 				}
 			}
 
-			return latestApplicationVersionMapByFullApplicationName;
+			return latestApplicationVersionMapByFullApplication_Name;
 		});
 
 		this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains,
@@ -231,27 +231,27 @@ export class TerminalStore
 				return allApplicationVersionsByIds;
 			});
 
-		this.getLatestApplicationVersionsByApplicationIndexes = this.selectorManager.createSelector(this.getDomains,
+		this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains,
 			domains => {
-				const latestApplicationVersionsByApplicationIndexes: IApplicationVersion[] = [];
+				const latestApplicationVersionsByApplication_Indexes: IApplicationVersion[] = [];
 
 				for (const domain of domains) {
 					for (const application of domain.applications) {
-						latestApplicationVersionsByApplicationIndexes[application.index]
+						latestApplicationVersionsByApplication_Indexes[application.index]
 							= application.currentVersion[0].applicationVersion;
 					}
 				}
 
-				return latestApplicationVersionsByApplicationIndexes;
+				return latestApplicationVersionsByApplication_Indexes;
 			});
 
 		this.getApplications = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applications);
 
-		this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes,
-			latestApplicationVersionsByApplicationIndexes => {
+		this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes,
+			latestApplicationVersionsByApplication_Indexes => {
 				const allEntities: IApplicationEntity[] = [];
-				for (const latestApplicationVersion of latestApplicationVersionsByApplicationIndexes) {
+				for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
 					if (!latestApplicationVersion) {
 						continue;
 					}

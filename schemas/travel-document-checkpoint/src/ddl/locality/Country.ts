@@ -1,4 +1,5 @@
 import {
+    Column,
     DbNumber,
     DbString,
     Entity,
@@ -22,13 +23,17 @@ export class Country {
     @Id()
     @GeneratedValue()
     @DbNumber()
+    @Column({ name: 'COUNTRY_ID' })
     id: Country_Id;
 
     @DbString()
     name: Country_Name
 
     @ManyToOne()
-    @JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'CONTINENT_LID',
+        referencedColumnName: 'CONTINENT_LID'
+    })
     continent: Continent
 
     @OneToMany({ mappedBy: 'country' })

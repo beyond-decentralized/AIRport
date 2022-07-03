@@ -33,14 +33,14 @@ export interface IEntityDatabaseFacade<IEntity,
 	EntityCreateProperties extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQ extends IQEntity> {
 
 	dbEntity: DbEntity;
 
 	duo: IDuo<IEntity, EntitySelect, EntityCreateProperties,
-		EntityUpdateColumns, EntityUpdateProperties, EntityId,
+		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
 		EntityCascadeGraph, IQ>;
 
 	/**

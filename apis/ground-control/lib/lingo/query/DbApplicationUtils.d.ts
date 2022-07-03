@@ -1,12 +1,12 @@
-import { ColumnName } from "../application/Property";
+import { ApplicationColumn_Name } from "../application/Property";
 export interface IDbApplicationUtils {
-    getFullApplicationName({ domain, name, }: {
+    getFullApplication_Name({ domain, name, }: {
         domain: string | {
             name: string;
         };
         name: string;
     }): string;
-    getFullApplicationNameFromDomainAndName(domainName: string, applicationName: string): string;
-    getSequenceName(prefixedTableName: string, columnName: ColumnName): string;
+    getFullApplication_NameFromDomainAndName(domainName: string, applicationName: string): string;
+    getSequenceName(prefixedTableName: string, columnName: ApplicationColumn_Name): string;
 }
 //# sourceMappingURL=DbApplicationUtils.d.ts.map

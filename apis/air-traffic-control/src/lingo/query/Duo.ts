@@ -31,7 +31,7 @@ export interface IDuo<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdate extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
@@ -39,16 +39,16 @@ export interface IDuo<Entity,
 
 	getIdStub(
 		ids: number | string | number[] | string[]
-	): EntityId;
+	): ApplicationEntity_LocalId;
 
 	getIdStubs(
 		ids: number[] | string[] | number[][] | string[][]
-	): EntityId[];
+	): ApplicationEntity_LocalId[];
 
 	/*
 	getAllFieldsSelect(): EntitySelect;
 
-	getIdFieldsSelect(): EntityId;
+	getIdFieldsSelect(): ApplicationEntity_LocalId;
 
 	getNonIdFieldsSelect(): EntityUpdate;
 

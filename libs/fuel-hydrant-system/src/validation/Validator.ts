@@ -2,12 +2,12 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ColumnIndex,
+	ApplicationColumn_Index,
 	DbColumn,
 	DbEntity,
 	JSONRelation,
-	ApplicationIndex,
-	TableIndex
+	Application_Index,
+	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 
 /**
@@ -38,15 +38,15 @@ export interface IValidator {
 	): void;
 
 	validateReadQEntityProperty(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index,
 	): void;
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index,
 	): void;
 
 	addFunctionAlias(functionAlias: string): void;
@@ -85,16 +85,16 @@ export class QValidator
 	}
 
 	validateReadQEntityProperty(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index,
 	): void {
 	}
 
 	validateReadQEntityManyToOneRelation(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		columnIndex: ColumnIndex,
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		columnIndex: ApplicationColumn_Index,
 	): void {
 	}
 

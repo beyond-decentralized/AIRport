@@ -25,7 +25,8 @@ export abstract class AirEntity {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: 'REPOSITORY_ID', referencedColumnName: 'ID',
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID',
 		nullable: false
 	})
 	repository?: Repository
@@ -33,7 +34,8 @@ export abstract class AirEntity {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ACTOR_ID', referencedColumnName: 'ID',
+		name: 'ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID',
 		nullable: false
 	})
 	actor?: Actor
@@ -41,7 +43,7 @@ export abstract class AirEntity {
 	@Id()
 	@Column({ name: 'ACTOR_RECORD_ID', nullable: false })
 	@GeneratedValue()
-	actorRecordId?: AirEntity_ActorRecordId
+	_actorRecordId?: AirEntity_ActorRecordId
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
@@ -55,7 +57,7 @@ export abstract class AirEntity {
 	// It is needed for bulk updates of repository records, where there is now way to find out
 	// what the new field values are (like 'UPDATE ... SET a = (SUBSELECT)'). It is used as
 	// a marker to find the new values after the update (and before saving them to history).
-	@Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
+	@Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 	systemWideOperationId?: AirEntity_SystemWideOperationId
 
 	// A record may actually be copied from another repository
@@ -64,13 +66,15 @@ export abstract class AirEntity {
 	// here
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
+		name: 'ORIGINAL_REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
 	})
 	originalRepository?: Repository
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
+		name: 'ORIGINAL_ACTOR_LID',
+		referencedColumnName: 'ACTOR_LID'
 	})
 	originalActor?: Actor
 
@@ -86,7 +90,7 @@ export abstract class AirEntity {
 	 * 		actor: {
 	 * 			uuId
 	 * 		},
-	 * 		actorRecordId,
+	 * 		_actorRecordId,
 	 * 		repository: {
 	 * 			uuId
 	 * 		}
@@ -94,7 +98,7 @@ export abstract class AirEntity {
 	 * 
 	 * Returns:
 	 * 
-	 * `${repository.uuId}-${actor.uuId}-${actorRecordId}`
+	 * `${repository.uuId}-${actor.uuId}-${_actorRecordId}`
 	 * 
 	 * Returns null if one of it's member Ids does not exist
 	 */

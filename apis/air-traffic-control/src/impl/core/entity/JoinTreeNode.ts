@@ -4,9 +4,9 @@ import {
 	JSONEntityRelation,
 	JSONRelation,
 	JSONRelationType,
-	RelationIndex,
-	ApplicationIndex,
-	TableIndex
+	ApplicationRelation_Index,
+	Application_Index,
+	ApplicationEntity_TableIndex
 } from "@airport/ground-control";
 
 /**
@@ -42,9 +42,9 @@ export class JoinTreeNode {
 	}
 
 	getEntityRelationChildNodeByIndexes(
-		applicationIndex: ApplicationIndex,
-		tableIndex: TableIndex,
-		relationIndex: RelationIndex
+		applicationIndex: Application_Index,
+		tableIndex: ApplicationEntity_TableIndex,
+		relationIndex: ApplicationRelation_Index
 	): JoinTreeNode {
 		let matchingNodes = this.childNodes.filter((childNode) => {
 			return (<JSONEntityRelation>childNode.jsonRelation).ri === relationIndex;

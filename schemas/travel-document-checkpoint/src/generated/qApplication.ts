@@ -4,7 +4,7 @@ import {
 } from '@airport/aviation-communication'
 import {
     DbApplication,
-    EntityId,
+    ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
 import { QClassification } from './type/qclassification';
 import { QClient } from './client/qclient';
@@ -91,13 +91,13 @@ export const Q_APPLICATION: LocalQApplication = <any>{
 export const Q: LocalQApplication = Q_APPLICATION
 
 export function diSet(
-	dbEntityId: EntityId
+	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
 	return airApi.dS(Q.__dbApplication__, dbEntityId)
 }
 
 export function duoDiSet(
-	dbEntityId: EntityId
+	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
 	return airApi.ddS(Q.__dbApplication__, dbEntityId)
 }

@@ -6,14 +6,14 @@ import {
 } from '@airport/air-traffic-control'
 import {
 	ensureChildArray,
-	EntityId,
+	ApplicationEntity_LocalId,
 	JSONBaseOperation,
 	TransactionType
 } from '@airport/ground-control'
 import {
 	Actor_Id,
 	RecordHistoryActorRecordId,
-	Repository_Id,
+	Repository_LocalId,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryTransactionHistoryDao,
@@ -36,8 +36,8 @@ export interface IRepositoryTransactionHistoryDao {
 	): Promise<IRepositoryTransactionHistory[]>
 
 	findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
-	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>>;
+		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>
+	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>>;
 
 	updateSyncTimestamp(
 		repositoryTransactionHistory: IRepositoryTransactionHistory
@@ -46,7 +46,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	ids: Map<EntityId, Map<Actor_Id, Set<RecordHistoryActorRecordId>>>;
+	ids: Map<ApplicationEntity_LocalId, Map<Actor_Id, Set<RecordHistoryActorRecordId>>>;
 	firstChangeTime: number;
 }
 
@@ -85,9 +85,9 @@ export class RepositoryTransactionHistoryDao
 	}
 
 	async findAllLocalChangesForRecordIds(
-		changedRecordIds: Map<Repository_Id, IChangedRecordIdsForRepository>
-	): Promise<Map<Repository_Id, IRepositoryTransactionHistory[]>> {
-		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
+		changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>
+	): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>> {
+		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
@@ -97,7 +97,7 @@ export class RepositoryTransactionHistoryDao
 		const av: QApplicationVersion = ae.applicationVersion.leftJoin()
 		const rh: QRecordHistory = oh.recordHistory.leftJoin()
 		const nv: QRecordHistoryNewValue = rh.newValues.leftJoin()
-		let id = Y
+		let _localId = Y
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
@@ -107,8 +107,8 @@ export class RepositoryTransactionHistoryDao
 				const actorEquals: JSONBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
 					actorEquals.push(and(
-						oh.actor.id.equals(actorId),
-						rh.actorRecordId.in(Array.from(recordsForActor))
+						oh.actor._localId.equals(actorId),
+						rh._actorRecordId.in(Array.from(recordsForActor))
 					))
 				}
 				entityEquals.push(and(
@@ -117,7 +117,7 @@ export class RepositoryTransactionHistoryDao
 				))
 			}
 			repositoryEquals.push(and(
-				rth.repository.id.equals(repositoryId),
+				rth.repository._localId.equals(repositoryId),
 				rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime),
 				or(...entityEquals)
 			))
@@ -130,10 +130,10 @@ export class RepositoryTransactionHistoryDao
 					orderNumber: Y,
 					changeType: Y,
 					entity: {
-						id,
+						_localId,
 						// index: Y,
 						applicationVersion: {
-							id: Y,
+							_localId: Y,
 							// integerVersion: Y,
 							// application: {
 							// 	index: Y
@@ -141,7 +141,7 @@ export class RepositoryTransactionHistoryDao
 						}
 					},
 					recordHistory: {
-						id,
+						_localId,
 						newValues: {
 							columnIndex: Y,
 							newValue: Y
@@ -164,13 +164,13 @@ export class RepositoryTransactionHistoryDao
 				or(...repositoryEquals)
 			),
 			// orderBy: [
-			// 	rth.repository.id.asc()
+			// 	rth.repository._localId.asc()
 			// ]
 		})
 
 		for (const repoTransHistory of repoTransHistories) {
 			ensureChildArray(
-				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository.id)
+				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((
 				rth1: IOperationHistory,

@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { ApplicationName, ApplicationStatus } from '@airport/ground-control';
+import { Application_Name, ApplicationStatus } from '@airport/ground-control';
 import {
     IDomain,
     IApplication,
@@ -20,7 +20,7 @@ export interface IDomainCheckRecord {
 
 export interface IApplicationCheckRecord {
     found?: boolean
-    applicationName: ApplicationName
+    applicationName: Application_Name
     application?: IApplication;
 }
 
@@ -68,11 +68,11 @@ export class SyncInApplicationChecker
         message: RepositorySynchronizationMessage,
         context: IContext
     ): Promise<Map<string, Map<string, IApplicationCheckRecord>>> {
-        const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap }
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap }
             = this.getNames(message)
 
         const applications = await this.applicationDao
-            .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
 
         for (let application of applications) {
             let domainName = application.domain.name
@@ -135,7 +135,7 @@ export class SyncInApplicationChecker
     private getNames(
         message: RepositorySynchronizationMessage
     ): {
-        allApplicationNames: string[],
+        allApplication_Names: string[],
         domainCheckMap: Map<string, IDomainCheckRecord>,
         domainNames: string[],
         applicationCheckMap: Map<string, Map<string, IApplicationCheckRecord>>
@@ -180,16 +180,16 @@ export class SyncInApplicationChecker
         }
 
         const domainNames = []
-        const allApplicationNames = []
+        const allApplication_Names = []
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName)
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplicationNames.push(applicationName)
+                allApplication_Names.push(applicationName)
             }
         }
 
         return {
-            allApplicationNames,
+            allApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap

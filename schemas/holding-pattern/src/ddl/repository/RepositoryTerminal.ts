@@ -6,7 +6,7 @@ import {
 	Table
 } from "@airport/air-traffic-control";
 import {
-    Terminal,
+	Terminal,
 	Type
 } from "@airport/travel-document-checkpoint";
 import { Repository } from "./Repository";
@@ -17,14 +17,20 @@ import { Repository } from "./Repository";
 })
 export class RepositoryTerminal {
 
-    @Id()
+	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
+	})
 	repository: Repository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'TERMINAL_LID',
+		referencedColumnName: 'TERMINAL_LID'
+	})
 	terminal: Terminal
 
 }

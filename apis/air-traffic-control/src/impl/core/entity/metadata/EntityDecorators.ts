@@ -1,7 +1,7 @@
 import {
 	EntityDecorator,
 	MappedSuperclassDecorator,
-	TableConfiguration,
+	ApplicationEntity_TableConfiguration,
 	TableDecorator
 } from '../../../../lingo/core/entity/metadata/EntityDecorators'
 
@@ -16,7 +16,7 @@ export const Entity: EntityDecorator = function () {
 }
 
 export const Table: TableDecorator = function (
-	tableConfiguration?: TableConfiguration
+	tableConfiguration?: ApplicationEntity_TableConfiguration
 ) {
 	return function (constructor: Function) {
 		// No runtime logic required.

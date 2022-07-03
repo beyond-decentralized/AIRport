@@ -116,7 +116,7 @@ export class TransactionalServer
 				// url, platform, platformConfig, distributionStrategy
 				actor,
 				context);
-			repositoryId = repository.id
+			repositoryId = repository._localId
 		}, context)
 
 		return repositoryId
@@ -391,7 +391,7 @@ export class TransactionalServer
 		}
 		let actors: IActor[]
 		const actorMapForDomain = this.terminalStore
-			.getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain)
+			.getApplicationActorMapByDomainAndApplication_Names().get(credentials.domain)
 		if (actorMapForDomain) {
 			actors = actorMapForDomain.get(credentials.application)
 		} else {

@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
 	Actor_Id,
 	Repository,
-	Repository_Id,
+	Repository_LocalId,
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
@@ -24,7 +24,7 @@ import { IOperationHistoryDuo } from './OperationHistoryDuo'
 export interface IRepositoryTransactionHistoryDuo {
 
 	getNewRecord(
-		repositoryId: Repository_Id,
+		repositoryId: Repository_LocalId,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory;
 
@@ -57,7 +57,7 @@ export class RepositoryTransactionHistoryDuo
 	operationHistoryDuo: IOperationHistoryDuo
 
 	getNewRecord(
-		repositoryId: Repository_Id,
+		repositoryId: Repository_LocalId,
 		isRepositoryCreation: boolean
 	): IRepositoryTransactionHistory {
 		let repositoryTransactionHistory: IRepositoryTransactionHistory = new RepositoryTransactionHistory() as IRepositoryTransactionHistory
@@ -68,7 +68,7 @@ export class RepositoryTransactionHistoryDuo
 		repositoryTransactionHistory.GUID = uuidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
 		repositoryTransactionHistory.repository = new Repository() as IRepository
-		repositoryTransactionHistory.repository.id = repositoryId
+		repositoryTransactionHistory.repository._localId = repositoryId
 
 		return repositoryTransactionHistory
 	}

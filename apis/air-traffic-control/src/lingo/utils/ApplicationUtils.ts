@@ -4,9 +4,9 @@ import {
   DbColumn,
   DbEntity,
   DbRelation,
-  ApplicationIndex,
+  Application_Index,
   SQLDataType,
-  TableIndex,
+  ApplicationEntity_TableIndex,
 } from '@airport/ground-control';
 import type { QEntityConstructor } from '../../impl/core/entity/Entity';
 import {
@@ -54,8 +54,8 @@ export interface RepositorySheetSelectInfo {
 export interface IApplicationUtils {
 
   getDbEntity(
-    applicationIndex: ApplicationIndex,
-    tableIndex: TableIndex
+    applicationIndex: Application_Index,
+    tableIndex: ApplicationEntity_TableIndex
   ): DbEntity;
 
   getQEntityConstructor(

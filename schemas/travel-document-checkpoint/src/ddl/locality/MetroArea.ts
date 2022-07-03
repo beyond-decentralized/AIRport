@@ -1,4 +1,4 @@
-import { DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
+import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
 import { User } from "../User";
 import { Country } from "./Country";
 import { State } from "./State";
@@ -13,13 +13,17 @@ export class MetroArea {
     @Id()
     @GeneratedValue()
     @DbNumber()
+    @Column({ name: 'METRO_AREA_ID' })
     id: MetroArea_Id;
 
     @DbString()
     name: MetroArea_Name
 
     @ManyToOne()
-    @JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'COUNTRY_LID',
+        referencedColumnName: 'COUNTRY_LID'
+    })
     country: Country
 
     @OneToMany({ mappedBy: 'metroArea' })

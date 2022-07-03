@@ -32,7 +32,7 @@ export interface AirEntityUuId {
         GUID?: string,
         user?: IUser
     },
-    actorRecordId?: number
+    _actorRecordId?: number
 
 }
 
@@ -74,19 +74,19 @@ export class AirEntityUtils
             || !idObject.repository.GUID
             || !idObject.actor
             || !idObject.actor.GUID
-            || !idObject.actorRecordId) {
+            || !idObject._actorRecordId) {
             return null
         }
         if (typeof idObject.repository.GUID !== 'string') {
-            throw Error(`Type of "repository.uuId" property is not a string.`)
+            throw Error(`Type of "repository.GUID" property is not a string.`)
         }
         if (typeof idObject.actor.GUID !== 'string') {
-            throw Error(`Type of "actor.uuId" property is not a string.`)
+            throw Error(`Type of "actor.GUID" property is not a string.`)
         }
-        if (typeof idObject.actorRecordId !== 'number') {
-            throw Error(`Type of "actorRecordId" property is not a number.`)
+        if (typeof idObject._actorRecordId !== 'number') {
+            throw Error(`Type of "_actorRecordId" property is not a number.`)
         }
-        return idObject.repository.GUID + '-' + idObject.actor.GUID + '-' + idObject.actorRecordId
+        return idObject.repository.GUID + '-' + idObject.actor.GUID + '-' + idObject._actorRecordId
     }
 
     parseEGUID(
@@ -94,7 +94,7 @@ export class AirEntityUtils
     ): AirEntityUuId {
         const idStringFragments = idString.split('-')
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid Entity GUID, expecting ${repository.uuId}-${actor.uuId}-${actorRecordId}');
+            throw new Error('Invalid Entity Id, expecting ${repository.GUID}-${actor.GUID}-${_actorRecordId}');
         }
         const repositoryUuIdFragments: string[] = []
         for (let i = 0; i < 5; i++) {
@@ -111,7 +111,7 @@ export class AirEntityUtils
             actor: {
                 GUID: actorUuIdFragments.join('-')
             },
-            actorRecordId: parseInt(idStringFragments[11])
+            _actorRecordId: parseInt(idStringFragments[11])
         }
     }
 
@@ -136,7 +136,7 @@ export class AirEntityUtils
             airEntity.actor.GUID = airEntityId.actor.GUID
         }
 
-        airEntity.actorRecordId = airEntityId.actorRecordId
+        airEntity._actorRecordId = airEntityId._actorRecordId
     }
 
 }

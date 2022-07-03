@@ -21,7 +21,7 @@ export interface IRecordHistoryDuo
 
 	getNewRecord(
 		actorId: Actor_Id,
-		actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory;
 
 	addNewValue(
@@ -51,13 +51,13 @@ export class RecordHistoryDuo
 
 	getNewRecord(
 		actorId: Actor_Id,
-		actorRecordId: AirEntity_ActorRecordId
+		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()
 
-		recordHistory.actorRecordId = actorRecordId
+		recordHistory._actorRecordId = _actorRecordId
 		recordHistory.actor = {
-			id: actorId
+			_localId: actorId
 		} as any
 
 		return recordHistory as IRecordHistory

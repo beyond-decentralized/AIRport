@@ -6,7 +6,7 @@ import {
 	Table
 } from "@airport/air-traffic-control";
 import {
-    Client,
+	Client,
 	Type
 } from "@airport/travel-document-checkpoint";
 import { Repository } from "./Repository";
@@ -17,14 +17,20 @@ import { Repository } from "./Repository";
 })
 export class RepositoryClient {
 
-    @Id()
+	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
+	})
 	repository: Repository
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({ name: 'CLIENT_ID', referencedColumnName: 'ID' })
+	@JoinColumn({
+		name: 'CLIENT_LID',
+		referencedColumnName: 'CLIENT_LID'
+	})
 	client: Client
 
 }

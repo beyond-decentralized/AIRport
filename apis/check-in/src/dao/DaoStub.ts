@@ -14,7 +14,7 @@ export class DaoStub<Entity, EntityCreate extends IEntityCreateProperties> {
 		entity: EntityInfo
 	): Promise<number> {
 		throw new Error(`Cannot use this.stub.save for manual queries (it
-		is meant for prepared queries (with @\${EntityName}Dao.Save).  Instead
+		is meant for prepared queries (with @\${ApplicationEntity_Name}Dao.Save).  Instead
 		please use this.db.save`);
 	}
 }

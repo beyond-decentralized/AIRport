@@ -183,7 +183,7 @@ export class QEntityDriver
 		relationManager: IRelationManager
 	): JSONRelation {
 		// FIXME: this does not work for non-entity tree queries, as there is not dbEntity
-		// see ApplicationDao.findMaxVersionedMapByApplicationAndDomainNames for an example
+		// see ApplicationDao.findMaxVersionedMapByApplicationAndDomain_Names for an example
 		let jsonRelation: JSONRelation = {
 			currentChildIndex: this.currentChildIndex,
 			ti: this.dbEntity.index,
@@ -309,7 +309,7 @@ export class QEntityDriver
 
 		for (const entityRelation of this.entityRelations) {
 			const propertyName = ApplicationUtils.getIPropertyWithRelationIndex(
-				entityRelation.parentApplicationIndex,
+				entityRelation.parentApplication_Index,
 				entityRelation.parentTableIndex,
 				entityRelation.parentRelationIndex,
 			).name;

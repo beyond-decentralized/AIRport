@@ -2,7 +2,7 @@ import {
 	IVersionedApplicationObject,
 } from './versionedapplicationobject';
 import {
-	TableConfiguration,
+	ApplicationEntity_TableConfiguration,
 } from '@airport/air-traffic-control';
 import {
 	IApplicationColumn,
@@ -38,7 +38,7 @@ export interface IApplicationEntity extends IVersionedApplicationObject {
 	isLocal?: boolean;
 	isAirEntity?: boolean;
 	name?: string;
-	tableConfig?: TableConfiguration;
+	tableConfig?: ApplicationEntity_TableConfiguration;
 
 	// Non-Id Relations
 	applicationVersion?: IApplicationVersion;

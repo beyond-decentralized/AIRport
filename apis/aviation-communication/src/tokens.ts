@@ -1,5 +1,5 @@
 import { lib } from "@airport/direction-indicator"
-import { IAirEntityUtils, AirEntityUtils } from "./AirEntityUuId"
+import { IAirEntityUtils, AirEntityUtils } from "./AirEntityUtils"
 
 const aviationCommunication = lib('aviation-communication')
 

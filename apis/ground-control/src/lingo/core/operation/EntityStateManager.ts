@@ -15,7 +15,7 @@ export enum EntityState {
 	// In that case we want to keep the ID of the record from another application
 	// so that it can be saved in the record of the current application that is
 	// referencing it.
-	PARENT_SCHEMA_ID = 'PARENT_SCHEMA_ID',
+	PARENT_SCHEMA_ID = 'PARENT_SCHEMA_LID',
 	// A "Pass through object" is an existing that is present in the object graph
 	// but no operations are performed on it
 	PASS_THROUGH = 'PASS_THROUGH',

@@ -8,7 +8,7 @@
 export interface ISystemWideOperationId {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

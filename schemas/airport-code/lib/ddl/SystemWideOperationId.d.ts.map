@@ -1,1 +1,1 @@
-{"version":3,"file":"SystemWideOperationId.d.ts","sourceRoot":"","sources":["../../src/ddl/SystemWideOperationId.ts"],"names":[],"mappings":"AASA,oBAAY,wBAAwB,GAAG,MAAM,CAAC;AAE9C;;GAEG;AACH,qBAEa,qBAAqB;IAMjC,EAAE,EAAE,wBAAwB,CAAA;CAE5B"}
+{"version":3,"file":"SystemWideOperationId.d.ts","sourceRoot":"","sources":["../../src/ddl/SystemWideOperationId.ts"],"names":[],"mappings":"AASA,oBAAY,wBAAwB,GAAG,MAAM,CAAC;AAE9C;;GAEG;AACH,qBAEa,qBAAqB;IAMjC,QAAQ,EAAE,wBAAwB,CAAA;CAElC"}

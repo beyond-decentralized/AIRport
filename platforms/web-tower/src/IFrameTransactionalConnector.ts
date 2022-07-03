@@ -14,7 +14,7 @@ import {
 } from '@airport/direction-indicator';
 import {
 	DbDomain,
-	DomainName,
+	Domain_Name,
 	IDbApplicationUtils,
 	ISaveResult,
 	ITransactionalConnector,
@@ -22,7 +22,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IAddRepositoryIMI,
-	IGetLatestApplicationVersionByApplicationNameIMI,
+	IGetLatestApplicationVersionByApplication_NameIMI,
 	IInitConnectionIMI,
 	IInitConnectionIMO,
 	IIsolateMessage,
@@ -50,7 +50,7 @@ import { IAirEntity } from '@airport/ground-control/src';
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {
 
-	getLatestApplicationVersionMapByFullApplicationName(
+	getLatestApplicationVersionMapByFullApplication_Name(
 		applicationName: string
 	): Promise<IApplicationVersion>
 
@@ -62,7 +62,7 @@ export interface IIframeTransactionalConnector
 	): Promise<void>
 
 	retrieveDomain(
-		domainName: DomainName
+		domainName: Domain_Name
 	): Promise<DbDomain>
 
 }
@@ -128,14 +128,14 @@ export class IframeTransactionalConnector
 				|| !message.application
 				// And if own domain is a direct sub-domain of the message's domain
 				|| ownDomain !== this.dbApplicationUtils.
-					getFullApplicationName({
+					getFullApplication_Name({
 						domain: message.domain,
 						name: message.application,
 					}) + domainSuffix) {
 				return
 			}
 			const ownDomainFragments = ownDomain.split('.')
-			// Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+			// Only accept requests from 'www.${mainDomain_Name}' or 'www.${mainDomain_Name}'
 			// All 'App' messages must first come from the main domain, which ensures
 			// that the application is installed
 			const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1)
@@ -338,12 +338,12 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async getLatestApplicationVersionMapByFullApplicationName(
-		fullApplicationName: string
+	async getLatestApplicationVersionMapByFullApplication_Name(
+		fullApplication_Name: string
 	): Promise<IApplicationVersion> {
-		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplicationNameIMI, IApplicationVersion>({
+		return await this.sendMessageNoWait<IGetLatestApplicationVersionByApplication_NameIMI, IApplicationVersion>({
 			...this.getCoreFields(),
-			fullApplicationName: fullApplicationName,
+			fullApplication_Name: fullApplication_Name,
 			type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
 		})
 	}
@@ -506,8 +506,8 @@ export class IframeTransactionalConnector
 				await this.applicationLoader.initialize()
 				window.parent.postMessage({
 					...this.getCoreFields(),
-					fullApplicationName: this.dbApplicationUtils.
-						getFullApplicationName(
+					fullApplication_Name: this.dbApplicationUtils.
+						getFullApplication_Name(
 							this.applicationLoader.getApplication()),
 					type: IsolateMessageType.APP_INITIALIZED
 				}, this.applicationStore.state.hostServer)
@@ -531,7 +531,7 @@ export class IframeTransactionalConnector
 	}
 
 	async retrieveDomain(
-		domainName: DomainName
+		domainName: Domain_Name
 	): Promise<DbDomain> {
 		return await this.sendMessageNoWait<IRetrieveDomainIMI, DbDomain>({
 			...this.getCoreFields(),

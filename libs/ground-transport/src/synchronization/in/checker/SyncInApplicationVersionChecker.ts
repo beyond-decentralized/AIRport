@@ -57,17 +57,17 @@ export class SyncInApplicationVersionChecker
 		message: RepositorySynchronizationMessage,
 		context: IContext
 	): Promise<Map<string, Map<string, IApplicationVersionCheckRecord>>> {
-		const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message)
+		const { allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(message)
 
-		const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames)
+		const applicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names)
 
-		let lastDomainName
-		let lastApplicationName
+		let lastDomain_Name
+		let lastApplication_Name
 		for (let applicationVersion of applicationVersions) {
 			let domainName = applicationVersion.application.domain.name
 			let applicationName = applicationVersion.application.name
-			if (lastDomainName !== domainName
-				&& lastApplicationName !== applicationName) {
+			if (lastDomain_Name !== domainName
+				&& lastApplication_Name !== applicationName) {
 				let applicationVersionNumber = applicationVersion.integerVersion
 
 				for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
@@ -80,8 +80,8 @@ export class SyncInApplicationVersionChecker
 						applicationCheck.applicationVersion = applicationVersion
 					}
 				}
-				lastDomainName = domainName
-				lastApplicationName = applicationName
+				lastDomain_Name = domainName
+				lastApplication_Name = applicationName
 			}
 		}
 
@@ -101,7 +101,7 @@ export class SyncInApplicationVersionChecker
 	private getNames(
 		message: RepositorySynchronizationMessage
 	): {
-		allApplicationNames: string[],
+		allApplication_Names: string[],
 		domainNames: string[],
 		applicationVersionCheckMap: Map<string, Map<string, IApplicationVersionCheckRecord>>
 	} {
@@ -136,16 +136,16 @@ export class SyncInApplicationVersionChecker
 		}
 
 		const domainNames = []
-		const allApplicationNames = []
+		const allApplication_Names = []
 		for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
 			domainNames.push(domainName)
 			for (let [applicationName, _] of applicationChecksForDomainMap) {
-				allApplicationNames.push(applicationName)
+				allApplication_Names.push(applicationName)
 			}
 		}
 
 		return {
-			allApplicationNames,
+			allApplication_Names,
 			domainNames,
 			applicationVersionCheckMap
 		}

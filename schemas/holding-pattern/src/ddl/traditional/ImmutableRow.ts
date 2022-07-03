@@ -10,7 +10,7 @@ import {IUser}     from '@airport/travel-document-checkpoint'
 export abstract class ImmutableRow {
 
 	@ManyToOne()
-	@JoinColumn({name: 'USER_ACCOUNT_ID'})
+	@JoinColumn({name: 'USER_ACCOUNT_LID'})
 	user: IUser
 
 	@Column({name: 'CREATED_AT'})

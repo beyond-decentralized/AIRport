@@ -71,7 +71,7 @@ export function visitDaoFile(
 			case tsc.SyntaxKind.ExtendsKeyword: {
 				extendedBaseClass = (heritageClause.types[0].expression as any).escapedText;
 				if (!extendedBaseClass.startsWith('Base') || !extendedBaseClass.endsWith('Dao')) {
-					throw new Error(`Dao ${daoName} must extends the Base{EntityName}Dao class.`);
+					throw new Error(`Dao ${daoName} must extends the Base{ApplicationEntity_Name}Dao class.`);
 				}
 				entityName = extendedBaseClass.substring(4, extendedBaseClass.length - 3);
 				break;
@@ -84,7 +84,7 @@ export function visitDaoFile(
 	}
 
 	if (!entityName) {
-		throw new Error(`The '${daoName}' Dao must extend the Base{EntityName}Dao class.`);
+		throw new Error(`The '${daoName}' Dao must extend the Base{ApplicationEntity_Name}Dao class.`);
 	}
 
 	if (file.hasDao) {

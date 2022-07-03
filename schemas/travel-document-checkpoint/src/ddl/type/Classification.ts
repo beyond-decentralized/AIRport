@@ -1,4 +1,5 @@
 import {
+    Column,
     Entity,
     Id,
     Table
@@ -11,6 +12,7 @@ import {
 export class Classification {
 
     @Id()
+    @Column({ name: 'CLASSIFICATION_ID' })
     id: number
 
     name: string

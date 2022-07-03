@@ -11,7 +11,7 @@ import {
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_GUID,
-	Repository_Id,
+	Repository_LocalId,
 	Repository_Source,
 	Repository_GUID,
 } from '../../ddl/ddl'
@@ -35,7 +35,7 @@ export interface IRepositoryDao
 	): Promise<IRepository>
 
 	findByIds(
-		repositoryIds: Repository_Id[]
+		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]>;
 
 	findByGUIDs(
@@ -52,7 +52,7 @@ export interface IRepositoryDao
 export type RepositoryIdMap = Map<User_GUID,
 	Map<Terminal_GUID, Map<User_GUID,
 		Map<Actor_GUID, Map<number,
-			Map<Repository_GUID, Repository_Id>>>>>>;
+			Map<Repository_GUID, Repository_LocalId>>>>>>;
 
 @Injected()
 export class RepositoryDao
@@ -90,7 +90,7 @@ export class RepositoryDao
 	}
 
 	async findReposWithDetailsAndSyncNodeIds(
-		repositoryIds: Repository_Id[]
+		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
 		const id = Y
@@ -111,7 +111,7 @@ export class RepositoryDao
 	}
 
 	async findByIds(
-		repositoryIds: Repository_Id[]
+		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
@@ -167,7 +167,7 @@ export class RepositoryDao
 		}, context)
 		for (let i = 0; i < repositories.length; i++) {
 			let repository = repositories[i]
-			repository.id = ids[i][0]
+			repository._localId = ids[i][0]
 		}
 	}
 

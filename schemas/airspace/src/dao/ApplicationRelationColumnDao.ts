@@ -1,6 +1,6 @@
 import { or } from '@airport/air-traffic-control'
 import { IContext, Injected } from '@airport/direction-indicator'
-import { ColumnId } from '@airport/ground-control'
+import { ApplicationColumn_LocalId } from '@airport/ground-control'
 import {
 	BaseApplicationRelationColumnDao,
 	IBaseApplicationRelationColumnDao,
@@ -13,7 +13,7 @@ export interface IApplicationRelationColumnDao
 	extends IBaseApplicationRelationColumnDao {
 
 	findAllForColumns(
-		columnIds: ColumnId[]
+		columnIds: ApplicationColumn_LocalId[]
 	): Promise<IApplicationRelationColumn[]>
 
 	insert(
@@ -29,7 +29,7 @@ export class ApplicationRelationColumnDao
 	implements IApplicationRelationColumnDao {
 
 	async findAllForColumns(
-		columnIds: ColumnId[]
+		columnIds: ApplicationColumn_LocalId[]
 	): Promise<IApplicationRelationColumn[]> {
 		let rc: QApplicationRelationColumn
 

@@ -191,15 +191,15 @@ export class WebTransactionalReceiver
 		context: IApiCallContext & ITransactionContext
 	): Promise<boolean> {
 		return await this.startApiCall(message, context, async () => {
-			const fullApplicationName = this.dbApplicationUtils.
-				getFullApplicationNameFromDomainAndName(
+			const fullApplication_Name = this.dbApplicationUtils.
+				getFullApplication_NameFromDomainAndName(
 					message.domain, message.application)
-			const frameWindow = this.getFrameWindow(fullApplicationName)
+			const frameWindow = this.getFrameWindow(fullApplication_Name)
 			if (frameWindow) {
 				// Forward the request to the correct application iframe
 				frameWindow.postMessage(message, '*')
 			} else {
-				throw new Error(`No Application IFrame found for: ${fullApplicationName}`)
+				throw new Error(`No Application IFrame found for: ${fullApplication_Name}`)
 			}
 		})
 	}
@@ -244,24 +244,24 @@ export class WebTransactionalReceiver
 	private async ensureConnectionIsReady(
 		message: ILocalAPIRequest
 	): Promise<void> {
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
 
 		const applicationInitializing = this.terminalStore.getApplicationInitializer()
-			.initializingApplicationMap.get(fullApplicationName)
+			.initializingApplicationMap.get(fullApplication_Name)
 		if (applicationInitializing) {
 			return
 		}
 
 		const applicationWindow = this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplicationName)
+			.applicationWindowMap.get(fullApplication_Name)
 
 		if (!applicationWindow) {
 			this.terminalStore.getApplicationInitializer()
-				.initializingApplicationMap.set(fullApplicationName, true)
+				.initializingApplicationMap.set(fullApplication_Name, true)
 			await this.applicationInitializer.nativeInitializeApplication(message.domain,
-				message.application, fullApplicationName)
+				message.application, fullApplication_Name)
 		}
 
 		const connectionIsReadyMessage: ILocalAPIResponse = {
@@ -307,11 +307,11 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
 
-		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName)
+		let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name)
 		if (!numPendingMessagesForApplication) {
 			numPendingMessagesForApplication = 0
 		}
@@ -321,9 +321,9 @@ export class WebTransactionalReceiver
 		}
 
 		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
-		webReciever.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1)
+		webReciever.pendingApplicationCounts.set(fullApplication_Name, numPendingMessagesForApplication + 1)
 
-		if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
+		if (!await this.ensureApplicationIsInstalled(fullApplication_Name)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
@@ -361,10 +361,10 @@ export class WebTransactionalReceiver
 	}
 
 	private getFrameWindow(
-		fullApplicationName: string
+		fullApplication_Name: string
 	) {
 		const iframe: HTMLIFrameElement = document
-			.getElementsByName(fullApplicationName) as any
+			.getElementsByName(fullApplication_Name) as any
 		if (!iframe || !iframe[0]) {
 			return null
 		}
@@ -384,8 +384,8 @@ export class WebTransactionalReceiver
 	private replyToClientRequest(
 		message: ILocalAPIResponse
 	) {
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
 		const webReciever = this.terminalStore.getWebReceiver()
 
@@ -393,7 +393,7 @@ export class WebTransactionalReceiver
 		if (numMessagesFromHost > 0) {
 			webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1)
 		}
-		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName)
+		let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name)
 		if (numMessagesForApplication > 0) {
 			webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1)
 		}
@@ -406,14 +406,14 @@ export class WebTransactionalReceiver
 	}
 
 	private async ensureApplicationIsInstalled(
-		fullApplicationName: string
+		fullApplication_Name: string
 	): Promise<boolean> {
-		if (!fullApplicationName) {
+		if (!fullApplication_Name) {
 			return false
 		}
 
 		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplicationName)
+			.applicationWindowMap.get(fullApplication_Name)
 	}
 
 	private async messageIsFromValidApp(
@@ -430,16 +430,16 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
 		// Only accept requests from https protocol
 		if (!messageOrigin.startsWith("https")
-			// and from application domains that match the fullApplicationName
-			|| applicationDomain !== fullApplicationName + webReciever.domainPrefix) {
+			// and from application domains that match the fullApplication_Name
+			|| applicationDomain !== fullApplication_Name + webReciever.domainPrefix) {
 			return false
 		}
-		// Only accept requests from '${applicationName}.${mainDomainName}'
+		// Only accept requests from '${applicationName}.${mainDomain_Name}'
 		if (applicationDomainFragments.length !== webReciever.mainDomainFragments.length + 1) {
 			return false
 		}
@@ -448,15 +448,15 @@ export class WebTransactionalReceiver
 			return false
 		}
 		const applicationDomainFirstFragment = applicationDomainFragments[0]
-		// check application domain-embedded signature and fullApplicationName in message
+		// check application domain-embedded signature and fullApplication_Name in message
 		// and make sure they result in a match
-		if (applicationDomainFirstFragment !== fullApplicationName) {
+		if (applicationDomainFirstFragment !== fullApplication_Name) {
 			return false
 		}
 
 		// Make sure the application is installed
 		return !!this.terminalStore.getApplicationInitializer()
-			.applicationWindowMap.get(fullApplicationName)
+			.applicationWindowMap.get(fullApplication_Name)
 	}
 
 	private async handleIsolateMessage(
@@ -470,12 +470,12 @@ export class WebTransactionalReceiver
 
 		const webReciever = this.terminalStore.getWebReceiver()
 
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
 		switch (message.type) {
 			case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name)
 				if (!isolateSubscriptionMap) {
 					return
 				}
@@ -499,21 +499,21 @@ export class WebTransactionalReceiver
 			return
 		}
 
-		let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain
+		let shemaDomain_Name = fullApplication_Name + '.' + webReciever.localDomain
 		switch (message.type) {
 			case IsolateMessageType.SEARCH:
 			case IsolateMessageType.SEARCH_ONE:
 				const observableDataResult = <IObservableDataIMO<any>>response
 				observableDataResult.result.pipe(
 					map(value => {
-						window.postMessage(value, shemaDomainName)
+						window.postMessage(value, shemaDomain_Name)
 					})
 				)
 				const subscription = observableDataResult.result.subscribe()
-				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName)
+				let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name)
 				if (!isolateSubscriptionMap) {
 					isolateSubscriptionMap = new Map()
-					webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap)
+					webReciever.subsriptionMap.set(fullApplication_Name, isolateSubscriptionMap)
 				}
 				isolateSubscriptionMap.set(message.id, subscription)
 				return

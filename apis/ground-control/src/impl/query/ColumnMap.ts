@@ -1,12 +1,12 @@
-import {TableIndex}        from "../../lingo/application/Entity";
-import {ColumnIndex}       from "../../lingo/application/Property";
+import {ApplicationEntity_TableIndex}        from "../../lingo/application/Entity";
+import {ApplicationColumn_Index}       from "../../lingo/application/Property";
 import {ALL_TABLE_COLUMNS} from "./TableMap";
 
 export class ColumnMap {
 	columnMap: { [columnIndex: string]: boolean } = {};
 
 	constructor(
-		public tableIndex: TableIndex,
+		public tableIndex: ApplicationEntity_TableIndex,
 		allColumns: boolean = false
 	) {
 		if (allColumns) {
@@ -14,7 +14,7 @@ export class ColumnMap {
 		}
 	}
 
-	ensure(columnIndex: ColumnIndex): void {
+	ensure(columnIndex: ApplicationColumn_Index): void {
 		this.columnMap[columnIndex] = true;
 	}
 

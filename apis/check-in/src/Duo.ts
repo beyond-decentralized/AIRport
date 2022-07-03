@@ -11,7 +11,7 @@ import {
   IQEntity,
   Y,
 } from '@airport/air-traffic-control';
-import { DbEntity, EntityId as DbEntityId, EntityRelationType } from '@airport/ground-control';
+import { DbEntity, ApplicationEntity_LocalId as DbEntityId, EntityRelationType } from '@airport/ground-control';
 
 /**
  * Created by Papa on 8/26/2017.
@@ -90,11 +90,11 @@ export class Duo<Entity,
   EntityCreate extends IEntityCreateProperties,
   EntityUpdateColumns extends IEntityUpdateColumns,
   EntityUpdate extends IEntityUpdateProperties,
-  EntityId extends IEntityIdProperties,
+  ApplicationEntity_LocalId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQE extends IQEntity>
   implements IDuo<Entity, EntitySelect, EntityCreate,
-  EntityUpdateColumns, EntityUpdate, EntityId,
+  EntityUpdateColumns, EntityUpdate, ApplicationEntity_LocalId,
   EntityCascadeGraph, IQE> {
 
   select: IFieldsSelect<EntitySelect>;
@@ -116,13 +116,13 @@ export class Duo<Entity,
 
   getIdStub(
     ids: number | string | number[] | string[],
-  ): EntityId {
+  ): ApplicationEntity_LocalId {
     throw new Error(`Not Implemented.`);
   }
 
   getIdStubs(
     ids: number[] | string[] | number[][] | string[][],
-  ): EntityId[] {
+  ): ApplicationEntity_LocalId[] {
     throw new Error(`Not Implemented.`);
   }
 
@@ -131,7 +131,7 @@ export class Duo<Entity,
     throw new Error(`Not Implemented.`)
   }
 
-  getIdFieldsSelect(): EntityId {
+  getIdFieldsSelect(): ApplicationEntity_LocalId {
     throw new Error(`Not Implemented.`)
   }
 

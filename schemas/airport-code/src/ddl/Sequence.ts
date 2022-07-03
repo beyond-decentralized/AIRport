@@ -6,9 +6,9 @@ import {
 	Table
 }               from '@airport/air-traffic-control'
 import {
-	ColumnIndex,
-	ApplicationIndex,
-	TableIndex
+	ApplicationColumn_Index,
+	Application_Index,
+	ApplicationEntity_TableIndex
 }               from '@airport/ground-control'
 
 export type SequenceIncrementBy = number
@@ -21,17 +21,17 @@ export class Sequence {
 	@Id()
 	@Column({name: 'APPLICATION_INDEX', nullable: false})
 	@DbNumber()
-	applicationIndex: ApplicationIndex
+	applicationIndex: Application_Index
 
 	@Id()
 	@Column({name: 'TABLE_INDEX', nullable: false})
 	@DbNumber()
-	tableIndex: TableIndex
+	tableIndex: ApplicationEntity_TableIndex
 
 	@Id()
 	@Column({name: 'COLUMN_INDEX', nullable: false})
 	@DbNumber()
-	columnIndex: ColumnIndex
+	columnIndex: ApplicationColumn_Index
 
 	@Column({name: 'SEQUENCE_INCREMENT_BY', nullable: false})
 	incrementBy: SequenceIncrementBy

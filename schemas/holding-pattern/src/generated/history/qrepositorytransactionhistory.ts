@@ -168,7 +168,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns
 	SYNC_TIMESTAMP?: number | IQNumberField;
 	GUID?: string | IQStringField;
 	IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
-	REPOSITORY_ID?: number | IQNumberField;
+	REPOSITORY_LID?: number | IQNumberField;
 	TRANSACTION_HISTORY_ID?: number | IQNumberField;
 
 }
@@ -195,7 +195,7 @@ extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColu
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRepositoryTransactionHistory extends IQEntity
 {

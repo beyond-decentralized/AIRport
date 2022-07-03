@@ -277,7 +277,7 @@ appears more than once in the Columns clause`)
 				const idValues = allIds[i]
 				let idValue
 				if (isActorIdColumn) {
-					idValue = actor.id
+					idValue = actor._localId
 				} else {
 					idValue = entityValues[inStatementColumnIndex]
 					if (!idValue && idValue !== 0) {
@@ -295,7 +295,7 @@ appears more than once in the Columns clause`)
 		// 	for (const entityValues of values) {
 		// 		const repositoryId = entityValues[repositoryIdIndex]
 		// 		if (!repositoryId && repositoryId !== 0) {
-		// 			throw new Error(`@Column({ name: 'REPOSITORY_ID'}) value is not specified on
+		// 			throw new Error(`@Column({ name: 'REPOSITORY_LID'}) value is not specified on
 		// insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
 
 		const generatedColumnIndexes: number[] = []
@@ -400,9 +400,9 @@ appears more than once in the Columns clause`)
 		transaction: ITransaction,
 		context: IOperationContext
 	): ColumnsToPopulate {
-		const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_ID]
+		const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID]
 		const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID]
-		const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_ID]
+		const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID]
 		const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID]
 
 		let repositoryIdColumnQueryIndex
@@ -422,7 +422,7 @@ appears more than once in the Columns clause`)
 					}
 					if (!transaction.isSync) {
 						throw new Error(errorPrefix +
-							`You cannot explicitly provide an ACTOR_ID value for Repository entities.`)
+							`You cannot explicitly provide an ACTOR_LID value for Repository entities.`)
 					}
 					break
 				case actorRecordIdColumn.index:
@@ -447,7 +447,7 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository en
 
 		const missingRepositoryIdErrorMsg = errorPrefix +
 			`Error inserting into '${dbEntity.name}'.
-You must provide a valid REPOSITORY_ID value for Repository entities.`
+You must provide a valid REPOSITORY_LID value for Repository entities.`
 
 		if (repositoryIdColumnQueryIndex === undefined) {
 			throw new Error(missingRepositoryIdErrorMsg)
@@ -456,7 +456,7 @@ You must provide a valid REPOSITORY_ID value for Repository entities.`
 		if (transaction.isSync) {
 			if (!foundActorIdColumn) {
 				throw new Error(errorPrefix +
-					`ACTOR_ID must be provided for sync operations.`)
+					`ACTOR_LID must be provided for sync operations.`)
 			}
 			if (!foundActorRecordIdColumn) {
 				throw new Error(errorPrefix +
@@ -500,7 +500,7 @@ and cannot have NULL values.`)
 			}
 			if (!context.isSaveOperation && !transaction.isSync) {
 				// Save operation set Actor ealier (at the entity level, to be returned back to client)
-				entityValues[actorIdColumn.index] = actor.id
+				entityValues[actorIdColumn.index] = actor._localId
 			}
 		}
 
@@ -535,8 +535,8 @@ and cannot have NULL values.`)
 		let operationsByRepo: IOperationHistory[] = []
 		let repoTransHistories: IRepositoryTransactionHistory[] = []
 
-		const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_ID].index
-		const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_ID].index
+		const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_LID].index
+		const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_LID].index
 		const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index
 
 		let repositoryIdColumnNumber
@@ -576,10 +576,10 @@ and cannot have NULL values.`)
 				operationsByRepo[repositoryId] = operationHistory
 			}
 
-			const actorRecordId = row[actorRecordIdColumnNumber]
+			const _actorRecordId = row[actorRecordIdColumnNumber]
 			const actorId = row[actorIdColumnNumber]
 			const recordHistory = this.operationHistoryDuo.startRecordHistory(
-				operationHistory, actorId, actorRecordId)
+				operationHistory, actorId, _actorRecordId)
 
 			for (const columnNumber in jsonInsertValues.C) {
 				if (columnNumber === repositoryIdColumnNumber

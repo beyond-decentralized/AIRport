@@ -14,7 +14,7 @@ import {
 import {
     IApiIMI,
     IConnectionInitializedIMI,
-    IGetLatestApplicationVersionByApplicationNameIMI,
+    IGetLatestApplicationVersionByApplication_NameIMI,
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
@@ -119,24 +119,24 @@ export abstract class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage: IInitConnectionIMI = message as any
                 const application: JsonApplicationWithLastIds = initConnectionMessage.jsonApplication
-                const fullApplicationName = this.dbApplicationUtils.
-                    getFullApplicationName(application)
-                const messageFullApplicationName = this.dbApplicationUtils.
-                    getFullApplicationNameFromDomainAndName(message.domain, message.application)
-                if (fullApplicationName !== messageFullApplicationName) {
+                const fullApplication_Name = this.dbApplicationUtils.
+                    getFullApplication_Name(application)
+                const messageFullApplication_Name = this.dbApplicationUtils.
+                    getFullApplication_NameFromDomainAndName(message.domain, message.application)
+                if (fullApplication_Name !== messageFullApplication_Name) {
                     theResult = null
                     break
                 }
 
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullApplicationName)) {
+                    .has(fullApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     }
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullApplicationName)
+                    .add(fullApplication_Name)
 
                 // FIXME: initalize ahead of time, at Isolate Loading
                 await this.databaseManager.initFeatureApplications({}, [application])
@@ -148,14 +148,14 @@ export abstract class TransactionalReceiver {
                 break
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps
-                initializedApps.add((message as any as IConnectionInitializedIMI).fullApplicationName)
+                initializedApps.add((message as any as IConnectionInitializedIMI).fullApplication_Name)
                 return {
                     theErrorMessage,
                     theResult
                 }
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
-                    .get((message as any as IGetLatestApplicationVersionByApplicationNameIMI).fullApplicationName)
+                theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+                    .get((message as any as IGetLatestApplicationVersionByApplication_NameIMI).fullApplication_Name)
                 break
             }
             case IsolateMessageType.RETRIEVE_DOMAIN: {

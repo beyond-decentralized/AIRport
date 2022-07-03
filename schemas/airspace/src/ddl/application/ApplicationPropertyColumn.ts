@@ -4,10 +4,10 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                              from '@airport/air-traffic-control'
-import {ApplicationColumn}          from './ApplicationColumn'
-import {ApplicationProperty}        from './ApplicationProperty'
-import {VersionedApplicationObject} from './VersionedApplicationObject'
+} from '@airport/air-traffic-control'
+import { ApplicationColumn } from './ApplicationColumn'
+import { ApplicationProperty } from './ApplicationProperty'
+import { VersionedApplicationObject } from './VersionedApplicationObject'
 
 /**
  * Many-to-Many between Columns and properties
@@ -22,12 +22,18 @@ export class ApplicationPropertyColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({
+		name: 'APPLICATION_COLUMN_LID',
+		referencedColumnName: 'APPLICATION_COLUMN_LID', nullable: false
+	})
 	column: ApplicationColumn
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: 'APPLICATION_PROPERTY_ID', referencedColumnName: 'ID', nullable: false})
+	@JoinColumn({
+		name: 'APPLICATION_PROPERTY_LID',
+		referencedColumnName: 'APPLICATION_PROPERTY_LID', nullable: false
+	})
 	property: ApplicationProperty
 
 }

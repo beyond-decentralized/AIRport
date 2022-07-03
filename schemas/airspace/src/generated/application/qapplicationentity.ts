@@ -22,7 +22,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-	TableConfiguration,
+	ApplicationEntity_TableConfiguration,
 } from '@airport/air-traffic-control';
 import {
 	VersionedApplicationObjectGraph,
@@ -121,7 +121,7 @@ export interface ApplicationEntityESelect
 	isLocal?: boolean | IQBooleanField;
 	isAirEntity?: boolean | IQBooleanField;
 	name?: string | IQStringField;
-	tableConfig?: TableConfiguration | IQStringField;
+	tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -168,7 +168,7 @@ export interface ApplicationEntityEUpdateProperties
 	isLocal?: boolean | IQBooleanField;
 	isAirEntity?: boolean | IQBooleanField;
 	name?: string | IQStringField;
-	tableConfig?: TableConfiguration | IQStringField;
+	tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
 
 	// Non-Id Relations - ids only & no OneToMany's
 	applicationVersion?: ApplicationVersionEOptionalId;
@@ -187,7 +187,7 @@ export interface ApplicationEntityGraph
 	isLocal?: boolean | IQBooleanField;
 	isAirEntity?: boolean | IQBooleanField;
 	name?: string | IQStringField;
-	tableConfig?: TableConfiguration | IQStringField;
+	tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
 
 	// Relations
 	applicationVersion?: ApplicationVersionGraph;
@@ -239,7 +239,7 @@ extends ApplicationEntityEId, ApplicationEntityEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationEntity extends QVersionedApplicationObject
 {

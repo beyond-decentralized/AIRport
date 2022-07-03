@@ -132,7 +132,7 @@ It must be an Object with the uuId property.`)
 			actor.GUID = Y
 
 		}
-		selectClauseFragment.actorRecordId = Y
+		selectClauseFragment._actorRecordId = Y
 		this.ensureRepositoryAndActorJoin(qEntity)
 	}
 

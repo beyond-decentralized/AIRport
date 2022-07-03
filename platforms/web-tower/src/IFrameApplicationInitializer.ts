@@ -1,7 +1,7 @@
 import {
 	Injected
 } from '@airport/direction-indicator'
-import { FullApplicationName } from "@airport/ground-control";
+import { FullApplication_Name } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
     IApplicationInitializer
@@ -16,12 +16,12 @@ export interface IIFrameApplicationInitializer
 export class IFrameApplicationInitializer
     extends ApplicationInitializer {
 
-    applicationWindowMap: Map<FullApplicationName, Window> = new Map()
+    applicationWindowMap: Map<FullApplication_Name, Window> = new Map()
 
     async nativeInitializeApplication(
         domain: string,
         application: string,
-        fullApplicationName: string,
+        fullApplication_Name: string,
     ): Promise<void> {
         throw new Error(
             `Application Initialization should be done directly from main AIRport window,

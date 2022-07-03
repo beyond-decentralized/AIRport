@@ -1,4 +1,5 @@
 import {
+    Column,
     DbNumber,
     DbString,
     Entity,
@@ -18,8 +19,8 @@ export type Continent_Name = string;
 export class Continent {
 
     @Id()
-    @GeneratedValue()
     @DbNumber()
+    @Column({ name: 'CONTINENT_ID' })
     id: Continent_Id;
 
     @DbString()

@@ -18,7 +18,7 @@ export interface IndexConfiguration
 /**
  * SQL Table configuration
  */
-export interface TableConfiguration
+export interface ApplicationEntity_TableConfiguration
 	extends DatabaseObjectConfiguration<IndexConfiguration> {
 }
 
@@ -26,7 +26,7 @@ export interface TableConfiguration
  * Marks an object as a SQL table.
  */
 export interface TableDecorator {
-	(tableConfiguration?: TableConfiguration): ClassDecorator
+	(tableConfiguration?: ApplicationEntity_TableConfiguration): ClassDecorator
 }
 
 /**

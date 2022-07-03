@@ -4,11 +4,11 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ApplicationName,
+	Application_Name,
 	DbApplication,
 	DbEntity,
-	DomainName,
-	FullApplicationName,
+	Domain_Name,
+	FullApplication_Name,
 	IDbApplicationUtils,
 	IEntityStateManager,
 	InternalFragments,
@@ -125,11 +125,11 @@ export abstract class SqlDriver
 
 	getTableName(
 		application: {
-			domain: DomainName | {
-				name: DomainName
+			domain: Domain_Name | {
+				name: Domain_Name
 			};
-			name: ApplicationName;
-			fullName?: FullApplicationName;
+			name: Application_Name;
+			fullName?: FullApplication_Name;
 		},
 		table: {
 			name: string, tableConfig?: {
@@ -142,13 +142,13 @@ export abstract class SqlDriver
 		if (table.tableConfig && table.tableConfig.name) {
 			theTableName = table.tableConfig.name;
 		}
-		let fullApplicationName;
+		let fullApplication_Name;
 		if ((application as DbApplication).fullName) {
-			fullApplicationName = (application as DbApplication).fullName;
+			fullApplication_Name = (application as DbApplication).fullName;
 		} else {
-			fullApplicationName = this.dbApplicationUtils.getFullApplicationName(application);
+			fullApplication_Name = this.dbApplicationUtils.getFullApplication_Name(application);
 		}
-		return this.composeTableName(fullApplicationName, theTableName, context);
+		return this.composeTableName(fullApplication_Name, theTableName, context);
 	}
 
 	abstract composeTableName(

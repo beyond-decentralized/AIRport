@@ -1,4 +1,5 @@
 import {
+    Column,
     Entity,
     Id,
     OneToMany,
@@ -13,6 +14,7 @@ import { TypeClassification } from './TypeClassification'
 export class Type {
 
     @Id()
+    @Column({ name: 'TYPE_ID' })
     id: number
 
     name: string

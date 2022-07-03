@@ -1,10 +1,10 @@
 import {
-	ColumnIndex,
+	ApplicationColumn_Index,
 	DatabaseForeignKey,
 	DatabaseManyToOneElements,
 	DatabaseOneToManyElements,
 	EntityRelationType,
-	PropertyIndex,
+	ApplicationProperty_Index,
 	ApplicationReferenceByIndex
 } from '@airport/ground-control';
 
@@ -58,7 +58,7 @@ export interface SRelation {
 	/**
 	 * Index of the application of the related entity (if not local).
 	 */
-	referencedApplicationIndex?: number;
+	referencedApplication_Index?: number;
 
 	/**
 	 * Explicitly defined foreign key (if any)
@@ -91,7 +91,7 @@ export interface SRelation {
 	relationMustBeSingleIdEntity: boolean;
 
 	/**
-	 * Does this join automatically join REPOSITORY_ID?
+	 * Does this join automatically join REPOSITORY_LID?
 	 * Not needed - all joins to and from Repository entities are automatically repository joins
 	 */
 	// repositoryJoin: boolean;
@@ -117,7 +117,7 @@ export interface SRelation {
  * A column in a application table.
  */
 export interface SColumn
-	extends ApplicationReferenceByIndex<ColumnIndex> {
+	extends ApplicationReferenceByIndex<ApplicationColumn_Index> {
 
 	/**
 	 * How many ids to allocate for a sequence at a time.
@@ -157,7 +157,7 @@ export interface SColumn
 	/**
 	 * Properties that are mapped to this column.
 	 */
-	propertyRefs: PropertyIndex[];
+	propertyRefs: ApplicationProperty_Index[];
 
 	// The scale of a decimal (digits after the floating point)
 	scale?: number;

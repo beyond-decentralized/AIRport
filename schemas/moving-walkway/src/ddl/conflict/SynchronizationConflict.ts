@@ -1,4 +1,5 @@
 import {
+	Column,
 	DbBoolean,
 	DbNumber,
 	DbString,
@@ -9,25 +10,26 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from "@airport/air-traffic-control";
+} from '@airport/air-traffic-control';
 import {
 	IRecordHistory,
 	IRepository
-} from "@airport/holding-pattern";
-import { SynchronizationConflict_Type } from "./SynchronizationConflictType";
-import { SynchronizationConflictValues } from "./SynchronizationConflictValues";
+} from '@airport/holding-pattern';
+import { SynchronizationConflict_Type } from './SynchronizationConflictType';
+import { SynchronizationConflictValues } from './SynchronizationConflictValues';
 
 export type SynchronizationConflict_Id = number;
 export type SynchronizationConflict_Acknowledged = boolean;
 
 @Entity()
-@Table({ name: "SYNCHRONIZATION_CONFLICT" })
+@Table({ name: 'SYNCHRONIZATION_CONFLICT' })
 export class SynchronizationConflict {
 
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	id: SynchronizationConflict_Id;
+	@Column({ name: 'SYNCHRONIZATION_CONFLICT_LID' })
+	_localId: SynchronizationConflict_Id;
 
 	@DbString()
 	type: SynchronizationConflict_Type;
@@ -36,18 +38,27 @@ export class SynchronizationConflict {
 	acknowledged: SynchronizationConflict_Acknowledged;
 
 	@ManyToOne()
-	@JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
+	@JoinColumn({
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID'
+	})
 	repository: IRepository;
 
 	@ManyToOne()
-	@JoinColumn({ name: "OVERWRITTEN_RECORD_HISTORY_ID", referencedColumnName: "ID" })
+	@JoinColumn({
+		name: 'OVERWRITTEN_RECORD_HISTORY_LID',
+		referencedColumnName: 'RECORD_HISTORY_LID'
+	})
 	overwrittenRecordHistory: IRecordHistory;
 
 	@ManyToOne()
-	@JoinColumn({ name: "OVERWRITING_RECORD_HISTORY_ID", referencedColumnName: "ID" })
+	@JoinColumn({
+		name: 'OVERWRITING_RECORD_HISTORY_LID',
+		referencedColumnName: 'RECORD_HISTORY_LID'
+	})
 	overwritingRecordHistory: IRecordHistory;
 
-	@OneToMany({ mappedBy: "SYNCHRONIZATION_CONFLICT_ID" })
+	@OneToMany({ mappedBy: 'synchronizationConflict' })
 	values: SynchronizationConflictValues[];
 
 }

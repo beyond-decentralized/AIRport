@@ -56,7 +56,7 @@ export interface TerminalRunESelect
 export interface TerminalRunEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -67,7 +67,7 @@ export interface TerminalRunEId
  */
 export interface TerminalRunEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -139,7 +139,7 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 export interface QTerminalRun extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -157,7 +157,7 @@ export interface QTerminalRunQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

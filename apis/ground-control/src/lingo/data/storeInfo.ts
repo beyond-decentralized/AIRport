@@ -19,5 +19,5 @@ export interface StoreSetupInfo {
 }
 
 export enum IdGeneration {
-	ENTITY_CHANGE_ID = 'ENTITY_CHANGE_ID'
+	ENTITY_CHANGE_ID = 'ENTITY_CHANGE_LID'
 }

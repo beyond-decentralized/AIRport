@@ -2,7 +2,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { FullApplicationName } from "@airport/ground-control";
+import { FullApplication_Name } from "@airport/ground-control";
 import { ApplicationInitializer } from "@airport/landing";
 import {
     IApplicationInitializer,
@@ -12,9 +12,9 @@ import {
 export interface IWebApplicationInitializer
     extends IApplicationInitializer {
 
-    applicationWindowMap: Map<FullApplicationName, Window>
+    applicationWindowMap: Map<FullApplication_Name, Window>
 
-    initializingApplicationMap: Map<FullApplicationName, boolean>
+    initializingApplicationMap: Map<FullApplication_Name, boolean>
 
 }
 
@@ -28,21 +28,21 @@ export class WebApplicationInitializer
     async nativeInitializeApplication(
         domain: string,
         application: string,
-        fullApplicationName: string,
+        fullApplication_Name: string,
     ): Promise<void> {
         if (this.terminalStore.getReceiver().initializedApps
-            .has(fullApplicationName)) {
+            .has(fullApplication_Name)) {
             return
         }
 
-        let appIframes = document.getElementsByName(fullApplicationName);
+        let appIframes = document.getElementsByName(fullApplication_Name);
         let appIframe: HTMLIFrameElement
 
         if (!appIframes.length) {
             appIframe = document.createElement('iframe') as HTMLIFrameElement
             appIframe.src = 'http://' + domain + '/AIRport/apps/'
                 + application + '/index.html'
-            appIframe.name = fullApplicationName
+            appIframe.name = fullApplication_Name
             appIframe.style.display = 'none'
             document.body.appendChild(appIframe)
         } else {
@@ -50,14 +50,14 @@ export class WebApplicationInitializer
         }
 
         while (!this.terminalStore.getReceiver().initializedApps
-            .has(fullApplicationName)) {
+            .has(fullApplication_Name)) {
             await this.wait(100)
         }
 
         this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.set(fullApplicationName, appIframe.contentWindow)
+            .applicationWindowMap.set(fullApplication_Name, appIframe.contentWindow)
         this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.set(fullApplicationName, false)
+            .initializingApplicationMap.set(fullApplication_Name, false)
     }
 }
 

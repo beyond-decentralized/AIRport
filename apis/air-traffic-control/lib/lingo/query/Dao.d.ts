@@ -11,18 +11,18 @@ export declare type OperationName = string;
 /**
  * Data access object.
  */
-export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, EntityId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
+export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     airportDatabase: IAirportDatabase;
     databaseFacade: IDatabaseFacade;
     entityStateManager: IEntityStateManager;
     lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
-    db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, EntityId, EntityCascadeGraph, IQE>;
+    db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE>;
     mapByUuId(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
-    exists(entityId: EntityId, context?: IContext): Promise<boolean>;
-    findAll(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
-    findAllAsTrees(entityIds?: EntityId[], context?: IContext): Promise<Entity[]>;
+    exists(entityId: ApplicationEntity_LocalId, context?: IContext): Promise<boolean>;
+    findAll(entityIds?: ApplicationEntity_LocalId[], context?: IContext): Promise<Entity[]>;
+    findAllAsTrees(entityIds?: ApplicationEntity_LocalId[], context?: IContext): Promise<Entity[]>;
     findByUuId(airEntityId: Entity | AirEntityUuId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
     /**
      * Either creates or updates the entity based entity

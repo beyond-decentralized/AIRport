@@ -1,5 +1,5 @@
 import { QApplication } from '@airport/aviation-communication';
-import { DbColumn, DbEntity, DbProperty, DbApplication, ApplicationIndex, TableIndex } from '@airport/ground-control';
+import { DbColumn, DbEntity, DbProperty, DbApplication, Application_Index, ApplicationEntity_TableIndex } from '@airport/ground-control';
 import { QApplicationInternal } from '../../lingo/AirportDatabase';
 import { IQEntity, IQEntityInternal } from '../../lingo/core/entity/Entity';
 import { IQRelation } from '../../lingo/core/entity/Relation';
@@ -50,12 +50,12 @@ export declare function getQEntityIdFields(addToObject: any, relationEntity: DbE
 export declare function setQApplicationEntities(application: DbApplication, qApplication: QApplicationInternal, allQApplications: QApplication[], appliationUtils: IApplicationUtils, relationManager: IRelationManager): void;
 export interface DbApplicationWithDependencies {
     application: DbApplication;
-    dependencies: Set<ApplicationIndex>;
+    dependencies: Set<Application_Index>;
 }
 export declare function orderApplicationsInOrderOfPrecedence(applications: DbApplication[]): DbApplication[];
-export declare function applicationDependsOn(dependantApplication: DbApplicationWithDependencies, dependsOnApplicationIndex: ApplicationIndex, applicationWithDepsMap: Map<ApplicationIndex, DbApplicationWithDependencies>): boolean;
+export declare function applicationDependsOn(dependantApplication: DbApplicationWithDependencies, dependsOnApplication_Index: Application_Index, applicationWithDepsMap: Map<Application_Index, DbApplicationWithDependencies>): boolean;
 export interface DbEntityWithDependencies {
     entity: DbEntity;
-    dependencies: Set<TableIndex>;
+    dependencies: Set<ApplicationEntity_TableIndex>;
 }
 //# sourceMappingURL=qApplicationBuilderUtils.d.ts.map

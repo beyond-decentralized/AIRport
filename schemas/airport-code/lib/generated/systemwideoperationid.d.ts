@@ -1,4 +1,4 @@
 export interface ISystemWideOperationId {
-    id: number;
+    _localId: number;
 }
 //# sourceMappingURL=systemwideoperationid.d.ts.map

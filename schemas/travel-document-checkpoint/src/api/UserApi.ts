@@ -37,7 +37,7 @@ export class UserApi {
             }
         }
         const user: IUser = {
-            id: null,
+            _localId: null,
             GUID: uuidv4(),
             username
         }

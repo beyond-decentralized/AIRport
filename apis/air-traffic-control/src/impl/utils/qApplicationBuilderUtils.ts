@@ -7,9 +7,9 @@ import {
 	DbApplication,
 	EntityRelationType,
 	JoinType,
-	ApplicationIndex,
+	Application_Index,
 	SQLDataType,
-	TableIndex
+	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 import {
 	QApplicationInternal
@@ -363,16 +363,16 @@ export function setQApplicationEntities(
 
 export interface DbApplicationWithDependencies {
 	application: DbApplication
-	dependencies: Set<ApplicationIndex>
+	dependencies: Set<Application_Index>
 }
 
 export function orderApplicationsInOrderOfPrecedence(
 	applications: DbApplication[]
 ): DbApplication[] {
-	const applicationWithDepsMap: Map<ApplicationIndex, DbApplicationWithDependencies> = new Map()
+	const applicationWithDepsMap: Map<Application_Index, DbApplicationWithDependencies> = new Map()
 	const applicationsWithDeps: DbApplicationWithDependencies[] = applications.map(
 		application => {
-			const dependencies: Set<ApplicationIndex> = new Set()
+			const dependencies: Set<Application_Index> = new Set()
 			for (const applicationReference of application.currentVersion[0]
 				.applicationVersion.references) {
 				dependencies.add(applicationReference.referencedApplicationVersion.application.index)
@@ -408,14 +408,14 @@ export function orderApplicationsInOrderOfPrecedence(
 
 export function applicationDependsOn(
 	dependantApplication: DbApplicationWithDependencies,
-	dependsOnApplicationIndex: ApplicationIndex,
-	applicationWithDepsMap: Map<ApplicationIndex, DbApplicationWithDependencies>
+	dependsOnApplication_Index: Application_Index,
+	applicationWithDepsMap: Map<Application_Index, DbApplicationWithDependencies>
 ) {
-	if (dependantApplication.dependencies.has(dependsOnApplicationIndex)) {
+	if (dependantApplication.dependencies.has(dependsOnApplication_Index)) {
 		return true
 	}
 
-	// for(const dependencyApplicationIndex of dependantApplication.dependencies) {
+	// for(const dependencyApplication_Index of dependantApplication.dependencies) {
 	//
 	// }
 
@@ -424,5 +424,5 @@ export function applicationDependsOn(
 
 export interface DbEntityWithDependencies {
 	entity: DbEntity
-	dependencies: Set<TableIndex>
+	dependencies: Set<ApplicationEntity_TableIndex>
 }

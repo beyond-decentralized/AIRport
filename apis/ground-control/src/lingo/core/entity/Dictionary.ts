@@ -109,17 +109,17 @@ export namespace table {
  * @type {string}
  */
 export namespace airEntity {
-	export const ACTOR_ID = 'ACTOR_ID'
+	export const ACTOR_LID = 'ACTOR_LID'
 	export const ACTOR_RECORD_ID = 'ACTOR_RECORD_ID'
 	export const ENTITY_NAME = 'AirEntity'
-	export const FOREIGN_KEY = 'REPOSITORY_ID'
+	export const FOREIGN_KEY = 'REPOSITORY_LID'
 	export const LOCAL_ENTITY_NAME = 'LocalAirEntity'
-	export const REPOSITORY_ID = 'REPOSITORY_ID'
-	export const ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_ID'
+	export const REPOSITORY_LID = 'REPOSITORY_LID'
+	export const ORIGINAL_ACTOR_ID = 'ORIGINAL_ACTOR_LID'
 	export const ORIGINAL_ACTOR_RECORD_ID = 'ORIGINAL_ACTOR_RECORD_ID'
-	export const ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_ID'
+	export const ORIGINAL_REPOSITORY_ID = 'ORIGINAL_REPOSITORY_LID'
 	export const SYS_WIDE_OP_ID_APPLICATION = 'air____at_airport_slash_airport_dash_code'
 	export const SYS_WIDE_OP_ID_ENTITY = 'SystemWideOperationId'
 	export const systemWideOperationId = 'systemWideOperationId'
-	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_ID'
+	export const SYSTEM_WIDE_OPERATION_ID = 'SYSTEM_WIDE_OPERATION_LID'
 }

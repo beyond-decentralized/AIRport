@@ -16,12 +16,18 @@ export class ClientType {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'CLIENT_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'CLIENT_LID',
+        referencedColumnName: 'CLIENT_LID'
+    })
     client: Client
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    @JoinColumn({
+        name: 'TYPE_LID',
+        referencedColumnName: 'TYPE_LID'
+    })
     type: Type
 
 }

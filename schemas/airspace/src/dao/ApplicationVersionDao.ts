@@ -13,9 +13,9 @@ import {
 export interface IApplicationVersionDao
 	extends IBaseApplicationVersionDao {
 
-	findAllActiveOrderByApplicationIndexAndId(): Promise<IApplicationVersion[]>
+	findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]>
 
-	findByDomainNamesAndApplicationNames(
+	findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<IApplicationVersion[]>
@@ -33,8 +33,8 @@ export class ApplicationVersionDao
 	implements IApplicationVersionDao {
 
 	/*
-	async findAllLatestForApplicationIndexes(
-		applicationIndexes: ApplicationIndex[]
+	async findAllLatestForApplication_Indexes(
+		applicationIndexes: Application_Index[]
 	): Promise<IApplicationVersion[]> {
 		let sv: QApplicationVersion
 
@@ -51,7 +51,7 @@ export class ApplicationVersionDao
 	}
 	*/
 
-	async findAllActiveOrderByApplicationIndexAndId(): Promise<IApplicationVersion[]> {
+	async findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]> {
 		let sv: QApplicationVersion
 		// let s: QApplication
 
@@ -68,7 +68,7 @@ export class ApplicationVersionDao
 		})
 	}
 
-	async findByDomainNamesAndApplicationNames(
+	async findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<IApplicationVersion[]> {
@@ -78,7 +78,7 @@ export class ApplicationVersionDao
 
 		return await this.db.find.tree({
 			select: {
-				id: Y,
+				_localId: Y,
 				integerVersion: Y,
 				application: {
 					domain: {
@@ -101,12 +101,12 @@ export class ApplicationVersionDao
 	}
 
 	/*
-	async findMaxVersionedMapByApplicationAndDomainNames(
-		applicationDomainNames: DomainName[],
-		applicationNames: ApplicationName[]
-	): Promise<Map<DomainName, Map<ApplicationName, IApplicationVersion>>> {
-		const maxVersionedMapByApplicationAndDomainNames
-				  : Map<DomainName, Map<ApplicationName, IApplicationVersion>>
+	async findMaxVersionedMapByApplicationAndDomain_Names(
+		applicationDomain_Names: Domain_Name[],
+		applicationNames: Application_Name[]
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
+		const maxVersionedMapByApplicationAndDomain_Names
+				  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
 				  = new Map()
 
 		let sv: QApplicationVersion
@@ -123,11 +123,11 @@ export class ApplicationVersionDao
 					index: Y,
 					name: Y,
 					domain: {
-						id: Y,
+						_localId: Y,
 						name: Y
 					}
 				},
-				id: Y
+				_localId: Y
 			},
 			from: [
 				sv = Q.ApplicationVersion,
@@ -135,8 +135,8 @@ export class ApplicationVersionDao
 				d = s.domain.innerJoin()
 			],
 			where: and(
-				sv.id.in(this.idsForMaxVersionSelect()),
-				d.name.in(applicationDomainNames),
+				sv._localId.in(this.idsForMaxVersionSelect()),
+				d.name.in(applicationDomain_Names),
 				s.name.in(applicationNames)
 			),
 		})
@@ -144,12 +144,12 @@ export class ApplicationVersionDao
 		for (const maxApplicationVersion of maxApplicationVersions) {
 			const application = maxApplicationVersion.application
 			this.utils.ensureChildJsMap(
-				maxVersionedMapByApplicationAndDomainNames, application.domain.name)
+				maxVersionedMapByApplicationAndDomain_Names, application.domain.name)
 				.set(application.name, maxApplicationVersion)
 		}
 
 
-		return maxVersionedMapByApplicationAndDomainNames
+		return maxVersionedMapByApplicationAndDomain_Names
 	}
 
 	private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
@@ -164,12 +164,12 @@ export class ApplicationVersionDao
 					],
 					select: distinct({
 						integerVersion: max(sv2.integerVersion),
-						id: sv2.id,
+						_localId: sv2._localId,
 						applicationIndex: sv2.application.index
 					})
 				})
 			],
-			select: svMax.id
+			select: svMax._localId
 		})
 	}
 */

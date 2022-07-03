@@ -40,8 +40,8 @@ export interface IApplicationVersion {
 
 	// Transient Properties
 	entityMapByName?: { [entityName: string]: IApplicationEntity; };
-	referencesMapByName?: { [fullApplicationName: string]: IApplicationReference; };
-	referencedByMapByName?: { [fullApplicationName: string]: IApplicationReference; };
+	referencesMapByName?: { [fullApplication_Name: string]: IApplicationReference; };
+	referencedByMapByName?: { [fullApplication_Name: string]: IApplicationReference; };
 
 	// Public Methods
 	

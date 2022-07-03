@@ -14,11 +14,11 @@ import { internalTerminalState } from './theState'
 import { Subject, Subscription } from 'rxjs'
 import { ITransaction } from '../transaction/ITransaction'
 import { ITransactionCredentials } from '../Credentials'
-import { FullApplicationName } from '@airport/ground-control'
+import { FullApplication_Name } from '@airport/ground-control'
 
 export interface IReceiverState {
-	initializingApps: Set<FullApplicationName>
-	initializedApps: Set<FullApplicationName>
+	initializingApps: Set<FullApplication_Name>
+	initializedApps: Set<FullApplication_Name>
 }
 
 export interface IWebReceiverState {
@@ -52,8 +52,8 @@ export interface ISequenceGeneratorState {
 }
 
 export interface IApplicationInitializerState {
-	applicationWindowMap: Map<FullApplicationName, Window>
-	initializingApplicationMap: Map<FullApplicationName, boolean>
+	applicationWindowMap: Map<FullApplication_Name, Window>
+	initializingApplicationMap: Map<FullApplication_Name, boolean>
 }
 
 export interface ITerminalState {

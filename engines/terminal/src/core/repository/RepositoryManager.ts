@@ -140,7 +140,7 @@ already contains a new repository.`)
 		for (let i = 0; i < values.length; i++) {
 			let row = values[i].slice()
 			values[i] = row
-			row.push(repository.id)
+			row.push(repository._localId)
 		}
 
 		return {
@@ -159,7 +159,7 @@ already contains a new repository.`)
 		return {
 			update: rawUpdate.update,
 			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QAirEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawUpdate.where, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 
@@ -173,7 +173,7 @@ already contains a new repository.`)
 		}
 		return {
 			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QAirEntity><any>qEntity).repository.id.equals(repository.id))
+			where: and(rawDelete.where, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 

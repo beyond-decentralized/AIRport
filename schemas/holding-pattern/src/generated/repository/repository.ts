@@ -33,16 +33,16 @@ import {
 export interface IRepository {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 
 	// Non-Id Properties
+	GUID?: string;
 	ageSuitability?: number;
 	createdAt?: Date;
 	immutable?: boolean;
 	source?: string;
-	GUID?: string;
 
 	// Non-Id Relations
 	owner?: IUser;

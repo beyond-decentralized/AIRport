@@ -7,6 +7,6 @@ export enum AirEntityType {
 	AIR_ENTITY = 'AIR_ENTITY'
 }
 
-export const REPOSITORY_ID = 'REPOSITORY_ID';
+export const REPOSITORY_LID = 'REPOSITORY_LID';
 
 export const REPOSITORY_FIELD = 'repository';

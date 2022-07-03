@@ -21,7 +21,10 @@ export class ApplicationCurrentVersion {
 
     @Id()
     @ManyToOne()
-    @JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    @JoinColumn({
+        name: 'APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+    })
     applicationVersion: ApplicationVersion;
 
 }

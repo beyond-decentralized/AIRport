@@ -35,16 +35,16 @@ export class EntityDatabaseFacade<Entity,
   EntityCreate extends IEntityCreateProperties,
   EntityUpdateColumns extends IEntityUpdateColumns,
   EntityUpdateProperties extends IEntityUpdateProperties,
-  EntityId extends IEntityIdProperties,
+  ApplicationEntity_LocalId extends IEntityIdProperties,
   EntityCascadeGraph extends IEntityCascadeGraph,
   IQ extends IQEntity>
   implements IEntityDatabaseFacade<Entity, EntitySelect,
   EntityCreate, EntityUpdateColumns,
-  EntityUpdateProperties, EntityId,
+  EntityUpdateProperties, ApplicationEntity_LocalId,
   EntityCascadeGraph, IQ> {
 
   duo: IDuo<Entity, EntitySelect, EntityCreate,
-    EntityUpdateColumns, EntityUpdateProperties, EntityId,
+    EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
     EntityCascadeGraph, IQ>;
 
   find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
@@ -60,7 +60,7 @@ export class EntityDatabaseFacade<Entity,
     private Q: QApplication,
     protected dao: IDao<Entity, EntitySelect,
       EntityCreate, EntityUpdateColumns,
-      EntityUpdateProperties, EntityId,
+      EntityUpdateProperties, ApplicationEntity_LocalId,
       EntityCascadeGraph, IQ>
   ) {
     this.find = new EntityFind<Entity, Array<Entity>, EntitySelect>(

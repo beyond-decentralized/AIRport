@@ -57,7 +57,7 @@ var SEQ_GEN: ISequenceGenerator;
 
 export function diSet(
 	dbApplication: DbApplication,
-	dbEntityId: number // EntityId
+	dbEntityId: number // ApplicationEntity_LocalId
 ): boolean {
 	if (!SEQ_GEN
 		|| !dbApplication) {
@@ -97,7 +97,8 @@ export async function getSysWideOpIds(
 	const sysWideOpIdGeneratedColumn
 		= (airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION] as QApplicationInternal)
 			.__dbApplication__.currentVersion[0].applicationVersion
-			.entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY].columnMap['ID'];
+			.entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY]
+			.columnMap['SYSTEM_WIDE_OPERATION_LID'];
 
 	const generatedNumWrapper = await sequenceGenerator
 		.generateSequenceNumbers(

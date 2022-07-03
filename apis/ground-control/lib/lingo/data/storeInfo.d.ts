@@ -16,6 +16,6 @@ export interface StoreSetupInfo {
     idGeneration: IdGeneration;
 }
 export declare enum IdGeneration {
-    ENTITY_CHANGE_ID = "ENTITY_CHANGE_ID"
+    ENTITY_CHANGE_ID = "ENTITY_CHANGE_LID"
 }
 //# sourceMappingURL=storeInfo.d.ts.map

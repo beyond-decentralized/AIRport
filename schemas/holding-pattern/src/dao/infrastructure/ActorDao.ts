@@ -4,8 +4,8 @@ import {
 	Y
 } from '@airport/air-traffic-control'
 import {
-	ApplicationName,
-	DomainName,
+	Application_Name,
+	Domain_Name,
 	ensureChildJsMap,
 	JSONBaseOperation
 } from '@airport/ground-control'
@@ -17,7 +17,7 @@ import {
 	QTerminal,
 	QUser,
 	TmTerminal_Id,
-	User_Id
+	User_LocalId
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_Id,
@@ -41,21 +41,21 @@ export interface IActorDao
 
 	findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_Id[],
+		userIds: User_LocalId[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_Id[],
+		userIds: User_LocalId[],
 		terminalIds: TmTerminal_Id[],
-		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
+		actorMap: Map<User_LocalId, Map<TmTerminal_Id, IActor>>,
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void>;
 
-	findByDomainAndApplicationNames(
-		domainName: DomainName,
-		applicationName: ApplicationName
+	findByDomainAndApplication_Names(
+		domainName: Domain_Name,
+		applicationName: Application_Name
 	): Promise<IActor[]>
 
 	findByGUIDs(
@@ -84,9 +84,9 @@ export class ActorDao
 
 	async findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_Id[],
+		userIds: User_LocalId[],
 		terminalIds: TmTerminal_Id[],
-		actorMap: Map<User_Id, Map<TmTerminal_Id, IActor>>,
+		actorMap: Map<User_LocalId, Map<TmTerminal_Id, IActor>>,
 		actorMapById: Map<Actor_Id, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
@@ -98,13 +98,13 @@ export class ActorDao
 		for (const actor of actors) {
 			ensureChildJsMap(actorMap, actor.user.id)
 				.set(actor.terminal.id, actor)
-			actorMapById.set(actor.id, actor)
+			actorMapById.set(actor._localId, actor)
 		}
 	}
 
 	async findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_Id[],
+		userIds: User_LocalId[],
 		terminalIds: TmTerminal_Id[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
@@ -116,9 +116,9 @@ export class ActorDao
 		))
 	}
 
-	async findByDomainAndApplicationNames(
-		domainName: DomainName,
-		applicationName: ApplicationName
+	async findByDomainAndApplication_Names(
+		domainName: Domain_Name,
+		applicationName: Application_Name
 	): Promise<IActor[]> {
 		let act: QActor
 		let application: QApplication
@@ -127,7 +127,7 @@ export class ActorDao
 		let user: QUser
 		return await this.db.find.tree({
 			select: {
-				id: Y,
+				_localId: Y,
 				application: {
 					...ALL_FIELDS,
 					domain: {}
@@ -186,7 +186,7 @@ export class ActorDao
 		}, context)
 		for (let i = 0; i < actors.length; i++) {
 			let actor = actors[i]
-			actor.id = ids[i][0]
+			actor._localId = ids[i][0]
 		}
 	}
 

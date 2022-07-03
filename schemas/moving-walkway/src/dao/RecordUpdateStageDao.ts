@@ -5,11 +5,11 @@ import {
 } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator';
 import {
-	ColumnIndex,
+	ApplicationColumn_Index,
 	JSONBaseOperation,
-	ApplicationIndex,
-	ApplicationVersionId,
-	TableIndex
+	Application_Index,
+	ApplicationVersion_LocalId,
+	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 import {
 	Actor_Id,
@@ -27,12 +27,12 @@ import {
 export type RecordUpdateStageValue = any;
 
 export type RecordUpdateStageValues = [
-	ApplicationVersionId,
-	TableIndex,
+	ApplicationVersion_LocalId,
+	ApplicationEntity_TableIndex,
 	Repository_Id,
 	Actor_Id,
 	RecordHistoryActorRecordId,
-	ColumnIndex,
+	ApplicationColumn_Index,
 	RecordUpdateStageValue
 ];
 
@@ -44,11 +44,11 @@ export interface IRecordUpdateStageDao
 	): Promise<number[][]>;
 
 	updateEntityWhereIds(
-		applicationIndex: ApplicationIndex,
-		applicationVersionId: ApplicationVersionId,
-		tableIndex: TableIndex,
+		applicationIndex: Application_Index,
+		applicationVersionId: ApplicationVersion_LocalId,
+		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
-		updatedColumnIndexes: ColumnIndex[]
+		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void>;
 
 	delete( //
@@ -70,9 +70,9 @@ export class RecordUpdateStageDao
 		const columns = [
 			rus.applicationVersion.id,
 			rus.entity.id,
-			rus.repository.id,
-			rus.actor.id,
-			rus.actorRecordId,
+			rus.repository._localId,
+			rus.actor._localId,
+			rus._actorRecordId,
 			rus.column.id,
 			rus.updatedValue
 		]
@@ -88,11 +88,11 @@ export class RecordUpdateStageDao
 	}
 
 	async updateEntityWhereIds(
-		applicationIndex: ApplicationIndex,
-		applicationVersionId: ApplicationVersionId,
-		tableIndex: TableIndex,
+		applicationIndex: Application_Index,
+		applicationVersionId: ApplicationVersion_LocalId,
+		tableIndex: ApplicationEntity_TableIndex,
 		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
-		updatedColumnIndexes: ColumnIndex[]
+		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
 			.applicationVersion.entities[tableIndex]
@@ -104,7 +104,7 @@ export class RecordUpdateStageDao
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(and(
 					qEntity['actor'].id.equals(actorId),
-					qEntity['actorRecordId'].in(Array.from(idsForActor))
+					qEntity['_actorRecordId'].in(Array.from(idsForActor))
 				))
 			}
 			repositoryEquals.push(and(
@@ -126,9 +126,9 @@ export class RecordUpdateStageDao
 					and(
 						columnRus.applicationVersion.id.equals(applicationVersionId),
 						columnRus.entity.id.equals(dbEntity.index),
-						columnRus.repository.id.equals(qEntity.repository.id),
-						columnRus.actor.id.equals(qEntity.actor.id),
-						columnRus.actorRecordId.equals(qEntity.actorRecordId),
+						columnRus.repository._localId.equals(qEntity.repository._localId),
+						columnRus.actor._localId.equals(qEntity.actor._localId),
+						columnRus._actorRecordId.equals(qEntity._actorRecordId),
 						columnRus.column.id.equals(column.index)
 					)
 			})

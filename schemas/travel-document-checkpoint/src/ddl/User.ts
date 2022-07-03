@@ -13,7 +13,7 @@ import { Continent } from './locality/Continent';
 import { MetroArea } from './locality/MetroArea';
 import { State } from './locality/State';
 
-export type User_Id = number;
+export type User_LocalId = number;
 export type User_GUID = string;
 export type User_Email = string;
 export type User_PasswordHash = string;
@@ -27,13 +27,14 @@ export class User {
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	id?: User_Id;
+	@Column({ name: 'USER_LID' })
+	_localId?: User_LocalId;
 
 	@Column({ name: "ORIGIN" })
 	@DbString()
 	origin: User_Origin
 
-	@Column({ name: "ORIGIN_ID" })
+	@Column({ name: "ORIGIN_LID" })
 	@DbString()
 	originId: User_OriginId
 
@@ -53,23 +54,35 @@ export class User {
 	@DbString()
 	username: User_Username;
 
-	@Column({ name: "GUID", nullable: false })
+	@Column({ name: "USER_GUID", nullable: false })
 	@DbString()
 	GUID?: User_GUID;
 
 	@ManyToOne()
-	@JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'CONTINENT_LID',
+		referencedColumnName: 'CONTINENT_LID', nullable: true
+	})
 	continent?: Continent
 
 	@ManyToOne()
-	@JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'COUNTRY_LID',
+		referencedColumnName: 'COUNTRY_LID', nullable: true
+	})
 	country?: Country
 
 	@ManyToOne()
-	@JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'STATE_LID',
+		referencedColumnName: 'STATE_LID', nullable: true
+	})
 	state?: State
 
 	@ManyToOne()
-	@JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+	@JoinColumn({
+		name: 'METRO_AREA_LID',
+		referencedColumnName: 'METRO_AREA_LID', nullable: true
+	})
 	metroArea?: MetroArea
 }

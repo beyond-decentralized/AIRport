@@ -12,7 +12,6 @@ import {
 	SequenceGenerator,
 	Table,
 } from '@airport/air-traffic-control'
-import { Actor } from '../infrastructure/Actor'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'
 import { RepositoryTransactionType } from './RepositoryTransactionType'
@@ -22,7 +21,7 @@ import { TransactionHistory } from './TransactionHistory'
  * Created by Papa on 9/15/2016.
  */
 
-export type RepositoryTransactionHistory_Id = number;
+export type RepositoryTransactionHistory_LocalId = number;
 export type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
 export type RepositoryTransactionHistory_BlockId = number;
 export type RepositoryTransactionHistory_SaveTimestamp = number;
@@ -36,7 +35,8 @@ export class RepositoryTransactionHistory {
 	@GeneratedValue()
 	@Id()
 	@SequenceGenerator({ allocationSize: 200 })
-	id: RepositoryTransactionHistory_Id
+	@Column({ name: 'REPOSITORY_TRANSACTION_HISTORY_LID' })
+	_localId: RepositoryTransactionHistory_LocalId
 
 	@Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false })
 	@DbString()
@@ -60,15 +60,15 @@ export class RepositoryTransactionHistory {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'REPOSITORY_ID',
-		referencedColumnName: 'ID', nullable: false
+		name: 'REPOSITORY_LID',
+		referencedColumnName: 'REPOSITORY_LID', nullable: false
 	})
 	repository: Repository
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TRANSACTION_HISTORY_ID',
-		referencedColumnName: 'ID', nullable: false
+		name: 'TRANSACTION_HISTORY_LID',
+		referencedColumnName: 'TRANSACTION_HISTORY_LID', nullable: false
 	})
 	transactionHistory: TransactionHistory
 

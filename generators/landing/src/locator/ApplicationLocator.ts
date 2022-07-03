@@ -18,8 +18,8 @@ export interface IApplicationLocator {
 		terminalStore: ITerminalStore
 	): IApplicationVersion
 
-	locateLatestApplicationVersionByApplicationName(
-		fullApplicationName: string,
+	locateLatestApplicationVersionByApplication_Name(
+		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion>
 
@@ -38,17 +38,17 @@ export class ApplicationLocator
 		jsonApplication: JsonApplication,
 		terminalStore: ITerminalStore
 	): IApplicationVersion {
-		const applicationVersionsForDomainName = terminalStore
+		const applicationVersionsForDomain_Name = terminalStore
 			.getLatestApplicationVersionMapByNames().get(jsonApplication.domain)
-		if (!applicationVersionsForDomainName) {
+		if (!applicationVersionsForDomain_Name) {
 			return null
 		}
-		const fullApplicationName = this.dbApplicationUtils.
-			getFullApplicationNameFromDomainAndName(
+		const fullApplication_Name = this.dbApplicationUtils.
+			getFullApplication_NameFromDomainAndName(
 				jsonApplication.domain,
 				jsonApplication.name
 			)
-		const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(fullApplicationName)
+		const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name)
 
 		const jsonApplicationVersion = jsonApplication.versions[0]
 
@@ -60,12 +60,12 @@ export class ApplicationLocator
 		return latestApplicationVersionForApplication
 	}
 
-	async locateLatestApplicationVersionByApplicationName(
-		fullApplicationName: string,
+	async locateLatestApplicationVersionByApplication_Name(
+		fullApplication_Name: string,
 		terminalStore: ITerminalStore,
 	): Promise<IApplicationVersion> {
-		return terminalStore.getLatestApplicationVersionMapByFullApplicationName()
-			.get(fullApplicationName)
+		return terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+			.get(fullApplication_Name)
 	}
 
 }

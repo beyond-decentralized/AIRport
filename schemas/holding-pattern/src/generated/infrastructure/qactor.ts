@@ -99,7 +99,7 @@ export interface ActorESelect
 export interface ActorEId
     extends IEntityIdProperties {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -110,7 +110,7 @@ export interface ActorEId
  */
 export interface ActorEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -186,12 +186,12 @@ extends ActorEId, ActorEUpdateColumns {
 ///////////////////////////////////////////////
 
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QActor extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -212,7 +212,7 @@ export interface QActorQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

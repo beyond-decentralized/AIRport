@@ -7,13 +7,13 @@ import {
 } from '@airport/air-traffic-control'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
-	DomainName,
+	Domain_Name,
 	ensureChildJsMap,
-	ApplicationIndex,
-	ApplicationName,
+	Application_Index,
+	Application_Name,
 	ApplicationStatus,
-	ApplicationVersionId,
-	FullApplicationName
+	ApplicationVersion_LocalId,
+	FullApplication_Name
 } from '@airport/ground-control'
 import {
 	BaseApplicationDao,
@@ -29,7 +29,7 @@ import {
 export interface IApplicationLookupRecord {
 	index: number
 	domain: {
-		id: number
+		_localId: number
 		name: string
 	},
 	name: string
@@ -46,30 +46,30 @@ export interface IApplicationDao
 	findAllWithJson(): Promise<IApplication[]>;
 
 	findMapByVersionIds(
-		applicationVersionIds: ApplicationVersionId[]
-	): Promise<Map<ApplicationIndex, IApplication>>;
+		applicationVersionIds: ApplicationVersion_LocalId[]
+	): Promise<Map<Application_Index, IApplication>>;
 
-	findMaxVersionedMapByApplicationAndDomainNames(
-		applicationDomainNames: DomainName[],
-		applicationNames: ApplicationName[]
-	): Promise<Map<DomainName, Map<ApplicationName, IApplicationLookupRecord>>>;
+	findMaxVersionedMapByApplicationAndDomain_Names(
+		applicationDomain_Names: Domain_Name[],
+		applicationNames: Application_Name[]
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationLookupRecord>>>;
 
 	setStatusByIndexes(
-		indexes: ApplicationIndex[],
+		indexes: Application_Index[],
 		status: ApplicationStatus
 	): Promise<void>;
 
 	findMapByFullNames(
-		fullApplicationNames: FullApplicationName[]
-	): Promise<Map<FullApplicationName, IApplication>>
+		fullApplication_Names: FullApplication_Name[]
+	): Promise<Map<FullApplication_Name, IApplication>>
 
-	findByDomainNamesAndApplicationNames(
+	findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<IApplication[]>
 
 	findByIndex(
-		index: ApplicationIndex
+		index: Application_Index
 	): Promise<IApplication>
 
 	insert(
@@ -108,12 +108,12 @@ export class ApplicationDao
 				...ALL_FIELDS,
 				// currentVersion: {
 				// 	applicationVersion: {
-				// 		id: Y,
+				// 		_localId: Y,
 				// 		jsonApplication: Y
 				// 	}
 				// }
 				versions: {
-					id: Y,
+					_localId: Y,
 					jsonApplication: Y
 				}
 			},
@@ -127,10 +127,10 @@ export class ApplicationDao
 	}
 
 	async findMapByVersionIds(
-		applicationVersionIds: ApplicationVersionId[]
-	): Promise<Map<ApplicationVersionId, IApplication>> {
+		applicationVersionIds: ApplicationVersion_LocalId[]
+	): Promise<Map<ApplicationVersion_LocalId, IApplication>> {
 
-		const applicationMapByIndex: Map<ApplicationVersionId, IApplication> = new Map()
+		const applicationMapByIndex: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 
 		let s: QApplication,
 			sv: QApplicationVersion
@@ -138,13 +138,13 @@ export class ApplicationDao
 			select: {
 				index: Y,
 				domain: {
-					id: Y,
+					_localId: Y,
 					name: Y
 				},
 				name: Y,
 				fullName: Y,
 				versions: {
-					id: Y,
+					_localId: Y,
 					majorVersion: Y,
 					minorVersion: Y,
 					patchVersion: Y
@@ -166,7 +166,7 @@ export class ApplicationDao
 		return applicationMapByIndex
 	}
 
-	async findMaxIndex(): Promise<ApplicationIndex> {
+	async findMaxIndex(): Promise<Application_Index> {
 
 		const s = Q.Application
 		return await this.airportDatabase.findOne.field({
@@ -177,12 +177,12 @@ export class ApplicationDao
 		})
 	}
 
-	async findMaxVersionedMapByApplicationAndDomainNames(
-		applicationDomainNames: DomainName[],
-		applicationNames: ApplicationName[]
-	): Promise<Map<DomainName, Map<ApplicationName, IApplicationLookupRecord>>> {
+	async findMaxVersionedMapByApplicationAndDomain_Names(
+		applicationDomain_Names: Domain_Name[],
+		applicationNames: Application_Name[]
+	): Promise<Map<Domain_Name, Map<Application_Name, IApplicationLookupRecord>>> {
 
-		const maxVersionedMapByApplicationAndDomainNames: Map<DomainName, Map<ApplicationName, IApplicationLookupRecord>>
+		const maxVersionedMapByApplicationAndDomain_Names: Map<Domain_Name, Map<Application_Name, IApplicationLookupRecord>>
 			= new Map()
 
 		let sv: QApplicationVersion
@@ -211,7 +211,7 @@ export class ApplicationDao
 								patchVersion: sv.patchVersion,
 							},
 							where: and(
-								d.name.in(applicationDomainNames),
+								d.name.in(applicationDomain_Names),
 								s.name.in(applicationNames)
 							),
 							groupBy: [
@@ -244,7 +244,7 @@ export class ApplicationDao
 			select: {
 				index: sMiV.index,
 				domain: {
-					id: sMiV.domainId,
+					_localId: sMiV.domainId,
 					name: sMiV.domainName
 				},
 				name: sMiV.name,
@@ -264,16 +264,16 @@ export class ApplicationDao
 
 		for (const applicationLookupRecord of applicationLookupRecords) {
 			ensureChildJsMap(
-				maxVersionedMapByApplicationAndDomainNames, applicationLookupRecord.domain.name)
+				maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
 				.set(applicationLookupRecord.name, applicationLookupRecord)
 		}
 
 
-		return maxVersionedMapByApplicationAndDomainNames
+		return maxVersionedMapByApplicationAndDomain_Names
 	}
 
 	async setStatusByIndexes(
-		indexes: ApplicationIndex[],
+		indexes: Application_Index[],
 		status: ApplicationStatus
 	): Promise<void> {
 		let s: QApplication
@@ -287,9 +287,9 @@ export class ApplicationDao
 	}
 
 	async findMapByFullNames(
-		fullApplicationNames: FullApplicationName[]
-	): Promise<Map<FullApplicationName, IApplication>> {
-		const mapByFullName: Map<FullApplicationName, IApplication> = new Map()
+		fullApplication_Names: FullApplication_Name[]
+	): Promise<Map<FullApplication_Name, IApplication>> {
+		const mapByFullName: Map<FullApplication_Name, IApplication> = new Map()
 
 		let s: QApplication
 
@@ -298,7 +298,7 @@ export class ApplicationDao
 			from: [
 				s = Q.Application
 			],
-			where: s.fullName.in(fullApplicationNames)
+			where: s.fullName.in(fullApplication_Names)
 		})
 
 		for (const record of records) {
@@ -308,7 +308,7 @@ export class ApplicationDao
 		return mapByFullName
 	}
 
-	async findByDomainNamesAndApplicationNames(
+	async findByDomain_NamesAndApplication_Names(
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<IApplication[]> {
@@ -319,7 +319,7 @@ export class ApplicationDao
 			select: {
 				index: Y,
 				domain: {
-					id: Y,
+					_localId: Y,
 					name: Y
 				},
 				fullName: Y,
@@ -337,7 +337,7 @@ export class ApplicationDao
 	}
 
 	async findByIndex(
-		index: ApplicationIndex
+		index: Application_Index
 	): Promise<IApplication> {
 		let a: QApplication;
 		let d: QDomain;

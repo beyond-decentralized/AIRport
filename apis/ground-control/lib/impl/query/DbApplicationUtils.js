@@ -6,13 +6,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Injected } from '@airport/direction-indicator';
 let DbApplicationUtils = class DbApplicationUtils {
-    getFullApplicationName({ domain, name, }) {
+    getFullApplication_Name({ domain, name, }) {
         if (domain.name) {
             domain = domain.name;
         }
-        return this.getFullApplicationNameFromDomainAndName(domain, name);
+        return this.getFullApplication_NameFromDomainAndName(domain, name);
     }
-    getFullApplicationNameFromDomainAndName(domainName, applicationName) {
+    getFullApplication_NameFromDomainAndName(domainName, applicationName) {
         if (domainName.indexOf('___') > -1) {
             throw new Error('Domain Name cannot contain "___" (3 consecutive underscores) in it.');
         }
@@ -51,11 +51,11 @@ let DbApplicationUtils = class DbApplicationUtils {
         if (applicationPrefix.indexOf('___') > -1) {
             throw new Error('Application Name cannot have with "@", "/", "." or "_" right next to each other.');
         }
-        let fullApplicationName = `${domainPrefix}___${applicationPrefix}`;
-        if (fullApplicationName.endsWith('_dash_runtime')) {
-            fullApplicationName = fullApplicationName.substring(0, fullApplicationName.length - 13);
+        let fullApplication_Name = `${domainPrefix}___${applicationPrefix}`;
+        if (fullApplication_Name.endsWith('_dash_runtime')) {
+            fullApplication_Name = fullApplication_Name.substring(0, fullApplication_Name.length - 13);
         }
-        return fullApplicationName;
+        return fullApplication_Name;
     }
     getSequenceName(prefixedTableName, columnName) {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
