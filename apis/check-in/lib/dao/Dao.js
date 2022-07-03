@@ -28,7 +28,7 @@ let Dao = class Dao {
     mapByUuId(entities) {
         const map = new Map();
         for (const entity of entities) {
-            map.set(entity.id, entity);
+            map.set(entity.uuId, entity);
         }
         return map;
     }
@@ -93,7 +93,7 @@ let Dao = class Dao {
                 id: Y,
                 uuId: Y
             },
-            actorRecordId: Y,
+            _actorRecordId: Y,
             ageSuitability: Y,
             repository: {
                 id: Y,

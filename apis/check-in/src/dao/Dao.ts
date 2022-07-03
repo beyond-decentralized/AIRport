@@ -104,7 +104,7 @@ export abstract class Dao<Entity,
 	): Map<string, Entity> {
 		const map = new Map()
 		for (const entity of entities) {
-			map.set(entity.id, entity)
+			map.set(entity.uuId, entity)
 		}
 
 		return map

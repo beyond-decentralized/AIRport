@@ -4,7 +4,7 @@ import { SqlSchemaBuilder } from '@airport/landing';
 export class NoOpApplicationBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
         const applicationName = IOC.getSync(DB_APPLICATION_UTILS).
-            getFullApplicationName(jsonApplication);
+            getFullApplication_Name(jsonApplication);
         const createApplicationStatement = `CREATE APPLICATION ${applicationName}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
@@ -18,7 +18,7 @@ export class NoOpApplicationBuilder extends SqlSchemaBuilder {
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
-                getFullApplicationName(jsonApplication)];
+                getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -29,7 +29,7 @@ export class NoOpApplicationBuilder extends SqlSchemaBuilder {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[IOC.getSync(DB_APPLICATION_UTILS).
-                getFullApplicationName(jsonApplication)];
+                getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

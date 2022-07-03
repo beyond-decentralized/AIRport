@@ -73,28 +73,28 @@ let SqlSchemaBuilder = class SqlSchemaBuilder {
             }
             let relatedJsonApplication;
             let relatedJsonEntity;
-            if (jsonRelation.relationTableApplicationIndex
-                || jsonRelation.relationTableApplicationIndex === 0) {
+            if (jsonRelation.relationTableApplication_Index
+                || jsonRelation.relationTableApplication_Index === 0) {
                 const referencedApplication = applicationVersion
-                    .referencedApplications[jsonRelation.relationTableApplicationIndex];
-                let relatedFullApplicationName = this.dbApplicationUtils
-                    .getFullApplicationNameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
-                relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplicationName);
+                    .referencedApplications[jsonRelation.relationTableApplication_Index];
+                let relatedFullApplication_Name = this.dbApplicationUtils
+                    .getFullApplication_NameFromDomainAndName(referencedApplication.domain, referencedApplication.name);
+                relatedJsonApplication = relatedJsonApplicationMap.get(relatedFullApplication_Name);
                 if (!relatedJsonApplication) {
-                    const relatedApplication = existingApplicationMap.get(relatedFullApplicationName);
+                    const relatedApplication = existingApplicationMap.get(relatedFullApplication_Name);
                     if (relatedApplication) {
                         // FIXME: this should be looked up though currentVersion - make sure it's populated
                         // relatedJsonApplication = relatedApplication.currentVersion[0].applicationVersion.jsonApplication
                         relatedJsonApplication = relatedApplication.versions[0].jsonApplication;
                     }
                     else {
-                        relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplicationName);
+                        relatedJsonApplication = newJsonApplicationMap.get(relatedFullApplication_Name);
                     }
                     if (!relatedJsonApplication) {
-                        throw new Error(`Could not find related application ${relatedFullApplicationName}
+                        throw new Error(`Could not find related application ${relatedFullApplication_Name}
             in either existing applications or newly installing applications.`);
                     }
-                    relatedJsonApplicationMap.set(relatedFullApplicationName, relatedJsonApplication);
+                    relatedJsonApplicationMap.set(relatedFullApplication_Name, relatedJsonApplication);
                 }
                 const relatedApplicationVersion = relatedJsonApplication
                     .versions[relatedJsonApplication.versions.length - 1];

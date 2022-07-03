@@ -18,7 +18,7 @@ export class SQDI${this.classSuffix}<Entity,
 	EntityCreate extends IEntityCreateProperties,
 	EntityUpdateColumns extends IEntityUpdateColumns,
 	EntityUpdateProperties extends IEntityUpdateProperties,
-	EntityId extends IEntityIdProperties,
+	ApplicationEntity_LocalId extends IEntityIdProperties,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends ${this.classSuffix}<Entity,
@@ -26,7 +26,7 @@ export class SQDI${this.classSuffix}<Entity,
 		EntityCreate,
 		EntityUpdateColumns,
 		EntityUpdateProperties,
-		EntityId,
+		ApplicationEntity_LocalId,
 		EntityCascadeGraph,
 		IQE> {
 
@@ -71,7 +71,7 @@ ${baseClassDefinitions}`;
         this.addImport([
             {
                 asName: 'DbEntityId',
-                sourceName: 'EntityId'
+                sourceName: 'ApplicationEntity_LocalId'
             }
         ], '@airport/ground-control');
         this.addImport([

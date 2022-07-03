@@ -19,24 +19,24 @@ let DdlObjectRetriever = class DdlObjectRetriever {
         });
         const domains = await this.domainDao.findByIdIn(Array.from(domainIdSet));
         const allApplicationVersions = await this.applicationVersionDao
-            .findAllActiveOrderByApplicationIndexAndId();
-        let lastApplicationIndex;
+            .findAllActiveOrderByApplication_IndexAndId();
+        let lastApplication_Index;
         // const allApplicationVersionsByIds: IApplicationVersion[] = []
         const latestApplicationVersions = [];
         const applicationVersions = [];
         for (const applicationVersion of allApplicationVersions) {
-            if (applicationVersion.application.index !== lastApplicationIndex) {
+            if (applicationVersion.application.index !== lastApplication_Index) {
                 latestApplicationVersions.push(applicationVersion);
             }
             // allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
-            lastApplicationIndex = applicationVersion.application.index;
+            lastApplication_Index = applicationVersion.application.index;
             applicationVersions.push(applicationVersion);
         }
-        const latestApplicationVersionIds = latestApplicationVersions.map(applicationVersion => applicationVersion.id);
+        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion.id);
         const applicationReferences = await this.applicationReferenceDao
-            .findAllForApplicationVersions(latestApplicationVersionIds);
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
         const entities = await this.applicationEntityDao
-            .findAllForApplicationVersions(latestApplicationVersionIds);
+            .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
         const entityIds = entities.map(entity => entity.id);
         /*
         const entityIds = entities.map(

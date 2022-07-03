@@ -43,7 +43,7 @@ export class DbApplicationBuilder {
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
             fullName: IOC.getSync(DB_APPLICATION_UTILS).
-                getFullApplicationNameFromDomainAndName(dbDomain.name, jsonApplication.name),
+                getFullApplication_NameFromDomainAndName(dbDomain.name, jsonApplication.name),
             id: null,
             index: allApplications.length,
             name: jsonApplication.name,
@@ -93,7 +93,7 @@ export class DbApplicationBuilder {
                 const jsonApplicationVersion = jsonApplication.versions[0];
                 for (const index in jsonApplicationVersion.referencedApplications) {
                     const applicationReference = jsonApplicationVersion.referencedApplications[index];
-                    const referencedApplicationName = applicationReference.name;
+                    const referencedApplication_Name = applicationReference.name;
                     const referencedDbDomain = applicationMap[applicationReference.domain];
                     if (!referencedDbDomain) {
                         if (failOnMissingMappings) {
@@ -101,10 +101,10 @@ export class DbApplicationBuilder {
                         }
                         continue;
                     }
-                    const referencedApplication = referencedDbDomain[referencedApplicationName];
+                    const referencedApplication = referencedDbDomain[referencedApplication_Name];
                     if (!referencedApplication) {
                         if (failOnMissingMappings) {
-                            throw new Error(`Application '${referencedApplicationName}' is not yet available for relation linking.`);
+                            throw new Error(`Application '${referencedApplication_Name}' is not yet available for relation linking.`);
                         }
                         continue;
                     }
@@ -324,24 +324,24 @@ export class DbApplicationBuilder {
         });
         dbColumn.propertyColumns = propertyColumns;
         jsonColumn.manyRelationColumnRefs.map(relationColumnRef => {
-            const manyApplicationReferenceIndex = jsonApplication.index;
+            const manyApplicationReference_Index = jsonApplication.index;
             let manyApplication;
-            if (manyApplicationReferenceIndex === null) {
+            if (manyApplicationReference_Index === null) {
                 manyApplication = jsonApplication;
             }
             else {
-                manyApplication = referencedApplications[manyApplicationReferenceIndex];
+                manyApplication = referencedApplications[manyApplicationReference_Index];
             }
             const manyTableIndex = jsonEntity.index;
             const manyRelationIndex = relationColumnRef.manyRelationIndex;
             const manyColumnIndex = dbColumn.index;
-            const oneApplicationReferenceIndex = relationColumnRef.oneApplicationIndex;
+            const oneApplicationReference_Index = relationColumnRef.oneApplication_Index;
             let oneApplication;
-            if (oneApplicationReferenceIndex === null) {
+            if (oneApplicationReference_Index === null) {
                 oneApplication = jsonApplication;
             }
             else {
-                oneApplication = referencedApplications[oneApplicationReferenceIndex];
+                oneApplication = referencedApplications[oneApplicationReference_Index];
             }
             if (!oneApplication) {
                 // FIXME: figure out if not having references to nested applications is OK

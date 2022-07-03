@@ -28,7 +28,7 @@ export declare abstract class ApplicationInitializer implements IApplicationInit
     initialize(jsonApplications: JsonApplicationWithLastIds[], context: IContext, checkDependencies: boolean, loadExistingApplications: boolean): Promise<void>;
     initializeForAIRportApp(jsonApplication: JsonApplicationWithLastIds): Promise<void>;
     stage(jsonApplications: JsonApplicationWithLastIds[], context: IContext): Promise<void>;
-    abstract nativeInitializeApplication(domain: string, application: string, fullApplicationName: string): Promise<void>;
+    abstract nativeInitializeApplication(domain: string, application: string, fullApplication_Name: string): Promise<void>;
     protected wait(milliseconds: number): Promise<void>;
     private getApplicationsWithValidDependencies;
     private setAirDbApplications;

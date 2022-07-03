@@ -79,45 +79,45 @@ let ApplicationChecker = class ApplicationChecker {
     async pruneReferencesToExistingApplications(jsonApplications, allReferencedApplicationMap, referencedApplicationMapByApplication) {
         const existingApplicationInfo = await this.findExistingApplications(allReferencedApplicationMap);
         for (const applicationName of existingApplicationInfo.existingApplicationMapByName.keys()) {
-            const coreDomainAndApplicationNames = existingApplicationInfo.coreDomainAndApplicationNamesByApplicationName.get(applicationName);
+            const coreDomainAndApplication_Names = existingApplicationInfo.coreDomainAndApplication_NamesByApplication_Name.get(applicationName);
             // Remove every reference for this existing application
             for (const referenceMapForApplicationsOfDomain of referencedApplicationMapByApplication.values()) {
                 for (const applicationsReferencedByAGivenApplication of referenceMapForApplicationsOfDomain.values()) {
-                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndApplicationNames.domain);
+                    const applicationReferencesForDomain = applicationsReferencedByAGivenApplication.get(coreDomainAndApplication_Names.domain);
                     if (applicationReferencesForDomain) {
-                        applicationReferencesForDomain.delete(coreDomainAndApplicationNames.application);
+                        applicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
                     }
                 }
             }
-            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndApplicationNames.domain);
+            const allApplicationReferencesForDomain = allReferencedApplicationMap.get(coreDomainAndApplication_Names.domain);
             if (allApplicationReferencesForDomain) {
-                allApplicationReferencesForDomain.delete(coreDomainAndApplicationNames.application);
+                allApplicationReferencesForDomain.delete(coreDomainAndApplication_Names.application);
             }
         }
     }
     async findExistingApplications(allReferencedApplicationMap) {
-        const fullApplicationNames = [];
-        const coreDomainAndApplicationNamesByApplicationName = new Map();
+        const fullApplication_Names = [];
+        const coreDomainAndApplication_NamesByApplication_Name = new Map();
         for (const [domainName, allReferencedApplicationsForDomain] of allReferencedApplicationMap) {
-            for (const [coreApplicationName, referencedApplication] of allReferencedApplicationsForDomain) {
-                const fullApplicationName = this.dbApplicationUtils.
-                    getFullApplicationName(referencedApplication);
-                fullApplicationNames.push(fullApplicationName);
-                coreDomainAndApplicationNamesByApplicationName.set(fullApplicationName, {
+            for (const [coreApplication_Name, referencedApplication] of allReferencedApplicationsForDomain) {
+                const fullApplication_Name = this.dbApplicationUtils.
+                    getFullApplication_Name(referencedApplication);
+                fullApplication_Names.push(fullApplication_Name);
+                coreDomainAndApplication_NamesByApplication_Name.set(fullApplication_Name, {
                     domain: domainName,
-                    application: coreApplicationName
+                    application: coreApplication_Name
                 });
             }
         }
         let existingApplicationMapByName;
-        if (!fullApplicationNames.length) {
+        if (!fullApplication_Names.length) {
             existingApplicationMapByName = new Map();
         }
         else {
-            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullApplicationNames);
+            existingApplicationMapByName = await this.applicationDao.findMapByFullNames(fullApplication_Names);
         }
         return {
-            coreDomainAndApplicationNamesByApplicationName,
+            coreDomainAndApplication_NamesByApplication_Name,
             existingApplicationMapByName
         };
     }

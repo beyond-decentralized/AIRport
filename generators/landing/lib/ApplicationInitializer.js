@@ -40,19 +40,19 @@ let ApplicationInitializer = class ApplicationInitializer {
         const newJsonApplicationMap = new Map();
         for (const jsonApplication of jsonApplications) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getFullApplicationName(jsonApplication));
+                getFullApplication_Name(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }
             else {
                 newJsonApplicationMap.set(this.dbApplicationUtils.
-                    getFullApplicationName(jsonApplication), jsonApplication);
+                    getFullApplication_Name(jsonApplication), jsonApplication);
             }
         }
         let checkedApplicationsWithValidDependencies = [];
         for (const jsonApplication of applicationsWithValidDependencies) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils.
-                getFullApplicationName(jsonApplication));
+                getFullApplication_Name(jsonApplication));
             if (!existingApplication) {
                 checkedApplicationsWithValidDependencies.push(jsonApplication);
                 await this.applicationBuilder.build(jsonApplication, existingApplicationMap, newJsonApplicationMap, context);
@@ -118,9 +118,9 @@ let ApplicationInitializer = class ApplicationInitializer {
                 // const
                 for (let i = 0; i < applicationReferenceCheckResults.neededDependencies.length; i++) {
                     const neededDependency = applicationReferenceCheckResults.neededDependencies[i];
-                    const fullApplicationName = this.dbApplicationUtils.
-                        getFullApplicationName(neededDependency);
-                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplicationName);
+                    const fullApplication_Name = this.dbApplicationUtils.
+                        getFullApplication_Name(neededDependency);
+                    await this.nativeInitializeApplication(neededDependency.domain, neededDependency.name, fullApplication_Name);
                 }
             }
             applicationsWithValidDependencies = [

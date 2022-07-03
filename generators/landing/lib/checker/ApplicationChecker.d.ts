@@ -1,12 +1,12 @@
-import { JsonApplication, ApplicationName, IDbApplicationUtils } from '@airport/ground-control';
+import { JsonApplication, Application_Name, IDbApplicationUtils } from '@airport/ground-control';
 import { IApplication, IApplicationDao } from '@airport/airspace';
-export interface CoreDomainAndApplicationNames {
+export interface CoreDomainAndApplication_Names {
     domain: string;
     application: string;
 }
 export interface ExistingApplicationInfo {
-    coreDomainAndApplicationNamesByApplicationName: Map<ApplicationName, CoreDomainAndApplicationNames>;
-    existingApplicationMapByName: Map<ApplicationName, IApplication>;
+    coreDomainAndApplication_NamesByApplication_Name: Map<Application_Name, CoreDomainAndApplication_Names>;
+    existingApplicationMapByName: Map<Application_Name, IApplication>;
 }
 export interface ApplicationReferenceCheckResults {
     applicationsWithValidDependencies: JsonApplication[];

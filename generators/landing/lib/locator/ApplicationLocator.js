@@ -8,14 +8,14 @@ import { Inject, Injected } from '@airport/direction-indicator';
 let ApplicationLocator = class ApplicationLocator {
     // private terminalStore: ITerminalStore
     locateExistingApplicationVersionRecord(jsonApplication, terminalStore) {
-        const applicationVersionsForDomainName = terminalStore
+        const applicationVersionsForDomain_Name = terminalStore
             .getLatestApplicationVersionMapByNames().get(jsonApplication.domain);
-        if (!applicationVersionsForDomainName) {
+        if (!applicationVersionsForDomain_Name) {
             return null;
         }
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
-        const latestApplicationVersionForApplication = applicationVersionsForDomainName.get(fullApplicationName);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name);
+        const latestApplicationVersionForApplication = applicationVersionsForDomain_Name.get(fullApplication_Name);
         const jsonApplicationVersion = jsonApplication.versions[0];
         if (latestApplicationVersionForApplication
             && latestApplicationVersionForApplication.integerVersion !== jsonApplicationVersion.integerVersion) {
@@ -23,9 +23,9 @@ let ApplicationLocator = class ApplicationLocator {
         }
         return latestApplicationVersionForApplication;
     }
-    async locateLatestApplicationVersionByApplicationName(fullApplicationName, terminalStore) {
-        return terminalStore.getLatestApplicationVersionMapByFullApplicationName()
-            .get(fullApplicationName);
+    async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
+        return terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+            .get(fullApplication_Name);
     }
 };
 __decorate([

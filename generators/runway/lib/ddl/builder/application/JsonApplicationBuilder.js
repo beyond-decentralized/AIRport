@@ -191,24 +191,24 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                 };
             }
             else {
-                let relationTableApplicationIndex;
-                let relationApplicationIndex;
+                let relationTableApplication_Index;
+                let relationApplication_Index;
                 let relationTableIndex;
                 let relatedIndexedEntity;
-                if (sRelation.referencedApplicationIndex || sRelation.referencedApplicationIndex === 0) {
-                    relationTableApplicationIndex = sRelation.referencedApplicationIndex;
-                    const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplicationIndex];
-                    relationApplicationIndex = relatedDbApplication.index;
+                if (sRelation.referencedApplication_Index || sRelation.referencedApplication_Index === 0) {
+                    relationTableApplication_Index = sRelation.referencedApplication_Index;
+                    const relatedDbApplication = sIndexedApplication.application.referencedApplications[sRelation.referencedApplication_Index];
+                    relationApplication_Index = relatedDbApplication.index;
                     relatedIndexedEntity = relatedDbApplication.dbApplication
                         .currentVersion[0].applicationVersion.entityMapByName[sRelation.entityName];
                     relationTableIndex = relatedIndexedEntity.index;
                 }
                 else {
                     relatedIndexedEntity = sIndexedApplication.entityMapByName[sRelation.entityName];
-                    relationApplicationIndex = null;
+                    relationApplication_Index = null;
                     relationTableIndex = relatedIndexedEntity.entity.tableIndex;
                 }
-                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplicationIndex, relationTableIndex, columns);
+                this.buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns);
                 const relation = {
                     // addToJoinFunction: sRelation.addToJoinFunction,
                     foreignKey: sRelation.foreignKey,
@@ -223,7 +223,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
                         index: index
                     },
                     relationTableIndex,
-                    relationTableApplicationIndex,
+                    relationTableApplication_Index,
                     sinceVersion: 1
                 };
                 relations[sRelation.index] = relation;
@@ -242,7 +242,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
         });
         return [properties, relations];
     }
-    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplicationIndex, relationTableIndex, columns) {
+    buildColumnRelations(sIndexedEntity, sRelation, relatedIndexedEntity, relationApplication_Index, relationTableIndex, columns) {
         switch (sRelation.relationType) {
             case EntityRelationType.MANY_TO_ONE:
                 break;
@@ -272,7 +272,7 @@ Expecting ${parameter.name}.propertyName.  Got ${parameter.name}.${propertyName}
             const column = columns[ownColumnIndex];
             column.manyRelationColumnRefs.push({
                 manyRelationIndex: sRelation.index,
-                oneApplicationIndex: relationApplicationIndex,
+                oneApplication_Index: relationApplication_Index,
                 oneTableIndex: relationTableIndex,
                 oneRelationIndex: sRelationColumn.oneSideRelationIndex,
                 oneColumnIndex: relationColumnIndex,

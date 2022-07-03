@@ -56,14 +56,14 @@ export class SApplicationBuilder {
         }
         entity.numIdColumns = 3;
         switch (columnName) {
-            case 'REPOSITORY_ID':
+            case 'REPOSITORY_LID':
                 return 0;
-            case 'ACTOR_ID':
+            case 'ACTOR_LID':
                 return 1;
             case 'ACTOR_RECORD_ID':
                 return 2;
             default:
-                throw new Error(`AirEntity @Id columns must be 'REPOSITORY_ID', 'ACTOR_ID' and 'ACTOR_RECORD_ID'`);
+                throw new Error(`AirEntity @Id columns must be 'REPOSITORY_LID', 'ACTOR_LID' and 'ACTOR_RECORD_ID'`);
         }
     }
     getColumnIndex(entity, idIndex) {
@@ -397,7 +397,7 @@ class ${entityCandidate.docEntry.name}
                         }
                     }
                     const notNull = isManyToOnePropertyNotNull(aProperty);
-                    const relationColumnReferences = ['REPOSITORY_ID', 'ACTOR_ID', 'ACTOR_RECORD_ID'];
+                    const relationColumnReferences = ['REPOSITORY_LID', 'ACTOR_LID', 'ACTOR_RECORD_ID'];
                     let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);
                     if (!numExistingReferenceToTable) {
                         numExistingReferenceToTable = 1;
@@ -432,7 +432,7 @@ class ${entityCandidate.docEntry.name}
             }
         }
         let entityName;
-        let referencedApplicationIndex;
+        let referencedApplication_Index;
         if (!aProperty.entity) {
             if (!aProperty.fromProject) {
                 throw new Error(`Neither entity nor source project was specified 
@@ -451,7 +451,7 @@ class ${entityCandidate.docEntry.name}
                 };
                 referencedApplicationsByProjectName[aProperty.fromProject] = applicationReference;
             }
-            referencedApplicationIndex = applicationReference.index;
+            referencedApplication_Index = applicationReference.index;
             const propertyType = aProperty.nonArrayType;
             let relatedEntity = applicationReference.dbApplication.currentVersion[0]
                 .applicationVersion.entityMapByName[propertyType];
@@ -487,7 +487,7 @@ class ${entityCandidate.docEntry.name}
             manyToOne,
             oneToMany,
             relationType,
-            referencedApplicationIndex,
+            referencedApplication_Index,
             relationMustBeSingleIdEntity,
             // repositoryJoin,
             sRelationColumns
