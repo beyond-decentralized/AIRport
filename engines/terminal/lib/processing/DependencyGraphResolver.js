@@ -4,6 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildArray, EntityRelationType } from '@airport/ground-control';
 /*
@@ -111,8 +112,8 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
                     case EntityRelationType.MANY_TO_ONE:
                         childDeleteByCascade = false;
                         // TODO: see if there is a cleaner way to escape nested Actor and Repository records
-                        if (dbEntity.isAirEntity && (dbProperty.name === 'repository'
-                            || dbProperty.name === 'actor')
+                        if (dbEntity.isAirEntity && (dbProperty.name === REPOSITORY_PROPERTY_NAME
+                            || dbProperty.name === ACTOR_PROPERTY_NAME)
                             && !propertyValue[this.entityStateManager.getStateFieldName()]) {
                             continue;
                         }

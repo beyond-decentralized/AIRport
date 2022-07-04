@@ -4,9 +4,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, } from '@airport/air-traffic-control';
+import { and, REPOSITORY_PROPERTY_NAME, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { REPOSITORY_FIELD, } from '@airport/terminal-map';
 import { v4 as guidv4 } from "uuid";
 let RepositoryManager = class RepositoryManager {
     async initialize() {
@@ -60,12 +59,12 @@ already contains a new repository.`);
         }
         let columns = rawInsertValues.columns.slice();
         if (columns.some((column, index) => {
-            // return column.fieldName === REPOSITORY_FIELD
-            return column.dbProperty.name === REPOSITORY_FIELD;
+            // return column.fieldName === REPOSITORY_PROPERTY_NAME
+            return column.dbProperty.name === REPOSITORY_PROPERTY_NAME;
         })) {
             return rawInsertValues;
         }
-        columns.push(qEntity[REPOSITORY_FIELD]);
+        columns.push(qEntity[REPOSITORY_PROPERTY_NAME]);
         let values = rawInsertValues.values.slice();
         for (let i = 0; i < values.length; i++) {
             let row = values[i].slice();

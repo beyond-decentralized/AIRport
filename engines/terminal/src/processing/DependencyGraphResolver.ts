@@ -1,3 +1,4 @@
+import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
@@ -156,8 +157,8 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
 
 						// TODO: see if there is a cleaner way to escape nested Actor and Repository records
 						if (dbEntity.isAirEntity && (
-							dbProperty.name === 'repository'
-							|| dbProperty.name === 'actor')
+							dbProperty.name === REPOSITORY_PROPERTY_NAME
+							|| dbProperty.name === ACTOR_PROPERTY_NAME)
 							&& !propertyValue[this.entityStateManager.getStateFieldName()]) {
 							continue
 						}

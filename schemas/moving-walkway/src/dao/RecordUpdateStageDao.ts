@@ -1,7 +1,10 @@
 import {
+	ACTOR_PROPERTY_NAME,
+	ACTOR_RECORD_ID_PROPERTY_NAME,
 	and,
 	field,
-	or
+	or,
+	REPOSITORY_PROPERTY_NAME
 } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator';
 import {
@@ -103,12 +106,12 @@ export class RecordUpdateStageDao
 			const actorEquals: JSONBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(and(
-					qEntity['actor']._localId.equals(actorId),
-					qEntity['_actorRecordId'].in(Array.from(idsForActor))
+					qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId),
+					qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].in(Array.from(idsForActor))
 				))
 			}
 			repositoryEquals.push(and(
-				qEntity['repository']._localId.equals(repositoryId),
+				qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId),
 				or(...actorEquals)
 			))
 		}

@@ -15,6 +15,7 @@ import { QField } from '../core/field/Field'
 import { ENTITY_UTILS } from '../../core-tokens'
 import { Y } from '../../lingo/query/facade/Query'
 import { DbEntity } from '@airport/ground-control'
+import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '../..'
 
 /**
  * Created by Papa on 6/14/2016.
@@ -146,11 +147,11 @@ It must be an Object with the id property.`)
 		let repositoryJoinFound = false
 		let actorJoinFound = false
 		for (const childQEntity of qEntity.__driver__.childQEntities) {
-			if (childQEntity.__driver__.dbRelation.property.name === 'actor') {
+			if (childQEntity.__driver__.dbRelation.property.name === ACTOR_PROPERTY_NAME) {
 				actorJoinFound = true
 				qActor = childQEntity
 			}
-			if (childQEntity.__driver__.dbRelation.property.name === 'repository') {
+			if (childQEntity.__driver__.dbRelation.property.name === REPOSITORY_PROPERTY_NAME) {
 				repositoryJoinFound = true
 				qRepository = childQEntity
 			}

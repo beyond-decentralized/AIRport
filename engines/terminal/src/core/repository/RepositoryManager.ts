@@ -6,6 +6,7 @@ import {
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
+	REPOSITORY_PROPERTY_NAME,
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -21,7 +22,6 @@ import {
 import {
 	IOperationContext,
 	IRepositoryManager,
-	REPOSITORY_FIELD,
 	UpdateState,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
@@ -129,12 +129,12 @@ already contains a new repository.`)
 			column: IQOperableFieldInternal<any, any, any, any>,
 			index
 		) => {
-			// return column.fieldName === REPOSITORY_FIELD
-			return column.dbProperty.name === REPOSITORY_FIELD
+			// return column.fieldName === REPOSITORY_PROPERTY_NAME
+			return column.dbProperty.name === REPOSITORY_PROPERTY_NAME
 		})) {
 			return rawInsertValues
 		}
-		columns.push(qEntity[REPOSITORY_FIELD])
+		columns.push(qEntity[REPOSITORY_PROPERTY_NAME])
 
 		let values = rawInsertValues.values.slice()
 		for (let i = 0; i < values.length; i++) {

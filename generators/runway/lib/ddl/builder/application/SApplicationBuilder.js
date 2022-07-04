@@ -56,11 +56,11 @@ export class SApplicationBuilder {
         }
         entity.numIdColumns = 3;
         switch (columnName) {
-            case 'REPOSITORY_LID':
+            case airEntity.REPOSITORY_LID:
                 return 0;
-            case 'ACTOR_LID':
+            case airEntity.ACTOR_LID:
                 return 1;
-            case 'ACTOR_RECORD_ID':
+            case airEntity.ACTOR_RECORD_ID:
                 return 2;
             default:
                 throw new Error(`AirEntity @Id columns must be 'REPOSITORY_LID', 'ACTOR_LID' and 'ACTOR_RECORD_ID'`);
@@ -397,7 +397,10 @@ class ${entityCandidate.docEntry.name}
                         }
                     }
                     const notNull = isManyToOnePropertyNotNull(aProperty);
-                    const relationColumnReferences = ['REPOSITORY_LID', 'ACTOR_LID', 'ACTOR_RECORD_ID'];
+                    const relationColumnReferences = [
+                        airEntity.REPOSITORY_LID, airEntity.ACTOR_LID,
+                        airEntity.ACTOR_RECORD_ID
+                    ];
                     let numExistingReferenceToTable = relatedTableMap.get(relatedTableName);
                     if (!numExistingReferenceToTable) {
                         numExistingReferenceToTable = 1;

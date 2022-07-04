@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, field, or } from '@airport/air-traffic-control';
+import { ACTOR_PROPERTY_NAME, ACTOR_RECORD_ID_PROPERTY_NAME, and, field, or, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
 let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
@@ -35,9 +35,9 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
             for (const [actorId, idsForActor] of idsForRepository) {
-                actorEquals.push(and(qEntity['actor']._localId.equals(actorId), qEntity['_actorRecordId'].in(Array.from(idsForActor))));
+                actorEquals.push(and(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].in(Array.from(idsForActor))));
             }
-            repositoryEquals.push(and(qEntity['repository']._localId.equals(repositoryId), or(...actorEquals)));
+            repositoryEquals.push(and(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), or(...actorEquals)));
         }
         const setClause = {};
         for (const columnIndex of updatedColumnIndexes) {

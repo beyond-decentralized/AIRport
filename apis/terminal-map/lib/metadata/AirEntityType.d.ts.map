@@ -1,1 +1,1 @@
-{"version":3,"file":"AirEntityType.d.ts","sourceRoot":"","sources":["../../src/metadata/AirEntityType.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,oBAAY,aAAa;IACxB,cAAc,mBAAmB;IACjC,UAAU,eAAe;CACzB;AAED,eAAO,MAAM,cAAc,mBAAmB,CAAC;AAE/C,eAAO,MAAM,gBAAgB,eAAe,CAAC"}
+{"version":3,"file":"AirEntityType.d.ts","sourceRoot":"","sources":["../../src/metadata/AirEntityType.ts"],"names":[],"mappings":"AAAA;;GAEG;AAEH,oBAAY,aAAa;IACxB,cAAc,mBAAmB;IACjC,UAAU,eAAe;CACzB"}

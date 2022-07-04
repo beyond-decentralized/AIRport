@@ -76,7 +76,7 @@ let StructuralEntityValidator = class StructuralEntityValidator {
                                 const parentOneToManyElems = parentRelationProperty.relation[0].oneToManyElems;
                                 const parentMappedBy = parentOneToManyElems ? parentOneToManyElems.mappedBy : null;
                                 const mappedBy = dbRelation.manyToOneElems ? dbRelation.manyToOneElems.mappedBy : null;
-                                // NOTE: 'actor' or the 'repository' property may be automatically populated
+                                // NOTE: 'actor' or the 'repository' properties may be automatically populated
                                 // in the entity by this.validateRelationColumn
                                 if (parentMappedBy === dbProperty.name
                                     || mappedBy === parentRelationProperty.name) {
