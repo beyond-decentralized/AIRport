@@ -14,14 +14,6 @@ __decorate([
     Column({ name: 'USER_LID' })
 ], User.prototype, "_localId", void 0);
 __decorate([
-    Column({ name: "ORIGIN" }),
-    DbString()
-], User.prototype, "origin", void 0);
-__decorate([
-    Column({ name: "ORIGIN_LID" }),
-    DbString()
-], User.prototype, "originId", void 0);
-__decorate([
     Column({ name: "EMAIL" }),
     DbString()
 ], User.prototype, "email", void 0);
@@ -41,6 +33,13 @@ __decorate([
     Column({ name: "USER_GUID", nullable: false }),
     DbString()
 ], User.prototype, "GUID", void 0);
+__decorate([
+    ManyToOne(),
+    JoinColumn({
+        name: 'DOMAIN_LID',
+        referencedColumnName: 'DOMAIN_LID'
+    })
+], User.prototype, "domain", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({

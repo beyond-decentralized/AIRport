@@ -5,12 +5,12 @@ export declare type TransactionLogs = string;
 export declare type UserResponse = string;
 export declare type BatchUuid = string;
 export interface IReadRequest {
-    repositoryUuId: string;
+    repositoryGUID: string;
     transactionLogEntryTime: number;
 }
 export declare type ReadReply = string;
 export interface IWriteRequest {
-    repositoryUuId: string;
+    repositoryGUID: string;
     data: string;
 }
 export interface IWriteReply {

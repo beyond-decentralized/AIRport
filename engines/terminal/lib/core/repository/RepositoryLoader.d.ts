@@ -7,6 +7,6 @@ export declare class RepositoryLoader implements IRepositoryLoader {
     repositoryDao: IRepositoryDao;
     synchronizationAdapterLoader: ISynchronizationAdapterLoader;
     synchronizationInManager: ISynchronizationInManager;
-    loadRepository(repositorySource: string, repositoryUuId: string, context: IContext & ITransactionContext): Promise<void>;
+    loadRepository(repositorySource: string, repositoryGUID: string, context: IContext & ITransactionContext): Promise<void>;
 }
 //# sourceMappingURL=RepositoryLoader.d.ts.map

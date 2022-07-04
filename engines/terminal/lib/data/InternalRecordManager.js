@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Actor, } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { Terminal, User } from "@airport/travel-document-checkpoint";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import { Inject, Injected } from '@airport/direction-indicator';
 let InternalRecordManager = class InternalRecordManager {
     async ensureApplicationRecords(application, context) {
@@ -30,7 +30,7 @@ let InternalRecordManager = class InternalRecordManager {
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
-                    uuId: uuidv4()
+                    GUID: guidv4()
                 };
                 await this.actorDao.save(actor, context);
                 actors = [actor];
@@ -55,11 +55,11 @@ let InternalRecordManager = class InternalRecordManager {
             const terminal = new Terminal();
             terminal.owner = user;
             terminal.isLocal = true;
-            terminal.GUID = uuidv4();
+            terminal.GUID = guidv4();
             const actor = new Actor();
             actor.user = user;
             actor.terminal = terminal;
-            actor.GUID = uuidv4();
+            actor.GUID = guidv4();
             const actorDao = await this.getactorDaoAsync();
             await actorDao.save(actor, context);
             const lastTerminalState = this.terminalStore.getTerminalState();

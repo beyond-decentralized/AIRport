@@ -9,7 +9,7 @@ export declare type Terminal_IsLocal = boolean;
 export declare type Terminal_GUID = string;
 export declare class Terminal {
     _localId: Terminal_LocalId;
-    GUID: Terminal_GUID;
+    GUID?: Terminal_GUID;
     owner?: User;
     isLocal: Terminal_IsLocal;
     continent?: Continent;

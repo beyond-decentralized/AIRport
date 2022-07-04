@@ -1,4 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { DomainGraph, DomainEOptionalId, DomainESelect, QDomainQRelation } from '@airport/airspace';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from './locality/qcontinent';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './locality/qcountry';
 import { StateGraph, StateEOptionalId, StateESelect, QStateQRelation } from './locality/qstate';
@@ -7,13 +8,12 @@ import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRela
  * SELECT - All fields and relations (optional).
  */
 export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
-    origin?: string | IQStringField;
-    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
     GUID?: string | IQStringField;
+    domain?: DomainESelect;
     continent?: ContinentESelect;
     country?: CountryESelect;
     state?: StateESelect;
@@ -35,13 +35,12 @@ export interface UserEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface UserEUpdateProperties extends IEntityUpdateProperties {
-    origin?: string | IQStringField;
-    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
     GUID?: string | IQStringField;
+    domain?: DomainEOptionalId;
     continent?: ContinentEOptionalId;
     country?: CountryEOptionalId;
     state?: StateEOptionalId;
@@ -51,13 +50,12 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
-    origin?: string | IQStringField;
-    originId?: string | IQStringField;
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
     username?: string | IQStringField;
     GUID?: string | IQStringField;
+    domain?: DomainGraph;
     continent?: ContinentGraph;
     country?: CountryGraph;
     state?: StateGraph;
@@ -67,13 +65,12 @@ export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
-    ORIGIN?: string | IQStringField;
-    ORIGIN_LID?: string | IQStringField;
     EMAIL?: string | IQStringField;
     PASSWORD_HASH?: string | IQStringField;
     RANKING?: number | IQNumberField;
     USERNAME?: string | IQStringField;
     USER_GUID?: string | IQStringField;
+    DOMAIN_LID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -94,13 +91,12 @@ export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
  */
 export interface QUser extends IQEntity {
     _localId: IQNumberField;
-    origin: IQStringField;
-    originId: IQStringField;
     email: IQStringField;
     passwordHash: IQStringField;
     ranking: IQNumberField;
     username: IQStringField;
     GUID: IQStringField;
+    domain: QDomainQRelation;
     continent: QContinentQRelation;
     country: QCountryQRelation;
     state: QStateQRelation;

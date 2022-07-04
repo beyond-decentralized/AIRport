@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { and, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { REPOSITORY_FIELD, } from '@airport/terminal-map';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 let RepositoryManager = class RepositoryManager {
     async initialize() {
     }
@@ -44,7 +44,7 @@ already contains a new repository.`);
             // platformConfig: null,
             repositoryTransactionHistory: [],
             source: 'localhost:9000',
-            GUID: uuidv4(),
+            GUID: guidv4(),
         };
         return repository;
     }

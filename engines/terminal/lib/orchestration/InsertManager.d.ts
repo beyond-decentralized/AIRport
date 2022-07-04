@@ -16,7 +16,7 @@ export declare class InsertManager implements IInsertManager {
     private internalInsertValues;
     private validateValueRowLength;
     private ensureGeneratedValues;
-    private ensureAirEntityUuIdValues;
+    private ensureAirEntityIdValues;
     /**
      *
      * All repository records must have _localIds when inserted.  Currently AP doesn't support

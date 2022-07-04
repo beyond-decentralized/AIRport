@@ -6,15 +6,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
-    async getTransactionsForRepository(repositorySource, repositoryUuId, sinceSyncTimestamp) {
-        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryUuId, sinceSyncTimestamp);
+    async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
+        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
         for (const fragment of response) {
-            if (fragment.repositoryUuId !== repositoryUuId) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryUuId}.
-    Expecting message fragments for repository: ${repositoryUuId}`);
+            if (fragment.repositoryGUID !== repositoryGUID) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+    Expecting message fragments for repository: ${repositoryGUID}`);
                 continue;
             }
             for (const message of fragment.messages) {
@@ -26,9 +26,9 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
     }
     async sendTransactions(repositorySource, messagesByRepository) {
         let allSent = true;
-        for (const [repositoryUuid, messages] of messagesByRepository) {
+        for (const [repositoryGUID, messages] of messagesByRepository) {
             try {
-                if (!await this.sendTransactionsForRepository(repositorySource, repositoryUuid, messages)) {
+                if (!await this.sendTransactionsForRepository(repositorySource, repositoryGUID, messages)) {
                     allSent = false;
                 }
             }
@@ -39,11 +39,11 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
         }
         return allSent;
     }
-    async sendTransactionsForRepository(repositorySource, repositoryUuId, messages) {
+    async sendTransactionsForRepository(repositorySource, repositoryGUID, messages) {
         if (!messages || !messages.length) {
             return false;
         }
-        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
+        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
         if (!syncTimestamp) {
             return false;
         }

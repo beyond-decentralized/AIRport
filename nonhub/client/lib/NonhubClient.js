@@ -10,10 +10,10 @@ let NonhubClient = class NonhubClient {
         // encryptionKey = process.env.ENCRYPTION_KEY
         this.serverLocationProtocol = 'http://';
     }
-    async getRepositoryTransactions(location, repositoryUuId, sinceSyncTimestamp = null) {
+    async getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp = null) {
         try {
             const response = await this.sendMessage(location + '/read', {
-                repositoryUuId,
+                repositoryGUID,
                 syncTimestamp: sinceSyncTimestamp
             });
             if (response.error) {
@@ -27,11 +27,11 @@ let NonhubClient = class NonhubClient {
             return [];
         }
     }
-    async sendRepositoryTransactions(location, repositoryUuId, messages) {
+    async sendRepositoryTransactions(location, repositoryGUID, messages) {
         try {
             const response = await this.sendMessage(location + '/write', {
                 messages,
-                repositoryUuId
+                repositoryGUID
             });
             if (response.error) {
                 console.error(response.error);

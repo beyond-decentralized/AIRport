@@ -43,7 +43,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             const missingRepositories = message.referencedRepositories
                 .filter(messageRepository => !messageRepository._localId);
             if (typeof history.repository !== 'object') {
-                throw new Error(`Repository with UuId ${history.repository} is not
+                throw new Error(`Repository with GUID ${history.repository} is not
 					present and cannot be synced
 	This RepositorySynchronizationMessage is for an existing repository and that
 	repository must already be loaded in this database for this message to be

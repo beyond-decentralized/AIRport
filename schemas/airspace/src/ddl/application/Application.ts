@@ -31,11 +31,11 @@ export class Application {
 	@Column({ name: 'APPLICATION_INDEX', nullable: false })
 	index: Application_Index;
 
-	GUID: string
+	GUID?: string
 
 	@Column({ name: 'SCOPE', nullable: false })
 	@DbString()
-	scope: Application_Scope;
+	scope: string // Application_Scope;
 
 	@Column({ name: 'APPLICATION_NAME', nullable: false })
 	@DbString()

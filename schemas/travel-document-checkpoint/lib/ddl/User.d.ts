@@ -1,3 +1,4 @@
+import { Domain } from '@airport/airspace';
 import { Country } from './locality/Country';
 import { Continent } from './locality/Continent';
 import { MetroArea } from './locality/MetroArea';
@@ -7,17 +8,14 @@ export declare type User_GUID = string;
 export declare type User_Email = string;
 export declare type User_PasswordHash = string;
 export declare type User_Username = string;
-export declare type User_Origin = string;
-export declare type User_OriginId = string;
 export declare class User {
     _localId?: User_LocalId;
-    origin: User_Origin;
-    originId: User_OriginId;
     email: User_Email;
     passwordHash?: User_PasswordHash;
     ranking?: number;
     username: User_Username;
     GUID?: User_GUID;
+    domain?: Domain;
     continent?: Continent;
     country?: Country;
     state?: State;

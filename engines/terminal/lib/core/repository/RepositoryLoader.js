@@ -13,12 +13,12 @@ let RepositoryLoader = class RepositoryLoader {
     - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
     Immutable repositories are only loaded once
     */
-    async loadRepository(repositorySource, repositoryUuId, context) {
+    async loadRepository(repositorySource, repositoryGUID, context) {
         if (context.repositoryExistenceChecked) {
             return;
         }
         context.repositoryExistenceChecked = true;
-        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId, context);
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryGUID, context);
         let loadRepository = false;
         let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {
@@ -47,10 +47,10 @@ let RepositoryLoader = class RepositoryLoader {
                 }
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000;
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId, lastSyncTimestamp);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID, lastSyncTimestamp);
             }
             else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
             }
             // TODO: Add a special message for repository for adding users
             // into the repository 

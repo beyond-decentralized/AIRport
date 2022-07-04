@@ -25,8 +25,8 @@ let QueryManager = class QueryManager {
         return this.storeDriver.searchOne(portableQuery, {}, context, cachedSqlQueryId);
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
-        if (context.repository && context.repository.source && context.repository.uuId) {
-            await this.repositoryLoader.loadRepository(context.repository.source, context.repository.uuId, context);
+        if (context.repository && context.repository.source && context.repository.GUID) {
+            await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context);
         }
     }
 };

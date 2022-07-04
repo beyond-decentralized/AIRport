@@ -60,7 +60,7 @@ appears more than once in the Columns clause`);
         let columnsToPopulate;
         const insertValues = portableQuery.jsonQuery;
         if (dbEntity.isAirEntity) {
-            columnsToPopulate = this.ensureAirEntityUuIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
+            columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
         if (!transaction.isSync || context.generateOnSync) {
@@ -240,7 +240,7 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureAirEntityUuIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
+    ensureAirEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
         const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID];
         const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID];
         const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID];

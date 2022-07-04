@@ -89,7 +89,7 @@ export class InternalRecordManager
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
                 const frameworkActor = this.terminalStore.getFrameworkActor()
-                const actor: Actor = {
+                const actor: IActor = {
                     _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,

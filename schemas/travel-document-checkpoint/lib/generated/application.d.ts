@@ -172,7 +172,24 @@ export declare const APPLICATION: {
             };
             operations?: undefined;
         } | {
-            columns: {
+            columns: ({
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplication_Index: number;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            } | {
                 index: number;
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
@@ -190,7 +207,7 @@ export declare const APPLICATION: {
                 }[];
                 sinceVersion: number;
                 type: string;
-            }[];
+            })[];
             idColumnRefs: {
                 index: number;
             }[];
@@ -217,7 +234,17 @@ export declare const APPLICATION: {
                 sinceVersion: number;
                 columnRef?: undefined;
             })[];
-            relations: {
+            relations: ({
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                relationTableApplication_Index: number;
+                sinceVersion: number;
+            } | {
                 index: number;
                 isId: boolean;
                 relationType: string;
@@ -226,7 +253,8 @@ export declare const APPLICATION: {
                 };
                 relationTableIndex: number;
                 sinceVersion: number;
-            }[];
+                relationTableApplication_Index?: undefined;
+            })[];
             sinceVersion: number;
             tableConfig: {
                 columnIndexes: any[];
@@ -384,7 +412,18 @@ export declare const APPLICATION: {
             operations: {};
         })[];
         integerVersion: number;
-        referencedApplications: any[];
+        referencedApplications: {
+            domain: string;
+            index: number;
+            name: string;
+            sinceVersion: number;
+            versions: {
+                entities: any;
+                integerVersion: number;
+                referencedApplications: any;
+                versionString: string;
+            }[];
+        }[];
         versionString: string;
     }[];
 };

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { IsolateMessageType, AppState } from '@airport/apron';
 import { Observable } from 'rxjs';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 let IframeTransactionalConnector = class IframeTransactionalConnector {
     async processMessage(message, origin) {
         if (message.__received__) {
@@ -267,7 +267,7 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
             application: this.applicationStore.state.application,
             category: 'ToDb',
             domain: this.applicationStore.state.domain,
-            id: uuidv4(),
+            id: guidv4(),
         };
     }
     async sendMessage(message) {

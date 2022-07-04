@@ -1,4 +1,7 @@
 import {
+	IDomain,
+} from '@airport/airspace';
+import {
 	IContinent,
 } from './locality/continent';
 import {
@@ -25,8 +28,6 @@ export interface IUser {
 	// Id Relations
 
 	// Non-Id Properties
-	origin?: string;
-	originId?: string;
 	email?: string;
 	passwordHash?: string;
 	ranking?: number;
@@ -34,6 +35,7 @@ export interface IUser {
 	GUID?: string;
 
 	// Non-Id Relations
+	domain?: IDomain;
 	continent?: IContinent;
 	country?: ICountry;
 	state?: IState;

@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 export class SqlTransaction {
     constructor(driver, parentTransaction) {
         this.driver = driver;
@@ -11,7 +11,7 @@ export class SqlTransaction {
             objectName: ''
         };
         this.__container__ = driver.__container__;
-        this.id = uuidv4();
+        this.id = guidv4();
         this.type = driver.type;
         if (parentTransaction) {
             parentTransaction.childTransaction = this;

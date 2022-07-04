@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from "@airport/direction-indicator";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 let _inDemoMode = true;
 // let _demoServer = 'https://turbase.app'
 let _demoServer = 'http://localhost:7500';
@@ -93,7 +93,7 @@ let LocalAPIClient = class LocalAPIClient {
             domain: token.application.domain.name,
             hostDomain: null,
             hostProtocol: null,
-            id: uuidv4(),
+            id: guidv4(),
             methodName,
             objectName: token.descriptor.interface,
             protocol: window.location.protocol,

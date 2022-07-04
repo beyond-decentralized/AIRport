@@ -40,7 +40,7 @@ export class Terminal {
 
 	@Column({ name: 'GUID', nullable: false })
 	@DbString()
-	GUID: Terminal_GUID
+	GUID?: Terminal_GUID
 
 	@ManyToOne()
 	@JoinColumn({

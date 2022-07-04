@@ -1927,7 +1927,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 1,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "ORIGIN",
+                                "name": "EMAIL",
                                 "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1947,7 +1947,7 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 2,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "ORIGIN_LID",
+                                "name": "PASSWORD_HASH",
                                 "notNull": false,
                                 "oneRelationColumns": [],
                                 "propertyColumnMap": null,
@@ -1967,46 +1967,6 @@ export const MAPPED_SUPERCLASS = [
                                 "index": 3,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
-                                "name": "EMAIL",
-                                "notNull": false,
-                                "oneRelationColumns": [],
-                                "propertyColumnMap": null,
-                                "propertyColumns": [
-                                    {
-                                        "column": null,
-                                        "property": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "sinceVersion": null,
-                                "type": "STRING"
-                            },
-                            {
-                                "entity": null,
-                                "_localId": null,
-                                "index": 4,
-                                "isGenerated": false,
-                                "manyRelationColumns": [],
-                                "name": "PASSWORD_HASH",
-                                "notNull": false,
-                                "oneRelationColumns": [],
-                                "propertyColumnMap": null,
-                                "propertyColumns": [
-                                    {
-                                        "column": null,
-                                        "property": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "sinceVersion": null,
-                                "type": "STRING"
-                            },
-                            {
-                                "entity": null,
-                                "_localId": null,
-                                "index": 5,
-                                "isGenerated": false,
-                                "manyRelationColumns": [],
                                 "name": "RANKING",
                                 "notNull": false,
                                 "oneRelationColumns": [],
@@ -2024,7 +1984,7 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 6,
+                                "index": 4,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "USERNAME",
@@ -2044,7 +2004,7 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 7,
+                                "index": 5,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "USER_GUID",
@@ -2064,7 +2024,27 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 8,
+                                "index": 6,
+                                "isGenerated": false,
+                                "manyRelationColumns": [],
+                                "name": "DOMAIN_LID",
+                                "notNull": false,
+                                "oneRelationColumns": [],
+                                "propertyColumnMap": null,
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null,
+                                "type": "NUMBER"
+                            },
+                            {
+                                "entity": null,
+                                "_localId": null,
+                                "index": 7,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "CONTINENT_ID",
@@ -2084,7 +2064,7 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 9,
+                                "index": 8,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "COUNTRY_ID",
@@ -2104,7 +2084,7 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 10,
+                                "index": 9,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "STATE_ID",
@@ -2124,7 +2104,7 @@ export const MAPPED_SUPERCLASS = [
                             {
                                 "entity": null,
                                 "_localId": null,
-                                "index": 11,
+                                "index": 10,
                                 "isGenerated": false,
                                 "manyRelationColumns": [],
                                 "name": "METRO_AREA_ID",
@@ -2201,7 +2181,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 1,
                                 "isId": false,
-                                "name": "origin",
+                                "name": "email",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2217,7 +2197,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 2,
                                 "isId": false,
-                                "name": "originId",
+                                "name": "passwordHash",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2233,7 +2213,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 3,
                                 "isId": false,
-                                "name": "email",
+                                "name": "ranking",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2249,7 +2229,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 4,
                                 "isId": false,
-                                "name": "passwordHash",
+                                "name": "username",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2265,7 +2245,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 5,
                                 "isId": false,
-                                "name": "ranking",
+                                "name": "GUID",
                                 "relation": null,
                                 "sinceVersion": null
                             },
@@ -2281,39 +2261,7 @@ export const MAPPED_SUPERCLASS = [
                                 "_localId": null,
                                 "index": 6,
                                 "isId": false,
-                                "name": "username",
-                                "relation": null,
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [
-                                    {
-                                        "column": null,
-                                        "property": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "entity": null,
-                                "_localId": null,
-                                "index": 7,
-                                "isId": false,
-                                "name": "GUID",
-                                "relation": null,
-                                "sinceVersion": null
-                            },
-                            {
-                                "propertyColumns": [
-                                    {
-                                        "column": null,
-                                        "property": null,
-                                        "sinceVersion": null
-                                    }
-                                ],
-                                "entity": null,
-                                "_localId": null,
-                                "index": 8,
-                                "isId": false,
-                                "name": "continent",
+                                "name": "domain",
                                 "relation": [
                                     {
                                         "isId": false,
@@ -2339,9 +2287,9 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "_localId": null,
-                                "index": 9,
+                                "index": 7,
                                 "isId": false,
-                                "name": "country",
+                                "name": "continent",
                                 "relation": [
                                     {
                                         "isId": false,
@@ -2367,9 +2315,9 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "_localId": null,
-                                "index": 10,
+                                "index": 8,
                                 "isId": false,
-                                "name": "state",
+                                "name": "country",
                                 "relation": [
                                     {
                                         "isId": false,
@@ -2395,7 +2343,35 @@ export const MAPPED_SUPERCLASS = [
                                 ],
                                 "entity": null,
                                 "_localId": null,
-                                "index": 11,
+                                "index": 9,
+                                "isId": false,
+                                "name": "state",
+                                "relation": [
+                                    {
+                                        "isId": false,
+                                        "relationType": "MANY_TO_ONE",
+                                        "_localId": null,
+                                        "index": 3,
+                                        "property": null,
+                                        "manyRelationColumns": [],
+                                        "oneRelationColumns": [],
+                                        "relationEntity": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "sinceVersion": null
+                            },
+                            {
+                                "propertyColumns": [
+                                    {
+                                        "column": null,
+                                        "property": null,
+                                        "sinceVersion": null
+                                    }
+                                ],
+                                "entity": null,
+                                "_localId": null,
+                                "index": 10,
                                 "isId": false,
                                 "name": "metroArea",
                                 "relation": [
@@ -2403,7 +2379,7 @@ export const MAPPED_SUPERCLASS = [
                                         "isId": false,
                                         "relationType": "MANY_TO_ONE",
                                         "_localId": null,
-                                        "index": 3,
+                                        "index": 4,
                                         "property": null,
                                         "manyRelationColumns": [],
                                         "oneRelationColumns": [],
@@ -2454,6 +2430,17 @@ export const MAPPED_SUPERCLASS = [
                                 "relationType": "MANY_TO_ONE",
                                 "_localId": null,
                                 "index": 3,
+                                "property": null,
+                                "manyRelationColumns": [],
+                                "oneRelationColumns": [],
+                                "relationEntity": null,
+                                "sinceVersion": null
+                            },
+                            {
+                                "isId": false,
+                                "relationType": "MANY_TO_ONE",
+                                "_localId": null,
+                                "index": 4,
                                 "property": null,
                                 "manyRelationColumns": [],
                                 "oneRelationColumns": [],
@@ -3441,7 +3428,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 1,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "ORIGIN",
+                                    "name": "EMAIL",
                                     "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3461,7 +3448,7 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 2,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "ORIGIN_LID",
+                                    "name": "PASSWORD_HASH",
                                     "notNull": false,
                                     "oneRelationColumns": [],
                                     "propertyColumnMap": null,
@@ -3481,46 +3468,6 @@ export const MAPPED_SUPERCLASS = [
                                     "index": 3,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
-                                    "name": "EMAIL",
-                                    "notNull": false,
-                                    "oneRelationColumns": [],
-                                    "propertyColumnMap": null,
-                                    "propertyColumns": [
-                                        {
-                                            "column": null,
-                                            "property": null,
-                                            "sinceVersion": null
-                                        }
-                                    ],
-                                    "sinceVersion": null,
-                                    "type": "STRING"
-                                },
-                                {
-                                    "entity": null,
-                                    "_localId": null,
-                                    "index": 4,
-                                    "isGenerated": false,
-                                    "manyRelationColumns": [],
-                                    "name": "PASSWORD_HASH",
-                                    "notNull": false,
-                                    "oneRelationColumns": [],
-                                    "propertyColumnMap": null,
-                                    "propertyColumns": [
-                                        {
-                                            "column": null,
-                                            "property": null,
-                                            "sinceVersion": null
-                                        }
-                                    ],
-                                    "sinceVersion": null,
-                                    "type": "STRING"
-                                },
-                                {
-                                    "entity": null,
-                                    "_localId": null,
-                                    "index": 5,
-                                    "isGenerated": false,
-                                    "manyRelationColumns": [],
                                     "name": "RANKING",
                                     "notNull": false,
                                     "oneRelationColumns": [],
@@ -3538,7 +3485,7 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 6,
+                                    "index": 4,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "USERNAME",
@@ -3558,7 +3505,7 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 7,
+                                    "index": 5,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "USER_GUID",
@@ -3578,7 +3525,27 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 8,
+                                    "index": 6,
+                                    "isGenerated": false,
+                                    "manyRelationColumns": [],
+                                    "name": "DOMAIN_LID",
+                                    "notNull": false,
+                                    "oneRelationColumns": [],
+                                    "propertyColumnMap": null,
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null,
+                                    "type": "NUMBER"
+                                },
+                                {
+                                    "entity": null,
+                                    "_localId": null,
+                                    "index": 7,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "CONTINENT_ID",
@@ -3598,7 +3565,7 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 9,
+                                    "index": 8,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "COUNTRY_ID",
@@ -3618,7 +3585,7 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 10,
+                                    "index": 9,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "STATE_ID",
@@ -3638,7 +3605,7 @@ export const MAPPED_SUPERCLASS = [
                                 {
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 11,
+                                    "index": 10,
                                     "isGenerated": false,
                                     "manyRelationColumns": [],
                                     "name": "METRO_AREA_ID",
@@ -3715,7 +3682,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 1,
                                     "isId": false,
-                                    "name": "origin",
+                                    "name": "email",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3731,7 +3698,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 2,
                                     "isId": false,
-                                    "name": "originId",
+                                    "name": "passwordHash",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3747,7 +3714,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 3,
                                     "isId": false,
-                                    "name": "email",
+                                    "name": "ranking",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3763,7 +3730,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 4,
                                     "isId": false,
-                                    "name": "passwordHash",
+                                    "name": "username",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3779,7 +3746,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 5,
                                     "isId": false,
-                                    "name": "ranking",
+                                    "name": "GUID",
                                     "relation": null,
                                     "sinceVersion": null
                                 },
@@ -3795,39 +3762,7 @@ export const MAPPED_SUPERCLASS = [
                                     "_localId": null,
                                     "index": 6,
                                     "isId": false,
-                                    "name": "username",
-                                    "relation": null,
-                                    "sinceVersion": null
-                                },
-                                {
-                                    "propertyColumns": [
-                                        {
-                                            "column": null,
-                                            "property": null,
-                                            "sinceVersion": null
-                                        }
-                                    ],
-                                    "entity": null,
-                                    "_localId": null,
-                                    "index": 7,
-                                    "isId": false,
-                                    "name": "GUID",
-                                    "relation": null,
-                                    "sinceVersion": null
-                                },
-                                {
-                                    "propertyColumns": [
-                                        {
-                                            "column": null,
-                                            "property": null,
-                                            "sinceVersion": null
-                                        }
-                                    ],
-                                    "entity": null,
-                                    "_localId": null,
-                                    "index": 8,
-                                    "isId": false,
-                                    "name": "continent",
+                                    "name": "domain",
                                     "relation": [
                                         {
                                             "isId": false,
@@ -3853,9 +3788,9 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 9,
+                                    "index": 7,
                                     "isId": false,
-                                    "name": "country",
+                                    "name": "continent",
                                     "relation": [
                                         {
                                             "isId": false,
@@ -3881,9 +3816,9 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 10,
+                                    "index": 8,
                                     "isId": false,
-                                    "name": "state",
+                                    "name": "country",
                                     "relation": [
                                         {
                                             "isId": false,
@@ -3909,7 +3844,35 @@ export const MAPPED_SUPERCLASS = [
                                     ],
                                     "entity": null,
                                     "_localId": null,
-                                    "index": 11,
+                                    "index": 9,
+                                    "isId": false,
+                                    "name": "state",
+                                    "relation": [
+                                        {
+                                            "isId": false,
+                                            "relationType": "MANY_TO_ONE",
+                                            "_localId": null,
+                                            "index": 3,
+                                            "property": null,
+                                            "manyRelationColumns": [],
+                                            "oneRelationColumns": [],
+                                            "relationEntity": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "propertyColumns": [
+                                        {
+                                            "column": null,
+                                            "property": null,
+                                            "sinceVersion": null
+                                        }
+                                    ],
+                                    "entity": null,
+                                    "_localId": null,
+                                    "index": 10,
                                     "isId": false,
                                     "name": "metroArea",
                                     "relation": [
@@ -3917,7 +3880,7 @@ export const MAPPED_SUPERCLASS = [
                                             "isId": false,
                                             "relationType": "MANY_TO_ONE",
                                             "_localId": null,
-                                            "index": 3,
+                                            "index": 4,
                                             "property": null,
                                             "manyRelationColumns": [],
                                             "oneRelationColumns": [],
@@ -3968,6 +3931,17 @@ export const MAPPED_SUPERCLASS = [
                                     "relationType": "MANY_TO_ONE",
                                     "_localId": null,
                                     "index": 3,
+                                    "property": null,
+                                    "manyRelationColumns": [],
+                                    "oneRelationColumns": [],
+                                    "relationEntity": null,
+                                    "sinceVersion": null
+                                },
+                                {
+                                    "isId": false,
+                                    "relationType": "MANY_TO_ONE",
+                                    "_localId": null,
+                                    "index": 4,
                                     "property": null,
                                     "manyRelationColumns": [],
                                     "oneRelationColumns": [],

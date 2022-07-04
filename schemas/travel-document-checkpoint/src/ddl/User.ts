@@ -8,18 +8,17 @@ import {
 	JoinColumn,
 	ManyToOne,
 } from '@airport/air-traffic-control'
-import { Country } from './locality/Country';
-import { Continent } from './locality/Continent';
-import { MetroArea } from './locality/MetroArea';
-import { State } from './locality/State';
+import { Domain } from '@airport/airspace'
+import { Country } from './locality/Country'
+import { Continent } from './locality/Continent'
+import { MetroArea } from './locality/MetroArea'
+import { State } from './locality/State'
 
 export type User_LocalId = number;
 export type User_GUID = string;
 export type User_Email = string;
 export type User_PasswordHash = string;
 export type User_Username = string;
-export type User_Origin = string;
-export type User_OriginId = string;
 
 @Entity()
 export class User {
@@ -29,14 +28,6 @@ export class User {
 	@DbNumber()
 	@Column({ name: 'USER_LID' })
 	_localId?: User_LocalId;
-
-	@Column({ name: "ORIGIN" })
-	@DbString()
-	origin: User_Origin
-
-	@Column({ name: "ORIGIN_LID" })
-	@DbString()
-	originId: User_OriginId
 
 	@Column({ name: "EMAIL" })
 	@DbString()
@@ -57,6 +48,13 @@ export class User {
 	@Column({ name: "USER_GUID", nullable: false })
 	@DbString()
 	GUID?: User_GUID;
+
+	@ManyToOne()
+	@JoinColumn({
+		name: 'DOMAIN_LID',
+		referencedColumnName: 'DOMAIN_LID'
+	})
+	domain?: Domain
 
 	@ManyToOne()
 	@JoinColumn({
