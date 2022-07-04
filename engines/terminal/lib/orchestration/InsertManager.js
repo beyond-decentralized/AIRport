@@ -11,7 +11,7 @@ let InsertManager = class InsertManager {
     async insertValues(portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context) {
+    async insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, true);
     }
     verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
@@ -66,19 +66,19 @@ appears more than once in the Columns clause`);
         if (!transaction.isSync || context.generateOnSync) {
             generatedColumns = this.verifyNoGeneratedColumns(dbEntity, portableQuery.jsonQuery, errorPrefix);
         }
-        let ids;
+        let _localIds;
         let systemWideOperationId;
         if (!dbEntity.isLocal) {
             systemWideOperationId = await getSysWideOpId(this.airportDatabase, this.sequenceGenerator);
         }
         if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
-            ids = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, this.sequenceGenerator);
+            _localIds = await this.ensureGeneratedValues(dbEntity, insertValues, actor, columnsToPopulate, generatedColumns, systemWideOperationId, errorPrefix, this.sequenceGenerator);
         }
         if (!dbEntity.isLocal && !transaction.isSync) {
             await this.addInsertHistory(dbEntity, portableQuery, actor, systemWideOperationId, transaction, rootTransaction, context);
         }
         const numberOfInsertedRecords = await transaction.insertValues(portableQuery, context);
-        return getIds ? ids : numberOfInsertedRecords;
+        return getIds ? _localIds : numberOfInsertedRecords;
     }
     async validateValueRowLength(portableQuery, errorPrefix) {
         const values = portableQuery.jsonQuery.V;
@@ -125,7 +125,7 @@ appears more than once in the Columns clause`);
             });
             if (matchingColumns.length < 1) {
                 // Actor Id cannot be in the insert statement
-                if (idColumn.id === actorIdColumn.id) {
+                if (idColumn._localId === actorIdColumn._localId) {
                     isActorIdColumn = true;
                     inStatementColumnIndex = jsonInsertValues.C.length;
                     jsonInsertValues.C.push(actorIdColumn.index);
@@ -142,7 +142,7 @@ appears more than once in the Columns clause`);
                 const idValues = allIds[i];
                 let idValue;
                 if (isActorIdColumn) {
-                    idValue = actor.id;
+                    idValue = actor._localId;
                 }
                 else {
                     idValue = entityValues[inStatementColumnIndex];
@@ -160,7 +160,7 @@ appears more than once in the Columns clause`);
         // 	for (const entityValues of values) {
         // 		const repositoryId = entityValues[repositoryIdIndex]
         // 		if (!repositoryId && repositoryId !== 0) {
-        // 			throw new Error(`@Column({ name: 'REPOSITORY_ID'}) value is not specified on
+        // 			throw new Error(`@Column({ name: 'REPOSITORY_LID'}) value is not specified on
         // insert for '${dbEntity0.name}.${repositoryColumn.name}'.`) } } }
         const generatedColumnIndexes = [];
         // let numAddedColumns                    = 0
@@ -241,9 +241,9 @@ appears more than once in the Columns clause`);
         return allIds;
     }
     ensureAirEntityUuIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
-        const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_ID];
+        const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID];
         const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID];
-        const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_ID];
+        const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID];
         const sysWideOperationIdColumn = dbEntity.columnMap[airEntity.SYSTEM_WIDE_OPERATION_ID];
         let repositoryIdColumnQueryIndex;
         let foundActorIdColumn = false;
@@ -260,7 +260,7 @@ appears more than once in the Columns clause`);
                     }
                     if (!transaction.isSync) {
                         throw new Error(errorPrefix +
-                            `You cannot explicitly provide an ACTOR_ID value for Repository entities.`);
+                            `You cannot explicitly provide an ACTOR_LID value for Repository entities.`);
                     }
                     break;
                 case actorRecordIdColumn.index:
@@ -284,14 +284,14 @@ You cannot explicitly provide a SYSTEM_WIDE_OPERATION_ID value for Repository en
         }
         const missingRepositoryIdErrorMsg = errorPrefix +
             `Error inserting into '${dbEntity.name}'.
-You must provide a valid REPOSITORY_ID value for Repository entities.`;
+You must provide a valid REPOSITORY_LID value for Repository entities.`;
         if (repositoryIdColumnQueryIndex === undefined) {
             throw new Error(missingRepositoryIdErrorMsg);
         }
         if (transaction.isSync) {
             if (!foundActorIdColumn) {
                 throw new Error(errorPrefix +
-                    `ACTOR_ID must be provided for sync operations.`);
+                    `ACTOR_LID must be provided for sync operations.`);
             }
             if (!foundActorRecordIdColumn) {
                 throw new Error(errorPrefix +
@@ -330,7 +330,7 @@ and cannot have NULL values.`);
             }
             if (!context.isSaveOperation && !transaction.isSync) {
                 // Save operation set Actor ealier (at the entity level, to be returned back to client)
-                entityValues[actorIdColumn.index] = actor.id;
+                entityValues[actorIdColumn.index] = actor._localId;
             }
         }
         return {
@@ -340,9 +340,9 @@ and cannot have NULL values.`);
     }
     /**
      *
-     * All repository records must have ids when inserted.  Currently AP doesn't support
+     * All repository records must have _localIds when inserted.  Currently AP doesn't support
      * inserting from select and in the values provided id's must either be explicitly
-     * specified or already provided. For all repository entities all ids must be
+     * specified or already provided. For all repository entities all _localIds must be
      * auto-generated.
      *
      * @param {DbEntity} dbEntity
@@ -353,8 +353,8 @@ and cannot have NULL values.`);
         const jsonInsertValues = portableQuery.jsonQuery;
         let operationsByRepo = [];
         let repoTransHistories = [];
-        const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_ID].index;
-        const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_ID].index;
+        const repositoryIdIndex = dbEntity.columnMap[airEntity.REPOSITORY_LID].index;
+        const actorIdIndex = dbEntity.columnMap[airEntity.ACTOR_LID].index;
         const actorRecordIdIndex = dbEntity.columnMap[airEntity.ACTOR_RECORD_ID].index;
         let repositoryIdColumnNumber;
         let actorIdColumnNumber;
@@ -387,9 +387,9 @@ and cannot have NULL values.`);
                 operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.INSERT_VALUES, dbEntity, actor, rootTransaction);
                 operationsByRepo[repositoryId] = operationHistory;
             }
-            const actorRecordId = row[actorRecordIdColumnNumber];
+            const _actorRecordId = row[actorRecordIdColumnNumber];
             const actorId = row[actorIdColumnNumber];
-            const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId);
+            const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, _actorRecordId);
             for (const columnNumber in jsonInsertValues.C) {
                 if (columnNumber === repositoryIdColumnNumber
                     || columnNumber === actorIdColumnNumber

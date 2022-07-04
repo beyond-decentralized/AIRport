@@ -13,7 +13,7 @@ let InternalRecordManager = class InternalRecordManager {
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             await this.updateDomain(application, context);
             let actorMapForDomain = this.terminalStore
-                .getApplicationActorMapByDomainAndApplicationNames().get(application.domain);
+                .getApplicationActorMapByDomainAndApplication_Names().get(application.domain);
             let actors;
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name);
@@ -21,12 +21,12 @@ let InternalRecordManager = class InternalRecordManager {
                     return;
                 }
             }
-            actors = await this.actorDao.findByDomainAndApplicationNames(application.domain, application.name);
+            actors = await this.actorDao.findByDomainAndApplication_Names(application.domain, application.name);
             let anApplication = await this.applicationDao.findByIndex(application.lastIds.applications + 1);
             if (!actors || !actors.length) {
                 const frameworkActor = this.terminalStore.getFrameworkActor();
                 const actor = {
-                    id: null,
+                    _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
@@ -89,7 +89,7 @@ let InternalRecordManager = class InternalRecordManager {
             }
             else {
                 updatedDomain = {
-                    id: null,
+                    _localId: null,
                     name: application.domain,
                 };
                 await this.domainDao.save(updatedDomain, context);

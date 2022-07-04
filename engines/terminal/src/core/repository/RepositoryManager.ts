@@ -91,7 +91,7 @@ already contains a new repository.`)
 		const repository: IRepository = {
 			ageSuitability: 0,
 			createdAt: new Date(),
-			id: null,
+			_localId: null,
 			immutable: false,
 			owner: actor.user,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,

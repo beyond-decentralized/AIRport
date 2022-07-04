@@ -24,7 +24,7 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId
 } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { IUser, TmTerminal_Id, User_LocalId } from "@airport/travel-document-checkpoint";
+import { IUser, Terminal_LocalId, User_LocalId } from "@airport/travel-document-checkpoint";
 
 export interface ISyncOutDataSerializer {
 
@@ -37,7 +37,7 @@ export interface ISyncOutDataSerializer {
 }
 
 export interface IWithId {
-	id: number
+	_localId: number
 }
 export interface IWithRecordHistory
 	extends IWithId {
@@ -174,8 +174,8 @@ export class SyncOutDataSerializer
 			message.actors[actorInMessageIndex] = {
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
-				terminal: terminalInMessageIndexesById.get(actor.terminal.id) as any,
-				user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id) as any,
+				terminal: terminalInMessageIndexesById.get(actor.terminal._localId) as any,
+				user: inMessageUserLookup.inMessageIndexesById.get(actor.user._localId) as any,
 				GUID: actor.GUID
 			}
 		}
@@ -187,20 +187,20 @@ export class SyncOutDataSerializer
 		actors: IActor[],
 		message: RepositorySynchronizationMessage,
 		inMessageUserLookup: InMessageUserLookup
-	): Map<TmTerminal_Id, number> {
+	): Map<Terminal_LocalId, number> {
 		let lastInMessageTerminalIndex = -1
-		const terminalInMessageIndexesById: Map<TmTerminal_Id, number> = new Map()
+		const terminalInMessageIndexesById: Map<Terminal_LocalId, number> = new Map()
 		for (const actor of actors) {
 			let terminal = actor.terminal
-			if (terminalInMessageIndexesById.has(terminal.id)) {
+			if (terminalInMessageIndexesById.has(terminal._localId)) {
 				continue
 			}
 			const terminalInMessageIndex = ++lastInMessageTerminalIndex
-			terminalInMessageIndexesById.set(terminal.id, terminalInMessageIndex)
+			terminalInMessageIndexesById.set(terminal._localId, terminalInMessageIndex)
 			message.terminals[terminalInMessageIndex] = {
 				...WITH_ID,
 				GUID: terminal.GUID,
-				owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id) as any
+				owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner._localId) as any
 			}
 		}
 
@@ -238,11 +238,11 @@ export class SyncOutDataSerializer
 		user: IUser,
 		inMessageUserLookup: InMessageUserLookup
 	): number {
-		if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
-			return inMessageUserLookup.inMessageIndexesById.get(user.id)
+		if (inMessageUserLookup.inMessageIndexesById.has(user._localId)) {
+			return inMessageUserLookup.inMessageIndexesById.get(user._localId)
 		}
 		let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex
-		inMessageUserLookup.inMessageIndexesById.set(user.id, userInMessageIndex)
+		inMessageUserLookup.inMessageIndexesById.set(user._localId, userInMessageIndex)
 
 		return userInMessageIndex
 	}
@@ -257,7 +257,7 @@ export class SyncOutDataSerializer
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
 			repositoryIdsToFindBy.push(repositoryId)
 		}
-		repositoryIdsToFindBy.push(repositoryTransactionHistory.id)
+		repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
 		const repositories = await this.repositoryDao.findByIds(repositoryIdsToFindBy)
 
 		for (const repository of repositories) {
@@ -399,16 +399,16 @@ export class SyncOutDataSerializer
 		// if (typeof applicationVersion !== 'object') {
 		// 	throw new Error(`OperationHistory.entity.applicationVersion must be populated`)
 		// }
-		// if (typeof applicationVersion.id !== 'number') {
-		// 	throw new Error(`OperationHistory.entity.applicationVersion.id must be present`)
+		// if (typeof applicationVersion._localId !== 'number') {
+		// 	throw new Error(`OperationHistory.entity.applicationVersion._localId must be present`)
 		// }
 
 		let applicationVersionInMessageIndex
-		if (lookups.applicationVersionInMessageIndexesById.has(applicationVersion.id)) {
-			applicationVersionInMessageIndex = lookups.applicationVersionInMessageIndexesById.get(applicationVersion.id)
+		if (lookups.applicationVersionInMessageIndexesById.has(applicationVersion._localId)) {
+			applicationVersionInMessageIndex = lookups.applicationVersionInMessageIndexesById.get(applicationVersion._localId)
 		} else {
 			applicationVersionInMessageIndex = ++lookups.lastInMessageApplicationVersionIndex
-			lookups.applicationVersionInMessageIndexesById.set(applicationVersion.id, applicationVersionInMessageIndex)
+			lookups.applicationVersionInMessageIndexesById.set(applicationVersion._localId, applicationVersionInMessageIndex)
 		}
 		lookups.applicationVersions[applicationVersionInMessageIndex] = applicationVersion
 
@@ -452,7 +452,7 @@ export class SyncOutDataSerializer
 		// 	throw new Error(`RecordHistory.actor must be populated`)
 		// }
 		const baseObject: {
-			id: number,
+			_localId: number,
 			actor?: IActor,
 			newValues?: IRecordHistoryNewValue[],
 			oldValues?: IRecordHistoryOldValue[]
@@ -554,7 +554,7 @@ export class SyncOutDataSerializer
 		value: number,
 		lookups: InMessageLookupStructures
 	) {
-		if (value === lookups.messageRepository.id) {
+		if (value === lookups.messageRepository._localId) {
 			return -1
 		}
 

@@ -308,7 +308,7 @@ export abstract class SQLWhereBase
 		dbColumn: DbColumn,
 	): void {
 		const dbEntity = dbColumn.propertyColumns[0].property.entity
-		this.addField(dbEntity.applicationVersion.id, dbEntity.index, dbColumn.index)
+		this.addField(dbEntity.applicationVersion._localId, dbEntity.index, dbColumn.index)
 	}
 
 	protected addField(

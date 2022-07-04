@@ -1,1 +1,1 @@
-{"version":3,"file":"SchemaCollector.js","sourceRoot":"","sources":["../../../src/impl/schema/SchemaCollector.ts"],"names":[],"mappings":"AAKA,MAAM,OAAO,eAAe;IAG3B,KAAK,CAAC,OAAO;QACZ,OAAO,EAAE,CAAC;IACX,CAAC;CACD"}
+{"version":3,"file":"SchemaCollector.js","sourceRoot":"","sources":["../../../src/impl/schema/SchemaCollector.ts"],"names":[],"mappings":"AAKA,MAAM,OAAO,oBAAoB;IAGhC,KAAK,CAAC,OAAO;QACZ,OAAO,EAAE,CAAC;IACX,CAAC;CACD"}

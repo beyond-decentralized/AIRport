@@ -11,47 +11,47 @@ import { Q } from '@airport/holding-pattern';
  */
 let IdGenerator = class IdGenerator {
     constructor() {
-        this.transactionHistoryIdColumns = [];
+        this.transactionHistory_LocalIdColumns = [];
     }
     async init() {
-        this.populateTransactionHistoryIdColumns().then();
+        this.populateTransactionHistory_LocalIdColumns().then();
     }
-    populateTransactionHistoryIdColumns() {
+    populateTransactionHistory_LocalIdColumns() {
         return new Promise((resolve, _reject) => {
-            this.doPopulateTransactionHistoryIdColumns(resolve);
+            this.doPopulateTransactionHistory_LocalIdColumns(resolve);
         });
     }
-    doPopulateTransactionHistoryIdColumns(resolve) {
+    doPopulateTransactionHistory_LocalIdColumns(resolve) {
         if (Q.__dbApplication__ && Q.__dbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
             const recordHistoryDbEntity = this.getHoldingPatternDbEntity('RecordHistory');
-            this.transactionHistoryIdColumns.push(transactionHistoryDbEntity.idColumns[0]);
-            this.transactionHistoryIdColumns.push(repoTransHistoryDbEntity.idColumns[0]);
-            this.transactionHistoryIdColumns.push(operationHistoryDbEntity.idColumns[0]);
-            this.transactionHistoryIdColumns.push(recordHistoryDbEntity.idColumns[0]);
+            this.transactionHistory_LocalIdColumns.push(transactionHistoryDbEntity.idColumns[0]);
+            this.transactionHistory_LocalIdColumns.push(repoTransHistoryDbEntity.idColumns[0]);
+            this.transactionHistory_LocalIdColumns.push(operationHistoryDbEntity.idColumns[0]);
+            this.transactionHistory_LocalIdColumns.push(recordHistoryDbEntity.idColumns[0]);
             resolve();
         }
         else {
             setTimeout(() => {
-                this.doPopulateTransactionHistoryIdColumns(resolve);
+                this.doPopulateTransactionHistory_LocalIdColumns(resolve);
             }, 100);
         }
     }
-    async generateTransactionHistoryIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
+    async generateTransactionHistory_LocalIds(numRepositoryTransHistories, numOperationTransHistories, numRecordHistories) {
         let generatedSequenceNumbers = await this.sequenceGenerator
-            .generateSequenceNumbers(this.transactionHistoryIdColumns, [
+            .generateSequenceNumbers(this.transactionHistory_LocalIdColumns, [
             1,
             numRepositoryTransHistories,
             numOperationTransHistories,
             numRecordHistories
         ]);
         return {
-            operationHistoryIds: generatedSequenceNumbers[2],
-            recordHistoryIds: generatedSequenceNumbers[3],
-            repositoryHistoryIds: generatedSequenceNumbers[1],
-            transactionHistoryId: generatedSequenceNumbers[0][0]
+            operationHistory_LocalIds: generatedSequenceNumbers[2],
+            recordHistory_LocalIds: generatedSequenceNumbers[3],
+            repositoryHistory_LocalIds: generatedSequenceNumbers[1],
+            transactionHistory_LocalId: generatedSequenceNumbers[0][0]
         };
     }
     async generateEntityIds() {

@@ -55,16 +55,16 @@ let AirportDatabase = class AirportDatabase {
         // Just calling this method, loads the AirpotDatabase object
     }
     setQApplication(qApplication) {
-        const fullApplicationName = this.dbApplicationUtils
-            .getFullApplicationName(qApplication);
-        const existingQApplication = this.QM[fullApplicationName];
+        const fullApplication_Name = this.dbApplicationUtils
+            .getFullApplication_Name(qApplication);
+        const existingQApplication = this.QM[fullApplication_Name];
         if (existingQApplication) {
             const dbApplication = existingQApplication.__dbApplication__;
             qApplication.__dbApplication__ = dbApplication;
             setQApplicationEntities(dbApplication, qApplication, this.qApplications, this.appliationUtils, this.relationManager);
             this.Q[dbApplication.index] = qApplication;
         }
-        this.QM[fullApplicationName] = qApplication;
+        this.QM[fullApplication_Name] = qApplication;
     }
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);

@@ -11,7 +11,7 @@ let IFrameApplicationInitializer = class IFrameApplicationInitializer extends Ap
         super(...arguments);
         this.applicationWindowMap = new Map();
     }
-    async nativeInitializeApplication(domain, application, fullApplicationName) {
+    async nativeInitializeApplication(domain, application, fullApplication_Name) {
         throw new Error(`Application Initialization should be done directly from main AIRport window,
             not from Application child frames`);
     }

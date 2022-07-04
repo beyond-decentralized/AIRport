@@ -45,7 +45,7 @@ let TransactionalServer = class TransactionalServer {
             const repository = await this.repositoryManager.createRepository(
             // url, platform, platformConfig, distributionStrategy
             actor, context);
-            repositoryId = repository.id;
+            repositoryId = repository._localId;
         }, context);
         return repositoryId;
     }
@@ -149,16 +149,16 @@ let TransactionalServer = class TransactionalServer {
         }, context);
         return numInsertedRecords;
     }
-    async insertValuesGetIds(portableQuery, credentials, context) {
+    async insertValuesGetLocalIds(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         const actor = await this.getActor(credentials);
-        let ids;
+        let _localIds;
         await this.transactionManager.transactInternal(async (transaction, context) => {
-            ids = await this.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
+            _localIds = await this.insertManager.insertValuesGetLocalIds(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
-        return ids;
+        return _localIds;
     }
     async updateValues(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
@@ -191,7 +191,7 @@ let TransactionalServer = class TransactionalServer {
         }
         let actors;
         const actorMapForDomain = this.terminalStore
-            .getApplicationActorMapByDomainAndApplicationNames().get(credentials.domain);
+            .getApplicationActorMapByDomainAndApplication_Names().get(credentials.domain);
         if (actorMapForDomain) {
             actors = actorMapForDomain.get(credentials.application);
         }

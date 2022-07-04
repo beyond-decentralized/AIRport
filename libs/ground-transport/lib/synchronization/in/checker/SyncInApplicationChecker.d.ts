@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { ApplicationName } from '@airport/ground-control';
+import { Application_Name } from '@airport/ground-control';
 import { IDomain, IApplication, IDomainDao, IApplicationDao } from "@airport/airspace";
 import { IContext } from '@airport/direction-indicator';
 export interface IDomainCheckRecord {
@@ -9,7 +9,7 @@ export interface IDomainCheckRecord {
 }
 export interface IApplicationCheckRecord {
     found?: boolean;
-    applicationName: ApplicationName;
+    applicationName: Application_Name;
     application?: IApplication;
 }
 export interface ISyncInApplicationChecker {

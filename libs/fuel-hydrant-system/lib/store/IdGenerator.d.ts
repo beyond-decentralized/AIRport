@@ -1,18 +1,18 @@
 import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
-import { OperationHistory_Id, RecordHistoryId, RepositoryTransactionHistory_Id, TransactionHistoryId } from '@airport/holding-pattern';
+import { OperationHistory_LocalId, RecordHistory_LocalId, RepositoryTransactionHistory_LocalId, TransactionHistory_LocalId } from '@airport/holding-pattern';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;
 export declare type NumRecordHistories = number;
-export interface TransactionHistoryIds {
-    operationHistoryIds: OperationHistory_Id[];
-    recordHistoryIds: RecordHistoryId[];
-    repositoryHistoryIds: RepositoryTransactionHistory_Id[];
-    transactionHistoryId: TransactionHistoryId;
+export interface TransactionHistory_LocalIds {
+    operationHistory_LocalIds: OperationHistory_LocalId[];
+    recordHistory_LocalIds: RecordHistory_LocalId[];
+    repositoryHistory_LocalIds: RepositoryTransactionHistory_LocalId[];
+    transactionHistory_LocalId: TransactionHistory_LocalId;
 }
 export interface IIdGenerator {
     init(): Promise<void>;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
+    generateTransactionHistory_LocalIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistory_LocalIds>;
 }
 export interface IIdGeneratorContext extends IContext {
     di: {
@@ -25,11 +25,11 @@ export interface IIdGeneratorContext extends IContext {
  */
 export declare class IdGenerator implements IIdGenerator {
     sequenceGenerator: ISequenceGenerator;
-    private transactionHistoryIdColumns;
+    private transactionHistory_LocalIdColumns;
     init(): Promise<void>;
-    populateTransactionHistoryIdColumns(): Promise<void>;
-    doPopulateTransactionHistoryIdColumns(resolve: any): void;
-    generateTransactionHistoryIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistoryIds>;
+    populateTransactionHistory_LocalIdColumns(): Promise<void>;
+    doPopulateTransactionHistory_LocalIdColumns(resolve: any): void;
+    generateTransactionHistory_LocalIds(numRepositoryTransHistories: NumRepositoryTransHistories, numOperationTransHistories: NumOperationTransHistories, numRecordHistories: NumRecordHistories): Promise<TransactionHistory_LocalIds>;
     generateEntityIds(): Promise<void>;
     private getHoldingPatternDbEntity;
 }

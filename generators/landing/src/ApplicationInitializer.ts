@@ -79,7 +79,7 @@ export abstract class ApplicationInitializer
 		ddlObjects: AllDdlObjects
 	) {
 		for (const applicationVersion of ddlObjects.added.applicationVersions) {
-			ddlObjects.allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+			ddlObjects.allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
 		}
 	}
 

@@ -14,7 +14,7 @@ import {
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRepositoryTransactionHistory,
-	RecordHistoryId,
+	RecordHistory_LocalId,
 	AirEntity_ActorRecordId,
 	Repository_LocalId
 } from '@airport/holding-pattern'
@@ -60,18 +60,18 @@ export interface ISyncRecordHistory
 export interface ISyncNewValue
 	extends IRecordHistoryNewValue {
 	// isLocal?: boolean;
-	// recordHistoryId?: RecordHistoryId;
+	// RecordHistory_LocalId?: RecordHistory_LocalId;
 }
 
 export interface RecordUpdate {
 	newValue: any;
-	recordHistoryId: RecordHistoryId;
+	recordHistoryLocalId: RecordHistory_LocalId;
 }
 
 export interface ISyncInUtils {
 
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
-		repositoryId: Repository_LocalId,
+		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
 		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
@@ -97,7 +97,7 @@ export class SyncInUtils
 	implements ISyncInUtils {
 
 	ensureRecordMapForRepoInTable<CI extends number | string, V>(
-		repositoryId: Repository_LocalId,
+		repositoryLocalId: Repository_LocalId,
 		operationHistory: IOperationHistory,
 		recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId,
 			Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>
@@ -105,8 +105,8 @@ export class SyncInUtils
 		return <any>ensureChildJsMap(
 			ensureChildJsMap(
 				ensureChildJsMap(
-					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id),
-				operationHistory.entity.index), repositoryId)
+					recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId),
+				operationHistory.entity.index), repositoryLocalId)
 	}
 
 }

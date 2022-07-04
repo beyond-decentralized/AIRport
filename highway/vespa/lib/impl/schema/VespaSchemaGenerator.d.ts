@@ -1,9 +1,9 @@
-import { IVespaSchemaStore } from './VespaSchemaStore';
-export interface IVespaSchemaGenerator {
-    generate(store: IVespaSchemaStore): Promise<void>;
+import { IVespaApplicationStore } from './VespaApplicationStore';
+export interface IVespaApplicationGenerator {
+    generate(store: IVespaApplicationStore): Promise<void>;
 }
-export declare class VespaSchemaGenerator implements IVespaSchemaGenerator {
-    generate(store: IVespaSchemaStore): Promise<void>;
+export declare class VespaApplicationGenerator implements IVespaApplicationGenerator {
+    generate(store: IVespaApplicationStore): Promise<void>;
     private generateDeploymentXml;
     private generateHostsXml;
     private generateServicesXml;

@@ -94,7 +94,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                 ri: null,
                 rt: JSONRelationType.ENTITY_ROOT,
                 rep: 'r_',
-                si: this.dbEntity.applicationVersion.id
+                si: this.dbEntity.applicationVersion._localId
             };
             joinRelations.push(onlyJsonRelation);
         }
@@ -263,7 +263,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
         return this.queryParser.flushEntity(entityAlias, dbEntity, selectClauseFragment, idValue, resultObject, context);
     }
     /**
-     * Verify that the entity select clause is valid (has ids) and fill in clauses
+     * Verify that the entity select clause is valid (has _localIds) and fill in clauses
      * that are blank (defined as {}).
      *
      *
@@ -327,7 +327,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`;
                 continue;
             }
             // Need to differentiate between properties that contain only
-            // foreign key ids and properties
+            // foreign key _localIds and properties
             if (dbProperty.relation && dbProperty.relation.length) {
                 selectFragment[propertyName] = this.setupSelectFields(value, dbProperty.relation[0].relationEntity, context, dbProperty);
                 // } else {

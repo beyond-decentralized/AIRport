@@ -51,7 +51,7 @@ export class SQLQuery extends SQLWhereBase {
                     relationColumns = dbRelation.oneRelationColumns;
                 }
                 else {
-                    const matchingRelations = dbRelation.relationEntity.relations.filter(manySideRelation => manySideRelation.relationEntity.id == leftDbEntity.id
+                    const matchingRelations = dbRelation.relationEntity.relations.filter(manySideRelation => manySideRelation.relationEntity._localId == leftDbEntity._localId
                         && manySideRelation.manyToOneElems
                         && manySideRelation.manyToOneElems !== true
                         && manySideRelation.manyToOneElems.mappedBy === dbRelation.property.name);

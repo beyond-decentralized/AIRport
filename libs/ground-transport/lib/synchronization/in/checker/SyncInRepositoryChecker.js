@@ -41,7 +41,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                 }
             }
             const missingRepositories = message.referencedRepositories
-                .filter(messageRepository => !messageRepository.id);
+                .filter(messageRepository => !messageRepository._localId);
             if (typeof history.repository !== 'object') {
                 throw new Error(`Repository with UuId ${history.repository} is not
 					present and cannot be synced
@@ -49,7 +49,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
 	repository must already be loaded in this database for this message to be
 	processed.`);
             }
-            else if (!history.repository.id) {
+            else if (!history.repository._localId) {
                 missingRepositories.push(history.repository);
             }
             if (missingRepositories.length) {
@@ -93,7 +93,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             messageRepositoryIndexMap.set(repository.GUID, repositoryIndex);
         }
         // Make sure id field is not in the input
-        delete repository.id;
+        delete repository._localId;
     }
 };
 __decorate([

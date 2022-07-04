@@ -5,7 +5,7 @@ export declare enum EntityState {
     CREATE = "CREATE",
     DATE = "DATE",
     DELETE = "DELETE",
-    PARENT_SCHEMA_ID = "PARENT_SCHEMA_ID",
+    PARENT_SCHEMA_ID = "PARENT_SCHEMA_LID",
     STUB = "STUB",
     UPDATE = "UPDATE"
 }

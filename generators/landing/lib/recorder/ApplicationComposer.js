@@ -87,12 +87,12 @@ let ApplicationComposer = class ApplicationComposer {
                 };
                 application.index = ++this.terminalStore.getLastIds().applications;
             }
-            if (!domain.id) {
-                domain.id = ++this.terminalStore.getLastIds().domains;
+            if (!domain._localId) {
+                domain._localId = ++this.terminalStore.getLastIds().domains;
             }
             const applicationVersion = newApplicationVersionMapByApplication_Name.get(application.fullName);
-            if (!applicationVersion.id) {
-                applicationVersion.id = ++this.terminalStore.getLastIds().applicationVersions;
+            if (!applicationVersion._localId) {
+                applicationVersion._localId = ++this.terminalStore.getLastIds().applicationVersions;
                 applicationVersion.jsonApplication = jsonApplication;
             }
             this.composeApplicationEntities(jsonApplication, applicationVersion, newEntitiesMapByApplication_Name, added.entities);
@@ -103,7 +103,7 @@ let ApplicationComposer = class ApplicationComposer {
         }
         this.addObjects(allDdlObjects.added, allDdlObjects.all);
         for (const applicationVersion of allDdlObjects.all.applicationVersions) {
-            allDdlObjects.allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+            allDdlObjects.allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
         }
         return allDdlObjects;
     }
@@ -207,7 +207,7 @@ let ApplicationComposer = class ApplicationComposer {
         let domain = await this.domainRetriever.retrieveDomain(domainName, domainMapByName, allDomains, newDomains);
         if (!domain) {
             domain = {
-                id: null,
+                _localId: null,
                 name: domainName,
                 applications: []
             };
@@ -243,7 +243,7 @@ let ApplicationComposer = class ApplicationComposer {
         for (const applicationVersion of jsonApplication.versions) {
             const versionParts = applicationVersion.versionString.split('.');
             newApplicationVersion = {
-                id: null,
+                _localId: null,
                 integerVersion: applicationVersion.integerVersion,
                 versionString: applicationVersion.versionString,
                 majorVersion: parseInt(versionParts[0]),
@@ -331,7 +331,7 @@ let ApplicationComposer = class ApplicationComposer {
         const newApplicationEntities = [];
         for (const jsonEntity of jsonEntities) {
             const entity = {
-                id: ++this.terminalStore.getLastIds().entities,
+                _localId: ++this.terminalStore.getLastIds().entities,
                 index: index++,
                 applicationVersion,
                 isLocal: jsonEntity.isLocal,
@@ -368,7 +368,7 @@ let ApplicationComposer = class ApplicationComposer {
             let index = 0;
             for (const jsonProperty of jsonEntity.properties) {
                 const property = {
-                    id: ++this.terminalStore.getLastIds().properties,
+                    _localId: ++this.terminalStore.getLastIds().properties,
                     index,
                     entity,
                     name: jsonProperty.name,
@@ -414,7 +414,7 @@ let ApplicationComposer = class ApplicationComposer {
                 const relationEntity = entitiesArray[jsonRelation.relationTableIndex];
                 const relation = {
                     entity,
-                    id: ++terminalStore.getLastIds().relations,
+                    _localId: ++terminalStore.getLastIds().relations,
                     index,
                     foreignKey: jsonRelation.foreignKey,
                     isId: property.isId,
@@ -458,7 +458,7 @@ let ApplicationComposer = class ApplicationComposer {
                 const column = {
                     allocationSize: jsonColumn.allocationSize,
                     entity,
-                    id: ++this.terminalStore.getLastIds().columns,
+                    _localId: ++this.terminalStore.getLastIds().columns,
                     idIndex: idColumndIndex,
                     index,
                     isGenerated: jsonColumn.isGenerated,
@@ -540,7 +540,7 @@ let ApplicationComposer = class ApplicationComposer {
                     // 	oneRelation.oneRelationColumns = []
                     // }
                     const relationColumn = {
-                        id: ++terminalStore.getLastIds().relationColumns,
+                        _localId: ++terminalStore.getLastIds().relationColumns,
                         manyColumn,
                         manyRelation,
                         oneColumn,

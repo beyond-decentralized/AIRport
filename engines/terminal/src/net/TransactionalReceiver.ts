@@ -227,7 +227,7 @@ export abstract class TransactionalReceiver {
                     theErrorMessage = `DbEntity id was not passed in`
                     break
                 }
-                const dbEntityId = saveMessage.dbEntity.id
+                const dbEntityId = saveMessage.dbEntity._localId
                 const dbEntity = this.terminalStore.getAllEntities()[dbEntityId]
                 if (!dbEntity) {
                     theErrorMessage = `Could not find DbEntity with Id ${dbEntityId}`

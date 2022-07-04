@@ -22,8 +22,8 @@ export var ApplicationComparisonResult;
     ApplicationComparisonResult[ApplicationComparisonResult["MESSAGE_APPLICATION_VERSION_IS_HIGHER"] = 1] = "MESSAGE_APPLICATION_VERSION_IS_HIGHER";
 })(ApplicationComparisonResult || (ApplicationComparisonResult = {}));
 let SyncInUtils = class SyncInUtils {
-    ensureRecordMapForRepoInTable(repositoryId, operationHistory, recordMapByApplicationTableAndRepository) {
-        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion.id), operationHistory.entity.index), repositoryId);
+    ensureRecordMapForRepoInTable(repositoryLocalId, operationHistory, recordMapByApplicationTableAndRepository) {
+        return ensureChildJsMap(ensureChildJsMap(ensureChildJsMap(recordMapByApplicationTableAndRepository, operationHistory.entity.applicationVersion._localId), operationHistory.entity.index), repositoryLocalId);
     }
 };
 SyncInUtils = __decorate([

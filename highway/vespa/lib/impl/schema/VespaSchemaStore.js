@@ -1,4 +1,4 @@
-export class VespaSchemaStore {
+export class VespaApplicationStore {
     constructor() {
         this.documentMap = {};
     }

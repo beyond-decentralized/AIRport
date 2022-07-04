@@ -57,7 +57,7 @@ export class SyncInTerminalChecker
 				terminalGUIDs.push(terminal.GUID)
 				messageTerminalIndexMap.set(terminal.GUID, i)
 				// Make sure id field is not in the input
-				delete terminal.id
+				delete terminal._localId
 			}
 
 			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs)
@@ -67,7 +67,7 @@ export class SyncInTerminalChecker
 			}
 
 			const missingTerminals = message.terminals
-				.filter(messageTerminal => !messageTerminal.id)
+				.filter(messageTerminal => !messageTerminal._localId)
 
 			if (missingTerminals.length) {
 				await this.addMissingTerminals(missingTerminals, context)

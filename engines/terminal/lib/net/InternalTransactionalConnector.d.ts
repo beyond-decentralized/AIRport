@@ -17,7 +17,7 @@ export declare class InternalTransactionalConnector implements ITransactionalCon
     save<E extends IAirEntity, T = E | E[]>(entity: T, context: IEntityContext): Promise<ISaveResult>;
     saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
+    insertValuesGetLocalIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
     onMessage(callback: (message: any) => void): void;

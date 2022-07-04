@@ -1,12 +1,12 @@
-import { store } from './schema/store';
-import { VespaSchemaGenerator } from './schema/VespaSchemaGenerator';
-import { VespaSchemaProcessor } from './schema/VespaSchemaProcessor';
+import { store } from './application/store';
+import { VespaApplicationGenerator } from './application/VespaApplicationGenerator';
+import { VespaApplicationProcessor } from './application/VespaApplicationProcessor';
 export class VespaProcessor {
     async process() {
-        const schemaProcessor = new VespaSchemaProcessor();
-        const schemaGenerator = new VespaSchemaGenerator();
-        await schemaProcessor.process(store);
-        await schemaGenerator.generate(store);
+        const applicationProcessor = new VespaApplicationProcessor();
+        const applicationGenerator = new VespaApplicationGenerator();
+        await applicationProcessor.process(store);
+        await applicationGenerator.generate(store);
     }
 }
 //# sourceMappingURL=VespaProcessor.js.map

@@ -91,7 +91,7 @@ export class EntityGraphResultParser extends AbstractObjectResultParser {
                     throw new Error(`Unknown EntityRelationType: ${dbRelation.relationType}`);
             }
             if (dbRelation.oneToManyElems && dbRelation.oneToManyElems.mappedBy) {
-                if (dbEntity.id === dbRelation.relationEntity.id
+                if (dbEntity._localId === dbRelation.relationEntity._localId
                     || dbRelation.oneToManyElems.mappedBy === propertyName) {
                     otmEntityField = dbRelation.property.name;
                 }

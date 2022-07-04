@@ -7,15 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { ApplicationLocator } from '@airport/landing';
 import { Inject, Injected } from '@airport/direction-indicator';
 let IFrameApplicationLocator = class IFrameApplicationLocator extends ApplicationLocator {
-    async locateLatestApplicationVersionByApplicationName(fullApplicationName, terminalStore) {
+    async locateLatestApplicationVersionByApplication_Name(fullApplication_Name, terminalStore) {
         let applicationVersion = terminalStore
-            .getLatestApplicationVersionMapByFullApplicationName()
-            .get(fullApplicationName);
+            .getLatestApplicationVersionMapByFullApplication_Name()
+            .get(fullApplication_Name);
         if (applicationVersion) {
             return applicationVersion;
         }
         return await this.transactionalConnector
-            .getLatestApplicationVersionMapByFullApplicationName(fullApplicationName);
+            .getLatestApplicationVersionMapByFullApplication_Name(fullApplication_Name);
     }
 };
 __decorate([

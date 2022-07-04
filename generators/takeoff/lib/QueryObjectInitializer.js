@@ -48,7 +48,7 @@ let QueryObjectInitializer = class QueryObjectInitializer {
         const ddlObjects = await this.ddlObjectRetriever.retrieveDdlObjects();
         const allApplicationVersionsByIds = [];
         for (const applicationVersion of ddlObjects.applicationVersions) {
-            allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+            allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
         }
         let allDdlObjects = {
             all: ddlObjects,

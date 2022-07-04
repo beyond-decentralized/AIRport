@@ -12,7 +12,7 @@ let DdlObjectRetriever = class DdlObjectRetriever {
         const domainIdSet = new Set();
         applications.forEach(application => {
             applicationIndexes.push(application.index);
-            domainIdSet.add(application.domain.id);
+            domainIdSet.add(application.domain._localId);
         });
         applications.sort((application1, application2) => {
             return application1.index - application2.index;
@@ -28,33 +28,33 @@ let DdlObjectRetriever = class DdlObjectRetriever {
             if (applicationVersion.application.index !== lastApplication_Index) {
                 latestApplicationVersions.push(applicationVersion);
             }
-            // allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
+            // allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
             lastApplication_Index = applicationVersion.application.index;
             applicationVersions.push(applicationVersion);
         }
-        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion.id);
+        const latestApplicationVersion_LocalIds = latestApplicationVersions.map(applicationVersion => applicationVersion._localId);
         const applicationReferences = await this.applicationReferenceDao
             .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
         const entities = await this.applicationEntityDao
             .findAllForApplicationVersions(latestApplicationVersion_LocalIds);
-        const entityIds = entities.map(entity => entity.id);
+        const entityIds = entities.map(entity => entity._localId);
         /*
         const entityIds = entities.map(
     entity => {
         if (entity.tableConfig) {
             entity.tableConfig = JSON.parse(entity.tableConfig as any)
         }
-        return entity.id
+        return entity._localId
     })
          */
         const properties = await this.applicationPropertyDao
             .findAllForEntities(entityIds);
-        const propertyIds = properties.map(property => property.id);
+        const propertyIds = properties.map(property => property._localId);
         const relations = await this.applicationRelationDao
             .findAllForProperties(propertyIds);
         const columns = await this.applicationColumnDao
             .findAllForEntities(entityIds);
-        const columnIds = columns.map(column => column.id);
+        const columnIds = columns.map(column => column._localId);
         const propertyColumns = await this.applicationPropertyColumnDao
             .findAllForColumns(columnIds);
         const relationColumns = await this.applicationRelationColumnDao

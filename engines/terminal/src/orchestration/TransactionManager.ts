@@ -437,14 +437,14 @@ ${callHerarchy}
 		}
 		let applicationMap = transactionHistory.applicationMap;
 
-		const transactionHistoryIds = await this.idGenerator.generateTransactionHistoryIds(
+		const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(
 			transactionHistory.repositoryTransactionHistories.length,
 			transactionHistory.allOperationHistory.length,
 			transactionHistory.allRecordHistory.length
 		);
 
 		applicationMap.ensureEntity((<IQEntityInternal><any>Q.TransactionHistory).__driver__.dbEntity, true);
-		transactionHistory.id = transactionHistoryIds.transactionHistoryId;
+		transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
 		await this.doInsertValues(transaction, Q.TransactionHistory,
 			[transactionHistory], context);
 
@@ -453,7 +453,7 @@ ${callHerarchy}
 			repositoryTransactionHistory,
 			index,
 		) => {
-			repositoryTransactionHistory.id = transactionHistoryIds.repositoryHistoryIds[index];
+			repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
 			repositoryTransactionHistory.transactionHistory = transactionHistory
 		});
 		await this.doInsertValues(transaction, Q.RepositoryTransactionHistory,
@@ -464,7 +464,7 @@ ${callHerarchy}
 			operationHistory,
 			index,
 		) => {
-			operationHistory.id = transactionHistoryIds.operationHistoryIds[index];
+			operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
 		});
 		await this.doInsertValues(transaction, Q.OperationHistory,
 			transactionHistory.allOperationHistory, context);
@@ -474,7 +474,7 @@ ${callHerarchy}
 			recordHistory,
 			index,
 		) => {
-			recordHistory.id = transactionHistoryIds.recordHistoryIds[index];
+			recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
 		});
 		await this.doInsertValues(transaction,
 			(<IQEntityInternal><any>Q.RecordHistory),

@@ -1,4 +1,4 @@
-import { store } from './schema/store';
+import { store } from './application/store';
 export const Document = function () {
     return function (constructor) {
         const vespaDocument = ensureDocument(constructor.name, store);

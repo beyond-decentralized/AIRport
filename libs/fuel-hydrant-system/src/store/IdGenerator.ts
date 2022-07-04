@@ -11,23 +11,23 @@ import {
 	DbEntity
 } from '@airport/ground-control'
 import {
-	OperationHistory_Id,
+	OperationHistory_LocalId,
 	Q,
-	RecordHistoryId,
-	RepositoryTransactionHistory_Id,
-	TransactionHistoryId
+	RecordHistory_LocalId,
+	RepositoryTransactionHistory_LocalId,
+	TransactionHistory_LocalId
 } from '@airport/holding-pattern'
 
 export type NumRepositoryTransHistories = number
 export type NumOperationTransHistories = number
 export type NumRecordHistories = number
 
-export interface TransactionHistoryIds {
+export interface TransactionHistory_LocalIds {
 
-	operationHistoryIds: OperationHistory_Id[]
-	recordHistoryIds: RecordHistoryId[]
-	repositoryHistoryIds: RepositoryTransactionHistory_Id[]
-	transactionHistoryId: TransactionHistoryId
+	operationHistory_LocalIds: OperationHistory_LocalId[]
+	recordHistory_LocalIds: RecordHistory_LocalId[]
+	repositoryHistory_LocalIds: RepositoryTransactionHistory_LocalId[]
+	transactionHistory_LocalId: TransactionHistory_LocalId
 
 }
 
@@ -35,11 +35,11 @@ export interface IIdGenerator {
 
 	init(): Promise<void>;
 
-	generateTransactionHistoryIds(
+	generateTransactionHistory_LocalIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
 		numRecordHistories: NumRecordHistories
-	): Promise<TransactionHistoryIds>;
+	): Promise<TransactionHistory_LocalIds>;
 
 }
 
@@ -61,19 +61,19 @@ export class IdGenerator
 	@Inject()
 	sequenceGenerator: ISequenceGenerator
 
-	private transactionHistoryIdColumns: DbColumn[] = []
+	private transactionHistory_LocalIdColumns: DbColumn[] = []
 
 	async init(): Promise<void> {
-		this.populateTransactionHistoryIdColumns().then()
+		this.populateTransactionHistory_LocalIdColumns().then()
 	}
 
-	populateTransactionHistoryIdColumns(): Promise<void> {
+	populateTransactionHistory_LocalIdColumns(): Promise<void> {
 		return new Promise((resolve, _reject) => {
-			this.doPopulateTransactionHistoryIdColumns(resolve);
+			this.doPopulateTransactionHistory_LocalIdColumns(resolve);
 		});
 	}
 
-	doPopulateTransactionHistoryIdColumns(resolve): void {
+	doPopulateTransactionHistory_LocalIdColumns(resolve): void {
 		if (Q.__dbApplication__ && Q.__dbApplication__.currentVersion) {
 			const transactionHistoryDbEntity =
 				this.getHoldingPatternDbEntity('TransactionHistory')
@@ -84,36 +84,36 @@ export class IdGenerator
 			const recordHistoryDbEntity =
 				this.getHoldingPatternDbEntity('RecordHistory')
 
-			this.transactionHistoryIdColumns.push(
+			this.transactionHistory_LocalIdColumns.push(
 				transactionHistoryDbEntity.idColumns[0]
 			)
-			this.transactionHistoryIdColumns.push(
+			this.transactionHistory_LocalIdColumns.push(
 				repoTransHistoryDbEntity.idColumns[0]
 			)
-			this.transactionHistoryIdColumns.push(
+			this.transactionHistory_LocalIdColumns.push(
 				operationHistoryDbEntity.idColumns[0]
 			)
-			this.transactionHistoryIdColumns.push(
+			this.transactionHistory_LocalIdColumns.push(
 				recordHistoryDbEntity.idColumns[0]
 			)
 
 			resolve()
 		} else {
 			setTimeout(() => {
-				this.doPopulateTransactionHistoryIdColumns(resolve)
+				this.doPopulateTransactionHistory_LocalIdColumns(resolve)
 			}, 100)
 		}
 	}
 
-	async generateTransactionHistoryIds(
+	async generateTransactionHistory_LocalIds(
 		numRepositoryTransHistories: NumRepositoryTransHistories,
 		numOperationTransHistories: NumOperationTransHistories,
 		numRecordHistories: NumRecordHistories
-	): Promise<TransactionHistoryIds> {
+	): Promise<TransactionHistory_LocalIds> {
 
 		let generatedSequenceNumbers: any = await this.sequenceGenerator
 			.generateSequenceNumbers(
-				this.transactionHistoryIdColumns,
+				this.transactionHistory_LocalIdColumns,
 				[
 					1,
 					numRepositoryTransHistories,
@@ -122,10 +122,10 @@ export class IdGenerator
 				]);
 
 		return {
-			operationHistoryIds: generatedSequenceNumbers[2],
-			recordHistoryIds: generatedSequenceNumbers[3],
-			repositoryHistoryIds: generatedSequenceNumbers[1],
-			transactionHistoryId: generatedSequenceNumbers[0][0]
+			operationHistory_LocalIds: generatedSequenceNumbers[2],
+			recordHistory_LocalIds: generatedSequenceNumbers[3],
+			repositoryHistory_LocalIds: generatedSequenceNumbers[1],
+			transactionHistory_LocalId: generatedSequenceNumbers[0][0]
 		}
 
 	}

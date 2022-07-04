@@ -2,7 +2,7 @@ import { IAirportDatabase } from '@airport/air-traffic-control';
 import { ISequenceGenerator } from '@airport/check-in';
 import { DbColumn, DbEntity, IRootTransaction, JsonInsertValues, PortableQuery } from '@airport/ground-control';
 import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
-import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, RecordId } from '@airport/terminal-map';
+import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, Record_LocalId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
     airportDatabase: IAirportDatabase;
     historyManager: IHistoryManager;
@@ -11,7 +11,7 @@ export declare class InsertManager implements IInsertManager {
     repositoryTransactionHistoryDuo: IRepositoryTransactionHistoryDuo;
     sequenceGenerator: ISequenceGenerator;
     insertValues(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<RecordId[][]>;
+    insertValuesGetLocalIds(portableQuery: PortableQuery, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<Record_LocalId[][]>;
     verifyNoGeneratedColumns(dbEntity: DbEntity, jsonInsertValues: JsonInsertValues, errorPrefix: string): DbColumn[];
     private internalInsertValues;
     private validateValueRowLength;
@@ -19,9 +19,9 @@ export declare class InsertManager implements IInsertManager {
     private ensureAirEntityUuIdValues;
     /**
      *
-     * All repository records must have ids when inserted.  Currently AP doesn't support
+     * All repository records must have _localIds when inserted.  Currently AP doesn't support
      * inserting from select and in the values provided id's must either be explicitly
-     * specified or already provided. For all repository entities all ids must be
+     * specified or already provided. For all repository entities all _localIds must be
      * auto-generated.
      *
      * @param {DbEntity} dbEntity

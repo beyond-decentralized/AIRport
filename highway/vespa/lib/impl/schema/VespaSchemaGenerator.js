@@ -1,6 +1,6 @@
 import { SQLDataType } from '@airport/ground-control';
 import * as fs from 'fs';
-export class VespaSchemaGenerator {
+export class VespaApplicationGenerator {
     async generate(store) {
         const workingDirPath = process.cwd().replace(/\\/g, '/');
         const mainDirPath = workingDirPath + '/src/main';

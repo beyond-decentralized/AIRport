@@ -135,25 +135,25 @@ export class OperationManager
 			.getOperationsInOrder(entityGraph, context)
 		const rootDbEntity = context.dbEntity
 		let saveActor: ISaveActor = {
-			id: actor._localId,
+			_localId: actor._localId,
 			GUID: actor.GUID,
 			user: actor.user ? {
-				id: actor.user.id
+				_localId: actor.user._localId
 			} : null
 		}
 		let newRepository: ISaveRepository
 		if (context.newRepository) {
 			newRepository = {
-				id: context.newRepository.id,
+				_localId: context.newRepository._localId,
 				createdAt: context.newRepository.createdAt,
 				GUID: context.newRepository.GUID,
 				ageSuitability: context.newRepository.ageSuitability,
 				source: context.newRepository.source,
 				ownerActor: {
-					id: actor._localId,
+					_localId: actor._localId,
 					GUID: actor.GUID,
 					user: actor.user ? {
-						id: actor.user.id
+						_localId: actor.user._localId
 					} : null
 				}
 			}

@@ -9,8 +9,8 @@ import { QueryType, SQLDataType } from '@airport/ground-control';
 import { SqlSchemaBuilder } from '@airport/landing';
 let MySqlSchemaBuilder = class MySqlSchemaBuilder extends SqlSchemaBuilder {
     async createApplication(jsonApplication, context) {
-        const fullApplicationName = this.dbApplicationUtils.getFullApplicationName(jsonApplication);
-        const createApplicationStatement = `CREATE SCHEMA ${fullApplicationName}`;
+        const fullApplication_Name = this.dbApplicationUtils.getFullApplication_Name(jsonApplication);
+        const createApplicationStatement = `CREATE SCHEMA ${fullApplication_Name}`;
         await this.storeDriver.query(QueryType.DDL, createApplicationStatement, [], context, false);
     }
     getColumnSuffix(jsonApplication, jsonEntity, jsonColumn) {
@@ -50,7 +50,7 @@ let MySqlSchemaBuilder = class MySqlSchemaBuilder extends SqlSchemaBuilder {
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-                .getFullApplicationName(jsonApplication)];
+                .getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -63,7 +63,7 @@ let MySqlSchemaBuilder = class MySqlSchemaBuilder extends SqlSchemaBuilder {
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[this.dbApplicationUtils
-                .getFullApplicationName(jsonApplication)];
+                .getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

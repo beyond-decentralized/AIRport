@@ -138,7 +138,7 @@ export class TwoStageSyncedInDataProcessor
 				actorMapById.set(actor._localId, actor)
 			}
 			for (const applicationVersion of message.applicationVersions) {
-				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion.id, applicationVersion.application)
+				applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application)
 			}
 		}
 

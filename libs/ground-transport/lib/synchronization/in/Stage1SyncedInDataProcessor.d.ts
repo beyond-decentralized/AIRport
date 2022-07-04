@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { ISequenceGenerator } from '@airport/check-in';
-import { Actor_Id, IActor, IRecordHistory, RecordHistoryId, AirEntity_ActorRecordId, Repository_Id, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { Actor_LocalId, IActor, IRecordHistory, RecordHistory_LocalId, AirEntity_ActorRecordId, Repository_LocalId, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { ISyncInUtils, ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to
@@ -10,7 +10,7 @@ import { ISyncInUtils, ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult
  *  2)  Generate synchronization conflict datastructure
  */
 export interface IStage1SyncedInDataProcessor {
-    performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>, context: IContext): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_LocalId, IActor>, context: IContext): Promise<Stage1SyncedInDataProcessingResult>;
 }
 export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataProcessor {
     actorDao: IActorDao;
@@ -25,13 +25,13 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
      *  1)  Unique create/update/delete statement datastructures are generated
      *  2)  Synchronization conflict datastructure is generated
      *
-     * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByRepositoryId
-     * @param {Map<Actor_Id, IActor>} actorMayById
+     * @param {Map<repositoryLocalId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByrepositoryLocalId
+     * @param {Map<Actor_LocalId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
-    performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_Id, IActor>, context: IContext): Promise<Stage1SyncedInDataProcessingResult>;
+    performStage1DataProcessing(repositoryTransactionHistoryMapByrepositoryLocalId: Map<Repository_LocalId, ISyncRepoTransHistory[]>, actorMayById: Map<Actor_LocalId, IActor>, context: IContext): Promise<Stage1SyncedInDataProcessingResult>;
     private populateSystemWideOperationIds;
-    ensureRecordHistoryId(recordHistory: IRecordHistory, actorRecordIdSetByActor: Map<Actor_Id, Map<AirEntity_ActorRecordId, RecordHistoryId>>, actorRecordId?: AirEntity_ActorRecordId): void;
+    ensureRecordHistoryLocalId(recordHistory: IRecordHistory, actorRecordLocalIdSetByActor: Map<Actor_LocalId, Map<AirEntity_ActorRecordId, RecordHistory_LocalId>>, _actorRecordId?: AirEntity_ActorRecordId): void;
     private getDeletedRecordIdsAndPopulateAllHistoryMap;
     private mergeArraysInMap;
     private processCreation;
@@ -40,7 +40,7 @@ export declare class Stage1SyncedInDataProcessor implements IStage1SyncedInDataP
     private getRecordsForRepoInTable;
     private getRecord;
     private hasRecordId;
-    private getRecordHistoryId;
+    private getRecordHistoryLocalId;
     private getRecordsForActor;
     private getRecordInfo;
     private addSyncConflict;

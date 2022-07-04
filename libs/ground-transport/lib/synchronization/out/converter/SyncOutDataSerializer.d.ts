@@ -1,8 +1,8 @@
 import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Application_Id } from "@airport/ground-control";
-import { Actor_Id, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_Id } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { User_Id } from "@airport/travel-document-checkpoint";
+import { Application_LocalId } from "@airport/ground-control";
+import { Actor_LocalId, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_LocalId } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+import { User_LocalId } from "@airport/travel-document-checkpoint";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
         historiesToSend: IRepositoryTransactionHistory[];
@@ -10,7 +10,7 @@ export interface ISyncOutDataSerializer {
     }>;
 }
 export interface IWithId {
-    id: number;
+    _localId: number;
 }
 export interface IWithRecordHistory extends IWithId {
     recordHistory: IRecordHistory;
@@ -22,21 +22,21 @@ export declare const WITH_ID: IWithId;
 export declare const WITH_RECORD_HISTORY: IWithRecordHistory;
 export declare const WITH_INDEX: IWithIndex;
 export interface InMessageLookupStructures {
-    actorInMessageIndexesById: Map<Actor_Id, number>;
-    applicationVersionInMessageIndexesById: Map<Actor_Id, number>;
+    actorInMessageIndexesById: Map<Actor_LocalId, number>;
+    applicationVersionInMessageIndexesById: Map<Actor_LocalId, number>;
     applicationVersions: IApplicationVersion[];
     lastInMessageActorIndex: number;
     lastInMessageApplicationVersionIndex: number;
     lastInMessageRepositoryIndex: number;
     messageRepository: IRepository;
-    repositoryInMessageIndexesById: Map<Repository_Id, number>;
+    repositoryInMessageIndexesById: Map<Repository_LocalId, number>;
 }
 export interface InMessageApplicationLookup {
-    inMessageIndexesById: Map<Application_Id, number>;
+    inMessageIndexesById: Map<Application_LocalId, number>;
     lastInMessageIndex: number;
 }
 export interface InMessageUserLookup {
-    inMessageIndexesById: Map<User_Id, number>;
+    inMessageIndexesById: Map<User_LocalId, number>;
     lastInMessageIndex: number;
 }
 export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {

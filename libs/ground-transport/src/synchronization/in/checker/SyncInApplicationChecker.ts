@@ -95,7 +95,7 @@ export class SyncInApplicationChecker
                 continue
             }
             let domain: IDomain = {
-                id: null,
+                _localId: null,
                 name
             }
             domainCheck.domain = domain

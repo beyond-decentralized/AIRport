@@ -24,9 +24,9 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
         return true;
     }
     async checkApplicationsAndDomains(message, context) {
-        const { allApplicationNames, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
+        const { allApplication_Names, domainCheckMap, domainNames, applicationCheckMap } = this.getNames(message);
         const applications = await this.applicationDao
-            .findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
+            .findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
         for (let application of applications) {
             let domainName = application.domain.name;
             let applicationName = application.name;
@@ -46,7 +46,7 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
                 continue;
             }
             let domain = {
-                id: null,
+                _localId: null,
                 name
             };
             domainCheck.domain = domain;
@@ -117,15 +117,15 @@ let SyncInApplicationChecker = class SyncInApplicationChecker {
             }
         }
         const domainNames = [];
-        const allApplicationNames = [];
+        const allApplication_Names = [];
         for (const [domainName, applicationChecksForDomainMap] of applicationCheckMap) {
             domainNames.push(domainName);
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplicationNames.push(applicationName);
+                allApplication_Names.push(applicationName);
             }
         }
         return {
-            allApplicationNames,
+            allApplication_Names,
             domainCheckMap,
             domainNames,
             applicationCheckMap

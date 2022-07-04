@@ -174,7 +174,7 @@ let UpdateCacheManager = class UpdateCacheManager {
                                         return true;
                                     }
                                     // Values should not be dates or json objects, only
-                                    // nested object references to eventual Ids
+                                    // nested object references to eventual _localIds
                                 }
                                 else if (typeof originalValue === 'object') {
                                     // value is not a nested object but originalValue is
@@ -182,7 +182,7 @@ let UpdateCacheManager = class UpdateCacheManager {
                                     return true;
                                 }
                                 else {
-                                    // Both values are primitives (nested ids)
+                                    // Both values are primitives (nested _localIds)
                                     if (value !== originalValue) {
                                         entityState = EntityState.UPDATE;
                                         return true;
@@ -271,7 +271,7 @@ let UpdateCacheManager = class UpdateCacheManager {
                 }
                 if (dbEntity.isAirEntity) {
                     let airEntity = entity;
-                    if (!airEntity.repository || !airEntity.repository.id) {
+                    if (!airEntity.repository || !airEntity.repository._localId) {
                         airEntity.repository = saveResult.newRepository;
                     }
                     airEntity.actor = saveResult.actor;

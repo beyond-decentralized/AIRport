@@ -65,13 +65,13 @@ export class DdlObjectLinker
 	): void {
 		const domainMapById: Map<Domain_LocalId, IDomain> = new Map()
 		domains.forEach((domain: IDomain) => {
-			domainMapById.set(domain.id, domain)
+			domainMapById.set(domain._localId, domain)
 		})
 
 		const applicationMapByIndex: Map<Application_Index, IApplication> = new Map()
 		applications.forEach((application: IApplication) => {
 			applicationMapByIndex.set(application.index, application)
-			const domain = domainMapById.get(application.domain.id)
+			const domain = domainMapById.get(application.domain._localId)
 			application.domain = domain
 			domain.applications.push(<any>application)
 		})
@@ -95,8 +95,8 @@ export class DdlObjectLinker
 		})
 
 		applicationReferences.forEach((applicationReference: IApplicationReference) => {
-			const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion.id]
-			const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion.id]
+			const ownApplicationVersion = allApplicationVersionsByIds[applicationReference.ownApplicationVersion._localId]
+			const referencedApplicationVersion = allApplicationVersionsByIds[applicationReference.referencedApplicationVersion._localId]
 
 			ownApplicationVersion.references[applicationReference.index] = applicationReference
 			ownApplicationVersion.referencesMapByName[referencedApplicationVersion.application.fullName] = applicationReference
@@ -118,16 +118,16 @@ export class DdlObjectLinker
 		const entityArrayById: IApplicationEntity[] = []
 
 		allEntities.forEach((entity: IApplicationEntity) => {
-			entityArrayById[entity.id] = entity
+			entityArrayById[entity._localId] = entity
 		})
 
 		addedEntities.forEach((entity: IApplicationEntity) => {
-			const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion.id]
+			const applicationVersion = allApplicationVersionsByIds[entity.applicationVersion._localId]
 			entity.applicationVersion = applicationVersion
 			applicationVersion.entities[entity.index] = entity
 			applicationVersion.entityMapByName[entity.name] = entity
 
-			entityArrayById[entity.id] = entity
+			entityArrayById[entity._localId] = entity
 
 			entity.columns = []
 			entity.properties = []
@@ -153,7 +153,7 @@ export class DdlObjectLinker
 
 		properties.forEach((property: IApplicationProperty) => {
 			// Entity is already property wired in
-			const entity = entityArrayById[property.entity.id]
+			const entity = entityArrayById[property.entity._localId]
 			entity.properties[property.index] = property
 			entity.propertyMap[property.name] = property
 
@@ -161,22 +161,22 @@ export class DdlObjectLinker
 
 			property.propertyColumns = []
 
-			propertyMapById.set(property.id, property)
+			propertyMapById.set(property._localId, property)
 		})
 
 		const relationMapById: Map<ApplicationRelation_LocalId, IApplicationRelation> = new Map()
 		relations.forEach((relation: IApplicationRelation) => {
-			const entity = entityArrayById[relation.entity.id]
+			const entity = entityArrayById[relation.entity._localId]
 			entity.relations[relation.index] = relation
 
-			let relationEntity = entityArrayById[relation.relationEntity.id]
+			let relationEntity = entityArrayById[relation.relationEntity._localId]
 
 			if (!relationEntity) {
-				relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity.id]
+				relationEntity = this.terminalStore.getAllEntities()[relation.relationEntity._localId]
 			}
 			relationEntity.relationReferences.push(relation)
 
-			const property = propertyMapById.get(relation.property.id)
+			const property = propertyMapById.get(relation.property._localId)
 			relation.property = property
 			property.relation = [relation]
 
@@ -184,7 +184,7 @@ export class DdlObjectLinker
 			relation.relationEntity = relationEntity
 			relation.manyRelationColumns = []
 			relation.oneRelationColumns = []
-			relationMapById.set(relation.id, relation)
+			relationMapById.set(relation._localId, relation)
 		})
 
 		return {
@@ -200,12 +200,12 @@ export class DdlObjectLinker
 	) {
 		const columnMapById: Map<ApplicationColumn_LocalId, IApplicationColumn> = new Map()
 		allDdlObjects.all.columns.forEach((column: IApplicationColumn) => {
-			columnMapById.set(column.id, column)
+			columnMapById.set(column._localId, column)
 		})
 		allDdlObjects.added.columns.forEach((column: IApplicationColumn) => {
-			columnMapById.set(column.id, column)
+			columnMapById.set(column._localId, column)
 
-			const entity = entityArrayById[column.entity.id]
+			const entity = entityArrayById[column.entity._localId]
 			entity.columns[column.index] = column
 			entity.columnMap[column.name] = column
 
@@ -218,10 +218,10 @@ export class DdlObjectLinker
 		})
 
 		allDdlObjects.added.propertyColumns.forEach((propertyColumn: IApplicationPropertyColumn) => {
-			const column = columnMapById.get(propertyColumn.column.id)
+			const column = columnMapById.get(propertyColumn.column._localId)
 			column.propertyColumns.push(propertyColumn)
 
-			const property = propertyMapById.get(propertyColumn.property.id)
+			const property = propertyMapById.get(propertyColumn.property._localId)
 			property.propertyColumns.push(propertyColumn)
 
 			propertyColumn.column = column
@@ -229,32 +229,32 @@ export class DdlObjectLinker
 		})
 
 		allDdlObjects.added.relationColumns.forEach((relationColumn: IApplicationRelationColumn) => {
-			let manyColumn = columnMapById.get(relationColumn.manyColumn.id)
+			let manyColumn = columnMapById.get(relationColumn.manyColumn._localId)
 			if (!manyColumn) {
-				manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn.id]
+				manyColumn = this.terminalStore.getAllColumns()[relationColumn.manyColumn._localId]
 			}
 			manyColumn.manyRelationColumns.push(relationColumn)
 
-			let oneColumn = columnMapById.get(relationColumn.oneColumn.id)
+			let oneColumn = columnMapById.get(relationColumn.oneColumn._localId)
 			if (!oneColumn) {
-				oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn.id]
+				oneColumn = this.terminalStore.getAllColumns()[relationColumn.oneColumn._localId]
 			}
 			oneColumn.oneRelationColumns.push(relationColumn)
 
 			let manyRelation
-			if (relationColumn.manyRelation && relationColumn.manyRelation.id) {
-				manyRelation = relationMapById.get(relationColumn.manyRelation.id)
+			if (relationColumn.manyRelation && relationColumn.manyRelation._localId) {
+				manyRelation = relationMapById.get(relationColumn.manyRelation._localId)
 				if (!manyRelation) {
-					manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation.id]
+					manyRelation = this.terminalStore.getAllRelations()[relationColumn.manyRelation._localId]
 				}
 				manyRelation.manyRelationColumns.push(relationColumn)
 			}
 
 			let oneRelation
-			if (relationColumn.oneRelation && relationColumn.oneRelation.id) {
-				oneRelation = relationMapById.get(relationColumn.oneRelation.id)
+			if (relationColumn.oneRelation && relationColumn.oneRelation._localId) {
+				oneRelation = relationMapById.get(relationColumn.oneRelation._localId)
 				if (!oneRelation) {
-					oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation.id]
+					oneRelation = this.terminalStore.getAllRelations()[relationColumn.oneRelation._localId]
 				}
 				oneRelation.oneRelationColumns.push(relationColumn)
 			}

@@ -46,7 +46,7 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlSchemaB
         let allSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-                getFullApplicationName(jsonApplication)];
+                getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }
@@ -59,7 +59,7 @@ let SqLiteApplicationBuilder = class SqLiteApplicationBuilder extends SqlSchemaB
         let stagedSequences = [];
         for (const jsonApplication of jsonApplications) {
             const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-                getFullApplicationName(jsonApplication)];
+                getFullApplication_Name(jsonApplication)];
             for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
                 stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity));
             }

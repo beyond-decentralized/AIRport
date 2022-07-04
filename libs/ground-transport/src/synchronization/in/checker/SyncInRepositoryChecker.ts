@@ -75,7 +75,7 @@ export class SyncInRepositoryChecker
 			}
 
 			const missingRepositories = message.referencedRepositories
-				.filter(messageRepository => !messageRepository.id)
+				.filter(messageRepository => !messageRepository._localId)
 
 			if (typeof history.repository !== 'object') {
 				throw new Error(`Repository with UuId ${history.repository} is not

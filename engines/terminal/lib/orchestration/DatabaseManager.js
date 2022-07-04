@@ -24,7 +24,7 @@ let DatabaseManager = class DatabaseManager {
         this.transactionalServer.tempActor = new Actor();
         await this.transactionManager.transactInternal(async (_transaction, context) => {
             const hydrate = await this.storeDriver.doesTableExist(this.dbApplicationUtils
-                .getFullApplicationName(BLUEPRINT[0]), 'PACKAGES', context);
+                .getFullApplication_Name(BLUEPRINT[0]), 'PACKAGES', context);
             await this.installStarterApplication(false, hydrate, context);
             if (!hydrate) {
                 await this.internalRecordManager.initTerminal(domainName, context);
@@ -47,7 +47,7 @@ let DatabaseManager = class DatabaseManager {
         const applicationsToCreate = [];
         for (const jsonApplication of jsonApplications) {
             const existingApplication = existingApplicationMap.get(this.dbApplicationUtils
-                .getFullApplicationName(jsonApplication));
+                .getFullApplication_Name(jsonApplication));
             if (existingApplication) {
                 jsonApplication.lastIds = existingApplication.versions[0].jsonApplication.lastIds;
             }

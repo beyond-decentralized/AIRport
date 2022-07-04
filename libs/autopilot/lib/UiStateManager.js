@@ -11,7 +11,7 @@ export var EntityState;
     EntityState["CREATE"] = "CREATE";
     EntityState["DATE"] = "DATE";
     EntityState["DELETE"] = "DELETE";
-    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_ID";
+    EntityState["PARENT_SCHEMA_ID"] = "PARENT_SCHEMA_LID";
     EntityState["STUB"] = "STUB";
     EntityState["UPDATE"] = "UPDATE";
 })(EntityState || (EntityState = {}));

@@ -209,7 +209,7 @@ let SQLWhereBase = class SQLWhereBase {
     }
     addFieldFromColumn(dbColumn) {
         const dbEntity = dbColumn.propertyColumns[0].property.entity;
-        this.addField(dbEntity.applicationVersion.id, dbEntity.index, dbColumn.index);
+        this.addField(dbEntity.applicationVersion._localId, dbEntity.index, dbColumn.index);
     }
     addField(applicationIndex, tableIndex, columnIndex) {
         this.fieldMap.ensure(applicationIndex, tableIndex)

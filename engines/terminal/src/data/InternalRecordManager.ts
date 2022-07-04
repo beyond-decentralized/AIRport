@@ -90,7 +90,7 @@ export class InternalRecordManager
             if (!actors || !actors.length) {
                 const frameworkActor = this.terminalStore.getFrameworkActor()
                 const actor = {
-                    id: null,
+                    _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
@@ -169,7 +169,7 @@ export class InternalRecordManager
                 updatedDomain = dbDomain
             } else {
                 updatedDomain = {
-                    id: null,
+                    _localId: null,
                     name: application.domain,
                 }
                 await this.domainDao.save(updatedDomain, context)

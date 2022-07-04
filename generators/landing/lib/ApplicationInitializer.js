@@ -8,7 +8,7 @@ import { Inject, Injected } from '@airport/direction-indicator';
 let ApplicationInitializer = class ApplicationInitializer {
     addNewApplicationVersionsToAll(ddlObjects) {
         for (const applicationVersion of ddlObjects.added.applicationVersions) {
-            ddlObjects.allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+            ddlObjects.allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
         }
     }
     async hydrate(jsonApplications, context) {

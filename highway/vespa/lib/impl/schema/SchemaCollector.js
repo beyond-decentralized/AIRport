@@ -1,4 +1,4 @@
-export class SchemaCollector {
+export class ApplicationCollector {
     async collect() {
         return [];
     }

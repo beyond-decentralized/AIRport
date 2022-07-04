@@ -1,6 +1,6 @@
-import { QOperableField } from '@airport/air-control';
+import { QOperableField } from '@airport/air-traffic-control';
 import { ensureField } from '../VespaDecoratorsImpl';
-export class VespaSchemaProcessor {
+export class VespaApplicationProcessor {
     async process(store) {
         for (const documentName in store.documentMap) {
             const document = store.documentMap[documentName];

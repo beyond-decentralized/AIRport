@@ -1,5 +1,5 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
-import { ApplicationName, DbEntity, DomainName, FullApplicationName, IDbApplicationUtils, IEntityStateManager, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
+import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, IDbApplicationUtils, IEntityStateManager, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { Observable } from 'rxjs';
 import { IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
@@ -32,11 +32,11 @@ export declare abstract class SqlDriver implements IStoreDriver {
     getEntityTableName(dbEntity: DbEntity, context: IFuelHydrantContext): string;
     abstract getSelectQuerySuffix(jsonQuery: JsonQuery, context: IFuelHydrantContext): string;
     getTableName(application: {
-        domain: DomainName | {
-            name: DomainName;
+        domain: Domain_Name | {
+            name: Domain_Name;
         };
-        name: ApplicationName;
-        fullName?: FullApplicationName;
+        name: Application_Name;
+        fullName?: FullApplication_Name;
     }, table: {
         name: string;
         tableConfig?: {

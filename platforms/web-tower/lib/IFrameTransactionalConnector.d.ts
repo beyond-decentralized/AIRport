@@ -2,16 +2,16 @@ import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { IApplicationVersion } from '@airport/airspace';
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { DbDomain, DomainName, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { DbDomain, Domain_Name, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
 import { Observable } from 'rxjs';
 import { ITerminalStore } from '@airport/terminal-map';
 import { IAirEntity } from '@airport/ground-control/src';
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
-    getLatestApplicationVersionMapByFullApplicationName(applicationName: string): Promise<IApplicationVersion>;
+    getLatestApplicationVersionMapByFullApplication_Name(applicationName: string): Promise<IApplicationVersion>;
     initializeConnection(): Promise<void>;
     processMessage(message: IIsolateMessageOut<any> | ILocalAPIRequest, origin: string): Promise<void>;
-    retrieveDomain(domainName: DomainName): Promise<DbDomain>;
+    retrieveDomain(domainName: Domain_Name): Promise<DbDomain>;
 }
 export declare class IframeTransactionalConnector implements IIframeTransactionalConnector {
     applicationLoader: IApplicationLoader;
@@ -29,10 +29,10 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     save<E extends IAirEntity, T = E | E[]>(entity: T, context: IEntityContext): Promise<ISaveResult>;
     saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
+    insertValuesGetLocalIds(portableQuery: PortableQuery, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
-    getLatestApplicationVersionMapByFullApplicationName(fullApplicationName: string): Promise<IApplicationVersion>;
+    getLatestApplicationVersionMapByFullApplication_Name(fullApplication_Name: string): Promise<IApplicationVersion>;
     initializeConnection(): Promise<void>;
     private handleLocalApiRequest;
     private handleDbToIsolateMessage;
@@ -42,7 +42,7 @@ export declare class IframeTransactionalConnector implements IIframeTransactiona
     private sendObservableMessage;
     private wait;
     private isConnectionInitialized;
-    retrieveDomain(domainName: DomainName): Promise<DbDomain>;
+    retrieveDomain(domainName: Domain_Name): Promise<DbDomain>;
     onMessage(callback: (message: any) => void): void;
 }
 //# sourceMappingURL=IFrameTransactionalConnector.d.ts.map

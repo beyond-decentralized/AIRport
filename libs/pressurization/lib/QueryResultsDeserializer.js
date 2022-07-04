@@ -152,7 +152,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))) {
             Object.defineProperty(object, 'isNew', {
                 get() {
-                    return !!this.actorRecordId;
+                    return !!this._actorRecordId;
                 }
             });
         }

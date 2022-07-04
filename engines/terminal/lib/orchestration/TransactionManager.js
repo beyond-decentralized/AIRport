@@ -203,7 +203,7 @@ parent transactions.
         let childTransactionHistory = transaction.transactionHistory;
         let parentTransactionHistory = parentTransaction.transactionHistory;
         for (const operationHistory of childTransactionHistory.allOperationHistory) {
-            const repositoryId = operationHistory.repositoryTransactionHistory.repository.id;
+            const repositoryId = operationHistory.repositoryTransactionHistory.repository._localId;
             const parentRepositoryTransactionRecord = parentTransactionHistory
                 .repositoryTransactionHistoryMap[repositoryId];
             if (parentRepositoryTransactionRecord) {
@@ -291,24 +291,24 @@ ${callHerarchy}
             return false;
         }
         let applicationMap = transactionHistory.applicationMap;
-        const transactionHistoryIds = await this.idGenerator.generateTransactionHistoryIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
+        const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
         applicationMap.ensureEntity(Q.TransactionHistory.__driver__.dbEntity, true);
-        transactionHistory.id = transactionHistoryIds.transactionHistoryId;
+        transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
         await this.doInsertValues(transaction, Q.TransactionHistory, [transactionHistory], context);
         applicationMap.ensureEntity(Q.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
-            repositoryTransactionHistory.id = transactionHistoryIds.repositoryHistoryIds[index];
+            repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
             repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
         await this.doInsertValues(transaction, Q.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
         applicationMap.ensureEntity(Q.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
-            operationHistory.id = transactionHistoryIds.operationHistoryIds[index];
+            operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
         });
         await this.doInsertValues(transaction, Q.OperationHistory, transactionHistory.allOperationHistory, context);
         applicationMap.ensureEntity(Q.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
-            recordHistory.id = transactionHistoryIds.recordHistoryIds[index];
+            recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
         });
         await this.doInsertValues(transaction, Q.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {

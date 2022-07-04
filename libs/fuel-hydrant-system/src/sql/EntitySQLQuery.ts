@@ -192,7 +192,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 				ri: null,
 				rt: JSONRelationType.ENTITY_ROOT,
 				rep: 'r_',
-				si: this.dbEntity.applicationVersion.id
+				si: this.dbEntity.applicationVersion._localId
 			}
 			joinRelations.push(onlyJsonRelation)
 		}

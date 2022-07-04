@@ -76,7 +76,7 @@ let OnlineManager = class OnlineManager {
         }, context);
     }
     async repositoryGoOnline(repository, repositoryManager) {
-        let deltaStore = repositoryManager.deltaStore[repository.id];
+        let deltaStore = repositoryManager.deltaStore[repository._localId];
         let remoteChangesSinceInitialGoOnline = [];
         // 3)  Go Online and start listening for new transactions coming in
         await deltaStore.goOnline(async (transactions) => {

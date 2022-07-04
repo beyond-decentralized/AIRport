@@ -13,8 +13,8 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
      */
     async syncMessages(messages, transaction, context) {
         this.aggregateHistoryRecords(messages, transaction);
-        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersionIdMap } = await this.getDataStructures(messages);
-        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersionIdMap, context);
+        const { actorMapById, repositoryTransactionHistoryMapByRepositoryId, applicationsByApplicationVersion_LocalIdMap } = await this.getDataStructures(messages);
+        await this.updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMapById, applicationsByApplicationVersion_LocalIdMap, context);
     }
     aggregateHistoryRecords(messages, transaction) {
         const transactionHistory = transaction.transactionHistory;
@@ -44,17 +44,17 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     }
     async getDataStructures(messages) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const applicationsByApplicationVersionIdMap = new Map();
+        const applicationsByApplicationVersion_LocalIdMap = new Map();
         const actorMapById = new Map();
         const repoTransHistories = [];
         for (const message of messages) {
             repoTransHistories.push(message.history);
-            repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository.id, repoTransHistories);
+            repositoryTransactionHistoryMapByRepositoryId.set(message.history.repository._localId, repoTransHistories);
             for (const actor of message.actors) {
-                actorMapById.set(actor.id, actor);
+                actorMapById.set(actor._localId, actor);
             }
             for (const applicationVersion of message.applicationVersions) {
-                applicationsByApplicationVersionIdMap.set(applicationVersion.id, applicationVersion.application);
+                applicationsByApplicationVersion_LocalIdMap.set(applicationVersion._localId, applicationVersion.application);
             }
         }
         for (const [_, repoTransHistories] of repositoryTransactionHistoryMapByRepositoryId) {
@@ -64,10 +64,10 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
         return {
             actorMapById,
             repositoryTransactionHistoryMapByRepositoryId,
-            applicationsByApplicationVersionIdMap
+            applicationsByApplicationVersion_LocalIdMap
         };
     }
-    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersionIdMap, context) {
+    async updateLocalData(repositoryTransactionHistoryMapByRepositoryId, actorMayById, applicationsByApplicationVersion_LocalIdMap, context) {
         const stage1Result = await this.stage1SyncedInDataProcessor.performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context);
         let allSyncConflicts = [];
         let allSyncConflictValues = [];
@@ -79,7 +79,7 @@ let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
                 }
             }
         }
-        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap);
+        await this.stage2SyncedInDataProcessor.applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap);
         if (allSyncConflicts.length) {
             await this.synchronizationConflictDao.insert(allSyncConflicts, context);
         }

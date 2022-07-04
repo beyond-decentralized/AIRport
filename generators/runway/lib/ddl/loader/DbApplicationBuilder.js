@@ -15,7 +15,7 @@ export class DbApplicationBuilder {
         const versionString = currentJsonApplicationVersion.versionString;
         const versionParts = versionString.split('.');
         const dbApplicationVersion = {
-            id: null,
+            _localId: null,
             entities,
             entityMapByName,
             integerVersion: currentJsonApplicationVersion.integerVersion,
@@ -35,16 +35,15 @@ export class DbApplicationBuilder {
         };
         const dbDomain = {
             applications: [],
-            id: undefined,
+            _localId: undefined,
             name: jsonApplication.domain,
         };
         const dbApplication = {
-            applicationPackages: [],
             currentVersion: [dbApplicationCurrentVersion],
             domain: dbDomain,
             fullName: IOC.getSync(DB_APPLICATION_UTILS).
                 getFullApplication_NameFromDomainAndName(dbDomain.name, jsonApplication.name),
-            id: null,
+            _localId: null,
             index: allApplications.length,
             name: jsonApplication.name,
             scope: null,
@@ -204,7 +203,7 @@ export class DbApplicationBuilder {
             columns,
             idColumns,
             idColumnMap,
-            id: null,
+            _localId: null,
             index: jsonEntity.index,
             isLocal: jsonEntity.isLocal,
             isAirEntity: jsonEntity.isAirEntity,
@@ -221,7 +220,7 @@ export class DbApplicationBuilder {
             const property = {
                 propertyColumns: [],
                 entity: dbEntity,
-                id: null,
+                _localId: null,
                 index: jsonProperty.index,
                 isId: jsonProperty.isId,
                 name: jsonProperty.name,
@@ -259,7 +258,7 @@ export class DbApplicationBuilder {
             manyToOneElems: jsonRelation.manyToOneElems,
             oneToManyElems: jsonRelation.oneToManyElems,
             relationType: jsonRelation.relationType,
-            id: null,
+            _localId: null,
             index: jsonRelation.index,
             property: dbProperty,
             manyRelationColumns: [],
@@ -299,7 +298,7 @@ export class DbApplicationBuilder {
     buildDbColumn(jsonApplication, jsonEntity, jsonColumn, properties, dictionary, referencedApplications, applicationVersion, entity) {
         const dbColumn = {
             entity,
-            id: null,
+            _localId: null,
             index: jsonColumn.index,
             isGenerated: !!jsonColumn.isGenerated,
             manyRelationColumns: [],

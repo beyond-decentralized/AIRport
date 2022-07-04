@@ -82,7 +82,7 @@ export class QueryObjectInitializer
 		const allApplicationVersionsByIds = []
 
 		for (const applicationVersion of ddlObjects.applicationVersions) {
-			allApplicationVersionsByIds[applicationVersion.id] = applicationVersion
+			allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion
 		}
 
 		let allDdlObjects: AllDdlObjects = {

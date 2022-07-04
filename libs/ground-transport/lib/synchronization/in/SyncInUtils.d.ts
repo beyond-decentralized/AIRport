@@ -1,9 +1,9 @@
-import { ColumnIndex, EntityId, ApplicationIndex, ApplicationVersionId } from '@airport/ground-control';
-import { Actor_Id, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistoryId, AirEntity_ActorRecordId, Repository_Id } from '@airport/holding-pattern';
+import { ApplicationColumn_Index, ApplicationEntity_LocalId, Application_Index, ApplicationVersion_LocalId } from '@airport/ground-control';
+import { Actor_LocalId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistory_LocalId, AirEntity_ActorRecordId, Repository_LocalId } from '@airport/holding-pattern';
 import { ISynchronizationConflict } from '@airport/moving-walkway';
-export declare type RemoteApplicationIndex = ApplicationIndex;
-export declare type RemoteApplicationVersionId = ApplicationVersionId;
-export declare type RemoteActorId = Actor_Id;
+export declare type RemoteApplication_Index = Application_Index;
+export declare type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;
+export declare type RemoteActorId = Actor_LocalId;
 /**
  * Result of comparing to versions of a given application.
  */
@@ -20,24 +20,24 @@ export interface ISyncOperationHistory extends IOperationHistory {
     recordHistory?: ISyncRecordHistory[];
 }
 export interface ISyncRecordHistory extends IRecordHistory {
-    newValueMap?: Map<ColumnIndex, ISyncNewValue>;
+    newValueMap?: Map<ApplicationColumn_Index, ISyncNewValue>;
 }
 export interface ISyncNewValue extends IRecordHistoryNewValue {
 }
 export interface RecordUpdate {
     newValue: any;
-    recordHistoryId: RecordHistoryId;
+    recordHistoryLocalId: RecordHistory_LocalId;
 }
 export interface ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryLocalId: Repository_LocalId, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>): Map<CI, V>;
 }
 export interface Stage1SyncedInDataProcessingResult {
-    recordCreations: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, any>>>>>>;
-    recordDeletions: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>>>;
-    recordUpdates: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<Actor_Id, Map<AirEntity_ActorRecordId, Map<ColumnIndex, RecordUpdate>>>>>>;
-    syncConflictMapByRepoId: Map<Repository_Id, ISynchronizationConflict[]>;
+    recordCreations: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId, Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>;
+    recordDeletions: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>>>>;
+    recordUpdates: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<Actor_LocalId, Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>;
+    syncConflictMapByRepoId: Map<Repository_LocalId, ISynchronizationConflict[]>;
 }
 export declare class SyncInUtils implements ISyncInUtils {
-    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryId: Repository_Id, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersionId, Map<EntityId, Map<Repository_Id, Map<CI, V>>>>): Map<CI, V>;
+    ensureRecordMapForRepoInTable<CI extends number | string, V>(repositoryLocalId: Repository_LocalId, operationHistory: IOperationHistory, recordMapByApplicationTableAndRepository: Map<ApplicationVersion_LocalId, Map<ApplicationEntity_LocalId, Map<Repository_LocalId, Map<CI, V>>>>): Map<CI, V>;
 }
 //# sourceMappingURL=SyncInUtils.d.ts.map

@@ -55,7 +55,7 @@ let DatabaseFacade = class DatabaseFacade {
         const insertValues = new InsertColumnValues(rawInsertColumnValues);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
-        return await this.transactionalConnector.insertValuesGetIds(portableQuery, context);
+        return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
     async insertValuesGenerateIds(rawInsertValues, context) {
         if (!rawInsertValues) {
@@ -67,7 +67,7 @@ let DatabaseFacade = class DatabaseFacade {
         const insertValues = new InsertValues(rawInsertValues);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
-        return await this.transactionalConnector.insertValuesGetIds(portableQuery, context);
+        return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
     async deleteWhere(rawDelete, context) {
         if (!rawDelete) {

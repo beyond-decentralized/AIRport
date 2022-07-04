@@ -43,7 +43,7 @@ let DeleteManager = class DeleteManager {
         return await deleteCommand;
     }
     recordRepositoryIds(treeToDelete, dbEntity, recordsToDelete, repositoryIdSet, applicationUtils) {
-        const repositoryId = treeToDelete.repository.id;
+        const repositoryId = treeToDelete.repository._localId;
         repositoryIdSet.add(repositoryId);
         const recordsToDeleteForApplication = ensureChildJsMap(recordsToDelete, dbEntity.applicationVersion.application.index);
         const recordsToDeleteForTable = ensureChildJsMap(recordsToDeleteForApplication, dbEntity.index);
@@ -122,7 +122,7 @@ let DeleteManager = class DeleteManager {
                     const repositoryTransactionHistory = await this.historyManager.getNewRepositoryTransactionHistory(transaction.transactionHistory, repositoryId, context);
                     const operationHistory = this.repositoryTransactionHistoryDuo.startOperation(repositoryTransactionHistory, systemWideOperationId, ChangeType.DELETE_ROWS, dbEntity, actor, rootTransaction);
                     for (const recordToDelete of entityRecordsToDeleteForRepo) {
-                        const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor.id, recordToDelete.actorRecordId);
+                        const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, recordToDelete.actor._localId, recordToDelete._actorRecordId);
                         for (const dbProperty of dbEntity.properties) {
                             if (dbProperty.relation && dbProperty.relation.length) {
                                 const dbRelation = dbProperty.relation[0];
@@ -132,8 +132,8 @@ let DeleteManager = class DeleteManager {
                                             switch (dbColumn.name) {
                                                 // Do not add Actor or Repository the are recorded
                                                 // at record history level
-                                                case airEntity.ACTOR_ID:
-                                                case airEntity.REPOSITORY_ID:
+                                                case airEntity.ACTOR_LID:
+                                                case airEntity.REPOSITORY_LID:
                                                     break;
                                                 default:
                                                     this.recordHistoryDuo.addOldValue(recordHistory, dbColumn, value);

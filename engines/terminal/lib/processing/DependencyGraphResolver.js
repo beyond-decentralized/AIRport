@@ -9,7 +9,7 @@ import { ensureChildArray, EntityRelationType } from '@airport/ground-control';
 /*
  * Takes a (potentially) interconnected entity graph and returns
  * an array of entities to be operated on, in a order that is valid
- * for insertion (with all needed new ids being inserted in an order
+ * for insertion (with all needed new _localIds being inserted in an order
  * that will work).
  */
 let DependencyGraphResolver = class DependencyGraphResolver {
@@ -237,10 +237,10 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
     optimizePersistOperations(orderedDependencies, context) {
         let operationNodes = [];
         let processedNodes = [];
-        let operationsByApplicationIndex = [];
+        let operationsByApplication_Index = [];
         for (const node of orderedDependencies) {
             const dbEntity = node.dbEntity;
-            const applicationOperationNodes = ensureChildArray(operationsByApplicationIndex, dbEntity.applicationVersion.application.index);
+            const applicationOperationNodes = ensureChildArray(operationsByApplication_Index, dbEntity.applicationVersion.application.index);
             let entityOperations = applicationOperationNodes[dbEntity.index];
             if (!entityOperations) {
                 entityOperations = {

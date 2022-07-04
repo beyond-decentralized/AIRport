@@ -144,13 +144,13 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
         if (!parentRelationRecord) {
             const originalValues = this.entityStateManager.getOriginalValues(record);
             if (newRepositoryNeeded && originalValues && originalValues.repository
-                && originalValues.actor && originalValues.actorRecordId) {
+                && originalValues.actor && originalValues._actorRecordId) {
                 const airEntity = record;
                 airEntity.originalRepository = originalValues.repository;
                 this.entityStateManager.markAsStub(airEntity.originalRepository);
                 airEntity.originalActor = originalValues.actor;
                 this.entityStateManager.markAsStub(airEntity.originalActor);
-                airEntity.originalActorRecordId = originalValues.actorRecordId;
+                airEntity.originalActorRecordId = originalValues._actorRecordId;
             }
             return;
         }
@@ -172,15 +172,15 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
         // }
         let airEntity = record;
         // If the repositories of parent record and child record match
-        if (rootRelationRecord.repository.id === airEntity.repository.id) {
+        if (rootRelationRecord.repository._localId === airEntity.repository._localId) {
             // no further checks needed
             return;
         }
         if (isCreate) {
-            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
-is being assigned to repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
+            throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
+is being assigned to repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
 	This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-	from a record of repository id ${airEntity.repository.id} (UUID: ${airEntity.repository.id})
+	from a record of repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
 	
 	If you are manually creating a copy of a record in another repository, there is no need,
 	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified
@@ -194,11 +194,11 @@ is being assigned to repository id ${airEntity.repository.id} (UUID: ${airEntity
         airEntity.repository = rootRelationRecord.repository;
         // Aslo set originalActor and originalActorRecordId to look up the original record
         airEntity.originalActor = airEntity.actor;
-        airEntity.originalActorRecordId = airEntity.actorRecordId;
-        // reset 'actor' and clear 'actorRecordId' to prevents unique constraint
+        airEntity.originalActorRecordId = airEntity._actorRecordId;
+        // reset 'actor' and clear '_actorRecordId' to prevents unique constraint
         // violation if multiple databases flip to the same exact record (independently)
         airEntity.actor = context.actor;
-        delete airEntity.actorRecordId;
+        delete airEntity._actorRecordId;
         // Flip the state of this record to EntityState.CREATE this record now
         // has to be created in the referencing repository
         airEntity[this.entityStateManager.getStateFieldName()] = EntityState.CREATE;

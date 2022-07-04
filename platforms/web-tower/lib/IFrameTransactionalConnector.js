@@ -48,14 +48,14 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 || !message.application
                 // And if own domain is a direct sub-domain of the message's domain
                 || ownDomain !== this.dbApplicationUtils.
-                    getFullApplicationName({
+                    getFullApplication_Name({
                     domain: message.domain,
                     name: message.application,
                 }) + domainSuffix) {
                 return;
             }
             const ownDomainFragments = ownDomain.split('.');
-            // Only accept requests from 'www.${mainDomainName}' or 'www.${mainDomainName}'
+            // Only accept requests from 'www.${mainDomain_Name}' or 'www.${mainDomain_Name}'
             // All 'App' messages must first come from the main domain, which ensures
             // that the application is installed
             const expectedNumFragments = mainDomainFragments.length + (startsWithWww ? 0 : 1);
@@ -147,8 +147,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
         return await this.sendMessage({
             ...this.getCoreFields(),
             dbEntity: {
-                id: dbEntity.id,
-                applicationVersionId: dbEntity.applicationVersion.id
+                _localId: dbEntity._localId,
+                _applicationVersionLocalId: dbEntity.applicationVersion._localId
             },
             entity,
             type: IsolateMessageType.SAVE
@@ -159,8 +159,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
         return await this.sendMessage({
             ...this.getCoreFields(),
             dbEntity: {
-                id: dbEntity.id,
-                applicationVersionId: dbEntity.applicationVersion.id
+                _localId: dbEntity._localId,
+                _applicationVersionLocalId: dbEntity.applicationVersion._localId
             },
             entity,
             repositoryDestination,
@@ -176,7 +176,7 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
             type: IsolateMessageType.INSERT_VALUES
         });
     }
-    async insertValuesGetIds(portableQuery, context) {
+    async insertValuesGetLocalIds(portableQuery, context) {
         return await this.sendMessage({
             ...this.getCoreFields(),
             portableQuery,
@@ -197,10 +197,10 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
             type: IsolateMessageType.DELETE_WHERE
         });
     }
-    async getLatestApplicationVersionMapByFullApplicationName(fullApplicationName) {
+    async getLatestApplicationVersionMapByFullApplication_Name(fullApplication_Name) {
         return await this.sendMessageNoWait({
             ...this.getCoreFields(),
-            fullApplicationName: fullApplicationName,
+            fullApplication_Name: fullApplication_Name,
             type: IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME
         });
     }
@@ -332,8 +332,8 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
                 await this.applicationLoader.initialize();
                 window.parent.postMessage({
                     ...this.getCoreFields(),
-                    fullApplicationName: this.dbApplicationUtils.
-                        getFullApplicationName(this.applicationLoader.getApplication()),
+                    fullApplication_Name: this.dbApplicationUtils.
+                        getFullApplication_Name(this.applicationLoader.getApplication()),
                     type: IsolateMessageType.APP_INITIALIZED
                 }, this.applicationStore.state.hostServer);
                 return true;

@@ -22,7 +22,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         const repositoryIdsToLookup = new Set();
         const repositoryMapById = new Map();
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
-            repositoryIdsToLookup.add(repositoryTransactionHistory.repository.id);
+            repositoryIdsToLookup.add(repositoryTransactionHistory.repository._localId);
         }
         if (!repositoryIdsToLookup.size) {
             return;
@@ -31,11 +31,11 @@ let SynchronizationOutManager = class SynchronizationOutManager {
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {
-            repositoryMapById.set(repository.id, repository);
+            repositoryMapById.set(repository._localId, repository);
         }
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
             repositoryTransactionHistory.repository =
-                repositoryMapById.get(repositoryTransactionHistory.repository.id);
+                repositoryMapById.get(repositoryTransactionHistory.repository._localId);
         }
     }
     async ensureGlobalRepositoryIdentifiers(repositoryTransactionHistories, messages) {
@@ -44,10 +44,10 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         for (const repositoryTransactionHistory of repositoryTransactionHistories) {
             const repository = repositoryTransactionHistory.repository;
             if (!repository.source || !repository.GUID) {
-                repositoryIdsToLookup.add(repository.id);
+                repositoryIdsToLookup.add(repository._localId);
             }
             else {
-                repositoryMapById.set(repository.id, repository);
+                repositoryMapById.set(repository._localId, repository);
             }
         }
         if (!repositoryIdsToLookup.size) {
@@ -57,15 +57,15 @@ let SynchronizationOutManager = class SynchronizationOutManager {
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {
-            repositoryMapById.set(repository.id, repository);
+            repositoryMapById.set(repository._localId, repository);
         }
         for (const message of messages) {
             const repository = message.history.repository;
             if (!repository.source || !repository.GUID) {
-                const foundRepository = repositoryMapById.get(repository.id);
+                const foundRepository = repositoryMapById.get(repository._localId);
                 repository.source = foundRepository.source;
                 repository.GUID = foundRepository.GUID;
-                delete repository.id;
+                delete repository._localId;
             }
         }
     }

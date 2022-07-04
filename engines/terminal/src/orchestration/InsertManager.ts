@@ -260,7 +260,7 @@ appears more than once in the Columns clause`)
 				})
 			if (matchingColumns.length < 1) {
 				// Actor Id cannot be in the insert statement
-				if (idColumn.id === actorIdColumn.id) {
+				if (idColumn._localId === actorIdColumn._localId) {
 					isActorIdColumn = true
 					inStatementColumnIndex = jsonInsertValues.C.length
 					jsonInsertValues.C.push(actorIdColumn.index)

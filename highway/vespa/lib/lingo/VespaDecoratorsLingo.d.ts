@@ -1,4 +1,4 @@
-import { ClassDecorator, PropertyDecorator } from '@airport/air-control';
+import { ClassDecorator, PropertyDecorator } from '@airport/air-traffic-control';
 export interface VespaIndexing {
     attribute?: boolean;
     index?: boolean;

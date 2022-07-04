@@ -50,23 +50,23 @@ let TransactionalReceiver = class TransactionalReceiver {
             case IsolateMessageType.APP_INITIALIZING:
                 let initConnectionMessage = message;
                 const application = initConnectionMessage.jsonApplication;
-                const fullApplicationName = this.dbApplicationUtils.
-                    getFullApplicationName(application);
-                const messageFullApplicationName = this.dbApplicationUtils.
-                    getFullApplicationNameFromDomainAndName(message.domain, message.application);
-                if (fullApplicationName !== messageFullApplicationName) {
+                const fullApplication_Name = this.dbApplicationUtils.
+                    getFullApplication_Name(application);
+                const messageFullApplication_Name = this.dbApplicationUtils.
+                    getFullApplication_NameFromDomainAndName(message.domain, message.application);
+                if (fullApplication_Name !== messageFullApplication_Name) {
                     theResult = null;
                     break;
                 }
                 if (this.terminalStore.getReceiver().initializingApps
-                    .has(fullApplicationName)) {
+                    .has(fullApplication_Name)) {
                     return {
                         theErrorMessage,
                         theResult
                     };
                 }
                 this.terminalStore.getReceiver().initializingApps
-                    .add(fullApplicationName);
+                    .add(fullApplication_Name);
                 // FIXME: initalize ahead of time, at Isolate Loading
                 await this.databaseManager.initFeatureApplications({}, [application]);
                 await this.internalRecordManager.ensureApplicationRecords(application, {});
@@ -74,14 +74,14 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             case IsolateMessageType.APP_INITIALIZED:
                 const initializedApps = this.terminalStore.getReceiver().initializedApps;
-                initializedApps.add(message.fullApplicationName);
+                initializedApps.add(message.fullApplication_Name);
                 return {
                     theErrorMessage,
                     theResult
                 };
             case IsolateMessageType.GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME: {
-                theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplicationName()
-                    .get(message.fullApplicationName);
+                theResult = this.terminalStore.getLatestApplicationVersionMapByFullApplication_Name()
+                    .get(message.fullApplication_Name);
                 break;
             }
             case IsolateMessageType.RETRIEVE_DOMAIN: {
@@ -122,7 +122,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             case IsolateMessageType.INSERT_VALUES_GET_IDS:
                 const insertValuesGetIdsMessage = message;
-                theResult = await this.transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
+                theResult = await this.transactionalServer.insertValuesGetLocalIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
                 break;
             case IsolateMessageType.SAVE:
             case IsolateMessageType.SAVE_TO_DESTINATION: {
@@ -131,7 +131,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                     theErrorMessage = `DbEntity id was not passed in`;
                     break;
                 }
-                const dbEntityId = saveMessage.dbEntity.id;
+                const dbEntityId = saveMessage.dbEntity._localId;
                 const dbEntity = this.terminalStore.getAllEntities()[dbEntityId];
                 if (!dbEntity) {
                     theErrorMessage = `Could not find DbEntity with Id ${dbEntityId}`;

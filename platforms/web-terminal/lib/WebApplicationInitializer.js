@@ -7,18 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ApplicationInitializer } from "@airport/landing";
 let WebApplicationInitializer = class WebApplicationInitializer extends ApplicationInitializer {
-    async nativeInitializeApplication(domain, application, fullApplicationName) {
+    async nativeInitializeApplication(domain, application, fullApplication_Name) {
         if (this.terminalStore.getReceiver().initializedApps
-            .has(fullApplicationName)) {
+            .has(fullApplication_Name)) {
             return;
         }
-        let appIframes = document.getElementsByName(fullApplicationName);
+        let appIframes = document.getElementsByName(fullApplication_Name);
         let appIframe;
         if (!appIframes.length) {
             appIframe = document.createElement('iframe');
             appIframe.src = 'http://' + domain + '/AIRport/apps/'
                 + application + '/index.html';
-            appIframe.name = fullApplicationName;
+            appIframe.name = fullApplication_Name;
             appIframe.style.display = 'none';
             document.body.appendChild(appIframe);
         }
@@ -26,13 +26,13 @@ let WebApplicationInitializer = class WebApplicationInitializer extends Applicat
             appIframe = appIframes[0];
         }
         while (!this.terminalStore.getReceiver().initializedApps
-            .has(fullApplicationName)) {
+            .has(fullApplication_Name)) {
             await this.wait(100);
         }
         this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.set(fullApplicationName, appIframe.contentWindow);
+            .applicationWindowMap.set(fullApplication_Name, appIframe.contentWindow);
         this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.set(fullApplicationName, false);
+            .initializingApplicationMap.set(fullApplication_Name, false);
     }
 };
 __decorate([

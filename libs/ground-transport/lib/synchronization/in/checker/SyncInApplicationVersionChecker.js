@@ -23,15 +23,15 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
         return true;
     }
     async checkVersionsApplicationsDomains(message, context) {
-        const { allApplicationNames, domainNames, applicationVersionCheckMap } = this.getNames(message);
-        const applicationVersions = await this.applicationVersionDao.findByDomainNamesAndApplicationNames(domainNames, allApplicationNames);
-        let lastDomainName;
-        let lastApplicationName;
+        const { allApplication_Names, domainNames, applicationVersionCheckMap } = this.getNames(message);
+        const applicationVersions = await this.applicationVersionDao.findByDomain_NamesAndApplication_Names(domainNames, allApplication_Names);
+        let lastDomain_Name;
+        let lastApplication_Name;
         for (let applicationVersion of applicationVersions) {
             let domainName = applicationVersion.application.domain.name;
             let applicationName = applicationVersion.application.name;
-            if (lastDomainName !== domainName
-                && lastApplicationName !== applicationName) {
+            if (lastDomain_Name !== domainName
+                && lastApplication_Name !== applicationName) {
                 let applicationVersionNumber = applicationVersion.integerVersion;
                 for (let [_, applicationCheck] of applicationVersionCheckMap.get(domainName)) {
                     if (applicationCheck.applicationName === applicationName) {
@@ -43,8 +43,8 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
                         applicationCheck.applicationVersion = applicationVersion;
                     }
                 }
-                lastDomainName = domainName;
-                lastApplicationName = applicationName;
+                lastDomain_Name = domainName;
+                lastApplication_Name = applicationName;
             }
         }
         for (const [domainName, applicationChecks] of applicationVersionCheckMap) {
@@ -85,15 +85,15 @@ let SyncInApplicationVersionChecker = class SyncInApplicationVersionChecker {
             }
         }
         const domainNames = [];
-        const allApplicationNames = [];
+        const allApplication_Names = [];
         for (const [domainName, applicationChecksForDomainMap] of applicationVersionCheckMap) {
             domainNames.push(domainName);
             for (let [applicationName, _] of applicationChecksForDomainMap) {
-                allApplicationNames.push(applicationName);
+                allApplication_Names.push(applicationName);
             }
         }
         return {
-            allApplicationNames,
+            allApplication_Names,
             domainNames,
             applicationVersionCheckMap
         };

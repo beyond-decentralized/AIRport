@@ -126,21 +126,20 @@ export interface IObservableDataIMO<T>
     extends IIsolateMessageOut<Observable<T>> {
 }
 
+export interface IMessageDbEntity {
+    _localId: number,
+    _applicationVersionLocalId: number
+}
+
 export interface ISaveIMI<E, T = E | E[]>
     extends IIsolateMessage {
-    dbEntity: {
-        id: number,
-        applicationVersionId: number
-    }
+    dbEntity: IMessageDbEntity
     entity: T
 }
 
 export interface ISaveToDestinationIMI<E, T = E | E[]>
     extends IApiIMI, IIsolateMessage {
-    dbEntity: {
-        id: number,
-        applicationVersionId: number
-    }
+    dbEntity: IMessageDbEntity
     entity: T
     repositoryDestination: string
 }

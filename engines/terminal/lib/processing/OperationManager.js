@@ -47,25 +47,25 @@ let OperationManager = class OperationManager {
             .getOperationsInOrder(entityGraph, context);
         const rootDbEntity = context.dbEntity;
         let saveActor = {
-            id: actor.id,
+            _localId: actor._localId,
             GUID: actor.GUID,
             user: actor.user ? {
-                id: actor.user.id
+                _localId: actor.user._localId
             } : null
         };
         let newRepository;
         if (context.newRepository) {
             newRepository = {
-                id: context.newRepository.id,
+                _localId: context.newRepository._localId,
                 createdAt: context.newRepository.createdAt,
                 GUID: context.newRepository.GUID,
                 ageSuitability: context.newRepository.ageSuitability,
                 source: context.newRepository.source,
                 ownerActor: {
-                    id: actor.id,
+                    _localId: actor._localId,
                     GUID: actor.GUID,
                     user: actor.user ? {
-                        id: actor.user.id
+                        _localId: actor.user._localId
                     } : null
                 }
             };
@@ -152,7 +152,7 @@ let OperationManager = class OperationManager {
                 const portableQuery = this.queryFacade
                     .getPortableQuery(insertValues, null, context);
                 const idsAndGeneratedValues = await this.insertManager
-                    .insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context);
+                    .insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context);
                 for (let i = 0; i < entities.length; i++) {
                     const entity = entities[i];
                     const entitySaveResult = {};

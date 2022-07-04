@@ -8,14 +8,14 @@ import { and, or } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap, ensureChildJsSet, airEntity } from '@airport/ground-control';
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
-    async applyChangesToDb(stage1Result, applicationsByApplicationVersionIdMap) {
+    async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
         const context = {};
-        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersionIdMap, context);
-        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersionIdMap, context);
-        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersionIdMap, context);
+        await this.performCreates(stage1Result.recordCreations, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performUpdates(stage1Result.recordUpdates, applicationsByApplicationVersion_LocalIdMap, context);
+        await this.performDeletes(stage1Result.recordDeletions, applicationsByApplicationVersion_LocalIdMap, context);
     }
     /**
-     * Remote changes come in with ApplicationVersionIds not ApplicationIndexes, so it makes
+     * Remote changes come in with ApplicationVersion_LocalIds not Application_Indexes, so it makes
      * sense to keep this structure.  NOTE: only one version of a given application is
      * processed at one time:
      *
@@ -23,21 +23,21 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      *  Terminal itself must first be upgraded to newer application versions, before changes
      *  for that application version are processed.
      *
-     *  To tie in a given ApplicationVersionId to its ApplicationIndex an additional mapping data
+     *  To tie in a given ApplicationVersion_LocalId to its Application_Index an additional mapping data
      *  structure is passed in.
      */
-    async performCreates(recordCreations, applicationsByApplicationVersionIdMap, context) {
+    async performCreates(recordCreations, applicationsByApplicationVersion_LocalIdMap, context) {
         for (const [applicationVersionId, creationInApplicationMap] of recordCreations) {
             for (const [tableIndex, creationInTableMap] of creationInApplicationMap) {
-                const applicationIndex = applicationsByApplicationVersionIdMap
+                const applicationIndex = applicationsByApplicationVersion_LocalIdMap
                     .get(applicationVersionId).index;
                 const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
                     .applicationVersion.entities[tableIndex];
                 const qEntity = this.airportDatabase.qApplications[applicationIndex][dbEntity.name];
                 const columns = [
-                    qEntity.repository.id,
-                    qEntity.actor.id,
-                    qEntity.actorRecordId
+                    qEntity.repository._localId,
+                    qEntity.actor._localId,
+                    qEntity._actorRecordId
                 ];
                 const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity);
                 let creatingColumns = true;
@@ -45,11 +45,11 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                 const values = [];
                 for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
                     for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
-                        for (const [actorRecordId, creationOfRowMap] of creationForActorMap) {
+                        for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
                             const rowValues = [
                                 repositoryId,
                                 actorId,
-                                actorRecordId
+                                _actorRecordId
                             ];
                             const columnIndexedValues = [];
                             for (const [columnIndex, columnValue] of creationOfRowMap) {
@@ -107,9 +107,9 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         const nonIdColumns = [];
         for (const column of dbEntity.columns) {
             switch (column.name) {
-                case airEntity.ACTOR_ID:
+                case airEntity.ACTOR_LID:
                 case airEntity.ACTOR_RECORD_ID:
-                case airEntity.REPOSITORY_ID:
+                case airEntity.REPOSITORY_LID:
                     continue;
             }
             nonIdColumns.push(column);
@@ -119,7 +119,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         });
         return nonIdColumns;
     }
-    async performUpdates(recordUpdates, applicationsByApplicationVersionIdMap, context) {
+    async performUpdates(recordUpdates, applicationsByApplicationVersion_LocalIdMap, context) {
         const finalUpdateMap = new Map();
         const recordUpdateStage = [];
         // Build the final update data structure
@@ -129,17 +129,17 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                 const finalTableUpdateMap = ensureChildJsMap(finalApplicationUpdateMap, tableIndex);
                 for (const [repositoryId, repositoryUpdateMap] of tableUpdateMap) {
                     for (const [actorId, actorUpdates] of repositoryUpdateMap) {
-                        for (const [actorRecordId, recordUpdateMap] of actorUpdates) {
+                        for (const [_actorRecordId, recordUpdateMap] of actorUpdates) {
                             const recordKeyMap = this.getRecordKeyMap(recordUpdateMap, finalTableUpdateMap);
                             ensureChildJsSet(ensureChildJsMap(recordKeyMap, repositoryId), actorId)
-                                .add(actorRecordId);
+                                .add(_actorRecordId);
                             for (const [columnIndex, columnUpdate] of recordUpdateMap) {
                                 recordUpdateStage.push([
                                     applicationVersionId,
                                     tableIndex,
                                     repositoryId,
                                     actorId,
-                                    actorRecordId,
+                                    _actorRecordId,
                                     columnIndex,
                                     columnUpdate.newValue
                                 ]);
@@ -155,16 +155,16 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         await this.recordUpdateStageDao.insertValues(recordUpdateStage);
         // Perform the updates
         for (const [applicationVersionId, updateMapForApplication] of finalUpdateMap) {
-            const application = applicationsByApplicationVersionIdMap.get(applicationVersionId);
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [tableIndex, updateMapForTable] of updateMapForApplication) {
                 await this.runUpdatesForTable(application.index, applicationVersionId, tableIndex, updateMapForTable);
             }
         }
         await this.recordUpdateStageDao.delete();
     }
-    async performDeletes(recordDeletions, applicationsByApplicationVersionIdMap, context) {
+    async performDeletes(recordDeletions, applicationsByApplicationVersion_LocalIdMap, context) {
         for (const [applicationVersionId, deletionInApplicationMap] of recordDeletions) {
-            const application = applicationsByApplicationVersionIdMap.get(applicationVersionId);
+            const application = applicationsByApplicationVersion_LocalIdMap.get(applicationVersionId);
             for (const [tableIndex, deletionInTableMap] of deletionInApplicationMap) {
                 const dbEntity = this.airportDatabase.applications[application.index].currentVersion[0]
                     .applicationVersion.entities[tableIndex];
@@ -175,9 +175,9 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                     let actorWhereFragments = [];
                     for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
                         numClauses++;
-                        actorWhereFragments.push(and(qEntity.actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor.id.equals(actorId)));
+                        actorWhereFragments.push(and(qEntity._actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
                     }
-                    repositoryWhereFragments.push(and(qEntity.repository.id.equals(repositoryId), or(...actorWhereFragments)));
+                    repositoryWhereFragments.push(and(qEntity.repository._localId.equals(repositoryId), or(...actorWhereFragments)));
                 }
                 if (numClauses) {
                     const previousDbEntity = context.dbEntity;
@@ -197,10 +197,10 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         }
     }
     /**
-     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
+     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
      * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
-     * @param {Map<ColumnIndex, RecordUpdate>} recordUpdateMap
+     * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
      * @param {ColumnUpdateKeyMap} finalTableUpdarecordKeyMapteMap
      * @returns {RecordKeyMap}
      */
@@ -241,8 +241,8 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
      * Run all updates for a particular table.  One update per updated column combination
      * is run.
      *
-     * @param {ApplicationIndex} applicationIndex
-     * @param {TableIndex} tableIndex
+     * @param {Application_Index} applicationIndex
+     * @param {ApplicationEntity_TableIndex} tableIndex
      * @param {ColumnUpdateKeyMap} updateKeyMap
      * @returns {Promise<void>}
      */

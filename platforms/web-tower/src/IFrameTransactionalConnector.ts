@@ -266,8 +266,8 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
 			...this.getCoreFields(),
 			dbEntity: {
-				id: dbEntity.id,
-				applicationVersionId: dbEntity.applicationVersion.id
+				_localId: dbEntity._localId,
+				_applicationVersionLocalId: dbEntity.applicationVersion._localId
 			},
 			entity,
 			type: IsolateMessageType.SAVE
@@ -283,8 +283,8 @@ export class IframeTransactionalConnector
 		return await this.sendMessage<ISaveIMI<any, any>, ISaveResult>({
 			...this.getCoreFields(),
 			dbEntity: {
-				id: dbEntity.id,
-				applicationVersionId: dbEntity.applicationVersion.id
+				_localId: dbEntity._localId,
+				_applicationVersionLocalId: dbEntity.applicationVersion._localId
 			},
 			entity,
 			repositoryDestination,

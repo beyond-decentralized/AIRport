@@ -37,7 +37,7 @@ already contains a new repository.`);
         const repository = {
             ageSuitability: 0,
             createdAt: new Date(),
-            id: null,
+            _localId: null,
             immutable: false,
             owner: actor.user,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
@@ -70,7 +70,7 @@ already contains a new repository.`);
         for (let i = 0; i < values.length; i++) {
             let row = values[i].slice();
             values[i] = row;
-            row.push(repository.id);
+            row.push(repository._localId);
         }
         return {
             insertInto: qEntity, columns: columns, values: values
@@ -83,7 +83,7 @@ already contains a new repository.`);
         return {
             update: rawUpdate.update,
             set: rawUpdate.set,
-            where: and(rawUpdate.where, qEntity.repository.id.equals(repository.id))
+            where: and(rawUpdate.where, qEntity.repository._localId.equals(repository._localId))
         };
     }
     ensureRepositoryScopeOnDeleteWhere(qEntity, repository, rawDelete) {
@@ -92,7 +92,7 @@ already contains a new repository.`);
         }
         return {
             deleteFrom: rawDelete.deleteFrom,
-            where: and(rawDelete.where, qEntity.repository.id.equals(repository.id))
+            where: and(rawDelete.where, qEntity.repository._localId.equals(repository._localId))
         };
     }
 };

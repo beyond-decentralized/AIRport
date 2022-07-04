@@ -1,3 +1,3 @@
-import { VespaSchemaStore } from './VespaSchemaStore';
-export const store = new VespaSchemaStore();
+import { VespaApplicationStore } from './VespaApplicationStore';
+export const store = new VespaApplicationStore();
 //# sourceMappingURL=store.js.map

@@ -57,7 +57,7 @@ export class SyncInActorChecker
 			}
 
 			const missingActors = message.actors
-				.filter(messageActor => !messageActor.id)
+				.filter(messageActor => !messageActor._localId)
 
 			if (missingActors.length) {
 				await this.actorDao.insert(missingActors, context)

@@ -128,15 +128,15 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
     }
     async nativeStartApiCall(message, context) {
         return await this.startApiCall(message, context, async () => {
-            const fullApplicationName = this.dbApplicationUtils.
-                getFullApplicationNameFromDomainAndName(message.domain, message.application);
-            const frameWindow = this.getFrameWindow(fullApplicationName);
+            const fullApplication_Name = this.dbApplicationUtils.
+                getFullApplication_NameFromDomainAndName(message.domain, message.application);
+            const frameWindow = this.getFrameWindow(fullApplication_Name);
             if (frameWindow) {
                 // Forward the request to the correct application iframe
                 frameWindow.postMessage(message, '*');
             }
             else {
-                throw new Error(`No Application IFrame found for: ${fullApplicationName}`);
+                throw new Error(`No Application IFrame found for: ${fullApplication_Name}`);
             }
         });
     }
@@ -171,19 +171,19 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         return response;
     }
     async ensureConnectionIsReady(message) {
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(message.domain, message.application);
         const applicationInitializing = this.terminalStore.getApplicationInitializer()
-            .initializingApplicationMap.get(fullApplicationName);
+            .initializingApplicationMap.get(fullApplication_Name);
         if (applicationInitializing) {
             return;
         }
         const applicationWindow = this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.get(fullApplicationName);
+            .applicationWindowMap.get(fullApplication_Name);
         if (!applicationWindow) {
             this.terminalStore.getApplicationInitializer()
-                .initializingApplicationMap.set(fullApplicationName, true);
-            await this.applicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplicationName);
+                .initializingApplicationMap.set(fullApplication_Name, true);
+            await this.applicationInitializer.nativeInitializeApplication(message.domain, message.application, fullApplication_Name);
         }
         const connectionIsReadyMessage = {
             application: message.application,
@@ -219,9 +219,9 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             // Prevent hosts from making local 'Denial of Service' attacks
             return;
         }
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(message.domain, message.application);
-        let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(message.domain, message.application);
+        let numPendingMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name);
         if (!numPendingMessagesForApplication) {
             numPendingMessagesForApplication = 0;
         }
@@ -230,8 +230,8 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return;
         }
         webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1);
-        webReciever.pendingApplicationCounts.set(fullApplicationName, numPendingMessagesForApplication + 1);
-        if (!await this.ensureApplicationIsInstalled(fullApplicationName)) {
+        webReciever.pendingApplicationCounts.set(fullApplication_Name, numPendingMessagesForApplication + 1);
+        if (!await this.ensureApplicationIsInstalled(fullApplication_Name)) {
             this.relyToClientWithError(message, `Application is not installed`);
             return;
         }
@@ -260,9 +260,9 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         };
         this.replyToClientRequest(toClientRedirectedMessage);
     }
-    getFrameWindow(fullApplicationName) {
+    getFrameWindow(fullApplication_Name) {
         const iframe = document
-            .getElementsByName(fullApplicationName);
+            .getElementsByName(fullApplication_Name);
         if (!iframe || !iframe[0]) {
             return null;
         }
@@ -275,14 +275,14 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         this.replyToClientRequest(message);
     }
     replyToClientRequest(message) {
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(message.domain, message.application);
         const webReciever = this.terminalStore.getWebReceiver();
         let numMessagesFromHost = webReciever.pendingHostCounts.get(message.domain);
         if (numMessagesFromHost > 0) {
             webReciever.pendingHostCounts.set(message.domain, numMessagesFromHost - 1);
         }
-        let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplicationName);
+        let numMessagesForApplication = webReciever.pendingApplicationCounts.get(fullApplication_Name);
         if (numMessagesForApplication > 0) {
             webReciever.pendingApplicationCounts.set(message.domain, numMessagesForApplication - 1);
         }
@@ -292,12 +292,12 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         }
         this.webMessageReciever.sendMessageToClient(message);
     }
-    async ensureApplicationIsInstalled(fullApplicationName) {
-        if (!fullApplicationName) {
+    async ensureApplicationIsInstalled(fullApplication_Name) {
+        if (!fullApplication_Name) {
             return false;
         }
         return !!this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.get(fullApplicationName);
+            .applicationWindowMap.get(fullApplication_Name);
     }
     async messageIsFromValidApp(message, messageOrigin) {
         const applicationDomain = messageOrigin.split('//')[1];
@@ -307,15 +307,15 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return true;
         }
         const webReciever = this.terminalStore.getWebReceiver();
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(message.domain, message.application);
         // Only accept requests from https protocol
         if (!messageOrigin.startsWith("https")
-            // and from application domains that match the fullApplicationName
-            || applicationDomain !== fullApplicationName + webReciever.domainPrefix) {
+            // and from application domains that match the fullApplication_Name
+            || applicationDomain !== fullApplication_Name + webReciever.domainPrefix) {
             return false;
         }
-        // Only accept requests from '${applicationName}.${mainDomainName}'
+        // Only accept requests from '${applicationName}.${mainDomain_Name}'
         if (applicationDomainFragments.length !== webReciever.mainDomainFragments.length + 1) {
             return false;
         }
@@ -324,25 +324,25 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
             return false;
         }
         const applicationDomainFirstFragment = applicationDomainFragments[0];
-        // check application domain-embedded signature and fullApplicationName in message
+        // check application domain-embedded signature and fullApplication_Name in message
         // and make sure they result in a match
-        if (applicationDomainFirstFragment !== fullApplicationName) {
+        if (applicationDomainFirstFragment !== fullApplication_Name) {
             return false;
         }
         // Make sure the application is installed
         return !!this.terminalStore.getApplicationInitializer()
-            .applicationWindowMap.get(fullApplicationName);
+            .applicationWindowMap.get(fullApplication_Name);
     }
     async handleIsolateMessage(message, messageOrigin, source) {
         if (!await this.messageIsFromValidApp(message, messageOrigin)) {
             return;
         }
         const webReciever = this.terminalStore.getWebReceiver();
-        const fullApplicationName = this.dbApplicationUtils.
-            getFullApplicationNameFromDomainAndName(message.domain, message.application);
+        const fullApplication_Name = this.dbApplicationUtils.
+            getFullApplication_NameFromDomainAndName(message.domain, message.application);
         switch (message.type) {
             case IsolateMessageType.SEARCH_UNSUBSCRIBE:
-                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
+                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name);
                 if (!isolateSubscriptionMap) {
                     return;
                 }
@@ -366,19 +366,19 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         if (!response) {
             return;
         }
-        let shemaDomainName = fullApplicationName + '.' + webReciever.localDomain;
+        let shemaDomain_Name = fullApplication_Name + '.' + webReciever.localDomain;
         switch (message.type) {
             case IsolateMessageType.SEARCH:
             case IsolateMessageType.SEARCH_ONE:
                 const observableDataResult = response;
                 observableDataResult.result.pipe(map(value => {
-                    window.postMessage(value, shemaDomainName);
+                    window.postMessage(value, shemaDomain_Name);
                 }));
                 const subscription = observableDataResult.result.subscribe();
-                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplicationName);
+                let isolateSubscriptionMap = webReciever.subsriptionMap.get(fullApplication_Name);
                 if (!isolateSubscriptionMap) {
                     isolateSubscriptionMap = new Map();
-                    webReciever.subsriptionMap.set(fullApplicationName, isolateSubscriptionMap);
+                    webReciever.subsriptionMap.set(fullApplication_Name, isolateSubscriptionMap);
                 }
                 isolateSubscriptionMap.set(message.id, subscription);
                 return;

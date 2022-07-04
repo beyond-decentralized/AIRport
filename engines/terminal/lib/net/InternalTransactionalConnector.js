@@ -70,8 +70,8 @@ they are internal to the AIRport framework).`);
             ...context
         }, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, context) {
-        return await this.transactionalServer.insertValuesGetIds(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
+    async insertValuesGetLocalIds(portableQuery, context) {
+        return await this.transactionalServer.insertValuesGetLocalIds(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });

@@ -30,14 +30,14 @@ let SqlDriver = class SqlDriver {
         if (table.tableConfig && table.tableConfig.name) {
             theTableName = table.tableConfig.name;
         }
-        let fullApplicationName;
+        let fullApplication_Name;
         if (application.fullName) {
-            fullApplicationName = application.fullName;
+            fullApplication_Name = application.fullName;
         }
         else {
-            fullApplicationName = this.dbApplicationUtils.getFullApplicationName(application);
+            fullApplication_Name = this.dbApplicationUtils.getFullApplication_Name(application);
         }
-        return this.composeTableName(fullApplicationName, theTableName, context);
+        return this.composeTableName(fullApplication_Name, theTableName, context);
     }
     async internalSetupTransaction(transaction, context) {
         await this.ensureContext(context);

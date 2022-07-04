@@ -21,7 +21,7 @@ let SyncInActorChecker = class SyncInActorChecker {
                 actorGUIDs.push(actor.GUID);
                 messageActorIndexMap.set(actor.GUID, i);
                 // Make sure id field is not in the input
-                delete actor.id;
+                delete actor._localId;
             }
             const actors = await this.actorDao.findByGUIDs(actorGUIDs);
             for (const actor of actors) {
@@ -29,7 +29,7 @@ let SyncInActorChecker = class SyncInActorChecker {
                 message.actors[messageUserIndex] = actor;
             }
             const missingActors = message.actors
-                .filter(messageActor => !messageActor.id);
+                .filter(messageActor => !messageActor._localId);
             if (missingActors.length) {
                 await this.actorDao.insert(missingActors, context);
             }

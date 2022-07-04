@@ -43,7 +43,7 @@ export class SyncInUserChecker
 				userGUIDs.push(user.GUID)
 				messageUserIndexMap.set(user.GUID, i)
 				// Make sure id field is not in the input
-				delete user.id
+				delete user._localId
 			}
 
 			const users = await this.userDao.findByGUIDs(userGUIDs)
@@ -52,7 +52,7 @@ export class SyncInUserChecker
 				message.users[messageUserIndex] = user
 			}
 
-			const missingUsers = message.users.filter(messageUser => !messageUser.id)
+			const missingUsers = message.users.filter(messageUser => !messageUser._localId)
 
 			if (missingUsers.length) {
 				await this.addMissingUsers(missingUsers, context)

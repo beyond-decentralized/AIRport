@@ -86,9 +86,9 @@ let UpdateManager = class UpdateManager {
             for (const recordToUpdate of recordsForRepositoryId) {
                 const actorId = recordToUpdate[getSheetSelectFromSetClauseResult.actorIdColumnIndex];
                 const recordHistoryMapForActor = ensureChildMap(recordHistoryMapForRepository, actorId);
-                const actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
-                const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, actorRecordId);
-                recordHistoryMapForActor[actorRecordId] = recordHistory;
+                const _actorRecordId = recordToUpdate[getSheetSelectFromSetClauseResult.actorRecordIdColumnIndex];
+                const recordHistory = this.operationHistoryDuo.startRecordHistory(operationHistory, actorId, _actorRecordId);
+                recordHistoryMapForActor[_actorRecordId] = recordHistory;
                 for (let i = 0; i < recordToUpdate.length; i++) {
                     switch (i) {
                         case getSheetSelectFromSetClauseResult.actorIdColumnIndex:
@@ -135,8 +135,8 @@ let UpdateManager = class UpdateManager {
             for (const updatedRecord of recordsForRepositoryId) {
                 const repositoryId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.repositoryIdColumnIndex)];
                 const actorId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorIdColumnIndex)];
-                const actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorRecordIdColumnIndex)];
-                const recordHistory = recordHistoryMapByRecordId[repositoryId][actorId][actorRecordId];
+                const _actorRecordId = updatedRecord[resultSetIndexByColumnIndex.get(repositorySheetSelectInfo.actorRecordIdColumnIndex)];
+                const recordHistory = recordHistoryMapByRecordId[repositoryId][actorId][_actorRecordId];
                 for (const columnName in jsonUpdate.S) {
                     const dbColumn = context.dbEntity.columnMap[columnName];
                     const value = updatedRecord[resultSetIndexByColumnIndex.get(dbColumn.index)];
