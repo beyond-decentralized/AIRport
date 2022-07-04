@@ -4,7 +4,7 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	PortableQuery
+	PortableQuery, QueryResultType
 } from '@airport/ground-control'
 import {
 	IQueryManager,
@@ -30,7 +30,12 @@ export class QueryManager
 	): Promise<EntityArray> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
 
-		return await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		const entityArray = await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+
+		await this.populateEntityGuidEntitiesAndUsers(
+			portableQuery, entityArray);
+
+		return entityArray;
 	}
 
 	async findOne<E>(
@@ -40,7 +45,12 @@ export class QueryManager
 	): Promise<E> {
 		await this.ensureRepositoryPresenceAndCurrentState(context)
 
-		return await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		const entity = await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+
+		await this.populateEntityGuidEntitiesAndUsers(
+			portableQuery, [entity]);
+
+		return entity
 	}
 
 	search<E, EntityArray extends Array<E>>(
@@ -71,6 +81,22 @@ export class QueryManager
 		if (context.repository && context.repository.source && context.repository.GUID) {
 			await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context)
 		}
+	}
+
+	// TODO: if needed use the Entity structure of the incoming portable query
+	// to definitively process the results
+	private async populateEntityGuidEntitiesAndUsers<E, EntityArray extends Array<E>>(
+		portableQuery: PortableQuery,
+		entities: EntityArray
+	): Promise<void> {
+		switch (portableQuery.queryResultType) {
+			case QueryResultType.ENTITY_GRAPH:
+			case QueryResultType.ENTITY_TREE:
+				break;
+			default:
+				return
+		}
+
 	}
 
 }
