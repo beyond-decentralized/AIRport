@@ -156,6 +156,16 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 }
             });
         }
+        if (!object.isNew
+            && !Object.getOwnPropertyDescriptor(object, 'createdBy')
+            && (!objectPrototype
+                || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
+            Object.defineProperty(object, 'createdBy', {
+                get() {
+                    return this.actor.user.username;
+                }
+            });
+        }
     }
 };
 __decorate([

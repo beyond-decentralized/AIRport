@@ -511,6 +511,24 @@ export const MAPPED_SUPERCLASS = [
                     "isId": false,
                     "isMappedSuperclass": false,
                     "isTransient": true,
+                    "name": "createdBy",
+                    "optional": true,
+                    "type": "string",
+                    "ownerEntity": null,
+                    "nonArrayType": "string",
+                    "primitive": "string"
+                },
+                {
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
+                    "isTransient": true,
                     "name": "isNew",
                     "optional": true,
                     "type": "boolean",
@@ -1087,6 +1105,24 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": true,
                         "name": "id",
+                        "optional": true,
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "createdBy",
                         "optional": true,
                         "type": "string",
                         "ownerEntity": null,
@@ -1763,6 +1799,24 @@ export const MAPPED_SUPERCLASS = [
                         "isMappedSuperclass": false,
                         "isTransient": true,
                         "name": "id",
+                        "optional": true,
+                        "type": "string",
+                        "ownerEntity": null,
+                        "nonArrayType": "string",
+                        "primitive": "string"
+                    },
+                    {
+                        "decorators": [
+                            {
+                                "name": "Transient",
+                                "values": []
+                            }
+                        ],
+                        "isGenerated": false,
+                        "isId": false,
+                        "isMappedSuperclass": false,
+                        "isTransient": true,
+                        "name": "createdBy",
                         "optional": true,
                         "type": "string",
                         "ownerEntity": null,
@@ -3169,6 +3223,24 @@ export const MAPPED_SUPERCLASS = [
                             "isMappedSuperclass": false,
                             "isTransient": true,
                             "name": "id",
+                            "optional": true,
+                            "type": "string",
+                            "ownerEntity": null,
+                            "nonArrayType": "string",
+                            "primitive": "string"
+                        },
+                        {
+                            "decorators": [
+                                {
+                                    "name": "Transient",
+                                    "values": []
+                                }
+                            ],
+                            "isGenerated": false,
+                            "isId": false,
+                            "isMappedSuperclass": false,
+                            "isTransient": true,
+                            "name": "createdBy",
                             "optional": true,
                             "type": "string",
                             "ownerEntity": null,

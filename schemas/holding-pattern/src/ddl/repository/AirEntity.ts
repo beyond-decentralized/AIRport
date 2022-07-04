@@ -105,6 +105,13 @@ export abstract class AirEntity {
 	@Transient()
 	id?: string
 
+	/*
+	 *A transient convenience property to get the username of the
+	 * UserAccount that created the record.
+	 */
+	@Transient()
+	createdBy?: string
+
 	/**
 	 * A transient property, generated on the entity objects by the
 	 * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value

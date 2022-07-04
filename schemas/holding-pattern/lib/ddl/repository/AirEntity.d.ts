@@ -38,6 +38,7 @@ export declare abstract class AirEntity {
      * Returns null if one of it's member Ids does not exist
      */
     id?: string;
+    createdBy?: string;
     /**
      * A transient property, generated on the entity objects by the
      * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value

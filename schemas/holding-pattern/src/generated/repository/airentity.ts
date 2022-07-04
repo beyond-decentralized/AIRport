@@ -32,6 +32,7 @@ export interface IAirEntity {
 
 	// Transient Properties
 	id?: string;
+	createdBy?: string;
 	isNew?: boolean;
 
 	// Public Methods
