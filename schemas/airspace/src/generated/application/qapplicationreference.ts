@@ -107,7 +107,7 @@ export interface ApplicationReferenceEUpdateProperties
 	// Non-Id Properties
 	index?: number | IQNumberField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 
 }
 

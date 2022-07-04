@@ -9,7 +9,7 @@ export interface IRootContainer
     // objectPoolMap: Map<string, any[]>
 
     db(
-        id?: string
+        databaseComponentId?: string
     ): IChildContainer
 
     ui(

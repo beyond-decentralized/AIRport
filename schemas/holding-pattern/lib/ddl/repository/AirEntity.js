@@ -60,7 +60,7 @@ __decorate([
 ], AirEntity.prototype, "originalActorRecordId", void 0);
 __decorate([
     Transient()
-], AirEntity.prototype, "uuId", void 0);
+], AirEntity.prototype, "id", void 0);
 __decorate([
     Transient()
 ], AirEntity.prototype, "isNew", void 0);

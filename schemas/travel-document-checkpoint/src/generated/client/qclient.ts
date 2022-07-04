@@ -152,7 +152,7 @@ export interface ClientEUpdateProperties
 	domain?: string | IQStringField;
 	GUID?: string | IQStringField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
 	state?: StateEOptionalId;

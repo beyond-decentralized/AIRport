@@ -15,13 +15,13 @@ export interface INonhubClient {
 
     getRepositoryTransactions(
         location: string,
-        repositoryUuid: string,
+        repositoryGUID: string,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationReadResponseFragment[]>
 
     sendRepositoryTransactions(
         location: string,
-        repositoryUuId: string,
+        repositoryGUID: string,
         messages: RepositorySynchronizationMessage[]
     ): Promise<RepositoryTransactionHistory_SyncTimestamp>
 
@@ -36,14 +36,14 @@ export class NonhubClient
 
     async getRepositoryTransactions(
         location: string,
-        repositoryUuId: string,
+        repositoryGUID: string,
         sinceSyncTimestamp: number = null
     ): Promise<RepositorySynchronizationReadResponseFragment[]> {
         try {
             const response = await this.sendMessage<
                 RepositorySynchronizationReadRequest,
                 RepositorySynchronizationReadResponse>(location + '/read', {
-                    repositoryUuId,
+                    repositoryGUID,
                     syncTimestamp: sinceSyncTimestamp
                 })
             if (response.error) {
@@ -59,7 +59,7 @@ export class NonhubClient
 
     async sendRepositoryTransactions(
         location: string,
-        repositoryUuId: string,
+        repositoryGUID: string,
         messages: RepositorySynchronizationMessage[]
     ): Promise<RepositoryTransactionHistory_SyncTimestamp> {
         try {
@@ -68,7 +68,7 @@ export class NonhubClient
                 RepositorySynchronizationWriteResponse
             >(location + '/write', {
                 messages,
-                repositoryUuId
+                repositoryGUID
             })
             if (response.error) {
                 console.error(response.error)

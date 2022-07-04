@@ -1,4 +1,4 @@
-import { AirEntityUuId } from '@airport/aviation-communication';
+import { AirEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { IEntityStateManager, IAirEntity, ISaveResult } from '@airport/ground-control';
 import { IAirportDatabase } from '../AirportDatabase';
@@ -18,12 +18,12 @@ export interface IDao<Entity, EntitySelect extends IEntitySelectProperties, Enti
     lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE>;
-    mapByUuId(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
+    mapById(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: ApplicationEntity_LocalId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: ApplicationEntity_LocalId[], context?: IContext): Promise<Entity[]>;
     findAllAsTrees(entityIds?: ApplicationEntity_LocalId[], context?: IContext): Promise<Entity[]>;
-    findByUuId(airEntityId: Entity | AirEntityUuId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
+    findOne(airEntityId: Entity | AirEntityId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
     /**
      * Either creates or updates the entity based entity
      * state flag.  Cascades.

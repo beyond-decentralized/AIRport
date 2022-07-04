@@ -1,5 +1,5 @@
 import { Api } from "@airport/check-in";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import { IUser } from "../generated/user";
 import { UserDao } from "../dao/UserDao";
 import { Injected } from "@airport/direction-indicator";
@@ -38,7 +38,7 @@ export class UserApi {
         }
         const user: IUser = {
             _localId: null,
-            GUID: uuidv4(),
+            GUID: guidv4(),
             username
         }
         await this.userDao.save(user)

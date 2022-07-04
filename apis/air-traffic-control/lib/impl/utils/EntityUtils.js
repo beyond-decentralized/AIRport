@@ -59,12 +59,12 @@ let EntityUtils = class EntityUtils {
     getQuery(query) {
         return this.getRawQuery(query);
     }
-    ensureUuid(rawEntityQuery) {
+    ensureId(rawEntityQuery) {
         let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
-        this.ensureUuIdAtLevel(theRawEntityQuery.select, theRawEntityQuery.from[0]);
+        this.ensureIdAtLevel(theRawEntityQuery.select, theRawEntityQuery.from[0]);
         return theRawEntityQuery;
     }
-    ensureUuIdAtLevel(selectClauseFragment, qEntity) {
+    ensureIdAtLevel(selectClauseFragment, qEntity) {
         for (const propertyName in selectClauseFragment) {
             const subFragment = selectClauseFragment[propertyName];
             if (subFragment instanceof Object
@@ -78,26 +78,26 @@ let EntityUtils = class EntityUtils {
                     }
                 }
                 if (matchingQEntity) {
-                    this.ensureUuIdAtLevel(subFragment, matchingQEntity);
+                    this.ensureIdAtLevel(subFragment, matchingQEntity);
                 }
             }
         }
-        if (!selectClauseFragment.uuId) {
+        if (!selectClauseFragment.id) {
             return;
         }
         let repository = selectClauseFragment.repository;
         if (repository) {
             if (!(repository instanceof Object)) {
-                throw new Error(`uuId queries must include a repository object in the select clause.
-It must be an Object with the uuId property.`);
+                throw new Error(`id queries must include a repository object in the select clause.
+It must be an Object with the id property.`);
             }
             repository.GUID = Y;
         }
         let actor = selectClauseFragment.actor;
         if (actor) {
             if (!(actor instanceof Object)) {
-                throw new Error(`uuId queries must include an actor object in the select clause.
-It must be an Object with the uuId property.`);
+                throw new Error(`id queries must include an actor object in the select clause.
+It must be an Object with the id property.`);
             }
             actor.GUID = Y;
         }

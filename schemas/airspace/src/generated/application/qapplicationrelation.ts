@@ -147,7 +147,7 @@ export interface ApplicationRelationEUpdateProperties
 	relationType?: string | IQStringField;
 	isId?: boolean | IQBooleanField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	property?: ApplicationPropertyEOptionalId;
 	entity?: ApplicationEntityEOptionalId;
 	relationEntity?: ApplicationEntityEOptionalId;

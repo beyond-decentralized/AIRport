@@ -38,7 +38,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                     _localId
                 },
                 createdAt: Y,
-                uuId: Y
+                GUID: Y
             },
             from: [
                 r = Q.Repository

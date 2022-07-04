@@ -41,7 +41,7 @@ export class SyncInTerminalChecker
 					in 'terminal.owner' of RepositorySynchronizationMessage.terminals`)
 				}
 				if (typeof terminal.GUID !== 'string' || terminal.GUID.length !== 36) {
-					throw new Error(`Invalid 'terminal.uuid' in RepositorySynchronizationMessage.terminals`)
+					throw new Error(`Invalid 'terminal.GUID' in RepositorySynchronizationMessage.terminals`)
 				}
 				if (terminal.isLocal !== undefined) {
 					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`)

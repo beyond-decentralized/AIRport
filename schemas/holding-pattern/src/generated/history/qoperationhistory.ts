@@ -138,7 +138,7 @@ export interface OperationHistoryEUpdateProperties
 	changeType?: string | IQStringField;
 	systemWideOperationId?: number | IQNumberField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	entity?: ApplicationEntityEOptionalId;
 	actor?: ActorEOptionalId;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryEOptionalId;

@@ -10,7 +10,7 @@ export interface IAirEntity {
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    uuId?: string;
+    id?: string;
     isNew?: boolean;
 }
 //# sourceMappingURL=airentity.d.ts.map

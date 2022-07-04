@@ -12,7 +12,7 @@ export interface IEntityUtils {
     getQuery<Q>(query: Q | {
         (...args: any[]): Q;
     }): Q;
-    ensureUuid<EntitySelect extends IEntitySelectProperties>(rawEntityQuery: RawEntityQuery<EntitySelect> | {
+    ensureId<EntitySelect extends IEntitySelectProperties>(rawEntityQuery: RawEntityQuery<EntitySelect> | {
         (...args: any[]): RawEntityQuery<EntitySelect>;
     }): RawEntityQuery<EntitySelect>;
     ensureRepositoryAndActorJoin(qEntity: IQEntityInternal): {

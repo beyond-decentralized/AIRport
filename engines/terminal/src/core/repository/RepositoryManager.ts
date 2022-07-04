@@ -24,7 +24,7 @@ import {
 	REPOSITORY_FIELD,
 	UpdateState,
 } from '@airport/terminal-map'
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 
 /**
  * Created by Papa on 2/12/2017.
@@ -98,7 +98,7 @@ already contains a new repository.`)
 			// platformConfig: null,
 			repositoryTransactionHistory: [],
 			source: 'localhost:9000',
-			GUID: uuidv4(),
+			GUID: guidv4(),
 		}
 
 		return repository

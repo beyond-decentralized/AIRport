@@ -7,6 +7,8 @@ import {
 } from '@airport/air-traffic-control'
 import { TypeClassification } from './TypeClassification'
 
+export type Type_Id = number
+
 @Entity()
 @Table({
     name: 'TYPES'

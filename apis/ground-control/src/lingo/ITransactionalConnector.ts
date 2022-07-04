@@ -94,7 +94,7 @@ export interface IAirEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	uuId?: string
+	id?: string
 
 	// Public Methods
 }

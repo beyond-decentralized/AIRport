@@ -136,7 +136,7 @@ export interface RecordHistoryEUpdateProperties
 	// Non-Id Properties
 	_actorRecordId?: number | IQNumberField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	actor?: ActorEOptionalId;
 	operationHistory?: OperationHistoryEOptionalId;
 

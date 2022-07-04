@@ -38,7 +38,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 },
                 terminal: {},
                 user: {},
-                uuId: Y
+                GUID: Y
             },
             from: [
                 act = Q.Actor,

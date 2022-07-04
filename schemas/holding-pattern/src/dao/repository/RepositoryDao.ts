@@ -101,7 +101,7 @@ export class RepositoryDao
 					_localId
 				},
 				createdAt: Y,
-				uuId: Y
+				GUID: Y
 			},
 			from: [
 				r = Q.Repository

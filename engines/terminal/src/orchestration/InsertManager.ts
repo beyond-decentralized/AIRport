@@ -153,7 +153,7 @@ appears more than once in the Columns clause`)
 		const insertValues = <JsonInsertValues>portableQuery.jsonQuery
 
 		if (dbEntity.isAirEntity) {
-			columnsToPopulate = this.ensureAirEntityUuIdValues(actor, dbEntity,
+			columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity,
 				insertValues, errorPrefix, transaction, context)
 		}
 
@@ -392,7 +392,7 @@ appears more than once in the Columns clause`)
 		return allIds
 	}
 
-	private ensureAirEntityUuIdValues(
+	private ensureAirEntityIdValues(
 		actor: IActor,
 		dbEntity: DbEntity,
 		jsonInsertValues: JsonInsertValues,

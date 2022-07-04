@@ -134,7 +134,7 @@ export class ActorDao
 				},
 				terminal: {},
 				user: {},
-				uuId: Y
+				GUID: Y
 			},
 			from: [
 				act = Q.Actor,

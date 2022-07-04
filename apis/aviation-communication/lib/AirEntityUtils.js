@@ -9,7 +9,7 @@ let AirEntityUtils = class AirEntityUtils {
     getCreatedBy(airEntity) {
         return airEntity.actor.user;
     }
-    encodeUuId(idObject) {
+    encodeId(idObject) {
         if (!idObject.repository
             || !idObject.repository.GUID
             || !idObject.actor
@@ -33,25 +33,25 @@ let AirEntityUtils = class AirEntityUtils {
         if (idStringFragments.length !== 11) {
             throw new Error('Invalid Entity Id, expecting ${repository.GUID}-${actor.GUID}-${_actorRecordId}');
         }
-        const repositoryUuIdFragments = [];
+        const repositoryGUIDFragments = [];
         for (let i = 0; i < 5; i++) {
-            repositoryUuIdFragments.push(idStringFragments[i]);
+            repositoryGUIDFragments.push(idStringFragments[i]);
         }
-        const actorUuIdFragments = [];
+        const actorGUIDFragments = [];
         for (let i = 5; i < 10; i++) {
-            actorUuIdFragments.push(idStringFragments[i]);
+            actorGUIDFragments.push(idStringFragments[i]);
         }
         return {
             repository: {
-                GUID: repositoryUuIdFragments.join('-')
+                GUID: repositoryGUIDFragments.join('-')
             },
             actor: {
-                GUID: actorUuIdFragments.join('-')
+                GUID: actorGUIDFragments.join('-')
             },
             _actorRecordId: parseInt(idStringFragments[11])
         };
     }
-    setUuId(idString, airEntity) {
+    setId(idString, airEntity) {
         let airEntityId = this.parseEGUID(idString);
         if (!airEntity.repository) {
             airEntity.repository = {

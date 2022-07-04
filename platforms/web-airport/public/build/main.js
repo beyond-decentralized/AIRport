@@ -2105,12 +2105,12 @@ let RepositoryLoader = class RepositoryLoader {
     - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
     Immutable repositories are only loaded once
     */
-    async loadRepository(repositorySource, repositoryUuId, context) {
+    async loadRepository(repositorySource, repositoryGUID, context) {
         if (context.repositoryExistenceChecked) {
             return;
         }
         context.repositoryExistenceChecked = true;
-        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryUuId, context);
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryGUID, context);
         let loadRepository = false;
         let lastSyncTimestamp = 0;
         if (!repositoryLoadInfo) {
@@ -2139,10 +2139,10 @@ let RepositoryLoader = class RepositoryLoader {
                 }
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000;
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId, lastSyncTimestamp);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID, lastSyncTimestamp);
             }
             else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryUuId);
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
             }
             // TODO: Add a special message for repository for adding users
             // into the repository 
@@ -2150,11 +2150,11 @@ let RepositoryLoader = class RepositoryLoader {
             // each message is signed with the private key and the initial
             // message for repository is CREATE_REPOSITORY with the public 
             // key of the owner user
-            const messageMapByUuId = new Map();
+            const messagemapById = new Map();
             for (const message of messages) {
-                messageMapByUuId.set(message.history.uuId, message);
+                messagemapById.set(message.history.uuId, message);
             }
-            await this.synchronizationInManager.receiveMessages(messageMapByUuId, context);
+            await this.synchronizationInManager.receiveMessages(messagemapById, context);
         }
         catch (e) {
             console.error(e);
@@ -3915,18 +3915,18 @@ var __decorate$2J = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let QueryUtils = class QueryUtils {
-    equals(entityOrUuId, toObject) {
-        if (!entityOrUuId) {
+    equals(entityOrId, toObject) {
+        if (!entityOrId) {
             throw new Error(`null entity/Id/UuId is passed into equals method`);
         }
         let entityUuId;
-        let entityOrId = entityOrUuId;
-        if (typeof entityOrUuId === 'string') {
-            entityUuId = this.airEntityUtils.parseUuId(entityOrUuId);
+        let entityOrId = entityOrId;
+        if (typeof entityOrId === 'string') {
+            entityUuId = this.airEntityUtils.parseUuId(entityOrId);
         }
         else if (entityOrId.repository.uuId
             && entityOrId.actor.uuId) {
-            entityUuId = entityOrUuId;
+            entityUuId = entityOrId;
         }
         else {
             throw new Error(`Expecting either string id or an object tree with uuIds`);
@@ -5876,7 +5876,7 @@ class EntityLookup extends LookupProxy {
     async entityLookup(rawEntityQuery, queryResultType, search, one, context) {
         context.dbEntity = this.dbEntity;
         rawEntityQuery = IOC.getSync(ENTITY_UTILS)
-            .ensureUuid(rawEntityQuery, this.dbEntity);
+            .ensureId(rawEntityQuery, this.dbEntity);
         const result = await this.lookup(rawEntityQuery, queryResultType, search, one, null, context, this.mapResults);
         if (search) {
             throw new Error(`Search operations are not yet supported`);
@@ -7334,12 +7334,12 @@ let EntityUtils = class EntityUtils {
     getQuery(query) {
         return this.getRawQuery(query);
     }
-    ensureUuid(rawEntityQuery, dbEntity) {
+    ensureId(rawEntityQuery, dbEntity) {
         let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
-        this.ensureUuIdAtLevel(theRawEntityQuery.select, dbEntity, theRawEntityQuery.from[0], rawEntityQuery);
+        this.ensureIdAtLevel(theRawEntityQuery.select, dbEntity, theRawEntityQuery.from[0], rawEntityQuery);
         return theRawEntityQuery;
     }
-    ensureUuIdAtLevel(selectClauseFragment, dbEntity, qEntity, rawGraphQuery) {
+    ensureIdAtLevel(selectClauseFragment, dbEntity, qEntity, rawGraphQuery) {
         if (selectClauseFragment.uuId) {
             qEntity.__driver__.parentJoinEntity;
         }
@@ -8003,7 +8003,7 @@ let AirEntityUtils = class AirEntityUtils {
     getCreatedBy(airEntity) {
         return airEntity.actor.user;
     }
-    encodeUuId(idObject) {
+    encodeId(idObject) {
         if (!idObject.repository
             || !idObject.repository.uuId
             || !idObject.actor
@@ -8025,11 +8025,11 @@ let AirEntityUtils = class AirEntityUtils {
     parseUuId(idString) {
         const idStringFragments = idString.split('-');
         if (idStringFragments.length !== 11) {
-            throw new Error('Invalid AirEntity UuId, expecting {repositoryUuId}-{actorUuId}-{_actorRecordId}');
+            throw new Error('Invalid AirEntity UuId, expecting {repositoryGUID}-{actorUuId}-{_actorRecordId}');
         }
-        const repositoryUuIdFragments = [];
+        const repositoryGUIDFragments = [];
         for (let i = 0; i < 5; i++) {
-            repositoryUuIdFragments.push(idStringFragments[i]);
+            repositoryGUIDFragments.push(idStringFragments[i]);
         }
         const actorUuIdFragments = [];
         for (let i = 5; i < 10; i++) {
@@ -8037,7 +8037,7 @@ let AirEntityUtils = class AirEntityUtils {
         }
         return {
             repository: {
-                uuId: repositoryUuIdFragments.join('-')
+                uuId: repositoryGUIDFragments.join('-')
             },
             actor: {
                 uuId: actorUuIdFragments.join('-')
@@ -8045,7 +8045,7 @@ let AirEntityUtils = class AirEntityUtils {
             _actorRecordId: parseInt(idStringFragments[11])
         };
     }
-    setUuId(idString, airEntity) {
+    setId(idString, airEntity) {
         let airEntityId = this.parseUuId(idString);
         if (!airEntity.repository) {
             airEntity.repository = {
@@ -8607,7 +8607,7 @@ let Dao = class Dao {
             // No runtime logic required.
         };
     }
-    mapByUuId(entities) {
+    mapById(entities) {
         const map = new Map();
         for (const entity of entities) {
             map.set(entity.id, entity);
@@ -8638,15 +8638,15 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    async findByUuId(airEntityUuId, context) {
-        if (typeof airEntityUuId === 'string') {
-            airEntityUuId = IOC.getSync(AIR_ENTITY_UTILS)
-                .parseUuId(airEntityUuId);
+    async findOne(AirEntityId, context) {
+        if (typeof AirEntityId === 'string') {
+            AirEntityId = IOC.getSync(AIR_ENTITY_UTILS)
+                .parseUuId(AirEntityId);
         }
         if (!this.db.dbEntity.isAirEntity) {
-            throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
+            throw new Error(`Dao.findOne can only be called for Repository Entities.`);
         }
-        const idObject = airEntityUuId;
+        const idObject = AirEntityId;
         if (!idObject.repository
             || !idObject.repository.uuId
             || typeof idObject.repository.uuId !== 'string'
@@ -8656,7 +8656,7 @@ let Dao = class Dao {
             || !idObject._actorRecordId
             || typeof idObject._actorRecordId !== 'number') {
             throw new Error(`Invalid AirEntity Id.  Expecting:
-				interface AirEntityUuId {
+				interface AirEntityId {
 					repository: {
 						uuId: string
 					},
@@ -10325,7 +10325,7 @@ var __decorate$26 = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
-    async getRepositoryLoadInfo(repositorySource, repositoryUuId, context) {
+    async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
         let r;
         let rth;
         let th;
@@ -10341,7 +10341,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 rth = r.repositoryTransactionHistory.innerJoin(),
                 th = rth.transactionHistory.innerJoin()
             ],
-            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryUuId), th.transactionType.equals(TransactionType.REMOTE_SYNC))
+            where: and(r.source.equals(repositorySource), r.uuId.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         }, context);
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
@@ -11413,10 +11413,10 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'uuId'))) {
             Object.defineProperty(object, 'uuId', {
                 get() {
-                    return this.__container__.getSync(AIR_ENTITY_UTILS).encodeUuId(this);
+                    return this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this);
                 },
                 set(idString) {
-                    return this.__container__.getSync(AIR_ENTITY_UTILS).setUuId(idString, this);
+                    return this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this);
                 }
             });
         }
@@ -20738,7 +20738,7 @@ appears more than once in the Columns clause`);
         let columnsToPopulate;
         const insertValues = portableQuery.jsonQuery;
         if (dbEntity.isAirEntity) {
-            columnsToPopulate = this.ensureAirEntityUuIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
+            columnsToPopulate = this.ensureAirEntityIdValues(actor, dbEntity, insertValues, errorPrefix, transaction, context);
         }
         let generatedColumns;
         if (!transaction.isSync || context.generateOnSync) {
@@ -20902,7 +20902,7 @@ appears more than once in the Columns clause`);
         // }
         return allIds;
     }
-    ensureAirEntityUuIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
+    ensureAirEntityIdValues(actor, dbEntity, jsonInsertValues, errorPrefix, transaction, context) {
         const actorIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_LID];
         const actorRecordIdColumn = dbEntity.idColumnMap[airEntity.ACTOR_RECORD_ID];
         const repositoryIdColumn = dbEntity.idColumnMap[airEntity.REPOSITORY_LID];
@@ -28191,15 +28191,15 @@ var __decorate$Y = (undefined && undefined.__decorate) || function (decorators, 
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
-    async getTransactionsForRepository(repositorySource, repositoryUuId, sinceSyncTimestamp) {
-        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryUuId, sinceSyncTimestamp);
+    async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
+        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
         for (const fragment of response) {
-            if (fragment.repositoryUuId !== repositoryUuId) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryUuId}.
-    Expecting message fragments for repository: ${repositoryUuId}`);
+            if (fragment.repositoryGUID !== repositoryGUID) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+    Expecting message fragments for repository: ${repositoryGUID}`);
                 continue;
             }
             for (const message of fragment.messages) {
@@ -28211,9 +28211,9 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
     }
     async sendTransactions(repositorySource, messagesByRepository) {
         let allSent = true;
-        for (const [repositoryUuid, messages] of messagesByRepository) {
+        for (const [repositoryGUID, messages] of messagesByRepository) {
             try {
-                if (!await this.sendTransactionsForRepository(repositorySource, repositoryUuid, messages)) {
+                if (!await this.sendTransactionsForRepository(repositorySource, repositoryGUID, messages)) {
                     allSent = false;
                 }
             }
@@ -28224,11 +28224,11 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
         }
         return allSent;
     }
-    async sendTransactionsForRepository(repositorySource, repositoryUuId, messages) {
+    async sendTransactionsForRepository(repositorySource, repositoryGUID, messages) {
         if (!messages || !messages.length) {
             return false;
         }
-        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryUuId, messages);
+        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
         if (!syncTimestamp) {
             return false;
         }
@@ -28984,10 +28984,10 @@ var __decorate$R = (undefined && undefined.__decorate) || function (decorators, 
 let SyncInRepositoryChecker = class SyncInRepositoryChecker {
     async ensureRepositories(message, context) {
         try {
-            let repositoryUuids = [];
+            let repositoryGUIDs = [];
             let messageRepositoryIndexMap = new Map();
             for (let i = 0; i < message.referencedRepositories.length; i++) {
-                this.checkRepository(message.referencedRepositories[i], i, repositoryUuids, messageRepositoryIndexMap, message);
+                this.checkRepository(message.referencedRepositories[i], i, repositoryGUIDs, messageRepositoryIndexMap, message);
             }
             const history = message.history;
             if (history.isRepositoryCreation) {
@@ -28995,16 +28995,16 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
                     throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be an object
 	if RepositorySynchronizationMessage.history.isRepositoryCreation === true`);
                 }
-                this.checkRepository(history.repository, null, repositoryUuids, messageRepositoryIndexMap, message);
+                this.checkRepository(history.repository, null, repositoryGUIDs, messageRepositoryIndexMap, message);
             }
             else {
                 if (typeof history.repository !== 'string') {
                     throw new Error(`Serialized RepositorySynchronizationMessage.history.repository should be a string
 	if RepositorySynchronizationMessage.history.isRepositoryCreation === false`);
                 }
-                repositoryUuids.push(history.repository);
+                repositoryGUIDs.push(history.repository);
             }
-            const repositories = await this.repositoryDao.findByGUIDs(repositoryUuids);
+            const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
             for (const repository of repositories) {
                 const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
                 if (messageUserIndex || messageUserIndex === 0) {
@@ -29038,7 +29038,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
         }
         return true;
     }
-    checkRepository(repository, repositoryIndex, repositoryUuids, messageRepositoryIndexMap, message) {
+    checkRepository(repository, repositoryIndex, repositoryGUIDs, messageRepositoryIndexMap, message) {
         if (typeof repository.ageSuitability !== 'number') {
             throw new Error(`Invalid 'repository.ageSuitability'`);
         }
@@ -29064,7 +29064,7 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             throw new Error(`Did not find repository.owner (User) with "in-message index" ${repository.owner}`);
         }
         repository.owner = user;
-        repositoryUuids.push(repository.uuId);
+        repositoryGUIDs.push(repository.uuId);
         if (typeof repositoryIndex === 'number') {
             messageRepositoryIndexMap.set(repository.uuId, repositoryIndex);
         }
@@ -30289,18 +30289,18 @@ var __decorate$G = (undefined && undefined.__decorate) || function (decorators, 
  * Synchronization in Manager implementation.
  */
 let SynchronizationInManager = class SynchronizationInManager {
-    async receiveMessages(messageMapByUuId, context) {
+    async receiveMessages(messagemapById, context) {
         const syncTimestamp = new Date().getTime();
         const existingRepositoryTransactionHistories = await this.repositoryTransactionHistoryDao
-            .findWhereUuIdsIn([...messageMapByUuId.keys()]);
+            .findWhereUuIdsIn([...messagemapById.keys()]);
         for (const existingRepositoryTransactionHistory of existingRepositoryTransactionHistories) {
-            messageMapByUuId.delete(existingRepositoryTransactionHistory.uuId);
+            messagemapById.delete(existingRepositoryTransactionHistory.uuId);
         }
-        if (!messageMapByUuId.size) {
+        if (!messagemapById.size) {
             return;
         }
         let messagesToProcess = [];
-        const orderedMessages = this.timeOrderMessages(messageMapByUuId);
+        const orderedMessages = this.timeOrderMessages(messagemapById);
         // Split up messages by type
         for (const message of orderedMessages) {
             if (!this.isValidLastChangeTime(syncTimestamp, message.syncTimestamp, 'Sync Timestamp')) {
@@ -30326,8 +30326,8 @@ let SynchronizationInManager = class SynchronizationInManager {
             await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context);
         }, context);
     }
-    timeOrderMessages(messageMapByUuId) {
-        const messages = [...messageMapByUuId.values()];
+    timeOrderMessages(messagemapById) {
+        const messages = [...messagemapById.values()];
         messages.sort((message1, message2) => {
             if (message1.syncTimestamp < message2.syncTimestamp) {
                 return -1;
@@ -31307,10 +31307,10 @@ let NonhubClient = class NonhubClient {
         // encryptionKey = process.env.ENCRYPTION_KEY
         this.serverLocationProtocol = 'http://';
     }
-    async getRepositoryTransactions(location, repositoryUuId, sinceSyncTimestamp = null) {
+    async getRepositoryTransactions(location, repositoryGUID, sinceSyncTimestamp = null) {
         try {
             const response = await this.sendMessage(location + '/read', {
-                repositoryUuId,
+                repositoryGUID,
                 syncTimestamp: sinceSyncTimestamp
             });
             if (response.error) {
@@ -31324,11 +31324,11 @@ let NonhubClient = class NonhubClient {
             return [];
         }
     }
-    async sendRepositoryTransactions(location, repositoryUuId, messages) {
+    async sendRepositoryTransactions(location, repositoryGUID, messages) {
         try {
             const response = await this.sendMessage(location + '/write', {
                 messages,
-                repositoryUuId
+                repositoryGUID
             });
             if (response.error) {
                 console.error(response.error);

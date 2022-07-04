@@ -19,7 +19,7 @@ export interface IEntityUtils {
 		query: Q | { (...args: any[]): Q }
 	): Q;
 
-	ensureUuid<EntitySelect extends IEntitySelectProperties>(
+	ensureId<EntitySelect extends IEntitySelectProperties>(
 		rawEntityQuery: RawEntityQuery<EntitySelect>
 			| { (...args: any[]): RawEntityQuery<EntitySelect> }
 	): RawEntityQuery<EntitySelect>

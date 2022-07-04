@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
 import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
 let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
@@ -13,7 +13,7 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo exte
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();
         repositoryTransactionHistory.saveTimestamp = saveTimestamp;
-        repositoryTransactionHistory.GUID = uuidv4();
+        repositoryTransactionHistory.GUID = guidv4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
         repositoryTransactionHistory.repository._localId = repositoryId;

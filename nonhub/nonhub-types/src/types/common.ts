@@ -6,14 +6,14 @@ export type UserResponse = string
 export type BatchUuid = string
 
 export interface IReadRequest {
-    repositoryUuId: string
+    repositoryGUID: string
     transactionLogEntryTime: number
 }
 
 export type ReadReply = string
 
 export interface IWriteRequest {
-    repositoryUuId: string
+    repositoryGUID: string
     data: string
 }
 

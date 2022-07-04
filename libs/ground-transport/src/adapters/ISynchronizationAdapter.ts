@@ -5,7 +5,7 @@ export interface ISynchronizationAdapter {
 
     getTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_GUID,
+        repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]>
 
@@ -16,7 +16,7 @@ export interface ISynchronizationAdapter {
 
     sendTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_GUID,
+        repositoryGUID: Repository_GUID,
         repositoryTransactionHistories: RepositorySynchronizationMessage[]
     ): Promise<boolean>
 

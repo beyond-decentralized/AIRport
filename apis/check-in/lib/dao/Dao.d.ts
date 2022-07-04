@@ -1,5 +1,5 @@
 import { IAirportDatabase, IDao, IDatabaseFacade, IEntityCascadeGraph, IEntityCreateProperties, IEntityDatabaseFacade, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, ILookup, IQEntity, IUpdateCacheManager, RawEntityQuery } from '@airport/air-traffic-control';
-import { QApplication, AirEntityUuId } from '@airport/aviation-communication';
+import { QApplication, AirEntityId } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { ApplicationEntity_LocalId as DbEntityId, IEntityStateManager, IAirEntity, ISaveResult } from '@airport/ground-control';
 import { Observable } from 'rxjs';
@@ -18,24 +18,22 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, QE>;
     stub: DaoStub<Entity, EntityCreate>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
-    mapByUuId(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
+    mapById(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;
     exists(entityId: ApplicationEntity_LocalId, context?: IContext): Promise<boolean>;
     findAll(entityIds?: ApplicationEntity_LocalId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: ApplicationEntity_LocalId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
-    findByUuId(airEntityUuId: Entity | AirEntityUuId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
+    findOne(AirEntityId: Entity | AirEntityId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     protected _repositoryId(): {
         actor: {
-            id: any;
-            uuId: any;
+            _localId: any;
         };
         _actorRecordId: any;
         ageSuitability: any;
         repository: {
-            id: any;
-            uuId: any;
+            _localId: any;
         };
     };
     /**

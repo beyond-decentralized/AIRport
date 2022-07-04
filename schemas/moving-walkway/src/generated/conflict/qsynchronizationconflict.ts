@@ -119,7 +119,7 @@ export interface SynchronizationConflictEUpdateProperties
 	type?: string | IQStringField;
 	acknowledged?: boolean | IQBooleanField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	repository?: RepositoryEOptionalId;
 	overwrittenRecordHistory?: RecordHistoryEOptionalId;
 	overwritingRecordHistory?: RecordHistoryEOptionalId;

@@ -74,7 +74,7 @@ export interface IReadQueryIMI extends IPortableQueryIMI {
     portableQuery: PortableQuery;
     repository?: {
         source: string;
-        uuid?: string;
+        GUID?: string;
     };
 }
 export interface IDataIMO<T> extends IIsolateMessageOut<T> {

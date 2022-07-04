@@ -1,4 +1,4 @@
-import { AirEntityUuId } from '@airport/aviation-communication'
+import { AirEntityId } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { IEntityStateManager, IAirEntity, ISaveResult } from '@airport/ground-control'
 import { IAirportDatabase } from '../AirportDatabase'
@@ -39,7 +39,7 @@ export interface IDao<Entity,
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE>
 
-	mapByUuId(
+	mapById(
 		entities: (Entity & IAirEntity)[]
 	): Map<string, Entity>
 
@@ -62,8 +62,8 @@ export interface IDao<Entity,
 		context?: IContext
 	): Promise<Entity[]>;
 
-	findByUuId(
-		airEntityId: Entity | AirEntityUuId | string,
+	findOne(
+		airEntityId: Entity | AirEntityId | string,
 		forUpdate?: boolean,
 		context?: IContext
 	): Promise<Entity>;

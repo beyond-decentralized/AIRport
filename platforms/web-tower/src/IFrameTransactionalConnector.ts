@@ -43,7 +43,7 @@ import {
 	Observable,
 	Observer
 } from 'rxjs';
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import { ITerminalStore } from '@airport/terminal-map';
 import { IAirEntity } from '@airport/ground-control/src';
 
@@ -424,7 +424,7 @@ export class IframeTransactionalConnector
 			application: this.applicationStore.state.application,
 			category: 'ToDb',
 			domain: this.applicationStore.state.domain,
-			id: uuidv4(),
+			id: guidv4(),
 		}
 	}
 

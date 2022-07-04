@@ -26,7 +26,7 @@ export interface RepositorySynchronizationMessage {
 
 export interface RepositorySynchronizationWriteRequest {
 	messages: RepositorySynchronizationMessage[]
-	repositoryUuId: string
+	repositoryGUID: string
 }
 
 export interface RepositorySynchronizationWriteResponse {
@@ -35,7 +35,7 @@ export interface RepositorySynchronizationWriteResponse {
 }
 
 export interface RepositorySynchronizationReadRequest {
-	repositoryUuId: string
+	repositoryGUID: string
 	syncTimestamp?: number
 }
 
@@ -46,6 +46,6 @@ export interface RepositorySynchronizationReadResponse {
 
 export interface RepositorySynchronizationReadResponseFragment {
 	messages: RepositorySynchronizationMessage[]
-	repositoryUuId: string
+	repositoryGUID: string
 	syncTimestamp: number
 }

@@ -94,7 +94,7 @@ export interface TypeEUpdateProperties
 	// Non-Id Properties
 	name?: string | IQStringField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 
 }
 

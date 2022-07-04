@@ -4,7 +4,7 @@ import { Injected } from '@airport/direction-indicator'
 export interface IUser {
 
     // Id Properties
-    id?: number;
+    _localId?: number;
 
     // Id Relations
 
@@ -23,7 +23,7 @@ export interface IUser {
 
 }
 
-export interface AirEntityUuId {
+export interface AirEntityId {
 
     repository?: {
         GUID?: string
@@ -39,20 +39,20 @@ export interface AirEntityUuId {
 export interface IAirEntityUtils {
 
     getCreatedBy(
-        idObject: AirEntityUuId
+        idObject: AirEntityId
     ): IUser
 
-    encodeUuId(
-        idObject: AirEntityUuId
+    encodeId(
+        idObject: AirEntityId
     ): string
 
     parseEGUID(
         idString: string
-    ): AirEntityUuId
+    ): AirEntityId
 
-    setUuId(
+    setId(
         idString: string,
-        airEntity: AirEntityUuId
+        airEntity: AirEntityId
     ): void
 
 }
@@ -62,13 +62,13 @@ export class AirEntityUtils
     implements IAirEntityUtils {
 
     getCreatedBy(
-        airEntity: AirEntityUuId
+        airEntity: AirEntityId
     ): IUser {
         return airEntity.actor.user
     }
 
-    encodeUuId(
-        idObject: AirEntityUuId
+    encodeId(
+        idObject: AirEntityId
     ): string {
         if (!idObject.repository
             || !idObject.repository.GUID
@@ -91,33 +91,33 @@ export class AirEntityUtils
 
     parseEGUID(
         idString: string
-    ): AirEntityUuId {
+    ): AirEntityId {
         const idStringFragments = idString.split('-')
         if (idStringFragments.length !== 11) {
             throw new Error('Invalid Entity Id, expecting ${repository.GUID}-${actor.GUID}-${_actorRecordId}');
         }
-        const repositoryUuIdFragments: string[] = []
+        const repositoryGUIDFragments: string[] = []
         for (let i = 0; i < 5; i++) {
-            repositoryUuIdFragments.push(idStringFragments[i])
+            repositoryGUIDFragments.push(idStringFragments[i])
         }
-        const actorUuIdFragments: string[] = []
+        const actorGUIDFragments: string[] = []
         for (let i = 5; i < 10; i++) {
-            actorUuIdFragments.push(idStringFragments[i])
+            actorGUIDFragments.push(idStringFragments[i])
         }
         return {
             repository: {
-                GUID: repositoryUuIdFragments.join('-')
+                GUID: repositoryGUIDFragments.join('-')
             },
             actor: {
-                GUID: actorUuIdFragments.join('-')
+                GUID: actorGUIDFragments.join('-')
             },
             _actorRecordId: parseInt(idStringFragments[11])
         }
     }
 
-    setUuId(
+    setId(
         idString: string,
-        airEntity: AirEntityUuId
+        airEntity: AirEntityId
     ): void {
         let airEntityId = this.parseEGUID(idString)
         if (!airEntity.repository) {

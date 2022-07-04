@@ -94,7 +94,7 @@ export interface SynchronizationConflictValuesEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 
 }
 

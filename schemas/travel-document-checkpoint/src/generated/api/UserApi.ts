@@ -10,7 +10,7 @@ import {
 	Api,
 } from '@airport/check-in';
 import {
-	v4 as uuidv4,
+	v4 as guidv4,
 } from 'uuid';
 import {
 	IUser,

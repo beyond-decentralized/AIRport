@@ -26,7 +26,7 @@ export const server: BasicServer<http.Server> = new BasicServer<http.Server>({
 
 export interface ITransactionLogEntry {
     messages: RepositorySynchronizationMessage[]
-    repositoryUuId: string
+    repositoryGUID: string
     syncTimestamp: number
 }
 
@@ -95,7 +95,7 @@ async function serveReadRequest(
         return
     }
 
-    let transactionLog = transactionLogs.get(readRequest.repositoryUuId)
+    let transactionLog = transactionLogs.get(readRequest.repositoryGUID)
 
     if (!transactionLog || !transactionLog.length) {
         reply.send({
@@ -165,15 +165,15 @@ async function serveWriteRequest(
 
     const syncTimestamp = new Date().getTime()
 
-    let transactionLog = transactionLogs.get(writeRequest.repositoryUuId)
+    let transactionLog = transactionLogs.get(writeRequest.repositoryGUID)
     if (!transactionLog) {
         transactionLog = []
-        transactionLogs.set(writeRequest.repositoryUuId, transactionLog)
+        transactionLogs.set(writeRequest.repositoryGUID, transactionLog)
     }
 
     transactionLog.push({
         messages: writeRequest.messages,
-        repositoryUuId: writeRequest.repositoryUuId,
+        repositoryGUID: writeRequest.repositoryGUID,
         syncTimestamp
     })
 

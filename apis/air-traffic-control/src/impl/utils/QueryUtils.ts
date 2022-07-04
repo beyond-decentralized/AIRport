@@ -1,4 +1,4 @@
-import { AirEntityUuId, IAirEntityUtils } from '@airport/aviation-communication'
+import { AirEntityId, IAirEntityUtils } from '@airport/aviation-communication'
 import { Inject, Injected, IOC } from '@airport/direction-indicator'
 import {
 	IAirEntity,
@@ -37,31 +37,31 @@ export class QueryUtils
 	airEntityUtils: IAirEntityUtils
 
 	equals<Entity extends IAirEntity, IQ extends IQAirEntity>(
-		entityOrUuId: Entity | IQAirEntity
-			| IQAirEntityRelation<Entity, IQ> 
-			| AirEntityUuId | string,
+		entityOrId: Entity | IQAirEntity
+			| IQAirEntityRelation<Entity, IQ>
+			| AirEntityId | string,
 		toObject: IQ
 		// | IQRelation<IQ>
 	): JSONLogicalOperation {
-		if (!entityOrUuId) {
-			throw new Error(`null entity/Id/UuId is passed into equals method`)
+		if (!entityOrId) {
+			throw new Error(`null entity/Id is passed into equals method`)
 		}
-		// if(entityOrUuId instanceof QEntity) {
-		let entityUuId: AirEntityUuId
-		let entityOrId: AirEntityUuId = entityOrUuId as AirEntityUuId
-		if (typeof entityOrUuId === 'string') {
-			entityUuId = this.airEntityUtils.parseEGUID(entityOrUuId)
-		} else  {
-			if (!entityOrId.repository
-				|| !entityOrId.repository.GUID
-				|| typeof entityOrId.repository.GUID !== 'string'
-				|| !entityOrId.actor
-				|| !entityOrId.actor.GUID
-				|| typeof entityOrId.actor.GUID !== 'number'
-				|| !entityOrId._actorRecordId
-				|| typeof entityOrId._actorRecordId !== 'number') {
+		// if(entityOrId instanceof QEntity) {
+		let entityId: AirEntityId
+		let theEntityOrId: AirEntityId = entityOrId as AirEntityId
+		if (typeof entityOrId === 'string') {
+			entityId = this.airEntityUtils.parseEGUID(entityOrId)
+		} else {
+			if (!theEntityOrId.repository
+				|| !theEntityOrId.repository.GUID
+				|| typeof theEntityOrId.repository.GUID !== 'string'
+				|| !theEntityOrId.actor
+				|| !theEntityOrId.actor.GUID
+				|| typeof theEntityOrId.actor.GUID !== 'number'
+				|| !theEntityOrId._actorRecordId
+				|| typeof theEntityOrId._actorRecordId !== 'number') {
 				throw new Error(`Passed in AirEntity does not have
-				the necessary fields to query by uuId.  Expecting:
+				the necessary fields to query by id.  Expecting:
 					interface AnInterface extends AirEntity {
 						repository: {
 							GUID: string
@@ -73,7 +73,7 @@ export class QueryUtils
 					}
 					`)
 			}
-			entityUuId = entityOrUuId as AirEntityUuId
+			entityId = theEntityOrId as AirEntityId
 		}
 
 		const {
@@ -82,20 +82,20 @@ export class QueryUtils
 		} = this.entityUtils.ensureRepositoryAndActorJoin(toObject as any as IQEntityInternal)
 
 		return and(
-			qRepository.GUID.equals(entityUuId.repository.GUID),
-			qActor.GUID.equals(entityUuId.actor.GUID),
-			(toObject as any)._actorRecordId.equals(entityUuId._actorRecordId)
+			qRepository.GUID.equals(entityId.repository.GUID),
+			qActor.GUID.equals(entityId.actor.GUID),
+			(toObject as any)._actorRecordId.equals(entityId._actorRecordId)
 		)
 		// } else {
 		// Relations can only be joined by a local Id, implement if necessary
 		// only, as this might confuse users and won't work properly in
 		// distributed environments (for @CrossRepository() queries, if
 		// the referenced repository is not yet loaded) without additional
-		// logic to join against the UuIds of the object (anyway).
+		// logic to join against the composing GUIDs for the object (anyway).
 		// return and(
-		// 	toObject.repository._localId.equals(entityUuId.repository._localId),
-		// 	toObject.actor._localId.equals(entityUuId.actor._localId),
-		// 	toObject._actorRecordId.equals(entityUuId._actorRecordId)
+		// 	toObject.repository._localId.equals(entityId.repository._localId),
+		// 	toObject.actor._localId.equals(entityId.actor._localId),
+		// 	toObject._actorRecordId.equals(entityId._actorRecordId)
 		// )
 		// }
 	}

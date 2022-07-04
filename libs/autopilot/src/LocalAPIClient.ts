@@ -7,7 +7,7 @@ import {
     IOperationSerializer,
     IQueryResultsDeserializer
 } from "@airport/pressurization";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 
 export interface ILocalAPIClient {
 
@@ -148,7 +148,7 @@ export class LocalAPIClient
             domain: token.application.domain.name,
             hostDomain: null,
             hostProtocol: null,
-            id: uuidv4(),
+            id: guidv4(),
             methodName,
             objectName: token.descriptor.interface,
             protocol: window.location.protocol,

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Api } from "@airport/check-in";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import { Injected } from "@airport/direction-indicator";
 export var AddUserErrorCodes;
 (function (AddUserErrorCodes) {
@@ -28,7 +28,7 @@ let UserApi = class UserApi {
         }
         const user = {
             _localId: null,
-            GUID: uuidv4(),
+            GUID: guidv4(),
             username
         };
         await this.userDao.save(user);

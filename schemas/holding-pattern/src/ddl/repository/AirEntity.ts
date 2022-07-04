@@ -88,22 +88,22 @@ export abstract class AirEntity {
 	 * 
 	 * 	{
 	 * 		actor: {
-	 * 			uuId
+	 * 			GUID
 	 * 		},
 	 * 		_actorRecordId,
 	 * 		repository: {
-	 * 			uuId
+	 * 			GUID
 	 * 		}
 	 * 	}
 	 * 
 	 * Returns:
 	 * 
-	 * `${repository.uuId}-${actor.uuId}-${_actorRecordId}`
+	 * `${repository.GUID}-${actor.GUID}-${_actorRecordId}`
 	 * 
 	 * Returns null if one of it's member Ids does not exist
 	 */
 	@Transient()
-	uuId?: string
+	id?: string
 
 	/**
 	 * A transient property, generated on the entity objects by the
@@ -113,9 +113,9 @@ export abstract class AirEntity {
 	 * 	true - this entity object has not been saved and does not have an id
 	 * 	false - this entity object has been saved and has an id
 	 * 
-	 * It does not check the existence of UuId on the object - most of
-	 * the time existing objects are retrieved without a UuId (only with
-	 * the numeric id properties). 
+	 * It does not check the existence of Id on the object - most of
+	 * the time existing objects are retrieved without a Id (only with
+	 * the _localId properties). 
 	 */
 	@Transient()
 	isNew?: boolean

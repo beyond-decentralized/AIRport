@@ -25,10 +25,10 @@ let Dao = class Dao {
             // No runtime logic required.
         };
     }
-    mapByUuId(entities) {
+    mapById(entities) {
         const map = new Map();
         for (const entity of entities) {
-            map.set(entity.uuId, entity);
+            map.set(entity.id, entity);
         }
         return map;
     }
@@ -56,16 +56,15 @@ let Dao = class Dao {
             from: [this.db.from],
         }, context);
     }
-    async findByUuId(airEntityUuId, forUpdate = false, context) {
+    async findOne(AirEntityId, forUpdate = false, context) {
         if (!this.db.dbEntity.isAirEntity) {
-            throw new Error(`Dao.findByUuId can only be called for Repository Entities.`);
+            throw new Error(`Dao.findOne can only be called for Repository Entities.`);
         }
-        const idObject = airEntityUuId;
+        const idObject = AirEntityId;
         let q;
         return await this.db.findOne.graph({
             select: {
-                '*': Y,
-                uuId: Y
+                '*': Y
             },
             from: [
                 q = this.db.from
@@ -90,14 +89,12 @@ let Dao = class Dao {
     _repositoryId() {
         return {
             actor: {
-                id: Y,
-                uuId: Y
+                _localId: Y
             },
             _actorRecordId: Y,
             ageSuitability: Y,
             repository: {
-                id: Y,
-                uuId: Y
+                _localId: Y
             }
         };
     }

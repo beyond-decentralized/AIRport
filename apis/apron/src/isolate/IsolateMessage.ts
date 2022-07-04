@@ -114,7 +114,7 @@ export interface IReadQueryIMI
     portableQuery: PortableQuery
     repository?: {
         source: string
-        uuid?: string
+        GUID?: string
     }
 }
 

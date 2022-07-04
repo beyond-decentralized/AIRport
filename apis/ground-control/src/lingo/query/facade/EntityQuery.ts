@@ -9,7 +9,6 @@ export interface JsonEntityProperties {
 	// When specified with value of null selects all fields in current
 	// entity
 	'*'?: true | any;
-	uuId?: boolean | any
 }
 
 /**

@@ -4,7 +4,7 @@ import {
 	DbEntity,
 	IRootTransaction
 } from '@airport/ground-control'
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import {
 	Actor_LocalId,
 	Repository,
@@ -65,7 +65,7 @@ export class RepositoryTransactionHistoryDuo
 		let saveTimestamp = new Date().getTime()
 
 		repositoryTransactionHistory.saveTimestamp = saveTimestamp
-		repositoryTransactionHistory.GUID = uuidv4()
+		repositoryTransactionHistory.GUID = guidv4()
 		repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation
 		repositoryTransactionHistory.repository = new Repository() as IRepository
 		repositoryTransactionHistory.repository._localId = repositoryId

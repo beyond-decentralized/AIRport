@@ -39,7 +39,7 @@ export class SyncInActorChecker
 			for (let i = 0; i < message.actors.length; i++) {
 				const actor = message.actors[i]
 				if (typeof actor.GUID !== 'string' || actor.GUID.length !== 36) {
-					throw new Error(`Invalid 'terminal.uuid'`)
+					throw new Error(`Invalid 'terminal.GUID'`)
 				}
 				this.checkActorApplication(actor, message)
 				this.checkActorTerminal(actor, message)

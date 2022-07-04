@@ -30,7 +30,7 @@ export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 
 	// equals(
 	// 	entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
-	// 		| AirEntityUuId | string
+	// 		| AirEntityId | string
 	// ): JSONLogicalOperation
 
 	isNull(): JSONLogicalOperation

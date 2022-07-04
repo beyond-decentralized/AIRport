@@ -6,7 +6,6 @@ import { JsonQuery, JsonLimitedQuery } from './Query';
  */
 export interface JsonEntityProperties {
     '*'?: true | any;
-    uuId?: boolean | any;
 }
 /**
  * Entity queries are serialized in this format.

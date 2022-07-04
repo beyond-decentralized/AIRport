@@ -12,7 +12,7 @@ import { IFieldColumnAliases } from './Aliases'
 import { IJoinFields } from './Joins'
 import { IQInternalRelation, IQAirEntityRelation } from './Relation'
 import type { IRelationManager } from '../../../impl/core/entity/RelationManager'
-import { AirEntityUuId } from '@airport/aviation-communication'
+import { AirEntityId } from '@airport/aviation-communication'
 import { JSONLogicalOperation } from '../operation/LogicalOperation'
 
 /**
@@ -30,7 +30,6 @@ export interface IEntityIdProperties {
  */
 export interface IEntitySelectProperties {
 	'*'?: boolean | any
-	uuId?: boolean | any
 }
 
 /**
@@ -77,7 +76,6 @@ export interface IEntityUpdateProperties {
  */
 export interface IEntityCascadeGraph {
 	'*'?: boolean | any
-	uuId?: boolean | any
 }
 
 export interface EntityConstructor {
@@ -146,7 +144,7 @@ export interface IQEntity {
 
 	equals<Entity, IQ extends IQEntityInternal>(
 		entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ>
-			| AirEntityUuId | string
+			| AirEntityId | string
 	): JSONLogicalOperation;
 
 	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;

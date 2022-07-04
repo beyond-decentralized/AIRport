@@ -22,7 +22,7 @@ import {
     Terminal,
     User
 } from "@airport/travel-document-checkpoint";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 import {
     Inject,
     Injected
@@ -89,12 +89,12 @@ export class InternalRecordManager
                 application.lastIds.applications + 1);
             if (!actors || !actors.length) {
                 const frameworkActor = this.terminalStore.getFrameworkActor()
-                const actor = {
+                const actor: Actor = {
                     _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
                     user: frameworkActor.user,
-                    uuId: uuidv4()
+                    GUID: guidv4()
                 }
                 await this.actorDao.save(actor, context)
                 actors = [actor]
@@ -129,12 +129,12 @@ export class InternalRecordManager
             const terminal = new Terminal();
             terminal.owner = user;
             terminal.isLocal = true;
-            terminal.GUID = uuidv4();
+            terminal.GUID = guidv4();
 
             const actor = new Actor();
             actor.user = user;
             actor.terminal = terminal;
-            actor.GUID = uuidv4();
+            actor.GUID = guidv4();
             const actorDao = await (this as any).getactorDaoAsync()
             await actorDao.save(actor, context);
 

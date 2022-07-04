@@ -83,12 +83,12 @@ async function serveReadRequest(
     SELECT data FROM votecube.transaction_logs tl
     WHERE
         Repository_GUID = ?`;
-    let params: any[] = [readRequest.repositoryUuId];
+    let params: any[] = [readRequest.repositoryGUID];
 
     if (readRequest.transactionLogEntryTime) {
         query = `${query}
         AND transaction_log_entry_time >= ?`
-        params = [readRequest.repositoryUuId, readRequest.transactionLogEntryTime];
+        params = [readRequest.repositoryGUID, readRequest.transactionLogEntryTime];
     }
 
     server.scyllaDbClient.execute(query, function (
@@ -140,7 +140,7 @@ async function serveWriteRequest(
     INSERT INTO votecube.transaction_logs (Repository_GUID, transaction_log_entry_time, data)
     VALUES (?, ?, ?)`;
 
-    const params = [writeRequest.repositoryUuId, transactionLogEntryTime, writeRequest.data];
+    const params = [writeRequest.repositoryGUID, transactionLogEntryTime, writeRequest.data];
     server.scyllaDbClient.execute(query, params, function (
         error,
         _results

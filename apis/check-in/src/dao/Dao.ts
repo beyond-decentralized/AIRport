@@ -19,7 +19,7 @@ import {
 } from '@airport/air-traffic-control';
 import {
 	QApplication,
-	AirEntityUuId
+	AirEntityId
 } from '@airport/aviation-communication';
 import {
 	IContext,
@@ -99,12 +99,12 @@ export abstract class Dao<Entity,
 				dbEntity, Q, this);
 	}
 
-	mapByUuId(
+	mapById(
 		entities: (Entity & IAirEntity)[]
 	): Map<string, Entity> {
 		const map = new Map()
 		for (const entity of entities) {
-			map.set(entity.uuId, entity)
+			map.set(entity.id, entity)
 		}
 
 		return map
@@ -151,21 +151,20 @@ export abstract class Dao<Entity,
 		}, context);
 	}
 
-	async findByUuId(
-		airEntityUuId: Entity | AirEntityUuId | string,
+	async findOne(
+		AirEntityId: Entity | AirEntityId | string,
 		forUpdate: boolean = false,
 		context?: IContext
 	): Promise<Entity> {
 		if (!this.db.dbEntity.isAirEntity) {
-			throw new Error(`Dao.findByUuId can only be called for Repository Entities.`)
+			throw new Error(`Dao.findOne can only be called for Repository Entities.`)
 		}
-		const idObject: AirEntityUuId = airEntityUuId as AirEntityUuId
+		const idObject: AirEntityId = AirEntityId as AirEntityId
 
 		let q
 		return await this.db.findOne.graph({
 			select: <any>{
-				'*': Y,
-				uuId: Y
+				'*': Y
 			},
 			from: [
 				q = this.db.from
@@ -199,14 +198,12 @@ export abstract class Dao<Entity,
 	protected _repositoryId() {
 		return {
 			actor: {
-				id: Y,
-				uuId: Y
+				_localId: Y
 			},
 			_actorRecordId: Y,
 			ageSuitability: Y,
 			repository: {
-				id: Y,
-				uuId: Y
+				_localId: Y
 			}
 		}
 	}

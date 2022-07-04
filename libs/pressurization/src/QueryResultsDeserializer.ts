@@ -183,17 +183,17 @@ export class QueryResultsDeserializer
 	): void {
 		let objectPrototype = Object.getPrototypeOf(object)
 		if (!object.id
-			&& !Object.getOwnPropertyDescriptor(object, 'uuId')
+			&& !Object.getOwnPropertyDescriptor(object, 'id')
 			&& (!objectPrototype
-				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'uuId'))) {
-			Object.defineProperty(object, 'uuId', {
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+			Object.defineProperty(object, 'id', {
 				get() {
-					return this.__container__.getSync(AIR_ENTITY_UTILS).encodeUuId(this)
+					return this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this)
 				},
 				set(
 					idString: string
 				) {
-					return this.__container__.getSync(AIR_ENTITY_UTILS).setUuId(idString, this)
+					return this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
 				}
 			});
 		}

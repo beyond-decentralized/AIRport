@@ -70,7 +70,7 @@ export abstract class EntityLookup<Child,
 		context.dbEntity = this.dbEntity
 
 		rawEntityQuery = IOC.getSync(ENTITY_UTILS)
-			.ensureUuid(rawEntityQuery)
+			.ensureId(rawEntityQuery)
 
 		const result = await this.lookup(rawEntityQuery, queryResultType,
 			search, one, null, context, this.mapResults)

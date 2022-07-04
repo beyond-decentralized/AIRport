@@ -13,14 +13,14 @@ export interface RepositorySynchronizationMessage {
 }
 export interface RepositorySynchronizationWriteRequest {
     messages: RepositorySynchronizationMessage[];
-    repositoryUuId: string;
+    repositoryGUID: string;
 }
 export interface RepositorySynchronizationWriteResponse {
     error?: string;
     syncTimestamp: number;
 }
 export interface RepositorySynchronizationReadRequest {
-    repositoryUuId: string;
+    repositoryGUID: string;
     syncTimestamp?: number;
 }
 export interface RepositorySynchronizationReadResponse {
@@ -29,7 +29,7 @@ export interface RepositorySynchronizationReadResponse {
 }
 export interface RepositorySynchronizationReadResponseFragment {
     messages: RepositorySynchronizationMessage[];
-    repositoryUuId: string;
+    repositoryGUID: string;
     syncTimestamp: number;
 }
 //# sourceMappingURL=RepositorySynchronizationMessage.d.ts.map

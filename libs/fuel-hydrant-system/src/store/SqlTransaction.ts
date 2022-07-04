@@ -24,7 +24,7 @@ import {
     ITransactionCredentials
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
-import { v4 as uuidv4 } from "uuid";
+import { v4 as guidv4 } from "uuid";
 
 export abstract class SqlTransaction
     implements ITransaction {
@@ -49,7 +49,7 @@ export abstract class SqlTransaction
         public parentTransaction: ITransaction
     ) {
         (<IInjected>this).__container__ = (<IInjected>driver).__container__
-        this.id = uuidv4()
+        this.id = guidv4()
         this.type = driver.type
         if (parentTransaction) {
             parentTransaction.childTransaction = this

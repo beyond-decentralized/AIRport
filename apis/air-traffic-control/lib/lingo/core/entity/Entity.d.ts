@@ -6,7 +6,7 @@ import { IFieldColumnAliases } from './Aliases';
 import { IJoinFields } from './Joins';
 import { IQInternalRelation, IQAirEntityRelation } from './Relation';
 import type { IRelationManager } from '../../../impl/core/entity/RelationManager';
-import { AirEntityUuId } from '@airport/aviation-communication';
+import { AirEntityId } from '@airport/aviation-communication';
 import { JSONLogicalOperation } from '../operation/LogicalOperation';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
@@ -21,7 +21,6 @@ export interface IEntityIdProperties {
  */
 export interface IEntitySelectProperties {
     '*'?: boolean | any;
-    uuId?: boolean | any;
 }
 /**
  * Marker interface with all @Id columns as required and all other columns
@@ -61,7 +60,6 @@ export interface IEntityUpdateProperties {
  */
 export interface IEntityCascadeGraph {
     '*'?: boolean | any;
-    uuId?: boolean | any;
 }
 export interface EntityConstructor {
     new (...args: any[]): any;
@@ -100,7 +98,7 @@ export interface IEntityRelationFrom {
  * A concrete Generated Query Entity.
  */
 export interface IQEntity {
-    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string): JSONLogicalOperation;
+    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ> | AirEntityId | string): JSONLogicalOperation;
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;

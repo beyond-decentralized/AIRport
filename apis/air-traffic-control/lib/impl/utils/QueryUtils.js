@@ -11,29 +11,29 @@ import { QOperableField } from '../core/field/OperableField';
 import { wrapPrimitive } from '../core/field/WrapperFunctions';
 import { and } from '../core/operation/LogicalOperation';
 let QueryUtils = class QueryUtils {
-    equals(entityOrUuId, toObject
+    equals(entityOrId, toObject
     // | IQRelation<IQ>
     ) {
-        if (!entityOrUuId) {
-            throw new Error(`null entity/Id/UuId is passed into equals method`);
+        if (!entityOrId) {
+            throw new Error(`null entity/Id is passed into equals method`);
         }
-        // if(entityOrUuId instanceof QEntity) {
-        let entityUuId;
-        let entityOrId = entityOrUuId;
-        if (typeof entityOrUuId === 'string') {
-            entityUuId = this.airEntityUtils.parseEGUID(entityOrUuId);
+        // if(entityOrId instanceof QEntity) {
+        let entityId;
+        let theEntityOrId = entityOrId;
+        if (typeof entityOrId === 'string') {
+            entityId = this.airEntityUtils.parseEGUID(entityOrId);
         }
         else {
-            if (!entityOrId.repository
-                || !entityOrId.repository.GUID
-                || typeof entityOrId.repository.GUID !== 'string'
-                || !entityOrId.actor
-                || !entityOrId.actor.GUID
-                || typeof entityOrId.actor.GUID !== 'number'
-                || !entityOrId._actorRecordId
-                || typeof entityOrId._actorRecordId !== 'number') {
+            if (!theEntityOrId.repository
+                || !theEntityOrId.repository.GUID
+                || typeof theEntityOrId.repository.GUID !== 'string'
+                || !theEntityOrId.actor
+                || !theEntityOrId.actor.GUID
+                || typeof theEntityOrId.actor.GUID !== 'number'
+                || !theEntityOrId._actorRecordId
+                || typeof theEntityOrId._actorRecordId !== 'number') {
                 throw new Error(`Passed in AirEntity does not have
-				the necessary fields to query by uuId.  Expecting:
+				the necessary fields to query by id.  Expecting:
 					interface AnInterface extends AirEntity {
 						repository: {
 							GUID: string
@@ -45,20 +45,20 @@ let QueryUtils = class QueryUtils {
 					}
 					`);
             }
-            entityUuId = entityOrUuId;
+            entityId = theEntityOrId;
         }
         const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        return and(qRepository.GUID.equals(entityUuId.repository.GUID), qActor.GUID.equals(entityUuId.actor.GUID), toObject._actorRecordId.equals(entityUuId._actorRecordId));
+        return and(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
         // } else {
         // Relations can only be joined by a local Id, implement if necessary
         // only, as this might confuse users and won't work properly in
         // distributed environments (for @CrossRepository() queries, if
         // the referenced repository is not yet loaded) without additional
-        // logic to join against the UuIds of the object (anyway).
+        // logic to join against the composing GUIDs for the object (anyway).
         // return and(
-        // 	toObject.repository._localId.equals(entityUuId.repository._localId),
-        // 	toObject.actor._localId.equals(entityUuId.actor._localId),
-        // 	toObject._actorRecordId.equals(entityUuId._actorRecordId)
+        // 	toObject.repository._localId.equals(entityId.repository._localId),
+        // 	toObject.actor._localId.equals(entityId.actor._localId),
+        // 	toObject._actorRecordId.equals(entityId._actorRecordId)
         // )
         // }
     }

@@ -2,7 +2,7 @@ export interface IContext {
     lastOUID?: number;
     repository?: {
         source: string;
-        uuId?: string;
+        GUID?: string;
     };
     repositoryExistenceChecked?: boolean;
     startedAt?: Date;

@@ -136,7 +136,7 @@ export interface RecordUpdateStageEUpdateProperties
 	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	applicationVersion?: ApplicationVersionEOptionalId;
 	entity?: ApplicationEntityEOptionalId;
 	repository?: RepositoryEOptionalId;

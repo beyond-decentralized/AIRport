@@ -41,7 +41,7 @@ export class RepositoryLoader
     */
     async loadRepository(
         repositorySource: string,
-        repositoryUuId: string,
+        repositoryGUID: string,
         context: IContext & ITransactionContext
     ): Promise<void> {
         if (context.repositoryExistenceChecked) {
@@ -50,7 +50,7 @@ export class RepositoryLoader
         context.repositoryExistenceChecked = true
 
         const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(
-            repositorySource, repositoryUuId, context)
+            repositorySource, repositoryGUID, context)
 
         let loadRepository = false
         let lastSyncTimestamp = 0
@@ -83,10 +83,10 @@ export class RepositoryLoader
                 // Check 100 seconds back, in case there were update issues
                 lastSyncTimestamp -= 100000
                 messages = await synchronizationAdapter.getTransactionsForRepository(
-                    repositorySource, repositoryUuId, lastSyncTimestamp)
+                    repositorySource, repositoryGUID, lastSyncTimestamp)
             } else {
                 messages = await synchronizationAdapter.getTransactionsForRepository(
-                    repositorySource, repositoryUuId)
+                    repositorySource, repositoryGUID)
             }
 
             // TODO: Add a special message for repository for adding users

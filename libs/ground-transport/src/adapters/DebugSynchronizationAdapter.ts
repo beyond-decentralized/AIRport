@@ -19,21 +19,21 @@ export class DebugSynchronizationAdapter
 
     async getTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_GUID,
+        repositoryGUID: Repository_GUID,
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
         const response: RepositorySynchronizationReadResponseFragment[]
             = await this.nonhubClient.getRepositoryTransactions(
-                repositorySource, repositoryUuId, sinceSyncTimestamp)
+                repositorySource, repositoryGUID, sinceSyncTimestamp)
 
         const messages: RepositorySynchronizationMessage[] = []
 
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
         for (const fragment of response) {
-            if (fragment.repositoryUuId !== repositoryUuId) {
-                console.error(`Got a reponse fragment for repository ${fragment.repositoryUuId}.
-    Expecting message fragments for repository: ${repositoryUuId}`)
+            if (fragment.repositoryGUID !== repositoryGUID) {
+                console.error(`Got a reponse fragment for repository ${fragment.repositoryGUID}.
+    Expecting message fragments for repository: ${repositoryGUID}`)
                 continue
             }
             for (const message of fragment.messages) {
@@ -50,10 +50,10 @@ export class DebugSynchronizationAdapter
         messagesByRepository: Map<Repository_GUID, RepositorySynchronizationMessage[]>
     ): Promise<boolean> {
         let allSent = true
-        for (const [repositoryUuid, messages] of messagesByRepository) {
+        for (const [repositoryGUID, messages] of messagesByRepository) {
             try {
                 if (!await this.sendTransactionsForRepository(
-                    repositorySource, repositoryUuid, messages)) {
+                    repositorySource, repositoryGUID, messages)) {
                     allSent = false
                 }
             } catch (e) {
@@ -67,7 +67,7 @@ export class DebugSynchronizationAdapter
 
     async sendTransactionsForRepository(
         repositorySource: Repository_Source,
-        repositoryUuId: Repository_GUID,
+        repositoryGUID: Repository_GUID,
         messages: RepositorySynchronizationMessage[]
     ): Promise<boolean> {
         if (!messages || !messages.length) {
@@ -75,7 +75,7 @@ export class DebugSynchronizationAdapter
         }
 
         const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(
-            repositorySource, repositoryUuId, messages)
+            repositorySource, repositoryGUID, messages)
 
         if (!syncTimestamp) {
             return false

@@ -90,7 +90,7 @@ export interface ImmutableRowEUpdateProperties
 	// Non-Id Properties
 	createdAt?: Date | IQDateField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	user?: UserEOptionalId;
 
 }

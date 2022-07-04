@@ -1,12 +1,12 @@
 export interface IUser {
-    id?: number;
+    _localId?: number;
     email?: string;
     passwordHash?: string;
     ranking?: number;
     username?: string;
     GUID?: string;
 }
-export interface AirEntityUuId {
+export interface AirEntityId {
     repository?: {
         GUID?: string;
     };
@@ -17,15 +17,15 @@ export interface AirEntityUuId {
     _actorRecordId?: number;
 }
 export interface IAirEntityUtils {
-    getCreatedBy(idObject: AirEntityUuId): IUser;
-    encodeUuId(idObject: AirEntityUuId): string;
-    parseEGUID(idString: string): AirEntityUuId;
-    setUuId(idString: string, airEntity: AirEntityUuId): void;
+    getCreatedBy(idObject: AirEntityId): IUser;
+    encodeId(idObject: AirEntityId): string;
+    parseEGUID(idString: string): AirEntityId;
+    setId(idString: string, airEntity: AirEntityId): void;
 }
 export declare class AirEntityUtils implements IAirEntityUtils {
-    getCreatedBy(airEntity: AirEntityUuId): IUser;
-    encodeUuId(idObject: AirEntityUuId): string;
-    parseEGUID(idString: string): AirEntityUuId;
-    setUuId(idString: string, airEntity: AirEntityUuId): void;
+    getCreatedBy(airEntity: AirEntityId): IUser;
+    encodeId(idObject: AirEntityId): string;
+    parseEGUID(idString: string): AirEntityId;
+    setId(idString: string, airEntity: AirEntityId): void;
 }
 //# sourceMappingURL=AirEntityUtils.d.ts.map

@@ -130,7 +130,7 @@ export interface RepositoryTransactionHistoryEUpdateProperties
 	GUID?: string | IQStringField;
 	isRepositoryCreation?: boolean | IQBooleanField;
 
-	// Non-Id Relations - ids only & no OneToMany's
+	// Non-Id Relations - _localIds only & no OneToMany's
 	repository?: RepositoryEOptionalId;
 	transactionHistory?: TransactionHistoryEOptionalId;
 

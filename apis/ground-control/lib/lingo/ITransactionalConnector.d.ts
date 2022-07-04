@@ -40,7 +40,7 @@ export interface IAirEntity {
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    uuId?: string;
+    id?: string;
 }
 export interface ITransactionalConnector {
     callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;

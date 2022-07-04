@@ -1,4 +1,4 @@
-import { AirEntityUuId, IAirEntityUtils } from '@airport/aviation-communication';
+import { AirEntityId, IAirEntityUtils } from '@airport/aviation-communication';
 import { IAirEntity, JSONBaseOperation } from '@airport/ground-control';
 import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases';
 import { IQAirEntity } from '../../lingo/core/entity/Entity';
@@ -13,7 +13,7 @@ export declare class QueryUtils implements IQueryUtils {
     fieldUtils: IFieldUtils;
     relationManager: IRelationManager;
     airEntityUtils: IAirEntityUtils;
-    equals<Entity extends IAirEntity, IQ extends IQAirEntity>(entityOrUuId: Entity | IQAirEntity | IQAirEntityRelation<Entity, IQ> | AirEntityUuId | string, toObject: IQ): JSONLogicalOperation;
+    equals<Entity extends IAirEntity, IQ extends IQAirEntity>(entityOrId: Entity | IQAirEntity | IQAirEntityRelation<Entity, IQ> | AirEntityId | string, toObject: IQ): JSONLogicalOperation;
     whereClauseToJSON(whereClause: JSONBaseOperation, columnAliases: IFieldColumnAliases<any>): JSONBaseOperation;
     private convertLRValue;
 }

@@ -239,10 +239,10 @@ Property: ${dbEntity.name}.${dbProperty.name}, with "${this.entityStateManager.g
 		}
 
 		if (isCreate) {
-			throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
-is being assigned to repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
+			throw new Error(`A newly created ${dbEntity.name} via ${dbEntity.name} record for repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
+is being assigned to repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
 	This is because it is being referenced via ${parentRelationProperty.entity.name}.${parentRelationProperty.name},
-	from a record of repository id ${airEntity.repository._localId} (UUID: ${airEntity.repository._localId})
+	from a record of repository _localId ${airEntity.repository._localId} (GUID: ${airEntity.repository.GUID})
 	
 	If you are manually creating a copy of a record in another repository, there is no need,
 	AIRport automatically copies all records refrenced via @ManyToOne()s into the created/modified

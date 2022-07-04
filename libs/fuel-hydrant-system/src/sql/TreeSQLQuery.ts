@@ -118,9 +118,9 @@ export class TreeSQLQuery
 				throw new Error(
 					`'*' operator isn't yet implemented in mapped queries`)
 			}
-			if (propertyName === 'uuId') {
+			if (propertyName === 'id') {
 				throw new Error(
-					`'uuId' operator isn't yet implemented in mapped queries`)
+					`'id' operator isn't yet implemented in mapped queries`)
 			}
 			numProperties++
 		}
