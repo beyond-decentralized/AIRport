@@ -22,13 +22,13 @@ export interface ApplicationVersionESelect extends IEntitySelectProperties, Appl
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationVersionEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationVersionEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -80,10 +80,10 @@ export interface ApplicationVersionECreateProperties extends Partial<Application
 export interface ApplicationVersionECreateColumns extends ApplicationVersionEId, ApplicationVersionEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationVersion extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     integerVersion: IQNumberField;
     versionString: IQStringField;
     majorVersion: IQNumberField;
@@ -96,7 +96,7 @@ export interface QApplicationVersion extends IQEntity {
     referencedBy: IQOneToManyRelation<QApplicationReference>;
 }
 export interface QApplicationVersionQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationVersionQRelation extends IQRelation<QApplicationVersion>, QApplicationVersionQId {
 }

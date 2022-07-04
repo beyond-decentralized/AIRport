@@ -11,8 +11,8 @@ import {
 	TransactionType
 } from '@airport/ground-control'
 import {
-	Actor_Id,
-	RecordHistoryActorRecordId,
+	Actor_LocalId,
+	RecordHistory_ActorRecordId,
 	Repository_LocalId,
 } from '../../ddl/ddl'
 import {
@@ -46,7 +46,7 @@ export interface IRepositoryTransactionHistoryDao {
 }
 
 export interface IChangedRecordIdsForRepository {
-	ids: Map<ApplicationEntity_LocalId, Map<Actor_Id, Set<RecordHistoryActorRecordId>>>;
+	actorRecordIdsByLocalIds: Map<ApplicationEntity_LocalId, Map<Actor_LocalId, Set<RecordHistory_ActorRecordId>>>;
 	firstChangeTime: number;
 }
 
@@ -64,7 +64,7 @@ export class RepositoryTransactionHistoryDao
 			set: {
 				contents: null
 			},
-			where: rtb.id.in(repositoryTransactionBlockIds)
+			where: rtb._localId.in(repositoryTransactionBlockIds)
 		})
 	}
 	*/
@@ -101,7 +101,7 @@ export class RepositoryTransactionHistoryDao
 
 		const repositoryEquals: JSONBaseOperation[] = []
 		for (const [repositoryId, idsForRepository] of changedRecordIds) {
-			const recordMapForRepository = idsForRepository.ids
+			const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds
 			const entityEquals: JSONBaseOperation[] = []
 			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
 				const actorEquals: JSONBaseOperation[] = []
@@ -112,7 +112,7 @@ export class RepositoryTransactionHistoryDao
 					))
 				}
 				entityEquals.push(and(
-					oh.entity.id.equals(entityId),
+					oh.entity._localId.equals(entityId),
 					or(...actorEquals)
 				))
 			}
@@ -199,7 +199,7 @@ export class RepositoryTransactionHistoryDao
 			set: {
 				syncTimestamp: repositoryTransactionHistory.syncTimestamp
 			},
-			where: rth.id.equals(repositoryTransactionHistory.id)
+			where: rth._localId.equals(repositoryTransactionHistory._localId)
 		})
 	}
 }

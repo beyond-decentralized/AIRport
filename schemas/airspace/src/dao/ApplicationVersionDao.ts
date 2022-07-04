@@ -44,7 +44,7 @@ export class ApplicationVersionDao
 			],
 			select: {},
 			where: and(
-				sv.id.in(this.idsForMaxVersionSelect()),
+				sv._localId.in(this._localIdsForMaxVersionSelect()),
 				sv.application.index.in(applicationIndexes)
 			)
 		})
@@ -63,7 +63,7 @@ export class ApplicationVersionDao
 			select: {},
 			orderBy: [
 				sv.application.index.asc(),
-				sv.id.desc()
+				sv._localId.desc()
 			]
 		})
 	}
@@ -135,7 +135,7 @@ export class ApplicationVersionDao
 				d = s.domain.innerJoin()
 			],
 			where: and(
-				sv._localId.in(this.idsForMaxVersionSelect()),
+				sv._localId.in(this._localIdsForMaxVersionSelect()),
 				d.name.in(applicationDomain_Names),
 				s.name.in(applicationNames)
 			),
@@ -181,7 +181,7 @@ export class ApplicationVersionDao
 		const values = []
 		for (const applicationVersion of applicationVersions) {
 			values.push([
-				applicationVersion.id, applicationVersion.integerVersion,
+				applicationVersion._localId, applicationVersion.integerVersion,
 				applicationVersion.versionString, applicationVersion.majorVersion,
 				applicationVersion.minorVersion, applicationVersion.patchVersion,
 				applicationVersion.application.index, applicationVersion.jsonApplication
@@ -190,7 +190,7 @@ export class ApplicationVersionDao
 		await this.db.insertValuesGenerateIds({
 			insertInto: sv = Q.ApplicationVersion,
 			columns: [
-				sv.id,
+				sv._localId,
 				sv.integerVersion,
 				sv.versionString,
 				sv.majorVersion,

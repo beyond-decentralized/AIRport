@@ -8,26 +8,26 @@ export class SQDIDuo extends Duo {
 }
 export class BaseRecordUpdateStageDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-export class BaseSynchronizationConflictDuo extends SQDIDuo {
-    static diSet() {
         return duoDiSet(2);
     }
     constructor() {
         super(2);
     }
 }
-export class BaseSynchronizationConflictValuesDuo extends SQDIDuo {
+export class BaseSynchronizationConflictDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(1);
     }
     constructor() {
         super(1);
+    }
+}
+export class BaseSynchronizationConflictValuesDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(0);
+    }
+    constructor() {
+        super(0);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

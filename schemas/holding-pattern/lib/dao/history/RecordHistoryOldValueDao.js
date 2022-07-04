@@ -8,14 +8,14 @@ import { Injected } from '@airport/direction-indicator';
 import { BaseRecordHistoryOldValueDao } from '../../generated/generated';
 import { Q, } from '../../generated/generated';
 let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
-    async findByRecordHistoryIdIn(recordHistoryIds) {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
         let rhov;
         return await this.db.find.tree({
             select: {},
             from: [
                 rhov = Q.RecordHistoryOldValue
             ],
-            where: rhov.recordHistory.id.in(recordHistoryIds)
+            where: rhov.recordHistory._localId.in(RecordHistory_LocalIds)
         });
     }
 };

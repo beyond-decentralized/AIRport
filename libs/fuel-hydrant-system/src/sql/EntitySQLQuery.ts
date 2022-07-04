@@ -387,7 +387,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	}
 
 	/**
-	 * Verify that the entity select clause is valid (has ids) and fill in clauses
+	 * Verify that the entity select clause is valid (has _localIds) and fill in clauses
 	 * that are blank (defined as {}).
 	 *
 	 *
@@ -458,7 +458,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 				continue
 			}
 			// Need to differentiate between properties that contain only
-			// foreign key ids and properties
+			// foreign key _localIds and properties
 			if (dbProperty.relation && dbProperty.relation.length) {
 				selectFragment[propertyName] = this.setupSelectFields(
 					value, dbProperty.relation[0].relationEntity,

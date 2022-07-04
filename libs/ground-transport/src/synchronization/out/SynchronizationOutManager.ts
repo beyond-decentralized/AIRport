@@ -12,7 +12,7 @@ import {
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDao,
-	Repository_Id,
+	Repository_LocalId,
 	Repository_Source,
 	Repository_GUID
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
@@ -68,8 +68,8 @@ export class SynchronizationOutManager
 	private async loadHistoryRepositories(
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 	): Promise<void> {
-		const repositoryIdsToLookup: Set<Repository_Id> = new Set()
-		const repositoryMapById: Map<Repository_Id, IRepository> = new Map()
+		const repositoryIdsToLookup: Set<Repository_LocalId> = new Set()
+		const repositoryMapById: Map<Repository_LocalId, IRepository> = new Map()
 
 		for (const repositoryTransactionHistory of repositoryTransactionHistories) {
 			repositoryIdsToLookup.add(repositoryTransactionHistory.repository._localId)
@@ -95,8 +95,8 @@ export class SynchronizationOutManager
 		repositoryTransactionHistories: IRepositoryTransactionHistory[],
 		messages: RepositorySynchronizationMessage[]
 	): Promise<void> {
-		const repositoryIdsToLookup: Set<Repository_Id> = new Set()
-		const repositoryMapById: Map<Repository_Id, IRepository> = new Map()
+		const repositoryIdsToLookup: Set<Repository_LocalId> = new Set()
+		const repositoryMapById: Map<Repository_LocalId, IRepository> = new Map()
 
 		for (const repositoryTransactionHistory of repositoryTransactionHistories) {
 			const repository = repositoryTransactionHistory.repository

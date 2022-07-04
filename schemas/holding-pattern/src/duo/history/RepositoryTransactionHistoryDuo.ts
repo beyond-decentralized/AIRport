@@ -6,7 +6,7 @@ import {
 } from '@airport/ground-control'
 import { v4 as uuidv4 } from "uuid";
 import {
-	Actor_Id,
+	Actor_LocalId,
 	Repository,
 	Repository_LocalId,
 	RepositoryTransactionHistory,
@@ -34,7 +34,7 @@ export interface IRepositoryTransactionHistoryDuo {
 
 	sortRepoTransHistories(
 		repoTransHistories: IRepositoryTransactionHistory[],
-		actorMapById: Map<Actor_Id, IActor>
+		actorMapById: Map<Actor_LocalId, IActor>
 	): void;
 
 	startOperation(
@@ -85,7 +85,7 @@ export class RepositoryTransactionHistoryDuo
 
 	sortRepoTransHistories(
 		repoTransHistories: IRepositoryTransactionHistory[],
-		actorMapById: Map<Actor_Id, IActor>
+		actorMapById: Map<Actor_LocalId, IActor>
 	): void {
 		repoTransHistories.sort((
 			repoTransHistory1: IRepositoryTransactionHistory,

@@ -41,7 +41,7 @@ export interface ChildRepoRowECreateProperties extends Partial<ChildRepoRowEId>,
 export interface ChildRepoRowECreateColumns extends ChildRepoRowEId, ChildRepoRowEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QChildRepoRow extends QAirEntity {
 }

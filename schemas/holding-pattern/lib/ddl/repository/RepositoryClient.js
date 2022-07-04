@@ -10,12 +10,18 @@ let RepositoryClient = class RepositoryClient {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
+    })
 ], RepositoryClient.prototype, "repository", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'CLIENT_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'CLIENT_LID',
+        referencedColumnName: 'CLIENT_LID'
+    })
 ], RepositoryClient.prototype, "client", void 0);
 RepositoryClient = __decorate([
     Entity(),

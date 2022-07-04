@@ -126,7 +126,7 @@ export interface ClientESelect
 export interface ClientEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -137,7 +137,7 @@ export interface ClientEId
  */
 export interface ClientEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -186,8 +186,8 @@ export interface ClientGraph
 export interface ClientEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	DOMAIN?: string | IQStringField;
-	GUID?: string | IQStringField;
+	CLIENT_DOMAIN?: string | IQStringField;
+	CLIENT_GUID?: string | IQStringField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -222,7 +222,7 @@ extends ClientEId, ClientEUpdateColumns {
 export interface QClient extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -245,7 +245,7 @@ export interface QClientQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

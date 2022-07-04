@@ -30,12 +30,12 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
         let r;
-        const id = Y;
+        const _localId = Y;
         return await this.db.find.tree({
             select: {
-                id,
+                _localId,
                 owner: {
-                    id
+                    _localId
                 },
                 createdAt: Y,
                 uuId: Y
@@ -43,7 +43,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             from: [
                 r = Q.Repository
             ],
-            where: r.id.in(repositoryIds)
+            where: r._localId.in(repositoryIds)
         });
     }
     async findByIds(repositoryIds) {
@@ -57,7 +57,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 r = Q.Repository,
                 r.owner.innerJoin()
             ],
-            where: r.id.in(repositoryIds)
+            where: r._localId.in(repositoryIds)
         });
     }
     async findByGUIDs(repositoryGUIDs) {
@@ -76,10 +76,10 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         for (const repository of repositories) {
             values.push([
                 repository.createdAt, repository.GUID, repository.ageSuitability,
-                repository.source, repository.immutable, repository.owner.id,
+                repository.source, repository.immutable, repository.owner._localId,
             ]);
         }
-        const ids = await this.db.insertValuesGenerateIds({
+        const _localIds = await this.db.insertValuesGenerateIds({
             insertInto: r = Q.Repository,
             columns: [
                 r.createdAt,
@@ -87,13 +87,13 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 r.ageSuitability,
                 r.source,
                 r.immutable,
-                r.owner.id
+                r.owner._localId
             ],
             values
         }, context);
         for (let i = 0; i < repositories.length; i++) {
             let repository = repositories[i];
-            repository.id = ids[i][0];
+            repository._localId = _localIds[i][0];
         }
     }
 };

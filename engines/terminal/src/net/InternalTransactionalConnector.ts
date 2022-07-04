@@ -160,11 +160,11 @@ they are internal to the AIRport framework).`)
         }, ensureGeneratedValues)
     }
 
-    async insertValuesGetIds(
+    async insertValuesGetLocalIds(
         portableQuery: PortableQuery,
         context: IContext,
     ): Promise<number[][]> {
-        return await this.transactionalServer.insertValuesGetIds(portableQuery,
+        return await this.transactionalServer.insertValuesGetLocalIds(portableQuery,
             this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context

@@ -54,7 +54,7 @@ export interface CountryECreateProperties extends Partial<CountryEId>, CountryEU
 export interface CountryECreateColumns extends CountryEId, CountryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QCountry extends IQEntity {
     id: IQNumberField;

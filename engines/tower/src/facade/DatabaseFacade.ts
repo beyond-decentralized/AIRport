@@ -127,7 +127,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
-		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
+		return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context)
 	}
 
 	async insertValuesGenerateIds<IQE extends IQEntity>(
@@ -147,7 +147,7 @@ export class DatabaseFacade
 		const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
 			insertValues, null, queryContext)
 
-		return await this.transactionalConnector.insertValuesGetIds(portableQuery, context)
+		return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context)
 	}
 
 	async deleteWhere<IQE extends IQEntity>(

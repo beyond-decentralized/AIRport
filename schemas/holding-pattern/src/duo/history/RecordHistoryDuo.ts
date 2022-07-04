@@ -1,7 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator'
 import { DbColumn } from '@airport/ground-control'
 import {
-	Actor_Id,
+	Actor_LocalId,
 	RecordHistory,
 	AirEntity_ActorRecordId
 } from '../../ddl/ddl'
@@ -20,7 +20,7 @@ export interface IRecordHistoryDuo
 	extends IBaseRecordHistoryDuo {
 
 	getNewRecord(
-		actorId: Actor_Id,
+		actorId: Actor_LocalId,
 		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory;
 
@@ -50,7 +50,7 @@ export class RecordHistoryDuo
 	recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
 
 	getNewRecord(
-		actorId: Actor_Id,
+		actorId: Actor_LocalId,
 		_actorRecordId: AirEntity_ActorRecordId
 	): IRecordHistory {
 		const recordHistory = new RecordHistory()

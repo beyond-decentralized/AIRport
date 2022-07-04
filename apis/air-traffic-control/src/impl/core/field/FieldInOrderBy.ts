@@ -39,7 +39,7 @@ export class FieldInOrderBy<IQF extends IQOrderableField<IQF>>
 			ci: qField.dbColumn.index,
 			pi: qField.dbProperty.index,
 			ti: qField.dbProperty.entity.index,
-			si: qField.dbProperty.entity.applicationVersion.id,
+			si: qField.dbProperty.entity.applicationVersion._localId,
 			so: this.sortOrder
 		};
 	}

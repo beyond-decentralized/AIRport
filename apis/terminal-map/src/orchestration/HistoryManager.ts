@@ -3,7 +3,7 @@ import type {
     IActor,
     IRepositoryTransactionHistory,
     ITransactionHistory,
-    Repository_Id
+    Repository_LocalId
 } from "@airport/holding-pattern";
 import { IOperationContext } from "../processing/OperationContext";
 
@@ -15,7 +15,7 @@ export interface IHistoryManager {
 
     getNewRepositoryTransactionHistory(
         transactionHistory: ITransactionHistory,
-        repositoryId: Repository_Id,
+        repositoryId: Repository_LocalId,
         context: IOperationContext
     ): Promise<IRepositoryTransactionHistory>;
 

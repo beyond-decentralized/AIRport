@@ -10,11 +10,11 @@ import { RepositoryTypeGraph, RepositoryTypeESelect, QRepositoryType } from './q
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
+    GUID?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    GUID?: string | IQStringField;
     owner?: UserESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     continent?: ContinentESelect;
@@ -31,23 +31,23 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RepositoryEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
+    GUID?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    GUID?: string | IQStringField;
     owner?: UserEOptionalId;
     continent?: ContinentEOptionalId;
     country?: CountryEOptionalId;
@@ -58,11 +58,11 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
+    GUID?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    GUID?: string | IQStringField;
     owner?: UserGraph;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
     continent?: ContinentGraph;
@@ -79,12 +79,12 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
  * UPDATE - non-id columns (optional).
  */
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
+    GUID?: string | IQStringField;
     AGE_SUITABILITY?: number | IQNumberField;
     CREATED_AT?: Date | IQDateField;
     IMMUTABLE?: boolean | IQBooleanField;
     SOURCE?: string | IQStringField;
-    GUID?: string | IQStringField;
-    OWNER_USER_ID?: number | IQNumberField;
+    OWNER_USER_LID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -101,15 +101,15 @@ export interface RepositoryECreateProperties extends Partial<RepositoryEId>, Rep
 export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRepository extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
+    GUID: IQStringField;
     ageSuitability: IQNumberField;
     createdAt: IQDateField;
     immutable: IQBooleanField;
     source: IQStringField;
-    GUID: IQStringField;
     owner: QUserQRelation;
     repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
     continent: QContinentQRelation;
@@ -123,7 +123,7 @@ export interface QRepository extends IQEntity {
     repositoryTypes: IQOneToManyRelation<QRepositoryType>;
 }
 export interface QRepositoryQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QRepositoryQRelation extends IQRelation<QRepository>, QRepositoryQId {
 }

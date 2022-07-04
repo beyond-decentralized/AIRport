@@ -15,7 +15,7 @@ export interface IRootTransaction {
 export interface IUser {
 	
 	// Id Properties
-	id?: number;
+	_localId?: number;
 
 	// Id Relations
 
@@ -36,7 +36,7 @@ export interface IUser {
 export interface IActor {
 	
 	// Id Properties
-	id?: number;
+	_localId?: number;
 
 	// Id Relations
 
@@ -55,7 +55,7 @@ export interface IActor {
 export interface IRepository {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 
@@ -154,7 +154,7 @@ export interface ITransactionalConnector {
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
-	insertValuesGetIds(
+	insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
 		context?: IContext,
 	): Promise<number[][] | string[][]>

@@ -10,12 +10,18 @@ let RepositoryTerminal = class RepositoryTerminal {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
+    })
 ], RepositoryTerminal.prototype, "repository", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID'
+    })
 ], RepositoryTerminal.prototype, "terminal", void 0);
 RepositoryTerminal = __decorate([
     Entity(),

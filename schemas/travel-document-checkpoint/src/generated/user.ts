@@ -20,7 +20,7 @@ import {
 export interface IUser {
 	
 	// Id Properties
-	id?: number;
+	_localId?: number;
 
 	// Id Relations
 

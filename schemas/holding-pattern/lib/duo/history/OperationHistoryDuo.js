@@ -12,7 +12,7 @@ let OperationHistoryDuo = class OperationHistoryDuo extends BaseOperationHistory
             actor,
             changeType: entityChangeType,
             entity: dbEntity,
-            id: undefined,
+            _localId: undefined,
             orderNumber: ++rootTransaction.numberOfOperations,
             recordHistory: [],
             repositoryTransactionHistory: repositoryTransactionHistory,
@@ -31,8 +31,8 @@ let OperationHistoryDuo = class OperationHistoryDuo extends BaseOperationHistory
         }
         return 0;
     }
-    startRecordHistory(operationHistory, actorId, actorRecordId) {
-        const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, actorRecordId);
+    startRecordHistory(operationHistory, actorId, _actorRecordId) {
+        const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, _actorRecordId);
         recordHistory.operationHistory = operationHistory;
         operationHistory.recordHistory.push(recordHistory);
         operationHistory.repositoryTransactionHistory

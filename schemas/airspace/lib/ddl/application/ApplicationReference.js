@@ -11,12 +11,18 @@ let ApplicationReference = class ApplicationReference extends VersionedApplicati
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'OWN_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'OWN_APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+    })
 ], ApplicationReference.prototype, "ownApplicationVersion", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'REFERENCED_APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'REFERENCED_APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+    })
 ], ApplicationReference.prototype, "referencedApplicationVersion", void 0);
 __decorate([
     Column({ name: 'APPLICATION_REFERENCE_INDEX', nullable: false }),

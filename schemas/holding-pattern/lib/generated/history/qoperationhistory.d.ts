@@ -19,13 +19,13 @@ export interface OperationHistoryESelect extends IEntitySelectProperties, Operat
  * DELETE - Ids fields and relations only (required).
  */
 export interface OperationHistoryEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface OperationHistoryEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -56,10 +56,10 @@ export interface OperationHistoryGraph extends OperationHistoryEOptionalId, IEnt
 export interface OperationHistoryEUpdateColumns extends IEntityUpdateColumns {
     ORDER_NUMBER?: number | IQNumberField;
     CHANGE_TYPE?: string | IQStringField;
-    SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
-    ENTITY_ID?: number | IQNumberField;
-    ACTOR_ID?: number | IQNumberField;
-    REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
+    SYSTEM_WIDE_OPERATION_LID?: number | IQNumberField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
+    ACTOR_LID?: number | IQNumberField;
+    REPOSITORY_TRANSACTION_HISTORY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -72,10 +72,10 @@ export interface OperationHistoryECreateProperties extends Partial<OperationHist
 export interface OperationHistoryECreateColumns extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QOperationHistory extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     orderNumber: IQNumberField;
     changeType: IQStringField;
     systemWideOperationId: IQNumberField;
@@ -85,7 +85,7 @@ export interface QOperationHistory extends IQEntity {
     recordHistory: IQOneToManyRelation<QRecordHistory>;
 }
 export interface QOperationHistoryQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QOperationHistoryQRelation extends IQRelation<QOperationHistory>, QOperationHistoryQId {
 }

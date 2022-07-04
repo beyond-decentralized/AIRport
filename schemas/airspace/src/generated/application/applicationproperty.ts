@@ -20,7 +20,7 @@ import {
 export interface IApplicationProperty extends IVersionedApplicationObject {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

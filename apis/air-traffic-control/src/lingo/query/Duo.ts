@@ -37,12 +37,12 @@ export interface IDuo<Entity,
 
 	select: IFieldsSelect<EntitySelect>
 
-	getIdStub(
-		ids: number | string | number[] | string[]
+	getLocalIdStub(
+		_localIds: number | string | number[] | string[]
 	): ApplicationEntity_LocalId;
 
-	getIdStubs(
-		ids: number[] | string[] | number[][] | string[][]
+	getLocalIdStubs(
+		_localIds: number[] | string[] | number[][] | string[][]
 	): ApplicationEntity_LocalId[];
 
 	/*

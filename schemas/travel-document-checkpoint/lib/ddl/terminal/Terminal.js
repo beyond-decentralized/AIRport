@@ -13,15 +13,19 @@ let Terminal = class Terminal {
 __decorate([
     Id(),
     GeneratedValue(),
-    DbNumber()
-], Terminal.prototype, "id", void 0);
+    DbNumber(),
+    Column({ name: 'TERMINAL_LID' })
+], Terminal.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'GUID', nullable: false }),
     DbString()
 ], Terminal.prototype, "GUID", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'OWNER_USER_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'OWNER_USER_LID',
+        referencedColumnName: 'USER_LID', nullable: true
+    })
 ], Terminal.prototype, "owner", void 0);
 __decorate([
     Column({ name: 'IS_LOCAL', nullable: false }),
@@ -29,23 +33,35 @@ __decorate([
 ], Terminal.prototype, "isLocal", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'CONTINENT_ID',
+        referencedColumnName: 'CONTINENT_ID', nullable: true
+    })
 ], Terminal.prototype, "continent", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'COUNTRY_ID',
+        referencedColumnName: 'COUNTRY_ID', nullable: true
+    })
 ], Terminal.prototype, "country", void 0);
 __decorate([
-    OneToMany({ mappedBy: 'terminal' })
-], Terminal.prototype, "terminalTypes", void 0);
-__decorate([
     ManyToOne(),
-    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'STATE_ID',
+        referencedColumnName: 'STATE_ID', nullable: true
+    })
 ], Terminal.prototype, "state", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'METRO_AREA_ID',
+        referencedColumnName: 'METRO_AREA_ID', nullable: true
+    })
 ], Terminal.prototype, "metroArea", void 0);
+__decorate([
+    OneToMany({ mappedBy: 'terminal' })
+], Terminal.prototype, "terminalTypes", void 0);
 Terminal = __decorate([
     Entity(),
     Table({

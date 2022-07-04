@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedApplicationObject",
-		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/VersionedApplicationObject.ts",
+		"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -76,7 +76,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
-									"referencedColumnName": "LID"
+									"referencedColumnName": "APPLICATION_VERSION_LID"
 								}
 							]
 						}
@@ -92,7 +92,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "ApplicationVersion",
 					"entity": {
 						"type": "ApplicationVersion",
-						"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationVersion.ts",
+						"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -114,13 +114,21 @@ export const MAPPED_SUPERCLASS = [
 												"allocationSize": 100
 											}
 										]
+									},
+									{
+										"name": "Column",
+										"values": [
+											{
+												"name": "APPLICATION_VERSION_LID"
+											}
+										]
 									}
 								],
 								"isGenerated": false,
 								"isId": true,
 								"isMappedSuperclass": false,
 								"isTransient": false,
-								"name": "id",
+								"name": "_localId",
 								"optional": false,
 								"type": "ApplicationVersion_LocalId",
 								"ownerEntity": null,
@@ -376,13 +384,21 @@ export const MAPPED_SUPERCLASS = [
 													"allocationSize": 100
 												}
 											]
+										},
+										{
+											"name": "Column",
+											"values": [
+												{
+													"name": "APPLICATION_VERSION_LID"
+												}
+											]
 										}
 									],
 									"isGenerated": false,
 									"isId": true,
 									"isMappedSuperclass": false,
 									"isTransient": false,
-									"name": "id",
+									"name": "_localId",
 									"optional": false,
 									"type": "ApplicationVersion_LocalId",
 									"ownerEntity": null,
@@ -585,7 +601,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Application",
 									"entity": {
 										"type": "Application",
-										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Application.ts",
+										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -680,11 +696,6 @@ export const MAPPED_SUPERCLASS = [
 																"moduleImport": null,
 																"sourceName": "JoinColumn"
 															},
-															"Json": {
-																"asName": "Json",
-																"moduleImport": null,
-																"sourceName": "Json"
-															},
 															"ManyToOne": {
 																"asName": "ManyToOne",
 																"moduleImport": null,
@@ -708,19 +719,13 @@ export const MAPPED_SUPERCLASS = [
 													"Entity": null,
 													"Id": null,
 													"JoinColumn": null,
-													"Json": null,
 													"ManyToOne": null,
 													"OneToMany": null,
 													"Table": null,
-													"PackageName": {
+													"Application_Index": {
 														"fileImports": null,
 														"isLocal": false,
 														"objectMapByAsName": {
-															"PackageName": {
-																"asName": "PackageName",
-																"moduleImport": null,
-																"sourceName": "PackageName"
-															},
 															"Application_Index": {
 																"asName": "Application_Index",
 																"moduleImport": null,
@@ -749,7 +754,6 @@ export const MAPPED_SUPERCLASS = [
 														},
 														"path": "@airport/ground-control"
 													},
-													"Application_Index": null,
 													"FullApplication_Name": null,
 													"Application_Scope": null,
 													"ApplicationStatus": null,
@@ -997,7 +1001,7 @@ export const MAPPED_SUPERCLASS = [
 															"values": [
 																{
 																	"name": "DOMAIN_LID",
-																	"referencedColumnName": "LID",
+																	"referencedColumnName": "DOMAIN_LID",
 																	"nullable": false
 																}
 															]
@@ -1014,7 +1018,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Domain.ts",
+														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1027,13 +1031,21 @@ export const MAPPED_SUPERCLASS = [
 																	{
 																		"name": "DbNumber",
 																		"values": []
+																	},
+																	{
+																		"name": "Column",
+																		"values": [
+																			{
+																				"name": "DOMAIN_LID"
+																			}
+																		]
 																	}
 																],
 																"isGenerated": false,
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
-																"name": "id",
+																"name": "_localId",
 																"optional": false,
 																"type": "Domain_LocalId",
 																"ownerEntity": null,
@@ -1066,10 +1078,15 @@ export const MAPPED_SUPERCLASS = [
 															"type": "typeof Domain",
 															"fileImports": {
 																"importMapByObjectAsName": {
-																	"DbNumber": {
+																	"Column": {
 																		"fileImports": null,
 																		"isLocal": false,
 																		"objectMapByAsName": {
+																			"Column": {
+																				"asName": "Column",
+																				"moduleImport": null,
+																				"sourceName": "Column"
+																			},
 																			"DbNumber": {
 																				"asName": "DbNumber",
 																				"moduleImport": null,
@@ -1103,6 +1120,7 @@ export const MAPPED_SUPERCLASS = [
 																		},
 																		"path": "@airport/air-traffic-control"
 																	},
+																	"DbNumber": null,
 																	"DbString": null,
 																	"Entity": null,
 																	"Id": null,
@@ -1155,13 +1173,21 @@ export const MAPPED_SUPERCLASS = [
 																		{
 																			"name": "DbNumber",
 																			"values": []
+																		},
+																		{
+																			"name": "Column",
+																			"values": [
+																				{
+																					"name": "DOMAIN_LID"
+																				}
+																			]
 																		}
 																	],
 																	"isGenerated": false,
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "id",
+																	"name": "_localId",
 																	"optional": false,
 																	"type": "Domain_LocalId",
 																	"ownerEntity": null,
@@ -1272,7 +1298,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
 														"type": "ApplicationCurrentVersion",
-														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationCurrentVersion.ts",
+														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1324,7 +1350,7 @@ export const MAPPED_SUPERCLASS = [
 																		"values": [
 																			{
 																				"name": "APPLICATION_VERSION_LID",
-																				"referencedColumnName": "LID",
+																				"referencedColumnName": "APPLICATION_VERSION_LID",
 																				"nullable": false
 																			}
 																		]
@@ -1483,7 +1509,7 @@ export const MAPPED_SUPERCLASS = [
 																			"values": [
 																				{
 																					"name": "APPLICATION_VERSION_LID",
-																					"referencedColumnName": "LID",
+																					"referencedColumnName": "APPLICATION_VERSION_LID",
 																					"nullable": false
 																				}
 																			]
@@ -1550,7 +1576,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationEntity",
 									"entity": {
 										"type": "ApplicationEntity",
-										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationEntity.ts",
+										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -1564,13 +1590,21 @@ export const MAPPED_SUPERCLASS = [
 													{
 														"name": "Id",
 														"values": []
+													},
+													{
+														"name": "Column",
+														"values": [
+															{
+																"name": "APPLICATION_ENTITY_LID"
+															}
+														]
 													}
 												],
 												"isGenerated": false,
 												"isId": true,
 												"isMappedSuperclass": false,
 												"isTransient": false,
-												"name": "id",
+												"name": "_localId",
 												"optional": false,
 												"type": "ApplicationEntity_LocalId",
 												"ownerEntity": null,
@@ -1843,13 +1877,21 @@ export const MAPPED_SUPERCLASS = [
 														{
 															"name": "Id",
 															"values": []
+														},
+														{
+															"name": "Column",
+															"values": [
+																{
+																	"name": "APPLICATION_ENTITY_LID"
+																}
+															]
 														}
 													],
 													"isGenerated": false,
 													"isId": true,
 													"isMappedSuperclass": false,
 													"isTransient": false,
-													"name": "id",
+													"name": "_localId",
 													"optional": false,
 													"type": "ApplicationEntity_LocalId",
 													"ownerEntity": null,
@@ -2008,7 +2050,7 @@ export const MAPPED_SUPERCLASS = [
 															"values": [
 																{
 																	"name": "APPLICATION_VERSION_LID",
-																	"referencedColumnName": "LID",
+																	"referencedColumnName": "APPLICATION_VERSION_LID",
 																	"nullable": false
 																}
 															]
@@ -2049,7 +2091,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationColumn",
 													"entity": {
 														"type": "ApplicationColumn",
-														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationColumn.ts",
+														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2063,13 +2105,21 @@ export const MAPPED_SUPERCLASS = [
 																	{
 																		"name": "Id",
 																		"values": []
+																	},
+																	{
+																		"name": "Column",
+																		"values": [
+																			{
+																				"name": "APPLICATION_COLUMN_LID"
+																			}
+																		]
 																	}
 																],
 																"isGenerated": false,
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
-																"name": "id",
+																"name": "_localId",
 																"optional": false,
 																"type": "ApplicationColumn_LocalId",
 																"ownerEntity": null,
@@ -2302,13 +2352,21 @@ export const MAPPED_SUPERCLASS = [
 																		{
 																			"name": "Id",
 																			"values": []
+																		},
+																		{
+																			"name": "Column",
+																			"values": [
+																				{
+																					"name": "APPLICATION_COLUMN_LID"
+																				}
+																			]
 																		}
 																	],
 																	"isGenerated": false,
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "id",
+																	"name": "_localId",
 																	"optional": false,
 																	"type": "ApplicationColumn_LocalId",
 																	"ownerEntity": null,
@@ -2575,7 +2633,7 @@ export const MAPPED_SUPERCLASS = [
 																			"values": [
 																				{
 																					"name": "APPLICATION_ENTITY_LID",
-																					"referencedColumnName": "LID",
+																					"referencedColumnName": "APPLICATION_ENTITY_LID",
 																					"nullable": false
 																				}
 																			]
@@ -2616,7 +2674,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
 																		"type": "ApplicationPropertyColumn",
-																		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationPropertyColumn.ts",
+																		"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
 																		"parentClassName": "VersionedApplicationObject",
 																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
@@ -2636,7 +2694,7 @@ export const MAPPED_SUPERCLASS = [
 																						"values": [
 																							{
 																								"name": "APPLICATION_COLUMN_LID",
-																								"referencedColumnName": "LID",
+																								"referencedColumnName": "APPLICATION_COLUMN_LID",
 																								"nullable": false
 																							}
 																						]
@@ -2669,7 +2727,7 @@ export const MAPPED_SUPERCLASS = [
 																						"values": [
 																							{
 																								"name": "APPLICATION_PROPERTY_LID",
-																								"referencedColumnName": "LID",
+																								"referencedColumnName": "APPLICATION_PROPERTY_LID",
 																								"nullable": false
 																							}
 																						]
@@ -2808,7 +2866,7 @@ export const MAPPED_SUPERCLASS = [
 																							"values": [
 																								{
 																									"name": "APPLICATION_COLUMN_LID",
-																									"referencedColumnName": "LID",
+																									"referencedColumnName": "APPLICATION_COLUMN_LID",
 																									"nullable": false
 																								}
 																							]
@@ -2841,7 +2899,7 @@ export const MAPPED_SUPERCLASS = [
 																							"values": [
 																								{
 																									"name": "APPLICATION_PROPERTY_LID",
-																									"referencedColumnName": "LID",
+																									"referencedColumnName": "APPLICATION_PROPERTY_LID",
 																									"nullable": false
 																								}
 																							]
@@ -2958,7 +3016,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationOperation",
 													"entity": {
 														"type": "ApplicationOperation",
-														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationOperation.ts",
+														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2976,17 +3034,25 @@ export const MAPPED_SUPERCLASS = [
 																	{
 																		"name": "DbNumber",
 																		"values": []
+																	},
+																	{
+																		"name": "Column",
+																		"values": [
+																			{
+																				"name": "APPLICATION_OPERATION_LID"
+																			}
+																		]
 																	}
 																],
 																"isGenerated": true,
 																"isId": true,
 																"isMappedSuperclass": false,
 																"isTransient": false,
-																"name": "id",
+																"name": "_localId",
 																"optional": false,
-																"type": "Operation_Id",
+																"type": "Operation_LocalId",
 																"ownerEntity": null,
-																"nonArrayType": "Operation_Id",
+																"nonArrayType": "Operation_LocalId",
 																"primitive": "number",
 																"index": 0
 															}
@@ -3081,14 +3147,14 @@ export const MAPPED_SUPERCLASS = [
 																	"Json": null,
 																	"ManyToOne": null,
 																	"Table": null,
-																	"Operation_Id": {
+																	"Operation_LocalId": {
 																		"fileImports": null,
 																		"isLocal": false,
 																		"objectMapByAsName": {
-																			"Operation_Id": {
-																				"asName": "Operation_Id",
+																			"Operation_LocalId": {
+																				"asName": "Operation_LocalId",
 																				"moduleImport": null,
-																				"sourceName": "Operation_Id"
+																				"sourceName": "Operation_LocalId"
 																			},
 																			"Operation_Name": {
 																				"asName": "Operation_Name",
@@ -3157,17 +3223,25 @@ export const MAPPED_SUPERCLASS = [
 																		{
 																			"name": "DbNumber",
 																			"values": []
+																		},
+																		{
+																			"name": "Column",
+																			"values": [
+																				{
+																					"name": "APPLICATION_OPERATION_LID"
+																				}
+																			]
 																		}
 																	],
 																	"isGenerated": true,
 																	"isId": true,
 																	"isMappedSuperclass": false,
 																	"isTransient": false,
-																	"name": "id",
+																	"name": "_localId",
 																	"optional": false,
-																	"type": "Operation_Id",
+																	"type": "Operation_LocalId",
 																	"ownerEntity": null,
-																	"nonArrayType": "Operation_Id",
+																	"nonArrayType": "Operation_LocalId",
 																	"primitive": "number",
 																	"index": 0
 																},
@@ -3210,7 +3284,7 @@ export const MAPPED_SUPERCLASS = [
 																			"values": [
 																				{
 																					"name": "APPLICATION_ENTITY_LID",
-																					"referencedColumnName": "LID",
+																					"referencedColumnName": "APPLICATION_ENTITY_LID",
 																					"nullable": false
 																				}
 																			]
@@ -3479,7 +3553,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationReference",
 									"entity": {
 										"type": "ApplicationReference",
-										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationReference.ts",
+										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -3499,7 +3573,7 @@ export const MAPPED_SUPERCLASS = [
 														"values": [
 															{
 																"name": "OWN_APPLICATION_VERSION_LID",
-																"referencedColumnName": "LID",
+																"referencedColumnName": "APPLICATION_VERSION_LID",
 																"nullable": false
 															}
 														]
@@ -3532,7 +3606,7 @@ export const MAPPED_SUPERCLASS = [
 														"values": [
 															{
 																"name": "REFERENCED_APPLICATION_VERSION_LID",
-																"referencedColumnName": "LID",
+																"referencedColumnName": "APPLICATION_VERSION_LID",
 																"nullable": false
 															}
 														]
@@ -3683,7 +3757,7 @@ export const MAPPED_SUPERCLASS = [
 															"values": [
 																{
 																	"name": "OWN_APPLICATION_VERSION_LID",
-																	"referencedColumnName": "LID",
+																	"referencedColumnName": "APPLICATION_VERSION_LID",
 																	"nullable": false
 																}
 															]
@@ -3716,7 +3790,7 @@ export const MAPPED_SUPERCLASS = [
 															"values": [
 																{
 																	"name": "REFERENCED_APPLICATION_VERSION_LID",
-																	"referencedColumnName": "LID",
+																	"referencedColumnName": "APPLICATION_VERSION_LID",
 																	"nullable": false
 																}
 															]
@@ -3878,7 +3952,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "REMOVED_IN_APPLICATION_VERSION_LID",
-									"referencedColumnName": "LID"
+									"referencedColumnName": "APPLICATION_VERSION_LID"
 								}
 							]
 						}
@@ -3906,7 +3980,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "SINCE_APPLICATION_VERSION_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "APPLICATION_VERSION_LID",
 									"nullable": false
 								}
 							]

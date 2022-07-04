@@ -23,13 +23,13 @@ export interface ApplicationRelationESelect extends VersionedApplicationObjectES
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationRelationEId extends VersionedApplicationObjectEId {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationRelationEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -65,18 +65,18 @@ export interface ApplicationRelationGraph extends ApplicationRelationEOptionalId
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationRelationEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     RELATION_INDEX?: number | IQNumberField;
     FOREIGN_KEY?: string | IQStringField;
     MANY_TO_ONE_ELEMENTS?: string | IQStringField;
     ONE_TO_MANY_ELEMENTS?: string | IQStringField;
     RELATION_TYPE?: string | IQStringField;
-    IS_ID?: boolean | IQBooleanField;
-    APPLICATION_PROPERTY_ID?: number | IQNumberField;
-    APPLICATION_TABLE_ID?: number | IQNumberField;
-    RELATION_APPLICATION_TABLE_ID?: number | IQNumberField;
+    IS_LID?: boolean | IQBooleanField;
+    APPLICATION_PROPERTY_LID?: number | IQNumberField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
+    RELATION_APPLICATION_ENTITY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -89,10 +89,10 @@ export interface ApplicationRelationECreateProperties extends Partial<Applicatio
 export interface ApplicationRelationECreateColumns extends ApplicationRelationEId, ApplicationRelationEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationRelation extends QVersionedApplicationObject {
-    id: IQNumberField;
+    _localId: IQNumberField;
     index: IQNumberField;
     foreignKey: IQStringField;
     manyToOneElems: IQStringField;
@@ -106,7 +106,7 @@ export interface QApplicationRelation extends QVersionedApplicationObject {
     oneRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
 }
 export interface QApplicationRelationQId extends QVersionedApplicationObjectQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationRelationQRelation extends QVersionedApplicationObjectQRelation<QApplicationRelation>, QApplicationRelationQId {
 }

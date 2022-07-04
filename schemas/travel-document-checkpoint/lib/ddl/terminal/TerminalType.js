@@ -10,12 +10,18 @@ let TerminalType = class TerminalType {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID'
+    })
 ], TerminalType.prototype, "terminal", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID'
+    })
 ], TerminalType.prototype, "type", void 0);
 TerminalType = __decorate([
     Entity(),

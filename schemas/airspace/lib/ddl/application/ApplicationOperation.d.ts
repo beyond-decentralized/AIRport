@@ -1,8 +1,8 @@
-import { Operation_Id, Operation_Name, Operation_Rule, Operation_Type } from '@airport/ground-control';
+import { Operation_LocalId, Operation_Name, Operation_Rule, Operation_Type } from '@airport/ground-control';
 import { ApplicationEntity } from './ApplicationEntity';
 import { VersionedApplicationObject } from './VersionedApplicationObject';
 export declare class ApplicationOperation extends VersionedApplicationObject {
-    id: Operation_Id;
+    _localId: Operation_LocalId;
     type: Operation_Type;
     entity: ApplicationEntity;
     name: Operation_Name;

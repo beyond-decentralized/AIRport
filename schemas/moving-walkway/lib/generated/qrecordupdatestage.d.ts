@@ -5,7 +5,7 @@ import { RepositoryGraph, RepositoryEOptionalId, RepositoryESelect, QRepositoryQ
  * SELECT - All fields and relations (optional).
  */
 export interface RecordUpdateStageESelect extends IEntitySelectProperties, RecordUpdateStageEOptionalId {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     updatedValue?: any | IQUntypedField;
     applicationVersion?: ApplicationVersionESelect;
     entity?: ApplicationEntityESelect;
@@ -17,19 +17,19 @@ export interface RecordUpdateStageESelect extends IEntitySelectProperties, Recor
  * DELETE - Ids fields and relations only (required).
  */
 export interface RecordUpdateStageEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RecordUpdateStageEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RecordUpdateStageEUpdateProperties extends IEntityUpdateProperties {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     updatedValue?: any | IQUntypedField;
     applicationVersion?: ApplicationVersionEOptionalId;
     entity?: ApplicationEntityEOptionalId;
@@ -41,7 +41,7 @@ export interface RecordUpdateStageEUpdateProperties extends IEntityUpdatePropert
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RecordUpdateStageGraph extends RecordUpdateStageEOptionalId, IEntityCascadeGraph {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     updatedValue?: any | IQUntypedField;
     applicationVersion?: ApplicationVersionGraph;
     entity?: ApplicationEntityGraph;
@@ -55,11 +55,11 @@ export interface RecordUpdateStageGraph extends RecordUpdateStageEOptionalId, IE
 export interface RecordUpdateStageEUpdateColumns extends IEntityUpdateColumns {
     ACTOR_RECORD_ID?: number | IQNumberField;
     UPDATED_VALUE?: any | IQUntypedField;
-    APPLICATION_VERSION_ID?: number | IQNumberField;
-    APPLICATION_ENTITY_ID?: number | IQNumberField;
-    REPOSITORY_ID?: number | IQNumberField;
-    ACTOR_ID?: number | IQNumberField;
-    APPLICATION_COLUMN_ID?: number | IQNumberField;
+    APPLICATION_VERSION_LID?: number | IQNumberField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
+    REPOSITORY_LID?: number | IQNumberField;
+    ACTOR_LID?: number | IQNumberField;
+    APPLICATION_COLUMN_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -72,11 +72,11 @@ export interface RecordUpdateStageECreateProperties extends Partial<RecordUpdate
 export interface RecordUpdateStageECreateColumns extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRecordUpdateStage extends IQEntity {
-    id: IQNumberField;
-    actorRecordId: IQNumberField;
+    _localId: IQNumberField;
+    _actorRecordId: IQNumberField;
     updatedValue: IQUntypedField;
     applicationVersion: QApplicationVersionQRelation;
     entity: QApplicationEntityQRelation;
@@ -85,7 +85,7 @@ export interface QRecordUpdateStage extends IQEntity {
     column: QApplicationColumnQRelation;
 }
 export interface QRecordUpdateStageQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QRecordUpdateStageQRelation extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
 }

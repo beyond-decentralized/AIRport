@@ -16,11 +16,11 @@ import {
 import {
 	QTerminal,
 	QUser,
-	TmTerminal_Id,
+	Terminal_LocalId,
 	User_LocalId
 } from '@airport/travel-document-checkpoint'
 import {
-	Actor_Id,
+	Actor_LocalId,
 	Actor_GUID,
 } from '../../ddl/ddl'
 import {
@@ -36,21 +36,21 @@ export interface IActorDao
 	extends IBaseActorDao {
 
 	findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_Id[]
+		actorIds: Actor_LocalId[]
 	): Promise<IActor[]>;
 
 	findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
 		userIds: User_LocalId[],
-		terminalIds: TmTerminal_Id[]
+		terminalIds: Terminal_LocalId[]
 	): Promise<IActor[]>;
 
 	findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
 		userIds: User_LocalId[],
-		terminalIds: TmTerminal_Id[],
-		actorMap: Map<User_LocalId, Map<TmTerminal_Id, IActor>>,
-		actorMapById: Map<Actor_Id, IActor>
+		terminalIds: Terminal_LocalId[],
+		actorMap: Map<User_LocalId, Map<Terminal_LocalId, IActor>>,
+		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void>;
 
 	findByDomainAndApplication_Names(
@@ -75,19 +75,19 @@ export class ActorDao
 	implements IActorDao {
 
 	async findWithDetailsAndGlobalIdsByIds(
-		actorIds: Actor_Id[]
+		actorIds: Actor_LocalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
-		) => a.id.in(actorIds))
+		) => a._localId.in(actorIds))
 	}
 
 	async findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
 		userIds: User_LocalId[],
-		terminalIds: TmTerminal_Id[],
-		actorMap: Map<User_LocalId, Map<TmTerminal_Id, IActor>>,
-		actorMapById: Map<Actor_Id, IActor>
+		terminalIds: Terminal_LocalId[],
+		actorMap: Map<User_LocalId, Map<Terminal_LocalId, IActor>>,
+		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
 			actorGUIDs,
@@ -96,8 +96,8 @@ export class ActorDao
 		)
 
 		for (const actor of actors) {
-			ensureChildJsMap(actorMap, actor.user.id)
-				.set(actor.terminal.id, actor)
+			ensureChildJsMap(actorMap, actor.user._localId)
+				.set(actor.terminal._localId, actor)
 			actorMapById.set(actor._localId, actor)
 		}
 	}
@@ -105,14 +105,14 @@ export class ActorDao
 	async findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
 		userIds: User_LocalId[],
-		terminalIds: TmTerminal_Id[]
+		terminalIds: Terminal_LocalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
 		) => and(
 			a.GUID.in(actorGUIDs),
-			a.terminal.id.in(terminalIds),
-			a.user.id.in(userIds)
+			a.terminal._localId.in(terminalIds),
+			a.user._localId.in(userIds)
 		))
 	}
 
@@ -171,22 +171,23 @@ export class ActorDao
 		const values = []
 		for (const actor of actors) {
 			values.push([
-				actor.GUID, actor.application.index, actor.user.id, actor.terminal.id,
+				actor.GUID, actor.application.index,
+				actor.user._localId, actor.terminal._localId
 			])
 		}
-		const ids = await this.db.insertValuesGenerateIds({
+		const _localIds = await this.db.insertValuesGenerateIds({
 			insertInto: a = Q.Actor,
 			columns: [
 				a.GUID,
 				a.application.index,
-				a.user.id,
-				a.terminal.id
+				a.user._localId,
+				a.terminal._localId
 			],
 			values
 		}, context)
 		for (let i = 0; i < actors.length; i++) {
 			let actor = actors[i]
-			actor._localId = ids[i][0]
+			actor._localId = _localIds[i][0]
 		}
 	}
 

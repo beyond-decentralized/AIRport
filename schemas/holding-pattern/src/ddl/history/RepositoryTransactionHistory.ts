@@ -82,7 +82,7 @@ export class RepositoryTransactionHistory {
 			return
 		}
 
-		this.id = data.id
+		this._localId = data._localId
 		this.transactionHistory = data.transactionHistory
 		this.repository = data.repository
 		this.saveTimestamp = data.saveTimestamp

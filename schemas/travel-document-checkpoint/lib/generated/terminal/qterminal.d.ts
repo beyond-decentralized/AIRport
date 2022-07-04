@@ -2,9 +2,9 @@ import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntity
 import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation } from '../quser';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from '../locality/qcontinent';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from '../locality/qcountry';
-import { TerminalTypeGraph, TerminalTypeESelect, QTerminalType } from './qterminaltype';
 import { StateGraph, StateEOptionalId, StateESelect, QStateQRelation } from '../locality/qstate';
 import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '../locality/qmetroarea';
+import { TerminalTypeGraph, TerminalTypeESelect, QTerminalType } from './qterminaltype';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -14,21 +14,21 @@ export interface TerminalESelect extends IEntitySelectProperties, TerminalEOptio
     owner?: UserESelect;
     continent?: ContinentESelect;
     country?: CountryESelect;
-    terminalTypes?: TerminalTypeESelect;
     state?: StateESelect;
     metroArea?: MetroAreaESelect;
+    terminalTypes?: TerminalTypeESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
  */
 export interface TerminalEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface TerminalEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -51,9 +51,9 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
     owner?: UserGraph;
     continent?: ContinentGraph;
     country?: CountryGraph;
-    terminalTypes?: TerminalTypeGraph[];
     state?: StateGraph;
     metroArea?: MetroAreaGraph;
+    terminalTypes?: TerminalTypeGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -61,7 +61,7 @@ export interface TerminalGraph extends TerminalEOptionalId, IEntityCascadeGraph 
 export interface TerminalEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
     IS_LOCAL?: boolean | IQBooleanField;
-    OWNER_USER_ID?: number | IQNumberField;
+    OWNER_USER_LID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -78,21 +78,21 @@ export interface TerminalECreateProperties extends Partial<TerminalEId>, Termina
 export interface TerminalECreateColumns extends TerminalEId, TerminalEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTerminal extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     GUID: IQStringField;
     isLocal: IQBooleanField;
     owner: QUserQRelation;
     continent: QContinentQRelation;
     country: QCountryQRelation;
-    terminalTypes: IQOneToManyRelation<QTerminalType>;
     state: QStateQRelation;
     metroArea: QMetroAreaQRelation;
+    terminalTypes: IQOneToManyRelation<QTerminalType>;
 }
 export interface QTerminalQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QTerminalQRelation extends IQRelation<QTerminal>, QTerminalQId {
 }

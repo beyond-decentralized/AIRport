@@ -10,7 +10,10 @@ let SynchronizationConflictValues = class SynchronizationConflictValues {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'SYNCHRONIZATION_CONFLICT_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'SYNCHRONIZATION_CONFLICT_LID',
+        referencedColumnName: 'SYNCHRONIZATION_CONFLICT_LID'
+    })
 ], SynchronizationConflictValues.prototype, "synchronizationConflict", void 0);
 __decorate([
     Id(),

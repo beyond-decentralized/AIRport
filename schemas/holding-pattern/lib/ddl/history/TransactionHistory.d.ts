@@ -9,9 +9,9 @@ export declare type TransactionHistoryNumberOfOperations = number;
 /**
  * Created by Papa on 5/1/2017./
  */
-export declare type TransactionHistoryId = number;
+export declare type TransactionHistory_LocalId = number;
 export declare class TransactionHistory implements ATransactionHistory {
-    id: TransactionHistoryId;
+    _localId: TransactionHistory_LocalId;
     transactionType: TransactionType;
     repositoryTransactionHistories: RepositoryTransactionHistory[];
     repositoryTransactionHistoryMap: {

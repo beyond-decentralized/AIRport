@@ -23,13 +23,13 @@ export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
  * DELETE - Ids fields and relations only (required).
  */
 export interface UserEId extends IEntityIdProperties {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface UserEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -68,12 +68,12 @@ export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
  */
 export interface UserEUpdateColumns extends IEntityUpdateColumns {
     ORIGIN?: string | IQStringField;
-    ORIGIN_ID?: string | IQStringField;
+    ORIGIN_LID?: string | IQStringField;
     EMAIL?: string | IQStringField;
     PASSWORD_HASH?: string | IQStringField;
     RANKING?: number | IQNumberField;
     USERNAME?: string | IQStringField;
-    GUID?: string | IQStringField;
+    USER_GUID?: string | IQStringField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -90,10 +90,10 @@ export interface UserECreateProperties extends Partial<UserEId>, UserEUpdateProp
 export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QUser extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     origin: IQStringField;
     originId: IQStringField;
     email: IQStringField;
@@ -107,7 +107,7 @@ export interface QUser extends IQEntity {
     metroArea: QMetroAreaQRelation;
 }
 export interface QUserQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
 }

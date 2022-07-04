@@ -33,8 +33,8 @@ export class SynchronizationConflictDao
 				synchronizationConflict.type,
 				synchronizationConflict.acknowledged,
 				synchronizationConflict.repository._localId,
-				synchronizationConflict.overwrittenRecordHistory.id,
-				synchronizationConflict.overwritingRecordHistory.id
+				synchronizationConflict.overwrittenRecordHistory._localId,
+				synchronizationConflict.overwritingRecordHistory._localId
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
@@ -43,14 +43,14 @@ export class SynchronizationConflictDao
 				sc.type,
 				sc.acknowledged,
 				sc.repository._localId,
-				sc.overwrittenRecordHistory.id,
-				sc.overwritingRecordHistory.id
+				sc.overwrittenRecordHistory._localId,
+				sc.overwritingRecordHistory._localId
 			],
 			values
 		}, context)
 		for (let i = 0; i < synchronizationConflicts.length; i++) {
 			let synchronizationConflict = synchronizationConflicts[i]
-			synchronizationConflict.id = ids[i][0]
+			synchronizationConflict._localId = ids[i][0]
 		}
 	}
 }

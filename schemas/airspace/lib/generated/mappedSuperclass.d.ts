@@ -84,12 +84,17 @@ export declare const MAPPED_SUPERCLASS: {
                 isSuperclass: boolean;
                 ids: {
                     allocationSize: number;
-                    decorators: {
+                    decorators: ({
                         name: string;
                         values: {
                             allocationSize: number;
                         }[];
-                    }[];
+                    } | {
+                        name: string;
+                        values: {
+                            name: string;
+                        }[];
+                    })[];
                     isGenerated: boolean;
                     isId: boolean;
                     isMappedSuperclass: boolean;
@@ -196,36 +201,36 @@ export declare const MAPPED_SUPERCLASS: {
                             SequenceGenerator: any;
                             Table: any;
                             Transient: any;
-                            ApplicationVersionId: {
+                            ApplicationVersion_LocalId: {
                                 fileImports: any;
                                 isLocal: boolean;
                                 objectMapByAsName: {
-                                    ApplicationVersionId: {
+                                    ApplicationVersion_LocalId: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
                                     };
-                                    ApplicationVersionInteger: {
+                                    ApplicationVersion_IntegerVersion: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
                                     };
-                                    ApplicationVersionMajor: {
+                                    ApplicationVersion_MajorVersion: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
                                     };
-                                    ApplicationVersionMinor: {
+                                    ApplicationVersion_MinorVersion: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
                                     };
-                                    ApplicationVersionPatch: {
+                                    ApplicationVersion_PatchVersion: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
                                     };
-                                    ApplicationVersionString: {
+                                    ApplicationVersion_VersionString: {
                                         asName: string;
                                         moduleImport: any;
                                         sourceName: string;
@@ -233,11 +238,11 @@ export declare const MAPPED_SUPERCLASS: {
                                 };
                                 path: string;
                             };
-                            ApplicationVersionInteger: any;
-                            ApplicationVersionMajor: any;
-                            ApplicationVersionMinor: any;
-                            ApplicationVersionPatch: any;
-                            ApplicationVersionString: any;
+                            ApplicationVersion_IntegerVersion: any;
+                            ApplicationVersion_MajorVersion: any;
+                            ApplicationVersion_MinorVersion: any;
+                            ApplicationVersion_PatchVersion: any;
+                            ApplicationVersion_VersionString: any;
                             Application: {
                                 fileImports: any;
                                 isLocal: boolean;
@@ -324,12 +329,17 @@ export declare const MAPPED_SUPERCLASS: {
                     };
                     properties: ({
                         allocationSize: number;
-                        decorators: {
+                        decorators: ({
                             name: string;
                             values: {
                                 allocationSize: number;
                             }[];
-                        }[];
+                        } | {
+                            name: string;
+                            values: {
+                                name: string;
+                            }[];
+                        })[];
                         isGenerated: boolean;
                         isId: boolean;
                         isMappedSuperclass: boolean;
@@ -457,11 +467,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                Json: {
-                                                    asName: string;
-                                                    moduleImport: any;
-                                                    sourceName: string;
-                                                };
                                                 ManyToOne: {
                                                     asName: string;
                                                     moduleImport: any;
@@ -478,7 +483,8 @@ export declare const MAPPED_SUPERCLASS: {
                                                     sourceName: string;
                                                 };
                                                 DbBoolean?: undefined;
-                                                TableConfiguration?: undefined;
+                                                Json?: undefined;
+                                                ApplicationEntity_TableConfiguration?: undefined;
                                                 Transient?: undefined;
                                             };
                                             path: string;
@@ -488,30 +494,24 @@ export declare const MAPPED_SUPERCLASS: {
                                         Entity: any;
                                         Id: any;
                                         JoinColumn: any;
-                                        Json: any;
                                         ManyToOne: any;
                                         OneToMany: any;
                                         Table: any;
-                                        PackageName: {
+                                        Application_Index: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
-                                                PackageName: {
+                                                Application_Index: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                ApplicationIndex: {
+                                                FullApplication_Name: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                FullApplicationName: {
-                                                    asName: string;
-                                                    moduleImport: any;
-                                                    sourceName: string;
-                                                };
-                                                ApplicationScope: {
+                                                Application_Scope: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -521,7 +521,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                ApplicationName: {
+                                                Application_Name: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -529,11 +529,10 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
-                                        ApplicationIndex: any;
-                                        FullApplicationName: any;
-                                        ApplicationScope: any;
+                                        FullApplication_Name: any;
+                                        Application_Scope: any;
                                         ApplicationStatus: any;
-                                        ApplicationName: any;
+                                        Application_Name: any;
                                         Domain: {
                                             fileImports: any;
                                             isLocal: boolean;
@@ -571,13 +570,14 @@ export declare const MAPPED_SUPERCLASS: {
                                             path: string;
                                         };
                                         DbBoolean?: undefined;
-                                        TableConfiguration?: undefined;
+                                        Json?: undefined;
+                                        ApplicationEntity_TableConfiguration?: undefined;
                                         Transient?: undefined;
-                                        EntityId?: undefined;
-                                        EntityIsLocal?: undefined;
-                                        EntityIsAirEntity?: undefined;
-                                        EntityName?: undefined;
-                                        TableIndex?: undefined;
+                                        ApplicationEntity_LocalId?: undefined;
+                                        ApplicationEntity_IsLocal?: undefined;
+                                        ApplicationEntity_IsAirEntity?: undefined;
+                                        ApplicationEntity_Name?: undefined;
+                                        ApplicationEntity_TableIndex?: undefined;
                                         ApplicationColumn?: undefined;
                                         ApplicationOperation?: undefined;
                                         ApplicationProperty?: undefined;
@@ -585,7 +585,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         VersionedApplicationObject?: undefined;
                                         IApplicationColumn?: undefined;
                                         IApplicationProperty?: undefined;
-                                        ApplicationReferenceIndex?: undefined;
+                                        ApplicationReference_Index?: undefined;
                                     };
                                     importMapByModulePath: {
                                         "@airport/air-traffic-control": any;
@@ -649,7 +649,9 @@ export declare const MAPPED_SUPERCLASS: {
                                         ids: {
                                             decorators: {
                                                 name: string;
-                                                values: any[];
+                                                values: {
+                                                    name: string;
+                                                }[];
                                             }[];
                                             isGenerated: boolean;
                                             isId: boolean;
@@ -679,10 +681,15 @@ export declare const MAPPED_SUPERCLASS: {
                                             type: string;
                                             fileImports: {
                                                 importMapByObjectAsName: {
-                                                    DbNumber: {
+                                                    Column: {
                                                         fileImports: any;
                                                         isLocal: boolean;
                                                         objectMapByAsName: {
+                                                            Column: {
+                                                                asName: string;
+                                                                moduleImport: any;
+                                                                sourceName: string;
+                                                            };
                                                             DbNumber: {
                                                                 asName: string;
                                                                 moduleImport: any;
@@ -716,21 +723,22 @@ export declare const MAPPED_SUPERCLASS: {
                                                         };
                                                         path: string;
                                                     };
+                                                    DbNumber: any;
                                                     DbString: any;
                                                     Entity: any;
                                                     Id: any;
                                                     OneToMany: any;
                                                     Table: any;
-                                                    DomainId: {
+                                                    Domain_LocalId: {
                                                         fileImports: any;
                                                         isLocal: boolean;
                                                         objectMapByAsName: {
-                                                            DomainId: {
+                                                            Domain_LocalId: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            DomainName: {
+                                                            Domain_Name: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
@@ -738,7 +746,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                         };
                                                         path: string;
                                                     };
-                                                    DomainName: any;
+                                                    Domain_Name: any;
                                                     Application: {
                                                         fileImports: any;
                                                         isLocal: boolean;
@@ -765,7 +773,9 @@ export declare const MAPPED_SUPERCLASS: {
                                             properties: ({
                                                 decorators: {
                                                     name: string;
-                                                    values: any[];
+                                                    values: {
+                                                        name: string;
+                                                    }[];
                                                 }[];
                                                 isGenerated: boolean;
                                                 isId: boolean;
@@ -931,11 +941,12 @@ export declare const MAPPED_SUPERCLASS: {
                                                         };
                                                         path: string;
                                                     };
+                                                    Column?: undefined;
                                                     DbNumber?: undefined;
                                                     DbString?: undefined;
                                                     OneToMany?: undefined;
-                                                    DomainId?: undefined;
-                                                    DomainName?: undefined;
+                                                    Domain_LocalId?: undefined;
+                                                    Domain_Name?: undefined;
                                                 };
                                                 importMapByModulePath: {
                                                     "@airport/air-traffic-control": any;
@@ -1016,7 +1027,9 @@ export declare const MAPPED_SUPERCLASS: {
                             ids: {
                                 decorators: {
                                     name: string;
-                                    values: any[];
+                                    values: {
+                                        name: string;
+                                    }[];
                                 }[];
                                 isGenerated: boolean;
                                 isId: boolean;
@@ -1105,7 +1118,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                TableConfiguration: {
+                                                ApplicationEntity_TableConfiguration: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -1128,33 +1141,33 @@ export declare const MAPPED_SUPERCLASS: {
                                         ManyToOne: any;
                                         OneToMany: any;
                                         Table: any;
-                                        TableConfiguration: any;
+                                        ApplicationEntity_TableConfiguration: any;
                                         Transient: any;
-                                        EntityId: {
+                                        ApplicationEntity_LocalId: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
-                                                EntityId: {
+                                                ApplicationEntity_LocalId: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                EntityIsLocal: {
+                                                ApplicationEntity_IsLocal: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                EntityIsAirEntity: {
+                                                ApplicationEntity_IsAirEntity: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                EntityName: {
+                                                ApplicationEntity_Name: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
                                                 };
-                                                TableIndex: {
+                                                ApplicationEntity_TableIndex: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -1162,10 +1175,10 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
-                                        EntityIsLocal: any;
-                                        EntityIsAirEntity: any;
-                                        EntityName: any;
-                                        TableIndex: any;
+                                        ApplicationEntity_IsLocal: any;
+                                        ApplicationEntity_IsAirEntity: any;
+                                        ApplicationEntity_Name: any;
+                                        ApplicationEntity_TableIndex: any;
                                         ApplicationColumn: {
                                             fileImports: any;
                                             isLocal: boolean;
@@ -1262,15 +1275,14 @@ export declare const MAPPED_SUPERCLASS: {
                                             };
                                             path: string;
                                         };
-                                        PackageName?: undefined;
-                                        ApplicationIndex?: undefined;
-                                        FullApplicationName?: undefined;
-                                        ApplicationScope?: undefined;
+                                        Application_Index?: undefined;
+                                        FullApplication_Name?: undefined;
+                                        Application_Scope?: undefined;
                                         ApplicationStatus?: undefined;
-                                        ApplicationName?: undefined;
+                                        Application_Name?: undefined;
                                         Domain?: undefined;
                                         ApplicationCurrentVersion?: undefined;
-                                        ApplicationReferenceIndex?: undefined;
+                                        ApplicationReference_Index?: undefined;
                                     };
                                     importMapByModulePath: {
                                         "@airport/air-traffic-control": any;
@@ -1288,6 +1300,26 @@ export declare const MAPPED_SUPERCLASS: {
                                     };
                                 };
                                 properties: ({
+                                    decorators: {
+                                        name: string;
+                                        values: {
+                                            name: string;
+                                        }[];
+                                    }[];
+                                    isGenerated: boolean;
+                                    isId: boolean;
+                                    isMappedSuperclass: boolean;
+                                    isTransient: boolean;
+                                    name: string;
+                                    optional: boolean;
+                                    type: string;
+                                    ownerEntity: any;
+                                    nonArrayType: string;
+                                    primitive: string;
+                                    index: number;
+                                    entity?: undefined;
+                                    isArray?: undefined;
+                                } | {
                                     decorators: {
                                         name: string;
                                         values: {
@@ -1356,7 +1388,9 @@ export declare const MAPPED_SUPERCLASS: {
                                         ids: {
                                             decorators: {
                                                 name: string;
-                                                values: any[];
+                                                values: {
+                                                    name: string;
+                                                }[];
                                             }[];
                                             isGenerated: boolean;
                                             isId: boolean;
@@ -1454,51 +1488,51 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ManyToOne: any;
                                                     OneToMany: any;
                                                     Table: any;
-                                                    ColumnId: {
+                                                    ApplicationColumn_LocalId: {
                                                         fileImports: any;
                                                         isLocal: boolean;
                                                         objectMapByAsName: {
-                                                            ColumnId: {
+                                                            ApplicationColumn_LocalId: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ColumnIndex: {
+                                                            ApplicationColumn_Index: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ColumnName: {
+                                                            ApplicationColumn_Name: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ColumnNotNull: {
+                                                            ApplicationColumn_NotNull: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ColumnPrecision: {
+                                                            ApplicationColumn_Precision: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ColumnScale: {
+                                                            ApplicationColumn_Scale: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            IdColumnOnlyIndex: {
+                                                            ApplicationColumn_IdIndex: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ApplicationColumnAllocationSize: {
+                                                            ApplicationColumn_AllocationSize: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
                                                             };
-                                                            ApplicationColumnIsGenerated: {
+                                                            ApplicationColumn_IsGenerated: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
@@ -1511,14 +1545,14 @@ export declare const MAPPED_SUPERCLASS: {
                                                         };
                                                         path: string;
                                                     };
-                                                    ColumnIndex: any;
-                                                    ColumnName: any;
-                                                    ColumnNotNull: any;
-                                                    ColumnPrecision: any;
-                                                    ColumnScale: any;
-                                                    IdColumnOnlyIndex: any;
-                                                    ApplicationColumnAllocationSize: any;
-                                                    ApplicationColumnIsGenerated: any;
+                                                    ApplicationColumn_Index: any;
+                                                    ApplicationColumn_Name: any;
+                                                    ApplicationColumn_NotNull: any;
+                                                    ApplicationColumn_Precision: any;
+                                                    ApplicationColumn_Scale: any;
+                                                    ApplicationColumn_IdIndex: any;
+                                                    ApplicationColumn_AllocationSize: any;
+                                                    ApplicationColumn_IsGenerated: any;
                                                     SQLDataType: any;
                                                     ApplicationEntity: {
                                                         fileImports: any;
@@ -1570,7 +1604,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     };
                                                     GeneratedValue?: undefined;
                                                     Json?: undefined;
-                                                    Operation_Id?: undefined;
+                                                    Operation_LocalId?: undefined;
                                                     Operation_Name?: undefined;
                                                     Operation_Rule?: undefined;
                                                     Operation_Type?: undefined;
@@ -1589,7 +1623,6 @@ export declare const MAPPED_SUPERCLASS: {
                                                     name: string;
                                                     values: {
                                                         name: string;
-                                                        nullable: boolean;
                                                     }[];
                                                 }[];
                                                 isGenerated: boolean;
@@ -1610,6 +1643,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     name: string;
                                                     values: {
                                                         name: string;
+                                                        nullable: boolean;
                                                     }[];
                                                 }[];
                                                 isGenerated: boolean;
@@ -1857,7 +1891,9 @@ export declare const MAPPED_SUPERCLASS: {
                                         ids: {
                                             decorators: {
                                                 name: string;
-                                                values: any[];
+                                                values: {
+                                                    name: string;
+                                                }[];
                                             }[];
                                             isGenerated: boolean;
                                             isId: boolean;
@@ -1955,11 +1991,11 @@ export declare const MAPPED_SUPERCLASS: {
                                                     Json: any;
                                                     ManyToOne: any;
                                                     Table: any;
-                                                    Operation_Id: {
+                                                    Operation_LocalId: {
                                                         fileImports: any;
                                                         isLocal: boolean;
                                                         objectMapByAsName: {
-                                                            Operation_Id: {
+                                                            Operation_LocalId: {
                                                                 asName: string;
                                                                 moduleImport: any;
                                                                 sourceName: string;
@@ -2011,15 +2047,15 @@ export declare const MAPPED_SUPERCLASS: {
                                                     };
                                                     DbBoolean?: undefined;
                                                     OneToMany?: undefined;
-                                                    ColumnId?: undefined;
-                                                    ColumnIndex?: undefined;
-                                                    ColumnName?: undefined;
-                                                    ColumnNotNull?: undefined;
-                                                    ColumnPrecision?: undefined;
-                                                    ColumnScale?: undefined;
-                                                    IdColumnOnlyIndex?: undefined;
-                                                    ApplicationColumnAllocationSize?: undefined;
-                                                    ApplicationColumnIsGenerated?: undefined;
+                                                    ApplicationColumn_LocalId?: undefined;
+                                                    ApplicationColumn_Index?: undefined;
+                                                    ApplicationColumn_Name?: undefined;
+                                                    ApplicationColumn_NotNull?: undefined;
+                                                    ApplicationColumn_Precision?: undefined;
+                                                    ApplicationColumn_Scale?: undefined;
+                                                    ApplicationColumn_IdIndex?: undefined;
+                                                    ApplicationColumn_AllocationSize?: undefined;
+                                                    ApplicationColumn_IsGenerated?: undefined;
                                                     SQLDataType?: undefined;
                                                     ApplicationPropertyColumn?: undefined;
                                                     ApplicationRelationColumn?: undefined;
@@ -2034,6 +2070,25 @@ export declare const MAPPED_SUPERCLASS: {
                                                 };
                                             };
                                             properties: ({
+                                                decorators: {
+                                                    name: string;
+                                                    values: {
+                                                        name: string;
+                                                    }[];
+                                                }[];
+                                                isGenerated: boolean;
+                                                isId: boolean;
+                                                isMappedSuperclass: boolean;
+                                                isTransient: boolean;
+                                                name: string;
+                                                optional: boolean;
+                                                type: string;
+                                                ownerEntity: any;
+                                                nonArrayType: string;
+                                                primitive: string;
+                                                index: number;
+                                                entity?: undefined;
+                                            } | {
                                                 decorators: {
                                                     name: string;
                                                     values: {
@@ -2235,10 +2290,10 @@ export declare const MAPPED_SUPERCLASS: {
                                                     sourceName: string;
                                                 };
                                                 DbString?: undefined;
-                                                Json?: undefined;
                                                 OneToMany?: undefined;
                                                 DbBoolean?: undefined;
-                                                TableConfiguration?: undefined;
+                                                Json?: undefined;
+                                                ApplicationEntity_TableConfiguration?: undefined;
                                                 Transient?: undefined;
                                             };
                                             path: string;
@@ -2249,11 +2304,11 @@ export declare const MAPPED_SUPERCLASS: {
                                         JoinColumn: any;
                                         ManyToOne: any;
                                         Table: any;
-                                        ApplicationReferenceIndex: {
+                                        ApplicationReference_Index: {
                                             fileImports: any;
                                             isLocal: boolean;
                                             objectMapByAsName: {
-                                                ApplicationReferenceIndex: {
+                                                ApplicationReference_Index: {
                                                     asName: string;
                                                     moduleImport: any;
                                                     sourceName: string;
@@ -2286,24 +2341,23 @@ export declare const MAPPED_SUPERCLASS: {
                                             path: string;
                                         };
                                         DbString?: undefined;
-                                        Json?: undefined;
                                         OneToMany?: undefined;
-                                        PackageName?: undefined;
-                                        ApplicationIndex?: undefined;
-                                        FullApplicationName?: undefined;
-                                        ApplicationScope?: undefined;
+                                        Application_Index?: undefined;
+                                        FullApplication_Name?: undefined;
+                                        Application_Scope?: undefined;
                                         ApplicationStatus?: undefined;
-                                        ApplicationName?: undefined;
+                                        Application_Name?: undefined;
                                         Domain?: undefined;
                                         ApplicationCurrentVersion?: undefined;
                                         DbBoolean?: undefined;
-                                        TableConfiguration?: undefined;
+                                        Json?: undefined;
+                                        ApplicationEntity_TableConfiguration?: undefined;
                                         Transient?: undefined;
-                                        EntityId?: undefined;
-                                        EntityIsLocal?: undefined;
-                                        EntityIsAirEntity?: undefined;
-                                        EntityName?: undefined;
-                                        TableIndex?: undefined;
+                                        ApplicationEntity_LocalId?: undefined;
+                                        ApplicationEntity_IsLocal?: undefined;
+                                        ApplicationEntity_IsAirEntity?: undefined;
+                                        ApplicationEntity_Name?: undefined;
+                                        ApplicationEntity_TableIndex?: undefined;
                                         ApplicationColumn?: undefined;
                                         ApplicationOperation?: undefined;
                                         ApplicationProperty?: undefined;

@@ -5,13 +5,11 @@ import {
 	Entity,
 	Id,
 	JoinColumn,
-	Json,
 	ManyToOne,
 	OneToMany,
 	Table
 } from '@airport/air-traffic-control';
 import {
-	PackageName,
 	Application_Index,
 	FullApplication_Name,
 	Application_Scope,

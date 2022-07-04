@@ -111,7 +111,7 @@ export interface OperationHistoryESelect
 export interface OperationHistoryEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -122,7 +122,7 @@ export interface OperationHistoryEId
  */
 export interface OperationHistoryEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -173,10 +173,10 @@ export interface OperationHistoryEUpdateColumns
 	// Non-Id Columns
 	ORDER_NUMBER?: number | IQNumberField;
 	CHANGE_TYPE?: string | IQStringField;
-	SYSTEM_WIDE_OPERATION_ID?: number | IQNumberField;
-	ENTITY_ID?: number | IQNumberField;
+	SYSTEM_WIDE_OPERATION_LID?: number | IQNumberField;
+	APPLICATION_ENTITY_LID?: number | IQNumberField;
 	ACTOR_LID?: number | IQNumberField;
-	REPOSITORY_TRANSACTION_HISTORY_ID?: number | IQNumberField;
+	REPOSITORY_TRANSACTION_HISTORY_LID?: number | IQNumberField;
 
 }
 
@@ -207,7 +207,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 export interface QOperationHistory extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -230,7 +230,7 @@ export interface QOperationHistoryQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

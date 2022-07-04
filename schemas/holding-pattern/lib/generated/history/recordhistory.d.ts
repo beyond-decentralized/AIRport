@@ -4,8 +4,8 @@ import { IOperationHistory } from './operationhistory';
 import { IRecordHistoryNewValue } from './recordhistorynewvalue';
 import { IRecordHistoryOldValue } from './recordhistoryoldvalue';
 export interface IRecordHistory {
-    id: number;
-    actorRecordId?: number;
+    _localId: number;
+    _actorRecordId?: number;
     actor?: IActor;
     operationHistory?: IOperationHistory;
     newValues?: IRecordHistoryNewValue[];

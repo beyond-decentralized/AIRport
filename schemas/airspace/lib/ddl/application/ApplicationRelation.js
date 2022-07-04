@@ -15,15 +15,19 @@ let ApplicationRelation = class ApplicationRelation extends VersionedApplication
 };
 __decorate([
     DbNumber(),
-    Id()
-], ApplicationRelation.prototype, "id", void 0);
+    Id(),
+    Column({ name: 'APPLICATION_RELATION_LID' })
+], ApplicationRelation.prototype, "_localId", void 0);
 __decorate([
     DbNumber(),
     Column({ name: 'RELATION_INDEX', nullable: false })
 ], ApplicationRelation.prototype, "index", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_PROPERTY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_PROPERTY_LID',
+        referencedColumnName: 'APPLICATION_PROPERTY_LID', nullable: false
+    })
 ], ApplicationRelation.prototype, "property", void 0);
 __decorate([
     Json(),
@@ -42,15 +46,21 @@ __decorate([
     Column({ name: 'RELATION_TYPE', nullable: false })
 ], ApplicationRelation.prototype, "relationType", void 0);
 __decorate([
-    Column({ name: 'IS_ID', nullable: false })
+    Column({ name: 'IS_LID', nullable: false })
 ], ApplicationRelation.prototype, "isId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+    })
 ], ApplicationRelation.prototype, "entity", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'RELATION_APPLICATION_TABLE_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'RELATION_APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+    })
 ], ApplicationRelation.prototype, "relationEntity", void 0);
 __decorate([
     OneToMany({ mappedBy: 'manyRelation' })

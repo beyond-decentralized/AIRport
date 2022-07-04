@@ -13,7 +13,7 @@ export interface IFieldsSelect<EntitySelect extends IEntitySelectProperties> {
  */
 export interface IDuo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdate extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> {
     select: IFieldsSelect<EntitySelect>;
-    getIdStub(ids: number | string | number[] | string[]): ApplicationEntity_LocalId;
-    getIdStubs(ids: number[] | string[] | number[][] | string[][]): ApplicationEntity_LocalId[];
+    getLocalIdStub(_localIds: number | string | number[] | string[]): ApplicationEntity_LocalId;
+    getLocalIdStubs(_localIds: number[] | string[] | number[][] | string[][]): ApplicationEntity_LocalId[];
 }
 //# sourceMappingURL=Duo.d.ts.map

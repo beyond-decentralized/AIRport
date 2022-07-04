@@ -50,7 +50,7 @@ export interface ClientTypeECreateProperties extends Partial<ClientTypeEId>, Cli
 export interface ClientTypeECreateColumns extends ClientTypeEId, ClientTypeEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QClientType extends IQEntity {
     client: QClientQRelation;

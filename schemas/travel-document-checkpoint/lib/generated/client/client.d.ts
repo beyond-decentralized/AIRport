@@ -4,7 +4,7 @@ import { IState } from '../locality/state';
 import { IMetroArea } from '../locality/metroarea';
 import { IClientType } from './clienttype';
 export interface IClient {
-    id: number;
+    _localId: number;
     domain?: string;
     GUID?: string;
     continent?: IContinent;

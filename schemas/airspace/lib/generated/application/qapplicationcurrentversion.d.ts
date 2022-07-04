@@ -50,7 +50,7 @@ export interface ApplicationCurrentVersionECreateProperties extends Partial<Appl
 export interface ApplicationCurrentVersionECreateColumns extends ApplicationCurrentVersionEId, ApplicationCurrentVersionEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationCurrentVersion extends IQEntity {
     application: QApplicationQRelation;

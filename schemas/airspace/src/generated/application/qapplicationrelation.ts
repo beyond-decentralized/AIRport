@@ -117,7 +117,7 @@ export interface ApplicationRelationESelect
 export interface ApplicationRelationEId
     extends VersionedApplicationObjectEId {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -128,7 +128,7 @@ export interface ApplicationRelationEId
  */
 export interface ApplicationRelationEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -184,18 +184,18 @@ export interface ApplicationRelationGraph
 export interface ApplicationRelationEUpdateColumns
 	extends VersionedApplicationObjectEUpdateColumns {
 	// Non-Id Columns
-	DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-	REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-	SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+	DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+	REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+	SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
 	RELATION_INDEX?: number | IQNumberField;
 	FOREIGN_KEY?: string | IQStringField;
 	MANY_TO_ONE_ELEMENTS?: string | IQStringField;
 	ONE_TO_MANY_ELEMENTS?: string | IQStringField;
 	RELATION_TYPE?: string | IQStringField;
-	IS_ID?: boolean | IQBooleanField;
-	APPLICATION_PROPERTY_ID?: number | IQNumberField;
-	APPLICATION_TABLE_ID?: number | IQNumberField;
-	RELATION_APPLICATION_TABLE_ID?: number | IQNumberField;
+	IS_LID?: boolean | IQBooleanField;
+	APPLICATION_PROPERTY_LID?: number | IQNumberField;
+	APPLICATION_ENTITY_LID?: number | IQNumberField;
+	RELATION_APPLICATION_ENTITY_LID?: number | IQNumberField;
 
 }
 
@@ -226,7 +226,7 @@ extends ApplicationRelationEId, ApplicationRelationEUpdateColumns {
 export interface QApplicationRelation extends QVersionedApplicationObject
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -253,7 +253,7 @@ export interface QApplicationRelationQId extends QVersionedApplicationObjectQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

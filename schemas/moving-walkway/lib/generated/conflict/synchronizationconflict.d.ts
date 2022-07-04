@@ -1,7 +1,7 @@
 import { IRepository, IRecordHistory } from '@airport/holding-pattern';
 import { ISynchronizationConflictValues } from './synchronizationconflictvalues';
 export interface ISynchronizationConflict {
-    id: number;
+    _localId: number;
     type?: string;
     acknowledged?: boolean;
     repository?: IRepository;

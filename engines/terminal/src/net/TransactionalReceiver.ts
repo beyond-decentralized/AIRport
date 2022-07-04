@@ -214,7 +214,7 @@ export abstract class TransactionalReceiver {
                 break
             case IsolateMessageType.INSERT_VALUES_GET_IDS:
                 const insertValuesGetIdsMessage: IPortableQueryIMI = <IPortableQueryIMI>message
-                theResult = await this.transactionalServer.insertValuesGetIds(
+                theResult = await this.transactionalServer.insertValuesGetLocalIds(
                     insertValuesGetIdsMessage.portableQuery,
                     credentials,
                     context

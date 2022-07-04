@@ -18,7 +18,7 @@ export interface AirEntityESelect extends IEntitySelectProperties, AirEntityEOpt
  * DELETE - Ids fields and relations only (required).
  */
 export interface AirEntityEId extends IEntityIdProperties {
-    actorRecordId: number | IQNumberField;
+    _actorRecordId: number | IQNumberField;
     repository: RepositoryEId;
     actor: ActorEId;
 }
@@ -26,7 +26,7 @@ export interface AirEntityEId extends IEntityIdProperties {
  * Ids fields and relations only (optional).
  */
 export interface AirEntityEOptionalId {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     repository?: RepositoryEOptionalId;
     actor?: ActorEOptionalId;
 }
@@ -70,10 +70,10 @@ export interface AirEntityECreateProperties extends Partial<AirEntityEId>, AirEn
 export interface AirEntityECreateColumns extends AirEntityEId, AirEntityEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QAirEntity extends IQEntity {
-    actorRecordId: IQNumberField;
+    _actorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;
     ageSuitability: IQNumberField;
@@ -84,7 +84,7 @@ export interface QAirEntity extends IQEntity {
     originalActor: QActorQRelation;
 }
 export interface QAirEntityQId {
-    actorRecordId: IQNumberField;
+    _actorRecordId: IQNumberField;
     repository: QRepositoryQId;
     actor: QActorQId;
 }

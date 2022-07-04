@@ -15,7 +15,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
             from: [
                 r = Q.ApplicationRelation
             ],
-            where: r.property.id.in(propertyIds)
+            where: r.property._localId.in(propertyIds)
         });
     }
     async insert(applicationRelations, context) {
@@ -23,34 +23,34 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
         const values = [];
         for (const applicationRelation of applicationRelations) {
             values.push([
-                applicationRelation.id, applicationRelation.index,
-                applicationRelation.property.id,
+                applicationRelation._localId, applicationRelation.index,
+                applicationRelation.property._localId,
                 undefinedToNull(applicationRelation.foreignKey),
                 undefinedToNull(applicationRelation.manyToOneElems),
                 undefinedToNull(applicationRelation.oneToManyElems),
                 applicationRelation.relationType, applicationRelation.isId,
-                applicationRelation.entity.id, applicationRelation.relationEntity.id,
-                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion.id : null,
-                applicationRelation.removedInVersion ? applicationRelation.removedInVersion.id : null,
-                applicationRelation.sinceVersion ? applicationRelation.sinceVersion.id : null,
+                applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
+                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
+                applicationRelation.removedInVersion ? applicationRelation.removedInVersion._localId : null,
+                applicationRelation.sinceVersion ? applicationRelation.sinceVersion._localId : null,
             ]);
         }
         await this.db.insertValuesGenerateIds({
             insertInto: sr = Q.ApplicationRelation,
             columns: [
-                sr.id,
+                sr._localId,
                 sr.index,
-                sr.property.id,
+                sr.property._localId,
                 sr.foreignKey,
                 sr.manyToOneElems,
                 sr.oneToManyElems,
                 sr.relationType,
                 sr.isId,
-                sr.entity.id,
-                sr.relationEntity.id,
-                sr.deprecatedSinceVersion.id,
-                sr.removedInVersion.id,
-                sr.sinceVersion.id
+                sr.entity._localId,
+                sr.relationEntity._localId,
+                sr.deprecatedSinceVersion._localId,
+                sr.removedInVersion._localId,
+                sr.sinceVersion._localId
             ],
             values
         }, context);

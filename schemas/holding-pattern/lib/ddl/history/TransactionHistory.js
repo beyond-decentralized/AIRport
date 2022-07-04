@@ -20,8 +20,9 @@ let TransactionHistory = class TransactionHistory {
 __decorate([
     GeneratedValue(),
     Id(),
-    SequenceGenerator({ allocationSize: 100 })
-], TransactionHistory.prototype, "id", void 0);
+    SequenceGenerator({ allocationSize: 100 }),
+    Column({ name: 'TRANSACTION_HISTORY_LID' })
+], TransactionHistory.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'TRANSACTION_TYPE', nullable: false }),
     DbString()

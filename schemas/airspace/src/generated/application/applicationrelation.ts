@@ -25,7 +25,7 @@ import {
 export interface IApplicationRelation extends IVersionedApplicationObject {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

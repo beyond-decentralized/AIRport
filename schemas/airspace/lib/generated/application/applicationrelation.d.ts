@@ -4,7 +4,7 @@ import { IApplicationProperty } from './applicationproperty';
 import { IApplicationEntity } from './applicationentity';
 import { IApplicationRelationColumn } from './applicationrelationcolumn';
 export interface IApplicationRelation extends IVersionedApplicationObject {
-    id: number;
+    _localId: number;
     index?: number;
     foreignKey?: ForeignKey;
     manyToOneElems?: ManyToOneElements;

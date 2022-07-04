@@ -43,7 +43,7 @@ export class DbApplicationBuilder
 		const versionParts = versionString.split('.');
 
 		const dbApplicationVersion: DbApplicationVersion = {
-			id: null,
+			_localId: null,
 			entities,
 			entityMapByName,
 			integerVersion: currentJsonApplicationVersion.integerVersion,

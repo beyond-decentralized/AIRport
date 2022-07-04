@@ -26,7 +26,7 @@ import {
 export interface ITransactionHistory {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

@@ -19,13 +19,13 @@ export interface RepositoryTransactionHistoryESelect extends IEntitySelectProper
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryTransactionHistoryEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RepositoryTransactionHistoryEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -61,8 +61,8 @@ export interface RepositoryTransactionHistoryEUpdateColumns extends IEntityUpdat
     SYNC_TIMESTAMP?: number | IQNumberField;
     GUID?: string | IQStringField;
     IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
-    REPOSITORY_ID?: number | IQNumberField;
-    TRANSACTION_HISTORY_ID?: number | IQNumberField;
+    REPOSITORY_LID?: number | IQNumberField;
+    TRANSACTION_HISTORY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -75,10 +75,10 @@ export interface RepositoryTransactionHistoryECreateProperties extends Partial<R
 export interface RepositoryTransactionHistoryECreateColumns extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRepositoryTransactionHistory extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     repositoryTransactionType: IQStringField;
     saveTimestamp: IQNumberField;
     syncTimestamp: IQNumberField;
@@ -89,7 +89,7 @@ export interface QRepositoryTransactionHistory extends IQEntity {
     operationHistory: IQOneToManyRelation<QOperationHistory>;
 }
 export interface QRepositoryTransactionHistoryQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QRepositoryTransactionHistoryQRelation extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }

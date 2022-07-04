@@ -23,9 +23,9 @@ import {
 	DbEntity
 } from '@airport/ground-control'
 import {
-	Actor_Id,
+	Actor_LocalId,
 	AirEntity_ActorRecordId,
-	Repository_Id
+	Repository_LocalId
 } from '@airport/holding-pattern'
 import {
 	IRecordUpdateStageDao,
@@ -62,7 +62,7 @@ interface ColumnUpdateKeyMap
 }
 
 interface RecordKeyMap
-	extends Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>> {
+	extends Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>> {
 }
 
 type ColumnIndexAndValue = [ApplicationColumn_Index, any];
@@ -112,7 +112,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performCreates(
 		recordCreations: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_Id, Map<Actor_Id,
+			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, any>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
@@ -223,7 +223,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performUpdates(
 		recordUpdates: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_Id, Map<Actor_Id,
+			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Map<AirEntity_ActorRecordId, Map<ApplicationColumn_Index, RecordUpdate>>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
@@ -283,7 +283,7 @@ export class Stage2SyncedInDataProcessor
 
 	async performDeletes(
 		recordDeletions: Map<ApplicationVersion_LocalId,
-			Map<ApplicationEntity_TableIndex, Map<Repository_Id, Map<Actor_Id,
+			Map<ApplicationEntity_TableIndex, Map<Repository_LocalId, Map<Actor_LocalId,
 				Set<AirEntity_ActorRecordId>>>>>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IOperationContext
@@ -331,7 +331,7 @@ export class Stage2SyncedInDataProcessor
 	}
 
 	/**
-	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
+	 * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
 	 * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
 	 * of columns/values being updated)
 	 * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap

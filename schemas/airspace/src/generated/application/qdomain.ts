@@ -69,7 +69,7 @@ export interface DomainESelect
 export interface DomainEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -80,7 +80,7 @@ export interface DomainEId
  */
 export interface DomainEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -150,7 +150,7 @@ extends DomainEId, DomainEUpdateColumns {
 export interface QDomain extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -168,7 +168,7 @@ export interface QDomainQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

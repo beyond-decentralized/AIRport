@@ -14,7 +14,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
             from: [
                 rc = Q.ApplicationPropertyColumn
             ],
-            where: rc.column.id.in(columnIds)
+            where: rc.column._localId.in(columnIds)
         });
     }
     async insert(applicationPropertyColumns, context) {
@@ -22,20 +22,20 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
         const values = [];
         for (const applicationPropertyColumn of applicationPropertyColumns) {
             values.push([
-                applicationPropertyColumn.column.id, applicationPropertyColumn.property.id,
-                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion.id : null,
-                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion.id : null,
-                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion.id : null,
+                applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
+                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
+                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
+                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion._localId : null,
             ]);
         }
         await this.db.insertValuesGenerateIds({
             insertInto: spc = Q.ApplicationPropertyColumn,
             columns: [
-                spc.column.id,
-                spc.property.id,
-                spc.deprecatedSinceVersion.id,
-                spc.removedInVersion.id,
-                spc.sinceVersion.id
+                spc.column._localId,
+                spc.property._localId,
+                spc.deprecatedSinceVersion._localId,
+                spc.removedInVersion._localId,
+                spc.sinceVersion._localId
             ],
             values
         }, context);

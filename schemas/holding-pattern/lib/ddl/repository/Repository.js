@@ -11,11 +11,15 @@ let Repository = class Repository {
     }
 };
 __decorate([
-    Column({ name: "ID" }),
+    Column({ name: "REPOSITORY_LID" }),
     GeneratedValue(),
     Id(),
     DbNumber()
-], Repository.prototype, "id", void 0);
+], Repository.prototype, "_localId", void 0);
+__decorate([
+    Column({ name: "GUID", nullable: false }),
+    DbString()
+], Repository.prototype, "GUID", void 0);
 __decorate([
     Column({ name: 'AGE_SUITABILITY', nullable: false }),
     DbNumber()
@@ -32,13 +36,9 @@ __decorate([
     DbString()
 ], Repository.prototype, "source", void 0);
 __decorate([
-    Column({ name: "GUID", nullable: false }),
-    DbString()
-], Repository.prototype, "GUID", void 0);
-__decorate([
     ManyToOne(),
     JoinColumn({
-        name: "OWNER_USER_ID", referencedColumnName: "ID",
+        name: 'OWNER_USER_LID', referencedColumnName: 'USER_LID',
         nullable: false
     })
 ], Repository.prototype, "owner", void 0);
@@ -47,19 +47,31 @@ __decorate([
 ], Repository.prototype, "repositoryTransactionHistory", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'CONTINENT_ID',
+        referencedColumnName: 'CONTINENT_ID', nullable: true
+    })
 ], Repository.prototype, "continent", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'COUNTRY_ID',
+        referencedColumnName: 'COUNTRY_ID', nullable: true
+    })
 ], Repository.prototype, "country", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'STATE_ID',
+        referencedColumnName: 'STATE_ID', nullable: true
+    })
 ], Repository.prototype, "state", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'METRO_AREA_ID',
+        referencedColumnName: 'METRO_AREA_ID', nullable: true
+    })
 ], Repository.prototype, "metroArea", void 0);
 __decorate([
     OneToMany({ mappedBy: 'repository' })

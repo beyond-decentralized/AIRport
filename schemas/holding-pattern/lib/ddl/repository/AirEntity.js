@@ -11,7 +11,8 @@ __decorate([
     Id(),
     ManyToOne(),
     JoinColumn({
-        name: 'REPOSITORY_ID', referencedColumnName: 'ID',
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID',
         nullable: false
     })
 ], AirEntity.prototype, "repository", void 0);
@@ -19,7 +20,8 @@ __decorate([
     Id(),
     ManyToOne(),
     JoinColumn({
-        name: 'ACTOR_ID', referencedColumnName: 'ID',
+        name: 'ACTOR_LID',
+        referencedColumnName: 'ACTOR_LID',
         nullable: false
     })
 ], AirEntity.prototype, "actor", void 0);
@@ -27,7 +29,7 @@ __decorate([
     Id(),
     Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     GeneratedValue()
-], AirEntity.prototype, "actorRecordId", void 0);
+], AirEntity.prototype, "_actorRecordId", void 0);
 __decorate([
     Column({ name: 'AGE_SUITABILITY', nullable: false }),
     DbNumber()
@@ -37,18 +39,20 @@ __decorate([
     DbDate()
 ], AirEntity.prototype, "createdAt", void 0);
 __decorate([
-    Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false })
+    Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false })
 ], AirEntity.prototype, "systemWideOperationId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'ORIGINAL_REPOSITORY_ID', referencedColumnName: 'ID'
+        name: 'ORIGINAL_REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
     })
 ], AirEntity.prototype, "originalRepository", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'ORIGINAL_ACTOR_ID', referencedColumnName: 'ID'
+        name: 'ORIGINAL_ACTOR_LID',
+        referencedColumnName: 'ACTOR_LID'
     })
 ], AirEntity.prototype, "originalActor", void 0);
 __decorate([

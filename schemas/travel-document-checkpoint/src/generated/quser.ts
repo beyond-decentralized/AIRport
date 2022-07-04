@@ -117,7 +117,7 @@ export interface UserESelect
 export interface UserEId
     extends IEntityIdProperties {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -128,7 +128,7 @@ export interface UserEId
  */
 export interface UserEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -187,12 +187,12 @@ export interface UserEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	ORIGIN?: string | IQStringField;
-	ORIGIN_ID?: string | IQStringField;
+	ORIGIN_LID?: string | IQStringField;
 	EMAIL?: string | IQStringField;
 	PASSWORD_HASH?: string | IQStringField;
 	RANKING?: number | IQNumberField;
 	USERNAME?: string | IQStringField;
-	GUID?: string | IQStringField;
+	USER_GUID?: string | IQStringField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -227,7 +227,7 @@ extends UserEId, UserEUpdateColumns {
 export interface QUser extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -254,7 +254,7 @@ export interface QUserQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

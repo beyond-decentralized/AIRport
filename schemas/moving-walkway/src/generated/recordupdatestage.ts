@@ -17,7 +17,7 @@ import {
 export interface IRecordUpdateStage {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

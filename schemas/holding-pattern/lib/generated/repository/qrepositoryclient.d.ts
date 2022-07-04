@@ -50,7 +50,7 @@ export interface RepositoryClientECreateProperties extends Partial<RepositoryCli
 export interface RepositoryClientECreateColumns extends RepositoryClientEId, RepositoryClientEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRepositoryClient extends IQEntity {
     repository: QRepositoryQRelation;

@@ -9,7 +9,7 @@ let ImmutableRow = class ImmutableRow {
 };
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'USER_ACCOUNT_ID' })
+    JoinColumn({ name: 'USER_ACCOUNT_LID' })
 ], ImmutableRow.prototype, "user", void 0);
 __decorate([
     Column({ name: 'CREATED_AT' })

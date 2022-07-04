@@ -1,4 +1,4 @@
-import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, TableConfiguration } from '@airport/air-traffic-control';
+import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, ApplicationEntity_TableConfiguration } from '@airport/air-traffic-control';
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
 import { ApplicationVersionGraph, ApplicationVersionEOptionalId, ApplicationVersionESelect, QApplicationVersionQRelation } from './qapplicationversion';
 import { ApplicationColumnGraph, ApplicationColumnESelect, QApplicationColumn } from './qapplicationcolumn';
@@ -13,7 +13,7 @@ export interface ApplicationEntityESelect extends VersionedApplicationObjectESel
     isLocal?: boolean | IQBooleanField;
     isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
-    tableConfig?: TableConfiguration | IQStringField;
+    tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionESelect;
     columns?: ApplicationColumnESelect;
     operations?: ApplicationOperationESelect;
@@ -25,13 +25,13 @@ export interface ApplicationEntityESelect extends VersionedApplicationObjectESel
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationEntityEId extends VersionedApplicationObjectEId {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationEntityEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -41,7 +41,7 @@ export interface ApplicationEntityEUpdateProperties extends VersionedApplication
     isLocal?: boolean | IQBooleanField;
     isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
-    tableConfig?: TableConfiguration | IQStringField;
+    tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionEOptionalId;
 }
 /**
@@ -52,7 +52,7 @@ export interface ApplicationEntityGraph extends ApplicationEntityEOptionalId, Ve
     isLocal?: boolean | IQBooleanField;
     isAirEntity?: boolean | IQBooleanField;
     name?: string | IQStringField;
-    tableConfig?: TableConfiguration | IQStringField;
+    tableConfig?: ApplicationEntity_TableConfiguration | IQStringField;
     applicationVersion?: ApplicationVersionGraph;
     columns?: ApplicationColumnGraph[];
     operations?: ApplicationOperationGraph[];
@@ -64,15 +64,15 @@ export interface ApplicationEntityGraph extends ApplicationEntityEOptionalId, Ve
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationEntityEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     TABLE_INDEX?: number | IQNumberField;
     IS_LOCAL?: boolean | IQBooleanField;
     IS_AIR_ENTITY?: boolean | IQBooleanField;
     NAME?: string | IQStringField;
     TABLE_CONFIGURATION?: string | IQStringField;
-    APPLICATION_VERSION_ID?: number | IQNumberField;
+    APPLICATION_VERSION_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -85,10 +85,10 @@ export interface ApplicationEntityECreateProperties extends Partial<ApplicationE
 export interface ApplicationEntityECreateColumns extends ApplicationEntityEId, ApplicationEntityEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationEntity extends QVersionedApplicationObject {
-    id: IQNumberField;
+    _localId: IQNumberField;
     index: IQNumberField;
     isLocal: IQBooleanField;
     isAirEntity: IQBooleanField;
@@ -102,7 +102,7 @@ export interface QApplicationEntity extends QVersionedApplicationObject {
     relationReferences: IQOneToManyRelation<QApplicationRelation>;
 }
 export interface QApplicationEntityQId extends QVersionedApplicationObjectQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationEntityQRelation extends QVersionedApplicationObjectQRelation<QApplicationEntity>, QApplicationEntityQId {
 }

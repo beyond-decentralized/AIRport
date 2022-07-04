@@ -11,8 +11,9 @@ let ApplicationOperation = class ApplicationOperation extends VersionedApplicati
 __decorate([
     Id(),
     GeneratedValue(),
-    DbNumber()
-], ApplicationOperation.prototype, "id", void 0);
+    DbNumber(),
+    Column({ name: 'APPLICATION_OPERATION_LID' })
+], ApplicationOperation.prototype, "_localId", void 0);
 __decorate([
     Column({
         name: 'TYPE',
@@ -23,8 +24,8 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'APPLICATION_ENTITY_ID',
-        referencedColumnName: 'ID',
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID',
         nullable: false
     })
 ], ApplicationOperation.prototype, "entity", void 0);

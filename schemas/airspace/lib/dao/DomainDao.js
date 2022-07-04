@@ -14,7 +14,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
             from: [
                 d = Q.Domain
             ],
-            where: d.id.in(domainIds)
+            where: d._localId.in(domainIds)
         });
     }
     async findMapByNameWithNames(domainNames) {
@@ -55,14 +55,14 @@ let DomainDao = class DomainDao extends BaseDomainDao {
         });
     }
     async checkAndInsertIfNeeded(domains, context) {
-        const existingDomains = await this.findByIdIn(domains.map(domain => domain.id));
+        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId));
         const existingDomainMap = new Map();
         for (const existingDomain of existingDomains) {
-            existingDomainMap.set(existingDomain.id, existingDomain);
+            existingDomainMap.set(existingDomain._localId, existingDomain);
         }
         const newDomains = [];
         for (const domain of domains) {
-            if (!existingDomainMap.has(domain.id)) {
+            if (!existingDomainMap.has(domain._localId)) {
                 newDomains.push(domain);
             }
         }
@@ -73,13 +73,13 @@ let DomainDao = class DomainDao extends BaseDomainDao {
         const values = [];
         for (const domain of newDomains) {
             values.push([
-                domain.id, domain.name
+                domain._localId, domain.name
             ]);
         }
         await this.db.insertValuesGenerateIds({
             insertInto: d = Q.Domain,
             columns: [
-                d.id,
+                d._localId,
                 d.name,
             ],
             values
@@ -102,7 +102,7 @@ let DomainDao = class DomainDao extends BaseDomainDao {
         });
         for (let i = 0; i < domains.length; i++) {
             let domain = domains[i];
-            domain.id = ids[i][0];
+            domain._localId = ids[i][0];
         }
     }
 };

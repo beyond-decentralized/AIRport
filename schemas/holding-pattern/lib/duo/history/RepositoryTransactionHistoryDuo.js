@@ -16,7 +16,7 @@ let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo exte
         repositoryTransactionHistory.GUID = uuidv4();
         repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
         repositoryTransactionHistory.repository = new Repository();
-        repositoryTransactionHistory.repository.id = repositoryId;
+        repositoryTransactionHistory.repository._localId = repositoryId;
         return repositoryTransactionHistory;
     }
     newRecord(data) {

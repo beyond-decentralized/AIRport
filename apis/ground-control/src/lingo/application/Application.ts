@@ -30,7 +30,7 @@ export interface DbApplication {
 
 	domain: DbDomain
 
-	id: Application_LocalId
+	_localId: Application_LocalId
 
 	name: Application_Name
 
@@ -40,7 +40,7 @@ export interface DbApplication {
 
 export interface DbDomain {
 
-	id: Domain_LocalId
+	_localId: Domain_LocalId
 
 	name: Domain_Name
 
@@ -168,7 +168,7 @@ export interface DbApplicationCurrentVersion {
 export interface DbApplicationVersion
 	extends DbApplicationVersionReference {
 
-	id: ApplicationVersion_LocalId;
+	_localId: ApplicationVersion_LocalId;
 
 	/**
 	 * Entities by their application table indexes.

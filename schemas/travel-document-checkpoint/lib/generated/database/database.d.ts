@@ -4,7 +4,7 @@ import { IState } from '../locality/state';
 import { IMetroArea } from '../locality/metroarea';
 import { IDatabaseType } from './databasetype';
 export interface IDatabase {
-    id: number;
+    _localId: number;
     domain?: string;
     GUID?: string;
     continent?: IContinent;

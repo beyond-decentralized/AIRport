@@ -18,8 +18,8 @@ let RecordHistoryOldValue = class RecordHistoryOldValue {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: "REPOSITORY_RECORD_HISTORY_ID",
-        referencedColumnName: "ID", nullable: false })
+    JoinColumn({ name: "REPOSITORY_RECORD_HISTORY_LID",
+        referencedColumnName: "RECORD_HISTORY_LID", nullable: false })
 ], RecordHistoryOldValue.prototype, "recordHistory", void 0);
 __decorate([
     Id(),
@@ -35,7 +35,7 @@ RecordHistoryOldValue = __decorate([
     Table({
         name: "REPOSITORY_RECORD_HISTORY_OLD_VALUES",
         // primaryKey: [
-        // 	"REPOSITORY_RECORD_HISTORY_ID",
+        // 	"REPOSITORY_RECORD_HISTORY_LID",
         // 	"COLUMN_INDEX"
         // ]
     })

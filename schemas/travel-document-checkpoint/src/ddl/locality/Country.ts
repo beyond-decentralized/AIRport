@@ -31,8 +31,8 @@ export class Country {
 
     @ManyToOne()
     @JoinColumn({
-        name: 'CONTINENT_LID',
-        referencedColumnName: 'CONTINENT_LID'
+        name: 'CONTINENT_ID',
+        referencedColumnName: 'CONTINENT_ID'
     })
     continent: Continent
 

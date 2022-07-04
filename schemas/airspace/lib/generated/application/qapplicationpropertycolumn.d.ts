@@ -39,9 +39,9 @@ export interface ApplicationPropertyColumnGraph extends ApplicationPropertyColum
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationPropertyColumnEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -54,7 +54,7 @@ export interface ApplicationPropertyColumnECreateProperties extends Partial<Appl
 export interface ApplicationPropertyColumnECreateColumns extends ApplicationPropertyColumnEId, ApplicationPropertyColumnEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationPropertyColumn extends QVersionedApplicationObject {
     column: QApplicationColumnQRelation;

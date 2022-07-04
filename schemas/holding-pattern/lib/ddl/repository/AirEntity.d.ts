@@ -9,7 +9,7 @@ export declare type AirEntity_SystemWideOperationId = SystemWideOperationId;
 export declare abstract class AirEntity {
     repository?: Repository;
     actor?: Actor;
-    actorRecordId?: AirEntity_ActorRecordId;
+    _actorRecordId?: AirEntity_ActorRecordId;
     ageSuitability?: number;
     createdAt?: Date;
     systemWideOperationId?: AirEntity_SystemWideOperationId;
@@ -25,7 +25,7 @@ export declare abstract class AirEntity {
      * 		actor: {
      * 			uuId
      * 		},
-     * 		actorRecordId,
+     * 		_actorRecordId,
      * 		repository: {
      * 			uuId
      * 		}
@@ -33,7 +33,7 @@ export declare abstract class AirEntity {
      *
      * Returns:
      *
-     * `${repository.uuId}-${actor.uuId}-${actorRecordId}`
+     * `${repository.uuId}-${actor.uuId}-${_actorRecordId}`
      *
      * Returns null if one of it's member Ids does not exist
      */

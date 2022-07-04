@@ -12,10 +12,10 @@ import {
 	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 import {
-	Actor_Id,
-	RecordHistoryActorRecordId,
+	Actor_LocalId,
+	RecordHistory_ActorRecordId,
 	AirEntity_ActorRecordId,
-	Repository_Id
+	Repository_LocalId
 } from '@airport/holding-pattern'
 import {
 	BaseRecordUpdateStageDao,
@@ -29,9 +29,9 @@ export type RecordUpdateStageValue = any;
 export type RecordUpdateStageValues = [
 	ApplicationVersion_LocalId,
 	ApplicationEntity_TableIndex,
-	Repository_Id,
-	Actor_Id,
-	RecordHistoryActorRecordId,
+	Repository_LocalId,
+	Actor_LocalId,
+	RecordHistory_ActorRecordId,
 	ApplicationColumn_Index,
 	RecordUpdateStageValue
 ];
@@ -47,7 +47,7 @@ export interface IRecordUpdateStageDao
 		applicationIndex: Application_Index,
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
-		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
+		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void>;
 
@@ -68,12 +68,12 @@ export class RecordUpdateStageDao
 		const rus: QRecordUpdateStage = Q.RecordUpdateStage
 
 		const columns = [
-			rus.applicationVersion.id,
-			rus.entity.id,
+			rus.applicationVersion._localId,
+			rus.entity._localId,
 			rus.repository._localId,
 			rus.actor._localId,
 			rus._actorRecordId,
-			rus.column.id,
+			rus.column._localId,
 			rus.updatedValue
 		]
 
@@ -91,7 +91,7 @@ export class RecordUpdateStageDao
 		applicationIndex: Application_Index,
 		applicationVersionId: ApplicationVersion_LocalId,
 		tableIndex: ApplicationEntity_TableIndex,
-		idMap: Map<Repository_Id, Map<Actor_Id, Set<AirEntity_ActorRecordId>>>,
+		idMap: Map<Repository_LocalId, Map<Actor_LocalId, Set<AirEntity_ActorRecordId>>>,
 		updatedColumnIndexes: ApplicationColumn_Index[]
 	): Promise<void> {
 		const dbEntity = this.airportDatabase.applications[applicationIndex].currentVersion[0]
@@ -103,12 +103,12 @@ export class RecordUpdateStageDao
 			const actorEquals: JSONBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
 				actorEquals.push(and(
-					qEntity['actor'].id.equals(actorId),
+					qEntity['actor']._localId.equals(actorId),
 					qEntity['_actorRecordId'].in(Array.from(idsForActor))
 				))
 			}
 			repositoryEquals.push(and(
-				qEntity['repository'].id.equals(repositoryId),
+				qEntity['repository']._localId.equals(repositoryId),
 				or(...actorEquals)
 			))
 		}
@@ -124,12 +124,12 @@ export class RecordUpdateStageDao
 				select: columnRus.updatedValue,
 				where:
 					and(
-						columnRus.applicationVersion.id.equals(applicationVersionId),
-						columnRus.entity.id.equals(dbEntity.index),
+						columnRus.applicationVersion._localId.equals(applicationVersionId),
+						columnRus.entity._localId.equals(dbEntity.index),
 						columnRus.repository._localId.equals(qEntity.repository._localId),
 						columnRus.actor._localId.equals(qEntity.actor._localId),
 						columnRus._actorRecordId.equals(qEntity._actorRecordId),
-						columnRus.column.id.equals(column.index)
+						columnRus.column._localId.equals(column.index)
 					)
 			})
 			setClause[column.name] = columnSetClause

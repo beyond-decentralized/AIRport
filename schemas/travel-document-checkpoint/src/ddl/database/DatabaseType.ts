@@ -25,8 +25,8 @@ export class DatabaseType {
     @Id()
     @ManyToOne()
     @JoinColumn({
-        name: 'TYPE_LID',
-        referencedColumnName: 'TYPE_LID', nullable: true
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID', nullable: true
     })
     type: Type
 

@@ -11,13 +11,13 @@ export interface TransactionHistoryESelect extends IEntitySelectProperties, Tran
  * DELETE - Ids fields and relations only (required).
  */
 export interface TransactionHistoryEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface TransactionHistoryEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -49,15 +49,15 @@ export interface TransactionHistoryECreateProperties extends Partial<Transaction
 export interface TransactionHistoryECreateColumns extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTransactionHistory extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     transactionType: IQStringField;
     repositoryTransactionHistories: IQOneToManyRelation<QRepositoryTransactionHistory>;
 }
 export interface QTransactionHistoryQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QTransactionHistoryQRelation extends IQRelation<QTransactionHistory>, QTransactionHistoryQId {
 }

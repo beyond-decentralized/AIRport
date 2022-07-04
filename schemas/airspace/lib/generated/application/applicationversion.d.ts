@@ -3,7 +3,7 @@ import { IApplication } from './application';
 import { IApplicationEntity } from './applicationentity';
 import { IApplicationReference } from './applicationreference';
 export interface IApplicationVersion {
-    id: number;
+    _localId: number;
     integerVersion?: number;
     versionString?: string;
     majorVersion?: number;
@@ -18,10 +18,10 @@ export interface IApplicationVersion {
         [entityName: string]: IApplicationEntity;
     };
     referencesMapByName?: {
-        [fullApplicationName: string]: IApplicationReference;
+        [fullApplication_Name: string]: IApplicationReference;
     };
     referencedByMapByName?: {
-        [fullApplicationName: string]: IApplicationReference;
+        [fullApplication_Name: string]: IApplicationReference;
     };
 }
 //# sourceMappingURL=applicationversion.d.ts.map

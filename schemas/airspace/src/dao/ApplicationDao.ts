@@ -154,12 +154,12 @@ export class ApplicationDao
 				s = Q.Application,
 				sv = s.versions.innerJoin()
 			],
-			where: sv.id.in(applicationVersionIds)
+			where: sv._localId.in(applicationVersionIds)
 		})
 
 		for (const application of applications) {
 			for (const applicationVersion of application.versions) {
-				applicationMapByIndex.set(applicationVersion.id, application)
+				applicationMapByIndex.set(applicationVersion._localId, application)
 			}
 		}
 
@@ -203,7 +203,7 @@ export class ApplicationDao
 							],
 							select: {
 								index: s.index,
-								domainId: d.id,
+								domainId: d._localId,
 								domainName: d.name,
 								name: s.name,
 								majorVersion: max(sv.majorVersion),
@@ -216,7 +216,7 @@ export class ApplicationDao
 							),
 							groupBy: [
 								s.index,
-								d.id,
+								d._localId,
 								d.name,
 								s.name,
 								sv.minorVersion,
@@ -362,7 +362,7 @@ export class ApplicationDao
 		const values = []
 		for (const application of applications) {
 			values.push([
-				application.index, application.domain.id, application.scope,
+				application.index, application.domain._localId, application.scope,
 				application.fullName, application.name,
 				// application.packageName,
 				application.status, application.signature
@@ -372,7 +372,7 @@ export class ApplicationDao
 			insertInto: a = Q.Application,
 			columns: [
 				a.index,
-				a.domain.id,
+				a.domain._localId,
 				a.scope,
 				a.fullName,
 				a.name,

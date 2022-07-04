@@ -35,7 +35,7 @@ export class JoinTreeNode {
 		dbRelation: DbRelation
 	): JoinTreeNode {
 		return this.getEntityRelationChildNodeByIndexes(
-			dbRelation.property.entity.applicationVersion.id,
+			dbRelation.property.entity.applicationVersion._localId,
 			dbRelation.property.entity.index,
 			dbRelation.index
 		);

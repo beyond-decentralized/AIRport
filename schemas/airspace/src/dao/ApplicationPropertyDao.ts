@@ -37,7 +37,7 @@ export class ApplicationPropertyDao
 			from: [
 				p = Q.ApplicationProperty
 			],
-			where: p.entity.id.in(entityIds)
+			where: p.entity._localId.in(entityIds)
 		})
 	}
 
@@ -49,25 +49,25 @@ export class ApplicationPropertyDao
 		const values = []
 		for (const applicationProperty of applicationProperties) {
 			values.push([
-				applicationProperty.id, applicationProperty.index,
+				applicationProperty._localId, applicationProperty.index,
 				applicationProperty.name, applicationProperty.isId,
-				applicationProperty.entity.id,
-				applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion.id : null,
-				applicationProperty.removedInVersion ? applicationProperty.removedInVersion.id : null,
-				applicationProperty.sinceVersion ? applicationProperty.sinceVersion.id : null,
+				applicationProperty.entity._localId,
+				applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion._localId : null,
+				applicationProperty.removedInVersion ? applicationProperty.removedInVersion._localId : null,
+				applicationProperty.sinceVersion ? applicationProperty.sinceVersion._localId : null,
 			])
 		}
 		await this.db.insertValuesGenerateIds({
 			insertInto: sp = Q.ApplicationProperty,
 			columns: [
-				sp.id,
+				sp._localId,
 				sp.index,
 				sp.name,
 				sp.isId,
-				sp.entity.id,
-				sp.deprecatedSinceVersion.id,
-				sp.removedInVersion.id,
-				sp.sinceVersion.id
+				sp.entity._localId,
+				sp.deprecatedSinceVersion._localId,
+				sp.removedInVersion._localId,
+				sp.sinceVersion._localId
 			],
 			values
 		}, context)

@@ -69,7 +69,7 @@ export interface TransactionHistoryESelect
 export interface TransactionHistoryEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -80,7 +80,7 @@ export interface TransactionHistoryEId
  */
 export interface TransactionHistoryEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -150,7 +150,7 @@ extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 export interface QTransactionHistory extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -168,7 +168,7 @@ export interface QTransactionHistoryQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

@@ -15,7 +15,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             from: [
                 t = Q.Terminal
             ],
-            where: and(t.owner.id.in(ownerIds), t.GUID.in(GUIDs))
+            where: and(t.owner._localId.in(ownerIds), t.GUID.in(GUIDs))
         });
     }
     async findByGUIDs(GUIDs) {
@@ -33,21 +33,21 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         const values = [];
         for (const terminal of terminals) {
             values.push([
-                terminal.GUID, terminal.owner.id, false,
+                terminal.GUID, terminal.owner._localId, false,
             ]);
         }
-        const ids = await this.db.insertValuesGenerateIds({
+        const _localIds = await this.db.insertValuesGenerateIds({
             insertInto: t = Q.Terminal,
             columns: [
                 t.GUID,
-                t.owner.id,
+                t.owner._localId,
                 t.isLocal
             ],
             values
         }, context);
         for (let i = 0; i < terminals.length; i++) {
             const terminal = terminals[i];
-            terminal.id = ids[i][0];
+            terminal._localId = _localIds[i][0];
         }
     }
 };

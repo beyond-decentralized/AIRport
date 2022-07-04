@@ -7,14 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Injected } from '@airport/direction-indicator';
 import { BaseRecordHistoryNewValueDao, Q } from '../../generated/generated';
 let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
-    async findByRecordHistoryIdIn(recordHistoryIds) {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
         let rhnv;
         return await this.db.find.tree({
             select: {},
             from: [
                 rhnv = Q.RecordHistoryNewValue
             ],
-            where: rhnv.recordHistory.id.in(recordHistoryIds)
+            where: rhnv.recordHistory._localId.in(RecordHistory_LocalIds)
         });
     }
 };

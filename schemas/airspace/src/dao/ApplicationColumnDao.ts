@@ -40,7 +40,7 @@ export class ApplicationColumnDao
 			from: [
 				c = Q.ApplicationColumn
 			],
-			where: c.entity.id.in(entityIds)
+			where: c.entity._localId.in(entityIds)
 		})
 	}
 
@@ -52,7 +52,7 @@ export class ApplicationColumnDao
 		const values = []
 		for (const applicationColumn of applicationColumns) {
 			values.push([
-				applicationColumn.id, applicationColumn.index,
+				applicationColumn._localId, applicationColumn.index,
 				undefinedToNull(applicationColumn.idIndex),
 				applicationColumn.isGenerated,
 				undefinedToNull(applicationColumn.allocationSize),
@@ -61,16 +61,16 @@ export class ApplicationColumnDao
 				undefinedToNull(applicationColumn.precision),
 				undefinedToNull(applicationColumn.scale),
 				applicationColumn.type,
-				applicationColumn.entity.id,
-				applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion.id : null,
-				applicationColumn.removedInVersion ? applicationColumn.removedInVersion.id : null,
-				applicationColumn.sinceVersion ? applicationColumn.sinceVersion.id : null,
+				applicationColumn.entity._localId,
+				applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
+				applicationColumn.removedInVersion ? applicationColumn.removedInVersion._localId : null,
+				applicationColumn.sinceVersion ? applicationColumn.sinceVersion._localId : null,
 			])
 		}
 		await this.db.insertValuesGenerateIds({
 			insertInto: sc = Q.ApplicationColumn,
 			columns: [
-				sc.id,
+				sc._localId,
 				sc.index,
 				sc.idIndex,
 				sc.isGenerated,
@@ -80,10 +80,10 @@ export class ApplicationColumnDao
 				sc.precision,
 				sc.scale,
 				sc.type,
-				sc.entity.id,
-				sc.deprecatedSinceVersion.id,
-				sc.removedInVersion.id,
-				sc.sinceVersion.id
+				sc.entity._localId,
+				sc.deprecatedSinceVersion._localId,
+				sc.removedInVersion._localId,
+				sc.sinceVersion._localId
 			],
 			values
 		}, context)

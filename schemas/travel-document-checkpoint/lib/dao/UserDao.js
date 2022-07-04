@@ -35,7 +35,7 @@ let UserDao = class UserDao extends BaseUserDao {
                 user.GUID, user.username
             ]);
         }
-        const ids = await this.db.insertValuesGenerateIds({
+        const _localIds = await this.db.insertValuesGenerateIds({
             insertInto: u = Q.User,
             columns: [
                 u.GUID,
@@ -45,7 +45,7 @@ let UserDao = class UserDao extends BaseUserDao {
         }, context);
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
-            user.id = ids[i][0];
+            user._localId = _localIds[i][0];
         }
     }
 };

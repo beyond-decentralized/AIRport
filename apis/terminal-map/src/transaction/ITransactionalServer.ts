@@ -90,7 +90,7 @@ export interface ITransactionalServer {
 		ensureGeneratedValues?: boolean // For internal use only
 	): Promise<number>
 
-	insertValuesGetIds(
+	insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
 		context: IContext

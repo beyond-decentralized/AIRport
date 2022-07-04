@@ -273,7 +273,7 @@ export interface RepositoryEUpdateColumns
 	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
 	SOURCE?: string | IQStringField;
-	OWNER_USER_ID?: number | IQNumberField;
+	OWNER_USER_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;

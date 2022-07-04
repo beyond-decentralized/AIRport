@@ -20,8 +20,8 @@ export class State {
 
     @ManyToOne()
     @JoinColumn({
-        name: 'COUNTRY_LID',
-        referencedColumnName: 'COUNTRY_LID'
+        name: 'COUNTRY_ID',
+        referencedColumnName: 'COUNTRY_ID'
     })
     country: Country
 

@@ -10,12 +10,18 @@ let RepositoryType = class RepositoryType {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
+    })
 ], RepositoryType.prototype, "repository", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID'
+    })
 ], RepositoryType.prototype, "type", void 0);
 RepositoryType = __decorate([
     Entity(),

@@ -14,7 +14,7 @@ export class JoinTreeNode {
         this.childNodes[childPosition] = joinTreeNode;
     }
     getEntityRelationChildNode(dbRelation) {
-        return this.getEntityRelationChildNodeByIndexes(dbRelation.property.entity.applicationVersion.id, dbRelation.property.entity.index, dbRelation.index);
+        return this.getEntityRelationChildNodeByIndexes(dbRelation.property.entity.applicationVersion._localId, dbRelation.property.entity.index, dbRelation.index);
     }
     getEntityRelationChildNodeByIndexes(applicationIndex, tableIndex, relationIndex) {
         let matchingNodes = this.childNodes.filter((childNode) => {

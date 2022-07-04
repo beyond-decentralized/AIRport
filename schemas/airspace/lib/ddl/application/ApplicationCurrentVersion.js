@@ -15,7 +15,10 @@ __decorate([
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+    })
 ], ApplicationCurrentVersion.prototype, "applicationVersion", void 0);
 ApplicationCurrentVersion = __decorate([
     Entity(),

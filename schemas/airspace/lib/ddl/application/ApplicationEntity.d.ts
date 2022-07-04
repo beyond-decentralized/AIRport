@@ -1,5 +1,5 @@
-import { TableConfiguration } from '@airport/air-traffic-control';
-import { EntityId, EntityIsLocal, EntityIsAirEntity, EntityName, TableIndex } from '@airport/ground-control';
+import { ApplicationEntity_TableConfiguration } from '@airport/air-traffic-control';
+import { ApplicationEntity_LocalId, ApplicationEntity_IsLocal, ApplicationEntity_IsAirEntity, ApplicationEntity_Name, ApplicationEntity_TableIndex } from '@airport/ground-control';
 import { ApplicationColumn } from './ApplicationColumn';
 import { ApplicationOperation } from './ApplicationOperation';
 import { ApplicationProperty } from './ApplicationProperty';
@@ -9,12 +9,12 @@ import { VersionedApplicationObject } from './VersionedApplicationObject';
 import { IApplicationColumn } from '../../generated/application/applicationcolumn';
 import { IApplicationProperty } from '../../generated/application/applicationproperty';
 export declare class ApplicationEntity extends VersionedApplicationObject {
-    id: EntityId;
-    index: TableIndex;
-    isLocal: EntityIsLocal;
-    isAirEntity: EntityIsAirEntity;
-    name: EntityName;
-    tableConfig: TableConfiguration;
+    _localId: ApplicationEntity_LocalId;
+    index: ApplicationEntity_TableIndex;
+    isLocal: ApplicationEntity_IsLocal;
+    isAirEntity: ApplicationEntity_IsAirEntity;
+    name: ApplicationEntity_Name;
+    tableConfig: ApplicationEntity_TableConfiguration;
     applicationVersion: ApplicationVersion;
     columns: ApplicationColumn[];
     operations?: ApplicationOperation[];

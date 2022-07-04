@@ -11,8 +11,8 @@ __decorate([
     Id(),
     GeneratedValue(),
     DbNumber(),
-    Column({ name: 'ID' })
-], Actor.prototype, "id", void 0);
+    Column({ name: 'ACTOR_LID' })
+], Actor.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'GUID', nullable: false }),
     DbString()
@@ -20,25 +20,31 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'USER_ID', referencedColumnName: 'ID',
+        name: 'USER_LID',
+        referencedColumnName: 'USER_LID',
         nullable: false
     })
 ], Actor.prototype, "user", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'TERMINAL_ID', referencedColumnName: 'ID',
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID',
         nullable: false
     })
 ], Actor.prototype, "terminal", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: "APPLICATION_INDEX", referencedColumnName: "APPLICATION_INDEX" })
+    JoinColumn({
+        name: "APPLICATION_INDEX",
+        referencedColumnName: "APPLICATION_INDEX"
+    })
 ], Actor.prototype, "application", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'CLIENT_ID', referencedColumnName: 'ID',
+        name: 'CLIENT_LID',
+        referencedColumnName: 'CLIENT_LID',
         nullable: true
     })
 ], Actor.prototype, "client", void 0);

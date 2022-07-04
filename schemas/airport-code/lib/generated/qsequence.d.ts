@@ -54,7 +54,7 @@ export interface SequenceECreateProperties extends Partial<SequenceEId>, Sequenc
 export interface SequenceECreateColumns extends SequenceEId, SequenceEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QSequence extends IQEntity {
     applicationIndex: IQNumberField;

@@ -1,4 +1,4 @@
-import {DatabaseObjectConfiguration, JsonDatabaseObjectConfiguration} from './DatabaseObjectConfiguration'
+import { DatabaseObjectConfiguration, JsonDatabaseObjectConfiguration } from './DatabaseObjectConfiguration'
 import {
 	DbOperation,
 	JsonOperations
@@ -11,12 +11,12 @@ import {
 	JsonApplicationProperty,
 	JsonApplicationRelation,
 	ApplicationReferenceByIndex
-}                                    from './Property'
+} from './Property'
 import {
 	DatabaseObject,
 	DbApplicationVersion,
 	JsonDatabaseObject
-}                                    from './Application'
+} from './Application'
 
 export type ApplicationEntity_LocalId = number;
 export type ApplicationEntity_Name = string;
@@ -31,7 +31,7 @@ export type ApplicationColumn_IdIndex = number;
  */
 export interface JsonApplicationEntity
 	extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>,
-	        JsonDatabaseObject {
+	JsonDatabaseObject {
 
 	/**
 	 * Columns by their table column indexes.
@@ -85,9 +85,9 @@ export interface JsonApplicationEntity
  */
 export interface DbEntity
 	extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>,
-	        DatabaseObject {
+	DatabaseObject {
 
-	id: ApplicationEntity_LocalId
+	_localId: ApplicationEntity_LocalId
 
 	/**
 	 * Map of all columns in the entity by name.

@@ -16,8 +16,9 @@ let ApplicationColumn = class ApplicationColumn extends VersionedApplicationObje
 };
 __decorate([
     DbNumber(),
-    Id()
-], ApplicationColumn.prototype, "id", void 0);
+    Id(),
+    Column({ name: 'APPLICATION_COLUMN_LID' })
+], ApplicationColumn.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'COLUMN_INDEX', nullable: false }),
     DbNumber()
@@ -56,7 +57,10 @@ __decorate([
 ], ApplicationColumn.prototype, "type", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+    })
 ], ApplicationColumn.prototype, "entity", void 0);
 __decorate([
     OneToMany({ mappedBy: 'column' })

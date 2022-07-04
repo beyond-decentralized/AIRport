@@ -21,12 +21,12 @@ export declare type ApplicationVersion_PatchVersion = number;
 export declare type ApplicationVersion_VersionString = string;
 export interface DbApplication {
     domain: DbDomain;
-    id: Application_LocalId;
+    _localId: Application_LocalId;
     name: Application_Name;
     signature: Application_Signature;
 }
 export interface DbDomain {
-    id: Domain_LocalId;
+    _localId: Domain_LocalId;
     name: Domain_Name;
     applications: DbApplication[];
 }
@@ -109,7 +109,7 @@ export interface DbApplicationCurrentVersion {
  * A application with additional indexes (maps).
  */
 export interface DbApplicationVersion extends DbApplicationVersionReference {
-    id: ApplicationVersion_LocalId;
+    _localId: ApplicationVersion_LocalId;
     /**
      * Entities by their application table indexes.
      */

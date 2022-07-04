@@ -1,8 +1,8 @@
 import { IApplicationVersion, IApplicationEntity, IApplicationColumn } from '@airport/airspace';
 import { IRepository, IActor } from '@airport/holding-pattern';
 export interface IRecordUpdateStage {
-    id: number;
-    actorRecordId?: number;
+    _localId: number;
+    _actorRecordId?: number;
     updatedValue?: any;
     applicationVersion?: IApplicationVersion;
     entity?: IApplicationEntity;

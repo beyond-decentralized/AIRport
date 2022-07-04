@@ -11,7 +11,7 @@ import {
 	Table
 } from '@airport/air-traffic-control'
 import {
-	Operation_Id,
+	Operation_LocalId,
 	Operation_Name,
 	Operation_Rule,
 	Operation_Type
@@ -30,7 +30,7 @@ export class ApplicationOperation
 	@GeneratedValue()
 	@DbNumber()
 	@Column({ name: 'APPLICATION_OPERATION_LID' })
-	_localId: Operation_Id
+	_localId: Operation_LocalId
 
 	@Column({
 		name: 'TYPE',

@@ -50,7 +50,7 @@ export interface VersionedApplicationObjectECreateProperties extends Partial<Ver
 export interface VersionedApplicationObjectECreateColumns extends VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QVersionedApplicationObject extends IQEntity {
     deprecatedSinceVersion: QApplicationVersionQRelation;

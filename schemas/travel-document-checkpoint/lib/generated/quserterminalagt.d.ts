@@ -66,7 +66,7 @@ export interface UserTerminalAgtECreateProperties extends Partial<UserTerminalAg
 export interface UserTerminalAgtECreateColumns extends UserTerminalAgtEId, UserTerminalAgtEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QUserTerminalAgt extends IQEntity {
     id: IQNumberField;

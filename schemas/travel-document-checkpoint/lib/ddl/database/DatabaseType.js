@@ -10,12 +10,18 @@ let DatabaseType = class DatabaseType {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'DATABASE_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'DATABASE_LID',
+        referencedColumnName: 'DATABASE_LID', nullable: true
+    })
 ], DatabaseType.prototype, "database", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID', nullable: true
+    })
 ], DatabaseType.prototype, "type", void 0);
 DatabaseType = __decorate([
     Entity(),

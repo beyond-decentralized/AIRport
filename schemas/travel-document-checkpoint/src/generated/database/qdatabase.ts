@@ -126,7 +126,7 @@ export interface DatabaseESelect
 export interface DatabaseEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -137,7 +137,7 @@ export interface DatabaseEId
  */
 export interface DatabaseEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -186,8 +186,8 @@ export interface DatabaseGraph
 export interface DatabaseEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	DOMAIN?: string | IQStringField;
-	GUID?: string | IQStringField;
+	DATABASE_DOMAIN?: string | IQStringField;
+	DATABASE_GUID?: string | IQStringField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -222,7 +222,7 @@ extends DatabaseEId, DatabaseEUpdateColumns {
 export interface QDatabase extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -245,7 +245,7 @@ export interface QDatabaseQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

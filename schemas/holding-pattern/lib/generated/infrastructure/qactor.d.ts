@@ -15,13 +15,13 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
  * DELETE - Ids fields and relations only (required).
  */
 export interface ActorEId extends IEntityIdProperties {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ActorEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -48,10 +48,10 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
  */
 export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
-    USER_ID?: number | IQNumberField;
-    TERMINAL_ID?: number | IQNumberField;
+    USER_LID?: number | IQNumberField;
+    TERMINAL_LID?: number | IQNumberField;
     APPLICATION_INDEX?: number | IQNumberField;
-    CLIENT_ID?: number | IQNumberField;
+    CLIENT_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -64,10 +64,10 @@ export interface ActorECreateProperties extends Partial<ActorEId>, ActorEUpdateP
 export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QActor extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     GUID: IQStringField;
     user: QUserQRelation;
     terminal: QTerminalQRelation;
@@ -75,7 +75,7 @@ export interface QActor extends IQEntity {
     client: QClientQRelation;
 }
 export interface QActorQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QActorQRelation extends IQRelation<QActor>, QActorQId {
 }

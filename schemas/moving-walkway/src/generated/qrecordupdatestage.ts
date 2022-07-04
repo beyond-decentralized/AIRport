@@ -110,7 +110,7 @@ export interface RecordUpdateStageESelect
 export interface RecordUpdateStageEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -121,7 +121,7 @@ export interface RecordUpdateStageEId
  */
 export interface RecordUpdateStageEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -173,11 +173,11 @@ export interface RecordUpdateStageEUpdateColumns
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
 	UPDATED_VALUE?: any | IQUntypedField;
-	APPLICATION_VERSION_ID?: number | IQNumberField;
-	APPLICATION_ENTITY_ID?: number | IQNumberField;
+	APPLICATION_VERSION_LID?: number | IQNumberField;
+	APPLICATION_ENTITY_LID?: number | IQNumberField;
 	REPOSITORY_LID?: number | IQNumberField;
 	ACTOR_LID?: number | IQNumberField;
-	APPLICATION_COLUMN_ID?: number | IQNumberField;
+	APPLICATION_COLUMN_LID?: number | IQNumberField;
 
 }
 
@@ -208,7 +208,7 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 export interface QRecordUpdateStage extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -231,7 +231,7 @@ export interface QRecordUpdateStageQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

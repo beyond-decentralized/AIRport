@@ -50,7 +50,7 @@ export interface UserTerminalECreateProperties extends Partial<UserTerminalEId>,
 export interface UserTerminalECreateColumns extends UserTerminalEId, UserTerminalEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QUserTerminal extends IQEntity {
     user: QUserQRelation;

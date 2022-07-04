@@ -157,10 +157,10 @@ export interface ActorEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	GUID?: string | IQStringField;
-	USER_ID?: number | IQNumberField;
-	TERMINAL_ID?: number | IQNumberField;
+	USER_LID?: number | IQNumberField;
+	TERMINAL_LID?: number | IQNumberField;
 	APPLICATION_INDEX?: number | IQNumberField;
-	CLIENT_ID?: number | IQNumberField;
+	CLIENT_LID?: number | IQNumberField;
 
 }
 

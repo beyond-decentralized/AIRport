@@ -23,7 +23,7 @@ export interface IInsertManager {
         ensureGeneratedValues?: boolean
     ): Promise<number>;
 
-    insertValuesGetIds(
+    insertValuesGetLocalIds(
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,

@@ -44,7 +44,7 @@ export interface MutableRowECreateProperties extends Partial<MutableRowEId>, Mut
 export interface MutableRowECreateColumns extends MutableRowEId, MutableRowEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QMutableRow extends QImmutableRow {
     updatedAt: IQDateField;

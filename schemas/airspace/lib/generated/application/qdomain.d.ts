@@ -11,13 +11,13 @@ export interface DomainESelect extends IEntitySelectProperties, DomainEOptionalI
  * DELETE - Ids fields and relations only (required).
  */
 export interface DomainEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface DomainEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -49,15 +49,15 @@ export interface DomainECreateProperties extends Partial<DomainEId>, DomainEUpda
 export interface DomainECreateColumns extends DomainEId, DomainEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QDomain extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     name: IQStringField;
     applications: IQOneToManyRelation<QApplication>;
 }
 export interface QDomainQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QDomainQRelation extends IQRelation<QDomain>, QDomainQId {
 }

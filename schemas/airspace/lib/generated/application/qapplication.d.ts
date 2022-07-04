@@ -64,7 +64,7 @@ export interface ApplicationEUpdateColumns extends IEntityUpdateColumns {
     FULL_APPLICATION_NAME?: string | IQStringField;
     STATUS?: string | IQStringField;
     SIGNATURE?: string | IQStringField;
-    DOMAIN_ID?: number | IQNumberField;
+    DOMAIN_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -77,7 +77,7 @@ export interface ApplicationECreateProperties extends Partial<ApplicationEId>, A
 export interface ApplicationECreateColumns extends ApplicationEId, ApplicationEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplication extends IQEntity {
     index: IQNumberField;

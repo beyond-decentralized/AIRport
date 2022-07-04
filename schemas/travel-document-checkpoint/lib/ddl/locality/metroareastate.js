@@ -10,12 +10,18 @@ let MetroAreaState = class MetroAreaState {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'STATE_ID',
+        referencedColumnName: 'STATE_ID'
+    })
 ], MetroAreaState.prototype, "state", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'METRO_AREA_ID',
+        referencedColumnName: 'METRO_AREA_ID'
+    })
 ], MetroAreaState.prototype, "metroArea", void 0);
 MetroAreaState = __decorate([
     Entity(),

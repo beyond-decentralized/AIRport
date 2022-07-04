@@ -8,7 +8,7 @@ export declare class Duo<Entity, EntitySelect extends IEntitySelectProperties, E
     select: IFieldsSelect<EntitySelect>;
     private dbEntity;
     constructor(dbEntityId: DbEntityId | DbEntity, qApplication?: QApplication);
-    getIdStub(ids: number | string | number[] | string[]): ApplicationEntity_LocalId;
-    getIdStubs(ids: number[] | string[] | number[][] | string[][]): ApplicationEntity_LocalId[];
+    getLocalIdStub(_localIds: number | string | number[] | string[]): ApplicationEntity_LocalId;
+    getLocalIdStubs(_localIds: number[] | string[] | number[][] | string[][]): ApplicationEntity_LocalId[];
 }
 //# sourceMappingURL=Duo.d.ts.map

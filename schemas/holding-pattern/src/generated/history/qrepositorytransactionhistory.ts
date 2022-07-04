@@ -101,7 +101,7 @@ export interface RepositoryTransactionHistoryESelect
 export interface RepositoryTransactionHistoryEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -112,7 +112,7 @@ export interface RepositoryTransactionHistoryEId
  */
 export interface RepositoryTransactionHistoryEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -169,7 +169,7 @@ export interface RepositoryTransactionHistoryEUpdateColumns
 	GUID?: string | IQStringField;
 	IS_REPOSITORY_CREATION?: boolean | IQBooleanField;
 	REPOSITORY_LID?: number | IQNumberField;
-	TRANSACTION_HISTORY_ID?: number | IQNumberField;
+	TRANSACTION_HISTORY_LID?: number | IQNumberField;
 
 }
 
@@ -200,7 +200,7 @@ extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColu
 export interface QRepositoryTransactionHistory extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -224,7 +224,7 @@ export interface QRepositoryTransactionHistoryQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

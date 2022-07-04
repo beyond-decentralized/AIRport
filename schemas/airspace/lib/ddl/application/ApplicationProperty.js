@@ -15,8 +15,9 @@ let ApplicationProperty = class ApplicationProperty extends VersionedApplication
 };
 __decorate([
     DbNumber(),
-    Id()
-], ApplicationProperty.prototype, "id", void 0);
+    Id(),
+    Column({ name: 'APPLICATION_PROPERTY_LID' })
+], ApplicationProperty.prototype, "_localId", void 0);
 __decorate([
     DbNumber(),
     Column({ name: 'PROPERTY_INDEX', nullable: false })
@@ -27,11 +28,14 @@ __decorate([
 ], ApplicationProperty.prototype, "name", void 0);
 __decorate([
     DbBoolean(),
-    Column({ name: 'IS_ID', nullable: false })
+    Column({ name: 'IS_LID', nullable: false })
 ], ApplicationProperty.prototype, "isId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+    })
 ], ApplicationProperty.prototype, "entity", void 0);
 __decorate([
     OneToMany({ mappedBy: 'property' })

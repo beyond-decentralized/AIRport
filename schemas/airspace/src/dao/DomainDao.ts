@@ -60,7 +60,7 @@ export class DomainDao
 			from: [
 				d = Q.Domain
 			],
-			where: d.id.in(domainIds)
+			where: d._localId.in(domainIds)
 		})
 	}
 
@@ -120,14 +120,14 @@ export class DomainDao
 		domains: IDomain[],
 		context: IContext
 	): Promise<void> {
-		const existingDomains = await this.findByIdIn(domains.map(domain => domain.id))
+		const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId))
 		const existingDomainMap: Map<Domain_LocalId, IDomain> = new Map()
 		for (const existingDomain of existingDomains) {
-			existingDomainMap.set(existingDomain.id, existingDomain)
+			existingDomainMap.set(existingDomain._localId, existingDomain)
 		}
 		const newDomains: IDomain[] = []
 		for (const domain of domains) {
-			if (!existingDomainMap.has(domain.id)) {
+			if (!existingDomainMap.has(domain._localId)) {
 				newDomains.push(domain)
 			}
 		}
@@ -138,13 +138,13 @@ export class DomainDao
 		const values = []
 		for (const domain of newDomains) {
 			values.push([
-				domain.id, domain.name
+				domain._localId, domain.name
 			])
 		}
 		await this.db.insertValuesGenerateIds({
 			insertInto: d = Q.Domain,
 			columns: [
-				d.id,
+				d._localId,
 				d.name,
 			],
 			values
@@ -170,7 +170,7 @@ export class DomainDao
 		})
 		for (let i = 0; i < domains.length; i++) {
 			let domain = domains[i]
-			domain.id = ids[i][0]
+			domain._localId = ids[i][0]
 		}
 	}
 

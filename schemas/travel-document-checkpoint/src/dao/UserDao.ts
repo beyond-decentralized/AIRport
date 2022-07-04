@@ -71,7 +71,7 @@ export class UserDao
 				user.GUID, user.username
 			])
 		}
-		const ids = await this.db.insertValuesGenerateIds({
+		const _localIds = await this.db.insertValuesGenerateIds({
 			insertInto: u = Q.User,
 			columns: [
 				u.GUID,
@@ -81,7 +81,7 @@ export class UserDao
 		}, context) as number[][]
 		for (let i = 0; i < users.length; i++) {
 			const user = users[i]
-			user.id = ids[i][0]
+			user._localId = _localIds[i][0]
 		}
 	}
 

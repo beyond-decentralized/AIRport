@@ -23,7 +23,7 @@ import {
 export interface IRecordHistory {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

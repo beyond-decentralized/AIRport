@@ -37,7 +37,7 @@ export class ApplicationEntityDao
 			from: [
 				se = Q.ApplicationEntity
 			],
-			where: se.applicationVersion.id.in(applicationVersionIds)
+			where: se.applicationVersion._localId.in(applicationVersionIds)
 		})
 	}
 
@@ -49,28 +49,28 @@ export class ApplicationEntityDao
 		const values = []
 		for (const applicationEntity of applicationEntities) {
 			values.push([
-				applicationEntity.id, applicationEntity.index,
+				applicationEntity._localId, applicationEntity.index,
 				applicationEntity.isLocal, applicationEntity.isAirEntity,
 				applicationEntity.name, applicationEntity.tableConfig,
-				applicationEntity.applicationVersion.id,
-				applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion.id : null,
-				applicationEntity.removedInVersion ? applicationEntity.removedInVersion.id : null,
-				applicationEntity.sinceVersion ? applicationEntity.sinceVersion.id : null,
+				applicationEntity.applicationVersion._localId,
+				applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion._localId : null,
+				applicationEntity.removedInVersion ? applicationEntity.removedInVersion._localId : null,
+				applicationEntity.sinceVersion ? applicationEntity.sinceVersion._localId : null,
 			])
 		}
 		await this.db.insertValuesGenerateIds({
 			insertInto: se = Q.ApplicationEntity,
 			columns: [
-				se.id,
+				se._localId,
 				se.index,
 				se.isLocal,
 				se.isAirEntity,
 				se.name,
 				se.tableConfig,
-				se.applicationVersion.id,
-				se.deprecatedSinceVersion.id,
-				se.removedInVersion.id,
-				se.sinceVersion.id
+				se.applicationVersion._localId,
+				se.deprecatedSinceVersion._localId,
+				se.removedInVersion._localId,
+				se.sinceVersion._localId
 			],
 			values
 		}, context)

@@ -7,7 +7,7 @@ import { RecordHistoryOldValueGraph, RecordHistoryOldValueESelect, QRecordHistor
  * SELECT - All fields and relations (optional).
  */
 export interface RecordHistoryESelect extends IEntitySelectProperties, RecordHistoryEOptionalId {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     actor?: ActorESelect;
     operationHistory?: OperationHistoryESelect;
     newValues?: RecordHistoryNewValueESelect;
@@ -17,19 +17,19 @@ export interface RecordHistoryESelect extends IEntitySelectProperties, RecordHis
  * DELETE - Ids fields and relations only (required).
  */
 export interface RecordHistoryEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface RecordHistoryEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
 export interface RecordHistoryEUpdateProperties extends IEntityUpdateProperties {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     actor?: ActorEOptionalId;
     operationHistory?: OperationHistoryEOptionalId;
 }
@@ -37,7 +37,7 @@ export interface RecordHistoryEUpdateProperties extends IEntityUpdateProperties 
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface RecordHistoryGraph extends RecordHistoryEOptionalId, IEntityCascadeGraph {
-    actorRecordId?: number | IQNumberField;
+    _actorRecordId?: number | IQNumberField;
     actor?: ActorGraph;
     operationHistory?: OperationHistoryGraph;
     newValues?: RecordHistoryNewValueGraph[];
@@ -48,8 +48,8 @@ export interface RecordHistoryGraph extends RecordHistoryEOptionalId, IEntityCas
  */
 export interface RecordHistoryEUpdateColumns extends IEntityUpdateColumns {
     ACTOR_RECORD_ID?: number | IQNumberField;
-    ACTOR_ID?: number | IQNumberField;
-    REPOSITORY_OPERATION_HISTORY_ID?: number | IQNumberField;
+    ACTOR_LID?: number | IQNumberField;
+    OPERATION_HISTORY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -62,18 +62,18 @@ export interface RecordHistoryECreateProperties extends Partial<RecordHistoryEId
 export interface RecordHistoryECreateColumns extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRecordHistory extends IQEntity {
-    id: IQNumberField;
-    actorRecordId: IQNumberField;
+    _localId: IQNumberField;
+    _actorRecordId: IQNumberField;
     actor: QActorQRelation;
     operationHistory: QOperationHistoryQRelation;
     newValues: IQOneToManyRelation<QRecordHistoryNewValue>;
     oldValues: IQOneToManyRelation<QRecordHistoryOldValue>;
 }
 export interface QRecordHistoryQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QRecordHistoryQRelation extends IQRelation<QRecordHistory>, QRecordHistoryQId {
 }

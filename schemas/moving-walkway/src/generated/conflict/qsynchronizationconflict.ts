@@ -93,7 +93,7 @@ export interface SynchronizationConflictESelect
 export interface SynchronizationConflictEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -104,7 +104,7 @@ export interface SynchronizationConflictEId
  */
 export interface SynchronizationConflictEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -154,8 +154,8 @@ export interface SynchronizationConflictEUpdateColumns
 	TYPE?: string | IQStringField;
 	ACKNOWLEDGED?: boolean | IQBooleanField;
 	REPOSITORY_LID?: number | IQNumberField;
-	OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
-	OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
+	OVERWRITTEN_RECORD_HISTORY_LID?: number | IQNumberField;
+	OVERWRITING_RECORD_HISTORY_LID?: number | IQNumberField;
 
 }
 
@@ -186,7 +186,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 export interface QSynchronizationConflict extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -208,7 +208,7 @@ export interface QSynchronizationConflictQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

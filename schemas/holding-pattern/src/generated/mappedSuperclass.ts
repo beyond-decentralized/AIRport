@@ -21,7 +21,7 @@ export const MAPPED_SUPERCLASS = [
 						"values": [
 							{
 								"name": "REPOSITORY_LID",
-								"referencedColumnName": "LID",
+								"referencedColumnName": "REPOSITORY_LID",
 								"nullable": false
 							}
 						]
@@ -54,7 +54,7 @@ export const MAPPED_SUPERCLASS = [
 						"values": [
 							{
 								"name": "ACTOR_LID",
-								"referencedColumnName": "LID",
+								"referencedColumnName": "ACTOR_LID",
 								"nullable": false
 							}
 						]
@@ -241,7 +241,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "REPOSITORY_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "REPOSITORY_LID",
 									"nullable": false
 								}
 							]
@@ -274,7 +274,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "ACTOR_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "ACTOR_LID",
 									"nullable": false
 								}
 							]
@@ -414,7 +414,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "ORIGINAL_REPOSITORY_LID",
-									"referencedColumnName": "LID"
+									"referencedColumnName": "REPOSITORY_LID"
 								}
 							]
 						}
@@ -442,7 +442,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "ORIGINAL_ACTOR_LID",
-									"referencedColumnName": "LID"
+									"referencedColumnName": "ACTOR_LID"
 								}
 							]
 						}
@@ -614,7 +614,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "REPOSITORY_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "REPOSITORY_LID",
 									"nullable": false
 								}
 							]
@@ -647,7 +647,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "ACTOR_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "ACTOR_LID",
 									"nullable": false
 								}
 							]
@@ -834,7 +834,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "REPOSITORY_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "REPOSITORY_LID",
 										"nullable": false
 									}
 								]
@@ -867,7 +867,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ACTOR_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "ACTOR_LID",
 										"nullable": false
 									}
 								]
@@ -1007,7 +1007,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ORIGINAL_REPOSITORY_LID",
-										"referencedColumnName": "LID"
+										"referencedColumnName": "REPOSITORY_LID"
 									}
 								]
 							}
@@ -1035,7 +1035,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ORIGINAL_ACTOR_LID",
-										"referencedColumnName": "LID"
+										"referencedColumnName": "ACTOR_LID"
 									}
 								]
 							}
@@ -1290,7 +1290,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "REPOSITORY_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "REPOSITORY_LID",
 									"nullable": false
 								}
 							]
@@ -1323,7 +1323,7 @@ export const MAPPED_SUPERCLASS = [
 							"values": [
 								{
 									"name": "ACTOR_LID",
-									"referencedColumnName": "LID",
+									"referencedColumnName": "ACTOR_LID",
 									"nullable": false
 								}
 							]
@@ -1510,7 +1510,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "REPOSITORY_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "REPOSITORY_LID",
 										"nullable": false
 									}
 								]
@@ -1543,7 +1543,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ACTOR_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "ACTOR_LID",
 										"nullable": false
 									}
 								]
@@ -1683,7 +1683,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ORIGINAL_REPOSITORY_LID",
-										"referencedColumnName": "LID"
+										"referencedColumnName": "REPOSITORY_LID"
 									}
 								]
 							}
@@ -1711,7 +1711,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ORIGINAL_ACTOR_LID",
-										"referencedColumnName": "LID"
+										"referencedColumnName": "ACTOR_LID"
 									}
 								]
 							}
@@ -1906,7 +1906,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 0,
 								"isGenerated": true,
 								"manyRelationColumns": [],
-								"name": "LID",
+								"name": "USER_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2047,7 +2047,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 7,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "GUID",
+								"name": "USER_GUID",
 								"notNull": true,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2067,7 +2067,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 8,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "CONTINENT_LID",
+								"name": "CONTINENT_ID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2087,7 +2087,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 9,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "COUNTRY_LID",
+								"name": "COUNTRY_ID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2107,7 +2107,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 10,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "STATE_LID",
+								"name": "STATE_ID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2127,7 +2127,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 11,
 								"isGenerated": false,
 								"manyRelationColumns": [],
-								"name": "METRO_AREA_LID",
+								"name": "METRO_AREA_ID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2149,7 +2149,7 @@ export const MAPPED_SUPERCLASS = [
 								"index": 0,
 								"isGenerated": true,
 								"manyRelationColumns": [],
-								"name": "LID",
+								"name": "USER_LID",
 								"notNull": false,
 								"oneRelationColumns": [],
 								"propertyColumnMap": null,
@@ -2167,7 +2167,7 @@ export const MAPPED_SUPERCLASS = [
 						],
 						"idColumnMap": null,
 						"id": null,
-						"index": 4,
+						"index": 3,
 						"isLocal": true,
 						"isAirEntity": false,
 						"name": "User",
@@ -2185,7 +2185,7 @@ export const MAPPED_SUPERCLASS = [
 								"id": null,
 								"index": 0,
 								"isId": true,
-								"name": "id",
+								"name": "_localId",
 								"relation": null,
 								"sinceVersion": null
 							},
@@ -2709,7 +2709,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "REPOSITORY_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "REPOSITORY_LID",
 										"nullable": false
 									}
 								]
@@ -2742,7 +2742,7 @@ export const MAPPED_SUPERCLASS = [
 								"values": [
 									{
 										"name": "ACTOR_LID",
-										"referencedColumnName": "LID",
+										"referencedColumnName": "ACTOR_LID",
 										"nullable": false
 									}
 								]
@@ -2929,7 +2929,7 @@ export const MAPPED_SUPERCLASS = [
 									"values": [
 										{
 											"name": "REPOSITORY_LID",
-											"referencedColumnName": "LID",
+											"referencedColumnName": "REPOSITORY_LID",
 											"nullable": false
 										}
 									]
@@ -2962,7 +2962,7 @@ export const MAPPED_SUPERCLASS = [
 									"values": [
 										{
 											"name": "ACTOR_LID",
-											"referencedColumnName": "LID",
+											"referencedColumnName": "ACTOR_LID",
 											"nullable": false
 										}
 									]
@@ -3102,7 +3102,7 @@ export const MAPPED_SUPERCLASS = [
 									"values": [
 										{
 											"name": "ORIGINAL_REPOSITORY_LID",
-											"referencedColumnName": "LID"
+											"referencedColumnName": "REPOSITORY_LID"
 										}
 									]
 								}
@@ -3130,7 +3130,7 @@ export const MAPPED_SUPERCLASS = [
 									"values": [
 										{
 											"name": "ORIGINAL_ACTOR_LID",
-											"referencedColumnName": "LID"
+											"referencedColumnName": "ACTOR_LID"
 										}
 									]
 								}
@@ -3420,7 +3420,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 0,
 									"isGenerated": true,
 									"manyRelationColumns": [],
-									"name": "LID",
+									"name": "USER_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3561,7 +3561,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 7,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "GUID",
+									"name": "USER_GUID",
 									"notNull": true,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3581,7 +3581,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 8,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "CONTINENT_LID",
+									"name": "CONTINENT_ID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3601,7 +3601,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 9,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "COUNTRY_LID",
+									"name": "COUNTRY_ID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3621,7 +3621,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 10,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "STATE_LID",
+									"name": "STATE_ID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3641,7 +3641,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 11,
 									"isGenerated": false,
 									"manyRelationColumns": [],
-									"name": "METRO_AREA_LID",
+									"name": "METRO_AREA_ID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3663,7 +3663,7 @@ export const MAPPED_SUPERCLASS = [
 									"index": 0,
 									"isGenerated": true,
 									"manyRelationColumns": [],
-									"name": "LID",
+									"name": "USER_LID",
 									"notNull": false,
 									"oneRelationColumns": [],
 									"propertyColumnMap": null,
@@ -3681,7 +3681,7 @@ export const MAPPED_SUPERCLASS = [
 							],
 							"idColumnMap": null,
 							"id": null,
-							"index": 4,
+							"index": 3,
 							"isLocal": true,
 							"isAirEntity": false,
 							"name": "User",
@@ -3699,7 +3699,7 @@ export const MAPPED_SUPERCLASS = [
 									"id": null,
 									"index": 0,
 									"isId": true,
-									"name": "id",
+									"name": "_localId",
 									"relation": null,
 									"sinceVersion": null
 								},

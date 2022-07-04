@@ -4,18 +4,18 @@ export class ApplicationMap {
         this.applicationMap = applicationMap;
     }
     ensureEntity(entity, allColumns = false, TableMapConstructor = TableMap) {
-        return this.ensure(entity.applicationVersion.id, entity.index, allColumns, TableMapConstructor);
+        return this.ensure(entity.applicationVersion._localId, entity.index, allColumns, TableMapConstructor);
     }
-    ensure(applicationIndex, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
-        let tableMap = this.applicationMap[applicationIndex];
+    ensure(applicationVersionLocalId, tableIndex, allColumns = false, TableMapConstructor = TableMap) {
+        let tableMap = this.applicationMap[applicationVersionLocalId];
         if (!tableMap) {
-            tableMap = new TableMapConstructor(applicationIndex);
-            this.applicationMap[applicationIndex] = tableMap;
+            tableMap = new TableMapConstructor(applicationVersionLocalId);
+            this.applicationMap[applicationVersionLocalId] = tableMap;
         }
         return tableMap.ensure(tableIndex, allColumns);
     }
-    existsByStructure(applicationIndex, tableIndex, columnIndex) {
-        let tableMap = this.applicationMap[applicationIndex];
+    existsByStructure(applicationVersionLocalId, tableIndex, columnIndex) {
+        let tableMap = this.applicationMap[applicationVersionLocalId];
         if (!tableMap) {
             return false;
         }

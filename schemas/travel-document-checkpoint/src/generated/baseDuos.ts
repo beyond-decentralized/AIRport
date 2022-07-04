@@ -264,11 +264,11 @@ export class BaseClassificationDuo
 	implements IBaseClassificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(6)
+		super(5)
 	}
 }
 
@@ -282,11 +282,11 @@ export class BaseClientDuo
 	implements IBaseClientDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(10)
+		super(9)
 	}
 }
 
@@ -300,11 +300,11 @@ export class BaseClientTypeDuo
 	implements IBaseClientTypeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(9)
+		super(8)
 	}
 }
 
@@ -318,11 +318,11 @@ export class BaseContinentDuo
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(0)
+		super(4)
 	}
 }
 
@@ -336,11 +336,11 @@ export class BaseCountryDuo
 	implements IBaseCountryDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }
 
@@ -354,11 +354,11 @@ export class BaseDatabaseDuo
 	implements IBaseDatabaseDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(15)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(15)
+		super(11)
 	}
 }
 
@@ -372,11 +372,11 @@ export class BaseDatabaseTypeDuo
 	implements IBaseDatabaseTypeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(14)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(14)
+		super(10)
 	}
 }
 
@@ -390,11 +390,11 @@ export class BaseMetroAreaDuo
 	implements IBaseMetroAreaDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -408,11 +408,11 @@ export class BaseMetroAreaStateDuo
 	implements IBaseMetroAreaStateDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(5)
+		super(12)
 	}
 }
 
@@ -426,11 +426,11 @@ export class BaseStateDuo
 	implements IBaseStateDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -444,11 +444,11 @@ export class BaseTerminalDuo
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(14)
 	}
 	
 	constructor() {
-		super(12)
+		super(14)
 	}
 }
 
@@ -462,11 +462,11 @@ export class BaseTerminalTypeDuo
 	implements IBaseTerminalTypeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(13)
 	}
 	
 	constructor() {
-		super(11)
+		super(13)
 	}
 }
 
@@ -480,11 +480,11 @@ export class BaseTypeDuo
 	implements IBaseTypeDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(8)
+		super(7)
 	}
 }
 
@@ -498,11 +498,11 @@ export class BaseTypeClassificationDuo
 	implements IBaseTypeClassificationDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(7)
+		super(6)
 	}
 }
 
@@ -516,11 +516,11 @@ export class BaseUserDuo
 	implements IBaseUserDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -534,10 +534,10 @@ export class BaseUserTerminalDuo
 	implements IBaseUserTerminalDuo {
 
 	static diSet(): boolean {
-		return duoDiSet(13)
+		return duoDiSet(15)
 	}
 	
 	constructor() {
-		super(13)
+		super(15)
 	}
 }

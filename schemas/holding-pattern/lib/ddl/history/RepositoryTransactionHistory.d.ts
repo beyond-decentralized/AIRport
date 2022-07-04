@@ -5,14 +5,14 @@ import { TransactionHistory } from './TransactionHistory';
 /**
  * Created by Papa on 9/15/2016.
  */
-export declare type RepositoryTransactionHistory_Id = number;
+export declare type RepositoryTransactionHistory_LocalId = number;
 export declare type RepositoryTransactionHistory_IsRepositoryCreation = boolean;
 export declare type RepositoryTransactionHistory_BlockId = number;
 export declare type RepositoryTransactionHistory_SaveTimestamp = number;
 export declare type RepositoryTransactionHistory_SyncTimestamp = number;
 export declare type RepositoryTransactionHistory_GUID = string;
 export declare class RepositoryTransactionHistory {
-    id: RepositoryTransactionHistory_Id;
+    _localId: RepositoryTransactionHistory_LocalId;
     repositoryTransactionType: RepositoryTransactionType;
     saveTimestamp: RepositoryTransactionHistory_SaveTimestamp;
     syncTimestamp: RepositoryTransactionHistory_SyncTimestamp;

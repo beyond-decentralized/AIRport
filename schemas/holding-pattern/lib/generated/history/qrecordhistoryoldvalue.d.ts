@@ -51,7 +51,7 @@ export interface RecordHistoryOldValueECreateProperties extends Partial<RecordHi
 export interface RecordHistoryOldValueECreateColumns extends RecordHistoryOldValueEId, RecordHistoryOldValueEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QRecordHistoryOldValue extends IQEntity {
     columnIndex: IQNumberField;

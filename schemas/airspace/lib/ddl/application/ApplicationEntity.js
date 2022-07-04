@@ -16,7 +16,7 @@ let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObje
         // TODO: implement if needed
         // @OneToMany()
         // @JoinColumns([
-        // 	{name: "APPLICATION_VERSION_ID"},
+        // 	{name: "APPLICATION_VERSION_LID"},
         // 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
         // ])
         // @WhereJoinTable((
@@ -36,8 +36,9 @@ let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObje
 };
 __decorate([
     DbNumber(),
-    Id()
-], ApplicationEntity.prototype, "id", void 0);
+    Id(),
+    Column({ name: 'APPLICATION_ENTITY_LID' })
+], ApplicationEntity.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'TABLE_INDEX', nullable: false }),
     DbNumber()
@@ -60,7 +61,10 @@ __decorate([
 ], ApplicationEntity.prototype, "tableConfig", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID', nullable: false
+    })
 ], ApplicationEntity.prototype, "applicationVersion", void 0);
 __decorate([
     OneToMany({ mappedBy: 'entity' })

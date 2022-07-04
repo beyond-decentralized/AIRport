@@ -10,14 +10,15 @@ let User = class User {
 __decorate([
     Id(),
     GeneratedValue(),
-    DbNumber()
-], User.prototype, "id", void 0);
+    DbNumber(),
+    Column({ name: 'USER_LID' })
+], User.prototype, "_localId", void 0);
 __decorate([
     Column({ name: "ORIGIN" }),
     DbString()
 ], User.prototype, "origin", void 0);
 __decorate([
-    Column({ name: "ORIGIN_ID" }),
+    Column({ name: "ORIGIN_LID" }),
     DbString()
 ], User.prototype, "originId", void 0);
 __decorate([
@@ -37,24 +38,36 @@ __decorate([
     DbString()
 ], User.prototype, "username", void 0);
 __decorate([
-    Column({ name: "GUID", nullable: false }),
+    Column({ name: "USER_GUID", nullable: false }),
     DbString()
 ], User.prototype, "GUID", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'CONTINENT_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'CONTINENT_ID',
+        referencedColumnName: 'CONTINENT_ID', nullable: true
+    })
 ], User.prototype, "continent", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'COUNTRY_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'COUNTRY_ID',
+        referencedColumnName: 'COUNTRY_ID', nullable: true
+    })
 ], User.prototype, "country", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'STATE_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'STATE_ID',
+        referencedColumnName: 'STATE_ID', nullable: true
+    })
 ], User.prototype, "state", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'METRO_AREA_ID', referencedColumnName: 'ID', nullable: true })
+    JoinColumn({
+        name: 'METRO_AREA_ID',
+        referencedColumnName: 'METRO_AREA_ID', nullable: true
+    })
 ], User.prototype, "metroArea", void 0);
 User = __decorate([
     Entity()

@@ -106,7 +106,7 @@ export interface ApplicationVersionESelect
 export interface ApplicationVersionEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -117,7 +117,7 @@ export interface ApplicationVersionEId
  */
 export interface ApplicationVersionEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -207,7 +207,7 @@ extends ApplicationVersionEId, ApplicationVersionEUpdateColumns {
 export interface QApplicationVersion extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -233,7 +233,7 @@ export interface QApplicationVersionQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

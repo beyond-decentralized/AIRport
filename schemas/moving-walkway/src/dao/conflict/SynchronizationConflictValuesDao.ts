@@ -30,14 +30,14 @@ export class SynchronizationConflictValuesDao
 		const values = []
 		for (const synchronizationConflictValue of synchronizationConflictValues) {
 			values.push([
-				synchronizationConflictValue.synchronizationConflict.id,
+				synchronizationConflictValue.synchronizationConflict._localId,
 				synchronizationConflictValue.columnIndex
 			])
 		}
 		await this.db.insertValues({
 			insertInto: scv = Q.SynchronizationConflictValues,
 			columns: [
-				scv.synchronizationConflict.id,
+				scv.synchronizationConflict._localId,
 				scv.columnIndex
 			],
 			values

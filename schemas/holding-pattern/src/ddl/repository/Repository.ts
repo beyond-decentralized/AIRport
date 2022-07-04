@@ -81,29 +81,29 @@ export class Repository {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'CONTINENT_LID',
-		referencedColumnName: 'CONTINENT_LID', nullable: true
+		name: 'CONTINENT_ID',
+		referencedColumnName: 'CONTINENT_ID', nullable: true
 	})
 	continent?: Continent
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'COUNTRY_LID',
-		referencedColumnName: 'COUNTRY_LID', nullable: true
+		name: 'COUNTRY_ID',
+		referencedColumnName: 'COUNTRY_ID', nullable: true
 	})
 	country?: Country
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'STATE_LID',
-		referencedColumnName: 'STATE_LID', nullable: true
+		name: 'STATE_ID',
+		referencedColumnName: 'STATE_ID', nullable: true
 	})
 	state?: State
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'METRO_AREA_LID',
-		referencedColumnName: 'METRO_AREA_LID', nullable: true
+		name: 'METRO_AREA_ID',
+		referencedColumnName: 'METRO_AREA_ID', nullable: true
 	})
 	metroArea?: MetroArea
 

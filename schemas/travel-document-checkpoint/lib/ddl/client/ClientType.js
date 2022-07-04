@@ -10,12 +10,18 @@ let ClientType = class ClientType {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'CLIENT_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'CLIENT_LID',
+        referencedColumnName: 'CLIENT_LID'
+    })
 ], ClientType.prototype, "client", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID'
+    })
 ], ClientType.prototype, "type", void 0);
 ClientType = __decorate([
     Entity(),

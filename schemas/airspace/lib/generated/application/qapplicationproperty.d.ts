@@ -18,13 +18,13 @@ export interface ApplicationPropertyESelect extends VersionedApplicationObjectES
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationPropertyEId extends VersionedApplicationObjectEId {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationPropertyEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -50,13 +50,13 @@ export interface ApplicationPropertyGraph extends ApplicationPropertyEOptionalId
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationPropertyEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     PROPERTY_INDEX?: number | IQNumberField;
     NAME?: string | IQStringField;
-    IS_ID?: boolean | IQBooleanField;
-    APPLICATION_ENTITY_ID?: number | IQNumberField;
+    IS_LID?: boolean | IQBooleanField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -69,10 +69,10 @@ export interface ApplicationPropertyECreateProperties extends Partial<Applicatio
 export interface ApplicationPropertyECreateColumns extends ApplicationPropertyEId, ApplicationPropertyEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationProperty extends QVersionedApplicationObject {
-    id: IQNumberField;
+    _localId: IQNumberField;
     index: IQNumberField;
     name: IQStringField;
     isId: IQBooleanField;
@@ -81,7 +81,7 @@ export interface QApplicationProperty extends QVersionedApplicationObject {
     relation: IQOneToManyRelation<QApplicationRelation>;
 }
 export interface QApplicationPropertyQId extends QVersionedApplicationObjectQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationPropertyQRelation extends QVersionedApplicationObjectQRelation<QApplicationProperty>, QApplicationPropertyQId {
 }

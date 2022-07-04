@@ -120,7 +120,7 @@ export interface SColumn
 	extends ApplicationReferenceByIndex<ApplicationColumn_Index> {
 
 	/**
-	 * How many ids to allocate for a sequence at a time.
+	 * How many _localIds to allocate for a sequence at a time.
 	 */
 	allocationSize?: number;
 

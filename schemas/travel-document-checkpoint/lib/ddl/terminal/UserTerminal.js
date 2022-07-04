@@ -10,12 +10,18 @@ let UserTerminal = class UserTerminal {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'USER_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'USER_LID',
+        referencedColumnName: 'USER_LID'
+    })
 ], UserTerminal.prototype, "user", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TERMINAL_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TERMINAL_LID',
+        referencedColumnName: 'TERMINAL_LID'
+    })
 ], UserTerminal.prototype, "terminal", void 0);
 UserTerminal = __decorate([
     Entity(),

@@ -37,7 +37,7 @@ export class ApplicationReferenceDao
 			from: [
 				sr = Q.ApplicationReference
 			],
-			where: sr.ownApplicationVersion.id.in(applicationVersionIds)
+			where: sr.ownApplicationVersion._localId.in(applicationVersionIds)
 		})
 	}
 
@@ -49,23 +49,23 @@ export class ApplicationReferenceDao
 		const values = []
 		for (const applicationReference of applicationReferences) {
 			values.push([
-				applicationReference.ownApplicationVersion.id,
-				applicationReference.referencedApplicationVersion.id,
+				applicationReference.ownApplicationVersion._localId,
+				applicationReference.referencedApplicationVersion._localId,
 				applicationReference.index,
-				applicationReference.deprecatedSinceVersion ? applicationReference.deprecatedSinceVersion.id : null,
-				applicationReference.removedInVersion ? applicationReference.removedInVersion.id : null,
-				applicationReference.sinceVersion ? applicationReference.sinceVersion.id : null,
+				applicationReference.deprecatedSinceVersion ? applicationReference.deprecatedSinceVersion._localId : null,
+				applicationReference.removedInVersion ? applicationReference.removedInVersion._localId : null,
+				applicationReference.sinceVersion ? applicationReference.sinceVersion._localId : null,
 			])
 		}
 		await this.db.insertValuesGenerateIds({
 			insertInto: sr = Q.ApplicationReference,
 			columns: [
-				sr.ownApplicationVersion.id,
-				sr.referencedApplicationVersion.id,
+				sr.ownApplicationVersion._localId,
+				sr.referencedApplicationVersion._localId,
 				sr.index,
-				sr.deprecatedSinceVersion.id,
-				sr.removedInVersion.id,
-				sr.sinceVersion.id
+				sr.deprecatedSinceVersion._localId,
+				sr.removedInVersion._localId,
+				sr.sinceVersion._localId
 			],
 			values
 		}, context)

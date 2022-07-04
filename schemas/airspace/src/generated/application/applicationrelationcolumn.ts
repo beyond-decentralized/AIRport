@@ -17,7 +17,7 @@ import {
 export interface IApplicationRelationColumn extends IVersionedApplicationObject {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

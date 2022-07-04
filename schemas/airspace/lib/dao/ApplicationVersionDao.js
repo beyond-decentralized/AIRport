@@ -9,8 +9,8 @@ import { Injected } from '@airport/direction-indicator';
 import { BaseApplicationVersionDao, Q } from '../generated/generated';
 let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationVersionDao {
     /*
-    async findAllLatestForApplicationIndexes(
-        applicationIndexes: ApplicationIndex[]
+    async findAllLatestForApplication_Indexes(
+        applicationIndexes: Application_Index[]
     ): Promise<IApplicationVersion[]> {
         let sv: QApplicationVersion
 
@@ -20,13 +20,13 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
             ],
             select: {},
             where: and(
-                sv.id.in(this.idsForMaxVersionSelect()),
+                sv._localId.in(this._localIdsForMaxVersionSelect()),
                 sv.application.index.in(applicationIndexes)
             )
         })
     }
     */
-    async findAllActiveOrderByApplicationIndexAndId() {
+    async findAllActiveOrderByApplication_IndexAndId() {
         let sv;
         // let s: QApplication
         return await this.db.find.tree({
@@ -37,17 +37,17 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
             select: {},
             orderBy: [
                 sv.application.index.asc(),
-                sv.id.desc()
+                sv._localId.desc()
             ]
         });
     }
-    async findByDomainNamesAndApplicationNames(domainNames, applicationNames) {
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
         let sv;
         let s;
         let d;
         return await this.db.find.tree({
             select: {
-                id: Y,
+                _localId: Y,
                 integerVersion: Y,
                 application: {
                     domain: {
@@ -66,12 +66,12 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         });
     }
     /*
-    async findMaxVersionedMapByApplicationAndDomainNames(
-        applicationDomainNames: DomainName[],
-        applicationNames: ApplicationName[]
-    ): Promise<Map<DomainName, Map<ApplicationName, IApplicationVersion>>> {
-        const maxVersionedMapByApplicationAndDomainNames
-                  : Map<DomainName, Map<ApplicationName, IApplicationVersion>>
+    async findMaxVersionedMapByApplicationAndDomain_Names(
+        applicationDomain_Names: Domain_Name[],
+        applicationNames: Application_Name[]
+    ): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
+        const maxVersionedMapByApplicationAndDomain_Names
+                  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
                   = new Map()
 
         let sv: QApplicationVersion
@@ -88,11 +88,11 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                     index: Y,
                     name: Y,
                     domain: {
-                        id: Y,
+                        _localId: Y,
                         name: Y
                     }
                 },
-                id: Y
+                _localId: Y
             },
             from: [
                 sv = Q.ApplicationVersion,
@@ -100,8 +100,8 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                 d = s.domain.innerJoin()
             ],
             where: and(
-                sv.id.in(this.idsForMaxVersionSelect()),
-                d.name.in(applicationDomainNames),
+                sv._localId.in(this._localIdsForMaxVersionSelect()),
+                d.name.in(applicationDomain_Names),
                 s.name.in(applicationNames)
             ),
         })
@@ -109,12 +109,12 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         for (const maxApplicationVersion of maxApplicationVersions) {
             const application = maxApplicationVersion.application
             this.utils.ensureChildJsMap(
-                maxVersionedMapByApplicationAndDomainNames, application.domain.name)
+                maxVersionedMapByApplicationAndDomain_Names, application.domain.name)
                 .set(application.name, maxApplicationVersion)
         }
 
 
-        return maxVersionedMapByApplicationAndDomainNames
+        return maxVersionedMapByApplicationAndDomain_Names
     }
 
     private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
@@ -129,12 +129,12 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                     ],
                     select: distinct({
                         integerVersion: max(sv2.integerVersion),
-                        id: sv2.id,
+                        _localId: sv2._localId,
                         applicationIndex: sv2.application.index
                     })
                 })
             ],
-            select: svMax.id
+            select: svMax._localId
         })
     }
 */
@@ -143,7 +143,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         const values = [];
         for (const applicationVersion of applicationVersions) {
             values.push([
-                applicationVersion.id, applicationVersion.integerVersion,
+                applicationVersion._localId, applicationVersion.integerVersion,
                 applicationVersion.versionString, applicationVersion.majorVersion,
                 applicationVersion.minorVersion, applicationVersion.patchVersion,
                 applicationVersion.application.index, applicationVersion.jsonApplication
@@ -152,7 +152,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         await this.db.insertValuesGenerateIds({
             insertInto: sv = Q.ApplicationVersion,
             columns: [
-                sv.id,
+                sv._localId,
                 sv.integerVersion,
                 sv.versionString,
                 sv.majorVersion,

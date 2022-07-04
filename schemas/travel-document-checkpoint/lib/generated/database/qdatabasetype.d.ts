@@ -50,7 +50,7 @@ export interface DatabaseTypeECreateProperties extends Partial<DatabaseTypeEId>,
 export interface DatabaseTypeECreateColumns extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QDatabaseType extends IQEntity {
     database: QDatabaseQRelation;

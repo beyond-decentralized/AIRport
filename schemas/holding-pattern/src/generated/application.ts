@@ -16,7 +16,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "ACTOR_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -47,7 +47,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 4,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -69,7 +69,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 12,
+									"oneTableIndex": 14,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -113,7 +113,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 3,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 10,
+									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -202,7 +202,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 2
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 3,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -213,7 +213,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 3
 							},
-							"relationTableIndex": 12,
+							"relationTableIndex": 14,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -235,7 +235,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 5
 							},
-							"relationTableIndex": 10,
+							"relationTableIndex": 9,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
@@ -481,7 +481,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "RECORD_HISTORY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -540,7 +540,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "REPOSITORY_OPERATION_HISTORY_LID",
+							"name": "OPERATION_HISTORY_LID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -567,7 +567,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -710,12 +710,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 8,
+									"oneTableIndex": 7,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "TYPE_LID",
+							"name": "TYPE_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -776,7 +776,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 8,
+							"relationTableIndex": 7,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
@@ -819,7 +819,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 15,
+									"oneTableIndex": 11,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -885,7 +885,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 15,
+							"relationTableIndex": 11,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
@@ -928,7 +928,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 10,
+									"oneTableIndex": 9,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -994,7 +994,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 10,
+							"relationTableIndex": 9,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
@@ -1037,7 +1037,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 1,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 12,
+									"oneTableIndex": 14,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1103,7 +1103,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 1
 							},
-							"relationTableIndex": 12,
+							"relationTableIndex": 14,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
@@ -1229,7 +1229,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "REPOSITORY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1316,7 +1316,7 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 0,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 4,
+									"oneTableIndex": 3,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
@@ -1338,12 +1338,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 2,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 0,
+									"oneTableIndex": 4,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "CONTINENT_LID",
+							"name": "CONTINENT_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1360,12 +1360,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 3,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 1,
+									"oneTableIndex": 0,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "COUNTRY_LID",
+							"name": "COUNTRY_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1382,12 +1382,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 4,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 2,
+									"oneTableIndex": 1,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "STATE_LID",
+							"name": "STATE_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1404,12 +1404,12 @@ export const APPLICATION = {
 								{
 									"manyRelationIndex": 5,
 									"oneApplication_Index": 0,
-									"oneTableIndex": 3,
+									"oneTableIndex": 2,
 									"oneColumnIndex": 0,
 									"sinceVersion": 1
 								}
 							],
-							"name": "METRO_AREA_LID",
+							"name": "METRO_AREA_ID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1592,7 +1592,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 6
 							},
-							"relationTableIndex": 4,
+							"relationTableIndex": 3,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -1616,7 +1616,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 8
 							},
-							"relationTableIndex": 0,
+							"relationTableIndex": 4,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -1627,7 +1627,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 9
 							},
-							"relationTableIndex": 1,
+							"relationTableIndex": 0,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -1638,7 +1638,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 10
 							},
-							"relationTableIndex": 2,
+							"relationTableIndex": 1,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -1649,7 +1649,7 @@ export const APPLICATION = {
 							"propertyRef": {
 								"index": 11
 							},
-							"relationTableIndex": 3,
+							"relationTableIndex": 2,
 							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						},
@@ -1733,7 +1733,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "TRANSACTION_HISTORY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1774,7 +1774,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -1824,7 +1824,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "REPOSITORY_TRANSACTION_HISTORY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1967,7 +1967,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -2092,7 +2092,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "OPERATION_HISTORY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2156,7 +2156,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "ENTITY_LID",
+							"name": "APPLICATION_ENTITY_LID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -2228,7 +2228,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{

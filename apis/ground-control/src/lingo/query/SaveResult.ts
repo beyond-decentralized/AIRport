@@ -1,15 +1,15 @@
 export interface ISaveUser {
-    id: number;
+    _localId: number;
 }
 
 export interface ISaveActor {
-    id: number;
+    _localId: number;
     GUID?: string;
     user?: ISaveUser;
 }
 
 export interface ISaveRepository {
-    id: number;
+    _localId: number;
     createdAt?: Date;
     GUID?: string;
     ageSuitability?: number;
@@ -19,7 +19,7 @@ export interface ISaveRepository {
 
 /**
  * Save results are needed to update application/application isolates:
- *     - created objects with new ids
+ *     - created objects with new _localIds
  *     - trim deleted objects
  *     - notify the client if an expected update did not take place
  * 

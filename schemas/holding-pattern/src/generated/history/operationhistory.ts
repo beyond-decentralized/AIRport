@@ -20,7 +20,7 @@ import {
 export interface IOperationHistory {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 

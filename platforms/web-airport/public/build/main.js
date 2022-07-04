@@ -8862,10 +8862,10 @@ class Duo {
         }
         this.select = new FieldsSelect(this.dbEntity);
     }
-    getIdStub(ids) {
+    getLocalIdStub(ids) {
         throw new Error(`Not Implemented.`);
     }
-    getIdStubs(ids) {
+    getLocalIdStubs(ids) {
         throw new Error(`Not Implemented.`);
     }
 }
@@ -12050,8 +12050,8 @@ they are internal to the AIRport framework).`);
             ...context
         }, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, context) {
-        return await this.transactionalServer.insertValuesGetIds(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
+    async insertValuesGetLocalIds(portableQuery, context) {
+        return await this.transactionalServer.insertValuesGetLocalIds(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,
             ...context
         });
@@ -12459,7 +12459,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                 break;
             case IsolateMessageType.INSERT_VALUES_GET_IDS:
                 const insertValuesGetIdsMessage = message;
-                theResult = await this.transactionalServer.insertValuesGetIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
+                theResult = await this.transactionalServer.insertValuesGetLocalIds(insertValuesGetIdsMessage.portableQuery, credentials, context);
                 break;
             case IsolateMessageType.SAVE:
             case IsolateMessageType.SAVE_TO_DESTINATION: {
@@ -12721,14 +12721,14 @@ let TransactionalServer = class TransactionalServer {
         }, context);
         return numInsertedRecords;
     }
-    async insertValuesGetIds(portableQuery, credentials, context) {
+    async insertValuesGetLocalIds(portableQuery, credentials, context) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
         }
         const actor = await this.getActor(credentials);
         let ids;
         await this.transactionManager.transactInternal(async (transaction, context) => {
-            ids = await this.insertManager.insertValuesGetIds(portableQuery, actor, transaction, context.rootTransaction, context);
+            ids = await this.insertManager.insertValuesGetLocalIds(portableQuery, actor, transaction, context.rootTransaction, context);
         }, context);
         return ids;
     }
@@ -20689,7 +20689,7 @@ let InsertManager = class InsertManager {
     async insertValues(portableQuery, actor, transaction, rootTransaction, context, ensureGeneratedValues) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues);
     }
-    async insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context) {
+    async insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context) {
         return await this.internalInsertValues(portableQuery, actor, transaction, rootTransaction, context, true);
     }
     verifyNoGeneratedColumns(dbEntity, jsonInsertValues, errorPrefix) {
@@ -22361,7 +22361,7 @@ let OperationManager = class OperationManager {
                 const portableQuery = this.queryFacade
                     .getPortableQuery(insertValues, null, context);
                 const idsAndGeneratedValues = await this.insertManager
-                    .insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context);
+                    .insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context);
                 for (let i = 0; i < entities.length; i++) {
                     const entity = entities[i];
                     const entitySaveResult = {};
@@ -29574,7 +29574,7 @@ let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
      *  2)  Synchronization conflict datastructure is generated
      *
      * @param {Map<RepositoryId, ISyncRepoTransHistory[]>} repositoryTransactionHistoryMapByRepositoryId
-     * @param {Map<Actor_Id, IActor>} actorMayById
+     * @param {Map<Actor_LocalId, IActor>} actorMayById
      * @returns {Promise<void>}
      */
     async performStage1DataProcessing(repositoryTransactionHistoryMapByRepositoryId, actorMayById, context) {
@@ -30203,7 +30203,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
         }
     }
     /**
-     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_Id
+     * Get the record key map (RecordKeyMap = RepositoryId -> Actor_LocalId
      * -> AirEntity_ActorRecordId) for the recordUpdateMap (the specified combination
      * of columns/values being updated)
      * @param {Map<ApplicationColumn_Index, RecordUpdate>} recordUpdateMap
@@ -32648,7 +32648,7 @@ let DatabaseFacade = class DatabaseFacade {
         const insertValues = new InsertColumnValues(rawInsertColumnValues);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
-        return await this.transactionalConnector.insertValuesGetIds(portableQuery, context);
+        return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
     async insertValuesGenerateIds(rawInsertValues, context) {
         if (!rawInsertValues) {
@@ -32660,7 +32660,7 @@ let DatabaseFacade = class DatabaseFacade {
         const insertValues = new InsertValues(rawInsertValues);
         const queryContext = await this.ensureQueryContext(context);
         const portableQuery = this.queryFacade.getPortableQuery(insertValues, null, queryContext);
-        return await this.transactionalConnector.insertValuesGetIds(portableQuery, context);
+        return await this.transactionalConnector.insertValuesGetLocalIds(portableQuery, context);
     }
     async deleteWhere(rawDelete, context) {
         if (!rawDelete) {

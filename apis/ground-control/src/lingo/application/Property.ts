@@ -7,11 +7,11 @@ import {
 	EntityRelationType,
 	JsonDatabaseObject,
 	SQLDataType
-}                      from '../../index';
+} from '../../index';
 import {
 	DbEntity,
 	ApplicationEntity_TableIndex
-}                      from './Entity';
+} from './Entity';
 import { Application_Index } from './Application';
 
 export type ApplicationColumn_LocalId = number;
@@ -27,6 +27,7 @@ export type ApplicationProperty_IsId = boolean;
 export type ApplicationProperty_Name = string;
 export type ApplicationRelation_LocalId = number;
 export type ApplicationRelation_Index = number;
+export type ApplicationRelationColumn_LocalId = number;
 export type ApplicationColumn_IsGenerated = boolean
 export type ApplicationColumn_AllocationSize = number
 
@@ -37,7 +38,7 @@ export type ApplicationColumn_AllocationSize = number
  */
 export interface JsonApplicationProperty
 	extends ApplicationReferenceByIndex<ApplicationProperty_Index>,
-	        JsonDatabaseObject {
+	JsonDatabaseObject {
 
 	/**
 	 * Does this property consist of @Id columns?
@@ -63,9 +64,9 @@ export interface JsonApplicationProperty
 
 export interface DbProperty
 	extends ApplicationReferenceByIndex<ApplicationProperty_Index>,
-	        DatabaseObject {
+	DatabaseObject {
 
-	id: ApplicationProperty_LocalId
+	_localId: ApplicationProperty_LocalId
 	entity: DbEntity;
 	name: ApplicationProperty_Name;
 	isId: ApplicationProperty_IsId;
@@ -87,7 +88,7 @@ export class DbPropertyColumn {
  */
 export interface JsonApplicationColumn
 	extends ApplicationReferenceByIndex<ApplicationColumn_Index>,
-	        JsonDatabaseObject {
+	JsonDatabaseObject {
 
 	/**
 	 * Verbatim DDL for the column (after the name of the column)
@@ -102,7 +103,7 @@ export interface JsonApplicationColumn
 	isGenerated?: ApplicationColumn_IsGenerated;
 
 	/**
-	 * How many ids to allocate at a time
+	 * How many _localIds to allocate at a time
 	 */
 	allocationSize?: ApplicationColumn_AllocationSize;
 
@@ -142,13 +143,13 @@ export interface IdKeyArrayByIdColumnIndex
 
 export interface DbColumn
 	extends ApplicationReferenceByIndex<ApplicationColumn_Index>,
-	        DatabaseObject {
+	DatabaseObject {
 
 	allocationSize?: ApplicationColumn_AllocationSize
 
 	entity: DbEntity
 
-	id: ApplicationColumn_LocalId
+	_localId: ApplicationColumn_LocalId
 
 	/**
 	 * Id index of this column (if it's an ID column).
@@ -206,7 +207,7 @@ export interface PropertyReference
  */
 export interface JsonApplicationRelation
 	extends ApplicationReferenceByIndex<ApplicationRelation_Index>,
-	        JsonDatabaseObject {
+	JsonDatabaseObject {
 
 	/**
 	 * Foreign key definition, if provided by (R)JoinColumn(s)
@@ -271,9 +272,9 @@ export interface JsonApplicationRelation
 
 export interface DbRelation
 	extends ApplicationReferenceByIndex<ApplicationRelation_Index>,
-	        DatabaseObject {
+	DatabaseObject {
 
-	id: ApplicationRelation_LocalId
+	_localId: ApplicationRelation_LocalId
 
 	entity: DbEntity
 	foreignKey: DatabaseForeignKey
@@ -316,7 +317,7 @@ export interface JsonApplicationRelationColumn
 export interface DbRelationColumn
 	extends DatabaseObject {
 
-	id: number;
+	_localId: ApplicationRelationColumn_LocalId;
 
 	manyColumn: DbColumn;
 

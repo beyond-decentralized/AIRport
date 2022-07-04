@@ -15,7 +15,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
             from: [
                 rc = Q.ApplicationRelationColumn
             ],
-            where: or(rc.oneColumn.id.in(columnIds), rc.manyColumn.id.in(columnIds))
+            where: or(rc.oneColumn._localId.in(columnIds), rc.manyColumn._localId.in(columnIds))
         });
     }
     async insert(applicationRelationColumns, context) {
@@ -23,29 +23,29 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
         const values = [];
         for (const applicationRelationColumn of applicationRelationColumns) {
             values.push([
-                applicationRelationColumn.id,
-                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn.id : null,
-                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn.id : null,
-                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation.id : null,
-                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation.id : null,
-                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation.id : null,
-                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion.id : null,
-                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion.id : null,
-                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion.id : null,
+                applicationRelationColumn._localId,
+                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
+                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
+                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation._localId : null,
+                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation._localId : null,
+                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation._localId : null,
+                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion._localId : null,
+                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion._localId : null,
+                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion._localId : null,
             ]);
         }
         await this.db.insertValuesGenerateIds({
             insertInto: src = Q.ApplicationRelationColumn,
             columns: [
-                src.id,
-                src.manyColumn.id,
-                src.oneColumn.id,
-                src.manyRelation.id,
-                src.oneRelation.id,
-                src.parentRelation.id,
-                src.deprecatedSinceVersion.id,
-                src.removedInVersion.id,
-                src.sinceVersion.id
+                src._localId,
+                src.manyColumn._localId,
+                src.oneColumn._localId,
+                src.manyRelation._localId,
+                src.oneRelation._localId,
+                src.parentRelation._localId,
+                src.deprecatedSinceVersion._localId,
+                src.removedInVersion._localId,
+                src.sinceVersion._localId
             ],
             values
         }, context);

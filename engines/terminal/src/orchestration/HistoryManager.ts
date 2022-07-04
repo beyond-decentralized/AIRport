@@ -7,7 +7,7 @@ import {
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 	ITransactionHistoryDuo,
-	Repository_Id,
+	Repository_LocalId,
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import { IHistoryManager, IOperationContext } from '@airport/terminal-map'
 
@@ -26,7 +26,7 @@ export class HistoryManager
 
 	async getNewRepositoryTransactionHistory(
 		transactionHistory: ITransactionHistory,
-		repositoryId: Repository_Id,
+		repositoryId: Repository_LocalId,
 		context: IOperationContext
 	): Promise<IRepositoryTransactionHistory> {
 		return await this.transactionHistoryDuo.getRepositoryTransaction(

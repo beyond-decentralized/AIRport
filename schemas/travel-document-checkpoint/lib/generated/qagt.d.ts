@@ -52,7 +52,7 @@ export interface AgtECreateProperties extends Partial<AgtEId>, AgtEUpdatePropert
 export interface AgtECreateColumns extends AgtEId, AgtEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QAgt extends IQEntity {
     id: IQNumberField;

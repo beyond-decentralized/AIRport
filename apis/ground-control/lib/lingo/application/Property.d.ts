@@ -13,6 +13,7 @@ export declare type ApplicationProperty_IsId = boolean;
 export declare type ApplicationProperty_Name = string;
 export declare type ApplicationRelation_LocalId = number;
 export declare type ApplicationRelation_Index = number;
+export declare type ApplicationRelationColumn_LocalId = number;
 export declare type ApplicationColumn_IsGenerated = boolean;
 export declare type ApplicationColumn_AllocationSize = number;
 /**
@@ -39,7 +40,7 @@ export interface JsonApplicationProperty extends ApplicationReferenceByIndex<App
     relationRef?: ApplicationReferenceByIndex<ApplicationRelation_Index>;
 }
 export interface DbProperty extends ApplicationReferenceByIndex<ApplicationProperty_Index>, DatabaseObject {
-    id: ApplicationProperty_LocalId;
+    _localId: ApplicationProperty_LocalId;
     entity: DbEntity;
     name: ApplicationProperty_Name;
     isId: ApplicationProperty_IsId;
@@ -65,7 +66,7 @@ export interface JsonApplicationColumn extends ApplicationReferenceByIndex<Appli
      */
     isGenerated?: ApplicationColumn_IsGenerated;
     /**
-     * How many ids to allocate at a time
+     * How many _localIds to allocate at a time
      */
     allocationSize?: ApplicationColumn_AllocationSize;
     /**
@@ -93,7 +94,7 @@ export interface IdKeyArrayByIdColumnIndex extends Array<(number | string)> {
 export interface DbColumn extends ApplicationReferenceByIndex<ApplicationColumn_Index>, DatabaseObject {
     allocationSize?: ApplicationColumn_AllocationSize;
     entity: DbEntity;
-    id: ApplicationColumn_LocalId;
+    _localId: ApplicationColumn_LocalId;
     /**
      * Id index of this column (if it's an ID column).
      */
@@ -171,7 +172,7 @@ export interface JsonApplicationRelation extends ApplicationReferenceByIndex<App
     relationTableIndex: ApplicationEntity_TableIndex;
 }
 export interface DbRelation extends ApplicationReferenceByIndex<ApplicationRelation_Index>, DatabaseObject {
-    id: ApplicationRelation_LocalId;
+    _localId: ApplicationRelation_LocalId;
     entity: DbEntity;
     foreignKey: DatabaseForeignKey;
     isId: boolean;
@@ -195,7 +196,7 @@ export interface JsonApplicationRelationColumn extends JsonDatabaseObject {
     oneColumnIndex: ApplicationColumn_Index;
 }
 export interface DbRelationColumn extends DatabaseObject {
-    id: number;
+    _localId: ApplicationRelationColumn_LocalId;
     manyColumn: DbColumn;
     /**
      * Only present if @ManyToOne side of the relationship is defined.

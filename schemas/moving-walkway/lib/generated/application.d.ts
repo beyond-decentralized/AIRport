@@ -13,8 +13,9 @@ export declare const APPLICATION: {
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneApplicationIndex: any;
+                    oneApplication_Index: any;
                     oneTableIndex: number;
+                    oneRelationIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
                 }[];
@@ -74,7 +75,7 @@ export declare const APPLICATION: {
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
-                    oneApplicationIndex: number;
+                    oneApplication_Index: number;
                     oneTableIndex: number;
                     oneColumnIndex: number;
                     sinceVersion: number;
@@ -121,7 +122,7 @@ export declare const APPLICATION: {
                     index: number;
                 };
                 relationTableIndex: number;
-                relationTableApplicationIndex: number;
+                relationTableApplication_Index: number;
                 sinceVersion: number;
                 oneToManyElems?: undefined;
             } | {
@@ -136,7 +137,7 @@ export declare const APPLICATION: {
                 };
                 relationTableIndex: number;
                 sinceVersion: number;
-                relationTableApplicationIndex?: undefined;
+                relationTableApplication_Index?: undefined;
             })[];
             sinceVersion: number;
             tableConfig: {

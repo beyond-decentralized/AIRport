@@ -14,308 +14,6 @@ export const APPLICATION = {
                     "columns": [
                         {
                             "index": 0,
-                            "isGenerated": true,
-                            "manyRelationColumnRefs": [],
-                            "name": "ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 0
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 1,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "ACTOR_RECORD_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 5
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 2,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [],
-                            "name": "UPDATED_VALUE",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 7
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "ANY"
-                        },
-                        {
-                            "index": 3,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 0,
-                                    "oneApplicationIndex": 0,
-                                    "oneTableIndex": 8,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "APPLICATION_VERSION_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 1
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 4,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 1,
-                                    "oneApplicationIndex": 0,
-                                    "oneTableIndex": 6,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "APPLICATION_ENTITY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 2
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 5,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 2,
-                                    "oneApplicationIndex": 1,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "REPOSITORY_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 3
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 6,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 3,
-                                    "oneApplicationIndex": 1,
-                                    "oneTableIndex": 0,
-                                    "oneColumnIndex": 0,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "ACTOR_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 4
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        },
-                        {
-                            "index": 7,
-                            "isGenerated": false,
-                            "manyRelationColumnRefs": [
-                                {
-                                    "manyRelationIndex": 4,
-                                    "oneApplicationIndex": 0,
-                                    "oneTableIndex": 4,
-                                    "oneColumnIndex": 3,
-                                    "sinceVersion": 1
-                                }
-                            ],
-                            "name": "APPLICATION_COLUMN_ID",
-                            "notNull": false,
-                            "propertyRefs": [
-                                {
-                                    "index": 6
-                                }
-                            ],
-                            "sinceVersion": 1,
-                            "type": "NUMBER"
-                        }
-                    ],
-                    "idColumnRefs": [
-                        {
-                            "index": 0
-                        }
-                    ],
-                    "index": 0,
-                    "isLocal": true,
-                    "isAirEntity": false,
-                    "name": "RecordUpdateStage",
-                    "properties": [
-                        {
-                            "columnRef": {
-                                "index": 0
-                            },
-                            "index": 0,
-                            "isId": true,
-                            "name": "id",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "name": "applicationVersion",
-                            "relationRef": {
-                                "index": 0
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "name": "entity",
-                            "relationRef": {
-                                "index": 1
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "name": "repository",
-                            "relationRef": {
-                                "index": 2
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "name": "actor",
-                            "relationRef": {
-                                "index": 3
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 1
-                            },
-                            "index": 5,
-                            "isId": false,
-                            "name": "actorRecordId",
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 6,
-                            "isId": false,
-                            "name": "column",
-                            "relationRef": {
-                                "index": 4
-                            },
-                            "sinceVersion": 1
-                        },
-                        {
-                            "columnRef": {
-                                "index": 2
-                            },
-                            "index": 7,
-                            "isId": false,
-                            "name": "updatedValue",
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "relations": [
-                        {
-                            "index": 0,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 1
-                            },
-                            "relationTableIndex": 8,
-                            "relationTableApplicationIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 1,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 2
-                            },
-                            "relationTableIndex": 6,
-                            "relationTableApplicationIndex": 0,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 2,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 3
-                            },
-                            "relationTableIndex": 4,
-                            "relationTableApplicationIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 3,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 4
-                            },
-                            "relationTableIndex": 0,
-                            "relationTableApplicationIndex": 1,
-                            "sinceVersion": 1
-                        },
-                        {
-                            "index": 4,
-                            "isId": false,
-                            "relationType": "MANY_TO_ONE",
-                            "propertyRef": {
-                                "index": 6
-                            },
-                            "relationTableIndex": 4,
-                            "relationTableApplicationIndex": 0,
-                            "sinceVersion": 1
-                        }
-                    ],
-                    "sinceVersion": 1,
-                    "tableConfig": {
-                        "name": "RECORD_UPDATE_STAGE",
-                        "columnIndexes": []
-                    },
-                    "operations": {}
-                },
-                {
-                    "columns": [
-                        {
-                            "index": 0,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
                             "name": "COLUMNINDEX",
@@ -334,13 +32,14 @@ export const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplicationIndex": null,
-                                    "oneTableIndex": 2,
+                                    "oneApplication_Index": null,
+                                    "oneTableIndex": 1,
+                                    "oneRelationIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "SYNCHRONIZATION_CONFLICT_ID",
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -359,7 +58,7 @@ export const APPLICATION = {
                             "index": 1
                         }
                     ],
-                    "index": 1,
+                    "index": 0,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "SynchronizationConflictValues",
@@ -391,7 +90,7 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 0
                             },
-                            "relationTableIndex": 2,
+                            "relationTableIndex": 1,
                             "sinceVersion": 1
                         }
                     ],
@@ -408,7 +107,7 @@ export const APPLICATION = {
                             "index": 0,
                             "isGenerated": true,
                             "manyRelationColumnRefs": [],
-                            "name": "ID",
+                            "name": "SYNCHRONIZATION_CONFLICT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -452,13 +151,13 @@ export const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 0,
-                                    "oneApplicationIndex": 1,
-                                    "oneTableIndex": 4,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 9,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "REPOSITORY_ID",
+                            "name": "REPOSITORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -474,13 +173,13 @@ export const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 1,
-                                    "oneApplicationIndex": 1,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OVERWRITTEN_RECORD_HISTORY_ID",
+                            "name": "OVERWRITTEN_RECORD_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -496,13 +195,13 @@ export const APPLICATION = {
                             "manyRelationColumnRefs": [
                                 {
                                     "manyRelationIndex": 2,
-                                    "oneApplicationIndex": 1,
+                                    "oneApplication_Index": 0,
                                     "oneTableIndex": 3,
                                     "oneColumnIndex": 0,
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OVERWRITING_RECORD_HISTORY_ID",
+                            "name": "OVERWRITING_RECORD_HISTORY_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -518,7 +217,7 @@ export const APPLICATION = {
                             "index": 0
                         }
                     ],
-                    "index": 2,
+                    "index": 1,
                     "isLocal": true,
                     "isAirEntity": false,
                     "name": "SynchronizationConflict",
@@ -529,7 +228,7 @@ export const APPLICATION = {
                             },
                             "index": 0,
                             "isId": true,
-                            "name": "id",
+                            "name": "_localId",
                             "sinceVersion": 1
                         },
                         {
@@ -595,8 +294,8 @@ export const APPLICATION = {
                             "propertyRef": {
                                 "index": 3
                             },
-                            "relationTableIndex": 4,
-                            "relationTableApplicationIndex": 1,
+                            "relationTableIndex": 9,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -607,7 +306,7 @@ export const APPLICATION = {
                                 "index": 4
                             },
                             "relationTableIndex": 3,
-                            "relationTableApplicationIndex": 1,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
@@ -618,26 +317,328 @@ export const APPLICATION = {
                                 "index": 5
                             },
                             "relationTableIndex": 3,
-                            "relationTableApplicationIndex": 1,
+                            "relationTableApplication_Index": 0,
                             "sinceVersion": 1
                         },
                         {
                             "index": 3,
                             "isId": false,
                             "oneToManyElems": {
-                                "mappedBy": "SYNCHRONIZATION_CONFLICT_ID"
+                                "mappedBy": "synchronizationConflict"
                             },
                             "relationType": "ONE_TO_MANY",
                             "propertyRef": {
                                 "index": 6
                             },
-                            "relationTableIndex": 1,
+                            "relationTableIndex": 0,
                             "sinceVersion": 1
                         }
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
                         "name": "SYNCHRONIZATION_CONFLICT",
+                        "columnIndexes": []
+                    },
+                    "operations": {}
+                },
+                {
+                    "columns": [
+                        {
+                            "index": 0,
+                            "isGenerated": true,
+                            "manyRelationColumnRefs": [],
+                            "name": "RECORD_UPDATE_STAGE_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 0
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 1,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "ACTOR_RECORD_ID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 5
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 2,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [],
+                            "name": "UPDATED_VALUE",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 7
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "ANY"
+                        },
+                        {
+                            "index": 3,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 0,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 8,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_VERSION_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 1
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 4,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 1,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 6,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_ENTITY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 2
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 5,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 2,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 9,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "REPOSITORY_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 3
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 6,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 3,
+                                    "oneApplication_Index": 0,
+                                    "oneTableIndex": 0,
+                                    "oneColumnIndex": 0,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "ACTOR_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 4
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        },
+                        {
+                            "index": 7,
+                            "isGenerated": false,
+                            "manyRelationColumnRefs": [
+                                {
+                                    "manyRelationIndex": 4,
+                                    "oneApplication_Index": 1,
+                                    "oneTableIndex": 4,
+                                    "oneColumnIndex": 3,
+                                    "sinceVersion": 1
+                                }
+                            ],
+                            "name": "APPLICATION_COLUMN_LID",
+                            "notNull": false,
+                            "propertyRefs": [
+                                {
+                                    "index": 6
+                                }
+                            ],
+                            "sinceVersion": 1,
+                            "type": "NUMBER"
+                        }
+                    ],
+                    "idColumnRefs": [
+                        {
+                            "index": 0
+                        }
+                    ],
+                    "index": 2,
+                    "isLocal": true,
+                    "isAirEntity": false,
+                    "name": "RecordUpdateStage",
+                    "properties": [
+                        {
+                            "columnRef": {
+                                "index": 0
+                            },
+                            "index": 0,
+                            "isId": true,
+                            "name": "_localId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "name": "applicationVersion",
+                            "relationRef": {
+                                "index": 0
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "name": "entity",
+                            "relationRef": {
+                                "index": 1
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "name": "repository",
+                            "relationRef": {
+                                "index": 2
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "name": "actor",
+                            "relationRef": {
+                                "index": 3
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 1
+                            },
+                            "index": 5,
+                            "isId": false,
+                            "name": "_actorRecordId",
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 6,
+                            "isId": false,
+                            "name": "column",
+                            "relationRef": {
+                                "index": 4
+                            },
+                            "sinceVersion": 1
+                        },
+                        {
+                            "columnRef": {
+                                "index": 2
+                            },
+                            "index": 7,
+                            "isId": false,
+                            "name": "updatedValue",
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "relations": [
+                        {
+                            "index": 0,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 1
+                            },
+                            "relationTableIndex": 8,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 1,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 2
+                            },
+                            "relationTableIndex": 6,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 2,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 3
+                            },
+                            "relationTableIndex": 9,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 3,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 4
+                            },
+                            "relationTableIndex": 0,
+                            "relationTableApplication_Index": 0,
+                            "sinceVersion": 1
+                        },
+                        {
+                            "index": 4,
+                            "isId": false,
+                            "relationType": "MANY_TO_ONE",
+                            "propertyRef": {
+                                "index": 6
+                            },
+                            "relationTableIndex": 4,
+                            "relationTableApplication_Index": 1,
+                            "sinceVersion": 1
+                        }
+                    ],
+                    "sinceVersion": 1,
+                    "tableConfig": {
+                        "name": "RECORD_UPDATE_STAGE",
                         "columnIndexes": []
                     },
                     "operations": {}
@@ -648,7 +649,7 @@ export const APPLICATION = {
                 {
                     "domain": "air",
                     "index": 0,
-                    "name": "@airport/airspace",
+                    "name": "@airport/holding-pattern",
                     "sinceVersion": 1,
                     "versions": [
                         {
@@ -662,7 +663,7 @@ export const APPLICATION = {
                 {
                     "domain": "air",
                     "index": 1,
-                    "name": "@airport/holding-pattern",
+                    "name": "@airport/airspace",
                     "sinceVersion": 1,
                     "versions": [
                         {

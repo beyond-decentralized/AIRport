@@ -10,17 +10,17 @@ import { RepositoryApplication } from "./RepositoryApplication";
  */
 export declare type Repository_AgeSuitability = 0 | 7 | 13 | 18;
 export declare type Repository_CreatedAt = Date;
-export declare type Repository_Id = number;
+export declare type Repository_LocalId = number;
 export declare type Repository_Immutable = boolean;
 export declare type Repository_Source = string;
 export declare type Repository_GUID = string;
 export declare class Repository {
-    id: Repository_Id;
+    _localId: Repository_LocalId;
+    GUID: Repository_GUID;
     ageSuitability: Repository_AgeSuitability;
     createdAt: Repository_CreatedAt;
     immutable: Repository_Immutable;
     source: Repository_Source;
-    GUID: Repository_GUID;
     owner: User;
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     continent?: Continent;

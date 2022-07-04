@@ -5,7 +5,7 @@ import { IRecordHistoryNewValue } from './recordhistorynewvalue';
 import { IRecordHistoryOldValue } from './recordhistoryoldvalue';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 export interface ITransactionHistory {
-    id: number;
+    _localId: number;
     transactionType?: string;
     repositoryTransactionHistories?: IRepositoryTransactionHistory[];
     repositoryTransactionHistoryMap?: {

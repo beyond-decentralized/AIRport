@@ -19,7 +19,7 @@ import {
 /*
  * Takes a (potentially) interconnected entity graph and returns
  * an array of entities to be operated on, in a order that is valid
- * for insertion (with all needed new ids being inserted in an order
+ * for insertion (with all needed new _localIds being inserted in an order
  * that will work).
  */
 @Injected()

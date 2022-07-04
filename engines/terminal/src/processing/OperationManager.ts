@@ -270,7 +270,7 @@ export class OperationManager
 				const portableQuery: PortableQuery = this.queryFacade
 					.getPortableQuery(insertValues, null, context)
 				const idsAndGeneratedValues = await this.insertManager
-					.insertValuesGetIds(portableQuery, actor, transaction, rootTransaction, context)
+					.insertValuesGetLocalIds(portableQuery, actor, transaction, rootTransaction, context)
 				for (let i = 0; i < entities.length; i++) {
 					const entity = entities[i]
 					const entitySaveResult = {}

@@ -18,8 +18,9 @@ let ApplicationVersion = class ApplicationVersion {
 __decorate([
     DbNumber(),
     Id(),
-    SequenceGenerator({ allocationSize: 100 })
-], ApplicationVersion.prototype, "id", void 0);
+    SequenceGenerator({ allocationSize: 100 }),
+    Column({ name: 'APPLICATION_VERSION_LID' })
+], ApplicationVersion.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'INTEGER_VERSION', nullable: false }),
     DbNumber()

@@ -6,12 +6,12 @@ import { IRepositoryDatabase } from './repositorydatabase';
 import { IRepositoryTerminal } from './repositoryterminal';
 import { IRepositoryType } from './repositorytype';
 export interface IRepository {
-    id: number;
+    _localId: number;
+    GUID?: string;
     ageSuitability?: number;
     createdAt?: Date;
     immutable?: boolean;
     source?: string;
-    GUID?: string;
     owner?: IUser;
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];
     continent?: IContinent;

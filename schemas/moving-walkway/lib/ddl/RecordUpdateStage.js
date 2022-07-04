@@ -14,37 +14,53 @@ let RecordUpdateStage = class RecordUpdateStage {
 };
 __decorate([
     Id(),
-    GeneratedValue()
-], RecordUpdateStage.prototype, "id", void 0);
+    GeneratedValue(),
+    Column({ name: 'RECORD_UPDATE_STAGE_LID' })
+], RecordUpdateStage.prototype, "_localId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_VERSION_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'APPLICATION_VERSION_LID',
+        referencedColumnName: 'APPLICATION_VERSION_LID'
+    })
 ], RecordUpdateStage.prototype, "applicationVersion", void 0);
 __decorate([
     ManyToOne()
     // FIXME: verify that these records don't make it into serialized
     // repository ledger (and hence, that using local ids is safe)
     ,
-    JoinColumn({ name: 'APPLICATION_ENTITY_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID'
+    })
 ], RecordUpdateStage.prototype, "entity", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'REPOSITORY_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
+    })
 ], RecordUpdateStage.prototype, "repository", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'ACTOR_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'ACTOR_LID',
+        referencedColumnName: 'ACTOR_LID'
+    })
 ], RecordUpdateStage.prototype, "actor", void 0);
 __decorate([
     Column({ name: 'ACTOR_RECORD_ID' }),
     DbNumber()
-], RecordUpdateStage.prototype, "actorRecordId", void 0);
+], RecordUpdateStage.prototype, "_actorRecordId", void 0);
 __decorate([
     ManyToOne()
     // FIXME: verify that these records don't make it into serialized
     // repository ledger (and hence, that using local ids is safe)
     ,
-    JoinColumn({ name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'APPLICATION_COLUMN_LID',
+        referencedColumnName: 'APPLICATION_COLUMN_LID'
+    })
 ], RecordUpdateStage.prototype, "column", void 0);
 __decorate([
     Column({ name: 'UPDATED_VALUE' })

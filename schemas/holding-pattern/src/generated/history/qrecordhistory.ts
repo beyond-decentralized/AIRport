@@ -111,7 +111,7 @@ export interface RecordHistoryESelect
 export interface RecordHistoryEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -122,7 +122,7 @@ export interface RecordHistoryEId
  */
 export interface RecordHistoryEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -168,7 +168,7 @@ export interface RecordHistoryEUpdateColumns
 	// Non-Id Columns
 	ACTOR_RECORD_ID?: number | IQNumberField;
 	ACTOR_LID?: number | IQNumberField;
-	REPOSITORY_OPERATION_HISTORY_ID?: number | IQNumberField;
+	OPERATION_HISTORY_LID?: number | IQNumberField;
 
 }
 
@@ -199,7 +199,7 @@ extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 export interface QRecordHistory extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -220,7 +220,7 @@ export interface QRecordHistoryQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

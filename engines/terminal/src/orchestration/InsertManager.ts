@@ -72,7 +72,7 @@ export class InsertManager
 			portableQuery, actor, transaction, rootTransaction, context, false, ensureGeneratedValues)
 	}
 
-	async insertValuesGetIds(
+	async insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
 		actor: IActor,
 		transaction: ITransaction,
@@ -163,7 +163,7 @@ appears more than once in the Columns clause`)
 				<JsonInsertValues>portableQuery.jsonQuery, errorPrefix)
 		}
 
-		let ids
+		let _localIds
 
 		let systemWideOperationId: SystemWideOperationId
 		if (!dbEntity.isLocal) {
@@ -171,7 +171,7 @@ appears more than once in the Columns clause`)
 		}
 
 		if ((!transaction.isSync || context.generateOnSync) && ensureGeneratedValues) {
-			ids = await this.ensureGeneratedValues(
+			_localIds = await this.ensureGeneratedValues(
 				dbEntity, insertValues, actor,
 				columnsToPopulate, generatedColumns,
 				systemWideOperationId, errorPrefix,
@@ -187,7 +187,7 @@ appears more than once in the Columns clause`)
 		const numberOfInsertedRecords = await transaction.insertValues(
 			portableQuery, context)
 
-		return getIds ? ids : numberOfInsertedRecords
+		return getIds ? _localIds : numberOfInsertedRecords
 	}
 
 	private async validateValueRowLength(
@@ -512,9 +512,9 @@ and cannot have NULL values.`)
 
 	/**
 	 *
-	 * All repository records must have ids when inserted.  Currently AP doesn't support
+	 * All repository records must have _localIds when inserted.  Currently AP doesn't support
 	 * inserting from select and in the values provided id's must either be explicitly
-	 * specified or already provided. For all repository entities all ids must be
+	 * specified or already provided. For all repository entities all _localIds must be
 	 * auto-generated.
 	 *
 	 * @param {DbEntity} dbEntity

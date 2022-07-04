@@ -50,7 +50,7 @@ export interface TerminalRunECreateProperties extends Partial<TerminalRunEId>, T
 export interface TerminalRunECreateColumns extends TerminalRunEId, TerminalRunEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QTerminalRun extends IQEntity {
     _localId: IQNumberField;

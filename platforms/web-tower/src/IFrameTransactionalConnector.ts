@@ -305,7 +305,7 @@ export class IframeTransactionalConnector
 		})
 	}
 
-	async insertValuesGetIds(
+	async insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
 		context: IContext,
 	): Promise<number[][]> {

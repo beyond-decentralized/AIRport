@@ -55,10 +55,10 @@ export class Duo {
         }
         this.select = new FieldsSelect(this.dbEntity);
     }
-    getIdStub(ids) {
+    getLocalIdStub(_localIds) {
         throw new Error(`Not Implemented.`);
     }
-    getIdStubs(ids) {
+    getLocalIdStubs(_localIds) {
         throw new Error(`Not Implemented.`);
     }
 }

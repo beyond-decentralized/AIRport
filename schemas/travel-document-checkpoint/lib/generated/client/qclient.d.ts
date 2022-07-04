@@ -20,13 +20,13 @@ export interface ClientESelect extends IEntitySelectProperties, ClientEOptionalI
  * DELETE - Ids fields and relations only (required).
  */
 export interface ClientEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ClientEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -55,8 +55,8 @@ export interface ClientGraph extends ClientEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface ClientEUpdateColumns extends IEntityUpdateColumns {
-    DOMAIN?: string | IQStringField;
-    GUID?: string | IQStringField;
+    CLIENT_DOMAIN?: string | IQStringField;
+    CLIENT_GUID?: string | IQStringField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -73,10 +73,10 @@ export interface ClientECreateProperties extends Partial<ClientEId>, ClientEUpda
 export interface ClientECreateColumns extends ClientEId, ClientEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QClient extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     domain: IQStringField;
     GUID: IQStringField;
     continent: QContinentQRelation;
@@ -86,7 +86,7 @@ export interface QClient extends IQEntity {
     clientTypes: IQOneToManyRelation<QClientType>;
 }
 export interface QClientQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QClientQRelation extends IQRelation<QClient>, QClientQId {
 }

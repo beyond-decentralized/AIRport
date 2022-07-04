@@ -63,19 +63,6 @@ import {
 	ICountry,
 } from '../locality/country';
 import {
-	TerminalTypeGraph,
-	TerminalTypeEId,
-	TerminalTypeEOptionalId,
-	TerminalTypeEUpdateProperties,
-	TerminalTypeESelect,
-	QTerminalType,
-	QTerminalTypeQId,
-	QTerminalTypeQRelation,
-} from './qterminaltype';
-import {
-	ITerminalType,
-} from './terminaltype';
-import {
 	StateGraph,
 	StateEId,
 	StateEOptionalId,
@@ -101,6 +88,19 @@ import {
 import {
 	IMetroArea,
 } from '../locality/metroarea';
+import {
+	TerminalTypeGraph,
+	TerminalTypeEId,
+	TerminalTypeEOptionalId,
+	TerminalTypeEUpdateProperties,
+	TerminalTypeESelect,
+	QTerminalType,
+	QTerminalTypeQId,
+	QTerminalTypeQRelation,
+} from './qterminaltype';
+import {
+	ITerminalType,
+} from './terminaltype';
 import {
 	ITerminal,
 } from './terminal';
@@ -128,9 +128,9 @@ export interface TerminalESelect
 	owner?: UserESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
-	terminalTypes?: TerminalTypeESelect;
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
+	terminalTypes?: TerminalTypeESelect;
 
 }
 
@@ -140,7 +140,7 @@ export interface TerminalESelect
 export interface TerminalEId
     extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -151,7 +151,7 @@ export interface TerminalEId
  */
 export interface TerminalEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -190,9 +190,9 @@ export interface TerminalGraph
 	owner?: UserGraph;
 	continent?: ContinentGraph;
 	country?: CountryGraph;
-	terminalTypes?: TerminalTypeGraph[];
 	state?: StateGraph;
 	metroArea?: MetroAreaGraph;
+	terminalTypes?: TerminalTypeGraph[];
 
 }
 
@@ -204,7 +204,7 @@ export interface TerminalEUpdateColumns
 	// Non-Id Columns
 	GUID?: string | IQStringField;
 	IS_LOCAL?: boolean | IQBooleanField;
-	OWNER_USER_ID?: number | IQNumberField;
+	OWNER_USER_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -239,7 +239,7 @@ extends TerminalEId, TerminalEUpdateColumns {
 export interface QTerminal extends IQEntity
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -251,9 +251,9 @@ export interface QTerminal extends IQEntity
 	owner: QUserQRelation;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;
-	terminalTypes: IQOneToManyRelation<QTerminalType>;
 	state: QStateQRelation;
 	metroArea: QMetroAreaQRelation;
+	terminalTypes: IQOneToManyRelation<QTerminalType>;
 
 }
 
@@ -263,7 +263,7 @@ export interface QTerminalQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

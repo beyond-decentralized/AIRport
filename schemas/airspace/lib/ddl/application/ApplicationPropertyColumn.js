@@ -14,12 +14,18 @@ let ApplicationPropertyColumn = class ApplicationPropertyColumn extends Versione
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_COLUMN_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_COLUMN_LID',
+        referencedColumnName: 'APPLICATION_COLUMN_LID', nullable: false
+    })
 ], ApplicationPropertyColumn.prototype, "column", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'APPLICATION_PROPERTY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_PROPERTY_LID',
+        referencedColumnName: 'APPLICATION_PROPERTY_LID', nullable: false
+    })
 ], ApplicationPropertyColumn.prototype, "property", void 0);
 ApplicationPropertyColumn = __decorate([
     Entity()

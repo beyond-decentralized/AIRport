@@ -11,7 +11,7 @@ import {
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_LocalId, ApplicationColumn_Index, airEntity } from "@airport/ground-control";
 import {
-	Actor_Id,
+	Actor_LocalId,
 	IActor,
 	IActorDao,
 	IOperationHistory,
@@ -22,7 +22,7 @@ import {
 	IRepositoryDao,
 	IRepositoryTransactionHistory,
 	RepositoryTransactionType,
-	Repository_Id
+	Repository_LocalId
 } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
 import { IUser, TmTerminal_Id, User_LocalId } from "@airport/travel-document-checkpoint";
 
@@ -52,14 +52,14 @@ export const WITH_RECORD_HISTORY: IWithRecordHistory = {} as any
 export const WITH_INDEX: IWithIndex = {} as any
 
 export interface InMessageLookupStructures {
-	actorInMessageIndexesById: Map<Actor_Id, number>
-	applicationVersionInMessageIndexesById: Map<Actor_Id, number>
+	actorInMessageIndexesById: Map<Actor_LocalId, number>
+	applicationVersionInMessageIndexesById: Map<Actor_LocalId, number>
 	applicationVersions: IApplicationVersion[]
 	lastInMessageActorIndex: number
 	lastInMessageApplicationVersionIndex: number
 	lastInMessageRepositoryIndex: number
 	messageRepository: IRepository
-	repositoryInMessageIndexesById: Map<Repository_Id, number>
+	repositoryInMessageIndexesById: Map<Repository_LocalId, number>
 }
 
 export interface InMessageApplicationLookup {
@@ -152,7 +152,7 @@ export class SyncOutDataSerializer
 		lookups: InMessageLookupStructures,
 		inMessageUserLookup: InMessageUserLookup
 	): Promise<InMessageApplicationLookup> {
-		let actorIdsToFindBy: Actor_Id[] = []
+		let actorIdsToFindBy: Actor_LocalId[] = []
 		for (let actorId of lookups.actorInMessageIndexesById.keys()) {
 			actorIdsToFindBy.push(actorId)
 		}
@@ -253,7 +253,7 @@ export class SyncOutDataSerializer
 		lookups: InMessageLookupStructures,
 		inMessageUserLookup: InMessageUserLookup
 	): Promise<void> {
-		let repositoryIdsToFindBy: Repository_Id[] = []
+		let repositoryIdsToFindBy: Repository_LocalId[] = []
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
 			repositoryIdsToFindBy.push(repositoryId)
 		}
@@ -486,7 +486,7 @@ export class SyncOutDataSerializer
 	}
 
 	private getActorInMessageIndexById(
-		actorId: Actor_Id,
+		actorId: Actor_LocalId,
 		lookups: InMessageLookupStructures
 	): number {
 		let actorInMessageIndex

@@ -28,12 +28,12 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 ...ALL_FIELDS,
                 // currentVersion: {
                 // 	applicationVersion: {
-                // 		id: Y,
+                // 		_localId: Y,
                 // 		jsonApplication: Y
                 // 	}
                 // }
                 versions: {
-                    id: Y,
+                    _localId: Y,
                     jsonApplication: Y
                 }
             },
@@ -52,13 +52,13 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             select: {
                 index: Y,
                 domain: {
-                    id: Y,
+                    _localId: Y,
                     name: Y
                 },
                 name: Y,
                 fullName: Y,
                 versions: {
-                    id: Y,
+                    _localId: Y,
                     majorVersion: Y,
                     minorVersion: Y,
                     patchVersion: Y
@@ -68,11 +68,11 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 s = Q.Application,
                 sv = s.versions.innerJoin()
             ],
-            where: sv.id.in(applicationVersionIds)
+            where: sv._localId.in(applicationVersionIds)
         });
         for (const application of applications) {
             for (const applicationVersion of application.versions) {
-                applicationMapByIndex.set(applicationVersion.id, application);
+                applicationMapByIndex.set(applicationVersion._localId, application);
             }
         }
         return applicationMapByIndex;
@@ -86,8 +86,8 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             ]
         });
     }
-    async findMaxVersionedMapByApplicationAndDomainNames(applicationDomainNames, applicationNames) {
-        const maxVersionedMapByApplicationAndDomainNames = new Map();
+    async findMaxVersionedMapByApplicationAndDomain_Names(applicationDomain_Names, applicationNames) {
+        const maxVersionedMapByApplicationAndDomain_Names = new Map();
         let sv;
         let s;
         let d;
@@ -105,17 +105,17 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                             ],
                             select: {
                                 index: s.index,
-                                domainId: d.id,
+                                domainId: d._localId,
                                 domainName: d.name,
                                 name: s.name,
                                 majorVersion: max(sv.majorVersion),
                                 minorVersion: sv.minorVersion,
                                 patchVersion: sv.patchVersion,
                             },
-                            where: and(d.name.in(applicationDomainNames), s.name.in(applicationNames)),
+                            where: and(d.name.in(applicationDomain_Names), s.name.in(applicationNames)),
                             groupBy: [
                                 s.index,
-                                d.id,
+                                d._localId,
                                 d.name,
                                 s.name,
                                 sv.minorVersion,
@@ -145,7 +145,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             select: {
                 index: sMiV.index,
                 domain: {
-                    id: sMiV.domainId,
+                    _localId: sMiV.domainId,
                     name: sMiV.domainName
                 },
                 name: sMiV.name,
@@ -163,10 +163,10 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             ]
         });
         for (const applicationLookupRecord of applicationLookupRecords) {
-            ensureChildJsMap(maxVersionedMapByApplicationAndDomainNames, applicationLookupRecord.domain.name)
+            ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
                 .set(applicationLookupRecord.name, applicationLookupRecord);
         }
-        return maxVersionedMapByApplicationAndDomainNames;
+        return maxVersionedMapByApplicationAndDomain_Names;
     }
     async setStatusByIndexes(indexes, status) {
         let s;
@@ -178,7 +178,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             where: s.index.in(indexes)
         });
     }
-    async findMapByFullNames(fullApplicationNames) {
+    async findMapByFullNames(fullApplication_Names) {
         const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
@@ -186,21 +186,21 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             from: [
                 s = Q.Application
             ],
-            where: s.fullName.in(fullApplicationNames)
+            where: s.fullName.in(fullApplication_Names)
         });
         for (const record of records) {
             mapByFullName.set(record.fullName, record);
         }
         return mapByFullName;
     }
-    async findByDomainNamesAndApplicationNames(domainNames, applicationNames) {
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
         let s;
         let d;
         return await this.db.find.tree({
             select: {
                 index: Y,
                 domain: {
-                    id: Y,
+                    _localId: Y,
                     name: Y
                 },
                 fullName: Y,
@@ -233,7 +233,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         const values = [];
         for (const application of applications) {
             values.push([
-                application.index, application.domain.id, application.scope,
+                application.index, application.domain._localId, application.scope,
                 application.fullName, application.name,
                 // application.packageName,
                 application.status, application.signature
@@ -243,7 +243,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             insertInto: a = Q.Application,
             columns: [
                 a.index,
-                a.domain.id,
+                a.domain._localId,
                 a.scope,
                 a.fullName,
                 a.name,

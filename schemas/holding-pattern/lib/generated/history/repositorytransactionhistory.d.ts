@@ -2,7 +2,7 @@ import { IRepository } from '../repository/repository';
 import { ITransactionHistory } from './transactionhistory';
 import { IOperationHistory } from './operationhistory';
 export interface IRepositoryTransactionHistory {
-    id: number;
+    _localId: number;
     repositoryTransactionType?: string;
     saveTimestamp?: number;
     syncTimestamp?: number;

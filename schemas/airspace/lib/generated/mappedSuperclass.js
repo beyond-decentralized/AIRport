@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "VersionedApplicationObject",
-        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/VersionedApplicationObject.ts",
+        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -75,8 +75,8 @@ export const MAPPED_SUPERCLASS = [
                             "name": "JoinColumn",
                             "values": [
                                 {
-                                    "name": "DEPRECATED_SINCE_APPLICATION_VERSION_ID",
-                                    "referencedColumnName": "ID"
+                                    "name": "DEPRECATED_SINCE_APPLICATION_VERSION_LID",
+                                    "referencedColumnName": "APPLICATION_VERSION_LID"
                                 }
                             ]
                         }
@@ -92,7 +92,7 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "ApplicationVersion",
                     "entity": {
                         "type": "ApplicationVersion",
-                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationVersion.ts",
+                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
                         "parentClassName": null,
                         "isSuperclass": false,
                         "ids": [
@@ -114,17 +114,25 @@ export const MAPPED_SUPERCLASS = [
                                                 "allocationSize": 100
                                             }
                                         ]
+                                    },
+                                    {
+                                        "name": "Column",
+                                        "values": [
+                                            {
+                                                "name": "APPLICATION_VERSION_LID"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "isGenerated": false,
                                 "isId": true,
                                 "isMappedSuperclass": false,
                                 "isTransient": false,
-                                "name": "id",
+                                "name": "_localId",
                                 "optional": false,
-                                "type": "ApplicationVersionId",
+                                "type": "ApplicationVersion_LocalId",
                                 "ownerEntity": null,
-                                "nonArrayType": "ApplicationVersionId",
+                                "nonArrayType": "ApplicationVersion_LocalId",
                                 "primitive": "number",
                                 "index": 0
                             }
@@ -231,48 +239,48 @@ export const MAPPED_SUPERCLASS = [
                                     "SequenceGenerator": null,
                                     "Table": null,
                                     "Transient": null,
-                                    "ApplicationVersionId": {
+                                    "ApplicationVersion_LocalId": {
                                         "fileImports": null,
                                         "isLocal": false,
                                         "objectMapByAsName": {
-                                            "ApplicationVersionId": {
-                                                "asName": "ApplicationVersionId",
+                                            "ApplicationVersion_LocalId": {
+                                                "asName": "ApplicationVersion_LocalId",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionId"
+                                                "sourceName": "ApplicationVersion_LocalId"
                                             },
-                                            "ApplicationVersionInteger": {
-                                                "asName": "ApplicationVersionInteger",
+                                            "ApplicationVersion_IntegerVersion": {
+                                                "asName": "ApplicationVersion_IntegerVersion",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionInteger"
+                                                "sourceName": "ApplicationVersion_IntegerVersion"
                                             },
-                                            "ApplicationVersionMajor": {
-                                                "asName": "ApplicationVersionMajor",
+                                            "ApplicationVersion_MajorVersion": {
+                                                "asName": "ApplicationVersion_MajorVersion",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionMajor"
+                                                "sourceName": "ApplicationVersion_MajorVersion"
                                             },
-                                            "ApplicationVersionMinor": {
-                                                "asName": "ApplicationVersionMinor",
+                                            "ApplicationVersion_MinorVersion": {
+                                                "asName": "ApplicationVersion_MinorVersion",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionMinor"
+                                                "sourceName": "ApplicationVersion_MinorVersion"
                                             },
-                                            "ApplicationVersionPatch": {
-                                                "asName": "ApplicationVersionPatch",
+                                            "ApplicationVersion_PatchVersion": {
+                                                "asName": "ApplicationVersion_PatchVersion",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionPatch"
+                                                "sourceName": "ApplicationVersion_PatchVersion"
                                             },
-                                            "ApplicationVersionString": {
-                                                "asName": "ApplicationVersionString",
+                                            "ApplicationVersion_VersionString": {
+                                                "asName": "ApplicationVersion_VersionString",
                                                 "moduleImport": null,
-                                                "sourceName": "ApplicationVersionString"
+                                                "sourceName": "ApplicationVersion_VersionString"
                                             }
                                         },
                                         "path": "@airport/ground-control"
                                     },
-                                    "ApplicationVersionInteger": null,
-                                    "ApplicationVersionMajor": null,
-                                    "ApplicationVersionMinor": null,
-                                    "ApplicationVersionPatch": null,
-                                    "ApplicationVersionString": null,
+                                    "ApplicationVersion_IntegerVersion": null,
+                                    "ApplicationVersion_MajorVersion": null,
+                                    "ApplicationVersion_MinorVersion": null,
+                                    "ApplicationVersion_PatchVersion": null,
+                                    "ApplicationVersion_VersionString": null,
                                     "Application": {
                                         "fileImports": null,
                                         "isLocal": true,
@@ -376,17 +384,25 @@ export const MAPPED_SUPERCLASS = [
                                                     "allocationSize": 100
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "name": "Column",
+                                            "values": [
+                                                {
+                                                    "name": "APPLICATION_VERSION_LID"
+                                                }
+                                            ]
                                         }
                                     ],
                                     "isGenerated": false,
                                     "isId": true,
                                     "isMappedSuperclass": false,
                                     "isTransient": false,
-                                    "name": "id",
+                                    "name": "_localId",
                                     "optional": false,
-                                    "type": "ApplicationVersionId",
+                                    "type": "ApplicationVersion_LocalId",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionId",
+                                    "nonArrayType": "ApplicationVersion_LocalId",
                                     "primitive": "number",
                                     "index": 0
                                 },
@@ -412,9 +428,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": false,
                                     "name": "integerVersion",
                                     "optional": false,
-                                    "type": "ApplicationVersionInteger",
+                                    "type": "ApplicationVersion_IntegerVersion",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionInteger",
+                                    "nonArrayType": "ApplicationVersion_IntegerVersion",
                                     "primitive": "number",
                                     "index": 1
                                 },
@@ -440,9 +456,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": false,
                                     "name": "versionString",
                                     "optional": false,
-                                    "type": "ApplicationVersionString",
+                                    "type": "ApplicationVersion_VersionString",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionString",
+                                    "nonArrayType": "ApplicationVersion_VersionString",
                                     "primitive": "string",
                                     "index": 2
                                 },
@@ -468,9 +484,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": false,
                                     "name": "majorVersion",
                                     "optional": false,
-                                    "type": "ApplicationVersionMajor",
+                                    "type": "ApplicationVersion_MajorVersion",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionMajor",
+                                    "nonArrayType": "ApplicationVersion_MajorVersion",
                                     "primitive": "number",
                                     "index": 3
                                 },
@@ -496,9 +512,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": false,
                                     "name": "minorVersion",
                                     "optional": false,
-                                    "type": "ApplicationVersionMinor",
+                                    "type": "ApplicationVersion_MinorVersion",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionMinor",
+                                    "nonArrayType": "ApplicationVersion_MinorVersion",
                                     "primitive": "number",
                                     "index": 4
                                 },
@@ -524,9 +540,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": false,
                                     "name": "patchVersion",
                                     "optional": false,
-                                    "type": "ApplicationVersionPatch",
+                                    "type": "ApplicationVersion_PatchVersion",
                                     "ownerEntity": null,
-                                    "nonArrayType": "ApplicationVersionPatch",
+                                    "nonArrayType": "ApplicationVersion_PatchVersion",
                                     "primitive": "number",
                                     "index": 5
                                 },
@@ -585,7 +601,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "Application",
                                     "entity": {
                                         "type": "Application",
-                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Application.ts",
+                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
                                         "parentClassName": null,
                                         "isSuperclass": false,
                                         "ids": [
@@ -615,9 +631,9 @@ export const MAPPED_SUPERCLASS = [
                                                 "isTransient": false,
                                                 "name": "index",
                                                 "optional": false,
-                                                "type": "ApplicationIndex",
+                                                "type": "Application_Index",
                                                 "ownerEntity": null,
-                                                "nonArrayType": "ApplicationIndex",
+                                                "nonArrayType": "Application_Index",
                                                 "primitive": "number",
                                                 "index": 0
                                             }
@@ -680,11 +696,6 @@ export const MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "JoinColumn"
                                                             },
-                                                            "Json": {
-                                                                "asName": "Json",
-                                                                "moduleImport": null,
-                                                                "sourceName": "Json"
-                                                            },
                                                             "ManyToOne": {
                                                                 "asName": "ManyToOne",
                                                                 "moduleImport": null,
@@ -708,52 +719,45 @@ export const MAPPED_SUPERCLASS = [
                                                     "Entity": null,
                                                     "Id": null,
                                                     "JoinColumn": null,
-                                                    "Json": null,
                                                     "ManyToOne": null,
                                                     "OneToMany": null,
                                                     "Table": null,
-                                                    "PackageName": {
+                                                    "Application_Index": {
                                                         "fileImports": null,
                                                         "isLocal": false,
                                                         "objectMapByAsName": {
-                                                            "PackageName": {
-                                                                "asName": "PackageName",
+                                                            "Application_Index": {
+                                                                "asName": "Application_Index",
                                                                 "moduleImport": null,
-                                                                "sourceName": "PackageName"
+                                                                "sourceName": "Application_Index"
                                                             },
-                                                            "ApplicationIndex": {
-                                                                "asName": "ApplicationIndex",
+                                                            "FullApplication_Name": {
+                                                                "asName": "FullApplication_Name",
                                                                 "moduleImport": null,
-                                                                "sourceName": "ApplicationIndex"
+                                                                "sourceName": "FullApplication_Name"
                                                             },
-                                                            "FullApplicationName": {
-                                                                "asName": "FullApplicationName",
+                                                            "Application_Scope": {
+                                                                "asName": "Application_Scope",
                                                                 "moduleImport": null,
-                                                                "sourceName": "FullApplicationName"
-                                                            },
-                                                            "ApplicationScope": {
-                                                                "asName": "ApplicationScope",
-                                                                "moduleImport": null,
-                                                                "sourceName": "ApplicationScope"
+                                                                "sourceName": "Application_Scope"
                                                             },
                                                             "ApplicationStatus": {
                                                                 "asName": "ApplicationStatus",
                                                                 "moduleImport": null,
                                                                 "sourceName": "ApplicationStatus"
                                                             },
-                                                            "ApplicationName": {
-                                                                "asName": "ApplicationName",
+                                                            "Application_Name": {
+                                                                "asName": "Application_Name",
                                                                 "moduleImport": null,
-                                                                "sourceName": "ApplicationName"
+                                                                "sourceName": "Application_Name"
                                                             }
                                                         },
                                                         "path": "@airport/ground-control"
                                                     },
-                                                    "ApplicationIndex": null,
-                                                    "FullApplicationName": null,
-                                                    "ApplicationScope": null,
+                                                    "FullApplication_Name": null,
+                                                    "Application_Scope": null,
                                                     "ApplicationStatus": null,
-                                                    "ApplicationName": null,
+                                                    "Application_Name": null,
                                                     "Domain": {
                                                         "fileImports": null,
                                                         "isLocal": true,
@@ -826,9 +830,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "index",
                                                     "optional": false,
-                                                    "type": "ApplicationIndex",
+                                                    "type": "Application_Index",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "ApplicationIndex",
+                                                    "nonArrayType": "Application_Index",
                                                     "primitive": "number",
                                                     "index": 0
                                                 },
@@ -868,9 +872,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "scope",
                                                     "optional": false,
-                                                    "type": "ApplicationScope",
+                                                    "type": "Application_Scope",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "ApplicationScope",
+                                                    "nonArrayType": "Application_Scope",
                                                     "primitive": "string",
                                                     "index": 2
                                                 },
@@ -896,9 +900,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "name",
                                                     "optional": false,
-                                                    "type": "ApplicationName",
+                                                    "type": "Application_Name",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "ApplicationName",
+                                                    "nonArrayType": "Application_Name",
                                                     "primitive": "string",
                                                     "index": 3
                                                 },
@@ -924,9 +928,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "fullName",
                                                     "optional": false,
-                                                    "type": "FullApplicationName",
+                                                    "type": "FullApplication_Name",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "FullApplicationName",
+                                                    "nonArrayType": "FullApplication_Name",
                                                     "primitive": "string",
                                                     "index": 4
                                                 },
@@ -996,8 +1000,8 @@ export const MAPPED_SUPERCLASS = [
                                                             "name": "JoinColumn",
                                                             "values": [
                                                                 {
-                                                                    "name": "DOMAIN_ID",
-                                                                    "referencedColumnName": "ID",
+                                                                    "name": "DOMAIN_LID",
+                                                                    "referencedColumnName": "DOMAIN_LID",
                                                                     "nullable": false
                                                                 }
                                                             ]
@@ -1014,7 +1018,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "Domain",
                                                     "entity": {
                                                         "type": "Domain",
-                                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Domain.ts",
+                                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
                                                         "parentClassName": null,
                                                         "isSuperclass": false,
                                                         "ids": [
@@ -1027,17 +1031,25 @@ export const MAPPED_SUPERCLASS = [
                                                                     {
                                                                         "name": "DbNumber",
                                                                         "values": []
+                                                                    },
+                                                                    {
+                                                                        "name": "Column",
+                                                                        "values": [
+                                                                            {
+                                                                                "name": "DOMAIN_LID"
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ],
                                                                 "isGenerated": false,
                                                                 "isId": true,
                                                                 "isMappedSuperclass": false,
                                                                 "isTransient": false,
-                                                                "name": "id",
+                                                                "name": "_localId",
                                                                 "optional": false,
-                                                                "type": "DomainId",
+                                                                "type": "Domain_LocalId",
                                                                 "ownerEntity": null,
-                                                                "nonArrayType": "DomainId",
+                                                                "nonArrayType": "Domain_LocalId",
                                                                 "primitive": "number",
                                                                 "index": 0
                                                             }
@@ -1066,10 +1078,15 @@ export const MAPPED_SUPERCLASS = [
                                                             "type": "typeof Domain",
                                                             "fileImports": {
                                                                 "importMapByObjectAsName": {
-                                                                    "DbNumber": {
+                                                                    "Column": {
                                                                         "fileImports": null,
                                                                         "isLocal": false,
                                                                         "objectMapByAsName": {
+                                                                            "Column": {
+                                                                                "asName": "Column",
+                                                                                "moduleImport": null,
+                                                                                "sourceName": "Column"
+                                                                            },
                                                                             "DbNumber": {
                                                                                 "asName": "DbNumber",
                                                                                 "moduleImport": null,
@@ -1103,29 +1120,30 @@ export const MAPPED_SUPERCLASS = [
                                                                         },
                                                                         "path": "@airport/air-traffic-control"
                                                                     },
+                                                                    "DbNumber": null,
                                                                     "DbString": null,
                                                                     "Entity": null,
                                                                     "Id": null,
                                                                     "OneToMany": null,
                                                                     "Table": null,
-                                                                    "DomainId": {
+                                                                    "Domain_LocalId": {
                                                                         "fileImports": null,
                                                                         "isLocal": false,
                                                                         "objectMapByAsName": {
-                                                                            "DomainId": {
-                                                                                "asName": "DomainId",
+                                                                            "Domain_LocalId": {
+                                                                                "asName": "Domain_LocalId",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "DomainId"
+                                                                                "sourceName": "Domain_LocalId"
                                                                             },
-                                                                            "DomainName": {
-                                                                                "asName": "DomainName",
+                                                                            "Domain_Name": {
+                                                                                "asName": "Domain_Name",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "DomainName"
+                                                                                "sourceName": "Domain_Name"
                                                                             }
                                                                         },
                                                                         "path": "@airport/ground-control"
                                                                     },
-                                                                    "DomainName": null,
+                                                                    "Domain_Name": null,
                                                                     "Application": {
                                                                         "fileImports": null,
                                                                         "isLocal": true,
@@ -1155,17 +1173,25 @@ export const MAPPED_SUPERCLASS = [
                                                                         {
                                                                             "name": "DbNumber",
                                                                             "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "DOMAIN_LID"
+                                                                                }
+                                                                            ]
                                                                         }
                                                                     ],
                                                                     "isGenerated": false,
                                                                     "isId": true,
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
-                                                                    "name": "id",
+                                                                    "name": "_localId",
                                                                     "optional": false,
-                                                                    "type": "DomainId",
+                                                                    "type": "Domain_LocalId",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "DomainId",
+                                                                    "nonArrayType": "Domain_LocalId",
                                                                     "primitive": "number",
                                                                     "index": 0
                                                                 },
@@ -1182,9 +1208,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "name",
                                                                     "optional": false,
-                                                                    "type": "DomainName",
+                                                                    "type": "Domain_Name",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "DomainName",
+                                                                    "nonArrayType": "Domain_Name",
                                                                     "primitive": "string",
                                                                     "index": 1
                                                                 },
@@ -1272,7 +1298,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "ApplicationCurrentVersion",
                                                     "entity": {
                                                         "type": "ApplicationCurrentVersion",
-                                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationCurrentVersion.ts",
+                                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
                                                         "parentClassName": null,
                                                         "isSuperclass": false,
                                                         "ids": [
@@ -1323,8 +1349,8 @@ export const MAPPED_SUPERCLASS = [
                                                                         "name": "JoinColumn",
                                                                         "values": [
                                                                             {
-                                                                                "name": "APPLICATION_VERSION_ID",
-                                                                                "referencedColumnName": "ID",
+                                                                                "name": "APPLICATION_VERSION_LID",
+                                                                                "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                                 "nullable": false
                                                                             }
                                                                         ]
@@ -1482,8 +1508,8 @@ export const MAPPED_SUPERCLASS = [
                                                                             "name": "JoinColumn",
                                                                             "values": [
                                                                                 {
-                                                                                    "name": "APPLICATION_VERSION_ID",
-                                                                                    "referencedColumnName": "ID",
+                                                                                    "name": "APPLICATION_VERSION_LID",
+                                                                                    "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                                     "nullable": false
                                                                                 }
                                                                             ]
@@ -1550,7 +1576,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "ApplicationEntity",
                                     "entity": {
                                         "type": "ApplicationEntity",
-                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationEntity.ts",
+                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
                                         "parentClassName": "VersionedApplicationObject",
                                         "location": "./VersionedApplicationObject",
                                         "isSuperclass": false,
@@ -1564,17 +1590,25 @@ export const MAPPED_SUPERCLASS = [
                                                     {
                                                         "name": "Id",
                                                         "values": []
+                                                    },
+                                                    {
+                                                        "name": "Column",
+                                                        "values": [
+                                                            {
+                                                                "name": "APPLICATION_ENTITY_LID"
+                                                            }
+                                                        ]
                                                     }
                                                 ],
                                                 "isGenerated": false,
                                                 "isId": true,
                                                 "isMappedSuperclass": false,
                                                 "isTransient": false,
-                                                "name": "id",
+                                                "name": "_localId",
                                                 "optional": false,
-                                                "type": "EntityId",
+                                                "type": "ApplicationEntity_LocalId",
                                                 "ownerEntity": null,
-                                                "nonArrayType": "EntityId",
+                                                "nonArrayType": "ApplicationEntity_LocalId",
                                                 "primitive": "number",
                                                 "index": 0
                                             }
@@ -1662,10 +1696,10 @@ export const MAPPED_SUPERCLASS = [
                                                                 "moduleImport": null,
                                                                 "sourceName": "Table"
                                                             },
-                                                            "TableConfiguration": {
-                                                                "asName": "TableConfiguration",
+                                                            "ApplicationEntity_TableConfiguration": {
+                                                                "asName": "ApplicationEntity_TableConfiguration",
                                                                 "moduleImport": null,
-                                                                "sourceName": "TableConfiguration"
+                                                                "sourceName": "ApplicationEntity_TableConfiguration"
                                                             },
                                                             "Transient": {
                                                                 "asName": "Transient",
@@ -1685,44 +1719,44 @@ export const MAPPED_SUPERCLASS = [
                                                     "ManyToOne": null,
                                                     "OneToMany": null,
                                                     "Table": null,
-                                                    "TableConfiguration": null,
+                                                    "ApplicationEntity_TableConfiguration": null,
                                                     "Transient": null,
-                                                    "EntityId": {
+                                                    "ApplicationEntity_LocalId": {
                                                         "fileImports": null,
                                                         "isLocal": false,
                                                         "objectMapByAsName": {
-                                                            "EntityId": {
-                                                                "asName": "EntityId",
+                                                            "ApplicationEntity_LocalId": {
+                                                                "asName": "ApplicationEntity_LocalId",
                                                                 "moduleImport": null,
-                                                                "sourceName": "EntityId"
+                                                                "sourceName": "ApplicationEntity_LocalId"
                                                             },
-                                                            "EntityIsLocal": {
-                                                                "asName": "EntityIsLocal",
+                                                            "ApplicationEntity_IsLocal": {
+                                                                "asName": "ApplicationEntity_IsLocal",
                                                                 "moduleImport": null,
-                                                                "sourceName": "EntityIsLocal"
+                                                                "sourceName": "ApplicationEntity_IsLocal"
                                                             },
-                                                            "EntityIsAirEntity": {
-                                                                "asName": "EntityIsAirEntity",
+                                                            "ApplicationEntity_IsAirEntity": {
+                                                                "asName": "ApplicationEntity_IsAirEntity",
                                                                 "moduleImport": null,
-                                                                "sourceName": "EntityIsAirEntity"
+                                                                "sourceName": "ApplicationEntity_IsAirEntity"
                                                             },
-                                                            "EntityName": {
-                                                                "asName": "EntityName",
+                                                            "ApplicationEntity_Name": {
+                                                                "asName": "ApplicationEntity_Name",
                                                                 "moduleImport": null,
-                                                                "sourceName": "EntityName"
+                                                                "sourceName": "ApplicationEntity_Name"
                                                             },
-                                                            "TableIndex": {
-                                                                "asName": "TableIndex",
+                                                            "ApplicationEntity_TableIndex": {
+                                                                "asName": "ApplicationEntity_TableIndex",
                                                                 "moduleImport": null,
-                                                                "sourceName": "TableIndex"
+                                                                "sourceName": "ApplicationEntity_TableIndex"
                                                             }
                                                         },
                                                         "path": "@airport/ground-control"
                                                     },
-                                                    "EntityIsLocal": null,
-                                                    "EntityIsAirEntity": null,
-                                                    "EntityName": null,
-                                                    "TableIndex": null,
+                                                    "ApplicationEntity_IsLocal": null,
+                                                    "ApplicationEntity_IsAirEntity": null,
+                                                    "ApplicationEntity_Name": null,
+                                                    "ApplicationEntity_TableIndex": null,
                                                     "ApplicationColumn": {
                                                         "fileImports": null,
                                                         "isLocal": true,
@@ -1843,17 +1877,25 @@ export const MAPPED_SUPERCLASS = [
                                                         {
                                                             "name": "Id",
                                                             "values": []
+                                                        },
+                                                        {
+                                                            "name": "Column",
+                                                            "values": [
+                                                                {
+                                                                    "name": "APPLICATION_ENTITY_LID"
+                                                                }
+                                                            ]
                                                         }
                                                     ],
                                                     "isGenerated": false,
                                                     "isId": true,
                                                     "isMappedSuperclass": false,
                                                     "isTransient": false,
-                                                    "name": "id",
+                                                    "name": "_localId",
                                                     "optional": false,
-                                                    "type": "EntityId",
+                                                    "type": "ApplicationEntity_LocalId",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "EntityId",
+                                                    "nonArrayType": "ApplicationEntity_LocalId",
                                                     "primitive": "number",
                                                     "index": 0
                                                 },
@@ -1879,9 +1921,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "index",
                                                     "optional": false,
-                                                    "type": "TableIndex",
+                                                    "type": "ApplicationEntity_TableIndex",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "TableIndex",
+                                                    "nonArrayType": "ApplicationEntity_TableIndex",
                                                     "primitive": "number",
                                                     "index": 1
                                                 },
@@ -1907,9 +1949,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "isLocal",
                                                     "optional": false,
-                                                    "type": "EntityIsLocal",
+                                                    "type": "ApplicationEntity_IsLocal",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "EntityIsLocal",
+                                                    "nonArrayType": "ApplicationEntity_IsLocal",
                                                     "primitive": "boolean",
                                                     "index": 2
                                                 },
@@ -1935,9 +1977,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "isAirEntity",
                                                     "optional": false,
-                                                    "type": "EntityIsAirEntity",
+                                                    "type": "ApplicationEntity_IsAirEntity",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "EntityIsAirEntity",
+                                                    "nonArrayType": "ApplicationEntity_IsAirEntity",
                                                     "primitive": "boolean",
                                                     "index": 3
                                                 },
@@ -1963,9 +2005,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "name",
                                                     "optional": false,
-                                                    "type": "EntityName",
+                                                    "type": "ApplicationEntity_Name",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "EntityName",
+                                                    "nonArrayType": "ApplicationEntity_Name",
                                                     "primitive": "string",
                                                     "index": 4
                                                 },
@@ -1991,9 +2033,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "tableConfig",
                                                     "optional": false,
-                                                    "type": "TableConfiguration",
+                                                    "type": "ApplicationEntity_TableConfiguration",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "TableConfiguration",
+                                                    "nonArrayType": "ApplicationEntity_TableConfiguration",
                                                     "primitive": "Json",
                                                     "index": 5
                                                 },
@@ -2007,8 +2049,8 @@ export const MAPPED_SUPERCLASS = [
                                                             "name": "JoinColumn",
                                                             "values": [
                                                                 {
-                                                                    "name": "APPLICATION_VERSION_ID",
-                                                                    "referencedColumnName": "ID",
+                                                                    "name": "APPLICATION_VERSION_LID",
+                                                                    "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                     "nullable": false
                                                                 }
                                                             ]
@@ -2049,7 +2091,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "ApplicationColumn",
                                                     "entity": {
                                                         "type": "ApplicationColumn",
-                                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationColumn.ts",
+                                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
                                                         "parentClassName": "VersionedApplicationObject",
                                                         "location": "./VersionedApplicationObject",
                                                         "isSuperclass": false,
@@ -2063,17 +2105,25 @@ export const MAPPED_SUPERCLASS = [
                                                                     {
                                                                         "name": "Id",
                                                                         "values": []
+                                                                    },
+                                                                    {
+                                                                        "name": "Column",
+                                                                        "values": [
+                                                                            {
+                                                                                "name": "APPLICATION_COLUMN_LID"
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ],
                                                                 "isGenerated": false,
                                                                 "isId": true,
                                                                 "isMappedSuperclass": false,
                                                                 "isTransient": false,
-                                                                "name": "id",
+                                                                "name": "_localId",
                                                                 "optional": false,
-                                                                "type": "ColumnId",
+                                                                "type": "ApplicationColumn_LocalId",
                                                                 "ownerEntity": null,
-                                                                "nonArrayType": "ColumnId",
+                                                                "nonArrayType": "ApplicationColumn_LocalId",
                                                                 "primitive": "number",
                                                                 "index": 0
                                                             }
@@ -2168,54 +2218,54 @@ export const MAPPED_SUPERCLASS = [
                                                                     "ManyToOne": null,
                                                                     "OneToMany": null,
                                                                     "Table": null,
-                                                                    "ColumnId": {
+                                                                    "ApplicationColumn_LocalId": {
                                                                         "fileImports": null,
                                                                         "isLocal": false,
                                                                         "objectMapByAsName": {
-                                                                            "ColumnId": {
-                                                                                "asName": "ColumnId",
+                                                                            "ApplicationColumn_LocalId": {
+                                                                                "asName": "ApplicationColumn_LocalId",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnId"
+                                                                                "sourceName": "ApplicationColumn_LocalId"
                                                                             },
-                                                                            "ColumnIndex": {
-                                                                                "asName": "ColumnIndex",
+                                                                            "ApplicationColumn_Index": {
+                                                                                "asName": "ApplicationColumn_Index",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnIndex"
+                                                                                "sourceName": "ApplicationColumn_Index"
                                                                             },
-                                                                            "ColumnName": {
-                                                                                "asName": "ColumnName",
+                                                                            "ApplicationColumn_Name": {
+                                                                                "asName": "ApplicationColumn_Name",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnName"
+                                                                                "sourceName": "ApplicationColumn_Name"
                                                                             },
-                                                                            "ColumnNotNull": {
-                                                                                "asName": "ColumnNotNull",
+                                                                            "ApplicationColumn_NotNull": {
+                                                                                "asName": "ApplicationColumn_NotNull",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnNotNull"
+                                                                                "sourceName": "ApplicationColumn_NotNull"
                                                                             },
-                                                                            "ColumnPrecision": {
-                                                                                "asName": "ColumnPrecision",
+                                                                            "ApplicationColumn_Precision": {
+                                                                                "asName": "ApplicationColumn_Precision",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnPrecision"
+                                                                                "sourceName": "ApplicationColumn_Precision"
                                                                             },
-                                                                            "ColumnScale": {
-                                                                                "asName": "ColumnScale",
+                                                                            "ApplicationColumn_Scale": {
+                                                                                "asName": "ApplicationColumn_Scale",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ColumnScale"
+                                                                                "sourceName": "ApplicationColumn_Scale"
                                                                             },
-                                                                            "IdColumnOnlyIndex": {
-                                                                                "asName": "IdColumnOnlyIndex",
+                                                                            "ApplicationColumn_IdIndex": {
+                                                                                "asName": "ApplicationColumn_IdIndex",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "IdColumnOnlyIndex"
+                                                                                "sourceName": "ApplicationColumn_IdIndex"
                                                                             },
-                                                                            "ApplicationColumnAllocationSize": {
-                                                                                "asName": "ApplicationColumnAllocationSize",
+                                                                            "ApplicationColumn_AllocationSize": {
+                                                                                "asName": "ApplicationColumn_AllocationSize",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ApplicationColumnAllocationSize"
+                                                                                "sourceName": "ApplicationColumn_AllocationSize"
                                                                             },
-                                                                            "ApplicationColumnIsGenerated": {
-                                                                                "asName": "ApplicationColumnIsGenerated",
+                                                                            "ApplicationColumn_IsGenerated": {
+                                                                                "asName": "ApplicationColumn_IsGenerated",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "ApplicationColumnIsGenerated"
+                                                                                "sourceName": "ApplicationColumn_IsGenerated"
                                                                             },
                                                                             "SQLDataType": {
                                                                                 "asName": "SQLDataType",
@@ -2225,14 +2275,14 @@ export const MAPPED_SUPERCLASS = [
                                                                         },
                                                                         "path": "@airport/ground-control"
                                                                     },
-                                                                    "ColumnIndex": null,
-                                                                    "ColumnName": null,
-                                                                    "ColumnNotNull": null,
-                                                                    "ColumnPrecision": null,
-                                                                    "ColumnScale": null,
-                                                                    "IdColumnOnlyIndex": null,
-                                                                    "ApplicationColumnAllocationSize": null,
-                                                                    "ApplicationColumnIsGenerated": null,
+                                                                    "ApplicationColumn_Index": null,
+                                                                    "ApplicationColumn_Name": null,
+                                                                    "ApplicationColumn_NotNull": null,
+                                                                    "ApplicationColumn_Precision": null,
+                                                                    "ApplicationColumn_Scale": null,
+                                                                    "ApplicationColumn_IdIndex": null,
+                                                                    "ApplicationColumn_AllocationSize": null,
+                                                                    "ApplicationColumn_IsGenerated": null,
                                                                     "SQLDataType": null,
                                                                     "ApplicationEntity": {
                                                                         "fileImports": null,
@@ -2302,17 +2352,25 @@ export const MAPPED_SUPERCLASS = [
                                                                         {
                                                                             "name": "Id",
                                                                             "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "APPLICATION_COLUMN_LID"
+                                                                                }
+                                                                            ]
                                                                         }
                                                                     ],
                                                                     "isGenerated": false,
                                                                     "isId": true,
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
-                                                                    "name": "id",
+                                                                    "name": "_localId",
                                                                     "optional": false,
-                                                                    "type": "ColumnId",
+                                                                    "type": "ApplicationColumn_LocalId",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnId",
+                                                                    "nonArrayType": "ApplicationColumn_LocalId",
                                                                     "primitive": "number",
                                                                     "index": 0
                                                                 },
@@ -2338,9 +2396,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "index",
                                                                     "optional": false,
-                                                                    "type": "ColumnIndex",
+                                                                    "type": "ApplicationColumn_Index",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnIndex",
+                                                                    "nonArrayType": "ApplicationColumn_Index",
                                                                     "primitive": "number",
                                                                     "index": 1
                                                                 },
@@ -2365,9 +2423,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "idIndex",
                                                                     "optional": true,
-                                                                    "type": "IdColumnOnlyIndex",
+                                                                    "type": "ApplicationColumn_IdIndex",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "IdColumnOnlyIndex",
+                                                                    "nonArrayType": "ApplicationColumn_IdIndex",
                                                                     "primitive": "number",
                                                                     "index": 2
                                                                 },
@@ -2393,9 +2451,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "isGenerated",
                                                                     "optional": false,
-                                                                    "type": "ApplicationColumnIsGenerated",
+                                                                    "type": "ApplicationColumn_IsGenerated",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ApplicationColumnIsGenerated",
+                                                                    "nonArrayType": "ApplicationColumn_IsGenerated",
                                                                     "primitive": "boolean",
                                                                     "index": 3
                                                                 },
@@ -2420,9 +2478,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "allocationSize",
                                                                     "optional": true,
-                                                                    "type": "ApplicationColumnAllocationSize",
+                                                                    "type": "ApplicationColumn_AllocationSize",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ApplicationColumnAllocationSize",
+                                                                    "nonArrayType": "ApplicationColumn_AllocationSize",
                                                                     "primitive": "number",
                                                                     "index": 4
                                                                 },
@@ -2448,9 +2506,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "name",
                                                                     "optional": false,
-                                                                    "type": "ColumnName",
+                                                                    "type": "ApplicationColumn_Name",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnName",
+                                                                    "nonArrayType": "ApplicationColumn_Name",
                                                                     "primitive": "string",
                                                                     "index": 5
                                                                 },
@@ -2476,9 +2534,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "notNull",
                                                                     "optional": false,
-                                                                    "type": "ColumnNotNull",
+                                                                    "type": "ApplicationColumn_NotNull",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnNotNull",
+                                                                    "nonArrayType": "ApplicationColumn_NotNull",
                                                                     "primitive": "boolean",
                                                                     "index": 6
                                                                 },
@@ -2503,9 +2561,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "precision",
                                                                     "optional": false,
-                                                                    "type": "ColumnPrecision",
+                                                                    "type": "ApplicationColumn_Precision",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnPrecision",
+                                                                    "nonArrayType": "ApplicationColumn_Precision",
                                                                     "primitive": "number",
                                                                     "index": 7
                                                                 },
@@ -2530,9 +2588,9 @@ export const MAPPED_SUPERCLASS = [
                                                                     "isTransient": false,
                                                                     "name": "scale",
                                                                     "optional": false,
-                                                                    "type": "ColumnScale",
+                                                                    "type": "ApplicationColumn_Scale",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "ColumnScale",
+                                                                    "nonArrayType": "ApplicationColumn_Scale",
                                                                     "primitive": "number",
                                                                     "index": 8
                                                                 },
@@ -2574,8 +2632,8 @@ export const MAPPED_SUPERCLASS = [
                                                                             "name": "JoinColumn",
                                                                             "values": [
                                                                                 {
-                                                                                    "name": "APPLICATION_ENTITY_ID",
-                                                                                    "referencedColumnName": "ID",
+                                                                                    "name": "APPLICATION_ENTITY_LID",
+                                                                                    "referencedColumnName": "APPLICATION_ENTITY_LID",
                                                                                     "nullable": false
                                                                                 }
                                                                             ]
@@ -2616,7 +2674,7 @@ export const MAPPED_SUPERCLASS = [
                                                                     "nonArrayType": "ApplicationPropertyColumn",
                                                                     "entity": {
                                                                         "type": "ApplicationPropertyColumn",
-                                                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationPropertyColumn.ts",
+                                                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
                                                                         "parentClassName": "VersionedApplicationObject",
                                                                         "location": "./VersionedApplicationObject",
                                                                         "isSuperclass": false,
@@ -2635,8 +2693,8 @@ export const MAPPED_SUPERCLASS = [
                                                                                         "name": "JoinColumn",
                                                                                         "values": [
                                                                                             {
-                                                                                                "name": "APPLICATION_COLUMN_ID",
-                                                                                                "referencedColumnName": "ID",
+                                                                                                "name": "APPLICATION_COLUMN_LID",
+                                                                                                "referencedColumnName": "APPLICATION_COLUMN_LID",
                                                                                                 "nullable": false
                                                                                             }
                                                                                         ]
@@ -2668,8 +2726,8 @@ export const MAPPED_SUPERCLASS = [
                                                                                         "name": "JoinColumn",
                                                                                         "values": [
                                                                                             {
-                                                                                                "name": "APPLICATION_PROPERTY_ID",
-                                                                                                "referencedColumnName": "ID",
+                                                                                                "name": "APPLICATION_PROPERTY_LID",
+                                                                                                "referencedColumnName": "APPLICATION_PROPERTY_LID",
                                                                                                 "nullable": false
                                                                                             }
                                                                                         ]
@@ -2807,8 +2865,8 @@ export const MAPPED_SUPERCLASS = [
                                                                                             "name": "JoinColumn",
                                                                                             "values": [
                                                                                                 {
-                                                                                                    "name": "APPLICATION_COLUMN_ID",
-                                                                                                    "referencedColumnName": "ID",
+                                                                                                    "name": "APPLICATION_COLUMN_LID",
+                                                                                                    "referencedColumnName": "APPLICATION_COLUMN_LID",
                                                                                                     "nullable": false
                                                                                                 }
                                                                                             ]
@@ -2840,8 +2898,8 @@ export const MAPPED_SUPERCLASS = [
                                                                                             "name": "JoinColumn",
                                                                                             "values": [
                                                                                                 {
-                                                                                                    "name": "APPLICATION_PROPERTY_ID",
-                                                                                                    "referencedColumnName": "ID",
+                                                                                                    "name": "APPLICATION_PROPERTY_LID",
+                                                                                                    "referencedColumnName": "APPLICATION_PROPERTY_LID",
                                                                                                     "nullable": false
                                                                                                 }
                                                                                             ]
@@ -2958,7 +3016,7 @@ export const MAPPED_SUPERCLASS = [
                                                     "nonArrayType": "ApplicationOperation",
                                                     "entity": {
                                                         "type": "ApplicationOperation",
-                                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationOperation.ts",
+                                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
                                                         "parentClassName": "VersionedApplicationObject",
                                                         "location": "./VersionedApplicationObject",
                                                         "isSuperclass": false,
@@ -2976,17 +3034,25 @@ export const MAPPED_SUPERCLASS = [
                                                                     {
                                                                         "name": "DbNumber",
                                                                         "values": []
+                                                                    },
+                                                                    {
+                                                                        "name": "Column",
+                                                                        "values": [
+                                                                            {
+                                                                                "name": "APPLICATION_OPERATION_LID"
+                                                                            }
+                                                                        ]
                                                                     }
                                                                 ],
                                                                 "isGenerated": true,
                                                                 "isId": true,
                                                                 "isMappedSuperclass": false,
                                                                 "isTransient": false,
-                                                                "name": "id",
+                                                                "name": "_localId",
                                                                 "optional": false,
-                                                                "type": "Operation_Id",
+                                                                "type": "Operation_LocalId",
                                                                 "ownerEntity": null,
-                                                                "nonArrayType": "Operation_Id",
+                                                                "nonArrayType": "Operation_LocalId",
                                                                 "primitive": "number",
                                                                 "index": 0
                                                             }
@@ -3081,14 +3147,14 @@ export const MAPPED_SUPERCLASS = [
                                                                     "Json": null,
                                                                     "ManyToOne": null,
                                                                     "Table": null,
-                                                                    "Operation_Id": {
+                                                                    "Operation_LocalId": {
                                                                         "fileImports": null,
                                                                         "isLocal": false,
                                                                         "objectMapByAsName": {
-                                                                            "Operation_Id": {
-                                                                                "asName": "Operation_Id",
+                                                                            "Operation_LocalId": {
+                                                                                "asName": "Operation_LocalId",
                                                                                 "moduleImport": null,
-                                                                                "sourceName": "Operation_Id"
+                                                                                "sourceName": "Operation_LocalId"
                                                                             },
                                                                             "Operation_Name": {
                                                                                 "asName": "Operation_Name",
@@ -3157,17 +3223,25 @@ export const MAPPED_SUPERCLASS = [
                                                                         {
                                                                             "name": "DbNumber",
                                                                             "values": []
+                                                                        },
+                                                                        {
+                                                                            "name": "Column",
+                                                                            "values": [
+                                                                                {
+                                                                                    "name": "APPLICATION_OPERATION_LID"
+                                                                                }
+                                                                            ]
                                                                         }
                                                                     ],
                                                                     "isGenerated": true,
                                                                     "isId": true,
                                                                     "isMappedSuperclass": false,
                                                                     "isTransient": false,
-                                                                    "name": "id",
+                                                                    "name": "_localId",
                                                                     "optional": false,
-                                                                    "type": "Operation_Id",
+                                                                    "type": "Operation_LocalId",
                                                                     "ownerEntity": null,
-                                                                    "nonArrayType": "Operation_Id",
+                                                                    "nonArrayType": "Operation_LocalId",
                                                                     "primitive": "number",
                                                                     "index": 0
                                                                 },
@@ -3209,8 +3283,8 @@ export const MAPPED_SUPERCLASS = [
                                                                             "name": "JoinColumn",
                                                                             "values": [
                                                                                 {
-                                                                                    "name": "APPLICATION_ENTITY_ID",
-                                                                                    "referencedColumnName": "ID",
+                                                                                    "name": "APPLICATION_ENTITY_LID",
+                                                                                    "referencedColumnName": "APPLICATION_ENTITY_LID",
                                                                                     "nullable": false
                                                                                 }
                                                                             ]
@@ -3479,7 +3553,7 @@ export const MAPPED_SUPERCLASS = [
                                     "nonArrayType": "ApplicationReference",
                                     "entity": {
                                         "type": "ApplicationReference",
-                                        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationReference.ts",
+                                        "path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
                                         "parentClassName": "VersionedApplicationObject",
                                         "location": "./VersionedApplicationObject",
                                         "isSuperclass": false,
@@ -3498,8 +3572,8 @@ export const MAPPED_SUPERCLASS = [
                                                         "name": "JoinColumn",
                                                         "values": [
                                                             {
-                                                                "name": "OWN_APPLICATION_VERSION_ID",
-                                                                "referencedColumnName": "ID",
+                                                                "name": "OWN_APPLICATION_VERSION_LID",
+                                                                "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                 "nullable": false
                                                             }
                                                         ]
@@ -3531,8 +3605,8 @@ export const MAPPED_SUPERCLASS = [
                                                         "name": "JoinColumn",
                                                         "values": [
                                                             {
-                                                                "name": "REFERENCED_APPLICATION_VERSION_ID",
-                                                                "referencedColumnName": "ID",
+                                                                "name": "REFERENCED_APPLICATION_VERSION_LID",
+                                                                "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                 "nullable": false
                                                             }
                                                         ]
@@ -3623,14 +3697,14 @@ export const MAPPED_SUPERCLASS = [
                                                     "JoinColumn": null,
                                                     "ManyToOne": null,
                                                     "Table": null,
-                                                    "ApplicationReferenceIndex": {
+                                                    "ApplicationReference_Index": {
                                                         "fileImports": null,
                                                         "isLocal": false,
                                                         "objectMapByAsName": {
-                                                            "ApplicationReferenceIndex": {
-                                                                "asName": "ApplicationReferenceIndex",
+                                                            "ApplicationReference_Index": {
+                                                                "asName": "ApplicationReference_Index",
                                                                 "moduleImport": null,
-                                                                "sourceName": "ApplicationReferenceIndex"
+                                                                "sourceName": "ApplicationReference_Index"
                                                             }
                                                         },
                                                         "path": "@airport/ground-control"
@@ -3682,8 +3756,8 @@ export const MAPPED_SUPERCLASS = [
                                                             "name": "JoinColumn",
                                                             "values": [
                                                                 {
-                                                                    "name": "OWN_APPLICATION_VERSION_ID",
-                                                                    "referencedColumnName": "ID",
+                                                                    "name": "OWN_APPLICATION_VERSION_LID",
+                                                                    "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                     "nullable": false
                                                                 }
                                                             ]
@@ -3715,8 +3789,8 @@ export const MAPPED_SUPERCLASS = [
                                                             "name": "JoinColumn",
                                                             "values": [
                                                                 {
-                                                                    "name": "REFERENCED_APPLICATION_VERSION_ID",
-                                                                    "referencedColumnName": "ID",
+                                                                    "name": "REFERENCED_APPLICATION_VERSION_LID",
+                                                                    "referencedColumnName": "APPLICATION_VERSION_LID",
                                                                     "nullable": false
                                                                 }
                                                             ]
@@ -3756,9 +3830,9 @@ export const MAPPED_SUPERCLASS = [
                                                     "isTransient": false,
                                                     "name": "index",
                                                     "optional": false,
-                                                    "type": "ApplicationReferenceIndex",
+                                                    "type": "ApplicationReference_Index",
                                                     "ownerEntity": null,
-                                                    "nonArrayType": "ApplicationReferenceIndex",
+                                                    "nonArrayType": "ApplicationReference_Index",
                                                     "primitive": "number",
                                                     "index": 2
                                                 }
@@ -3831,9 +3905,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": true,
                                     "name": "referencesMapByName",
                                     "optional": true,
-                                    "type": "{ [fullApplicationName: string]: IApplicationReference; }",
+                                    "type": "{ [fullApplication_Name: string]: IApplicationReference; }",
                                     "ownerEntity": null,
-                                    "nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
+                                    "nonArrayType": "{ [fullApplication_Name: string]: IApplicationReference; }",
                                     "primitive": "Json"
                                 },
                                 {
@@ -3849,9 +3923,9 @@ export const MAPPED_SUPERCLASS = [
                                     "isTransient": true,
                                     "name": "referencedByMapByName",
                                     "optional": true,
-                                    "type": "{ [fullApplicationName: string]: IApplicationReference; }",
+                                    "type": "{ [fullApplication_Name: string]: IApplicationReference; }",
                                     "ownerEntity": null,
-                                    "nonArrayType": "{ [fullApplicationName: string]: IApplicationReference; }",
+                                    "nonArrayType": "{ [fullApplication_Name: string]: IApplicationReference; }",
                                     "primitive": "Json"
                                 }
                             ],
@@ -3877,8 +3951,8 @@ export const MAPPED_SUPERCLASS = [
                             "name": "JoinColumn",
                             "values": [
                                 {
-                                    "name": "REMOVED_IN_APPLICATION_VERSION_ID",
-                                    "referencedColumnName": "ID"
+                                    "name": "REMOVED_IN_APPLICATION_VERSION_LID",
+                                    "referencedColumnName": "APPLICATION_VERSION_LID"
                                 }
                             ]
                         }
@@ -3905,8 +3979,8 @@ export const MAPPED_SUPERCLASS = [
                             "name": "JoinColumn",
                             "values": [
                                 {
-                                    "name": "SINCE_APPLICATION_VERSION_ID",
-                                    "referencedColumnName": "ID",
+                                    "name": "SINCE_APPLICATION_VERSION_LID",
+                                    "referencedColumnName": "APPLICATION_VERSION_LID",
                                     "nullable": false
                                 }
                             ]

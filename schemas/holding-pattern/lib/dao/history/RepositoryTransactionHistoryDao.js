@@ -19,7 +19,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             set: {
                 contents: null
             },
-            where: rtb.id.in(repositoryTransactionBlockIds)
+            where: rtb._localId.in(repositoryTransactionBlockIds)
         })
     }
     */
@@ -44,19 +44,19 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
         const av = ae.applicationVersion.leftJoin();
         const rh = oh.recordHistory.leftJoin();
         const nv = rh.newValues.leftJoin();
-        let id = Y;
+        let _localId = Y;
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of changedRecordIds) {
-            const recordMapForRepository = idsForRepository.ids;
+            const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds;
             const entityEquals = [];
             for (const [entityId, recordMapForEntity] of recordMapForRepository) {
                 const actorEquals = [];
                 for (const [actorId, recordsForActor] of recordMapForEntity) {
-                    actorEquals.push(and(oh.actor.id.equals(actorId), rh.actorRecordId.in(Array.from(recordsForActor))));
+                    actorEquals.push(and(oh.actor._localId.equals(actorId), rh._actorRecordId.in(Array.from(recordsForActor))));
                 }
-                entityEquals.push(and(oh.entity.id.equals(entityId), or(...actorEquals)));
+                entityEquals.push(and(oh.entity._localId.equals(entityId), or(...actorEquals)));
             }
-            repositoryEquals.push(and(rth.repository.id.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), or(...entityEquals)));
+            repositoryEquals.push(and(rth.repository._localId.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), or(...entityEquals)));
         }
         const repoTransHistories = await this.db.find.tree({
             select: {
@@ -65,10 +65,10 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
                     orderNumber: Y,
                     changeType: Y,
                     entity: {
-                        id,
+                        _localId,
                         // index: Y,
                         applicationVersion: {
-                            id: Y,
+                            _localId: Y,
                             // integerVersion: Y,
                             // application: {
                             // 	index: Y
@@ -76,7 +76,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
                         }
                     },
                     recordHistory: {
-                        id,
+                        _localId,
                         newValues: {
                             columnIndex: Y,
                             newValue: Y
@@ -95,11 +95,11 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             ],
             where: and(th.transactionType.equals(TransactionType.LOCAL), or(...repositoryEquals)),
             // orderBy: [
-            // 	rth.repository.id.asc()
+            // 	rth.repository._localId.asc()
             // ]
         });
         for (const repoTransHistory of repoTransHistories) {
-            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository.id)
+            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
                 .push(repoTransHistory);
             repoTransHistory.operationHistory.sort((rth1, rth2) => {
                 if (rth1.orderNumber < rth2.orderNumber) {
@@ -120,7 +120,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             set: {
                 syncTimestamp: repositoryTransactionHistory.syncTimestamp
             },
-            where: rth.id.equals(repositoryTransactionHistory.id)
+            where: rth._localId.equals(repositoryTransactionHistory._localId)
         });
     }
 };

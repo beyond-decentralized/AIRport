@@ -38,7 +38,7 @@ __decorate([
 ], Application.prototype, "signature", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'DOMAIN_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({ name: 'DOMAIN_LID', referencedColumnName: 'DOMAIN_LID', nullable: false })
 ], Application.prototype, "domain", void 0);
 __decorate([
     OneToMany({ mappedBy: 'application' })

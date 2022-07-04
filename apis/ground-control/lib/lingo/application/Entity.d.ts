@@ -51,7 +51,7 @@ export interface JsonApplicationEntity extends ApplicationReferenceByIndex<Appli
  * Application Entity with additional indexes (maps).
  */
 export interface DbEntity extends ApplicationReferenceByIndex<ApplicationEntity_TableIndex>, DatabaseObject {
-    id: ApplicationEntity_LocalId;
+    _localId: ApplicationEntity_LocalId;
     /**
      * Map of all columns in the entity by name.
      */

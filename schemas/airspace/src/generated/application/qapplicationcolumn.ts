@@ -116,7 +116,7 @@ export interface ApplicationColumnESelect
 export interface ApplicationColumnEId
     extends VersionedApplicationObjectEId {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -127,7 +127,7 @@ export interface ApplicationColumnEId
  */
 export interface ApplicationColumnEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -186,9 +186,9 @@ export interface ApplicationColumnGraph
 export interface ApplicationColumnEUpdateColumns
 	extends VersionedApplicationObjectEUpdateColumns {
 	// Non-Id Columns
-	DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-	REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-	SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+	DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+	REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+	SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
 	COLUMN_INDEX?: number | IQNumberField;
 	ID_INDEX?: number | IQNumberField;
 	IS_GENERATED?: boolean | IQBooleanField;
@@ -198,7 +198,7 @@ export interface ApplicationColumnEUpdateColumns
 	PRECISION?: number | IQNumberField;
 	SCALE?: number | IQNumberField;
 	TYPE?: string | IQStringField;
-	APPLICATION_ENTITY_ID?: number | IQNumberField;
+	APPLICATION_ENTITY_LID?: number | IQNumberField;
 
 }
 
@@ -229,7 +229,7 @@ extends ApplicationColumnEId, ApplicationColumnEUpdateColumns {
 export interface QApplicationColumn extends QVersionedApplicationObject
 {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -258,7 +258,7 @@ export interface QApplicationColumnQId extends QVersionedApplicationObjectQId
 {
 	
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 

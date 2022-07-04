@@ -15,13 +15,13 @@ export interface ApplicationOperationESelect extends VersionedApplicationObjectE
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationOperationEId extends VersionedApplicationObjectEId {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationOperationEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -45,13 +45,13 @@ export interface ApplicationOperationGraph extends ApplicationOperationEOptional
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationOperationEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     TYPE?: number | IQNumberField;
     NAME?: string | IQStringField;
     RULE?: string | IQStringField;
-    APPLICATION_ENTITY_ID?: number | IQNumberField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -64,17 +64,17 @@ export interface ApplicationOperationECreateProperties extends Partial<Applicati
 export interface ApplicationOperationECreateColumns extends ApplicationOperationEId, ApplicationOperationEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationOperation extends QVersionedApplicationObject {
-    id: IQNumberField;
+    _localId: IQNumberField;
     type: IQNumberField;
     name: IQStringField;
     rule: IQStringField;
     entity: QApplicationEntityQRelation;
 }
 export interface QApplicationOperationQId extends QVersionedApplicationObjectQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationOperationQRelation extends QVersionedApplicationObjectQRelation<QApplicationOperation>, QApplicationOperationQId {
 }

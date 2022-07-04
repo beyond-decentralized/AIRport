@@ -15,7 +15,10 @@ __decorate([
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: "REPOSITORY_ID", referencedColumnName: "ID" })
+    JoinColumn({
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID'
+    })
 ], RepositoryApplication.prototype, "repository", void 0);
 RepositoryApplication = __decorate([
     Entity(),

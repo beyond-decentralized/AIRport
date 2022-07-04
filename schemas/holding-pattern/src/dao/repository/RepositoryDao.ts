@@ -93,12 +93,12 @@ export class RepositoryDao
 		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
-		const id = Y
+		const _localId = Y
 		return await this.db.find.tree({
 			select: {
-				id,
+				_localId,
 				owner: {
-					id
+					_localId
 				},
 				createdAt: Y,
 				uuId: Y
@@ -106,7 +106,7 @@ export class RepositoryDao
 			from: [
 				r = Q.Repository
 			],
-			where: r.id.in(repositoryIds)
+			where: r._localId.in(repositoryIds)
 		})
 	}
 
@@ -124,7 +124,7 @@ export class RepositoryDao
 				r.owner.innerJoin()
 			],
 			where:
-				r.id.in(repositoryIds)
+				r._localId.in(repositoryIds)
 		})
 	}
 
@@ -150,10 +150,10 @@ export class RepositoryDao
 		for (const repository of repositories) {
 			values.push([
 				repository.createdAt, repository.GUID, repository.ageSuitability,
-				repository.source, repository.immutable, repository.owner.id,
+				repository.source, repository.immutable, repository.owner._localId,
 			])
 		}
-		const ids = await this.db.insertValuesGenerateIds({
+		const _localIds = await this.db.insertValuesGenerateIds({
 			insertInto: r = Q.Repository,
 			columns: [
 				r.createdAt,
@@ -161,13 +161,13 @@ export class RepositoryDao
 				r.ageSuitability,
 				r.source,
 				r.immutable,
-				r.owner.id
+				r.owner._localId
 			],
 			values
 		}, context)
 		for (let i = 0; i < repositories.length; i++) {
 			let repository = repositories[i]
-			repository._localId = ids[i][0]
+			repository._localId = _localIds[i][0]
 		}
 	}
 

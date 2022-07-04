@@ -14,22 +14,25 @@ let RecordHistory = class RecordHistory {
 __decorate([
     Id(),
     GeneratedValue(),
-    SequenceGenerator({ allocationSize: 2000 })
-], RecordHistory.prototype, "id", void 0);
+    SequenceGenerator({ allocationSize: 2000 }),
+    Column({ name: 'RECORD_HISTORY_LID' })
+], RecordHistory.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'ACTOR_RECORD_ID', nullable: false }),
     DbNumber()
-], RecordHistory.prototype, "actorRecordId", void 0);
+], RecordHistory.prototype, "_actorRecordId", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'ACTOR_ID', referencedColumnName: 'ID', nullable: false
+        name: 'ACTOR_LID',
+        referencedColumnName: 'ACTOR_LID', nullable: false
     })
 ], RecordHistory.prototype, "actor", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'REPOSITORY_OPERATION_HISTORY_ID', referencedColumnName: 'ID',
+        name: 'OPERATION_HISTORY_LID',
+        referencedColumnName: 'OPERATION_HISTORY_LID',
         nullable: false
     })
 ], RecordHistory.prototype, "operationHistory", void 0);
@@ -49,7 +52,7 @@ RecordHistory = __decorate([
         indexes: [{
                 name: 'RCRD_HSTR_TO_OPRTN_HSTR_FX',
                 columnList: [
-                    'REPOSITORY_OPERATION_HISTORY_ID'
+                    'REPOSITORY_OPERATION_HISTORY_LID'
                 ],
                 unique: false
             }]

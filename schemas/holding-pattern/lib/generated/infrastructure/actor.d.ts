@@ -1,7 +1,7 @@
 import { IUser, ITerminal, IClient } from '@airport/travel-document-checkpoint';
 import { IApplication } from '@airport/airspace';
 export interface IActor {
-    id?: number;
+    _localId?: number;
     GUID?: string;
     user?: IUser;
     terminal?: ITerminal;

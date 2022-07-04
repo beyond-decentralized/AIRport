@@ -6,11 +6,11 @@ import { RecordHistoryOldValue } from './RecordHistoryOldValue';
 /**
  * Entity Changes are always local-only, so a sequence for id will do.
  */
-export declare type RecordHistoryId = number;
-export declare type RecordHistoryActorRecordId = number;
+export declare type RecordHistory_LocalId = number;
+export declare type RecordHistory_ActorRecordId = number;
 export declare class RecordHistory {
-    id: RecordHistoryId;
-    actorRecordId: RecordHistoryActorRecordId;
+    _localId: RecordHistory_LocalId;
+    _actorRecordId: RecordHistory_ActorRecordId;
     actor: Actor;
     operationHistory: OperationHistory;
     newValues: RecordHistoryNewValue[];

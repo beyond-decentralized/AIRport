@@ -8,11 +8,11 @@ import { Inject, Injected } from '@airport/direction-indicator';
 import { RecordHistory } from '../../ddl/ddl';
 import { BaseRecordHistoryDuo, } from '../../generated/generated';
 let RecordHistoryDuo = class RecordHistoryDuo extends BaseRecordHistoryDuo {
-    getNewRecord(actorId, actorRecordId) {
+    getNewRecord(actorId, _actorRecordId) {
         const recordHistory = new RecordHistory();
-        recordHistory.actorRecordId = actorRecordId;
+        recordHistory._actorRecordId = _actorRecordId;
         recordHistory.actor = {
-            id: actorId
+            _localId: actorId
         };
         return recordHistory;
     }

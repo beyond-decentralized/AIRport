@@ -1,4 +1,4 @@
-import { ApplicationVersionId, ApplicationVersionInteger, ApplicationVersionMajor, ApplicationVersionMinor, ApplicationVersionPatch, ApplicationVersionString } from '@airport/ground-control';
+import { ApplicationVersion_LocalId, ApplicationVersion_IntegerVersion, ApplicationVersion_MajorVersion, ApplicationVersion_MinorVersion, ApplicationVersion_PatchVersion, ApplicationVersion_VersionString } from '@airport/ground-control';
 import { Application } from './Application';
 import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationReference } from './ApplicationReference';
@@ -6,12 +6,12 @@ import { IApplicationEntity } from '../../generated/application/applicationentit
 import { IApplicationReference } from '../../generated/application/applicationreference';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 export declare class ApplicationVersion {
-    id: ApplicationVersionId;
-    integerVersion: ApplicationVersionInteger;
-    versionString: ApplicationVersionString;
-    majorVersion: ApplicationVersionMajor;
-    minorVersion: ApplicationVersionMinor;
-    patchVersion: ApplicationVersionPatch;
+    _localId: ApplicationVersion_LocalId;
+    integerVersion: ApplicationVersion_IntegerVersion;
+    versionString: ApplicationVersion_VersionString;
+    majorVersion: ApplicationVersion_MajorVersion;
+    minorVersion: ApplicationVersion_MinorVersion;
+    patchVersion: ApplicationVersion_PatchVersion;
     jsonApplication: JsonApplicationWithLastIds;
     application: Application;
     entities: ApplicationEntity[];
@@ -21,10 +21,10 @@ export declare class ApplicationVersion {
         [entityName: string]: IApplicationEntity;
     };
     referencesMapByName?: {
-        [fullApplicationName: string]: IApplicationReference;
+        [fullApplication_Name: string]: IApplicationReference;
     };
     referencedByMapByName?: {
-        [fullApplicationName: string]: IApplicationReference;
+        [fullApplication_Name: string]: IApplicationReference;
     };
 }
 //# sourceMappingURL=ApplicationVersion.d.ts.map

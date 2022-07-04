@@ -41,9 +41,9 @@ export interface ApplicationReferenceGraph extends ApplicationReferenceEOptional
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationReferenceEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     APPLICATION_REFERENCE_INDEX?: number | IQNumberField;
 }
 /**
@@ -57,7 +57,7 @@ export interface ApplicationReferenceECreateProperties extends Partial<Applicati
 export interface ApplicationReferenceECreateColumns extends ApplicationReferenceEId, ApplicationReferenceEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationReference extends QVersionedApplicationObject {
     ownApplicationVersion: QApplicationVersionQRelation;

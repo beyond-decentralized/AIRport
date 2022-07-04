@@ -25,13 +25,13 @@ export interface ApplicationColumnESelect extends VersionedApplicationObjectESel
  * DELETE - Ids fields and relations only (required).
  */
 export interface ApplicationColumnEId extends VersionedApplicationObjectEId {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface ApplicationColumnEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -70,9 +70,9 @@ export interface ApplicationColumnGraph extends ApplicationColumnEOptionalId, Ve
  * UPDATE - non-id columns (optional).
  */
 export interface ApplicationColumnEUpdateColumns extends VersionedApplicationObjectEUpdateColumns {
-    DEPRECATED_SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
-    REMOVED_IN_APPLICATION_VERSION_ID?: number | IQNumberField;
-    SINCE_APPLICATION_VERSION_ID?: number | IQNumberField;
+    DEPRECATED_SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
+    REMOVED_IN_APPLICATION_VERSION_LID?: number | IQNumberField;
+    SINCE_APPLICATION_VERSION_LID?: number | IQNumberField;
     COLUMN_INDEX?: number | IQNumberField;
     ID_INDEX?: number | IQNumberField;
     IS_GENERATED?: boolean | IQBooleanField;
@@ -82,7 +82,7 @@ export interface ApplicationColumnEUpdateColumns extends VersionedApplicationObj
     PRECISION?: number | IQNumberField;
     SCALE?: number | IQNumberField;
     TYPE?: string | IQStringField;
-    APPLICATION_ENTITY_ID?: number | IQNumberField;
+    APPLICATION_ENTITY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -95,10 +95,10 @@ export interface ApplicationColumnECreateProperties extends Partial<ApplicationC
 export interface ApplicationColumnECreateColumns extends ApplicationColumnEId, ApplicationColumnEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QApplicationColumn extends QVersionedApplicationObject {
-    id: IQNumberField;
+    _localId: IQNumberField;
     index: IQNumberField;
     idIndex: IQNumberField;
     isGenerated: IQBooleanField;
@@ -114,7 +114,7 @@ export interface QApplicationColumn extends QVersionedApplicationObject {
     oneRelationColumns: IQOneToManyRelation<QApplicationRelationColumn>;
 }
 export interface QApplicationColumnQId extends QVersionedApplicationObjectQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QApplicationColumnQRelation extends QVersionedApplicationObjectQRelation<QApplicationColumn>, QApplicationColumnQId {
 }

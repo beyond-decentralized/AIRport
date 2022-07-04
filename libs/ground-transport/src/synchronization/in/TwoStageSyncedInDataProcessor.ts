@@ -6,12 +6,12 @@ import {
 	TransactionType
 } from '@airport/ground-control'
 import {
-	Actor_Id,
+	Actor_LocalId,
 	IActor,
 	IRepositoryTransactionHistory,
 	IRepositoryTransactionHistoryDuo,
 	RepositoryTransactionType,
-	Repository_Id
+	Repository_LocalId
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import {
 	ISynchronizationConflict,
@@ -123,10 +123,10 @@ export class TwoStageSyncedInDataProcessor
 		messages: RepositorySynchronizationMessage[]
 	): Promise<{
 		actorMapById: Map<number, IActor>
-		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
+		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>
 	}> {
-		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, IRepositoryTransactionHistory[]>
+		const repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, IRepositoryTransactionHistory[]>
 			= new Map()
 		const applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication> = new Map()
 		const actorMapById: Map<number, IActor> = new Map()
@@ -155,8 +155,8 @@ export class TwoStageSyncedInDataProcessor
 	}
 
 	private async updateLocalData(
-		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_Id, ISyncRepoTransHistory[]>,
-		actorMayById: Map<Actor_Id, IActor>,
+		repositoryTransactionHistoryMapByRepositoryId: Map<Repository_LocalId, ISyncRepoTransHistory[]>,
+		actorMayById: Map<Actor_LocalId, IActor>,
 		applicationsByApplicationVersion_LocalIdMap: Map<ApplicationVersion_LocalId, IApplication>,
 		context: IContext
 	): Promise<void> {

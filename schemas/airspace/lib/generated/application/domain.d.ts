@@ -1,6 +1,6 @@
 import { IApplication } from './application';
 export interface IDomain {
-    id: number;
+    _localId: number;
     name?: string;
     applications?: IApplication[];
 }

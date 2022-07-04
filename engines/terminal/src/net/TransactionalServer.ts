@@ -10,7 +10,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, IAirEntity, Repository_Id } from '@airport/holding-pattern';
+import { Actor, IActor, IAirEntity, Repository_LocalId } from '@airport/holding-pattern';
 import {
 	ICredentials,
 	IOperationContext,
@@ -99,7 +99,7 @@ export class TransactionalServer
 	async addRepository(
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
-	): Promise<Repository_Id> {
+	): Promise<Repository_LocalId> {
 		if (context.transaction || credentials.transactionId) {
 			this.transactionManager.getTransactionFromContextOrCredentials(
 				credentials, context)
@@ -308,7 +308,7 @@ export class TransactionalServer
 		return numInsertedRecords
 	}
 
-	async insertValuesGetIds(
+	async insertValuesGetLocalIds(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
 		context: IOperationContext & ITransactionContext
@@ -320,16 +320,16 @@ export class TransactionalServer
 
 		const actor = await this.getActor(credentials)
 
-		let ids
+		let _localIds
 		await this.transactionManager.transactInternal(async (
 			transaction: ITransaction,
 			context: IOperationContext & ITransactionContext
 		) => {
-			ids = await this.insertManager.insertValuesGetIds(
+			_localIds = await this.insertManager.insertValuesGetLocalIds(
 				portableQuery, actor, transaction, context.rootTransaction, context);
 		}, context)
 
-		return ids
+		return _localIds
 	}
 
 	async updateValues(

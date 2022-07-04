@@ -3,7 +3,7 @@ import { IActor } from '../infrastructure/actor';
 import { IRepositoryTransactionHistory } from './repositorytransactionhistory';
 import { IRecordHistory } from './recordhistory';
 export interface IOperationHistory {
-    id: number;
+    _localId: number;
     orderNumber?: number;
     changeType?: string;
     systemWideOperationId?: number;

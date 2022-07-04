@@ -16,13 +16,13 @@ export interface SynchronizationConflictESelect extends IEntitySelectProperties,
  * DELETE - Ids fields and relations only (required).
  */
 export interface SynchronizationConflictEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface SynchronizationConflictEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -51,9 +51,9 @@ export interface SynchronizationConflictGraph extends SynchronizationConflictEOp
 export interface SynchronizationConflictEUpdateColumns extends IEntityUpdateColumns {
     TYPE?: string | IQStringField;
     ACKNOWLEDGED?: boolean | IQBooleanField;
-    REPOSITORY_ID?: number | IQNumberField;
-    OVERWRITTEN_RECORD_HISTORY_ID?: number | IQNumberField;
-    OVERWRITING_RECORD_HISTORY_ID?: number | IQNumberField;
+    REPOSITORY_LID?: number | IQNumberField;
+    OVERWRITTEN_RECORD_HISTORY_LID?: number | IQNumberField;
+    OVERWRITING_RECORD_HISTORY_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -66,10 +66,10 @@ export interface SynchronizationConflictECreateProperties extends Partial<Synchr
 export interface SynchronizationConflictECreateColumns extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QSynchronizationConflict extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     type: IQStringField;
     acknowledged: IQBooleanField;
     repository: QRepositoryQRelation;
@@ -78,7 +78,7 @@ export interface QSynchronizationConflict extends IQEntity {
     values: IQOneToManyRelation<QSynchronizationConflictValues>;
 }
 export interface QSynchronizationConflictQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QSynchronizationConflictQRelation extends IQRelation<QSynchronizationConflict>, QSynchronizationConflictQId {
 }

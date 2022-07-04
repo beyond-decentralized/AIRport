@@ -14,9 +14,9 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
             values.push([
                 synchronizationConflict.type,
                 synchronizationConflict.acknowledged,
-                synchronizationConflict.repository.id,
-                synchronizationConflict.overwrittenRecordHistory.id,
-                synchronizationConflict.overwritingRecordHistory.id
+                synchronizationConflict.repository._localId,
+                synchronizationConflict.overwrittenRecordHistory._localId,
+                synchronizationConflict.overwritingRecordHistory._localId
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
@@ -24,15 +24,15 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
             columns: [
                 sc.type,
                 sc.acknowledged,
-                sc.repository.id,
-                sc.overwrittenRecordHistory.id,
-                sc.overwritingRecordHistory.id
+                sc.repository._localId,
+                sc.overwrittenRecordHistory._localId,
+                sc.overwritingRecordHistory._localId
             ],
             values
         }, context);
         for (let i = 0; i < synchronizationConflicts.length; i++) {
             let synchronizationConflict = synchronizationConflicts[i];
-            synchronizationConflict.id = ids[i][0];
+            synchronizationConflict._localId = ids[i][0];
         }
     }
 };

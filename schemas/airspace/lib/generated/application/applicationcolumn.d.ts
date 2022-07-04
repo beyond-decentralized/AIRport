@@ -3,7 +3,7 @@ import { IApplicationEntity } from './applicationentity';
 import { IApplicationPropertyColumn } from './applicationpropertycolumn';
 import { IApplicationRelationColumn } from './applicationrelationcolumn';
 export interface IApplicationColumn extends IVersionedApplicationObject {
-    id: number;
+    _localId: number;
     index?: number;
     idIndex?: number;
     isGenerated?: boolean;

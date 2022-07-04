@@ -46,7 +46,7 @@ export interface ClassificationECreateProperties extends Partial<ClassificationE
 export interface ClassificationECreateColumns extends ClassificationEId, ClassificationEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QClassification extends IQEntity {
     id: IQNumberField;

@@ -3,7 +3,7 @@ import { ICountry } from './locality/country';
 import { IState } from './locality/state';
 import { IMetroArea } from './locality/metroarea';
 export interface IUser {
-    id?: number;
+    _localId?: number;
     origin?: string;
     originId?: string;
     email?: string;

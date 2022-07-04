@@ -16,8 +16,9 @@ let OperationHistory = class OperationHistory {
 __decorate([
     GeneratedValue(),
     SequenceGenerator({ allocationSize: 600 }),
-    Id()
-], OperationHistory.prototype, "id", void 0);
+    Id(),
+    Column({ name: 'OPERATION_HISTORY_LID' })
+], OperationHistory.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'ORDER_NUMBER', nullable: false }),
     DbNumber()
@@ -27,24 +28,29 @@ __decorate([
     DbString()
 ], OperationHistory.prototype, "changeType", void 0);
 __decorate([
-    Column({ name: 'SYSTEM_WIDE_OPERATION_ID', nullable: false }),
+    Column({ name: 'SYSTEM_WIDE_OPERATION_LID', nullable: false }),
     DbNumber()
 ], OperationHistory.prototype, "systemWideOperationId", void 0);
 __decorate([
     ManyToOne(),
-    JoinColumn({ name: 'ENTITY_ID', referencedColumnName: 'ID', nullable: false })
+    JoinColumn({
+        name: 'APPLICATION_ENTITY_LID',
+        referencedColumnName: 'APPLICATION_ENTITY_LID', nullable: false
+    })
 ], OperationHistory.prototype, "entity", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'ACTOR_ID', referencedColumnName: 'ID',
+        name: 'ACTOR_LID',
+        referencedColumnName: 'ACTOR_LID',
         nullable: false
     })
 ], OperationHistory.prototype, "actor", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'REPOSITORY_TRANSACTION_HISTORY_ID', referencedColumnName: 'ID',
+        name: 'REPOSITORY_TRANSACTION_HISTORY_LID',
+        referencedColumnName: 'REPOSITORY_TRANSACTION_HISTORY_LID',
         nullable: false
     })
 ], OperationHistory.prototype, "repositoryTransactionHistory", void 0);

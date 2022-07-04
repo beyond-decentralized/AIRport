@@ -171,7 +171,7 @@ export interface ApplicationEUpdateColumns
 	FULL_APPLICATION_NAME?: string | IQStringField;
 	STATUS?: string | IQStringField;
 	SIGNATURE?: string | IQStringField;
-	DOMAIN_ID?: number | IQNumberField;
+	DOMAIN_LID?: number | IQNumberField;
 
 }
 

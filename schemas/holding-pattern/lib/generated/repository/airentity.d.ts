@@ -1,7 +1,7 @@
 import { IRepository } from './repository';
 import { IActor } from '../infrastructure/actor';
 export interface IAirEntity {
-    actorRecordId?: number;
+    _actorRecordId?: number;
     repository: IRepository;
     actor: IActor;
     ageSuitability?: number;

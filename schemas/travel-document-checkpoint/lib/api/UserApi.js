@@ -27,7 +27,7 @@ let UserApi = class UserApi {
             }
         }
         const user = {
-            id: null,
+            _localId: null,
             GUID: uuidv4(),
             username
         };

@@ -8,14 +8,14 @@ import {
 	ICountry,
 } from '../locality/country';
 import {
-	ITerminalType,
-} from './terminaltype';
-import {
 	IState,
 } from '../locality/state';
 import {
 	IMetroArea,
 } from '../locality/metroarea';
+import {
+	ITerminalType,
+} from './terminaltype';
 
 
 
@@ -26,7 +26,7 @@ import {
 export interface ITerminal {
 	
 	// Id Properties
-	id: number;
+	_localId: number;
 
 	// Id Relations
 
@@ -38,9 +38,9 @@ export interface ITerminal {
 	owner?: IUser;
 	continent?: IContinent;
 	country?: ICountry;
-	terminalTypes?: ITerminalType[];
 	state?: IState;
 	metroArea?: IMetroArea;
+	terminalTypes?: ITerminalType[];
 
 	// Transient Properties
 

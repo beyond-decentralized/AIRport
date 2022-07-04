@@ -10,12 +10,18 @@ let TypeClassification = class TypeClassification {
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'CLASSIFICATION_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'CLASSIFICATION_ID',
+        referencedColumnName: 'CLASSIFICATION_ID'
+    })
 ], TypeClassification.prototype, "classification", void 0);
 __decorate([
     Id(),
     ManyToOne(),
-    JoinColumn({ name: 'TYPE_ID', referencedColumnName: 'ID' })
+    JoinColumn({
+        name: 'TYPE_ID',
+        referencedColumnName: 'TYPE_ID'
+    })
 ], TypeClassification.prototype, "type", void 0);
 TypeClassification = __decorate([
     Entity(),

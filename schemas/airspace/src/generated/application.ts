@@ -82,7 +82,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_RELATION_COLUMN_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -250,7 +250,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -460,7 +460,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_RELATION_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -590,7 +590,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "APPLICATION_TABLE_LID",
+							"name": "APPLICATION_ENTITY_LID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -613,7 +613,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "RELATION_APPLICATION_TABLE_LID",
+							"name": "RELATION_APPLICATION_ENTITY_LID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -667,7 +667,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -937,7 +937,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_PROPERTY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1056,7 +1056,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -1494,7 +1494,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_COLUMN_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1697,7 +1697,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -1978,7 +1978,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_OPERATION_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2097,7 +2097,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -2257,7 +2257,7 @@ export const APPLICATION = {
 							"index": 3,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_ENTITY_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2404,7 +2404,7 @@ export const APPLICATION = {
 							},
 							"index": 3,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -2884,7 +2884,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "APPLICATION_VERSION_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -3018,7 +3018,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{
@@ -3554,7 +3554,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "LID",
+							"name": "DOMAIN_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -3595,7 +3595,7 @@ export const APPLICATION = {
 							},
 							"index": 0,
 							"isId": true,
-							"name": "id",
+							"name": "_localId",
 							"sinceVersion": 1
 						},
 						{

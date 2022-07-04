@@ -10,20 +10,20 @@ import { BaseActorDao, Q } from '../../generated/generated';
 import { Injected } from '@airport/direction-indicator';
 let ActorDao = class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.in(actorIds));
     }
     async findMapsWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds, actorMap, actorMapById) {
         const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds);
         for (const actor of actors) {
-            ensureChildJsMap(actorMap, actor.user.id)
-                .set(actor.terminal.id, actor);
-            actorMapById.set(actor.id, actor);
+            ensureChildJsMap(actorMap, actor.user._localId)
+                .set(actor.terminal._localId, actor);
+            actorMapById.set(actor._localId, actor);
         }
     }
     async findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.GUID.in(actorGUIDs), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.GUID.in(actorGUIDs), a.terminal._localId.in(terminalIds), a.user._localId.in(userIds)));
     }
-    async findByDomainAndApplicationNames(domainName, applicationName) {
+    async findByDomainAndApplication_Names(domainName, applicationName) {
         let act;
         let application;
         let domain;
@@ -31,7 +31,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         let user;
         return await this.db.find.tree({
             select: {
-                id: Y,
+                _localId: Y,
                 application: {
                     ...ALL_FIELDS,
                     domain: {}
@@ -65,22 +65,23 @@ let ActorDao = class ActorDao extends BaseActorDao {
         const values = [];
         for (const actor of actors) {
             values.push([
-                actor.GUID, actor.application.index, actor.user.id, actor.terminal.id,
+                actor.GUID, actor.application.index,
+                actor.user._localId, actor.terminal._localId
             ]);
         }
-        const ids = await this.db.insertValuesGenerateIds({
+        const _localIds = await this.db.insertValuesGenerateIds({
             insertInto: a = Q.Actor,
             columns: [
                 a.GUID,
                 a.application.index,
-                a.user.id,
-                a.terminal.id
+                a.user._localId,
+                a.terminal._localId
             ],
             values
         }, context);
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
-            actor.id = ids[i][0];
+            actor._localId = _localIds[i][0];
         }
     }
     async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {

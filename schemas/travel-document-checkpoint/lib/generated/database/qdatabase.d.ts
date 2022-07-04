@@ -20,13 +20,13 @@ export interface DatabaseESelect extends IEntitySelectProperties, DatabaseEOptio
  * DELETE - Ids fields and relations only (required).
  */
 export interface DatabaseEId extends IEntityIdProperties {
-    id: number | IQNumberField;
+    _localId: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
 export interface DatabaseEOptionalId {
-    id?: number | IQNumberField;
+    _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
@@ -55,8 +55,8 @@ export interface DatabaseGraph extends DatabaseEOptionalId, IEntityCascadeGraph 
  * UPDATE - non-id columns (optional).
  */
 export interface DatabaseEUpdateColumns extends IEntityUpdateColumns {
-    DOMAIN?: string | IQStringField;
-    GUID?: string | IQStringField;
+    DATABASE_DOMAIN?: string | IQStringField;
+    DATABASE_GUID?: string | IQStringField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -73,10 +73,10 @@ export interface DatabaseECreateProperties extends Partial<DatabaseEId>, Databas
 export interface DatabaseECreateColumns extends DatabaseEId, DatabaseEUpdateColumns {
 }
 /**
- * Query Entity Query Definition (used for Q.EntityName).
+ * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
 export interface QDatabase extends IQEntity {
-    id: IQNumberField;
+    _localId: IQNumberField;
     domain: IQStringField;
     GUID: IQStringField;
     continent: QContinentQRelation;
@@ -86,7 +86,7 @@ export interface QDatabase extends IQEntity {
     databaseTypes: IQOneToManyRelation<QDatabaseType>;
 }
 export interface QDatabaseQId {
-    id: IQNumberField;
+    _localId: IQNumberField;
 }
 export interface QDatabaseQRelation extends IQRelation<QDatabase>, QDatabaseQId {
 }

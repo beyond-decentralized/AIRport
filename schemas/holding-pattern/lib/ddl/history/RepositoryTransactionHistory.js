@@ -13,7 +13,7 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
         if (!data) {
             return;
         }
-        this.id = data.id;
+        this._localId = data._localId;
         this.transactionHistory = data.transactionHistory;
         this.repository = data.repository;
         this.saveTimestamp = data.saveTimestamp;
@@ -23,8 +23,9 @@ let RepositoryTransactionHistory = class RepositoryTransactionHistory {
 __decorate([
     GeneratedValue(),
     Id(),
-    SequenceGenerator({ allocationSize: 200 })
-], RepositoryTransactionHistory.prototype, "id", void 0);
+    SequenceGenerator({ allocationSize: 200 }),
+    Column({ name: 'REPOSITORY_TRANSACTION_HISTORY_LID' })
+], RepositoryTransactionHistory.prototype, "_localId", void 0);
 __decorate([
     Column({ name: 'REPOSITORY_TRANSACTION_TYPE', nullable: false }),
     DbString()
@@ -48,15 +49,15 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'REPOSITORY_ID',
-        referencedColumnName: 'ID', nullable: false
+        name: 'REPOSITORY_LID',
+        referencedColumnName: 'REPOSITORY_LID', nullable: false
     })
 ], RepositoryTransactionHistory.prototype, "repository", void 0);
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'TRANSACTION_HISTORY_ID',
-        referencedColumnName: 'ID', nullable: false
+        name: 'TRANSACTION_HISTORY_LID',
+        referencedColumnName: 'TRANSACTION_HISTORY_LID', nullable: false
     })
 ], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
 __decorate([

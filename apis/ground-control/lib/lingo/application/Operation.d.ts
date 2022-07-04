@@ -6,7 +6,7 @@
  */
 import { IApplicationQuery } from '../query/PortableQuery';
 import { DbEntity } from './Entity';
-export declare type Operation_Id = number;
+export declare type Operation_LocalId = number;
 export declare type Operation_Name = string;
 export declare type Operation_Rule = string;
 export declare type Operation_Type = number;
@@ -76,7 +76,7 @@ export interface JsonFunctionCall {
     parameters: number[];
 }
 export interface DbOperation {
-    id: Operation_Id;
+    _localId: Operation_LocalId;
     name: Operation_Name;
     rule: Operation_Rule;
     type: Operation_Type;

@@ -45,7 +45,7 @@ export interface IInitConnectionIMI extends IIsolateMessage {
     jsonApplication: JsonApplicationWithLastIds;
 }
 export interface IConnectionInitializedIMI extends IIsolateMessage {
-    fullApplicationName: string;
+    fullApplication_Name: string;
 }
 export interface IInitConnectionIMO extends IIsolateMessageOut<LastIds> {
 }
@@ -96,8 +96,8 @@ export interface ISaveToDestinationIMI<E, T = E | E[]> extends IApiIMI, IIsolate
     entity: T;
     repositoryDestination: string;
 }
-export interface IGetLatestApplicationVersionByApplicationNameIMI extends IIsolateMessage {
-    fullApplicationName: string;
+export interface IGetLatestApplicationVersionByApplication_NameIMI extends IIsolateMessage {
+    fullApplication_Name: string;
 }
 export interface IRetrieveDomainIMI extends IIsolateMessage {
     domainName: string;

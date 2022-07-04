@@ -11,7 +11,7 @@ import {
 import {
 	IActor,
 	IRepository,
-	RecordHistoryActorRecordId
+	RecordHistory_ActorRecordId
 } from '@airport/holding-pattern'
 import {
 	IApplicationColumn,
@@ -67,7 +67,7 @@ export class RecordUpdateStage {
 
 	@Column({ name: 'ACTOR_RECORD_ID' })
 	@DbNumber()
-	_actorRecordId: RecordHistoryActorRecordId
+	_actorRecordId: RecordHistory_ActorRecordId
 
 	@ManyToOne()
 	// FIXME: verify that these records don't make it into serialized

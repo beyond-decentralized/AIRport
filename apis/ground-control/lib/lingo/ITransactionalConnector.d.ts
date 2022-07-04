@@ -10,19 +10,19 @@ export interface IRootTransaction {
     numberOfOperations: number;
 }
 export interface IUser {
-    id?: number;
+    _localId?: number;
     email?: string;
     passwordHash?: string;
     username?: string;
     GUID?: string;
 }
 export interface IActor {
-    id?: number;
+    _localId?: number;
     GUID?: string;
     user?: IUser;
 }
 export interface IRepository {
-    id: number;
+    _localId: number;
     ageSuitability?: number;
     createdAt?: Date;
     immutable?: boolean;
@@ -52,7 +52,7 @@ export interface ITransactionalConnector {
     save<E extends IAirEntity, T = E | E[]>(entity: T, context?: IContext): Promise<ISaveResult>;
     saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, context?: IContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, context?: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, context?: IContext): Promise<number[][] | string[][]>;
+    insertValuesGetLocalIds(portableQuery: PortableQuery, context?: IContext): Promise<number[][] | string[][]>;
     updateValues(portableQuery: PortableQuery, context?: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, context?: IContext): Promise<number>;
     onMessage(callback: (message: any) => void): any;

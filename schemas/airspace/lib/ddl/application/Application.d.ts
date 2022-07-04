@@ -1,13 +1,13 @@
-import { ApplicationIndex, FullApplicationName, ApplicationScope, ApplicationStatus, ApplicationName } from '@airport/ground-control';
+import { Application_Index, FullApplication_Name, Application_Scope, ApplicationStatus, Application_Name } from '@airport/ground-control';
 import { Domain } from './Domain';
 import { ApplicationCurrentVersion } from './ApplicationCurrentVersion';
 import { ApplicationVersion } from './ApplicationVersion';
 export declare class Application {
-    index: ApplicationIndex;
+    index: Application_Index;
     GUID: string;
-    scope: ApplicationScope;
-    name: ApplicationName;
-    fullName: FullApplicationName;
+    scope: Application_Scope;
+    name: Application_Name;
+    fullName: FullApplication_Name;
     status: ApplicationStatus;
     signature: string;
     domain: Domain;
