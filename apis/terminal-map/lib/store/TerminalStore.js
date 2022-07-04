@@ -14,10 +14,10 @@ let TerminalStore = class TerminalStore {
         this.getTerminalState = this.selectorManager.createRootSelector(this.state);
         this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
         this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
-        this.getApplicationActorMapByDomainAndApplicationNames = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByDomainAndApplicationNames = new Map();
+        this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsByDomainAndApplication_Names = new Map();
             for (const applicationActor of applicationActors) {
-                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplicationNames, applicationActor.application.domain.name);
+                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
                 let actorsForApplication = applicationActorMapForDomain
                     .get(applicationActor.application.name);
                 if (!actorsForApplication) {
@@ -26,7 +26,7 @@ let TerminalStore = class TerminalStore {
                 }
                 actorsForApplication.push(applicationActor);
             }
-            return applicationActorsByDomainAndApplicationNames;
+            return applicationActorsByDomainAndApplication_Names;
         });
         this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
         this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
@@ -49,45 +49,45 @@ let TerminalStore = class TerminalStore {
             }
             return latestApplicationVersionMapByNames;
         });
-        this.getLatestApplicationVersionMapByFullApplicationName = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
-            const latestApplicationVersionMapByFullApplicationName = new Map();
-            for (const applicationVersionsForDomainName of latestApplicationVersionMapByNames.values()) {
-                for (const applicationVersion of applicationVersionsForDomainName.values()) {
-                    latestApplicationVersionMapByFullApplicationName.set(applicationVersion.application.fullName, applicationVersion);
+        this.getLatestApplicationVersionMapByFullApplication_Name = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+            const latestApplicationVersionMapByFullApplication_Name = new Map();
+            for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
+                for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
+                    latestApplicationVersionMapByFullApplication_Name.set(applicationVersion.application.fullName, applicationVersion);
                 }
             }
-            return latestApplicationVersionMapByFullApplicationName;
+            return latestApplicationVersionMapByFullApplication_Name;
         });
         this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
             const allApplicationVersionsByIds = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
                     for (const applicationVersion of application.versions) {
-                        allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+                        allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
                     }
                 }
             }
             return allApplicationVersionsByIds;
         });
-        this.getLatestApplicationVersionsByApplicationIndexes = this.selectorManager.createSelector(this.getDomains, domains => {
-            const latestApplicationVersionsByApplicationIndexes = [];
+        this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionsByApplication_Indexes = [];
             for (const domain of domains) {
                 for (const application of domain.applications) {
-                    latestApplicationVersionsByApplicationIndexes[application.index]
+                    latestApplicationVersionsByApplication_Indexes[application.index]
                         = application.currentVersion[0].applicationVersion;
                 }
             }
-            return latestApplicationVersionsByApplicationIndexes;
+            return latestApplicationVersionsByApplication_Indexes;
         });
         this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
-        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplicationIndexes, latestApplicationVersionsByApplicationIndexes => {
+        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
             const allEntities = [];
-            for (const latestApplicationVersion of latestApplicationVersionsByApplicationIndexes) {
+            for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
                 if (!latestApplicationVersion) {
                     continue;
                 }
                 for (const entity of latestApplicationVersion.entities) {
-                    allEntities[entity.id] = entity;
+                    allEntities[entity._localId] = entity;
                 }
             }
             return allEntities;
@@ -99,7 +99,7 @@ let TerminalStore = class TerminalStore {
                     continue;
                 }
                 for (const column of entity.columns) {
-                    allColumns[column.id] = column;
+                    allColumns[column._localId] = column;
                 }
             }
             return allColumns;
@@ -111,7 +111,7 @@ let TerminalStore = class TerminalStore {
                     continue;
                 }
                 for (const relation of entity.relations) {
-                    allRelations[relation.id] = relation;
+                    allRelations[relation._localId] = relation;
                 }
             }
             return allRelations;

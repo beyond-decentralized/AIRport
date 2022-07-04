@@ -5,12 +5,12 @@ import type {
 } from "@airport/ground-control";
 import type {
     IActor,
-    RecordHistoryId
+    RecordHistory_LocalId
 } from "@airport/holding-pattern";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 
-export type RecordId = number;
+export type Record_LocalId = number;
 
 export interface IInsertManager {
 
@@ -18,7 +18,7 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
-		rootTransaction: IRootTransaction,
+        rootTransaction: IRootTransaction,
         context: IOperationContext,
         ensureGeneratedValues?: boolean
     ): Promise<number>;
@@ -27,8 +27,8 @@ export interface IInsertManager {
         portableQuery: PortableQuery,
         actor: IActor,
         transaction: ITransaction,
-		rootTransaction: IRootTransaction,
+        rootTransaction: IRootTransaction,
         context: IOperationContext,
-    ): Promise<RecordHistoryId[] | RecordId[][]>;
+    ): Promise<RecordHistory_LocalId[] | Record_LocalId[][]>;
 
 }

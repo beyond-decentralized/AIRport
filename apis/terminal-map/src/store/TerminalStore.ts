@@ -223,7 +223,7 @@ export class TerminalStore
 				for (const domain of domains) {
 					for (const application of domain.applications) {
 						for (const applicationVersion of application.versions) {
-							allApplicationVersionsByIds[applicationVersion.id] = applicationVersion;
+							allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
 						}
 					}
 				}
@@ -256,7 +256,7 @@ export class TerminalStore
 						continue;
 					}
 					for (const entity of latestApplicationVersion.entities) {
-						allEntities[entity.id] = entity;
+						allEntities[entity._localId] = entity;
 					}
 				}
 
@@ -272,7 +272,7 @@ export class TerminalStore
 						continue;
 					}
 					for (const column of entity.columns) {
-						allColumns[column.id] = column;
+						allColumns[column._localId] = column;
 					}
 				}
 
@@ -288,7 +288,7 @@ export class TerminalStore
 						continue;
 					}
 					for (const relation of entity.relations) {
-						allRelations[relation.id] = relation;
+						allRelations[relation._localId] = relation;
 					}
 				}
 

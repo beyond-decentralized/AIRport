@@ -30,7 +30,7 @@ import {
 	IInsertManager,
 	IOperationContext,
 	ITransaction,
-	RecordId,
+	Record_LocalId,
 } from '@airport/terminal-map'
 
 interface ColumnsToPopulate {
@@ -78,8 +78,8 @@ export class InsertManager
 		transaction: ITransaction,
 		rootTransaction: IRootTransaction,
 		context: IOperationContext,
-	): Promise<RecordId[][]> {
-		return <RecordId[][]>await this.internalInsertValues(
+	): Promise<Record_LocalId[][]> {
+		return <Record_LocalId[][]>await this.internalInsertValues(
 			portableQuery, actor, transaction, rootTransaction, context, true)
 	}
 
@@ -111,7 +111,7 @@ export class InsertManager
 		context: IOperationContext,
 		getIds: boolean = false,
 		ensureGeneratedValues: boolean = true
-	): Promise<number | RecordId[] | RecordId[][]> {
+	): Promise<number | Record_LocalId[] | Record_LocalId[][]> {
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
 			.currentVersion[0].applicationVersion.entities[portableQuery.tableIndex]
 
@@ -224,11 +224,11 @@ appears more than once in the Columns clause`)
 		systemWideOperationId: SystemWideOperationId,
 		errorPrefix: string,
 		sequenceGenerator: ISequenceGenerator
-	): Promise<RecordId[] | RecordId[][]> {
+	): Promise<Record_LocalId[] | Record_LocalId[][]> {
 		const values = jsonInsertValues.V
 		const idColumns = dbEntity.idColumns
 
-		const allIds: RecordId[][] = []
+		const allIds: Record_LocalId[][] = []
 		for (const _entityValues of values) {
 			allIds.push([])
 		}

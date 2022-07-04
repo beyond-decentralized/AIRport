@@ -2,7 +2,7 @@ import { IContext } from '@airport/direction-indicator';
 import { Observable } from 'rxjs';
 import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery';
 import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity';
-import { ApplicationName, DomainName, FullApplicationName } from '@airport/ground-control/src/lingo/application/Application';
+import { Application_Name, Domain_Name, FullApplication_Name } from '@airport/ground-control/src/lingo/application/Application';
 import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/lingo/data/IStoreOperator';
 import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
 import { ITransaction } from '../../transaction/ITransaction';
@@ -19,11 +19,11 @@ export interface IStoreDriver extends IStoreOperator {
     getEntityTableName(dbEntity: DbEntity, context: IContext): string;
     getSelectQuerySuffix(jsonQuery: JsonQuery, context: IContext): string;
     getTableName(application: {
-        domain: DomainName | {
-            name: DomainName;
+        domain: Domain_Name | {
+            name: Domain_Name;
         };
-        name: ApplicationName;
-        fullName?: FullApplicationName;
+        name: Application_Name;
+        fullName?: FullApplication_Name;
     }, table: {
         name: string;
         tableConfig?: {

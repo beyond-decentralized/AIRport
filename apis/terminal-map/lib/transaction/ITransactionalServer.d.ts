@@ -18,7 +18,7 @@ export interface ITransactionalServer {
     save<E extends IAirEntity, T = E | E[]>(entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
     saveToDestination<E extends IAirEntity, T = E | E[]>(repositoryDestination: string, entity: T, credentials: ITransactionCredentials, context: IEntityContext): Promise<ISaveResult>;
     insertValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext, ensureGeneratedValues?: boolean): Promise<number>;
-    insertValuesGetIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number[][]>;
+    insertValuesGetLocalIds(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number[][]>;
     updateValues(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number>;
     deleteWhere(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IContext): Promise<number>;
 }
