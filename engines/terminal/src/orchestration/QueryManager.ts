@@ -5,6 +5,7 @@ import {
 } from '@airport/direction-indicator'
 import {
 	DbEntity,
+	DbProperty,
 	EntityRelationType,
 	IEntityStateManager,
 	PortableQuery, QueryResultType
@@ -140,15 +141,6 @@ export class QueryManager
 					let relatedEntities = propertyValue
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							switch (dbProperty.name) {
-								case ACTOR_PROPERTY_NAME:
-									if (!propertyValue._localId) {
-										throw new Error(`Actor entity does not have a _localId`)
-									}
-									continue;
-								case REPOSITORY_PROPERTY_NAME:
-									continue;
-							}
 							relatedEntities = [propertyValue]
 							break
 						case EntityRelationType.ONE_TO_MANY:
@@ -168,8 +160,23 @@ export class QueryManager
 		}
 	}
 
-	isRepositoryOrActor() {
-
+	processRepositoryOrActor(
+		dbProperty: DbProperty,
+		propertyValue: any
+	): boolean {
+		let isActor = true
+		switch (dbProperty.name) {
+			case ACTOR_PROPERTY_NAME:
+				break
+			case REPOSITORY_PROPERTY_NAME:
+				isActor = false
+				break
+			default:
+				return false
+		}
+		if (!propertyValue._localId) {
+			throw new Error(`Actor entity does not have a _localId`)
+		}
 	}
 
 }
