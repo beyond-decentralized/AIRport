@@ -14,8 +14,6 @@ import {
 	QDomain
 } from '@airport/airspace'
 import {
-	QCountry,
-	QMetroArea,
 	QTerminal,
 	QUser,
 	Terminal_LocalId,
@@ -173,19 +171,28 @@ export class ActorDao
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]> {
 		let a: QActor,
-			u: QUser,
-			ma: QMetroArea
+			u: QUser
 		return await this.db.find.graph({
 			select: {
 				'*': Y,
 				user: {
 					_localId: Y,
+					continent: {
+						id: Y,
+						name: Y
+					},
+					country: {
+						abbreviation: Y,
+						id: Y,
+						name: Y,
+					},
 					GUID: Y,
 					metroArea: {
-						country: {
-							id: Y,
-							name: Y
-						},
+						id: Y,
+						name: Y,
+					},
+					state: {
+						abbreviation: Y,
 						id: Y,
 						name: Y
 					},
@@ -196,9 +203,12 @@ export class ActorDao
 			from: [
 				a = Q.Actor,
 				u = a.user.leftJoin(),
-				ma = u.metroArea.leftJoin(),
-				ma.country.leftJoin()
+				u.continent.leftJoin(),
+				u.country.leftJoin(),
+				u.metroArea.leftJoin(),
+				u.state.leftJoin()
 			],
+
 			where: a._localId.in(actor_localIds)
 		})
 	}

@@ -67,6 +67,7 @@ declare function require(moduleName: string): any;
 export interface StateESelect
     extends IEntitySelectProperties, StateEOptionalId {
 	// Non-Id Properties
+	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
@@ -107,6 +108,7 @@ export interface StateEOptionalId {
 export interface StateEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
@@ -122,6 +124,7 @@ export interface StateGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
 
 	// Relations
@@ -137,6 +140,7 @@ export interface StateGraph
 export interface StateEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
+	ABBREVIATION?: string | IQStringField;
 	NAME?: string | IQStringField;
 	COUNTRY_ID?: number | IQNumberField;
 
@@ -174,6 +178,7 @@ export interface QState extends IQEntity
 	// Id Relations
 
 	// Non-Id Fields
+	abbreviation: IQStringField;
 	name: IQStringField;
 
 	// Non-Id Relations

@@ -2,8 +2,8 @@ import {
 	ICountry,
 } from './country';
 import {
-	IState,
-} from './state';
+	IMetroAreaState,
+} from './metroareastate';
 import {
 	IUser,
 } from '../user';
@@ -26,7 +26,7 @@ export interface IMetroArea {
 
 	// Non-Id Relations
 	country?: ICountry;
-	metroAreaStates?: IState[];
+	metroAreaStates?: IMetroAreaState[];
 	users?: IUser[];
 
 	// Transient Properties

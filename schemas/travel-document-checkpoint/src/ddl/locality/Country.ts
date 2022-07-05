@@ -13,6 +13,7 @@ import {
 import { Continent } from "./Continent";
 import { User } from "../User";
 
+export type Country_Abbreviation = string;
 export type Country_Id = number;
 export type Country_Name = string;
 
@@ -25,6 +26,9 @@ export class Country {
     @DbNumber()
     @Column({ name: 'COUNTRY_ID' })
     id: Country_Id;
+
+    @DbString()
+    abbreviation: Country_Abbreviation
 
     @DbString()
     name: Country_Name

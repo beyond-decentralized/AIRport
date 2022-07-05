@@ -19,6 +19,7 @@ export interface ICountry {
 	// Id Relations
 
 	// Non-Id Properties
+	abbreviation?: string;
 	name?: string;
 
 	// Non-Id Relations

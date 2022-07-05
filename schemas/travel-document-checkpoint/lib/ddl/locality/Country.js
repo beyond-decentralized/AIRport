@@ -15,6 +15,9 @@ __decorate([
 ], Country.prototype, "id", void 0);
 __decorate([
     DbString()
+], Country.prototype, "abbreviation", void 0);
+__decorate([
+    DbString()
 ], Country.prototype, "name", void 0);
 __decorate([
     ManyToOne(),

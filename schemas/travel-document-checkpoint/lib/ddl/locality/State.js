@@ -15,6 +15,9 @@ __decorate([
 ], State.prototype, "id", void 0);
 __decorate([
     DbString()
+], State.prototype, "abbreviation", void 0);
+__decorate([
+    DbString()
 ], State.prototype, "name", void 0);
 __decorate([
     ManyToOne(),

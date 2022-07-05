@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './qcountry';
-import { StateGraph, StateESelect, QState } from './qstate';
+import { MetroAreaStateGraph, MetroAreaStateESelect, QMetroAreaState } from './qmetroareastate';
 import { UserGraph, UserESelect, QUser } from '../quser';
 /**
  * SELECT - All fields and relations (optional).
@@ -8,7 +8,7 @@ import { UserGraph, UserESelect, QUser } from '../quser';
 export interface MetroAreaESelect extends IEntitySelectProperties, MetroAreaEOptionalId {
     name?: string | IQStringField;
     country?: CountryESelect;
-    metroAreaStates?: StateESelect;
+    metroAreaStates?: MetroAreaStateESelect;
     users?: UserESelect;
 }
 /**
@@ -36,7 +36,7 @@ export interface MetroAreaEUpdateProperties extends IEntityUpdateProperties {
 export interface MetroAreaGraph extends MetroAreaEOptionalId, IEntityCascadeGraph {
     name?: string | IQStringField;
     country?: CountryGraph;
-    metroAreaStates?: StateGraph[];
+    metroAreaStates?: MetroAreaStateGraph[];
     users?: UserGraph[];
 }
 /**
@@ -63,7 +63,7 @@ export interface QMetroArea extends IQEntity {
     id: IQNumberField;
     name: IQStringField;
     country: QCountryQRelation;
-    metroAreaStates: IQOneToManyRelation<QState>;
+    metroAreaStates: IQOneToManyRelation<QMetroAreaState>;
     users: IQOneToManyRelation<QUser>;
 }
 export interface QMetroAreaQId {

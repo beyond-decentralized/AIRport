@@ -5,6 +5,7 @@ import { UserGraph, UserESelect, QUser } from '../quser';
  * SELECT - All fields and relations (optional).
  */
 export interface CountryESelect extends IEntitySelectProperties, CountryEOptionalId {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     continent?: ContinentESelect;
     users?: UserESelect;
@@ -25,6 +26,7 @@ export interface CountryEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface CountryEUpdateProperties extends IEntityUpdateProperties {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     continent?: ContinentEOptionalId;
 }
@@ -32,6 +34,7 @@ export interface CountryEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface CountryGraph extends CountryEOptionalId, IEntityCascadeGraph {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     continent?: ContinentGraph;
     users?: UserGraph[];
@@ -40,6 +43,7 @@ export interface CountryGraph extends CountryEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface CountryEUpdateColumns extends IEntityUpdateColumns {
+    ABBREVIATION?: string | IQStringField;
     NAME?: string | IQStringField;
     CONTINENT_ID?: number | IQNumberField;
 }
@@ -58,6 +62,7 @@ export interface CountryECreateColumns extends CountryEId, CountryEUpdateColumns
  */
 export interface QCountry extends IQEntity {
     id: IQNumberField;
+    abbreviation: IQStringField;
     name: IQStringField;
     continent: QContinentQRelation;
     users: IQOneToManyRelation<QUser>;

@@ -5,6 +5,7 @@ import { UserGraph, UserESelect, QUser } from '../quser';
  * SELECT - All fields and relations (optional).
  */
 export interface StateESelect extends IEntitySelectProperties, StateEOptionalId {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     country?: CountryESelect;
     metroAreaStates?: StateESelect;
@@ -26,6 +27,7 @@ export interface StateEOptionalId {
  * UPDATE - non-id fields and relations (optional).
  */
 export interface StateEUpdateProperties extends IEntityUpdateProperties {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     country?: CountryEOptionalId;
 }
@@ -33,6 +35,7 @@ export interface StateEUpdateProperties extends IEntityUpdateProperties {
  * PERSIST CASCADE - non-id relations (optional).
  */
 export interface StateGraph extends StateEOptionalId, IEntityCascadeGraph {
+    abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     country?: CountryGraph;
     metroAreaStates?: StateGraph[];
@@ -42,6 +45,7 @@ export interface StateGraph extends StateEOptionalId, IEntityCascadeGraph {
  * UPDATE - non-id columns (optional).
  */
 export interface StateEUpdateColumns extends IEntityUpdateColumns {
+    ABBREVIATION?: string | IQStringField;
     NAME?: string | IQStringField;
     COUNTRY_ID?: number | IQNumberField;
 }
@@ -60,6 +64,7 @@ export interface StateECreateColumns extends StateEId, StateEUpdateColumns {
  */
 export interface QState extends IQEntity {
     id: IQNumberField;
+    abbreviation: IQStringField;
     name: IQStringField;
     country: QCountryQRelation;
     metroAreaStates: IQOneToManyRelation<QState>;

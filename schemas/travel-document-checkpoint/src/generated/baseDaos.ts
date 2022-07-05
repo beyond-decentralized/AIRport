@@ -275,11 +275,11 @@ export class BaseClassificationDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(6)
 	}
 	
 	constructor() {
-		super(5)
+		super(6)
 	}
 }
 
@@ -303,11 +303,11 @@ export class BaseClientDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return duoDiSet(10)
 	}
 	
 	constructor() {
-		super(9)
+		super(10)
 	}
 }
 
@@ -331,11 +331,11 @@ export class BaseClientTypeDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return duoDiSet(9)
 	}
 	
 	constructor() {
-		super(8)
+		super(9)
 	}
 }
 
@@ -359,11 +359,11 @@ export class BaseContinentDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(4)
+		super(0)
 	}
 }
 
@@ -387,11 +387,11 @@ export class BaseCountryDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }
 
@@ -415,11 +415,11 @@ export class BaseDatabaseDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return duoDiSet(12)
 	}
 	
 	constructor() {
-		super(11)
+		super(12)
 	}
 }
 
@@ -443,11 +443,11 @@ export class BaseDatabaseTypeDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return duoDiSet(11)
 	}
 	
 	constructor() {
-		super(10)
+		super(11)
 	}
 }
 
@@ -471,11 +471,11 @@ export class BaseMetroAreaDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(2)
+		super(4)
 	}
 }
 
@@ -499,11 +499,11 @@ export class BaseMetroAreaStateDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(12)
+		super(3)
 	}
 }
 
@@ -527,11 +527,11 @@ export class BaseStateDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -611,11 +611,11 @@ export class BaseTypeDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return duoDiSet(8)
 	}
 	
 	constructor() {
-		super(7)
+		super(8)
 	}
 }
 
@@ -639,11 +639,11 @@ export class BaseTypeClassificationDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return duoDiSet(7)
 	}
 	
 	constructor() {
-		super(6)
+		super(7)
 	}
 }
 
@@ -667,11 +667,11 @@ export class BaseUserDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(3)
+		super(5)
 	}
 }
 

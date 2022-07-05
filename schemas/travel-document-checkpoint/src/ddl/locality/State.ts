@@ -2,6 +2,7 @@ import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, Man
 import { User } from "../User";
 import { Country } from "./Country";
 
+export type State_Abbreviation = string;
 export type State_Id = number;
 export type State_Name = string;
 
@@ -14,6 +15,9 @@ export class State {
     @DbNumber()
     @Column({ name: 'STATE_ID' })
     id: State_Id;
+
+    @DbString()
+    abbreviation: State_Abbreviation
 
     @DbString()
     name: State_Name

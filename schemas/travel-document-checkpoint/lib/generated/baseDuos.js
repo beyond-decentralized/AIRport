@@ -8,53 +8,13 @@ export class SQDIDuo extends Duo {
 }
 export class BaseClassificationDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(6);
     }
     constructor() {
-        super(5);
+        super(6);
     }
 }
 export class BaseClientDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(9);
-    }
-    constructor() {
-        super(9);
-    }
-}
-export class BaseClientTypeDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(8);
-    }
-    constructor() {
-        super(8);
-    }
-}
-export class BaseContinentDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-export class BaseCountryDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(0);
-    }
-    constructor() {
-        super(0);
-    }
-}
-export class BaseDatabaseDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(11);
-    }
-    constructor() {
-        super(11);
-    }
-}
-export class BaseDatabaseTypeDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(10);
     }
@@ -62,15 +22,31 @@ export class BaseDatabaseTypeDuo extends SQDIDuo {
         super(10);
     }
 }
-export class BaseMetroAreaDuo extends SQDIDuo {
+export class BaseClientTypeDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(2);
+        return duoDiSet(9);
     }
     constructor() {
-        super(2);
+        super(9);
     }
 }
-export class BaseMetroAreaStateDuo extends SQDIDuo {
+export class BaseContinentDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(0);
+    }
+    constructor() {
+        super(0);
+    }
+}
+export class BaseCountryDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
+    }
+}
+export class BaseDatabaseDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(12);
     }
@@ -78,12 +54,36 @@ export class BaseMetroAreaStateDuo extends SQDIDuo {
         super(12);
     }
 }
-export class BaseStateDuo extends SQDIDuo {
+export class BaseDatabaseTypeDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
+        return duoDiSet(11);
     }
     constructor() {
-        super(1);
+        super(11);
+    }
+}
+export class BaseMetroAreaDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(4);
+    }
+    constructor() {
+        super(4);
+    }
+}
+export class BaseMetroAreaStateDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(3);
+    }
+    constructor() {
+        super(3);
+    }
+}
+export class BaseStateDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(2);
+    }
+    constructor() {
+        super(2);
     }
 }
 export class BaseTerminalDuo extends SQDIDuo {
@@ -104,26 +104,26 @@ export class BaseTerminalTypeDuo extends SQDIDuo {
 }
 export class BaseTypeDuo extends SQDIDuo {
     static diSet() {
+        return duoDiSet(8);
+    }
+    constructor() {
+        super(8);
+    }
+}
+export class BaseTypeClassificationDuo extends SQDIDuo {
+    static diSet() {
         return duoDiSet(7);
     }
     constructor() {
         super(7);
     }
 }
-export class BaseTypeClassificationDuo extends SQDIDuo {
-    static diSet() {
-        return duoDiSet(6);
-    }
-    constructor() {
-        super(6);
-    }
-}
 export class BaseUserDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(3);
+        return duoDiSet(5);
     }
     constructor() {
-        super(3);
+        super(5);
     }
 }
 export class BaseUserTerminalDuo extends SQDIDuo {
