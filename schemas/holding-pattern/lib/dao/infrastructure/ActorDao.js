@@ -60,7 +60,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.GUID.in(actorGUIDs)
         });
     }
-    async findWithUsersAndTheirLocationsBy_LocalIds(actor_localIds) {
+    async findWithUsersAndTheirLocationBy_LocalIds(actor_localIds) {
         let a, u;
         return await this.db.find.graph({
             select: {

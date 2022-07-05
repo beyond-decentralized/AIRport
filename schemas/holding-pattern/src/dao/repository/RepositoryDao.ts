@@ -145,12 +145,22 @@ export class RepositoryDao
 				'*': Y,
 				owner: {
 					_localId: Y,
+					continent: {
+						id: Y,
+						name: Y
+					},
+					country: {
+						abbreviation: Y,
+						id: Y,
+						name: Y,
+					},
 					GUID: Y,
 					metroArea: {
-						country: {
-							id: Y,
-							name: Y
-						},
+						id: Y,
+						name: Y,
+					},
+					state: {
+						abbreviation: Y,
 						id: Y,
 						name: Y
 					},
