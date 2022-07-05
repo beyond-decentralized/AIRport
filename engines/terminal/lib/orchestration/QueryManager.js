@@ -74,7 +74,7 @@ let QueryManager = class QueryManager {
         }
         const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys());
         const repositories = await this.repositoryDao
-            .findWithOwnerAndTheirLocationBy_LocalIds(repositoryLocalIds);
+            .findWithLocationAndOwnerAndTheirLocationBy_LocalIds(repositoryLocalIds);
         for (const repository of repositories) {
             const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId);
             for (const entity of entiesWithoutRepositoryObject) {

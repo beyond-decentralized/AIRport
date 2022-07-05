@@ -6,6 +6,7 @@ import {
 import { IContext, Injected } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
+	QUser,
 	Terminal_GUID,
 	User_GUID
 } from '@airport/travel-document-checkpoint'
@@ -42,7 +43,7 @@ export interface IRepositoryDao
 		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]>
 
-	findWithOwnerAndTheirLocationBy_LocalIds(
+	findWithLocationAndOwnerAndTheirLocationBy_LocalIds(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]>
 
@@ -136,13 +137,32 @@ export class RepositoryDao
 		})
 	}
 
-	async findWithOwnerAndTheirLocationBy_LocalIds(
+	async findWithLocationAndOwnerAndTheirLocationBy_LocalIds(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
-		let r: QRepository
+		let r: QRepository,
+			o: QUser
 		return await this.db.find.graph({
 			select: {
 				'*': Y,
+				continent: {
+					id: Y,
+					name: Y
+				},
+				country: {
+					abbreviation: Y,
+					id: Y,
+					name: Y,
+				},
+				metroArea: {
+					id: Y,
+					name: Y,
+				},
+				state: {
+					abbreviation: Y,
+					id: Y,
+					name: Y
+				},
 				owner: {
 					_localId: Y,
 					continent: {

@@ -64,11 +64,29 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r._localId.in(repositoryIds)
         });
     }
-    async findWithOwnerAndTheirLocationBy_LocalIds(repository_localIds) {
-        let r;
+    async findWithLocationAndOwnerAndTheirLocationBy_LocalIds(repository_localIds) {
+        let r, o;
         return await this.db.find.graph({
             select: {
                 '*': Y,
+                continent: {
+                    id: Y,
+                    name: Y
+                },
+                country: {
+                    abbreviation: Y,
+                    id: Y,
+                    name: Y,
+                },
+                metroArea: {
+                    id: Y,
+                    name: Y,
+                },
+                state: {
+                    abbreviation: Y,
+                    id: Y,
+                    name: Y
+                },
                 owner: {
                     _localId: Y,
                     continent: {
