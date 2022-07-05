@@ -1,6 +1,7 @@
 import { Actor } from '../infrastructure/Actor';
 import { SystemWideOperationId } from '../common';
 import { Repository } from './Repository';
+import { User } from '@airport/travel-document-checkpoint';
 /**
  * Created by Papa on 2/17/2017.
  */
@@ -38,7 +39,7 @@ export declare abstract class AirEntity {
      * Returns null if one of it's member Ids does not exist
      */
     id?: string;
-    createdBy?: string;
+    createdBy?: User;
     /**
      * A transient property, generated on the entity objects by the
      * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value

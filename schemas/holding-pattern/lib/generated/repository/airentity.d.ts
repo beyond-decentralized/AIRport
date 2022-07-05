@@ -1,3 +1,4 @@
+import { User } from '@airport/travel-document-checkpoint';
 import { IRepository } from './repository';
 import { IActor } from '../infrastructure/actor';
 export interface IAirEntity {
@@ -11,7 +12,7 @@ export interface IAirEntity {
     originalRepository?: IRepository;
     originalActor?: IActor;
     id?: string;
-    createdBy?: string;
+    createdBy?: User;
     isNew?: boolean;
 }
 //# sourceMappingURL=airentity.d.ts.map

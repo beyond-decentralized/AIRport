@@ -156,13 +156,13 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 }
             });
         }
-        if (!object.isNew
+        if (!object.createdBy
             && !Object.getOwnPropertyDescriptor(object, 'createdBy')
             && (!objectPrototype
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
             Object.defineProperty(object, 'createdBy', {
                 get() {
-                    return this.actor.user.username;
+                    return this.actor.user;
                 }
             });
         }

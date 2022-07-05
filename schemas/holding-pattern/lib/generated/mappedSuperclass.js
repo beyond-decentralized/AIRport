@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "AirEntity",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [
@@ -216,13 +216,26 @@ export const MAPPED_SUPERCLASS = [
                             }
                         },
                         "path": "./Repository"
+                    },
+                    "User": {
+                        "fileImports": null,
+                        "isLocal": false,
+                        "objectMapByAsName": {
+                            "User": {
+                                "asName": "User",
+                                "moduleImport": null,
+                                "sourceName": "User"
+                            }
+                        },
+                        "path": "@airport/travel-document-checkpoint"
                     }
                 },
                 "importMapByModulePath": {
                     "@airport/air-traffic-control": null,
                     "../infrastructure/Actor": null,
                     "../common": null,
-                    "./Repository": null
+                    "./Repository": null,
+                    "@airport/travel-document-checkpoint": null
                 }
             },
             "properties": [
@@ -513,10 +526,9 @@ export const MAPPED_SUPERCLASS = [
                     "isTransient": true,
                     "name": "createdBy",
                     "optional": true,
-                    "type": "string",
+                    "type": "User",
                     "ownerEntity": null,
-                    "nonArrayType": "string",
-                    "primitive": "string"
+                    "nonArrayType": "User"
                 },
                 {
                     "decorators": [
@@ -550,7 +562,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRepoRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRepoRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRepoRow.ts",
         "parentClassName": "AirEntity",
         "location": "../repository/AirEntity",
         "isSuperclass": true,
@@ -613,7 +625,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "AirEntity",
-            "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
+            "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -827,13 +839,26 @@ export const MAPPED_SUPERCLASS = [
                                 }
                             },
                             "path": "./Repository"
+                        },
+                        "User": {
+                            "fileImports": null,
+                            "isLocal": false,
+                            "objectMapByAsName": {
+                                "User": {
+                                    "asName": "User",
+                                    "moduleImport": null,
+                                    "sourceName": "User"
+                                }
+                            },
+                            "path": "@airport/travel-document-checkpoint"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
-                        "./Repository": null
+                        "./Repository": null,
+                        "@airport/travel-document-checkpoint": null
                     }
                 },
                 "properties": [
@@ -1124,10 +1149,9 @@ export const MAPPED_SUPERCLASS = [
                         "isTransient": true,
                         "name": "createdBy",
                         "optional": true,
-                        "type": "string",
+                        "type": "User",
                         "ownerEntity": null,
-                        "nonArrayType": "string",
-                        "primitive": "string"
+                        "nonArrayType": "User"
                     },
                     {
                         "decorators": [
@@ -1163,7 +1187,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ChildRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ChildRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ChildRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -1214,7 +1238,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRepoRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
         "parentClassName": "AirEntity",
         "location": "../repository/AirEntity",
         "isSuperclass": true,
@@ -1307,7 +1331,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "AirEntity",
-            "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
+            "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [
@@ -1521,13 +1545,26 @@ export const MAPPED_SUPERCLASS = [
                                 }
                             },
                             "path": "./Repository"
+                        },
+                        "User": {
+                            "fileImports": null,
+                            "isLocal": false,
+                            "objectMapByAsName": {
+                                "User": {
+                                    "asName": "User",
+                                    "moduleImport": null,
+                                    "sourceName": "User"
+                                }
+                            },
+                            "path": "@airport/travel-document-checkpoint"
                         }
                     },
                     "importMapByModulePath": {
                         "@airport/air-traffic-control": null,
                         "../infrastructure/Actor": null,
                         "../common": null,
-                        "./Repository": null
+                        "./Repository": null,
+                        "@airport/travel-document-checkpoint": null
                     }
                 },
                 "properties": [
@@ -1818,10 +1855,9 @@ export const MAPPED_SUPERCLASS = [
                         "isTransient": true,
                         "name": "createdBy",
                         "optional": true,
-                        "type": "string",
+                        "type": "User",
                         "ownerEntity": null,
-                        "nonArrayType": "string",
-                        "primitive": "string"
+                        "nonArrayType": "User"
                     },
                     {
                         "decorators": [
@@ -1857,7 +1893,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ImmutableRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
@@ -2545,7 +2581,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRepoRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRepoRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRepoRow.ts",
         "parentClassName": "ImmutableRepoRow",
         "location": "./ImmutableRepoRow",
         "isSuperclass": true,
@@ -2638,7 +2674,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRepoRow",
-            "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRepoRow.ts",
+            "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRepoRow.ts",
             "parentClassName": "AirEntity",
             "location": "../repository/AirEntity",
             "isSuperclass": true,
@@ -2731,7 +2767,7 @@ export const MAPPED_SUPERCLASS = [
             "implementedInterfaceNames": [],
             "parentEntity": {
                 "type": "AirEntity",
-                "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
+                "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
                 "parentClassName": null,
                 "isSuperclass": true,
                 "ids": [
@@ -2945,13 +2981,26 @@ export const MAPPED_SUPERCLASS = [
                                     }
                                 },
                                 "path": "./Repository"
+                            },
+                            "User": {
+                                "fileImports": null,
+                                "isLocal": false,
+                                "objectMapByAsName": {
+                                    "User": {
+                                        "asName": "User",
+                                        "moduleImport": null,
+                                        "sourceName": "User"
+                                    }
+                                },
+                                "path": "@airport/travel-document-checkpoint"
                             }
                         },
                         "importMapByModulePath": {
                             "@airport/air-traffic-control": null,
                             "../infrastructure/Actor": null,
                             "../common": null,
-                            "./Repository": null
+                            "./Repository": null,
+                            "@airport/travel-document-checkpoint": null
                         }
                     },
                     "properties": [
@@ -3242,10 +3291,9 @@ export const MAPPED_SUPERCLASS = [
                             "isTransient": true,
                             "name": "createdBy",
                             "optional": true,
-                            "type": "string",
+                            "type": "User",
                             "ownerEntity": null,
-                            "nonArrayType": "string",
-                            "primitive": "string"
+                            "nonArrayType": "User"
                         },
                         {
                             "decorators": [
@@ -3283,7 +3331,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "MutableRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\MutableRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/MutableRow.ts",
         "parentClassName": "ImmutableRow",
         "location": "./ImmutableRow",
         "isSuperclass": true,
@@ -3376,7 +3424,7 @@ export const MAPPED_SUPERCLASS = [
         "implementedInterfaceNames": [],
         "parentEntity": {
             "type": "ImmutableRow",
-            "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ImmutableRow.ts",
+            "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ImmutableRow.ts",
             "parentClassName": null,
             "isSuperclass": true,
             "ids": [],
@@ -4066,7 +4114,7 @@ export const MAPPED_SUPERCLASS = [
     },
     {
         "type": "ReferenceRow",
-        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\traditional\\ReferenceRow.ts",
+        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/traditional/ReferenceRow.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [],
