@@ -34,12 +34,16 @@ export interface IRepositoryDao
 		context: IContext
 	): Promise<IRepository>
 
-	findByIds(
+	findWithOwnerBy_LocalIds(
 		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]>;
 
 	findByGUIDs(
 		repositoryGUIDs: Repository_GUID[],
+	): Promise<IRepository[]>
+
+	findWithOwnerAndTheirLocationBy_LocalIds(
+		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]>
 
 	insert(
@@ -110,14 +114,18 @@ export class RepositoryDao
 		})
 	}
 
-	async findByIds(
+	async findWithOwnerBy_LocalIds(
 		repositoryIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
 			select: {
-				...ALL_FIELDS,
-				owner: {}
+				'*': Y,
+				owner: {
+					_localId: Y,
+					GUID: Y,
+					username: Y
+				}
 			},
 			from: [
 				r = Q.Repository,
@@ -125,6 +133,37 @@ export class RepositoryDao
 			],
 			where:
 				r._localId.in(repositoryIds)
+		})
+	}
+
+	async findWithOwnerAndTheirLocationBy_LocalIds(
+		repository_localIds: Repository_LocalId[]
+	): Promise<IRepository[]> {
+		let r: QRepository
+		return await this.db.find.graph({
+			select: {
+				'*': Y,
+				owner: {
+					_localId: Y,
+					GUID: Y,
+					metroArea: {
+						country: {
+							id: Y,
+							name: Y
+						},
+						id: Y,
+						name: Y
+					},
+					ranking: Y,
+					username: Y
+				}
+			},
+			from: [
+				r = Q.Repository,
+				r.owner.innerJoin()
+			],
+			where:
+				r._localId.in(repository_localIds)
 		})
 	}
 

@@ -198,6 +198,9 @@ OPERATION_MANAGER.setDependencies({
     utils: UTILS
 });
 QUERY_MANAGER.setDependencies({
+    actorDao: ACTOR_DAO,
+    airportDatabase: AIRPORT_DATABASE,
+    repositoryDao: REPOSITORY_DAO,
     repositoryLoader: REPOSITORY_LOADER,
     storeDriver: STORE_DRIVER
 });

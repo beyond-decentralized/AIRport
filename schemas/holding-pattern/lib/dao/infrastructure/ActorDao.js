@@ -60,6 +60,35 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.GUID.in(actorGUIDs)
         });
     }
+    async findWithUsersAndTheirLocationsBy_LocalIds(actor_localIds) {
+        let a, u, ma;
+        return await this.db.find.graph({
+            select: {
+                '*': Y,
+                user: {
+                    _localId: Y,
+                    GUID: Y,
+                    metroArea: {
+                        country: {
+                            id: Y,
+                            name: Y
+                        },
+                        id: Y,
+                        name: Y
+                    },
+                    ranking: Y,
+                    username: Y
+                }
+            },
+            from: [
+                a = Q.Actor,
+                u = a.user.leftJoin(),
+                ma = u.metroArea.leftJoin(),
+                ma.country.leftJoin()
+            ],
+            where: a._localId.in(actor_localIds)
+        });
+    }
     async insert(actors, context) {
         let a;
         const values = [];

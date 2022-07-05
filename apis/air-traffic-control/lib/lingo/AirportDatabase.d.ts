@@ -13,9 +13,11 @@ import { OperationName } from './query/Dao';
 import { RawDelete } from './query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from './query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from './query/facade/Update';
-export declare const REPOSITORY_PROPERTY_NAME = "repository";
 export declare const ACTOR_PROPERTY_NAME = "actor";
 export declare const ACTOR_RECORD_ID_PROPERTY_NAME = "_actorRecordId";
+export declare const LOCAL_ID_PROPERTY_NAME = "_localId";
+export declare const REPOSITORY_PROPERTY_NAME = "repository";
+export declare const USER_PROPERTY_NAME = "user";
 export interface FunctionAndOperatorHub {
     functions: FunctionsAndOperators;
     F: FunctionsAndOperators;

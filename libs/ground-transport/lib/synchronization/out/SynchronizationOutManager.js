@@ -27,7 +27,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         if (!repositoryIdsToLookup.size) {
             return;
         }
-        const repositories = await this.repositoryDao.findByIds([
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {
@@ -53,7 +53,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         if (!repositoryIdsToLookup.size) {
             return;
         }
-        const repositories = await this.repositoryDao.findByIds([
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {

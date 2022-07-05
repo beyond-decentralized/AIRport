@@ -10362,7 +10362,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r.id.in(repositoryIds)
         });
     }
-    async findByIds(repositoryIds) {
+    async findWithOwnerBy_LocalIds(repositoryIds) {
         let r;
         return await this.db.find.tree({
             select: {
@@ -30641,7 +30641,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             repositoryIdsToFindBy.push(repositoryId);
         }
         repositoryIdsToFindBy.push(repositoryTransactionHistory.id);
-        const repositories = await this.repositoryDao.findByIds(repositoryIdsToFindBy);
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
             let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
@@ -30917,7 +30917,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         if (!repositoryIdsToLookup.size) {
             return;
         }
-        const repositories = await this.repositoryDao.findByIds([
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {
@@ -30943,7 +30943,7 @@ let SynchronizationOutManager = class SynchronizationOutManager {
         if (!repositoryIdsToLookup.size) {
             return;
         }
-        const repositories = await this.repositoryDao.findByIds([
+        const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds([
             ...repositoryIdsToLookup.values()
         ]);
         for (const repository of repositories) {

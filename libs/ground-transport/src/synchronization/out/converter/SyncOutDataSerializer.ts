@@ -258,7 +258,7 @@ export class SyncOutDataSerializer
 			repositoryIdsToFindBy.push(repositoryId)
 		}
 		repositoryIdsToFindBy.push(repositoryTransactionHistory._localId)
-		const repositories = await this.repositoryDao.findByIds(repositoryIdsToFindBy)
+		const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy)
 
 		for (const repository of repositories) {
 			let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup)

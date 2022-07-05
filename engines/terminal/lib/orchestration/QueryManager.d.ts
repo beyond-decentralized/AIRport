@@ -1,9 +1,12 @@
-import { IRepositoryLoader } from '@airport/air-traffic-control';
-import { IEntityStateManager, PortableQuery } from '@airport/ground-control';
+import { IAirportDatabase, IRepositoryLoader } from '@airport/air-traffic-control';
+import { PortableQuery } from '@airport/ground-control';
+import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/lib/dao/dao';
 import { IQueryManager, IQueryOperationContext, IStoreDriver } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare class QueryManager implements IQueryManager {
-    entityStateManager: IEntityStateManager;
+    actorDao: IActorDao;
+    airportDatabase: IAirportDatabase;
+    repositoryDao: IRepositoryDao;
     repositoryLoader: IRepositoryLoader;
     storeDriver: IStoreDriver;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
@@ -12,7 +15,7 @@ export declare class QueryManager implements IQueryManager {
     searchOne<E>(portableQuery: PortableQuery, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
     private ensureRepositoryPresenceAndCurrentState;
     private populateEntityGuidEntitiesAndUsers;
-    private markEntityGraph;
-    isRepositoryOrActor(): void;
+    private markEntities;
+    private processRepositoryOrActor;
 }
 //# sourceMappingURL=QueryManager.d.ts.map

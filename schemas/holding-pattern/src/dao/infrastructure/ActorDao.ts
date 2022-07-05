@@ -14,6 +14,8 @@ import {
 	QDomain
 } from '@airport/airspace'
 import {
+	QCountry,
+	QMetroArea,
 	QTerminal,
 	QUser,
 	Terminal_LocalId,
@@ -37,13 +39,13 @@ export interface IActorDao
 
 	findWithDetailsAndGlobalIdsByIds(
 		actorIds: Actor_LocalId[]
-	): Promise<IActor[]>;
+	): Promise<IActor[]>
 
 	findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
 		userIds: User_LocalId[],
 		terminalIds: Terminal_LocalId[]
-	): Promise<IActor[]>;
+	): Promise<IActor[]>
 
 	findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
@@ -51,7 +53,11 @@ export interface IActorDao
 		terminalIds: Terminal_LocalId[],
 		actorMap: Map<User_LocalId, Map<Terminal_LocalId, IActor>>,
 		actorMapById: Map<Actor_LocalId, IActor>
-	): Promise<void>;
+	): Promise<void>
+
+	findWithUsersAndTheirLocationsBy_LocalIds(
+		actor_localIds: Actor_LocalId[],
+	): Promise<IActor[]>
 
 	findByDomainAndApplication_Names(
 		domainName: Domain_Name,
@@ -160,6 +166,40 @@ export class ActorDao
 				a = Q.Actor
 			],
 			where: a.GUID.in(actorGUIDs)
+		})
+	}
+
+	async findWithUsersAndTheirLocationsBy_LocalIds(
+		actor_localIds: Actor_LocalId[],
+	): Promise<IActor[]> {
+		let a: QActor,
+			u: QUser,
+			ma: QMetroArea
+		return await this.db.find.graph({
+			select: {
+				'*': Y,
+				user: {
+					_localId: Y,
+					GUID: Y,
+					metroArea: {
+						country: {
+							id: Y,
+							name: Y
+						},
+						id: Y,
+						name: Y
+					},
+					ranking: Y,
+					username: Y
+				}
+			},
+			from: [
+				a = Q.Actor,
+				u = a.user.leftJoin(),
+				ma = u.metroArea.leftJoin(),
+				ma.country.leftJoin()
+			],
+			where: a._localId.in(actor_localIds)
 		})
 	}
 

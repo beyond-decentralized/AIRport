@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ALL_FIELDS, and, Y } from '@airport/air-traffic-control';
+import { and, Y } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
@@ -46,18 +46,49 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             where: r._localId.in(repositoryIds)
         });
     }
-    async findByIds(repositoryIds) {
+    async findWithOwnerBy_LocalIds(repositoryIds) {
         let r;
         return await this.db.find.tree({
             select: {
-                ...ALL_FIELDS,
-                owner: {}
+                '*': Y,
+                owner: {
+                    _localId: Y,
+                    GUID: Y,
+                    username: Y
+                }
             },
             from: [
                 r = Q.Repository,
                 r.owner.innerJoin()
             ],
             where: r._localId.in(repositoryIds)
+        });
+    }
+    async findWithOwnerAndTheirLocationBy_LocalIds(repository_localIds) {
+        let r;
+        return await this.db.find.graph({
+            select: {
+                '*': Y,
+                owner: {
+                    _localId: Y,
+                    GUID: Y,
+                    metroArea: {
+                        country: {
+                            id: Y,
+                            name: Y
+                        },
+                        id: Y,
+                        name: Y
+                    },
+                    ranking: Y,
+                    username: Y
+                }
+            },
+            from: [
+                r = Q.Repository,
+                r.owner.innerJoin()
+            ],
+            where: r._localId.in(repository_localIds)
         });
     }
     async findByGUIDs(repositoryGUIDs) {
