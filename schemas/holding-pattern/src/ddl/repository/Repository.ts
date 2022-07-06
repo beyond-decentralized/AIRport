@@ -38,11 +38,17 @@ export type Repository_Immutable = boolean;
 export type Repository_Source = string;
 export type Repository_GUID = string;
 
+export interface IRepositoryIdentifier {
+	source: Repository_Source;
+	GUID: Repository_GUID;
+}
+
 @Entity()
 @Table({
 	name: "REPOSITORY"
 })
-export class Repository {
+export class Repository
+	implements IRepositoryIdentifier {
 
 	@Column({ name: "REPOSITORY_LID" })
 	@GeneratedValue()
