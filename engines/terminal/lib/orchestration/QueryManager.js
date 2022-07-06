@@ -59,7 +59,7 @@ let QueryManager = class QueryManager {
             actorIdSet.add(actorLocalId);
         }
         const actorLocalIds = Array.from(actorIdSet);
-        const actors = await this.actorDao.findWithUsersBy_LocalIdIn(actorLocalIds);
+        const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds);
         for (const actor of actors) {
             const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
             if (entitiesWithoutActorObject) {

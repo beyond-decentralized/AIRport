@@ -53,7 +53,7 @@ export interface IActorDao
 		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void>
 
-	findWithUsersBy_LocalIdIn(
+	findWithUserBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]>
 
@@ -167,7 +167,7 @@ export class ActorDao
 		})
 	}
 
-	async findWithUsersBy_LocalIdIn(
+	async findWithUserBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]> {
 		let a: QActor,
