@@ -5,7 +5,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbDate, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/air-traffic-control';
+import { IOC } from '@airport/direction-indicator';
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 let AirEntity = class AirEntity {
+    constructor(entityGUID) {
+        this.id = entityGUID;
+    }
+    /*
+     *A transient convenience property to get the username of the
+     * UserAccount that created the record.
+     */
+    get createdBy() {
+        return this.actor.user;
+    }
+    /**
+     * A transient property, generated on the entity objects by the
+     * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value
+     * is:
+     *
+     * 	true - this entity object has not been saved and does not have an id
+     * 	false - this entity object has been saved and has an id
+     *
+     * It does not check the existence of Id on the object - most of
+     * the time existing objects are retrieved without a Id (only with
+     * the _localId properties).
+     */
+    get isNew() {
+        return !!this._actorRecordId;
+    }
+    /**
+     * A transient aggregate property, generated on the entity objects by the
+     * QueryResultsDeserializer.doSetPropertyDescriptors.  It is
+     * composed of:
+     *
+     * 	{
+     * 		actor: {
+     * 			GUID
+     * 		},
+     * 		_actorRecordId,
+     * 		repository: {
+     * 			GUID
+     * 		}
+     * 	}
+     *
+     * Returns:
+     *
+     * `${repository.GUID}-${actor.GUID}-${_actorRecordId}`
+     *
+     * Returns null if one of it's member Ids does not exist
+     */
+    get id() {
+        return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this);
+    }
+    set id(entityGUID) {
+        IOC.getSync(AIR_ENTITY_UTILS).setId(entityGUID, this);
+    }
 };
 __decorate([
     Id(),
@@ -60,13 +114,7 @@ __decorate([
 ], AirEntity.prototype, "originalActorRecordId", void 0);
 __decorate([
     Transient()
-], AirEntity.prototype, "id", void 0);
-__decorate([
-    Transient()
-], AirEntity.prototype, "createdBy", void 0);
-__decorate([
-    Transient()
-], AirEntity.prototype, "isNew", void 0);
+], AirEntity.prototype, "isNew", null);
 AirEntity = __decorate([
     MappedSuperclass()
 ], AirEntity);

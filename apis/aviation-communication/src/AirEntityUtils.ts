@@ -119,6 +119,9 @@ export class AirEntityUtils
         idString: string,
         airEntity: AirEntityId
     ): void {
+        if (!idString) {
+            return
+        }
         let airEntityId = this.parseEGUID(idString)
         if (!airEntity.repository) {
             airEntity.repository = {

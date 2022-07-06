@@ -228,6 +228,30 @@ export const MAPPED_SUPERCLASS = [
 							}
 						},
 						"path": "@airport/travel-document-checkpoint"
+					},
+					"IOC": {
+						"fileImports": null,
+						"isLocal": false,
+						"objectMapByAsName": {
+							"IOC": {
+								"asName": "IOC",
+								"moduleImport": null,
+								"sourceName": "IOC"
+							}
+						},
+						"path": "@airport/direction-indicator"
+					},
+					"AIR_ENTITY_UTILS": {
+						"fileImports": null,
+						"isLocal": false,
+						"objectMapByAsName": {
+							"AIR_ENTITY_UTILS": {
+								"asName": "AIR_ENTITY_UTILS",
+								"moduleImport": null,
+								"sourceName": "AIR_ENTITY_UTILS"
+							}
+						},
+						"path": "@airport/aviation-communication"
 					}
 				},
 				"importMapByModulePath": {
@@ -235,7 +259,9 @@ export const MAPPED_SUPERCLASS = [
 					"../infrastructure/Actor": null,
 					"../common": null,
 					"./Repository": null,
-					"@airport/travel-document-checkpoint": null
+					"@airport/travel-document-checkpoint": null,
+					"@airport/direction-indicator": null,
+					"@airport/aviation-communication": null
 				}
 			},
 			"properties": [
@@ -496,33 +522,7 @@ export const MAPPED_SUPERCLASS = [
 					"index": 8
 				},
 				{
-					"decorators": [
-						{
-							"name": "Transient",
-							"values": []
-						}
-					],
-					"isGenerated": false,
-					"isId": false,
-					"isMappedSuperclass": false,
-					"isTransient": true,
-					"name": "id",
-					"optional": true,
-					"type": "string",
-					"ownerEntity": null,
-					"nonArrayType": "string",
-					"primitive": "string"
-				},
-				{
-					"decorators": [
-						{
-							"name": "Transient",
-							"values": []
-						}
-					],
-					"isGenerated": false,
-					"isId": false,
-					"isMappedSuperclass": false,
+					"decorators": [],
 					"isTransient": true,
 					"name": "createdBy",
 					"optional": true,
@@ -531,15 +531,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "User"
 				},
 				{
-					"decorators": [
-						{
-							"name": "Transient",
-							"values": []
-						}
-					],
-					"isGenerated": false,
-					"isId": false,
-					"isMappedSuperclass": false,
+					"decorators": [],
 					"isTransient": true,
 					"name": "isNew",
 					"optional": true,
@@ -547,12 +539,33 @@ export const MAPPED_SUPERCLASS = [
 					"ownerEntity": null,
 					"nonArrayType": "boolean",
 					"primitive": "boolean"
+				},
+				{
+					"decorators": [],
+					"isTransient": true,
+					"name": "id",
+					"optional": true,
+					"type": "string",
+					"ownerEntity": null,
+					"nonArrayType": "string",
+					"primitive": "string"
 				}
 			],
 			"methodSignatures": [],
 			"constructors": [
 				{
-					"parameters": [],
+					"parameters": [
+						{
+							"decorators": [],
+							"isGenerated": false,
+							"isId": false,
+							"isMappedSuperclass": false,
+							"isTransient": false,
+							"name": "entityGUID",
+							"optional": true,
+							"type": "string"
+						}
+					],
 					"returnType": "AirEntity"
 				}
 			]
@@ -617,7 +630,18 @@ export const MAPPED_SUPERCLASS = [
 			"methodSignatures": [],
 			"constructors": [
 				{
-					"parameters": [],
+					"parameters": [
+						{
+							"decorators": [],
+							"isGenerated": false,
+							"isId": false,
+							"isMappedSuperclass": false,
+							"isTransient": false,
+							"name": "entityGUID",
+							"optional": true,
+							"type": "string"
+						}
+					],
 					"returnType": "ChildRepoRow"
 				}
 			]
@@ -851,6 +875,30 @@ export const MAPPED_SUPERCLASS = [
 								}
 							},
 							"path": "@airport/travel-document-checkpoint"
+						},
+						"IOC": {
+							"fileImports": null,
+							"isLocal": false,
+							"objectMapByAsName": {
+								"IOC": {
+									"asName": "IOC",
+									"moduleImport": null,
+									"sourceName": "IOC"
+								}
+							},
+							"path": "@airport/direction-indicator"
+						},
+						"AIR_ENTITY_UTILS": {
+							"fileImports": null,
+							"isLocal": false,
+							"objectMapByAsName": {
+								"AIR_ENTITY_UTILS": {
+									"asName": "AIR_ENTITY_UTILS",
+									"moduleImport": null,
+									"sourceName": "AIR_ENTITY_UTILS"
+								}
+							},
+							"path": "@airport/aviation-communication"
 						}
 					},
 					"importMapByModulePath": {
@@ -858,7 +906,9 @@ export const MAPPED_SUPERCLASS = [
 						"../infrastructure/Actor": null,
 						"../common": null,
 						"./Repository": null,
-						"@airport/travel-document-checkpoint": null
+						"@airport/travel-document-checkpoint": null,
+						"@airport/direction-indicator": null,
+						"@airport/aviation-communication": null
 					}
 				},
 				"properties": [
@@ -1119,33 +1169,7 @@ export const MAPPED_SUPERCLASS = [
 						"index": 8
 					},
 					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
-						"isTransient": true,
-						"name": "id",
-						"optional": true,
-						"type": "string",
-						"ownerEntity": null,
-						"nonArrayType": "string",
-						"primitive": "string"
-					},
-					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
+						"decorators": [],
 						"isTransient": true,
 						"name": "createdBy",
 						"optional": true,
@@ -1154,15 +1178,7 @@ export const MAPPED_SUPERCLASS = [
 						"nonArrayType": "User"
 					},
 					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
+						"decorators": [],
 						"isTransient": true,
 						"name": "isNew",
 						"optional": true,
@@ -1170,12 +1186,33 @@ export const MAPPED_SUPERCLASS = [
 						"ownerEntity": null,
 						"nonArrayType": "boolean",
 						"primitive": "boolean"
+					},
+					{
+						"decorators": [],
+						"isTransient": true,
+						"name": "id",
+						"optional": true,
+						"type": "string",
+						"ownerEntity": null,
+						"nonArrayType": "string",
+						"primitive": "string"
 					}
 				],
 				"methodSignatures": [],
 				"constructors": [
 					{
-						"parameters": [],
+						"parameters": [
+							{
+								"decorators": [],
+								"isGenerated": false,
+								"isId": false,
+								"isMappedSuperclass": false,
+								"isTransient": false,
+								"name": "entityGUID",
+								"optional": true,
+								"type": "string"
+							}
+						],
 						"returnType": "AirEntity"
 					}
 				]
@@ -1323,7 +1360,18 @@ export const MAPPED_SUPERCLASS = [
 			"methodSignatures": [],
 			"constructors": [
 				{
-					"parameters": [],
+					"parameters": [
+						{
+							"decorators": [],
+							"isGenerated": false,
+							"isId": false,
+							"isMappedSuperclass": false,
+							"isTransient": false,
+							"name": "entityGUID",
+							"optional": true,
+							"type": "string"
+						}
+					],
 					"returnType": "ImmutableRepoRow"
 				}
 			]
@@ -1557,6 +1605,30 @@ export const MAPPED_SUPERCLASS = [
 								}
 							},
 							"path": "@airport/travel-document-checkpoint"
+						},
+						"IOC": {
+							"fileImports": null,
+							"isLocal": false,
+							"objectMapByAsName": {
+								"IOC": {
+									"asName": "IOC",
+									"moduleImport": null,
+									"sourceName": "IOC"
+								}
+							},
+							"path": "@airport/direction-indicator"
+						},
+						"AIR_ENTITY_UTILS": {
+							"fileImports": null,
+							"isLocal": false,
+							"objectMapByAsName": {
+								"AIR_ENTITY_UTILS": {
+									"asName": "AIR_ENTITY_UTILS",
+									"moduleImport": null,
+									"sourceName": "AIR_ENTITY_UTILS"
+								}
+							},
+							"path": "@airport/aviation-communication"
 						}
 					},
 					"importMapByModulePath": {
@@ -1564,7 +1636,9 @@ export const MAPPED_SUPERCLASS = [
 						"../infrastructure/Actor": null,
 						"../common": null,
 						"./Repository": null,
-						"@airport/travel-document-checkpoint": null
+						"@airport/travel-document-checkpoint": null,
+						"@airport/direction-indicator": null,
+						"@airport/aviation-communication": null
 					}
 				},
 				"properties": [
@@ -1825,33 +1899,7 @@ export const MAPPED_SUPERCLASS = [
 						"index": 8
 					},
 					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
-						"isTransient": true,
-						"name": "id",
-						"optional": true,
-						"type": "string",
-						"ownerEntity": null,
-						"nonArrayType": "string",
-						"primitive": "string"
-					},
-					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
+						"decorators": [],
 						"isTransient": true,
 						"name": "createdBy",
 						"optional": true,
@@ -1860,15 +1908,7 @@ export const MAPPED_SUPERCLASS = [
 						"nonArrayType": "User"
 					},
 					{
-						"decorators": [
-							{
-								"name": "Transient",
-								"values": []
-							}
-						],
-						"isGenerated": false,
-						"isId": false,
-						"isMappedSuperclass": false,
+						"decorators": [],
 						"isTransient": true,
 						"name": "isNew",
 						"optional": true,
@@ -1876,12 +1916,33 @@ export const MAPPED_SUPERCLASS = [
 						"ownerEntity": null,
 						"nonArrayType": "boolean",
 						"primitive": "boolean"
+					},
+					{
+						"decorators": [],
+						"isTransient": true,
+						"name": "id",
+						"optional": true,
+						"type": "string",
+						"ownerEntity": null,
+						"nonArrayType": "string",
+						"primitive": "string"
 					}
 				],
 				"methodSignatures": [],
 				"constructors": [
 					{
-						"parameters": [],
+						"parameters": [
+							{
+								"decorators": [],
+								"isGenerated": false,
+								"isId": false,
+								"isMappedSuperclass": false,
+								"isTransient": false,
+								"name": "entityGUID",
+								"optional": true,
+								"type": "string"
+							}
+						],
 						"returnType": "AirEntity"
 					}
 				]
@@ -2237,7 +2298,7 @@ export const MAPPED_SUPERCLASS = [
 						],
 						"idColumnMap": null,
 						"_localId": null,
-						"index": 3,
+						"index": 5,
 						"isLocal": true,
 						"isAirEntity": false,
 						"name": "User",
@@ -2666,7 +2727,18 @@ export const MAPPED_SUPERCLASS = [
 			"methodSignatures": [],
 			"constructors": [
 				{
-					"parameters": [],
+					"parameters": [
+						{
+							"decorators": [],
+							"isGenerated": false,
+							"isId": false,
+							"isMappedSuperclass": false,
+							"isTransient": false,
+							"name": "entityGUID",
+							"optional": true,
+							"type": "string"
+						}
+					],
 					"returnType": "MutableRepoRow"
 				}
 			]
@@ -2759,7 +2831,18 @@ export const MAPPED_SUPERCLASS = [
 				"methodSignatures": [],
 				"constructors": [
 					{
-						"parameters": [],
+						"parameters": [
+							{
+								"decorators": [],
+								"isGenerated": false,
+								"isId": false,
+								"isMappedSuperclass": false,
+								"isTransient": false,
+								"name": "entityGUID",
+								"optional": true,
+								"type": "string"
+							}
+						],
 						"returnType": "ImmutableRepoRow"
 					}
 				]
@@ -2993,6 +3076,30 @@ export const MAPPED_SUPERCLASS = [
 									}
 								},
 								"path": "@airport/travel-document-checkpoint"
+							},
+							"IOC": {
+								"fileImports": null,
+								"isLocal": false,
+								"objectMapByAsName": {
+									"IOC": {
+										"asName": "IOC",
+										"moduleImport": null,
+										"sourceName": "IOC"
+									}
+								},
+								"path": "@airport/direction-indicator"
+							},
+							"AIR_ENTITY_UTILS": {
+								"fileImports": null,
+								"isLocal": false,
+								"objectMapByAsName": {
+									"AIR_ENTITY_UTILS": {
+										"asName": "AIR_ENTITY_UTILS",
+										"moduleImport": null,
+										"sourceName": "AIR_ENTITY_UTILS"
+									}
+								},
+								"path": "@airport/aviation-communication"
 							}
 						},
 						"importMapByModulePath": {
@@ -3000,7 +3107,9 @@ export const MAPPED_SUPERCLASS = [
 							"../infrastructure/Actor": null,
 							"../common": null,
 							"./Repository": null,
-							"@airport/travel-document-checkpoint": null
+							"@airport/travel-document-checkpoint": null,
+							"@airport/direction-indicator": null,
+							"@airport/aviation-communication": null
 						}
 					},
 					"properties": [
@@ -3261,33 +3370,7 @@ export const MAPPED_SUPERCLASS = [
 							"index": 8
 						},
 						{
-							"decorators": [
-								{
-									"name": "Transient",
-									"values": []
-								}
-							],
-							"isGenerated": false,
-							"isId": false,
-							"isMappedSuperclass": false,
-							"isTransient": true,
-							"name": "id",
-							"optional": true,
-							"type": "string",
-							"ownerEntity": null,
-							"nonArrayType": "string",
-							"primitive": "string"
-						},
-						{
-							"decorators": [
-								{
-									"name": "Transient",
-									"values": []
-								}
-							],
-							"isGenerated": false,
-							"isId": false,
-							"isMappedSuperclass": false,
+							"decorators": [],
 							"isTransient": true,
 							"name": "createdBy",
 							"optional": true,
@@ -3296,15 +3379,7 @@ export const MAPPED_SUPERCLASS = [
 							"nonArrayType": "User"
 						},
 						{
-							"decorators": [
-								{
-									"name": "Transient",
-									"values": []
-								}
-							],
-							"isGenerated": false,
-							"isId": false,
-							"isMappedSuperclass": false,
+							"decorators": [],
 							"isTransient": true,
 							"name": "isNew",
 							"optional": true,
@@ -3312,12 +3387,33 @@ export const MAPPED_SUPERCLASS = [
 							"ownerEntity": null,
 							"nonArrayType": "boolean",
 							"primitive": "boolean"
+						},
+						{
+							"decorators": [],
+							"isTransient": true,
+							"name": "id",
+							"optional": true,
+							"type": "string",
+							"ownerEntity": null,
+							"nonArrayType": "string",
+							"primitive": "string"
 						}
 					],
 					"methodSignatures": [],
 					"constructors": [
 						{
-							"parameters": [],
+							"parameters": [
+								{
+									"decorators": [],
+									"isGenerated": false,
+									"isId": false,
+									"isMappedSuperclass": false,
+									"isTransient": false,
+									"name": "entityGUID",
+									"optional": true,
+									"type": "string"
+								}
+							],
 							"returnType": "AirEntity"
 						}
 					]
@@ -3768,7 +3864,7 @@ export const MAPPED_SUPERCLASS = [
 							],
 							"idColumnMap": null,
 							"_localId": null,
-							"index": 3,
+							"index": 5,
 							"isLocal": true,
 							"isAirEntity": false,
 							"name": "User",

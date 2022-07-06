@@ -193,7 +193,7 @@ export class QueryResultsDeserializer
 				set(
 					idString: string
 				) {
-					return this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
+					this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
 				}
 			});
 		}

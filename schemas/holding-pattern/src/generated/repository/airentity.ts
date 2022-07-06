@@ -34,9 +34,9 @@ export interface IAirEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	id?: string;
 	createdBy?: User;
 	isNew?: boolean;
+	id?: string;
 
 	// Public Methods
 	

@@ -52,6 +52,9 @@ let AirEntityUtils = class AirEntityUtils {
         };
     }
     setId(idString, airEntity) {
+        if (!idString) {
+            return;
+        }
         let airEntityId = this.parseEGUID(idString);
         if (!airEntity.repository) {
             airEntity.repository = {

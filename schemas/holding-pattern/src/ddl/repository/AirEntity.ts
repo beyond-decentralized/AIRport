@@ -13,6 +13,8 @@ import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
 import { User } from '@airport/travel-document-checkpoint'
+import { IOC } from '@airport/direction-indicator'
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 
 /**
  * Created by Papa on 2/17/2017.
@@ -22,6 +24,12 @@ export type AirEntity_SystemWideOperationId = SystemWideOperationId
 
 @MappedSuperclass()
 export abstract class AirEntity {
+
+	constructor(
+		entityGUID?: string
+	) {
+		this.id = entityGUID
+	}
 
 	@Id()
 	@ManyToOne()
@@ -82,6 +90,31 @@ export abstract class AirEntity {
 	@Column({ name: 'ORIGINAL_ACTOR_RECORD_ID' })
 	originalActorRecordId?: AirEntity_ActorRecordId
 
+	/*
+	 *A transient convenience property to get the username of the
+	 * UserAccount that created the record.
+	 */
+	get createdBy(): User {
+		return this.actor.user
+	}
+
+	/**
+	 * A transient property, generated on the entity objects by the
+	 * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value
+	 * is:
+	 * 
+	 * 	true - this entity object has not been saved and does not have an id
+	 * 	false - this entity object has been saved and has an id
+	 * 
+	 * It does not check the existence of Id on the object - most of
+	 * the time existing objects are retrieved without a Id (only with
+	 * the _localId properties). 
+	 */
+	@Transient()
+	get isNew(): boolean {
+		return !!this._actorRecordId
+	}
+
 	/**
 	 * A transient aggregate property, generated on the entity objects by the
 	 * QueryResultsDeserializer.doSetPropertyDescriptors.  It is
@@ -103,29 +136,14 @@ export abstract class AirEntity {
 	 * 
 	 * Returns null if one of it's member Ids does not exist
 	 */
-	@Transient()
-	id?: string
+	get id(): string {
+		return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this)
+	}
 
-	/*
-	 *A transient convenience property to get the username of the
-	 * UserAccount that created the record.
-	 */
-	@Transient()
-	createdBy?: User
-
-	/**
-	 * A transient property, generated on the entity objects by the
-	 * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value
-	 * is:
-	 * 
-	 * 	true - this entity object has not been saved and does not have an id
-	 * 	false - this entity object has been saved and has an id
-	 * 
-	 * It does not check the existence of Id on the object - most of
-	 * the time existing objects are retrieved without a Id (only with
-	 * the _localId properties). 
-	 */
-	@Transient()
-	isNew?: boolean
+	set id(
+		entityGUID: string
+	) {
+		IOC.getSync(AIR_ENTITY_UTILS).setId(entityGUID, this)
+	}
 
 }

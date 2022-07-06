@@ -522,8 +522,26 @@ function serializeClass(symbol, decorators, classPath, fileImports, file) {
                         methodSignatures.push(serializeMethodDefinition(member));
                     }
                     break;
+                case tsc.SyntaxKind.GetAccessor:
+                    // 		if (flags & 8 /* NoTruncation */) {
+                    // if (flags & 256 /* UseFullyQualifiedType */) {
+                    // if (flags & 4096 /* SuppressAnyReturnType */) {
+                    // if (flags & 1 /* WriteArrayAsGenericType */) {
+                    // if (flags & 64 /* WriteTypeArgumentsOfSignature */) {
+                    let type = globalThis.checker.typeToString(globalThis.checker.getTypeOfSymbolAtLocation(member, member.valueDeclaration), file);
+                    properties.push({
+                        decorators: [],
+                        isTransient: true,
+                        name: member.getName(),
+                        optional: true,
+                        // documentation:
+                        // tsc.displayPartsToString(symbol.getDocumentationComment(undefined)),
+                        type
+                    });
+                    break;
                 default:
-                    throw new Error(`Not implemented`);
+                    // skip
+                    break;
             }
         }
         else if (member.declarations) {
