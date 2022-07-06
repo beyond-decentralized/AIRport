@@ -6,7 +6,7 @@ export interface IRepositoryDao extends IBaseRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryGUID: Repository_GUID, context: IContext): Promise<IRepository>;
     findWithOwnerBy_LocalIds(repositoryIds: Repository_LocalId[]): Promise<IRepository[]>;
     findByGUIDs(repositoryGUIDs: Repository_GUID[]): Promise<IRepository[]>;
-    findWithLocationAndOwnerAndTheirLocationBy_LocalIds(repository_localIds: Repository_LocalId[]): Promise<IRepository[]>;
+    findWithOwnerBy_LocalIdIn(repository_localIds: Repository_LocalId[]): Promise<IRepository[]>;
     insert(repositories: IRepository[], context: IContext): Promise<void>;
 }
 export declare type RepositoryIdMap = Map<User_GUID, Map<Terminal_GUID, Map<User_GUID, Map<Actor_GUID, Map<number, Map<Repository_GUID, Repository_LocalId>>>>>>;
@@ -14,7 +14,7 @@ export declare class RepositoryDao extends BaseRepositoryDao implements IReposit
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryGUID: Repository_GUID, context: IContext): Promise<IRepository>;
     findReposWithDetailsAndSyncNodeIds(repositoryIds: Repository_LocalId[]): Promise<IRepository[]>;
     findWithOwnerBy_LocalIds(repositoryIds: Repository_LocalId[]): Promise<IRepository[]>;
-    findWithLocationAndOwnerAndTheirLocationBy_LocalIds(repository_localIds: Repository_LocalId[]): Promise<IRepository[]>;
+    findWithOwnerBy_LocalIdIn(repository_localIds: Repository_LocalId[]): Promise<IRepository[]>;
     findByGUIDs(repositoryGUIDs: Repository_GUID[]): Promise<IRepository[]>;
     insert(repositories: IRepository[], context: IContext): Promise<void>;
 }

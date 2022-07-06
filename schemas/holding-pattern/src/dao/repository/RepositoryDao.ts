@@ -43,7 +43,7 @@ export interface IRepositoryDao
 		repositoryGUIDs: Repository_GUID[],
 	): Promise<IRepository[]>
 
-	findWithLocationAndOwnerAndTheirLocationBy_LocalIds(
+	findWithOwnerBy_LocalIdIn(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]>
 
@@ -137,7 +137,7 @@ export class RepositoryDao
 		})
 	}
 
-	async findWithLocationAndOwnerAndTheirLocationBy_LocalIds(
+	async findWithOwnerBy_LocalIdIn(
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository,
@@ -145,45 +145,9 @@ export class RepositoryDao
 		return await this.db.find.graph({
 			select: {
 				'*': Y,
-				continent: {
-					id: Y,
-					name: Y
-				},
-				country: {
-					abbreviation: Y,
-					id: Y,
-					name: Y,
-				},
-				metroArea: {
-					id: Y,
-					name: Y,
-				},
-				state: {
-					abbreviation: Y,
-					id: Y,
-					name: Y
-				},
 				owner: {
 					_localId: Y,
-					continent: {
-						id: Y,
-						name: Y
-					},
-					country: {
-						abbreviation: Y,
-						id: Y,
-						name: Y,
-					},
 					GUID: Y,
-					metroArea: {
-						id: Y,
-						name: Y,
-					},
-					state: {
-						abbreviation: Y,
-						id: Y,
-						name: Y
-					},
 					ranking: Y,
 					username: Y
 				}

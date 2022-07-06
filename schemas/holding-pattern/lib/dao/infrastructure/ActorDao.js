@@ -60,32 +60,14 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.GUID.in(actorGUIDs)
         });
     }
-    async findWithUsersAndTheirLocationBy_LocalIds(actor_localIds) {
+    async findWithUsersBy_LocalIdIn(actor_localIds) {
         let a, u;
         return await this.db.find.graph({
             select: {
                 '*': Y,
                 user: {
                     _localId: Y,
-                    continent: {
-                        id: Y,
-                        name: Y
-                    },
-                    country: {
-                        abbreviation: Y,
-                        id: Y,
-                        name: Y,
-                    },
                     GUID: Y,
-                    metroArea: {
-                        id: Y,
-                        name: Y,
-                    },
-                    state: {
-                        abbreviation: Y,
-                        id: Y,
-                        name: Y
-                    },
                     ranking: Y,
                     username: Y
                 }

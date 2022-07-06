@@ -59,7 +59,7 @@ let QueryManager = class QueryManager {
             actorIdSet.add(actorLocalId);
         }
         const actorLocalIds = Array.from(actorIdSet);
-        const actors = await this.actorDao.findWithUsersAndTheirLocationBy_LocalIds(actorLocalIds);
+        const actors = await this.actorDao.findWithUsersBy_LocalIdIn(actorLocalIds);
         for (const actor of actors) {
             const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
             if (entitiesWithoutActorObject) {
@@ -74,7 +74,7 @@ let QueryManager = class QueryManager {
         }
         const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys());
         const repositories = await this.repositoryDao
-            .findWithLocationAndOwnerAndTheirLocationBy_LocalIds(repositoryLocalIds);
+            .findWithOwnerBy_LocalIdIn(repositoryLocalIds);
         for (const repository of repositories) {
             const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId);
             for (const entity of entiesWithoutRepositoryObject) {
