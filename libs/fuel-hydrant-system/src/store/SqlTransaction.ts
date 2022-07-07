@@ -14,16 +14,14 @@ import {
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
-import { IRepositoryTransactionHistory, ITransactionHistory } from '@airport/holding-pattern'
+import {  ITransactionHistory } from '@airport/holding-pattern'
 import {
-    ICredentials,
     IOperationContext,
     IStoreDriver,
     ITransaction,
     ITransactionContext,
     ITransactionCredentials
 } from '@airport/terminal-map'
-import { Observable } from 'rxjs'
 import { v4 as guidv4 } from "uuid";
 
 export abstract class SqlTransaction
@@ -120,24 +118,6 @@ export abstract class SqlTransaction
         context: IContext,
     ): Promise<any> {
         // Nothing to do
-    }
-
-    search<E, EntityArray extends Array<E>>(
-        portableQuery: PortableQuery,
-        internalFragments: InternalFragments,
-        context: IContext,
-        cachedSqlQueryId?: number,
-    ): Observable<EntityArray> {
-        return this.driver.search(portableQuery, internalFragments, context, cachedSqlQueryId)
-    }
-
-    searchOne<E>(
-        portableQuery: PortableQuery,
-        internalFragments: InternalFragments,
-        context: IContext,
-        cachedSqlQueryId?: number,
-    ): Observable<E> {
-        return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId)
     }
 
     async startTransaction(

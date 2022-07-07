@@ -6,15 +6,18 @@ import {
 	USER_PROPERTY_NAME
 } from '@airport/air-traffic-control'
 import {
+	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import { IObservableQueryAdapter } from '@airport/flight-number'
 import {
 	DbEntity,
 	DbProperty,
 	ensureChildArray,
 	EntityRelationType,
 	IActor,
+	InternalFragments,
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
 import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern'
@@ -26,9 +29,18 @@ import {
 } from '@airport/terminal-map'
 import { Observable } from 'rxjs'
 
-interface IOperationUniqueIdContainer {
-	operationUniqueId: number
+interface StoreDriverObservableMethod<E> {
+	(
+		portableQuery: PortableQuery,
+		internalFragments: InternalFragments,
+		context: IContext,
+		cachedSqlQueryId?: number,
+	): Promise<E>
 }
+
+interface IFormatter {
+	(data: string, toUpper: boolean): string;
+};
 
 @Injected()
 export class QueryManager
@@ -39,6 +51,9 @@ export class QueryManager
 
 	@Inject()
 	airportDatabase: IAirportDatabase
+
+	@Inject()
+	observableQueryAdapter: IObservableQueryAdapter
 
 	@Inject()
 	repositoryDao: IRepositoryDao
@@ -84,10 +99,16 @@ export class QueryManager
 		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<EntityArray> {
-		// TODO: checking for presence of a repository in in an observable
-		// await this.ensureRepositoryPresenceAndCurrentState(context)
-
-		return this.storeDriver.search<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
+		return this.observableQueryAdapter.wrapInObservable(
+			portableQuery,
+			() => {
+				return this.storeDriver.find(portableQuery, {}, context)
+					.then((result: EntityArray) => {
+						return this.populateEntityGuidEntitiesAndUsers<E>(
+							portableQuery, result);
+					})
+			}
+		)
 	}
 
 	searchOne<E>(
@@ -95,10 +116,16 @@ export class QueryManager
 		context: IQueryOperationContext,
 		cachedSqlQueryId?: number,
 	): Observable<E> {
-		// TODO: checking for presence of a repository in in an observable
-		// await this.ensureRepositoryPresenceAndCurrentState(context)
-
-		return this.storeDriver.searchOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+		return this.observableQueryAdapter.wrapInObservable<E>(
+			portableQuery,
+			() => {
+				return this.storeDriver.findOne(portableQuery, {}, context)
+					.then((result: E) => {
+						return this.populateEntityGuidEntitiesAndUsers<E>(
+							portableQuery, [result])[0];
+					})
+			}
+		)
 	}
 
 	private async ensureRepositoryPresenceAndCurrentState(
@@ -109,10 +136,10 @@ export class QueryManager
 		}
 	}
 
-	private async populateEntityGuidEntitiesAndUsers<E, EntityArray extends Array<E>>(
+	private async populateEntityGuidEntitiesAndUsers<E>(
 		portableQuery: PortableQuery,
-		entities: EntityArray
-	): Promise<void> {
+		entities: Array<E>
+	): Promise<Array<E>> {
 		if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
 			&& portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
 			return
@@ -133,6 +160,8 @@ export class QueryManager
 			actorsToRetrieveUserForByLocalId
 		)
 		await this.populateRepositories(entityMapByRepositoryLocalId)
+
+		return entities
 	}
 
 	private markEntities<E, EntityArray extends Array<E>>(

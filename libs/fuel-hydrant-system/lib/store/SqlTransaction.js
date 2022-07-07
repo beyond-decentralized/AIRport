@@ -38,12 +38,6 @@ export class SqlTransaction {
     async initialize(dbName, context) {
         // Nothing to do
     }
-    search(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        return this.driver.search(portableQuery, internalFragments, context, cachedSqlQueryId);
-    }
-    searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        return this.driver.searchOne(portableQuery, internalFragments, context, cachedSqlQueryId);
-    }
     async startTransaction(transaction, context) {
         throw new Error(`Nested transactions are not supported`);
     }

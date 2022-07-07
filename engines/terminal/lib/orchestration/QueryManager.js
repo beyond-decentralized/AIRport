@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME, USER_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildArray, EntityRelationType, QueryResultType } from '@airport/ground-control';
+;
 let QueryManager = class QueryManager {
     async find(portableQuery, context, cachedSqlQueryId) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
@@ -21,14 +22,20 @@ let QueryManager = class QueryManager {
         return entity;
     }
     search(portableQuery, context, cachedSqlQueryId) {
-        // TODO: checking for presence of a repository in in an observable
-        // await this.ensureRepositoryPresenceAndCurrentState(context)
-        return this.storeDriver.search(portableQuery, {}, context, cachedSqlQueryId);
+        return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
+            return this.storeDriver.find(portableQuery, {}, context)
+                .then((result) => {
+                return this.populateEntityGuidEntitiesAndUsers(portableQuery, result);
+            });
+        });
     }
     searchOne(portableQuery, context, cachedSqlQueryId) {
-        // TODO: checking for presence of a repository in in an observable
-        // await this.ensureRepositoryPresenceAndCurrentState(context)
-        return this.storeDriver.searchOne(portableQuery, {}, context, cachedSqlQueryId);
+        return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
+            return this.storeDriver.findOne(portableQuery, {}, context)
+                .then((result) => {
+                return this.populateEntityGuidEntitiesAndUsers(portableQuery, [result])[0];
+            });
+        });
     }
     async ensureRepositoryPresenceAndCurrentState(context) {
         if (context.repository && context.repository.source && context.repository.GUID) {
@@ -48,6 +55,7 @@ let QueryManager = class QueryManager {
         this.markEntities(entities, new Set(), entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity);
         await this.populateActorsAndUsers(entityMapByActorRecordId, actorsToRetrieveUserForByLocalId);
         await this.populateRepositories(entityMapByRepositoryLocalId);
+        return entities;
     }
     markEntities(currentEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity) {
         for (const entity of currentEntities) {
@@ -153,6 +161,9 @@ __decorate([
 __decorate([
     Inject()
 ], QueryManager.prototype, "airportDatabase", void 0);
+__decorate([
+    Inject()
+], QueryManager.prototype, "observableQueryAdapter", void 0);
 __decorate([
     Inject()
 ], QueryManager.prototype, "repositoryDao", void 0);

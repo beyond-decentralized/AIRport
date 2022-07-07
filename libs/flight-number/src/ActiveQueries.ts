@@ -2,22 +2,22 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
+	ApplicationMap,
 	PortableQuery,
 	SyncApplicationMap
 } from '@airport/ground-control'
 import { Subject } from 'rxjs'
-import { SQLQuery } from '../sql/core/SQLQuery'
 
 /**
  * Created by shamsutdinov.artem on 8/8/2016.
  */
-export interface IActiveQueries {
+export interface IActiveQueries<SQLQuery extends IFieldMapped> {
 
-	queries: Map<PortableQuery, CachedSQLQuery>;
+	queries: Map<PortableQuery, CachedSQLQuery<SQLQuery>>;
 
 	add(
 		portableQuery: PortableQuery,
-		cachedSqlQuery: CachedSQLQuery
+		cachedSqlQuery: CachedSQLQuery<SQLQuery>
 	): void;
 
 	remove(
@@ -34,14 +34,14 @@ export interface IActiveQueries {
 }
 
 @Injected()
-export class ActiveQueries
-	implements IActiveQueries {
+export class ActiveQueries<SQLQuery extends IFieldMapped>
+	implements IActiveQueries<SQLQuery> {
 
-	queries: Map<PortableQuery, CachedSQLQuery> = new Map<PortableQuery, CachedSQLQuery>()
+	queries: Map<PortableQuery, CachedSQLQuery<SQLQuery>> = new Map<PortableQuery, CachedSQLQuery<SQLQuery>>()
 
 	add(
 		portableQuery: PortableQuery,
-		cachedSqlQuery: CachedSQLQuery
+		cachedSqlQuery: CachedSQLQuery<SQLQuery>
 	): void {
 		this.queries.set(portableQuery, cachedSqlQuery)
 	}
@@ -77,12 +77,16 @@ export class ActiveQueries
 	}
 }
 
-export interface CachedSQLQuery {
+export interface CachedSQLQuery<SQLQuery extends IFieldMapped> {
 	parameters: any[],
 	portableQuery: PortableQuery,
 	resultsSubject: Subject<any>,
 	rerun: boolean;
 	runQuery: Function,
-	sqlQuery: SQLQuery<any>,
+	sqlQuery: SQLQuery,
 	sql: string
+}
+
+export interface IFieldMapped {
+	getFieldMap(): ApplicationMap
 }

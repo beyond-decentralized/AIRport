@@ -1,9 +1,8 @@
 import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
+import { IActiveQueries } from '@airport/flight-number';
 import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, IDbApplicationUtils, IEntityStateManager, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { Observable } from 'rxjs';
 import { IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
 import { SQLDialect, SQLQuery } from '../sql/core/SQLQuery';
-import { IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
@@ -13,7 +12,7 @@ import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserF
  * Created by Papa on 9/9/2016.
  */
 export declare abstract class SqlDriver implements IStoreDriver {
-    activeQueries: IActiveQueries;
+    activeQueries: IActiveQueries<SQLQuery<any>>;
     airportDatabase: IAirportDatabase;
     applicationUtils: IApplicationUtils;
     dbApplicationUtils: IDbApplicationUtils;
@@ -62,8 +61,6 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract isValueValid(value: any, sqlDataType: SQLDataType, context: IFuelHydrantContext): boolean;
     abstract findNative(sqlQuery: string, parameters: any[], context: IFuelHydrantContext): Promise<any[]>;
     findOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext, cachedSqlQueryId?: number): Promise<E>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IFuelHydrantContext, cachedSqlQueryId?: number): Observable<E>;
     warn(message: string): void;
     abstract doesTableExist(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
     abstract dropTable(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;

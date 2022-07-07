@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { doEnsureContext } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { QueryResultType, SyncApplicationMap, } from '@airport/ground-control';
-import { Subject } from 'rxjs';
 import { SQLDelete } from '../sql/core/SQLDelete';
 import { SQLInsertValues } from '../sql/core/SQLInsertValues';
 import { SQLUpdate } from '../sql/core/SQLUpdate';
@@ -163,54 +162,6 @@ let SqlDriver = class SqlDriver {
             return results[0];
         }
         return null;
-    }
-    search(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject();
-        // TODO: Remove the query for the list of cached queries, that are checked every
-        //    time a mutation operation is run
-        // let resultsSubject                 = new Subject<EntityArray>(() => {
-        // 	if (resultsSubject.subscriptions.length < 1) {
-        // 					// Remove the query for the list of cached queries, that are checked every
-        // 					// time a mutation operation is run
-        // 					this.activeQueries.remove(portableQuery)
-        // 	}
-        // })
-        let cachedSqlQuery = {
-            resultsSubject: resultsSubject,
-            runQuery: () => {
-                this.find(portableQuery, internalFragments, context)
-                    .then((results) => {
-                    resultsSubject.next(results);
-                });
-            }
-        };
-        // this.queries.add(portableQuery, cachedSqlQuery);
-        cachedSqlQuery.runQuery();
-        return resultsSubject;
-    }
-    searchOne(portableQuery, internalFragments, context, cachedSqlQueryId) {
-        let resultsSubject = new Subject();
-        // TODO: Remove the query for the list of cached queries, that are checked every
-        //       time a mutation operation is run
-        // let resultsSubject                 = new Subject<E>(() => {
-        // 	if (resultsSubject.subscriptions.length < 1) {
-        // 					// Remove the query for the list of cached queries, that are checked every
-        // 					// time a mutation operation is run
-        // 					this.activeQueries.remove(portableQuery)
-        // 	}
-        // });
-        let cachedSqlQuery = {
-            resultsSubject: resultsSubject,
-            runQuery: () => {
-                this.findOne(portableQuery, internalFragments, context)
-                    .then((result) => {
-                    resultsSubject.next(result);
-                });
-            }
-        };
-        // this.queries.add(portableQuery, cachedSqlQuery);
-        cachedSqlQuery.runQuery();
-        return resultsSubject;
     }
     warn(message) {
         console.log(message);

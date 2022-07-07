@@ -6,9 +6,9 @@ import {
 import {
 	IContext
 } from '@airport/direction-indicator';
+import { IActiveQueries } from '@airport/flight-number';
 import {
-	IActiveQueries,
-	IIdGenerator,
+	IIdGenerator, SQLQuery,
 } from '@airport/fuel-hydrant-system';
 import {
 	INTERNAL_APP,
@@ -39,7 +39,7 @@ export class TransactionManager
 	implements ITransactionManager {
 
 	@Inject()
-	activeQueries: IActiveQueries
+	activeQueries: IActiveQueries<SQLQuery<any>>
 
 	@Inject()
 	idGenerator: IIdGenerator

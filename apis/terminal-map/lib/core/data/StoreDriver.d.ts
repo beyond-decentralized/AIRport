@@ -1,13 +1,7 @@
 import { IContext } from '@airport/direction-indicator';
-import { Observable } from 'rxjs';
-import { PortableQuery } from '@airport/ground-control/src/lingo/query/PortableQuery';
-import { DbEntity } from '@airport/ground-control/src/lingo/application/Entity';
-import { Application_Name, Domain_Name, FullApplication_Name } from '@airport/ground-control/src/lingo/application/Application';
-import { InternalFragments, IStoreOperator } from '@airport/ground-control/src/lingo/data/IStoreOperator';
-import { StoreType } from '@airport/ground-control/src/lingo/data/storeInfo';
+import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, IStoreOperator, JsonQuery, StoreType } from '@airport/ground-control';
 import { ITransaction } from '../../transaction/ITransaction';
 import { ITransactionContext } from '../../orchestration/TransactionManager';
-import { JsonQuery } from '@airport/ground-control';
 /**
  * Created by Papa on 6/10/2016.
  */
@@ -31,8 +25,6 @@ export interface IStoreDriver extends IStoreOperator {
         };
     }, context: IContext): string;
     initialize(dbName: string, context: IContext): Promise<any>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;

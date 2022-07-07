@@ -1,8 +1,18 @@
-import { doEnsureContext, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
+import {
+	doEnsureContext,
+	IAirportDatabase,
+	IApplicationUtils,
+	IQMetadataUtils,
+	IRelationManager,
+	IUtils
+} from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
+import {
+	IActiveQueries
+} from '@airport/flight-number';
 import {
 	Application_Name,
 	DbApplication,
@@ -27,10 +37,6 @@ import {
 	SyncApplicationMap,
 } from '@airport/ground-control';
 import {
-	Observable,
-	Subject
-} from 'rxjs';
-import {
 	IStoreDriver,
 	ITransaction,
 	ITransactionContext,
@@ -47,7 +53,6 @@ import { EntitySQLQuery } from '../sql/EntitySQLQuery';
 import { FieldSQLQuery } from '../sql/FieldSQLQuery';
 import { SheetSQLQuery } from '../sql/SheetSQLQuery';
 import { TreeSQLQuery } from '../sql/TreeSQLQuery';
-import { CachedSQLQuery, IActiveQueries } from './ActiveQueries';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
@@ -62,7 +67,7 @@ export abstract class SqlDriver
 	implements IStoreDriver {
 
 	@Inject()
-	activeQueries: IActiveQueries
+	activeQueries: IActiveQueries<SQLQuery<any>>
 
 	@Inject()
 	airportDatabase: IAirportDatabase
@@ -100,9 +105,7 @@ export abstract class SqlDriver
 	@Inject()
 	utils: IUtils
 
-	// public queries: ActiveQueries
 	public type: StoreType;
-	// protected airDb: IAirportDatabase
 	protected maxValues: number;
 
 	supportsLocalTransactions(
@@ -453,70 +456,6 @@ export abstract class SqlDriver
 			return <E>results[0];
 		}
 		return null;
-	}
-
-	search<E, EntityArray extends Array<E>>(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments,
-		context: IFuelHydrantContext,
-		cachedSqlQueryId?: number,
-	): Observable<EntityArray> {
-		let resultsSubject = new Subject<EntityArray>();
-
-		// TODO: Remove the query for the list of cached queries, that are checked every
-		//    time a mutation operation is run
-
-		// let resultsSubject                 = new Subject<EntityArray>(() => {
-		// 	if (resultsSubject.subscriptions.length < 1) {
-		// 					// Remove the query for the list of cached queries, that are checked every
-		// 					// time a mutation operation is run
-		// 					this.activeQueries.remove(portableQuery)
-		// 	}
-		// })
-		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
-			resultsSubject: resultsSubject,
-			runQuery: () => {
-				this.find(portableQuery, internalFragments, context)
-					.then((results: E[]) => {
-						resultsSubject.next(<EntityArray>results);
-					});
-			}
-		};
-		// this.queries.add(portableQuery, cachedSqlQuery);
-		cachedSqlQuery.runQuery();
-
-		return resultsSubject;
-	}
-
-	searchOne<E>(
-		portableQuery: PortableQuery,
-		internalFragments: InternalFragments,
-		context: IFuelHydrantContext,
-		cachedSqlQueryId?: number,
-	): Observable<E> {
-		let resultsSubject = new Subject<E>();
-		// TODO: Remove the query for the list of cached queries, that are checked every
-		//       time a mutation operation is run
-		// let resultsSubject                 = new Subject<E>(() => {
-		// 	if (resultsSubject.subscriptions.length < 1) {
-		// 					// Remove the query for the list of cached queries, that are checked every
-		// 					// time a mutation operation is run
-		// 					this.activeQueries.remove(portableQuery)
-		// 	}
-		// });
-		let cachedSqlQuery: CachedSQLQuery = <CachedSQLQuery><any>{
-			resultsSubject: resultsSubject,
-			runQuery: () => {
-				this.findOne(portableQuery, internalFragments, context)
-					.then((result: E) => {
-						resultsSubject.next(result);
-					});
-			}
-		};
-		// this.queries.add(portableQuery, cachedSqlQuery);
-		cachedSqlQuery.runQuery();
-
-		return resultsSubject;
 	}
 
 	warn(message: string) {

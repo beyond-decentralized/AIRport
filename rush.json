@@ -133,6 +133,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@airport/flight-number",
+      "projectFolder": "libs/flight-number",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/fuel-hydrant-system",
       "projectFolder": "libs/fuel-hydrant-system",
       "shouldPublish": true

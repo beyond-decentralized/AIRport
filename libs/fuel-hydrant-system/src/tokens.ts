@@ -2,7 +2,6 @@ import { lib } from '@airport/direction-indicator'
 import { ISubStatementSqlGenerator, SubStatementSqlGenerator } from './sql/core/SubStatementSqlGenerator'
 import { IObjectResultParserFactory, ObjectResultParserFactory } from './result/entity/ObjectResultParserFactory'
 import { ISQLQueryAdaptor } from './adaptor/SQLQueryAdaptor'
-import { ActiveQueries, IActiveQueries } from './store/ActiveQueries'
 import { IdGenerator, IIdGenerator } from './store/IdGenerator'
 import { IValidator, QValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
@@ -10,14 +9,10 @@ import { IStoreDriver, STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/termin
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER } from '@airport/ground-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { AIRPORT_DATABASE, APPLICATION_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, UTILS } from '@airport/air-traffic-control'
+import { ACTIVE_QUERIES } from '@airport/flight-number'
 
 const fuelHydrantSystem = lib('fuel-hydrant-system')
 
-export const ACTIVE_QUERIES = fuelHydrantSystem.token<IActiveQueries>({
-    class: ActiveQueries,
-    interface: 'IActiveQueries',
-    token: 'ACTIVE_QUERIES'
-})
 export const SUB_STATEMENT_SQL_GENERATOR = fuelHydrantSystem.token<ISubStatementSqlGenerator>({
     class: SubStatementSqlGenerator,
     interface: 'ISubStatementSqlGenerator',

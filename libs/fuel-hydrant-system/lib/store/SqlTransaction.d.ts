@@ -2,7 +2,6 @@ import { IContext } from '@airport/direction-indicator';
 import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
-import { Observable } from 'rxjs';
 export declare abstract class SqlTransaction implements ITransaction {
     protected driver: IStoreDriver;
     parentTransaction: ITransaction;
@@ -37,8 +36,6 @@ export declare abstract class SqlTransaction implements ITransaction {
         };
     }, context: IContext): string;
     initialize(dbName: string, context: IContext): Promise<any>;
-    search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<EntityArray>;
-    searchOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Observable<E>;
     startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     setupTransaction(context: ITransactionContext, parentTransaction?: ITransaction): Promise<ITransaction>;
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
