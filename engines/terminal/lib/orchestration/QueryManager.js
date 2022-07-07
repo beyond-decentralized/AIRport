@@ -35,15 +35,10 @@ let QueryManager = class QueryManager {
             await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context);
         }
     }
-    // TODO: if needed use the Entity structure of the incoming portable query
-    // to definitively process the results
     async populateEntityGuidEntitiesAndUsers(portableQuery, entities) {
-        switch (portableQuery.queryResultType) {
-            case QueryResultType.ENTITY_GRAPH:
-            case QueryResultType.ENTITY_TREE:
-                break;
-            default:
-                return;
+        if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
+            && portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
+            return;
         }
         const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
@@ -51,36 +46,8 @@ let QueryManager = class QueryManager {
         const entityMapByActorRecordId = new Map();
         const actorsToRetrieveUserForByLocalId = new Map();
         this.markEntities(entities, new Set(), entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity);
-        const actorIdSet = new Set();
-        for (const actorLocalId of entityMapByActorRecordId.keys()) {
-            actorIdSet.add(actorLocalId);
-        }
-        for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
-            actorIdSet.add(actorLocalId);
-        }
-        const actorLocalIds = Array.from(actorIdSet);
-        const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds);
-        for (const actor of actors) {
-            const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
-            if (entitiesWithoutActorObject) {
-                for (const entity of entitiesWithoutActorObject) {
-                    entity.actor = actor;
-                }
-            }
-            const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId);
-            if (actorWithoutUserObject) {
-                actorWithoutUserObject.user = actor.user;
-            }
-        }
-        const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys());
-        const repositories = await this.repositoryDao
-            .findWithOwnerBy_LocalIdIn(repositoryLocalIds);
-        for (const repository of repositories) {
-            const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId);
-            for (const entity of entiesWithoutRepositoryObject) {
-                entity.repository = repository;
-            }
-        }
+        await this.populateActorsAndUsers(entityMapByActorRecordId, actorsToRetrieveUserForByLocalId);
+        await this.populateRepositories(entityMapByRepositoryLocalId);
     }
     markEntities(currentEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity) {
         for (const entity of currentEntities) {
@@ -144,6 +111,40 @@ let QueryManager = class QueryManager {
                 .push(propertyValue);
         }
         return true;
+    }
+    async populateActorsAndUsers(entityMapByActorRecordId, actorsToRetrieveUserForByLocalId) {
+        const actorIdSet = new Set();
+        for (const actorLocalId of entityMapByActorRecordId.keys()) {
+            actorIdSet.add(actorLocalId);
+        }
+        for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
+            actorIdSet.add(actorLocalId);
+        }
+        const actorLocalIds = Array.from(actorIdSet);
+        const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds);
+        for (const actor of actors) {
+            const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
+            if (entitiesWithoutActorObject) {
+                for (const entity of entitiesWithoutActorObject) {
+                    entity.actor = actor;
+                }
+            }
+            const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId);
+            if (actorWithoutUserObject) {
+                actorWithoutUserObject.user = actor.user;
+            }
+        }
+    }
+    async populateRepositories(entityMapByRepositoryLocalId) {
+        const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys());
+        const repositories = await this.repositoryDao
+            .findWithOwnerBy_LocalIdIn(repositoryLocalIds);
+        for (const repository of repositories) {
+            const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId);
+            for (const entity of entiesWithoutRepositoryObject) {
+                entity.repository = repository;
+            }
+        }
     }
 };
 __decorate([

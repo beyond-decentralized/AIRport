@@ -17,5 +17,7 @@ export declare class QueryManager implements IQueryManager {
     private populateEntityGuidEntitiesAndUsers;
     private markEntities;
     private processRepositoryOrActor;
+    private populateActorsAndUsers;
+    private populateRepositories;
 }
 //# sourceMappingURL=QueryManager.d.ts.map

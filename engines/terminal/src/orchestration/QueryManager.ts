@@ -15,10 +15,9 @@ import {
 	ensureChildArray,
 	EntityRelationType,
 	IActor,
-	IEntityStateManager,
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
-import { Actor, Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern'
+import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern'
 import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/lib/dao/dao'
 import {
 	IQueryManager,
@@ -110,18 +109,13 @@ export class QueryManager
 		}
 	}
 
-	// TODO: if needed use the Entity structure of the incoming portable query
-	// to definitively process the results
 	private async populateEntityGuidEntitiesAndUsers<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		entities: EntityArray
 	): Promise<void> {
-		switch (portableQuery.queryResultType) {
-			case QueryResultType.ENTITY_GRAPH:
-			case QueryResultType.ENTITY_TREE:
-				break;
-			default:
-				return
+		if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
+			&& portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
+			return
 		}
 
 		const dbEntity = this.airportDatabase.applications[portableQuery.applicationIndex]
@@ -134,38 +128,11 @@ export class QueryManager
 		this.markEntities(entities, new Set(), entityMapByRepositoryLocalId,
 			entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity)
 
-		const actorIdSet = new Set<Actor_LocalId>()
-		for (const actorLocalId of entityMapByActorRecordId.keys()) {
-			actorIdSet.add(actorLocalId)
-		}
-		for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
-			actorIdSet.add(actorLocalId)
-		}
-		const actorLocalIds: number[] = Array.from(actorIdSet)
-		const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds)
-		for (const actor of actors) {
-			const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId)
-			if (entitiesWithoutActorObject) {
-				for (const entity of entitiesWithoutActorObject) {
-					entity.actor = actor
-				}
-			}
-			const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId)
-			if (actorWithoutUserObject) {
-				actorWithoutUserObject.user = actor.user
-			}
-		}
-
-		const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys())
-		const repositories = await this.repositoryDao
-			.findWithOwnerBy_LocalIdIn(repositoryLocalIds)
-
-		for (const repository of repositories) {
-			const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId)
-			for (const entity of entiesWithoutRepositoryObject) {
-				entity.repository = repository
-			}
-		}
+		await this.populateActorsAndUsers(
+			entityMapByActorRecordId,
+			actorsToRetrieveUserForByLocalId
+		)
+		await this.populateRepositories(entityMapByRepositoryLocalId)
 	}
 
 	private markEntities<E, EntityArray extends Array<E>>(
@@ -257,6 +224,48 @@ export class QueryManager
 		}
 
 		return true
+	}
+
+	private async populateActorsAndUsers(
+		entityMapByActorRecordId: Map<Actor_LocalId, any[]>,
+		actorsToRetrieveUserForByLocalId: Map<Actor_LocalId, IActor>
+	): Promise<void> {
+		const actorIdSet = new Set<Actor_LocalId>()
+		for (const actorLocalId of entityMapByActorRecordId.keys()) {
+			actorIdSet.add(actorLocalId)
+		}
+		for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
+			actorIdSet.add(actorLocalId)
+		}
+		const actorLocalIds: number[] = Array.from(actorIdSet)
+		const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds)
+		for (const actor of actors) {
+			const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId)
+			if (entitiesWithoutActorObject) {
+				for (const entity of entitiesWithoutActorObject) {
+					entity.actor = actor
+				}
+			}
+			const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId)
+			if (actorWithoutUserObject) {
+				actorWithoutUserObject.user = actor.user
+			}
+		}
+	}
+
+	private async populateRepositories(
+		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>
+	): Promise<void> {
+		const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys())
+		const repositories = await this.repositoryDao
+			.findWithOwnerBy_LocalIdIn(repositoryLocalIds)
+
+		for (const repository of repositories) {
+			const entiesWithoutRepositoryObject = entityMapByRepositoryLocalId.get(repository._localId)
+			for (const entity of entiesWithoutRepositoryObject) {
+				entity.repository = repository
+			}
+		}
 	}
 
 }
