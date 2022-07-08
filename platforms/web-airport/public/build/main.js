@@ -19653,7 +19653,7 @@ const APPLICATION$1 = {
 const APPLICATION = {
     "domain": "air",
     "index": null,
-    "name": "@airport/moving-walkway",
+    "name": "@airport/layover",
     "sinceVersion": 1,
     "versions": [
         {
@@ -29345,7 +29345,7 @@ const __constructors__$1 = {
 const Q_APPLICATION$1 = {
     __constructors__: __constructors__$1,
     domain: 'air',
-    name: '@airport/moving-walkway'
+    name: '@airport/layover'
 };
 const Q$1 = Q_APPLICATION$1;
 function duoDiSet$1(dbEntityId) {
@@ -29543,7 +29543,7 @@ RecordUpdateStageDao = __decorate$J([
     Injected()
 ], RecordUpdateStageDao);
 
-const movingWalkway = lib$1('moving-walkway');
+const movingWalkway = lib$1('layover');
 const RECORD_UPDATE_STAGE_DAO = movingWalkway.token({
     class: RecordUpdateStageDao,
     interface: 'IRecordUpdateStageDao',

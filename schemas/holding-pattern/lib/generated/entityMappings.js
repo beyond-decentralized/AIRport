@@ -15,13 +15,6 @@ import { TransactionHistory } from '../ddl/history/TransactionHistory';
 import { RepositoryTransactionHistory } from '../ddl/history/RepositoryTransactionHistory';
 import { OperationHistory } from '../ddl/history/OperationHistory';
 import { AirEntity } from '../ddl/repository/AirEntity';
-import { ChildRepoRow } from '../ddl/traditional/ChildRepoRow';
-import { ChildRow } from '../ddl/traditional/ChildRow';
-import { ImmutableRepoRow } from '../ddl/traditional/ImmutableRepoRow';
-import { ImmutableRow } from '../ddl/traditional/ImmutableRow';
-import { MutableRepoRow } from '../ddl/traditional/MutableRepoRow';
-import { MutableRow } from '../ddl/traditional/MutableRow';
-import { ReferenceRow } from '../ddl/traditional/ReferenceRow';
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'holding-pattern');
     accumulator.add(Actor, 0);
@@ -38,12 +31,5 @@ DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     accumulator.add(RepositoryTransactionHistory, 11);
     accumulator.add(OperationHistory, 12);
     accumulator.add(AirEntity, undefined);
-    accumulator.add(ChildRepoRow, undefined);
-    accumulator.add(ChildRow, undefined);
-    accumulator.add(ImmutableRepoRow, undefined);
-    accumulator.add(ImmutableRow, undefined);
-    accumulator.add(MutableRepoRow, undefined);
-    accumulator.add(MutableRow, undefined);
-    accumulator.add(ReferenceRow, undefined);
 });
 //# sourceMappingURL=entityMappings.js.map

@@ -6,7 +6,7 @@ Implementation platform adapters.
 Deployable AIRport tab for the Web.
 
 [web-terminal](./web-terminal)
-Core AIRport logic adapter for the Web.
+Core AIRport adapter for the Web.
 
 [web-tower](./web-tower)
-Application VM logic adapter for the Web.
+Application VM adapter for the Web.

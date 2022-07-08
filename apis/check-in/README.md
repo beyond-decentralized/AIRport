@@ -1,7 +1,19 @@
 # check-in
 
-"Airport check-in is the process whereby passengers (data entities)
-are accepted by an airline (your application) at the airport prior
-to travel (running of the application)."
+TODO:
+Split out DAOs to ORMs\tmc
+move Selector to @airport/apron
 
-Data Access Object (DAO) and serialization APIs.
+## Why the name 
+
+"Airport check-in is the process whereby passengers 
+are accepted by an airline at the airport prior
+to travel."
+
+@airport/check-in defines interfaces for application API definitions.
+
+## Description
+
+Interfaces for @Api() implementation
+
+Currently also hosts Data Access Object (DAO) and serialization APIs.

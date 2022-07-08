@@ -1016,6 +1016,76 @@ export declare const BLUEPRINT: ({
                 isGenerated: boolean;
                 manyRelationColumnRefs: {
                     manyRelationIndex: number;
+                    oneApplication_Index: any;
+                    oneTableIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            } | {
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
+                    oneApplication_Index: any;
+                    oneTableIndex: number;
+                    oneRelationIndex: number;
+                    oneColumnIndex: number;
+                    sinceVersion: number;
+                }[];
+                name: string;
+                notNull: boolean;
+                propertyRefs: {
+                    index: number;
+                }[];
+                sinceVersion: number;
+                type: string;
+            })[];
+            idColumnRefs: {
+                index: number;
+            }[];
+            index: number;
+            isLocal: boolean;
+            isAirEntity: boolean;
+            name: string;
+            properties: {
+                index: number;
+                isId: boolean;
+                name: string;
+                relationRef: {
+                    index: number;
+                };
+                sinceVersion: number;
+            }[];
+            relations: {
+                index: number;
+                isId: boolean;
+                relationType: string;
+                propertyRef: {
+                    index: number;
+                };
+                relationTableIndex: number;
+                sinceVersion: number;
+            }[];
+            sinceVersion: number;
+            tableConfig: {
+                name: string;
+                columnIndexes: any[];
+                propertyIndexes?: undefined;
+            };
+            operations?: undefined;
+        } | {
+            columns: ({
+                index: number;
+                isGenerated: boolean;
+                manyRelationColumnRefs: {
+                    manyRelationIndex: number;
                     oneApplication_Index: number;
                     oneTableIndex: number;
                     oneColumnIndex: number;
@@ -1101,76 +1171,6 @@ export declare const BLUEPRINT: ({
                 propertyIndexes?: undefined;
             };
             operations: {};
-        } | {
-            columns: ({
-                index: number;
-                isGenerated: boolean;
-                manyRelationColumnRefs: {
-                    manyRelationIndex: number;
-                    oneApplication_Index: any;
-                    oneTableIndex: number;
-                    oneColumnIndex: number;
-                    sinceVersion: number;
-                }[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-            } | {
-                index: number;
-                isGenerated: boolean;
-                manyRelationColumnRefs: {
-                    manyRelationIndex: number;
-                    oneApplication_Index: any;
-                    oneTableIndex: number;
-                    oneRelationIndex: number;
-                    oneColumnIndex: number;
-                    sinceVersion: number;
-                }[];
-                name: string;
-                notNull: boolean;
-                propertyRefs: {
-                    index: number;
-                }[];
-                sinceVersion: number;
-                type: string;
-            })[];
-            idColumnRefs: {
-                index: number;
-            }[];
-            index: number;
-            isLocal: boolean;
-            isAirEntity: boolean;
-            name: string;
-            properties: {
-                index: number;
-                isId: boolean;
-                name: string;
-                relationRef: {
-                    index: number;
-                };
-                sinceVersion: number;
-            }[];
-            relations: {
-                index: number;
-                isId: boolean;
-                relationType: string;
-                propertyRef: {
-                    index: number;
-                };
-                relationTableIndex: number;
-                sinceVersion: number;
-            }[];
-            sinceVersion: number;
-            tableConfig: {
-                name: string;
-                columnIndexes: any[];
-                propertyIndexes?: undefined;
-            };
-            operations?: undefined;
         } | {
             columns: {
                 index: number;

@@ -28,7 +28,7 @@ cd ../travel-document-checkpoint
 tsc
 cd ../holding-pattern
 tsc
-cd ../moving-walkway
+cd ../layover
 tsc
 cd ../blueprint
 tsc

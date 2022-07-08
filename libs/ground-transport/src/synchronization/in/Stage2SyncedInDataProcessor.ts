@@ -30,7 +30,7 @@ import {
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues
-} from '@airport/moving-walkway'
+} from '@airport/layover'
 import { IApplication } from '@airport/airspace'
 import {
 	RecordUpdate,

@@ -20,7 +20,7 @@ import {
 } from '@airport/holding-pattern'
 import {
 	ISynchronizationConflict
-} from '@airport/moving-walkway'
+} from '@airport/layover'
 
 export type RemoteApplication_Index = Application_Index;
 export type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;

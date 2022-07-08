@@ -18,7 +18,7 @@ import {
 	ISynchronizationConflictDao,
 	ISynchronizationConflictValues,
 	ISynchronizationConflictValuesDao,
-} from '@airport/moving-walkway'
+} from '@airport/layover'
 import {
 	ITransaction
 } from '@airport/terminal-map'

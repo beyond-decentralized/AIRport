@@ -1,12 +1,14 @@
 # Flight Number
 
-Future work - Observables are not yet implemented.
+Future work - Observables are not yet fully implemented.  Should 
+they work on per-entity or per-repository basis?
 
 ## Why the name 
 
 "In the aviation industry, a flight number or flight designator is a code for an airline service consisting of two-character airline designator and a 1 to 4 digit number.[1] For example, "BA 98" is a British Airways service from Toronto-Pearson to London-Heathrow. A service is called "direct" if it is covered by a single flight number, regardless of the number of stops or equipment changes."
 
-One Flight Number is re-used across all flights for that service/route.
+One Flight Number is re-used across all flights for that service/route.  In AIRport
+one Observable observable is reused to get multiple data results over time.
 
 ## Description
 

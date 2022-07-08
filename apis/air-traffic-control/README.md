@@ -1,20 +1,17 @@
 # Air Traffic Control
 
-"Air Control - controls how an airplane (your application) lands
-and takes off (persists and retrieves data) from the airport."
+TODO: move the ORM part to ORMs\tmc
+## Why the name
 
-## Internal and external query APIs.
+"Air traffic control (ATC) is a service provided by ground-based air traffic controllers who direct aircraft on the ground and through a given section of controlled airspace, and can provide advisory services to aircraft in non-controlled airspace."
 
+ATC is (one of the ways) aircraft interfaces with an airport.  In @airport\air-traffic-control defines the interfaces needed for Applications
+to interact with AIRport
+## Description
 
-Main goals of it are:
+Currently @airport\air-traffic-control hosts the default ORM.  It will be moved
+to ORMs\tmc to allow for other ORM implementations.
 
-- Object Relational mapping w/ automatic Tree and Graph reconstruction
-- Ease of defining query result structure
-- Query compile-time checking
+ORM Documentation can be found [here](./doc/README.md).
 
-Air Control works with the help of query instrumentation.  Query APIs 
-are created vis automatic inspection of entity objects.
-
-It utilizes JPA-like decorators to record entity metadata.
-
-Documentation can be found [here](./doc/README.md).
+@airport\air-traffic-control also contains the core query and peristence interfaces.  They define how Applications interact with AIRport.

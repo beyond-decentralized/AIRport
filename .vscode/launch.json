@@ -91,29 +91,29 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "moving-walkway-dos",
+            "name": "layover-dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\moving-walkway\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\layover\\node_modules\\@airport\\runway\\lib\\index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\schemas\\moving-walkway",
+            "cwd": "${workspaceFolder}\\schemas\\layover",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "moving-walkway-sh",
+            "name": "layover-sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/moving-walkway/node_modules/@airport/runway/lib/index.js",
+            "program": "${workspaceFolder}/schemas/layover/node_modules/@airport/runway/lib/index.js",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}/schemas/moving-walkway",
+            "cwd": "${workspaceFolder}/schemas/layover",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {

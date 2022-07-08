@@ -35,7 +35,7 @@ import {
 import {
 	ISynchronizationConflict,
 	SynchronizationConflict_Type
-} from '@airport/moving-walkway'
+} from '@airport/layover'
 import {
 	ISyncInUtils,
 	ISyncRepoTransHistory,

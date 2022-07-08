@@ -13,12 +13,5 @@ export * from './repository/RepositoryClient';
 export * from './repository/RepositoryDatabase';
 export * from './repository/RepositoryTerminal';
 export * from './repository/RepositoryType';
-export * from './traditional/ChildRepoRow';
-export * from './traditional/ChildRow';
-export * from './traditional/ImmutableRepoRow';
-export * from './traditional/ImmutableRow';
-export * from './traditional/MutableRepoRow';
-export * from './traditional/MutableRow';
-export * from './traditional/ReferenceRow';
 export * from './common';
 //# sourceMappingURL=ddl.js.map

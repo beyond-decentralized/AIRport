@@ -7,18 +7,10 @@ import {
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
-import { QAirEntity } from './repository/qairentity';
-import { QChildRepoRow } from './traditional/qchildreporow';
-import { QChildRow } from './traditional/qchildrow';
-import { QImmutableRepoRow } from './traditional/qimmutablereporow';
-import { QImmutableRow } from './traditional/qimmutablerow';
-import { QMutableRepoRow } from './traditional/qmutablereporow';
-import { QMutableRow } from './traditional/qmutablerow';
 import { QOperationHistory } from './history/qoperationhistory';
 import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';
 import { QRecordHistoryOldValue } from './history/qrecordhistoryoldvalue';
-import { QReferenceRow } from './traditional/qreferencerow';
 import { QRepository } from './repository/qrepository';
 import { QRepositoryApplication } from './repository/qrepositoryapplication';
 import { QRepositoryClient } from './repository/qrepositoryclient';
@@ -30,17 +22,10 @@ import { QTransactionHistory } from './history/qtransactionhistory';
 import {
   Actor,
   AirEntity,
-  ChildRepoRow,
-  ChildRow,
-  ImmutableRepoRow,
-  ImmutableRow,
-  MutableRepoRow,
-  MutableRow,
   OperationHistory,
   RecordHistory,
   RecordHistoryNewValue,
   RecordHistoryOldValue,
-  ReferenceRow,
   Repository,
   RepositoryApplication,
   RepositoryClient,
@@ -74,17 +59,10 @@ export interface LocalQApplication extends QApplication {
 const __constructors__ = {
 	Actor: Actor,
 	AirEntity: AirEntity,
-	ChildRepoRow: ChildRepoRow,
-	ChildRow: ChildRow,
-	ImmutableRepoRow: ImmutableRepoRow,
-	ImmutableRow: ImmutableRow,
-	MutableRepoRow: MutableRepoRow,
-	MutableRow: MutableRow,
 	OperationHistory: OperationHistory,
 	RecordHistory: RecordHistory,
 	RecordHistoryNewValue: RecordHistoryNewValue,
 	RecordHistoryOldValue: RecordHistoryOldValue,
-	ReferenceRow: ReferenceRow,
 	Repository: Repository,
 	RepositoryApplication: RepositoryApplication,
 	RepositoryClient: RepositoryClient,

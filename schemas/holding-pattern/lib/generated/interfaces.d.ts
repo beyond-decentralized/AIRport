@@ -12,11 +12,4 @@ export * from './repository/repositoryclient';
 export * from './repository/repositorydatabase';
 export * from './repository/repositoryterminal';
 export * from './repository/repositorytype';
-export * from './traditional/childreporow';
-export * from './traditional/childrow';
-export * from './traditional/immutablereporow';
-export * from './traditional/immutablerow';
-export * from './traditional/mutablereporow';
-export * from './traditional/mutablerow';
-export * from './traditional/referencerow';
 //# sourceMappingURL=interfaces.d.ts.map

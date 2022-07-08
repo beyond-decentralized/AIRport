@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { getSysWideOpIds } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
-import { SynchronizationConflict_Type } from '@airport/moving-walkway';
+import { SynchronizationConflict_Type } from '@airport/layover';
 let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {
     /**
      * In stage one:

@@ -12,11 +12,4 @@ export * from './repository/qrepositoryclient';
 export * from './repository/qrepositorydatabase';
 export * from './repository/qrepositoryterminal';
 export * from './repository/qrepositorytype';
-export * from './traditional/qchildreporow';
-export * from './traditional/qchildrow';
-export * from './traditional/qimmutablereporow';
-export * from './traditional/qimmutablerow';
-export * from './traditional/qmutablereporow';
-export * from './traditional/qmutablerow';
-export * from './traditional/qreferencerow';
 //# sourceMappingURL=qInterfaces.js.map

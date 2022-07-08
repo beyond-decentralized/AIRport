@@ -1,6 +1,6 @@
 import { ApplicationColumn_Index, ApplicationEntity_LocalId, Application_Index, ApplicationVersion_LocalId } from '@airport/ground-control';
 import { Actor_LocalId, IOperationHistory, IRecordHistory, IRecordHistoryNewValue, IRepositoryTransactionHistory, RecordHistory_LocalId, AirEntity_ActorRecordId, Repository_LocalId } from '@airport/holding-pattern';
-import { ISynchronizationConflict } from '@airport/moving-walkway';
+import { ISynchronizationConflict } from '@airport/layover';
 export declare type RemoteApplication_Index = Application_Index;
 export declare type RemoteApplicationVersion_LocalId = ApplicationVersion_LocalId;
 export declare type RemoteActorId = Actor_LocalId;

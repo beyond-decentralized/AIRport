@@ -1,22 +1,20 @@
 # Direction/Heading Indicator
 
-"The heading indicator (HI), also known as a directional gyro or direction indicator, is a flight instrument used in an
-aircraft to inform the pilot of the aircraft's heading."
+## Why the name 
 
-AIRports own Inversion of Control (IoC) or Dependency Injection implementation. In AIRport all objects are injected on
-the stack.
+"The heading indicator (HI), also known as a directional gyro
+ or direction indicator, is a flight instrument used in an 
+ aircraft to inform the pilot of the aircraft's heading."
 
-Allows to keep track of nested transactions and request state.
+@airport/direction-indicator specifies how objects
+are injected in AIRport.  Also the first letters are the same
+as Dependency Injection.
 
-Also allows for seamless upgrades/bug fixes which can be done on the fly without having to re-start the AIRport
-application (or parent frame). This is important because AIRport runs on user devices and does not have a defined
-maintenance schedule, while servicing multiple applications that may run in background and fail if the local AIRport
-server is down
-(due to upgrades).
+## Description
 
-Additionaly full application replacements might cause cross-application dependency issues. Also state that is stored in
-an application would have to be wiped out.
+AIRports Inversion of Control (IoC)/Dependency Injection. 
 
-Updates are performed whenever the the application sees new version of the framework. TODO: If the users chooses they
-should be able to run AIRport in lockdown mode and verify all upgrades manually (though potentially breaking background
-applications that may not gracefully handle an outage of the local AIRport server).
+All objects are injected on the stack. Hence, it allows to
+keep track of nested transactions and request state (without
+having to pass around a context object in Application code).
+Will allow "on the fly" applcation upgrades.
