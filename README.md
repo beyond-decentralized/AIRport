@@ -265,7 +265,7 @@ Code generators.
 Libraries.
 
 [orms](/ORMs)
-ORMs.
+Object Relational Mapping frameworks.
 
 [platforms](/platforms)
 Platform adaptors for Web and Native.

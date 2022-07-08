@@ -20,6 +20,7 @@ export * from './dependencyInjection/InversionOfControl';
 export * from './dependencyInjection/RootContainer';
 export * from './dependencyInjection/Token';
 export * from './Context';
+export * from './extend';
 export * from './tokens';
 if (typeof window !== 'undefined') {
     window.DEPENDENCY_INJECTION = DEPENDENCY_INJECTION;

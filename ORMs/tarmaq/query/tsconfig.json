@@ -10,5 +10,5 @@
     "lib",
     "node_modules"
   ],
-  "extends": "../../tsconfig.core.json"
+  "extends": "../../../tsconfig.core.json"
 }

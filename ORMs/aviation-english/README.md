@@ -1,6 +1,6 @@
 # Aviation English
 
-FUTURE WORK: need help with parsing SQL
+FUTURE WORK: need help with parsing SQL and IDE auto-completion
 
 ## Why the name
 

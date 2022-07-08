@@ -1,0 +1,37 @@
+import { IApiOperation } from "./ApiOperation";
+
+export interface IApiRegistry {
+
+    initialize(
+        // installedApi: InstalledApi
+        applicationApi: IApplicationApi
+    ): void
+
+    findApiObjectAndOperation(
+        domainName: string,
+        applicationName: string,
+        apiInterfaceName: string,
+        methodName: string
+    ): Promise<{
+        apiObject: any,
+        apiOperation: IApiOperation
+    }>
+
+}
+
+export interface InstalledApi {
+    domainApiMap: { [domainName: string]: IDomainApi }
+}
+
+export interface IDomainApi {
+    applicationApiMap: { [applicationName: string]: IApplicationApi }
+}
+
+
+export interface IApplicationApi {
+    apiObjectMap: { [interfaceName: string]: IApiObject }
+}
+
+export interface IApiObject {
+    operationMap: { [operationKey: string]: IApiOperation }
+}

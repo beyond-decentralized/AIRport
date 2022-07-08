@@ -17,6 +17,7 @@ export * from './dependencyInjection/InversionOfControl';
 export * from './dependencyInjection/RootContainer';
 export * from './dependencyInjection/Token';
 export * from './Context';
+export * from './extend';
 export * from './tokens';
 export declare const IOC: InversionOfControl;
 //# sourceMappingURL=index.d.ts.map
