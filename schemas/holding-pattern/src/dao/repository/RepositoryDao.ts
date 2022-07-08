@@ -6,9 +6,9 @@ import {
 import { IContext, Injected } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {
-	QUser,
+	QUserAccount,
 	Terminal_GUID,
-	User_GUID
+	UserAccount_GUID
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_GUID,
@@ -54,8 +54,8 @@ export interface IRepositoryDao
 
 }
 
-export type RepositoryIdMap = Map<User_GUID,
-	Map<Terminal_GUID, Map<User_GUID,
+export type RepositoryIdMap = Map<UserAccount_GUID,
+	Map<Terminal_GUID, Map<UserAccount_GUID,
 		Map<Actor_GUID, Map<number,
 			Map<Repository_GUID, Repository_LocalId>>>>>>;
 
@@ -141,7 +141,7 @@ export class RepositoryDao
 		repository_localIds: Repository_LocalId[]
 	): Promise<IRepository[]> {
 		let r: QRepository,
-			o: QUser
+			o: QUserAccount
 		return await this.db.find.graph({
 			select: {
 				'*': Y,

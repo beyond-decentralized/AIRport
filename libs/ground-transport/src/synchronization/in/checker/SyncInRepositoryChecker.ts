@@ -64,9 +64,9 @@ export class SyncInRepositoryChecker
 
 			const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs)
 			for (const repository of repositories) {
-				const messageUserIndex = messageRepositoryIndexMap.get(repository.GUID)
-				if (messageUserIndex || messageUserIndex === 0) {
-					message.referencedRepositories[messageUserIndex] = repository
+				const messageUserAccountIndex = messageRepositoryIndexMap.get(repository.GUID)
+				if (messageUserAccountIndex || messageUserAccountIndex === 0) {
+					message.referencedRepositories[messageUserAccountIndex] = repository
 				} else {
 					// Populating ahead of potential insert is OK, object
 					// gets modified with required state on an insert
@@ -125,12 +125,12 @@ export class SyncInRepositoryChecker
 			throw new Error(`Expecting "in-message index" (number)
 				in 'repository.owner'`)
 		}
-		const user = message.users[repository.owner as any]
-		if (!user) {
+		const userAccount = message.userAccounts[repository.owner as any]
+		if (!userAccount) {
 			throw new Error(
-				`Did not find repository.owner (User) with "in-message index" ${repository.owner}`);
+				`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
 		}
-		repository.owner = user
+		repository.owner = userAccount
 
 		repositoryGUIDs.push(repository.GUID)
 		if (typeof repositoryIndex === 'number') {

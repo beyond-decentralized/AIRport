@@ -15,7 +15,7 @@ import { Continent } from '../locality/Continent'
 import { Country } from '../locality/Country'
 import { MetroArea } from '../locality/MetroArea'
 import { State } from '../locality/State'
-import { User } from '../User'
+import { UserAccount } from '../UserAccount'
 import { TerminalType } from './TerminalType'
 
 export type Terminal_LocalId = number;
@@ -44,10 +44,10 @@ export class Terminal {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'OWNER_USER_LID',
-		referencedColumnName: 'USER_LID', nullable: true
+		name: 'OWNER_USER_ACCOUNT_LID',
+		referencedColumnName: 'USER_ACCOUNT_LID', nullable: true
 	})
-	owner?: User
+	owner?: UserAccount
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()

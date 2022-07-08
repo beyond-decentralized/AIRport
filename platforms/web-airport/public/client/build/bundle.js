@@ -1035,7 +1035,7 @@ var app = (function (exports) {
         /**
          * Handle abrupt closes that do not originate from db.close().
          * This could happen, for example, if the underlying storage is
-         * removed or if the user clears the database in the browser's
+         * removed or if the userAccount clears the database in the browser's
          * history preferences.
          */
 
@@ -1340,9 +1340,9 @@ var app = (function (exports) {
 
     function averageResponseTime() {
       var defaultTime = 120;
-      var userAgent = navigator.userAgent.toLowerCase();
+      var userAccountAgent = navigator.userAccountAgent.toLowerCase();
 
-      if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
+      if (userAccountAgent.includes('safari') && !userAccountAgent.includes('chrome')) {
         // safari is much slower so this time is higher
         return defaultTime * 2;
       }
@@ -2236,7 +2236,7 @@ var app = (function (exports) {
            */
           leaderElector._dpLC = true;
 
-          leaderElector._dpL(); // message the lib user so the app can handle the problem
+          leaderElector._dpL(); // message the lib userAccount so the app can handle the problem
 
 
           _sendMessage(leaderElector, 'tell'); // ensure other leader also knows the problem
@@ -2339,7 +2339,7 @@ var app = (function (exports) {
     /**
      * because babel can only export on default-attribute,
      * we use this for the non-module-build
-     * this ensures that users do not have to use
+     * this ensures that userAccounts do not have to use
      * var BroadcastChannel = require('broadcast-channel').default;
      * but
      * var BroadcastChannel = require('broadcast-channel');

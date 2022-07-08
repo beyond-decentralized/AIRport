@@ -50,18 +50,18 @@ import {
 	IAgt,
 } from './agt';
 import {
-	UserTerminalAgtGraph,
-	UserTerminalAgtEId,
-	UserTerminalAgtEOptionalId,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtESelect,
-	QUserTerminalAgt,
-	QUserTerminalAgtQId,
-	QUserTerminalAgtQRelation,
-} from './quserterminalagt';
+	UserAccountTerminalAgtGraph,
+	UserAccountTerminalAgtEId,
+	UserAccountTerminalAgtEOptionalId,
+	UserAccountTerminalAgtEUpdateProperties,
+	UserAccountTerminalAgtESelect,
+	QUserAccountTerminalAgt,
+	QUserAccountTerminalAgtQId,
+	QUserAccountTerminalAgtQRelation,
+} from './quserAccountterminalagt';
 import {
-	IUserTerminalAgt,
-} from './userterminalagt';
+	IUserAccountTerminalAgt,
+} from './userAccountterminalagt';
 import {
 	ITerminalAgt,
 } from './terminalagt';
@@ -87,7 +87,7 @@ export interface TerminalAgtESelect
 	agt?: AgtESelect;
 
   // Non-Id relations (including OneToMany's)
-	userTerminalAgts?: UserTerminalAgtESelect;
+	userAccountTerminalAgts?: UserAccountTerminalAgtESelect;
 
 }
 
@@ -141,7 +141,7 @@ export interface TerminalAgtGraph
 	// Relations
 	terminal?: TerminalGraph;
 	agt?: AgtGraph;
-	userTerminalAgts?: UserTerminalAgtGraph[];
+	userAccountTerminalAgts?: UserAccountTerminalAgtGraph[];
 
 }
 
@@ -191,7 +191,7 @@ export interface QTerminalAgt extends IQEntity
 	password: IQStringField;
 
 	// Non-Id Relations
-	userTerminalAgts: IQOneToManyRelation<QUserTerminalAgt>;
+	userAccountTerminalAgts: IQOneToManyRelation<QUserAccountTerminalAgt>;
 
 }
 

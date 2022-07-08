@@ -1,5 +1,5 @@
 import {
-	USER_API,
+	USER_ACCOUNT_API,
 } from '../../to_be_generated/common-tokens';
 import {
 	DEPENDENCY_INJECTION,
@@ -13,51 +13,51 @@ import {
 	v4 as guidv4,
 } from 'uuid';
 import {
-	IUser,
-} from '../../generated/user';
+	IUserAccount,
+} from '../../generated/userAccount';
 import {
-	UserDao,
-} from '../../dao/UserDao';
+	UserAccountDao,
+} from '../../dao/UserAccountDao';
 
 
-export enum AddUserErrorCodes {
+export enum AddUserAccountErrorCodes {
     EMAIL_TAKEN = 'EMAIL_TAKEN',
     INVALID_BIRTH_MONTH = 'INVALID_BIRTH_MONTH',
     INVALID_COUNTRY = 'INVALID_COUNTRY',
     INVALID_EMAIL = 'INVALID_EMAIL',
     INVALID_USERNAME = 'INVALID_USERNAME',
-    USERNAME_TAKEN = 'USERNAME_TAKEN'
+    USER_ACCOUNTNAME_TAKEN = 'USER_ACCOUNTNAME_TAKEN'
 }
-export interface IAddUserResponse {
-    errorCode?: AddUserErrorCodes;
-    user?: IUser;
+export interface IAddUserAccountResponse {
+    errorCode?: AddUserAccountErrorCodes;
+    userAccount?: IUserAccount;
 }
 
 // An API stub for other Applications and UIs to use
 @Injected()
-export class UserApi {
+export class UserAccountApi {
 
     constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, USER_API)
+        DEPENDENCY_INJECTION.db().manualInject(this, USER_ACCOUNT_API)
     }
         
     @Inject()
-    userApi: UserApi
+    userAccountApi: UserAccountApi
             
-    async  addUser(
+    async  addUserAccount(
         username: string,
         email: string
-    ): Promise<IAddUserResponse> {
-        return await this.userApi.addUser(
+    ): Promise<IAddUserAccountResponse> {
+        return await this.userAccountApi.addUserAccount(
             username,
             email
         )
     }
 
-    async  findUser(
+    async  findUserAccount(
         privateId: string
-    ): Promise<IUser> {
-        return await this.userApi.findUser(privateId)
+    ): Promise<IUserAccount> {
+        return await this.userAccountApi.findUserAccount(privateId)
     }
 
 }

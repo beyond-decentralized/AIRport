@@ -14,40 +14,40 @@ import { Continent } from './locality/Continent'
 import { MetroArea } from './locality/MetroArea'
 import { State } from './locality/State'
 
-export type User_LocalId = number;
-export type User_GUID = string;
-export type User_Email = string;
-export type User_PasswordHash = string;
-export type User_Username = string;
+export type UserAccount_LocalId = number;
+export type UserAccount_GUID = string;
+export type UserAccount_Email = string;
+export type UserAccount_PasswordHash = string;
+export type UserAccount_UserAccountname = string;
 
 @Entity()
-export class User {
+export class UserAccount {
 
 	@Id()
 	@GeneratedValue()
 	@DbNumber()
-	@Column({ name: 'USER_LID' })
-	_localId?: User_LocalId;
+	@Column({ name: 'USER_ACCOUNT_LID' })
+	_localId?: UserAccount_LocalId;
 
 	@Column({ name: "EMAIL" })
 	@DbString()
-	email: User_Email
+	email: UserAccount_Email
 
 	@Column({ name: "PASSWORD_HASH" })
 	@DbString()
-	passwordHash?: User_PasswordHash
+	passwordHash?: UserAccount_PasswordHash
 
 	@Column({ name: "RANKING" })
 	@DbNumber()
 	ranking?: number
 
-	@Column({ name: "USERNAME" })
+	@Column({ name: "USER_ACCOUNTNAME" })
 	@DbString()
-	username: User_Username;
+	username: UserAccount_UserAccountname;
 
-	@Column({ name: "USER_GUID", nullable: false })
+	@Column({ name: "USER_ACCOUNT_GUID", nullable: false })
 	@DbString()
-	GUID?: User_GUID;
+	GUID?: UserAccount_GUID;
 
 	@ManyToOne()
 	@JoinColumn({

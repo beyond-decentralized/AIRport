@@ -1,11 +1,11 @@
-export interface ISaveUser {
+export interface ISaveUserAccount {
     _localId: number;
 }
 
 export interface ISaveActor {
     _localId: number;
     GUID?: string;
-    user?: ISaveUser;
+    userAccount?: ISaveUserAccount;
 }
 
 export interface ISaveRepository {

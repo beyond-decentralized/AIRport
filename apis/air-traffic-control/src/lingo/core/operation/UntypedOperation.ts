@@ -22,7 +22,7 @@ export interface IUntypedOperation
 
 /**
  * JSON representation of a boolean operation as it exists immediately after
- * user defining a query (to which the operation belongs).
+ * defining a query (to which the operation belongs).
  */
 export interface JSONRawUntypedOperation
 	extends JSONRawValueOperation<IQUntypedField> {

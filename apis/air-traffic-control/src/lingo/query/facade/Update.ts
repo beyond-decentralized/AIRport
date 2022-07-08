@@ -14,7 +14,7 @@ export interface AbstractRawUpdate<IQE extends IQEntity> {
 }
 
 /**
- * UPDATE statements are user-defined in this format.
+ * UPDATE statement format.
  */
 export interface RawUpdate<IEUP extends IEntityUpdateProperties, IQE extends IQEntity>
 	extends AbstractRawUpdate<IQE> {

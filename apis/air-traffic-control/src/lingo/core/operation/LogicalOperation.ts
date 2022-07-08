@@ -3,7 +3,7 @@ import {IOperation} from './Operation';
 
 /**
  * Serialized version of a logical operation. Same as exists immediately
- * after user defining a query (to which the operation belongs) - values
+ * after defining a query (to which the operation belongs) - values
  * are serialized subsequently.
  */
 export interface JSONLogicalOperation

@@ -213,7 +213,7 @@ export class QueryResultsDeserializer
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
 			Object.defineProperty(object, 'createdBy', {
 				get() {
-					return this.actor.user
+					return this.actor.userAccount
 				}
 			});
 		}

@@ -24,7 +24,7 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId
 } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { IUser, Terminal_LocalId, User_LocalId } from "@airport/travel-document-checkpoint";
+import { IUserAccount, Terminal_LocalId, UserAccount_LocalId } from "@airport/travel-document-checkpoint";
 
 export interface ISyncOutDataSerializer {
 
@@ -66,8 +66,8 @@ export interface InMessageApplicationLookup {
 	inMessageIndexesById: Map<Application_LocalId, number>
 	lastInMessageIndex: number
 }
-export interface InMessageUserLookup {
-	inMessageIndexesById: Map<User_LocalId, number>
+export interface InMessageUserAccountLookup {
+	inMessageIndexesById: Map<UserAccount_LocalId, number>
 	lastInMessageIndex: number
 }
 
@@ -118,7 +118,7 @@ export class SyncOutDataSerializer
 			messageRepository: repositoryTransactionHistory.repository,
 			repositoryInMessageIndexesById: new Map()
 		}
-		const inMessageUserLookup: InMessageUserLookup = {
+		const inMessageUserAccountLookup: InMessageUserAccountLookup = {
 			inMessageIndexesById: new Map(),
 			lastInMessageIndex: -1
 		}
@@ -130,27 +130,27 @@ export class SyncOutDataSerializer
 			history: null,
 			// Repositories may reference records in other repositories
 			referencedRepositories: [],
-			users: [],
+			userAccounts: [],
 			terminals: []
 		}
 		message.history = this.serializeRepositoryTransactionHistory(
-			repositoryTransactionHistory, message, lookups, inMessageUserLookup)
+			repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup)
 
 		// TODO: replace db lookups with TerminalState lookups where possible
 		await this.serializeRepositories(repositoryTransactionHistory, message,
-			lookups, inMessageUserLookup)
-		const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(
-			message, lookups, inMessageUserLookup)
+			lookups, inMessageUserAccountLookup)
+		const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(
+			message, lookups, inMessageUserAccountLookup)
 		await this.serializeApplicationsAndVersions(message,
 			inMessageApplicationLookup, lookups)
 
 		return message
 	}
 
-	private async serializeActorsUsersAndTerminals(
+	private async serializeActorsUserAccountsAndTerminals(
 		message: RepositorySynchronizationMessage,
 		lookups: InMessageLookupStructures,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): Promise<InMessageApplicationLookup> {
 		let actorIdsToFindBy: Actor_LocalId[] = []
 		for (let actorId of lookups.actorInMessageIndexesById.keys()) {
@@ -158,9 +158,9 @@ export class SyncOutDataSerializer
 		}
 		const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy)
 
-		this.serializeUsers(actors, message, inMessageUserLookup)
+		this.serializeUserAccounts(actors, message, inMessageUserAccountLookup)
 		const terminalInMessageIndexesById =
-			this.serializeTerminals(actors, message, inMessageUserLookup)
+			this.serializeTerminals(actors, message, inMessageUserAccountLookup)
 
 		const inMessageApplicationLookup: InMessageApplicationLookup = {
 			lastInMessageIndex: -1,
@@ -175,7 +175,7 @@ export class SyncOutDataSerializer
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
 				terminal: terminalInMessageIndexesById.get(actor.terminal._localId) as any,
-				user: inMessageUserLookup.inMessageIndexesById.get(actor.user._localId) as any,
+				userAccount: inMessageUserAccountLookup.inMessageIndexesById.get(actor.userAccount._localId) as any,
 				GUID: actor.GUID
 			}
 		}
@@ -186,7 +186,7 @@ export class SyncOutDataSerializer
 	private serializeTerminals(
 		actors: IActor[],
 		message: RepositorySynchronizationMessage,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): Map<Terminal_LocalId, number> {
 		let lastInMessageTerminalIndex = -1
 		const terminalInMessageIndexesById: Map<Terminal_LocalId, number> = new Map()
@@ -200,58 +200,58 @@ export class SyncOutDataSerializer
 			message.terminals[terminalInMessageIndex] = {
 				...WITH_ID,
 				GUID: terminal.GUID,
-				owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner._localId) as any
+				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId) as any
 			}
 		}
 
 		return terminalInMessageIndexesById
 	}
 
-	private serializeUsers(
+	private serializeUserAccounts(
 		actors: IActor[],
 		message: RepositorySynchronizationMessage,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): void {
 		for (const actor of actors) {
-			this.addUserToMessage(actor.user, message, inMessageUserLookup)
-			this.addUserToMessage(actor.terminal.owner, message, inMessageUserLookup)
+			this.addUserAccountToMessage(actor.userAccount, message, inMessageUserAccountLookup)
+			this.addUserAccountToMessage(actor.terminal.owner, message, inMessageUserAccountLookup)
 		}
 	}
 
-	private addUserToMessage(
-		user: IUser,
+	private addUserAccountToMessage(
+		userAccount: IUserAccount,
 		message: RepositorySynchronizationMessage,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): number {
-		let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup)
+		let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup)
 
-		message.users[userInMessageIndex] = {
+		message.userAccounts[userAccountInMessageIndex] = {
 			...WITH_ID,
-			username: user.username,
-			GUID: user.GUID
+			username: userAccount.username,
+			GUID: userAccount.GUID
 		}
 
-		return userInMessageIndex
+		return userAccountInMessageIndex
 	}
 
-	private getUserInMessageIndex(
-		user: IUser,
-		inMessageUserLookup: InMessageUserLookup
+	private getUserAccountInMessageIndex(
+		userAccount: IUserAccount,
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): number {
-		if (inMessageUserLookup.inMessageIndexesById.has(user._localId)) {
-			return inMessageUserLookup.inMessageIndexesById.get(user._localId)
+		if (inMessageUserAccountLookup.inMessageIndexesById.has(userAccount._localId)) {
+			return inMessageUserAccountLookup.inMessageIndexesById.get(userAccount._localId)
 		}
-		let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex
-		inMessageUserLookup.inMessageIndexesById.set(user._localId, userInMessageIndex)
+		let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex
+		inMessageUserAccountLookup.inMessageIndexesById.set(userAccount._localId, userAccountInMessageIndex)
 
-		return userInMessageIndex
+		return userAccountInMessageIndex
 	}
 
 	private async serializeRepositories(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		message: RepositorySynchronizationMessage,
 		lookups: InMessageLookupStructures,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): Promise<void> {
 		let repositoryIdsToFindBy: Repository_LocalId[] = []
 		for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
@@ -261,14 +261,14 @@ export class SyncOutDataSerializer
 		const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy)
 
 		for (const repository of repositories) {
-			let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup)
+			let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup)
 			if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
 				const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId)
 				message.referencedRepositories[repositoryInMessageIndex] =
-					this.serializeRepository(repository, userInMessageIndex as any)
+					this.serializeRepository(repository, userAccountInMessageIndex as any)
 			} else {
 				if (typeof message.history.repository !== 'string') {
-					message.history.repository.owner = userInMessageIndex as any
+					message.history.repository.owner = userAccountInMessageIndex as any
 					message.history.repository._localId = repository._localId
 				}
 			}
@@ -323,7 +323,7 @@ export class SyncOutDataSerializer
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		message: RepositorySynchronizationMessage,
 		lookups: InMessageLookupStructures,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): IRepositoryTransactionHistory {
 		repositoryTransactionHistory.operationHistory.sort((
 			operationHistory1,
@@ -348,7 +348,7 @@ export class SyncOutDataSerializer
 			...WITH_ID,
 			isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
 			repository: this.serializeHistoryRepository(
-				repositoryTransactionHistory, message, inMessageUserLookup),
+				repositoryTransactionHistory, message, inMessageUserAccountLookup),
 			operationHistory: serializedOperationHistory,
 			saveTimestamp: repositoryTransactionHistory.saveTimestamp,
 			GUID: repositoryTransactionHistory.GUID
@@ -358,14 +358,14 @@ export class SyncOutDataSerializer
 	private serializeHistoryRepository(
 		repositoryTransactionHistory: IRepositoryTransactionHistory,
 		message: RepositorySynchronizationMessage,
-		inMessageUserLookup: InMessageUserLookup
+		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): IRepository {
 		if (repositoryTransactionHistory.isRepositoryCreation) {
 			const repository = repositoryTransactionHistory.repository
-			let userInMessageIndex = this.addUserToMessage(
-				repository.owner, message, inMessageUserLookup)
+			let userAccountInMessageIndex = this.addUserAccountToMessage(
+				repository.owner, message, inMessageUserAccountLookup)
 
-			return this.serializeRepository(repository, userInMessageIndex as any)
+			return this.serializeRepository(repository, userAccountInMessageIndex as any)
 		} else {
 			// When this repositoryTransactionHistory processed at sync-in 
 			// the repository should already be loaded in the target database
@@ -569,7 +569,7 @@ export class SyncOutDataSerializer
 
 	private serializeRepository(
 		repository: IRepository,
-		owner: IUser
+		owner: IUserAccount
 	): IRepository {
 		return {
 			...WITH_ID,

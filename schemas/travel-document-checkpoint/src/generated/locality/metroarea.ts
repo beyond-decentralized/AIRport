@@ -5,8 +5,8 @@ import {
 	IMetroAreaState,
 } from './metroareastate';
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 
 
 
@@ -27,7 +27,7 @@ export interface IMetroArea {
 	// Non-Id Relations
 	country?: ICountry;
 	metroAreaStates?: IMetroAreaState[];
-	users?: IUser[];
+	userAccounts?: IUserAccount[];
 
 	// Transient Properties
 

@@ -11,7 +11,7 @@ import {
     Table
 } from "@airport/air-traffic-control";
 import { Continent } from "./Continent";
-import { User } from "../User";
+import { UserAccount } from "../UserAccount";
 
 export type Country_Abbreviation = string;
 export type Country_Id = number;
@@ -41,6 +41,6 @@ export class Country {
     continent: Continent
 
     @OneToMany({ mappedBy: 'country' })
-    users: User[]
+    userAccounts: UserAccount[]
 
 }

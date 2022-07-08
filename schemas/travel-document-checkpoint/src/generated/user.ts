@@ -20,7 +20,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IUser {
+export interface IUserAccount {
 	
 	// Id Properties
 	_localId?: number;

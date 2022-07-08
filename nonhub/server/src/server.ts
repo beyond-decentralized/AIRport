@@ -198,7 +198,7 @@ export function processUserRequest(
         })
         return
     }
-    const username = userRequest.userName
+    const username = userRequest.username
     const usernameRegexp = /^\S*$/
     if (typeof username !== 'string'
         || username.length < 3 || username.length > 32

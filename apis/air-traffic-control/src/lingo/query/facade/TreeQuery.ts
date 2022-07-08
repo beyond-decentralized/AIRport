@@ -10,7 +10,7 @@ export interface ITreeEntity {
 }
 
 /**
- * Non-Entity Tree queries are user-defined in this format.
+ * Non-Entity Tree query format.
  */
 export interface RawTreeQuery<ITC extends ITreeEntity> extends RawNonEntityQuery {
 	select: ITC | IQDistinctFunction<ITC>;

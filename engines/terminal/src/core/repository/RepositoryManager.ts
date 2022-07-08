@@ -93,7 +93,7 @@ already contains a new repository.`)
 			createdAt: new Date(),
 			_localId: null,
 			immutable: false,
-			owner: actor.user,
+			owner: actor.userAccount,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
 			// platformConfig: null,
 			repositoryTransactionHistory: [],

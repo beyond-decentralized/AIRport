@@ -97,7 +97,7 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
 
 /**
  * JSON representation of an operation as it exists immediately after
- * user defining a query (to which the operation belongs).
+ * defining a query (to which the operation belongs).
  *
  * All operations with a value assigned via an operator use this.
  */

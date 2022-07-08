@@ -11,7 +11,7 @@ import {
 import {
 	Client,
 	Terminal,
-	User
+	UserAccount
 } from '@airport/travel-document-checkpoint'
 import { Application } from '@airport/airspace';
 
@@ -33,11 +33,11 @@ export class Actor {
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'USER_LID',
-		referencedColumnName: 'USER_LID',
+		name: 'USER_ACCOUNT_LID',
+		referencedColumnName: 'USER_ACCOUNT_LID',
 		nullable: false
 	})
-	user: User
+	userAccount: UserAccount
 
 	@ManyToOne()
 	@JoinColumn({

@@ -4,7 +4,7 @@ import { IQOperableField } from '../../core/field/OperableField';
 import { RawQuery } from './Query';
 
 /**
- * All Non-Entity Queries are user-defined in this format.
+ * All Non-Entity Queries are defined in this format.
  */
 export interface RawNonEntityQuery extends RawQuery {
 	from: IFrom[];

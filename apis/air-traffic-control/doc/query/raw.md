@@ -10,7 +10,7 @@
 <!-- /TOC -->
 ## Summary
 
-Raw queries are defined by the users. Every query starts as an update
+Raw queries are defined by the userAccounts. Every query starts as an update
 query. All Raw queries are accessed via either the query objects or via
 the central db accessor.
 

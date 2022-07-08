@@ -7,7 +7,7 @@ import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
 import { ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
-import { ISyncInUserChecker } from './SyncInUserChecker';
+import { ISyncInUserAccountChecker } from './SyncInUserAccountChecker';
 import {
 	IContext,
 	Inject,
@@ -46,7 +46,7 @@ export class SyncInChecker
 	syncInTerminalChecker: ISyncInTerminalChecker
 
 	@Inject()
-	syncInUserChecker: ISyncInUserChecker
+	syncInUserAccountChecker: ISyncInUserAccountChecker
 
 	/**
 	 * Check the message and load all required auxiliary entities.
@@ -57,7 +57,7 @@ export class SyncInChecker
 	): Promise<boolean> {
 		// FIXME: replace as many DB lookups as possible with Terminal State lookups
 
-		if (! await this.syncInUserChecker.ensureUsers(message, context)) {
+		if (! await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
 			return false
 		}
 		if (! await this.syncInTerminalChecker.ensureTerminals(message, context)) {

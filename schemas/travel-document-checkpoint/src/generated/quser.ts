@@ -87,8 +87,8 @@ import {
 	IMetroArea,
 } from './locality/metroarea';
 import {
-	IUser,
-} from './user';
+	IUserAccount,
+} from './userAccount';
 
 
 declare function require(moduleName: string): any;
@@ -101,8 +101,8 @@ declare function require(moduleName: string): any;
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserESelect
-    extends IEntitySelectProperties, UserEOptionalId {
+export interface UserAccountESelect
+    extends IEntitySelectProperties, UserAccountEOptionalId {
 	// Non-Id Properties
 	email?: string | IQStringField;
 	passwordHash?: string | IQStringField;
@@ -124,7 +124,7 @@ export interface UserESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface UserEId
+export interface UserAccountEId
     extends IEntityIdProperties {
 	// Id Properties
 	_localId?: number | IQNumberField;
@@ -136,7 +136,7 @@ export interface UserEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface UserEOptionalId {
+export interface UserAccountEOptionalId {
 	// Id Properties
 	_localId?: number | IQNumberField;
 
@@ -147,7 +147,7 @@ export interface UserEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface UserEUpdateProperties
+export interface UserAccountEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	email?: string | IQStringField;
@@ -168,8 +168,8 @@ export interface UserEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserGraph
-	extends UserEOptionalId, IEntityCascadeGraph {
+export interface UserAccountGraph
+	extends UserAccountEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
@@ -191,14 +191,14 @@ export interface UserGraph
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface UserEUpdateColumns
+export interface UserAccountEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	EMAIL?: string | IQStringField;
 	PASSWORD_HASH?: string | IQStringField;
 	RANKING?: number | IQNumberField;
-	USERNAME?: string | IQStringField;
-	USER_GUID?: string | IQStringField;
+	USER_ACCOUNTNAME?: string | IQStringField;
+	USER_ACCOUNT_GUID?: string | IQStringField;
 	DOMAIN_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
@@ -210,15 +210,15 @@ export interface UserEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface UserECreateProperties
-extends Partial<UserEId>, UserEUpdateProperties {
+export interface UserAccountECreateProperties
+extends Partial<UserAccountEId>, UserAccountEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface UserECreateColumns
-extends UserEId, UserEUpdateColumns {
+export interface UserAccountECreateColumns
+extends UserAccountEId, UserAccountEUpdateColumns {
 }
 
 
@@ -231,7 +231,7 @@ extends UserEId, UserEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QUser extends IQEntity
+export interface QUserAccount extends IQEntity
 {
 	// Id Fields
 	_localId: IQNumberField;
@@ -256,7 +256,7 @@ export interface QUser extends IQEntity
 
 
 // Entity Id Interface
-export interface QUserQId
+export interface QUserAccountQId
 {
 	
 	// Id Fields
@@ -268,7 +268,7 @@ export interface QUserQId
 }
 
 // Entity Relation Interface
-export interface QUserQRelation
-	extends IQRelation<QUser>, QUserQId {
+export interface QUserAccountQRelation
+	extends IQRelation<QUserAccount>, QUserAccountQId {
 }
 

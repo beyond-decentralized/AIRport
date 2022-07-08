@@ -182,31 +182,31 @@ import {
 	QTypeClassification,
 } from './type/qtypeclassification';
 import {
-	User,
-} from '../ddl/user';
+	UserAccount,
+} from '../ddl/userAccount';
 import {
-	UserESelect,
-	UserECreateColumns,
-	UserECreateProperties,
-	UserEUpdateColumns,
-	UserEUpdateProperties,
-	UserEId,
-	UserGraph,
-	QUser,
-} from './quser';
+	UserAccountESelect,
+	UserAccountECreateColumns,
+	UserAccountECreateProperties,
+	UserAccountEUpdateColumns,
+	UserAccountEUpdateProperties,
+	UserAccountEId,
+	UserAccountGraph,
+	QUserAccount,
+} from './quserAccount';
 import {
-	UserTerminal,
-} from '../ddl/terminal/userterminal';
+	UserAccountTerminal,
+} from '../ddl/terminal/userAccountterminal';
 import {
-	UserTerminalESelect,
-	UserTerminalECreateColumns,
-	UserTerminalECreateProperties,
-	UserTerminalEUpdateColumns,
-	UserTerminalEUpdateProperties,
-	UserTerminalEId,
-	UserTerminalGraph,
-	QUserTerminal,
-} from './terminal/quserterminal';
+	UserAccountTerminalESelect,
+	UserAccountTerminalECreateColumns,
+	UserAccountTerminalECreateProperties,
+	UserAccountTerminalEUpdateColumns,
+	UserAccountTerminalEUpdateProperties,
+	UserAccountTerminalEId,
+	UserAccountTerminalGraph,
+	QUserAccountTerminal,
+} from './terminal/quserAccountterminal';
 import {
 	IDao,
 	IEntityCascadeGraph,
@@ -648,22 +648,22 @@ export class BaseTypeClassificationDao
 }
 
 
-export interface IBaseUserDao
-  extends IDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
+export interface IBaseUserAccountDao
+  extends IDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
 }
 
-export class BaseUserDao
-  extends SQDIDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
-	implements IBaseUserDao {
+export class BaseUserAccountDao
+  extends SQDIDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
+	implements IBaseUserAccountDao {
 	
-	static Find      = new DaoQueryDecorators<UserESelect>();
-	static FindOne   = new DaoQueryDecorators<UserESelect>();
-	static Search    = new DaoQueryDecorators<UserESelect>();
-	static SearchOne = new DaoQueryDecorators<UserESelect>();
+	static Find      = new DaoQueryDecorators<UserAccountESelect>();
+	static FindOne   = new DaoQueryDecorators<UserAccountESelect>();
+	static Search    = new DaoQueryDecorators<UserAccountESelect>();
+	static SearchOne = new DaoQueryDecorators<UserAccountESelect>();
 	static Save(
-		config: UserGraph
+		config: UserAccountGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<UserGraph>(config);
+		return Dao.BaseSave<UserAccountGraph>(config);
   }
 
 	static diSet(): boolean {
@@ -676,22 +676,22 @@ export class BaseUserDao
 }
 
 
-export interface IBaseUserTerminalDao
-  extends IDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
+export interface IBaseUserAccountTerminalDao
+  extends IDao<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal> {
 }
 
-export class BaseUserTerminalDao
-  extends SQDIDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
-	implements IBaseUserTerminalDao {
+export class BaseUserAccountTerminalDao
+  extends SQDIDao<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal>
+	implements IBaseUserAccountTerminalDao {
 	
-	static Find      = new DaoQueryDecorators<UserTerminalESelect>();
-	static FindOne   = new DaoQueryDecorators<UserTerminalESelect>();
-	static Search    = new DaoQueryDecorators<UserTerminalESelect>();
-	static SearchOne = new DaoQueryDecorators<UserTerminalESelect>();
+	static Find      = new DaoQueryDecorators<UserAccountTerminalESelect>();
+	static FindOne   = new DaoQueryDecorators<UserAccountTerminalESelect>();
+	static Search    = new DaoQueryDecorators<UserAccountTerminalESelect>();
+	static SearchOne = new DaoQueryDecorators<UserAccountTerminalESelect>();
 	static Save(
-		config: UserTerminalGraph
+		config: UserAccountTerminalGraph
 	): PropertyDecorator {
-		return Dao.BaseSave<UserTerminalGraph>(config);
+		return Dao.BaseSave<UserAccountTerminalGraph>(config);
   }
 
 	static diSet(): boolean {

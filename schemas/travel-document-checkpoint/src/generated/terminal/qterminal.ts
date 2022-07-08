@@ -24,18 +24,18 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-} from '../quser';
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+} from '../quserAccount';
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 import {
 	ContinentGraph,
 	ContinentEId,
@@ -125,7 +125,7 @@ export interface TerminalESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	owner?: UserESelect;
+	owner?: UserAccountESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
 	state?: StateESelect;
@@ -167,7 +167,7 @@ export interface TerminalEUpdateProperties
 	isLocal?: boolean | IQBooleanField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
-	owner?: UserEOptionalId;
+	owner?: UserAccountEOptionalId;
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
 	state?: StateEOptionalId;
@@ -187,7 +187,7 @@ export interface TerminalGraph
 	isLocal?: boolean | IQBooleanField;
 
 	// Relations
-	owner?: UserGraph;
+	owner?: UserAccountGraph;
 	continent?: ContinentGraph;
 	country?: CountryGraph;
 	state?: StateGraph;
@@ -204,7 +204,7 @@ export interface TerminalEUpdateColumns
 	// Non-Id Columns
 	GUID?: string | IQStringField;
 	IS_LOCAL?: boolean | IQBooleanField;
-	OWNER_USER_LID?: number | IQNumberField;
+	OWNER_USER_ACCOUNT_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -248,7 +248,7 @@ export interface QTerminal extends IQEntity
 	isLocal: IQBooleanField;
 
 	// Non-Id Relations
-	owner: QUserQRelation;
+	owner: QUserAccountQRelation;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;
 	state: QStateQRelation;

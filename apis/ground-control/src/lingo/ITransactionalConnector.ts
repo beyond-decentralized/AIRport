@@ -12,7 +12,7 @@ export interface IRootTransaction {
 	numberOfOperations: number
 }
 
-export interface IUser {
+export interface IUserAccount {
 	
 	// Id Properties
 	_localId?: number;
@@ -44,7 +44,7 @@ export interface IActor {
 	GUID?: string;
 
 	// Non-Id Relations
-	user?: IUser;
+	userAccount?: IUserAccount;
 
 	// Transient Properties
 
@@ -67,7 +67,7 @@ export interface IRepository {
 	GUID?: string;
 
 	// Non-Id Relations
-	owner?: IUser;
+	owner?: IUserAccount;
 
 	// Transient Properties
 

@@ -12,7 +12,7 @@ import {
 import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
-import { User } from '@airport/travel-document-checkpoint'
+import { UserAccount } from '@airport/travel-document-checkpoint'
 import { IOC } from '@airport/direction-indicator'
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 
@@ -92,10 +92,10 @@ export abstract class AirEntity {
 
 	/*
 	 *A transient convenience property to get the username of the
-	 * UserAccount that created the record.
+	 * UserAccountAccount that created the record.
 	 */
-	get createdBy(): User {
-		return this.actor.user
+	get createdBy(): UserAccount {
+		return this.actor.userAccount
 	}
 
 	/**

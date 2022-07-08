@@ -24,18 +24,18 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-} from './quser';
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+} from './quserAccount';
 import {
-	IUser,
-} from './user';
+	IUserAccount,
+} from './userAccount';
 import {
 	TerminalGraph,
 	TerminalEId,
@@ -76,8 +76,8 @@ import {
 	ITerminalAgt,
 } from './terminalagt';
 import {
-	IUserTerminalAgt,
-} from './userterminalagt';
+	IUserAccountTerminalAgt,
+} from './userAccountterminalagt';
 
 
 declare function require(moduleName: string): any;
@@ -90,15 +90,15 @@ declare function require(moduleName: string): any;
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserTerminalAgtESelect
-    extends IEntitySelectProperties, UserTerminalAgtEOptionalId {
+export interface UserAccountTerminalAgtESelect
+    extends IEntitySelectProperties, UserAccountTerminalAgtEOptionalId {
 	// Non-Id Properties
 	password?: number | IQNumberField;
 
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	user?: UserESelect;
+	userAccount?: UserAccountESelect;
 	terminal?: TerminalESelect;
 	agt?: AgtESelect;
 	terminalAgt?: TerminalAgtESelect;
@@ -108,7 +108,7 @@ export interface UserTerminalAgtESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface UserTerminalAgtEId
+export interface UserAccountTerminalAgtEId
     extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
@@ -121,7 +121,7 @@ export interface UserTerminalAgtEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface UserTerminalAgtEOptionalId {
+export interface UserAccountTerminalAgtEOptionalId {
 	// Id Properties
 	id?: number | IQNumberField;
 	agtId?: number | IQNumberField;
@@ -133,13 +133,13 @@ export interface UserTerminalAgtEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface UserTerminalAgtEUpdateProperties
+export interface UserAccountTerminalAgtEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	password?: number | IQNumberField;
 
 	// Non-Id Relations - ids only & no OneToMany's
-	user?: UserEOptionalId;
+	userAccount?: UserAccountEOptionalId;
 	terminal?: TerminalEOptionalId;
 	agt?: AgtEOptionalId;
 	terminalAgt?: TerminalAgtEOptionalId;
@@ -149,15 +149,15 @@ export interface UserTerminalAgtEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserTerminalAgtGraph
-	extends UserTerminalAgtEOptionalId, IEntityCascadeGraph {
+export interface UserAccountTerminalAgtGraph
+	extends UserAccountTerminalAgtEOptionalId, IEntityCascadeGraph {
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	password?: number | IQNumberField;
 
 	// Relations
-	user?: UserGraph;
+	userAccount?: UserAccountGraph;
 	terminal?: TerminalGraph;
 	agt?: AgtGraph;
 	terminalAgt?: TerminalAgtGraph;
@@ -167,11 +167,11 @@ export interface UserTerminalAgtGraph
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface UserTerminalAgtEUpdateColumns
+export interface UserAccountTerminalAgtEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	PASSWORD?: number | IQNumberField;
-	USER_ID?: number | IQNumberField;
+	USER_ACCOUNT_ID?: number | IQNumberField;
 	TERMINAL_ID?: number | IQNumberField;
 
 }
@@ -179,15 +179,15 @@ export interface UserTerminalAgtEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface UserTerminalAgtECreateProperties
-extends Partial<UserTerminalAgtEId>, UserTerminalAgtEUpdateProperties {
+export interface UserAccountTerminalAgtECreateProperties
+extends Partial<UserAccountTerminalAgtEId>, UserAccountTerminalAgtEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface UserTerminalAgtECreateColumns
-extends UserTerminalAgtEId, UserTerminalAgtEUpdateColumns {
+export interface UserAccountTerminalAgtECreateColumns
+extends UserAccountTerminalAgtEId, UserAccountTerminalAgtEUpdateColumns {
 }
 
 
@@ -200,7 +200,7 @@ extends UserTerminalAgtEId, UserTerminalAgtEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QUserTerminalAgt extends IQEntity
+export interface QUserAccountTerminalAgt extends IQEntity
 {
 	// Id Fields
 	id: IQNumberField;
@@ -212,7 +212,7 @@ export interface QUserTerminalAgt extends IQEntity
 	password: IQNumberField;
 
 	// Non-Id Relations
-	user: QUserQRelation;
+	userAccount: QUserAccountQRelation;
 	terminal: QTerminalQRelation;
 	agt: QAgtQRelation;
 	terminalAgt: QTerminalAgtQRelation;
@@ -221,7 +221,7 @@ export interface QUserTerminalAgt extends IQEntity
 
 
 // Entity Id Interface
-export interface QUserTerminalAgtQId
+export interface QUserAccountTerminalAgtQId
 {
 	
 	// Id Fields
@@ -234,7 +234,7 @@ export interface QUserTerminalAgtQId
 }
 
 // Entity Relation Interface
-export interface QUserTerminalAgtQRelation
-	extends IQRelation<QUserTerminalAgt>, QUserTerminalAgtQId {
+export interface QUserAccountTerminalAgtQRelation
+	extends IQRelation<QUserAccountTerminalAgt>, QUserAccountTerminalAgtQId {
 }
 

@@ -50,18 +50,18 @@ import {
 	IMetroAreaState,
 } from './metroareastate';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-} from '../quser';
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+} from '../quserAccount';
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 import {
 	IMetroArea,
 } from './metroarea';
@@ -87,7 +87,7 @@ export interface MetroAreaESelect
   // Non-Id relations (including OneToMany's)
 	country?: CountryESelect;
 	metroAreaStates?: MetroAreaStateESelect;
-	users?: UserESelect;
+	userAccounts?: UserAccountESelect;
 
 }
 
@@ -140,7 +140,7 @@ export interface MetroAreaGraph
 	// Relations
 	country?: CountryGraph;
 	metroAreaStates?: MetroAreaStateGraph[];
-	users?: UserGraph[];
+	userAccounts?: UserAccountGraph[];
 
 }
 
@@ -192,7 +192,7 @@ export interface QMetroArea extends IQEntity
 	// Non-Id Relations
 	country: QCountryQRelation;
 	metroAreaStates: IQOneToManyRelation<QMetroAreaState>;
-	users: IQOneToManyRelation<QUser>;
+	userAccounts: IQOneToManyRelation<QUserAccount>;
 
 }
 

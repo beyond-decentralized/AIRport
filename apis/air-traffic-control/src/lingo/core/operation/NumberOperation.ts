@@ -12,7 +12,7 @@ export interface INumberOperation
 
 /**
  * JSON representation of a number operation as it exists immediately after
- * user defining a query (to which the operation belongs).
+ * defining a query (to which the operation belongs).
  */
 export interface JSONRawNumberOperation
 	extends JSONRawValueOperation<IQNumberField> {

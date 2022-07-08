@@ -2,7 +2,7 @@
   "airport": {
     "domain": "air",
     "application": "airport-code",
-    "user": "diapco",
+    "userAccount": "diapco",
     "project": "airport",
     "path": "applications/airport-code"
   },

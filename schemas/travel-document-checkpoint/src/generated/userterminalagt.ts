@@ -1,6 +1,6 @@
 import {
-	IUser,
-} from './user';
+	IUserAccount,
+} from './userAccount';
 import {
 	ITerminal,
 } from './terminal';
@@ -17,7 +17,7 @@ import {
 //     ENTITY INTERFACE     //
 //////////////////////////////
 
-export interface IUserTerminalAgt {
+export interface IUserAccountTerminalAgt {
 	
 	// Id Properties
 	id: number;
@@ -29,7 +29,7 @@ export interface IUserTerminalAgt {
 	password?: number;
 
 	// Non-Id Relations
-	user?: IUser;
+	userAccount?: IUserAccount;
 	terminal?: ITerminal;
 	agt?: IAgt;
 	terminalAgt?: ITerminalAgt;

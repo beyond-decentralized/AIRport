@@ -1,5 +1,5 @@
 import {
-	IUser,
+	IUserAccount,
 	IContinent,
 	ICountry,
 	IState,
@@ -45,7 +45,7 @@ export interface IRepository {
 	source?: string;
 
 	// Non-Id Relations
-	owner?: IUser;
+	owner?: IUserAccount;
 	repositoryTransactionHistory?: IRepositoryTransactionHistory[];
 	continent?: IContinent;
 	country?: ICountry;

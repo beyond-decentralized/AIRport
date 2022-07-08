@@ -1,12 +1,12 @@
 import { Actor } from "@airport/holding-pattern";
-import { User } from "@airport/travel-document-checkpoint";
+import { UserAccount } from "@airport/travel-document-checkpoint";
 import { AirRequest } from "./AirRequest";
 
 export interface RequestManager {
 
     request: AirRequest
 
-    user: User
+    userAccount: UserAccount
 
     actor: Actor
 

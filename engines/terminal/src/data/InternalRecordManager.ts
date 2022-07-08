@@ -20,7 +20,7 @@ import {
 } from "@airport/airspace";
 import {
     Terminal,
-    User
+    UserAccount
 } from "@airport/travel-document-checkpoint";
 import { v4 as guidv4 } from "uuid";
 import {
@@ -93,7 +93,7 @@ export class InternalRecordManager
                     _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
-                    user: frameworkActor.user,
+                    userAccount: frameworkActor.userAccount,
                     GUID: guidv4()
                 }
                 await this.actorDao.save(actor, context)
@@ -122,17 +122,17 @@ export class InternalRecordManager
         await this.transactionManager.transactInternal(async (
             _transaction
         ) => {
-            const user = new User();
-            user.GUID = 'AIRportA-demo-demo-demo-functionalty';
-            user.username = "internalUser";
+            const userAccount = new UserAccount();
+            userAccount.GUID = 'AIRportA-demo-demo-demo-functionalty';
+            userAccount.username = "internalUserAccount";
 
             const terminal = new Terminal();
-            terminal.owner = user;
+            terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = guidv4();
 
             const actor = new Actor();
-            actor.user = user;
+            actor.userAccount = userAccount;
             actor.terminal = terminal;
             actor.GUID = guidv4();
             const actorDao = await (this as any).getactorDaoAsync()

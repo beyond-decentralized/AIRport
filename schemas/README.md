@@ -14,4 +14,4 @@ Core repository schema.
 Repository synchronization conflict tracking schema.
 
 [travel-document-checkpoint](./travel-document-checkpoint)
-User location and entity classification schema.
+Optional Repository, User location and entity classification schema.

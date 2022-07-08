@@ -7,7 +7,7 @@ export interface AbstractRawInsertValues<IQE extends IQEntity> {
 }
 
 /**
- * INSERT statements are user-defined in this format.
+ * INSERT statements are defined in this format.
  */
 export interface RawInsertValues<IQE extends IQEntity>
 	extends AbstractRawInsertValues<IQE> {

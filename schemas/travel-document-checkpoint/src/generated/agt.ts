@@ -2,8 +2,8 @@ import {
 	ITerminalAgt,
 } from './terminalagt';
 import {
-	IUserTerminalAgt,
-} from './userterminalagt';
+	IUserAccountTerminalAgt,
+} from './userAccountterminalagt';
 
 
 
@@ -23,7 +23,7 @@ export interface IAgt {
 
 	// Non-Id Relations
 	terminalAgts?: ITerminalAgt[];
-	userTerminalAgts?: IUserTerminalAgt[];
+	userAccountTerminalAgts?: IUserAccountTerminalAgt[];
 
 	// Transient Properties
 

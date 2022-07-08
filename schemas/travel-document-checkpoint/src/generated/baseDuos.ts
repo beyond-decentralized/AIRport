@@ -182,31 +182,31 @@ import {
 	QTypeClassification,
 } from './type/qtypeclassification';
 import {
-	User,
-} from '../ddl/user';
+	UserAccount,
+} from '../ddl/userAccount';
 import {
-	UserESelect,
-	UserECreateColumns,
-	UserECreateProperties,
-	UserEUpdateColumns,
-	UserEUpdateProperties,
-	UserEId,
-	UserGraph,
-	QUser,
-} from './quser';
+	UserAccountESelect,
+	UserAccountECreateColumns,
+	UserAccountECreateProperties,
+	UserAccountEUpdateColumns,
+	UserAccountEUpdateProperties,
+	UserAccountEId,
+	UserAccountGraph,
+	QUserAccount,
+} from './quserAccount';
 import {
-	UserTerminal,
-} from '../ddl/terminal/userterminal';
+	UserAccountTerminal,
+} from '../ddl/terminal/userAccountterminal';
 import {
-	UserTerminalESelect,
-	UserTerminalECreateColumns,
-	UserTerminalECreateProperties,
-	UserTerminalEUpdateColumns,
-	UserTerminalEUpdateProperties,
-	UserTerminalEId,
-	UserTerminalGraph,
-	QUserTerminal,
-} from './terminal/quserterminal';
+	UserAccountTerminalESelect,
+	UserAccountTerminalECreateColumns,
+	UserAccountTerminalECreateProperties,
+	UserAccountTerminalEUpdateColumns,
+	UserAccountTerminalEUpdateProperties,
+	UserAccountTerminalEId,
+	UserAccountTerminalGraph,
+	QUserAccountTerminal,
+} from './terminal/quserAccountterminal';
 import {
 	IDuo,
 	IEntityCascadeGraph,
@@ -507,13 +507,13 @@ export class BaseTypeClassificationDuo
 }
 
 
-export interface IBaseUserDuo
-  extends IDuo<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
+export interface IBaseUserAccountDuo
+  extends IDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
 }
 
-export class BaseUserDuo
-  extends SQDIDuo<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser>
-	implements IBaseUserDuo {
+export class BaseUserAccountDuo
+  extends SQDIDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
+	implements IBaseUserAccountDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(5)
@@ -525,13 +525,13 @@ export class BaseUserDuo
 }
 
 
-export interface IBaseUserTerminalDuo
-  extends IDuo<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
+export interface IBaseUserAccountTerminalDuo
+  extends IDuo<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal> {
 }
 
-export class BaseUserTerminalDuo
-  extends SQDIDuo<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal>
-	implements IBaseUserTerminalDuo {
+export class BaseUserAccountTerminalDuo
+  extends SQDIDuo<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal>
+	implements IBaseUserAccountTerminalDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(15)

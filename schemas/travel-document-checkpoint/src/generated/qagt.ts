@@ -37,18 +37,18 @@ import {
 	ITerminalAgt,
 } from './terminalagt';
 import {
-	UserTerminalAgtGraph,
-	UserTerminalAgtEId,
-	UserTerminalAgtEOptionalId,
-	UserTerminalAgtEUpdateProperties,
-	UserTerminalAgtESelect,
-	QUserTerminalAgt,
-	QUserTerminalAgtQId,
-	QUserTerminalAgtQRelation,
-} from './quserterminalagt';
+	UserAccountTerminalAgtGraph,
+	UserAccountTerminalAgtEId,
+	UserAccountTerminalAgtEOptionalId,
+	UserAccountTerminalAgtEUpdateProperties,
+	UserAccountTerminalAgtESelect,
+	QUserAccountTerminalAgt,
+	QUserAccountTerminalAgtQId,
+	QUserAccountTerminalAgtQRelation,
+} from './quserAccountterminalagt';
 import {
-	IUserTerminalAgt,
-} from './userterminalagt';
+	IUserAccountTerminalAgt,
+} from './userAccountterminalagt';
 import {
 	IAgt,
 } from './agt';
@@ -73,7 +73,7 @@ export interface AgtESelect
 
   // Non-Id relations (including OneToMany's)
 	terminalAgts?: TerminalAgtESelect;
-	userTerminalAgts?: UserTerminalAgtESelect;
+	userAccountTerminalAgts?: UserAccountTerminalAgtESelect;
 
 }
 
@@ -124,7 +124,7 @@ export interface AgtGraph
 
 	// Relations
 	terminalAgts?: TerminalAgtGraph[];
-	userTerminalAgts?: UserTerminalAgtGraph[];
+	userAccountTerminalAgts?: UserAccountTerminalAgtGraph[];
 
 }
 
@@ -174,7 +174,7 @@ export interface QAgt extends IQEntity
 
 	// Non-Id Relations
 	terminalAgts: IQOneToManyRelation<QTerminalAgt>;
-	userTerminalAgts: IQOneToManyRelation<QUserTerminalAgt>;
+	userAccountTerminalAgts: IQOneToManyRelation<QUserAccountTerminalAgt>;
 
 }
 

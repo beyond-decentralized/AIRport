@@ -1,5 +1,5 @@
 import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
-import { User } from "../User";
+import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 import { MetroAreaState } from "./MetroAreaState";
 import { State } from "./State";
@@ -31,6 +31,6 @@ export class MetroArea {
     metroAreaStates: MetroAreaState[]
 
     @OneToMany({ mappedBy: 'metroArea' })
-    users: User[]
+    userAccounts: UserAccount[]
 
 }

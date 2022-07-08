@@ -1,5 +1,5 @@
 import {
-	User,
+	UserAccount,
 } from '@airport/travel-document-checkpoint';
 import {
 	IRepository,
@@ -34,7 +34,7 @@ export interface IAirEntity {
 	originalActor?: IActor;
 
 	// Transient Properties
-	createdBy?: User;
+	createdBy?: UserAccount;
 	isNew?: boolean;
 	id?: string;
 

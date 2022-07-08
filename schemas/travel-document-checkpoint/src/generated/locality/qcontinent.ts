@@ -37,18 +37,18 @@ import {
 	ICountry,
 } from './country';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-} from '../quser';
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+} from '../quserAccount';
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 import {
 	IContinent,
 } from './continent';
@@ -73,7 +73,7 @@ export interface ContinentESelect
 
   // Non-Id relations (including OneToMany's)
 	countries?: CountryESelect;
-	users?: UserESelect;
+	userAccounts?: UserAccountESelect;
 
 }
 
@@ -124,7 +124,7 @@ export interface ContinentGraph
 
 	// Relations
 	countries?: CountryGraph[];
-	users?: UserGraph[];
+	userAccounts?: UserAccountGraph[];
 
 }
 
@@ -174,7 +174,7 @@ export interface QContinent extends IQEntity
 
 	// Non-Id Relations
 	countries: IQOneToManyRelation<QCountry>;
-	users: IQOneToManyRelation<QUser>;
+	userAccounts: IQOneToManyRelation<QUserAccount>;
 
 }
 

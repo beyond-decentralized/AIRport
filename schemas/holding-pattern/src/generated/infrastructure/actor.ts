@@ -1,5 +1,5 @@
 import {
-	IUser,
+	IUserAccount,
 	ITerminal,
 	IClient,
 } from '@airport/travel-document-checkpoint';
@@ -24,7 +24,7 @@ export interface IActor {
 	GUID?: string;
 
 	// Non-Id Relations
-	user?: IUser;
+	userAccount?: IUserAccount;
 	terminal?: ITerminal;
 	application?: IApplication;
 	client?: IClient;

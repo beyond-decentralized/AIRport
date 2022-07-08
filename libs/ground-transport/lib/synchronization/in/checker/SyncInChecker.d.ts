@@ -5,7 +5,7 @@ import { ISyncInApplicationChecker } from './SyncInApplicationChecker';
 import { ISyncInDataChecker } from './SyncInDataChecker';
 import { ISyncInRepositoryChecker } from './SyncInRepositoryChecker';
 import { ISyncInTerminalChecker } from './SyncInTerminalChecker';
-import { ISyncInUserChecker } from './SyncInUserChecker';
+import { ISyncInUserChecker } from './SyncInUserAccountChecker';
 import { IContext } from '@airport/direction-indicator';
 export interface ISyncInChecker {
     checkMessage(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;

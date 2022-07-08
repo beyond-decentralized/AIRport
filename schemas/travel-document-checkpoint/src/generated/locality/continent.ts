@@ -2,8 +2,8 @@ import {
 	ICountry,
 } from './country';
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 
 
 
@@ -23,7 +23,7 @@ export interface IContinent {
 
 	// Non-Id Relations
 	countries?: ICountry[];
-	users?: IUser[];
+	userAccounts?: IUserAccount[];
 
 	// Transient Properties
 

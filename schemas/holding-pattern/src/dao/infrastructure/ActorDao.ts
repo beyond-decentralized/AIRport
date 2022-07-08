@@ -15,9 +15,9 @@ import {
 } from '@airport/airspace'
 import {
 	QTerminal,
-	QUser,
+	QUserAccount,
 	Terminal_LocalId,
-	User_LocalId
+	UserAccount_LocalId
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_LocalId,
@@ -41,19 +41,19 @@ export interface IActorDao
 
 	findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_LocalId[],
+		userAccountIds: UserAccount_LocalId[],
 		terminalIds: Terminal_LocalId[]
 	): Promise<IActor[]>
 
 	findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_LocalId[],
+		userAccountIds: UserAccount_LocalId[],
 		terminalIds: Terminal_LocalId[],
-		actorMap: Map<User_LocalId, Map<Terminal_LocalId, IActor>>,
+		actorMap: Map<UserAccount_LocalId, Map<Terminal_LocalId, IActor>>,
 		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void>
 
-	findWithUserBy_LocalIdIn(
+	findWithUserAccountBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]>
 
@@ -88,19 +88,19 @@ export class ActorDao
 
 	async findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_LocalId[],
+		userAccountIds: UserAccount_LocalId[],
 		terminalIds: Terminal_LocalId[],
-		actorMap: Map<User_LocalId, Map<Terminal_LocalId, IActor>>,
+		actorMap: Map<UserAccount_LocalId, Map<Terminal_LocalId, IActor>>,
 		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
 			actorGUIDs,
-			userIds,
+			userAccountIds,
 			terminalIds
 		)
 
 		for (const actor of actors) {
-			ensureChildJsMap(actorMap, actor.user._localId)
+			ensureChildJsMap(actorMap, actor.userAccount._localId)
 				.set(actor.terminal._localId, actor)
 			actorMapById.set(actor._localId, actor)
 		}
@@ -108,7 +108,7 @@ export class ActorDao
 
 	async findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userIds: User_LocalId[],
+		userAccountIds: UserAccount_LocalId[],
 		terminalIds: Terminal_LocalId[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
@@ -116,7 +116,7 @@ export class ActorDao
 		) => and(
 			a.GUID.in(actorGUIDs),
 			a.terminal._localId.in(terminalIds),
-			a.user._localId.in(userIds)
+			a.userAccount._localId.in(userAccountIds)
 		))
 	}
 
@@ -128,7 +128,7 @@ export class ActorDao
 		let application: QApplication
 		let domain: QDomain
 		let terminal: QTerminal
-		let user: QUser
+		let userAccount: QUserAccount
 		return await this.db.find.tree({
 			select: {
 				_localId: Y,
@@ -137,7 +137,7 @@ export class ActorDao
 					domain: {}
 				},
 				terminal: {},
-				user: {},
+				userAccount: {},
 				GUID: Y
 			},
 			from: [
@@ -145,7 +145,7 @@ export class ActorDao
 				application = act.application.innerJoin(),
 				domain = application.domain.innerJoin(),
 				terminal = act.terminal.leftJoin(),
-				user = act.user.leftJoin()
+				userAccount = act.userAccount.leftJoin()
 			],
 			where: and(
 				domain.name.equals(domainName),
@@ -167,15 +167,15 @@ export class ActorDao
 		})
 	}
 
-	async findWithUserBy_LocalIdIn(
+	async findWithUserAccountBy_LocalIdIn(
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]> {
 		let a: QActor,
-			u: QUser
+			u: QUserAccount
 		return await this.db.find.graph({
 			select: {
 				'*': Y,
-				user: {
+				userAccount: {
 					_localId: Y,
 					GUID: Y,
 					ranking: Y,
@@ -184,7 +184,7 @@ export class ActorDao
 			},
 			from: [
 				a = Q.Actor,
-				u = a.user.leftJoin(),
+				u = a.userAccount.leftJoin(),
 				u.continent.leftJoin(),
 				u.country.leftJoin(),
 				u.metroArea.leftJoin(),
@@ -204,7 +204,7 @@ export class ActorDao
 		for (const actor of actors) {
 			values.push([
 				actor.GUID, actor.application.index,
-				actor.user._localId, actor.terminal._localId
+				actor.userAccount._localId, actor.terminal._localId
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
@@ -212,7 +212,7 @@ export class ActorDao
 			columns: [
 				a.GUID,
 				a.application.index,
-				a.user._localId,
+				a.userAccount._localId,
 				a.terminal._localId
 			],
 			values
@@ -253,7 +253,7 @@ export class ActorDao
 						GUID,
 					}
 				},
-				user: {
+				userAccount: {
 					id,
 					username,
 					GUID,
@@ -265,7 +265,7 @@ export class ActorDao
 				ap.domain.leftJoin(),
 				t = a.terminal.leftJoin(),
 				t.owner.leftJoin(),
-				a.user.leftJoin()
+				a.userAccount.leftJoin()
 			],
 			where: getWhereClause(a)
 		})

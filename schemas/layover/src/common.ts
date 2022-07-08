@@ -10,7 +10,7 @@ import {
 }                from "@airport/airspace";
 import {
 	ITerminal,
-	IUser
+	IUserAccount
 }                from '@airport/travel-document-checkpoint'
 
 export interface RepositoryTransactionBlockData {
@@ -30,5 +30,5 @@ export interface RepositoryTransactionBlockData {
 	applications: IApplication[];
 	applicationVersions: IApplicationVersion[];
 	terminal: ITerminal;
-	users: IUser[];
+	userAccounts: IUserAccount[];
 }

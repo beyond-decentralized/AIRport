@@ -5,7 +5,7 @@ import {
 } from "@airport/holding-pattern";
 import type {
 	ITerminal,
-	IUser
+	IUserAccount
 } from "@airport/travel-document-checkpoint";
 import {
 	IApplication,
@@ -21,7 +21,7 @@ export interface RepositorySynchronizationMessage {
 	referencedRepositories: IRepository[]
 	syncTimestamp?: number
 	terminals: ITerminal[]
-	users: IUser[]
+	userAccounts: IUserAccount[]
 }
 
 export interface RepositorySynchronizationWriteRequest {

@@ -1,7 +1,7 @@
 import { and } from '@airport/air-traffic-control'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
-	User_LocalId,
+	UserAccount_LocalId,
 	Terminal_GUID
 } from '../ddl/ddl'
 import {
@@ -16,7 +16,7 @@ export interface ITerminalDao
 	extends IBaseTerminalDao {
 
 	findByOwnerIdsAndGUIDs(
-		ownerIds: User_LocalId[],
+		ownerIds: UserAccount_LocalId[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]>;
 
@@ -37,7 +37,7 @@ export class TerminalDao
 	implements ITerminalDao {
 
 	async findByOwnerIdsAndGUIDs(
-		ownerIds: User_LocalId[],
+		ownerIds: UserAccount_LocalId[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]> {
 		let t: QTerminal

@@ -20,8 +20,8 @@ import { QTerminal } from './terminal/qterminal';
 import { QTerminalType } from './terminal/qterminaltype';
 import { QType } from './type/qtype';
 import { QTypeClassification } from './type/qtypeclassification';
-import { QUser } from './quser';
-import { QUserTerminal } from './terminal/quserterminal';
+import { QUserAccount } from './quserAccount';
+import { QUserAccountTerminal } from './terminal/quserAccountterminal';
 import {
   Classification,
   Client,
@@ -37,8 +37,8 @@ import {
   TerminalType,
   Type,
   TypeClassification,
-  User,
-  UserTerminal
+  UserAccount,
+  UserAccountTerminal
 } from '../ddl/ddl';
 
 export interface LocalQApplication extends QApplication {
@@ -59,8 +59,8 @@ export interface LocalQApplication extends QApplication {
 	TerminalType: QTerminalType;
 	Type: QType;
 	TypeClassification: QTypeClassification;
-	User: QUser;
-	UserTerminal: QUserTerminal;
+	UserAccount: QUserAccount;
+	UserAccountTerminal: QUserAccountTerminal;
 
 }
 
@@ -79,8 +79,8 @@ const __constructors__ = {
 	TerminalType: TerminalType,
 	Type: Type,
 	TypeClassification: TypeClassification,
-	User: User,
-	UserTerminal: UserTerminal
+	UserAccount: UserAccount,
+	UserAccountTerminal: UserAccountTerminal
 };
 
 export const Q_APPLICATION: LocalQApplication = <any>{

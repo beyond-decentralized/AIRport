@@ -24,15 +24,15 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-	IUser,
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+	IUserAccount,
 	ContinentGraph,
 	ContinentEId,
 	ContinentEOptionalId,
@@ -175,7 +175,7 @@ export interface RepositoryESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	owner?: UserESelect;
+	owner?: UserAccountESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
@@ -225,7 +225,7 @@ export interface RepositoryEUpdateProperties
 	source?: string | IQStringField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
-	owner?: UserEOptionalId;
+	owner?: UserAccountEOptionalId;
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
 	state?: StateEOptionalId;
@@ -248,7 +248,7 @@ export interface RepositoryGraph
 	source?: string | IQStringField;
 
 	// Relations
-	owner?: UserGraph;
+	owner?: UserAccountGraph;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
 	continent?: ContinentGraph;
 	country?: CountryGraph;
@@ -273,7 +273,7 @@ export interface RepositoryEUpdateColumns
 	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
 	SOURCE?: string | IQStringField;
-	OWNER_USER_LID?: number | IQNumberField;
+	OWNER_USER_ACCOUNT_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -320,7 +320,7 @@ export interface QRepository extends IQEntity
 	source: IQStringField;
 
 	// Non-Id Relations
-	owner: QUserQRelation;
+	owner: QUserAccountQRelation;
 	repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;

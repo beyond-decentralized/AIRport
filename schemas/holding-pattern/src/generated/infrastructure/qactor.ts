@@ -24,15 +24,15 @@ import {
 	RawUpdate,
 } from '@airport/air-traffic-control';
 import {
-	UserGraph,
-	UserEId,
-	UserEOptionalId,
-	UserEUpdateProperties,
-	UserESelect,
-	QUser,
-	QUserQId,
-	QUserQRelation,
-	IUser,
+	UserAccountGraph,
+	UserAccountEId,
+	UserAccountEOptionalId,
+	UserAccountEUpdateProperties,
+	UserAccountESelect,
+	QUserAccount,
+	QUserAccountQId,
+	QUserAccountQRelation,
+	IUserAccount,
 	TerminalGraph,
 	TerminalEId,
 	TerminalEOptionalId,
@@ -86,7 +86,7 @@ export interface ActorESelect
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	user?: UserESelect;
+	userAccount?: UserAccountESelect;
 	terminal?: TerminalESelect;
 	application?: ApplicationESelect;
 	client?: ClientESelect;
@@ -125,7 +125,7 @@ export interface ActorEUpdateProperties
 	GUID?: string | IQStringField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
-	user?: UserEOptionalId;
+	userAccount?: UserAccountEOptionalId;
 	terminal?: TerminalEOptionalId;
 	application?: ApplicationEOptionalId;
 	client?: ClientEOptionalId;
@@ -143,7 +143,7 @@ export interface ActorGraph
 	GUID?: string | IQStringField;
 
 	// Relations
-	user?: UserGraph;
+	userAccount?: UserAccountGraph;
 	terminal?: TerminalGraph;
 	application?: ApplicationGraph;
 	client?: ClientGraph;
@@ -157,7 +157,7 @@ export interface ActorEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	GUID?: string | IQStringField;
-	USER_LID?: number | IQNumberField;
+	USER_ACCOUNT_LID?: number | IQNumberField;
 	TERMINAL_LID?: number | IQNumberField;
 	APPLICATION_INDEX?: number | IQNumberField;
 	CLIENT_LID?: number | IQNumberField;
@@ -199,7 +199,7 @@ export interface QActor extends IQEntity
 	GUID: IQStringField;
 
 	// Non-Id Relations
-	user: QUserQRelation;
+	userAccount: QUserAccountQRelation;
 	terminal: QTerminalQRelation;
 	application: QApplicationQRelation;
 	client: QClientQRelation;

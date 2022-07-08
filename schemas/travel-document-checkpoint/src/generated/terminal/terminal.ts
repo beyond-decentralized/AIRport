@@ -1,6 +1,6 @@
 import {
-	IUser,
-} from '../user';
+	IUserAccount,
+} from '../userAccount';
 import {
 	IContinent,
 } from '../locality/continent';
@@ -35,7 +35,7 @@ export interface ITerminal {
 	isLocal?: boolean;
 
 	// Non-Id Relations
-	owner?: IUser;
+	owner?: IUserAccount;
 	continent?: IContinent;
 	country?: ICountry;
 	state?: IState;

@@ -43,7 +43,7 @@ export class SyncInActorChecker
 				}
 				this.checkActorApplication(actor, message)
 				this.checkActorTerminal(actor, message)
-				this.checkActorUser(actor, message)
+				this.checkActorUserAccount(actor, message)
 				actorGUIDs.push(actor.GUID)
 				messageActorIndexMap.set(actor.GUID, i)
 				// Make sure id field is not in the input
@@ -52,8 +52,8 @@ export class SyncInActorChecker
 
 			const actors = await this.actorDao.findByGUIDs(actorGUIDs)
 			for (const actor of actors) {
-				const messageUserIndex = messageActorIndexMap.get(actor.GUID)
-				message.actors[messageUserIndex] = actor
+				const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID)
+				message.actors[messageUserAccountIndex] = actor
 			}
 
 			const missingActors = message.actors
@@ -102,20 +102,20 @@ export class SyncInActorChecker
 		actor.terminal = terminal
 	}
 
-	private checkActorUser(
+	private checkActorUserAccount(
 		actor: IActor,
 		message: RepositorySynchronizationMessage
 	): void {
-		if (typeof actor.user !== 'number') {
+		if (typeof actor.userAccount !== 'number') {
 			throw new Error(`Expecting "in-message index" (number)
-			in 'actor.user'`)
+			in 'actor.userAccount'`)
 		}
-		const user = message.users[actor.user as any]
-		if (!user) {
+		const userAccount = message.userAccounts[actor.userAccount as any]
+		if (!userAccount) {
 			throw new Error(
-				`Did not find actor.user with "in-message index" ${actor.user}`);
+				`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
 		}
-		actor.user = user
+		actor.userAccount = userAccount
 	}
 
 }

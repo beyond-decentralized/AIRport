@@ -4,7 +4,7 @@ import {IQDistinctFunction} from '../../core/field/Functions';
 import {RawNonEntityQuery}  from './NonEntityQuery';
 
 /**
- * Sheet queries are user-defined in this format.
+ * Sheet query format.
  */
 export interface RawSheetQuery
 	extends RawNonEntityQuery {

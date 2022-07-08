@@ -1,9 +1,9 @@
-import { UserApi } from '../api/UserApi'
+import { UserAccountApi } from '../api/UserAccountApi'
 import { ITerminalDao, TerminalDao } from '../dao/TerminalDao'
-import { IUserDao, UserDao } from '../dao/UserDao'
+import { IUserAccountDao, UserAccountDao } from '../dao/UserAccountDao'
 import {
     travelDocumentCheckpoint,
-    USER_API
+    USER_ACCOUNT_API
 } from './common-tokens'
 
 export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>({
@@ -11,13 +11,13 @@ export const TERMINAL_DAO = travelDocumentCheckpoint.token<ITerminalDao>({
     interface: 'ITerminalDao',
     token: 'TERMINAL_DAO'
 })
-export const USER_DAO = travelDocumentCheckpoint.token<IUserDao>({
-    class: UserDao,
-    interface: 'IUserDao',
-    token: 'USER_DAO'
+export const USER_ACCOUNT_DAO = travelDocumentCheckpoint.token<IUserAccountDao>({
+    class: UserAccountDao,
+    interface: 'IUserAccountDao',
+    token: 'USER_ACCOUNT_DAO'
 })
 
-USER_API.setClass(UserApi)
-USER_API.setDependencies({
-    userDao: USER_DAO
+USER_ACCOUNT_API.setClass(UserAccountApi)
+USER_ACCOUNT_API.setDependencies({
+    userAccountDao: USER_ACCOUNT_DAO
 })

@@ -88,7 +88,7 @@ export class QueryUtils
 		)
 		// } else {
 		// Relations can only be joined by a local Id, implement if necessary
-		// only, as this might confuse users and won't work properly in
+		// only, as this might confuse developers and won't work properly in
 		// distributed environments (for @CrossRepository() queries, if
 		// the referenced repository is not yet loaded) without additional
 		// logic to join against the composing GUIDs for the object (anyway).

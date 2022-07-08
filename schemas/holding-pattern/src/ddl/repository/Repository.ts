@@ -19,7 +19,7 @@ import {
 	Country,
 	MetroArea,
 	State,
-	User
+	UserAccount
 } from "@airport/travel-document-checkpoint";
 import { RepositoryType } from "./RepositoryType";
 import { RepositoryDatabase } from "./RepositoryDatabase";
@@ -77,10 +77,10 @@ export class Repository
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'OWNER_USER_LID', referencedColumnName: 'USER_LID',
+		name: 'OWNER_USER_ACCOUNT_LID', referencedColumnName: 'USER_ACCOUNT_LID',
 		nullable: false
 	})
-	owner: User;
+	owner: UserAccount;
 
 	@OneToMany({ mappedBy: 'repository' })
 	repositoryTransactionHistory: RepositoryTransactionHistory[] = [];

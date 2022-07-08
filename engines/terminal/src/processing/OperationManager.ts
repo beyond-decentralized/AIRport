@@ -137,8 +137,8 @@ export class OperationManager
 		let saveActor: ISaveActor = {
 			_localId: actor._localId,
 			GUID: actor.GUID,
-			user: actor.user ? {
-				_localId: actor.user._localId
+			userAccount: actor.userAccount ? {
+				_localId: actor.userAccount._localId
 			} : null
 		}
 		let newRepository: ISaveRepository
@@ -152,8 +152,8 @@ export class OperationManager
 				ownerActor: {
 					_localId: actor._localId,
 					GUID: actor.GUID,
-					user: actor.user ? {
-						_localId: actor.user._localId
+					userAccount: actor.userAccount ? {
+						_localId: actor.userAccount._localId
 					} : null
 				}
 			}

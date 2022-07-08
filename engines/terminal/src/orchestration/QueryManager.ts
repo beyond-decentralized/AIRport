@@ -3,7 +3,7 @@ import {
 	IAirportDatabase,
 	IRepositoryLoader,
 	REPOSITORY_PROPERTY_NAME,
-	USER_PROPERTY_NAME
+	USER_ACCOUNT_PROPERTY_NAME
 } from '@airport/air-traffic-control'
 import {
 	IContext,
@@ -73,7 +73,7 @@ export class QueryManager
 
 		const entityArray = await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 
-		await this.populateEntityGuidEntitiesAndUsers(
+		await this.populateEntityGuidEntitiesAndUserAccounts(
 			portableQuery, entityArray);
 
 		return entityArray;
@@ -88,7 +88,7 @@ export class QueryManager
 
 		const entity = await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
 
-		await this.populateEntityGuidEntitiesAndUsers(
+		await this.populateEntityGuidEntitiesAndUserAccounts(
 			portableQuery, [entity]);
 
 		return entity
@@ -104,7 +104,7 @@ export class QueryManager
 			() => {
 				return this.storeDriver.find(portableQuery, {}, context)
 					.then((result: EntityArray) => {
-						return this.populateEntityGuidEntitiesAndUsers<E>(
+						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
 							portableQuery, result);
 					})
 			}
@@ -121,7 +121,7 @@ export class QueryManager
 			() => {
 				return this.storeDriver.findOne(portableQuery, {}, context)
 					.then((result: E) => {
-						return this.populateEntityGuidEntitiesAndUsers<E>(
+						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
 							portableQuery, [result])[0];
 					})
 			}
@@ -136,7 +136,7 @@ export class QueryManager
 		}
 	}
 
-	private async populateEntityGuidEntitiesAndUsers<E>(
+	private async populateEntityGuidEntitiesAndUserAccounts<E>(
 		portableQuery: PortableQuery,
 		entities: Array<E>
 	): Promise<Array<E>> {
@@ -150,14 +150,14 @@ export class QueryManager
 
 		const entityMapByRepositoryLocalId = new Map<Repository_LocalId, any[]>()
 		const entityMapByActorRecordId = new Map<Actor_LocalId, any[]>()
-		const actorsToRetrieveUserForByLocalId = new Map<Actor_LocalId, IActor>()
+		const actorsToRetrieveUserAccountForByLocalId = new Map<Actor_LocalId, IActor>()
 
 		this.markEntities(entities, new Set(), entityMapByRepositoryLocalId,
-			entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity)
+			entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbEntity)
 
-		await this.populateActorsAndUsers(
+		await this.populateActorsAndUserAccounts(
 			entityMapByActorRecordId,
-			actorsToRetrieveUserForByLocalId
+			actorsToRetrieveUserAccountForByLocalId
 		)
 		await this.populateRepositories(entityMapByRepositoryLocalId)
 
@@ -169,7 +169,7 @@ export class QueryManager
 		processedEntitySet: Set<Object>,
 		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>,
 		entityMapByActorRecordId: Map<Actor_LocalId, any[]>,
-		actorsToRetrieveUserForByLocalId: Map<Actor_LocalId, IActor>,
+		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>,
 		dbEntity: DbEntity
 	): void {
 		for (const entity of currentEntities) {
@@ -191,7 +191,7 @@ export class QueryManager
 						case EntityRelationType.MANY_TO_ONE:
 							if (this.processRepositoryOrActor(dbProperty, propertyValue,
 								entityMapByRepositoryLocalId, entityMapByActorRecordId,
-								actorsToRetrieveUserForByLocalId)) {
+								actorsToRetrieveUserAccountForByLocalId)) {
 								continue
 							}
 							relatedEntities = [propertyValue]
@@ -204,7 +204,7 @@ export class QueryManager
 						processedEntitySet,
 						entityMapByRepositoryLocalId,
 						entityMapByActorRecordId,
-						actorsToRetrieveUserForByLocalId,
+						actorsToRetrieveUserAccountForByLocalId,
 						dbRelation.relationEntity
 					)
 				}
@@ -217,7 +217,7 @@ export class QueryManager
 		propertyValue: any,
 		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>,
 		entityMapByActorLocalId: Map<Actor_LocalId, any[]>,
-		actorsToRetrieveUserForByLocalId: Map<Actor_LocalId, IActor>
+		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>
 	): boolean {
 		let isActor = true
 		switch (dbProperty.name) {
@@ -238,8 +238,8 @@ export class QueryManager
 			if (!isActor) {
 				return true
 			}
-			if (!propertyValue[USER_PROPERTY_NAME]) {
-				actorsToRetrieveUserForByLocalId.set(propertyValue._localId, propertyValue)
+			if (!propertyValue[USER_ACCOUNT_PROPERTY_NAME]) {
+				actorsToRetrieveUserAccountForByLocalId.set(propertyValue._localId, propertyValue)
 			}
 			return true
 		}
@@ -255,19 +255,19 @@ export class QueryManager
 		return true
 	}
 
-	private async populateActorsAndUsers(
+	private async populateActorsAndUserAccounts(
 		entityMapByActorRecordId: Map<Actor_LocalId, any[]>,
-		actorsToRetrieveUserForByLocalId: Map<Actor_LocalId, IActor>
+		actorsToRetrieveUserAccountForByLocalId: Map<Actor_LocalId, IActor>
 	): Promise<void> {
 		const actorIdSet = new Set<Actor_LocalId>()
 		for (const actorLocalId of entityMapByActorRecordId.keys()) {
 			actorIdSet.add(actorLocalId)
 		}
-		for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
+		for (const actorLocalId of actorsToRetrieveUserAccountForByLocalId.keys()) {
 			actorIdSet.add(actorLocalId)
 		}
 		const actorLocalIds: number[] = Array.from(actorIdSet)
-		const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds)
+		const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds)
 		for (const actor of actors) {
 			const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId)
 			if (entitiesWithoutActorObject) {
@@ -275,9 +275,9 @@ export class QueryManager
 					entity.actor = actor
 				}
 			}
-			const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId)
-			if (actorWithoutUserObject) {
-				actorWithoutUserObject.user = actor.user
+			const actorWithoutUserAccountObject = actorsToRetrieveUserAccountForByLocalId.get(actor._localId)
+			if (actorWithoutUserAccountObject) {
+				actorWithoutUserAccountObject.userAccount = actor.userAccount
 			}
 		}
 	}

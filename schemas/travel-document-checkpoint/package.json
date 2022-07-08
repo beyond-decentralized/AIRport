@@ -2,7 +2,7 @@
   "airport": {
     "domain": "air",
     "application": "travel-document-checkpoint",
-    "user": "diapco",
+    "userAccount": "diapco",
     "project": "airport",
     "path": "applications/travel-document-checkpoint"
   },

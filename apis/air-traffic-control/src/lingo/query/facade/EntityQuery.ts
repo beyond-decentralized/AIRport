@@ -1,8 +1,8 @@
-import { IEntitySelectProperties, IEntityRelationFrom } from '../../core/entity/Entity';
+import { IEntityRelationFrom } from '../../core/entity/Entity';
 import { RawLimitedQuery, RawQuery } from './Query';
 
 /**
- * Entity queries are user-defined in this format.
+ * Entity queries are defined in this format.
  */
 export interface RawEntityQuery<EntitySelect>
 	extends RawQuery {

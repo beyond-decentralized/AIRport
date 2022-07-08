@@ -6,7 +6,7 @@ import { ISyncInRepositoryChecker, SyncInRepositoryChecker } from './synchroniza
 import { ISyncInApplicationChecker, SyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker'
 import { ISyncInApplicationVersionChecker, SyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker'
 import { ISyncInTerminalChecker, SyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker'
-import { ISyncInUserChecker, SyncInUserChecker } from './synchronization/in/checker/SyncInUserChecker'
+import { ISyncInUserAccountChecker, SyncInUserAccountChecker } from './synchronization/in/checker/SyncInUserAccountChecker'
 import { IStage1SyncedInDataProcessor, Stage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor'
 import { IStage2SyncedInDataProcessor, Stage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedInDataProcessor'
 import { ISynchronizationInManager, SynchronizationInManager } from './synchronization/in/SynchronizationInManager'
@@ -19,7 +19,7 @@ import { ISyncOutDataSerializer, SyncOutDataSerializer } from './synchronization
 import { AIRPORT_DATABASE, DATABASE_FACADE, UTILS } from '@airport/air-traffic-control'
 import { SEQUENCE_GENERATOR } from '@airport/check-in'
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { TERMINAL_DAO, USER_DAO } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
+import { TERMINAL_DAO, USER_ACCOUNT_DAO } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
 import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
 import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/layover'
@@ -73,10 +73,10 @@ export const SYNC_IN_APPLICATION_VERSION_CHECKER = groundTransport.token<ISyncIn
     interface: 'ISyncInApplicationVersionChecker',
     token: 'SYNC_IN_APPLICATION_VERSION_CHECKER'
 })
-export const SYNC_IN_USER_CHECKER = groundTransport.token<ISyncInUserChecker>({
-    class: SyncInUserChecker,
-    interface: 'ISyncInUserChecker',
-    token: 'SYNC_IN_USER_CHECKER'
+export const SYNC_IN_USER_ACCOUNT_CHECKER = groundTransport.token<ISyncInUserAccountChecker>({
+    class: SyncInUserAccountChecker,
+    interface: 'ISyncInUserAccountChecker',
+    token: 'SYNC_IN_USER_ACCOUNT_CHECKER'
 })
 export const SYNC_IN_UTILS = groundTransport.token<ISyncInUtils>({
     class: SyncInUtils,
@@ -154,7 +154,7 @@ SYNC_IN_CHECKER.setDependencies({
     syncInDataChecker: SYNC_IN_DATA_CHECKER,
     syncInRepositoryChecker: SYNC_IN_REPOSITORY_CHECKER,
     syncInTerminalChecker: SYNC_IN_TERMINAL_CHECKER,
-    syncInUserChecker: SYNC_IN_USER_CHECKER
+    syncInUserAccountChecker: SYNC_IN_USER_ACCOUNT_CHECKER
 })
 
 SYNC_IN_DATA_CHECKER.setDependencies({
@@ -171,8 +171,8 @@ SYNC_IN_TERMINAL_CHECKER.setDependencies({
     terminalDao: TERMINAL_DAO
 })
 
-SYNC_IN_USER_CHECKER.setDependencies({
-    userDao: USER_DAO
+SYNC_IN_USER_ACCOUNT_CHECKER.setDependencies({
+    userAccountDao: USER_ACCOUNT_DAO
 })
 
 SYNC_OUT_DATA_SERIALIZER.setDependencies({

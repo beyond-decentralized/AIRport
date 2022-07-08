@@ -12,7 +12,7 @@ export interface IDateOperation extends IValueOperation<Date, JSONRawDateOperati
 
 /**
  * JSON representation of a Date operation as it exists immediately after
- * user defining a query (to which the operation belongs).
+ * defining a query (to which the operation belongs).
  */
 export interface JSONRawDateOperation extends JSONRawValueOperation<IQDateField> {
 	// Date Operator

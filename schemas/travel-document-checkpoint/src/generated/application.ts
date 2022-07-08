@@ -8,13 +8,13 @@ export const APPLICATION = {
 		{
 			"api": {
 				"apiObjectMap": {
-					"UserApi": {
+					"UserAccountApi": {
 						"operationMap": {
-							"addUser": {
+							"addUserAccount": {
 								"isAsync": true,
 								"parameters": []
 							},
-							"findUser": {
+							"findUserAccount": {
 								"isAsync": true,
 								"parameters": []
 							}
@@ -94,7 +94,7 @@ export const APPLICATION = {
 						{
 							"index": 3,
 							"isId": false,
-							"name": "users",
+							"name": "userAccounts",
 							"relationRef": {
 								"index": 1
 							},
@@ -252,7 +252,7 @@ export const APPLICATION = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "users",
+							"name": "userAccounts",
 							"relationRef": {
 								"index": 1
 							},
@@ -415,7 +415,7 @@ export const APPLICATION = {
 						{
 							"index": 5,
 							"isId": false,
-							"name": "users",
+							"name": "userAccounts",
 							"relationRef": {
 								"index": 2
 							},
@@ -676,7 +676,7 @@ export const APPLICATION = {
 						{
 							"index": 4,
 							"isId": false,
-							"name": "users",
+							"name": "userAccounts",
 							"relationRef": {
 								"index": 2
 							},
@@ -733,7 +733,7 @@ export const APPLICATION = {
 							"index": 0,
 							"isGenerated": true,
 							"manyRelationColumnRefs": [],
-							"name": "USER_LID",
+							"name": "USER_ACCOUNT_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -789,7 +789,7 @@ export const APPLICATION = {
 							"index": 4,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "USERNAME",
+							"name": "USER_ACCOUNTNAME",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -803,7 +803,7 @@ export const APPLICATION = {
 							"index": 5,
 							"isGenerated": false,
 							"manyRelationColumnRefs": [],
-							"name": "USER_GUID",
+							"name": "USER_ACCOUNT_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -936,7 +936,7 @@ export const APPLICATION = {
 					"index": 5,
 					"isLocal": true,
 					"isAirEntity": false,
-					"name": "User",
+					"name": "UserAccount",
 					"properties": [
 						{
 							"columnRef": {
@@ -2296,7 +2296,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "OWNER_USER_LID",
+							"name": "OWNER_USER_ACCOUNT_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2578,7 +2578,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "USER_LID",
+							"name": "USER_ACCOUNT_LID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -2622,12 +2622,12 @@ export const APPLICATION = {
 					"index": 15,
 					"isLocal": true,
 					"isAirEntity": false,
-					"name": "UserTerminal",
+					"name": "UserAccountTerminal",
 					"properties": [
 						{
 							"index": 0,
 							"isId": true,
-							"name": "user",
+							"name": "userAccount",
 							"relationRef": {
 								"index": 0
 							},
@@ -2667,7 +2667,7 @@ export const APPLICATION = {
 					],
 					"sinceVersion": 1,
 					"tableConfig": {
-						"name": "USER_TERMINAL",
+						"name": "USER_ACCOUNT_TERMINAL",
 						"columnIndexes": []
 					}
 				}

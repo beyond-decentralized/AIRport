@@ -2,7 +2,7 @@
   "airport": {
     "domain": "air",
     "application": "holding-pattern",
-    "user": "diapco",
+    "userAccount": "diapco",
     "project": "airport",
     "path": "applications/holding-pattern"
   },

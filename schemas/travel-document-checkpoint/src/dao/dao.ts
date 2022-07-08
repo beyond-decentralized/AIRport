@@ -1,2 +1,2 @@
 export * from './TerminalDao'
-export * from './UserDao'
+export * from './UserAccountDao'

@@ -12,7 +12,7 @@ Entity classification schema:
 *   Type
 
 Core entity schema:
-    User, Client, Terminal, Database entities and their joins to Type.
+    UserAccount, Client, Terminal, Database entities and their joins to Type.
 
 Geographical partitioning entities.  These are to geographically
 narrow down repositories.  Users can also self-identify with a region.

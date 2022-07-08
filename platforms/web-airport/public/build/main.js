@@ -322,7 +322,7 @@ var tokensToRegExp_1 = tokensToRegExp;
  */
 var PATH_REGEXP = new RegExp([
   // Match escaped characters that would otherwise appear in future matches.
-  // This allows the user to escape special characters that won't transform.
+  // This allows the userAccount to escape special characters that won't transform.
   '(\\\\.)',
   // Match Express-style parameters and un-named parameters with a prefix
   // and optional suffixes. Matches appear as:
@@ -666,7 +666,7 @@ function tokensToRegExp (tokens, options) {
  * Normalize the given path string, returning a regular expression.
  *
  * An empty array can be passed in for the keys, which will hold the
- * placeholder key descriptions. For example, using `/user/:id`, `keys` will
+ * placeholder key descriptions. For example, using `/userAccount/:id`, `keys` will
  * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
  *
  * @param  {(String|RegExp|Array)} path
@@ -1289,9 +1289,9 @@ pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
    *
    *   page(fn);
    *   page('*', fn);
-   *   page('/user/:id', load, user);
-   *   page('/user/' + user.id, { some: 'thing' });
-   *   page('/user/' + user.id);
+   *   page('/userAccount/:id', load, userAccount);
+   *   page('/userAccount/' + userAccount.id, { some: 'thing' });
+   *   page('/userAccount/' + userAccount.id);
    *   page('/from', '/to')
    *   page();
    *
@@ -2144,12 +2144,12 @@ let RepositoryLoader = class RepositoryLoader {
             else {
                 messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
             }
-            // TODO: Add a special message for repository for adding users
+            // TODO: Add a special message for repository for adding userAccounts
             // into the repository 
-            // each user will have a public key that they will distribute
+            // each userAccount will have a public key that they will distribute
             // each message is signed with the private key and the initial
             // message for repository is CREATE_REPOSITORY with the public 
-            // key of the owner user
+            // key of the owner userAccount
             const messagemapById = new Map();
             for (const message of messages) {
                 messagemapById.set(message.history.uuId, message);
@@ -8001,7 +8001,7 @@ var __decorate$2x = (undefined && undefined.__decorate) || function (decorators,
 };
 let AirEntityUtils = class AirEntityUtils {
     getCreatedBy(airEntity) {
-        return airEntity.actor.user;
+        return airEntity.actor.userAccount;
     }
     encodeId(idObject) {
         if (!idObject.repository
@@ -9181,7 +9181,7 @@ already contains a new repository.`);
             createdAt: new Date(),
             id: null,
             immutable: false,
-            owner: actor.user,
+            owner: actor.userAccount,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
             repositoryTransactionHistory: [],
@@ -9550,7 +9550,7 @@ __decorate$2l([
 __decorate$2l([
     ManyToOne(),
     JoinColumn()
-], Actor.prototype, "user", void 0);
+], Actor.prototype, "userAccount", void 0);
 __decorate$2l([
     ManyToOne(),
     JoinColumn()
@@ -9744,7 +9744,7 @@ let ImmutableRow = class ImmutableRow {
 __decorate$2e([
     ManyToOne(),
     JoinColumn()
-], ImmutableRow.prototype, "user", void 0);
+], ImmutableRow.prototype, "userAccount", void 0);
 __decorate$2e([
     Column()
 ], ImmutableRow.prototype, "createdAt", void 0);
@@ -10201,16 +10201,16 @@ let ActorDao = class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a.id.in(actorIds));
     }
-    async findMapsWithDetailsByGlobalIds(uuIds, userIds, terminalIds, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(uuIds, userIds, terminalIds);
+    async findMapsWithDetailsByGlobalIds(uuIds, userAccountIds, terminalIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(uuIds, userAccountIds, terminalIds);
         for (const actor of actors) {
-            ensureChildJsMap(actorMap, actor.user.id)
+            ensureChildJsMap(actorMap, actor.userAccount.id)
                 .set(actor.terminal.id, actor);
             actorMapById.set(actor._localId, actor);
         }
     }
-    async findWithDetailsByGlobalIds(uuIds, userIds, terminalIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.uuId.in(uuIds), a.terminal.id.in(terminalIds), a.user.id.in(userIds)));
+    async findWithDetailsByGlobalIds(uuIds, userAccountIds, terminalIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.uuId.in(uuIds), a.terminal.id.in(terminalIds), a.userAccount.id.in(userAccountIds)));
     }
     async findByDomainAndApplication_Names(domainName, applicationName) {
         let act;
@@ -10224,7 +10224,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                     domain: {}
                 },
                 terminal: {},
-                user: {},
+                userAccount: {},
                 uuId: Y
             },
             from: [
@@ -10232,7 +10232,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 application = act.application.innerJoin(),
                 domain = application.domain.innerJoin(),
                 act.terminal.leftJoin(),
-                act.user.leftJoin()
+                act.userAccount.leftJoin()
             ],
             where: and(domain.name.equals(domainName), application.name.equals(applicationName))
         });
@@ -10252,7 +10252,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         const values = [];
         for (const actor of actors) {
             values.push([
-                actor.uuId, actor.application.index, actor.user.id, actor.terminal.id,
+                actor.uuId, actor.application.index, actor.userAccount.id, actor.terminal.id,
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
@@ -10260,7 +10260,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             columns: [
                 t.uuId,
                 t.application.index,
-                t.user.id,
+                t.userAccount.id,
                 t.terminal.id
             ],
             values
@@ -10296,7 +10296,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                         uuId,
                     }
                 },
-                user: {
+                userAccount: {
                     id,
                     username,
                     uuId,
@@ -10308,7 +10308,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 ap.domain.leftJoin(),
                 t = a.terminal.leftJoin(),
                 t.owner.leftJoin(),
-                a.user.leftJoin()
+                a.userAccount.leftJoin()
             ],
             where: getWhereClause(a)
         });
@@ -10797,10 +10797,10 @@ TRANSACTION_HISTORY_DUO.setDependencies({
 });
 
 const travelDocumentCheckpoint = lib$1('travel-document-checkpoint');
-const USER_API = travelDocumentCheckpoint.token({
+const USER_ACCOUNT_API = travelDocumentCheckpoint.token({
     class: null,
-    interface: 'UserApi',
-    token: 'USER_API'
+    interface: 'UserAccountApi',
+    token: 'USER_ACCOUNT_API'
 });
 
 var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -10809,33 +10809,33 @@ var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var AddUserErrorCodes$1;
-(function (AddUserErrorCodes) {
-    AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
-    AddUserErrorCodes["INVALID_BIRTH_MONTH"] = "INVALID_BIRTH_MONTH";
-    AddUserErrorCodes["INVALID_COUNTRY"] = "INVALID_COUNTRY";
-    AddUserErrorCodes["INVALID_EMAIL"] = "INVALID_EMAIL";
-    AddUserErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
-    AddUserErrorCodes["USERNAME_TAKEN"] = "USERNAME_TAKEN";
-})(AddUserErrorCodes$1 || (AddUserErrorCodes$1 = {}));
+var AddUserAccountErrorCodes$1;
+(function (AddUserAccountErrorCodes) {
+    AddUserAccountErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
+    AddUserAccountErrorCodes["INVALID_BIRTH_MONTH"] = "INVALID_BIRTH_MONTH";
+    AddUserAccountErrorCodes["INVALID_COUNTRY"] = "INVALID_COUNTRY";
+    AddUserAccountErrorCodes["INVALID_EMAIL"] = "INVALID_EMAIL";
+    AddUserAccountErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
+    AddUserAccountErrorCodes["USER_ACCOUNTNAME_TAKEN"] = "USER_ACCOUNTNAME_TAKEN";
+})(AddUserAccountErrorCodes$1 || (AddUserAccountErrorCodes$1 = {}));
 // An API stub for other Applications and UIs to use
-let UserApi$1 = class UserApi {
+let UserAccountApi$1 = class UserAccountApi {
     constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, USER_API);
+        DEPENDENCY_INJECTION.db().manualInject(this, USER_ACCOUNT_API);
     }
-    async addUser(username, email) {
-        return await this.userApi.addUser(username, email);
+    async addUserAccount(username, email) {
+        return await this.userAccountApi.addUserAccount(username, email);
     }
-    async findUser(privateId) {
-        return await this.userApi.findUser(privateId);
+    async findUserAccount(privateId) {
+        return await this.userAccountApi.findUserAccount(privateId);
     }
 };
 __decorate$1$([
     Inject()
-], UserApi$1.prototype, "userApi", void 0);
-UserApi$1 = __decorate$1$([
+], UserAccountApi$1.prototype, "userAccountApi", void 0);
+UserAccountApi$1 = __decorate$1$([
     Injected()
-], UserApi$1);
+], UserAccountApi$1);
 
 var __decorate$1_ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -11556,7 +11556,7 @@ __decorate$1U([
 ], Agt.prototype, "terminalAgts", void 0);
 __decorate$1U([
     OneToMany()
-], Agt.prototype, "userTerminalAgts", void 0);
+], Agt.prototype, "userAccountTerminalAgts", void 0);
 Agt = __decorate$1U([
     Entity(),
     Table()
@@ -11608,7 +11608,7 @@ __decorate$1S([
 ], Country.prototype, "continent", void 0);
 __decorate$1S([
     OneToMany()
-], Country.prototype, "users", void 0);
+], Country.prototype, "userAccounts", void 0);
 Country = __decorate$1S([
     Entity(),
     Table()
@@ -11631,9 +11631,9 @@ let Terminal = class Terminal {
         // @OneToMany({ mappedBy: 'terminal' })
         // terminalAgts: TerminalAgt[]
         // @OneToMany({ mappedBy: 'terminal' })
-        // userTerminal: UserTerminal[]
+        // userAccountTerminal: UserAccountTerminal[]
         // @OneToMany({ mappedBy: 'terminal' })
-        // userTerminalAgt: UserTerminalAgt[]
+        // userAccountTerminalAgt: UserAccountTerminalAgt[]
     }
 };
 __decorate$1R([
@@ -11683,7 +11683,7 @@ __decorate$1Q([
 ], TerminalAgt.prototype, "agt", void 0);
 __decorate$1Q([
     OneToMany()
-], TerminalAgt.prototype, "userTerminalAgts", void 0);
+], TerminalAgt.prototype, "userAccountTerminalAgts", void 0);
 TerminalAgt = __decorate$1Q([
     Entity(),
     Table()
@@ -11695,36 +11695,36 @@ var __decorate$1P = (undefined && undefined.__decorate) || function (decorators,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let User = class User {
+let UserAccount = class UserAccount {
 };
 __decorate$1P([
     Id(),
     GeneratedValue(),
     DbNumber()
-], User.prototype, "id", void 0);
+], UserAccount.prototype, "id", void 0);
 __decorate$1P([
     Column(),
     DbString()
-], User.prototype, "email", void 0);
+], UserAccount.prototype, "email", void 0);
 __decorate$1P([
     Column(),
     DbString()
-], User.prototype, "passwordHash", void 0);
+], UserAccount.prototype, "passwordHash", void 0);
 __decorate$1P([
     Column(),
     DbNumber()
-], User.prototype, "ranking", void 0);
+], UserAccount.prototype, "ranking", void 0);
 __decorate$1P([
     Column(),
     DbString()
-], User.prototype, "username", void 0);
+], UserAccount.prototype, "username", void 0);
 __decorate$1P([
     Column(),
     DbString()
-], User.prototype, "uuId", void 0);
-User = __decorate$1P([
+], UserAccount.prototype, "uuId", void 0);
+UserAccount = __decorate$1P([
     Entity()
-], User);
+], UserAccount);
 
 var __decorate$1O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -11737,22 +11737,22 @@ var __decorate$1O = (undefined && undefined.__decorate) || function (decorators,
  * DEPRECATED - syncing will now be done via IPFS/Peergos
  *
  */
-let UserTerminal = class UserTerminal {
+let UserAccountTerminal = class UserAccountTerminal {
 };
 __decorate$1O([
     Id(),
     ManyToOne(),
     JoinColumn()
-], UserTerminal.prototype, "user", void 0);
+], UserAccountTerminal.prototype, "userAccount", void 0);
 __decorate$1O([
     Id(),
     ManyToOne(),
     JoinColumn()
-], UserTerminal.prototype, "terminal", void 0);
-UserTerminal = __decorate$1O([
+], UserAccountTerminal.prototype, "terminal", void 0);
+UserAccountTerminal = __decorate$1O([
     Entity(),
     Table()
-], UserTerminal);
+], UserAccountTerminal);
 
 var __decorate$1N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -11763,13 +11763,13 @@ var __decorate$1N = (undefined && undefined.__decorate) || function (decorators,
 /**
  * DEPRECATED - syncing will now be done via IPFS/Peergos
  *
- * User needs some sort of password that can be used to verify that
- * a given user is indeed making changes (instead of another one).
+ * UserAccount needs some sort of password that can be used to verify that
+ * a given userAccount is indeed making changes (instead of another one).
  *
  * The password should be AGT specific and Terminal specific
  * to reduce security risks.
  *
- * The password is generated as soon as a user is verified with
+ * The password is generated as soon as a userAccount is verified with
  * a terminal and then subsequently registered with an AGT (on
  * the next transaction)
  *
@@ -11777,43 +11777,43 @@ var __decorate$1N = (undefined && undefined.__decorate) || function (decorators,
  * Id and password, to verify that is indeed coming from the
  * specified terminal.
  *
- * FIXME: additional credentials are needed for User-Agt registration
+ * FIXME: additional credentials are needed for UserAccount-Agt registration
  * see of OpenConnect can provide something verifiable with the
  * provider
  */
-let UserTerminalAgt = class UserTerminalAgt {
+let UserAccountTerminalAgt = class UserAccountTerminalAgt {
 };
 __decorate$1N([
     Id(),
     DbNumber(),
     GeneratedValue()
-], UserTerminalAgt.prototype, "id", void 0);
+], UserAccountTerminalAgt.prototype, "id", void 0);
 __decorate$1N([
     Id(),
     Column(),
     DbNumber(),
     GeneratedValue()
-], UserTerminalAgt.prototype, "agtId", void 0);
+], UserAccountTerminalAgt.prototype, "agtId", void 0);
 __decorate$1N([
     ManyToOne(),
     JoinColumn()
-], UserTerminalAgt.prototype, "user", void 0);
+], UserAccountTerminalAgt.prototype, "userAccount", void 0);
 __decorate$1N([
     ManyToOne(),
     JoinColumn()
-], UserTerminalAgt.prototype, "terminal", void 0);
+], UserAccountTerminalAgt.prototype, "terminal", void 0);
 __decorate$1N([
     ManyToOne(),
     JoinColumn()
-], UserTerminalAgt.prototype, "agt", void 0);
+], UserAccountTerminalAgt.prototype, "agt", void 0);
 __decorate$1N([
     ManyToOne(),
     JoinColumns()
-], UserTerminalAgt.prototype, "terminalAgt", void 0);
-UserTerminalAgt = __decorate$1N([
+], UserAccountTerminalAgt.prototype, "terminalAgt", void 0);
+UserAccountTerminalAgt = __decorate$1N([
     Entity(),
     Table()
-], UserTerminalAgt);
+], UserAccountTerminalAgt);
 
 const __constructors__$3 = {
     Agt: Agt,
@@ -11821,9 +11821,9 @@ const __constructors__$3 = {
     Country: Country,
     Terminal: Terminal,
     TerminalAgt: TerminalAgt,
-    User: User,
-    UserTerminal: UserTerminal,
-    UserTerminalAgt: UserTerminalAgt
+    UserAccount: UserAccount,
+    UserAccountTerminal: UserAccountTerminal,
+    UserAccountTerminalAgt: UserAccountTerminalAgt
 };
 const Q_APPLICATION$3 = {
     __constructors__: __constructors__$3,
@@ -11836,8 +11836,8 @@ function duoDiSet$3(dbEntityId) {
 }
 airApi.setQApplication(Q_APPLICATION$3);
 
-USER_API.setClass(UserApi$1);
-USER_API.setDependencies({
+USER_ACCOUNT_API.setClass(UserAccountApi$1);
+USER_ACCOUNT_API.setDependencies({
     interAppApiClient: INTER_APP_API_CLIENT
 });
 
@@ -11868,7 +11868,7 @@ let InternalRecordManager = class InternalRecordManager {
                     id: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
-                    user: frameworkActor.user,
+                    userAccount: frameworkActor.userAccount,
                     uuId: v4()
                 };
                 await this.actorDao.save(actor, context);
@@ -11888,15 +11888,15 @@ let InternalRecordManager = class InternalRecordManager {
     }
     async initTerminal(domainName, context) {
         await this.transactionManager.transactInternal(async (_transaction) => {
-            const user = new User();
-            user.uuId = 'AIRportA-demo-demo-demo-functionalty';
-            user.username = "internalUser";
+            const userAccount = new UserAccount();
+            userAccount.uuId = 'AIRportA-demo-demo-demo-functionalty';
+            userAccount.username = "internalUserAccount";
             const terminal = new Terminal();
-            terminal.owner = user;
+            terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.uuId = v4();
             const actor = new Actor();
-            actor.user = user;
+            actor.userAccount = userAccount;
             actor.terminal = terminal;
             actor.uuId = v4();
             const actorDao = await this.getactorDaoAsync();
@@ -13279,7 +13279,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_LID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -13365,7 +13365,7 @@ const APPLICATION$3 = {
                         {
                             "index": 2,
                             "isId": false,
-                            "name": "user",
+                            "name": "userAccount",
                             "relationRef": {
                                 "index": 0
                             },
@@ -13961,7 +13961,7 @@ const APPLICATION$3 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_LID",
+                            "name": "OWNER_USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -18494,13 +18494,13 @@ const APPLICATION$1 = {
         {
             "api": {
                 "apiObjectMap": {
-                    "UserApi": {
+                    "UserAccountApi": {
                         "operationMap": {
-                            "addUser": {
+                            "addUserAccount": {
                                 "isAsync": true,
                                 "parameters": []
                             },
-                            "findUser": {
+                            "findUserAccount": {
                                 "isAsync": true,
                                 "parameters": []
                             }
@@ -18693,7 +18693,7 @@ const APPLICATION$1 = {
                         {
                             "index": 3,
                             "isId": false,
-                            "name": "users",
+                            "name": "userAccounts",
                             "relationRef": {
                                 "index": 1
                             },
@@ -18745,7 +18745,7 @@ const APPLICATION$1 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_LID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -18789,12 +18789,12 @@ const APPLICATION$1 = {
                     "index": 2,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "UserTerminal",
+                    "name": "UserAccountTerminal",
                     "properties": [
                         {
                             "index": 0,
                             "isId": true,
-                            "name": "user",
+                            "name": "userAccount",
                             "relationRef": {
                                 "index": 0
                             },
@@ -18834,7 +18834,7 @@ const APPLICATION$1 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "USER_TERMINAL",
+                        "name": "USER_ACCOUNT_TERMINAL",
                         "columnIndexes": []
                     }
                 },
@@ -18911,7 +18911,7 @@ const APPLICATION$1 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_LID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -18966,7 +18966,7 @@ const APPLICATION$1 = {
                     "index": 3,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "UserTerminalAgt",
+                    "name": "UserAccountTerminalAgt",
                     "properties": [
                         {
                             "columnRef": {
@@ -18998,7 +18998,7 @@ const APPLICATION$1 = {
                         {
                             "index": 3,
                             "isId": false,
-                            "name": "user",
+                            "name": "userAccount",
                             "relationRef": {
                                 "index": 0
                             },
@@ -19076,7 +19076,7 @@ const APPLICATION$1 = {
                     ],
                     "sinceVersion": 1,
                     "tableConfig": {
-                        "name": "USER_TERMINAL_AGT",
+                        "name": "USER_ACCOUNT_TERMINAL_AGT",
                         "columnIndexes": []
                     }
                 },
@@ -19142,7 +19142,7 @@ const APPLICATION$1 = {
                             "index": 4,
                             "isGenerated": false,
                             "manyRelationColumnRefs": [],
-                            "name": "USERNAME",
+                            "name": "USER_ACCOUNTNAME",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -19175,7 +19175,7 @@ const APPLICATION$1 = {
                     "index": 4,
                     "isLocal": true,
                     "isAirEntity": false,
-                    "name": "User",
+                    "name": "UserAccount",
                     "properties": [
                         {
                             "columnRef": {
@@ -19295,7 +19295,7 @@ const APPLICATION$1 = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_LID",
+                            "name": "OWNER_USER_ACCOUNT_LID",
                             "notNull": false,
                             "propertyRefs": [
                                 {
@@ -19482,7 +19482,7 @@ const APPLICATION$1 = {
                         {
                             "index": 3,
                             "isId": false,
-                            "name": "userTerminalAgts",
+                            "name": "userAccountTerminalAgts",
                             "relationRef": {
                                 "index": 2
                             },
@@ -19601,7 +19601,7 @@ const APPLICATION$1 = {
                         {
                             "index": 3,
                             "isId": false,
-                            "name": "userTerminalAgts",
+                            "name": "userAccountTerminalAgts",
                             "relationRef": {
                                 "index": 1
                             },
@@ -22262,8 +22262,8 @@ let OperationManager = class OperationManager {
         let saveActor = {
             id: actor._localId,
             uuId: actor.uuId,
-            user: actor.user ? {
-                id: actor.user.id
+            userAccount: actor.userAccount ? {
+                id: actor.userAccount.id
             } : null
         };
         let newRepository;
@@ -22277,8 +22277,8 @@ let OperationManager = class OperationManager {
                 ownerActor: {
                     id: actor._localId,
                     uuId: actor.uuId,
-                    user: actor.user ? {
-                        id: actor.user.id
+                    userAccount: actor.userAccount ? {
+                        id: actor.userAccount.id
                     } : null
                 }
             };
@@ -22823,7 +22823,7 @@ is being assigned to repository id ${airEntity.repository._localId} (UUID: ${air
         // NOTE: If the child record is not provided and it's an optional
         // @ManyToOne() it will be treated as if no record is there.  That is
         // probaby the only correct way to handle it and a warning is
-        // shown to the user in this case
+        // shown to the userAccount in this case
     }
     isRepositoryColumnAndNewRepositoryNeed(dbEntity, dbProperty, dbColumn, isCreate, entity, columnValue, context) {
         if (!dbColumn.idIndex && dbColumn.idIndex !== 0) {
@@ -28290,7 +28290,7 @@ let SyncInActorChecker = class SyncInActorChecker {
                 }
                 this.checkActorApplication(actor, message);
                 this.checkActorTerminal(actor, message);
-                this.checkActorUser(actor, message);
+                this.checkActorUserAccount(actor, message);
                 actorUuids.push(actor.uuId);
                 messageActorIndexMap.set(actor.uuId, i);
                 // Make sure id field is not in the input
@@ -28298,8 +28298,8 @@ let SyncInActorChecker = class SyncInActorChecker {
             }
             const actors = await this.actorDao.findByGUIDs(actorUuids);
             for (const actor of actors) {
-                const messageUserIndex = messageActorIndexMap.get(actor.uuId);
-                message.actors[messageUserIndex] = actor;
+                const messageUserAccountIndex = messageActorIndexMap.get(actor.uuId);
+                message.actors[messageUserAccountIndex] = actor;
             }
             const missingActors = message.actors
                 .filter(messageActor => !messageActor.id);
@@ -28335,16 +28335,16 @@ let SyncInActorChecker = class SyncInActorChecker {
         }
         actor.terminal = terminal;
     }
-    checkActorUser(actor, message) {
-        if (typeof actor.user !== 'number') {
+    checkActorUserAccount(actor, message) {
+        if (typeof actor.userAccount !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
-			in 'actor.user'`);
+			in 'actor.userAccount'`);
         }
-        const user = message.users[actor.user];
-        if (!user) {
-            throw new Error(`Did not find actor.user with "in-message index" ${actor.user}`);
+        const userAccount = message.userAccounts[actor.userAccount];
+        if (!userAccount) {
+            throw new Error(`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
         }
-        actor.user = user;
+        actor.userAccount = userAccount;
     }
 };
 __decorate$W([
@@ -28615,7 +28615,7 @@ let SyncInChecker = class SyncInChecker {
      */
     async checkMessage(message, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        if (!await this.syncInUserChecker.ensureUsers(message, context)) {
+        if (!await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
             return false;
         }
         if (!await this.syncInTerminalChecker.ensureTerminals(message, context)) {
@@ -28659,7 +28659,7 @@ __decorate$T([
 ], SyncInChecker.prototype, "syncInTerminalChecker", void 0);
 __decorate$T([
     Inject()
-], SyncInChecker.prototype, "syncInUserChecker", void 0);
+], SyncInChecker.prototype, "syncInUserAccountChecker", void 0);
 SyncInChecker = __decorate$T([
     Injected()
 ], SyncInChecker);
@@ -29006,9 +29006,9 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             }
             const repositories = await this.repositoryDao.findByGUIDs(repositoryGUIDs);
             for (const repository of repositories) {
-                const messageUserIndex = messageRepositoryIndexMap.get(repository.uuId);
-                if (messageUserIndex || messageUserIndex === 0) {
-                    message.referencedRepositories[messageUserIndex] = repository;
+                const messageUserAccountIndex = messageRepositoryIndexMap.get(repository.uuId);
+                if (messageUserAccountIndex || messageUserAccountIndex === 0) {
+                    message.referencedRepositories[messageUserAccountIndex] = repository;
                 }
                 else {
                     // Populating ahead of potential insert is OK, object
@@ -29059,11 +29059,11 @@ let SyncInRepositoryChecker = class SyncInRepositoryChecker {
             throw new Error(`Expecting "in-message index" (number)
 				in 'repository.owner'`);
         }
-        const user = message.users[repository.owner];
-        if (!user) {
-            throw new Error(`Did not find repository.owner (User) with "in-message index" ${repository.owner}`);
+        const userAccount = message.userAccounts[repository.owner];
+        if (!userAccount) {
+            throw new Error(`Did not find repository.owner (UserAccount) with "in-message index" ${repository.owner}`);
         }
-        repository.owner = user;
+        repository.owner = userAccount;
         repositoryGUIDs.push(repository.uuId);
         if (typeof repositoryIndex === 'number') {
             messageRepositoryIndexMap.set(repository.uuId, repositoryIndex);
@@ -29103,9 +29103,9 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
                     throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`);
                 }
                 terminal.isLocal = false;
-                const owner = message.users[terminal.owner];
+                const owner = message.userAccounts[terminal.owner];
                 if (!owner) {
-                    throw new Error(`Did not find user for terminal.owner with "in-message index" ${terminal.owner}
+                    throw new Error(`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
 						for RepositorySynchronizationMessage.terminals`);
                 }
                 terminal.owner = owner;
@@ -29116,8 +29116,8 @@ let SyncInTerminalChecker = class SyncInTerminalChecker {
             }
             const terminals = await this.terminalDao.findByGUIDs(terminalUuids);
             for (const terminal of terminals) {
-                const messageUserIndex = messageTerminalIndexMap.get(terminal.uuId);
-                message.terminals[messageUserIndex] = terminal;
+                const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.uuId);
+                message.terminals[messageUserAccountIndex] = terminal;
             }
             const missingTerminals = message.terminals
                 .filter(messageTerminal => !messageTerminal.id);
@@ -29151,32 +29151,32 @@ var __decorate$P = (undefined && undefined.__decorate) || function (decorators, 
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let SyncInUserChecker = class SyncInUserChecker {
-    async ensureUsers(message, context) {
+let SyncInUserAccountChecker = class SyncInUserAccountChecker {
+    async ensureUserAccounts(message, context) {
         try {
-            let userUuids = [];
-            let messageUserIndexMap = new Map();
-            for (let i = 0; i < message.users.length; i++) {
-                const user = message.users[i];
-                if (typeof user.uuId !== 'string' || user.uuId.length !== 36) {
-                    throw new Error(`Invalid 'user.uuid'`);
+            let userAccountUuids = [];
+            let messageUserAccountIndexMap = new Map();
+            for (let i = 0; i < message.userAccounts.length; i++) {
+                const userAccount = message.userAccounts[i];
+                if (typeof userAccount.uuId !== 'string' || userAccount.uuId.length !== 36) {
+                    throw new Error(`Invalid 'userAccount.uuid'`);
                 }
-                if (typeof user.username !== 'string' || user.username.length < 3) {
-                    throw new Error(`Invalid 'user.username'`);
+                if (typeof userAccount.username !== 'string' || userAccount.username.length < 3) {
+                    throw new Error(`Invalid 'userAccount.username'`);
                 }
-                userUuids.push(user.uuId);
-                messageUserIndexMap.set(user.uuId, i);
+                userAccountUuids.push(userAccount.uuId);
+                messageUserAccountIndexMap.set(userAccount.uuId, i);
                 // Make sure id field is not in the input
-                delete user.id;
+                delete userAccount.id;
             }
-            const users = await this.userDao.findByGUIDs(userUuids);
-            for (const user of users) {
-                const messageUserIndex = messageUserIndexMap.get(user.uuId);
-                message.users[messageUserIndex] = user;
+            const userAccounts = await this.userAccountDao.findByGUIDs(userAccountUuids);
+            for (const userAccount of userAccounts) {
+                const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.uuId);
+                message.userAccounts[messageUserAccountIndex] = userAccount;
             }
-            const missingUsers = message.users.filter(messageUser => !messageUser.id);
-            if (missingUsers.length) {
-                await this.addMissingUsers(missingUsers, context);
+            const missingUserAccounts = message.userAccounts.filter(messageUserAccount => !messageUserAccount.id);
+            if (missingUserAccounts.length) {
+                await this.addMissingUserAccounts(missingUserAccounts, context);
             }
         }
         catch (e) {
@@ -29185,21 +29185,21 @@ let SyncInUserChecker = class SyncInUserChecker {
         }
         return true;
     }
-    async addMissingUsers(missingUsers, context) {
-        for (const user of missingUsers) {
-            if (!user.username || typeof user.username !== 'string') {
-                throw new Error(`Invalid User.username ${user.username}`);
+    async addMissingUserAccounts(missingUserAccounts, context) {
+        for (const userAccount of missingUserAccounts) {
+            if (!userAccount.username || typeof userAccount.username !== 'string') {
+                throw new Error(`Invalid UserAccount.username ${userAccount.username}`);
             }
         }
-        await this.userDao.insert(missingUsers, context);
+        await this.userAccountDao.insert(missingUserAccounts, context);
     }
 };
 __decorate$P([
     Inject()
-], SyncInUserChecker.prototype, "userDao", void 0);
-SyncInUserChecker = __decorate$P([
+], SyncInUserAccountChecker.prototype, "userAccountDao", void 0);
+SyncInUserAccountChecker = __decorate$P([
     Injected()
-], SyncInUserChecker);
+], SyncInUserAccountChecker);
 
 var __decorate$O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -30548,7 +30548,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             messageRepository: repositoryTransactionHistory.repository,
             repositoryInMessageIndexesById: new Map()
         };
-        const inMessageUserLookup = {
+        const inMessageUserAccountLookup = {
             inMessageIndexesById: new Map(),
             lastInMessageIndex: -1
         };
@@ -30559,24 +30559,24 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             history: null,
             // Repositories may reference records in other repositories
             referencedRepositories: [],
-            users: [],
+            userAccounts: [],
             terminals: []
         };
-        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
+        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
-        const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup);
+        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
+        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup);
         await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups);
         return message;
     }
-    async serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup) {
+    async serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup) {
         let actorIdsToFindBy = [];
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
         const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
-        this.serializeUsers(actors, message, inMessageUserLookup);
-        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserLookup);
+        this.serializeUserAccounts(actors, message, inMessageUserAccountLookup);
+        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserAccountLookup);
         const inMessageApplicationLookup = {
             lastInMessageIndex: -1,
             inMessageIndexesById: new Map()
@@ -30588,13 +30588,13 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                 ...WITH_ID,
                 application: applicationInMessageIndex,
                 terminal: terminalInMessageIndexesById.get(actor.terminal.id),
-                user: inMessageUserLookup.inMessageIndexesById.get(actor.user.id),
+                userAccount: inMessageUserAccountLookup.inMessageIndexesById.get(actor.userAccount.id),
                 uuId: actor.uuId
             };
         }
         return inMessageApplicationLookup;
     }
-    serializeTerminals(actors, message, inMessageUserLookup) {
+    serializeTerminals(actors, message, inMessageUserAccountLookup) {
         let lastInMessageTerminalIndex = -1;
         const terminalInMessageIndexesById = new Map();
         for (const actor of actors) {
@@ -30607,35 +30607,35 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             message.terminals[terminalInMessageIndex] = {
                 ...WITH_ID,
                 uuId: terminal.uuId,
-                owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner.id)
+                owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner.id)
             };
         }
         return terminalInMessageIndexesById;
     }
-    serializeUsers(actors, message, inMessageUserLookup) {
+    serializeUserAccounts(actors, message, inMessageUserAccountLookup) {
         for (const actor of actors) {
-            this.addUserToMessage(actor.user, message, inMessageUserLookup);
-            this.addUserToMessage(actor.terminal.owner, message, inMessageUserLookup);
+            this.addUserAccountToMessage(actor.userAccount, message, inMessageUserAccountLookup);
+            this.addUserAccountToMessage(actor.terminal.owner, message, inMessageUserAccountLookup);
         }
     }
-    addUserToMessage(user, message, inMessageUserLookup) {
-        let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup);
-        message.users[userInMessageIndex] = {
+    addUserAccountToMessage(userAccount, message, inMessageUserAccountLookup) {
+        let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup);
+        message.userAccounts[userAccountInMessageIndex] = {
             ...WITH_ID,
-            username: user.username,
-            uuId: user.uuId
+            username: userAccount.username,
+            uuId: userAccount.uuId
         };
-        return userInMessageIndex;
+        return userAccountInMessageIndex;
     }
-    getUserInMessageIndex(user, inMessageUserLookup) {
-        if (inMessageUserLookup.inMessageIndexesById.has(user.id)) {
-            return inMessageUserLookup.inMessageIndexesById.get(user.id);
+    getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup) {
+        if (inMessageUserAccountLookup.inMessageIndexesById.has(userAccount.id)) {
+            return inMessageUserAccountLookup.inMessageIndexesById.get(userAccount.id);
         }
-        let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex;
-        inMessageUserLookup.inMessageIndexesById.set(user.id, userInMessageIndex);
-        return userInMessageIndex;
+        let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex;
+        inMessageUserAccountLookup.inMessageIndexesById.set(userAccount.id, userAccountInMessageIndex);
+        return userAccountInMessageIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
+    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
         let repositoryIdsToFindBy = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
             repositoryIdsToFindBy.push(repositoryId);
@@ -30643,15 +30643,15 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         repositoryIdsToFindBy.push(repositoryTransactionHistory.id);
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
-            let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup);
+            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
                 message.referencedRepositories[repositoryInMessageIndex] =
-                    this.serializeRepository(repository, userInMessageIndex);
+                    this.serializeRepository(repository, userAccountInMessageIndex);
             }
             else {
                 if (typeof message.history.repository !== 'string') {
-                    message.history.repository.owner = userInMessageIndex;
+                    message.history.repository.owner = userAccountInMessageIndex;
                     message.history.repository._localId = repository._localId;
                 }
             }
@@ -30689,7 +30689,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         }
         return applicationInMessageIndex;
     }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
+    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
         repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
             if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
                 return -1;
@@ -30706,17 +30706,17 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         return {
             ...WITH_ID,
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup),
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
             uuId: repositoryTransactionHistory.uuId
         };
     }
-    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup) {
+    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup) {
         if (repositoryTransactionHistory.isRepositoryCreation) {
             const repository = repositoryTransactionHistory.repository;
-            let userInMessageIndex = this.addUserToMessage(repository.owner, message, inMessageUserLookup);
-            return this.serializeRepository(repository, userInMessageIndex);
+            let userAccountInMessageIndex = this.addUserAccountToMessage(repository.owner, message, inMessageUserAccountLookup);
+            return this.serializeRepository(repository, userAccountInMessageIndex);
         }
         else {
             // When this repositoryTransactionHistory processed at sync-in 
@@ -31075,7 +31075,7 @@ BaseTerminalAgtDao.Find = new DaoQueryDecorators();
 BaseTerminalAgtDao.FindOne = new DaoQueryDecorators();
 BaseTerminalAgtDao.Search = new DaoQueryDecorators();
 BaseTerminalAgtDao.SearchOne = new DaoQueryDecorators();
-class BaseUserDao extends SQDIDao$1 {
+class BaseUserAccountDao extends SQDIDao$1 {
     constructor() {
         super(4);
     }
@@ -31086,11 +31086,11 @@ class BaseUserDao extends SQDIDao$1 {
         return duoDiSet$3(4);
     }
 }
-BaseUserDao.Find = new DaoQueryDecorators();
-BaseUserDao.FindOne = new DaoQueryDecorators();
-BaseUserDao.Search = new DaoQueryDecorators();
-BaseUserDao.SearchOne = new DaoQueryDecorators();
-class BaseUserTerminalDao extends SQDIDao$1 {
+BaseUserAccountDao.Find = new DaoQueryDecorators();
+BaseUserAccountDao.FindOne = new DaoQueryDecorators();
+BaseUserAccountDao.Search = new DaoQueryDecorators();
+BaseUserAccountDao.SearchOne = new DaoQueryDecorators();
+class BaseUserAccountTerminalDao extends SQDIDao$1 {
     constructor() {
         super(2);
     }
@@ -31101,11 +31101,11 @@ class BaseUserTerminalDao extends SQDIDao$1 {
         return duoDiSet$3(2);
     }
 }
-BaseUserTerminalDao.Find = new DaoQueryDecorators();
-BaseUserTerminalDao.FindOne = new DaoQueryDecorators();
-BaseUserTerminalDao.Search = new DaoQueryDecorators();
-BaseUserTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseUserTerminalAgtDao extends SQDIDao$1 {
+BaseUserAccountTerminalDao.Find = new DaoQueryDecorators();
+BaseUserAccountTerminalDao.FindOne = new DaoQueryDecorators();
+BaseUserAccountTerminalDao.Search = new DaoQueryDecorators();
+BaseUserAccountTerminalDao.SearchOne = new DaoQueryDecorators();
+class BaseUserAccountTerminalAgtDao extends SQDIDao$1 {
     constructor() {
         super(3);
     }
@@ -31116,10 +31116,10 @@ class BaseUserTerminalAgtDao extends SQDIDao$1 {
         return duoDiSet$3(3);
     }
 }
-BaseUserTerminalAgtDao.Find = new DaoQueryDecorators();
-BaseUserTerminalAgtDao.FindOne = new DaoQueryDecorators();
-BaseUserTerminalAgtDao.Search = new DaoQueryDecorators();
-BaseUserTerminalAgtDao.SearchOne = new DaoQueryDecorators();
+BaseUserAccountTerminalAgtDao.Find = new DaoQueryDecorators();
+BaseUserAccountTerminalAgtDao.FindOne = new DaoQueryDecorators();
+BaseUserAccountTerminalAgtDao.Search = new DaoQueryDecorators();
+BaseUserAccountTerminalAgtDao.SearchOne = new DaoQueryDecorators();
 
 var __decorate$B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -31181,13 +31181,13 @@ var __decorate$A = (undefined && undefined.__decorate) || function (decorators, 
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-let UserDao = class UserDao extends BaseUserDao {
-    async findByUserNames(usernames) {
+let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
+    async findByUserAccountNames(usernames) {
         let u;
         return await this.db.find.tree({
             select: {},
             from: [
-                u = Q$3.User
+                u = Q$3.UserAccount
             ],
             where: u.username.in(usernames)
         });
@@ -31197,36 +31197,36 @@ let UserDao = class UserDao extends BaseUserDao {
         return await this.db.find.tree({
             select: {},
             from: [
-                u = Q$3.User
+                u = Q$3.UserAccount
             ],
             where: u.uuId.in(uuIds)
         });
     }
-    async insert(users, context) {
+    async insert(userAccounts, context) {
         let u;
         const values = [];
-        for (const user of users) {
+        for (const userAccount of userAccounts) {
             values.push([
-                user.uuId, user.username
+                userAccount.uuId, userAccount.username
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            insertInto: u = Q$3.User,
+            insertInto: u = Q$3.UserAccount,
             columns: [
                 u.uuId,
                 u.username
             ],
             values
         }, context);
-        for (let i = 0; i < users.length; i++) {
-            const user = users[i];
-            user.id = ids[i][0];
+        for (let i = 0; i < userAccounts.length; i++) {
+            const userAccount = userAccounts[i];
+            userAccount.id = ids[i][0];
         }
     }
 };
-UserDao = __decorate$A([
+UserAccountDao = __decorate$A([
     Injected()
-], UserDao);
+], UserAccountDao);
 
 var __decorate$z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -31234,66 +31234,66 @@ var __decorate$z = (undefined && undefined.__decorate) || function (decorators, 
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var AddUserErrorCodes;
-(function (AddUserErrorCodes) {
-    AddUserErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
-    AddUserErrorCodes["INVALID_BIRTH_MONTH"] = "INVALID_BIRTH_MONTH";
-    AddUserErrorCodes["INVALID_COUNTRY"] = "INVALID_COUNTRY";
-    AddUserErrorCodes["INVALID_EMAIL"] = "INVALID_EMAIL";
-    AddUserErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
-    AddUserErrorCodes["USERNAME_TAKEN"] = "USERNAME_TAKEN";
-})(AddUserErrorCodes || (AddUserErrorCodes = {}));
-let UserApi = class UserApi {
-    async addUser(username, email) {
-        const existingUsers = await this.userDao.findByUserNames([username]);
-        for (const existingUser of existingUsers) {
-            if (existingUser.username === username) {
+var AddUserAccountErrorCodes;
+(function (AddUserAccountErrorCodes) {
+    AddUserAccountErrorCodes["EMAIL_TAKEN"] = "EMAIL_TAKEN";
+    AddUserAccountErrorCodes["INVALID_BIRTH_MONTH"] = "INVALID_BIRTH_MONTH";
+    AddUserAccountErrorCodes["INVALID_COUNTRY"] = "INVALID_COUNTRY";
+    AddUserAccountErrorCodes["INVALID_EMAIL"] = "INVALID_EMAIL";
+    AddUserAccountErrorCodes["INVALID_USERNAME"] = "INVALID_USERNAME";
+    AddUserAccountErrorCodes["USER_ACCOUNTNAME_TAKEN"] = "USER_ACCOUNTNAME_TAKEN";
+})(AddUserAccountErrorCodes || (AddUserAccountErrorCodes = {}));
+let UserAccountApi = class UserAccountApi {
+    async addUserAccount(username, email) {
+        const existingUserAccounts = await this.userAccountDao.findByUserAccountNames([username]);
+        for (const existingUserAccount of existingUserAccounts) {
+            if (existingUserAccount.username === username) {
                 return {
-                    errorCode: AddUserErrorCodes.USERNAME_TAKEN
+                    errorCode: AddUserAccountErrorCodes.USER_ACCOUNTNAME_TAKEN
                 };
             }
         }
-        const user = {
+        const userAccount = {
             id: null,
             uuId: v4(),
             username
         };
-        await this.userDao.save(user);
+        await this.userAccountDao.save(userAccount);
         return {
-            user
+            userAccount
         };
     }
-    async findUser(privateId) {
-        const users = await this.userDao.findByGUIDs([privateId]);
-        if (users.length) {
-            return users[0];
+    async findUserAccount(privateId) {
+        const userAccounts = await this.userAccountDao.findByGUIDs([privateId]);
+        if (userAccounts.length) {
+            return userAccounts[0];
         }
         return null;
     }
 };
 __decorate$z([
     Api()
-], UserApi.prototype, "addUser", null);
+], UserAccountApi.prototype, "addUserAccount", null);
 __decorate$z([
     Api()
-], UserApi.prototype, "findUser", null);
-UserApi = __decorate$z([
+], UserAccountApi.prototype, "findUserAccount", null);
+UserAccountApi = __decorate$z([
     Injected()
-], UserApi);
+], UserAccountApi);
 
 const TERMINAL_DAO = travelDocumentCheckpoint.token({
     class: TerminalDao,
     interface: 'ITerminalDao',
     token: 'TERMINAL_DAO'
 });
-const USER_DAO = travelDocumentCheckpoint.token({
-    class: UserDao,
-    interface: 'IUserDao',
-    token: 'USER_DAO'
+const USER_ACCOUNT_DAO = travelDocumentCheckpoint.token({
+    class: UserAccountDao,
+    interface: 'IUserAccountDao',
+    token: 'USER_ACCOUNT_DAO'
 });
-USER_API.setClass(UserApi);
-USER_API.setDependencies({
-    userDao: USER_DAO
+USER_ACCOUNT_API.setClass(UserAccountApi);
+USER_ACCOUNT_API.setDependencies({
+    userAccountDao: USER_ACCOUNT_DAO
 });
 
 var __decorate$y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -31428,10 +31428,10 @@ const SYNC_IN_APPLICATION_VERSION_CHECKER = groundTransport.token({
     interface: 'ISyncInApplicationVersionChecker',
     token: 'SYNC_IN_APPLICATION_VERSION_CHECKER'
 });
-const SYNC_IN_USER_CHECKER = groundTransport.token({
-    class: SyncInUserChecker,
-    interface: 'ISyncInUserChecker',
-    token: 'SYNC_IN_USER_CHECKER'
+const SYNC_IN_USER_ACCOUNT_CHECKER = groundTransport.token({
+    class: SyncInUserAccountChecker,
+    interface: 'ISyncInUserAccountChecker',
+    token: 'SYNC_IN_USER_ACCOUNT_CHECKER'
 });
 const SYNC_IN_UTILS = groundTransport.token({
     class: SyncInUtils,
@@ -31502,7 +31502,7 @@ SYNC_IN_CHECKER.setDependencies({
     syncInDataChecker: SYNC_IN_DATA_CHECKER,
     syncInRepositoryChecker: SYNC_IN_REPOSITORY_CHECKER,
     syncInTerminalChecker: SYNC_IN_TERMINAL_CHECKER,
-    syncInUserChecker: SYNC_IN_USER_CHECKER
+    syncInUserAccountChecker: SYNC_IN_USER_ACCOUNT_CHECKER
 });
 SYNC_IN_DATA_CHECKER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
@@ -31515,8 +31515,8 @@ SYNC_IN_REPOSITORY_CHECKER.setDependencies({
 SYNC_IN_TERMINAL_CHECKER.setDependencies({
     terminalDao: TERMINAL_DAO
 });
-SYNC_IN_USER_CHECKER.setDependencies({
-    userDao: USER_DAO
+SYNC_IN_USER_ACCOUNT_CHECKER.setDependencies({
+    userAccountDao: USER_ACCOUNT_DAO
 });
 SYNC_OUT_DATA_SERIALIZER.setDependencies({
     actorDao: ACTOR_DAO,
@@ -33548,7 +33548,7 @@ function create(channelName, options) {
     /**
      * Handle abrupt closes that do not originate from db.close().
      * This could happen, for example, if the underlying storage is
-     * removed or if the user clears the database in the browser's
+     * removed or if the userAccount clears the database in the browser's
      * history preferences.
      */
 
@@ -33853,9 +33853,9 @@ function canBeUsed() {
 
 function averageResponseTime() {
   var defaultTime = 120;
-  var userAgent = navigator.userAgent.toLowerCase();
+  var userAccountAgent = navigator.userAccountAgent.toLowerCase();
 
-  if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
+  if (userAccountAgent.includes('safari') && !userAccountAgent.includes('chrome')) {
     // safari is much slower so this time is higher
     return defaultTime * 2;
   }
@@ -34749,7 +34749,7 @@ function beLeader(leaderElector) {
        */
       leaderElector._dpLC = true;
 
-      leaderElector._dpL(); // message the lib user so the app can handle the problem
+      leaderElector._dpL(); // message the lib userAccount so the app can handle the problem
 
 
       _sendMessage(leaderElector, 'tell'); // ensure other leader also knows the problem
@@ -34852,7 +34852,7 @@ var _index = lib;
 /**
  * because babel can only export on default-attribute,
  * we use this for the non-module-build
- * this ensures that users do not have to use
+ * this ensures that userAccounts do not have to use
  * var BroadcastChannel = require('broadcast-channel').default;
  * but
  * var BroadcastChannel = require('broadcast-channel');

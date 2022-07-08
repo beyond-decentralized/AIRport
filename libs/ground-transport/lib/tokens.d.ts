@@ -5,7 +5,7 @@ import { ISyncInRepositoryChecker } from './synchronization/in/checker/SyncInRep
 import { ISyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker';
 import { ISyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker';
 import { ISyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker';
-import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserChecker';
+import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserAccountChecker';
 import { IStage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor';
 import { IStage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedInDataProcessor';
 import { ISynchronizationInManager } from './synchronization/in/SynchronizationInManager';

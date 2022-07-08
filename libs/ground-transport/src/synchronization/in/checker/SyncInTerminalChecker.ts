@@ -47,10 +47,10 @@ export class SyncInTerminalChecker
 					throw new Error(`'terminal.isLocal' cannot defined in RepositorySynchronizationMessage.terminals`)
 				}
 				terminal.isLocal = false
-				const owner = message.users[terminal.owner as any]
+				const owner = message.userAccounts[terminal.owner as any]
 				if (!owner) {
 					throw new Error(
-						`Did not find user for terminal.owner with "in-message index" ${terminal.owner}
+						`Did not find userAccount for terminal.owner with "in-message index" ${terminal.owner}
 						for RepositorySynchronizationMessage.terminals`);
 				}
 				terminal.owner = owner
@@ -62,8 +62,8 @@ export class SyncInTerminalChecker
 
 			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs)
 			for (const terminal of terminals) {
-				const messageUserIndex = messageTerminalIndexMap.get(terminal.GUID)
-				message.terminals[messageUserIndex] = terminal
+				const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID)
+				message.terminals[messageUserAccountIndex] = terminal
 			}
 
 			const missingTerminals = message.terminals

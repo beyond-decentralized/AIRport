@@ -16,7 +16,7 @@ import { IFieldInOrderBy } from '../../core/field/FieldInOrderBy';
 import type { IRelationManager } from '../../../impl/core/entity/RelationManager';
 
 /**
- * Query input format, as specified by the user. All queries extend this format.
+ * Query input format. All queries extend this format.
  */
 export interface RawQuery {
 	forUpdate?: boolean

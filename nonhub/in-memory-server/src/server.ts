@@ -7,7 +7,6 @@ import type {
 import type { Repository_GUID } from '@airport/holding-pattern';
 import type {
     SearchRequest,
-    UserRequest,
 } from '@airport/nonhub-types'
 import {
     BasicServer,
@@ -229,7 +228,7 @@ export function processUserRequest(
         })
         return
     }
-    const username = userRequest.userName
+    const username = userRequest.username
     const usernameRegexp = /^\S*$/
     if (typeof username !== 'string'
         || username.length < 3 || username.length > 32
