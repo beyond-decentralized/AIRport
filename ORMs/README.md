@@ -1,19 +1,14 @@
 # ORMS
 
-AIRport is capable of supporting multiple ORMs.
+Object relational mapping frameworks (framework adapters) to work
+with AIRport.
 
-Right now the default ORM is bundled into:
+[self](./self) Self-infered FROM clause for SELECT statements.
+[tarmaq](./tarmaq) Default, modular AIRport ORM
 
-@airport/air-traffic-control
+All ORMs benefit from AIRports support for:
 
-- JPA like annotations
-- Query object and SQL wrapper APIS
-
-@airport/check-in
-
-- DAO pattern
-
-To support multiple ORMs the default ORM is to be moved into:
-
-[tmc](./tmc) TypeScript Mapping Constructs
-
+*   results in arrays of rows
+*   results in flat Entity Object trees
+*   results in interlinked Entity Object graphs 
+*   sessionless entity state management framework

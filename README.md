@@ -205,6 +205,19 @@ export class ParentDao
       })
     }
 
+    async updateInPlace(
+        parent: Parent
+    ): Promise<void> {
+        const p: QParent
+        await this._updateWhere({
+            update: p = Q.Parent,
+            set: {
+                total: plus(p.total, 1)
+            },
+            where: p.equals(parent)
+        })
+    }
+
 }
 ```
 

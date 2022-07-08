@@ -183,6 +183,22 @@
       "projectFolder": "nonhub/processor-common",
       "shouldPublish": true
     },
+    // "ORMs" folder (alphabetical order)
+    {
+      "packageName": "@airport/tarmaq-dao",
+      "projectFolder": "ORMs/tarmaq/dao",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/tarmaq-entity",
+      "projectFolder": "ORMs/tarmaq/entity",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/tarmaq-query",
+      "projectFolder": "ORMs/tarmaq/query",
+      "shouldPublish": true
+    },
     // "platforms" folder (alphabetical order)
     {
       "packageName": "@airport/web-airport",

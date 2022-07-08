@@ -43,6 +43,9 @@ dependencies:
   '@rush-temp/sqlite': 'file:projects/sqlite.tgz'
   '@rush-temp/sqljs': 'file:projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:projects/takeoff.tgz'
+  '@rush-temp/tarmaq-dao': 'file:projects/tarmaq-dao.tgz'
+  '@rush-temp/tarmaq-entity': 'file:projects/tarmaq-entity.tgz'
+  '@rush-temp/tarmaq-query': 'file:projects/tarmaq-query.tgz'
   '@rush-temp/terminal': 'file:projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:projects/terminal-map.tgz'
   '@rush-temp/tower': 'file:projects/tower.tgz'
@@ -3569,6 +3572,33 @@ packages:
       integrity: sha512-uBVRsQFtJi5pNEJ0T0859G8Pml09bfmaVaVgZWXYjwtfaMtpIB5Xmm5JfqrQkz18IdG+FElbeIKL1by5ncFYnw==
       tarball: 'file:projects/takeoff.tgz'
     version: 0.0.0
+  'file:projects/tarmaq-dao.tgz':
+    dependencies:
+      rxjs: 7.4.0
+    dev: false
+    name: '@rush-temp/tarmaq-dao'
+    resolution:
+      integrity: sha512-zafXRRnJhh5Albw4M6eA8hg2uhHBwNiSa3+Tv2qxSEN0DfuDlqM7SuAHFfX4bad1pGTWnj1FW6xWSrv3ik0Rmg==
+      tarball: 'file:projects/tarmaq-dao.tgz'
+    version: 0.0.0
+  'file:projects/tarmaq-entity.tgz':
+    dependencies:
+      rxjs: 7.4.0
+    dev: false
+    name: '@rush-temp/tarmaq-entity'
+    resolution:
+      integrity: sha512-s4flUST3ZXNq3fa924TdP9kWS94hBfFDOX8adNehMwNon1nO/J6H2Q8s15Ghs04yp8nVH03RmtNDl5Zfpc689A==
+      tarball: 'file:projects/tarmaq-entity.tgz'
+    version: 0.0.0
+  'file:projects/tarmaq-query.tgz':
+    dependencies:
+      rxjs: 7.4.0
+    dev: false
+    name: '@rush-temp/tarmaq-query'
+    resolution:
+      integrity: sha512-3px25f3o+trrssSMafgYJEZyHuqBsVWSe48+5XQkeUECBt/hzlPDlrCL5UmdvLaNzs+GDL5+DMCbqmZT2DNvCw==
+      tarball: 'file:projects/tarmaq-query.tgz'
+    version: 0.0.0
   'file:projects/terminal-map.tgz':
     dependencies:
       rxjs: 7.4.0
@@ -3718,6 +3748,9 @@ specifiers:
   '@rush-temp/sqlite': 'file:./projects/sqlite.tgz'
   '@rush-temp/sqljs': 'file:./projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:./projects/takeoff.tgz'
+  '@rush-temp/tarmaq-dao': 'file:./projects/tarmaq-dao.tgz'
+  '@rush-temp/tarmaq-entity': 'file:./projects/tarmaq-entity.tgz'
+  '@rush-temp/tarmaq-query': 'file:./projects/tarmaq-query.tgz'
   '@rush-temp/terminal': 'file:./projects/terminal.tgz'
   '@rush-temp/terminal-map': 'file:./projects/terminal-map.tgz'
   '@rush-temp/tower': 'file:./projects/tower.tgz'
