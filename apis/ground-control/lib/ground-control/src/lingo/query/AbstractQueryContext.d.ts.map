@@ -1,0 +1,1 @@
+{"version":3,"file":"AbstractQueryContext.d.ts","sourceRoot":"","sources":["../../../../../src/lingo/query/AbstractQueryContext.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAC;AACxD,OAAO,EAAE,QAAQ,EAAE,MAAM,uBAAuB,CAAC;AAEjD,MAAM,WAAW,qBACb,SAAQ,QAAQ;IAChB,gBAAgB,EAAE,OAAO,CAAA;IACzB,QAAQ,CAAC,EAAE,QAAQ,CAAA;CACtB"}

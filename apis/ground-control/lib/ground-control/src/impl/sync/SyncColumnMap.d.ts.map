@@ -1,0 +1,1 @@
+{"version":3,"file":"SyncColumnMap.d.ts","sourceRoot":"","sources":["../../../../../src/impl/sync/SyncColumnMap.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,4BAA4B,EAAC,MAAM,gCAAgC,CAAC;AAC5E,OAAO,EAAC,SAAS,EAAC,MAAO,oBAAoB,CAAC;AAE9C,qBAAa,aAAc,SAAQ,SAAS;gBAG1C,UAAU,EAAE,4BAA4B,EACxC,UAAU,GAAE,OAAe;CAK5B"}

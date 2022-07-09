@@ -1,1 +1,0 @@
-{"version":3,"file":"decorators.d.ts","sourceRoot":"","sources":["../../../../src/lingo/core/metadata/decorators.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAC9B,CAAE,WAAW,EAAE,QAAQ,OAAG;CAG1B;AAED,MAAM,WAAW,eAAe;IAC/B,CACC,MAAM,EAAE,GAAG,EACX,UAAU,EAAE,MAAM,EAClB,gBAAgB,EAAE,GAAG,OACpB;CACF;AAED,MAAM,WAAW,iBAAiB;IACjC,CACC,MAAM,EAAE,GAAG,EACX,WAAW,EAAE,MAAM,OAClB;CACF"}

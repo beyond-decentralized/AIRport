@@ -1,6 +1,7 @@
-import { Utils } from "./impl/Utils";
-import { QueryUtils } from "./impl/utils/QueryUtils";
+import { Utils } from "./implementation/Utils";
+import { QueryUtils } from "./implementation/utils/QueryUtils";
 import { airTrafficControl } from "./library";
+import { ENTITY_UTILS, QUERY_UTILS } from "@airport/tarmaq-query";
 // Separating core-tokens from tokens removes circular dependencies
 // at code initialization time
 export const UTILS = airTrafficControl.token({
@@ -8,17 +9,8 @@ export const UTILS = airTrafficControl.token({
     interface: 'IUtils',
     token: 'UTILS'
 });
-export const ENTITY_UTILS = airTrafficControl.token({
-    class: null,
-    interface: 'IEntityUtils',
-    token: 'ENTITY_UTILS'
-});
-export const QUERY_UTILS = airTrafficControl.token({
-    class: QueryUtils,
-    interface: 'IQueryUtils',
-    token: 'QUERY_UTILS'
-});
 ENTITY_UTILS.setDependencies({
     utils: UTILS
 });
+QUERY_UTILS.setClass(QueryUtils);
 //# sourceMappingURL=core-tokens.js.map

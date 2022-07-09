@@ -1,5 +1,6 @@
 export * from './definition/core/entity/Aliases';
 export * from './definition/core/entity/Entity';
+export * from './definition/core/entity/IRelationManager';
 export * from './definition/core/entity/Joins';
 export * from './definition/core/entity/OneToManyRelation';
 export * from './definition/core/entity/Relation';

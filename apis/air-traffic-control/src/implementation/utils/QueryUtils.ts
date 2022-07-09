@@ -1,5 +1,12 @@
-import { AirEntityId, IAirEntityUtils } from '@airport/aviation-communication'
-import { Inject, Injected, IOC } from '@airport/direction-indicator'
+import {
+	AirEntityId,
+	IAirEntityUtils
+} from '@airport/aviation-communication'
+import {
+	Inject,
+	Injected,
+	IOC
+} from '@airport/direction-indicator'
 import {
 	IAirEntity,
 	JSONBaseOperation,
@@ -7,21 +14,24 @@ import {
 	OperationCategory,
 	SqlOperator
 } from '@airport/ground-control'
-import { ENTITY_UTILS } from '../../core-tokens'
-import { IFieldColumnAliases } from '../../lingo/core/entity/Aliases'
-import { IQAirEntity, IQEntityInternal } from '../../lingo/core/entity/Entity'
-import { IQAirEntityRelation } from '../../lingo/core/entity/Relation'
-import { JSONLogicalOperation } from '../../lingo/core/operation/LogicalOperation'
-import { JSONRawValueOperation } from '../../lingo/core/operation/Operation'
-import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
-import { IEntityUtils } from '../../lingo/utils/EntityUtils'
-import { IFieldUtils } from '../../lingo/utils/FieldUtils'
-import { IQueryUtils } from '../../lingo/utils/QueryUtils'
-import { IRelationManager } from '../core/entity/RelationManager'
-import { QExistsFunction } from '../core/field/Functions'
-import { QOperableField } from '../core/field/OperableField'
-import { wrapPrimitive } from '../core/field/WrapperFunctions'
-import { and } from '../core/operation/LogicalOperation'
+import {
+	and,
+	ENTITY_UTILS,
+	IEntityUtils,
+	IFieldColumnAliases,
+	IFieldUtils,
+	IQAirEntity,
+	IQAirEntityRelation,
+	IQEntityInternal,
+	IQueryUtils,
+	IRelationManager,
+	JSONLogicalOperation,
+	JSONRawValueOperation,
+	QExistsFunction,
+	QOperableField,
+	RawFieldQuery,
+	wrapPrimitive
+} from '@airport/tarmaq-query'
 
 @Injected()
 export class QueryUtils

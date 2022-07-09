@@ -1,17 +1,15 @@
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { RelationManager } from './impl/core/entity/RelationManager';
-import { Lookup } from './impl/query/api/Lookup';
-import { NonEntityFind } from './impl/query/api/NonEntityFind';
-import { NonEntityFindOne } from './impl/query/api/NonEntityFindOne';
-import { NonEntitySearch } from './impl/query/api/NonEntitySearch';
-import { NonEntitySearchOne } from './impl/query/api/NonEntitySearchOne';
-import { QMetadataUtils } from './impl/utils/QMetadataUtils';
-import { ApplicationUtils } from './impl/utils/ApplicationUtils';
-import { FieldUtils } from './impl/utils/FieldUtils';
-import { DatabaseStore } from './impl/DatabaseStore';
-import { ENTITY_UTILS, QUERY_UTILS, UTILS } from './core-tokens';
+import { QMetadataUtils } from './implementation/utils/QMetadataUtils';
+import { ApplicationUtils } from './implementation/utils/ApplicationUtils';
+import { FieldUtils } from './implementation/utils/FieldUtils';
+import { DatabaseStore } from './implementation/DatabaseStore';
 import { airTrafficControl } from './library';
+import { ENTITY_UTILS, QUERY_FACADE, QUERY_UTILS } from '@airport/tarmaq-query';
+import { LOOKUP, NON_ENTITY_FIND, NON_ENTITY_FIND_ONE, NON_ENTITY_SEARCH, NON_ENTITY_SEARCH_ONE } from '@airport/tarmaq-dao';
+import { Dao } from './implementation/Dao';
+import { RelationManager } from './implementation/RelationManager';
+import { UTILS } from './core-tokens';
 export const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,
     interface: 'IAirportDatabase',
@@ -21,6 +19,11 @@ export const APPLICATION_UTILS = airTrafficControl.token({
     class: ApplicationUtils,
     interface: 'IApplicationUtils',
     token: 'APPLICATION_UTILS'
+});
+export const DAO = airTrafficControl.token({
+    class: Dao,
+    interface: 'class Dao',
+    token: 'DAO'
 });
 export const DATABASE_FACADE = airTrafficControl.token({
     class: null,
@@ -37,40 +40,10 @@ export const FIELD_UTILS = airTrafficControl.token({
     interface: 'IFieldUtils',
     token: 'FIELD_UTILS'
 });
-export const LOOKUP = airTrafficControl.token({
-    class: Lookup,
-    interface: 'ILookup',
-    token: 'LOOKUP'
-});
-export const NON_ENTITY_FIND = airTrafficControl.token({
-    class: NonEntityFind,
-    interface: 'INonEntityFind',
-    token: 'NON_ENTITY_FIND'
-});
-export const NON_ENTITY_FIND_ONE = airTrafficControl.token({
-    class: NonEntityFindOne,
-    interface: 'INonEntityFindOne',
-    token: 'NON_ENTITY_FIND_ONE'
-});
-export const NON_ENTITY_SEARCH = airTrafficControl.token({
-    class: NonEntitySearch,
-    interface: 'INonEntitySearch',
-    token: 'NON_ENTITY_SEARCH'
-});
-export const NON_ENTITY_SEARCH_ONE = airTrafficControl.token({
-    class: NonEntitySearchOne,
-    interface: 'INonEntitySearchOne',
-    token: 'NON_ENTITY_SEARCH_ONE'
-});
 export const Q_METADATA_UTILS = airTrafficControl.token({
     class: QMetadataUtils,
     interface: 'IQMetadataUtils',
     token: 'Q_METADATA_UTILS'
-});
-export const QUERY_FACADE = airTrafficControl.token({
-    class: null,
-    interface: 'IQueryFacade',
-    token: 'QUERY_FACADE'
 });
 export const RELATION_MANAGER = airTrafficControl.token({
     class: RelationManager,
@@ -102,6 +75,13 @@ APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER,
     utils: UTILS
+});
+DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    databaseFacade: DATABASE_FACADE,
+    entityStateManager: ENTITY_STATE_MANAGER,
+    lookup: LOOKUP,
+    updateCacheManager: UPDATE_CACHE_MANAGER
 });
 DATABASE_FACADE.setDependencies({
     applicationUtils: APPLICATION_UTILS,

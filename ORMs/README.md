@@ -1,12 +1,12 @@
 # ORMS
 
-Object relational mapping frameworks (framework adapters) to work
-with AIRport.
+Object Relational Mapping frameworks.
 
-[self](./self) Self-infered FROM clause for SELECT statements.
+[self-query](./self) Self-infered FROM clause for SELECT statements.
 [tarmaq](./tarmaq) Default, modular AIRport ORM
+[tiql](./tiql) native SQL adapter ORM
 
-All ORMs benefit from AIRports support for:
+All ORMs benefit from AIRport's support for:
 
 *   results in arrays of rows
 *   results in flat Entity Object trees

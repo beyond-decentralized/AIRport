@@ -1,5 +1,5 @@
 import { Injected } from "@airport/direction-indicator"
-import { IUtils } from "../lingo/Utils"
+import { IUtils } from "../definition/utils/Utils"
 
 @Injected()
 export class Utils

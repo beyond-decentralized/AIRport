@@ -1,10 +1,10 @@
 import { QApplication } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
 import { DbApplication } from "@airport/ground-control";
+import { FunctionsAndOperators } from "@airport/tarmaq-query";
+import { IEntityRecord } from "../definition/AirportDatabase";
+import { IDatabaseState } from "../definition/DatabaseState";
 import { databaseState as theDatabaseState } from "./databaseState";
-import { IEntityRecord } from "../lingo/AirportDatabase";
-import { FunctionsAndOperators } from "../lingo/core/FunctionsAndOperators";
-import { IDatabaseState } from "../lingo/DatabaseState";
 
 @Injected()
 export class DatabaseStore

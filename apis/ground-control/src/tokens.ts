@@ -1,5 +1,6 @@
 import { lib } from '@airport/direction-indicator';
 import { DbApplicationUtils } from './impl/query/DbApplicationUtils';
+import { ISequenceGenerator } from './impl/SequenceGenerator';
 import { IEntityStateManager } from './lingo/core/operation/EntityStateManager';
 import { ITransactionalConnector } from './lingo/ITransactionalConnector';
 import { IDbApplicationUtils } from './lingo/query/DbApplicationUtils';
@@ -15,6 +16,11 @@ export const ENTITY_STATE_MANAGER = groundControl.token<IEntityStateManager>({
     class: null,
     interface: 'IEntityStateManager',
     token: 'ENTITY_STATE_MANAGER'
+})
+export const SEQUENCE_GENERATOR = groundControl.token<ISequenceGenerator>({
+    class: null,
+    interface: 'ISequenceGenerator',
+    token: 'SEQUENCE_GENERATOR'
 })
 export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnector>({
     class: null,

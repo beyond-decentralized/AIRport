@@ -1,12 +1,14 @@
 import { JsonFieldQuery } from '@airport/ground-control'
-import { IEntityAliases } from '../../lingo/core/entity/Aliases'
-import { IQOrderableField } from '../../lingo/core/field/Field'
-import { RawFieldQuery } from '../../lingo/query/facade/FieldQuery'
-import { IFieldUtils } from '../../lingo/utils/FieldUtils'
-import { IQueryUtils } from '../../lingo/utils/QueryUtils'
-import { IRelationManager } from '../../../../../ORMs/tarmaq/query/src/definition/core/entity/IRelationManager'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { FieldQuery } from '../../../../../ORMs/tarmaq/query/src/definition/query/facade/FieldQuery'
+import {
+	FieldQuery,
+	IEntityAliases,
+	IFieldUtils,
+	IQOrderableField,
+	IQueryUtils,
+	IRelationManager,
+	RawFieldQuery
+} from '@airport/tarmaq-query'
 
 @Injected()
 export class FieldUtils

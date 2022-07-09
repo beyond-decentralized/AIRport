@@ -1,3 +1,4 @@
+import { IEntityQueryDatabaseFacade } from "./definition/core/IEntityQueryDatabaseFacade"
 import { IEntityUtils } from "./definition/utils/IEntityUtils"
 import { IQueryUtils } from "./definition/utils/IQueryUtils"
 import { tarmaqQuery } from "./library"
@@ -14,4 +15,9 @@ export const QUERY_UTILS = tarmaqQuery.token<IQueryUtils>({
     class: null,
     interface: 'IQueryUtils',
     token: 'QUERY_UTILS'
+})
+export const QUERY_FACADE = tarmaqQuery.token<IEntityQueryDatabaseFacade<any, any, any, any, any, any, any, any>>({
+    class: null,
+    interface: 'IQueryFacade',
+    token: 'QUERY_FACADE'
 })

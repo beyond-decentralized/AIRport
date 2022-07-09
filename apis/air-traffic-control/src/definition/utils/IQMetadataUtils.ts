@@ -1,9 +1,8 @@
 import {
 	DbEntity,
 	JSONBaseOperation
-}                                from '@airport/ground-control'
-import {IQEntityInternal}        from '../core/entity/Entity'
-import {IQOperableFieldInternal} from '../core/field/OperableField'
+} from '@airport/ground-control'
+import { IQEntityInternal, IQOperableFieldInternal } from '@airport/tarmaq-query'
 
 export interface IQMetadataUtils {
 

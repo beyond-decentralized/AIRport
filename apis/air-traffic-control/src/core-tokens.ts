@@ -1,9 +1,8 @@
 import { Utils } from "./implementation/Utils"
 import { QueryUtils } from "./implementation/utils/QueryUtils"
 import { airTrafficControl } from "./library"
-import { IUtils } from "./definition/Utils"
-import { IEntityUtils } from "./definition/utils/EntityUtils"
-import { IQueryUtils } from "./definition/utils/QueryUtils"
+import { ENTITY_UTILS, QUERY_UTILS } from "@airport/tarmaq-query"
+import { IUtils } from "./definition/utils/Utils"
 
 // Separating core-tokens from tokens removes circular dependencies
 // at code initialization time

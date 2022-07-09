@@ -1,13 +1,12 @@
+import { Injected } from '@airport/direction-indicator'
 import {
 	DbEntity,
 	JSONBaseOperation,
 	airEntity
 } from '@airport/ground-control'
-import { IAirportDatabase } from '../../lingo/AirportDatabase'
-import { IQEntityInternal } from '../../lingo/core/entity/Entity'
-import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
-import { IQMetadataUtils } from '../../lingo/utils/QMetadataUtils'
-import { Injected } from '@airport/direction-indicator'
+import { IQEntityInternal, IQOperableFieldInternal } from '@airport/tarmaq-query'
+import { IAirportDatabase } from '../../definition/AirportDatabase'
+import { IQMetadataUtils } from '../../definition/utils/IQMetadataUtils'
 
 @Injected()
 export class QMetadataUtils

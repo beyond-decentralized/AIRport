@@ -1,12 +1,12 @@
-import { IDatabaseState } from "../lingo/DatabaseState";
 import {
+    and, not, or,
+    bool, date, num, str, wrapPrimitive,
     abs, add, avg, concat, count, distinct, divide, exists,
     format, intersect, lcase, len, max, mid, min, minus,
     modulus, multiply, now, replace, round, subtract, sum,
     trim, ucase, union, unionAll
-} from "./core/field/Functions";
-import { bool, date, num, str, wrapPrimitive } from "./core/field/WrapperFunctions";
-import { and, not, or } from "./core/operation/LogicalOperation";
+} from "@airport/tarmaq-query";
+import { IDatabaseState } from "../definition/DatabaseState";
 
 export const databaseState: IDatabaseState = {
     applications: [],

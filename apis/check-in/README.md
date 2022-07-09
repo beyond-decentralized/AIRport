@@ -1,9 +1,5 @@
 # check-in
 
-TODO:
-Split out DAOs to ORMs\tmc
-move Selector to @airport/apron
-
 ## Why the name 
 
 "Airport check-in is the process whereby passengers 
@@ -15,5 +11,3 @@ to travel."
 ## Description
 
 Interfaces for @Api() implementation
-
-Currently also hosts Data Access Object (DAO) and serialization APIs.

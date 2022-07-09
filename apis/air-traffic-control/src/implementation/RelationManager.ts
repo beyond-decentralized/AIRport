@@ -3,12 +3,7 @@ import {
 	JSONEntityRelation,
 	JSONRelation
 } from '@airport/ground-control'
-import {
-	IQEntityDriver,
-	IQEntityInternal
-} from '../../../definition/core/entity/Entity'
-import { IApplicationUtils } from '../definition/utils/ApplicationUtils'
-import { IRelationManager, IRelationManagerContext } from '../definition/RelationManager'
+import { IApplicationUtils, IQEntityDriver, IQEntityInternal, IRelationManager, IRelationManagerContext } from '@airport/tarmaq-query'
 
 @Injected()
 export class RelationManager

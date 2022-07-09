@@ -11,6 +11,11 @@ export const ENTITY_STATE_MANAGER = groundControl.token({
     interface: 'IEntityStateManager',
     token: 'ENTITY_STATE_MANAGER'
 });
+export const SEQUENCE_GENERATOR = groundControl.token({
+    class: null,
+    interface: 'ISequenceGenerator',
+    token: 'SEQUENCE_GENERATOR'
+});
 export const TRANSACTIONAL_CONNECTOR = groundControl.token({
     class: null,
     interface: 'ITransactionalConnector',

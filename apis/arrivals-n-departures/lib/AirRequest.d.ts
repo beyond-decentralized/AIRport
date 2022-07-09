@@ -1,7 +1,7 @@
 import { Actor } from "@airport/holding-pattern";
-import { User } from "@airport/travel-document-checkpoint";
+import { UserAccount } from "@airport/travel-document-checkpoint";
 export interface AirRequest {
     actor: Actor;
-    user: User;
+    userAccount: UserAccount;
 }
 //# sourceMappingURL=AirRequest.d.ts.map

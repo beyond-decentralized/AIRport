@@ -11,26 +11,25 @@ import {
 	IEntityStateManager
 } from '@airport/ground-control'
 import {
-	IAirportDatabase,
-	QApplicationInternal
-} from '../../lingo/AirportDatabase'
-import {
-	IEntityIdProperties,
-	IQEntity
-} from '../../lingo/core/entity/Entity'
-import { IQFieldInternal } from '../../lingo/core/field/Field'
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
 import {
 	convertToY,
-	isY
-} from '../../lingo/query/facade/Query'
-import {
-	IdKeysByIdColumnIndex,
 	IApplicationUtils,
+	IdKeysByIdColumnIndex,
+	IEntityIdProperties,
+	IQEntity,
+	IQFieldInternal,
+	isY,
+	QEntityConstructor,
 	RepositorySheetSelectInfo
-} from '../../lingo/utils/ApplicationUtils'
-import { QEntityConstructor } from '../core/entity/Entity'
-import { Inject, Injected } from '@airport/direction-indicator'
-import { IUtils } from '../../lingo/Utils'
+} from '@airport/tarmaq-query'
+import {
+	IAirportDatabase,
+	QApplicationInternal
+} from '../../definition/AirportDatabase'
+import { IUtils } from '../../definition/utils/Utils'
 
 interface ColumnValueForPath {
 	value: any,

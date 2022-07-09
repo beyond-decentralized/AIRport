@@ -1,1 +1,0 @@
-{"version":3,"file":"Delete.d.ts","sourceRoot":"","sources":["../../../../src/lingo/query/facade/Delete.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,yBAAyB,CAAC;AAC5D,OAAO,EAAE,QAAQ,EAAE,MAAM,0BAA0B,CAAC;AAEpD;;GAEG;AACH,MAAM,WAAW,SAAS,CAAC,GAAG,SAAS,QAAQ;IAC9C,UAAU,EAAE,GAAG,CAAC;IAChB,KAAK,CAAC,EAAE,iBAAiB,CAAC;CAC1B"}

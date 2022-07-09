@@ -1,1 +1,0 @@
-{"version":3,"file":"NonEntityLookup.js","sourceRoot":"","sources":["../../../../src/impl/query/api/NonEntityLookup.ts"],"names":[],"mappings":";;AAQA,qCAAgD;AAehD,MAAsB,eACrB,SAAQ,oBAAW;IAGnB,eAAe,CACd,iBAA8E,EAC9E,eAAgC,EAChC,MAAe,EACf,GAAY,EACZ,UAA8E;QAE9E,OAAO,IAAI,CAAC,MAAM,CAAC,iBAAiB,EAAE,eAAe,EACpD,MAAM,EAAE,GAAG,EAAE,UAAU,CAAC,CAAA;IAC1B,CAAC;CAED;AAfD,0CAeC"}

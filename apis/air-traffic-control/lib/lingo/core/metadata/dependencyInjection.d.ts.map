@@ -1,1 +1,0 @@
-{"version":3,"file":"dependencyInjection.d.ts","sourceRoot":"","sources":["../../../../src/lingo/core/metadata/dependencyInjection.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAC;AAEjE,MAAM,WAAW,iBAAiB;IAC9B,IAAI,cAAc,CAAA;CACrB;AAED,MAAM,WAAW,eAAe;IAC5B,IAAI,iBAAiB,CAAA;CACxB"}

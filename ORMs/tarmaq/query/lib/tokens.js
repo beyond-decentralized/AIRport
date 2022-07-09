@@ -11,4 +11,9 @@ export const QUERY_UTILS = tarmaqQuery.token({
     interface: 'IQueryUtils',
     token: 'QUERY_UTILS'
 });
+export const QUERY_FACADE = tarmaqQuery.token({
+    class: null,
+    interface: 'IQueryFacade',
+    token: 'QUERY_FACADE'
+});
 //# sourceMappingURL=tokens.js.map

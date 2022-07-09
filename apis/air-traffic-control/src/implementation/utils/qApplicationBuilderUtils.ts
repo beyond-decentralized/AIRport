@@ -1,4 +1,5 @@
 import { QApplication } from '@airport/aviation-communication'
+import { extend } from '@airport/direction-indicator'
 import {
 	DbColumn,
 	DbEntity,
@@ -11,31 +12,8 @@ import {
 	SQLDataType,
 	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
-import {
-	QApplicationInternal
-} from '../../lingo/AirportDatabase'
-import {
-	IQEntity,
-	IQEntityInternal
-} from '../../lingo/core/entity/Entity'
-import { IQRelation } from '../../lingo/core/entity/Relation'
-import { IQBooleanField } from '../../lingo/core/field/BooleanField'
-import { IQDateField } from '../../lingo/core/field/DateField'
-import { IQNumberField } from '../../lingo/core/field/NumberField'
-import { IQOperableFieldInternal } from '../../lingo/core/field/OperableField'
-import { IQStringField } from '../../lingo/core/field/StringField'
-import { IQUntypedField } from '../../lingo/core/field/UntypedField'
-import { IApplicationUtils } from '../../lingo/utils/ApplicationUtils'
-import { QEntity } from '../core/entity/Entity'
-import { QOneToManyRelation, QAirEntityOneToManyRelation } from '../core/entity/OneToManyRelation'
-import { QRelation, QAirEntityRelation } from '../core/entity/Relation'
-import { IRelationManager } from '../core/entity/RelationManager'
-import { QBooleanField } from '../core/field/BooleanField'
-import { QDateField } from '../core/field/DateField'
-import { QNumberField } from '../core/field/NumberField'
-import { QStringField } from '../core/field/StringField'
-import { QUntypedField } from '../core/field/UntypedField'
-
+import { IApplicationUtils, IQBooleanField, IQDateField, IQEntity, IQEntityInternal, IQNumberField, IQOperableFieldInternal, IQRelation, IQStringField, IQUntypedField, IRelationManager, QAirEntityOneToManyRelation, QAirEntityRelation, QBooleanField, QDateField, QEntity, QNumberField, QOneToManyRelation, QRelation, QStringField, QUntypedField } from '@airport/tarmaq-query'
+import { QApplicationInternal } from '../../definition/AirportDatabase'
 
 export function getColumnQField(
 	entity: DbEntity,
