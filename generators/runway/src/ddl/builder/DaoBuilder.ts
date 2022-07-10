@@ -1,4 +1,4 @@
-import { PathBuilder }    from './PathBuilder';
+import { PathBuilder } from './PathBuilder';
 import { UtilityBuilder } from './UtilityBuilder';
 
 export class DaoBuilder
@@ -14,7 +14,7 @@ export class DaoBuilder
 		super.addImports();
 		this.addImport([
 			'DaoQueryDecorators'
-		], '@airport/check-in');
+		], '@airport/tarmaq-dao');
 	}
 
 	protected buildStaticProperties(

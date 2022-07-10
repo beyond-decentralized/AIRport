@@ -48,8 +48,8 @@ import {
 	IQEntity,
 } from '@airport/tarmaq-query';
 import {
-	Dao,
 	IDao,
+	Dao,
 	DaoQueryDecorators,
 } from '@airport/tarmaq-dao';
 import {
@@ -71,13 +71,13 @@ export class SQDIDao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
-	EntitySelect,
-	EntityCreate,
-	EntityUpdateColumns,
-	EntityUpdateProperties,
-	ApplicationEntity_LocalId,
-	EntityCascadeGraph,
-	IQE> {
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateColumns,
+		EntityUpdateProperties,
+		ApplicationEntity_LocalId,
+		EntityCascadeGraph,
+		IQE> {
 
 	constructor(
 		dbEntityId: DbEntityId
@@ -88,27 +88,27 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseSequenceDao
-	extends IDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
+  extends IDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence> {
 }
 
 export class BaseSequenceDao
-	extends SQDIDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
+  extends SQDIDao<Sequence, SequenceESelect, SequenceECreateProperties, SequenceEUpdateColumns, SequenceEUpdateProperties, SequenceEId, SequenceGraph, QSequence>
 	implements IBaseSequenceDao {
-
-	static Find = new DaoQueryDecorators<SequenceESelect>();
-	static FindOne = new DaoQueryDecorators<SequenceESelect>();
-	static Search = new DaoQueryDecorators<SequenceESelect>();
+	
+	static Find      = new DaoQueryDecorators<SequenceESelect>();
+	static FindOne   = new DaoQueryDecorators<SequenceESelect>();
+	static Search    = new DaoQueryDecorators<SequenceESelect>();
 	static SearchOne = new DaoQueryDecorators<SequenceESelect>();
 	static Save(
 		config: SequenceGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<SequenceGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)
 	}
-
+	
 	constructor() {
 		super(0)
 	}
@@ -116,27 +116,27 @@ export class BaseSequenceDao
 
 
 export interface IBaseSystemWideOperationIdDao
-	extends IDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
+  extends IDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId> {
 }
 
 export class BaseSystemWideOperationIdDao
-	extends SQDIDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
+  extends SQDIDao<SystemWideOperationId, SystemWideOperationIdESelect, SystemWideOperationIdECreateProperties, SystemWideOperationIdEUpdateColumns, SystemWideOperationIdEUpdateProperties, SystemWideOperationIdEId, SystemWideOperationIdGraph, QSystemWideOperationId>
 	implements IBaseSystemWideOperationIdDao {
-
-	static Find = new DaoQueryDecorators<SystemWideOperationIdESelect>();
-	static FindOne = new DaoQueryDecorators<SystemWideOperationIdESelect>();
-	static Search = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	
+	static Find      = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static FindOne   = new DaoQueryDecorators<SystemWideOperationIdESelect>();
+	static Search    = new DaoQueryDecorators<SystemWideOperationIdESelect>();
 	static SearchOne = new DaoQueryDecorators<SystemWideOperationIdESelect>();
 	static Save(
 		config: SystemWideOperationIdGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<SystemWideOperationIdGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(1)
 	}
-
+	
 	constructor() {
 		super(1)
 	}
@@ -144,27 +144,27 @@ export class BaseSystemWideOperationIdDao
 
 
 export interface IBaseTerminalRunDao
-	extends IDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
+  extends IDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun> {
 }
 
 export class BaseTerminalRunDao
-	extends SQDIDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
+  extends SQDIDao<TerminalRun, TerminalRunESelect, TerminalRunECreateProperties, TerminalRunEUpdateColumns, TerminalRunEUpdateProperties, TerminalRunEId, TerminalRunGraph, QTerminalRun>
 	implements IBaseTerminalRunDao {
-
-	static Find = new DaoQueryDecorators<TerminalRunESelect>();
-	static FindOne = new DaoQueryDecorators<TerminalRunESelect>();
-	static Search = new DaoQueryDecorators<TerminalRunESelect>();
+	
+	static Find      = new DaoQueryDecorators<TerminalRunESelect>();
+	static FindOne   = new DaoQueryDecorators<TerminalRunESelect>();
+	static Search    = new DaoQueryDecorators<TerminalRunESelect>();
 	static SearchOne = new DaoQueryDecorators<TerminalRunESelect>();
 	static Save(
 		config: TerminalRunGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<TerminalRunGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(2)
 	}
-
+	
 	constructor() {
 		super(2)
 	}

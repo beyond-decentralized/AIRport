@@ -54,11 +54,6 @@ export class QEntityFileBuilder
       'IEntityUpdateColumns',
       'IEntityUpdateProperties',
       'IEntitySelectProperties',
-      'IEntityDatabaseFacade',
-      'IEntityFind',
-      'IEntityFindOne',
-      'IEntitySearch',
-      'IEntitySearchOne',
       'IQBooleanField',
       'IQDateField',
       'IQNumberField',
@@ -67,7 +62,7 @@ export class QEntityFileBuilder
       'IQEntity', 'IQRelation',
       'IQAirEntityOneToManyRelation', 'IQAirEntityRelation',
       'RawDelete', 'RawUpdate'],
-      '@airport/air-traffic-control');
+      '@airport/tarmaq-query');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
     if (entity.parentEntity) {
       let parentQEntityRelativePath;

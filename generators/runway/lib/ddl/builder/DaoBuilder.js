@@ -7,7 +7,7 @@ export class DaoBuilder extends UtilityBuilder {
         super.addImports();
         this.addImport([
             'DaoQueryDecorators'
-        ], '@airport/check-in');
+        ], '@airport/tarmaq-dao');
     }
     buildStaticProperties(entityName) {
         return `

@@ -72,7 +72,6 @@ ${baseClassDefinitions}`;
 			});
 
 		this.addImport([
-			`I${this.classSuffix}`,
 			'IEntityCascadeGraph',
 			'IEntityCreateProperties',
 			'IEntityIdProperties',
@@ -80,10 +79,11 @@ ${baseClassDefinitions}`;
 			'IEntityUpdateColumns',
 			'IEntityUpdateProperties',
 			'IQEntity'
-		], '@airport/air-traffic-control');
+		], '@airport/tarmaq-query');
 		this.addImport([
+			`I${this.classSuffix}`,
 			`${this.classSuffix}`
-		], '@airport/check-in');
+		], '@airport/tarmaq-dao');
 		this.addImport([
 			{
 				asName: 'DbEntityId',
