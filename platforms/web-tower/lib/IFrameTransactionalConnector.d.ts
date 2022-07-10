@@ -1,12 +1,12 @@
-import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { IApplicationVersion } from '@airport/airspace';
+import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
 import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
-import { DbDomain, Domain_Name, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
-import { IIsolateMessageOut, IApplicationLoader, ILocalAPIServer, IApplicationStore } from '@airport/apron';
-import { Observable } from 'rxjs';
+import { DbDomain, Domain_Name, IAirEntity, IDbApplicationUtils, ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
+import { IEntityContext } from '@airport/tarmaq-entity';
+import { IQueryContext } from '@airport/tarmaq-query';
 import { ITerminalStore } from '@airport/terminal-map';
-import { IAirEntity } from '@airport/ground-control/src';
+import { Observable } from 'rxjs';
 export interface IIframeTransactionalConnector extends ITransactionalConnector {
     getLatestApplicationVersionMapByFullApplication_Name(applicationName: string): Promise<IApplicationVersion>;
     initializeConnection(): Promise<void>;

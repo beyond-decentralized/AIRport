@@ -39,7 +39,6 @@ import {
 	QTerminalRun,
 } from './qterminalrun';
 import {
-	IDao,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -47,11 +46,14 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
-	Dao,
+	IDao,
 	DaoQueryDecorators,
-} from '@airport/check-in';
+} from '@airport/tarmaq-dao';
+import {
+	Dao
+} from '@airport/air-traffic-control';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';

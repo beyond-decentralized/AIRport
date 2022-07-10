@@ -1,4 +1,3 @@
-import { IQEntityInternal } from '@airport/air-traffic-control';
 import {
 	Inject,
 	Injected
@@ -20,6 +19,7 @@ import {
 	ITransactionHistoryDuo,
 	Q
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
 	IStoreDriver,
 	ITerminalStore,

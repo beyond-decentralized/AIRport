@@ -26,12 +26,11 @@ import { Type } from '../ddl/type/type';
 import { TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType } from './type/qtype';
 import { TypeClassification } from '../ddl/type/typeclassification';
 import { TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification } from './type/qtypeclassification';
-import { User } from '../ddl/user';
-import { UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser } from './quser';
-import { UserTerminal } from '../ddl/terminal/userterminal';
-import { UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal } from './terminal/quserterminal';
-import { IDao, IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/air-traffic-control';
-import { Dao, DaoQueryDecorators } from '@airport/check-in';
+import { UserAccount } from '../ddl/userAccount';
+import { UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount } from './quserAccount';
+import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/tarmaq-query';
+import { IDao, DaoQueryDecorators } from '@airport/tarmaq-dao';
+import { Dao } from '@airport/air-traffic-control';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);
@@ -190,25 +189,14 @@ export declare class BaseTypeClassificationDao extends SQDIDao<TypeClassificatio
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseUserDao extends IDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> {
+export interface IBaseUserAccountDao extends IDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
 }
-export declare class BaseUserDao extends SQDIDao<User, UserESelect, UserECreateProperties, UserEUpdateColumns, UserEUpdateProperties, UserEId, UserGraph, QUser> implements IBaseUserDao {
-    static Find: DaoQueryDecorators<UserESelect>;
-    static FindOne: DaoQueryDecorators<UserESelect>;
-    static Search: DaoQueryDecorators<UserESelect>;
-    static SearchOne: DaoQueryDecorators<UserESelect>;
-    static Save(config: UserGraph): PropertyDecorator;
-    static diSet(): boolean;
-    constructor();
-}
-export interface IBaseUserTerminalDao extends IDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> {
-}
-export declare class BaseUserTerminalDao extends SQDIDao<UserTerminal, UserTerminalESelect, UserTerminalECreateProperties, UserTerminalEUpdateColumns, UserTerminalEUpdateProperties, UserTerminalEId, UserTerminalGraph, QUserTerminal> implements IBaseUserTerminalDao {
-    static Find: DaoQueryDecorators<UserTerminalESelect>;
-    static FindOne: DaoQueryDecorators<UserTerminalESelect>;
-    static Search: DaoQueryDecorators<UserTerminalESelect>;
-    static SearchOne: DaoQueryDecorators<UserTerminalESelect>;
-    static Save(config: UserTerminalGraph): PropertyDecorator;
+export declare class BaseUserAccountDao extends SQDIDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> implements IBaseUserAccountDao {
+    static Find: DaoQueryDecorators<UserAccountESelect>;
+    static FindOne: DaoQueryDecorators<UserAccountESelect>;
+    static Search: DaoQueryDecorators<UserAccountESelect>;
+    static SearchOne: DaoQueryDecorators<UserAccountESelect>;
+    static Save(config: UserAccountGraph): PropertyDecorator;
     static diSet(): boolean;
     constructor();
 }

@@ -1,21 +1,19 @@
 import {
+	getSysWideOpId,
 	IAirportDatabase,
+} from '@airport/air-traffic-control'
+import {
 	IApplicationUtils,
 	IFieldUtils,
-	IQueryFacade,
 	IQueryUtils,
 	IRelationManager,
 	RepositorySheetSelectInfo,
 	SheetQuery
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	getSysWideOpId,
-	ISequenceGenerator
-} from '@airport/check-in'
 import {
 	ChangeType,
 	ApplicationColumn_Index,
@@ -29,15 +27,13 @@ import {
 	PortableQuery,
 	QueryResultType,
 	airEntity,
+	ISequenceGenerator,
 } from '@airport/ground-control'
 import {
 	IActor,
-	IOperationHistoryDuo,
-	IRecordHistoryDuo,
-	IRepositoryTransactionHistoryDuo,
 	AirEntity_SystemWideOperationId,
 	SystemWideOperationId
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern'
 import {
 	IHistoryManager,
 	IOperationContext,
@@ -45,6 +41,12 @@ import {
 	IUpdateManager,
 	RecordHistoryMap
 } from '@airport/terminal-map'
+import { IQueryFacade } from '@airport/tarmaq-dao'
+import {
+	IOperationHistoryDuo,
+	IRecordHistoryDuo,
+	IRepositoryTransactionHistoryDuo
+} from '@airport/holding-pattern/lib/duo/duo' // Default import is reserved for Application use
 
 @Injected()
 export class UpdateManager

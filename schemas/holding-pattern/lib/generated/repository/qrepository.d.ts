@@ -1,5 +1,5 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
-import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation, CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation, StateGraph, StateEOptionalId, StateESelect, QStateQRelation, MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '@airport/travel-document-checkpoint';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQDateField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
+import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation, ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation, CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation, StateGraph, StateEOptionalId, StateESelect, QStateQRelation, MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRelation } from '@airport/travel-document-checkpoint';
 import { RepositoryTransactionHistoryGraph, RepositoryTransactionHistoryESelect, QRepositoryTransactionHistory } from '../history/qrepositorytransactionhistory';
 import { RepositoryApplicationGraph, RepositoryApplicationESelect, QRepositoryApplication } from './qrepositoryapplication';
 import { RepositoryClientGraph, RepositoryClientESelect, QRepositoryClient } from './qrepositoryclient';
@@ -15,7 +15,7 @@ export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEO
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    owner?: UserESelect;
+    owner?: UserAccountESelect;
     repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
     continent?: ContinentESelect;
     country?: CountryESelect;
@@ -48,7 +48,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    owner?: UserEOptionalId;
+    owner?: UserAccountEOptionalId;
     continent?: ContinentEOptionalId;
     country?: CountryEOptionalId;
     state?: StateEOptionalId;
@@ -63,7 +63,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
     source?: string | IQStringField;
-    owner?: UserGraph;
+    owner?: UserAccountGraph;
     repositoryTransactionHistory?: RepositoryTransactionHistoryGraph[];
     continent?: ContinentGraph;
     country?: CountryGraph;
@@ -84,7 +84,7 @@ export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     CREATED_AT?: Date | IQDateField;
     IMMUTABLE?: boolean | IQBooleanField;
     SOURCE?: string | IQStringField;
-    OWNER_USER_LID?: number | IQNumberField;
+    OWNER_USER_ACCOUNT_LID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
     STATE_ID?: number | IQNumberField;
@@ -110,7 +110,7 @@ export interface QRepository extends IQEntity {
     createdAt: IQDateField;
     immutable: IQBooleanField;
     source: IQStringField;
-    owner: QUserQRelation;
+    owner: QUserAccountQRelation;
     repositoryTransactionHistory: IQOneToManyRelation<QRepositoryTransactionHistory>;
     continent: QContinentQRelation;
     country: QCountryQRelation;

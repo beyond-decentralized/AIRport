@@ -3,7 +3,7 @@ import {
 } from './versionedapplicationobject';
 import {
 	ApplicationEntity_TableConfiguration,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-entity';
 import {
 	IApplicationColumn,
 } from './applicationcolumn';

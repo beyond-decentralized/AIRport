@@ -7,7 +7,6 @@ import { IContext } from '@airport/direction-indicator';
 import {
 	EntityIdData,
 	IAbstractQuery,
-	IEntityContext,
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
@@ -19,6 +18,7 @@ import {
 	RawUpdateColumns
 } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
+import { IEntityContext } from '@airport/tarmaq-entity';
 
 export interface UpdateRecord {
 	newValue: any,

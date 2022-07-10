@@ -3,21 +3,18 @@ import {
 	ISequenceDao
 } from '@airport/airport-code';
 import {
-	ISequenceGenerator,
-	setSeqGen
-} from '@airport/check-in';
-import {
 	DbColumn,
 	DbEntity,
 	ensureChildArray,
-
+	ISequenceGenerator,
+	setSeqGen,
 } from '@airport/ground-control';
 import {
 	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ITerminalStore } from '../../../apis/terminal-map/lib';
+import { ITerminalStore } from '@airport/terminal-map';
 
 /**
  * Assumptions: 7/4/2019

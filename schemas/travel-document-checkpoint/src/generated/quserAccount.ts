@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,20 +17,18 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
-	UserAccountGraph,
-	UserAccountEId,
-	UserAccountEOptionalId,
-	UserAccountEUpdateProperties,
-	UserAccountESelect,
-	QUserAccount,
-	QUserAccountQId,
-	QUserAccountQRelation,
-} from './quserAccount';
-import {
-	IUserAccount,
-} from './userAccount';
+	DomainGraph,
+	DomainEId,
+	DomainEOptionalId,
+	DomainEUpdateProperties,
+	DomainESelect,
+	QDomain,
+	QDomainQId,
+	QDomainQRelation,
+	IDomain,
+} from '@airport/airspace';
 import {
 	ContinentGraph,
 	ContinentEId,
@@ -89,8 +82,8 @@ import {
 	IMetroArea,
 } from './locality/metroarea';
 import {
-	ITerminal,
-} from './terminal';
+	IUserAccount,
+} from './userAccount';
 
 
 declare function require(moduleName: string): any;
@@ -103,16 +96,19 @@ declare function require(moduleName: string): any;
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface TerminalESelect
-    extends IEntitySelectProperties, TerminalEOptionalId {
+export interface UserAccountESelect
+	extends IEntitySelectProperties, UserAccountEOptionalId {
 	// Non-Id Properties
+	email?: string | IQStringField;
+	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
+	username?: string | IQStringField;
 	GUID?: string | IQStringField;
-	isLocal?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
-	owner?: UserAccountESelect;
+	// Non-Id relations (including OneToMany's)
+	domain?: DomainESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
 	state?: StateESelect;
@@ -123,10 +119,10 @@ export interface TerminalESelect
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface TerminalEId
-    extends IEntityIdProperties {
+export interface UserAccountEId
+	extends IEntityIdProperties {
 	// Id Properties
-	id: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -135,9 +131,9 @@ export interface TerminalEId
 /**
  * Ids fields and relations only (optional).
  */
-export interface TerminalEOptionalId {
+export interface UserAccountEOptionalId {
 	// Id Properties
-	id?: number | IQNumberField;
+	_localId?: number | IQNumberField;
 
 	// Id Relations - Ids only
 
@@ -146,14 +142,17 @@ export interface TerminalEOptionalId {
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface TerminalEUpdateProperties
+export interface UserAccountEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
+	email?: string | IQStringField;
+	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
+	username?: string | IQStringField;
 	GUID?: string | IQStringField;
-	isLocal?: boolean | IQBooleanField;
 
-	// Non-Id Relations - ids only & no OneToMany's
-	owner?: UserAccountEOptionalId;
+	// Non-Id Relations - _localIds only & no OneToMany's
+	domain?: DomainEOptionalId;
 	continent?: ContinentEOptionalId;
 	country?: CountryEOptionalId;
 	state?: StateEOptionalId;
@@ -164,16 +163,19 @@ export interface TerminalEUpdateProperties
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface TerminalGraph
-	extends TerminalEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+export interface UserAccountGraph
+	extends UserAccountEOptionalId, IEntityCascadeGraph {
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
+	email?: string | IQStringField;
+	passwordHash?: string | IQStringField;
+	ranking?: number | IQNumberField;
+	username?: string | IQStringField;
 	GUID?: string | IQStringField;
-	isLocal?: boolean | IQBooleanField;
 
 	// Relations
-	owner?: UserAccountGraph;
+	domain?: DomainGraph;
 	continent?: ContinentGraph;
 	country?: CountryGraph;
 	state?: StateGraph;
@@ -184,12 +186,15 @@ export interface TerminalGraph
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface TerminalEUpdateColumns
+export interface UserAccountEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	GUID?: string | IQStringField;
-	IS_LOCAL?: boolean | IQBooleanField;
-	OWNER_USER_ACCOUNT_ID?: number | IQNumberField;
+	EMAIL?: string | IQStringField;
+	PASSWORD_HASH?: string | IQStringField;
+	RANKING?: number | IQNumberField;
+	USER_ACCOUNTNAME?: string | IQStringField;
+	USER_ACCOUNT_GUID?: string | IQStringField;
+	DOMAIN_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -200,15 +205,15 @@ export interface TerminalEUpdateColumns
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface TerminalECreateProperties
-extends Partial<TerminalEId>, TerminalEUpdateProperties {
+export interface UserAccountECreateProperties
+	extends Partial<UserAccountEId>, UserAccountEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface TerminalECreateColumns
-extends TerminalEId, TerminalEUpdateColumns {
+export interface UserAccountECreateColumns
+	extends UserAccountEId, UserAccountEUpdateColumns {
 }
 
 
@@ -221,19 +226,21 @@ extends TerminalEId, TerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminal extends IQEntity
-{
+export interface QUserAccount extends IQEntity {
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
 	// Non-Id Fields
+	email: IQStringField;
+	passwordHash: IQStringField;
+	ranking: IQNumberField;
+	username: IQStringField;
 	GUID: IQStringField;
-	isLocal: IQBooleanField;
 
 	// Non-Id Relations
-	owner: QUserAccountQRelation;
+	domain: QDomainQRelation;
 	continent: QContinentQRelation;
 	country: QCountryQRelation;
 	state: QStateQRelation;
@@ -243,11 +250,10 @@ export interface QTerminal extends IQEntity
 
 
 // Entity Id Interface
-export interface QTerminalQId
-{
-	
+export interface QUserAccountQId {
+
 	// Id Fields
-	id: IQNumberField;
+	_localId: IQNumberField;
 
 	// Id Relations
 
@@ -255,7 +261,7 @@ export interface QTerminalQId
 }
 
 // Entity Relation Interface
-export interface QTerminalQRelation
-	extends IQRelation<QTerminal>, QTerminalQId {
+export interface QUserAccountQRelation
+	extends IQRelation<QUserAccount>, QUserAccountQId {
 }
 

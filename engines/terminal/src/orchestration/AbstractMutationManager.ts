@@ -8,10 +8,10 @@ import {
   RawInsertValues,
   IApplicationUtils,
   IRelationManager,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
-	Inject,
-	Injected
+  Inject,
+  Injected
 } from '@airport/direction-indicator'
 import { IContext } from '@airport/direction-indicator';
 import { DbColumn, JsonQuery, PortableQuery, QueryResultType } from '@airport/ground-control';

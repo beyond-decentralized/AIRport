@@ -5,7 +5,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { ApplicationColumn_Index } from '@airport/ground-control'
 import { SynchronizationConflict } from './SynchronizationConflict'
 

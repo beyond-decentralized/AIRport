@@ -4,7 +4,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-} from "@airport/air-traffic-control";
+} from "@airport/tarmaq-entity";
 import {
 	Terminal,
 	Type

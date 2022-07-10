@@ -2,6 +2,7 @@ import {
     DbEntity,
     IEntityStateManager
 } from "@airport/ground-control";
+import { IApplicationUtils } from "@airport/tarmaq-query";
 
 export interface IOperationDeserializer {
 

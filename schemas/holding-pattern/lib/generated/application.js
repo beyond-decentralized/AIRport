@@ -52,7 +52,7 @@ export const APPLICATION = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "USER_LID",
+                            "name": "USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {
@@ -160,7 +160,7 @@ export const APPLICATION = {
                         {
                             "index": 2,
                             "isId": false,
-                            "name": "user",
+                            "name": "userAccount",
                             "relationRef": {
                                 "index": 0
                             },
@@ -1321,7 +1321,7 @@ export const APPLICATION = {
                                     "sinceVersion": 1
                                 }
                             ],
-                            "name": "OWNER_USER_LID",
+                            "name": "OWNER_USER_ACCOUNT_LID",
                             "notNull": true,
                             "propertyRefs": [
                                 {

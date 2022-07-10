@@ -1,5 +1,5 @@
-import { ReferencedColumnData } from '@airport/air-traffic-control';
 import { DbEntity, SQLDataType } from '@airport/ground-control';
+import { ReferencedColumnData } from '@airport/tarmaq-query';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { AbstractObjectResultParser, IEntityResultParser } from './entity/IEntityResultParser';
 /**

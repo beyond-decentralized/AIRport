@@ -15,7 +15,6 @@ import {
 	IApplicationUtils,
 	IFieldUtils,
 	IRelationManager,
-	QUERY_FACADE,
 	QUERY_UTILS
 } from '@airport/tarmaq-query'
 import {
@@ -25,7 +24,8 @@ import {
 	NON_ENTITY_FIND,
 	NON_ENTITY_FIND_ONE,
 	NON_ENTITY_SEARCH,
-	NON_ENTITY_SEARCH_ONE
+	NON_ENTITY_SEARCH_ONE,
+	QUERY_FACADE,
 } from '@airport/tarmaq-dao'
 import { Dao } from './implementation/Dao'
 import { IDatabaseState } from './definition/DatabaseState'

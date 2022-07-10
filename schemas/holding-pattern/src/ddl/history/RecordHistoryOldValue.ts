@@ -7,8 +7,8 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-}                      from "@airport/air-traffic-control";
-import {RecordHistory} from './RecordHistory'
+} from "@airport/tarmaq-entity";
+import { RecordHistory } from './RecordHistory'
 
 /**
  * Created by Papa on 9/15/2016.
@@ -38,16 +38,18 @@ export class RecordHistoryOldValue {
 
 	@Id()
 	@ManyToOne()
-	@JoinColumn({name: "REPOSITORY_RECORD_HISTORY_LID",
-		referencedColumnName: "RECORD_HISTORY_LID", nullable: false})
+	@JoinColumn({
+		name: "REPOSITORY_RECORD_HISTORY_LID",
+		referencedColumnName: "RECORD_HISTORY_LID", nullable: false
+	})
 	recordHistory: RecordHistory;
 
 	@Id()
-	@Column({name: "COLUMN_INDEX", nullable: false})
+	@Column({ name: "COLUMN_INDEX", nullable: false })
 	@DbNumber()
 	columnIndex: RecordHistoryOldValueColumnIndex;
 
-	@Column({name: "OLD_VALUE"})
+	@Column({ name: "OLD_VALUE" })
 	@DbAny()
 	oldValue: RecordHistoryOldValueOldValue;
 

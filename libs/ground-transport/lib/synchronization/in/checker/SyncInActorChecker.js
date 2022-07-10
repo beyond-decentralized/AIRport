@@ -17,7 +17,7 @@ let SyncInActorChecker = class SyncInActorChecker {
                 }
                 this.checkActorApplication(actor, message);
                 this.checkActorTerminal(actor, message);
-                this.checkActorUser(actor, message);
+                this.checkActorUserAccount(actor, message);
                 actorGUIDs.push(actor.GUID);
                 messageActorIndexMap.set(actor.GUID, i);
                 // Make sure id field is not in the input
@@ -25,8 +25,8 @@ let SyncInActorChecker = class SyncInActorChecker {
             }
             const actors = await this.actorDao.findByGUIDs(actorGUIDs);
             for (const actor of actors) {
-                const messageUserIndex = messageActorIndexMap.get(actor.GUID);
-                message.actors[messageUserIndex] = actor;
+                const messageUserAccountIndex = messageActorIndexMap.get(actor.GUID);
+                message.actors[messageUserAccountIndex] = actor;
             }
             const missingActors = message.actors
                 .filter(messageActor => !messageActor._localId);
@@ -62,16 +62,16 @@ let SyncInActorChecker = class SyncInActorChecker {
         }
         actor.terminal = terminal;
     }
-    checkActorUser(actor, message) {
-        if (typeof actor.user !== 'number') {
+    checkActorUserAccount(actor, message) {
+        if (typeof actor.userAccount !== 'number') {
             throw new Error(`Expecting "in-message index" (number)
-			in 'actor.user'`);
+			in 'actor.userAccount'`);
         }
-        const user = message.users[actor.user];
-        if (!user) {
-            throw new Error(`Did not find actor.user with "in-message index" ${actor.user}`);
+        const userAccount = message.userAccounts[actor.userAccount];
+        if (!userAccount) {
+            throw new Error(`Did not find actor.userAccount with "in-message index" ${actor.userAccount}`);
         }
-        actor.user = user;
+        actor.userAccount = userAccount;
     }
 };
 __decorate([

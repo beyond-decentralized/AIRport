@@ -1,11 +1,11 @@
 import { ICountry } from './country';
-import { IUser } from '../user';
+import { IUserAccount } from '../userAccount';
 export interface IState {
     id: number;
     abbreviation?: string;
     name?: string;
     country?: ICountry;
     metroAreaStates?: IState[];
-    users?: IUser[];
+    userAccounts?: IUserAccount[];
 }
 //# sourceMappingURL=state.d.ts.map

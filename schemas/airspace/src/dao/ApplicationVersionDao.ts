@@ -1,4 +1,4 @@
-import { and, Y } from '@airport/air-traffic-control'
+import { and, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseApplicationVersionDao,

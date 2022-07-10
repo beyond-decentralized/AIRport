@@ -4,8 +4,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ACTOR_PROPERTY_NAME, ACTOR_RECORD_ID_PROPERTY_NAME, and, field, or, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
+import { ACTOR_PROPERTY_NAME, ACTOR_RECORD_ID_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
+import { and, field, or, } from '@airport/tarmaq-query';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
 let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values) {

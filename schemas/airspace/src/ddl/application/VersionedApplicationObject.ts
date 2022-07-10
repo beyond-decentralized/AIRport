@@ -2,7 +2,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	MappedSuperclass
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { ApplicationVersion } from './ApplicationVersion'
 
 @MappedSuperclass()

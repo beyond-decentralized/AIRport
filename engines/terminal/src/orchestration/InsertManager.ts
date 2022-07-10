@@ -1,12 +1,11 @@
-import { IAirportDatabase } from '@airport/air-traffic-control'
+import {
+	getSysWideOpId,
+	IAirportDatabase
+} from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	getSysWideOpId,
-	ISequenceGenerator
-} from '@airport/check-in'
 import {
 	ChangeType,
 	DbColumn,
@@ -15,6 +14,7 @@ import {
 	JsonInsertValues,
 	PortableQuery,
 	airEntity,
+	ISequenceGenerator,
 } from '@airport/ground-control'
 import {
 	IActor,

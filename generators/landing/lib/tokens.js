@@ -1,9 +1,8 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { SEQUENCE_DAO } from '@airport/airport-code';
 import { APPLICATION_COLUMN_DAO, APPLICATION_DAO, APPLICATION_ENTITY_DAO, APPLICATION_PROPERTY_COLUMN_DAO, APPLICATION_PROPERTY_DAO, APPLICATION_REFERENCE_DAO, APPLICATION_RELATION_COLUMN_DAO, APPLICATION_RELATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace';
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
-import { DB_APPLICATION_UTILS } from '@airport/ground-control';
+import { DB_APPLICATION_UTILS, SEQUENCE_GENERATOR } from '@airport/ground-control';
 import { QUERY_OBJECT_INITIALIZER } from '@airport/takeoff';
 import { DOMAIN_RETRIEVER, STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { ApplicationInitializer } from './ApplicationInitializer';

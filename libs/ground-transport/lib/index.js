@@ -11,7 +11,7 @@ export * from './synchronization/in/checker/SyncInChecker';
 export * from './synchronization/in/checker/SyncInDataChecker';
 export * from './synchronization/in/checker/SyncInRepositoryChecker';
 export * from './synchronization/in/checker/SyncInTerminalChecker';
-export * from './synchronization/in/checker/SyncInUserChecker';
+export * from './synchronization/in/checker/SyncInUserAccountChecker';
 export * from './synchronization/in/Stage1SyncedInDataProcessor';
 export * from './synchronization/in/Stage2SyncedInDataProcessor';
 export * from './synchronization/in/SynchronizationInManager';

@@ -169,7 +169,6 @@ import {
 	QTransactionHistory,
 } from './history/qtransactionhistory';
 import {
-	IDuo,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -177,10 +176,11 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
+	IDuo,
 	Duo,
-} from '@airport/check-in';
+} from '@airport/tarmaq-dao';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';

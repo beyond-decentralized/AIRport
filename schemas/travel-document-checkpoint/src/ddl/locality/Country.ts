@@ -9,7 +9,7 @@ import {
     ManyToOne,
     OneToMany,
     Table
-} from "@airport/air-traffic-control";
+} from "@airport/tarmaq-entity";
 import { Continent } from "./Continent";
 import { UserAccount } from "../UserAccount";
 

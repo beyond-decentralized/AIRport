@@ -39,7 +39,6 @@ import {
 	QSynchronizationConflictValues,
 } from './conflict/qsynchronizationconflictvalues';
 import {
-	IDao,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -47,11 +46,14 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
-	Dao,
 	DaoQueryDecorators,
-} from '@airport/check-in';
+	IDao,
+} from '@airport/tarmaq-dao';
+import {
+	Dao
+} from '@airport/air-traffic-control'
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
@@ -71,13 +73,13 @@ export class SQDIDao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
-		EntitySelect,
-		EntityCreate,
-		EntityUpdateColumns,
-		EntityUpdateProperties,
-		ApplicationEntity_LocalId,
-		EntityCascadeGraph,
-		IQE> {
+	EntitySelect,
+	EntityCreate,
+	EntityUpdateColumns,
+	EntityUpdateProperties,
+	ApplicationEntity_LocalId,
+	EntityCascadeGraph,
+	IQE> {
 
 	constructor(
 		dbEntityId: DbEntityId
@@ -88,27 +90,27 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseRecordUpdateStageDao
-  extends IDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
+	extends IDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage> {
 }
 
 export class BaseRecordUpdateStageDao
-  extends SQDIDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
+	extends SQDIDao<RecordUpdateStage, RecordUpdateStageESelect, RecordUpdateStageECreateProperties, RecordUpdateStageEUpdateColumns, RecordUpdateStageEUpdateProperties, RecordUpdateStageEId, RecordUpdateStageGraph, QRecordUpdateStage>
 	implements IBaseRecordUpdateStageDao {
-	
-	static Find      = new DaoQueryDecorators<RecordUpdateStageESelect>();
-	static FindOne   = new DaoQueryDecorators<RecordUpdateStageESelect>();
-	static Search    = new DaoQueryDecorators<RecordUpdateStageESelect>();
+
+	static Find = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static FindOne = new DaoQueryDecorators<RecordUpdateStageESelect>();
+	static Search = new DaoQueryDecorators<RecordUpdateStageESelect>();
 	static SearchOne = new DaoQueryDecorators<RecordUpdateStageESelect>();
 	static Save(
 		config: RecordUpdateStageGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<RecordUpdateStageGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(2)
 	}
-	
+
 	constructor() {
 		super(2)
 	}
@@ -116,27 +118,27 @@ export class BaseRecordUpdateStageDao
 
 
 export interface IBaseSynchronizationConflictDao
-  extends IDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
+	extends IDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict> {
 }
 
 export class BaseSynchronizationConflictDao
-  extends SQDIDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
+	extends SQDIDao<SynchronizationConflict, SynchronizationConflictESelect, SynchronizationConflictECreateProperties, SynchronizationConflictEUpdateColumns, SynchronizationConflictEUpdateProperties, SynchronizationConflictEId, SynchronizationConflictGraph, QSynchronizationConflict>
 	implements IBaseSynchronizationConflictDao {
-	
-	static Find      = new DaoQueryDecorators<SynchronizationConflictESelect>();
-	static FindOne   = new DaoQueryDecorators<SynchronizationConflictESelect>();
-	static Search    = new DaoQueryDecorators<SynchronizationConflictESelect>();
+
+	static Find = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static FindOne = new DaoQueryDecorators<SynchronizationConflictESelect>();
+	static Search = new DaoQueryDecorators<SynchronizationConflictESelect>();
 	static SearchOne = new DaoQueryDecorators<SynchronizationConflictESelect>();
 	static Save(
 		config: SynchronizationConflictGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<SynchronizationConflictGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(1)
 	}
-	
+
 	constructor() {
 		super(1)
 	}
@@ -144,27 +146,27 @@ export class BaseSynchronizationConflictDao
 
 
 export interface IBaseSynchronizationConflictValuesDao
-  extends IDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
+	extends IDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues> {
 }
 
 export class BaseSynchronizationConflictValuesDao
-  extends SQDIDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
+	extends SQDIDao<SynchronizationConflictValues, SynchronizationConflictValuesESelect, SynchronizationConflictValuesECreateProperties, SynchronizationConflictValuesEUpdateColumns, SynchronizationConflictValuesEUpdateProperties, SynchronizationConflictValuesEId, SynchronizationConflictValuesGraph, QSynchronizationConflictValues>
 	implements IBaseSynchronizationConflictValuesDao {
-	
-	static Find      = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
-	static FindOne   = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
-	static Search    = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+
+	static Find = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static FindOne = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
+	static Search = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
 	static SearchOne = new DaoQueryDecorators<SynchronizationConflictValuesESelect>();
 	static Save(
 		config: SynchronizationConflictValuesGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<SynchronizationConflictValuesGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(0)
 	}
-	
+
 	constructor() {
 		super(0)
 	}

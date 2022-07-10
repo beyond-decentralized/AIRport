@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	TypeClassificationGraph,
 	TypeClassificationEId,
@@ -52,13 +47,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface TypeESelect
-    extends IEntitySelectProperties, TypeEOptionalId {
+	extends IEntitySelectProperties, TypeEOptionalId {
 	// Non-Id Properties
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	typeClassifications?: TypeClassificationESelect;
 
 }
@@ -67,7 +62,7 @@ export interface TypeESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface TypeEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -103,8 +98,8 @@ export interface TypeEUpdateProperties
  */
 export interface TypeGraph
 	extends TypeEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	name?: string | IQStringField;
 
@@ -127,14 +122,14 @@ export interface TypeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TypeECreateProperties
-extends Partial<TypeEId>, TypeEUpdateProperties {
+	extends Partial<TypeEId>, TypeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface TypeECreateColumns
-extends TypeEId, TypeEUpdateColumns {
+	extends TypeEId, TypeEUpdateColumns {
 }
 
 
@@ -147,8 +142,7 @@ extends TypeEId, TypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QType extends IQEntity
-{
+export interface QType extends IQEntity {
 	// Id Fields
 	id: IQNumberField;
 
@@ -164,9 +158,8 @@ export interface QType extends IQEntity
 
 
 // Entity Id Interface
-export interface QTypeQId
-{
-	
+export interface QTypeQId {
+
 	// Id Fields
 	id: IQNumberField;
 

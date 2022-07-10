@@ -1,5 +1,5 @@
-import { IQEntityInternal, JoinTreeNode } from '@airport/air-traffic-control';
 import { JSONEntityFieldInOrderBy } from '@airport/ground-control';
+import { IQEntityInternal, JoinTreeNode } from '@airport/tarmaq-query';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 import { AbstractEntityOrderByParser, IEntityOrderByParser } from './AbstractEntityOrderByParser';
 /**

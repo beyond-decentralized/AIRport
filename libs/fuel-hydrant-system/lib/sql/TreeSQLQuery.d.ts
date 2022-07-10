@@ -1,5 +1,6 @@
-import { AliasCache, IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
+import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-control';
 import { IEntityStateManager, InternalFragments, JsonTreeQuery, QueryResultType } from '@airport/ground-control';
+import { AliasCache, IApplicationUtils, IRelationManager } from '@airport/tarmaq-query';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../FuelHydrantContext';

@@ -1,11 +1,11 @@
-import { IEntityContext } from "@airport/air-traffic-control"
 import {
-	Injected
+    Injected
 } from '@airport/direction-indicator'
 import {
     DbEntity,
     IEntityStateManager
 } from "@airport/ground-control"
+import { IEntityContext } from '@airport/tarmaq-entity'
 
 interface ICopyOperation {
     processedEntityMap: Map<any, any>

@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	ContinentGraph,
 	ContinentEId,
@@ -104,14 +99,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ClientESelect
-    extends IEntitySelectProperties, ClientEOptionalId {
+	extends IEntitySelectProperties, ClientEOptionalId {
 	// Non-Id Properties
 	domain?: string | IQStringField;
 	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	continent?: ContinentESelect;
 	country?: CountryESelect;
 	state?: StateESelect;
@@ -124,7 +119,7 @@ export interface ClientESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ClientEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -165,8 +160,8 @@ export interface ClientEUpdateProperties
  */
 export interface ClientGraph
 	extends ClientEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	domain?: string | IQStringField;
 	GUID?: string | IQStringField;
@@ -199,14 +194,14 @@ export interface ClientEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ClientECreateProperties
-extends Partial<ClientEId>, ClientEUpdateProperties {
+	extends Partial<ClientEId>, ClientEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface ClientECreateColumns
-extends ClientEId, ClientEUpdateColumns {
+	extends ClientEId, ClientEUpdateColumns {
 }
 
 
@@ -219,8 +214,7 @@ extends ClientEId, ClientEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClient extends IQEntity
-{
+export interface QClient extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -241,9 +235,8 @@ export interface QClient extends IQEntity
 
 
 // Entity Id Interface
-export interface QClientQId
-{
-	
+export interface QClientQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

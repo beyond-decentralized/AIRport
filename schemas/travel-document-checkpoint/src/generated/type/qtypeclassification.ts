@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	ClassificationGraph,
 	ClassificationEId,
@@ -65,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface TypeClassificationESelect
-    extends IEntitySelectProperties, TypeClassificationEOptionalId {
+	extends IEntitySelectProperties, TypeClassificationEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	classification?: ClassificationESelect;
 	type?: TypeESelect;
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -80,7 +75,7 @@ export interface TypeClassificationESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface TypeClassificationEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -117,8 +112,8 @@ export interface TypeClassificationEUpdateProperties
  */
 export interface TypeClassificationGraph
 	extends TypeClassificationEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -140,14 +135,14 @@ export interface TypeClassificationEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TypeClassificationECreateProperties
-extends Partial<TypeClassificationEId>, TypeClassificationEUpdateProperties {
+	extends Partial<TypeClassificationEId>, TypeClassificationEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface TypeClassificationECreateColumns
-extends TypeClassificationEId, TypeClassificationEUpdateColumns {
+	extends TypeClassificationEId, TypeClassificationEUpdateColumns {
 }
 
 
@@ -160,8 +155,7 @@ extends TypeClassificationEId, TypeClassificationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTypeClassification extends IQEntity
-{
+export interface QTypeClassification extends IQEntity {
 	// Id Fields
 
 	// Id Relations
@@ -176,9 +170,8 @@ export interface QTypeClassification extends IQEntity
 
 
 // Entity Id Interface
-export interface QTypeClassificationQId
-{
-	
+export interface QTypeClassificationQId {
+
 	// Id Fields
 
 	// Id Relations

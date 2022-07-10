@@ -1,13 +1,15 @@
 import {
-	IApplicationUtils,
 	IUtils,
-	ReferencedColumnData
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
+import {
+	IApplicationUtils,
+	ReferencedColumnData
+} from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 
 /**

@@ -1,3 +1,3 @@
 export * from './TerminalDao';
-export * from './UserDao';
+export * from './UserAccountDao';
 //# sourceMappingURL=dao.js.map

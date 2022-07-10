@@ -1,9 +1,6 @@
 import {
 	ACTOR_PROPERTY_NAME,
 	ACTOR_RECORD_ID_PROPERTY_NAME,
-	and,
-	field,
-	or,
 	REPOSITORY_PROPERTY_NAME
 } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator';
@@ -20,6 +17,11 @@ import {
 	AirEntity_ActorRecordId,
 	Repository_LocalId
 } from '@airport/holding-pattern'
+import {
+	and,
+	field,
+	or,
+} from '@airport/tarmaq-query'
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,

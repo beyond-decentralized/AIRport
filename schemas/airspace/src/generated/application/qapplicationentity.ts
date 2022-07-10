@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,8 +17,10 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-	ApplicationEntity_TableConfiguration,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
+import {
+	ApplicationEntity_TableConfiguration
+} from '@airport/tarmaq-entity';
 import {
 	VersionedApplicationObjectGraph,
 	VersionedApplicationObjectEId,

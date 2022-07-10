@@ -1,4 +1,4 @@
-import { QEntity } from '@airport/air-traffic-control';
+import { QEntity } from '@airport/tarmaq-query';
 import { SQLWhereBase } from './SQLWhereBase';
 /**
  * Created by Papa on 10/2/2016.

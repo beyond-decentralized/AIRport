@@ -1,5 +1,6 @@
-import { IAirportDatabase, IApplicationUtils, IQEntityInternal, IQMetadataUtils, IUtils, JSONLogicalOperation, Parameter } from '@airport/air-traffic-control';
+import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-control';
 import { ApplicationColumn_Index, DbColumn, DbEntity, JSONBaseOperation, JSONClauseField, JSONClauseObject, JSONEntityRelation, JsonFieldQuery, Application_Index, ApplicationMap, SqlOperator, ApplicationEntity_TableIndex, IEntityStateManager } from '@airport/ground-control';
+import { IApplicationUtils, IQEntityInternal, JSONLogicalOperation, Parameter } from '@airport/tarmaq-query';
 import { IStoreDriver } from '@airport/terminal-map';
 import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';

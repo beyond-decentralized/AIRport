@@ -1,7 +1,5 @@
 import {
 	IAirportDatabase,
-	IApplicationUtils,
-	IRelationManager,
 	orderApplicationsInOrderOfPrecedence,
 	QApplicationInternal,
 	setQApplicationEntities
@@ -16,6 +14,7 @@ import {
 import { IApplication } from '@airport/airspace'
 import { DbApplication } from '@airport/ground-control'
 import { IQueryEntityClassCreator } from '@airport/terminal-map'
+import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query'
 
 @Injected()
 export class QueryEntityClassCreator

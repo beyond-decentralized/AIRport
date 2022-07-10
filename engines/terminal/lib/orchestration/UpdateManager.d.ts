@@ -1,8 +1,10 @@
-import { IAirportDatabase, IApplicationUtils, IFieldUtils, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-traffic-control';
-import { ISequenceGenerator } from '@airport/check-in';
-import { IRootTransaction, PortableQuery } from '@airport/ground-control';
-import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IAirportDatabase } from '@airport/air-traffic-control';
+import { IApplicationUtils, IFieldUtils, IQueryUtils, IRelationManager } from '@airport/tarmaq-query';
+import { IRootTransaction, PortableQuery, ISequenceGenerator } from '@airport/ground-control';
+import { IActor } from '@airport/holding-pattern';
 import { IHistoryManager, IOperationContext, ITransaction, IUpdateManager } from '@airport/terminal-map';
+import { IQueryFacade } from '@airport/tarmaq-dao';
+import { IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/duo/duo';
 export declare class UpdateManager implements IUpdateManager {
     airportDatabase: IAirportDatabase;
     applicationUtils: IApplicationUtils;

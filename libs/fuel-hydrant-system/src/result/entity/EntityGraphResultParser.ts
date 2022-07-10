@@ -1,7 +1,5 @@
 import {
-	IApplicationUtils,
 	IUtils,
-	ReferencedColumnData,
 } from '@airport/air-traffic-control'
 import {
 	DbEntity,
@@ -11,6 +9,10 @@ import {
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
+import {
+	IApplicationUtils,
+	ReferencedColumnData
+} from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import {
 	GraphMtoMapper,

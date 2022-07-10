@@ -1,27 +1,9 @@
 import {
-	FunctionsAndOperators,
 	IAirportDatabase,
-	IApplicationUtils,
-	IDatabaseFacade,
 	IDatabaseState,
 	IEntityAccumulator,
-	IEntityContext,
 	IEntityRecord,
-	IEntityUpdateColumns,
-	IEntityUpdateProperties,
-	INonEntityFind,
-	INonEntityFindOne,
-	INonEntitySearch,
-	INonEntitySearchOne,
-	IQEntity,
-	IRelationManager,
-	OperationName,
-	RawDelete,
-	RawInsertColumnValues,
-	RawInsertValues,
-	RawUpdate,
-	RawUpdateColumns,
-	setQApplicationEntities,
+	setQApplicationEntities
 } from '@airport/air-traffic-control';
 import { QApplication } from '@airport/aviation-communication'
 import {
@@ -33,6 +15,28 @@ import {
 	IDbApplicationUtils,
 	ISaveResult,
 } from '@airport/ground-control';
+import {
+	IDatabaseFacade,
+	INonEntityFind,
+	INonEntityFindOne,
+	INonEntitySearch,
+	INonEntitySearchOne,
+	OperationName
+} from '@airport/tarmaq-dao';
+import { IEntityContext } from '@airport/tarmaq-entity';
+import {
+	FunctionsAndOperators,
+	IApplicationUtils,
+	IEntityUpdateColumns,
+	IEntityUpdateProperties,
+	IQEntity,
+	IRelationManager,
+	RawDelete,
+	RawInsertColumnValues,
+	RawInsertValues,
+	RawUpdate,
+	RawUpdateColumns,
+} from '@airport/tarmaq-query';
 
 class EntityAccumulator
 	implements IEntityAccumulator {

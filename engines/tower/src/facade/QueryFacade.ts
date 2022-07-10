@@ -1,13 +1,4 @@
 import {
-	AbstractQuery,
-	IAbstractQuery,
-	IFieldUtils,
-	IQueryContext,
-	IQueryFacade,
-	IQueryUtils,
-	IRelationManager
-} from '@airport/air-traffic-control';
-import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -17,6 +8,15 @@ import {
 	PortableQuery,
 	QueryResultType,
 } from '@airport/ground-control';
+import { IQueryFacade } from '@airport/tarmaq-dao';
+import {
+	AbstractQuery,
+	IAbstractQuery,
+	IFieldUtils,
+	IQueryContext,
+	IQueryUtils,
+	IRelationManager
+} from '@airport/tarmaq-query';
 import {
 	Observable,
 } from 'rxjs';

@@ -16,10 +16,10 @@ export declare class QueryManager implements IQueryManager {
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;
     searchOne<E>(portableQuery: PortableQuery, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<E>;
     private ensureRepositoryPresenceAndCurrentState;
-    private populateEntityGuidEntitiesAndUsers;
+    private populateEntityGuidEntitiesAndUserAccounts;
     private markEntities;
     private processRepositoryOrActor;
-    private populateActorsAndUsers;
+    private populateActorsAndUserAccounts;
     private populateRepositories;
 }
 //# sourceMappingURL=QueryManager.d.ts.map

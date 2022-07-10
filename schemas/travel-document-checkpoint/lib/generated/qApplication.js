@@ -1,5 +1,5 @@
 import { airApi } from '@airport/aviation-communication';
-import { Classification, Client, ClientType, Continent, Country, Database, DatabaseType, MetroArea, MetroAreaState, State, Terminal, TerminalType, Type, TypeClassification, User, UserTerminal } from '../ddl/ddl';
+import { Classification, Client, ClientType, Continent, Country, Database, DatabaseType, MetroArea, MetroAreaState, State, Terminal, TerminalType, Type, TypeClassification, UserAccount } from '../ddl/ddl';
 const __constructors__ = {
     Classification: Classification,
     Client: Client,
@@ -15,8 +15,7 @@ const __constructors__ = {
     TerminalType: TerminalType,
     Type: Type,
     TypeClassification: TypeClassification,
-    User: User,
-    UserTerminal: UserTerminal
+    UserAccount: UserAccount
 };
 export const Q_APPLICATION = {
     __constructors__,

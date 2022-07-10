@@ -4,8 +4,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, REPOSITORY_PROPERTY_NAME, } from '@airport/air-traffic-control';
+import { REPOSITORY_PROPERTY_NAME, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
+// import is reserved for Application use
+import { and, } from '@airport/tarmaq-query';
 import { v4 as guidv4 } from "uuid";
 let RepositoryManager = class RepositoryManager {
     async initialize() {
@@ -38,7 +40,7 @@ already contains a new repository.`);
             createdAt: new Date(),
             _localId: null,
             immutable: false,
-            owner: actor.user,
+            owner: actor.userAccount,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
             repositoryTransactionHistory: [],

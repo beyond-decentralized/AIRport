@@ -1,4 +1,4 @@
-import { ApplicationEntity_TableConfiguration } from '@airport/air-traffic-control';
+import { ApplicationEntity_TableConfiguration } from '@airport/tarmaq-entity';
 import { ApplicationEntity_LocalId, ApplicationEntity_IsLocal, ApplicationEntity_IsAirEntity, ApplicationEntity_Name, ApplicationEntity_TableIndex } from '@airport/ground-control';
 import { ApplicationColumn } from './ApplicationColumn';
 import { ApplicationOperation } from './ApplicationOperation';

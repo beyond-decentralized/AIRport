@@ -1,10 +1,10 @@
-import { IEntityContext, IQueryContext } from '@airport/air-traffic-control'
 import { IContext } from '@airport/direction-indicator'
 import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control'
 import { IAirEntity } from '@airport/holding-pattern'
+import { IEntityContext } from '@airport/tarmaq-entity'
 import { Observable } from 'rxjs'
 import { IQueryOperationContext } from '..'
 import {

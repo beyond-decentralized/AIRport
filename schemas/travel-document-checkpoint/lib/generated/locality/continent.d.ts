@@ -1,9 +1,9 @@
 import { ICountry } from './country';
-import { IUser } from '../user';
+import { IUserAccount } from '../userAccount';
 export interface IContinent {
     id: number;
     name?: string;
     countries?: ICountry[];
-    users?: IUser[];
+    userAccounts?: IUserAccount[];
 }
 //# sourceMappingURL=continent.d.ts.map

@@ -1,5 +1,6 @@
-import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryFacade, IQueryUtils, IRelationManager } from '@airport/air-traffic-control';
 import { ITransactionalConnector, PortableQuery, QueryResultType } from '@airport/ground-control';
+import { IQueryFacade } from '@airport/tarmaq-dao';
+import { AbstractQuery, IAbstractQuery, IFieldUtils, IQueryContext, IQueryUtils, IRelationManager } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
 export declare class QueryFacade implements IQueryFacade {
     fieldUtils: IFieldUtils;

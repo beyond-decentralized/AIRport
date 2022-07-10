@@ -2,7 +2,7 @@
 export const APPLICATION = {
     "domain": "air",
     "index": null,
-    "name": "@airport/moving-walkway",
+    "name": "@airport/layover",
     "sinceVersion": 1,
     "versions": [
         {

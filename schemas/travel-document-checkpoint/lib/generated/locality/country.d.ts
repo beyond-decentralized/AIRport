@@ -1,10 +1,10 @@
 import { IContinent } from './continent';
-import { IUser } from '../user';
+import { IUserAccount } from '../userAccount';
 export interface ICountry {
     id: number;
     abbreviation?: string;
     name?: string;
     continent?: IContinent;
-    users?: IUser[];
+    userAccounts?: IUserAccount[];
 }
 //# sourceMappingURL=country.d.ts.map

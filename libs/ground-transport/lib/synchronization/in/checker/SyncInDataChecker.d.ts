@@ -1,7 +1,7 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
+import { ISequenceGenerator } from '@airport/ground-control';
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
-import { ISequenceGenerator } from '@airport/check-in';
 import { ITerminalStore } from '@airport/terminal-map';
 export interface ISyncInDataChecker {
     checkData(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;

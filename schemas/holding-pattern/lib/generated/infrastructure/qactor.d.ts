@@ -1,12 +1,12 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
-import { UserGraph, UserEOptionalId, UserESelect, QUserQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation, ClientGraph, ClientEOptionalId, ClientESelect, QClientQRelation } from '@airport/travel-document-checkpoint';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
+import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation, ClientGraph, ClientEOptionalId, ClientESelect, QClientQRelation } from '@airport/travel-document-checkpoint';
 import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '@airport/airspace';
 /**
  * SELECT - All fields and relations (optional).
  */
 export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId {
     GUID?: string | IQStringField;
-    user?: UserESelect;
+    userAccount?: UserAccountESelect;
     terminal?: TerminalESelect;
     application?: ApplicationESelect;
     client?: ClientESelect;
@@ -28,7 +28,7 @@ export interface ActorEOptionalId {
  */
 export interface ActorEUpdateProperties extends IEntityUpdateProperties {
     GUID?: string | IQStringField;
-    user?: UserEOptionalId;
+    userAccount?: UserAccountEOptionalId;
     terminal?: TerminalEOptionalId;
     application?: ApplicationEOptionalId;
     client?: ClientEOptionalId;
@@ -38,7 +38,7 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
  */
 export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
     GUID?: string | IQStringField;
-    user?: UserGraph;
+    userAccount?: UserAccountGraph;
     terminal?: TerminalGraph;
     application?: ApplicationGraph;
     client?: ClientGraph;
@@ -48,7 +48,7 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
  */
 export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
-    USER_LID?: number | IQNumberField;
+    USER_ACCOUNT_LID?: number | IQNumberField;
     TERMINAL_LID?: number | IQNumberField;
     APPLICATION_INDEX?: number | IQNumberField;
     CLIENT_LID?: number | IQNumberField;
@@ -69,7 +69,7 @@ export interface ActorECreateColumns extends ActorEId, ActorEUpdateColumns {
 export interface QActor extends IQEntity {
     _localId: IQNumberField;
     GUID: IQStringField;
-    user: QUserQRelation;
+    userAccount: QUserAccountQRelation;
     terminal: QTerminalQRelation;
     application: QApplicationQRelation;
     client: QClientQRelation;

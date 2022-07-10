@@ -1,4 +1,4 @@
-import { IUser, IContinent, ICountry, IState, IMetroArea } from '@airport/travel-document-checkpoint';
+import { IUserAccount, IContinent, ICountry, IState, IMetroArea } from '@airport/travel-document-checkpoint';
 import { IRepositoryTransactionHistory } from '../history/repositorytransactionhistory';
 import { IRepositoryApplication } from './repositoryapplication';
 import { IRepositoryClient } from './repositoryclient';
@@ -12,7 +12,7 @@ export interface IRepository {
     createdAt?: Date;
     immutable?: boolean;
     source?: string;
-    owner?: IUser;
+    owner?: IUserAccount;
     repositoryTransactionHistory?: IRepositoryTransactionHistory[];
     continent?: IContinent;
     country?: ICountry;

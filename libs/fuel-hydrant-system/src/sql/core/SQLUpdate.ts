@@ -1,11 +1,7 @@
 import {
 	IAirportDatabase,
-	IApplicationUtils,
-	IEntityUpdateProperties,
 	IQMetadataUtils,
-	IRelationManager,
 	IUtils,
-	ManyToOneColumnMapping
 } from '@airport/air-traffic-control'
 import {
 	IEntityStateManager,
@@ -13,6 +9,12 @@ import {
 	JSONClauseObjectType,
 	JsonUpdate
 } from '@airport/ground-control'
+import {
+	IApplicationUtils,
+	IEntityUpdateProperties,
+	IRelationManager,
+	ManyToOneColumnMapping
+} from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'

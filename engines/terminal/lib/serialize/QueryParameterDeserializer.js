@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Injected } from '@airport/direction-indicator';
-import { SQLDataType } from "@airport/ground-control";
+import { EntityState, SQLDataType } from "@airport/ground-control";
 // TODO: figure out if this is needed - originally written for deserializing
 // Client-side query parameters.  Since then moved to Isolates and generic
 // API calls.  Probably should be used in go-tower to deserialize all of the

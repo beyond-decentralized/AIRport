@@ -1,13 +1,10 @@
 import {
-	Column,
-	DbNumber,
 	Entity,
-	GeneratedValue,
 	Id,
 	JoinColumn,
 	ManyToOne,
 	Table
-} from "@airport/air-traffic-control";
+} from "@airport/tarmaq-entity";
 import { Application } from "@airport/airspace";
 import { Repository } from './Repository'
 

@@ -16,15 +16,38 @@ import { ISynchronizationOutManager, SynchronizationOutManager } from './synchro
 import { ISynchronizationAdapter } from './adapters/ISynchronizationAdapter'
 import { ISynchronizationAdapterLoader, SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer, SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
-import { AIRPORT_DATABASE, DATABASE_FACADE, UTILS } from '@airport/air-traffic-control'
-import { SEQUENCE_GENERATOR } from '@airport/check-in'
-import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
-import { TERMINAL_DAO, USER_ACCOUNT_DAO } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
-import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace'
-import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
-import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/layover'
+import {
+    AIRPORT_DATABASE,
+    DATABASE_FACADE,
+    UTILS
+} from '@airport/air-traffic-control'
+import {
+    TERMINAL_STORE,
+    TRANSACTION_MANAGER
+} from '@airport/terminal-map'
+import {
+    TERMINAL_DAO,
+    USER_ACCOUNT_DAO
+} from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
+import {
+    APPLICATION_DAO,
+    APPLICATION_VERSION_DAO,
+    DOMAIN_DAO
+} from '@airport/airspace'
+import {
+    ACTOR_DAO,
+    REPOSITORY_DAO,
+    REPOSITORY_TRANSACTION_HISTORY_DAO,
+    REPOSITORY_TRANSACTION_HISTORY_DUO
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+import {
+    RECORD_UPDATE_STAGE_DAO,
+    SYNCHRONIZATION_CONFLICT_DAO,
+    SYNCHRONIZATION_CONFLICT_VALUES_DAO
+} from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import { NONHUB_CLIENT } from '@airport/nonhub-client'
+import { SEQUENCE_GENERATOR } from '@airport/ground-control'
 
 const groundTransport = lib('ground-transport')
 

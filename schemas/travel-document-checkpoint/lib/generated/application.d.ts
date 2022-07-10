@@ -6,13 +6,13 @@ export declare const APPLICATION: {
     versions: {
         api: {
             apiObjectMap: {
-                UserApi: {
+                UserAccountApi: {
                     operationMap: {
-                        addUser: {
+                        addUserAccount: {
                             isAsync: boolean;
                             parameters: any[];
                         };
-                        findUser: {
+                        findUserAccount: {
                             isAsync: boolean;
                             parameters: any[];
                         };

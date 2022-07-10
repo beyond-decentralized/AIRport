@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, Delete, InsertValues, or, UpdateProperties, } from '@airport/air-traffic-control';
+import { and, Delete, InsertValues, or, UpdateProperties, } from '@airport/tarmaq-query';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType } from '@airport/ground-control';
 /**
@@ -49,8 +49,8 @@ let OperationManager = class OperationManager {
         let saveActor = {
             _localId: actor._localId,
             GUID: actor.GUID,
-            user: actor.user ? {
-                _localId: actor.user._localId
+            userAccount: actor.userAccount ? {
+                _localId: actor.userAccount._localId
             } : null
         };
         let newRepository;
@@ -64,8 +64,8 @@ let OperationManager = class OperationManager {
                 ownerActor: {
                     _localId: actor._localId,
                     GUID: actor.GUID,
-                    user: actor.user ? {
-                        _localId: actor.user._localId
+                    userAccount: actor.userAccount ? {
+                        _localId: actor.userAccount._localId
                     } : null
                 }
             };

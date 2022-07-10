@@ -1,4 +1,5 @@
-import { Dao, DaoQueryDecorators, } from '@airport/check-in';
+import { DaoQueryDecorators, } from '@airport/tarmaq-dao';
+import { Dao } from '@airport/air-traffic-control';
 import { Q, duoDiSet, } from './qApplication';
 // Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
@@ -216,7 +217,7 @@ BaseTypeClassificationDao.Find = new DaoQueryDecorators();
 BaseTypeClassificationDao.FindOne = new DaoQueryDecorators();
 BaseTypeClassificationDao.Search = new DaoQueryDecorators();
 BaseTypeClassificationDao.SearchOne = new DaoQueryDecorators();
-export class BaseUserDao extends SQDIDao {
+export class BaseUserAccountDao extends SQDIDao {
     constructor() {
         super(5);
     }
@@ -227,23 +228,8 @@ export class BaseUserDao extends SQDIDao {
         return duoDiSet(5);
     }
 }
-BaseUserDao.Find = new DaoQueryDecorators();
-BaseUserDao.FindOne = new DaoQueryDecorators();
-BaseUserDao.Search = new DaoQueryDecorators();
-BaseUserDao.SearchOne = new DaoQueryDecorators();
-export class BaseUserTerminalDao extends SQDIDao {
-    constructor() {
-        super(15);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet(15);
-    }
-}
-BaseUserTerminalDao.Find = new DaoQueryDecorators();
-BaseUserTerminalDao.FindOne = new DaoQueryDecorators();
-BaseUserTerminalDao.Search = new DaoQueryDecorators();
-BaseUserTerminalDao.SearchOne = new DaoQueryDecorators();
+BaseUserAccountDao.Find = new DaoQueryDecorators();
+BaseUserAccountDao.FindOne = new DaoQueryDecorators();
+BaseUserAccountDao.Search = new DaoQueryDecorators();
+BaseUserAccountDao.SearchOne = new DaoQueryDecorators();
 //# sourceMappingURL=baseDaos.js.map

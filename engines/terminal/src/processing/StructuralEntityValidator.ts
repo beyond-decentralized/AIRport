@@ -1,4 +1,3 @@
-import { IApplicationUtils } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
@@ -13,6 +12,7 @@ import {
 	SQLDataType
 } from '@airport/ground-control'
 import { IAirEntity } from '@airport/holding-pattern'
+import { IApplicationUtils } from '@airport/tarmaq-query'
 import {
 	IMissingRepositoryRecord,
 	IOperationContext,

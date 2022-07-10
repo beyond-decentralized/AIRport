@@ -1,13 +1,13 @@
 import {
-	IQEntityInternal,
-	JoinTreeNode
-} from '@airport/air-traffic-control'
-import {
 	DbEntity,
 	JSONEntityFieldInOrderBy,
 	JSONFieldInOrderBy,
 	SortOrder
 } from '@airport/ground-control'
+import {
+	IQEntityInternal,
+	JoinTreeNode
+} from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../FuelHydrantContext'
 import {
 	AbstractEntityOrderByParser,

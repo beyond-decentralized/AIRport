@@ -1,8 +1,8 @@
 import { IContext } from '@airport/direction-indicator';
 import { QueryResultType } from '@airport/ground-control';
+import { IEntityContext } from '@airport/tarmaq-entity';
 import {
 	IAbstractQuery,
-	IEntityContext,
 	RawNonEntityQuery,
 	RawQuery
 } from '@airport/tarmaq-query';

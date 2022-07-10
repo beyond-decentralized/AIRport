@@ -1,7 +1,7 @@
 import { Actor } from '../infrastructure/Actor';
 import { SystemWideOperationId } from '../common';
 import { Repository } from './Repository';
-import { User } from '@airport/travel-document-checkpoint';
+import { UserAccount } from '@airport/travel-document-checkpoint';
 /**
  * Created by Papa on 2/17/2017.
  */
@@ -18,7 +18,7 @@ export declare abstract class AirEntity {
     originalRepository?: Repository;
     originalActor?: Actor;
     originalActorRecordId?: AirEntity_ActorRecordId;
-    get createdBy(): User;
+    get createdBy(): UserAccount;
     /**
      * A transient property, generated on the entity objects by the
      * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value

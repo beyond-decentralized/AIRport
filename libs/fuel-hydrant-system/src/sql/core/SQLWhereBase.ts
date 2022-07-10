@@ -1,14 +1,9 @@
 import {
 	IAirportDatabase,
-	IApplicationUtils,
-	IQEntityInternal,
 	IQMetadataUtils,
 	IUtils,
-	JSONLogicalOperation,
-	Parameter,
 } from '@airport/air-traffic-control'
 import {
-	Inject,
 	Injected
 } from '@airport/direction-indicator'
 import {
@@ -31,6 +26,12 @@ import {
 	ApplicationEntity_TableIndex,
 	IEntityStateManager
 } from '@airport/ground-control'
+import {
+	IApplicationUtils,
+	IQEntityInternal,
+	JSONLogicalOperation,
+	Parameter
+} from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor, ISqlValueProvider } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'

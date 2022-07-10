@@ -1,5 +1,6 @@
-import { IApplicationUtils, IUpdateCacheManager } from "@airport/air-traffic-control";
+import { IUpdateCacheManager } from "@airport/air-traffic-control";
 import { DbEntity, IEntityStateManager, ISaveResult } from "@airport/ground-control";
+import { IApplicationUtils } from "@airport/tarmaq-query";
 export declare class UpdateCacheManager implements IUpdateCacheManager {
     entityStateManager: IEntityStateManager;
     applicationUtils: IApplicationUtils;

@@ -142,7 +142,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                     return this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this);
                 },
                 set(idString) {
-                    return this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this);
+                    this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this);
                 }
             });
         }
@@ -162,7 +162,7 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
                 || !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
             Object.defineProperty(object, 'createdBy', {
                 get() {
-                    return this.actor.user;
+                    return this.actor.userAccount;
                 }
             });
         }

@@ -1,5 +1,5 @@
 import { IVersionedApplicationObject } from './versionedapplicationobject';
-import { ApplicationEntity_TableConfiguration } from '@airport/air-traffic-control';
+import { ApplicationEntity_TableConfiguration } from '@airport/tarmaq-entity';
 import { IApplicationColumn } from './applicationcolumn';
 import { IApplicationVersion } from './applicationversion';
 import { IApplicationOperation } from './applicationoperation';

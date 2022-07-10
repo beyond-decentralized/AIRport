@@ -6,15 +6,13 @@ import {
 	Injected
 } from '@airport/direction-indicator'
 import {
-	ISequenceGenerator
-} from '@airport/check-in';
-import {
 	IContext
 } from '@airport/direction-indicator';
 import {
 	DbApplication,
 	FullApplication_Name,
 	IDbApplicationUtils,
+	ISequenceGenerator,
 	JsonApplication
 } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';

@@ -29,4 +29,9 @@ export const NON_ENTITY_SEARCH_ONE = tarmaqDao.token({
     interface: 'INonEntitySearchOne',
     token: 'NON_ENTITY_SEARCH_ONE'
 });
+export const QUERY_FACADE = tarmaqDao.token({
+    class: null,
+    interface: 'IQueryFacade',
+    token: 'QUERY_FACADE'
+});
 //# sourceMappingURL=tokens.js.map

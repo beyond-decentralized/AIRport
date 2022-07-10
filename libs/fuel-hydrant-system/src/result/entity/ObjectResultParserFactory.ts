@@ -1,5 +1,4 @@
 import {
-	IApplicationUtils,
 	IUtils
 } from '@airport/air-traffic-control'
 import {
@@ -11,6 +10,7 @@ import {
 	IEntityStateManager,
 	QueryResultType
 } from '@airport/ground-control'
+import { IApplicationUtils } from '@airport/tarmaq-query'
 import { EntityGraphResultParser } from './EntityGraphResultParser'
 import { EntityTreeResultParser } from './EntityTreeResultParser'
 import {

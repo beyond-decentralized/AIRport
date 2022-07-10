@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	DatabaseGraph,
 	DatabaseEId,
@@ -65,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface DatabaseTypeESelect
-    extends IEntitySelectProperties, DatabaseTypeEOptionalId {
+	extends IEntitySelectProperties, DatabaseTypeEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	database?: DatabaseESelect;
 	type?: TypeESelect;
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -80,7 +75,7 @@ export interface DatabaseTypeESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface DatabaseTypeEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -117,8 +112,8 @@ export interface DatabaseTypeEUpdateProperties
  */
 export interface DatabaseTypeGraph
 	extends DatabaseTypeEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -140,14 +135,14 @@ export interface DatabaseTypeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DatabaseTypeECreateProperties
-extends Partial<DatabaseTypeEId>, DatabaseTypeEUpdateProperties {
+	extends Partial<DatabaseTypeEId>, DatabaseTypeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface DatabaseTypeECreateColumns
-extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
+	extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
 }
 
 
@@ -160,8 +155,7 @@ extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabaseType extends IQEntity
-{
+export interface QDatabaseType extends IQEntity {
 	// Id Fields
 
 	// Id Relations
@@ -176,9 +170,8 @@ export interface QDatabaseType extends IQEntity
 
 
 // Entity Id Interface
-export interface QDatabaseTypeQId
-{
-	
+export interface QDatabaseTypeQId {
+
 	// Id Fields
 
 	// Id Relations

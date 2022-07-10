@@ -1,8 +1,11 @@
-import { AIRPORT_DATABASE, LimitedEntityQuery, LOOKUP, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, QUERY_FACADE, Y } from '@airport/air-traffic-control';
+import { AIRPORT_DATABASE, } from '@airport/air-traffic-control';
 import { IOC } from '@airport/direction-indicator';
 import { OperationType, QueryInputKind, QueryParameterType, QueryResultType, DB_APPLICATION_UTILS } from '@airport/ground-control';
+import { QUERY_FACADE } from '@airport/tarmaq-dao';
+import { LimitedEntityQuery, QBooleanFunction, QDateArrayFunction, QDateFunction, QNumberArrayFunction, QNumberFunction, QStringArrayFunction, QStringFunction, Y } from '@airport/tarmaq-query';
 import tsc from 'typescript';
 import { TempDatabase } from '../../ddl/loader/temp/TempDatabase';
+import { LOOKUP } from '@airport/tarmaq-dao';
 export class ApplicationQueryGenerator {
     constructor() {
         this.tempDatabase = new TempDatabase();

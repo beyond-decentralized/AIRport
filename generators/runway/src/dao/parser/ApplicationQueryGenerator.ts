@@ -1,20 +1,7 @@
 import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
-	IQFunction,
-	IQOperableField,
-	LimitedEntityQuery,
-	LOOKUP,
-	QBooleanFunction,
-	QDateArrayFunction,
-	QDateFunction,
-	QNumberArrayFunction,
-	QNumberFunction,
 	QApplicationInternal,
-	QStringArrayFunction,
-	QStringFunction,
-	QUERY_FACADE,
-	Y
 } from '@airport/air-traffic-control';
 import { QApplication } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator';
@@ -31,9 +18,26 @@ import {
 	DB_APPLICATION_UTILS,
 	IDbApplicationUtils
 } from '@airport/ground-control';
+import {
+	QUERY_FACADE
+} from '@airport/tarmaq-dao';
+import {
+	IQFunction,
+	IQOperableField,
+	LimitedEntityQuery,
+	QBooleanFunction,
+	QDateArrayFunction,
+	QDateFunction,
+	QNumberArrayFunction,
+	QNumberFunction,
+	QStringArrayFunction,
+	QStringFunction,
+	Y
+} from '@airport/tarmaq-query';
 import tsc from 'typescript';
 import { ITempDatabase, TempDatabase } from '../../ddl/loader/temp/TempDatabase';
 import { JsonFormattedQueryWithExpression } from './OperationGenerator';
+import { LOOKUP } from '@airport/tarmaq-dao';
 
 export class ApplicationQueryGenerator {
 
@@ -156,7 +160,8 @@ export class ApplicationQueryGenerator {
 
 		const rawQuery = queryFunction(...queryFunctionParameters);
 
-		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
+		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
+			DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
 		const qApplication: QApplicationInternal = airDb.QM[dbAppliationUtils.
 			getFullApplication_Name(jsonApplication)];

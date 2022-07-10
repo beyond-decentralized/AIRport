@@ -1,17 +1,14 @@
 import {
 	Column,
-	DbNumber,
 	DbString,
 	Entity,
 	GeneratedValue,
 	Id,
-	JoinColumn,
-	ManyToOne,
 	OneToMany,
 	SequenceGenerator,
 	Table,
 	Transient
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	ATransactionHistory,
 	SyncApplicationMap,

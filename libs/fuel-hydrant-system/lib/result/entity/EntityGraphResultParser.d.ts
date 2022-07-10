@@ -1,5 +1,6 @@
-import { IApplicationUtils, IUtils, ReferencedColumnData } from '@airport/air-traffic-control';
+import { IUtils } from '@airport/air-traffic-control';
 import { DbEntity, IEntityStateManager, SQLDataType } from '@airport/ground-control';
+import { IApplicationUtils, ReferencedColumnData } from '@airport/tarmaq-query';
 import { IFuelHydrantContext } from '../../FuelHydrantContext';
 import { GraphMtoMapper, ManyToOneStubReference } from './GraphMtoMapper';
 import { GraphOtmMapper, OneToManyStubReference } from './GraphOtmMapper';

@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	ApplicationEntityGraph,
 	ApplicationEntityEId,
@@ -89,7 +84,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface OperationHistoryESelect
-    extends IEntitySelectProperties, OperationHistoryEOptionalId {
+	extends IEntitySelectProperties, OperationHistoryEOptionalId {
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
 	changeType?: string | IQStringField;
@@ -97,7 +92,7 @@ export interface OperationHistoryESelect
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	entity?: ApplicationEntityESelect;
 	actor?: ActorESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
@@ -109,7 +104,7 @@ export interface OperationHistoryESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface OperationHistoryEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -150,8 +145,8 @@ export interface OperationHistoryEUpdateProperties
  */
 export interface OperationHistoryGraph
 	extends OperationHistoryEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	orderNumber?: number | IQNumberField;
 	changeType?: string | IQStringField;
@@ -184,14 +179,14 @@ export interface OperationHistoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface OperationHistoryECreateProperties
-extends Partial<OperationHistoryEId>, OperationHistoryEUpdateProperties {
+	extends Partial<OperationHistoryEId>, OperationHistoryEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface OperationHistoryECreateColumns
-extends OperationHistoryEId, OperationHistoryEUpdateColumns {
+	extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 }
 
 
@@ -204,8 +199,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QOperationHistory extends IQEntity
-{
+export interface QOperationHistory extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -226,9 +220,8 @@ export interface QOperationHistory extends IQEntity
 
 
 // Entity Id Interface
-export interface QOperationHistoryQId
-{
-	
+export interface QOperationHistoryQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

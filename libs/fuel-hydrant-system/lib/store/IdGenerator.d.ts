@@ -1,5 +1,5 @@
-import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
+import { ISequenceGenerator } from '@airport/ground-control';
 import { OperationHistory_LocalId, RecordHistory_LocalId, RepositoryTransactionHistory_LocalId, TransactionHistory_LocalId } from '@airport/holding-pattern';
 export declare type NumRepositoryTransHistories = number;
 export declare type NumOperationTransHistories = number;

@@ -1,8 +1,7 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
-import { SEQUENCE_GENERATOR } from '@airport/check-in';
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import {
-	JsonApplication
+	JsonApplication, SEQUENCE_GENERATOR
 } from '@airport/ground-control';
 import {
 	APPLICATION_BUILDER

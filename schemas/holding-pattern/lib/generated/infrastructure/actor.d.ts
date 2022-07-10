@@ -1,9 +1,9 @@
-import { IUser, ITerminal, IClient } from '@airport/travel-document-checkpoint';
+import { IUserAccount, ITerminal, IClient } from '@airport/travel-document-checkpoint';
 import { IApplication } from '@airport/airspace';
 export interface IActor {
     _localId?: number;
     GUID?: string;
-    user?: IUser;
+    userAccount?: IUserAccount;
     terminal?: ITerminal;
     application?: IApplication;
     client?: IClient;

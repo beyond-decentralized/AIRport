@@ -1,10 +1,11 @@
-import { IEntityContext, IQueryContext } from '@airport/air-traffic-control';
 import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, ITransactionalConnector, PortableQuery } from '@airport/ground-control';
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 import { IAirEntity } from '@airport/holding-pattern';
+import { IQueryContext } from '@airport/tarmaq-query';
+import { IEntityContext } from '@airport/tarmaq-entity';
 export declare class InternalTransactionalConnector implements ITransactionalConnector {
     terminalStore: ITerminalStore;
     transactionalServer: ITransactionalServer;

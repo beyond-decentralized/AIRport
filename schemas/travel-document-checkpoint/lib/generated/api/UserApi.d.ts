@@ -1,20 +1,20 @@
-import { IUser } from '../../generated/user';
-export declare enum AddUserErrorCodes {
+import { IUserAccount } from '../../generated/userAccount';
+export declare enum AddUserAccountErrorCodes {
     EMAIL_TAKEN = "EMAIL_TAKEN",
     INVALID_BIRTH_MONTH = "INVALID_BIRTH_MONTH",
     INVALID_COUNTRY = "INVALID_COUNTRY",
     INVALID_EMAIL = "INVALID_EMAIL",
     INVALID_USERNAME = "INVALID_USERNAME",
-    USERNAME_TAKEN = "USERNAME_TAKEN"
+    USER_ACCOUNTNAME_TAKEN = "USER_ACCOUNTNAME_TAKEN"
 }
-export interface IAddUserResponse {
-    errorCode?: AddUserErrorCodes;
-    user?: IUser;
+export interface IAddUserAccountResponse {
+    errorCode?: AddUserAccountErrorCodes;
+    userAccount?: IUserAccount;
 }
-export declare class UserApi {
+export declare class UserAccountApi {
     constructor();
-    userApi: UserApi;
-    addUser(username: string, email: string): Promise<IAddUserResponse>;
-    findUser(privateId: string): Promise<IUser>;
+    userAccountApi: UserAccountApi;
+    addUserAccount(username: string, email: string): Promise<IAddUserAccountResponse>;
+    findUserAccount(privateId: string): Promise<IUserAccount>;
 }
 //# sourceMappingURL=UserApi.d.ts.map

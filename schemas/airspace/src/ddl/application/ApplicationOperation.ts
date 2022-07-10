@@ -9,7 +9,7 @@ import {
 	Json,
 	ManyToOne,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	Operation_LocalId,
 	Operation_Name,

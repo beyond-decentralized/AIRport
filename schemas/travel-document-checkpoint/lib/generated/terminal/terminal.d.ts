@@ -1,4 +1,4 @@
-import { IUser } from '../user';
+import { IUserAccount } from '../userAccount';
 import { IContinent } from '../locality/continent';
 import { ICountry } from '../locality/country';
 import { IState } from '../locality/state';
@@ -8,7 +8,7 @@ export interface ITerminal {
     _localId: number;
     GUID?: string;
     isLocal?: boolean;
-    owner?: IUser;
+    owner?: IUserAccount;
     continent?: IContinent;
     country?: ICountry;
     state?: IState;

@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	CountryGraph,
 	CountryEId,
@@ -65,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface StateESelect
-    extends IEntitySelectProperties, StateEOptionalId {
+	extends IEntitySelectProperties, StateEOptionalId {
 	// Non-Id Properties
 	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	country?: CountryESelect;
 	metroAreaStates?: StateESelect;
 	userAccounts?: UserAccountESelect;
@@ -83,7 +78,7 @@ export interface StateESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface StateEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -121,8 +116,8 @@ export interface StateEUpdateProperties
  */
 export interface StateGraph
 	extends StateEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
@@ -150,14 +145,14 @@ export interface StateEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface StateECreateProperties
-extends Partial<StateEId>, StateEUpdateProperties {
+	extends Partial<StateEId>, StateEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface StateECreateColumns
-extends StateEId, StateEUpdateColumns {
+	extends StateEId, StateEUpdateColumns {
 }
 
 
@@ -170,8 +165,7 @@ extends StateEId, StateEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QState extends IQEntity
-{
+export interface QState extends IQEntity {
 	// Id Fields
 	id: IQNumberField;
 
@@ -190,9 +184,8 @@ export interface QState extends IQEntity
 
 
 // Entity Id Interface
-export interface QStateQId
-{
-	
+export interface QStateQId {
+
 	// Id Fields
 	id: IQNumberField;
 

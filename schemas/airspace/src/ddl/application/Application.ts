@@ -8,7 +8,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-entity';
 import {
 	Application_Index,
 	FullApplication_Name,

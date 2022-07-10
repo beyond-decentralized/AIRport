@@ -1,5 +1,5 @@
 import { SEQUENCE_DAO } from "@airport/airport-code"
-import { SEQUENCE_GENERATOR } from "@airport/check-in"
+import { SEQUENCE_GENERATOR } from "@airport/ground-control"
 import { TERMINAL_STORE } from "@airport/terminal-map"
 import { SequenceGenerator } from "./SequenceGenerator"
 

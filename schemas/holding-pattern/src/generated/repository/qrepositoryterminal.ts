@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	RepositoryGraph,
 	RepositoryEId,
@@ -63,14 +58,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryTerminalESelect
-    extends IEntitySelectProperties, RepositoryTerminalEOptionalId {
+	extends IEntitySelectProperties, RepositoryTerminalEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	terminal?: TerminalESelect;
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -78,7 +73,7 @@ export interface RepositoryTerminalESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryTerminalEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -115,8 +110,8 @@ export interface RepositoryTerminalEUpdateProperties
  */
 export interface RepositoryTerminalGraph
 	extends RepositoryTerminalEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -138,14 +133,14 @@ export interface RepositoryTerminalEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryTerminalECreateProperties
-extends Partial<RepositoryTerminalEId>, RepositoryTerminalEUpdateProperties {
+	extends Partial<RepositoryTerminalEId>, RepositoryTerminalEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface RepositoryTerminalECreateColumns
-extends RepositoryTerminalEId, RepositoryTerminalEUpdateColumns {
+	extends RepositoryTerminalEId, RepositoryTerminalEUpdateColumns {
 }
 
 
@@ -158,8 +153,7 @@ extends RepositoryTerminalEId, RepositoryTerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryTerminal extends IQEntity
-{
+export interface QRepositoryTerminal extends IQEntity {
 	// Id Fields
 
 	// Id Relations
@@ -174,9 +168,8 @@ export interface QRepositoryTerminal extends IQEntity
 
 
 // Entity Id Interface
-export interface QRepositoryTerminalQId
-{
-	
+export interface QRepositoryTerminalQId {
+
 	// Id Fields
 
 	// Id Relations

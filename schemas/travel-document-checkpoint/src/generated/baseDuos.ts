@@ -195,20 +195,6 @@ import {
 	QUserAccount,
 } from './quserAccount';
 import {
-	UserAccountTerminal,
-} from '../ddl/terminal/userAccountterminal';
-import {
-	UserAccountTerminalESelect,
-	UserAccountTerminalECreateColumns,
-	UserAccountTerminalECreateProperties,
-	UserAccountTerminalEUpdateColumns,
-	UserAccountTerminalEUpdateProperties,
-	UserAccountTerminalEId,
-	UserAccountTerminalGraph,
-	QUserAccountTerminal,
-} from './terminal/quserAccountterminal';
-import {
-	IDuo,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -216,10 +202,11 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	Duo,
-} from '@airport/check-in';
+	IDuo,
+} from '@airport/tarmaq-dao';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
@@ -239,13 +226,13 @@ export class SQDIDuo<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Duo<Entity,
-		EntitySelect,
-		EntityCreate,
-		EntityUpdateColumns,
-		EntityUpdateProperties,
-		ApplicationEntity_LocalId,
-		EntityCascadeGraph,
-		IQE> {
+	EntitySelect,
+	EntityCreate,
+	EntityUpdateColumns,
+	EntityUpdateProperties,
+	ApplicationEntity_LocalId,
+	EntityCascadeGraph,
+	IQE> {
 
 	constructor(
 		dbEntityId: DbEntityId
@@ -256,17 +243,17 @@ export class SQDIDuo<Entity,
 
 
 export interface IBaseClassificationDuo
-  extends IDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
+	extends IDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
 }
 
 export class BaseClassificationDuo
-  extends SQDIDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification>
+	extends SQDIDuo<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification>
 	implements IBaseClassificationDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(6)
 	}
-	
+
 	constructor() {
 		super(6)
 	}
@@ -274,17 +261,17 @@ export class BaseClassificationDuo
 
 
 export interface IBaseClientDuo
-  extends IDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
+	extends IDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
 }
 
 export class BaseClientDuo
-  extends SQDIDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient>
+	extends SQDIDuo<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient>
 	implements IBaseClientDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(10)
 	}
-	
+
 	constructor() {
 		super(10)
 	}
@@ -292,17 +279,17 @@ export class BaseClientDuo
 
 
 export interface IBaseClientTypeDuo
-  extends IDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
+	extends IDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
 }
 
 export class BaseClientTypeDuo
-  extends SQDIDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
+	extends SQDIDuo<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
 	implements IBaseClientTypeDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(9)
 	}
-	
+
 	constructor() {
 		super(9)
 	}
@@ -310,17 +297,17 @@ export class BaseClientTypeDuo
 
 
 export interface IBaseContinentDuo
-  extends IDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+	extends IDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
 
 export class BaseContinentDuo
-  extends SQDIDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
+	extends SQDIDuo<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
 	implements IBaseContinentDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(0)
 	}
-	
+
 	constructor() {
 		super(0)
 	}
@@ -328,17 +315,17 @@ export class BaseContinentDuo
 
 
 export interface IBaseCountryDuo
-  extends IDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+	extends IDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
 }
 
 export class BaseCountryDuo
-  extends SQDIDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
+	extends SQDIDuo<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
 	implements IBaseCountryDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(1)
 	}
-	
+
 	constructor() {
 		super(1)
 	}
@@ -346,17 +333,17 @@ export class BaseCountryDuo
 
 
 export interface IBaseDatabaseDuo
-  extends IDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
+	extends IDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
 }
 
 export class BaseDatabaseDuo
-  extends SQDIDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase>
+	extends SQDIDuo<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase>
 	implements IBaseDatabaseDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(12)
 	}
-	
+
 	constructor() {
 		super(12)
 	}
@@ -364,17 +351,17 @@ export class BaseDatabaseDuo
 
 
 export interface IBaseDatabaseTypeDuo
-  extends IDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
+	extends IDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
 }
 
 export class BaseDatabaseTypeDuo
-  extends SQDIDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType>
+	extends SQDIDuo<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType>
 	implements IBaseDatabaseTypeDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(11)
 	}
-	
+
 	constructor() {
 		super(11)
 	}
@@ -382,17 +369,17 @@ export class BaseDatabaseTypeDuo
 
 
 export interface IBaseMetroAreaDuo
-  extends IDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
+	extends IDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
 }
 
 export class BaseMetroAreaDuo
-  extends SQDIDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
+	extends SQDIDuo<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
 	implements IBaseMetroAreaDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(4)
 	}
-	
+
 	constructor() {
 		super(4)
 	}
@@ -400,17 +387,17 @@ export class BaseMetroAreaDuo
 
 
 export interface IBaseMetroAreaStateDuo
-  extends IDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
+	extends IDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
 }
 
 export class BaseMetroAreaStateDuo
-  extends SQDIDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
+	extends SQDIDuo<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
 	implements IBaseMetroAreaStateDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(3)
 	}
-	
+
 	constructor() {
 		super(3)
 	}
@@ -418,17 +405,17 @@ export class BaseMetroAreaStateDuo
 
 
 export interface IBaseStateDuo
-  extends IDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
+	extends IDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
 }
 
 export class BaseStateDuo
-  extends SQDIDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
+	extends SQDIDuo<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
 	implements IBaseStateDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(2)
 	}
-	
+
 	constructor() {
 		super(2)
 	}
@@ -436,17 +423,17 @@ export class BaseStateDuo
 
 
 export interface IBaseTerminalDuo
-  extends IDuo<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
+	extends IDuo<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 
 export class BaseTerminalDuo
-  extends SQDIDuo<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
+	extends SQDIDuo<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
 	implements IBaseTerminalDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(14)
 	}
-	
+
 	constructor() {
 		super(14)
 	}
@@ -454,17 +441,17 @@ export class BaseTerminalDuo
 
 
 export interface IBaseTerminalTypeDuo
-  extends IDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
+	extends IDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
 }
 
 export class BaseTerminalTypeDuo
-  extends SQDIDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
+	extends SQDIDuo<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
 	implements IBaseTerminalTypeDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(13)
 	}
-	
+
 	constructor() {
 		super(13)
 	}
@@ -472,17 +459,17 @@ export class BaseTerminalTypeDuo
 
 
 export interface IBaseTypeDuo
-  extends IDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
+	extends IDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
 }
 
 export class BaseTypeDuo
-  extends SQDIDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType>
+	extends SQDIDuo<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType>
 	implements IBaseTypeDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(8)
 	}
-	
+
 	constructor() {
 		super(8)
 	}
@@ -490,17 +477,17 @@ export class BaseTypeDuo
 
 
 export interface IBaseTypeClassificationDuo
-  extends IDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
+	extends IDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
 }
 
 export class BaseTypeClassificationDuo
-  extends SQDIDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification>
+	extends SQDIDuo<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification>
 	implements IBaseTypeClassificationDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(7)
 	}
-	
+
 	constructor() {
 		super(7)
 	}
@@ -508,36 +495,18 @@ export class BaseTypeClassificationDuo
 
 
 export interface IBaseUserAccountDuo
-  extends IDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
+	extends IDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
 }
 
 export class BaseUserAccountDuo
-  extends SQDIDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
+	extends SQDIDuo<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
 	implements IBaseUserAccountDuo {
 
 	static diSet(): boolean {
 		return duoDiSet(5)
 	}
-	
+
 	constructor() {
 		super(5)
-	}
-}
-
-
-export interface IBaseUserAccountTerminalDuo
-  extends IDuo<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal> {
-}
-
-export class BaseUserAccountTerminalDuo
-  extends SQDIDuo<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal>
-	implements IBaseUserAccountTerminalDuo {
-
-	static diSet(): boolean {
-		return duoDiSet(15)
-	}
-	
-	constructor() {
-		super(15)
 	}
 }

@@ -1,10 +1,7 @@
 {
   "dependencies": {
-    "@airport/air-traffic-control": "0.0.1",
     "@airport/airport-code": "0.0.1",
-    "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
-    "@airport/fuel-hydrant-system": "0.0.1",
     "@airport/ground-control": "0.0.1",
     "@airport/terminal-map": "0.0.1"
   },

@@ -195,20 +195,6 @@ import {
 	QUserAccount,
 } from './quserAccount';
 import {
-	UserAccountTerminal,
-} from '../ddl/terminal/userAccountterminal';
-import {
-	UserAccountTerminalESelect,
-	UserAccountTerminalECreateColumns,
-	UserAccountTerminalECreateProperties,
-	UserAccountTerminalEUpdateColumns,
-	UserAccountTerminalEUpdateProperties,
-	UserAccountTerminalEId,
-	UserAccountTerminalGraph,
-	QUserAccountTerminal,
-} from './terminal/quserAccountterminal';
-import {
-	IDao,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -216,11 +202,14 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
-	Dao,
+	IDao,
 	DaoQueryDecorators,
-} from '@airport/check-in';
+} from '@airport/tarmaq-dao';
+import {
+	Dao
+} from '@airport/air-traffic-control';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
@@ -672,33 +661,5 @@ export class BaseUserAccountDao
 	
 	constructor() {
 		super(5)
-	}
-}
-
-
-export interface IBaseUserAccountTerminalDao
-  extends IDao<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal> {
-}
-
-export class BaseUserAccountTerminalDao
-  extends SQDIDao<UserAccountTerminal, UserAccountTerminalESelect, UserAccountTerminalECreateProperties, UserAccountTerminalEUpdateColumns, UserAccountTerminalEUpdateProperties, UserAccountTerminalEId, UserAccountTerminalGraph, QUserAccountTerminal>
-	implements IBaseUserAccountTerminalDao {
-	
-	static Find      = new DaoQueryDecorators<UserAccountTerminalESelect>();
-	static FindOne   = new DaoQueryDecorators<UserAccountTerminalESelect>();
-	static Search    = new DaoQueryDecorators<UserAccountTerminalESelect>();
-	static SearchOne = new DaoQueryDecorators<UserAccountTerminalESelect>();
-	static Save(
-		config: UserAccountTerminalGraph
-	): PropertyDecorator {
-		return Dao.BaseSave<UserAccountTerminalGraph>(config);
-  }
-
-	static diSet(): boolean {
-		return duoDiSet(15)
-	}
-	
-	constructor() {
-		super(15)
 	}
 }

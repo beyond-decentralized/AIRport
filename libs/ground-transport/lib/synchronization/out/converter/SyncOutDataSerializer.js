@@ -38,7 +38,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             messageRepository: repositoryTransactionHistory.repository,
             repositoryInMessageIndexesById: new Map()
         };
-        const inMessageUserLookup = {
+        const inMessageUserAccountLookup = {
             inMessageIndexesById: new Map(),
             lastInMessageIndex: -1
         };
@@ -49,24 +49,24 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             history: null,
             // Repositories may reference records in other repositories
             referencedRepositories: [],
-            users: [],
+            userAccounts: [],
             terminals: []
         };
-        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
+        message.history = this.serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
         // TODO: replace db lookups with TerminalState lookups where possible
-        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup);
-        const inMessageApplicationLookup = await this.serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup);
+        await this.serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup);
+        const inMessageApplicationLookup = await this.serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup);
         await this.serializeApplicationsAndVersions(message, inMessageApplicationLookup, lookups);
         return message;
     }
-    async serializeActorsUsersAndTerminals(message, lookups, inMessageUserLookup) {
+    async serializeActorsUserAccountsAndTerminals(message, lookups, inMessageUserAccountLookup) {
         let actorIdsToFindBy = [];
         for (let actorId of lookups.actorInMessageIndexesById.keys()) {
             actorIdsToFindBy.push(actorId);
         }
         const actors = await this.actorDao.findWithDetailsAndGlobalIdsByIds(actorIdsToFindBy);
-        this.serializeUsers(actors, message, inMessageUserLookup);
-        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserLookup);
+        this.serializeUserAccounts(actors, message, inMessageUserAccountLookup);
+        const terminalInMessageIndexesById = this.serializeTerminals(actors, message, inMessageUserAccountLookup);
         const inMessageApplicationLookup = {
             lastInMessageIndex: -1,
             inMessageIndexesById: new Map()
@@ -78,13 +78,13 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
                 ...WITH_ID,
                 application: applicationInMessageIndex,
                 terminal: terminalInMessageIndexesById.get(actor.terminal._localId),
-                user: inMessageUserLookup.inMessageIndexesById.get(actor.user._localId),
+                userAccount: inMessageUserAccountLookup.inMessageIndexesById.get(actor.userAccount._localId),
                 GUID: actor.GUID
             };
         }
         return inMessageApplicationLookup;
     }
-    serializeTerminals(actors, message, inMessageUserLookup) {
+    serializeTerminals(actors, message, inMessageUserAccountLookup) {
         let lastInMessageTerminalIndex = -1;
         const terminalInMessageIndexesById = new Map();
         for (const actor of actors) {
@@ -97,35 +97,35 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
             message.terminals[terminalInMessageIndex] = {
                 ...WITH_ID,
                 GUID: terminal.GUID,
-                owner: inMessageUserLookup.inMessageIndexesById.get(terminal.owner._localId)
+                owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId)
             };
         }
         return terminalInMessageIndexesById;
     }
-    serializeUsers(actors, message, inMessageUserLookup) {
+    serializeUserAccounts(actors, message, inMessageUserAccountLookup) {
         for (const actor of actors) {
-            this.addUserToMessage(actor.user, message, inMessageUserLookup);
-            this.addUserToMessage(actor.terminal.owner, message, inMessageUserLookup);
+            this.addUserAccountToMessage(actor.userAccount, message, inMessageUserAccountLookup);
+            this.addUserAccountToMessage(actor.terminal.owner, message, inMessageUserAccountLookup);
         }
     }
-    addUserToMessage(user, message, inMessageUserLookup) {
-        let userInMessageIndex = this.getUserInMessageIndex(user, inMessageUserLookup);
-        message.users[userInMessageIndex] = {
+    addUserAccountToMessage(userAccount, message, inMessageUserAccountLookup) {
+        let userAccountInMessageIndex = this.getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup);
+        message.userAccounts[userAccountInMessageIndex] = {
             ...WITH_ID,
-            username: user.username,
-            GUID: user.GUID
+            username: userAccount.username,
+            GUID: userAccount.GUID
         };
-        return userInMessageIndex;
+        return userAccountInMessageIndex;
     }
-    getUserInMessageIndex(user, inMessageUserLookup) {
-        if (inMessageUserLookup.inMessageIndexesById.has(user._localId)) {
-            return inMessageUserLookup.inMessageIndexesById.get(user._localId);
+    getUserAccountInMessageIndex(userAccount, inMessageUserAccountLookup) {
+        if (inMessageUserAccountLookup.inMessageIndexesById.has(userAccount._localId)) {
+            return inMessageUserAccountLookup.inMessageIndexesById.get(userAccount._localId);
         }
-        let userInMessageIndex = ++inMessageUserLookup.lastInMessageIndex;
-        inMessageUserLookup.inMessageIndexesById.set(user._localId, userInMessageIndex);
-        return userInMessageIndex;
+        let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex;
+        inMessageUserAccountLookup.inMessageIndexesById.set(userAccount._localId, userAccountInMessageIndex);
+        return userAccountInMessageIndex;
     }
-    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
+    async serializeRepositories(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
         let repositoryIdsToFindBy = [];
         for (let repositoryId of lookups.repositoryInMessageIndexesById.keys()) {
             repositoryIdsToFindBy.push(repositoryId);
@@ -133,15 +133,15 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         repositoryIdsToFindBy.push(repositoryTransactionHistory._localId);
         const repositories = await this.repositoryDao.findWithOwnerBy_LocalIds(repositoryIdsToFindBy);
         for (const repository of repositories) {
-            let userInMessageIndex = this.getUserInMessageIndex(repository.owner, inMessageUserLookup);
+            let userAccountInMessageIndex = this.getUserAccountInMessageIndex(repository.owner, inMessageUserAccountLookup);
             if (lookups.repositoryInMessageIndexesById.has(repository._localId)) {
                 const repositoryInMessageIndex = lookups.repositoryInMessageIndexesById.get(repository._localId);
                 message.referencedRepositories[repositoryInMessageIndex] =
-                    this.serializeRepository(repository, userInMessageIndex);
+                    this.serializeRepository(repository, userAccountInMessageIndex);
             }
             else {
                 if (typeof message.history.repository !== 'string') {
-                    message.history.repository.owner = userInMessageIndex;
+                    message.history.repository.owner = userAccountInMessageIndex;
                     message.history.repository._localId = repository._localId;
                 }
             }
@@ -179,7 +179,7 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         }
         return applicationInMessageIndex;
     }
-    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserLookup) {
+    serializeRepositoryTransactionHistory(repositoryTransactionHistory, message, lookups, inMessageUserAccountLookup) {
         repositoryTransactionHistory.operationHistory.sort((operationHistory1, operationHistory2) => {
             if (operationHistory1.orderNumber < operationHistory2.orderNumber) {
                 return -1;
@@ -196,17 +196,17 @@ let SyncOutDataSerializer = class SyncOutDataSerializer {
         return {
             ...WITH_ID,
             isRepositoryCreation: repositoryTransactionHistory.isRepositoryCreation,
-            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup),
+            repository: this.serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup),
             operationHistory: serializedOperationHistory,
             saveTimestamp: repositoryTransactionHistory.saveTimestamp,
             GUID: repositoryTransactionHistory.GUID
         };
     }
-    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserLookup) {
+    serializeHistoryRepository(repositoryTransactionHistory, message, inMessageUserAccountLookup) {
         if (repositoryTransactionHistory.isRepositoryCreation) {
             const repository = repositoryTransactionHistory.repository;
-            let userInMessageIndex = this.addUserToMessage(repository.owner, message, inMessageUserLookup);
-            return this.serializeRepository(repository, userInMessageIndex);
+            let userAccountInMessageIndex = this.addUserAccountToMessage(repository.owner, message, inMessageUserAccountLookup);
+            return this.serializeRepository(repository, userAccountInMessageIndex);
         }
         else {
             // When this repositoryTransactionHistory processed at sync-in 

@@ -7,7 +7,7 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	Client,
 	Terminal,

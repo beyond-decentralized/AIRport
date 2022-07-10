@@ -1,4 +1,4 @@
-import { IApplicationUtils } from "@airport/air-traffic-control";
+import { IApplicationUtils } from "@airport/tarmaq-query";
 import {
 	DbEntity,
 	IEntityStateManager

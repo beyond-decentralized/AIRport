@@ -5,14 +5,34 @@ import {
   DbApplication,
   ISaveResult,
 } from '@airport/ground-control';
-import { EntityConstructor, FunctionsAndOperators, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, QEntityConstructor, QRelation, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/tarmaq-query';
-import { INonEntityFind, INonEntityFindOne, INonEntitySearch, INonEntitySearchOne, OperationName } from '../../../../ORMs/tarmaq/dao/lib';
+import {
+  INonEntityFind,
+  INonEntityFindOne,
+  INonEntitySearch,
+  INonEntitySearchOne,
+  OperationName
+} from '@airport/tarmaq-dao';
+import { IEntityContext } from '@airport/tarmaq-entity';
+import {
+  EntityConstructor,
+  FunctionsAndOperators,
+  IEntityUpdateColumns,
+  IEntityUpdateProperties,
+  IQEntity,
+  QEntityConstructor,
+  QRelation,
+  RawDelete,
+  RawInsertColumnValues,
+  RawInsertValues,
+  RawUpdate,
+  RawUpdateColumns
+} from '@airport/tarmaq-query';
 
 export const ACTOR_PROPERTY_NAME = 'actor'
 export const ACTOR_RECORD_ID_PROPERTY_NAME = '_actorRecordId'
 export const LOCAL_ID_PROPERTY_NAME = '_localId'
 export const REPOSITORY_PROPERTY_NAME = 'repository'
-export const USER_PROPERTY_NAME = 'user'
+export const USER_ACCOUNT_PROPERTY_NAME = 'userAccount'
 
 export interface FunctionAndOperatorHub {
 

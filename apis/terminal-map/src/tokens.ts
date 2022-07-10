@@ -1,14 +1,18 @@
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { lib } from '@airport/direction-indicator'
+import {
+    DB_APPLICATION_UTILS,
+    SEQUENCE_GENERATOR,
+    TRANSACTIONAL_CONNECTOR
+} from '@airport/ground-control'
 import { ITransactionManager } from './orchestration/TransactionManager'
 import { ITerminalStore, TerminalStore } from './store/TerminalStore'
 import { ITransactionalServer } from './transaction/ITransactionalServer'
 import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IApplicationInitializer, IDomainRetriever } from '.'
 import { IStoreDriver } from './core/data/StoreDriver'
-import { DB_APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
-import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in'
-import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
 import { ITerminalStateContainer, TerminalState } from './store/TerminalState'
+import { SELECTOR_MANAGER } from '@airport/apron'
 
 const terminalMap = lib('terminal-map')
 

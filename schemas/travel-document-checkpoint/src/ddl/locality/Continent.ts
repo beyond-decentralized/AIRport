@@ -3,11 +3,10 @@ import {
     DbNumber,
     DbString,
     Entity,
-    GeneratedValue,
     Id,
     OneToMany,
     Table
-} from "@airport/air-traffic-control";
+} from "@airport/tarmaq-entity";
 import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Actor, } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { Terminal, User } from "@airport/travel-document-checkpoint";
+import { Terminal, UserAccount } from "@airport/travel-document-checkpoint";
 import { v4 as guidv4 } from "uuid";
 import { Inject, Injected } from '@airport/direction-indicator';
 let InternalRecordManager = class InternalRecordManager {
@@ -29,7 +29,7 @@ let InternalRecordManager = class InternalRecordManager {
                     _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
-                    user: frameworkActor.user,
+                    userAccount: frameworkActor.userAccount,
                     GUID: guidv4()
                 };
                 await this.actorDao.save(actor, context);
@@ -49,15 +49,15 @@ let InternalRecordManager = class InternalRecordManager {
     }
     async initTerminal(domainName, context) {
         await this.transactionManager.transactInternal(async (_transaction) => {
-            const user = new User();
-            user.GUID = 'AIRportA-demo-demo-demo-functionalty';
-            user.username = "internalUser";
+            const userAccount = new UserAccount();
+            userAccount.GUID = 'AIRportA-demo-demo-demo-functionalty';
+            userAccount.username = "internalUserAccount";
             const terminal = new Terminal();
-            terminal.owner = user;
+            terminal.owner = userAccount;
             terminal.isLocal = true;
             terminal.GUID = guidv4();
             const actor = new Actor();
-            actor.user = user;
+            actor.userAccount = userAccount;
             actor.terminal = terminal;
             actor.GUID = guidv4();
             const actorDao = await this.getactorDaoAsync();

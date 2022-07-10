@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME, USER_PROPERTY_NAME } from '@airport/air-traffic-control';
+import { ACTOR_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME, USER_ACCOUNT_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildArray, EntityRelationType, QueryResultType } from '@airport/ground-control';
 ;
@@ -12,20 +12,20 @@ let QueryManager = class QueryManager {
     async find(portableQuery, context, cachedSqlQueryId) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
         const entityArray = await this.storeDriver.find(portableQuery, {}, context, cachedSqlQueryId);
-        await this.populateEntityGuidEntitiesAndUsers(portableQuery, entityArray);
+        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, entityArray);
         return entityArray;
     }
     async findOne(portableQuery, context, cachedSqlQueryId) {
         await this.ensureRepositoryPresenceAndCurrentState(context);
         const entity = await this.storeDriver.findOne(portableQuery, {}, context, cachedSqlQueryId);
-        await this.populateEntityGuidEntitiesAndUsers(portableQuery, [entity]);
+        await this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [entity]);
         return entity;
     }
     search(portableQuery, context, cachedSqlQueryId) {
         return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
             return this.storeDriver.find(portableQuery, {}, context)
                 .then((result) => {
-                return this.populateEntityGuidEntitiesAndUsers(portableQuery, result);
+                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, result);
             });
         });
     }
@@ -33,7 +33,7 @@ let QueryManager = class QueryManager {
         return this.observableQueryAdapter.wrapInObservable(portableQuery, () => {
             return this.storeDriver.findOne(portableQuery, {}, context)
                 .then((result) => {
-                return this.populateEntityGuidEntitiesAndUsers(portableQuery, [result])[0];
+                return this.populateEntityGuidEntitiesAndUserAccounts(portableQuery, [result])[0];
             });
         });
     }
@@ -42,7 +42,7 @@ let QueryManager = class QueryManager {
             await this.repositoryLoader.loadRepository(context.repository.source, context.repository.GUID, context);
         }
     }
-    async populateEntityGuidEntitiesAndUsers(portableQuery, entities) {
+    async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities) {
         if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
             && portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
             return;
@@ -51,13 +51,13 @@ let QueryManager = class QueryManager {
             .currentVersion[0].applicationVersion.entities[portableQuery.tableIndex];
         const entityMapByRepositoryLocalId = new Map();
         const entityMapByActorRecordId = new Map();
-        const actorsToRetrieveUserForByLocalId = new Map();
-        this.markEntities(entities, new Set(), entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity);
-        await this.populateActorsAndUsers(entityMapByActorRecordId, actorsToRetrieveUserForByLocalId);
+        const actorsToRetrieveUserAccountForByLocalId = new Map();
+        this.markEntities(entities, new Set(), entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbEntity);
+        await this.populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId);
         await this.populateRepositories(entityMapByRepositoryLocalId);
         return entities;
     }
-    markEntities(currentEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbEntity) {
+    markEntities(currentEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbEntity) {
         for (const entity of currentEntities) {
             // const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
             if (processedEntitySet.has(entity)) {
@@ -74,7 +74,7 @@ let QueryManager = class QueryManager {
                     let relatedEntities = propertyValue;
                     switch (dbRelation.relationType) {
                         case EntityRelationType.MANY_TO_ONE:
-                            if (this.processRepositoryOrActor(dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId)) {
+                            if (this.processRepositoryOrActor(dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId)) {
                                 continue;
                             }
                             relatedEntities = [propertyValue];
@@ -82,12 +82,12 @@ let QueryManager = class QueryManager {
                         case EntityRelationType.ONE_TO_MANY:
                             break;
                     }
-                    this.markEntities(relatedEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserForByLocalId, dbRelation.relationEntity);
+                    this.markEntities(relatedEntities, processedEntitySet, entityMapByRepositoryLocalId, entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId, dbRelation.relationEntity);
                 }
             }
         }
     }
-    processRepositoryOrActor(dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorLocalId, actorsToRetrieveUserForByLocalId) {
+    processRepositoryOrActor(dbProperty, propertyValue, entityMapByRepositoryLocalId, entityMapByActorLocalId, actorsToRetrieveUserAccountForByLocalId) {
         let isActor = true;
         switch (dbProperty.name) {
             case ACTOR_PROPERTY_NAME:
@@ -105,8 +105,8 @@ let QueryManager = class QueryManager {
             if (!isActor) {
                 return true;
             }
-            if (!propertyValue[USER_PROPERTY_NAME]) {
-                actorsToRetrieveUserForByLocalId.set(propertyValue._localId, propertyValue);
+            if (!propertyValue[USER_ACCOUNT_PROPERTY_NAME]) {
+                actorsToRetrieveUserAccountForByLocalId.set(propertyValue._localId, propertyValue);
             }
             return true;
         }
@@ -120,16 +120,16 @@ let QueryManager = class QueryManager {
         }
         return true;
     }
-    async populateActorsAndUsers(entityMapByActorRecordId, actorsToRetrieveUserForByLocalId) {
+    async populateActorsAndUserAccounts(entityMapByActorRecordId, actorsToRetrieveUserAccountForByLocalId) {
         const actorIdSet = new Set();
         for (const actorLocalId of entityMapByActorRecordId.keys()) {
             actorIdSet.add(actorLocalId);
         }
-        for (const actorLocalId of actorsToRetrieveUserForByLocalId.keys()) {
+        for (const actorLocalId of actorsToRetrieveUserAccountForByLocalId.keys()) {
             actorIdSet.add(actorLocalId);
         }
         const actorLocalIds = Array.from(actorIdSet);
-        const actors = await this.actorDao.findWithUserBy_LocalIdIn(actorLocalIds);
+        const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds);
         for (const actor of actors) {
             const entitiesWithoutActorObject = entityMapByActorRecordId.get(actor._localId);
             if (entitiesWithoutActorObject) {
@@ -137,9 +137,9 @@ let QueryManager = class QueryManager {
                     entity.actor = actor;
                 }
             }
-            const actorWithoutUserObject = actorsToRetrieveUserForByLocalId.get(actor._localId);
-            if (actorWithoutUserObject) {
-                actorWithoutUserObject.user = actor.user;
+            const actorWithoutUserAccountObject = actorsToRetrieveUserAccountForByLocalId.get(actor._localId);
+            if (actorWithoutUserAccountObject) {
+                actorWithoutUserAccountObject.userAccount = actor.userAccount;
             }
         }
     }

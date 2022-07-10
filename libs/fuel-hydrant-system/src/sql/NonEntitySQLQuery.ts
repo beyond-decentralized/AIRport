@@ -1,18 +1,20 @@
 import {
 	IAirportDatabase,
+	IQMetadataUtils,
+	IUtils
+} from '@airport/air-traffic-control'
+import {
 	IApplicationUtils,
 	IQEntityInternal,
-	IQMetadataUtils,
 	IQTree,
 	IRelationManager,
-	IUtils,
 	JoinTreeNode,
 	QBooleanField,
 	QDateField,
 	QNumberField,
 	QStringField,
 	QTree,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import {
 	DbColumn,
 	DbEntity,

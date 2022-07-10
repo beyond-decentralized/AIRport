@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	RepositoryGraph,
 	RepositoryEId,
@@ -63,14 +58,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryClientESelect
-    extends IEntitySelectProperties, RepositoryClientEOptionalId {
+	extends IEntitySelectProperties, RepositoryClientEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	repository?: RepositoryESelect;
 	client?: ClientESelect;
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -78,7 +73,7 @@ export interface RepositoryClientESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryClientEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -115,8 +110,8 @@ export interface RepositoryClientEUpdateProperties
  */
 export interface RepositoryClientGraph
 	extends RepositoryClientEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -138,14 +133,14 @@ export interface RepositoryClientEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryClientECreateProperties
-extends Partial<RepositoryClientEId>, RepositoryClientEUpdateProperties {
+	extends Partial<RepositoryClientEId>, RepositoryClientEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface RepositoryClientECreateColumns
-extends RepositoryClientEId, RepositoryClientEUpdateColumns {
+	extends RepositoryClientEId, RepositoryClientEUpdateColumns {
 }
 
 
@@ -158,8 +153,7 @@ extends RepositoryClientEId, RepositoryClientEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryClient extends IQEntity
-{
+export interface QRepositoryClient extends IQEntity {
 	// Id Fields
 
 	// Id Relations
@@ -174,9 +168,8 @@ export interface QRepositoryClient extends IQEntity
 
 
 // Entity Id Interface
-export interface QRepositoryClientQId
-{
-	
+export interface QRepositoryClientQId {
+
 	// Id Fields
 
 	// Id Relations

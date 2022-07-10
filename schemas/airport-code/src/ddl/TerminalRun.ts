@@ -4,7 +4,7 @@ import {
 	GeneratedValue,
 	Id,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 
 export type TerminalRun_LocalId = number
 export type TerminalRun_CreateTimestamp = number

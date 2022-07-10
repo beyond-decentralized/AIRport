@@ -7,7 +7,7 @@ import { MetroAreaGraph, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQRela
 /**
  * SELECT - All fields and relations (optional).
  */
-export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
+export interface UserAccountESelect extends IEntitySelectProperties, UserAccountEOptionalId {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
@@ -22,19 +22,19 @@ export interface UserESelect extends IEntitySelectProperties, UserEOptionalId {
 /**
  * DELETE - Ids fields and relations only (required).
  */
-export interface UserEId extends IEntityIdProperties {
+export interface UserAccountEId extends IEntityIdProperties {
     _localId?: number | IQNumberField;
 }
 /**
  * Ids fields and relations only (optional).
  */
-export interface UserEOptionalId {
+export interface UserAccountEOptionalId {
     _localId?: number | IQNumberField;
 }
 /**
  * UPDATE - non-id fields and relations (optional).
  */
-export interface UserEUpdateProperties extends IEntityUpdateProperties {
+export interface UserAccountEUpdateProperties extends IEntityUpdateProperties {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
@@ -49,7 +49,7 @@ export interface UserEUpdateProperties extends IEntityUpdateProperties {
 /**
  * PERSIST CASCADE - non-id relations (optional).
  */
-export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
+export interface UserAccountGraph extends UserAccountEOptionalId, IEntityCascadeGraph {
     email?: string | IQStringField;
     passwordHash?: string | IQStringField;
     ranking?: number | IQNumberField;
@@ -64,12 +64,12 @@ export interface UserGraph extends UserEOptionalId, IEntityCascadeGraph {
 /**
  * UPDATE - non-id columns (optional).
  */
-export interface UserEUpdateColumns extends IEntityUpdateColumns {
+export interface UserAccountEUpdateColumns extends IEntityUpdateColumns {
     EMAIL?: string | IQStringField;
     PASSWORD_HASH?: string | IQStringField;
     RANKING?: number | IQNumberField;
-    USERNAME?: string | IQStringField;
-    USER_GUID?: string | IQStringField;
+    USER_ACCOUNTNAME?: string | IQStringField;
+    USER_ACCOUNT_GUID?: string | IQStringField;
     DOMAIN_LID?: number | IQNumberField;
     CONTINENT_ID?: number | IQNumberField;
     COUNTRY_ID?: number | IQNumberField;
@@ -79,17 +79,17 @@ export interface UserEUpdateColumns extends IEntityUpdateColumns {
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
-export interface UserECreateProperties extends Partial<UserEId>, UserEUpdateProperties {
+export interface UserAccountECreateProperties extends Partial<UserAccountEId>, UserAccountEUpdateProperties {
 }
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
-export interface UserECreateColumns extends UserEId, UserEUpdateColumns {
+export interface UserAccountECreateColumns extends UserAccountEId, UserAccountEUpdateColumns {
 }
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QUser extends IQEntity {
+export interface QUserAccount extends IQEntity {
     _localId: IQNumberField;
     email: IQStringField;
     passwordHash: IQStringField;
@@ -102,9 +102,9 @@ export interface QUser extends IQEntity {
     state: QStateQRelation;
     metroArea: QMetroAreaQRelation;
 }
-export interface QUserQId {
+export interface QUserAccountQId {
     _localId: IQNumberField;
 }
-export interface QUserQRelation extends IQRelation<QUser>, QUserQId {
+export interface QUserAccountQRelation extends IQRelation<QUserAccount>, QUserAccountQId {
 }
 //# sourceMappingURL=quser.d.ts.map

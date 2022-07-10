@@ -1,7 +1,6 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
-import { ISequenceGenerator } from '@airport/check-in';
 import { IContext } from '@airport/direction-indicator';
-import { IDbApplicationUtils } from '@airport/ground-control';
+import { IDbApplicationUtils, ISequenceGenerator } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { AllDdlObjects, IApplicationInitializer, IQueryObjectInitializer, ITerminalStore, ITransactionManager } from '@airport/terminal-map';
 import { IApplicationDao } from '@airport/airspace';

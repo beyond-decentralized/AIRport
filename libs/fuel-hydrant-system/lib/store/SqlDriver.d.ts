@@ -1,4 +1,4 @@
-import { IAirportDatabase, IApplicationUtils, IQMetadataUtils, IRelationManager, IUtils } from '@airport/air-traffic-control';
+import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-control';
 import { IActiveQueries } from '@airport/flight-number';
 import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, IDbApplicationUtils, IEntityStateManager, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
 import { IStoreDriver, ITransaction, ITransactionContext, ITransactionManager } from '@airport/terminal-map';
@@ -8,6 +8,7 @@ import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
+import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query';
 /**
  * Created by Papa on 9/9/2016.
  */

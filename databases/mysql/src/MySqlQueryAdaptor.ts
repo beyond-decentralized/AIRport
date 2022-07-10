@@ -1,8 +1,4 @@
-import {
-	Injected,
-	IQEntityInternal,
-	Parameter
-} from '@airport/air-traffic-control';
+import { Injected } from '@airport/direction-indicator';
 import {
 	AbstractFunctionAdaptor,
 	ISQLFunctionAdaptor,
@@ -14,6 +10,10 @@ import {
 	SQLDataType,
 	SqlFunction
 } from '@airport/ground-control';
+import {
+	IQEntityInternal,
+	Parameter
+} from '@airport/tarmaq-query';
 import { IOperationContext } from '@airport/terminal-map';
 
 /**

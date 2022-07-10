@@ -4,7 +4,7 @@ import {
 	RawDelete,
 	RawInsertValues,
 	RawUpdate,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,

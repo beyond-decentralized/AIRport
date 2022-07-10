@@ -2,7 +2,7 @@ import { lib } from '@airport/direction-indicator';
 import { SynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
 import { RecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
-const movingWalkway = lib('moving-walkway');
+const movingWalkway = lib('layover');
 export const RECORD_UPDATE_STAGE_DAO = movingWalkway.token({
     class: RecordUpdateStageDao,
     interface: 'IRecordUpdateStageDao',

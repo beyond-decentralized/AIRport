@@ -3,9 +3,9 @@ import {
 	DbEntity,
 	QueryResultType
 } from '@airport/ground-control'
+import { IEntityContext } from '@airport/tarmaq-entity'
 import {
 	ENTITY_UTILS,
-	IEntityContext,
 	IEntityQueryContext,
 	IEntitySelectProperties,
 	RawEntityQuery

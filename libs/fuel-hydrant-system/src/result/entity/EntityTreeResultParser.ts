@@ -1,7 +1,7 @@
+import { DbEntity } from '@airport/ground-control'
 import {
 	ReferencedColumnData
-} from '@airport/air-traffic-control'
-import { DbEntity } from '@airport/ground-control'
+} from '@airport/tarmaq-query'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'
 import { TreeResultParser } from '../TreeResultParser'
 import { IEntityResultParser } from './IEntityResultParser'

@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	StateGraph,
 	StateEId,
@@ -65,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface MetroAreaStateESelect
-    extends IEntitySelectProperties, MetroAreaStateEOptionalId {
+	extends IEntitySelectProperties, MetroAreaStateEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	state?: StateESelect;
 	metroArea?: MetroAreaESelect;
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 
@@ -80,7 +75,7 @@ export interface MetroAreaStateESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface MetroAreaStateEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -117,8 +112,8 @@ export interface MetroAreaStateEUpdateProperties
  */
 export interface MetroAreaStateGraph
 	extends MetroAreaStateEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -140,14 +135,14 @@ export interface MetroAreaStateEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MetroAreaStateECreateProperties
-extends Partial<MetroAreaStateEId>, MetroAreaStateEUpdateProperties {
+	extends Partial<MetroAreaStateEId>, MetroAreaStateEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface MetroAreaStateECreateColumns
-extends MetroAreaStateEId, MetroAreaStateEUpdateColumns {
+	extends MetroAreaStateEId, MetroAreaStateEUpdateColumns {
 }
 
 
@@ -160,8 +155,7 @@ extends MetroAreaStateEId, MetroAreaStateEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QMetroAreaState extends IQEntity
-{
+export interface QMetroAreaState extends IQEntity {
 	// Id Fields
 
 	// Id Relations
@@ -176,9 +170,8 @@ export interface QMetroAreaState extends IQEntity
 
 
 // Entity Id Interface
-export interface QMetroAreaStateQId
-{
-	
+export interface QMetroAreaStateQId {
+
 	// Id Fields
 
 	// Id Relations

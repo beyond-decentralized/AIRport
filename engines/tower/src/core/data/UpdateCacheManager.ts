@@ -1,5 +1,4 @@
 import {
-    IApplicationUtils,
     IUpdateCacheManager
 } from "@airport/air-traffic-control";
 import {
@@ -16,6 +15,7 @@ import {
     DbColumn
 } from "@airport/ground-control"
 import { IAirEntity } from "@airport/holding-pattern";
+import { IApplicationUtils } from "@airport/tarmaq-query";
 
 @Injected()
 export class UpdateCacheManager

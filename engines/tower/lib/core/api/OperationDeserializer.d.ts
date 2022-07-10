@@ -1,6 +1,6 @@
-import { IApplicationUtils } from "@airport/air-traffic-control";
-import { IOperationDeserializer } from "@airport/check-in";
+import { IOperationDeserializer } from '@airport/arrivals-n-departures';
 import { DbEntity, IEntityStateManager } from "@airport/ground-control";
+import { IApplicationUtils } from '@airport/tarmaq-query';
 interface IDeserializableOperation {
     lookupTable: any[];
 }

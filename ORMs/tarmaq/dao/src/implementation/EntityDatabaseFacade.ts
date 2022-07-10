@@ -1,6 +1,5 @@
 import {
   IEntityCascadeGraph,
-  IEntityContext,
   IEntityCreateProperties,
   IEntityIdProperties,
   IEntitySelectProperties,
@@ -25,6 +24,7 @@ import { IDao } from '../definition/Dao';
 import { EntityFind } from './query/EntityFind';
 import { EntityFindOne } from './query/EntityFindOne';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
+import { IEntityContext } from '@airport/tarmaq-entity';
 
 /**
  * Created by Papa on 12/11/2016.

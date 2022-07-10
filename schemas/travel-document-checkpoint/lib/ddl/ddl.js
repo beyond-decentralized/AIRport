@@ -9,9 +9,8 @@ export * from './locality/MetroAreaState';
 export * from './locality/State';
 export * from './terminal/Terminal';
 export * from './terminal/TerminalType';
-export * from './terminal/UserTerminal';
 export * from './type/Classification';
 export * from './type/Type';
 export * from './type/TypeClassification';
-export * from './User';
+export * from './UserAccount';
 //# sourceMappingURL=ddl.js.map

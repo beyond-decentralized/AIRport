@@ -9,7 +9,6 @@ export * from './locality/metroareastate';
 export * from './locality/state';
 export * from './terminal/terminal';
 export * from './terminal/terminaltype';
-export * from './terminal/userAccountterminal';
 export * from './type/classification';
 export * from './type/type';
 export * from './type/typeclassification';

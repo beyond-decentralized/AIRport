@@ -14,8 +14,7 @@ import { QTerminal } from './terminal/qterminal';
 import { QTerminalType } from './terminal/qterminaltype';
 import { QType } from './type/qtype';
 import { QTypeClassification } from './type/qtypeclassification';
-import { QUser } from './quser';
-import { QUserTerminal } from './terminal/quserterminal';
+import { QUserAccount } from './quserAccount';
 export interface LocalQApplication extends QApplication {
     db: DbApplication;
     Classification: QClassification;
@@ -32,8 +31,7 @@ export interface LocalQApplication extends QApplication {
     TerminalType: QTerminalType;
     Type: QType;
     TypeClassification: QTypeClassification;
-    User: QUser;
-    UserTerminal: QUserTerminal;
+    UserAccount: QUserAccount;
 }
 export declare const Q_APPLICATION: LocalQApplication;
 export declare const Q: LocalQApplication;

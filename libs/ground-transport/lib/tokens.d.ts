@@ -5,7 +5,7 @@ import { ISyncInRepositoryChecker } from './synchronization/in/checker/SyncInRep
 import { ISyncInApplicationChecker } from './synchronization/in/checker/SyncInApplicationChecker';
 import { ISyncInApplicationVersionChecker } from './synchronization/in/checker/SyncInApplicationVersionChecker';
 import { ISyncInTerminalChecker } from './synchronization/in/checker/SyncInTerminalChecker';
-import { ISyncInUserChecker } from './synchronization/in/checker/SyncInUserAccountChecker';
+import { ISyncInUserAccountChecker } from './synchronization/in/checker/SyncInUserAccountChecker';
 import { IStage1SyncedInDataProcessor } from './synchronization/in/Stage1SyncedInDataProcessor';
 import { IStage2SyncedInDataProcessor } from './synchronization/in/Stage2SyncedInDataProcessor';
 import { ISynchronizationInManager } from './synchronization/in/SynchronizationInManager';
@@ -24,7 +24,7 @@ export declare const SYNC_IN_TERMINAL_CHECKER: import("@airport/direction-indica
 export declare const SYNC_IN_REPOSITORY_CHECKER: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInRepositoryChecker>;
 export declare const SYNC_IN_APPLICATION_CHECKER: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInApplicationChecker>;
 export declare const SYNC_IN_APPLICATION_VERSION_CHECKER: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInApplicationVersionChecker>;
-export declare const SYNC_IN_USER_CHECKER: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInUserChecker>;
+export declare const SYNC_IN_USER_ACCOUNT_CHECKER: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInUserAccountChecker>;
 export declare const SYNC_IN_UTILS: import("@airport/direction-indicator").IDependencyInjectionToken<ISyncInUtils>;
 export declare const SYNCHRONIZATION_IN_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<ISynchronizationInManager>;
 export declare const SYNCHRONIZATION_OUT_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<ISynchronizationOutManager>;

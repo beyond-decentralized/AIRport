@@ -1,13 +1,9 @@
-import { IAirportDatabase } from '@airport/air-traffic-control'
+import { getSysWideOpIds, IAirportDatabase } from '@airport/air-traffic-control'
 import {
 	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	getSysWideOpIds,
-	ISequenceGenerator
-} from '@airport/check-in'
 import {
 	ChangeType,
 	ApplicationColumn_Index,
@@ -16,7 +12,8 @@ import {
 	ensureChildJsSet,
 	ApplicationEntity_LocalId,
 	ApplicationVersion_LocalId,
-	ApplicationEntity_TableIndex
+	ApplicationEntity_TableIndex,
+	ISequenceGenerator
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,

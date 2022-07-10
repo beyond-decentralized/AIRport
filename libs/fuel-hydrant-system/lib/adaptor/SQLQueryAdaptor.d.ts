@@ -1,5 +1,5 @@
-import { IQEntityInternal, Parameter } from '@airport/air-traffic-control';
 import { JSONClauseField, JSONClauseObject, JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
+import { IQEntityInternal, Parameter } from '@airport/tarmaq-query';
 import { IFuelHydrantContext } from '../FuelHydrantContext';
 /**
  * Created by Papa on 8/27/2016.

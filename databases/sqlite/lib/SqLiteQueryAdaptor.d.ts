@@ -1,6 +1,6 @@
-import { IQEntityInternal, Parameter } from '@airport/air-traffic-control';
 import { AbstractFunctionAdaptor, ISQLFunctionAdaptor, ISQLQueryAdaptor, ISqlValueProvider } from '@airport/fuel-hydrant-system';
 import { JSONSqlFunctionCall, SQLDataType } from '@airport/ground-control';
+import { IQEntityInternal, Parameter } from '@airport/tarmaq-query';
 import { IOperationContext } from '@airport/terminal-map';
 /**
  * Created by Papa on 8/27/2016.

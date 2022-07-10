@@ -9,6 +9,6 @@ export declare class SyncInActorChecker implements ISyncInActorChecker {
     ensureActors(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
     private checkActorApplication;
     private checkActorTerminal;
-    private checkActorUser;
+    private checkActorUserAccount;
 }
 //# sourceMappingURL=SyncInActorChecker.d.ts.map

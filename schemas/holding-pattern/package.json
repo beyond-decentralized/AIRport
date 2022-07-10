@@ -15,6 +15,9 @@
     "@airport/ground-control": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
     "@airport/airspace": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
+    "@airport/tarmaq-entity": "0.0.1",
+    "@airport/tarmaq-query": "0.0.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

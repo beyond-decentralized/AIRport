@@ -1,0 +1,1 @@
+{"version":3,"file":"userterminal.d.ts","sourceRoot":"","sources":["../../../src/generated/terminal/userterminal.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,YAAY,EACZ,MAAM,gBAAgB,CAAC;AACxB,OAAO,EACN,SAAS,EACT,MAAM,YAAY,CAAC;AAQpB,MAAM,WAAW,oBAAoB;IAKpC,WAAW,EAAE,YAAY,CAAC;IAC1B,QAAQ,EAAE,SAAS,CAAC;CAUpB"}

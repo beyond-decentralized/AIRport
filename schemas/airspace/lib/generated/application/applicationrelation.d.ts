@@ -1,5 +1,5 @@
 import { IVersionedApplicationObject } from './versionedapplicationobject';
-import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-traffic-control';
+import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/tarmaq-entity';
 import { IApplicationProperty } from './applicationproperty';
 import { IApplicationEntity } from './applicationentity';
 import { IApplicationRelationColumn } from './applicationrelationcolumn';

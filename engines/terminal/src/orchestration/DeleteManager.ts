@@ -1,17 +1,12 @@
 import {
+	getSysWideOpId,
 	IAirportDatabase,
-	IApplicationUtils,
-	IUtils,
-	Y
+	IUtils
 } from '@airport/air-traffic-control'
 import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	getSysWideOpId,
-	ISequenceGenerator
-} from '@airport/check-in'
 import {
 	ChangeType,
 	DbColumn,
@@ -26,13 +21,19 @@ import {
 	PortableQuery,
 	QueryResultType,
 	airEntity,
+	ISequenceGenerator,
 } from '@airport/ground-control'
 import {
 	IActor,
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo,
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default import is reserved
+// for Applications
+import {
+	IApplicationUtils,
+	Y
+} from '@airport/tarmaq-query'
 import {
 	IDeleteManager,
 	IHistoryManager,

@@ -1,7 +1,8 @@
 import { ISaveResult, PortableQuery, QueryResultType } from '@airport/ground-control';
 import { IContext } from '@airport/direction-indicator';
-import { EntityIdData, IAbstractQuery, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryContext, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/tarmaq-query';
+import { EntityIdData, IAbstractQuery, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryContext, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
+import { IEntityContext } from '@airport/tarmaq-entity';
 export interface UpdateRecord {
     newValue: any;
     originalValue: any;

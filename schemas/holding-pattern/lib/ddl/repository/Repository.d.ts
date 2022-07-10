@@ -1,5 +1,5 @@
 import { RepositoryTransactionHistory } from '../history/RepositoryTransactionHistory';
-import { Continent, Country, MetroArea, State, User } from "@airport/travel-document-checkpoint";
+import { Continent, Country, MetroArea, State, UserAccount } from "@airport/travel-document-checkpoint";
 import { RepositoryType } from "./RepositoryType";
 import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
@@ -25,7 +25,7 @@ export declare class Repository implements IRepositoryIdentifier {
     createdAt: Repository_CreatedAt;
     immutable: Repository_Immutable;
     source: Repository_Source;
-    owner: User;
+    owner: UserAccount;
     repositoryTransactionHistory: RepositoryTransactionHistory[];
     continent?: Continent;
     country?: Country;

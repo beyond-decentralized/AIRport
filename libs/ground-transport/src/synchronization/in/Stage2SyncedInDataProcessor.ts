@@ -1,10 +1,6 @@
 import {
-	and,
 	IAirportDatabase,
-	IDatabaseFacade,
-	IQEntityInternal,
 	IUtils,
-	or
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -37,6 +33,8 @@ import {
 	Stage1SyncedInDataProcessingResult
 } from './SyncInUtils'
 import { IOperationContext } from '@airport/terminal-map'
+import { IDatabaseFacade } from '@airport/tarmaq-dao'
+import { and, IQEntityInternal, or } from '@airport/tarmaq-query'
 
 /**
  * Stage 2 data processor is used to optimize the number of required

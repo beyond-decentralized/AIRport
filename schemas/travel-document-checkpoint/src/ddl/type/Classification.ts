@@ -3,7 +3,7 @@ import {
     Entity,
     Id,
     Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 
 export type Classification_Id = number
 @Entity()

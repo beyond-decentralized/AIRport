@@ -1,9 +1,11 @@
-import { IEntityContext } from '@airport/air-traffic-control';
 import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
-import { ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
+import {
+    ILocalAPIRequest,
+    ILocalAPIResponse
+} from '@airport/aviation-communication';
 import {
     IContext,
 } from '@airport/direction-indicator';
@@ -18,7 +20,6 @@ import {
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
-    ILocalAPIRequestIMI,
     IPortableQueryIMI,
     IReadQueryIMI,
     ISaveIMI,
@@ -28,7 +29,6 @@ import {
 } from '@airport/apron';
 import {
     IApiCallContext,
-    ICredentials,
     IDatabaseManager,
     IQueryOperationContext,
     ITerminalStore,
@@ -38,6 +38,7 @@ import {
     ITransactionManager
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
+import { IEntityContext } from '@airport/tarmaq-entity';
 @Injected()
 export abstract class TransactionalReceiver {
 

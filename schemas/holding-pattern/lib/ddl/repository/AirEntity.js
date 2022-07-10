@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbDate, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/air-traffic-control';
+import { Column, DbDate, DbNumber, GeneratedValue, Id, JoinColumn, ManyToOne, MappedSuperclass, Transient } from '@airport/tarmaq-entity';
 import { IOC } from '@airport/direction-indicator';
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 let AirEntity = class AirEntity {
@@ -13,10 +13,10 @@ let AirEntity = class AirEntity {
     }
     /*
      *A transient convenience property to get the username of the
-     * UserAccount that created the record.
+     * UserAccountAccount that created the record.
      */
     get createdBy() {
-        return this.actor.user;
+        return this.actor.userAccount;
     }
     /**
      * A transient property, generated on the entity objects by the

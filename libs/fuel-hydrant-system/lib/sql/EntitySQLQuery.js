@@ -1,5 +1,5 @@
-import { AliasCache, getErrorMessageSelectStatement, isID, isN, isY, JoinTreeNode, Y } from '@airport/air-traffic-control';
 import { EntityRelationType, EntityState, JoinType, JSONRelationType } from '@airport/ground-control';
+import { AliasCache, getErrorMessageSelectStatement, isID, isN, isY, JoinTreeNode, Y } from '@airport/tarmaq-query';
 import { EntityOrderByParser } from '../orderBy/EntityOrderByParser';
 import { SQLQuery } from './core/SQLQuery';
 /**

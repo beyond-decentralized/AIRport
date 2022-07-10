@@ -12,7 +12,7 @@ import {
 	Table,
 	ApplicationEntity_TableConfiguration,
 	Transient
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	ApplicationEntity_LocalId,
 	ApplicationEntity_IsLocal,

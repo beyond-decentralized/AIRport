@@ -2,7 +2,7 @@ import { IApplicationVersion } from "@airport/airspace";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_LocalId } from "@airport/ground-control";
 import { Actor_LocalId, IActorDao, IRecordHistory, IRepository, IRepositoryDao, IRepositoryTransactionHistory, Repository_LocalId } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
-import { User_LocalId } from "@airport/travel-document-checkpoint";
+import { UserAccount_LocalId } from "@airport/travel-document-checkpoint";
 export interface ISyncOutDataSerializer {
     serialize(repositoryTransactionHistories: IRepositoryTransactionHistory[]): Promise<{
         historiesToSend: IRepositoryTransactionHistory[];
@@ -35,8 +35,8 @@ export interface InMessageApplicationLookup {
     inMessageIndexesById: Map<Application_LocalId, number>;
     lastInMessageIndex: number;
 }
-export interface InMessageUserLookup {
-    inMessageIndexesById: Map<User_LocalId, number>;
+export interface InMessageUserAccountLookup {
+    inMessageIndexesById: Map<UserAccount_LocalId, number>;
     lastInMessageIndex: number;
 }
 export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
@@ -47,11 +47,11 @@ export declare class SyncOutDataSerializer implements ISyncOutDataSerializer {
         messages: RepositorySynchronizationMessage[];
     }>;
     serializeMessage(repositoryTransactionHistory: IRepositoryTransactionHistory): Promise<RepositorySynchronizationMessage>;
-    private serializeActorsUsersAndTerminals;
+    private serializeActorsUserAccountsAndTerminals;
     private serializeTerminals;
-    private serializeUsers;
-    private addUserToMessage;
-    private getUserInMessageIndex;
+    private serializeUserAccounts;
+    private addUserAccountToMessage;
+    private getUserAccountInMessageIndex;
     private serializeRepositories;
     private serializeApplicationsAndVersions;
     private serializeApplication;

@@ -1,4 +1,4 @@
-import { User } from "../User";
+import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 import { MetroAreaState } from "./MetroAreaState";
 export declare type MetroArea_Id = number;
@@ -8,6 +8,6 @@ export declare class MetroArea {
     name: MetroArea_Name;
     country: Country;
     metroAreaStates: MetroAreaState[];
-    users: User[];
+    userAccounts: UserAccount[];
 }
 //# sourceMappingURL=MetroArea.d.ts.map

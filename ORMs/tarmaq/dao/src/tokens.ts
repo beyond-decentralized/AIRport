@@ -1,3 +1,4 @@
+import { IQueryFacade } from "./definition/IDatabaseFacade"
 import { ILookup } from "./definition/query/Lookup"
 import { INonEntityFind } from "./definition/query/NonEntityFind"
 import { INonEntityFindOne } from "./definition/query/NonEntityFindOne"
@@ -34,4 +35,9 @@ export const NON_ENTITY_SEARCH_ONE = tarmaqDao.token<INonEntitySearchOne>({
     class: NonEntitySearchOne,
     interface: 'INonEntitySearchOne',
     token: 'NON_ENTITY_SEARCH_ONE'
+})
+export const QUERY_FACADE = tarmaqDao.token<IQueryFacade>({
+    class: null,
+    interface: 'IQueryFacade',
+    token: 'QUERY_FACADE'
 })

@@ -1,11 +1,4 @@
 import {
-	and,
-	IEntityUpdateProperties,
-	IQEntityInternal,
-	IQOperableFieldInternal,
-	RawDelete,
-	RawInsertValues,
-	RawUpdate,
 	REPOSITORY_PROPERTY_NAME,
 } from '@airport/air-traffic-control'
 import {
@@ -18,7 +11,17 @@ import {
 	IRepository,
 	IRepositoryDao,
 	QAirEntity
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default
+// import is reserved for Application use
+import {
+	and,
+	IEntityUpdateProperties,
+	IQEntityInternal,
+	IQOperableFieldInternal,
+	RawDelete,
+	RawInsertValues,
+	RawUpdate,
+} from '@airport/tarmaq-query'
 import {
 	IOperationContext,
 	IRepositoryManager,

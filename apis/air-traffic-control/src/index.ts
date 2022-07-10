@@ -11,6 +11,7 @@ export * from './implementation/utils/FieldUtils';
 export * from './implementation/utils/QMetadataUtils';
 export * from './implementation/utils/qApplicationBuilderUtils';
 export * from './implementation/utils/QueryUtils';
+export * from './implementation/Dao';
 export * from './implementation/databaseState';
 export * from './implementation/DatabaseStore';
 export * from './implementation/RelationManager';

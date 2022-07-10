@@ -11,7 +11,7 @@ let SyncInChecker = class SyncInChecker {
      */
     async checkMessage(message, context) {
         // FIXME: replace as many DB lookups as possible with Terminal State lookups
-        if (!await this.syncInUserChecker.ensureUsers(message, context)) {
+        if (!await this.syncInUserAccountChecker.ensureUserAccounts(message, context)) {
             return false;
         }
         if (!await this.syncInTerminalChecker.ensureTerminals(message, context)) {
@@ -55,7 +55,7 @@ __decorate([
 ], SyncInChecker.prototype, "syncInTerminalChecker", void 0);
 __decorate([
     Inject()
-], SyncInChecker.prototype, "syncInUserChecker", void 0);
+], SyncInChecker.prototype, "syncInUserAccountChecker", void 0);
 SyncInChecker = __decorate([
     Injected()
 ], SyncInChecker);

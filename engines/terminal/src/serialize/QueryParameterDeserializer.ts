@@ -1,12 +1,13 @@
 import {
-	Injected
-} from '@airport/direction-indicator'
-import {
     IClientQuery,
     IJsonClientQueryParameter,
     IQueryParameterDeserializer
-} from "@airport/check-in";
+} from '@airport/arrivals-n-departures';
 import {
+    Injected
+} from '@airport/direction-indicator'
+import {
+    EntityState,
     IEntityStateManager,
     SQLDataType
 } from "@airport/ground-control";

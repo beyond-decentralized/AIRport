@@ -1,11 +1,7 @@
 import {
 	IAirportDatabase,
-	IApplicationUtils,
-	IQEntityInternal,
 	IQMetadataUtils,
-	IRelationManager,
 	IUtils,
-	JoinTreeNode
 } from '@airport/air-traffic-control'
 import {
 	DatabaseManyToOneElements,
@@ -21,6 +17,12 @@ import {
 	SqlOperator,
 	IEntityStateManager
 } from '@airport/ground-control'
+import {
+	IApplicationUtils,
+	IQEntityInternal,
+	IRelationManager,
+	JoinTreeNode
+} from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../../FuelHydrantContext'

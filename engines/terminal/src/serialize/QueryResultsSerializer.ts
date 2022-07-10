@@ -1,16 +1,15 @@
-import { IApplicationUtils } from '@airport/air-traffic-control'
+import { IQueryResultsSerializer } from '@airport/arrivals-n-departures'
 import {
 	Injected
 } from '@airport/direction-indicator'
-import {
-	IQueryResultsSerializer
-} from '@airport/check-in'
+
 import {
 	DbEntity,
 	EntityState,
 	IEntityStateManager,
 	SQLDataType
 } from '@airport/ground-control'
+import { IApplicationUtils } from '@airport/tarmaq-query'
 
 interface ISerializableOperation {
 	lookupTable: any[]
@@ -75,7 +74,7 @@ export class QueryResultsSerializer
 		let entityCopy: any = {}
 		operation.lookupTable[operationUniqueId] = entity
 		entityCopy[entityStateManager.getUniqueIdFieldName()] = operationUniqueId
-		
+
 		// TODO: Test this - used to be assigned to EntitState.RESULT, which is removed
 		entityCopy[entityStateManager.getStateFieldName()]
 			= entity[entityStateManager.getStateFieldName()]

@@ -1,4 +1,4 @@
-import { User } from '@airport/travel-document-checkpoint';
+import { UserAccount } from '@airport/travel-document-checkpoint';
 import { IRepository } from './repository';
 import { IActor } from '../infrastructure/actor';
 export interface IAirEntity {
@@ -11,7 +11,7 @@ export interface IAirEntity {
     originalActorRecordId?: number;
     originalRepository?: IRepository;
     originalActor?: IActor;
-    createdBy?: User;
+    createdBy?: UserAccount;
     isNew?: boolean;
     id?: string;
 }

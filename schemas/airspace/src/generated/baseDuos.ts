@@ -156,7 +156,6 @@ import {
 	QDomain,
 } from './application/qdomain';
 import {
-	IDuo,
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
 	IEntityIdProperties,
@@ -164,10 +163,11 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IQEntity,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	Duo,
-} from '@airport/check-in';
+	IDuo,
+} from '@airport/tarmaq-dao';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';

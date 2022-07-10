@@ -11,7 +11,7 @@ import {
 	SequenceGenerator,
 	Table,
 	Transient
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	ApplicationVersion_LocalId,
 	ApplicationVersion_IntegerVersion,

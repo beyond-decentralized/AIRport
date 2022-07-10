@@ -1,14 +1,9 @@
 import {
-    IEntityContext,
-    IQueryContext
-} from '@airport/air-traffic-control';
-import {
-	Inject,
-	Injected
+    Inject,
+    Injected
 } from '@airport/direction-indicator'
 import {
-    ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIRequest
 } from '@airport/aviation-communication';
 import {
     IContext
@@ -21,6 +16,8 @@ import {
 import { ITerminalStore, ITransactionalServer } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 import { IAirEntity } from '@airport/holding-pattern';
+import { IQueryContext } from '@airport/tarmaq-query';
+import { IEntityContext } from '@airport/tarmaq-entity';
 
 @Injected()
 export class InternalTransactionalConnector

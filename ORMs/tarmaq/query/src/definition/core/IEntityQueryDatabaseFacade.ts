@@ -2,12 +2,20 @@ import {
     DbEntity,
     ISaveResult
 } from '@airport/ground-control'
+import { IEntityContext } from '@airport/tarmaq-entity';
 import { RawDelete } from '../query/facade/Delete';
 import { RawInsertColumnValues, RawInsertValues } from '../query/facade/InsertValues';
 import { RawUpdate, RawUpdateColumns } from '../query/facade/Update';
 
-import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from './entity/Entity'
-import { IEntityContext } from './EntityContext';
+import {
+    IEntityCascadeGraph,
+    IEntityCreateProperties,
+    IEntityIdProperties,
+    IEntitySelectProperties,
+    IEntityUpdateColumns,
+    IEntityUpdateProperties,
+    IQEntity
+} from './entity/Entity'
 
 
 /**

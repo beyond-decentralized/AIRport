@@ -1,10 +1,11 @@
-import { IAirportDatabase, IDatabaseFacade, IUtils } from '@airport/air-traffic-control';
+import { IAirportDatabase, IUtils } from '@airport/air-traffic-control';
 import { ApplicationColumn_Index, ApplicationVersion_LocalId, ApplicationEntity_TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
 import { Actor_LocalId, AirEntity_ActorRecordId, Repository_LocalId } from '@airport/holding-pattern';
 import { IRecordUpdateStageDao } from '@airport/layover';
 import { IApplication } from '@airport/airspace';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 import { IOperationContext } from '@airport/terminal-map';
+import { IDatabaseFacade } from '@airport/tarmaq-dao';
 /**
  * Stage 2 data processor is used to optimize the number of required
  * I/O operations to do applyChangesToDb the terminal I/O (Creates, Updates, Deletes)

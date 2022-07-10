@@ -1,5 +1,5 @@
-import { IEntityContext } from "@airport/air-traffic-control";
 import { DbEntity, IEntityStateManager } from "@airport/ground-control";
+import { IEntityContext } from '@airport/tarmaq-entity';
 /**
  * A defensive copy maker.  It's a fast operation but might
  * save headaches going forward.  The only currently known scenario

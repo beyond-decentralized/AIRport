@@ -1,18 +1,19 @@
 import {
+	IAirportDatabase,
+	IQMetadataUtils,
+	IUtils,
+} from '@airport/air-traffic-control'
+import {
 	and,
 	Delete,
-	IAirportDatabase,
 	IApplicationUtils,
 	InsertValues,
-	IQMetadataUtils,
 	IQOperableFieldInternal,
-	IQueryFacade,
-	IUtils,
 	or,
 	RawDelete,
 	RawInsertValues,
 	UpdateProperties,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import {
 	Inject,
 	Injected
@@ -43,6 +44,7 @@ import {
 	ITransaction,
 	IUpdateManager
 } from '@airport/terminal-map'
+import { IQueryFacade } from '@airport/tarmaq-dao'
 
 /**
  * Created by Papa on 11/15/2016.

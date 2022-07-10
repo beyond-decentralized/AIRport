@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
@@ -52,13 +47,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface TransactionHistoryESelect
-    extends IEntitySelectProperties, TransactionHistoryEOptionalId {
+	extends IEntitySelectProperties, TransactionHistoryEOptionalId {
 	// Non-Id Properties
 	transactionType?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	repositoryTransactionHistories?: RepositoryTransactionHistoryESelect;
 
 }
@@ -67,7 +62,7 @@ export interface TransactionHistoryESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface TransactionHistoryEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -103,8 +98,8 @@ export interface TransactionHistoryEUpdateProperties
  */
 export interface TransactionHistoryGraph
 	extends TransactionHistoryEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	transactionType?: string | IQStringField;
 
@@ -127,14 +122,14 @@ export interface TransactionHistoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TransactionHistoryECreateProperties
-extends Partial<TransactionHistoryEId>, TransactionHistoryEUpdateProperties {
+	extends Partial<TransactionHistoryEId>, TransactionHistoryEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface TransactionHistoryECreateColumns
-extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
+	extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 }
 
 
@@ -147,8 +142,7 @@ extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTransactionHistory extends IQEntity
-{
+export interface QTransactionHistory extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -164,9 +158,8 @@ export interface QTransactionHistory extends IQEntity
 
 
 // Entity Id Interface
-export interface QTransactionHistoryQId
-{
-	
+export interface QTransactionHistoryQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

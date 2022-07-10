@@ -1,9 +1,6 @@
 import {
-	doEnsureContext,
 	IAirportDatabase,
-	IApplicationUtils,
 	IQMetadataUtils,
-	IRelationManager,
 	IUtils
 } from '@airport/air-traffic-control';
 import {
@@ -58,6 +55,8 @@ import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor';
 import { IValidator } from '../validation/Validator';
 import { ISubStatementSqlGenerator } from '../sql/core/SubStatementSqlGenerator';
 import { IObjectResultParserFactory } from '../result/entity/ObjectResultParserFactory';
+import { IApplicationUtils, IRelationManager } from '@airport/tarmaq-query';
+import { doEnsureContext } from '@airport/tarmaq-dao';
 
 /**
  * Created by Papa on 9/9/2016.

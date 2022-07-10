@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	UserAccountGraph,
 	UserAccountEId,
@@ -164,7 +159,7 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryESelect
-    extends IEntitySelectProperties, RepositoryEOptionalId {
+	extends IEntitySelectProperties, RepositoryEOptionalId {
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
@@ -174,7 +169,7 @@ export interface RepositoryESelect
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	owner?: UserAccountESelect;
 	repositoryTransactionHistory?: RepositoryTransactionHistoryESelect;
 	continent?: ContinentESelect;
@@ -193,7 +188,7 @@ export interface RepositoryESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -238,8 +233,8 @@ export interface RepositoryEUpdateProperties
  */
 export interface RepositoryGraph
 	extends RepositoryEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
@@ -285,14 +280,14 @@ export interface RepositoryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryECreateProperties
-extends Partial<RepositoryEId>, RepositoryEUpdateProperties {
+	extends Partial<RepositoryEId>, RepositoryEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface RepositoryECreateColumns
-extends RepositoryEId, RepositoryEUpdateColumns {
+	extends RepositoryEId, RepositoryEUpdateColumns {
 }
 
 
@@ -305,8 +300,7 @@ extends RepositoryEId, RepositoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepository extends IQEntity
-{
+export interface QRepository extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -336,9 +330,8 @@ export interface QRepository extends IQEntity
 
 
 // Entity Id Interface
-export interface QRepositoryQId
-{
-	
+export interface QRepositoryQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

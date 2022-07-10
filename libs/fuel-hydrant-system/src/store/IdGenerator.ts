@@ -2,13 +2,13 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { ISequenceGenerator } from '@airport/check-in'
 import {
 	IContext
 } from '@airport/direction-indicator'
 import {
 	DbColumn,
-	DbEntity
+	DbEntity,
+	ISequenceGenerator
 } from '@airport/ground-control'
 import {
 	OperationHistory_LocalId,

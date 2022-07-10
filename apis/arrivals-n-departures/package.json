@@ -4,6 +4,7 @@
     "@airport/ground-control": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/airspace": "0.0.1",
+    "@airport/tarmaq-query": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1"
   },
   "main": "lib/index.js",

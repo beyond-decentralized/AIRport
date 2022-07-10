@@ -1,4 +1,4 @@
-import { User } from "../User";
+import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 export declare type State_Abbreviation = string;
 export declare type State_Id = number;
@@ -9,6 +9,6 @@ export declare class State {
     name: State_Name;
     country: Country;
     metroAreaStates: State[];
-    users: User[];
+    userAccounts: UserAccount[];
 }
 //# sourceMappingURL=State.d.ts.map

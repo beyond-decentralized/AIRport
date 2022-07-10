@@ -21,7 +21,7 @@ export * from './definition/core/operation/NumberOperation';
 export * from './definition/core/operation/Operation';
 export * from './definition/core/operation/StringOperation';
 export * from './definition/core/operation/UntypedOperation';
-export * from './definition/core/EntityContext';
+export * from './definition/core/EntityQueryContext';
 export * from './definition/core/FunctionsAndOperators';
 export * from './definition/core/IEntityQueryDatabaseFacade';
 export * from './definition/QueryDecorators';

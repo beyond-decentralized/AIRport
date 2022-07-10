@@ -1,6 +1,6 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from './qcontinent';
-import { UserGraph, UserESelect, QUser } from '../quser';
+import { UserAccountGraph, UserAccountESelect, QUserAccount } from '../quserAccount';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -8,7 +8,7 @@ export interface CountryESelect extends IEntitySelectProperties, CountryEOptiona
     abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     continent?: ContinentESelect;
-    users?: UserESelect;
+    userAccounts?: UserAccountESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -37,7 +37,7 @@ export interface CountryGraph extends CountryEOptionalId, IEntityCascadeGraph {
     abbreviation?: string | IQStringField;
     name?: string | IQStringField;
     continent?: ContinentGraph;
-    users?: UserGraph[];
+    userAccounts?: UserAccountGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -65,7 +65,7 @@ export interface QCountry extends IQEntity {
     abbreviation: IQStringField;
     name: IQStringField;
     continent: QContinentQRelation;
-    users: IQOneToManyRelation<QUser>;
+    userAccounts: IQOneToManyRelation<QUserAccount>;
 }
 export interface QCountryQId {
     id: IQNumberField;

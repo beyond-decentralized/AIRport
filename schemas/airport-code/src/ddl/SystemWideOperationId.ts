@@ -5,7 +5,7 @@ import {
 	GeneratedValue,
 	Id,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 
 export type SystemWideOperationId_Id = number;
 

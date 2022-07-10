@@ -16,8 +16,3 @@ export const QUERY_UTILS = tarmaqQuery.token<IQueryUtils>({
     interface: 'IQueryUtils',
     token: 'QUERY_UTILS'
 })
-export const QUERY_FACADE = tarmaqQuery.token<IEntityQueryDatabaseFacade<any, any, any, any, any, any, any, any>>({
-    class: null,
-    interface: 'IQueryFacade',
-    token: 'QUERY_FACADE'
-})

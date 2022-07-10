@@ -9,7 +9,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	ApplicationProperty_LocalId,
 	ApplicationProperty_Index,

@@ -14,6 +14,9 @@
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
+    "@airport/tarmaq-entity": "0.0.1",
+    "@airport/tarmaq-query": "0.0.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

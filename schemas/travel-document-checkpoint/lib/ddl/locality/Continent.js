@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbNumber, DbString, Entity, Id, OneToMany, Table } from "@airport/air-traffic-control";
+import { Column, DbNumber, DbString, Entity, Id, OneToMany, Table } from "@airport/tarmaq-entity";
 let Continent = class Continent {
 };
 __decorate([
@@ -20,7 +20,7 @@ __decorate([
 ], Continent.prototype, "countries", void 0);
 __decorate([
     OneToMany({ mappedBy: 'continent' })
-], Continent.prototype, "users", void 0);
+], Continent.prototype, "userAccounts", void 0);
 Continent = __decorate([
     Entity(),
     Table({ name: "CONTINENTS" })

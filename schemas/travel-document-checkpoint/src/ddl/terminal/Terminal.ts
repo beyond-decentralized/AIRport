@@ -10,7 +10,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { Continent } from '../locality/Continent'
 import { Country } from '../locality/Country'
 import { MetroArea } from '../locality/MetroArea'

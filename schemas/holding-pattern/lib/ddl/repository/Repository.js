@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
+import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity";
 let Repository = class Repository {
     constructor() {
         this.repositoryTransactionHistory = [];
@@ -38,7 +38,7 @@ __decorate([
 __decorate([
     ManyToOne(),
     JoinColumn({
-        name: 'OWNER_USER_LID', referencedColumnName: 'USER_LID',
+        name: 'OWNER_USER_ACCOUNT_LID', referencedColumnName: 'USER_ACCOUNT_LID',
         nullable: false
     })
 ], Repository.prototype, "owner", void 0);

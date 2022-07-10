@@ -1,4 +1,4 @@
-import { IEntityCascadeGraph, IEntityContext, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/tarmaq-query';
+import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate } from '@airport/tarmaq-query';
 import { QApplication } from '@airport/aviation-communication';
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
@@ -7,6 +7,7 @@ import { IEntityFind } from '../definition/query/EntityFind';
 import { IEntityFindOne } from '../definition/query/EntityFindOne';
 import { IDao } from '../definition/Dao';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
+import { IEntityContext } from '@airport/tarmaq-entity';
 /**
  * Created by Papa on 12/11/2016.
  */

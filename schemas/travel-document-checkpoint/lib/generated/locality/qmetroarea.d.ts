@@ -1,7 +1,7 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './qcountry';
 import { MetroAreaStateGraph, MetroAreaStateESelect, QMetroAreaState } from './qmetroareastate';
-import { UserGraph, UserESelect, QUser } from '../quser';
+import { UserAccountGraph, UserAccountESelect, QUserAccount } from '../quserAccount';
 /**
  * SELECT - All fields and relations (optional).
  */
@@ -9,7 +9,7 @@ export interface MetroAreaESelect extends IEntitySelectProperties, MetroAreaEOpt
     name?: string | IQStringField;
     country?: CountryESelect;
     metroAreaStates?: MetroAreaStateESelect;
-    users?: UserESelect;
+    userAccounts?: UserAccountESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -37,7 +37,7 @@ export interface MetroAreaGraph extends MetroAreaEOptionalId, IEntityCascadeGrap
     name?: string | IQStringField;
     country?: CountryGraph;
     metroAreaStates?: MetroAreaStateGraph[];
-    users?: UserGraph[];
+    userAccounts?: UserAccountGraph[];
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -64,7 +64,7 @@ export interface QMetroArea extends IQEntity {
     name: IQStringField;
     country: QCountryQRelation;
     metroAreaStates: IQOneToManyRelation<QMetroAreaState>;
-    users: IQOneToManyRelation<QUser>;
+    userAccounts: IQOneToManyRelation<QUserAccount>;
 }
 export interface QMetroAreaQId {
     id: IQNumberField;

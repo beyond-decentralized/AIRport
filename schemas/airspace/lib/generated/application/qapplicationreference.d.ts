@@ -1,4 +1,4 @@
-import { IQNumberField } from '@airport/air-traffic-control';
+import { IQNumberField } from '@airport/tarmaq-query';
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
 import { ApplicationVersionGraph, ApplicationVersionEId, ApplicationVersionEOptionalId, ApplicationVersionESelect, QApplicationVersionQId, QApplicationVersionQRelation } from './qapplicationversion';
 /**

@@ -1,4 +1,10 @@
-import { Entity, Id, JoinColumn, ManyToOne, Table } from "@airport/air-traffic-control";
+import {
+    Entity,
+    Id,
+    JoinColumn,
+    ManyToOne,
+    Table
+} from "@airport/tarmaq-entity";
 import { MetroArea } from "./MetroArea";
 import { State } from "./State";
 

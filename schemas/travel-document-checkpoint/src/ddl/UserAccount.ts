@@ -7,7 +7,7 @@ import {
 	Id,
 	JoinColumn,
 	ManyToOne,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { Domain } from '@airport/airspace'
 import { Country } from './locality/Country'
 import { Continent } from './locality/Continent'

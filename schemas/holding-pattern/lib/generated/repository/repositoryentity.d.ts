@@ -1,4 +1,4 @@
-import { User } from '@airport/travel-document-checkpoint';
+import { UserAccount } from '@airport/travel-document-checkpoint';
 import { IRepository } from './repository';
 import { IActor } from '../infrastructure/actor';
 export interface IAirEntity {
@@ -12,6 +12,6 @@ export interface IAirEntity {
     originalRepository?: IRepository;
     originalActor?: IActor;
     uuId?: string;
-    createdBy?: User;
+    createdBy?: UserAccount;
 }
 //# sourceMappingURL=repositoryentity.d.ts.map

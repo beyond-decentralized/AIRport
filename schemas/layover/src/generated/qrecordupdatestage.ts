@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,
@@ -88,14 +83,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RecordUpdateStageESelect
-    extends IEntitySelectProperties, RecordUpdateStageEOptionalId {
+	extends IEntitySelectProperties, RecordUpdateStageEOptionalId {
 	// Non-Id Properties
 	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	applicationVersion?: ApplicationVersionESelect;
 	entity?: ApplicationEntityESelect;
 	repository?: RepositoryESelect;
@@ -108,7 +103,7 @@ export interface RecordUpdateStageESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RecordUpdateStageEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -150,8 +145,8 @@ export interface RecordUpdateStageEUpdateProperties
  */
 export interface RecordUpdateStageGraph
 	extends RecordUpdateStageEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	_actorRecordId?: number | IQNumberField;
 	updatedValue?: any | IQUntypedField;
@@ -185,14 +180,14 @@ export interface RecordUpdateStageEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RecordUpdateStageECreateProperties
-extends Partial<RecordUpdateStageEId>, RecordUpdateStageEUpdateProperties {
+	extends Partial<RecordUpdateStageEId>, RecordUpdateStageEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface RecordUpdateStageECreateColumns
-extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
+	extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 }
 
 
@@ -205,8 +200,7 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRecordUpdateStage extends IQEntity
-{
+export interface QRecordUpdateStage extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -227,9 +221,8 @@ export interface QRecordUpdateStage extends IQEntity
 
 
 // Entity Id Interface
-export interface QRecordUpdateStageQId
-{
-	
+export interface QRecordUpdateStageQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

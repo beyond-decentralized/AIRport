@@ -1,5 +1,6 @@
 import { QApplication } from '@airport/aviation-communication';
 import { DbApplication, ApplicationEntity_LocalId } from '@airport/ground-control';
+import { QApplication as QApp } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
 import { QApplicationEntity } from './application/qapplicationentity';
@@ -13,7 +14,7 @@ import { QApplicationVersion } from './application/qapplicationversion';
 import { QDomain } from './application/qdomain';
 export interface LocalQApplication extends QApplication {
     db: DbApplication;
-    Application: QApplication;
+    Application: QApp;
     ApplicationColumn: QApplicationColumn;
     ApplicationCurrentVersion: QApplicationCurrentVersion;
     ApplicationEntity: QApplicationEntity;

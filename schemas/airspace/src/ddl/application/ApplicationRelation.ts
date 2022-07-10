@@ -12,7 +12,7 @@ import {
 	OneToMany,
 	OneToManyElements,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	EntityRelationType,
 	ApplicationRelation_LocalId,

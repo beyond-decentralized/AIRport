@@ -5,7 +5,7 @@ import {
 	ForeignKey,
 	ManyToOneElements,
 	OneToManyElements,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-entity';
 import {
 	IApplicationProperty,
 } from './applicationproperty';

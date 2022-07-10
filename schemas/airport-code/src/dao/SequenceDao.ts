@@ -1,4 +1,4 @@
-import { plus } from '@airport/air-traffic-control'
+import { plus } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,

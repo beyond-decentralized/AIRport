@@ -1,4 +1,4 @@
-import { and } from '@airport/air-traffic-control'
+import { and } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	UserAccount_LocalId,

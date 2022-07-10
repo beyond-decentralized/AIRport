@@ -1,9 +1,9 @@
-import { lib } from '@airport/direction-indicator';
-import { TerminalStore } from './store/TerminalStore';
-import { DB_APPLICATION_UTILS, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
-import { SELECTOR_MANAGER, SEQUENCE_GENERATOR } from '@airport/check-in';
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
+import { lib } from '@airport/direction-indicator';
+import { DB_APPLICATION_UTILS, SEQUENCE_GENERATOR, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { TerminalStore } from './store/TerminalStore';
 import { TerminalState } from './store/TerminalState';
+import { SELECTOR_MANAGER } from '@airport/apron';
 const terminalMap = lib('terminal-map');
 export const APPLICATION_INITIALIZER = terminalMap.token({
     class: null,

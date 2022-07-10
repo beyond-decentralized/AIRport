@@ -6,7 +6,7 @@ import {
 	Id,
 	OneToMany,
 	Table,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import {
 	Domain_LocalId,
 	Domain_Name,

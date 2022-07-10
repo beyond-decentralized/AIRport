@@ -1,8 +1,7 @@
 import {
-	ALL_FIELDS,
 	and,
 	Y
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { TransactionType } from '@airport/ground-control'
 import {

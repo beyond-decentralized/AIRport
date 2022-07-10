@@ -23,6 +23,6 @@ export interface UserRequest {
     birthMonth: number;
     countryId: number;
     email: string;
-    userName: string;
+    username: string;
 }
 //# sourceMappingURL=common.d.ts.map

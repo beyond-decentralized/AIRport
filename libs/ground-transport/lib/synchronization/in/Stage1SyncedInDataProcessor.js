@@ -4,8 +4,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { getSysWideOpIds } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
-import { getSysWideOpIds } from '@airport/check-in';
 import { ChangeType, ensureChildArray, ensureChildJsMap, ensureChildJsSet } from '@airport/ground-control';
 import { SynchronizationConflict_Type } from '@airport/layover';
 let Stage1SyncedInDataProcessor = class Stage1SyncedInDataProcessor {

@@ -6,7 +6,7 @@ import { Country } from '../ddl/locality/Country';
 import { State } from '../ddl/locality/State';
 import { MetroAreaState } from '../ddl/locality/MetroAreaState';
 import { MetroArea } from '../ddl/locality/MetroArea';
-import { User } from '../ddl/User';
+import { UserAccount } from '../ddl/UserAccount';
 import { Classification } from '../ddl/type/Classification';
 import { TypeClassification } from '../ddl/type/TypeClassification';
 import { Type } from '../ddl/type/Type';
@@ -16,7 +16,6 @@ import { DatabaseType } from '../ddl/database/DatabaseType';
 import { Database } from '../ddl/database/Database';
 import { TerminalType } from '../ddl/terminal/TerminalType';
 import { Terminal } from '../ddl/terminal/Terminal';
-import { UserTerminal } from '../ddl/terminal/UserTerminal';
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
     accumulator.add(Continent, 0);
@@ -24,7 +23,7 @@ DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     accumulator.add(State, 2);
     accumulator.add(MetroAreaState, 3);
     accumulator.add(MetroArea, 4);
-    accumulator.add(User, 5);
+    accumulator.add(UserAccount, 5);
     accumulator.add(Classification, 6);
     accumulator.add(TypeClassification, 7);
     accumulator.add(Type, 8);
@@ -34,6 +33,5 @@ DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
     accumulator.add(Database, 12);
     accumulator.add(TerminalType, 13);
     accumulator.add(Terminal, 14);
-    accumulator.add(UserTerminal, 15);
 });
 //# sourceMappingURL=entityMappings.js.map

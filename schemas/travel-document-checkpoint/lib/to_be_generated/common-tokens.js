@@ -1,8 +1,8 @@
 import { lib } from '@airport/direction-indicator';
 export const travelDocumentCheckpoint = lib('travel-document-checkpoint');
-export const USER_API = travelDocumentCheckpoint.token({
+export const USER_ACCOUNT_API = travelDocumentCheckpoint.token({
     class: null,
-    interface: 'UserApi',
-    token: 'USER_API'
+    interface: 'UserAccountApi',
+    token: 'USER_ACCOUNT_API'
 });
 //# sourceMappingURL=common-tokens.js.map

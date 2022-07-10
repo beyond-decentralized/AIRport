@@ -10,7 +10,6 @@ export * from './locality/qstate';
 export * from './quserAccount';
 export * from './terminal/qterminal';
 export * from './terminal/qterminaltype';
-export * from './terminal/quserAccountterminal';
 export * from './type/qclassification';
 export * from './type/qtype';
 export * from './type/qtypeclassification';

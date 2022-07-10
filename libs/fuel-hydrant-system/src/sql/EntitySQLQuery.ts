@@ -1,18 +1,7 @@
 import {
-	AliasCache,
-	getErrorMessageSelectStatement,
 	IAirportDatabase,
-	IApplicationUtils,
-	IEntitySelectProperties,
 	IQMetadataUtils,
-	IRelationManager,
-	isID,
-	isN,
-	isY,
-	IUtils,
-	JoinTreeNode,
-	ReferencedColumnData,
-	Y
+	IUtils
 } from '@airport/air-traffic-control'
 import {
 	DbColumn,
@@ -28,6 +17,19 @@ import {
 	JSONRelationType,
 	QueryResultType
 } from '@airport/ground-control'
+import {
+	AliasCache,
+	getErrorMessageSelectStatement,
+	IApplicationUtils,
+	IEntitySelectProperties,
+	IRelationManager,
+	isID,
+	isN,
+	isY,
+	JoinTreeNode,
+	ReferencedColumnData,
+	Y
+} from '@airport/tarmaq-query'
 import { IStoreDriver } from '@airport/terminal-map'
 import { ISQLQueryAdaptor } from '../adaptor/SQLQueryAdaptor'
 import { IFuelHydrantContext } from '../FuelHydrantContext'

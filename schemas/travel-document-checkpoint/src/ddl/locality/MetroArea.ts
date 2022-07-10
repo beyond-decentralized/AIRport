@@ -1,8 +1,18 @@
-import { Column, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
+import {
+    Column,
+    DbNumber,
+    DbString,
+    Entity,
+    GeneratedValue,
+    Id,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    Table
+} from "@airport/tarmaq-entity";
 import { UserAccount } from "../UserAccount";
 import { Country } from "./Country";
 import { MetroAreaState } from "./MetroAreaState";
-import { State } from "./State";
 
 export type MetroArea_Id = number;
 export type MetroArea_Name = string;

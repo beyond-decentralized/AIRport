@@ -1,5 +1,5 @@
-import { AliasCache } from '@airport/air-traffic-control';
 import { JSONClauseObjectType, QueryResultType } from '@airport/ground-control';
+import { AliasCache } from '@airport/tarmaq-query';
 import { MappedOrderByParser } from '../orderBy/MappedOrderByParser';
 import { TreeQueryResultParser } from '../result/TreeQueryResultParser';
 import { ClauseType } from './core/SQLWhereBase';

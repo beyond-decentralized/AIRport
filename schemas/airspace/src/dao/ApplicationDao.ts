@@ -4,7 +4,7 @@ import {
 	max,
 	tree,
 	Y
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	Domain_Name,

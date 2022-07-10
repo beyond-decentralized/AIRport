@@ -21,9 +21,9 @@ import {
 	IEntityDatabaseFacade,
 	ILookup
 } from '@airport/tarmaq-dao';
+import { IEntityContext } from '@airport/tarmaq-entity';
 import {
 	IEntityCascadeGraph,
-	IEntityContext,
 	IEntityCreateProperties,
 	IEntityIdProperties,
 	IEntitySelectProperties,

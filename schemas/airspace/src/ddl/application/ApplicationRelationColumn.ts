@@ -5,7 +5,7 @@ import {
 	JoinColumn,
 	ManyToOne,
 	Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { ApplicationColumn } from './ApplicationColumn'
 import { ApplicationRelation } from './ApplicationRelation'
 import { VersionedApplicationObject } from './VersionedApplicationObject'

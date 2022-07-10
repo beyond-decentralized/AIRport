@@ -1,4 +1,14 @@
-import { Column, DbNumber, DbString, Entity, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/air-traffic-control";
+import {
+    Column,
+    DbNumber,
+    DbString,
+    Entity,
+    Id,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    Table
+} from "@airport/tarmaq-entity";
 import { Continent } from '../locality/Continent';
 import { Country } from '../locality/Country';
 import { MetroArea } from '../locality/MetroArea';

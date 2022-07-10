@@ -1,4 +1,4 @@
-import { Duo, } from '@airport/check-in';
+import { Duo, } from '@airport/tarmaq-dao';
 import { Q, duoDiSet, } from './qApplication';
 // Application Q object Dependency Injection readiness detection Duo
 export class SQDIDuo extends Duo {

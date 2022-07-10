@@ -3,22 +3,19 @@ import {
 	ChangeType,
 	ApplicationColumn_Index,
 	airEntity,
-	ApplicationEntity_TableIndex
+	ApplicationEntity_TableIndex,
+	ISequenceGenerator
 } from '@airport/ground-control'
 import {
 	IApplicationEntity,
 	IApplicationColumn
 } from '@airport/airspace'
-import { IAirportDatabase } from '@airport/air-traffic-control'
+import { getSysWideOpIds, IAirportDatabase } from '@airport/air-traffic-control'
 import {
 	IContext,
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import {
-	getSysWideOpIds,
-	ISequenceGenerator
-} from '@airport/check-in'
 import {
 	IOperationHistory,
 	IRecordHistory,

@@ -1,6 +1,9 @@
-import { IDatabaseFacade, IEntityContext, IEntityUpdateColumns, IEntityUpdateProperties, IFunctionWrapper, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns, IUpdateCacheManager, IQueryFacade } from '@airport/air-traffic-control';
+import { IUpdateCacheManager } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IEntityStateManager, ISaveResult, ITransactionalConnector } from '@airport/ground-control';
+import { IDatabaseFacade, IFunctionWrapper, IQueryFacade } from '@airport/tarmaq-dao';
+import { IEntityContext } from '@airport/tarmaq-entity';
+import { IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/tarmaq-query';
 import { IEntityCopier } from '../core/data/EntityCopier';
 /**
  * Created by Papa on 5/23/2016.

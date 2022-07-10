@@ -1,25 +1,4 @@
-import {
-	IEntityContext,
-	IQueryContext
-} from '@airport/air-traffic-control';
-import {
-	IInjected,
-	Inject,
-	Injected
-} from '@airport/direction-indicator'
 import { IApplicationVersion } from '@airport/airspace'
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
-import {
-	IContext
-} from '@airport/direction-indicator';
-import {
-	DbDomain,
-	Domain_Name,
-	IDbApplicationUtils,
-	ISaveResult,
-	ITransactionalConnector,
-	PortableQuery
-} from '@airport/ground-control';
 import {
 	IAddRepositoryIMI,
 	IGetLatestApplicationVersionByApplication_NameIMI,
@@ -39,13 +18,35 @@ import {
 	IObservableMessageInRecord,
 	ICallApiIMI
 } from '@airport/apron';
+import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication';
+import {
+	IContext,
+	IInjected,
+	Inject,
+	Injected
+} from '@airport/direction-indicator'
+
+import {
+	DbDomain,
+	Domain_Name,
+	IAirEntity,
+	IDbApplicationUtils,
+	ISaveResult,
+	ITransactionalConnector,
+	PortableQuery
+} from '@airport/ground-control';
+import {
+	IEntityContext
+} from '@airport/tarmaq-entity';
+import {
+	IQueryContext
+} from '@airport/tarmaq-query';
+import { ITerminalStore } from '@airport/terminal-map';
 import {
 	Observable,
 	Observer
 } from 'rxjs';
 import { v4 as guidv4 } from "uuid";
-import { ITerminalStore } from '@airport/terminal-map';
-import { IAirEntity } from '@airport/ground-control/src';
 
 export interface IIframeTransactionalConnector
 	extends ITransactionalConnector {

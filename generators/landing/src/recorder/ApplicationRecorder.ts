@@ -1,7 +1,4 @@
 import {
-	IDao
-} from '@airport/air-traffic-control'
-import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
@@ -21,6 +18,7 @@ import {
 	IDomainDao,
 } from '@airport/airspace'
 import { DdlObjects, ITransactionManager } from '@airport/terminal-map'
+import { IDao } from '@airport/tarmaq-dao'
 
 export interface IApplicationRecorder {
 

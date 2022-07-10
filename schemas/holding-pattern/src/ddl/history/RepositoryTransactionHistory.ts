@@ -11,7 +11,7 @@ import {
 	OneToMany,
 	SequenceGenerator,
 	Table,
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { Repository } from '../repository/Repository'
 import { OperationHistory } from './OperationHistory'
 import { RepositoryTransactionType } from './RepositoryTransactionType'

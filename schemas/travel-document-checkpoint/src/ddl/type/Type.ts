@@ -4,7 +4,7 @@ import {
     Id,
     OneToMany,
     Table
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-entity'
 import { TypeClassification } from './TypeClassification'
 
 export type Type_Id = number

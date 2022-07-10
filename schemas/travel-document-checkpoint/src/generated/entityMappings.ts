@@ -16,7 +16,6 @@ import { DatabaseType } from '../ddl/database/DatabaseType';
 import { Database } from '../ddl/database/Database';
 import { TerminalType } from '../ddl/terminal/TerminalType';
 import { Terminal } from '../ddl/terminal/Terminal';
-import { UserAccountTerminal } from '../ddl/terminal/UserAccountTerminal';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
   const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
@@ -35,5 +34,4 @@ DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
   accumulator.add(Database, 12);
   accumulator.add(TerminalType, 13);
   accumulator.add(Terminal, 14);
-  accumulator.add(UserAccountTerminal, 15);
 });

@@ -5,11 +5,6 @@ import {
 	IEntityUpdateColumns,
 	IEntityUpdateProperties,
 	IEntitySelectProperties,
-	IEntityDatabaseFacade,
-	IEntityFind,
-	IEntityFindOne,
-	IEntitySearch,
-	IEntitySearchOne,
 	IQBooleanField,
 	IQDateField,
 	IQNumberField,
@@ -22,7 +17,7 @@ import {
 	IQAirEntityRelation,
 	RawDelete,
 	RawUpdate,
-} from '@airport/air-traffic-control';
+} from '@airport/tarmaq-query';
 import {
 	RepositoryGraph,
 	RepositoryEId,
@@ -72,14 +67,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface SynchronizationConflictESelect
-    extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
+	extends IEntitySelectProperties, SynchronizationConflictEOptionalId {
 	// Non-Id Properties
 	type?: string | IQStringField;
 	acknowledged?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 	repository?: RepositoryESelect;
 	overwrittenRecordHistory?: RecordHistoryESelect;
 	overwritingRecordHistory?: RecordHistoryESelect;
@@ -91,7 +86,7 @@ export interface SynchronizationConflictESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface SynchronizationConflictEId
-    extends IEntityIdProperties {
+	extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -131,8 +126,8 @@ export interface SynchronizationConflictEUpdateProperties
  */
 export interface SynchronizationConflictGraph
 	extends SynchronizationConflictEOptionalId, IEntityCascadeGraph {
-// NOT USED: Cascading Relations
-// NOT USED: ${relationsForCascadeGraph}
+	// NOT USED: Cascading Relations
+	// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	type?: string | IQStringField;
 	acknowledged?: boolean | IQBooleanField;
@@ -163,14 +158,14 @@ export interface SynchronizationConflictEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface SynchronizationConflictECreateProperties
-extends Partial<SynchronizationConflictEId>, SynchronizationConflictEUpdateProperties {
+	extends Partial<SynchronizationConflictEId>, SynchronizationConflictEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface SynchronizationConflictECreateColumns
-extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
+	extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 }
 
 
@@ -183,8 +178,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QSynchronizationConflict extends IQEntity
-{
+export interface QSynchronizationConflict extends IQEntity {
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -204,9 +198,8 @@ export interface QSynchronizationConflict extends IQEntity
 
 
 // Entity Id Interface
-export interface QSynchronizationConflictQId
-{
-	
+export interface QSynchronizationConflictQId {
+
 	// Id Fields
 	_localId: IQNumberField;
 

@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ALL_FIELDS, and, Y } from '@airport/air-traffic-control';
+import { ALL_FIELDS, and, Y } from '@airport/tarmaq-query';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { BaseActorDao, Q } from '../../generated/generated';
 import { Injected } from '@airport/direction-indicator';
@@ -12,23 +12,23 @@ let ActorDao = class ActorDao extends BaseActorDao {
     async findWithDetailsAndGlobalIdsByIds(actorIds) {
         return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.in(actorIds));
     }
-    async findMapsWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds);
+    async findMapsWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds);
         for (const actor of actors) {
-            ensureChildJsMap(actorMap, actor.user._localId)
+            ensureChildJsMap(actorMap, actor.userAccount._localId)
                 .set(actor.terminal._localId, actor);
             actorMapById.set(actor._localId, actor);
         }
     }
-    async findWithDetailsByGlobalIds(actorGUIDs, userIds, terminalIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.GUID.in(actorGUIDs), a.terminal._localId.in(terminalIds), a.user._localId.in(userIds)));
+    async findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => and(a.GUID.in(actorGUIDs), a.terminal._localId.in(terminalIds), a.userAccount._localId.in(userAccountIds)));
     }
     async findByDomainAndApplication_Names(domainName, applicationName) {
         let act;
         let application;
         let domain;
         let terminal;
-        let user;
+        let userAccount;
         return await this.db.find.tree({
             select: {
                 _localId: Y,
@@ -37,7 +37,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                     domain: {}
                 },
                 terminal: {},
-                user: {},
+                userAccount: {},
                 GUID: Y
             },
             from: [
@@ -45,7 +45,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 application = act.application.innerJoin(),
                 domain = application.domain.innerJoin(),
                 terminal = act.terminal.leftJoin(),
-                user = act.user.leftJoin()
+                userAccount = act.userAccount.leftJoin()
             ],
             where: and(domain.name.equals(domainName), application.name.equals(applicationName))
         });
@@ -60,12 +60,12 @@ let ActorDao = class ActorDao extends BaseActorDao {
             where: a.GUID.in(actorGUIDs)
         });
     }
-    async findWithUserBy_LocalIdIn(actor_localIds) {
+    async findWithUserAccountBy_LocalIdIn(actor_localIds) {
         let a, u;
         return await this.db.find.graph({
             select: {
                 '*': Y,
-                user: {
+                userAccount: {
                     _localId: Y,
                     GUID: Y,
                     ranking: Y,
@@ -74,7 +74,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             },
             from: [
                 a = Q.Actor,
-                u = a.user.leftJoin(),
+                u = a.userAccount.leftJoin(),
                 u.continent.leftJoin(),
                 u.country.leftJoin(),
                 u.metroArea.leftJoin(),
@@ -89,7 +89,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
         for (const actor of actors) {
             values.push([
                 actor.GUID, actor.application.index,
-                actor.user._localId, actor.terminal._localId
+                actor.userAccount._localId, actor.terminal._localId
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
@@ -97,7 +97,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
             columns: [
                 a.GUID,
                 a.application.index,
-                a.user._localId,
+                a.userAccount._localId,
                 a.terminal._localId
             ],
             values
@@ -133,7 +133,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                         GUID,
                     }
                 },
-                user: {
+                userAccount: {
                     id,
                     username,
                     GUID,
@@ -145,7 +145,7 @@ let ActorDao = class ActorDao extends BaseActorDao {
                 ap.domain.leftJoin(),
                 t = a.terminal.leftJoin(),
                 t.owner.leftJoin(),
-                a.user.leftJoin()
+                a.userAccount.leftJoin()
             ],
             where: getWhereClause(a)
         });

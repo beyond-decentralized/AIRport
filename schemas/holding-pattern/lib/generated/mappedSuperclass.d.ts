@@ -155,11 +155,11 @@ export declare const MAPPED_SUPERCLASS: ({
                     };
                     path: string;
                 };
-                User: {
+                UserAccount: {
                     fileImports: any;
                     isLocal: boolean;
                     objectMapByAsName: {
-                        User: {
+                        UserAccount: {
                             asName: string;
                             moduleImport: any;
                             sourceName: string;
@@ -192,7 +192,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     path: string;
                 };
                 AirEntity?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
             };
@@ -393,10 +393,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
             };
@@ -587,11 +587,11 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
-                    User: {
+                    UserAccount: {
                         fileImports: any;
                         isLocal: boolean;
                         objectMapByAsName: {
-                            User: {
+                            UserAccount: {
                                 asName: string;
                                 moduleImport: any;
                                 sourceName: string;
@@ -624,7 +624,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         path: string;
                     };
                     AirEntity?: undefined;
-                    IUser?: undefined;
+                    IUserAccount?: undefined;
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
@@ -810,11 +810,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
                 AirEntity?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
             };
@@ -910,10 +910,10 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRepoRow?: undefined;
                 ImmutableRow?: undefined;
             };
@@ -1122,11 +1122,11 @@ export declare const MAPPED_SUPERCLASS: ({
                         };
                         path: string;
                     };
-                    User: {
+                    UserAccount: {
                         fileImports: any;
                         isLocal: boolean;
                         objectMapByAsName: {
-                            User: {
+                            UserAccount: {
                                 asName: string;
                                 moduleImport: any;
                                 sourceName: string;
@@ -1159,7 +1159,7 @@ export declare const MAPPED_SUPERCLASS: ({
                         path: string;
                     };
                     AirEntity?: undefined;
-                    IUser?: undefined;
+                    IUserAccount?: undefined;
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
@@ -1357,11 +1357,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 JoinColumn: any;
                 ManyToOne: any;
                 MappedSuperclass: any;
-                IUser: {
+                IUserAccount: {
                     fileImports: any;
                     isLocal: boolean;
                     objectMapByAsName: {
-                        IUser: {
+                        IUserAccount: {
                             asName: string;
                             moduleImport: any;
                             sourceName: string;
@@ -1377,7 +1377,7 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
                 AirEntity?: undefined;
@@ -1620,11 +1620,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
                 AirEntity?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRow?: undefined;
             };
             importMapByModulePath: {
@@ -1743,10 +1743,10 @@ export declare const MAPPED_SUPERCLASS: ({
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
-                    User?: undefined;
+                    UserAccount?: undefined;
                     IOC?: undefined;
                     AIR_ENTITY_UTILS?: undefined;
-                    IUser?: undefined;
+                    IUserAccount?: undefined;
                 };
                 importMapByModulePath: {
                     "@airport/air-traffic-control": any;
@@ -1951,11 +1951,11 @@ export declare const MAPPED_SUPERCLASS: ({
                             };
                             path: string;
                         };
-                        User: {
+                        UserAccount: {
                             fileImports: any;
                             isLocal: boolean;
                             objectMapByAsName: {
-                                User: {
+                                UserAccount: {
                                     asName: string;
                                     moduleImport: any;
                                     sourceName: string;
@@ -2196,11 +2196,11 @@ export declare const MAPPED_SUPERCLASS: ({
                 Actor?: undefined;
                 SystemWideOperationId?: undefined;
                 Repository?: undefined;
-                User?: undefined;
+                UserAccount?: undefined;
                 IOC?: undefined;
                 AIR_ENTITY_UTILS?: undefined;
                 AirEntity?: undefined;
-                IUser?: undefined;
+                IUserAccount?: undefined;
                 ImmutableRepoRow?: undefined;
             };
             importMapByModulePath: {
@@ -2297,11 +2297,11 @@ export declare const MAPPED_SUPERCLASS: ({
                     JoinColumn: any;
                     ManyToOne: any;
                     MappedSuperclass: any;
-                    IUser: {
+                    IUserAccount: {
                         fileImports: any;
                         isLocal: boolean;
                         objectMapByAsName: {
-                            IUser: {
+                            IUserAccount: {
                                 asName: string;
                                 moduleImport: any;
                                 sourceName: string;
@@ -2317,7 +2317,7 @@ export declare const MAPPED_SUPERCLASS: ({
                     Actor?: undefined;
                     SystemWideOperationId?: undefined;
                     Repository?: undefined;
-                    User?: undefined;
+                    UserAccount?: undefined;
                     IOC?: undefined;
                     AIR_ENTITY_UTILS?: undefined;
                     AirEntity?: undefined;

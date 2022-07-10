@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@airport/air-traffic-control": "0.0.1",
+    "@airport/airspace": "0.0.1",
+    "@airport/apron": "0.0.1",
     "@airport/arrivals-n-departures": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/blueprint": "0.0.1",
@@ -14,11 +16,12 @@
     "@airport/landing": "0.0.1",
     "@airport/layover": "0.0.1",
     "@airport/nonhub-client": "0.0.1",
-    "@airport/apron": "0.0.1",
     "@airport/takeoff": "0.0.1",
+    "@airport/tarmaq-dao": "0.0.1",
+    "@airport/tarmaq-entity": "0.0.1",
+    "@airport/tarmaq-query": "0.0.1",
     "@airport/terminal-map": "0.0.1",
     "@airport/tower": "0.0.1",
-    "@airport/airspace": "0.0.1",
     "@airport/travel-document-checkpoint": "0.0.1",
     "rxjs": "~7.4.0",
     "uuid": "^8.3.2",

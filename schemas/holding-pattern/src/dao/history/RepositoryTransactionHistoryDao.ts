@@ -3,7 +3,7 @@ import {
 	and,
 	or,
 	Y
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import {
 	ensureChildArray,
 	ApplicationEntity_LocalId,

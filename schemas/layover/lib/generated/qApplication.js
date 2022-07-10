@@ -8,7 +8,7 @@ const __constructors__ = {
 export const Q_APPLICATION = {
     __constructors__,
     domain: 'air',
-    name: '@airport/moving-walkway'
+    name: '@airport/layover'
 };
 export const Q = Q_APPLICATION;
 export function diSet(dbEntityId) {

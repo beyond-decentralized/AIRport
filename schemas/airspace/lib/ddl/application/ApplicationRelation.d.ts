@@ -1,4 +1,4 @@
-import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/air-traffic-control';
+import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/tarmaq-entity';
 import { EntityRelationType, ApplicationRelation_LocalId, ApplicationRelation_Index } from '@airport/ground-control';
 import { ApplicationEntity } from './ApplicationEntity';
 import { ApplicationProperty } from './ApplicationProperty';

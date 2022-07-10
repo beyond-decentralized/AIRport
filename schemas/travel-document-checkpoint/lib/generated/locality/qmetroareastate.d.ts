@@ -1,4 +1,4 @@
-import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/air-traffic-control';
+import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQEntity, IQRelation } from '@airport/tarmaq-query';
 import { StateGraph, StateEId, StateEOptionalId, StateESelect, QStateQId, QStateQRelation } from './qstate';
 import { MetroAreaGraph, MetroAreaEId, MetroAreaEOptionalId, MetroAreaESelect, QMetroAreaQId, QMetroAreaQRelation } from './qmetroarea';
 /**

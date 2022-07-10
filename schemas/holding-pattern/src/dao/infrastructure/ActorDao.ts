@@ -2,7 +2,7 @@ import {
 	ALL_FIELDS,
 	and,
 	Y
-} from '@airport/air-traffic-control'
+} from '@airport/tarmaq-query'
 import {
 	Application_Name,
 	Domain_Name,
