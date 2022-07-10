@@ -159,7 +159,6 @@ of the Applications with the objects it depends on.
 
 ### Entity Definitions
 
-"
 ```typescript
 @Entity()
 export class Parent extends AirEntity {

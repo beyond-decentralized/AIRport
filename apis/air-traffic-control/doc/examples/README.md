@@ -1,1 +1,0 @@
-# TIQL Examples

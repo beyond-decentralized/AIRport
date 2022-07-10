@@ -1,7 +1,7 @@
-# TIQL Entity Graph Query Examples
+# TARMAQ Entity Graph Query Examples
 <!-- TOC -->
 
-- [TIQL Entity Graph Query Examples](#tiql-entity-graph-query-examples)
+- [TARMAQ Entity Graph Query Examples](#TARMAQ-entity-graph-query-examples)
     - [Find all Tasks](#find-all-tasks)
     - [Find tasks with a sub-query function](#find-tasks-with-a-sub-query-function)
     - [Search for all goals](#search-for-all-goals)
@@ -11,60 +11,112 @@
 ## Find all Tasks
 
 ```ts
-await QTask.find(db).graph(findTasks);
+import { Injected } from '@airport/direction-indicator'
+import { BaseTaskDao } from '../generated/generated'
+
+class TaskDao extends BaseTaskDao {
+
+	async findAll(): Promise<Find> {
+		let t: QTask
+		return await this._find({
+			select: {},
+			from: [
+				t = Q.Task
+			]
+		});
+	}
+
+}
 ```
 
 ## Find tasks with a sub-query function
 
 ```ts
-	function subQueryWhereClause( t: QTask ) {
-		return and(
-			ucase(t.name).like('% REF%'),
-			t.taskId.equals(( t2: QTask ) => ({
-				from: [t2 = QTask.from(db)],
-				select: t2.taskId,
-				where: t2.taskId.equals(t.taskId)
-			}))
-		);
-	}
+import { Injected } from '@airport/direction-indicator'
+import { Task } from '../ddl/ddl'
+import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
-await QTask.find().graph(( t: QTask ) => ({
+class TaskDao extends BaseTaskDao {
+	async findTasksLikeWithSubQuery(
+		likeValue: string
+	): Promise<Task[]> {
+		let t: QTask
+		let t2: QTask
+		return await this._find({
 			select: {},
-			from: [t = QTask.from(db)],
-			where: subQueryWhereClause(t)
-		}));
+			from: [
+				t = Q.Task
+				],
+			where: and(
+				ucase(t.name).like(`%${likeValue}%`),
+				t.taskId.equals(field({
+					from: [
+						t2 = Q.Task
+					],
+					select:
+						t2.taskId,
+					where: 
+						t2.taskId.equals(t.taskId)
+				}))
+			)
+		});
+	}
+}
 ```
 
-## Search for all goals
+## Search for a goal
 
 ```ts
-QGoal.db().searchOne.graph((
-				g: QGoal
-			) => ({
-				select: {}
-			})).subscribe(
-				goal => {
-					// Do stuff here
-				});
+import { Injected } from '@airport/direction-indicator'
+import { BaseGoalDao, Q, QGoal } from '../generated/generated'
+
+class GoalDao extends BaseGoalDao {
+	findAGoal(
+		goalId: string
+	): Observable<Goal> {
+		let g: QGoal
+		return this._searchOne({
+			select: {},
+			from: [
+				g = Q.Goal
+			],
+			where:
+				g.equals(id)
+		});
+	}
+}
 ```
 
 ## Find Goal with Tasks ordered
 
 ```ts
-await QGoal.findOne().graph(
-			(
-				g: QGoal,
-				t: QTask
-			) => ({
-				select: {
-					'*': null,
-					tasks: {}
-				},
-				from: [
-					g = QGoal.from(db),
-					t = g.tasks.innerJoin()
-				],
-				where: g.goalId.equals(goalNTasks2.goalId),
-				orderBy: [g.goalId.asc(), g.dueDate.desc(), t.taskId.asc()]
-			}));
+import { Injected } from '@airport/direction-indicator'
+import { Y } from '@airport/tarmaq-query';
+import { Goal } from '../ddl/ddl'
+import { BaseGoalDao, Q, QGoal, QTask } from '../generated/generated'
+
+class GoalDao extends BaseGoalDao {
+	async findGoalWithOrderedTasks(
+		goalId: string
+	): Promise<Goal> {
+		let g: QGoal,
+			t: QTask
+		return await this._find({
+			select: {
+				'*': Y,
+				tasks: {}
+			},
+			from: [
+				g = Q.Goal,
+				t = g.tasks.innerJoin()
+			],
+			where: g.goalId.equals(goalId),
+			orderBy: [
+				g.goalId.asc(),
+				g.dueDate.desc(),
+				t.taskId.asc()
+			]
+		})
+	};
+}
 ```

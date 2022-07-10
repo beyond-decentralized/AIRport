@@ -1,79 +1,108 @@
-# TIQL Field Query Examples
+# TARMAQ Field Query Examples
 <!-- TOC -->
 
-- [TIQL Field Query Examples](#tiql-field-query-examples)
+- [TARMAQ Field Query Examples](#TARMAQ-field-query-examples)
     - [Stand-Alone Examples](#stand-alone-examples)
         - [Count all Tasks](#count-all-tasks)
     - [Sub-Query Examples](#sub-query-examples)
-        - [QTask Update Where: implied in equals operation](#qtask-update-where-implied-in-equals-operation)
-        - [TQ Database embedded in UPDATE WHERE, via field method](#tq-database-embedded-in-update-where-via-field-method)
+        - [sub-query in where clause](#sub-query-in-where-clause)
+        - [sub-query in set clause](#sub-query-in-set-clause)
 
 <!-- /TOC -->
 ## Stand-Alone Examples
 
 ### Count all Tasks
 ```ts
-await TQ.findOne().field((t: QTask) => ({
-  from: [t = QTask.from()],
-  select: count(t.taskId)
-}));
+import { Inject, Injected } from '@airport/direction-indicator'
+import { BaseTaskDao, Q, QTask } from '../generated/generated'
+
+@Injected()
+class TaskDao extends BaseTaskDao {
+
+	@Inject()
+	airDb: AirportDatabase
+	
+	async getTaskCount() {
+		let t: QTask
+		return await this.airDb.findOne.field({
+  			from: [
+				t = Q.Task
+				],
+  			select: count(t.taskId)
+		});
+	}
+}
 ```
 
 ## Sub-Query Examples
 
-### QTask Update Where: implied in equals operation
+### sub-query in where clause
 
 ```ts
-await QTask.updateWhere((t: QTask) => ({
-  update: t = QTask.from(db),
-  set: {
-    name: 'Cascaded Insert w/ Reference'
-  },
-  where: and(
-    ucase(t.name).like('% REF%'),
-    t.taskId.equals((t2: QTask) => ({
-      from: [t2 = QTask.from(db)],
-      select: t2.taskId,
-      where: t2.taskId.equals(t.taskId)
-    }))
-  )
-});
+
+import { Injected } from '@airport/direction-indicator'
+import { field } from '@airport/tarmaq-query'
+import { BaseTaskDao, Q, QTask } from '../generated/generated'
+
+@Injected()
+class TaskDao extends BaseTaskDao {
+	
+	async getTaskCount(
+		newName: string
+		taskNameLike: string
+	) {
+		let t: QTask,
+			t2: QTask
+		return await this.db.updateWhere({
+  			update: t = QTask.from(db),
+			set: {
+				name: newName
+			},
+			where: and(
+				ucase(t.name).like(`%${taskNameLike}%`),
+   				t.taskId.equals(field({
+      				from: [
+						t2 = QTask.from(db)
+					],
+      				select: t2.taskId,
+      				where: t2.taskId.equals(t.taskId)
+    			}))
+  			)
+		});
+	}
+}
 ```
 
-### TQ Database embedded in UPDATE WHERE, via field method
+### sub-query in set clause
 ```ts
-await QDatabase.db(this.dbFacade.name).updateWhere((
+import { Injected } from '@airport/direction-indicator'
+import { field } from '@airport/tarmaq-query'
+import { BaseTaskDao, Q, QTask } from '../generated/generated'
+
+@Injected()
+class TaskDao extends BaseTaskDao {
+	
+	async getTaskCount(
+		taskWithNameId: string,
+		taskToUpdateId: string
+	) {
+		let t: QTask
+			t2: QTask
+		return await QDatabase.db(this.dbFacade.name).updateWhere((
 			db: QDatabase
 		) => ({
-			update: db = QDatabase.from(this.dbFacade.name),
+			update: t = Q.Task,
 			set: {
-				lastSyncedTransaction: field((
-					cg: QTransaction
-				) => ({
-					from: [cg = QTransaction.from(this.dbFacade.name)],
-					select: cg.id,
-					where: and(
-						cg.createDateTime.equals((
-							cg2: QTransaction
-						) => ({
-							from: [cg2 = QTransaction.from(this.dbFacade.name)],
-							select: max(cg2.createDateTime),
-						})),
-						cg.transactionIndexInMillisecond.equals((
-							cg3: QTransaction
-						) => ({
-							from: [cg3 = QTransaction.from(this.dbFacade.name)],
-							select: max(cg3.transactionIndexInMillisecond),
-							where: cg3.createDateTime.equals((
-								cg4: QTransaction
-							) => ({
-								from: [cg4 = QTransaction.from(this.dbFacade.name)],
-								select: max(cg4.createDateTime),
-							}))
-						}))
-					)
-				}))
+				name: field({
+      				from: [
+						t2 = Q.Task
+					],
+      				select: t2.name,
+      				where: t2.taskId.equals(taskWithNameId)
+    			})
 			},
-			where: db.id.equals(this.dbFacade.dbId)
+			where: task.id.equals(taskToUpdateId)
 		}));
+	}
+}
 ```
