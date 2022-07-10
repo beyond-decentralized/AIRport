@@ -1,6 +1,7 @@
 import { ApplicationEntity_LocalId } from '@airport/ground-control';
-import { Actor_LocalId, RecordHistory_ActorRecordId, Repository_LocalId } from '../../ddl/ddl';
+import { Actor_LocalId, RecordHistory_ActorRecordId } from '../../ddl/ddl';
 import { BaseRepositoryTransactionHistoryDao, IRepositoryTransactionHistory } from '../../generated/generated';
+import { Repository_LocalId } from '../../types';
 export interface IRepositoryTransactionHistoryDao {
     findWhereGUIDsIn(GUIDs: string[]): Promise<IRepositoryTransactionHistory[]>;
     findAllLocalChangesForRecordIds(changedRecordIds: Map<Repository_LocalId, IChangedRecordIdsForRepository>): Promise<Map<Repository_LocalId, IRepositoryTransactionHistory[]>>;

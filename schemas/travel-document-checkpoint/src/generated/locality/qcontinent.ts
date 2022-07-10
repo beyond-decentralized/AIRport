@@ -40,10 +40,10 @@ import {
 	QUserAccount,
 	QUserAccountQId,
 	QUserAccountQRelation,
-} from '../quserAccount';
+} from '../quseraccount';
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 import {
 	IContinent,
 } from './continent';
@@ -60,13 +60,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ContinentESelect
-	extends IEntitySelectProperties, ContinentEOptionalId {
+    extends IEntitySelectProperties, ContinentEOptionalId {
 	// Non-Id Properties
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	countries?: CountryESelect;
 	userAccounts?: UserAccountESelect;
 
@@ -76,7 +76,7 @@ export interface ContinentESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ContinentEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -112,8 +112,8 @@ export interface ContinentEUpdateProperties
  */
 export interface ContinentGraph
 	extends ContinentEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	name?: string | IQStringField;
 
@@ -137,14 +137,14 @@ export interface ContinentEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ContinentECreateProperties
-	extends Partial<ContinentEId>, ContinentEUpdateProperties {
+extends Partial<ContinentEId>, ContinentEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface ContinentECreateColumns
-	extends ContinentEId, ContinentEUpdateColumns {
+extends ContinentEId, ContinentEUpdateColumns {
 }
 
 
@@ -157,7 +157,8 @@ export interface ContinentECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QContinent extends IQEntity {
+export interface QContinent extends IQEntity
+{
 	// Id Fields
 	id: IQNumberField;
 
@@ -174,8 +175,9 @@ export interface QContinent extends IQEntity {
 
 
 // Entity Id Interface
-export interface QContinentQId {
-
+export interface QContinentQId
+{
+	
 	// Id Fields
 	id: IQNumberField;
 

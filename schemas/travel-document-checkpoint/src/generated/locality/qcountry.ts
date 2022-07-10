@@ -40,10 +40,10 @@ import {
 	QUserAccount,
 	QUserAccountQId,
 	QUserAccountQRelation,
-} from '../quserAccount';
+} from '../quseraccount';
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 import {
 	ICountry,
 } from './country';
@@ -60,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface CountryESelect
-	extends IEntitySelectProperties, CountryEOptionalId {
+    extends IEntitySelectProperties, CountryEOptionalId {
 	// Non-Id Properties
 	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	continent?: ContinentESelect;
 	userAccounts?: UserAccountESelect;
 
@@ -77,7 +77,7 @@ export interface CountryESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface CountryEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -115,8 +115,8 @@ export interface CountryEUpdateProperties
  */
 export interface CountryGraph
 	extends CountryEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	abbreviation?: string | IQStringField;
 	name?: string | IQStringField;
@@ -143,14 +143,14 @@ export interface CountryEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface CountryECreateProperties
-	extends Partial<CountryEId>, CountryEUpdateProperties {
+extends Partial<CountryEId>, CountryEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface CountryECreateColumns
-	extends CountryEId, CountryEUpdateColumns {
+extends CountryEId, CountryEUpdateColumns {
 }
 
 
@@ -163,7 +163,8 @@ export interface CountryECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QCountry extends IQEntity {
+export interface QCountry extends IQEntity
+{
 	// Id Fields
 	id: IQNumberField;
 
@@ -181,8 +182,9 @@ export interface QCountry extends IQEntity {
 
 
 // Entity Id Interface
-export interface QCountryQId {
-
+export interface QCountryQId
+{
+	
 	// Id Fields
 	id: IQNumberField;
 

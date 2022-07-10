@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
 	{
 		"type": "VersionedApplicationObject",
-		"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\VersionedApplicationObject.ts",
+		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/VersionedApplicationObject.ts",
 		"parentClassName": null,
 		"isSuperclass": true,
 		"ids": [],
@@ -42,7 +42,7 @@ export const MAPPED_SUPERCLASS = [
 								"sourceName": "MappedSuperclass"
 							}
 						},
-						"path": "@airport/air-traffic-control"
+						"path": "@airport/tarmaq-entity"
 					},
 					"ManyToOne": null,
 					"MappedSuperclass": null,
@@ -60,7 +60,7 @@ export const MAPPED_SUPERCLASS = [
 					}
 				},
 				"importMapByModulePath": {
-					"@airport/air-traffic-control": null,
+					"@airport/tarmaq-entity": null,
 					"./ApplicationVersion": null
 				}
 			},
@@ -92,7 +92,7 @@ export const MAPPED_SUPERCLASS = [
 					"nonArrayType": "ApplicationVersion",
 					"entity": {
 						"type": "ApplicationVersion",
-						"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationVersion.ts",
+						"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationVersion.ts",
 						"parentClassName": null,
 						"isSuperclass": false,
 						"ids": [
@@ -226,7 +226,7 @@ export const MAPPED_SUPERCLASS = [
 												"sourceName": "Transient"
 											}
 										},
-										"path": "@airport/air-traffic-control"
+										"path": "@airport/tarmaq-entity"
 									},
 									"DbNumber": null,
 									"DbString": null,
@@ -355,7 +355,7 @@ export const MAPPED_SUPERCLASS = [
 									}
 								},
 								"importMapByModulePath": {
-									"@airport/air-traffic-control": null,
+									"@airport/tarmaq-entity": null,
 									"@airport/ground-control": null,
 									"./Application": null,
 									"./ApplicationEntity": null,
@@ -601,7 +601,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "Application",
 									"entity": {
 										"type": "Application",
-										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Application.ts",
+										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Application.ts",
 										"parentClassName": null,
 										"isSuperclass": false,
 										"ids": [
@@ -712,7 +712,7 @@ export const MAPPED_SUPERCLASS = [
 																"sourceName": "Table"
 															}
 														},
-														"path": "@airport/air-traffic-control"
+														"path": "@airport/tarmaq-entity"
 													},
 													"DbNumber": null,
 													"DbString": null,
@@ -796,7 +796,7 @@ export const MAPPED_SUPERCLASS = [
 													}
 												},
 												"importMapByModulePath": {
-													"@airport/air-traffic-control": null,
+													"@airport/tarmaq-entity": null,
 													"@airport/ground-control": null,
 													"./Domain": null,
 													"./ApplicationCurrentVersion": null,
@@ -1018,7 +1018,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "Domain",
 													"entity": {
 														"type": "Domain",
-														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\Domain.ts",
+														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/Domain.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1118,7 +1118,7 @@ export const MAPPED_SUPERCLASS = [
 																				"sourceName": "Table"
 																			}
 																		},
-																		"path": "@airport/air-traffic-control"
+																		"path": "@airport/tarmaq-entity"
 																	},
 																	"DbNumber": null,
 																	"DbString": null,
@@ -1158,7 +1158,7 @@ export const MAPPED_SUPERCLASS = [
 																	}
 																},
 																"importMapByModulePath": {
-																	"@airport/air-traffic-control": null,
+																	"@airport/tarmaq-entity": null,
 																	"@airport/ground-control": null,
 																	"./Application": null
 																}
@@ -1298,7 +1298,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationCurrentVersion",
 													"entity": {
 														"type": "ApplicationCurrentVersion",
-														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationCurrentVersion.ts",
+														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationCurrentVersion.ts",
 														"parentClassName": null,
 														"isSuperclass": false,
 														"ids": [
@@ -1423,7 +1423,7 @@ export const MAPPED_SUPERCLASS = [
 																				"sourceName": "Table"
 																			}
 																		},
-																		"path": "@airport/air-traffic-control"
+																		"path": "@airport/tarmaq-entity"
 																	},
 																	"Id": null,
 																	"JoinColumn": null,
@@ -1455,7 +1455,7 @@ export const MAPPED_SUPERCLASS = [
 																	}
 																},
 																"importMapByModulePath": {
-																	"@airport/air-traffic-control": null,
+																	"@airport/tarmaq-entity": null,
 																	"./Application": null,
 																	"./ApplicationVersion": null
 																}
@@ -1576,7 +1576,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationEntity",
 									"entity": {
 										"type": "ApplicationEntity",
-										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationEntity.ts",
+										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationEntity.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -1707,7 +1707,7 @@ export const MAPPED_SUPERCLASS = [
 																"sourceName": "Transient"
 															}
 														},
-														"path": "@airport/air-traffic-control"
+														"path": "@airport/tarmaq-entity"
 													},
 													"DbBoolean": null,
 													"DbNumber": null,
@@ -1855,7 +1855,7 @@ export const MAPPED_SUPERCLASS = [
 													}
 												},
 												"importMapByModulePath": {
-													"@airport/air-traffic-control": null,
+													"@airport/tarmaq-entity": null,
 													"@airport/ground-control": null,
 													"./ApplicationColumn": null,
 													"./ApplicationOperation": null,
@@ -2091,7 +2091,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationColumn",
 													"entity": {
 														"type": "ApplicationColumn",
-														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationColumn.ts",
+														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationColumn.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -2207,7 +2207,7 @@ export const MAPPED_SUPERCLASS = [
 																				"sourceName": "Table"
 																			}
 																		},
-																		"path": "@airport/air-traffic-control"
+																		"path": "@airport/tarmaq-entity"
 																	},
 																	"DbBoolean": null,
 																	"DbNumber": null,
@@ -2334,7 +2334,7 @@ export const MAPPED_SUPERCLASS = [
 																	}
 																},
 																"importMapByModulePath": {
-																	"@airport/air-traffic-control": null,
+																	"@airport/tarmaq-entity": null,
 																	"@airport/ground-control": null,
 																	"./ApplicationEntity": null,
 																	"./ApplicationPropertyColumn": null,
@@ -2674,7 +2674,7 @@ export const MAPPED_SUPERCLASS = [
 																	"nonArrayType": "ApplicationPropertyColumn",
 																	"entity": {
 																		"type": "ApplicationPropertyColumn",
-																		"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationPropertyColumn.ts",
+																		"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationPropertyColumn.ts",
 																		"parentClassName": "VersionedApplicationObject",
 																		"location": "./VersionedApplicationObject",
 																		"isSuperclass": false,
@@ -2800,7 +2800,7 @@ export const MAPPED_SUPERCLASS = [
 																								"sourceName": "Table"
 																							}
 																						},
-																						"path": "@airport/air-traffic-control"
+																						"path": "@airport/tarmaq-entity"
 																					},
 																					"Id": null,
 																					"JoinColumn": null,
@@ -2844,7 +2844,7 @@ export const MAPPED_SUPERCLASS = [
 																					}
 																				},
 																				"importMapByModulePath": {
-																					"@airport/air-traffic-control": null,
+																					"@airport/tarmaq-entity": null,
 																					"./ApplicationColumn": null,
 																					"./ApplicationProperty": null,
 																					"./VersionedApplicationObject": null
@@ -3016,7 +3016,7 @@ export const MAPPED_SUPERCLASS = [
 													"nonArrayType": "ApplicationOperation",
 													"entity": {
 														"type": "ApplicationOperation",
-														"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationOperation.ts",
+														"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationOperation.ts",
 														"parentClassName": "VersionedApplicationObject",
 														"location": "./VersionedApplicationObject",
 														"isSuperclass": false,
@@ -3136,7 +3136,7 @@ export const MAPPED_SUPERCLASS = [
 																				"sourceName": "Table"
 																			}
 																		},
-																		"path": "@airport/air-traffic-control"
+																		"path": "@airport/tarmaq-entity"
 																	},
 																	"DbNumber": null,
 																	"DbString": null,
@@ -3203,7 +3203,7 @@ export const MAPPED_SUPERCLASS = [
 																	}
 																},
 																"importMapByModulePath": {
-																	"@airport/air-traffic-control": null,
+																	"@airport/tarmaq-entity": null,
 																	"@airport/ground-control": null,
 																	"./ApplicationEntity": null,
 																	"./VersionedApplicationObject": null
@@ -3553,7 +3553,7 @@ export const MAPPED_SUPERCLASS = [
 									"nonArrayType": "ApplicationReference",
 									"entity": {
 										"type": "ApplicationReference",
-										"path": "D:\\code\\BD\\AIRport\\schemas\\airspace\\src\\ddl\\application\\ApplicationReference.ts",
+										"path": "/Users/mama/Documents/code/BD/AIRport/schemas/airspace/src/ddl/application/ApplicationReference.ts",
 										"parentClassName": "VersionedApplicationObject",
 										"location": "./VersionedApplicationObject",
 										"isSuperclass": false,
@@ -3689,7 +3689,7 @@ export const MAPPED_SUPERCLASS = [
 																"sourceName": "Table"
 															}
 														},
-														"path": "@airport/air-traffic-control"
+														"path": "@airport/tarmaq-entity"
 													},
 													"DbNumber": null,
 													"Entity": null,
@@ -3735,7 +3735,7 @@ export const MAPPED_SUPERCLASS = [
 													}
 												},
 												"importMapByModulePath": {
-													"@airport/air-traffic-control": null,
+													"@airport/tarmaq-entity": null,
 													"@airport/ground-control": null,
 													"./ApplicationVersion": null,
 													"./VersionedApplicationObject": null

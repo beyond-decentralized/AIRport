@@ -20,7 +20,7 @@ import { QTerminal } from './terminal/qterminal';
 import { QTerminalType } from './terminal/qterminaltype';
 import { QType } from './type/qtype';
 import { QTypeClassification } from './type/qtypeclassification';
-import { QUserAccount } from './quserAccount';
+import { QUserAccount } from './quseraccount';
 import {
   Classification,
   Client,

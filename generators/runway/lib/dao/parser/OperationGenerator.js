@@ -81,7 +81,8 @@ function serializeClass(symbol, daoName, entityName) {
             // 	serializeMethod(symbol, daoName, entityName, memberName, member, daoOperations);
             // 	break;
             case tsc.SyntaxKind.PropertyDeclaration:
-                serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
+                // NOTE: all queries are done in code, query serialization is no longer needed
+                // serializeProperty(symbol, daoName, entityName, memberName, member, daoOperations);
                 break;
             default:
                 break;

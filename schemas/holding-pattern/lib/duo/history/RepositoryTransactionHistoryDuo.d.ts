@@ -1,6 +1,7 @@
 import { ChangeType, DbEntity, IRootTransaction } from '@airport/ground-control';
-import { Actor_LocalId, Repository_LocalId, SystemWideOperationId } from '../../ddl/ddl';
+import { Actor_LocalId, SystemWideOperationId } from '../../ddl/ddl';
 import { BaseRepositoryTransactionHistoryDuo, IActor, IOperationHistory, IRepositoryTransactionHistory } from '../../generated/generated';
+import { Repository_LocalId } from '../../types';
 import { IOperationHistoryDuo } from './OperationHistoryDuo';
 export interface IRepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId: Repository_LocalId, isRepositoryCreation: boolean): IRepositoryTransactionHistory;

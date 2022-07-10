@@ -60,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ClientTypeESelect
-	extends IEntitySelectProperties, ClientTypeEOptionalId {
+    extends IEntitySelectProperties, ClientTypeEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	client?: ClientESelect;
 	type?: TypeESelect;
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -75,7 +75,7 @@ export interface ClientTypeESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ClientTypeEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -112,8 +112,8 @@ export interface ClientTypeEUpdateProperties
  */
 export interface ClientTypeGraph
 	extends ClientTypeEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -135,14 +135,14 @@ export interface ClientTypeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ClientTypeECreateProperties
-	extends Partial<ClientTypeEId>, ClientTypeEUpdateProperties {
+extends Partial<ClientTypeEId>, ClientTypeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface ClientTypeECreateColumns
-	extends ClientTypeEId, ClientTypeEUpdateColumns {
+extends ClientTypeEId, ClientTypeEUpdateColumns {
 }
 
 
@@ -155,7 +155,8 @@ export interface ClientTypeECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClientType extends IQEntity {
+export interface QClientType extends IQEntity
+{
 	// Id Fields
 
 	// Id Relations
@@ -170,8 +171,9 @@ export interface QClientType extends IQEntity {
 
 
 // Entity Id Interface
-export interface QClientTypeQId {
-
+export interface QClientTypeQId
+{
+	
 	// Id Fields
 
 	// Id Relations

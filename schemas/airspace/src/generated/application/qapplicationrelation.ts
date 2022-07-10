@@ -19,11 +19,6 @@ import {
 	RawUpdate,
 } from '@airport/tarmaq-query';
 import {
-	ForeignKey,
-	ManyToOneElements,
-	OneToManyElements,
-} from '@airport/tarmaq-entity'
-import {
 	VersionedApplicationObjectGraph,
 	VersionedApplicationObjectEId,
 	VersionedApplicationObjectEUpdateColumns,
@@ -33,6 +28,11 @@ import {
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
 } from './qversionedapplicationobject';
+import {
+	ForeignKey,
+	ManyToOneElements,
+	OneToManyElements,
+} from '@airport/tarmaq-entity';
 import {
 	ApplicationPropertyGraph,
 	ApplicationPropertyEId,

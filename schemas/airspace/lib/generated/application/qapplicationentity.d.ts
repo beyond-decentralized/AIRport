@@ -1,6 +1,6 @@
 import { IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField } from '@airport/tarmaq-query';
-import { ApplicationEntity_TableConfiguration } from '@airport/tarmaq-entity';
 import { VersionedApplicationObjectGraph, VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns, VersionedApplicationObjectEUpdateProperties, VersionedApplicationObjectESelect, QVersionedApplicationObjectQId, QVersionedApplicationObjectQRelation, QVersionedApplicationObject } from './qversionedapplicationobject';
+import { ApplicationEntity_TableConfiguration } from '@airport/tarmaq-entity';
 import { ApplicationVersionGraph, ApplicationVersionEOptionalId, ApplicationVersionESelect, QApplicationVersionQRelation } from './qapplicationversion';
 import { ApplicationColumnGraph, ApplicationColumnESelect, QApplicationColumn } from './qapplicationcolumn';
 import { ApplicationOperationGraph, ApplicationOperationESelect, QApplicationOperation } from './qapplicationoperation';

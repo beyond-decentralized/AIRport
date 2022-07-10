@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinColumn, ManyToOne, OneToMany, Table } from "@airport/tarmaq-entity";
+/**
+ * Created by Papa on 2/9/2017.
+ */
 let Repository = class Repository {
     constructor() {
         this.repositoryTransactionHistory = [];

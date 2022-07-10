@@ -1,11 +1,11 @@
 import {
-    airApi,
-    QApplication
+	airApi,
+	QApplication
 } from '@airport/aviation-communication'
 import {
-    DbApplication,
-    ApplicationEntity_LocalId,
-}                      from '@airport/ground-control';
+	DbApplication,
+	ApplicationEntity_LocalId,
+} from '@airport/ground-control';
 import { QApplication as QApp } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
@@ -20,26 +20,26 @@ import { QApplicationVersion } from './application/qapplicationversion';
 import { QDomain } from './application/qdomain';
 import { QVersionedApplicationObject } from './application/qversionedapplicationobject';
 import {
-  Application,
-  ApplicationColumn,
-  ApplicationCurrentVersion,
-  ApplicationEntity,
-  ApplicationOperation,
-  ApplicationProperty,
-  ApplicationPropertyColumn,
-  ApplicationReference,
-  ApplicationRelation,
-  ApplicationRelationColumn,
-  ApplicationVersion,
-  Domain,
-  VersionedApplicationObject
+	Application,
+	ApplicationColumn,
+	ApplicationCurrentVersion,
+	ApplicationEntity,
+	ApplicationOperation,
+	ApplicationProperty,
+	ApplicationPropertyColumn,
+	ApplicationReference,
+	ApplicationRelation,
+	ApplicationRelationColumn,
+	ApplicationVersion,
+	Domain,
+	VersionedApplicationObject
 } from '../ddl/ddl';
 
 export interface LocalQApplication extends QApplication {
 
-    db: DbApplication;
+	db: DbApplication;
 
-  Application: QApp;
+	Application: QApp;
 	ApplicationColumn: QApplicationColumn;
 	ApplicationCurrentVersion: QApplicationCurrentVersion;
 	ApplicationEntity: QApplicationEntity;
@@ -72,8 +72,8 @@ const __constructors__ = {
 
 export const Q_APPLICATION: LocalQApplication = <any>{
 	__constructors__,
-  domain: 'air',
-  name: '@airport/airspace'
+	domain: 'air',
+	name: '@airport/airspace'
 };
 export const Q: LocalQApplication = Q_APPLICATION
 

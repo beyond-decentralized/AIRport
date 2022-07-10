@@ -1,4 +1,4 @@
-import { Dao, DaoQueryDecorators } from '@airport/tarmaq-dao';
+import { Dao, DaoQueryDecorators, } from '@airport/tarmaq-dao';
 import { Q, duoDiSet, } from './qApplication';
 // Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {

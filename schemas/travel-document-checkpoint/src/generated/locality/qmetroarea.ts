@@ -53,10 +53,10 @@ import {
 	QUserAccount,
 	QUserAccountQId,
 	QUserAccountQRelation,
-} from '../quserAccount';
+} from '../quseraccount';
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 import {
 	IMetroArea,
 } from './metroarea';
@@ -73,13 +73,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface MetroAreaESelect
-	extends IEntitySelectProperties, MetroAreaEOptionalId {
+    extends IEntitySelectProperties, MetroAreaEOptionalId {
 	// Non-Id Properties
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	country?: CountryESelect;
 	metroAreaStates?: MetroAreaStateESelect;
 	userAccounts?: UserAccountESelect;
@@ -90,7 +90,7 @@ export interface MetroAreaESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface MetroAreaEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -127,8 +127,8 @@ export interface MetroAreaEUpdateProperties
  */
 export interface MetroAreaGraph
 	extends MetroAreaEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	name?: string | IQStringField;
 
@@ -154,14 +154,14 @@ export interface MetroAreaEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface MetroAreaECreateProperties
-	extends Partial<MetroAreaEId>, MetroAreaEUpdateProperties {
+extends Partial<MetroAreaEId>, MetroAreaEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface MetroAreaECreateColumns
-	extends MetroAreaEId, MetroAreaEUpdateColumns {
+extends MetroAreaEId, MetroAreaEUpdateColumns {
 }
 
 
@@ -174,7 +174,8 @@ export interface MetroAreaECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QMetroArea extends IQEntity {
+export interface QMetroArea extends IQEntity
+{
 	// Id Fields
 	id: IQNumberField;
 
@@ -192,8 +193,9 @@ export interface QMetroArea extends IQEntity {
 
 
 // Entity Id Interface
-export interface QMetroAreaQId {
-
+export interface QMetroAreaQId
+{
+	
 	// Id Fields
 	id: IQNumberField;
 

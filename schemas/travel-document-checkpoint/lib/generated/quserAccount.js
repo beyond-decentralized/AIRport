@@ -1,2 +1,2 @@
 export {};
-//# sourceMappingURL=quserAccount.js.map
+//# sourceMappingURL=quseraccount.js.map

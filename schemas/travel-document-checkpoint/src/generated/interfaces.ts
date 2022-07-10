@@ -12,4 +12,4 @@ export * from './terminal/terminaltype';
 export * from './type/classification';
 export * from './type/type';
 export * from './type/typeclassification';
-export * from './userAccount';
+export * from './useraccount';

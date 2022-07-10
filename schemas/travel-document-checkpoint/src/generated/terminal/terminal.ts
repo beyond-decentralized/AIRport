@@ -1,6 +1,6 @@
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 import {
 	IContinent,
 } from '../locality/continent';

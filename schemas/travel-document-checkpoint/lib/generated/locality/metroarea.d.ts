@@ -1,6 +1,6 @@
 import { ICountry } from './country';
 import { IMetroAreaState } from './metroareastate';
-import { IUserAccount } from '../userAccount';
+import { IUserAccount } from '../useraccount';
 export interface IMetroArea {
     id: number;
     name?: string;

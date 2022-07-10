@@ -34,13 +34,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ClassificationESelect
-	extends IEntitySelectProperties, ClassificationEOptionalId {
+    extends IEntitySelectProperties, ClassificationEOptionalId {
 	// Non-Id Properties
 	name?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -48,7 +48,7 @@ export interface ClassificationESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ClassificationEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	id: number | IQNumberField;
 
@@ -84,8 +84,8 @@ export interface ClassificationEUpdateProperties
  */
 export interface ClassificationGraph
 	extends ClassificationEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	name?: string | IQStringField;
 
@@ -107,14 +107,14 @@ export interface ClassificationEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ClassificationECreateProperties
-	extends Partial<ClassificationEId>, ClassificationEUpdateProperties {
+extends Partial<ClassificationEId>, ClassificationEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface ClassificationECreateColumns
-	extends ClassificationEId, ClassificationEUpdateColumns {
+extends ClassificationEId, ClassificationEUpdateColumns {
 }
 
 
@@ -127,7 +127,8 @@ export interface ClassificationECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClassification extends IQEntity {
+export interface QClassification extends IQEntity
+{
 	// Id Fields
 	id: IQNumberField;
 
@@ -142,8 +143,9 @@ export interface QClassification extends IQEntity {
 
 
 // Entity Id Interface
-export interface QClassificationQId {
-
+export interface QClassificationQId
+{
+	
 	// Id Fields
 	id: IQNumberField;
 

@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQBooleanField, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
-import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation } from '../quserAccount';
+import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation } from '../quseraccount';
 import { ContinentGraph, ContinentEOptionalId, ContinentESelect, QContinentQRelation } from '../locality/qcontinent';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from '../locality/qcountry';
 import { StateGraph, StateEOptionalId, StateESelect, QStateQRelation } from '../locality/qstate';

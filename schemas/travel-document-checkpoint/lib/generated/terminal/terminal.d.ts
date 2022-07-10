@@ -1,4 +1,4 @@
-import { IUserAccount } from '../userAccount';
+import { IUserAccount } from '../useraccount';
 import { IContinent } from '../locality/continent';
 import { ICountry } from '../locality/country';
 import { IState } from '../locality/state';

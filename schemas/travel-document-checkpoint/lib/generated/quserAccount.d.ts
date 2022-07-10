@@ -107,4 +107,4 @@ export interface QUserAccountQId {
 }
 export interface QUserAccountQRelation extends IQRelation<QUserAccount>, QUserAccountQId {
 }
-//# sourceMappingURL=quserAccount.d.ts.map
+//# sourceMappingURL=quseraccount.d.ts.map

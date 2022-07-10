@@ -11,9 +11,6 @@ import {
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_GUID,
-	Repository_LocalId,
-	Repository_Source,
-	Repository_GUID,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryDao,
@@ -24,6 +21,7 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
+import { Repository_GUID, Repository_LocalId, Repository_Source } from '../../types'
 
 export interface IRepositoryDao
 	extends IBaseRepositoryDao {

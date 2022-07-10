@@ -25,7 +25,7 @@ import { RepositoryTypeESelect, RepositoryTypeECreateProperties, RepositoryTypeE
 import { TransactionHistory } from '../ddl/history/transactionhistory';
 import { TransactionHistoryESelect, TransactionHistoryECreateProperties, TransactionHistoryEUpdateColumns, TransactionHistoryEUpdateProperties, TransactionHistoryEId, TransactionHistoryGraph, QTransactionHistory } from './history/qtransactionhistory';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/tarmaq-query';
-import { Dao, DaoQueryDecorators, IDao } from '@airport/tarmaq-dao';
+import { IDao, Dao, DaoQueryDecorators } from '@airport/tarmaq-dao';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);

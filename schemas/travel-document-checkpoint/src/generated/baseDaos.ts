@@ -183,7 +183,7 @@ import {
 } from './type/qtypeclassification';
 import {
 	UserAccount,
-} from '../ddl/userAccount';
+} from '../ddl/useraccount';
 import {
 	UserAccountESelect,
 	UserAccountECreateColumns,
@@ -193,7 +193,7 @@ import {
 	UserAccountEId,
 	UserAccountGraph,
 	QUserAccount,
-} from './quserAccount';
+} from './quseraccount';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -204,8 +204,8 @@ import {
 	IQEntity,
 } from '@airport/tarmaq-query';
 import {
-	Dao,
 	IDao,
+	Dao,
 	DaoQueryDecorators,
 } from '@airport/tarmaq-dao';
 import {
@@ -227,13 +227,13 @@ export class SQDIDao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
-	EntitySelect,
-	EntityCreate,
-	EntityUpdateColumns,
-	EntityUpdateProperties,
-	ApplicationEntity_LocalId,
-	EntityCascadeGraph,
-	IQE> {
+		EntitySelect,
+		EntityCreate,
+		EntityUpdateColumns,
+		EntityUpdateProperties,
+		ApplicationEntity_LocalId,
+		EntityCascadeGraph,
+		IQE> {
 
 	constructor(
 		dbEntityId: DbEntityId
@@ -244,27 +244,27 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseClassificationDao
-	extends IDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
+  extends IDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification> {
 }
 
 export class BaseClassificationDao
-	extends SQDIDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification>
+  extends SQDIDao<Classification, ClassificationESelect, ClassificationECreateProperties, ClassificationEUpdateColumns, ClassificationEUpdateProperties, ClassificationEId, ClassificationGraph, QClassification>
 	implements IBaseClassificationDao {
-
-	static Find = new DaoQueryDecorators<ClassificationESelect>();
-	static FindOne = new DaoQueryDecorators<ClassificationESelect>();
-	static Search = new DaoQueryDecorators<ClassificationESelect>();
+	
+	static Find      = new DaoQueryDecorators<ClassificationESelect>();
+	static FindOne   = new DaoQueryDecorators<ClassificationESelect>();
+	static Search    = new DaoQueryDecorators<ClassificationESelect>();
 	static SearchOne = new DaoQueryDecorators<ClassificationESelect>();
 	static Save(
 		config: ClassificationGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ClassificationGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(6)
 	}
-
+	
 	constructor() {
 		super(6)
 	}
@@ -272,27 +272,27 @@ export class BaseClassificationDao
 
 
 export interface IBaseClientDao
-	extends IDao<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
+  extends IDao<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient> {
 }
 
 export class BaseClientDao
-	extends SQDIDao<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient>
+  extends SQDIDao<Client, ClientESelect, ClientECreateProperties, ClientEUpdateColumns, ClientEUpdateProperties, ClientEId, ClientGraph, QClient>
 	implements IBaseClientDao {
-
-	static Find = new DaoQueryDecorators<ClientESelect>();
-	static FindOne = new DaoQueryDecorators<ClientESelect>();
-	static Search = new DaoQueryDecorators<ClientESelect>();
+	
+	static Find      = new DaoQueryDecorators<ClientESelect>();
+	static FindOne   = new DaoQueryDecorators<ClientESelect>();
+	static Search    = new DaoQueryDecorators<ClientESelect>();
 	static SearchOne = new DaoQueryDecorators<ClientESelect>();
 	static Save(
 		config: ClientGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ClientGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(10)
 	}
-
+	
 	constructor() {
 		super(10)
 	}
@@ -300,27 +300,27 @@ export class BaseClientDao
 
 
 export interface IBaseClientTypeDao
-	extends IDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
+  extends IDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType> {
 }
 
 export class BaseClientTypeDao
-	extends SQDIDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
+  extends SQDIDao<ClientType, ClientTypeESelect, ClientTypeECreateProperties, ClientTypeEUpdateColumns, ClientTypeEUpdateProperties, ClientTypeEId, ClientTypeGraph, QClientType>
 	implements IBaseClientTypeDao {
-
-	static Find = new DaoQueryDecorators<ClientTypeESelect>();
-	static FindOne = new DaoQueryDecorators<ClientTypeESelect>();
-	static Search = new DaoQueryDecorators<ClientTypeESelect>();
+	
+	static Find      = new DaoQueryDecorators<ClientTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<ClientTypeESelect>();
+	static Search    = new DaoQueryDecorators<ClientTypeESelect>();
 	static SearchOne = new DaoQueryDecorators<ClientTypeESelect>();
 	static Save(
 		config: ClientTypeGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ClientTypeGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(9)
 	}
-
+	
 	constructor() {
 		super(9)
 	}
@@ -328,27 +328,27 @@ export class BaseClientTypeDao
 
 
 export interface IBaseContinentDao
-	extends IDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
+  extends IDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent> {
 }
 
 export class BaseContinentDao
-	extends SQDIDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
+  extends SQDIDao<Continent, ContinentESelect, ContinentECreateProperties, ContinentEUpdateColumns, ContinentEUpdateProperties, ContinentEId, ContinentGraph, QContinent>
 	implements IBaseContinentDao {
-
-	static Find = new DaoQueryDecorators<ContinentESelect>();
-	static FindOne = new DaoQueryDecorators<ContinentESelect>();
-	static Search = new DaoQueryDecorators<ContinentESelect>();
+	
+	static Find      = new DaoQueryDecorators<ContinentESelect>();
+	static FindOne   = new DaoQueryDecorators<ContinentESelect>();
+	static Search    = new DaoQueryDecorators<ContinentESelect>();
 	static SearchOne = new DaoQueryDecorators<ContinentESelect>();
 	static Save(
 		config: ContinentGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ContinentGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(0)
 	}
-
+	
 	constructor() {
 		super(0)
 	}
@@ -356,27 +356,27 @@ export class BaseContinentDao
 
 
 export interface IBaseCountryDao
-	extends IDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
+  extends IDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry> {
 }
 
 export class BaseCountryDao
-	extends SQDIDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
+  extends SQDIDao<Country, CountryESelect, CountryECreateProperties, CountryEUpdateColumns, CountryEUpdateProperties, CountryEId, CountryGraph, QCountry>
 	implements IBaseCountryDao {
-
-	static Find = new DaoQueryDecorators<CountryESelect>();
-	static FindOne = new DaoQueryDecorators<CountryESelect>();
-	static Search = new DaoQueryDecorators<CountryESelect>();
+	
+	static Find      = new DaoQueryDecorators<CountryESelect>();
+	static FindOne   = new DaoQueryDecorators<CountryESelect>();
+	static Search    = new DaoQueryDecorators<CountryESelect>();
 	static SearchOne = new DaoQueryDecorators<CountryESelect>();
 	static Save(
 		config: CountryGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<CountryGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(1)
 	}
-
+	
 	constructor() {
 		super(1)
 	}
@@ -384,27 +384,27 @@ export class BaseCountryDao
 
 
 export interface IBaseDatabaseDao
-	extends IDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
+  extends IDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase> {
 }
 
 export class BaseDatabaseDao
-	extends SQDIDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase>
+  extends SQDIDao<Database, DatabaseESelect, DatabaseECreateProperties, DatabaseEUpdateColumns, DatabaseEUpdateProperties, DatabaseEId, DatabaseGraph, QDatabase>
 	implements IBaseDatabaseDao {
-
-	static Find = new DaoQueryDecorators<DatabaseESelect>();
-	static FindOne = new DaoQueryDecorators<DatabaseESelect>();
-	static Search = new DaoQueryDecorators<DatabaseESelect>();
+	
+	static Find      = new DaoQueryDecorators<DatabaseESelect>();
+	static FindOne   = new DaoQueryDecorators<DatabaseESelect>();
+	static Search    = new DaoQueryDecorators<DatabaseESelect>();
 	static SearchOne = new DaoQueryDecorators<DatabaseESelect>();
 	static Save(
 		config: DatabaseGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<DatabaseGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(12)
 	}
-
+	
 	constructor() {
 		super(12)
 	}
@@ -412,27 +412,27 @@ export class BaseDatabaseDao
 
 
 export interface IBaseDatabaseTypeDao
-	extends IDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
+  extends IDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType> {
 }
 
 export class BaseDatabaseTypeDao
-	extends SQDIDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType>
+  extends SQDIDao<DatabaseType, DatabaseTypeESelect, DatabaseTypeECreateProperties, DatabaseTypeEUpdateColumns, DatabaseTypeEUpdateProperties, DatabaseTypeEId, DatabaseTypeGraph, QDatabaseType>
 	implements IBaseDatabaseTypeDao {
-
-	static Find = new DaoQueryDecorators<DatabaseTypeESelect>();
-	static FindOne = new DaoQueryDecorators<DatabaseTypeESelect>();
-	static Search = new DaoQueryDecorators<DatabaseTypeESelect>();
+	
+	static Find      = new DaoQueryDecorators<DatabaseTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<DatabaseTypeESelect>();
+	static Search    = new DaoQueryDecorators<DatabaseTypeESelect>();
 	static SearchOne = new DaoQueryDecorators<DatabaseTypeESelect>();
 	static Save(
 		config: DatabaseTypeGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<DatabaseTypeGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(11)
 	}
-
+	
 	constructor() {
 		super(11)
 	}
@@ -440,27 +440,27 @@ export class BaseDatabaseTypeDao
 
 
 export interface IBaseMetroAreaDao
-	extends IDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
+  extends IDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea> {
 }
 
 export class BaseMetroAreaDao
-	extends SQDIDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
+  extends SQDIDao<MetroArea, MetroAreaESelect, MetroAreaECreateProperties, MetroAreaEUpdateColumns, MetroAreaEUpdateProperties, MetroAreaEId, MetroAreaGraph, QMetroArea>
 	implements IBaseMetroAreaDao {
-
-	static Find = new DaoQueryDecorators<MetroAreaESelect>();
-	static FindOne = new DaoQueryDecorators<MetroAreaESelect>();
-	static Search = new DaoQueryDecorators<MetroAreaESelect>();
+	
+	static Find      = new DaoQueryDecorators<MetroAreaESelect>();
+	static FindOne   = new DaoQueryDecorators<MetroAreaESelect>();
+	static Search    = new DaoQueryDecorators<MetroAreaESelect>();
 	static SearchOne = new DaoQueryDecorators<MetroAreaESelect>();
 	static Save(
 		config: MetroAreaGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<MetroAreaGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(4)
 	}
-
+	
 	constructor() {
 		super(4)
 	}
@@ -468,27 +468,27 @@ export class BaseMetroAreaDao
 
 
 export interface IBaseMetroAreaStateDao
-	extends IDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
+  extends IDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState> {
 }
 
 export class BaseMetroAreaStateDao
-	extends SQDIDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
+  extends SQDIDao<MetroAreaState, MetroAreaStateESelect, MetroAreaStateECreateProperties, MetroAreaStateEUpdateColumns, MetroAreaStateEUpdateProperties, MetroAreaStateEId, MetroAreaStateGraph, QMetroAreaState>
 	implements IBaseMetroAreaStateDao {
-
-	static Find = new DaoQueryDecorators<MetroAreaStateESelect>();
-	static FindOne = new DaoQueryDecorators<MetroAreaStateESelect>();
-	static Search = new DaoQueryDecorators<MetroAreaStateESelect>();
+	
+	static Find      = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static FindOne   = new DaoQueryDecorators<MetroAreaStateESelect>();
+	static Search    = new DaoQueryDecorators<MetroAreaStateESelect>();
 	static SearchOne = new DaoQueryDecorators<MetroAreaStateESelect>();
 	static Save(
 		config: MetroAreaStateGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<MetroAreaStateGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(3)
 	}
-
+	
 	constructor() {
 		super(3)
 	}
@@ -496,27 +496,27 @@ export class BaseMetroAreaStateDao
 
 
 export interface IBaseStateDao
-	extends IDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
+  extends IDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState> {
 }
 
 export class BaseStateDao
-	extends SQDIDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
+  extends SQDIDao<State, StateESelect, StateECreateProperties, StateEUpdateColumns, StateEUpdateProperties, StateEId, StateGraph, QState>
 	implements IBaseStateDao {
-
-	static Find = new DaoQueryDecorators<StateESelect>();
-	static FindOne = new DaoQueryDecorators<StateESelect>();
-	static Search = new DaoQueryDecorators<StateESelect>();
+	
+	static Find      = new DaoQueryDecorators<StateESelect>();
+	static FindOne   = new DaoQueryDecorators<StateESelect>();
+	static Search    = new DaoQueryDecorators<StateESelect>();
 	static SearchOne = new DaoQueryDecorators<StateESelect>();
 	static Save(
 		config: StateGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<StateGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(2)
 	}
-
+	
 	constructor() {
 		super(2)
 	}
@@ -524,27 +524,27 @@ export class BaseStateDao
 
 
 export interface IBaseTerminalDao
-	extends IDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
+  extends IDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal> {
 }
 
 export class BaseTerminalDao
-	extends SQDIDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
+  extends SQDIDao<Terminal, TerminalESelect, TerminalECreateProperties, TerminalEUpdateColumns, TerminalEUpdateProperties, TerminalEId, TerminalGraph, QTerminal>
 	implements IBaseTerminalDao {
-
-	static Find = new DaoQueryDecorators<TerminalESelect>();
-	static FindOne = new DaoQueryDecorators<TerminalESelect>();
-	static Search = new DaoQueryDecorators<TerminalESelect>();
+	
+	static Find      = new DaoQueryDecorators<TerminalESelect>();
+	static FindOne   = new DaoQueryDecorators<TerminalESelect>();
+	static Search    = new DaoQueryDecorators<TerminalESelect>();
 	static SearchOne = new DaoQueryDecorators<TerminalESelect>();
 	static Save(
 		config: TerminalGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<TerminalGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(14)
 	}
-
+	
 	constructor() {
 		super(14)
 	}
@@ -552,27 +552,27 @@ export class BaseTerminalDao
 
 
 export interface IBaseTerminalTypeDao
-	extends IDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
+  extends IDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType> {
 }
 
 export class BaseTerminalTypeDao
-	extends SQDIDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
+  extends SQDIDao<TerminalType, TerminalTypeESelect, TerminalTypeECreateProperties, TerminalTypeEUpdateColumns, TerminalTypeEUpdateProperties, TerminalTypeEId, TerminalTypeGraph, QTerminalType>
 	implements IBaseTerminalTypeDao {
-
-	static Find = new DaoQueryDecorators<TerminalTypeESelect>();
-	static FindOne = new DaoQueryDecorators<TerminalTypeESelect>();
-	static Search = new DaoQueryDecorators<TerminalTypeESelect>();
+	
+	static Find      = new DaoQueryDecorators<TerminalTypeESelect>();
+	static FindOne   = new DaoQueryDecorators<TerminalTypeESelect>();
+	static Search    = new DaoQueryDecorators<TerminalTypeESelect>();
 	static SearchOne = new DaoQueryDecorators<TerminalTypeESelect>();
 	static Save(
 		config: TerminalTypeGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<TerminalTypeGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(13)
 	}
-
+	
 	constructor() {
 		super(13)
 	}
@@ -580,27 +580,27 @@ export class BaseTerminalTypeDao
 
 
 export interface IBaseTypeDao
-	extends IDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
+  extends IDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType> {
 }
 
 export class BaseTypeDao
-	extends SQDIDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType>
+  extends SQDIDao<Type, TypeESelect, TypeECreateProperties, TypeEUpdateColumns, TypeEUpdateProperties, TypeEId, TypeGraph, QType>
 	implements IBaseTypeDao {
-
-	static Find = new DaoQueryDecorators<TypeESelect>();
-	static FindOne = new DaoQueryDecorators<TypeESelect>();
-	static Search = new DaoQueryDecorators<TypeESelect>();
+	
+	static Find      = new DaoQueryDecorators<TypeESelect>();
+	static FindOne   = new DaoQueryDecorators<TypeESelect>();
+	static Search    = new DaoQueryDecorators<TypeESelect>();
 	static SearchOne = new DaoQueryDecorators<TypeESelect>();
 	static Save(
 		config: TypeGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<TypeGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(8)
 	}
-
+	
 	constructor() {
 		super(8)
 	}
@@ -608,27 +608,27 @@ export class BaseTypeDao
 
 
 export interface IBaseTypeClassificationDao
-	extends IDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
+  extends IDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification> {
 }
 
 export class BaseTypeClassificationDao
-	extends SQDIDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification>
+  extends SQDIDao<TypeClassification, TypeClassificationESelect, TypeClassificationECreateProperties, TypeClassificationEUpdateColumns, TypeClassificationEUpdateProperties, TypeClassificationEId, TypeClassificationGraph, QTypeClassification>
 	implements IBaseTypeClassificationDao {
-
-	static Find = new DaoQueryDecorators<TypeClassificationESelect>();
-	static FindOne = new DaoQueryDecorators<TypeClassificationESelect>();
-	static Search = new DaoQueryDecorators<TypeClassificationESelect>();
+	
+	static Find      = new DaoQueryDecorators<TypeClassificationESelect>();
+	static FindOne   = new DaoQueryDecorators<TypeClassificationESelect>();
+	static Search    = new DaoQueryDecorators<TypeClassificationESelect>();
 	static SearchOne = new DaoQueryDecorators<TypeClassificationESelect>();
 	static Save(
 		config: TypeClassificationGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<TypeClassificationGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(7)
 	}
-
+	
 	constructor() {
 		super(7)
 	}
@@ -636,27 +636,27 @@ export class BaseTypeClassificationDao
 
 
 export interface IBaseUserAccountDao
-	extends IDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
+  extends IDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount> {
 }
 
 export class BaseUserAccountDao
-	extends SQDIDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
+  extends SQDIDao<UserAccount, UserAccountESelect, UserAccountECreateProperties, UserAccountEUpdateColumns, UserAccountEUpdateProperties, UserAccountEId, UserAccountGraph, QUserAccount>
 	implements IBaseUserAccountDao {
-
-	static Find = new DaoQueryDecorators<UserAccountESelect>();
-	static FindOne = new DaoQueryDecorators<UserAccountESelect>();
-	static Search = new DaoQueryDecorators<UserAccountESelect>();
+	
+	static Find      = new DaoQueryDecorators<UserAccountESelect>();
+	static FindOne   = new DaoQueryDecorators<UserAccountESelect>();
+	static Search    = new DaoQueryDecorators<UserAccountESelect>();
 	static SearchOne = new DaoQueryDecorators<UserAccountESelect>();
 	static Save(
 		config: UserAccountGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<UserAccountGraph>(config);
-	}
+  }
 
 	static diSet(): boolean {
 		return duoDiSet(5)
 	}
-
+	
 	constructor() {
 		super(5)
 	}

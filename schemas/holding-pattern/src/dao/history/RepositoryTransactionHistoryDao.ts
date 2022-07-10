@@ -13,7 +13,6 @@ import {
 import {
 	Actor_LocalId,
 	RecordHistory_ActorRecordId,
-	Repository_LocalId,
 } from '../../ddl/ddl'
 import {
 	BaseRepositoryTransactionHistoryDao,
@@ -28,6 +27,7 @@ import {
 } from '../../generated/generated'
 import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
 import { Injected } from '@airport/direction-indicator'
+import { Repository_LocalId } from '../../types'
 
 export interface IRepositoryTransactionHistoryDao {
 

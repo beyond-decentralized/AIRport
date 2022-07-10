@@ -58,14 +58,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface RepositoryApplicationESelect
-	extends IEntitySelectProperties, RepositoryApplicationEOptionalId {
+    extends IEntitySelectProperties, RepositoryApplicationEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	application?: ApplicationESelect;
 	repository?: RepositoryESelect;
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -73,7 +73,7 @@ export interface RepositoryApplicationESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface RepositoryApplicationEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -110,8 +110,8 @@ export interface RepositoryApplicationEUpdateProperties
  */
 export interface RepositoryApplicationGraph
 	extends RepositoryApplicationEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -133,14 +133,14 @@ export interface RepositoryApplicationEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface RepositoryApplicationECreateProperties
-	extends Partial<RepositoryApplicationEId>, RepositoryApplicationEUpdateProperties {
+extends Partial<RepositoryApplicationEId>, RepositoryApplicationEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface RepositoryApplicationECreateColumns
-	extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
+extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
 }
 
 
@@ -153,7 +153,8 @@ export interface RepositoryApplicationECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryApplication extends IQEntity {
+export interface QRepositoryApplication extends IQEntity
+{
 	// Id Fields
 
 	// Id Relations
@@ -168,8 +169,9 @@ export interface QRepositoryApplication extends IQEntity {
 
 
 // Entity Id Interface
-export interface QRepositoryApplicationQId {
-
+export interface QRepositoryApplicationQId
+{
+	
 	// Id Fields
 
 	// Id Relations

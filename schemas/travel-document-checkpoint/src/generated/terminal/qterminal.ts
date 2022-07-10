@@ -27,10 +27,10 @@ import {
 	QUserAccount,
 	QUserAccountQId,
 	QUserAccountQRelation,
-} from '../quserAccount';
+} from '../quseraccount';
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 import {
 	ContinentGraph,
 	ContinentEId,
@@ -112,14 +112,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalESelect
-	extends IEntitySelectProperties, TerminalEOptionalId {
+    extends IEntitySelectProperties, TerminalEOptionalId {
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	owner?: UserAccountESelect;
 	continent?: ContinentESelect;
 	country?: CountryESelect;
@@ -133,7 +133,7 @@ export interface TerminalESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface TerminalEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -175,8 +175,8 @@ export interface TerminalEUpdateProperties
  */
 export interface TerminalGraph
 	extends TerminalEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
@@ -211,14 +211,14 @@ export interface TerminalEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TerminalECreateProperties
-	extends Partial<TerminalEId>, TerminalEUpdateProperties {
+extends Partial<TerminalEId>, TerminalEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface TerminalECreateColumns
-	extends TerminalEId, TerminalEUpdateColumns {
+extends TerminalEId, TerminalEUpdateColumns {
 }
 
 
@@ -231,7 +231,8 @@ export interface TerminalECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminal extends IQEntity {
+export interface QTerminal extends IQEntity
+{
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -253,8 +254,9 @@ export interface QTerminal extends IQEntity {
 
 
 // Entity Id Interface
-export interface QTerminalQId {
-
+export interface QTerminalQId
+{
+	
 	// Id Fields
 	_localId: IQNumberField;
 

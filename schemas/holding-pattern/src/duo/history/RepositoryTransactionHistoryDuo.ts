@@ -8,7 +8,6 @@ import { v4 as guidv4 } from "uuid";
 import {
 	Actor_LocalId,
 	Repository,
-	Repository_LocalId,
 	RepositoryTransactionHistory,
 	SystemWideOperationId
 } from '../../ddl/ddl'
@@ -19,6 +18,7 @@ import {
 	IRepository,
 	IRepositoryTransactionHistory,
 } from '../../generated/generated'
+import { Repository_LocalId } from '../../types';
 import { IOperationHistoryDuo } from './OperationHistoryDuo'
 
 export interface IRepositoryTransactionHistoryDuo {

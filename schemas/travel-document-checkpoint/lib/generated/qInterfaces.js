@@ -7,7 +7,7 @@ export * from './locality/qcountry';
 export * from './locality/qmetroarea';
 export * from './locality/qmetroareastate';
 export * from './locality/qstate';
-export * from './quserAccount';
+export * from './quseraccount';
 export * from './terminal/qterminal';
 export * from './terminal/qterminaltype';
 export * from './type/qclassification';

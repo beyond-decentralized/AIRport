@@ -7,6 +7,7 @@ import {
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
 import { QActor } from './infrastructure/qactor';
+import { QAirEntity } from './repository/qairentity';
 import { QOperationHistory } from './history/qoperationhistory';
 import { QRecordHistory } from './history/qrecordhistory';
 import { QRecordHistoryNewValue } from './history/qrecordhistorynewvalue';

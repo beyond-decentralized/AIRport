@@ -1,7 +1,8 @@
 import { IContext } from '@airport/direction-indicator';
 import { Terminal_GUID, UserAccount_GUID } from '@airport/travel-document-checkpoint';
-import { Actor_GUID, Repository_LocalId, Repository_Source, Repository_GUID } from '../../ddl/ddl';
+import { Actor_GUID } from '../../ddl/ddl';
 import { BaseRepositoryDao, IBaseRepositoryDao, IRepository } from '../../generated/generated';
+import { Repository_GUID, Repository_LocalId, Repository_Source } from '../../types';
 export interface IRepositoryDao extends IBaseRepositoryDao {
     getRepositoryLoadInfo(repositorySource: Repository_Source, repositoryGUID: Repository_GUID, context: IContext): Promise<IRepository>;
     findWithOwnerBy_LocalIds(repositoryIds: Repository_LocalId[]): Promise<IRepository[]>;

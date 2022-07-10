@@ -74,13 +74,13 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface ActorESelect
-	extends IEntitySelectProperties, ActorEOptionalId {
+    extends IEntitySelectProperties, ActorEOptionalId {
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	userAccount?: UserAccountESelect;
 	terminal?: TerminalESelect;
 	application?: ApplicationESelect;
@@ -92,7 +92,7 @@ export interface ActorESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface ActorEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	_localId?: number | IQNumberField;
 
@@ -132,8 +132,8 @@ export interface ActorEUpdateProperties
  */
 export interface ActorGraph
 	extends ActorEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	GUID?: string | IQStringField;
 
@@ -163,14 +163,14 @@ export interface ActorEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface ActorECreateProperties
-	extends Partial<ActorEId>, ActorEUpdateProperties {
+extends Partial<ActorEId>, ActorEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface ActorECreateColumns
-	extends ActorEId, ActorEUpdateColumns {
+extends ActorEId, ActorEUpdateColumns {
 }
 
 
@@ -183,7 +183,8 @@ export interface ActorECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QActor extends IQEntity {
+export interface QActor extends IQEntity
+{
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -202,8 +203,9 @@ export interface QActor extends IQEntity {
 
 
 // Entity Id Interface
-export interface QActorQId {
-
+export interface QActorQId
+{
+	
 	// Id Fields
 	_localId: IQNumberField;
 

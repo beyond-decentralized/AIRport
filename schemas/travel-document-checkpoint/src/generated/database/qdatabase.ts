@@ -99,14 +99,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface DatabaseESelect
-	extends IEntitySelectProperties, DatabaseEOptionalId {
+    extends IEntitySelectProperties, DatabaseEOptionalId {
 	// Non-Id Properties
 	domain?: string | IQStringField;
 	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	continent?: ContinentESelect;
 	country?: CountryESelect;
 	state?: StateESelect;
@@ -119,7 +119,7 @@ export interface DatabaseESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface DatabaseEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 	_localId: number | IQNumberField;
 
@@ -160,8 +160,8 @@ export interface DatabaseEUpdateProperties
  */
 export interface DatabaseGraph
 	extends DatabaseEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	domain?: string | IQStringField;
 	GUID?: string | IQStringField;
@@ -194,14 +194,14 @@ export interface DatabaseEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface DatabaseECreateProperties
-	extends Partial<DatabaseEId>, DatabaseEUpdateProperties {
+extends Partial<DatabaseEId>, DatabaseEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface DatabaseECreateColumns
-	extends DatabaseEId, DatabaseEUpdateColumns {
+extends DatabaseEId, DatabaseEUpdateColumns {
 }
 
 
@@ -214,7 +214,8 @@ export interface DatabaseECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabase extends IQEntity {
+export interface QDatabase extends IQEntity
+{
 	// Id Fields
 	_localId: IQNumberField;
 
@@ -235,8 +236,9 @@ export interface QDatabase extends IQEntity {
 
 
 // Entity Id Interface
-export interface QDatabaseQId {
-
+export interface QDatabaseQId
+{
+	
 	// Id Fields
 	_localId: IQNumberField;
 

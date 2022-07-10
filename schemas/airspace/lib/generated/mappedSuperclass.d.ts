@@ -56,7 +56,7 @@ export declare const MAPPED_SUPERCLASS: {
                 };
             };
             importMapByModulePath: {
-                "@airport/air-traffic-control": any;
+                "@airport/tarmaq-entity": any;
                 "./ApplicationVersion": any;
             };
         };
@@ -317,7 +317,7 @@ export declare const MAPPED_SUPERCLASS: {
                             };
                         };
                         importMapByModulePath: {
-                            "@airport/air-traffic-control": any;
+                            "@airport/tarmaq-entity": any;
                             "@airport/ground-control": any;
                             "./Application": any;
                             "./ApplicationEntity": any;
@@ -588,7 +588,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         ApplicationReference_Index?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-traffic-control": any;
+                                        "@airport/tarmaq-entity": any;
                                         "@airport/ground-control": any;
                                         "./Domain": any;
                                         "./ApplicationCurrentVersion": any;
@@ -764,7 +764,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ApplicationVersion?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-traffic-control": any;
+                                                    "@airport/tarmaq-entity": any;
                                                     "@airport/ground-control": any;
                                                     "./Application": any;
                                                     "./ApplicationVersion"?: undefined;
@@ -949,7 +949,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     Domain_Name?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-traffic-control": any;
+                                                    "@airport/tarmaq-entity": any;
                                                     "./Application": any;
                                                     "./ApplicationVersion": any;
                                                     "@airport/ground-control"?: undefined;
@@ -1285,7 +1285,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         ApplicationReference_Index?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-traffic-control": any;
+                                        "@airport/tarmaq-entity": any;
                                         "@airport/ground-control": any;
                                         "./ApplicationColumn": any;
                                         "./ApplicationOperation": any;
@@ -1610,7 +1610,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     Operation_Type?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-traffic-control": any;
+                                                    "@airport/tarmaq-entity": any;
                                                     "@airport/ground-control": any;
                                                     "./ApplicationEntity": any;
                                                     "./ApplicationPropertyColumn": any;
@@ -1815,7 +1815,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                                 };
                                                             };
                                                             importMapByModulePath: {
-                                                                "@airport/air-traffic-control": any;
+                                                                "@airport/tarmaq-entity": any;
                                                                 "./ApplicationColumn": any;
                                                                 "./ApplicationProperty": any;
                                                                 "./VersionedApplicationObject": any;
@@ -2061,7 +2061,7 @@ export declare const MAPPED_SUPERCLASS: {
                                                     ApplicationRelationColumn?: undefined;
                                                 };
                                                 importMapByModulePath: {
-                                                    "@airport/air-traffic-control": any;
+                                                    "@airport/tarmaq-entity": any;
                                                     "@airport/ground-control": any;
                                                     "./ApplicationEntity": any;
                                                     "./VersionedApplicationObject": any;
@@ -2366,7 +2366,7 @@ export declare const MAPPED_SUPERCLASS: {
                                         IApplicationProperty?: undefined;
                                     };
                                     importMapByModulePath: {
-                                        "@airport/air-traffic-control": any;
+                                        "@airport/tarmaq-entity": any;
                                         "@airport/ground-control": any;
                                         "./ApplicationVersion": any;
                                         "./VersionedApplicationObject": any;

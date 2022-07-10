@@ -19,9 +19,6 @@ import {
 	RawUpdate,
 } from '@airport/tarmaq-query';
 import {
-	ApplicationEntity_TableConfiguration
-} from '@airport/tarmaq-entity';
-import {
 	VersionedApplicationObjectGraph,
 	VersionedApplicationObjectEId,
 	VersionedApplicationObjectEUpdateColumns,
@@ -31,6 +28,9 @@ import {
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
 } from './qversionedapplicationobject';
+import {
+	ApplicationEntity_TableConfiguration,
+} from '@airport/tarmaq-entity';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,

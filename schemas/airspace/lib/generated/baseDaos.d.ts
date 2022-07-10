@@ -23,7 +23,7 @@ import { ApplicationVersionESelect, ApplicationVersionECreateProperties, Applica
 import { Domain } from '../ddl/application/domain';
 import { DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain } from './application/qdomain';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity } from '@airport/tarmaq-query';
-import { Dao, IDao, DaoQueryDecorators } from '@airport/tarmaq-dao';
+import { IDao, Dao, DaoQueryDecorators } from '@airport/tarmaq-dao';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDao<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdateProperties extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> extends Dao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQE> {
     constructor(dbEntityId: DbEntityId);

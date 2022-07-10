@@ -1,6 +1,6 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQOneToManyRelation, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
 import { CountryGraph, CountryEOptionalId, CountryESelect, QCountryQRelation } from './qcountry';
-import { UserAccountGraph, UserAccountESelect, QUserAccount } from '../quserAccount';
+import { UserAccountGraph, UserAccountESelect, QUserAccount } from '../quseraccount';
 /**
  * SELECT - All fields and relations (optional).
  */

@@ -6,7 +6,7 @@ import {
 } from './metroareastate';
 import {
 	IUserAccount,
-} from '../userAccount';
+} from '../useraccount';
 
 
 

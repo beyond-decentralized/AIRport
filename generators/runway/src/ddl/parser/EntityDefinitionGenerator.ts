@@ -63,8 +63,11 @@ export function visitEntityFile(
 	}
 
 	const onlyClassInFileError = `
-		  Cannot declare entities in same files as interfaces and enums (needed for DDL hiding).
-		  NOTE: Entity interface is already generated for you.`
+	Error in file:
+${path}
+	Cannot declare entities in same files as interfaces and enums (needed for DDL hiding).
+	NOTE: Entity interface is already generated for you. If you need addition interfaces
+	please put them into src/types.ts file.`
 
 	if (node.kind === tsc.SyntaxKind.ClassDeclaration) {
 		if (file.hasEntityCandidate) {

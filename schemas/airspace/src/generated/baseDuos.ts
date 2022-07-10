@@ -165,8 +165,8 @@ import {
 	IQEntity,
 } from '@airport/tarmaq-query';
 import {
-	Duo,
 	IDuo,
+	Duo,
 } from '@airport/tarmaq-dao';
 import {
 	ApplicationEntity_LocalId as DbEntityId,

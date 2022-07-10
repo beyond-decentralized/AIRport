@@ -1,5 +1,5 @@
 import { ICountry } from './country';
-import { IUserAccount } from '../userAccount';
+import { IUserAccount } from '../useraccount';
 export interface IState {
     id: number;
     abbreviation?: string;

@@ -1,6 +1,6 @@
 import { TransactionType } from '@airport/ground-control';
-import { Repository_LocalId } from '../../ddl/ddl';
 import { BaseTransactionHistoryDuo, IRepositoryTransactionHistory, ITransactionHistory } from '../../generated/generated';
+import { Repository_LocalId } from '../../types';
 import { IRepositoryTransactionHistoryDuo } from './RepositoryTransactionHistoryDuo';
 export interface ITransactionHistoryDuo {
     getNewRecord(transactionType?: TransactionType): ITransactionHistory;

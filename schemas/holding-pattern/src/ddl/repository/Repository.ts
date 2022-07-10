@@ -26,22 +26,19 @@ import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";
 import { RepositoryTerminal } from "./RepositoryTerminal";
 import { RepositoryApplication } from "./RepositoryApplication";
+import {
+	IRepositoryIdentifier,
+	Repository_AgeSuitability,
+	Repository_CreatedAt,
+	Repository_GUID,
+	Repository_Immutable,
+	Repository_LocalId,
+	Repository_Source
+} from "../../types";
 
 /**
  * Created by Papa on 2/9/2017.
  */
-
-export type Repository_AgeSuitability = 0 | 7 | 13 | 18
-export type Repository_CreatedAt = Date;
-export type Repository_LocalId = number;
-export type Repository_Immutable = boolean;
-export type Repository_Source = string;
-export type Repository_GUID = string;
-
-export interface IRepositoryIdentifier {
-	source: Repository_Source;
-	GUID: Repository_GUID;
-}
 
 @Entity()
 @Table({
@@ -54,11 +51,11 @@ export class Repository
 	@GeneratedValue()
 	@Id()
 	@DbNumber()
-	_localId: Repository_LocalId;
+	_localId: Repository_LocalId
 
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
-	GUID: Repository_GUID;
+	GUID: Repository_GUID
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
@@ -66,7 +63,7 @@ export class Repository
 
 	@Column({ name: "CREATED_AT", nullable: false })
 	@DbDate()
-	createdAt: Repository_CreatedAt;
+	createdAt: Repository_CreatedAt
 
 	@Column({ name: "IMMUTABLE", nullable: false })
 	immutable: Repository_Immutable

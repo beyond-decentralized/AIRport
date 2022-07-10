@@ -60,14 +60,14 @@ declare function require(moduleName: string): any;
  * SELECT - All fields and relations (optional).
  */
 export interface TerminalTypeESelect
-	extends IEntitySelectProperties, TerminalTypeEOptionalId {
+    extends IEntitySelectProperties, TerminalTypeEOptionalId {
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 	terminal?: TerminalESelect;
 	type?: TypeESelect;
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 
 }
 
@@ -75,7 +75,7 @@ export interface TerminalTypeESelect
  * DELETE - Ids fields and relations only (required).
  */
 export interface TerminalTypeEId
-	extends IEntityIdProperties {
+    extends IEntityIdProperties {
 	// Id Properties
 
 	// Id Relations - Ids only
@@ -112,8 +112,8 @@ export interface TerminalTypeEUpdateProperties
  */
 export interface TerminalTypeGraph
 	extends TerminalTypeEOptionalId, IEntityCascadeGraph {
-	// NOT USED: Cascading Relations
-	// NOT USED: ${relationsForCascadeGraph}
+// NOT USED: Cascading Relations
+// NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 
 	// Relations
@@ -135,14 +135,14 @@ export interface TerminalTypeEUpdateColumns
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
  */
 export interface TerminalTypeECreateProperties
-	extends Partial<TerminalTypeEId>, TerminalTypeEUpdateProperties {
+extends Partial<TerminalTypeEId>, TerminalTypeEUpdateProperties {
 }
 
 /**
  * CREATE - id columns (required) and non-id columns (optional).
  */
 export interface TerminalTypeECreateColumns
-	extends TerminalTypeEId, TerminalTypeEUpdateColumns {
+extends TerminalTypeEId, TerminalTypeEUpdateColumns {
 }
 
 
@@ -155,7 +155,8 @@ export interface TerminalTypeECreateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminalType extends IQEntity {
+export interface QTerminalType extends IQEntity
+{
 	// Id Fields
 
 	// Id Relations
@@ -170,8 +171,9 @@ export interface QTerminalType extends IQEntity {
 
 
 // Entity Id Interface
-export interface QTerminalTypeQId {
-
+export interface QTerminalTypeQId
+{
+	
 	// Id Fields
 
 	// Id Relations

@@ -1,7 +1,6 @@
 import { Inject, Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control'
 import {
-	Repository_LocalId,
 	TransactionHistory
 } from '../../ddl/ddl'
 import {
@@ -9,6 +8,7 @@ import {
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 } from '../../generated/generated'
+import { Repository_LocalId } from '../../types';
 import { IRepositoryTransactionHistoryDuo } from './RepositoryTransactionHistoryDuo'
 
 export interface ITransactionHistoryDuo {
