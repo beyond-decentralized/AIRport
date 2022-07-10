@@ -1,9 +1,10 @@
 import { lib } from '@airport/direction-indicator';
-import { DbApplicationUtils } from './impl/query/DbApplicationUtils';
-import { ISequenceGenerator } from './impl/SequenceGenerator';
-import { IEntityStateManager } from './lingo/core/operation/EntityStateManager';
-import { ITransactionalConnector } from './lingo/ITransactionalConnector';
-import { IDbApplicationUtils } from './lingo/query/DbApplicationUtils';
+import { DbApplicationUtils } from './implementation/query/DbApplicationUtils';
+import { ISequenceGenerator } from './implementation/SequenceGenerator';
+import { IEntityStateManager } from './definition/core/operation/EntityStateManager';
+import { ITransactionalConnector } from './definition/ITransactionalConnector';
+import { IDbApplicationUtils } from './definition/query/DbApplicationUtils';
+import { IUpdateCacheManager } from './definition/data/UpdateCacheManager';
 
 const groundControl = lib('ground-control')
 
@@ -26,6 +27,11 @@ export const TRANSACTIONAL_CONNECTOR = groundControl.token<ITransactionalConnect
     class: null,
     interface: 'ITransactionalConnector',
     token: 'TRANSACTIONAL_CONNECTOR'
+})
+export const UPDATE_CACHE_MANAGER = groundControl.token<IUpdateCacheManager>({
+    class: null,
+    interface: 'IUpdateCacheManager',
+    token: 'UPDATE_CACHE_MANAGER'
 })
 TRANSACTIONAL_CONNECTOR.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,

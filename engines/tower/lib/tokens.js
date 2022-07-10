@@ -1,7 +1,7 @@
-import { AIRPORT_DATABASE, DATABASE_FACADE, UPDATE_CACHE_MANAGER } from '@airport/air-traffic-control';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { API_REGISTRY, API_VALIDATOR } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
-import { ENTITY_STATE_MANAGER } from '@airport/ground-control';
+import { ENTITY_STATE_MANAGER, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
 import { APPLICATION_STORE, LOCAL_API_SERVER } from '@airport/apron';
 import { AirportDatabase } from './AirportDatabase';
 import { ApiRegistry } from './core/api/ApiRegistry';
@@ -13,7 +13,7 @@ import { UpdateCacheManager } from './core/data/UpdateCacheManager';
 import { EntityStateManager } from './core/EntityStateManager';
 import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
-import { QUERY_FACADE } from '@airport/tarmaq-dao';
+import { DATABASE_FACADE, QUERY_FACADE } from '@airport/tarmaq-dao';
 import { OPERATION_DESERIALIZER } from '@airport/arrivals-n-departures';
 const tower = lib('tower');
 export const ENTITY_COPIER = tower.token({

@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { ALL_FIELDS, and, max, tree, Y } from '@airport/tarmaq-query';
-import { Injected } from '@airport/direction-indicator';
+import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { BaseApplicationDao, Q } from '../generated/generated';
 let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
@@ -255,6 +255,9 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         }, context);
     }
 };
+__decorate([
+    Inject()
+], ApplicationDao.prototype, "airportDatabase", void 0);
 ApplicationDao = __decorate([
     Injected()
 ], ApplicationDao);

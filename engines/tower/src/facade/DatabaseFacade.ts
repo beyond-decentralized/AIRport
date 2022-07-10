@@ -1,4 +1,3 @@
-import { IUpdateCacheManager } from '@airport/air-traffic-control'
 import {
 	IContext,
 	Inject,
@@ -8,6 +7,7 @@ import {
 	IEntityStateManager,
 	ISaveResult,
 	ITransactionalConnector,
+	IUpdateCacheManager,
 	PortableQuery
 } from '@airport/ground-control'
 import { IDatabaseFacade, IFunctionWrapper, IQueryFacade } from '@airport/tarmaq-dao'

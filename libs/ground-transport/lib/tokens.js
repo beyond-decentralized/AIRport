@@ -15,7 +15,7 @@ import { TwoStageSyncedInDataProcessor } from './synchronization/in/TwoStageSync
 import { SynchronizationOutManager } from './synchronization/out/SynchronizationOutManager';
 import { SynchronizationAdapterLoader } from './adapters/SynchronizationAdapterLoader';
 import { SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer';
-import { AIRPORT_DATABASE, DATABASE_FACADE, UTILS } from '@airport/air-traffic-control';
+import { AIRPORT_DATABASE, UTILS } from '@airport/air-traffic-control';
 import { TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map';
 import { TERMINAL_DAO, USER_ACCOUNT_DAO } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/airspace';
@@ -24,6 +24,7 @@ import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter';
 import { NONHUB_CLIENT } from '@airport/nonhub-client';
 import { SEQUENCE_GENERATOR } from '@airport/ground-control';
+import { DATABASE_FACADE } from '@airport/tarmaq-dao';
 const groundTransport = lib('ground-transport');
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token({
     class: Stage1SyncedInDataProcessor,

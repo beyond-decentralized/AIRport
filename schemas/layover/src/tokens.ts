@@ -1,3 +1,4 @@
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { lib } from '@airport/direction-indicator'
 import { ISynchronizationConflictDao, SynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { ISynchronizationConflictValuesDao, SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
@@ -22,3 +23,7 @@ export const SYNCHRONIZATION_CONFLICT_VALUES_DAO
 		interface: 'ISynchronizationConflictValuesDao',
 		token: 'SYNCHRONIZATION_CONFLICT_VALUES_DAO'
 	});
+
+RECORD_UPDATE_STAGE_DAO.setDependencies({
+	airportDatabase: AIRPORT_DATABASE
+})

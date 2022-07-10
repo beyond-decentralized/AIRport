@@ -10,6 +10,7 @@ import { ApplicationRelationColumnDao, IApplicationRelationColumnDao } from './d
 import { ApplicationRelationDao, IApplicationRelationDao } from './dao/ApplicationRelationDao';
 import { ApplicationVersionDao, IApplicationVersionDao } from './dao/ApplicationVersionDao';
 import { ApplicationVersionDuo, IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 
 const trafficPattern = lib('traffic-pattern');
 
@@ -68,3 +69,7 @@ export const APPLICATION_VERSION_DUO = trafficPattern.token<IApplicationVersionD
     interface: 'IApplicationVersionDuo',
     token: 'APPLICATION_VERSION_DUO'
 });
+
+APPLICATION_DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
+})

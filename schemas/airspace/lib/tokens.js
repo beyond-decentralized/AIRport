@@ -10,6 +10,7 @@ import { ApplicationRelationColumnDao } from './dao/ApplicationRelationColumnDao
 import { ApplicationRelationDao } from './dao/ApplicationRelationDao';
 import { ApplicationVersionDao } from './dao/ApplicationVersionDao';
 import { ApplicationVersionDuo } from './duo/ApplicationVersionDuo';
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 const trafficPattern = lib('traffic-pattern');
 export const DOMAIN_DAO = trafficPattern.token({
     class: DomainDao,
@@ -65,5 +66,8 @@ export const APPLICATION_VERSION_DUO = trafficPattern.token({
     class: ApplicationVersionDuo,
     interface: 'IApplicationVersionDuo',
     token: 'APPLICATION_VERSION_DUO'
+});
+APPLICATION_DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
 });
 //# sourceMappingURL=tokens.js.map

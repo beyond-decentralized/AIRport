@@ -1,7 +1,4 @@
 import {
-    IUpdateCacheManager
-} from "@airport/air-traffic-control";
-import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
@@ -11,6 +8,7 @@ import {
     EntityState,
     IEntityStateManager,
     ISaveResult,
+    IUpdateCacheManager,
     SQLDataType,
     DbColumn
 } from "@airport/ground-control"

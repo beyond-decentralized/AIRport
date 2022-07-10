@@ -5,7 +5,7 @@ import {
 	tree,
 	Y
 } from '@airport/tarmaq-query'
-import { IContext, Injected } from '@airport/direction-indicator'
+import { IContext, Inject, Injected } from '@airport/direction-indicator'
 import {
 	Domain_Name,
 	ensureChildJsMap,
@@ -25,6 +25,7 @@ import {
 	QApplicationCurrentVersion,
 	QApplicationVersion
 } from '../generated/generated'
+import { IAirportDatabase } from '@airport/air-traffic-control'
 
 export interface IApplicationLookupRecord {
 	index: number
@@ -83,6 +84,9 @@ export interface IApplicationDao
 export class ApplicationDao
 	extends BaseApplicationDao
 	implements IApplicationDao {
+
+	@Inject()
+	airportDatabase: IAirportDatabase
 
 	async findAllActive()
 		: Promise<IApplication[]> {

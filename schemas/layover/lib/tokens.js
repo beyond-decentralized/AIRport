@@ -1,3 +1,4 @@
+import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { lib } from '@airport/direction-indicator';
 import { SynchronizationConflictDao } from "./dao/conflict/SynchronizationConflictDao";
 import { SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
@@ -17,5 +18,8 @@ export const SYNCHRONIZATION_CONFLICT_VALUES_DAO = movingWalkway.token({
     class: SynchronizationConflictValuesDao,
     interface: 'ISynchronizationConflictValuesDao',
     token: 'SYNCHRONIZATION_CONFLICT_VALUES_DAO'
+});
+RECORD_UPDATE_STAGE_DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
 });
 //# sourceMappingURL=tokens.js.map

@@ -18,7 +18,6 @@ import { ISynchronizationAdapterLoader, SynchronizationAdapterLoader } from './a
 import { ISyncOutDataSerializer, SyncOutDataSerializer } from './synchronization/out/converter/SyncOutDataSerializer'
 import {
     AIRPORT_DATABASE,
-    DATABASE_FACADE,
     UTILS
 } from '@airport/air-traffic-control'
 import {
@@ -48,6 +47,7 @@ import {
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
 import { NONHUB_CLIENT } from '@airport/nonhub-client'
 import { SEQUENCE_GENERATOR } from '@airport/ground-control'
+import { DATABASE_FACADE } from '@airport/tarmaq-dao'
 
 const groundTransport = lib('ground-transport')
 

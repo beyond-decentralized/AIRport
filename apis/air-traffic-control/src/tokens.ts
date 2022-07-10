@@ -2,14 +2,9 @@ import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 import {
 	DB_APPLICATION_UTILS,
 	ENTITY_STATE_MANAGER,
-	TRANSACTIONAL_CONNECTOR
+	TRANSACTIONAL_CONNECTOR,
+	UPDATE_CACHE_MANAGER
 } from '@airport/ground-control'
-import { QMetadataUtils } from './implementation/utils/QMetadataUtils'
-import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
-import { FieldUtils } from './implementation/utils/FieldUtils'
-import { DatabaseStore } from './implementation/DatabaseStore'
-import { airTrafficControl } from './library'
-import { IAirportDatabase } from './definition/AirportDatabase'
 import {
 	ENTITY_UTILS,
 	IApplicationUtils,
@@ -18,8 +13,7 @@ import {
 	QUERY_UTILS
 } from '@airport/tarmaq-query'
 import {
-	IDao,
-	IDatabaseFacade,
+	DATABASE_FACADE,
 	LOOKUP,
 	NON_ENTITY_FIND,
 	NON_ENTITY_FIND_ONE,
@@ -27,12 +21,16 @@ import {
 	NON_ENTITY_SEARCH_ONE,
 	QUERY_FACADE,
 } from '@airport/tarmaq-dao'
-import { Dao } from './implementation/Dao'
+import { QMetadataUtils } from './implementation/utils/QMetadataUtils'
+import { ApplicationUtils } from './implementation/utils/ApplicationUtils'
+import { FieldUtils } from './implementation/utils/FieldUtils'
+import { DatabaseStore } from './implementation/DatabaseStore'
+import { airTrafficControl } from './library'
+import { IAirportDatabase } from './definition/AirportDatabase'
 import { IDatabaseState } from './definition/DatabaseState'
 import { IQMetadataUtils } from './definition/utils/IQMetadataUtils'
 import { RelationManager } from './implementation/RelationManager'
 import { IRepositoryLoader } from './definition/RepositoryLoader'
-import { IUpdateCacheManager } from './definition/UpdateCacheManager'
 import { UTILS } from './core-tokens'
 
 export const AIRPORT_DATABASE = airTrafficControl.token<IAirportDatabase>({
@@ -44,16 +42,6 @@ export const APPLICATION_UTILS = airTrafficControl.token<IApplicationUtils>({
 	class: ApplicationUtils,
 	interface: 'IApplicationUtils',
 	token: 'APPLICATION_UTILS'
-})
-export const DAO = airTrafficControl.token<IDao<any, any, any, any, any, any, any, any>>({
-	class: Dao,
-	interface: 'class Dao',
-	token: 'DAO'
-})
-export const DATABASE_FACADE = airTrafficControl.token<IDatabaseFacade>({
-	class: null,
-	interface: 'IDatabaseFacade',
-	token: 'DATABASE_FACADE'
 })
 export const DATABASE_STORE = airTrafficControl.token<IDatabaseState>({
 	class: DatabaseStore,
@@ -80,11 +68,6 @@ export const REPOSITORY_LOADER = airTrafficControl.token<IRepositoryLoader>({
 	interface: 'IRepositoryLoader',
 	token: 'REPOSITORY_LOADER'
 })
-export const UPDATE_CACHE_MANAGER = airTrafficControl.token<IUpdateCacheManager>({
-	class: null,
-	interface: 'IUpdateCacheManager',
-	token: 'UPDATE_CACHE_MANAGER'
-})
 
 AIRPORT_DATABASE.setDependencies({
 	appliationUtils: APPLICATION_UTILS,
@@ -101,13 +84,6 @@ APPLICATION_UTILS.setDependencies({
 	airportDatabase: AIRPORT_DATABASE,
 	entityStateManager: ENTITY_STATE_MANAGER,
 	utils: UTILS
-})
-DAO.setDependencies({
-	airportDatabase: AIRPORT_DATABASE,
-	databaseFacade: DATABASE_FACADE,
-	entityStateManager: ENTITY_STATE_MANAGER,
-	lookup: LOOKUP,
-	updateCacheManager: UPDATE_CACHE_MANAGER
 })
 DATABASE_FACADE.setDependencies({
 	applicationUtils: APPLICATION_UTILS,

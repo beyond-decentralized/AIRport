@@ -1,13 +1,12 @@
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
-import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
+import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, TRANSACTIONAL_CONNECTOR, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
+import { ENTITY_UTILS, QUERY_UTILS } from '@airport/tarmaq-query';
+import { DATABASE_FACADE, LOOKUP, NON_ENTITY_FIND, NON_ENTITY_FIND_ONE, NON_ENTITY_SEARCH, NON_ENTITY_SEARCH_ONE, QUERY_FACADE, } from '@airport/tarmaq-dao';
 import { QMetadataUtils } from './implementation/utils/QMetadataUtils';
 import { ApplicationUtils } from './implementation/utils/ApplicationUtils';
 import { FieldUtils } from './implementation/utils/FieldUtils';
 import { DatabaseStore } from './implementation/DatabaseStore';
 import { airTrafficControl } from './library';
-import { ENTITY_UTILS, QUERY_UTILS } from '@airport/tarmaq-query';
-import { LOOKUP, NON_ENTITY_FIND, NON_ENTITY_FIND_ONE, NON_ENTITY_SEARCH, NON_ENTITY_SEARCH_ONE, QUERY_FACADE, } from '@airport/tarmaq-dao';
-import { Dao } from './implementation/Dao';
 import { RelationManager } from './implementation/RelationManager';
 import { UTILS } from './core-tokens';
 export const AIRPORT_DATABASE = airTrafficControl.token({
@@ -19,16 +18,6 @@ export const APPLICATION_UTILS = airTrafficControl.token({
     class: ApplicationUtils,
     interface: 'IApplicationUtils',
     token: 'APPLICATION_UTILS'
-});
-export const DAO = airTrafficControl.token({
-    class: Dao,
-    interface: 'class Dao',
-    token: 'DAO'
-});
-export const DATABASE_FACADE = airTrafficControl.token({
-    class: null,
-    interface: 'IDatabaseFacade',
-    token: 'DATABASE_FACADE'
 });
 export const DATABASE_STORE = airTrafficControl.token({
     class: DatabaseStore,
@@ -55,11 +44,6 @@ export const REPOSITORY_LOADER = airTrafficControl.token({
     interface: 'IRepositoryLoader',
     token: 'REPOSITORY_LOADER'
 });
-export const UPDATE_CACHE_MANAGER = airTrafficControl.token({
-    class: null,
-    interface: 'IUpdateCacheManager',
-    token: 'UPDATE_CACHE_MANAGER'
-});
 AIRPORT_DATABASE.setDependencies({
     appliationUtils: APPLICATION_UTILS,
     databaseFacade: DATABASE_FACADE,
@@ -75,13 +59,6 @@ APPLICATION_UTILS.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     entityStateManager: ENTITY_STATE_MANAGER,
     utils: UTILS
-});
-DAO.setDependencies({
-    airportDatabase: AIRPORT_DATABASE,
-    databaseFacade: DATABASE_FACADE,
-    entityStateManager: ENTITY_STATE_MANAGER,
-    lookup: LOOKUP,
-    updateCacheManager: UPDATE_CACHE_MANAGER
 });
 DATABASE_FACADE.setDependencies({
     applicationUtils: APPLICATION_UTILS,

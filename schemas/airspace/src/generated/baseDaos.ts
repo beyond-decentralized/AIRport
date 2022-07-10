@@ -165,12 +165,10 @@ import {
 	IQEntity,
 } from '@airport/tarmaq-query';
 import {
+	Dao,
 	IDao,
 	DaoQueryDecorators,
 } from '@airport/tarmaq-dao';
-import {
-	Dao,
-} from '@airport/air-traffic-control';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
@@ -190,13 +188,13 @@ export class SQDIDao<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity>
 	extends Dao<Entity,
-		EntitySelect,
-		EntityCreate,
-		EntityUpdateColumns,
-		EntityUpdateProperties,
-		ApplicationEntity_LocalId,
-		EntityCascadeGraph,
-		IQE> {
+	EntitySelect,
+	EntityCreate,
+	EntityUpdateColumns,
+	EntityUpdateProperties,
+	ApplicationEntity_LocalId,
+	EntityCascadeGraph,
+	IQE> {
 
 	constructor(
 		dbEntityId: DbEntityId
@@ -207,27 +205,27 @@ export class SQDIDao<Entity,
 
 
 export interface IBaseApplicationDao
-  extends IDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
+	extends IDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication> {
 }
 
 export class BaseApplicationDao
-  extends SQDIDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
+	extends SQDIDao<Application, ApplicationESelect, ApplicationECreateProperties, ApplicationEUpdateColumns, ApplicationEUpdateProperties, ApplicationEId, ApplicationGraph, QApplication>
 	implements IBaseApplicationDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationESelect>();
+	static Search = new DaoQueryDecorators<ApplicationESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationESelect>();
 	static Save(
 		config: ApplicationGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(10)
 	}
-	
+
 	constructor() {
 		super(10)
 	}
@@ -235,27 +233,27 @@ export class BaseApplicationDao
 
 
 export interface IBaseApplicationColumnDao
-  extends IDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
+	extends IDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn> {
 }
 
 export class BaseApplicationColumnDao
-  extends SQDIDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn>
+	extends SQDIDao<ApplicationColumn, ApplicationColumnESelect, ApplicationColumnECreateProperties, ApplicationColumnEUpdateColumns, ApplicationColumnEUpdateProperties, ApplicationColumnEId, ApplicationColumnGraph, QApplicationColumn>
 	implements IBaseApplicationColumnDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationColumnESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationColumnESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationColumnESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationColumnESelect>();
+	static Search = new DaoQueryDecorators<ApplicationColumnESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationColumnESelect>();
 	static Save(
 		config: ApplicationColumnGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationColumnGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(4)
 	}
-	
+
 	constructor() {
 		super(4)
 	}
@@ -263,27 +261,27 @@ export class BaseApplicationColumnDao
 
 
 export interface IBaseApplicationCurrentVersionDao
-  extends IDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
+	extends IDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion> {
 }
 
 export class BaseApplicationCurrentVersionDao
-  extends SQDIDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion>
+	extends SQDIDao<ApplicationCurrentVersion, ApplicationCurrentVersionESelect, ApplicationCurrentVersionECreateProperties, ApplicationCurrentVersionEUpdateColumns, ApplicationCurrentVersionEUpdateProperties, ApplicationCurrentVersionEId, ApplicationCurrentVersionGraph, QApplicationCurrentVersion>
 	implements IBaseApplicationCurrentVersionDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
+	static Search = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationCurrentVersionESelect>();
 	static Save(
 		config: ApplicationCurrentVersionGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationCurrentVersionGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(9)
 	}
-	
+
 	constructor() {
 		super(9)
 	}
@@ -291,27 +289,27 @@ export class BaseApplicationCurrentVersionDao
 
 
 export interface IBaseApplicationEntityDao
-  extends IDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
+	extends IDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity> {
 }
 
 export class BaseApplicationEntityDao
-  extends SQDIDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity>
+	extends SQDIDao<ApplicationEntity, ApplicationEntityESelect, ApplicationEntityECreateProperties, ApplicationEntityEUpdateColumns, ApplicationEntityEUpdateProperties, ApplicationEntityEId, ApplicationEntityGraph, QApplicationEntity>
 	implements IBaseApplicationEntityDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationEntityESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationEntityESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationEntityESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationEntityESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationEntityESelect>();
+	static Search = new DaoQueryDecorators<ApplicationEntityESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationEntityESelect>();
 	static Save(
 		config: ApplicationEntityGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationEntityGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(6)
 	}
-	
+
 	constructor() {
 		super(6)
 	}
@@ -319,27 +317,27 @@ export class BaseApplicationEntityDao
 
 
 export interface IBaseApplicationOperationDao
-  extends IDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
+	extends IDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation> {
 }
 
 export class BaseApplicationOperationDao
-  extends SQDIDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation>
+	extends SQDIDao<ApplicationOperation, ApplicationOperationESelect, ApplicationOperationECreateProperties, ApplicationOperationEUpdateColumns, ApplicationOperationEUpdateProperties, ApplicationOperationEId, ApplicationOperationGraph, QApplicationOperation>
 	implements IBaseApplicationOperationDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationOperationESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationOperationESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationOperationESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationOperationESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationOperationESelect>();
+	static Search = new DaoQueryDecorators<ApplicationOperationESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationOperationESelect>();
 	static Save(
 		config: ApplicationOperationGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationOperationGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(5)
 	}
-	
+
 	constructor() {
 		super(5)
 	}
@@ -347,27 +345,27 @@ export class BaseApplicationOperationDao
 
 
 export interface IBaseApplicationPropertyDao
-  extends IDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
+	extends IDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty> {
 }
 
 export class BaseApplicationPropertyDao
-  extends SQDIDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty>
+	extends SQDIDao<ApplicationProperty, ApplicationPropertyESelect, ApplicationPropertyECreateProperties, ApplicationPropertyEUpdateColumns, ApplicationPropertyEUpdateProperties, ApplicationPropertyEId, ApplicationPropertyGraph, QApplicationProperty>
 	implements IBaseApplicationPropertyDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationPropertyESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationPropertyESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationPropertyESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationPropertyESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationPropertyESelect>();
+	static Search = new DaoQueryDecorators<ApplicationPropertyESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationPropertyESelect>();
 	static Save(
 		config: ApplicationPropertyGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationPropertyGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(2)
 	}
-	
+
 	constructor() {
 		super(2)
 	}
@@ -375,27 +373,27 @@ export class BaseApplicationPropertyDao
 
 
 export interface IBaseApplicationPropertyColumnDao
-  extends IDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
+	extends IDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn> {
 }
 
 export class BaseApplicationPropertyColumnDao
-  extends SQDIDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn>
+	extends SQDIDao<ApplicationPropertyColumn, ApplicationPropertyColumnESelect, ApplicationPropertyColumnECreateProperties, ApplicationPropertyColumnEUpdateColumns, ApplicationPropertyColumnEUpdateProperties, ApplicationPropertyColumnEId, ApplicationPropertyColumnGraph, QApplicationPropertyColumn>
 	implements IBaseApplicationPropertyColumnDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
+	static Search = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationPropertyColumnESelect>();
 	static Save(
 		config: ApplicationPropertyColumnGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationPropertyColumnGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(3)
 	}
-	
+
 	constructor() {
 		super(3)
 	}
@@ -403,27 +401,27 @@ export class BaseApplicationPropertyColumnDao
 
 
 export interface IBaseApplicationReferenceDao
-  extends IDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
+	extends IDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference> {
 }
 
 export class BaseApplicationReferenceDao
-  extends SQDIDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference>
+	extends SQDIDao<ApplicationReference, ApplicationReferenceESelect, ApplicationReferenceECreateProperties, ApplicationReferenceEUpdateColumns, ApplicationReferenceEUpdateProperties, ApplicationReferenceEId, ApplicationReferenceGraph, QApplicationReference>
 	implements IBaseApplicationReferenceDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationReferenceESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationReferenceESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationReferenceESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationReferenceESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationReferenceESelect>();
+	static Search = new DaoQueryDecorators<ApplicationReferenceESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationReferenceESelect>();
 	static Save(
 		config: ApplicationReferenceGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationReferenceGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(7)
 	}
-	
+
 	constructor() {
 		super(7)
 	}
@@ -431,27 +429,27 @@ export class BaseApplicationReferenceDao
 
 
 export interface IBaseApplicationRelationDao
-  extends IDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
+	extends IDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation> {
 }
 
 export class BaseApplicationRelationDao
-  extends SQDIDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation>
+	extends SQDIDao<ApplicationRelation, ApplicationRelationESelect, ApplicationRelationECreateProperties, ApplicationRelationEUpdateColumns, ApplicationRelationEUpdateProperties, ApplicationRelationEId, ApplicationRelationGraph, QApplicationRelation>
 	implements IBaseApplicationRelationDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationRelationESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationRelationESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationRelationESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationRelationESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationRelationESelect>();
+	static Search = new DaoQueryDecorators<ApplicationRelationESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationRelationESelect>();
 	static Save(
 		config: ApplicationRelationGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationRelationGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(1)
 	}
-	
+
 	constructor() {
 		super(1)
 	}
@@ -459,27 +457,27 @@ export class BaseApplicationRelationDao
 
 
 export interface IBaseApplicationRelationColumnDao
-  extends IDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
+	extends IDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn> {
 }
 
 export class BaseApplicationRelationColumnDao
-  extends SQDIDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn>
+	extends SQDIDao<ApplicationRelationColumn, ApplicationRelationColumnESelect, ApplicationRelationColumnECreateProperties, ApplicationRelationColumnEUpdateColumns, ApplicationRelationColumnEUpdateProperties, ApplicationRelationColumnEId, ApplicationRelationColumnGraph, QApplicationRelationColumn>
 	implements IBaseApplicationRelationColumnDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
+	static Search = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationRelationColumnESelect>();
 	static Save(
 		config: ApplicationRelationColumnGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationRelationColumnGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(0)
 	}
-	
+
 	constructor() {
 		super(0)
 	}
@@ -487,27 +485,27 @@ export class BaseApplicationRelationColumnDao
 
 
 export interface IBaseApplicationVersionDao
-  extends IDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
+	extends IDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion> {
 }
 
 export class BaseApplicationVersionDao
-  extends SQDIDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion>
+	extends SQDIDao<ApplicationVersion, ApplicationVersionESelect, ApplicationVersionECreateProperties, ApplicationVersionEUpdateColumns, ApplicationVersionEUpdateProperties, ApplicationVersionEId, ApplicationVersionGraph, QApplicationVersion>
 	implements IBaseApplicationVersionDao {
-	
-	static Find      = new DaoQueryDecorators<ApplicationVersionESelect>();
-	static FindOne   = new DaoQueryDecorators<ApplicationVersionESelect>();
-	static Search    = new DaoQueryDecorators<ApplicationVersionESelect>();
+
+	static Find = new DaoQueryDecorators<ApplicationVersionESelect>();
+	static FindOne = new DaoQueryDecorators<ApplicationVersionESelect>();
+	static Search = new DaoQueryDecorators<ApplicationVersionESelect>();
 	static SearchOne = new DaoQueryDecorators<ApplicationVersionESelect>();
 	static Save(
 		config: ApplicationVersionGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<ApplicationVersionGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(8)
 	}
-	
+
 	constructor() {
 		super(8)
 	}
@@ -515,27 +513,27 @@ export class BaseApplicationVersionDao
 
 
 export interface IBaseDomainDao
-  extends IDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
+	extends IDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain> {
 }
 
 export class BaseDomainDao
-  extends SQDIDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
+	extends SQDIDao<Domain, DomainESelect, DomainECreateProperties, DomainEUpdateColumns, DomainEUpdateProperties, DomainEId, DomainGraph, QDomain>
 	implements IBaseDomainDao {
-	
-	static Find      = new DaoQueryDecorators<DomainESelect>();
-	static FindOne   = new DaoQueryDecorators<DomainESelect>();
-	static Search    = new DaoQueryDecorators<DomainESelect>();
+
+	static Find = new DaoQueryDecorators<DomainESelect>();
+	static FindOne = new DaoQueryDecorators<DomainESelect>();
+	static Search = new DaoQueryDecorators<DomainESelect>();
 	static SearchOne = new DaoQueryDecorators<DomainESelect>();
 	static Save(
 		config: DomainGraph
 	): PropertyDecorator {
 		return Dao.BaseSave<DomainGraph>(config);
-  }
+	}
 
 	static diSet(): boolean {
 		return duoDiSet(11)
 	}
-	
+
 	constructor() {
 		super(11)
 	}

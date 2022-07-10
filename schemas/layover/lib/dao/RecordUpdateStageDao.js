@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { ACTOR_PROPERTY_NAME, ACTOR_RECORD_ID_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
 import { and, field, or, } from '@airport/tarmaq-query';
+import { Inject } from 'typedi';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
 let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
     async insertValues(values) {
@@ -66,6 +67,9 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
         });
     }
 };
+__decorate([
+    Inject()
+], RecordUpdateStageDao.prototype, "airportDatabase", void 0);
 RecordUpdateStageDao = __decorate([
     Injected()
 ], RecordUpdateStageDao);

@@ -1,6 +1,7 @@
 import { IContext } from '@airport/direction-indicator';
 import { Domain_Name, Application_Index, Application_Name, ApplicationStatus, ApplicationVersion_LocalId, FullApplication_Name } from '@airport/ground-control';
 import { BaseApplicationDao, IBaseApplicationDao, IApplication } from '../generated/generated';
+import { IAirportDatabase } from '@airport/air-traffic-control';
 export interface IApplicationLookupRecord {
     index: number;
     domain: {
@@ -24,6 +25,7 @@ export interface IApplicationDao extends IBaseApplicationDao {
     insert(applications: IApplication[], context: IContext): Promise<void>;
 }
 export declare class ApplicationDao extends BaseApplicationDao implements IApplicationDao {
+    airportDatabase: IAirportDatabase;
     findAllActive(): Promise<IApplication[]>;
     findAllWithJson(): Promise<IApplication[]>;
     findMapByVersionIds(applicationVersionIds: ApplicationVersion_LocalId[]): Promise<Map<ApplicationVersion_LocalId, IApplication>>;

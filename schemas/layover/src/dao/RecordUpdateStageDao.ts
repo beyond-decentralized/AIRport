@@ -1,6 +1,7 @@
 import {
 	ACTOR_PROPERTY_NAME,
 	ACTOR_RECORD_ID_PROPERTY_NAME,
+	IAirportDatabase,
 	REPOSITORY_PROPERTY_NAME
 } from '@airport/air-traffic-control'
 import { Injected } from '@airport/direction-indicator';
@@ -22,6 +23,7 @@ import {
 	field,
 	or,
 } from '@airport/tarmaq-query'
+import { Inject } from 'typedi';
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
@@ -65,6 +67,9 @@ export interface IRecordUpdateStageDao
 export class RecordUpdateStageDao
 	extends BaseRecordUpdateStageDao
 	implements IRecordUpdateStageDao {
+
+	@Inject()
+	airportDatabase: IAirportDatabase
 
 	async insertValues(
 		values: RecordUpdateStageValues[]

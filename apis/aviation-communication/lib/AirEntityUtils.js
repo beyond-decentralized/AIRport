@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Injected } from '@airport/direction-indicator';
 let AirEntityUtils = class AirEntityUtils {
     getCreatedBy(airEntity) {
-        return airEntity.actor.user;
+        return airEntity.actor.userAccount;
     }
     encodeId(idObject) {
         if (!idObject.repository

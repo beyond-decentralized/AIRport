@@ -1,5 +1,5 @@
 import { lib } from '@airport/direction-indicator';
-import { DbApplicationUtils } from './impl/query/DbApplicationUtils';
+import { DbApplicationUtils } from './implementation/query/DbApplicationUtils';
 const groundControl = lib('ground-control');
 export const DB_APPLICATION_UTILS = groundControl.token({
     class: DbApplicationUtils,
@@ -20,6 +20,11 @@ export const TRANSACTIONAL_CONNECTOR = groundControl.token({
     class: null,
     interface: 'ITransactionalConnector',
     token: 'TRANSACTIONAL_CONNECTOR'
+});
+export const UPDATE_CACHE_MANAGER = groundControl.token({
+    class: null,
+    interface: 'IUpdateCacheManager',
+    token: 'UPDATE_CACHE_MANAGER'
 });
 TRANSACTIONAL_CONNECTOR.setDependencies({
     dbApplicationUtils: DB_APPLICATION_UTILS,
