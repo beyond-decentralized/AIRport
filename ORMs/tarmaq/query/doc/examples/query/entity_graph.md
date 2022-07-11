@@ -4,11 +4,11 @@
 - [TARMAQ Entity Graph Query Examples](#TARMAQ-entity-graph-query-examples)
     - [Find all Tasks](#find-all-tasks)
     - [Find tasks with a sub-query function](#find-tasks-with-a-sub-query-function)
-    - [Search for all goals](#search-for-all-goals)
+    - [Search for a goal](#search-for-a-goal)
     - [Find Goal with Tasks ordered](#find-goal-with-tasks-ordered)
 
 <!-- /TOC -->
-## Find all Tasks
+## [Find all Tasks]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
@@ -31,7 +31,7 @@ class TaskDao extends BaseTaskDao {
 }
 ```
 
-## Find tasks with a sub-query function
+## [Find tasks with a sub-query function]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
@@ -68,7 +68,7 @@ class TaskDao extends BaseTaskDao {
 }
 ```
 
-## Search for a goal
+## [Search for a goal]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
@@ -94,7 +94,7 @@ class GoalDao extends BaseGoalDao {
 }
 ```
 
-## Find Goal with Tasks ordered
+## [Find Goal with Tasks ordered]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
