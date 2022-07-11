@@ -16,7 +16,7 @@ infers the FROM clause (by assuming always left joins) from the
 SELECT clause and the WHERE clause.  The WHERE clause is constructed
 using chained entity references: 
 
-<pre><code>
+```Typescript
 class ADao
     extends SelfADao {
 
@@ -40,4 +40,4 @@ class ADao
 		)
     }
 }
-</code></pre>
+```
