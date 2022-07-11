@@ -15,7 +15,7 @@ class TaskDao extends BaseTaskDao {
         taskNameLike: string,
         maxNumResults: number,
         resultSetOffset: number
-    ) {
+    ): Promise<any[][]> {
         let t: QTask
         return await this.airDb.find.sheet({
             from: [
