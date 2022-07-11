@@ -18,7 +18,8 @@ export class ApiBuilder extends FileBuilder {
             const moduleImport = this.apiFile.imports
                 .importMapByObjectAsName[objectAsName];
             let relativePathToImport = moduleImport.path;
-            if (moduleImport.path.indexOf('.') === 0) {
+            if (moduleImport.path.indexOf('.') === 0
+                && !moduleImport.path.startsWith('./')) {
                 const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, this.fullGenerationPath);
                 relativePathToImport = '../' + resolveRelativePath(this.fullGenerationPath, fullPathToImport);
             }

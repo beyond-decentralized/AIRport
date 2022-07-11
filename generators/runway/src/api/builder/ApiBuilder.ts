@@ -30,7 +30,8 @@ export class ApiBuilder
                 .importMapByObjectAsName[objectAsName]
 
             let relativePathToImport = moduleImport.path
-            if (moduleImport.path.indexOf('.') === 0) {
+            if (moduleImport.path.indexOf('.') === 0
+                && !moduleImport.path.startsWith('./')) {
                 const fullPathToImport = getFullPathFromRelativePath(
                     moduleImport.path, this.fullGenerationPath)
                 relativePathToImport = '../' + resolveRelativePath(
