@@ -14,7 +14,7 @@ results may contain duplicate object entries.
 
 ## Usage
 
-Here are some usage [examples](../../examples/query/entity tree.md).
+Here are some usage [examples](../../examples/query/entity_tree.md).
 
 ## Reason
 

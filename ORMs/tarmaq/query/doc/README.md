@@ -62,5 +62,5 @@ More:
 
 - [Fields](./structure/fields.md)
 - [Functions](./structure/functions.md)
-- [Generated Entity Query Objects](./structure/generated%20entity%20query%20objects.md)
+- [Generated Entity Query Objects](./structure/generated_entity_query_objects.md)
 - [Operations](./structure/operations.md)

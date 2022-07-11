@@ -14,7 +14,7 @@ returned object graph will not contain duplicates.
 
 ## Usage
 
-Here are some usage [examples](../../examples/query/entity graph.md).
+Here are some usage [examples](../../examples/query/entity_graph.md).
 
 ## Reason
 
