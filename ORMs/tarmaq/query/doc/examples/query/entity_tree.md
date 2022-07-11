@@ -2,12 +2,12 @@
 <!-- TOC -->
 
 - [TARMAQ Entity Tree Query Examples](#TARMAQ-entity-tree-query-examples)
-    - [Find all Goals (as tree)](#find-all-goals-as-tree)
-    - [Find some fields from all Goals with Tasks (as tree)](#find-some-fields-from-all-goals-with-tasks-as-tree)
+    - [Find all Goals (as flat tree)](#find-all-goals-as-flat-tree)
+    - [Find some fields from all Goals with Tasks (as flat tree)](#find-some-fields-from-all-goals-with-tasks-as-flat-tree)
 
 <!-- /TOC -->
 
-## Find all Goals (as flat tree)
+## [Find all Goals as flat tree]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
@@ -27,7 +27,7 @@ class GoalDao extends BaseGoalDao {
 }
 ```
 
-## Find some fields from all Goals with Tasks (as tree)
+## [Find some fields from all Goals with Tasks as flat tree]
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
