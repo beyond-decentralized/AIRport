@@ -22,5 +22,5 @@ Entity queries return results that map to Entities.  There are two types of Enti
 Queries that don't return results which belong to a particular entity are Non-Entity queries. There are three types of Non-Entity queries:
 
 - Non-Entity Tree Query - gets a flat tree of objects that don't directly map to entities
-- C. [Field Query](./query_types/field_query.md)
-- D. [Sheet Query](./query_types/sheet_query.md)
+- [Field Query](./query_types/field_query.md)
+- [Sheet Query](./query_types/sheet_query.md)

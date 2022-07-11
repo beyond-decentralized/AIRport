@@ -9,9 +9,9 @@
         - [sub-query in set clause](#sub-query-in-set-clause)
 
 <!-- /TOC -->
-## Stand-Alone Examples
+## [Stand-Alone Examples]
 
-### Count all Tasks
+### [Count all Tasks]
 ```ts
 import { Inject, Injected } from '@airport/direction-indicator'
 import { AirportDatabase } from '@airport/tower'
@@ -35,9 +35,9 @@ class TaskDao extends BaseTaskDao {
 }
 ```
 
-## Sub-Query Examples
+## [Sub-Query Examples]
 
-### sub-query in WHERE clause
+### [sub-query in WHERE clause]
 
 ```ts
 
@@ -75,7 +75,7 @@ class TaskDao extends BaseTaskDao {
 }
 ```
 
-### sub-query in SET clause
+### [sub-query in SET clause]
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { field } from '@airport/tarmaq-query'
