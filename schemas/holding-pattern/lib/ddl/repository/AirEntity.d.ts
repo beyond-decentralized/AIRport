@@ -18,7 +18,7 @@ export declare abstract class AirEntity {
     originalRepository?: Repository;
     originalActor?: Actor;
     originalActorRecordId?: AirEntity_ActorRecordId;
-    get createdBy(): UserAccount;
+    createdBy?: UserAccount;
     /**
      * A transient property, generated on the entity objects by the
      * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value
@@ -31,7 +31,7 @@ export declare abstract class AirEntity {
      * the time existing objects are retrieved without a Id (only with
      * the _localId properties).
      */
-    get isNew(): boolean;
+    isNew?: boolean;
     /**
      * A transient aggregate property, generated on the entity objects by the
      * QueryResultsDeserializer.doSetPropertyDescriptors.  It is
@@ -53,7 +53,6 @@ export declare abstract class AirEntity {
      *
      * Returns null if one of it's member Ids does not exist
      */
-    get id(): string;
-    set id(entityGUID: string);
+    id?: string;
 }
 //# sourceMappingURL=AirEntity.d.ts.map

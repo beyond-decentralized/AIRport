@@ -10,55 +10,29 @@ import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 let AirEntity = class AirEntity {
     constructor(entityGUID) {
         this.id = entityGUID;
-    }
-    /*
-     *A transient convenience property to get the username of the
-     * UserAccountAccount that created the record.
-     */
-    get createdBy() {
-        return this.actor.userAccount;
-    }
-    /**
-     * A transient property, generated on the entity objects by the
-     * QueryResultsDeserializer.doSetPropertyDescriptors.  It's value
-     * is:
-     *
-     * 	true - this entity object has not been saved and does not have an id
-     * 	false - this entity object has been saved and has an id
-     *
-     * It does not check the existence of Id on the object - most of
-     * the time existing objects are retrieved without a Id (only with
-     * the _localId properties).
-     */
-    get isNew() {
-        return !!this._actorRecordId;
-    }
-    /**
-     * A transient aggregate property, generated on the entity objects by the
-     * QueryResultsDeserializer.doSetPropertyDescriptors.  It is
-     * composed of:
-     *
-     * 	{
-     * 		actor: {
-     * 			GUID
-     * 		},
-     * 		_actorRecordId,
-     * 		repository: {
-     * 			GUID
-     * 		}
-     * 	}
-     *
-     * Returns:
-     *
-     * `${repository.GUID}-${actor.GUID}-${_actorRecordId}`
-     *
-     * Returns null if one of it's member Ids does not exist
-     */
-    get id() {
-        return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this);
-    }
-    set id(entityGUID) {
-        IOC.getSync(AIR_ENTITY_UTILS).setId(entityGUID, this);
+        // Currently TypeScript does not support optional getters/setters
+        // this is a workaround
+        delete this.id;
+        Object.defineProperty(this, 'id', {
+            get() {
+                return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this);
+            },
+            set(idString) {
+                IOC.getSync(AIR_ENTITY_UTILS).setId(idString, this);
+            }
+        });
+        delete this.isNew;
+        Object.defineProperty(this, 'isNew', {
+            get() {
+                return !!this._actorRecordId;
+            }
+        });
+        delete this.createdBy;
+        Object.defineProperty(this, 'createdBy', {
+            get() {
+                return this.actor.userAccount;
+            }
+        });
     }
 };
 __decorate([
@@ -114,7 +88,13 @@ __decorate([
 ], AirEntity.prototype, "originalActorRecordId", void 0);
 __decorate([
     Transient()
-], AirEntity.prototype, "isNew", null);
+], AirEntity.prototype, "createdBy", void 0);
+__decorate([
+    Transient()
+], AirEntity.prototype, "isNew", void 0);
+__decorate([
+    Transient()
+], AirEntity.prototype, "id", void 0);
 AirEntity = __decorate([
     MappedSuperclass()
 ], AirEntity);

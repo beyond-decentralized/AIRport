@@ -29,6 +29,31 @@ export abstract class AirEntity {
 		entityGUID?: string
 	) {
 		this.id = entityGUID
+		// Currently TypeScript does not support optional getters/setters
+		// this is a workaround
+		delete this.id
+		Object.defineProperty(this, 'id', {
+			get() {
+				return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this)
+			},
+			set(
+				idString: string
+			) {
+				IOC.getSync(AIR_ENTITY_UTILS).setId(idString, this)
+			}
+		});
+		delete this.isNew
+		Object.defineProperty(this, 'isNew', {
+			get() {
+				return !!this._actorRecordId
+			}
+		});
+		delete this.createdBy
+		Object.defineProperty(this, 'createdBy', {
+			get() {
+				return this.actor.userAccount
+			}
+		});
 	}
 
 	@Id()
@@ -94,9 +119,8 @@ export abstract class AirEntity {
 	 *A transient convenience property to get the username of the
 	 * UserAccountAccount that created the record.
 	 */
-	get createdBy(): UserAccount {
-		return this.actor.userAccount
-	}
+	@Transient()
+	createdBy?: UserAccount
 
 	/**
 	 * A transient property, generated on the entity objects by the
@@ -111,9 +135,7 @@ export abstract class AirEntity {
 	 * the _localId properties). 
 	 */
 	@Transient()
-	get isNew(): boolean {
-		return !!this._actorRecordId
-	}
+	isNew?: boolean
 
 	/**
 	 * A transient aggregate property, generated on the entity objects by the
@@ -136,14 +158,7 @@ export abstract class AirEntity {
 	 * 
 	 * Returns null if one of it's member Ids does not exist
 	 */
-	get id(): string {
-		return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this)
-	}
-
-	set id(
-		entityGUID: string
-	) {
-		IOC.getSync(AIR_ENTITY_UTILS).setId(entityGUID, this)
-	}
+	@Transient()
+	id?: string
 
 }
