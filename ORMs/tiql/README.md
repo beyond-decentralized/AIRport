@@ -12,13 +12,11 @@ My intial thoughs on the format for this are:
 
 example.tiql:
 
-<pre><code>
-@Inject()
-export class AnythingDao {
+<pre><code>export class ExampleDao extends BaseTiqlExampleDao {
 
     async getExampleEntity(
         id: string
-    ): ExampleEntity[] {
+    ): Promise<ExampleEntity[]> {
         SELECT 
             /*** {
                 '*': Y,
@@ -47,28 +45,14 @@ export class AnythingDao {
             ee.id = id
     }
 
-}
-</code></pre>
+}</code></pre>
 
-In the above example the SELECT has a SQL comment that in TIQL is a strongly
-typed block with top level entity matching the entity of the Dao.  This requires
-the ablitiy to build an AST from the .ae and IDE integration to provide type
-auto completion.
+The /*** and ---- marked SQL comments are typed and let the developer
+quickly specify the desired object graph and join relations. TIQL will 
+geneate the necessary SELECT and "JOIN" clauses and insert it them 
+inside "GENERATED" blocks.
 
-Once the entity block has been specified TIQL will geneate the necessary
-SELECT clause and insert it in side the "GENERATED" block.
-
-When joining entitiies the "-- TO alias" is also parsed and provides
-autocompletions for all table aliases defined above.
-
-Once TIQL generates the statement it can be used in a standard SQL
-database for querying (or inserts/updates/deletes, yet to be prototyped).
-
-It will also be possible to do the inverse - drop in a working SQL statement
-and the SELECT entities and "-- TO alias"es derived.  This derivation will
-be required to prove that the query does return the top level entity that
-is associated with the the selected entity.
-
+Thus, TIQL (with generated statements) is standard SQL.
 
 TIQL Daos be pre-processed at build time and implemented as generated
 Tarmaq Daos.
