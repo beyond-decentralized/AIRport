@@ -16,6 +16,7 @@ import { BaseGoalDao } from '../generated/generated'
 
 @Injected()
 class GoalDao extends BaseGoalDao {
+    
 	async findAllGoals(
 		goalId: string
 	): Promise<Goal> {
@@ -34,7 +35,9 @@ import { Y } from '@airport/tarmaq-query';
 import { Goal } from '../ddl/ddl'
 import { BaseGoalDao } from '../generated/generated'
 
+@Injected()
 class GoalDao extends BaseGoalDao {
+    
 	async findGoalInfoWithTasks(
 		goalId: string
 	): Promise<Goal> {

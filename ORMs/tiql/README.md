@@ -1,6 +1,6 @@
 # TIQL
 
-FUTURE WORK: need help with parsing TIQL and IDE auto-completion
+FUTURE WORK: I need help with parsing TIQL and IDE auto-completion
 
 ## Description
 
@@ -20,11 +20,10 @@ export class AnythingDao {
         id: string
     ): ExampleEntity[] {
         SELECT 
-            /* {
-                *,
+            /*** {
+                '*': Y,
                 entityA: {}
-            }
-            as ExampleEntity */
+            } */
         -- START GENERATED  
             ee.ARID,
             ee.RID,
@@ -38,11 +37,11 @@ export class AnythingDao {
         FROM
             example_entity ee
             LEFT JOIN entity_a ea
-                -- TO ee
+                ---- TO ee
             -- START GENERATED  
-                ON  ee.ENTITY_A_ARID = ee.ARID
-                    AND ee.ENTITY_A_RID = ee.RID
-                    AND ee.ENTITY_A_AID = ee.AID
+                ON  ee.ENTITY_A_ARID = ea.ARID
+                    AND ee.ENTITY_A_RID = ea.RID
+                    AND ee.ENTITY_A_AID = ea.AID
             -- END GENERATED
         WHERE
             ee.id = id

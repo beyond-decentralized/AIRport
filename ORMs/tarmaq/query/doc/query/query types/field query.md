@@ -1,6 +1,6 @@
 # Field Query
 
-Field Queries always return a single column list.
+Field Queries always return fields of a single column.
 
 ## Usage
 

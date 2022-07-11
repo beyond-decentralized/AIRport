@@ -2,7 +2,6 @@
 
 @airport/tarmaq-dao is a Data Access Object framework.
 
-"
 ```typescript
 @Injected()
 export class IdeaDao

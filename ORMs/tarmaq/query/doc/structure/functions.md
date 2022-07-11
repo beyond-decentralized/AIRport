@@ -23,7 +23,7 @@
         - [Exists](#exists)
 
 <!-- /TOC -->
-Following functions are defined by TIQL.
+Following functions are defined by Tarmaq (more will be added as needed).
 
 ## SQL Functions
 

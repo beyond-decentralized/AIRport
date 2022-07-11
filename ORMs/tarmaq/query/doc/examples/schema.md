@@ -1,32 +1,42 @@
 # Example Application
 
-This the example application used throughout the project:
+This the example Application has two entities:
+
+Task:
 
 ```ts
-@Entity()
-export class Task {
-	complete: boolean;
-	description: string;
-	@ManyToOne()
-	goal: GoalApi;
-	@Id()
-	taskId: number;
-	name: string;
-	@ManyToOne()
-	nextTask?: Task;
-	@OneToMany({mappedBy: 'nextTask'})
-	previousTasks?: Task[];
-}
+import { AirEntity } from '@airport/holding-pattern'
+import { Column, Entity } from '@airport/tarmaq-entity'
 
 @Entity()
-export class Goal {
-	accomplished: boolean;
-	description: string;
-	@Id()
-	goalId: number;
+export class Task extends AirEntity {
+	// Everything Id related is taken care of by AirEntity
+
+	@Column({ name: 'IS_COMPLETE' })
+	isComplete: boolean;
 	name: string;
+	@Column({ name: 'DUE_DATE' })
 	dueDate: Date;
-	@OneToMany({mappedBy: 'goal', cascade: CascadeType.ALL})
+	
+	@ManyToOne()
+	goal: GoalApi;
+}
+```
+
+and Goal:
+
+```ts
+import { AirEntity } from '@airport/holding-pattern'
+import { Column, Entity } from '@airport/tarmaq-entity'
+
+@Entity()
+export class Goal extends AirEntity {
+
+	@Column({ name: 'IS_ACCOMPLISHED' })
+	isAccomplished: boolean;
+	description: string;
+	
+	@OneToMany({ mappedBy: 'goal' })
 	tasks?: Task[];
 }
 ```

@@ -9,7 +9,7 @@
 Entity Tree Query is an entity based query API where the select clause
 is specified as a JSON object tree.
 
-Entity Tree Query returns a non-interlinked tree of objects.  Hence, the
+Entity Tree Query returns a flat tree of objects.  Hence, the
 results may contain duplicate object entries.
 
 ## Usage

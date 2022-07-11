@@ -1,7 +1,7 @@
 # Tarmaq
 
 @airport/tarmaq-query is a collection of functions and interfaces that allow
-for 
+for: 
 
 - GraphQL like select trees
 - Array based from clauses with simple (or precisely defined) join statements

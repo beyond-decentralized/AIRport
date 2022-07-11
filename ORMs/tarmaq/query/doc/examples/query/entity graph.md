@@ -12,11 +12,13 @@
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
-import { BaseTaskDao } from '../generated/generated'
+import { Task } from '../ddl/ddl'
+import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
+@Injected()
 class TaskDao extends BaseTaskDao {
 
-	async findAll(): Promise<Find> {
+	async findAll(): Promise<Task> {
 		let t: QTask
 		return await this._find({
 			select: {},
@@ -36,7 +38,9 @@ import { Injected } from '@airport/direction-indicator'
 import { Task } from '../ddl/ddl'
 import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
+@Injected()
 class TaskDao extends BaseTaskDao {
+
 	async findTasksLikeWithSubQuery(
 		likeValue: string
 	): Promise<Task[]> {
@@ -68,9 +72,12 @@ class TaskDao extends BaseTaskDao {
 
 ```ts
 import { Injected } from '@airport/direction-indicator'
+import { Goal } from '../ddl/ddl'
 import { BaseGoalDao, Q, QGoal } from '../generated/generated'
 
+@Injected()
 class GoalDao extends BaseGoalDao {
+
 	findAGoal(
 		goalId: string
 	): Observable<Goal> {
@@ -95,6 +102,7 @@ import { Y } from '@airport/tarmaq-query';
 import { Goal } from '../ddl/ddl'
 import { BaseGoalDao, Q, QGoal, QTask } from '../generated/generated'
 
+@Injected()
 class GoalDao extends BaseGoalDao {
 	async findGoalWithOrderedTasks(
 		goalId: string
@@ -108,7 +116,7 @@ class GoalDao extends BaseGoalDao {
 			},
 			from: [
 				g = Q.Goal,
-				t = g.tasks.innerJoin()
+				t = g.tasks.leftJoin()
 			],
 			where: g.goalId.equals(goalId),
 			orderBy: [

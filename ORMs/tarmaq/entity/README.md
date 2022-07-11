@@ -7,7 +7,7 @@ Used to
 *   generate SCHEMA definitions, Query interfaces and Objects.
 *   enable JSON trees as SELECT statements.
 
-"
+
 ```typescript
 @Entity()
 @Table({ name: 'IDEAS' })
@@ -15,7 +15,7 @@ export class Idea
 	extends AirEntity {
 
 	constructor(
-		entityGUID: string
+		entityGUID?: string
 	) {
 		super(entityGUID)
 		this.reasons = []

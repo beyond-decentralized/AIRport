@@ -14,6 +14,7 @@
 ### Count all Tasks
 ```ts
 import { Inject, Injected } from '@airport/direction-indicator'
+import { AirportDatabase } from '@airport/tower'
 import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
 @Injected()
@@ -36,33 +37,34 @@ class TaskDao extends BaseTaskDao {
 
 ## Sub-Query Examples
 
-### sub-query in where clause
+### sub-query in WHERE clause
 
 ```ts
 
 import { Injected } from '@airport/direction-indicator'
-import { field } from '@airport/tarmaq-query'
+import { and, field } from '@airport/tarmaq-query'
 import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
 @Injected()
 class TaskDao extends BaseTaskDao {
 	
-	async getTaskCount(
+	async setTaskName(
 		newName: string
 		taskNameLike: string
-	) {
+	): Promise<void> {
 		let t: QTask,
 			t2: QTask
 		return await this.db.updateWhere({
-  			update: t = QTask.from(db),
+  			update: t = Q.Task,
 			set: {
 				name: newName
 			},
 			where: and(
 				ucase(t.name).like(`%${taskNameLike}%`),
+				// TODO: come up with a realistic example
    				t.taskId.equals(field({
       				from: [
-						t2 = QTask.from(db)
+						t2 = Q.Task
 					],
       				select: t2.taskId,
       				where: t2.taskId.equals(t.taskId)
@@ -73,7 +75,7 @@ class TaskDao extends BaseTaskDao {
 }
 ```
 
-### sub-query in set clause
+### sub-query in SET clause
 ```ts
 import { Injected } from '@airport/direction-indicator'
 import { field } from '@airport/tarmaq-query'
@@ -82,15 +84,13 @@ import { BaseTaskDao, Q, QTask } from '../generated/generated'
 @Injected()
 class TaskDao extends BaseTaskDao {
 	
-	async getTaskCount(
-		taskWithNameId: string,
+	async updateTaskName(
+		anotherTaskId: string,
 		taskToUpdateId: string
-	) {
+	): {
 		let t: QTask
 			t2: QTask
-		return await QDatabase.db(this.dbFacade.name).updateWhere((
-			db: QDatabase
-		) => ({
+		return await this.db.updateWhere({
 			update: t = Q.Task,
 			set: {
 				name: field({
@@ -98,11 +98,11 @@ class TaskDao extends BaseTaskDao {
 						t2 = Q.Task
 					],
       				select: t2.name,
-      				where: t2.taskId.equals(taskWithNameId)
+      				where: t2.taskId.equals(anotherTaskId)
     			})
 			},
 			where: task.id.equals(taskToUpdateId)
-		}));
+		});
 	}
 }
 ```
