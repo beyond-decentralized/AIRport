@@ -263,7 +263,7 @@ Code generators.
 [libs](/libs)
 Libraries.
 
-[orms](/ORMs)
+[ORMs](/ORMs)
 Object Relational Mapping frameworks.
 
 [platforms](/platforms)

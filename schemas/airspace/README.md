@@ -1,7 +1,5 @@
 # Airspace
 
-# TODO: add @Api() interfaces
-
 ## Why the name 
 
 "Controlled airspace is found around some airports and at 
