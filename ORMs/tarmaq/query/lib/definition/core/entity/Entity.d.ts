@@ -8,6 +8,7 @@ import { JSONLogicalOperation } from '../operation/LogicalOperation';
 import { IRelationManager } from './IRelationManager';
 import { IQueryUtils } from '../../utils/IQueryUtils';
 import { IFieldUtils } from '../../utils/IFieldUtils';
+import { IQNumberEntityField } from '../../../implementation/core/field/NumberField';
 /**
  * Marker interface for a collection of only Entity @Id Properties.
  * Used for DELETE statements.  Must list all @Id properties.
@@ -98,13 +99,17 @@ export interface IEntityRelationFrom {
  * A concrete Generated Query Entity.
  */
 export interface IQEntity {
-    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | IQAirEntityRelation<Entity, IQ> | AirEntityId | string): JSONLogicalOperation;
+    equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | AirEntityId | string): JSONLogicalOperation;
+    in<Entity, IQ extends IQEntityInternal>(entity: Entity | AirEntityId | string): JSONLogicalOperation;
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
     rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
 export interface IQAirEntity extends IQEntity {
+    _actorRecordId: IQNumberEntityField;
+    actor: IQAirEntityRelation<any, any>;
+    repository: IQAirEntityRelation<any, any>;
 }
 export interface IQTree extends IQEntity {
 }

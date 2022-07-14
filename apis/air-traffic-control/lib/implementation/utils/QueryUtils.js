@@ -6,29 +6,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected, IOC } from '@airport/direction-indicator';
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
-import { and, ENTITY_UTILS, QOperableField, wrapPrimitive } from '@airport/tarmaq-query';
+import { and, ENTITY_UTILS, or, QEntity, QOperableField, wrapPrimitive } from '@airport/tarmaq-query';
 let QueryUtils = class QueryUtils {
-    equals(entityOrId, toObject
-    // | IQRelation<IQ>
+    equals(entityOrId, toObject // | IQRelation<IQ>
     ) {
         if (!entityOrId) {
-            throw new Error(`null entity/Id is passed into equals method`);
+            throw new Error(`null entity/Id is passed into 'equals' method`);
         }
-        // if(entityOrId instanceof QEntity) {
-        let entityId;
-        let theEntityOrId = entityOrId;
-        if (typeof entityOrId === 'string') {
-            entityId = this.airEntityUtils.parseEGUID(entityOrId);
+        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
+        if (entityOrId instanceof QEntity) {
+            const relationIdEntities = this.entityUtils
+                .ensureRepositoryAndActorJoin(entityOrId);
+            return and(qRepository.GUID.equals(relationIdEntities.qRepository.repository.GUID), qActor.GUID.equals(relationIdEntities.qActor.actor.GUID), toObject._actorRecordId.equals(entityOrId._actorRecordId));
         }
         else {
-            if (!theEntityOrId.repository
-                || !theEntityOrId.repository.GUID
-                || typeof theEntityOrId.repository.GUID !== 'string'
-                || !theEntityOrId.actor
-                || !theEntityOrId.actor.GUID
-                || typeof theEntityOrId.actor.GUID !== 'number'
-                || !theEntityOrId._actorRecordId
-                || typeof theEntityOrId._actorRecordId !== 'number') {
+            let entityId = this.validateEntityId(entityOrId);
+            return and(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
+        }
+    }
+    in(entitiesOrIds, toObject // | IQRelation<IQ>
+    ) {
+        if (!entitiesOrIds || !entitiesOrIds.length) {
+            throw new Error(`null entity/Id array is passed into 'in' method`);
+        }
+        let entityIds = entitiesOrIds.map(entityOrId => this.validateEntityId(entityOrId));
+        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
+        const equalOperations = [];
+        for (const entityId of entityIds) {
+            equalOperations.push(and(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId)));
+        }
+        return or(...equalOperations);
+    }
+    validateEntityId(entityId) {
+        if (typeof entityId === 'string') {
+            return this.airEntityUtils.parseEGUID(entityId);
+        }
+        else {
+            if (!entityId.repository
+                || !entityId.repository.GUID
+                || typeof entityId.repository.GUID !== 'string'
+                || !entityId.actor
+                || !entityId.actor.GUID
+                || typeof entityId.actor.GUID !== 'number'
+                || !entityId._actorRecordId
+                || typeof entityId._actorRecordId !== 'number') {
                 throw new Error(`Passed in AirEntity does not have
 				the necessary fields to query by id.  Expecting:
 					interface AnInterface extends AirEntity {
@@ -42,22 +63,8 @@ let QueryUtils = class QueryUtils {
 					}
 					`);
             }
-            entityId = theEntityOrId;
+            return entityId;
         }
-        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        return and(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
-        // } else {
-        // Relations can only be joined by a local Id, implement if necessary
-        // only, as this might confuse developers and won't work properly in
-        // distributed environments (for @CrossRepository() queries, if
-        // the referenced repository is not yet loaded) without additional
-        // logic to join against the composing GUIDs for the object (anyway).
-        // return and(
-        // 	toObject.repository._localId.equals(entityId.repository._localId),
-        // 	toObject.actor._localId.equals(entityId.actor._localId),
-        // 	toObject._actorRecordId.equals(entityId._actorRecordId)
-        // )
-        // }
     }
     whereClauseToJSON(whereClause, columnAliases) {
         if (!whereClause) {
