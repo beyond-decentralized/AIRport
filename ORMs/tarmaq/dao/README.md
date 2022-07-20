@@ -1,6 +1,7 @@
 # tarmaq-dao
 
-@airport/tarmaq-dao is a Data Access Object framework.
+@airport/tarmaq-dao is a Data Access Object framework.  It provides
+strongly-typed entry points into the Query API:
 
 ```typescript
 @Injected()
