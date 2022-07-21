@@ -70,6 +70,12 @@ export interface IDao<Entity,
 		context?: IContext
 	): Promise<Entity>;
 
+	findIn(
+		airEntityId: Entity[] | AirEntityId[] | string[],
+		forUpdate?: boolean,
+		context?: IContext
+	): Promise<Entity[]>;
+
 	/**
 	 * Either creates or updates the entity based entity
 	 * state flag.  Cascades.

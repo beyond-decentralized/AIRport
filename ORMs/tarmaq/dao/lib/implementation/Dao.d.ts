@@ -25,6 +25,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     findAll(entityIds?: ApplicationEntity_LocalId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findAllAsTrees(entityIds?: ApplicationEntity_LocalId[], context?: IContext, cacheForUpdate?: boolean): Promise<Entity[]>;
     findOne(AirEntityId: Entity | AirEntityId | string, forUpdate?: boolean, context?: IContext): Promise<Entity>;
+    findIn(airEntityIds: Entity[] | AirEntityId[] | string[], forUpdate?: boolean, context?: IContext): Promise<Entity[]>;
     save<EntityInfo extends EntityCreate | EntityCreate[]>(entity: EntityInfo, context?: IContext): Promise<ISaveResult>;
     markForDeletion<EntityInfo extends EntityCreate | EntityCreate[]>(entityIdInfo: EntityInfo, context?: IContext): void;
     protected _repositoryId(): {
