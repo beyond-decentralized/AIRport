@@ -146,7 +146,7 @@ Platform adaptors for Web and Native.
 Internal AIRport schemas.
 
 ## Latest
-Find out about the latest developments at the [AIRport blog](https://beyond-decentralized.world/blog.html)
+Find out about the latest developments at the [Beyond Decentralized blog](https://beyond-decentralized.world/blog.html)
 
 ## License
 AIRport is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
