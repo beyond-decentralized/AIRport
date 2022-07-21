@@ -2,25 +2,13 @@
 
 ![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
 
-* [Description](#description)
-  * [The Problem](#problem)
-  * [The Solution](#solution)
-* [Blockchain](#blockchain)
-* [Storage](#storage)
-* [Access Control](#access-control)
-* [Data Reuse](#data-reuse)
-* [Developer Experience](#developer-experience)
-* [Technical Details](#tech-details)
-
 ## Description <a name="description"></a>
 AIRport allows Decentralized Applications to interoperate by providing a relational
 database and an API framework, backed by transaction log storage.
 
 More documentation can be found "[here](https://beyond-decentralized.world/)".
 
-## Technical details<a name="tech-details"></a>
-
-### How it works
+## How it works
 
 *  User navigates to a web page and saves/retrieves data.
 *  A new tab is opened in the background with AIRport framework in it
@@ -30,9 +18,7 @@ writes the Transaction Log entries back to data hosts.
 *  Access to database is allowed only from App logic that runs in
  domain-sanboxed IFrames (inside AIRport tab).
 
-
-
-### Entity Definitions
+## Entity Definitions
 
 ```typescript
 @Entity()
@@ -54,13 +40,13 @@ export class Child extends AirEntity {
 }
 ```
 
-### Queries
+## Queries
 
 Apps can define entities which depend on entities in other
 Apps, via @ManyToOne() relations.  Apps can build joins that include 
 entities from other Apps.
 
-### Data Access Objects (DAOs)
+## Data Access Objects (DAOs)
 
 ```typescript
 @Injected()
@@ -101,7 +87,7 @@ export class ParentDao
 }
 ```
 
-### APIs
+## APIs
 
 Public API methods are annotated with @Api() decorator.  Apps can
 invoke @Api() methods of other Apps.  Apps can join across
