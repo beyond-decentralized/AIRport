@@ -1,4 +1,4 @@
-import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
+import { AIR_ENTITY_UTILS, IAirEntityUtils } from '@airport/aviation-communication'
 import { Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
@@ -29,9 +29,46 @@ interface IDeserializableOperation {
 	lookupTable: any[]
 }
 
+/*
+interface ArrayMemberEntityRecord<T> {
+	index: number,
+	entity: T
+}
+*/
+/*
+
+Instead of doing a blind "copy if GUID is present otherwise do nothing":
+
+1.	When sending objects, mark them all with serialization Ids
+2.  Retain those Ids during operations in @Api()s & AIRport
+3.	Map all objects on the way back by these serialization ids
+4.	Do a copy from -> to based on those ids
+
+interface ArrayMemberRecord<T> {
+	index: number,
+	isWithoutId: boolean
+	isObject: boolean
+	isEntity: boolean
+	isPrimitive: boolean
+	entity: T
+}
+
+interface ArrayEntityInfo {
+	hasWithoutId: boolean
+	hasObjects: boolean
+	hasEntities: boolean
+	hasPrimitives: boolean
+	entityMap: Map<string, ArrayMemberEntityRecord<any>>
+	entityArray: ArrayMemberRecord<any>[]
+}
+ */
+
 @Injected()
 export class QueryResultsDeserializer
 	implements IQueryResultsDeserializer {
+
+	@Inject()
+	airEntityUtils: IAirEntityUtils
 
 	@Inject()
 	serializationStateManager: ISerializationStateManager
@@ -113,11 +150,48 @@ export class QueryResultsDeserializer
 		return deserializedEntity
 	}
 
+	// private getArrayEntityMap() {
+	// 	{
+	// 		hasWithoutId: boolean
+	// 		hasObjects: boolean
+	// 		hasEntities: boolean
+	// 		hasPrimitives: boolean
+	// 		entityMap: Map < string, ArrayMemberEntityRecord < any >>
+	// 			entityArray: ArrayMemberRecod[]
+	// 	}
+	// }
+
 	deepCopyProperties<T>(
 		from: T,
 		to: T
 	): void {
 		if (from instanceof Array) {
+			// let fromArrayEntityMapByGUID: Map<string, ArrayMemberEntityRecord<any>> = new Map()
+			// let toArrayEntityMapByGUID: Map<string, ArrayMemberEntityRecord<any>> = new Map()
+			// let haveFromWithoutId = false
+			// let haveFromObjects = false
+			// let haveFromEntities = false
+			// let haveFromPrimitives = false
+			// for (let i = 0; i < from.length; i++) {
+			// 	let fromEntity = from[i]
+
+			// 	if (fromEntity instanceof Object && !(fromEntity instanceof Date)) {
+			// 		haveFromObjects = true
+			// 		let entityGUID = this.airEntityUtils.encodeId(from[i])
+			// 		if (entityGUID) {
+			// 			haveFromEntities = true
+			// 			fromArrayEntityMapByGUID.set(entityGUID, from[i])
+			// 		} else {
+			// 			haveFromWithoutId = true
+			// 		}
+			// 	} else {
+			// 		haveFromPrimitives = true
+			// 	}
+			// }
+			// let haveToWithoutId = false
+			// for (let i = 0; i < from.length; i++) {
+			// 	this.deepCopyProperties(from[i], to[i])
+			// }
 			for (let i = 0; i < from.length; i++) {
 				this.deepCopyProperties(from[i], to[i])
 			}
