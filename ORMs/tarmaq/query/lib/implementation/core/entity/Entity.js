@@ -20,6 +20,9 @@ QEntity.prototype.rightJoin = function (right) {
 QEntity.prototype.equals = function (entity) {
     return IOC.getSync(QUERY_UTILS).equals(entity, this);
 };
+QEntity.prototype.in = function (entities) {
+    return IOC.getSync(QUERY_UTILS).in(entities, this);
+};
 export class QEntityDriver {
     constructor(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, qEntity) {
         this.dbEntity = dbEntity;

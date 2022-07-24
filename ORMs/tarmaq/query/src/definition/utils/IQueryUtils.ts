@@ -9,8 +9,16 @@ export interface IQueryUtils {
 
 	equals<Entity extends IAirEntity, IQ extends IQAirEntity>(
 		entityOrId: Entity | IQAirEntity
-			| IQAirEntityRelation<Entity, IQ> 
+			// | IQAirEntityRelation<Entity, IQ> 
 			| AirEntityId | string,
+		toObject: IQ // | IQRelation<IQ>
+	): JSONLogicalOperation
+
+	in<Entity extends IAirEntity, IQ extends IQAirEntity>(
+		entitiesOrIds: (Entity
+			// | IQAirEntity
+			// | IQAirEntityRelation<Entity, IQ>
+			| AirEntityId | string)[],
 		toObject: IQ
 		// | IQRelation<IQ>
 	): JSONLogicalOperation

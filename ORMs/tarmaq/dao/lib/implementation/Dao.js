@@ -72,6 +72,22 @@ let Dao = class Dao {
             FOR_UPDATE: forUpdate
         }, context);
     }
+    async findIn(airEntityIds, forUpdate, context) {
+        if (!this.db.dbEntity.isAirEntity) {
+            throw new Error(`Dao.findIn can only be called for Repository Entities.`);
+        }
+        let q;
+        return await this.db.find.graph({
+            select: {
+                '*': Y
+            },
+            from: [
+                q = this.db.from
+            ],
+            where: q.in(airEntityIds),
+            forUpdate
+        }, context);
+    }
     async save(entity, context) {
         return await this.db.save(entity, this.ensureContext(context));
     }

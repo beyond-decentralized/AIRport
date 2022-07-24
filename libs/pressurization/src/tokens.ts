@@ -2,6 +2,7 @@ import { lib } from '@airport/direction-indicator'
 import { IQueryResultsDeserializer, QueryResultsDeserializer } from './QueryResultsDeserializer'
 import { IOperationSerializer, OperationSerializer } from './OperationSerializer'
 import { ISerializationStateManager, SerializationStateManager } from './SerializationStateManager'
+import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 
 const pressurization = lib('pressurization')
 
@@ -26,5 +27,6 @@ OPERATION_SERIALIZER.setDependencies({
 })
 
 QUERY_RESULTS_DESERIALIZER.setDependencies({
+    airEntityUtils: AIR_ENTITY_UTILS,
     serializationStateManager: SERIALIZATION_STATE_MANAGER
 })

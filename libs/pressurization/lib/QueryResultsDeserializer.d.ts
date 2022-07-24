@@ -1,3 +1,4 @@
+import { IAirEntityUtils } from '@airport/aviation-communication';
 import { ISerializationStateManager } from './SerializationStateManager';
 /**
  * Deserializer for query results coming back from the server
@@ -11,6 +12,7 @@ interface IDeserializableOperation {
     lookupTable: any[];
 }
 export declare class QueryResultsDeserializer implements IQueryResultsDeserializer {
+    airEntityUtils: IAirEntityUtils;
     serializationStateManager: ISerializationStateManager;
     deserialize<E, T = E | E[]>(entity: T): T;
     doDeserialize<E>(entity: E, operation: IDeserializableOperation): E;

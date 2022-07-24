@@ -168,6 +168,28 @@ export abstract class Dao<Entity,
 		}, context)
 	}
 
+	async findIn(
+		airEntityIds: Entity[] | AirEntityId[] | string[],
+		forUpdate?: boolean,
+		context?: IContext
+	): Promise<Entity[]> {
+		if (!this.db.dbEntity.isAirEntity) {
+			throw new Error(`Dao.findIn can only be called for Repository Entities.`)
+		}
+
+		let q
+		return await this.db.find.graph({
+			select: <any>{
+				'*': Y
+			},
+			from: [
+				q = this.db.from
+			],
+			where: q.in(airEntityIds),
+			forUpdate
+		}, context)
+	}
+
 	async save<EntityInfo extends EntityCreate | EntityCreate[]>(
 		entity: EntityInfo,
 		context?: IContext,
