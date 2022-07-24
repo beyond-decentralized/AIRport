@@ -1,8 +1,9 @@
+import { PropertyDecorator } from '@airport/direction-indicator';
 import {
 	JSONBaseOperation
-}                                from '@airport/ground-control';
+} from '@airport/ground-control';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';
-import { IQEntity }              from './core/entity/Entity';
+import { IQEntity } from './core/entity/Entity';
 
 /**
  * Function used to add a clause to a Join

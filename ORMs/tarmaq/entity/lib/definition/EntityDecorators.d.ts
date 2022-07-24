@@ -1,5 +1,5 @@
+import { ClassDecorator } from '@airport/direction-indicator';
 import { DatabaseIndexConfiguration, DatabaseObjectConfiguration } from '@airport/ground-control';
-import { ClassDecorator } from './decorators';
 /**
  * Marks an object as an ORM entity.
  */

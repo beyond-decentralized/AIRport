@@ -1,3 +1,4 @@
+import { PropertyDecorator } from "@airport/direction-indicator";
 import { IEntitySelectProperties, RawLimitedEntityQuery } from "@airport/tarmaq-query";
 
 export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
@@ -5,7 +6,7 @@ export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 	Graph(
 		callback: (...args: any[]) => RawLimitedEntityQuery<EntitySelect>
 	): PropertyDecorator {
-		return function(
+		return function (
 			target: any,
 			propertyKey: string
 		) {
@@ -16,7 +17,7 @@ export class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
 	Tree(
 		callback: { (...args: any[]): RawLimitedEntityQuery<EntitySelect> },
 	): PropertyDecorator {
-		return function(
+		return function (
 			target: any,
 			propertyKey: string
 		) {

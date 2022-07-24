@@ -118,6 +118,11 @@
     },
     // "libs" folder (alphabetical order)
     {
+      "packageName": "@airport/airbridge-validate",
+      "projectFolder": "libs/airbridge/validate",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/autopilot",
       "projectFolder": "libs/autopilot",
       "shouldPublish": true

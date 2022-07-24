@@ -1,4 +1,4 @@
-import {PropertyDecorator} from '@airport/air-traffic-control'
+import { PropertyDecorator } from '@airport/direction-indicator'
 
 export interface DocumentConfiguration<Entity> {
 

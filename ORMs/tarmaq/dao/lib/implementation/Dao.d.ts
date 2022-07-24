@@ -1,5 +1,5 @@
 import { QApplication, AirEntityId } from '@airport/aviation-communication';
-import { IContext } from '@airport/direction-indicator';
+import { IContext, PropertyDecorator } from '@airport/direction-indicator';
 import { ApplicationEntity_LocalId as DbEntityId, IEntityStateManager, IAirEntity, ISaveResult, IUpdateCacheManager } from '@airport/ground-control';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawEntityQuery } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';

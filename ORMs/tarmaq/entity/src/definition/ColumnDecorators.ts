@@ -1,9 +1,9 @@
+import { PropertyDecorator } from '@airport/direction-indicator';
 import {
 	DatabaseForeignKey,
 	DatabaseOneToManyElements,
 	JSONBaseOperation
-}                                from '@airport/ground-control';
-import { PropertyDecorator }     from './decorators';
+} from '@airport/ground-control';
 
 /**
  * Marks an object property as the ID column in a SQL table.

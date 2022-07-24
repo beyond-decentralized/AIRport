@@ -1,3 +1,4 @@
+import { PropertyDecorator } from '@airport/direction-indicator';
 import { JSONBaseOperation } from '@airport/ground-control';
 import { FunctionsAndOperators } from './core/FunctionsAndOperators';
 import { IQEntity } from './core/entity/Entity';

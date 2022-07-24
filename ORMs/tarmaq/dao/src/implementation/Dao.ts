@@ -5,7 +5,8 @@ import {
 import {
 	IContext,
 	Inject,
-	Injected
+	Injected,
+	PropertyDecorator
 } from '@airport/direction-indicator'
 import {
 	ApplicationEntity_LocalId as DbEntityId,
@@ -179,14 +180,14 @@ export abstract class Dao<Entity,
 
 		let q
 		return await this.db.find.graph({
-			select: <any>{
+			SELECT: <any>{
 				'*': Y
 			},
-			from: [
-				q = this.db.from
+			FROM: [
+				q = this.db.FROM
 			],
-			where: q.in(airEntityIds),
-			forUpdate
+			WHERE: q.in(airEntityIds),
+			FOR_UPDATE: forUpdate
 		}, context)
 	}
 

@@ -1,3 +1,4 @@
+import { PropertyDecorator } from '@airport/direction-indicator'
 import {
 	ColumnConfiguration,
 	ColumnDecorator,

@@ -1,10 +1,10 @@
-import { ClassDecorator }        from '@airport/air-traffic-control';
+import { ClassDecorator, PropertyDecorator } from '@airport/direction-indicator';
 import {
 	IVespaDocument,
 	IVespaDocumentWithConstructor
-}                                from '../lingo/model/VespaDocument';
+} from '../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo } from '../lingo/model/VespaField';
-import { IVespaFieldset }        from '../lingo/model/VespaFieldset';
+import { IVespaFieldset } from '../lingo/model/VespaFieldset';
 import {
 	VespaAttributeConfiguration,
 	VespaAttributeDecorator,
@@ -12,13 +12,13 @@ import {
 	VespaDocumentDecorator,
 	VespaFieldsetConfiguration,
 	VespaIndexing
-}                                from '../lingo/VespaDecoratorsLingo';
-import { store }                 from './application/store';
-import { IVespaApplicationStore }     from './application/VespaApplicationStore';
+} from '../lingo/VespaDecoratorsLingo';
+import { store } from './application/store';
+import { IVespaApplicationStore } from './application/VespaApplicationStore';
 
-export const Document: VespaDocumentDecorator = function() {
-	return function(constructor: { new(): Object }) {
-		const vespaDocument            = ensureDocument(constructor.name, store);
+export const Document: VespaDocumentDecorator = function () {
+	return function (constructor: { new(): Object }) {
+		const vespaDocument = ensureDocument(constructor.name, store);
 		vespaDocument.classConstructor = constructor;
 	};
 };
@@ -27,7 +27,7 @@ export function Fieldset<VespaEntity>(
 	vespaEntityClass: { new(...args: any[]): VespaEntity },
 	fieldsetConfiguration?: VespaFieldsetConfiguration<VespaEntity>
 ): ClassDecorator {
-	return function(constructor: { new(): Object }) {
+	return function (constructor: { new(): Object }) {
 		if (!vespaEntityClass || !vespaEntityClass.name) {
 			throw new Error(`Please provide the class of the Vespa document
 			as the first parameter to the @vespa.Fieldset decorator:
@@ -52,12 +52,12 @@ above the @vespa.Fieldset that references it.
 			fieldset.isDefault = true;
 		}
 		(constructor as any).fieldset = fieldset;
-		fieldset.fieldMap             = fieldsetConfiguration.fields as any;
+		fieldset.fieldMap = fieldsetConfiguration.fields as any;
 	};
 }
 
-export const Default: VespaDefaultDecorator = function() {
-	return function(constructor: { new(): Object }) {
+export const Default: VespaDefaultDecorator = function () {
+	return function (constructor: { new(): Object }) {
 		const fieldset = (constructor as any).fieldset;
 		if (fieldset) {
 			fieldset.isDefault = true;
@@ -67,29 +67,29 @@ export const Default: VespaDefaultDecorator = function() {
 	};
 };
 
-export const Attribute: VespaAttributeDecorator = function(
+export const Attribute: VespaAttributeDecorator = function (
 	attributeConfiguration: VespaAttributeConfiguration
 ) {
-	return function(
+	return function (
 		target: Object,
 		propertyKey: string
 	) {
 		const vespaDocument = ensureDocument(target, store);
-		const field         = ensureField(vespaDocument, propertyKey);
-		field.attribute     = attributeConfiguration;
+		const field = ensureField(vespaDocument, propertyKey);
+		field.attribute = attributeConfiguration;
 	};
 };
 
 export function Index(
 	indexing: VespaIndexing
 ): PropertyDecorator {
-	return function(
+	return function (
 		target: Object,
 		propertyKey: string
 	) {
 		const vespaDocument = ensureDocument(target, store);
-		const field         = ensureField(vespaDocument, propertyKey);
-		field.indexing      = indexing;
+		const field = ensureField(vespaDocument, propertyKey);
+		field.indexing = indexing;
 	};
 }
 
@@ -99,7 +99,7 @@ export function ensureField(
 ): IVespaFieldWithDbInfo {
 	let field = document.fieldMap[name];
 	if (!field) {
-		field                   = {
+		field = {
 			name,
 		};
 		document.fieldMap[name] = field;
@@ -122,7 +122,7 @@ function ensureDocument(
 	}
 	let vespaDocument = store.documentMap[name];
 	if (!vespaDocument) {
-		vespaDocument           = {
+		vespaDocument = {
 			fieldMap: {},
 			fieldsetMap: {},
 			name
@@ -139,9 +139,9 @@ function ensureFieldset(
 	store: IVespaApplicationStore
 ): IVespaFieldset {
 	const vespaDocument = ensureDocument(documentName, store);
-	let fieldset        = vespaDocument.fieldsetMap[name];
+	let fieldset = vespaDocument.fieldsetMap[name];
 	if (!fieldset) {
-		fieldset                        = {
+		fieldset = {
 			fieldMap: {},
 			isDefault: false,
 			name

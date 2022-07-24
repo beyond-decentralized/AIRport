@@ -4,6 +4,14 @@ export interface ClassDecorator {
 	// (constructor: {new (): any});
 }
 
+export interface MethodDecorator {
+	(
+		target: any,
+		methodName: string,
+		methodDescriptor: any
+	);
+}
+
 export interface PropertyDecorator {
 	(
 		target: any,

@@ -1,4 +1,4 @@
-import { ClassDecorator } from '@airport/air-traffic-control';
+import { ClassDecorator, PropertyDecorator } from '@airport/direction-indicator';
 import { IVespaDocument } from '../lingo/model/VespaDocument';
 import { IVespaFieldWithDbInfo } from '../lingo/model/VespaField';
 import { VespaAttributeDecorator, VespaDefaultDecorator, VespaDocumentDecorator, VespaFieldsetConfiguration, VespaIndexing } from '../lingo/VespaDecoratorsLingo';

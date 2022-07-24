@@ -78,14 +78,14 @@ let Dao = class Dao {
         }
         let q;
         return await this.db.find.graph({
-            select: {
+            SELECT: {
                 '*': Y
             },
-            from: [
-                q = this.db.from
+            FROM: [
+                q = this.db.FROM
             ],
-            where: q.in(airEntityIds),
-            forUpdate
+            WHERE: q.in(airEntityIds),
+            FOR_UPDATE: forUpdate
         }, context);
     }
     async save(entity, context) {

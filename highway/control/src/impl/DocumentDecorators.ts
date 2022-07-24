@@ -1,5 +1,5 @@
-import {PropertyDecorator}     from '@airport/air-traffic-control'
-import {DocumentConfiguration} from '../lingo/DocumentDecorators'
+import { PropertyDecorator } from '@airport/direction-indicator'
+import { DocumentConfiguration } from '../lingo/DocumentDecorators'
 
 export function Document<T>(
 	documentConfiguration?: DocumentConfiguration<T>

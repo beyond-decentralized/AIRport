@@ -1,3 +1,4 @@
+import { PropertyDecorator } from '@airport/direction-indicator';
 import { ColumnDecorator, GeneratedValueDecorator, IdDecorator, JoinColumnConfiguration, JoinColumnDecorator, JoinColumnsDecorator, ManyToOneDecorator, OneToManyDecorator, SequenceGeneratorDecorator, TraditionalServerSeqDecorator, TransientDecorator } from '../definition/ColumnDecorators';
 /**
  * Created by Papa on 8/20/2016.

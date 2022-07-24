@@ -1,3 +1,4 @@
+import { PropertyDecorator } from "@airport/direction-indicator";
 import { IEntitySelectProperties, RawLimitedEntityQuery } from "@airport/tarmaq-query";
 export declare class DaoQueryDecorators<EntitySelect extends IEntitySelectProperties> {
     Graph(callback: (...args: any[]) => RawLimitedEntityQuery<EntitySelect>): PropertyDecorator;

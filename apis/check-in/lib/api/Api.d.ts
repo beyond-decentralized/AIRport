@@ -1,3 +1,4 @@
+import { MethodDecorator } from "@airport/direction-indicator";
 export interface ApiDecorator {
     (): MethodDecorator;
 }
