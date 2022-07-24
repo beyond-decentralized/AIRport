@@ -127,7 +127,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                     FROM: [
                         sv2 = Q.ApplicationVersion
                     ],
-                    SELECT: distinct({
+                    SELECT: DISTINCT({
                         integerVersion: max(sv2.integerVersion),
                         _localId: sv2._localId,
                         applicationIndex: sv2.application.index

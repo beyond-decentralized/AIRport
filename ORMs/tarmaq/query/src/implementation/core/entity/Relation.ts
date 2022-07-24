@@ -85,18 +85,18 @@ export const qAirEntityRelationMethods = {
 	// 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
 	// }
 
-	isNull(): JSONLogicalOperation {
+	IS_NULL(): JSONLogicalOperation {
 		return OR(
-			this.actor._localId.isNull(),
-			this.repository._localId.isNull(),
-			this._actorRecordId.isNull(),
+			this.actor._localId.IS_NULL(),
+			this.repository._localId.IS_NULL(),
+			this._actorRecordId.IS_NULL(),
 		)
 	},
-	isNotNull(): JSONLogicalOperation {
+	IS_NOT_NULL(): JSONLogicalOperation {
 		return AND(
-			this.actor._localId.isNotNull(),
-			this.repository._localId.isNotNull(),
-			this._actorRecordId.isNotNull(),
+			this.actor._localId.IS_NOT_NULL(),
+			this.repository._localId.IS_NOT_NULL(),
+			this._actorRecordId.IS_NOT_NULL(),
 		)
 	}
 }

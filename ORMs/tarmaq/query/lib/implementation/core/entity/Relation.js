@@ -44,11 +44,11 @@ export const qAirEntityRelationMethods = {
     // ): JSONLogicalOperation {
     // 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
     // }
-    isNull() {
-        return OR(this.actor._localId.isNull(), this.repository._localId.isNull(), this._actorRecordId.isNull());
+    IS_NULL() {
+        return OR(this.actor._localId.IS_NULL(), this.repository._localId.IS_NULL(), this._actorRecordId.IS_NULL());
     },
-    isNotNull() {
-        return AND(this.actor._localId.isNotNull(), this.repository._localId.isNotNull(), this._actorRecordId.isNotNull());
+    IS_NOT_NULL() {
+        return AND(this.actor._localId.IS_NOT_NULL(), this.repository._localId.IS_NOT_NULL(), this._actorRecordId.IS_NOT_NULL());
     }
 };
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);

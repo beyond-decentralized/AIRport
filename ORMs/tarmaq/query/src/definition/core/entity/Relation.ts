@@ -33,9 +33,9 @@ export interface IQAirEntityRelation<Entity, IQ extends IQEntity>
 	// 		| AirEntityId | string
 	// ): JSONLogicalOperation
 
-	isNull(): JSONLogicalOperation
+	IS_NULL(): JSONLogicalOperation
 
-	isNotNull(): JSONLogicalOperation
+	IS_NOT_NULL(): JSONLogicalOperation
 
 }
 

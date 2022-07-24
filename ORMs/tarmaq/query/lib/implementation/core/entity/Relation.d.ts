@@ -9,7 +9,7 @@ import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils';
 export declare function QRelation(dbRelation: DbRelation, parentQ: IQEntityInternal, applicationUtils: IApplicationUtils, relationManager: IRelationManager): void;
 export declare function QAirEntityRelation(dbRelation: DbRelation, parentQ: IQEntityInternal, applicationUtils: IApplicationUtils, relationManager: IRelationManager): void;
 export declare const qAirEntityRelationMethods: {
-    isNull(): JSONLogicalOperation;
-    isNotNull(): JSONLogicalOperation;
+    IS_NULL(): JSONLogicalOperation;
+    IS_NOT_NULL(): JSONLogicalOperation;
 };
 //# sourceMappingURL=Relation.d.ts.map

@@ -13,8 +13,8 @@ export interface IQRelation<IQ extends IQEntity> {
  * A concrete ORM relation on a AirEntity
  */
 export interface IQAirEntityRelation<Entity, IQ extends IQEntity> extends IQRelation<IQ> {
-    isNull(): JSONLogicalOperation;
-    isNotNull(): JSONLogicalOperation;
+    IS_NULL(): JSONLogicalOperation;
+    IS_NOT_NULL(): JSONLogicalOperation;
 }
 export interface IQInternalRelation<IQ extends IQEntity> extends IQRelation<IQ> {
     dbRelation: DbRelation;

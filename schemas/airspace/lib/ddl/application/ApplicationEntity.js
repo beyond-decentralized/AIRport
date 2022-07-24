@@ -22,7 +22,7 @@ let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObje
         // @WhereJoinTable((
         // 	otm: QApplicationEntity,
         // 	mto: QApplicationColumn
-        // ) => mto.idIndex.isNotNull())
+        // ) => mto.idIndex.IS_NOT_NULL())
         // idColumns: IApplicationColumn[];
         this.operations = [];
         this.properties = [];

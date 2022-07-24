@@ -104,7 +104,7 @@ let QueryUtils = class QueryUtils {
             case OperationCategory.STRING:
             case OperationCategory.UNTYPED:
                 let valueOperation = operation;
-                // All Non logical or exists operations are value operations (eq, isNull, like,
+                // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
                 // etc.)
                 let jsonValueOperation = jsonOperation;
                 jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);

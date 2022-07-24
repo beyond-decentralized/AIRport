@@ -97,7 +97,7 @@ export class ApplicationEntity
 	// @WhereJoinTable((
 	// 	otm: QApplicationEntity,
 	// 	mto: QApplicationColumn
-	// ) => mto.idIndex.isNotNull())
+	// ) => mto.idIndex.IS_NOT_NULL())
 	// idColumns: IApplicationColumn[];
 
 	@OneToMany({ mappedBy: 'entity' })
