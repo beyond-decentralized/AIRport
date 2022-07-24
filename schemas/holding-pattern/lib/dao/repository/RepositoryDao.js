@@ -22,8 +22,8 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             },
             FROM: [
                 r = Q.Repository,
-                rth = r.repositoryTransactionHistory.innerJoin(),
-                th = rth.transactionHistory.innerJoin()
+                rth = r.repositoryTransactionHistory.INNER_JOIN(),
+                th = rth.transactionHistory.INNER_JOIN()
             ],
             WHERE: AND(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         }, context);
@@ -59,7 +59,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             },
             FROM: [
                 r = Q.Repository,
-                r.owner.innerJoin()
+                r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repositoryIds)
         });
@@ -78,7 +78,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
             },
             FROM: [
                 r = Q.Repository,
-                r.owner.innerJoin()
+                r.owner.INNER_JOIN()
             ],
             WHERE: r._localId.IN(repository_localIds)
         });

@@ -10,6 +10,6 @@ export interface JoinOperation<IF extends IFrom> {
  * The JOIN ... ON X clause.
  */
 export interface IJoinFields<IF extends IFrom> {
-    on(joinOperation: JoinOperation<IF>): IF;
+    ON(joinOperation: JoinOperation<IF>): IF;
 }
 //# sourceMappingURL=Joins.d.ts.map

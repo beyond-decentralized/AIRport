@@ -42,7 +42,7 @@ class TaskDao extends BaseTaskDao {
 ```ts
 
 import { Injected } from '@airport/direction-indicator'
-import { and, field } from '@airport/tarmaq-query'
+import { AND, field } from '@airport/tarmaq-query'
 import { BaseTaskDao, Q, QTask } from '../generated/generated'
 
 @Injected()

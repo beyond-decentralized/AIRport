@@ -116,10 +116,10 @@ class GoalDao extends BaseGoalDao {
 			},
 			FROM: [
 				g = Q.Goal,
-				t = g.tasks.leftJoin()
+				t = g.tasks.LEFT_JOIN()
 			],
 			WHERE: g.goalId.equals(goalId),
-			orderBy: [
+			ORDER_BY: [
 				g.goalId.asc(),
 				g.dueDate.desc(),
 				t.taskId.asc()

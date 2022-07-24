@@ -8,13 +8,13 @@ export function QEntity(dbEntity, applicationUtils, relationManager, fromClauseP
 QEntity.prototype.fullJoin = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);
 };
-QEntity.prototype.innerJoin = function (right) {
+QEntity.prototype.INNER_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.INNER_JOIN);
 };
-QEntity.prototype.leftJoin = function (right) {
+QEntity.prototype.LEFT_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.LEFT_JOIN);
 };
-QEntity.prototype.rightJoin = function (right) {
+QEntity.prototype.RIGHT_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.RIGHT_JOIN);
 };
 QEntity.prototype.equals = function (entity) {

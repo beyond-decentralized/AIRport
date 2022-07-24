@@ -620,7 +620,7 @@ Query must be in the following format:
     },
     FROM: [
       alias1 = Q.Entity1,
-      alias2 = alias1.relationA.innerJoin()
+      alias2 = alias1.relationA.INNER_JOIN()
       ...
     ],
     WHERE?: AND(

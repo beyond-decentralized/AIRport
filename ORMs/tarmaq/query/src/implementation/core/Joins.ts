@@ -98,7 +98,7 @@ export class JoinFields<IF extends IFrom> implements IJoinFields<IF> {
 		}
 	}
 
-	on(joinOperation: JoinOperation<IF>): IF {
+	ON(joinOperation: JoinOperation<IF>): IF {
 		let joinChild: IQEntityInternal = <IQEntityInternal><any>this.joinTo;
 		joinChild.__driver__.joinWhereClause = joinOperation(this.joinTo);
 

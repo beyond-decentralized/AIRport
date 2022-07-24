@@ -63,7 +63,7 @@ export class JoinFields {
             throw new Error(`Right value in join must be a View or an Entity`);
         }
     }
-    on(joinOperation) {
+    ON(joinOperation) {
         let joinChild = this.joinTo;
         joinChild.__driver__.joinWhereClause = joinOperation(this.joinTo);
         return this.joinTo;

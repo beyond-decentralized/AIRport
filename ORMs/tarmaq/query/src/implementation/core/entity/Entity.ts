@@ -95,15 +95,15 @@ QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields
 	return this.__driver__.join(right, JoinType.FULL_JOIN)
 }
 
-QEntity.prototype.innerJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.INNER_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
 	return this.__driver__.join(right, JoinType.INNER_JOIN)
 }
 
-QEntity.prototype.leftJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.LEFT_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
 	return this.__driver__.join(right, JoinType.LEFT_JOIN)
 }
 
-QEntity.prototype.rightJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.RIGHT_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 

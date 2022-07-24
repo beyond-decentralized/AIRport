@@ -20,6 +20,6 @@ export declare function field<IQF extends IQOrderableField<IQF>>(query: {
 export declare class JoinFields<IF extends IFrom> implements IJoinFields<IF> {
     private joinTo;
     constructor(joinTo: IF);
-    on(joinOperation: JoinOperation<IF>): IF;
+    ON(joinOperation: JoinOperation<IF>): IF;
 }
 //# sourceMappingURL=Joins.d.ts.map

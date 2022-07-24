@@ -58,7 +58,7 @@ export class ApplicationVersionDao
 		return await this.db.find.tree({
 			FROM: [
 				sv = Q.ApplicationVersion,
-				// s = sv.application.innerJoin()
+				// s = sv.application.INNER_JOIN()
 			],
 			SELECT: {},
 			ORDER_BY: [
@@ -90,8 +90,8 @@ export class ApplicationVersionDao
 			},
 			FROM: [
 				sv = Q.ApplicationVersion,
-				s = sv.application.innerJoin(),
-				d = s.domain.innerJoin()
+				s = sv.application.INNER_JOIN(),
+				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
 				d.name.IN(domainNames),
@@ -131,8 +131,8 @@ export class ApplicationVersionDao
 			},
 			FROM: [
 				sv = Q.ApplicationVersion,
-				s = sv.application.innerJoin(),
-				d = s.domain.innerJoin()
+				s = sv.application.INNER_JOIN(),
+				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
 				sv._localId.IN(this._localIdsForMaxVersionSelect()),
@@ -162,7 +162,7 @@ export class ApplicationVersionDao
 					FROM: [
 						sv2 = Q.ApplicationVersion
 					],
-					SELECT: distinct({
+					SELECT: DISTINCT({
 						integerVersion: max(sv2.integerVersion),
 						_localId: sv2._localId,
 						applicationIndex: sv2.application.index

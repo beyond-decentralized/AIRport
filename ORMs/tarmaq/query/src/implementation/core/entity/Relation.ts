@@ -32,14 +32,14 @@ export function QRelation(
 	this.relationManager = relationManager
 }
 
-QRelation.prototype.innerJoin = function <IQ extends IQEntityInternal>(): IQ {
+QRelation.prototype.INNER_JOIN = function <IQ extends IQEntityInternal>(): IQ {
 	const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN)
 	this.parentQ.__driver__.childQEntities.push(newQEntity)
 
 	return newQEntity
 }
 
-QRelation.prototype.leftJoin = function <IQ extends IQEntityInternal>(): IQ {
+QRelation.prototype.LEFT_JOIN = function <IQ extends IQEntityInternal>(): IQ {
 	const newQEntity = this.getNewQEntity(JoinType.LEFT_JOIN)
 	this.parentQ.__driver__.childQEntities.push(newQEntity)
 

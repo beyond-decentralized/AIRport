@@ -17,12 +17,12 @@ export function QRelation(dbRelation, parentQ, applicationUtils, relationManager
     this.applicationUtils = applicationUtils;
     this.relationManager = relationManager;
 }
-QRelation.prototype.innerJoin = function () {
+QRelation.prototype.INNER_JOIN = function () {
     const newQEntity = this.getNewQEntity(JoinType.INNER_JOIN);
     this.parentQ.__driver__.childQEntities.push(newQEntity);
     return newQEntity;
 };
-QRelation.prototype.leftJoin = function () {
+QRelation.prototype.LEFT_JOIN = function () {
     const newQEntity = this.getNewQEntity(JoinType.LEFT_JOIN);
     this.parentQ.__driver__.childQEntities.push(newQEntity);
     return newQEntity;

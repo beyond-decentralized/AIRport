@@ -42,10 +42,10 @@ let ActorDao = class ActorDao extends BaseActorDao {
             },
             FROM: [
                 act = Q.Actor,
-                application = act.application.innerJoin(),
-                domain = application.domain.innerJoin(),
-                terminal = act.terminal.leftJoin(),
-                userAccount = act.userAccount.leftJoin()
+                application = act.application.INNER_JOIN(),
+                domain = application.domain.INNER_JOIN(),
+                terminal = act.terminal.LEFT_JOIN(),
+                userAccount = act.userAccount.LEFT_JOIN()
             ],
             WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName))
         });
@@ -74,11 +74,11 @@ let ActorDao = class ActorDao extends BaseActorDao {
             },
             FROM: [
                 a = Q.Actor,
-                u = a.userAccount.leftJoin(),
-                u.continent.leftJoin(),
-                u.country.leftJoin(),
-                u.metroArea.leftJoin(),
-                u.state.leftJoin()
+                u = a.userAccount.LEFT_JOIN(),
+                u.continent.LEFT_JOIN(),
+                u.country.LEFT_JOIN(),
+                u.metroArea.LEFT_JOIN(),
+                u.state.LEFT_JOIN()
             ],
             WHERE: a._localId.IN(actor_localIds)
         });
@@ -141,11 +141,11 @@ let ActorDao = class ActorDao extends BaseActorDao {
             },
             FROM: [
                 a = Q.Actor,
-                ap = a.application.leftJoin(),
-                ap.domain.leftJoin(),
-                t = a.terminal.leftJoin(),
-                t.owner.leftJoin(),
-                a.userAccount.leftJoin()
+                ap = a.application.LEFT_JOIN(),
+                ap.domain.LEFT_JOIN(),
+                t = a.terminal.LEFT_JOIN(),
+                t.owner.LEFT_JOIN(),
+                a.userAccount.LEFT_JOIN()
             ],
             WHERE: getWhereClause(a)
         });

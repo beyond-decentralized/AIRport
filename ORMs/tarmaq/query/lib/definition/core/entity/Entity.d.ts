@@ -80,15 +80,15 @@ export interface IFrom {
     /**
      * GQE INNER JOIN OTHER
      */
-    innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    INNER_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
     /**
      * GQE LEFT JOIN OTHER
      */
-    leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    LEFT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
     /**
      * GQE RIGHT JOIN OTHER
      */
-    rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    RIGHT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
 /**
  * Concrete Entity joined via Many-To-One or One-To-Many relation used in the FROM clause.
@@ -102,9 +102,9 @@ export interface IQEntity {
     equals<Entity, IQ extends IQEntityInternal>(entity: Entity | IQEntity | AirEntityId | string): JSONLogicalOperation;
     in<Entity, IQ extends IQEntityInternal>(entity: Entity | AirEntityId | string): JSONLogicalOperation;
     fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
-    rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    INNER_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    LEFT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
+    RIGHT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
 }
 export interface IQAirEntity extends IQEntity {
     _actorRecordId: IQNumberEntityField;

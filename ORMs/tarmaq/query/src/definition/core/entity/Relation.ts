@@ -11,10 +11,10 @@ import {
  */
 export interface IQRelation<IQ extends IQEntity> {
 	// Inner join on this Many-To-One or One-To-Many relation
-	innerJoin(): IQ;
+	INNER_JOIN(): IQ;
 
 	// Left join on this Many-To-One or One-To-Many relation
-	leftJoin(): IQ;
+	LEFT_JOIN(): IQ;
 
 	/*
 	UPDATE a

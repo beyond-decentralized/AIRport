@@ -144,10 +144,10 @@ It must be an Object with the id property.`)
 		}
 
 		if (!actorJoinFound) {
-			qActor = (qEntity as any).actor.leftJoin()
+			qActor = (qEntity as any).actor.LEFT_JOIN()
 		}
 		if (!repositoryJoinFound) {
-			qRepository = (qEntity as any).repository.leftJoin()
+			qRepository = (qEntity as any).repository.LEFT_JOIN()
 		}
 
 		return {

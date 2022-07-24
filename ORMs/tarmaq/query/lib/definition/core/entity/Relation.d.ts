@@ -6,8 +6,8 @@ import { IQEntity, IQEntityInternal } from './Entity';
  * ORM based queries always return trees.
  */
 export interface IQRelation<IQ extends IQEntity> {
-    innerJoin(): IQ;
-    leftJoin(): IQ;
+    INNER_JOIN(): IQ;
+    LEFT_JOIN(): IQ;
 }
 /**
  * A concrete ORM relation on a AirEntity

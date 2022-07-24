@@ -32,7 +32,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         return await this.db.find.tree({
             FROM: [
                 sv = Q.ApplicationVersion,
-                // s = sv.application.innerJoin()
+                // s = sv.application.INNER_JOIN()
             ],
             SELECT: {},
             ORDER_BY: [
@@ -59,8 +59,8 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
             },
             FROM: [
                 sv = Q.ApplicationVersion,
-                s = sv.application.innerJoin(),
-                d = s.domain.innerJoin()
+                s = sv.application.INNER_JOIN(),
+                d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         });
@@ -96,8 +96,8 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
             },
             FROM: [
                 sv = Q.ApplicationVersion,
-                s = sv.application.innerJoin(),
-                d = s.domain.innerJoin()
+                s = sv.application.INNER_JOIN(),
+                d = s.domain.INNER_JOIN()
             ],
             WHERE: AND(
                 sv._localId.IN(this._localIdsForMaxVersionSelect()),

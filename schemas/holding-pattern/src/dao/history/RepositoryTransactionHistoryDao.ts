@@ -91,12 +91,12 @@ export class RepositoryTransactionHistoryDao
 			= new Map()
 
 		const rth: QRepositoryTransactionHistory = Q.RepositoryTransactionHistory
-		const th: QTransactionHistory = rth.transactionHistory.innerJoin()
-		const oh: QOperationHistory = rth.operationHistory.leftJoin()
-		const ae: QApplicationEntity = oh.entity.leftJoin()
-		const av: QApplicationVersion = ae.applicationVersion.leftJoin()
-		const rh: QRecordHistory = oh.recordHistory.leftJoin()
-		const nv: QRecordHistoryNewValue = rh.newValues.leftJoin()
+		const th: QTransactionHistory = rth.transactionHistory.INNER_JOIN()
+		const oh: QOperationHistory = rth.operationHistory.LEFT_JOIN()
+		const ae: QApplicationEntity = oh.entity.LEFT_JOIN()
+		const av: QApplicationVersion = ae.applicationVersion.LEFT_JOIN()
+		const rh: QRecordHistory = oh.recordHistory.LEFT_JOIN()
+		const nv: QRecordHistoryNewValue = rh.newValues.LEFT_JOIN()
 		let _localId = Y
 
 		const repositoryEquals: JSONBaseOperation[] = []

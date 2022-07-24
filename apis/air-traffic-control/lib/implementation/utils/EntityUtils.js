@@ -113,10 +113,10 @@ It must be an Object with the id property.`);
             }
         }
         if (!actorJoinFound) {
-            qActor = qEntity.actor.leftJoin();
+            qActor = qEntity.actor.LEFT_JOIN();
         }
         if (!repositoryJoinFound) {
-            qRepository = qEntity.repository.leftJoin();
+            qRepository = qEntity.repository.LEFT_JOIN();
         }
         return {
             qActor,

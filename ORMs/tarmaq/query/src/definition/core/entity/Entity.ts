@@ -108,7 +108,7 @@ export interface IFrom {
 	/**
 	 * GQE INNER JOIN OTHER
 	 */
-	innerJoin<IF extends IFrom>(
+	INNER_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
 	): IJoinFields<IF>;
@@ -116,7 +116,7 @@ export interface IFrom {
 	/**
 	 * GQE LEFT JOIN OTHER
 	 */
-	leftJoin<IF extends IFrom>(
+	LEFT_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
 	): IJoinFields<IF>;
@@ -124,7 +124,7 @@ export interface IFrom {
 	/**
 	 * GQE RIGHT JOIN OTHER
 	 */
-	rightJoin<IF extends IFrom>(
+	RIGHT_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
 	): IJoinFields<IF>;
@@ -155,11 +155,11 @@ export interface IQEntity {
 
 	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
-	innerJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	INNER_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
-	leftJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	LEFT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
-	rightJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	RIGHT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
 
 }
 

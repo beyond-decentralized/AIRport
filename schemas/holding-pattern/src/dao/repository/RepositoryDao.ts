@@ -80,8 +80,8 @@ export class RepositoryDao
 			},
 			FROM: [
 				r = Q.Repository,
-				rth = r.repositoryTransactionHistory.innerJoin(),
-				th = rth.transactionHistory.innerJoin()
+				rth = r.repositoryTransactionHistory.INNER_JOIN(),
+				th = rth.transactionHistory.INNER_JOIN()
 			],
 			WHERE: AND(
 				r.source.equals(repositorySource),
@@ -127,7 +127,7 @@ export class RepositoryDao
 			},
 			FROM: [
 				r = Q.Repository,
-				r.owner.innerJoin()
+				r.owner.INNER_JOIN()
 			],
 			WHERE:
 				r._localId.IN(repositoryIds)
@@ -151,7 +151,7 @@ export class RepositoryDao
 			},
 			FROM: [
 				r = Q.Repository,
-				r.owner.innerJoin()
+				r.owner.INNER_JOIN()
 			],
 			WHERE:
 				r._localId.IN(repository_localIds)

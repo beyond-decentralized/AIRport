@@ -3,24 +3,24 @@
 
 - [Functions](#functions)
     - [SQL Functions](#sql-functions)
-        - [ABS](#abs)
-        - [AVG](#avg)
-        - [COUNT](#count)
-        - [MAX](#max)
-        - [MIN](#min)
-        - [SUM](#sum)
-        - [UCASE](#ucase)
-        - [LCASE](#lcase)
-        - [MID](#mid)
-        - [LEN](#len)
-        - [ROUND](#round)
-        - [NOW](#now)
-        - [FORMAT](#format)
-        - [REPLACE](#replace)
-        - [TRIM](#trim)
+        - [ABS](#ABS)
+        - [AVG](#AVG)
+        - [COUNT](#COUNT)
+        - [MAX](#MAX)
+        - [MIN](#MIN)
+        - [SUM](#SUM)
+        - [UCASE](#UCASE)
+        - [LCASE](#LCASE)
+        - [MID](#MID)
+        - [LEN](#LEN)
+        - [ROUND](#ROUND)
+        - [NOW](#NOW)
+        - [FORMAT](#FORMAT)
+        - [REPLACE](#REPLACE)
+        - [TRIM](#TRIM)
     - [SQL Clauses and Conditions](#sql-clauses-and-conditions)
-        - [Distinct](#distinct)
-        - [Exists](#exists)
+        - [DISTINCT](#DISTINCT)
+        - [EXISTS](#EXISTS)
 
 <!-- /TOC -->
 Following functions are defined by Tarmaq (more will be added as needed).
@@ -30,7 +30,7 @@ Following functions are defined by Tarmaq (more will be added as needed).
 ### ABS
 Equivalent of SQL [ABS](http://www.w3resource.com/sql/arithmetic-functions/abs.php) function
 ```ts
-function abs(
+function ABS(
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField;
 ```
@@ -38,56 +38,56 @@ function abs(
 ### AVG
 Equivalent of SQL AVG
 ```ts
-function avg(
+function AVG(
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField;
 ```
 
 ### COUNT
 ```ts
-function count<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
+function COUNT<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF;
 ```
 
 ### MAX
 ```ts
-function max<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
+function MAX<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF;
 ```
 
 ### MIN
 ```ts
-function min<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
+function MIN<T extends boolean | Date | number | string, IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF;
 ```
 
 ### SUM
 ```ts
-function sum(
+function SUM(
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField;
 ```
 
 ### UCASE
 ```ts
-function ucase(
+function UCASE(
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>
 ): IQStringField;
 ```
 
 ### LCASE
 ```ts
-function lcase(
+function LCASE(
 	stringValue: IQStringField | string | RawFieldQuery<any>
 ): IQStringField;
 ```
 
 ### MID
 ```ts
-function mid(
+function MID(
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>,
 	start: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	length: IQNumberField | number | RawFieldQuery<IQNumberField>
@@ -96,14 +96,14 @@ function mid(
 
 ### LEN
 ```ts
-function len(
+function LEN(
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>
 ): IQStringField;
 ```
 
 ### ROUND
 ```ts
-function round(
+function ROUND(
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	digits: IQNumberField | number | RawFieldQuery<IQNumberField> = 0
 ): IQNumberField;
@@ -111,12 +111,12 @@ function round(
 
 ### NOW
 ```ts
-function now(): IQDateField;
+function NOW(): IQDateField;
 ```
 
 ### FORMAT
 ```ts
-export function format<T extends boolean | Date | number | string, 
+export function FORMAT<T extends boolean | Date | number | string, 
         IQF extends IQOperableField<T, any, any, IQF>>(
 	format: string | IQStringField | RawFieldQuery<IQF>,
 	...formatParameters: (T | IQF | RawFieldQuery<IQF>)[]
@@ -125,7 +125,7 @@ export function format<T extends boolean | Date | number | string,
 
 ### REPLACE
 ```ts
-export function replace(
+export function REPLACE(
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>,
 	toReplace: IQStringField | string | RawFieldQuery<IQStringField>,
 	replaceWith: IQStringField | string | RawFieldQuery<IQStringField>
@@ -134,23 +134,23 @@ export function replace(
 
 ### TRIM
 ```ts
-export function trim(
+export function TRIM(
 	stringField: IQStringField | string | RawFieldQuery<any>
 ): IQStringField;
 ```
 
 ## SQL Clauses and Conditions
 
-### Distinct
+### DISTINCT
 Equivant of SQL [DISTINCT](https://www.techonthenet.com/sql/distinct.php) clause
 ```ts
-export function distinct<ISelect>(
+export function DISTINCT<ISelect>(
 	selectClause: ISelect
 ): IQDistinctFunction<ISelect>;
 ```
 
-### Exists
+### EXISTS
 Equivalent of SQL [EXISTS](https://www.techonthenet.com/sql/exists.php) condition
 ```ts
-function exists( rawQuery: RawTreeQuery): IQExistsFunction;
+function EXISTS( rawQuery: RawTreeQuery): IQExistsFunction;
 ```

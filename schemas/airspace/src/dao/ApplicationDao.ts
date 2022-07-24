@@ -123,9 +123,9 @@ export class ApplicationDao
 			},
 			FROM: [
 				a = Q.Application,
-				// cv = a.currentVersion.innerJoin(),
-				// av = cv.applicationVersion.innerJoin()
-				av = a.versions.innerJoin()
+				// cv = a.currentVersion.INNER_JOIN(),
+				// av = cv.applicationVersion.INNER_JOIN()
+				av = a.versions.INNER_JOIN()
 			]
 		})
 	}
@@ -156,7 +156,7 @@ export class ApplicationDao
 			},
 			FROM: [
 				s = Q.Application,
-				sv = s.versions.innerJoin()
+				sv = s.versions.INNER_JOIN()
 			],
 			WHERE: sv._localId.IN(applicationVersionIds)
 		})
@@ -202,8 +202,8 @@ export class ApplicationDao
 						sMaV = tree({
 							FROM: [
 								s = Q.Application,
-								sv = s.versions.innerJoin(),
-								d = s.domain.innerJoin()
+								sv = s.versions.INNER_JOIN(),
+								d = s.domain.INNER_JOIN()
 							],
 							SELECT: {
 								index: s.index,
@@ -331,7 +331,7 @@ export class ApplicationDao
 			},
 			FROM: [
 				s = Q.Application,
-				d = s.domain.innerJoin()
+				d = s.domain.INNER_JOIN()
 			],
 			WHERE: AND(
 				d.name.IN(domainNames),
@@ -352,7 +352,7 @@ export class ApplicationDao
 			},
 			FROM: [
 				a = Q.Application,
-				d = a.domain.innerJoin()
+				d = a.domain.INNER_JOIN()
 			],
 			WHERE: a.index.equals(index)
 		})

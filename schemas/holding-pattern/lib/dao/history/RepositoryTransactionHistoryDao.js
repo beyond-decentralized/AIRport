@@ -38,12 +38,12 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
     async findAllLocalChangesForRecordIds(changedRecordIds) {
         const repositoryTransactionHistoryMapByRepositoryId = new Map();
         const rth = Q.RepositoryTransactionHistory;
-        const th = rth.transactionHistory.innerJoin();
-        const oh = rth.operationHistory.leftJoin();
-        const ae = oh.entity.leftJoin();
-        const av = ae.applicationVersion.leftJoin();
-        const rh = oh.recordHistory.leftJoin();
-        const nv = rh.newValues.leftJoin();
+        const th = rth.transactionHistory.INNER_JOIN();
+        const oh = rth.operationHistory.LEFT_JOIN();
+        const ae = oh.entity.LEFT_JOIN();
+        const av = ae.applicationVersion.LEFT_JOIN();
+        const rh = oh.recordHistory.LEFT_JOIN();
+        const nv = rh.newValues.LEFT_JOIN();
         let _localId = Y;
         const repositoryEquals = [];
         for (const [repositoryId, idsForRepository] of changedRecordIds) {
