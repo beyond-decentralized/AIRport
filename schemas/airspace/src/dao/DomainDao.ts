@@ -56,11 +56,11 @@ export class DomainDao
 		let d: QDomain
 
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				d = Q.Domain
 			],
-			where: d._localId.in(domainIds)
+			WHERE: d._localId.IN(domainIds)
 		})
 	}
 
@@ -69,9 +69,9 @@ export class DomainDao
 	): Promise<Map<Domain_Name, IDomain>> {
 		let d: QDomain
 		const domains = await this.db.find.tree({
-			select: {},
-			from: [d = Q.Domain],
-			where: d.name.in(domainNames)
+			SELECT: {},
+			FROM: [d = Q.Domain],
+			WHERE: d.name.IN(domainNames)
 		})
 
 		const domainMapByNameWithNames: Map<Domain_Name, IDomain> = new Map()
@@ -88,9 +88,9 @@ export class DomainDao
 	): Promise<IDomain> {
 		let d: QDomain
 		return await this.db.findOne.tree({
-			select: {},
-			from: [d = Q.Domain],
-			where: d.name.equals(name)
+			SELECT: {},
+			FROM: [d = Q.Domain],
+			WHERE: d.name.equals(name)
 		})
 	}
 
@@ -99,9 +99,9 @@ export class DomainDao
 	): Promise<IDomain[]> {
 		let d: QDomain
 		return await this.db.find.tree({
-			select: {},
-			from: [d = Q.Domain],
-			where: d.name.in(names)
+			SELECT: {},
+			FROM: [d = Q.Domain],
+			WHERE: d.name.IN(names)
 		})
 	}
 
@@ -110,9 +110,9 @@ export class DomainDao
 	): Promise<IDomain> {
 		let d: QDomain
 		return await this.db.findOne.tree({
-			select: {},
-			from: [d = Q.Domain],
-			where: d.name.equals(name)
+			SELECT: {},
+			FROM: [d = Q.Domain],
+			WHERE: d.name.equals(name)
 		})
 	}
 
@@ -135,19 +135,19 @@ export class DomainDao
 			return
 		}
 		let d: QDomain;
-		const values = []
+		const VALUES = []
 		for (const domain of newDomains) {
-			values.push([
+			VALUES.push([
 				domain._localId, domain.name
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: d = Q.Domain,
+			INSERT_INTO: d = Q.Domain,
 			columns: [
 				d._localId,
 				d.name,
 			],
-			values
+			VALUES
 		}, context)
 	}
 
@@ -155,18 +155,18 @@ export class DomainDao
 		domains: IDomain[]
 	): Promise<void> {
 		let d: QDomain;
-		const values = []
+		const VALUES = []
 		for (const domain of domains) {
-			values.push([
+			VALUES.push([
 				domain.name
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
-			insertInto: d = Q.Domain,
+			INSERT_INTO: d = Q.Domain,
 			columns: [
 				d.name
 			],
-			values
+			VALUES
 		})
 		for (let i = 0; i < domains.length; i++) {
 			let domain = domains[i]

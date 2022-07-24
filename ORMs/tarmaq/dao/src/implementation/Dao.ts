@@ -126,8 +126,8 @@ export abstract class Dao<Entity,
 			throw new Error(`Not implemented`);
 		}
 		return await this.db.find.graph({
-			select: <any>{},
-			from: [this.db.from],
+			SELECT: <any>{},
+			FROM: [this.db.FROM],
 		}, context);
 	}
 
@@ -140,8 +140,8 @@ export abstract class Dao<Entity,
 			throw new Error(`Not implemented`);
 		}
 		return await this.db.find.tree({
-			select: <any>{},
-			from: [this.db.from],
+			SELECT: <any>{},
+			FROM: [this.db.FROM],
 		}, context);
 	}
 
@@ -157,14 +157,14 @@ export abstract class Dao<Entity,
 
 		let q
 		return await this.db.findOne.graph({
-			select: <any>{
+			SELECT: <any>{
 				'*': Y
 			},
-			from: [
-				q = this.db.from
+			FROM: [
+				q = this.db.FROM
 			],
-			where: q.equals(idObject),
-			forUpdate
+			WHERE: q.equals(idObject),
+			FOR_UPDATE: forUpdate
 		}, context)
 	}
 

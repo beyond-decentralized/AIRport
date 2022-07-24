@@ -40,8 +40,8 @@ export enum SqlFunction {
 	REPLACE = 'REPLACE', // REPLACE(X, Y, Z) in string X, replace Y with Z
 	TRIM = 'TRIM', // Trims a string
 		// Other
-	DISTINCT = 'DISTINCT', // Used for select clauses
-	EXISTS = 'EXISTS', // used in where clauses
+	DISTINCT = 'DISTINCT', // Used for SELECT clauses
+	EXISTS = 'EXISTS', // used in WHERE clauses
 
 		// Algebra Operators
 	DIVIDE = 'DIVIDE', // A / B

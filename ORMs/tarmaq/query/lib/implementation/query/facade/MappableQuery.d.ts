@@ -7,7 +7,7 @@ import { DistinguishableQuery } from './NonEntityQuery';
  */
 export declare const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE = "Entity SELECT clauses can only contain fields assigned: null | undefined | boolean | Date | number | string | Relation SELECT";
 /**
- * A query whose select facade is a collection of properties.
+ * A query whose SELECT facade is a collection of properties.
  */
 export declare abstract class MappableQuery extends DistinguishableQuery {
     protected nonDistinctSelectClauseToJSON(rawSelect: any, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): any;

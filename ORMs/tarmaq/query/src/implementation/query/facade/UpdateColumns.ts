@@ -27,7 +27,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 		relationManager: IRelationManager
 	): IEUC {
 		const setClause: IEUC = <IEUC>{}
-		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.update)
+		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE)
 			.__driver__.dbEntity
 		const dbColumnMap = dbEntity.columnMap
 		const idDbColumnMap = dbEntity.idColumnMap
@@ -52,7 +52,7 @@ export class UpdateColumns<IEUC extends IEntityUpdateColumns, IQE extends IQEnti
 			}
 			value = wrapPrimitive(value)
 			if (!value.toJSON) {
-				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${(<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity.name}`
+				throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`
 			}
 			setClause[columnName] = (<QField<any>>value).toJSON(
 				this.columnAliases, false,

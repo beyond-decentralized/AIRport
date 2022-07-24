@@ -1,4 +1,4 @@
-import { or } from '@airport/tarmaq-query'
+import { OR } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import { ApplicationColumn_LocalId } from '@airport/ground-control'
 import {
@@ -34,13 +34,13 @@ export class ApplicationRelationColumnDao
 		let rc: QApplicationRelationColumn
 
 		return this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				rc = Q.ApplicationRelationColumn
 			],
-			where: or(
-				rc.oneColumn._localId.in(columnIds),
-				rc.manyColumn._localId.in(columnIds)
+			WHERE: OR(
+				rc.oneColumn._localId.IN(columnIds),
+				rc.manyColumn._localId.IN(columnIds)
 			)
 		})
 	}
@@ -50,9 +50,9 @@ export class ApplicationRelationColumnDao
 		context: IContext
 	): Promise<void> {
 		let src: QApplicationRelationColumn;
-		const values = []
+		const VALUES = []
 		for (const applicationRelationColumn of applicationRelationColumns) {
-			values.push([
+			VALUES.push([
 				applicationRelationColumn._localId,
 				applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
 				applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
@@ -65,7 +65,7 @@ export class ApplicationRelationColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: src = Q.ApplicationRelationColumn,
+			INSERT_INTO: src = Q.ApplicationRelationColumn,
 			columns: [
 				src._localId,
 				src.manyColumn._localId,
@@ -77,7 +77,7 @@ export class ApplicationRelationColumnDao
 				src.removedInVersion._localId,
 				src.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

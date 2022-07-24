@@ -55,7 +55,7 @@ let EntityUtils = class EntityUtils {
     }
     ensureId(rawEntityQuery) {
         let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
-        this.ensureIdAtLevel(theRawEntityQuery.select, theRawEntityQuery.from[0]);
+        this.ensureIdAtLevel(theRawEntityQuery.SELECT, theRawEntityQuery.FROM[0]);
         return theRawEntityQuery;
     }
     ensureIdAtLevel(selectClauseFragment, qEntity) {
@@ -82,7 +82,7 @@ let EntityUtils = class EntityUtils {
         let repository = selectClauseFragment.repository;
         if (repository) {
             if (!(repository instanceof Object)) {
-                throw new Error(`id queries must include a repository object in the select clause.
+                throw new Error(`id queries must include a repository object in the SELECT clause.
 It must be an Object with the id property.`);
             }
             repository.GUID = Y;
@@ -90,7 +90,7 @@ It must be an Object with the id property.`);
         let actor = selectClauseFragment.actor;
         if (actor) {
             if (!(actor instanceof Object)) {
-                throw new Error(`id queries must include an actor object in the select clause.
+                throw new Error(`id queries must include an actor object in the SELECT clause.
 It must be an Object with the id property.`);
             }
             actor.GUID = Y;

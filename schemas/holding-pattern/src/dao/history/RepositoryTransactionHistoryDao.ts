@@ -1,7 +1,7 @@
 import {
 	ALL_FIELDS,
-	and,
-	or,
+	AND,
+	OR,
 	Y
 } from '@airport/tarmaq-query'
 import {
@@ -60,11 +60,11 @@ export class RepositoryTransactionHistoryDao
 	): Promise<void> {
 		const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
 		await this.db.updateWhere({
-			update: rtb,
-			set: {
+			UPDATE: rtb,
+			SET: {
 				contents: null
 			},
-			where: rtb._localId.in(repositoryTransactionBlockIds)
+			WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
 		})
 	}
 	*/
@@ -74,13 +74,13 @@ export class RepositoryTransactionHistoryDao
 	): Promise<IRepositoryTransactionHistory[]> {
 		let rth: QRepositoryTransactionHistory
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				GUID: Y
 			},
-			from: [
+			FROM: [
 				rth = Q.RepositoryTransactionHistory
 			],
-			where: rth.GUID.in(GUIDs)
+			WHERE: rth.GUID.IN(GUIDs)
 		})
 	}
 
@@ -106,25 +106,25 @@ export class RepositoryTransactionHistoryDao
 			for (const [entityId, recordMapForEntity] of recordMapForRepository) {
 				const actorEquals: JSONBaseOperation[] = []
 				for (const [actorId, recordsForActor] of recordMapForEntity) {
-					actorEquals.push(and(
+					actorEquals.push(AND(
 						oh.actor._localId.equals(actorId),
-						rh._actorRecordId.in(Array.from(recordsForActor))
+						rh._actorRecordId.IN(Array.from(recordsForActor))
 					))
 				}
-				entityEquals.push(and(
+				entityEquals.push(AND(
 					oh.entity._localId.equals(entityId),
-					or(...actorEquals)
+					OR(...actorEquals)
 				))
 			}
-			repositoryEquals.push(and(
+			repositoryEquals.push(AND(
 				rth.repository._localId.equals(repositoryId),
 				rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime),
-				or(...entityEquals)
+				OR(...entityEquals)
 			))
 		}
 
 		const repoTransHistories = await this.db.find.tree({
-			select: {
+			SELECT: {
 				...ALL_FIELDS,
 				operationHistory: {
 					orderNumber: Y,
@@ -149,7 +149,7 @@ export class RepositoryTransactionHistoryDao
 					}
 				}
 			},
-			from: [
+			FROM: [
 				rth,
 				th,
 				oh,
@@ -159,11 +159,11 @@ export class RepositoryTransactionHistoryDao
 				nv
 
 			],
-			where: and(
+			WHERE: AND(
 				th.transactionType.equals(TransactionType.LOCAL),
-				or(...repositoryEquals)
+				OR(...repositoryEquals)
 			),
-			// orderBy: [
+			// ORDER_BY: [
 			// 	rth.repository._localId.asc()
 			// ]
 		})
@@ -195,11 +195,11 @@ export class RepositoryTransactionHistoryDao
 		let rth: QRepositoryTransactionHistory
 
 		await this.db.updateWhere({
-			update: rth = Q.RepositoryTransactionHistory,
-			set: {
+			UPDATE: rth = Q.RepositoryTransactionHistory,
+			SET: {
 				syncTimestamp: repositoryTransactionHistory.syncTimestamp
 			},
-			where: rth._localId.equals(repositoryTransactionHistory._localId)
+			WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
 		})
 	}
 }

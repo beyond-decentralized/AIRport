@@ -19,9 +19,9 @@ import {
 	Repository_LocalId
 } from '@airport/holding-pattern'
 import {
-	and,
+	AND,
 	field,
-	or,
+	OR,
 } from '@airport/tarmaq-query'
 import { Inject } from 'typedi';
 import {
@@ -88,9 +88,9 @@ export class RecordUpdateStageDao
 		]
 
 		return await this.db.insertValuesGenerateIds({
-			insertInto: rus,
+			INSERT_INTO: rus,
 			columns,
-			values
+			VALUES: values
 		}, {
 			generateOnSync: true
 		}) as number[][]
@@ -112,14 +112,14 @@ export class RecordUpdateStageDao
 		for (const [repositoryId, idsForRepository] of idMap) {
 			const actorEquals: JSONBaseOperation[] = []
 			for (const [actorId, idsForActor] of idsForRepository) {
-				actorEquals.push(and(
+				actorEquals.push(AND(
 					qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId),
-					qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].in(Array.from(idsForActor))
+					qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))
 				))
 			}
-			repositoryEquals.push(and(
+			repositoryEquals.push(AND(
 				qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId),
-				or(...actorEquals)
+				OR(...actorEquals)
 			))
 		}
 
@@ -128,12 +128,12 @@ export class RecordUpdateStageDao
 			const column = dbEntity.columns[columnIndex]
 			let columnRus = Q.RecordUpdateStage
 			let columnSetClause = field({
-				from: [
+				FROM: [
 					columnRus
 				],
-				select: columnRus.updatedValue,
-				where:
-					and(
+				SELECT: columnRus.updatedValue,
+				WHERE:
+					AND(
 						columnRus.applicationVersion._localId.equals(applicationVersionId),
 						columnRus.entity._localId.equals(dbEntity.index),
 						columnRus.repository._localId.equals(qEntity.repository._localId),
@@ -146,16 +146,16 @@ export class RecordUpdateStageDao
 		}
 
 		await this.db.updateColumnsWhere({
-			update: qEntity,
-			set: setClause,
-			where: or(...repositoryEquals)
+			UPDATE: qEntity,
+			SET: setClause,
+			WHERE: OR(...repositoryEquals)
 		})
 	}
 
 	async delete( //
 	): Promise<number> {
 		return await this.db.deleteWhere({
-			deleteFrom: Q.RecordUpdateStage
+			DELETE_FROM: Q.RecordUpdateStage
 		})
 	}
 

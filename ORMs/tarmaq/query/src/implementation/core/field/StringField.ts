@@ -46,13 +46,13 @@ export class QStringField
 			new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
 	}
 
-	like(
+	LIKE(
 		value: string | IQStringField | RawFieldQuery<IQStringField> | { (...args: any[]): RawFieldQuery<IQStringField> }
 	): JSONRawStringOperation {
 		if (value instanceof Function) {
 			value = value();
 		}
-		return this.operation.like(<any>this, value);
+		return this.operation.LIKE(<any>this, value);
 	}
 
 }

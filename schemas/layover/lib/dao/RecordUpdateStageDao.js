@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { ACTOR_PROPERTY_NAME, ACTOR_RECORD_ID_PROPERTY_NAME, REPOSITORY_PROPERTY_NAME } from '@airport/air-traffic-control';
 import { Injected } from '@airport/direction-indicator';
-import { and, field, or, } from '@airport/tarmaq-query';
+import { AND, field, OR, } from '@airport/tarmaq-query';
 import { Inject } from 'typedi';
 import { BaseRecordUpdateStageDao, Q } from '../generated/generated';
 let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateStageDao {
@@ -22,9 +22,9 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
             rus.updatedValue
         ];
         return await this.db.insertValuesGenerateIds({
-            insertInto: rus,
+            INSERT_INTO: rus,
             columns,
-            values
+            VALUES: values
         }, {
             generateOnSync: true
         });
@@ -37,33 +37,33 @@ let RecordUpdateStageDao = class RecordUpdateStageDao extends BaseRecordUpdateSt
         for (const [repositoryId, idsForRepository] of idMap) {
             const actorEquals = [];
             for (const [actorId, idsForActor] of idsForRepository) {
-                actorEquals.push(and(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].in(Array.from(idsForActor))));
+                actorEquals.push(AND(qEntity[ACTOR_PROPERTY_NAME]._localId.equals(actorId), qEntity[ACTOR_RECORD_ID_PROPERTY_NAME].IN(Array.from(idsForActor))));
             }
-            repositoryEquals.push(and(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), or(...actorEquals)));
+            repositoryEquals.push(AND(qEntity[REPOSITORY_PROPERTY_NAME]._localId.equals(repositoryId), OR(...actorEquals)));
         }
         const setClause = {};
         for (const columnIndex of updatedColumnIndexes) {
             const column = dbEntity.columns[columnIndex];
             let columnRus = Q.RecordUpdateStage;
             let columnSetClause = field({
-                from: [
+                FROM: [
                     columnRus
                 ],
-                select: columnRus.updatedValue,
-                where: and(columnRus.applicationVersion._localId.equals(applicationVersionId), columnRus.entity._localId.equals(dbEntity.index), columnRus.repository._localId.equals(qEntity.repository._localId), columnRus.actor._localId.equals(qEntity.actor._localId), columnRus._actorRecordId.equals(qEntity._actorRecordId), columnRus.column._localId.equals(column.index))
+                SELECT: columnRus.updatedValue,
+                WHERE: AND(columnRus.applicationVersion._localId.equals(applicationVersionId), columnRus.entity._localId.equals(dbEntity.index), columnRus.repository._localId.equals(qEntity.repository._localId), columnRus.actor._localId.equals(qEntity.actor._localId), columnRus._actorRecordId.equals(qEntity._actorRecordId), columnRus.column._localId.equals(column.index))
             });
             setClause[column.name] = columnSetClause;
         }
         await this.db.updateColumnsWhere({
-            update: qEntity,
-            set: setClause,
-            where: or(...repositoryEquals)
+            UPDATE: qEntity,
+            SET: setClause,
+            WHERE: OR(...repositoryEquals)
         });
     }
     async delete( //
     ) {
         return await this.db.deleteWhere({
-            deleteFrom: Q.RecordUpdateStage
+            DELETE_FROM: Q.RecordUpdateStage
         });
     }
 };

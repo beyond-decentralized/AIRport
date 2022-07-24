@@ -4,7 +4,7 @@ import { SortOrder } from '@airport/ground-control';
  */
 /**
  * Will hierarchically order the results of the query using breadth-first processing.
- * Within a given sub-select facade will take into account the sort order specified in the Order
+ * Within a given sub-SELECT facade will take into account the sort order specified in the Order
  * By clause.
  */
 export class MappedOrderByParser {
@@ -78,7 +78,7 @@ export class MappedOrderByParser {
             orderByFragments = orderByFragments.concat(entityOrderByFragments);
         }
         if (orderBy.length) {
-            throw new Error(`Found entries in Order By for tables not found in select clause.  Entries must be ordered hierarchically, in breadth-first order.`);
+            throw new Error(`Found entries in ORDER_BY for tables not found in SELECT clause.  Entries must be ordered hierarchically, in breadth-first order.`);
         }
         return orderByFragments.join(', ');
     }

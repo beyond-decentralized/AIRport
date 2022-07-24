@@ -35,9 +35,9 @@ export class TreeQuery<ITE extends ITreeEntity>
 				jsonQuery: JsonNonEntityQuery
 			) => {
 				jsonQuery.S = this.selectClauseToJSON(
-					this.rawQuery.select,
+					this.rawQuery.SELECT,
 					queryUtils, fieldUtils, relationManager)
-				jsonQuery.forUpdate = this.rawQuery.forUpdate
+				jsonQuery.forUpdate = this.rawQuery.FOR_UPDATE
 
 			}, queryUtils, fieldUtils, relationManager)
 

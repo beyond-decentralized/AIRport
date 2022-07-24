@@ -33,11 +33,11 @@ export class ApplicationEntityDao
 		let se: QApplicationEntity
 
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				se = Q.ApplicationEntity
 			],
-			where: se.applicationVersion._localId.in(applicationVersionIds)
+			WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
 		})
 	}
 
@@ -46,9 +46,9 @@ export class ApplicationEntityDao
 		context: IContext
 	): Promise<void> {
 		let se: QApplicationEntity;
-		const values = []
+		const VALUES = []
 		for (const applicationEntity of applicationEntities) {
-			values.push([
+			VALUES.push([
 				applicationEntity._localId, applicationEntity.index,
 				applicationEntity.isLocal, applicationEntity.isAirEntity,
 				applicationEntity.name, applicationEntity.tableConfig,
@@ -59,7 +59,7 @@ export class ApplicationEntityDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: se = Q.ApplicationEntity,
+			INSERT_INTO: se = Q.ApplicationEntity,
 			columns: [
 				se._localId,
 				se.index,
@@ -72,7 +72,7 @@ export class ApplicationEntityDao
 				se.removedInVersion._localId,
 				se.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

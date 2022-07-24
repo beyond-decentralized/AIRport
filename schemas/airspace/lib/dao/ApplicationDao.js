@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ALL_FIELDS, and, max, tree, Y } from '@airport/tarmaq-query';
+import { ALL_FIELDS, AND, MAX, tree, Y } from '@airport/tarmaq-query';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap } from '@airport/ground-control';
 import { BaseApplicationDao, Q } from '../generated/generated';
@@ -12,8 +12,8 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
     async findAllActive() {
         let s;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 s = Q.Application
             ]
         });
@@ -24,7 +24,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         // FIXME: this should be don through currentVersion - verify that it get's populated and switch
         let cv;
         return this.db.find.tree({
-            select: {
+            SELECT: {
                 ...ALL_FIELDS,
                 // currentVersion: {
                 // 	applicationVersion: {
@@ -37,7 +37,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                     jsonApplication: Y
                 }
             },
-            from: [
+            FROM: [
                 a = Q.Application,
                 // cv = a.currentVersion.innerJoin(),
                 // av = cv.applicationVersion.innerJoin()
@@ -49,7 +49,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         const applicationMapByIndex = new Map();
         let s, sv;
         const applications = await this.db.find.tree({
-            select: {
+            SELECT: {
                 index: Y,
                 domain: {
                     _localId: Y,
@@ -64,11 +64,11 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                     patchVersion: Y
                 }
             },
-            from: [
+            FROM: [
                 s = Q.Application,
                 sv = s.versions.innerJoin()
             ],
-            where: sv._localId.in(applicationVersionIds)
+            WHERE: sv._localId.IN(applicationVersionIds)
         });
         for (const application of applications) {
             for (const applicationVersion of application.versions) {
@@ -80,8 +80,8 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
     async findMaxIndex() {
         const s = Q.Application;
         return await this.airportDatabase.findOne.field({
-            select: max(s.index),
-            from: [
+            SELECT: MAX(s.index),
+            FROM: [
                 s
             ]
         });
@@ -94,26 +94,26 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         let sMaV;
         let sMiV;
         const applicationLookupRecords = await this.airportDatabase.find.tree({
-            from: [
+            FROM: [
                 sMiV = tree({
-                    from: [
+                    FROM: [
                         sMaV = tree({
-                            from: [
+                            FROM: [
                                 s = Q.Application,
                                 sv = s.versions.innerJoin(),
                                 d = s.domain.innerJoin()
                             ],
-                            select: {
+                            SELECT: {
                                 index: s.index,
                                 domainId: d._localId,
                                 domainName: d.name,
                                 name: s.name,
-                                majorVersion: max(sv.majorVersion),
+                                majorVersion: MAX(sv.majorVersion),
                                 minorVersion: sv.minorVersion,
                                 patchVersion: sv.patchVersion,
                             },
-                            where: and(d.name.in(applicationDomain_Names), s.name.in(applicationNames)),
-                            groupBy: [
+                            WHERE: AND(d.name.IN(applicationDomain_Names), s.name.IN(applicationNames)),
+                            GROUP_BY: [
                                 s.index,
                                 d._localId,
                                 d.name,
@@ -123,16 +123,16 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                             ]
                         })
                     ],
-                    select: {
+                    SELECT: {
                         index: sMaV.index,
                         domainId: sMaV.domainId,
                         domainName: sMaV.domainName,
                         name: sMaV.name,
                         majorVersion: sMaV.majorVersion,
-                        minorVersion: max(sMaV.minorVersion),
+                        minorVersion: MAX(sMaV.minorVersion),
                         patchVersion: sMaV.patchVersion,
                     },
-                    groupBy: [
+                    GROUP_BY: [
                         sMaV.index,
                         sMaV.domainId,
                         sMaV.domainName,
@@ -142,7 +142,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                     ]
                 })
             ],
-            select: {
+            SELECT: {
                 index: sMiV.index,
                 domain: {
                     _localId: sMiV.domainId,
@@ -151,9 +151,9 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 name: sMiV.name,
                 majorVersion: sMiV.majorVersion,
                 minorVersion: sMiV.minorVersion,
-                patchVersion: max(sMiV.patchVersion),
+                patchVersion: MAX(sMiV.patchVersion),
             },
-            groupBy: [
+            GROUP_BY: [
                 sMiV.index,
                 sMiV.domainId,
                 sMiV.domainName,
@@ -171,22 +171,22 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
     async setStatusByIndexes(indexes, status) {
         let s;
         await this.db.updateWhere({
-            update: s = Q.Application,
-            set: {
+            UPDATE: s = Q.Application,
+            SET: {
                 status
             },
-            where: s.index.in(indexes)
+            WHERE: s.index.IN(indexes)
         });
     }
     async findMapByFullNames(fullApplication_Names) {
         const mapByFullName = new Map();
         let s;
         const records = await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 s = Q.Application
             ],
-            where: s.fullName.in(fullApplication_Names)
+            WHERE: s.fullName.IN(fullApplication_Names)
         });
         for (const record of records) {
             mapByFullName.set(record.fullName, record);
@@ -197,7 +197,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
         let s;
         let d;
         return await this.db.find.tree({
-            select: {
+            SELECT: {
                 index: Y,
                 domain: {
                     _localId: Y,
@@ -206,33 +206,33 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 fullName: Y,
                 name: Y
             },
-            from: [
+            FROM: [
                 s = Q.Application,
                 d = s.domain.innerJoin()
             ],
-            where: and(d.name.in(domainNames), s.name.in(applicationNames))
+            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         });
     }
     async findByIndex(index) {
         let a;
         let d;
         return await this.db.findOne.tree({
-            select: {
+            SELECT: {
                 ...ALL_FIELDS,
                 domain: {}
             },
-            from: [
+            FROM: [
                 a = Q.Application,
                 d = a.domain.innerJoin()
             ],
-            where: a.index.equals(index)
+            WHERE: a.index.equals(index)
         });
     }
     async insert(applications, context) {
         let a;
-        const values = [];
+        const VALUES = [];
         for (const application of applications) {
-            values.push([
+            VALUES.push([
                 application.index, application.domain._localId, application.scope,
                 application.fullName, application.name,
                 // application.packageName,
@@ -240,7 +240,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: a = Q.Application,
+            INSERT_INTO: a = Q.Application,
             columns: [
                 a.index,
                 a.domain._localId,
@@ -251,7 +251,7 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
                 a.status,
                 a.signature
             ],
-            values
+            VALUES
         }, context);
     }
 };

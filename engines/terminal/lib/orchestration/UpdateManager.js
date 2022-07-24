@@ -108,11 +108,11 @@ let UpdateManager = class UpdateManager {
     async addNewValueHistory(jsonUpdate, recordHistoryMapByRecordId, systemWideOperationId, repositorySheetSelectInfo, errorPrefix, transaction, context) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         const sheetQuery = new SheetQuery({
-            from: [
+            FROM: [
                 qEntity
             ],
-            select: [],
-            where: qEntity[airEntity.systemWideOperationId]
+            SELECT: [],
+            WHERE: qEntity[airEntity.systemWideOperationId]
                 .equals(systemWideOperationId)
         });
         let portableSelect = this.queryFacade.getPortableQuery(sheetQuery, QueryResultType.SHEET, context);

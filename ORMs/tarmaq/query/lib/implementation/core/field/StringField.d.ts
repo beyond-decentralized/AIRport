@@ -17,7 +17,7 @@ export interface IQStringEntityField extends IQStringField {
 export declare class QStringField extends QOperableField<string, JSONRawStringOperation, IStringOperation, IQStringField> implements IQStringField {
     constructor(dbColumn: DbColumn, dbProperty: DbProperty, q: IQEntityInternal, objectType?: JSONClauseObjectType);
     getInstance(qEntity?: IQEntityInternal): QStringField;
-    like(value: string | IQStringField | RawFieldQuery<IQStringField> | {
+    LIKE(value: string | IQStringField | RawFieldQuery<IQStringField> | {
         (...args: any[]): RawFieldQuery<IQStringField>;
     }): JSONRawStringOperation;
 }

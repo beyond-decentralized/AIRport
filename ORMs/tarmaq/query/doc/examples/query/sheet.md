@@ -18,16 +18,16 @@ class TaskDao extends BaseTaskDao {
     ): Promise<any[][]> {
         let t: QTask
         return await this.airDb.find.sheet({
-            from: [
+            FROM: [
                 t = Q.Task
             ],
-            select: [
+            SELECT: [
                 t.name,
                 t.dueDate
             ],
-            where: t.name.like(`%${taskNameLike}%`),
-            limit: maxNumResults,
-            offset: resultSetOffset
+            WHERE: t.name.LIKE(`%${taskNameLike}%`),
+            LIMIT: maxNumResults,
+            OFFSET: resultSetOffset
         })
     }
 }

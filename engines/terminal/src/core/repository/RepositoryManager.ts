@@ -14,7 +14,7 @@ import {
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default
 // import is reserved for Application use
 import {
-	and,
+	AND,
 	IEntityUpdateProperties,
 	IQEntityInternal,
 	IQOperableFieldInternal,
@@ -122,7 +122,7 @@ already contains a new repository.`)
 		repository: IRepository,
 		rawInsertValues: RawInsertValues<IQE>
 	): RawInsertValues<IQE> {
-		let qEntity = rawInsertValues.insertInto
+		let qEntity = rawInsertValues.INSERT_INTO
 		if (!qEntity.__driver__.dbEntity.isAirEntity) {
 			return rawInsertValues
 		}
@@ -139,15 +139,15 @@ already contains a new repository.`)
 		}
 		columns.push(qEntity[REPOSITORY_PROPERTY_NAME])
 
-		let values = rawInsertValues.values.slice()
-		for (let i = 0; i < values.length; i++) {
-			let row = values[i].slice()
-			values[i] = row
+		let VALUES = rawInsertValues.VALUES.slice()
+		for (let i = 0; i < VALUES.length; i++) {
+			let row = VALUES[i].slice()
+			VALUES[i] = row
 			row.push(repository._localId)
 		}
 
 		return {
-			insertInto: qEntity, columns: columns, values: values
+			INSERT_INTO: qEntity, columns, VALUES
 		}
 	}
 
@@ -160,9 +160,9 @@ already contains a new repository.`)
 			return
 		}
 		return {
-			update: rawUpdate.update,
-			set: rawUpdate.set,
-			where: and(rawUpdate.where, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
+			UPDATE: rawUpdate.UPDATE,
+			SET: rawUpdate.SET,
+			WHERE: AND(rawUpdate.WHERE, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 
@@ -175,8 +175,8 @@ already contains a new repository.`)
 			return
 		}
 		return {
-			deleteFrom: rawDelete.deleteFrom,
-			where: and(rawDelete.where, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
+			DELETE_FROM: rawDelete.DELETE_FROM,
+			WHERE: AND(rawDelete.WHERE, (<QAirEntity><any>qEntity).repository._localId.equals(repository._localId))
 		}
 	}
 

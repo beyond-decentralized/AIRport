@@ -31,7 +31,7 @@ export declare class OperationManager implements IOperationManager {
     performSave<E extends IAirEntity, T = E | E[]>(entities: T, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<ISaveResult>;
     protected internalCreate<E extends IAirEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
     /**
-     * On an update operation, can a nested create contain an update?
+     * On an UPDATE operation, can a nested create contain an update?
      * Via:
      *  OneToMany:
      *    Yes, if the child entity is itself in the update cache

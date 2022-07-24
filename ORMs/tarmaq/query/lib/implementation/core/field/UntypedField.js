@@ -12,7 +12,7 @@ export class QUntypedField extends QOperableField {
         if (value instanceof Function) {
             value = value();
         }
-        return this.operation.like(this, value);
+        return this.operation.LIKE(this, value);
     }
 }
 export class QUntypedFunction extends QUntypedField {

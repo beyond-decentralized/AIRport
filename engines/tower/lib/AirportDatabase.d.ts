@@ -41,7 +41,7 @@ export declare class AirportDatabase implements IAirportDatabase {
         (...args: any[]): RawInsertValues<IQE>;
     }, context?: IEntityContext): Promise<number[] | string[] | number[][] | string[][]>;
     /**
-     * Creates an entity with a where clause - internal API.  Use the
+     * Creates an entity with a WHERE clause - internal API.  Use the
      *  API provided by the IEntityDatabaseFacade.
      *
      * @return Number of records deleted
@@ -57,7 +57,7 @@ export declare class AirportDatabase implements IAirportDatabase {
      */
     save<E>(entity: E, context?: IEntityContext, operationName?: OperationName): Promise<ISaveResult>;
     /**
-     * Updates an entity with a where clause, using a column based set clause
+     * Updates an entity with a WHERE clause, using a column based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
      *
      * @return Number of records updated
@@ -66,7 +66,7 @@ export declare class AirportDatabase implements IAirportDatabase {
         (...args: any[]): RawUpdateColumns<IEUC, IQE>;
     }, context?: IEntityContext): Promise<number>;
     /**
-     * Updates an entity with a where clause, using a property based set clause
+     * Updates an entity with a WHERE clause, using a property based set clause
      * - internal API.  Use the API provided by the IEntityDatabaseFacade.
      *
      * @return Number of records updated

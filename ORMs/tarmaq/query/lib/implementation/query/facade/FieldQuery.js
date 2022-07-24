@@ -22,24 +22,24 @@ export class FieldQuery extends DistinguishableQuery {
         this.rawQuery = rawQuery;
     }
     nonDistinctSelectClauseToJSON(rawSelect, queryUtils, fieldUtils, relationManager) {
-        if (!(this.rawQuery.select instanceof QField)) {
+        if (!(this.rawQuery.SELECT instanceof QField)) {
             throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE);
         }
-        this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity());
-        return this.rawQuery.select.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
+        this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity());
+        return this.rawQuery.SELECT.toJSON(this.columnAliases, true, queryUtils, fieldUtils, relationManager);
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
-        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
+        let select = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
             S: select,
-            forUpdate: this.rawQuery.forUpdate,
+            forUpdate: this.rawQuery.FOR_UPDATE,
             ot: JSONClauseObjectType.FIELD_QUERY,
             dt: this.getClauseDataType()
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }
     getClauseDataType() {
-        let selectField = this.rawQuery.select;
+        let selectField = this.rawQuery.SELECT;
         if (selectField instanceof QDistinctFunction) {
             selectField = selectField.getSelectClause();
         }
@@ -59,7 +59,7 @@ export class FieldQuery extends DistinguishableQuery {
             return SQLDataType.ANY;
         }
         else {
-            throw new Error(`Unsupported type of select field in Field Query`);
+            throw new Error(`Unsupported type of SELECT field in Field Query`);
         }
     }
 }

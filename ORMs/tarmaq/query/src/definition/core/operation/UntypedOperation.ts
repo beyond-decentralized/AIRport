@@ -13,7 +13,7 @@ import { IValueOperation, JSONRawValueOperation } from "./Operation";
 export interface IUntypedOperation
 	extends IValueOperation<any, JSONRawUntypedOperation, IQUntypedField> {
 
-	like(
+	LIKE(
 		lValue: IQUntypedField,
 		rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>
 	): JSONRawUntypedOperation;

@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "AirEntity",
-        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [
@@ -522,7 +522,15 @@ export const MAPPED_SUPERCLASS = [
                     "index": 8
                 },
                 {
-                    "decorators": [],
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
                     "isTransient": true,
                     "name": "createdBy",
                     "optional": true,
@@ -531,7 +539,15 @@ export const MAPPED_SUPERCLASS = [
                     "nonArrayType": "UserAccount"
                 },
                 {
-                    "decorators": [],
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
                     "isTransient": true,
                     "name": "isNew",
                     "optional": true,
@@ -541,7 +557,15 @@ export const MAPPED_SUPERCLASS = [
                     "primitive": "boolean"
                 },
                 {
-                    "decorators": [],
+                    "decorators": [
+                        {
+                            "name": "Transient",
+                            "values": []
+                        }
+                    ],
+                    "isGenerated": false,
+                    "isId": false,
+                    "isMappedSuperclass": false,
                     "isTransient": true,
                     "name": "id",
                     "optional": true,

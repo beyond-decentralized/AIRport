@@ -33,11 +33,11 @@ export class ApplicationReferenceDao
 		let sr: QApplicationReference
 
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				sr = Q.ApplicationReference
 			],
-			where: sr.ownApplicationVersion._localId.in(applicationVersionIds)
+			WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
 		})
 	}
 
@@ -46,9 +46,9 @@ export class ApplicationReferenceDao
 		context: IContext
 	): Promise<void> {
 		let sr: QApplicationReference;
-		const values = []
+		const VALUES = []
 		for (const applicationReference of applicationReferences) {
-			values.push([
+			VALUES.push([
 				applicationReference.ownApplicationVersion._localId,
 				applicationReference.referencedApplicationVersion._localId,
 				applicationReference.index,
@@ -58,7 +58,7 @@ export class ApplicationReferenceDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: sr = Q.ApplicationReference,
+			INSERT_INTO: sr = Q.ApplicationReference,
 			columns: [
 				sr.ownApplicationVersion._localId,
 				sr.referencedApplicationVersion._localId,
@@ -67,7 +67,7 @@ export class ApplicationReferenceDao
 				sr.removedInVersion._localId,
 				sr.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

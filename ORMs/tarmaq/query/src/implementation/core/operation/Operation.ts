@@ -68,7 +68,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		};
 	}
 
-	isNotNull(lValue: IQF): JRO {
+	IS_NOT_NULL(lValue: IQF): JRO {
 		return <JRO>{
 			c: this.category,
 			l: lValue,
@@ -76,7 +76,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		};
 	}
 
-	isNull(
+	IS_NULL(
 		lValue: IQF
 	): JRO {
 		return <JRO>{
@@ -86,7 +86,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		};
 	}
 
-	in(
+	IN(
 		lValue: IQF,
 		rValue: T[] | IQF | RawFieldQuery<IQF>
 	): JRO {
@@ -134,7 +134,7 @@ export abstract class ValueOperation<T extends boolean | string | number | Date,
 		};
 	}
 
-	notIn(
+	NOT_IN(
 		lValue: IQF,
 		rValue: (T | IQF | RawFieldQuery<IQF>)[]
 	): JRO {

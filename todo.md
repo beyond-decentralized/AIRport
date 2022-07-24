@@ -25,12 +25,12 @@ is included (for client the Autopilot library is used, if the AUTOPILOT tokens a
 by classes).  Clients will instead get the object by calling ApiClassName.get(), which will
 internally perform dependency injection in the class, after it "new"s it.
 
-## Make table missing from join error developer friendly
+## Make table missing FROM join error developer friendly
 
-Right now if you write a query and forget to add a table in the from for the entities you
+Right now if you write a query and forget to add a table in the FROM for the entities you
 have selected you get an 'undefined' error from within query processing code.  Instead
 there should be a developer friendly error message, stating that an entity is in the
-"select: {}" clause but is missing from the "from: []" clause and should suggest a
+"SELECT: {}" clause but is missing from the "FROM: []" clause and should suggest a
 way to get it done "like: entityAlias.enityName.leftJoin()"
 
 ## Time out transactions

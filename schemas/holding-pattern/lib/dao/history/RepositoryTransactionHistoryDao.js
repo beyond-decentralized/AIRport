@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { ALL_FIELDS, and, or, Y } from '@airport/tarmaq-query';
+import { ALL_FIELDS, AND, OR, Y } from '@airport/tarmaq-query';
 import { ensureChildArray, TransactionType } from '@airport/ground-control';
 import { BaseRepositoryTransactionHistoryDao, Q, } from '../../generated/generated';
 import { Injected } from '@airport/direction-indicator';
@@ -15,24 +15,24 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
     ): Promise<void> {
         const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
         await this.db.updateWhere({
-            update: rtb,
-            set: {
+            UPDATE: rtb,
+            SET: {
                 contents: null
             },
-            where: rtb._localId.in(repositoryTransactionBlockIds)
+            WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
         })
     }
     */
     async findWhereGUIDsIn(GUIDs) {
         let rth;
         return await this.db.find.tree({
-            select: {
+            SELECT: {
                 GUID: Y
             },
-            from: [
+            FROM: [
                 rth = Q.RepositoryTransactionHistory
             ],
-            where: rth.GUID.in(GUIDs)
+            WHERE: rth.GUID.IN(GUIDs)
         });
     }
     async findAllLocalChangesForRecordIds(changedRecordIds) {
@@ -52,14 +52,14 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
             for (const [entityId, recordMapForEntity] of recordMapForRepository) {
                 const actorEquals = [];
                 for (const [actorId, recordsForActor] of recordMapForEntity) {
-                    actorEquals.push(and(oh.actor._localId.equals(actorId), rh._actorRecordId.in(Array.from(recordsForActor))));
+                    actorEquals.push(AND(oh.actor._localId.equals(actorId), rh._actorRecordId.IN(Array.from(recordsForActor))));
                 }
-                entityEquals.push(and(oh.entity._localId.equals(entityId), or(...actorEquals)));
+                entityEquals.push(AND(oh.entity._localId.equals(entityId), OR(...actorEquals)));
             }
-            repositoryEquals.push(and(rth.repository._localId.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), or(...entityEquals)));
+            repositoryEquals.push(AND(rth.repository._localId.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), OR(...entityEquals)));
         }
         const repoTransHistories = await this.db.find.tree({
-            select: {
+            SELECT: {
                 ...ALL_FIELDS,
                 operationHistory: {
                     orderNumber: Y,
@@ -84,7 +84,7 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
                     }
                 }
             },
-            from: [
+            FROM: [
                 rth,
                 th,
                 oh,
@@ -93,8 +93,8 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
                 rh,
                 nv
             ],
-            where: and(th.transactionType.equals(TransactionType.LOCAL), or(...repositoryEquals)),
-            // orderBy: [
+            WHERE: AND(th.transactionType.equals(TransactionType.LOCAL), OR(...repositoryEquals)),
+            // ORDER_BY: [
             // 	rth.repository._localId.asc()
             // ]
         });
@@ -116,11 +116,11 @@ let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao exte
     async updateSyncTimestamp(repositoryTransactionHistory) {
         let rth;
         await this.db.updateWhere({
-            update: rth = Q.RepositoryTransactionHistory,
-            set: {
+            UPDATE: rth = Q.RepositoryTransactionHistory,
+            SET: {
                 syncTimestamp: repositoryTransactionHistory.syncTimestamp
             },
-            where: rth._localId.equals(repositoryTransactionHistory._localId)
+            WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
         });
     }
 };

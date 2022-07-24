@@ -36,21 +36,21 @@ export class ValueOperation extends Operation {
             r: rValue
         };
     }
-    isNotNull(lValue) {
+    IS_NOT_NULL(lValue) {
         return {
             c: this.category,
             l: lValue,
             o: SqlOperator.IS_NOT_NULL
         };
     }
-    isNull(lValue) {
+    IS_NULL(lValue) {
         return {
             c: this.category,
             l: lValue,
             o: SqlOperator.IS_NULL
         };
     }
-    in(lValue, rValue) {
+    IN(lValue, rValue) {
         return {
             c: this.category,
             l: lValue,
@@ -82,7 +82,7 @@ export class ValueOperation extends Operation {
             r: lValue
         };
     }
-    notIn(lValue, rValue) {
+    NOT_IN(lValue, rValue) {
         return {
             c: this.category,
             l: lValue,

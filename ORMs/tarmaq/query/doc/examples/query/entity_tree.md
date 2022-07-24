@@ -21,7 +21,7 @@ class GoalDao extends BaseGoalDao {
 		goalId: string
 	): Promise<Goal> {
         await this.db.find.tree({
-            select: {}
+            SELECT: {}
         });
     }
 }
@@ -42,7 +42,7 @@ class GoalDao extends BaseGoalDao {
 		goalId: string
 	): Promise<Goal> {
         await this.db.find.tree({
-            select: {
+            SELECT: {
                 goalId: Y,
                 description: Y,
                 tasks: {}

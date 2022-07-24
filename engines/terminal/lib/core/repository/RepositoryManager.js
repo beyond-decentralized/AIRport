@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { REPOSITORY_PROPERTY_NAME, } from '@airport/air-traffic-control';
 import { Inject, Injected } from '@airport/direction-indicator';
 // import is reserved for Application use
-import { and, } from '@airport/tarmaq-query';
+import { AND, } from '@airport/tarmaq-query';
 import { v4 as guidv4 } from "uuid";
 let RepositoryManager = class RepositoryManager {
     async initialize() {
@@ -55,7 +55,7 @@ already contains a new repository.`);
         return repository;
     }
     ensureRepositoryScopeOnInsertValues(repository, rawInsertValues) {
-        let qEntity = rawInsertValues.insertInto;
+        let qEntity = rawInsertValues.INSERT_INTO;
         if (!qEntity.__driver__.dbEntity.isAirEntity) {
             return rawInsertValues;
         }
@@ -67,14 +67,14 @@ already contains a new repository.`);
             return rawInsertValues;
         }
         columns.push(qEntity[REPOSITORY_PROPERTY_NAME]);
-        let values = rawInsertValues.values.slice();
-        for (let i = 0; i < values.length; i++) {
-            let row = values[i].slice();
-            values[i] = row;
+        let VALUES = rawInsertValues.VALUES.slice();
+        for (let i = 0; i < VALUES.length; i++) {
+            let row = VALUES[i].slice();
+            VALUES[i] = row;
             row.push(repository._localId);
         }
         return {
-            insertInto: qEntity, columns: columns, values: values
+            INSERT_INTO: qEntity, columns, VALUES
         };
     }
     ensureRepositoryLinkOnUpdateWhere(qEntity, repository, rawUpdate) {
@@ -82,9 +82,9 @@ already contains a new repository.`);
             return;
         }
         return {
-            update: rawUpdate.update,
-            set: rawUpdate.set,
-            where: and(rawUpdate.where, qEntity.repository._localId.equals(repository._localId))
+            UPDATE: rawUpdate.UPDATE,
+            SET: rawUpdate.SET,
+            WHERE: AND(rawUpdate.WHERE, qEntity.repository._localId.equals(repository._localId))
         };
     }
     ensureRepositoryScopeOnDeleteWhere(qEntity, repository, rawDelete) {
@@ -92,8 +92,8 @@ already contains a new repository.`);
             return;
         }
         return {
-            deleteFrom: rawDelete.deleteFrom,
-            where: and(rawDelete.where, qEntity.repository._localId.equals(repository._localId))
+            DELETE_FROM: rawDelete.DELETE_FROM,
+            WHERE: AND(rawDelete.WHERE, qEntity.repository._localId.equals(repository._localId))
         };
     }
 };

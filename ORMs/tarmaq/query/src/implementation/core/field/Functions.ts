@@ -113,7 +113,7 @@ function getSqlFunctionCall(
 	}
 }
 
-export const abs: absFunction = function (
+export const ABS: absFunction = function (
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>,
 ): IQNumberField {
 	if (numeric instanceof QNumberField) {
@@ -123,7 +123,7 @@ export const abs: absFunction = function (
 	}
 }
 
-export const avg: avgFunction = function (
+export const AVG: avgFunction = function (
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
 	if (numeric instanceof QNumberField) {
@@ -147,7 +147,7 @@ export function getFunctionObject<T extends boolean | Date | number | string>(
 	if (value instanceof Date) {
 		return new QDateFunction(<any>value)
 	}
-	let selectClause = (<RawFieldQuery<any>>value).select
+	let selectClause = (<RawFieldQuery<any>>value).SELECT
 	if (selectClause instanceof QDistinctFunction) {
 		selectClause = selectClause.getSelectClause()
 	}
@@ -163,7 +163,7 @@ export function getFunctionObject<T extends boolean | Date | number | string>(
 	throw new Error(`Function rValue must be a primitive, Date, Field or Field query`)
 }
 
-export const count: countFunction = function <T extends boolean | Date | number | string,
+export const COUNT: countFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF {
@@ -175,7 +175,7 @@ export const count: countFunction = function <T extends boolean | Date | number 
 	}
 }
 
-export const max: maxFunction = function <T extends boolean | Date | number | string,
+export const MAX: maxFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF {
@@ -187,7 +187,7 @@ export const max: maxFunction = function <T extends boolean | Date | number | st
 	}
 }
 
-export const min: minFunction = function <T extends boolean | Date | number | string,
+export const MIN: minFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, any>>(
 	value: IQF | T | RawFieldQuery<IQF>
 ): IQF {
@@ -199,7 +199,7 @@ export const min: minFunction = function <T extends boolean | Date | number | st
 	}
 }
 
-export const sum: sumFunction = function (
+export const SUM: sumFunction = function (
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
 	if (numeric instanceof QNumberField) {
@@ -210,7 +210,7 @@ export const sum: sumFunction = function (
 	}
 }
 
-export const plus: plusFunction = function (
+export const PLUS: plusFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -222,22 +222,22 @@ export const plus: plusFunction = function (
 	}
 }
 
-export function coalesce(
+export function COALESCE(
 	...values: (IQBooleanField | boolean | RawFieldQuery<IQBooleanField>)[]
 ): IQBooleanField
-export function coalesce(
+export function COALESCE(
 	...values: (IQDateField | Date | RawFieldQuery<IQDateField>)[]
 ): IQDateField
-export function coalesce(
+export function COALESCE(
 	...values: (IQNumberField | number | RawFieldQuery<IQNumberField>)[]
 ): IQNumberField
-export function coalesce(
+export function COALESCE(
 	...values: (IQStringField | string | RawFieldQuery<IQStringField>)[]
 ): IQStringField
-export function coalesce(
+export function COALESCE(
 	...values: (IQUntypedField | any | RawFieldQuery<IQUntypedField>)[]
 ): IQUntypedField
-export function coalesce(
+export function COALESCE(
 	...values: any[]
 ): IQOperableField<any, any, any, any> {
 	if (!values || !values.length) {
@@ -288,7 +288,7 @@ export function coalesce(
 	}
 }
 
-export const ucase: ucaseFunction = function (
+export const UCASE: ucaseFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>
 ): IQStringField {
 	if (stringValue instanceof QStringField) {
@@ -299,7 +299,7 @@ export const ucase: ucaseFunction = function (
 	}
 }
 
-export const lcase: lcaseFunction = function (
+export const LCASE: lcaseFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<any>
 ): IQStringField {
 	if (stringValue instanceof QStringField) {
@@ -310,7 +310,7 @@ export const lcase: lcaseFunction = function (
 	}
 }
 
-export const mid: midFunction = function (
+export const MID: midFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>,
 	start: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	length: IQNumberField | number | RawFieldQuery<IQNumberField>
@@ -323,7 +323,7 @@ export const mid: midFunction = function (
 	}
 }
 
-export const len: lenFunction = function (
+export const LEN: lenFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>
 ): IQStringField {
 	if (stringValue instanceof QStringField) {
@@ -334,7 +334,7 @@ export const len: lenFunction = function (
 	}
 }
 
-export const round: roundFunction = function (
+export const ROUND: roundFunction = function (
 	numeric: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	digits: IQNumberField | number | RawFieldQuery<IQNumberField> = 0
 ): IQNumberField {
@@ -346,12 +346,12 @@ export const round: roundFunction = function (
 	}
 }
 
-export const now: nowFunction = function (): IQDateField {
+export const NOW: nowFunction = function (): IQDateField {
 	return new QDateFunction(null)
 		.applySqlFunction(getSqlFunctionCall(SqlFunction.NOW))
 }
 
-export const format: formatFunction = function <T extends boolean | Date | number | string,
+export const FORMAT: formatFunction = function <T extends boolean | Date | number | string,
 	IQF extends IQOperableField<T, any, any, IQF>>(
 	format: string | IQStringField | RawFieldQuery<IQF>,
 	...formatParameters: (T | IQF | RawFieldQuery<IQF>)[]
@@ -364,7 +364,7 @@ export const format: formatFunction = function <T extends boolean | Date | numbe
 	}
 }
 
-export const replace: replaceFunction = function (
+export const REPLACE: replaceFunction = function (
 	stringValue: IQStringField | string | RawFieldQuery<IQStringField>,
 	toReplace: IQStringField | string | RawFieldQuery<IQStringField>,
 	replaceWith: IQStringField | string | RawFieldQuery<IQStringField>
@@ -377,7 +377,7 @@ export const replace: replaceFunction = function (
 	}
 }
 
-export const trim: trimFunction = function (
+export const TRIM: trimFunction = function (
 	stringField: IQStringField | string | RawFieldQuery<any>
 ): IQStringField {
 	if (stringField instanceof QStringField) {
@@ -392,7 +392,7 @@ export abstract class StandAloneFunction {
 
 }
 
-export const distinct: distinctFunction = function <ISelect>(
+export const DISTINCT: distinctFunction = function <ISelect>(
 	selectClause: ISelect
 ): IQDistinctFunction<ISelect> {
 	let distinctFunction = new QDistinctFunction<ISelect>(selectClause)
@@ -452,10 +452,10 @@ export class QDistinctFunction<ISelect>
 	}
 }
 
-export const exists: existsFunction = function <IME extends ITreeEntity>(
+export const EXISTS: existsFunction = function <IME extends ITreeEntity>(
 	rawQuery: RawTreeQuery<IME>
 ): IQExistsFunction {
-	let selectClause = rawQuery.select
+	let selectClause = rawQuery.SELECT
 	if (!selectClause) {
 		throw new Error(`Sub-Query must have SELECT clause defined to be used in EXITS function`)
 	}
@@ -519,7 +519,7 @@ export class QExistsFunction<IME extends ITreeEntity>
 
 // Algebra Operators
 
-export const divide: divideFunction = function (
+export const DIVIDE: divideFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -531,7 +531,7 @@ export const divide: divideFunction = function (
 	}
 }
 
-export const subtract: subtractFunction = function (
+export const SUBTRACT: subtractFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -543,7 +543,7 @@ export const subtract: subtractFunction = function (
 	}
 }
 
-export const modulus: modulusFunction = function (
+export const MODULUS: modulusFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -555,7 +555,7 @@ export const modulus: modulusFunction = function (
 	}
 }
 
-export const multiply: multiplyFunction = function (
+export const MULTIPLY: multiplyFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -567,7 +567,7 @@ export const multiply: multiplyFunction = function (
 	}
 }
 
-export const add: addFunction = function (
+export const ADD: addFunction = function (
 	numeric1: IQNumberField | number | RawFieldQuery<IQNumberField>,
 	numeric2: IQNumberField | number | RawFieldQuery<IQNumberField>
 ): IQNumberField {
@@ -579,7 +579,7 @@ export const add: addFunction = function (
 	}
 }
 
-export const concat: concatenateFunction = function ( //
+export const CONCAT: concatenateFunction = function ( //
 	...fragments: (
 		IQOperableField<any, any, any, any>
 		| boolean
@@ -605,7 +605,7 @@ export const concat: concatenateFunction = function ( //
  * UNION
  * B
  */
-export const union: unionFunction = function (
+export const UNION: unionFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
 	throw new Error('not implemented')
@@ -617,7 +617,7 @@ export const union: unionFunction = function (
  * UNION ALL
  * B
  */
-export const unionAll: unionAllFunction = function (
+export const UNION_ALL: unionAllFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
 	throw new Error('not implemented')
@@ -630,7 +630,7 @@ export const unionAll: unionAllFunction = function (
  * INTERSECT
  * B
  */
-export const intersect: intersectFunction = function (
+export const INTERSECT: intersectFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
 	throw new Error('not implemented')
@@ -642,7 +642,7 @@ export const intersect: intersectFunction = function (
  * MINUS
  * B
  */
-export const except: exceptFunction = function (
+export const EXCEPT: exceptFunction = function (
 	...rawQueries: RawNonEntityQuery[]
 ): RawNonEntityQuery {
 	throw new Error('not implemented')
@@ -654,4 +654,4 @@ export const except: exceptFunction = function (
  * MINUS
  * B
  */
-export const minus: minusFunction = except
+export const MINUS: minusFunction = EXCEPT

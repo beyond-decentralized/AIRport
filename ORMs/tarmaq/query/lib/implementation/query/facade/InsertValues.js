@@ -5,7 +5,7 @@ import { AbstractInsertValues } from './AbstractInsertValues';
 // FIXME: add support for a full blown INSERT VALUES, with expression support for VALUES
 export class InsertValues extends AbstractInsertValues {
     toJSON(queryUtils, fieldUtils, relationManager) {
-        const driver = this.rawInsertValues.insertInto
+        const driver = this.rawInsertValues.INSERT_INTO
             .__driver__;
         const insertInto = driver.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager);
         const dbColumns = [];
@@ -29,7 +29,7 @@ export class InsertValues extends AbstractInsertValues {
         return {
             II: insertInto,
             C: columnIndexes,
-            V: this.valuesToJSON(this.rawInsertValues.values, dbColumns, queryUtils, fieldUtils, relationManager)
+            V: this.valuesToJSON(this.rawInsertValues.VALUES, dbColumns, queryUtils, fieldUtils, relationManager)
         };
     }
 }

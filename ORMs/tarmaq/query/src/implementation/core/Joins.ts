@@ -32,7 +32,7 @@ export function tree<IME extends ITreeEntity>(
 	}
 
 	let view = IOC.getSync(ENTITY_UTILS).getQTree([], queryDefinition);
-	let customEntity: IME = <IME>queryDefinition.select;
+	let customEntity: IME = <IME>queryDefinition.SELECT;
 	view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
 
 	return <IME & IFrom><any>view;
@@ -68,7 +68,7 @@ function convertMappedEntitySelect<IME extends ITreeEntity>(
 }
 
 /**
- * Sub-queries in select clause
+ * Sub-queries in SELECT clause
  * @param query
  * @returns {IQF}
  */
@@ -81,7 +81,7 @@ export function field<IQF extends IQOrderableField<IQF>>(
 	} else {
 		queryDefinition = <RawFieldQuery<IQF>>query;
 	}
-	let customField: IQF = <IQF>queryDefinition.select;
+	let customField: IQF = <IQF>queryDefinition.SELECT;
 	customField = (<QField<IQF>><any>customField).addSubQuery(queryDefinition);
 	// Field query cannot be joined to any other query so don't have set the positional fields
 	return customField;

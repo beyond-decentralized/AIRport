@@ -41,15 +41,15 @@ export class EntityQuery<IEP extends IEntitySelectProperties>
 	): JsonEntityQuery<IEP> {
 		return {
 			S: this.selectClauseToJSON(
-				this.rawQuery.select,
+				this.rawQuery.SELECT,
 				queryUtils, fieldUtils, relationManager),
 			F: <JSONEntityRelation[]>this.fromClauseToJSON(
-				this.rawQuery.from,
+				this.rawQuery.FROM,
 				queryUtils, fieldUtils, relationManager),
-			forUpdate: this.rawQuery.forUpdate,
+			forUpdate: this.rawQuery.FOR_UPDATE,
 			W: queryUtils.whereClauseToJSON(
-				this.rawQuery.where, this.columnAliases),
-			OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
+				this.rawQuery.WHERE, this.columnAliases),
+			OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
 		}
 	}
 
@@ -94,8 +94,8 @@ export class LimitedEntityQuery<IEP extends IEntitySelectProperties>
 		let limitedJsonEntity: JsonLimitedEntityQuery<IEP> = super.toJSON(
 			queryUtils, fieldUtils, relationManager
 		)
-		limitedJsonEntity.L = this.rawQuery.limit
-		limitedJsonEntity.O = this.rawQuery.offset
+		limitedJsonEntity.L = this.rawQuery.LIMIT
+		limitedJsonEntity.O = this.rawQuery.OFFSET
 
 		return limitedJsonEntity
 	}

@@ -39,11 +39,11 @@ export class UserAccountDao
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				u = Q.UserAccount
 			],
-			where: u.username.in(usernames)
+			WHERE: u.username.IN(usernames)
 		})
 	}
 
@@ -52,11 +52,11 @@ export class UserAccountDao
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				u = Q.UserAccount
 			],
-			where: u.GUID.in(GUIDs)
+			WHERE: u.GUID.IN(GUIDs)
 		})
 	}
 
@@ -65,19 +65,19 @@ export class UserAccountDao
 		context: IContext
 	): Promise<void> {
 		let u: QUserAccount;
-		const values = []
+		const VALUES = []
 		for (const userAccount of userAccounts) {
-			values.push([
+			VALUES.push([
 				userAccount.GUID, userAccount.username
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			insertInto: u = Q.UserAccount,
+			INSERT_INTO: u = Q.UserAccount,
 			columns: [
 				u.GUID,
 				u.username
 			],
-			values
+			VALUES
 		}, context) as number[][]
 		for (let i = 0; i < userAccounts.length; i++) {
 			const userAccount = userAccounts[i]

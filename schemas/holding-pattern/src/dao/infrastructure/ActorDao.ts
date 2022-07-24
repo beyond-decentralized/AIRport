@@ -1,6 +1,6 @@
 import {
 	ALL_FIELDS,
-	and,
+	AND,
 	Y
 } from '@airport/tarmaq-query'
 import {
@@ -83,7 +83,7 @@ export class ActorDao
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor,
-		) => a._localId.in(actorIds))
+		) => a._localId.IN(actorIds))
 	}
 
 	async findMapsWithDetailsByGlobalIds(
@@ -113,10 +113,10 @@ export class ActorDao
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
-		) => and(
-			a.GUID.in(actorGUIDs),
-			a.terminal._localId.in(terminalIds),
-			a.userAccount._localId.in(userAccountIds)
+		) => AND(
+			a.GUID.IN(actorGUIDs),
+			a.terminal._localId.IN(terminalIds),
+			a.userAccount._localId.IN(userAccountIds)
 		))
 	}
 
@@ -130,7 +130,7 @@ export class ActorDao
 		let terminal: QTerminal
 		let userAccount: QUserAccount
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				_localId: Y,
 				application: {
 					...ALL_FIELDS,
@@ -140,14 +140,14 @@ export class ActorDao
 				userAccount: {},
 				GUID: Y
 			},
-			from: [
+			FROM: [
 				act = Q.Actor,
 				application = act.application.innerJoin(),
 				domain = application.domain.innerJoin(),
 				terminal = act.terminal.leftJoin(),
 				userAccount = act.userAccount.leftJoin()
 			],
-			where: and(
+			WHERE: AND(
 				domain.name.equals(domainName),
 				application.name.equals(applicationName)
 			)
@@ -159,11 +159,11 @@ export class ActorDao
 	): Promise<IActor[]> {
 		let a: QActor
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				a = Q.Actor
 			],
-			where: a.GUID.in(actorGUIDs)
+			WHERE: a.GUID.IN(actorGUIDs)
 		})
 	}
 
@@ -173,7 +173,7 @@ export class ActorDao
 		let a: QActor,
 			u: QUserAccount
 		return await this.db.find.graph({
-			select: {
+			SELECT: {
 				'*': Y,
 				userAccount: {
 					_localId: Y,
@@ -182,7 +182,7 @@ export class ActorDao
 					username: Y
 				}
 			},
-			from: [
+			FROM: [
 				a = Q.Actor,
 				u = a.userAccount.leftJoin(),
 				u.continent.leftJoin(),
@@ -191,7 +191,7 @@ export class ActorDao
 				u.state.leftJoin()
 			],
 
-			where: a._localId.in(actor_localIds)
+			WHERE: a._localId.IN(actor_localIds)
 		})
 	}
 
@@ -200,22 +200,22 @@ export class ActorDao
 		context: IContext
 	): Promise<void> {
 		let a: QActor;
-		const values = []
+		const VALUES = []
 		for (const actor of actors) {
-			values.push([
+			VALUES.push([
 				actor.GUID, actor.application.index,
 				actor.userAccount._localId, actor.terminal._localId
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			insertInto: a = Q.Actor,
+			INSERT_INTO: a = Q.Actor,
 			columns: [
 				a.GUID,
 				a.application.index,
 				a.userAccount._localId,
 				a.terminal._localId
 			],
-			values
+			VALUES
 		}, context)
 		for (let i = 0; i < actors.length; i++) {
 			let actor = actors[i]
@@ -235,7 +235,7 @@ export class ActorDao
 		const username = Y
 		const GUID = Y
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				...ALL_FIELDS,
 				application: {
 					index: Y,
@@ -259,7 +259,7 @@ export class ActorDao
 					GUID,
 				}
 			},
-			from: [
+			FROM: [
 				a = Q.Actor,
 				ap = a.application.leftJoin(),
 				ap.domain.leftJoin(),
@@ -267,7 +267,7 @@ export class ActorDao
 				t.owner.leftJoin(),
 				a.userAccount.leftJoin()
 			],
-			where: getWhereClause(a)
+			WHERE: getWhereClause(a)
 		})
 	}
 }

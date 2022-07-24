@@ -1,7 +1,7 @@
 import {
 	ALL_FIELDS,
-	and,
-	max,
+	AND,
+	MAX,
 	tree,
 	Y
 } from '@airport/tarmaq-query'
@@ -93,8 +93,8 @@ export class ApplicationDao
 		let s: QApplication
 
 		return this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				s = Q.Application
 			]
 		})
@@ -108,7 +108,7 @@ export class ApplicationDao
 		let cv: QApplicationCurrentVersion
 
 		return this.db.find.tree({
-			select: {
+			SELECT: {
 				...ALL_FIELDS,
 				// currentVersion: {
 				// 	applicationVersion: {
@@ -121,7 +121,7 @@ export class ApplicationDao
 					jsonApplication: Y
 				}
 			},
-			from: [
+			FROM: [
 				a = Q.Application,
 				// cv = a.currentVersion.innerJoin(),
 				// av = cv.applicationVersion.innerJoin()
@@ -139,7 +139,7 @@ export class ApplicationDao
 		let s: QApplication,
 			sv: QApplicationVersion
 		const applications = await this.db.find.tree({
-			select: {
+			SELECT: {
 				index: Y,
 				domain: {
 					_localId: Y,
@@ -154,11 +154,11 @@ export class ApplicationDao
 					patchVersion: Y
 				}
 			},
-			from: [
+			FROM: [
 				s = Q.Application,
 				sv = s.versions.innerJoin()
 			],
-			where: sv._localId.in(applicationVersionIds)
+			WHERE: sv._localId.IN(applicationVersionIds)
 		})
 
 		for (const application of applications) {
@@ -174,8 +174,8 @@ export class ApplicationDao
 
 		const s = Q.Application
 		return await this.airportDatabase.findOne.field({
-			select: max(s.index),
-			from: [
+			SELECT: MAX(s.index),
+			FROM: [
 				s
 			]
 		})
@@ -196,29 +196,29 @@ export class ApplicationDao
 		let sMiV
 
 		const applicationLookupRecords = await this.airportDatabase.find.tree({
-			from: [
+			FROM: [
 				sMiV = tree({
-					from: [
+					FROM: [
 						sMaV = tree({
-							from: [
+							FROM: [
 								s = Q.Application,
 								sv = s.versions.innerJoin(),
 								d = s.domain.innerJoin()
 							],
-							select: {
+							SELECT: {
 								index: s.index,
 								domainId: d._localId,
 								domainName: d.name,
 								name: s.name,
-								majorVersion: max(sv.majorVersion),
+								majorVersion: MAX(sv.majorVersion),
 								minorVersion: sv.minorVersion,
 								patchVersion: sv.patchVersion,
 							},
-							where: and(
-								d.name.in(applicationDomain_Names),
-								s.name.in(applicationNames)
+							WHERE: AND(
+								d.name.IN(applicationDomain_Names),
+								s.name.IN(applicationNames)
 							),
-							groupBy: [
+							GROUP_BY: [
 								s.index,
 								d._localId,
 								d.name,
@@ -227,16 +227,16 @@ export class ApplicationDao
 								sv.patchVersion,
 							]
 						})],
-					select: {
+					SELECT: {
 						index: sMaV.index,
 						domainId: sMaV.domainId,
 						domainName: sMaV.domainName,
 						name: sMaV.name,
 						majorVersion: sMaV.majorVersion,
-						minorVersion: max(sMaV.minorVersion),
+						minorVersion: MAX(sMaV.minorVersion),
 						patchVersion: sMaV.patchVersion,
 					},
-					groupBy: [
+					GROUP_BY: [
 						sMaV.index,
 						sMaV.domainId,
 						sMaV.domainName,
@@ -245,7 +245,7 @@ export class ApplicationDao
 						sMaV.patchVersion
 					]
 				})],
-			select: {
+			SELECT: {
 				index: sMiV.index,
 				domain: {
 					_localId: sMiV.domainId,
@@ -254,9 +254,9 @@ export class ApplicationDao
 				name: sMiV.name,
 				majorVersion: sMiV.majorVersion,
 				minorVersion: sMiV.minorVersion,
-				patchVersion: max(sMiV.patchVersion),
+				patchVersion: MAX(sMiV.patchVersion),
 			},
-			groupBy: [
+			GROUP_BY: [
 				sMiV.index,
 				sMiV.domainId,
 				sMiV.domainName,
@@ -282,11 +282,11 @@ export class ApplicationDao
 	): Promise<void> {
 		let s: QApplication
 		await this.db.updateWhere({
-			update: s = Q.Application,
-			set: {
+			UPDATE: s = Q.Application,
+			SET: {
 				status
 			},
-			where: s.index.in(indexes)
+			WHERE: s.index.IN(indexes)
 		})
 	}
 
@@ -298,11 +298,11 @@ export class ApplicationDao
 		let s: QApplication
 
 		const records = await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				s = Q.Application
 			],
-			where: s.fullName.in(fullApplication_Names)
+			WHERE: s.fullName.IN(fullApplication_Names)
 		})
 
 		for (const record of records) {
@@ -320,7 +320,7 @@ export class ApplicationDao
 		let d: QDomain
 
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				index: Y,
 				domain: {
 					_localId: Y,
@@ -329,13 +329,13 @@ export class ApplicationDao
 				fullName: Y,
 				name: Y
 			},
-			from: [
+			FROM: [
 				s = Q.Application,
 				d = s.domain.innerJoin()
 			],
-			where: and(
-				d.name.in(domainNames),
-				s.name.in(applicationNames)
+			WHERE: AND(
+				d.name.IN(domainNames),
+				s.name.IN(applicationNames)
 			)
 		})
 	}
@@ -346,15 +346,15 @@ export class ApplicationDao
 		let a: QApplication;
 		let d: QDomain;
 		return await this.db.findOne.tree({
-			select: {
+			SELECT: {
 				...ALL_FIELDS,
 				domain: {}
 			},
-			from: [
+			FROM: [
 				a = Q.Application,
 				d = a.domain.innerJoin()
 			],
-			where: a.index.equals(index)
+			WHERE: a.index.equals(index)
 		})
 	}
 
@@ -363,9 +363,9 @@ export class ApplicationDao
 		context: IContext
 	): Promise<void> {
 		let a: QApplication;
-		const values = []
+		const VALUES = []
 		for (const application of applications) {
-			values.push([
+			VALUES.push([
 				application.index, application.domain._localId, application.scope,
 				application.fullName, application.name,
 				// application.packageName,
@@ -373,7 +373,7 @@ export class ApplicationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: a = Q.Application,
+			INSERT_INTO: a = Q.Application,
 			columns: [
 				a.index,
 				a.domain._localId,
@@ -384,7 +384,7 @@ export class ApplicationDao
 				a.status,
 				a.signature
 			],
-			values
+			VALUES
 		}, context)
 	}
 }

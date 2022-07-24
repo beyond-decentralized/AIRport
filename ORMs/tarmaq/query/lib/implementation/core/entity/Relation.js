@@ -1,6 +1,6 @@
 import { extend } from '@airport/direction-indicator';
 import { JoinType, } from '@airport/ground-control';
-import { and, or } from '../operation/LogicalOperation';
+import { AND, OR } from '../operation/LogicalOperation';
 /**
  * Created by Papa on 4/26/2016.
  */
@@ -45,10 +45,10 @@ export const qAirEntityRelationMethods = {
     // 	return IOC.getSync(QUERY_UTILS).equals(entity, this)
     // }
     isNull() {
-        return or(this.actor._localId.isNull(), this.repository._localId.isNull(), this._actorRecordId.isNull());
+        return OR(this.actor._localId.isNull(), this.repository._localId.isNull(), this._actorRecordId.isNull());
     },
     isNotNull() {
-        return and(this.actor._localId.isNotNull(), this.repository._localId.isNotNull(), this._actorRecordId.isNotNull());
+        return AND(this.actor._localId.isNotNull(), this.repository._localId.isNotNull(), this._actorRecordId.isNotNull());
     }
 };
 extend(QRelation, QAirEntityRelation, qAirEntityRelationMethods);

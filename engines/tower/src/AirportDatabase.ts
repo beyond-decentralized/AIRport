@@ -203,7 +203,7 @@ export class AirportDatabase
 	}
 
 	/**
-	 * Creates an entity with a where clause - internal API.  Use the
+	 * Creates an entity with a WHERE clause - internal API.  Use the
 	 *  API provided by the IEntityDatabaseFacade.
 	 *
 	 * @return Number of records deleted
@@ -232,7 +232,7 @@ export class AirportDatabase
 	}
 
 	/**
-	 * Updates an entity with a where clause, using a column based set clause
+	 * Updates an entity with a WHERE clause, using a column based set clause
 	 * - internal API.  Use the API provided by the IEntityDatabaseFacade.
 	 *
 	 * @return Number of records updated
@@ -248,7 +248,7 @@ export class AirportDatabase
 	}
 
 	/**
-	 * Updates an entity with a where clause, using a property based set clause
+	 * Updates an entity with a WHERE clause, using a property based set clause
 	 * - internal API.  Use the API provided by the IEntityDatabaseFacade.
 	 *
 	 * @return Number of records updated

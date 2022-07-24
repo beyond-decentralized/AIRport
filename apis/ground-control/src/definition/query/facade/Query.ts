@@ -8,7 +8,7 @@ export enum JsonStatementType {
 }
 
 /**
- * All JSON Statements extend this object (have an optional where clause)
+ * All JSON Statements extend this object (have an optional WHERE clause)
  */
 export interface JsonStatement {
 	/**

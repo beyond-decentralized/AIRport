@@ -52,21 +52,21 @@ export interface ILogicalOperation
 	/**
 	 * A AND B
 	 */
-	and(
+	AND(
 		ops: JSONBaseOperation[]
 	): JSONLogicalOperation;
 
 	/**
 	 * A OR B
 	 */
-	or(
+	OR(
 		ops: JSONBaseOperation[]
 	): JSONLogicalOperation;
 
 	/**
 	 * NOT A
 	 */
-	not(
+	NOT(
 		op: JSONBaseOperation
 	): JSONLogicalOperation;
 

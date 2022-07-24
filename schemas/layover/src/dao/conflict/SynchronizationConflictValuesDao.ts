@@ -27,20 +27,20 @@ export class SynchronizationConflictValuesDao
 		context: IContext
 	): Promise<void> {
 		let scv: QSynchronizationConflictValues;
-		const values = []
+		const VALUES = []
 		for (const synchronizationConflictValue of synchronizationConflictValues) {
-			values.push([
+			VALUES.push([
 				synchronizationConflictValue.synchronizationConflict._localId,
 				synchronizationConflictValue.columnIndex
 			])
 		}
 		await this.db.insertValues({
-			insertInto: scv = Q.SynchronizationConflictValues,
+			INSERT_INTO: scv = Q.SynchronizationConflictValues,
 			columns: [
 				scv.synchronizationConflict._localId,
 				scv.columnIndex
 			],
-			values
+			VALUES
 		}, context)
 	}
 

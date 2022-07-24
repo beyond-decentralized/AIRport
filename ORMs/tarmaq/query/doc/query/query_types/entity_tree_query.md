@@ -6,7 +6,7 @@
     - [Reason](#reason)
 
 <!-- /TOC -->
-Entity Tree Query is an entity based query API where the select clause
+Entity Tree Query is an entity based query API where the SELECT clause
 is specified as a JSON object tree.
 
 Entity Tree Query returns a flat tree of objects.  Hence, the

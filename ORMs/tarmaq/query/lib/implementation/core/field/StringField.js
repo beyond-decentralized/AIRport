@@ -8,11 +8,11 @@ export class QStringField extends QOperableField {
     getInstance(qEntity = this.q) {
         return this.copyFunctions(new QStringField(this.dbColumn, this.dbProperty, qEntity, this.objectType));
     }
-    like(value) {
+    LIKE(value) {
         if (value instanceof Function) {
             value = value();
         }
-        return this.operation.like(this, value);
+        return this.operation.LIKE(this, value);
     }
 }
 export class QStringFunction extends QStringField {

@@ -45,7 +45,7 @@ export interface IEntityQueryDatabaseFacade<IEntity,
     /**
      * Creates a new instance of the Query Entity for this entity type.
      */
-    from: IQ;
+    FROM: IQ;
 
     insertColumnValues<IQE extends IQEntity>(
         rawInsertValues: RawInsertColumnValues<IQE> | {

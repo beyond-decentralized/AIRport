@@ -72,7 +72,7 @@ export class EntityDatabaseFacade<Entity,
     // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
   }
 
-  get from(): IQ {
+  get FROM(): IQ {
     return this.Q[this.dbEntity.name];
   }
 

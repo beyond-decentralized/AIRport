@@ -10,18 +10,18 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
     async findAllForApplicationVersions(applicationVersionIds) {
         let sr;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 sr = Q.ApplicationReference
             ],
-            where: sr.ownApplicationVersion._localId.in(applicationVersionIds)
+            WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
         });
     }
     async insert(applicationReferences, context) {
         let sr;
-        const values = [];
+        const VALUES = [];
         for (const applicationReference of applicationReferences) {
-            values.push([
+            VALUES.push([
                 applicationReference.ownApplicationVersion._localId,
                 applicationReference.referencedApplicationVersion._localId,
                 applicationReference.index,
@@ -31,7 +31,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: sr = Q.ApplicationReference,
+            INSERT_INTO: sr = Q.ApplicationReference,
             columns: [
                 sr.ownApplicationVersion._localId,
                 sr.referencedApplicationVersion._localId,
@@ -40,7 +40,7 @@ let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicat
                 sr.removedInVersion._localId,
                 sr.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

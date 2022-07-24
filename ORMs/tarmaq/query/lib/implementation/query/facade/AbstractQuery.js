@@ -15,17 +15,17 @@ export class AbstractQuery {
         return this.entityAliases.getParams().getParameters();
     }
     getNonEntityQuery(rawQuery, jsonQuery, createSelectCallback, queryUtils, fieldUtils, relationManager) {
-        let from = this.fromClauseToJSON(rawQuery.from, queryUtils, fieldUtils, relationManager);
+        let from = this.fromClauseToJSON(rawQuery.FROM, queryUtils, fieldUtils, relationManager);
         jsonQuery.F = from;
         if (createSelectCallback) {
             createSelectCallback(jsonQuery);
         }
-        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.where, this.columnAliases);
-        jsonQuery.GB = this.groupByClauseToJSON(rawQuery.groupBy);
-        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.having, this.columnAliases);
-        jsonQuery.OB = this.orderByClauseToJSON(rawQuery.orderBy);
-        jsonQuery.L = rawQuery.limit;
-        jsonQuery.O = rawQuery.offset;
+        jsonQuery.W = queryUtils.whereClauseToJSON(rawQuery.WHERE, this.columnAliases);
+        jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY);
+        jsonQuery.H = queryUtils.whereClauseToJSON(rawQuery.HAVING, this.columnAliases);
+        jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY);
+        jsonQuery.L = rawQuery.LIMIT;
+        jsonQuery.O = rawQuery.OFFSET;
         return jsonQuery;
     }
     fromClauseToJSON(fromClause, queryUtils, fieldUtils, relationManager) {
@@ -56,7 +56,7 @@ export class AbstractQuery {
         }
         return groupBy.map((field) => {
             if (!this.columnAliases.hasAliasFor(field)) {
-                throw new Error(`Field used in group by clause is not present in select clause`);
+                throw new Error(`Field used in group by clause is not present in SELECT clause`);
             }
             return {
                 fa: this.columnAliases.getExistingAlias(field)

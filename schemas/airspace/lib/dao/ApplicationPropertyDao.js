@@ -10,18 +10,18 @@ let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicatio
     async findAllForEntities(entityIds) {
         let p;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 p = Q.ApplicationProperty
             ],
-            where: p.entity._localId.in(entityIds)
+            WHERE: p.entity._localId.IN(entityIds)
         });
     }
     async insert(applicationProperties, context) {
         let sp;
-        const values = [];
+        const VALUES = [];
         for (const applicationProperty of applicationProperties) {
-            values.push([
+            VALUES.push([
                 applicationProperty._localId, applicationProperty.index,
                 applicationProperty.name, applicationProperty.isId,
                 applicationProperty.entity._localId,
@@ -31,7 +31,7 @@ let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicatio
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: sp = Q.ApplicationProperty,
+            INSERT_INTO: sp = Q.ApplicationProperty,
             columns: [
                 sp._localId,
                 sp.index,
@@ -42,7 +42,7 @@ let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicatio
                 sp.removedInVersion._localId,
                 sp.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

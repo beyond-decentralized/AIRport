@@ -11,18 +11,18 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
     async findAllForEntities(entityIds) {
         let c;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 c = Q.ApplicationColumn
             ],
-            where: c.entity._localId.in(entityIds)
+            WHERE: c.entity._localId.IN(entityIds)
         });
     }
     async insert(applicationColumns, context) {
         let sc;
-        const values = [];
+        const VALUES = [];
         for (const applicationColumn of applicationColumns) {
-            values.push([
+            VALUES.push([
                 applicationColumn._localId, applicationColumn.index,
                 undefinedToNull(applicationColumn.idIndex),
                 applicationColumn.isGenerated,
@@ -39,7 +39,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: sc = Q.ApplicationColumn,
+            INSERT_INTO: sc = Q.ApplicationColumn,
             columns: [
                 sc._localId,
                 sc.index,
@@ -56,7 +56,7 @@ let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationCol
                 sc.removedInVersion._localId,
                 sc.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

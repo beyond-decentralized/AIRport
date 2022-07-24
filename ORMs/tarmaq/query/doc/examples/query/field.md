@@ -5,8 +5,8 @@
     - [Stand-Alone Examples](#stand-alone-examples)
         - [Count all Tasks](#count-all-tasks)
     - [Sub-Query Examples](#sub-query-examples)
-        - [sub-query in where clause](#sub-query-in-where-clause)
-        - [sub-query in set clause](#sub-query-in-set-clause)
+        - [sub-query in WHERE clause](#sub-query-in-where-clause)
+        - [sub-query in SET clause](#sub-query-in-set-clause)
 
 <!-- /TOC -->
 ## [Stand-Alone Examples]
@@ -26,10 +26,10 @@ class TaskDao extends BaseTaskDao {
 	async getTaskCount() {
 		let t: QTask
 		return await this.airDb.findOne.field({
-  			from: [
+  			FROM: [
 				t = Q.Task
 				],
-  			select: count(t.taskId)
+  			SELECT: count(t.taskId)
 		});
 	}
 }
@@ -55,19 +55,19 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask,
 			t2: QTask
 		return await this.db.updateWhere({
-  			update: t = Q.Task,
-			set: {
+  			UPDATE: t = Q.Task,
+			SET: {
 				name: newName
 			},
-			where: and(
-				ucase(t.name).like(`%${taskNameLike}%`),
+			WHERE: AND(
+				ucase(t.name).LIKE(`%${taskNameLike}%`),
 				// TODO: come up with a realistic example
    				t.taskId.equals(field({
-      				from: [
+      				FROM: [
 						t2 = Q.Task
 					],
-      				select: t2.taskId,
-      				where: t2.taskId.equals(t.taskId)
+      				SELECT: t2.taskId,
+      				WHERE: t2.taskId.equals(t.taskId)
     			}))
   			)
 		});
@@ -91,17 +91,17 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask
 			t2: QTask
 		return await this.db.updateWhere({
-			update: t = Q.Task,
-			set: {
+			UPDATE: t = Q.Task,
+			SET: {
 				name: field({
-      				from: [
+      				FROM: [
 						t2 = Q.Task
 					],
-      				select: t2.name,
-      				where: t2.taskId.equals(anotherTaskId)
+      				SELECT: t2.name,
+      				WHERE: t2.taskId.equals(anotherTaskId)
     			})
 			},
-			where: task.id.equals(taskToUpdateId)
+			WHERE: task.id.equals(taskToUpdateId)
 		});
 	}
 }

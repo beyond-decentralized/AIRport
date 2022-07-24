@@ -7,7 +7,7 @@ export class UntypedOperation extends ValueOperation {
     constructor() {
         super(OperationCategory.UNTYPED);
     }
-    like(lValue, rValue
+    LIKE(lValue, rValue
     // TODO: implement ReqExp
     //| RegExp
     ) {

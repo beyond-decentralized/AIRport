@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected, IOC } from '@airport/direction-indicator';
 import { OperationCategory, SqlOperator } from '@airport/ground-control';
-import { and, ENTITY_UTILS, QOperableField, wrapPrimitive } from '@airport/tarmaq-query';
+import { AND, ENTITY_UTILS, QOperableField, wrapPrimitive } from '@airport/tarmaq-query';
 let QueryUtils = class QueryUtils {
     equals(entityOrId, toObject
     // | IQRelation<IQ>
@@ -45,14 +45,14 @@ let QueryUtils = class QueryUtils {
             entityId = theEntityOrId;
         }
         const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        return and(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
+        return AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
         // } else {
         // Relations can only be joined by a local Id, implement if necessary
         // only, as this might confuse developers and won't work properly in
         // distributed environments (for @CrossRepository() queries, if
         // the referenced repository is not yet loaded) without additional
         // logic to join against the composing GUIDs for the object (anyway).
-        // return and(
+        // return AND(
         // 	toObject.repository._localId.equals(entityId.repository._localId),
         // 	toObject.actor._localId.equals(entityId.actor._localId),
         // 	toObject._actorRecordId.equals(entityId._actorRecordId)

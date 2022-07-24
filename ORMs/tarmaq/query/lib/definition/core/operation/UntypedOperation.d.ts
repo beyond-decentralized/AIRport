@@ -9,7 +9,7 @@ import { IValueOperation, JSONRawValueOperation } from "./Operation";
  * Interface for all operation implementations with a boolean value.
  */
 export interface IUntypedOperation extends IValueOperation<any, JSONRawUntypedOperation, IQUntypedField> {
-    like(lValue: IQUntypedField, rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>): JSONRawUntypedOperation;
+    LIKE(lValue: IQUntypedField, rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>): JSONRawUntypedOperation;
 }
 /**
  * JSON representation of a boolean operation as it exists immediately after

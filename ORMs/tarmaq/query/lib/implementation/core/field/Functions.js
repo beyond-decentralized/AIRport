@@ -29,7 +29,7 @@ function getSqlFunctionCall(sqlFunction, parameters) {
         p: parameters
     };
 }
-export const abs = function (numeric) {
+export const ABS = function (numeric) {
     if (numeric instanceof QNumberField) {
         return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG));
     }
@@ -37,7 +37,7 @@ export const abs = function (numeric) {
         return new QNumberFunction(numeric).applySqlFunction(getSqlFunctionCall(SqlFunction.ABS));
     }
 };
-export const avg = function (numeric) {
+export const AVG = function (numeric) {
     if (numeric instanceof QNumberField) {
         return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.AVG));
     }
@@ -57,7 +57,7 @@ export function getFunctionObject(value) {
     if (value instanceof Date) {
         return new QDateFunction(value);
     }
-    let selectClause = value.select;
+    let selectClause = value.SELECT;
     if (selectClause instanceof QDistinctFunction) {
         selectClause = selectClause.getSelectClause();
     }
@@ -75,7 +75,7 @@ export function getFunctionObject(value) {
     }
     throw new Error(`Function rValue must be a primitive, Date, Field or Field query`);
 }
-export const count = function (value) {
+export const COUNT = function (value) {
     if (value instanceof QOperableField) {
         return value.applySqlFunction(getSqlFunctionCall(SqlFunction.COUNT));
     }
@@ -84,7 +84,7 @@ export const count = function (value) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.COUNT));
     }
 };
-export const max = function (value) {
+export const MAX = function (value) {
     if (value instanceof QOperableField) {
         return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MAX));
     }
@@ -93,7 +93,7 @@ export const max = function (value) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MAX));
     }
 };
-export const min = function (value) {
+export const MIN = function (value) {
     if (value instanceof QOperableField) {
         return value.applySqlFunction(getSqlFunctionCall(SqlFunction.MIN));
     }
@@ -102,7 +102,7 @@ export const min = function (value) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MIN));
     }
 };
-export const sum = function (numeric) {
+export const SUM = function (numeric) {
     if (numeric instanceof QNumberField) {
         return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.SUM));
     }
@@ -111,7 +111,7 @@ export const sum = function (numeric) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.SUM));
     }
 };
-export const plus = function (numeric1, numeric2) {
+export const PLUS = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
     }
@@ -120,7 +120,7 @@ export const plus = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
     }
 };
-export function coalesce(...values) {
+export function COALESCE(...values) {
     if (!values || !values.length) {
         throw new Error(`No arguments provided to the coalesce function`);
     }
@@ -171,7 +171,7 @@ export function coalesce(...values) {
         }
     }
 }
-export const ucase = function (stringValue) {
+export const UCASE = function (stringValue) {
     if (stringValue instanceof QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE));
     }
@@ -180,7 +180,7 @@ export const ucase = function (stringValue) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.UCASE));
     }
 };
-export const lcase = function (stringValue) {
+export const LCASE = function (stringValue) {
     if (stringValue instanceof QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE));
     }
@@ -189,7 +189,7 @@ export const lcase = function (stringValue) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.LCASE));
     }
 };
-export const mid = function (stringValue, start, length) {
+export const MID = function (stringValue, start, length) {
     if (stringValue instanceof QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]));
     }
@@ -198,7 +198,7 @@ export const mid = function (stringValue, start, length) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MID, [start, length]));
     }
 };
-export const len = function (stringValue) {
+export const LEN = function (stringValue) {
     if (stringValue instanceof QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.LEN));
     }
@@ -207,7 +207,7 @@ export const len = function (stringValue) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.LEN));
     }
 };
-export const round = function (numeric, digits = 0) {
+export const ROUND = function (numeric, digits = 0) {
     if (numeric instanceof QNumberField) {
         return numeric.applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]));
     }
@@ -216,11 +216,11 @@ export const round = function (numeric, digits = 0) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.ROUND, [digits]));
     }
 };
-export const now = function () {
+export const NOW = function () {
     return new QDateFunction(null)
         .applySqlFunction(getSqlFunctionCall(SqlFunction.NOW));
 };
-export const format = function (format, ...formatParameters) {
+export const FORMAT = function (format, ...formatParameters) {
     if (format instanceof QStringField) {
         return format.applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters));
     }
@@ -229,7 +229,7 @@ export const format = function (format, ...formatParameters) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.FORMAT, formatParameters));
     }
 };
-export const replace = function (stringValue, toReplace, replaceWith) {
+export const REPLACE = function (stringValue, toReplace, replaceWith) {
     if (stringValue instanceof QStringField) {
         return stringValue.applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
@@ -238,7 +238,7 @@ export const replace = function (stringValue, toReplace, replaceWith) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.REPLACE, [toReplace, replaceWith]));
     }
 };
-export const trim = function (stringField) {
+export const TRIM = function (stringField) {
     if (stringField instanceof QStringField) {
         return stringField.applySqlFunction(getSqlFunctionCall(SqlFunction.TRIM));
     }
@@ -249,7 +249,7 @@ export const trim = function (stringField) {
 };
 export class StandAloneFunction {
 }
-export const distinct = function (selectClause) {
+export const DISTINCT = function (selectClause) {
     let distinctFunction = new QDistinctFunction(selectClause);
     distinctFunction.applySqlFunction(getSqlFunctionCall(SqlFunction.DISTINCT));
     return distinctFunction;
@@ -289,8 +289,8 @@ export class QDistinctFunction extends StandAloneFunction {
         };
     }
 }
-export const exists = function (rawQuery) {
-    let selectClause = rawQuery.select;
+export const EXISTS = function (rawQuery) {
+    let selectClause = rawQuery.SELECT;
     if (!selectClause) {
         throw new Error(`Sub-Query must have SELECT clause defined to be used in EXITS function`);
     }
@@ -337,7 +337,7 @@ export class QExistsFunction extends StandAloneFunction {
     }
 }
 // Algebra Operators
-export const divide = function (numeric1, numeric2) {
+export const DIVIDE = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]));
     }
@@ -346,7 +346,7 @@ export const divide = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.DIVIDE, [numeric2]));
     }
 };
-export const subtract = function (numeric1, numeric2) {
+export const SUBTRACT = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]));
     }
@@ -355,7 +355,7 @@ export const subtract = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MINUS, [numeric2]));
     }
 };
-export const modulus = function (numeric1, numeric2) {
+export const MODULUS = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]));
     }
@@ -364,7 +364,7 @@ export const modulus = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MODULUS, [numeric2]));
     }
 };
-export const multiply = function (numeric1, numeric2) {
+export const MULTIPLY = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]));
     }
@@ -373,7 +373,7 @@ export const multiply = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.MULTIPLY, [numeric2]));
     }
 };
-export const add = function (numeric1, numeric2) {
+export const ADD = function (numeric1, numeric2) {
     if (numeric1 instanceof QNumberField) {
         return numeric1.applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
     }
@@ -382,7 +382,7 @@ export const add = function (numeric1, numeric2) {
             .applySqlFunction(getSqlFunctionCall(SqlFunction.PLUS, [numeric2]));
     }
 };
-export const concat = function (//
+export const CONCAT = function (//
 ...fragments) {
     if (fragments.length > 2) {
         throw new Error(`Less than two operands passed to 'concat' function.`);
@@ -402,7 +402,7 @@ export const concat = function (//
  * UNION
  * B
  */
-export const union = function (...rawQueries) {
+export const UNION = function (...rawQueries) {
     throw new Error('not implemented');
 };
 /**
@@ -410,7 +410,7 @@ export const union = function (...rawQueries) {
  * UNION ALL
  * B
  */
-export const unionAll = function (...rawQueries) {
+export const UNION_ALL = function (...rawQueries) {
     throw new Error('not implemented');
 };
 /**
@@ -418,7 +418,7 @@ export const unionAll = function (...rawQueries) {
  * INTERSECT
  * B
  */
-export const intersect = function (...rawQueries) {
+export const INTERSECT = function (...rawQueries) {
     throw new Error('not implemented');
 };
 /**
@@ -426,7 +426,7 @@ export const intersect = function (...rawQueries) {
  * MINUS
  * B
  */
-export const except = function (...rawQueries) {
+export const EXCEPT = function (...rawQueries) {
     throw new Error('not implemented');
 };
 /**
@@ -434,5 +434,5 @@ export const except = function (...rawQueries) {
  * MINUS
  * B
  */
-export const minus = except;
+export const MINUS = EXCEPT;
 //# sourceMappingURL=Functions.js.map

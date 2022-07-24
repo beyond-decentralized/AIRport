@@ -7,7 +7,7 @@ import { IQEntityInternal } from '../../../definition/core/entity/Entity'
 import { IRelationManager } from '../../../definition/core/entity/IRelationManager'
 import { JSONLogicalOperation } from '../../../definition/core/operation/LogicalOperation'
 import { IApplicationUtils } from '../../../definition/utils/IApplicationUtils'
-import { and, or } from '../operation/LogicalOperation'
+import { AND, OR } from '../operation/LogicalOperation'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -86,14 +86,14 @@ export const qAirEntityRelationMethods = {
 	// }
 
 	isNull(): JSONLogicalOperation {
-		return or(
+		return OR(
 			this.actor._localId.isNull(),
 			this.repository._localId.isNull(),
 			this._actorRecordId.isNull(),
 		)
 	},
 	isNotNull(): JSONLogicalOperation {
-		return and(
+		return AND(
 			this.actor._localId.isNotNull(),
 			this.repository._localId.isNotNull(),
 			this._actorRecordId.isNotNull(),

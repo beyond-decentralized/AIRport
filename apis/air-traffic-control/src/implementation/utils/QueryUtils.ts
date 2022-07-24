@@ -15,7 +15,7 @@ import {
 	SqlOperator
 } from '@airport/ground-control'
 import {
-	and,
+	AND,
 	ENTITY_UTILS,
 	IEntityUtils,
 	IFieldColumnAliases,
@@ -91,7 +91,7 @@ export class QueryUtils
 			qRepository
 		} = this.entityUtils.ensureRepositoryAndActorJoin(toObject as any as IQEntityInternal)
 
-		return and(
+		return AND(
 			qRepository.GUID.equals(entityId.repository.GUID),
 			qActor.GUID.equals(entityId.actor.GUID),
 			(toObject as any)._actorRecordId.equals(entityId._actorRecordId)
@@ -102,7 +102,7 @@ export class QueryUtils
 		// distributed environments (for @CrossRepository() queries, if
 		// the referenced repository is not yet loaded) without additional
 		// logic to join against the composing GUIDs for the object (anyway).
-		// return and(
+		// return AND(
 		// 	toObject.repository._localId.equals(entityId.repository._localId),
 		// 	toObject.actor._localId.equals(entityId.actor._localId),
 		// 	toObject._actorRecordId.equals(entityId._actorRecordId)

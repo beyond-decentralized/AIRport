@@ -53,7 +53,7 @@ export class Duo {
         else {
             this.dbEntity = dbEntityId;
         }
-        this.select = new FieldsSelect(this.dbEntity);
+        this.SELECT = new FieldsSelect(this.dbEntity);
     }
     getLocalIdStub(_localIds) {
         throw new Error(`Not Implemented.`);

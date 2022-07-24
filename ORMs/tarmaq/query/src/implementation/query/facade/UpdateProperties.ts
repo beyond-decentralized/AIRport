@@ -40,13 +40,13 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		relationManager: IRelationManager
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
-			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
+			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getRelationJson(
 					this.columnAliases,
 					queryUtils, fieldUtils, relationManager),
-			S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils, relationManager),
+			S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
-				this.rawUpdate.where, this.columnAliases)
+				this.rawUpdate.WHERE, this.columnAliases)
 		}
 	}
 
@@ -57,7 +57,7 @@ export class UpdateProperties<IEUP extends IEntityUpdateProperties, IQE extends 
 		relationManager: IRelationManager
 	): JsonEntityUpdateColumns {
 		const jsonSetClause: { [columnName: string]: JSONBaseOperation } = {}
-		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.update).__driver__.dbEntity
+		const dbEntity = (<IQEntityInternal><any>this.rawUpdate.UPDATE).__driver__.dbEntity
 		const dbPropertyMap = dbEntity.propertyMap
 
 		this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [],
@@ -212,7 +212,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Cannot update @OneToMany properties:
 					Property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-								this.rawUpdate.update).__driver__.dbEntity.name}
+								this.rawUpdate.UPDATE).__driver__.dbEntity.name}
 					is a @OneToMany relation and cannot be updated since it is
 					assumed to be based on @Id columns (which cannot be updated).'
 				`)
@@ -223,7 +223,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Undefined relation type: 
 					Property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-								this.rawUpdate.update).__driver__.dbEntity.name}'
+								this.rawUpdate.UPDATE).__driver__.dbEntity.name}'
 					is defined with an unknown type of a relation.  Expecting either
 					@ManyToOne(...)
 					or
@@ -238,7 +238,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Unexpected value ${JSON.stringify(value)} 
 					for property: '${propertyName}' of entity: '${(<IQEntityInternal><any>
-						this.rawUpdate.update).__driver__.dbEntity.name}'
+						this.rawUpdate.UPDATE).__driver__.dbEntity.name}'
 				Expecting a nested property definition.
 				`)
 			}

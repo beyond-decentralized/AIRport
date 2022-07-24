@@ -6,7 +6,7 @@ import { INonEntityOrderByParser } from './AbstractEntityOrderByParser';
  */
 /**
  * Will hierarchically order the results of the query using breadth-first processing.
- * Within a given sub-select facade will take into account the sort order specified in the Order
+ * Within a given sub-SELECT facade will take into account the sort order specified in the Order
  * By clause.
  */
 export declare class MappedOrderByParser implements INonEntityOrderByParser {

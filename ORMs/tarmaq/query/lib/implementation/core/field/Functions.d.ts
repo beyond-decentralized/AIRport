@@ -9,31 +9,31 @@ import { RawFieldQuery } from '../../../definition/query/facade/FieldQuery';
 import { ITreeEntity, RawTreeQuery } from '../../../definition/query/facade/TreeQuery';
 import { IAppliable } from './Appliable';
 import { QOperableField } from './OperableField';
-export declare const abs: absFunction;
-export declare const avg: avgFunction;
+export declare const ABS: absFunction;
+export declare const AVG: avgFunction;
 export declare function getFunctionObject<T extends boolean | Date | number | string>(value: T | RawFieldQuery<any>): QOperableField<T, any, any, any>;
-export declare const count: countFunction;
-export declare const max: maxFunction;
-export declare const min: minFunction;
-export declare const sum: sumFunction;
-export declare const plus: plusFunction;
-export declare function coalesce(...values: (IQBooleanField | boolean | RawFieldQuery<IQBooleanField>)[]): IQBooleanField;
-export declare function coalesce(...values: (IQDateField | Date | RawFieldQuery<IQDateField>)[]): IQDateField;
-export declare function coalesce(...values: (IQNumberField | number | RawFieldQuery<IQNumberField>)[]): IQNumberField;
-export declare function coalesce(...values: (IQStringField | string | RawFieldQuery<IQStringField>)[]): IQStringField;
-export declare function coalesce(...values: (IQUntypedField | any | RawFieldQuery<IQUntypedField>)[]): IQUntypedField;
-export declare const ucase: ucaseFunction;
-export declare const lcase: lcaseFunction;
-export declare const mid: midFunction;
-export declare const len: lenFunction;
-export declare const round: roundFunction;
-export declare const now: nowFunction;
-export declare const format: formatFunction;
-export declare const replace: replaceFunction;
-export declare const trim: trimFunction;
+export declare const COUNT: countFunction;
+export declare const MAX: maxFunction;
+export declare const MIN: minFunction;
+export declare const SUM: sumFunction;
+export declare const PLUS: plusFunction;
+export declare function COALESCE(...values: (IQBooleanField | boolean | RawFieldQuery<IQBooleanField>)[]): IQBooleanField;
+export declare function COALESCE(...values: (IQDateField | Date | RawFieldQuery<IQDateField>)[]): IQDateField;
+export declare function COALESCE(...values: (IQNumberField | number | RawFieldQuery<IQNumberField>)[]): IQNumberField;
+export declare function COALESCE(...values: (IQStringField | string | RawFieldQuery<IQStringField>)[]): IQStringField;
+export declare function COALESCE(...values: (IQUntypedField | any | RawFieldQuery<IQUntypedField>)[]): IQUntypedField;
+export declare const UCASE: ucaseFunction;
+export declare const LCASE: lcaseFunction;
+export declare const MID: midFunction;
+export declare const LEN: lenFunction;
+export declare const ROUND: roundFunction;
+export declare const NOW: nowFunction;
+export declare const FORMAT: formatFunction;
+export declare const REPLACE: replaceFunction;
+export declare const TRIM: trimFunction;
 export declare abstract class StandAloneFunction {
 }
-export declare const distinct: distinctFunction;
+export declare const DISTINCT: distinctFunction;
 export declare class QDistinctFunction<ISelect> extends StandAloneFunction implements IQDistinctFunction<ISelect>, IAppliable<JSONClauseObject, any> {
     private selectClause;
     __appliedFunctions__: JSONSqlFunctionCall[];
@@ -43,7 +43,7 @@ export declare class QDistinctFunction<ISelect> extends StandAloneFunction imple
     getSelectClause(): any;
     toJSON(parsedSelectClause?: any): JSONClauseField;
 }
-export declare const exists: existsFunction;
+export declare const EXISTS: existsFunction;
 export declare class QExistsFunction<IME extends ITreeEntity> extends StandAloneFunction implements IQExistsFunction, IAppliable<JSONClauseObject, any>, JSONBaseOperation {
     private subQuery;
     __appliedFunctions__: JSONSqlFunctionCall[];
@@ -56,40 +56,40 @@ export declare class QExistsFunction<IME extends ITreeEntity> extends StandAlone
     getQuery(): RawTreeQuery<any>;
     toJSON(parsedQuery?: JsonTreeQuery): JSONFunctionOperation;
 }
-export declare const divide: divideFunction;
-export declare const subtract: subtractFunction;
-export declare const modulus: modulusFunction;
-export declare const multiply: multiplyFunction;
-export declare const add: addFunction;
-export declare const concat: concatenateFunction;
+export declare const DIVIDE: divideFunction;
+export declare const SUBTRACT: subtractFunction;
+export declare const MODULUS: modulusFunction;
+export declare const MULTIPLY: multiplyFunction;
+export declare const ADD: addFunction;
+export declare const CONCAT: concatenateFunction;
 /**
  * A
  * UNION
  * B
  */
-export declare const union: unionFunction;
+export declare const UNION: unionFunction;
 /**
  * A
  * UNION ALL
  * B
  */
-export declare const unionAll: unionAllFunction;
+export declare const UNION_ALL: unionAllFunction;
 /**
  * A
  * INTERSECT
  * B
  */
-export declare const intersect: intersectFunction;
+export declare const INTERSECT: intersectFunction;
 /**
  * A
  * MINUS
  * B
  */
-export declare const except: exceptFunction;
+export declare const EXCEPT: exceptFunction;
 /**
  * A
  * MINUS
  * B
  */
-export declare const minus: minusFunction;
+export declare const MINUS: minusFunction;
 //# sourceMappingURL=Functions.d.ts.map

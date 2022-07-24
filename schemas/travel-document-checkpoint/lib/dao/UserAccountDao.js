@@ -10,38 +10,38 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
     async findByUserAccountNames(usernames) {
         let u;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 u = Q.UserAccount
             ],
-            where: u.username.in(usernames)
+            WHERE: u.username.IN(usernames)
         });
     }
     async findByGUIDs(GUIDs) {
         let u;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 u = Q.UserAccount
             ],
-            where: u.GUID.in(GUIDs)
+            WHERE: u.GUID.IN(GUIDs)
         });
     }
     async insert(userAccounts, context) {
         let u;
-        const values = [];
+        const VALUES = [];
         for (const userAccount of userAccounts) {
-            values.push([
+            VALUES.push([
                 userAccount.GUID, userAccount.username
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            insertInto: u = Q.UserAccount,
+            INSERT_INTO: u = Q.UserAccount,
             columns: [
                 u.GUID,
                 u.username
             ],
-            values
+            VALUES
         }, context);
         for (let i = 0; i < userAccounts.length; i++) {
             const userAccount = userAccounts[i];

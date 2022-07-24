@@ -62,7 +62,7 @@ export abstract class AbstractQuery
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JsonNonEntityQuery {
-		let from = this.fromClauseToJSON(rawQuery.from,
+		let from = this.fromClauseToJSON(rawQuery.FROM,
 			queryUtils, fieldUtils, relationManager)
 		jsonQuery.F = from
 		if (createSelectCallback) {
@@ -70,13 +70,13 @@ export abstract class AbstractQuery
 		}
 
 		jsonQuery.W = queryUtils.whereClauseToJSON(
-			rawQuery.where, this.columnAliases)
-		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.groupBy)
+			rawQuery.WHERE, this.columnAliases)
+		jsonQuery.GB = this.groupByClauseToJSON(rawQuery.GROUP_BY)
 		jsonQuery.H = queryUtils.whereClauseToJSON(
-			rawQuery.having, this.columnAliases)
-		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.orderBy)
-		jsonQuery.L = rawQuery.limit
-		jsonQuery.O = rawQuery.offset
+			rawQuery.HAVING, this.columnAliases)
+		jsonQuery.OB = this.orderByClauseToJSON(rawQuery.ORDER_BY)
+		jsonQuery.L = rawQuery.LIMIT
+		jsonQuery.O = rawQuery.OFFSET
 
 		return jsonQuery
 	}
@@ -117,7 +117,7 @@ export abstract class AbstractQuery
 		}
 		return groupBy.map((field) => {
 			if (!this.columnAliases.hasAliasFor(field)) {
-				throw new Error(`Field used in group by clause is not present in select clause`)
+				throw new Error(`Field used in group by clause is not present in SELECT clause`)
 			}
 			return {
 				fa: this.columnAliases.getExistingAlias(field)

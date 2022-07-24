@@ -8,7 +8,7 @@ import { IQOperableField } from './OperableField';
 export interface IQStringField
 	extends IQOperableField<string, JSONRawStringOperation, IStringOperation, IQStringField> {
 
-	like(
+	LIKE(
 		like: string | IQStringField | RawFieldQuery<IQStringField> | { ( ...args: any[] ): RawFieldQuery<IQStringField> }
 	): JSONRawStringOperation;
 

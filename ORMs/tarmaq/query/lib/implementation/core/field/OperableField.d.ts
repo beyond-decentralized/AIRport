@@ -19,9 +19,9 @@ export declare abstract class QOperableField<T, JO extends JSONRawValueOperation
     greaterThanOrEquals(value: T | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     }): JO;
-    isNotNull(): JO;
-    isNull(): JO;
-    in(value: T[] | IQF | RawFieldQuery<IQF> | {
+    IS_NOT_NULL(): JO;
+    IS_NULL(): JO;
+    IN(value: T[] | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     }): JO;
     lessThan(value: T | IQF | RawFieldQuery<IQF> | {
@@ -33,7 +33,7 @@ export declare abstract class QOperableField<T, JO extends JSONRawValueOperation
     notEquals(value: T | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     }): JO;
-    notIn(values: (T | IQF | RawFieldQuery<IQF> | {
+    NOT_IN(values: (T | IQF | RawFieldQuery<IQF> | {
         (...args: any[]): RawFieldQuery<IQF>;
     })[]): JO;
 }

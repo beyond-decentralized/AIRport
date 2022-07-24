@@ -110,7 +110,7 @@ export class TreeSQLQuery
 		if (distinctClause.ot == JSONClauseObjectType.DISTINCT_FUNCTION) {
 			if (nested) {
 				throw new Error(
-					`Cannot have DISTINCT specified in a nested select clause`)
+					`Cannot have DISTINCT specified in a nested SELECT clause`)
 			}
 			const distinctSelect = this.getSELECTFragment(
 				nested, distinctClause.appliedFunctions[0].p[0], internalFragments, context)
@@ -132,7 +132,7 @@ export class TreeSQLQuery
 		if (numProperties === 0) {
 			if (nested) {
 				throw new Error(
-					`Mapped query must have fields in a nested-select clause`)
+					`Mapped query must have fields in a nested-SELECT clause`)
 			} else {
 				return '*'
 			}

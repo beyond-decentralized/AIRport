@@ -100,7 +100,7 @@ export class Duo<Entity,
   EntityUpdateColumns, EntityUpdate, ApplicationEntity_LocalId,
   EntityCascadeGraph, IQE> {
 
-  select: IFieldsSelect<EntitySelect>;
+  SELECT: IFieldsSelect<EntitySelect>;
 
   private dbEntity: DbEntity;
 
@@ -114,7 +114,7 @@ export class Duo<Entity,
     } else {
       this.dbEntity = dbEntityId;
     }
-    this.select = new FieldsSelect(this.dbEntity);
+    this.SELECT = new FieldsSelect(this.dbEntity);
   }
 
   getLocalIdStub(

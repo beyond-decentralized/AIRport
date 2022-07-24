@@ -67,7 +67,7 @@ export class EntityOrderByParser
 		let currentJoinNode = joinTree
 		joinNodeQueue.push(currentJoinNode)
 
-		// Perform breadth-first select clause traversal
+		// Perform breadth-first SELECT clause traversal
 		while (
 			(currentSelectFragment = selectFragmentQueue.shift())
 			&& (currentJoinNode = joinNodeQueue.shift())) {
@@ -105,7 +105,7 @@ export class EntityOrderByParser
 
 			const allColumnsToSortBy: string[] = []
 			const idColumnsToSortBy: string[] = []
-			// By now the select clause is guaranteed to have:
+			// By now the SELECT clause is guaranteed to have:
 			// Either all ID columns defined on the entity (if @Id columns are defined)
 			// Or ALL of the columns on the entity (if no @Id columns are defined)
 			for (const propertyName in currentSelectFragment) {
@@ -155,7 +155,7 @@ export class EntityOrderByParser
 		}
 		if (orderBy.length) {
 			throw new Error(`
-			Found entries in Order By for tables not found in select clause.  
+			Found entries in ORDER_BY for tables not found in SELECT clause.  
 			Entries must be ordered hierarchically, in breadth-first order.`)
 		}
 

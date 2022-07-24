@@ -54,7 +54,7 @@ let AbstractMutationManager = class AbstractMutationManager {
                 columnValueLookups[dbColumn.index] = columnValueLookup;
             }
         }
-        const values = entities.map(entity => {
+        const VALUES = entities.map(entity => {
             return columnValueLookups.map(lookup => {
                 let value = entity[lookup.name];
                 while (lookup.nested) {
@@ -68,9 +68,9 @@ let AbstractMutationManager = class AbstractMutationManager {
             });
         });
         const rawInsertValues = {
-            insertInto: q,
+            INSERT_INTO: q,
             columns: null,
-            values,
+            VALUES
         };
         let insertValues = new InsertValues(rawInsertValues, columnIndexes);
         let portableQuery = this.getPortableQuery(dbEntity.applicationVersion.application.index, dbEntity.index, insertValues, null);

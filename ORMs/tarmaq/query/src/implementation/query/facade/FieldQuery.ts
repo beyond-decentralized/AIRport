@@ -49,11 +49,11 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): any {
-		if (!(this.rawQuery.select instanceof QField)) {
+		if (!(this.rawQuery.SELECT instanceof QField)) {
 			throw new Error(NON_ENTITY_SELECT_ERROR_MESSAGE)
 		}
-		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.select.q.__driver__.getRootJoinEntity())
-		return (<QField<any>><any>this.rawQuery.select).toJSON(
+		this.columnAliases.entityAliases.getNextAlias(this.rawQuery.SELECT.q.__driver__.getRootJoinEntity())
+		return (<QField<any>><any>this.rawQuery.SELECT).toJSON(
 			this.columnAliases, true,
 			queryUtils, fieldUtils, relationManager)
 	}
@@ -65,12 +65,12 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 	): JsonFieldQuery {
 
 		let select = this.selectClauseToJSON(
-			this.rawQuery.select,
+			this.rawQuery.SELECT,
 			queryUtils, fieldUtils, relationManager)
 
 		let jsonFieldQuery: JsonFieldQuery = {
 			S: select,
-			forUpdate: this.rawQuery.forUpdate,
+			forUpdate: this.rawQuery.FOR_UPDATE,
 			ot: JSONClauseObjectType.FIELD_QUERY,
 			dt: this.getClauseDataType()
 		}
@@ -82,7 +82,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 
 
 	getClauseDataType(): SQLDataType {
-		let selectField = this.rawQuery.select
+		let selectField = this.rawQuery.SELECT
 		if (selectField instanceof QDistinctFunction) {
 			selectField = selectField.getSelectClause()
 		}
@@ -97,7 +97,7 @@ export class FieldQuery<IQF extends IQOrderableField<IQF>>
 		} else if (selectField instanceof QUntypedField) {
 			return SQLDataType.ANY
 		} else {
-			throw new Error(`Unsupported type of select field in Field Query`)
+			throw new Error(`Unsupported type of SELECT field in Field Query`)
 		}
 	}
 

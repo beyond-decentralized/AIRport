@@ -44,7 +44,7 @@ export declare class EntitySQLQuery<IEP extends IEntitySelectProperties> extends
     }, context: IFuelHydrantContext): JoinTreeNode;
     protected parseQueryResult(selectClauseFragment: any, entityAlias: string, currentJoinNode: JoinTreeNode, resultRow: any, nextColumnIndex: number[], context: IFuelHydrantContext): any;
     /**
-     * Verify that the entity select clause is valid (has _localIds) and fill in clauses
+     * Verify that the entity SELECT clause is valid (has _localIds) and fill in clauses
      * that are blank (defined as {}).
      *
      *

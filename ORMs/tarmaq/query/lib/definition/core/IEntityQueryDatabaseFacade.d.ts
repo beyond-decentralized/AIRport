@@ -18,7 +18,7 @@ export interface IEntityQueryDatabaseFacade<IEntity, EntitySelect extends IEntit
     /**
      * Creates a new instance of the Query Entity for this entity type.
      */
-    from: IQ;
+    FROM: IQ;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;

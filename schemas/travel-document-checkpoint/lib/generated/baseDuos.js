@@ -32,18 +32,18 @@ export class BaseClientTypeDuo extends SQDIDuo {
 }
 export class BaseContinentDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(0);
+        return duoDiSet(5);
     }
     constructor() {
-        super(0);
+        super(5);
     }
 }
 export class BaseCountryDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(1);
+        return duoDiSet(0);
     }
     constructor() {
-        super(1);
+        super(0);
     }
 }
 export class BaseDatabaseDuo extends SQDIDuo {
@@ -64,26 +64,26 @@ export class BaseDatabaseTypeDuo extends SQDIDuo {
 }
 export class BaseMetroAreaDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-export class BaseMetroAreaStateDuo extends SQDIDuo {
-    static diSet() {
         return duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-export class BaseStateDuo extends SQDIDuo {
+export class BaseMetroAreaStateDuo extends SQDIDuo {
     static diSet() {
         return duoDiSet(2);
     }
     constructor() {
         super(2);
+    }
+}
+export class BaseStateDuo extends SQDIDuo {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 export class BaseTerminalDuo extends SQDIDuo {
@@ -120,10 +120,10 @@ export class BaseTypeClassificationDuo extends SQDIDuo {
 }
 export class BaseUserAccountDuo extends SQDIDuo {
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(4);
     }
     constructor() {
-        super(5);
+        super(4);
     }
 }
 //# sourceMappingURL=baseDuos.js.map

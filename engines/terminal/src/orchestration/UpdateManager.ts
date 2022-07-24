@@ -257,11 +257,11 @@ export class UpdateManager
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		const sheetQuery = new SheetQuery({
-			from: [
+			FROM: [
 				qEntity
 			],
-			select: [],
-			where: qEntity[airEntity.systemWideOperationId]
+			SELECT: [],
+			WHERE: qEntity[airEntity.systemWideOperationId]
 				.equals(systemWideOperationId)
 		})
 

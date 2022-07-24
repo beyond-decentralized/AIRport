@@ -1,4 +1,4 @@
-import { plus } from '@airport/tarmaq-query'
+import { PLUS } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,
@@ -32,9 +32,9 @@ export class SequenceDao
 	): Promise<void> {
 		const s = Q.Sequence
 		await this.db.updateWhere({
-			update: s,
-			set: {
-				currentValue: plus(s.currentValue, s.incrementBy)
+			UPDATE: s,
+			SET: {
+				currentValue: PLUS(s.currentValue, s.incrementBy)
 			}
 		}, context)
 	}
@@ -44,9 +44,9 @@ export class SequenceDao
 	): Promise<void> {
 		const s = Q.Sequence
 		await this.db.updateWhere({
-			update: s,
-			set: {
-				currentValue: plus(s.currentValue, s.incrementBy)
+			UPDATE: s,
+			SET: {
+				currentValue: PLUS(s.currentValue, s.incrementBy)
 			}
 		}, context)
 	}

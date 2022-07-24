@@ -12,7 +12,7 @@ export function tree(query) {
         queryDefinition = query;
     }
     let view = IOC.getSync(ENTITY_UTILS).getQTree([], queryDefinition);
-    let customEntity = queryDefinition.select;
+    let customEntity = queryDefinition.SELECT;
     view = convertMappedEntitySelect(customEntity, queryDefinition, view, view, 'f');
     return view;
 }
@@ -39,7 +39,7 @@ function convertMappedEntitySelect(customEntity, queryDefinition, view, selectPr
     return view;
 }
 /**
- * Sub-queries in select clause
+ * Sub-queries in SELECT clause
  * @param query
  * @returns {IQF}
  */
@@ -51,7 +51,7 @@ export function field(query) {
     else {
         queryDefinition = query;
     }
-    let customField = queryDefinition.select;
+    let customField = queryDefinition.SELECT;
     customField = customField.addSubQuery(queryDefinition);
     // Field query cannot be joined to any other query so don't have set the positional fields
     return customField;

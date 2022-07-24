@@ -15,12 +15,12 @@ export declare abstract class ValueOperation<T extends boolean | string | number
     equals(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
     greaterThan(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
     greaterThanOrEquals(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
-    isNotNull(lValue: IQF): JRO;
-    isNull(lValue: IQF): JRO;
-    in(lValue: IQF, rValue: T[] | IQF | RawFieldQuery<IQF>): JRO;
+    IS_NOT_NULL(lValue: IQF): JRO;
+    IS_NULL(lValue: IQF): JRO;
+    IN(lValue: IQF, rValue: T[] | IQF | RawFieldQuery<IQF>): JRO;
     lessThan(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
     lessThanOrEquals(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
     notEquals(lValue: IQF, rValue: T | IQF | RawFieldQuery<IQF>): JRO;
-    notIn(lValue: IQF, rValue: (T | IQF | RawFieldQuery<IQF>)[]): JRO;
+    NOT_IN(lValue: IQF, rValue: (T | IQF | RawFieldQuery<IQF>)[]): JRO;
 }
 //# sourceMappingURL=Operation.d.ts.map

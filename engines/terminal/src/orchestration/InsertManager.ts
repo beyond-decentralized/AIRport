@@ -513,7 +513,7 @@ and cannot have NULL values.`)
 	/**
 	 *
 	 * All repository records must have _localIds when inserted.  Currently AP doesn't support
-	 * inserting from select and in the values provided id's must either be explicitly
+	 * inserting from SELECT and in the values provided id's must either be explicitly
 	 * specified or already provided. For all repository entities all _localIds must be
 	 * auto-generated.
 	 *

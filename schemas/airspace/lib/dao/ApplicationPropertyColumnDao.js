@@ -10,18 +10,18 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 rc = Q.ApplicationPropertyColumn
             ],
-            where: rc.column._localId.in(columnIds)
+            WHERE: rc.column._localId.IN(columnIds)
         });
     }
     async insert(applicationPropertyColumns, context) {
         let spc;
-        const values = [];
+        const VALUES = [];
         for (const applicationPropertyColumn of applicationPropertyColumns) {
-            values.push([
+            VALUES.push([
                 applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
                 applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
                 applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
@@ -29,7 +29,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: spc = Q.ApplicationPropertyColumn,
+            INSERT_INTO: spc = Q.ApplicationPropertyColumn,
             columns: [
                 spc.column._localId,
                 spc.property._localId,
@@ -37,7 +37,7 @@ let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends Ba
                 spc.removedInVersion._localId,
                 spc.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

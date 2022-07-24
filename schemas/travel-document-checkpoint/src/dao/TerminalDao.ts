@@ -1,4 +1,4 @@
-import { and } from '@airport/tarmaq-query'
+import { AND } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
 	UserAccount_LocalId,
@@ -42,13 +42,13 @@ export class TerminalDao
 	): Promise<ITerminal[]> {
 		let t: QTerminal
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				t = Q.Terminal
 			],
-			where: and(
-				t.owner._localId.in(ownerIds),
-				t.GUID.in(GUIDs)
+			WHERE: AND(
+				t.owner._localId.IN(ownerIds),
+				t.GUID.IN(GUIDs)
 			)
 		})
 	}
@@ -58,11 +58,11 @@ export class TerminalDao
 	): Promise<ITerminal[]> {
 		let t: QTerminal
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				t = Q.Terminal
 			],
-			where: t.GUID.in(GUIDs)
+			WHERE: t.GUID.IN(GUIDs)
 		})
 	}
 
@@ -71,20 +71,20 @@ export class TerminalDao
 		context: IContext
 	): Promise<void> {
 		let t: QTerminal;
-		const values = []
+		const VALUES = []
 		for (const terminal of terminals) {
-			values.push([
+			VALUES.push([
 				terminal.GUID, terminal.owner._localId, false,
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			insertInto: t = Q.Terminal,
+			INSERT_INTO: t = Q.Terminal,
 			columns: [
 				t.GUID,
 				t.owner._localId,
 				t.isLocal
 			],
-			values
+			VALUES
 		}, context) as number[][]
 		for (let i = 0; i < terminals.length; i++) {
 			const terminal = terminals[i]

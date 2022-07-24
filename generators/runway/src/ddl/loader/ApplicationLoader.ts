@@ -83,7 +83,7 @@ export class ApplicationLoader
 			relatedApplicationJson = fs.readFileSync(process.cwd() + '/node_modules/'
 				+ projectName + '/src/generated/application-spec.json');
 		} catch (e) {
-			console.error(`Unable to load Application Spec from:
+			console.error(`Unable to load Application Spec FROM:
 ${process.cwd()}/node_modules/${projectName}/src/generated/application-spec.json`)
 			return null;
 		}

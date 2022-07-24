@@ -11,15 +11,15 @@ export class UpdateProperties extends AbstractUpdate {
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
-            U: this.rawUpdate.update
+            U: this.rawUpdate.UPDATE
                 .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
-            S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
+            S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases)
         };
     }
     setToJSON(rawSet, queryUtils, fieldUtils, relationManager) {
         const jsonSetClause = {};
-        const dbEntity = this.rawUpdate.update.__driver__.dbEntity;
+        const dbEntity = this.rawUpdate.UPDATE.__driver__.dbEntity;
         const dbPropertyMap = dbEntity.propertyMap;
         this.setEntityFragmentsToJSON(rawSet, jsonSetClause, [], dbPropertyMap, [], queryUtils, fieldUtils, relationManager);
         return jsonSetClause;
@@ -127,7 +127,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Cannot update @OneToMany properties:
-					Property: '${propertyName}' of entity: '${this.rawUpdate.update.__driver__.dbEntity.name}
+					Property: '${propertyName}' of entity: '${this.rawUpdate.UPDATE.__driver__.dbEntity.name}
 					is a @OneToMany relation and cannot be updated since it is
 					assumed to be based on @Id columns (which cannot be updated).'
 				`);
@@ -137,7 +137,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Undefined relation type: 
-					Property: '${propertyName}' of entity: '${this.rawUpdate.update.__driver__.dbEntity.name}'
+					Property: '${propertyName}' of entity: '${this.rawUpdate.UPDATE.__driver__.dbEntity.name}'
 					is defined with an unknown type of a relation.  Expecting either
 					@ManyToOne(...)
 					or
@@ -152,7 +152,7 @@ ${this.getPropertyChainDesription(dbPropertyChain)}
 ${this.getPropertyChainDesription(dbPropertyChain)}
 
 				Unexpected value ${JSON.stringify(value)} 
-					for property: '${propertyName}' of entity: '${this.rawUpdate.update.__driver__.dbEntity.name}'
+					for property: '${propertyName}' of entity: '${this.rawUpdate.UPDATE.__driver__.dbEntity.name}'
 				Expecting a nested property definition.
 				`);
             }

@@ -40,19 +40,19 @@ export interface IQOperableField<T, JO extends JSONBaseOperation, IO extends IOp
 	/**
 	 * A.B IN (C)
 	 */
-	in(
+	IN(
 		values: T[] | IQF | RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<IQF> }
 	): JO;
 
 	/**
 	 * A.B IS NOT NULL
 	 */
-	isNotNull(): JO;
+	IS_NOT_NULL(): JO;
 
 	/**
 	 * A.B IS NULL
 	 */
-	isNull(): JO;
+	IS_NULL(): JO;
 
 	/**
 	 * A.B < C
@@ -78,7 +78,7 @@ export interface IQOperableField<T, JO extends JSONBaseOperation, IO extends IOp
 	/**
 	 * A.B NOT IN (C)
 	 */
-	notIn(
+	NOT_IN(
 		values: (T | IQF | RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<IQF> })[]
 	): JO;
 

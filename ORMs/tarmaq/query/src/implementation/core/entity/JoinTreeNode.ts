@@ -57,7 +57,7 @@ export class JoinTreeNode {
 			default:
 				throw new Error(`More than one child node matched relation property index '${relationIndex}'`)
 		}
-		// No node matched, this must be reference to a sub-entity in select clause (in a Entity
+		// No node matched, this must be reference to a sub-entity in SELECT clause (in a Entity
 		// query)
 		let childPosition = this.jsonRelation.fromClausePosition.slice();
 		childPosition.push(this.childNodes.length);

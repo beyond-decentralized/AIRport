@@ -24,7 +24,7 @@ export class FieldInOrderBy<IQF extends IQOrderableField<IQF>>
 
 	toJSON(columnAliases: IFieldColumnAliases<IQF>): JSONFieldInOrderBy {
 		if (!columnAliases.hasAliasFor(this.field)) {
-			throw new Error(`Field used in order by clause is not present in select clause`);
+			throw new Error(`Field used in ORDER_BY clause is not present in SELECT clause`);
 		}
 		return {
 			fa: columnAliases.getExistingAlias(this.field),

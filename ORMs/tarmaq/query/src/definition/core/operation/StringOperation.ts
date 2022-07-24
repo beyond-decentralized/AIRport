@@ -9,7 +9,7 @@ import { IValueOperation, JSONRawValueOperation } from './Operation';
 export interface IStringOperation
 	extends IValueOperation<string, JSONRawStringOperation, IQStringField> {
 
-	like(
+	LIKE(
 		lValue: IQStringField,
 		rValue: string | IQStringField | RawFieldQuery<IQStringField>
 	): JSONRawStringOperation;

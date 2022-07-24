@@ -7,6 +7,6 @@ import { ValueOperation } from "./Operation";
  */
 export declare class StringOperation extends ValueOperation<string, JSONRawStringOperation, IQStringField> implements IStringOperation {
     constructor();
-    like(lValue: IQStringField, rValue: string | IQStringField | RawFieldQuery<IQStringField>): JSONRawStringOperation;
+    LIKE(lValue: IQStringField, rValue: string | IQStringField | RawFieldQuery<IQStringField>): JSONRawStringOperation;
 }
 //# sourceMappingURL=StringOperation.d.ts.map

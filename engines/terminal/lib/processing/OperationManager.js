@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, Delete, InsertValues, or, UpdateProperties, } from '@airport/tarmaq-query';
+import { AND, Delete, InsertValues, OR, UpdateProperties, } from '@airport/tarmaq-query';
 import { Inject, Injected } from '@airport/direction-indicator';
 import { EntityRelationType } from '@airport/ground-control';
 /**
@@ -99,9 +99,9 @@ let OperationManager = class OperationManager {
     async internalCreate(entities, actor, transaction, rootTransaction, saveResult, context, ensureGeneratedValues) {
         const qEntity = this.airportDatabase.qApplications[context.dbEntity.applicationVersion.application.index][context.dbEntity.name];
         let rawInsert = {
-            insertInto: qEntity,
+            INSERT_INTO: qEntity,
             columns: this.qMetadataUtils.getAllInsertableColumns(qEntity),
-            values: []
+            VALUES: []
         };
         let columnIndexesInValues = [];
         rawInsert.columns.forEach((qField, index) => {
@@ -143,10 +143,10 @@ let OperationManager = class OperationManager {
                     }
                 }
             }
-            rawInsert.values.push(valuesFragment);
+            rawInsert.VALUES.push(valuesFragment);
         }
         const insertValues = new InsertValues(rawInsert);
-        if (rawInsert.values.length) {
+        if (rawInsert.VALUES.length) {
             const generatedColumns = context.dbEntity.columns.filter(column => column.isGenerated);
             if (generatedColumns.length && ensureGeneratedValues) {
                 const portableQuery = this.queryFacade
@@ -178,7 +178,7 @@ let OperationManager = class OperationManager {
         }
     }
     /**
-     * On an update operation, can a nested create contain an update?
+     * On an UPDATE operation, can a nested create contain an update?
      * Via:
      *  OneToMany:
      *    Yes, if the child entity is itself in the update cache
@@ -272,15 +272,15 @@ let OperationManager = class OperationManager {
             if (runUpdate) {
                 let whereFragment;
                 if (idWhereFragments.length > 1) {
-                    whereFragment = and(...idWhereFragments);
+                    whereFragment = AND(...idWhereFragments);
                 }
                 else {
                     whereFragment = idWhereFragments[0];
                 }
                 const rawUpdate = {
-                    update: qEntity,
-                    set: setFragment,
-                    where: whereFragment
+                    UPDATE: qEntity,
+                    SET: setFragment,
+                    WHERE: whereFragment
                 };
                 const update = new UpdateProperties(rawUpdate);
                 const portableQuery = this.queryFacade.getPortableQuery(update, null, context);
@@ -340,23 +340,23 @@ let OperationManager = class OperationManager {
                 }
             }
             if (idWhereFragments.length > 1) {
-                entityIdWhereClauses.push(and(...idWhereFragments));
+                entityIdWhereClauses.push(AND(...idWhereFragments));
             }
             else {
                 entityIdWhereClauses.push(idWhereFragments[0]);
             }
             saveResult.deleted[this.entityStateManager.getOperationUniqueId(entity)] = true;
         }
-        let where;
+        let WHERE;
         if (entityIdWhereClauses.length === 1) {
-            where = entityIdWhereClauses[0];
+            WHERE = entityIdWhereClauses[0];
         }
         else {
-            where = or(...entityIdWhereClauses);
+            WHERE = OR(...entityIdWhereClauses);
         }
         let rawDelete = {
-            deleteFrom: qEntity,
-            where
+            DELETE_FROM: qEntity,
+            WHERE
         };
         let deleteWhere = new Delete(rawDelete);
         let portableQuery = this.queryFacade.getPortableQuery(deleteWhere, null, context);

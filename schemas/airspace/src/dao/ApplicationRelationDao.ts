@@ -36,11 +36,11 @@ export class ApplicationRelationDao
 		let r: QApplicationRelation
 
 		return this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				r = Q.ApplicationRelation
 			],
-			where: r.property._localId.in(propertyIds)
+			WHERE: r.property._localId.IN(propertyIds)
 		})
 	}
 
@@ -49,9 +49,9 @@ export class ApplicationRelationDao
 		context: IContext
 	): Promise<void> {
 		let sr: QApplicationRelation;
-		const values = []
+		const VALUES = []
 		for (const applicationRelation of applicationRelations) {
-			values.push([
+			VALUES.push([
 				applicationRelation._localId, applicationRelation.index,
 				applicationRelation.property._localId,
 				undefinedToNull(applicationRelation.foreignKey),
@@ -65,7 +65,7 @@ export class ApplicationRelationDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: sr = Q.ApplicationRelation,
+			INSERT_INTO: sr = Q.ApplicationRelation,
 			columns: [
 				sr._localId,
 				sr.index,
@@ -81,7 +81,7 @@ export class ApplicationRelationDao
 				sr.removedInVersion._localId,
 				sr.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

@@ -4,25 +4,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { or } from '@airport/tarmaq-query';
+import { OR } from '@airport/tarmaq-query';
 import { Injected } from '@airport/direction-indicator';
 import { BaseApplicationRelationColumnDao, Q, } from '../generated/generated';
 let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
     async findAllForColumns(columnIds) {
         let rc;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 rc = Q.ApplicationRelationColumn
             ],
-            where: or(rc.oneColumn._localId.in(columnIds), rc.manyColumn._localId.in(columnIds))
+            WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
         });
     }
     async insert(applicationRelationColumns, context) {
         let src;
-        const values = [];
+        const VALUES = [];
         for (const applicationRelationColumn of applicationRelationColumns) {
-            values.push([
+            VALUES.push([
                 applicationRelationColumn._localId,
                 applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
                 applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
@@ -35,7 +35,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: src = Q.ApplicationRelationColumn,
+            INSERT_INTO: src = Q.ApplicationRelationColumn,
             columns: [
                 src._localId,
                 src.manyColumn._localId,
@@ -47,7 +47,7 @@ let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends Ba
                 src.removedInVersion._localId,
                 src.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

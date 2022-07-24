@@ -16,7 +16,7 @@ export class StringOperation
 		super(OperationCategory.STRING);
 	}
 
-	like(
+	LIKE(
 		lValue: IQStringField,
 		rValue: string | IQStringField | RawFieldQuery<IQStringField>
 		// TODO: implement ReqExp

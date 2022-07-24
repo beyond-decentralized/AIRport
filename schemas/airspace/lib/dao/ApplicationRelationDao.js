@@ -11,18 +11,18 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
     async findAllForProperties(propertyIds) {
         let r;
         return this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 r = Q.ApplicationRelation
             ],
-            where: r.property._localId.in(propertyIds)
+            WHERE: r.property._localId.IN(propertyIds)
         });
     }
     async insert(applicationRelations, context) {
         let sr;
-        const values = [];
+        const VALUES = [];
         for (const applicationRelation of applicationRelations) {
-            values.push([
+            VALUES.push([
                 applicationRelation._localId, applicationRelation.index,
                 applicationRelation.property._localId,
                 undefinedToNull(applicationRelation.foreignKey),
@@ -36,7 +36,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: sr = Q.ApplicationRelation,
+            INSERT_INTO: sr = Q.ApplicationRelation,
             columns: [
                 sr._localId,
                 sr.index,
@@ -52,7 +52,7 @@ let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicatio
                 sr.removedInVersion._localId,
                 sr.sinceVersion._localId
             ],
-            values
+            VALUES
         }, context);
     }
 };

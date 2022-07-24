@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, Y } from '@airport/tarmaq-query';
+import { AND, Y } from '@airport/tarmaq-query';
 import { Injected } from '@airport/direction-indicator';
 import { BaseApplicationVersionDao, Q } from '../generated/generated';
 let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationVersionDao {
@@ -15,13 +15,13 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         let sv: QApplicationVersion
 
         return await this.db.find.tree({
-            from: [
+            FROM: [
                 sv = Q.ApplicationVersion
             ],
-            select: {},
-            where: and(
-                sv._localId.in(this._localIdsForMaxVersionSelect()),
-                sv.application.index.in(applicationIndexes)
+            SELECT: {},
+            WHERE: AND(
+                sv._localId.IN(this._localIdsForMaxVersionSelect()),
+                sv.application.index.IN(applicationIndexes)
             )
         })
     }
@@ -30,12 +30,12 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         let sv;
         // let s: QApplication
         return await this.db.find.tree({
-            from: [
+            FROM: [
                 sv = Q.ApplicationVersion,
                 // s = sv.application.innerJoin()
             ],
-            select: {},
-            orderBy: [
+            SELECT: {},
+            ORDER_BY: [
                 sv.application.index.asc(),
                 sv._localId.desc()
             ]
@@ -46,7 +46,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         let s;
         let d;
         return await this.db.find.tree({
-            select: {
+            SELECT: {
                 _localId: Y,
                 integerVersion: Y,
                 application: {
@@ -57,12 +57,12 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                     name: Y
                 }
             },
-            from: [
+            FROM: [
                 sv = Q.ApplicationVersion,
                 s = sv.application.innerJoin(),
                 d = s.domain.innerJoin()
             ],
-            where: and(d.name.in(domainNames), s.name.in(applicationNames))
+            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         });
     }
     /*
@@ -79,7 +79,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         let d: QDomain
 
         const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
-            select: {
+            SELECT: {
                 integerVersion: Y,
                 majorVersion: Y,
                 minorVersion: Y,
@@ -94,15 +94,15 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                 },
                 _localId: Y
             },
-            from: [
+            FROM: [
                 sv = Q.ApplicationVersion,
                 s = sv.application.innerJoin(),
                 d = s.domain.innerJoin()
             ],
-            where: and(
-                sv._localId.in(this._localIdsForMaxVersionSelect()),
-                d.name.in(applicationDomain_Names),
-                s.name.in(applicationNames)
+            WHERE: AND(
+                sv._localId.IN(this._localIdsForMaxVersionSelect()),
+                d.name.IN(applicationDomain_Names),
+                s.name.IN(applicationNames)
             ),
         })
 
@@ -122,27 +122,27 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
         let sv2: QApplicationVersion
 
         return field({
-            from: [
+            FROM: [
                 svMax = tree({
-                    from: [
+                    FROM: [
                         sv2 = Q.ApplicationVersion
                     ],
-                    select: distinct({
+                    SELECT: distinct({
                         integerVersion: max(sv2.integerVersion),
                         _localId: sv2._localId,
                         applicationIndex: sv2.application.index
                     })
                 })
             ],
-            select: svMax._localId
+            SELECT: svMax._localId
         })
     }
 */
     async insert(applicationVersions, context) {
         let sv;
-        const values = [];
+        const VALUES = [];
         for (const applicationVersion of applicationVersions) {
-            values.push([
+            VALUES.push([
                 applicationVersion._localId, applicationVersion.integerVersion,
                 applicationVersion.versionString, applicationVersion.majorVersion,
                 applicationVersion.minorVersion, applicationVersion.patchVersion,
@@ -150,7 +150,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: sv = Q.ApplicationVersion,
+            INSERT_INTO: sv = Q.ApplicationVersion,
             columns: [
                 sv._localId,
                 sv.integerVersion,
@@ -161,7 +161,7 @@ let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationV
                 sv.application.index,
                 sv.jsonApplication
             ],
-            values
+            VALUES: VALUES
         }, context);
     }
 };

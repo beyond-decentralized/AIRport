@@ -389,7 +389,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 	}
 
 	/**
-	 * Verify that the entity select clause is valid (has _localIds) and fill in clauses
+	 * Verify that the entity SELECT clause is valid (has _localIds) and fill in clauses
 	 * that are blank (defined as {}).
 	 *
 	 *
@@ -453,7 +453,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 					throw new Error(`@Id properties cannot be excluded from entity queries.`)
 				}
 				if (!entityDefinitionHasIds) {
-					throw new Error(`Cannot exclude property '${propertyName}' from select clause 
+					throw new Error(`Cannot exclude property '${propertyName}' from SELECT clause 
 					for '${dbEntity.name}' Entity - entity has no @Id so all properties must be included.`)
 				}
 				delete selectFragment[propertyName]
@@ -466,14 +466,14 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 					value, dbProperty.relation[0].relationEntity,
 					context, dbProperty)
 				// } else {
-				// 	//  At least one non-relational field is in the original select clause
+				// 	//  At least one non-relational field is in the original SELECT clause
 				// 	retrieveAllOwnFields = false
 			} else if (!isY(value)) {
 				selectFragment[propertyName] = Y
 			}
 		}
 
-		//  For {} select causes, entities with no @Id, retrieve the entire object.
+		//  For {} SELECT causes, entities with no @Id, retrieve the entire object.
 		// Otherwise make sure all @Id columns are specified.
 		for (const dbProperty of dbEntity.properties) {
 			if (entityDefinitionHasIds && !dbProperty.isId && !retrieveAllOwnFields) {
@@ -486,7 +486,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 					case EntityRelationType.ONE_TO_MANY:
 						break
 					case EntityRelationType.MANY_TO_ONE:
-						// If select fragment for the child entity is already defined, do not overwrite it
+						// If SELECT fragment for the child entity is already defined, do not overwrite it
 						if (selectFragment[dbProperty.name]) {
 							break
 						}
@@ -575,9 +575,9 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		let qEntity = this.qEntityMapByAlias[currentAlias]
 		if (!qEntity) {
 			throw new Error(`Select clause doesn't match the from clause.
-Please make sure that all entities present in the select: {...} clause
-are specified in the from: [...] clause, with the SAME nesting pattern as
-in the select: {...} clause.  The non-matching select clause is:
+Please make sure that all entities present in the SELECT: {...} clause
+are specified in the FROM: [...] clause, with the SAME nesting pattern as
+in the SELECT: {...} clause.  The non-matching SELECT clause is:
 
 ${getErrorMessageSelectStatement(this.jsonQuery.S)}
 

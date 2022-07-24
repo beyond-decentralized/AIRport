@@ -63,21 +63,21 @@ export abstract class QOperableField<T,
 		return this.operation.greaterThanOrEquals(<any>this, value);
 	}
 
-	isNotNull(): JO {
-		return this.operation.isNotNull(<any>this);
+	IS_NOT_NULL(): JO {
+		return this.operation.IS_NOT_NULL(<any>this);
 	}
 
-	isNull(): JO {
-		return this.operation.isNull(<any>this);
+	IS_NULL(): JO {
+		return this.operation.IS_NULL(<any>this);
 	}
 
-	in(
+	IN(
 		value: T[] | IQF | RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<IQF> }
 	): JO {
 		if (value instanceof Function) {
 			value = value();
 		}
-		return this.operation.in(<any>this, <any>value);
+		return this.operation.IN(<any>this, <any>value);
 	}
 
 	lessThan(
@@ -107,7 +107,7 @@ export abstract class QOperableField<T,
 		return this.operation.notEquals(<any>this, value);
 	}
 
-	notIn(
+	NOT_IN(
 		values: (T | IQF | RawFieldQuery<IQF> | { (...args: any[]): RawFieldQuery<IQF> })[]
 	): JO {
 		values = values.map((value) => {
@@ -116,7 +116,7 @@ export abstract class QOperableField<T,
 			}
 			return value;
 		});
-		return this.operation.notIn(<any>this, <any>values);
+		return this.operation.NOT_IN(<any>this, <any>values);
 	}
 
 }

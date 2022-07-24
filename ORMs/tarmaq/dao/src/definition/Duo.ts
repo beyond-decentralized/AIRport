@@ -35,7 +35,7 @@ export interface IDuo<Entity,
 	EntityCascadeGraph extends IEntityCascadeGraph,
 	IQE extends IQEntity> {
 
-	select: IFieldsSelect<EntitySelect>
+	SELECT: IFieldsSelect<EntitySelect>
 
 	getLocalIdStub(
 		_localIds: number | string | number[] | string[]

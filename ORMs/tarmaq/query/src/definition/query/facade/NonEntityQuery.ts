@@ -7,9 +7,9 @@ import { RawQuery } from './Query';
  * All Non-Entity Queries are defined in this format.
  */
 export interface RawNonEntityQuery extends RawQuery {
-	from: IFrom[];
-	groupBy?: IQOperableField<any, any, any, any>[];
-	having?: JSONBaseOperation,
-	limit?: number;
-	offset?: number;
+	FROM: IFrom[];
+	GROUP_BY?: IQOperableField<any, any, any, any>[];
+	HAVING?: JSONBaseOperation,
+	LIMIT?: number;
+	OFFSET?: number;
 }

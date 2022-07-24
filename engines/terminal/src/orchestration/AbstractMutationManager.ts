@@ -97,7 +97,7 @@ export class AbstractMutationManager {
         columnValueLookups[dbColumn.index] = columnValueLookup;
       }
     }
-    const values = entities.map(
+    const VALUES = entities.map(
       entity => {
         return columnValueLookups.map(
           lookup => {
@@ -113,9 +113,9 @@ export class AbstractMutationManager {
           });
       });
     const rawInsertValues: RawInsertValues<any> = {
-      insertInto: q,
+      INSERT_INTO: q,
       columns: null,
-      values,
+      VALUES
     };
     let insertValues: InsertValues<any> = new InsertValues(rawInsertValues, columnIndexes);
     let portableQuery: PortableQuery = this.getPortableQuery(

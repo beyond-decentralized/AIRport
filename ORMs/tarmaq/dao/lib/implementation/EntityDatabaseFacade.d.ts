@@ -19,7 +19,7 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QApplication, dao: IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQ>);
-    get from(): IQ;
+    get FROM(): IQ;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx?: IEntityContext): Promise<number>;

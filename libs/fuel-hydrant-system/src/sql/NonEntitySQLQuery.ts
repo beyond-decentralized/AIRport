@@ -292,7 +292,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 		for (let fieldName in select) {
 			let alias = `${fieldPrefix}${++fieldIndex}`
 			let fieldJson: JSONClauseField = select[fieldName]
-			// If its a nested select
+			// If its a nested SELECT
 			if (!fieldJson.ot) {
 				this.addFieldsToViewForSelect(view, viewAlias, fieldJson,
 					`${alias}_`, null, context)
@@ -376,7 +376,7 @@ ${this.storeDriver.getSelectQuerySuffix(this.jsonQuery, context)}`
 				break
 			case JSONClauseObjectType.MANY_TO_ONE_RELATION:
 				throw new Error(
-					`@ManyToOne fields cannot be directly in a select clause.
+					`@ManyToOne fields cannot be directly in a SELECT clause.
 					Please select a non-relational field within the relation.`)
 			// let relation =
 			// <QField<any>><any>QMetadataUtils.getRelationByColumnIndex(this.dbFacade.getQEntityByIndex(fieldJson.ti),

@@ -51,7 +51,7 @@ export class QUntypedField
 		if (value instanceof Function) {
 			value = value()
 		}
-		return this.operation.like(<any>this, value)
+		return this.operation.LIKE(<any>this, value)
 	}
 
 }

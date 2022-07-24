@@ -28,14 +28,14 @@ export abstract class AbstractUpdate<IQE extends IQEntity, ARE extends AbstractR
 		relationManager: IRelationManager
 	): JsonUpdate<JsonEntityUpdateColumns> {
 		return {
-			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.update)
+			U: <JSONEntityRelation>(<IQEntityInternal><any>this.rawUpdate.UPDATE)
 				.__driver__.getRelationJson(
 					this.columnAliases,
 					queryUtils, fieldUtils, relationManager),
-			S: this.setToJSON(this.rawUpdate.set,
+			S: this.setToJSON(this.rawUpdate.SET,
 				queryUtils, fieldUtils, relationManager),
 			W: queryUtils.whereClauseToJSON(
-				this.rawUpdate.where, this.columnAliases)
+				this.rawUpdate.WHERE, this.columnAliases)
 		}
 	}
 

@@ -9,20 +9,20 @@ import { BaseSynchronizationConflictValuesDao, Q } from '../../generated/generat
 let SynchronizationConflictValuesDao = class SynchronizationConflictValuesDao extends BaseSynchronizationConflictValuesDao {
     async insert(synchronizationConflictValues, context) {
         let scv;
-        const values = [];
+        const VALUES = [];
         for (const synchronizationConflictValue of synchronizationConflictValues) {
-            values.push([
+            VALUES.push([
                 synchronizationConflictValue.synchronizationConflict._localId,
                 synchronizationConflictValue.columnIndex
             ]);
         }
         await this.db.insertValues({
-            insertInto: scv = Q.SynchronizationConflictValues,
+            INSERT_INTO: scv = Q.SynchronizationConflictValues,
             columns: [
                 scv.synchronizationConflict._localId,
                 scv.columnIndex
             ],
-            values
+            VALUES
         }, context);
     }
 };

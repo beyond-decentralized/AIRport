@@ -27,7 +27,7 @@ export class InsertValues<IQE extends IQEntity>
 		fieldUtils: IFieldUtils,
 		relationManager: IRelationManager
 	): JsonInsertValues {
-		const driver = (<IQEntityInternal><any>this.rawInsertValues.insertInto)
+		const driver = (<IQEntityInternal><any>this.rawInsertValues.INSERT_INTO)
 			.__driver__
 		const insertInto = driver.getRelationJson(
 			this.columnAliases, queryUtils, fieldUtils, relationManager)
@@ -55,7 +55,7 @@ export class InsertValues<IQE extends IQEntity>
 			II: insertInto as JSONEntityRelation,
 			C: columnIndexes,
 			V: this.valuesToJSON(
-				this.rawInsertValues.values, dbColumns,
+				this.rawInsertValues.VALUES, dbColumns,
 				queryUtils, fieldUtils, relationManager)
 		}
 	}

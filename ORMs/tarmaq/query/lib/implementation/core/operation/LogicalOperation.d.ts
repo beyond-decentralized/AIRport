@@ -5,14 +5,14 @@ import { Operation } from "./Operation";
 /**
  * Created by Papa on 4/21/2016.
  */
-export declare const and: andOperator;
-export declare const or: orOperator;
-export declare const not: notOperator;
+export declare const AND: andOperator;
+export declare const OR: orOperator;
+export declare const NOT: notOperator;
 export declare class LogicalOperation extends Operation implements ILogicalOperation {
     constructor();
     static verifyChildOps(ops: IOperation[]): void;
-    and(ops: JSONBaseOperation[]): JSONLogicalOperation;
-    or(ops: JSONBaseOperation[]): JSONLogicalOperation;
-    not(op: JSONBaseOperation): JSONLogicalOperation;
+    AND(ops: JSONBaseOperation[]): JSONLogicalOperation;
+    OR(ops: JSONBaseOperation[]): JSONLogicalOperation;
+    NOT(op: JSONBaseOperation): JSONLogicalOperation;
 }
 //# sourceMappingURL=LogicalOperation.d.ts.map

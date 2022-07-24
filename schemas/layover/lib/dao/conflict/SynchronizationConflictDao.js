@@ -9,9 +9,9 @@ import { BaseSynchronizationConflictDao, Q } from '../../generated/generated';
 let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSynchronizationConflictDao {
     async insert(synchronizationConflicts, context) {
         let sc;
-        const values = [];
+        const VALUES = [];
         for (const synchronizationConflict of synchronizationConflicts) {
-            values.push([
+            VALUES.push([
                 synchronizationConflict.type,
                 synchronizationConflict.acknowledged,
                 synchronizationConflict.repository._localId,
@@ -20,7 +20,7 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            insertInto: sc = Q.SynchronizationConflict,
+            INSERT_INTO: sc = Q.SynchronizationConflict,
             columns: [
                 sc.type,
                 sc.acknowledged,
@@ -28,7 +28,7 @@ let SynchronizationConflictDao = class SynchronizationConflictDao extends BaseSy
                 sc.overwrittenRecordHistory._localId,
                 sc.overwritingRecordHistory._localId
             ],
-            values
+            VALUES
         }, context);
         for (let i = 0; i < synchronizationConflicts.length; i++) {
             let synchronizationConflict = synchronizationConflicts[i];

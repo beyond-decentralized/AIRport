@@ -15,7 +15,7 @@ export class UntypedOperation extends ValueOperation<number | string, JSONRawUnt
 		super(OperationCategory.UNTYPED);
 	}
 
-	like(
+	LIKE(
 		lValue: IQUntypedField,
 		rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>
 		// TODO: implement ReqExp

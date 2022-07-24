@@ -16,7 +16,7 @@ export const FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE
 	= `Entity SELECT clauses can only contain fields assigned: null | undefined | boolean | Date | number | string | Relation SELECT`
 
 /**
- * A query whose select facade is a collection of properties.
+ * A query whose SELECT facade is a collection of properties.
  */
 export abstract class MappableQuery
 	extends DistinguishableQuery {
@@ -35,9 +35,9 @@ export abstract class MappableQuery
 				if (this.isEntityQuery) {
 					throw new Error(FIELD_IN_SELECT_CLAUSE_ERROR_MESSAGE)
 				}
-				// The same value may appear in the select clause more than once.
+				// The same value may appear in the SELECT clause more than once.
 				// In that case the last one will set the alias for all of them.
-				// Because the alias only matters for GROUP BY and ORDER BY
+				// Because the alias only matters for GROUP_BY and ORDER_BY
 				// that is OK.
 				select[property] = value.toJSON(
 					this.columnAliases, true,

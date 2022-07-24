@@ -4,46 +4,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and } from '@airport/tarmaq-query';
+import { AND } from '@airport/tarmaq-query';
 import { Injected } from '@airport/direction-indicator';
 import { BaseTerminalDao, Q } from '../generated/generated';
 let TerminalDao = class TerminalDao extends BaseTerminalDao {
     async findByOwnerIdsAndGUIDs(ownerIds, GUIDs) {
         let t;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 t = Q.Terminal
             ],
-            where: and(t.owner._localId.in(ownerIds), t.GUID.in(GUIDs))
+            WHERE: AND(t.owner._localId.IN(ownerIds), t.GUID.IN(GUIDs))
         });
     }
     async findByGUIDs(GUIDs) {
         let t;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 t = Q.Terminal
             ],
-            where: t.GUID.in(GUIDs)
+            WHERE: t.GUID.IN(GUIDs)
         });
     }
     async insert(terminals, context) {
         let t;
-        const values = [];
+        const VALUES = [];
         for (const terminal of terminals) {
-            values.push([
+            VALUES.push([
                 terminal.GUID, terminal.owner._localId, false,
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            insertInto: t = Q.Terminal,
+            INSERT_INTO: t = Q.Terminal,
             columns: [
                 t.GUID,
                 t.owner._localId,
                 t.isLocal
             ],
-            values
+            VALUES
         }, context);
         for (let i = 0; i < terminals.length; i++) {
             const terminal = terminals[i];

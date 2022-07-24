@@ -17,22 +17,22 @@ import {Operation} from "./Operation";
  * Created by Papa on 4/21/2016.
  */
 
-export const and: andOperator = function (
+export const AND: andOperator = function (
 	...ops: JSONBaseOperation[]
 ): JSONLogicalOperation {
-	return new LogicalOperation().and(ops);
+	return new LogicalOperation().AND(ops);
 };
 
-export const or: orOperator = function (
+export const OR: orOperator = function (
 	...ops: JSONBaseOperation[]
 ): JSONLogicalOperation {
-	return new LogicalOperation().or(ops);
+	return new LogicalOperation().OR(ops);
 };
 
-export const not: notOperator = function (
+export const NOT: notOperator = function (
 	op: JSONBaseOperation
 ): JSONLogicalOperation {
-	return new LogicalOperation().not(op);
+	return new LogicalOperation().NOT(op);
 };
 
 export class LogicalOperation extends Operation implements ILogicalOperation {
@@ -49,7 +49,7 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		}
 	}
 
-	and(
+	AND(
 		ops: JSONBaseOperation[]
 	): JSONLogicalOperation {
 		return {
@@ -59,7 +59,7 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		};
 	}
 
-	or(
+	OR(
 		ops: JSONBaseOperation[]
 	): JSONLogicalOperation {
 		return {
@@ -69,7 +69,7 @@ export class LogicalOperation extends Operation implements ILogicalOperation {
 		};
 	}
 
-	not(
+	NOT(
 		op: JSONBaseOperation
 	): JSONLogicalOperation {
 		return {

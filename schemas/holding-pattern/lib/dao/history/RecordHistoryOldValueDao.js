@@ -11,11 +11,11 @@ let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecord
     async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
         let rhov;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 rhov = Q.RecordHistoryOldValue
             ],
-            where: rhov.recordHistory._localId.in(RecordHistory_LocalIds)
+            WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
         });
     }
 };

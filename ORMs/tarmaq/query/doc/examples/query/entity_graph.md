@@ -21,8 +21,8 @@ class TaskDao extends BaseTaskDao {
 	async findAll(): Promise<Task> {
 		let t: QTask
 		return await this._find({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				t = Q.Task
 			]
 		});
@@ -47,19 +47,19 @@ class TaskDao extends BaseTaskDao {
 		let t: QTask
 		let t2: QTask
 		return await this._find({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				t = Q.Task
 				],
-			where: and(
-				ucase(t.name).like(`%${likeValue}%`),
+			WHERE: AND(
+				ucase(t.name).LIKE(`%${likeValue}%`),
 				t.taskId.equals(field({
-					from: [
+					FROM: [
 						t2 = Q.Task
 					],
-					select:
+					SELECT:
 						t2.taskId,
-					where: 
+					WHERE: 
 						t2.taskId.equals(t.taskId)
 				}))
 			)
@@ -83,11 +83,11 @@ class GoalDao extends BaseGoalDao {
 	): Observable<Goal> {
 		let g: QGoal
 		return this._searchOne({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				g = Q.Goal
 			],
-			where:
+			WHERE:
 				g.equals(id)
 		});
 	}
@@ -110,15 +110,15 @@ class GoalDao extends BaseGoalDao {
 		let g: QGoal,
 			t: QTask
 		return await this._find({
-			select: {
+			SELECT: {
 				'*': Y,
 				tasks: {}
 			},
-			from: [
+			FROM: [
 				g = Q.Goal,
 				t = g.tasks.leftJoin()
 			],
-			where: g.goalId.equals(goalId),
+			WHERE: g.goalId.equals(goalId),
 			orderBy: [
 				g.goalId.asc(),
 				g.dueDate.desc(),

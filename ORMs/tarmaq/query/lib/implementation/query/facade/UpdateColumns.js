@@ -6,7 +6,7 @@ export class UpdateColumns extends AbstractUpdate {
     }
     setToJSON(set, queryUtils, fieldUtils, relationManager) {
         const setClause = {};
-        const dbEntity = this.rawUpdate.update
+        const dbEntity = this.rawUpdate.UPDATE
             .__driver__.dbEntity;
         const dbColumnMap = dbEntity.columnMap;
         const idDbColumnMap = dbEntity.idColumnMap;
@@ -31,7 +31,7 @@ export class UpdateColumns extends AbstractUpdate {
             }
             value = wrapPrimitive(value);
             if (!value.toJSON) {
-                throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${this.rawUpdate.update.__driver__.dbEntity.name}`;
+                throw `Unexpected value ${JSON.stringify(value)} for property ${columnName} of entity ${dbEntity.name}`;
             }
             setClause[columnName] = value.toJSON(this.columnAliases, false, queryUtils, fieldUtils, relationManager);
         }

@@ -16,7 +16,7 @@ export class EntityDatabaseFacade {
         //   this.dbEntity, updateCacheManager);
         // this.searchOne = new EntitySearchOne(this.dbEntity, updateCacheManager);
     }
-    get from() {
+    get FROM() {
         return this.Q[this.dbEntity.name];
     }
     async insertColumnValues(rawInsertColumnValues, ctx) {

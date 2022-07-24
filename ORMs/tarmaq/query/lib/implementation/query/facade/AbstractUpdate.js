@@ -6,10 +6,10 @@ export class AbstractUpdate extends AbstractQuery {
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
-            U: this.rawUpdate.update
+            U: this.rawUpdate.UPDATE
                 .__driver__.getRelationJson(this.columnAliases, queryUtils, fieldUtils, relationManager),
-            S: this.setToJSON(this.rawUpdate.set, queryUtils, fieldUtils, relationManager),
-            W: queryUtils.whereClauseToJSON(this.rawUpdate.where, this.columnAliases)
+            S: this.setToJSON(this.rawUpdate.SET, queryUtils, fieldUtils, relationManager),
+            W: queryUtils.whereClauseToJSON(this.rawUpdate.WHERE, this.columnAliases)
         };
     }
 }

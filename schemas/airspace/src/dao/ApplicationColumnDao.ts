@@ -36,11 +36,11 @@ export class ApplicationColumnDao
 		let c: QApplicationColumn
 
 		return this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				c = Q.ApplicationColumn
 			],
-			where: c.entity._localId.in(entityIds)
+			WHERE: c.entity._localId.IN(entityIds)
 		})
 	}
 
@@ -49,9 +49,9 @@ export class ApplicationColumnDao
 		context: IContext
 	): Promise<void> {
 		let sc: QApplicationColumn;
-		const values = []
+		const VALUES = []
 		for (const applicationColumn of applicationColumns) {
-			values.push([
+			VALUES.push([
 				applicationColumn._localId, applicationColumn.index,
 				undefinedToNull(applicationColumn.idIndex),
 				applicationColumn.isGenerated,
@@ -68,7 +68,7 @@ export class ApplicationColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: sc = Q.ApplicationColumn,
+			INSERT_INTO: sc = Q.ApplicationColumn,
 			columns: [
 				sc._localId,
 				sc.index,
@@ -85,7 +85,7 @@ export class ApplicationColumnDao
 				sc.removedInVersion._localId,
 				sc.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

@@ -27,7 +27,7 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
     /**
      * A.B IN (C)
      */
-    in(lValue: IQF, rValue: T[] | IQF | RawFieldQuery<IQF>): JRO;
+    IN(lValue: IQF, rValue: T[] | IQF | RawFieldQuery<IQF>): JRO;
     /**
      * A.B < C
      */
@@ -39,11 +39,11 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
     /**
      * A.B IS NOT NULL
      */
-    isNotNull(lValue: IQF): JRO;
+    IS_NOT_NULL(lValue: IQF): JRO;
     /**
      * A.B IS NULL
      */
-    isNull(lValue: IQF): JRO;
+    IS_NULL(lValue: IQF): JRO;
     /**
      * A.B != C
      */
@@ -51,7 +51,7 @@ export interface IValueOperation<T, JRO extends JSONBaseOperation, IQF extends I
     /**
      * A.B NOT IN (C)
      */
-    notIn(lValue: IQF, rValue: (T | IQF | RawFieldQuery<IQF>)[]): JRO;
+    NOT_IN(lValue: IQF, rValue: (T | IQF | RawFieldQuery<IQF>)[]): JRO;
 }
 /**
  * JSON representation of an operation as it exists immediately after

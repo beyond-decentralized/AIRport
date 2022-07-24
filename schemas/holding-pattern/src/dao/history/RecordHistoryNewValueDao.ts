@@ -28,11 +28,11 @@ export class RecordHistoryNewValueDao
 		let rhnv: QRecordHistoryNewValue
 
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				rhnv = Q.RecordHistoryNewValue
 			],
-			where: rhnv.recordHistory._localId.in(RecordHistory_LocalIds)
+			WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
 		})
 
 	}

@@ -34,14 +34,14 @@ export interface ILogicalOperation extends IOperation {
     /**
      * A AND B
      */
-    and(ops: JSONBaseOperation[]): JSONLogicalOperation;
+    AND(ops: JSONBaseOperation[]): JSONLogicalOperation;
     /**
      * A OR B
      */
-    or(ops: JSONBaseOperation[]): JSONLogicalOperation;
+    OR(ops: JSONBaseOperation[]): JSONLogicalOperation;
     /**
      * NOT A
      */
-    not(op: JSONBaseOperation): JSONLogicalOperation;
+    NOT(op: JSONBaseOperation): JSONLogicalOperation;
 }
 //# sourceMappingURL=LogicalOperation.d.ts.map

@@ -6,8 +6,8 @@ import { RawLimitedQuery, RawQuery } from './Query';
  */
 export interface RawEntityQuery<EntitySelect>
 	extends RawQuery {
-	from?: IEntityRelationFrom[];
-	select: EntitySelect;
+	FROM?: IEntityRelationFrom[];
+	SELECT: EntitySelect;
 }
 
 /**

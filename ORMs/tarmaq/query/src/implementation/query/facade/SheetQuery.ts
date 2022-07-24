@@ -51,12 +51,12 @@ export class SheetQuery
 		relationManager: IRelationManager
 	): JsonSheetQuery {
 		let select = this.selectClauseToJSON(
-			this.rawQuery.select,
+			this.rawQuery.SELECT,
 			queryUtils, fieldUtils, relationManager)
 
 		let jsonFieldQuery: JsonSheetQuery = {
 			S: select,
-			forUpdate: this.rawQuery.forUpdate
+			forUpdate: this.rawQuery.FOR_UPDATE
 		}
 
 		return <JsonSheetQuery>this.getNonEntityQuery(

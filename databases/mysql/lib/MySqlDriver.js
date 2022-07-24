@@ -20,9 +20,13 @@ let MySqlDriver = class MySqlDriver extends SqlDriver {
     async doesTableExist(applicationName, tableName, context) {
         const result = await this.findNative(
         // ` SELECT tbl_name, sql from sqlite_master WHERE type = '${tableName}'`,
-        `select count(1) as count from information_application.TABLES
-where TABLE_APPLICATION = '${applicationName}'
-and TABLE_NAME = '${tableName}';`, [], context);
+        `SELECT
+  count(1) AS count
+FROM
+  information_application.TABLES
+WHERE
+  TABLE_APPLICATION = '${applicationName}'
+  AND TABLE_NAME = '${tableName}';`, [], context);
         return result[0].count == 1;
     }
     async dropTable(applicationName, tableName, context) {

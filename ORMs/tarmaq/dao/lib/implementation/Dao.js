@@ -42,8 +42,8 @@ let Dao = class Dao {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.graph({
-            select: {},
-            from: [this.db.from],
+            SELECT: {},
+            FROM: [this.db.FROM],
         }, context);
     }
     async findAllAsTrees(entityIds, context, cacheForUpdate = false) {
@@ -51,8 +51,8 @@ let Dao = class Dao {
             throw new Error(`Not implemented`);
         }
         return await this.db.find.tree({
-            select: {},
-            from: [this.db.from],
+            SELECT: {},
+            FROM: [this.db.FROM],
         }, context);
     }
     async findOne(AirEntityId, forUpdate = false, context) {
@@ -62,14 +62,14 @@ let Dao = class Dao {
         const idObject = AirEntityId;
         let q;
         return await this.db.findOne.graph({
-            select: {
+            SELECT: {
                 '*': Y
             },
-            from: [
-                q = this.db.from
+            FROM: [
+                q = this.db.FROM
             ],
-            where: q.equals(idObject),
-            forUpdate
+            WHERE: q.equals(idObject),
+            FOR_UPDATE: forUpdate
         }, context);
     }
     async save(entity, context) {

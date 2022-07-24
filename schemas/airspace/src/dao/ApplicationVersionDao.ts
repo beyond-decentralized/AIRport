@@ -1,4 +1,4 @@
-import { and, Y } from '@airport/tarmaq-query'
+import { AND, Y } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseApplicationVersionDao,
@@ -39,13 +39,13 @@ export class ApplicationVersionDao
 		let sv: QApplicationVersion
 
 		return await this.db.find.tree({
-			from: [
+			FROM: [
 				sv = Q.ApplicationVersion
 			],
-			select: {},
-			where: and(
-				sv._localId.in(this._localIdsForMaxVersionSelect()),
-				sv.application.index.in(applicationIndexes)
+			SELECT: {},
+			WHERE: AND(
+				sv._localId.IN(this._localIdsForMaxVersionSelect()),
+				sv.application.index.IN(applicationIndexes)
 			)
 		})
 	}
@@ -56,12 +56,12 @@ export class ApplicationVersionDao
 		// let s: QApplication
 
 		return await this.db.find.tree({
-			from: [
+			FROM: [
 				sv = Q.ApplicationVersion,
 				// s = sv.application.innerJoin()
 			],
-			select: {},
-			orderBy: [
+			SELECT: {},
+			ORDER_BY: [
 				sv.application.index.asc(),
 				sv._localId.desc()
 			]
@@ -77,7 +77,7 @@ export class ApplicationVersionDao
 		let d: QDomain
 
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				_localId: Y,
 				integerVersion: Y,
 				application: {
@@ -88,14 +88,14 @@ export class ApplicationVersionDao
 					name: Y
 				}
 			},
-			from: [
+			FROM: [
 				sv = Q.ApplicationVersion,
 				s = sv.application.innerJoin(),
 				d = s.domain.innerJoin()
 			],
-			where: and(
-				d.name.in(domainNames),
-				s.name.in(applicationNames)
+			WHERE: AND(
+				d.name.IN(domainNames),
+				s.name.IN(applicationNames)
 			)
 		})
 	}
@@ -114,7 +114,7 @@ export class ApplicationVersionDao
 		let d: QDomain
 
 		const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
-			select: {
+			SELECT: {
 				integerVersion: Y,
 				majorVersion: Y,
 				minorVersion: Y,
@@ -129,15 +129,15 @@ export class ApplicationVersionDao
 				},
 				_localId: Y
 			},
-			from: [
+			FROM: [
 				sv = Q.ApplicationVersion,
 				s = sv.application.innerJoin(),
 				d = s.domain.innerJoin()
 			],
-			where: and(
-				sv._localId.in(this._localIdsForMaxVersionSelect()),
-				d.name.in(applicationDomain_Names),
-				s.name.in(applicationNames)
+			WHERE: AND(
+				sv._localId.IN(this._localIdsForMaxVersionSelect()),
+				d.name.IN(applicationDomain_Names),
+				s.name.IN(applicationNames)
 			),
 		})
 
@@ -157,19 +157,19 @@ export class ApplicationVersionDao
 		let sv2: QApplicationVersion
 
 		return field({
-			from: [
+			FROM: [
 				svMax = tree({
-					from: [
+					FROM: [
 						sv2 = Q.ApplicationVersion
 					],
-					select: distinct({
+					SELECT: distinct({
 						integerVersion: max(sv2.integerVersion),
 						_localId: sv2._localId,
 						applicationIndex: sv2.application.index
 					})
 				})
 			],
-			select: svMax._localId
+			SELECT: svMax._localId
 		})
 	}
 */
@@ -178,9 +178,9 @@ export class ApplicationVersionDao
 		context: IContext
 	): Promise<void> {
 		let sv: QApplicationVersion;
-		const values = []
+		const VALUES = []
 		for (const applicationVersion of applicationVersions) {
-			values.push([
+			VALUES.push([
 				applicationVersion._localId, applicationVersion.integerVersion,
 				applicationVersion.versionString, applicationVersion.majorVersion,
 				applicationVersion.minorVersion, applicationVersion.patchVersion,
@@ -188,7 +188,7 @@ export class ApplicationVersionDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: sv = Q.ApplicationVersion,
+			INSERT_INTO: sv = Q.ApplicationVersion,
 			columns: [
 				sv._localId,
 				sv.integerVersion,
@@ -199,7 +199,7 @@ export class ApplicationVersionDao
 				sv.application.index,
 				sv.jsonApplication
 			],
-			values
+			VALUES: VALUES
 		}, context)
 	}
 

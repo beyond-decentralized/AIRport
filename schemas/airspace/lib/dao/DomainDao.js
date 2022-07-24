@@ -10,19 +10,19 @@ let DomainDao = class DomainDao extends BaseDomainDao {
     async findByIdIn(domainIds) {
         let d;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 d = Q.Domain
             ],
-            where: d._localId.in(domainIds)
+            WHERE: d._localId.IN(domainIds)
         });
     }
     async findMapByNameWithNames(domainNames) {
         let d;
         const domains = await this.db.find.tree({
-            select: {},
-            from: [d = Q.Domain],
-            where: d.name.in(domainNames)
+            SELECT: {},
+            FROM: [d = Q.Domain],
+            WHERE: d.name.IN(domainNames)
         });
         const domainMapByNameWithNames = new Map();
         for (const domain of domains) {
@@ -33,25 +33,25 @@ let DomainDao = class DomainDao extends BaseDomainDao {
     async findOneByName(name) {
         let d;
         return await this.db.findOne.tree({
-            select: {},
-            from: [d = Q.Domain],
-            where: d.name.equals(name)
+            SELECT: {},
+            FROM: [d = Q.Domain],
+            WHERE: d.name.equals(name)
         });
     }
     async findByNames(names) {
         let d;
         return await this.db.find.tree({
-            select: {},
-            from: [d = Q.Domain],
-            where: d.name.in(names)
+            SELECT: {},
+            FROM: [d = Q.Domain],
+            WHERE: d.name.IN(names)
         });
     }
     async findByName(name) {
         let d;
         return await this.db.findOne.tree({
-            select: {},
-            from: [d = Q.Domain],
-            where: d.name.equals(name)
+            SELECT: {},
+            FROM: [d = Q.Domain],
+            WHERE: d.name.equals(name)
         });
     }
     async checkAndInsertIfNeeded(domains, context) {
@@ -70,35 +70,35 @@ let DomainDao = class DomainDao extends BaseDomainDao {
             return;
         }
         let d;
-        const values = [];
+        const VALUES = [];
         for (const domain of newDomains) {
-            values.push([
+            VALUES.push([
                 domain._localId, domain.name
             ]);
         }
         await this.db.insertValuesGenerateIds({
-            insertInto: d = Q.Domain,
+            INSERT_INTO: d = Q.Domain,
             columns: [
                 d._localId,
                 d.name,
             ],
-            values
+            VALUES
         }, context);
     }
     async insert(domains) {
         let d;
-        const values = [];
+        const VALUES = [];
         for (const domain of domains) {
-            values.push([
+            VALUES.push([
                 domain.name
             ]);
         }
         const ids = await this.db.insertValuesGenerateIds({
-            insertInto: d = Q.Domain,
+            INSERT_INTO: d = Q.Domain,
             columns: [
                 d.name
             ],
-            values
+            VALUES
         });
         for (let i = 0; i < domains.length; i++) {
             let domain = domains[i];

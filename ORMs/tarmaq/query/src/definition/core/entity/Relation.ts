@@ -17,9 +17,9 @@ export interface IQRelation<IQ extends IQEntity> {
 	leftJoin(): IQ;
 
 	/*
-	update a
-	set b = 1
-	where a.cId =
+	UPDATE a
+	SET b = 1
+	WHERE a.cId =
 	 */
 }
 /**

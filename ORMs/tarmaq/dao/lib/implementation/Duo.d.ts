@@ -6,7 +6,7 @@ import { IDuo, IFieldsSelect } from '../definition/Duo';
  * Data Manipulation object.
  */
 export declare class Duo<Entity, EntitySelect extends IEntitySelectProperties, EntityCreate extends IEntityCreateProperties, EntityUpdateColumns extends IEntityUpdateColumns, EntityUpdate extends IEntityUpdateProperties, ApplicationEntity_LocalId extends IEntityIdProperties, EntityCascadeGraph extends IEntityCascadeGraph, IQE extends IQEntity> implements IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdate, ApplicationEntity_LocalId, EntityCascadeGraph, IQE> {
-    select: IFieldsSelect<EntitySelect>;
+    SELECT: IFieldsSelect<EntitySelect>;
     private dbEntity;
     constructor(dbEntityId: DbEntityId | DbEntity, qApplication?: QApplication);
     getLocalIdStub(_localIds: number | string | number[] | string[]): ApplicationEntity_LocalId;

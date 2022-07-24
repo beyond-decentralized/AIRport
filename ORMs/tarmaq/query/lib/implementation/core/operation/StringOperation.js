@@ -7,7 +7,7 @@ export class StringOperation extends ValueOperation {
     constructor() {
         super(OperationCategory.STRING);
     }
-    like(lValue, rValue
+    LIKE(lValue, rValue
     // TODO: implement ReqExp
     //| RegExp
     ) {

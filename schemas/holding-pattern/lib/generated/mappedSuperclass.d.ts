@@ -283,21 +283,30 @@ export declare const MAPPED_SUPERCLASS: {
             index: number;
             primitive?: undefined;
         } | {
-            decorators: any[];
+            decorators: {
+                name: string;
+                values: any[];
+            }[];
+            isGenerated: boolean;
+            isId: boolean;
+            isMappedSuperclass: boolean;
             isTransient: boolean;
             name: string;
             optional: boolean;
             type: string;
             ownerEntity: any;
             nonArrayType: string;
-            isGenerated?: undefined;
-            isId?: undefined;
-            isMappedSuperclass?: undefined;
             entity?: undefined;
             index?: undefined;
             primitive?: undefined;
         } | {
-            decorators: any[];
+            decorators: {
+                name: string;
+                values: any[];
+            }[];
+            isGenerated: boolean;
+            isId: boolean;
+            isMappedSuperclass: boolean;
             isTransient: boolean;
             name: string;
             optional: boolean;
@@ -305,9 +314,6 @@ export declare const MAPPED_SUPERCLASS: {
             ownerEntity: any;
             nonArrayType: string;
             primitive: string;
-            isGenerated?: undefined;
-            isId?: undefined;
-            isMappedSuperclass?: undefined;
             entity?: undefined;
             index?: undefined;
         })[];

@@ -219,7 +219,7 @@ export class DatabaseFacade
 	}
 
 	/**
-	 * Updates an entity with a where clause, using a column based set clause
+	 * Updates an entity with a WHERE clause, using a column based set clause
 	 * - internal API.  Use the API provided by the IEntityDatabaseFacade.
 	 *
 	 * @return Number of records updated

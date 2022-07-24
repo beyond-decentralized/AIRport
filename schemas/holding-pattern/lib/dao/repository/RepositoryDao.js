@@ -4,7 +4,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { and, Y } from '@airport/tarmaq-query';
+import { AND, Y } from '@airport/tarmaq-query';
 import { Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control';
 import { BaseRepositoryDao, Q, } from '../../generated/generated';
@@ -14,25 +14,25 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
         let rth;
         let th;
         return await this.db.findOne.tree({
-            select: {
+            SELECT: {
                 immutable: Y,
                 repositoryTransactionHistory: {
                     saveTimestamp: Y
                 }
             },
-            from: [
+            FROM: [
                 r = Q.Repository,
                 rth = r.repositoryTransactionHistory.innerJoin(),
                 th = rth.transactionHistory.innerJoin()
             ],
-            where: and(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
+            WHERE: AND(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
         }, context);
     }
     async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
         let r;
         const _localId = Y;
         return await this.db.find.tree({
-            select: {
+            SELECT: {
                 _localId,
                 owner: {
                     _localId
@@ -40,16 +40,16 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 createdAt: Y,
                 GUID: Y
             },
-            from: [
+            FROM: [
                 r = Q.Repository
             ],
-            where: r._localId.in(repositoryIds)
+            WHERE: r._localId.IN(repositoryIds)
         });
     }
     async findWithOwnerBy_LocalIds(repositoryIds) {
         let r;
         return await this.db.find.tree({
-            select: {
+            SELECT: {
                 '*': Y,
                 owner: {
                     _localId: Y,
@@ -57,17 +57,17 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                     username: Y
                 }
             },
-            from: [
+            FROM: [
                 r = Q.Repository,
                 r.owner.innerJoin()
             ],
-            where: r._localId.in(repositoryIds)
+            WHERE: r._localId.IN(repositoryIds)
         });
     }
     async findWithOwnerBy_LocalIdIn(repository_localIds) {
         let r, o;
         return await this.db.find.graph({
-            select: {
+            SELECT: {
                 '*': Y,
                 owner: {
                     _localId: Y,
@@ -76,34 +76,34 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                     username: Y
                 }
             },
-            from: [
+            FROM: [
                 r = Q.Repository,
                 r.owner.innerJoin()
             ],
-            where: r._localId.in(repository_localIds)
+            WHERE: r._localId.IN(repository_localIds)
         });
     }
     async findByGUIDs(repositoryGUIDs) {
         let r;
         return await this.db.find.tree({
-            select: {},
-            from: [
+            SELECT: {},
+            FROM: [
                 r = Q.Repository
             ],
-            where: r.GUID.in(repositoryGUIDs)
+            WHERE: r.GUID.IN(repositoryGUIDs)
         });
     }
     async insert(repositories, context) {
         let r;
-        const values = [];
+        const VALUES = [];
         for (const repository of repositories) {
-            values.push([
+            VALUES.push([
                 repository.createdAt, repository.GUID, repository.ageSuitability,
                 repository.source, repository.immutable, repository.owner._localId,
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            insertInto: r = Q.Repository,
+            INSERT_INTO: r = Q.Repository,
             columns: [
                 r.createdAt,
                 r.GUID,
@@ -112,7 +112,7 @@ let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
                 r.immutable,
                 r.owner._localId
             ],
-            values
+            VALUES
         }, context);
         for (let i = 0; i < repositories.length; i++) {
             let repository = repositories[i];

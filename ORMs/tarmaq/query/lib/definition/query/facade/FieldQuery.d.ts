@@ -5,6 +5,6 @@ import { RawNonEntityQuery } from './NonEntityQuery';
  * Field queries are defined in this format.
  */
 export interface RawFieldQuery<IQF extends IQOrderableField<IQF>> extends RawNonEntityQuery {
-    select: IQF | IQDistinctFunction<IQF>;
+    SELECT: IQF | IQDistinctFunction<IQF>;
 }
 //# sourceMappingURL=FieldQuery.d.ts.map

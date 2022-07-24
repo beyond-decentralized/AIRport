@@ -27,9 +27,9 @@ export class SynchronizationConflictDao
 		context: IContext
 	): Promise<void> {
 		let sc: QSynchronizationConflict;
-		const values = []
+		const VALUES = []
 		for (const synchronizationConflict of synchronizationConflicts) {
-			values.push([
+			VALUES.push([
 				synchronizationConflict.type,
 				synchronizationConflict.acknowledged,
 				synchronizationConflict.repository._localId,
@@ -38,7 +38,7 @@ export class SynchronizationConflictDao
 			])
 		}
 		const ids = await this.db.insertValuesGenerateIds({
-			insertInto: sc = Q.SynchronizationConflict,
+			INSERT_INTO: sc = Q.SynchronizationConflict,
 			columns: [
 				sc.type,
 				sc.acknowledged,
@@ -46,7 +46,7 @@ export class SynchronizationConflictDao
 				sc.overwrittenRecordHistory._localId,
 				sc.overwritingRecordHistory._localId
 			],
-			values
+			VALUES
 		}, context)
 		for (let i = 0; i < synchronizationConflicts.length; i++) {
 			let synchronizationConflict = synchronizationConflicts[i]

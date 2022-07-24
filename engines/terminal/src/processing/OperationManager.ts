@@ -4,12 +4,12 @@ import {
 	IUtils,
 } from '@airport/air-traffic-control'
 import {
-	and,
+	AND,
 	Delete,
 	IApplicationUtils,
 	InsertValues,
 	IQOperableFieldInternal,
-	or,
+	OR,
 	RawDelete,
 	RawInsertValues,
 	UpdateProperties,
@@ -205,9 +205,9 @@ export class OperationManager
 		[context.dbEntity.applicationVersion.application.index][context.dbEntity.name]
 
 		let rawInsert: RawInsertValues<any> = {
-			insertInto: qEntity,
+			INSERT_INTO: qEntity,
 			columns: this.qMetadataUtils.getAllInsertableColumns(qEntity),
-			values: []
+			VALUES: []
 		}
 		let columnIndexesInValues = []
 
@@ -260,12 +260,12 @@ export class OperationManager
 					}
 				}
 			}
-			rawInsert.values.push(valuesFragment)
+			rawInsert.VALUES.push(valuesFragment)
 		}
 
 		const insertValues: InsertValues<any> = new InsertValues(rawInsert)
 
-		if (rawInsert.values.length) {
+		if (rawInsert.VALUES.length) {
 			const generatedColumns = context.dbEntity.columns.filter(
 				column => column.isGenerated)
 			if (generatedColumns.length && ensureGeneratedValues) {
@@ -303,7 +303,7 @@ export class OperationManager
 	}
 
 	/**
-	 * On an update operation, can a nested create contain an update?
+	 * On an UPDATE operation, can a nested create contain an update?
 	 * Via:
 	 *  OneToMany:
 	 *    Yes, if the child entity is itself in the update cache
@@ -411,14 +411,14 @@ export class OperationManager
 			if (runUpdate) {
 				let whereFragment
 				if (idWhereFragments.length > 1) {
-					whereFragment = and(...idWhereFragments)
+					whereFragment = AND(...idWhereFragments)
 				} else {
 					whereFragment = idWhereFragments[0]
 				}
 				const rawUpdate = {
-					update: qEntity,
-					set: setFragment,
-					where: whereFragment
+					UPDATE: qEntity,
+					SET: setFragment,
+					WHERE: whereFragment
 				}
 				const update: UpdateProperties<any, any> = new UpdateProperties(rawUpdate)
 				const portableQuery: PortableQuery = this.queryFacade.getPortableQuery(
@@ -499,7 +499,7 @@ export class OperationManager
 			}
 
 			if (idWhereFragments.length > 1) {
-				entityIdWhereClauses.push(and(...idWhereFragments))
+				entityIdWhereClauses.push(AND(...idWhereFragments))
 			} else {
 				entityIdWhereClauses.push(idWhereFragments[0])
 			}
@@ -508,16 +508,16 @@ export class OperationManager
 			] = true
 		}
 
-		let where
+		let WHERE
 		if (entityIdWhereClauses.length === 1) {
-			where = entityIdWhereClauses[0]
+			WHERE = entityIdWhereClauses[0]
 		} else {
-			where = or(...entityIdWhereClauses)
+			WHERE = OR(...entityIdWhereClauses)
 		}
 
 		let rawDelete: RawDelete<any> = {
-			deleteFrom: qEntity,
-			where
+			DELETE_FROM: qEntity,
+			WHERE
 		}
 		let deleteWhere: Delete<any> = new Delete(rawDelete)
 		let portableQuery: PortableQuery = this.queryFacade.getPortableQuery(

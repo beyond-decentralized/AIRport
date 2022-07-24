@@ -34,7 +34,7 @@ import {
 } from './SyncInUtils'
 import { IOperationContext } from '@airport/terminal-map'
 import { IDatabaseFacade } from '@airport/tarmaq-dao'
-import { and, IQEntityInternal, or } from '@airport/tarmaq-query'
+import { AND, IQEntityInternal, OR } from '@airport/tarmaq-query'
 
 /**
  * Stage 2 data processor is used to optimize the number of required
@@ -130,7 +130,7 @@ export class Stage2SyncedInDataProcessor
 				const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity)
 				let creatingColumns = true
 				let numInserts = 0
-				const values: any[][] = []
+				const VALUES: any[][] = []
 				for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
 					for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
 						for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
@@ -171,7 +171,7 @@ export class Stage2SyncedInDataProcessor
 								currentNonIdColumnArrayIndex++
 							}
 							if (columnIndexedValues.length) {
-								values.push(rowValues)
+								VALUES.push(rowValues)
 							}
 							creatingColumns = false
 						}
@@ -184,9 +184,9 @@ export class Stage2SyncedInDataProcessor
 						.__driver__.dbEntity
 					try {
 						await this.databaseFacade.insertValues({
-							insertInto: qEntity,
+							INSERT_INTO: qEntity,
 							columns,
-							values
+							VALUES
 						}, context)
 					} finally {
 						context.dbEntity = previousDbEntity
@@ -299,14 +299,14 @@ export class Stage2SyncedInDataProcessor
 					let actorWhereFragments: JSONBaseOperation[] = []
 					for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
 						numClauses++
-						actorWhereFragments.push(and(
-							qEntity._actorRecordId.in(Array.from(actorRecordIdSet)),
+						actorWhereFragments.push(AND(
+							qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)),
 							qEntity.actor._localId.equals(actorId)
 						))
 					}
-					repositoryWhereFragments.push(and(
+					repositoryWhereFragments.push(AND(
 						qEntity.repository._localId.equals(repositoryId),
-						or(...actorWhereFragments)
+						OR(...actorWhereFragments)
 					))
 				}
 
@@ -317,8 +317,8 @@ export class Stage2SyncedInDataProcessor
 						.__driver__.dbEntity
 					try {
 						await this.databaseFacade.deleteWhere({
-							deleteFrom: qEntity,
-							where: or(...repositoryWhereFragments)
+							DELETE_FROM: qEntity,
+							WHERE: OR(...repositoryWhereFragments)
 						}, context)
 					} finally {
 						context.dbEntity = previousDbEntity

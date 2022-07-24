@@ -7,6 +7,6 @@ import { ValueOperation } from "./Operation";
  */
 export declare class UntypedOperation extends ValueOperation<number | string, JSONRawUntypedOperation, IQUntypedField> implements IUntypedOperation {
     constructor();
-    like(lValue: IQUntypedField, rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>): JSONRawUntypedOperation;
+    LIKE(lValue: IQUntypedField, rValue: string | IQUntypedField | RawFieldQuery<IQUntypedField>): JSONRawUntypedOperation;
 }
 //# sourceMappingURL=UntypedOperation.d.ts.map

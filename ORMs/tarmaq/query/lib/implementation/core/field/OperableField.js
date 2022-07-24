@@ -25,17 +25,17 @@ export class QOperableField extends QField {
         }
         return this.operation.greaterThanOrEquals(this, value);
     }
-    isNotNull() {
-        return this.operation.isNotNull(this);
+    IS_NOT_NULL() {
+        return this.operation.IS_NOT_NULL(this);
     }
-    isNull() {
-        return this.operation.isNull(this);
+    IS_NULL() {
+        return this.operation.IS_NULL(this);
     }
-    in(value) {
+    IN(value) {
         if (value instanceof Function) {
             value = value();
         }
-        return this.operation.in(this, value);
+        return this.operation.IN(this, value);
     }
     lessThan(value) {
         if (value instanceof Function) {
@@ -55,14 +55,14 @@ export class QOperableField extends QField {
         }
         return this.operation.notEquals(this, value);
     }
-    notIn(values) {
+    NOT_IN(values) {
         values = values.map((value) => {
             if (value instanceof Function) {
                 return value();
             }
             return value;
         });
-        return this.operation.notIn(this, values);
+        return this.operation.NOT_IN(this, values);
     }
 }
 //# sourceMappingURL=OperableField.js.map

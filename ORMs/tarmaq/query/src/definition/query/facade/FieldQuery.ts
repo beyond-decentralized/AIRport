@@ -7,5 +7,5 @@ import { RawNonEntityQuery } from './NonEntityQuery';
  */
 export interface RawFieldQuery<IQF extends IQOrderableField<IQF>>
 	extends RawNonEntityQuery {
-	select: IQF | IQDistinctFunction<IQF>;
+	SELECT: IQF | IQDistinctFunction<IQF>;
 }

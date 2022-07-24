@@ -21,10 +21,10 @@ export class SheetQuery extends DistinguishableQuery {
         });
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
-        let select = this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager);
+        let select = this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager);
         let jsonFieldQuery = {
             S: select,
-            forUpdate: this.rawQuery.forUpdate
+            forUpdate: this.rawQuery.FOR_UPDATE
         };
         return this.getNonEntityQuery(this.rawQuery, jsonFieldQuery, null, queryUtils, fieldUtils, relationManager);
     }

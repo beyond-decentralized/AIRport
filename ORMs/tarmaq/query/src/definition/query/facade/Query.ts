@@ -15,16 +15,16 @@ import { IQueryUtils } from '../../utils/IQueryUtils';
  * Query input format. All queries extend this format.
  */
 export interface RawQuery {
-	forUpdate?: boolean
-	from?: (IFrom | IEntityRelationFrom)[];
-	orderBy?: IFieldInOrderBy<any>[];
-	select: any;
-	where?: JSONBaseOperation;
+	FOR_UPDATE?: boolean
+	FROM?: (IFrom | IEntityRelationFrom)[];
+	ORDER_BY?: IFieldInOrderBy<any>[];
+	SELECT: any;
+	WHERE?: JSONBaseOperation;
 }
 
 export interface RawLimitedQuery {
-	limit?: number;
-	offset?: number;
+	LIMIT?: number;
+	OFFSET?: number;
 }
 
 /**

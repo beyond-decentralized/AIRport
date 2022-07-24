@@ -34,11 +34,11 @@ export class ApplicationPropertyColumnDao
 		let rc: QApplicationPropertyColumn
 
 		return this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				rc = Q.ApplicationPropertyColumn
 			],
-			where: rc.column._localId.in(columnIds)
+			WHERE: rc.column._localId.IN(columnIds)
 		})
 	}
 
@@ -47,9 +47,9 @@ export class ApplicationPropertyColumnDao
 		context: IContext
 	): Promise<void> {
 		let spc: QApplicationPropertyColumn;
-		const values = []
+		const VALUES = []
 		for (const applicationPropertyColumn of applicationPropertyColumns) {
-			values.push([
+			VALUES.push([
 				applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
 				applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
 				applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
@@ -57,7 +57,7 @@ export class ApplicationPropertyColumnDao
 			])
 		}
 		await this.db.insertValuesGenerateIds({
-			insertInto: spc = Q.ApplicationPropertyColumn,
+			INSERT_INTO: spc = Q.ApplicationPropertyColumn,
 			columns: [
 				spc.column._localId,
 				spc.property._localId,
@@ -65,7 +65,7 @@ export class ApplicationPropertyColumnDao
 				spc.removedInVersion._localId,
 				spc.sinceVersion._localId
 			],
-			values
+			VALUES
 		}, context)
 	}
 

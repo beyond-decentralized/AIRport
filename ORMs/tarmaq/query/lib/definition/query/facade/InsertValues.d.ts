@@ -1,8 +1,8 @@
 import { IQEntity } from '../../core/entity/Entity';
 import { IQOperableField } from "../../core/field/OperableField";
 export interface AbstractRawInsertValues<IQE extends IQEntity> {
-    insertInto: IQE;
-    values: any[][];
+    INSERT_INTO: IQE;
+    VALUES: any[][];
 }
 /**
  * INSERT statements are defined in this format.

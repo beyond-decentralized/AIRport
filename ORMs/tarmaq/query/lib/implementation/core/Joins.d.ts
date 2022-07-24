@@ -10,7 +10,7 @@ export declare function tree<IME extends ITreeEntity>(query: {
     (...args: any[]): RawTreeQuery<IME>;
 } | RawTreeQuery<IME>): IME & IFrom;
 /**
- * Sub-queries in select clause
+ * Sub-queries in SELECT clause
  * @param query
  * @returns {IQF}
  */

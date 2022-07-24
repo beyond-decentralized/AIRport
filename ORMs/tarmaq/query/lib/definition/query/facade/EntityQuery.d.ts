@@ -4,8 +4,8 @@ import { RawLimitedQuery, RawQuery } from './Query';
  * Entity queries are defined in this format.
  */
 export interface RawEntityQuery<EntitySelect> extends RawQuery {
-    from?: IEntityRelationFrom[];
-    select: EntitySelect;
+    FROM?: IEntityRelationFrom[];
+    SELECT: EntitySelect;
 }
 /**
  * Entity queries with LIMIT and OFFSET clauses are serialized in this format

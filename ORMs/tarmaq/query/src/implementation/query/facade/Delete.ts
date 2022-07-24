@@ -31,11 +31,11 @@ export class Delete<IQE extends IQEntity>
 		relationManager: IRelationManager
 	): JsonDelete {
 		return {
-			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.deleteFrom)
+			DF: <JSONEntityRelation>(<IQEntityInternal><any>this.rawDelete.DELETE_FROM)
 				.__driver__.getRelationJson(
 					this.columnAliases,
 					queryUtils, fieldUtils, relationManager),
-			W: queryUtils.whereClauseToJSON(this.rawDelete.where, this.columnAliases)
+			W: queryUtils.whereClauseToJSON(this.rawDelete.WHERE, this.columnAliases)
 		}
 	}
 }

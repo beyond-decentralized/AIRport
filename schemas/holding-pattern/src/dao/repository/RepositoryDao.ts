@@ -1,5 +1,5 @@
 import {
-	and,
+	AND,
 	Y
 } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
@@ -72,18 +72,18 @@ export class RepositoryDao
 		let th: QTransactionHistory
 
 		return await this.db.findOne.tree({
-			select: {
+			SELECT: {
 				immutable: Y,
 				repositoryTransactionHistory: {
 					saveTimestamp: Y
 				}
 			},
-			from: [
+			FROM: [
 				r = Q.Repository,
 				rth = r.repositoryTransactionHistory.innerJoin(),
 				th = rth.transactionHistory.innerJoin()
 			],
-			where: and(
+			WHERE: AND(
 				r.source.equals(repositorySource),
 				r.GUID.equals(repositoryGUID),
 				th.transactionType.equals(TransactionType.REMOTE_SYNC)
@@ -97,7 +97,7 @@ export class RepositoryDao
 		let r: QRepository
 		const _localId = Y
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				_localId,
 				owner: {
 					_localId
@@ -105,10 +105,10 @@ export class RepositoryDao
 				createdAt: Y,
 				GUID: Y
 			},
-			from: [
+			FROM: [
 				r = Q.Repository
 			],
-			where: r._localId.in(repositoryIds)
+			WHERE: r._localId.IN(repositoryIds)
 		})
 	}
 
@@ -117,7 +117,7 @@ export class RepositoryDao
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
-			select: {
+			SELECT: {
 				'*': Y,
 				owner: {
 					_localId: Y,
@@ -125,12 +125,12 @@ export class RepositoryDao
 					username: Y
 				}
 			},
-			from: [
+			FROM: [
 				r = Q.Repository,
 				r.owner.innerJoin()
 			],
-			where:
-				r._localId.in(repositoryIds)
+			WHERE:
+				r._localId.IN(repositoryIds)
 		})
 	}
 
@@ -140,7 +140,7 @@ export class RepositoryDao
 		let r: QRepository,
 			o: QUserAccount
 		return await this.db.find.graph({
-			select: {
+			SELECT: {
 				'*': Y,
 				owner: {
 					_localId: Y,
@@ -149,12 +149,12 @@ export class RepositoryDao
 					username: Y
 				}
 			},
-			from: [
+			FROM: [
 				r = Q.Repository,
 				r.owner.innerJoin()
 			],
-			where:
-				r._localId.in(repository_localIds)
+			WHERE:
+				r._localId.IN(repository_localIds)
 		})
 	}
 
@@ -163,11 +163,11 @@ export class RepositoryDao
 	): Promise<IRepository[]> {
 		let r: QRepository
 		return await this.db.find.tree({
-			select: {},
-			from: [
+			SELECT: {},
+			FROM: [
 				r = Q.Repository
 			],
-			where: r.GUID.in(repositoryGUIDs)
+			WHERE: r.GUID.IN(repositoryGUIDs)
 		})
 	}
 
@@ -176,15 +176,15 @@ export class RepositoryDao
 		context: IContext
 	): Promise<void> {
 		let r: QRepository;
-		const values = []
+		const VALUES = []
 		for (const repository of repositories) {
-			values.push([
+			VALUES.push([
 				repository.createdAt, repository.GUID, repository.ageSuitability,
 				repository.source, repository.immutable, repository.owner._localId,
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
-			insertInto: r = Q.Repository,
+			INSERT_INTO: r = Q.Repository,
 			columns: [
 				r.createdAt,
 				r.GUID,
@@ -193,7 +193,7 @@ export class RepositoryDao
 				r.immutable,
 				r.owner._localId
 			],
-			values
+			VALUES
 		}, context)
 		for (let i = 0; i < repositories.length; i++) {
 			let repository = repositories[i]

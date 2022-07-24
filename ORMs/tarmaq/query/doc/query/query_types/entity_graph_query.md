@@ -6,7 +6,7 @@
     - [Reason](#reason)
 
 <!-- /TOC -->
-Entity Graph Query is an entity based query API where the select clause
+Entity Graph Query is an entity based query API where the SELECT clause
 is specified as a JSON object tree.
 
 Entity Graph Query returns fully interlinked graphs of objects. So, the

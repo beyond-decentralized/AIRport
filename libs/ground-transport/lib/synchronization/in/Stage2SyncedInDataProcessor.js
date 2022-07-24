@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ensureChildJsMap, ensureChildJsSet, airEntity } from '@airport/ground-control';
-import { and, or } from '@airport/tarmaq-query';
+import { AND, OR } from '@airport/tarmaq-query';
 let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
     async applyChangesToDb(stage1Result, applicationsByApplicationVersion_LocalIdMap) {
         const context = {};
@@ -42,7 +42,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                 const nonIdColumns = this.getNonIdColumnsInIndexOrder(dbEntity);
                 let creatingColumns = true;
                 let numInserts = 0;
-                const values = [];
+                const VALUES = [];
                 for (const [repositoryId, creationForRepositoryMap] of creationInTableMap) {
                     for (const [actorId, creationForActorMap] of creationForRepositoryMap) {
                         for (const [_actorRecordId, creationOfRowMap] of creationForActorMap) {
@@ -79,7 +79,7 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                                 currentNonIdColumnArrayIndex++;
                             }
                             if (columnIndexedValues.length) {
-                                values.push(rowValues);
+                                VALUES.push(rowValues);
                             }
                             creatingColumns = false;
                         }
@@ -91,9 +91,9 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                         .__driver__.dbEntity;
                     try {
                         await this.databaseFacade.insertValues({
-                            insertInto: qEntity,
+                            INSERT_INTO: qEntity,
                             columns,
-                            values
+                            VALUES
                         }, context);
                     }
                     finally {
@@ -175,9 +175,9 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                     let actorWhereFragments = [];
                     for (const [actorId, actorRecordIdSet] of deletionForRepositoryMap) {
                         numClauses++;
-                        actorWhereFragments.push(and(qEntity._actorRecordId.in(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
+                        actorWhereFragments.push(AND(qEntity._actorRecordId.IN(Array.from(actorRecordIdSet)), qEntity.actor._localId.equals(actorId)));
                     }
-                    repositoryWhereFragments.push(and(qEntity.repository._localId.equals(repositoryId), or(...actorWhereFragments)));
+                    repositoryWhereFragments.push(AND(qEntity.repository._localId.equals(repositoryId), OR(...actorWhereFragments)));
                 }
                 if (numClauses) {
                     const previousDbEntity = context.dbEntity;
@@ -185,8 +185,8 @@ let Stage2SyncedInDataProcessor = class Stage2SyncedInDataProcessor {
                         .__driver__.dbEntity;
                     try {
                         await this.databaseFacade.deleteWhere({
-                            deleteFrom: qEntity,
-                            where: or(...repositoryWhereFragments)
+                            DELETE_FROM: qEntity,
+                            WHERE: OR(...repositoryWhereFragments)
                         }, context);
                     }
                     finally {

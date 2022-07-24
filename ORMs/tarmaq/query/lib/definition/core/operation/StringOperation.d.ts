@@ -6,7 +6,7 @@ import { IValueOperation, JSONRawValueOperation } from './Operation';
  * Interface for all operation implementations with a boolean value.
  */
 export interface IStringOperation extends IValueOperation<string, JSONRawStringOperation, IQStringField> {
-    like(lValue: IQStringField, rValue: string | IQStringField | RawFieldQuery<IQStringField>): JSONRawStringOperation;
+    LIKE(lValue: IQStringField, rValue: string | IQStringField | RawFieldQuery<IQStringField>): JSONRawStringOperation;
 }
 /**
  * JSON representation of a boolean operation as it exists immediately after

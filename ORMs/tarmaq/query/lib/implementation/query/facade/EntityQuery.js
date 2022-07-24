@@ -12,11 +12,11 @@ export class EntityQuery extends MappableQuery {
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         return {
-            S: this.selectClauseToJSON(this.rawQuery.select, queryUtils, fieldUtils, relationManager),
-            F: this.fromClauseToJSON(this.rawQuery.from, queryUtils, fieldUtils, relationManager),
-            forUpdate: this.rawQuery.forUpdate,
-            W: queryUtils.whereClauseToJSON(this.rawQuery.where, this.columnAliases),
-            OB: this.orderByClauseToJSON(this.rawQuery.orderBy)
+            S: this.selectClauseToJSON(this.rawQuery.SELECT, queryUtils, fieldUtils, relationManager),
+            F: this.fromClauseToJSON(this.rawQuery.FROM, queryUtils, fieldUtils, relationManager),
+            forUpdate: this.rawQuery.FOR_UPDATE,
+            W: queryUtils.whereClauseToJSON(this.rawQuery.WHERE, this.columnAliases),
+            OB: this.orderByClauseToJSON(this.rawQuery.ORDER_BY)
         };
     }
     nonDistinctSelectClauseToJSON(rawSelect) {
@@ -48,8 +48,8 @@ export class LimitedEntityQuery extends EntityQuery {
     }
     toJSON(queryUtils, fieldUtils, relationManager) {
         let limitedJsonEntity = super.toJSON(queryUtils, fieldUtils, relationManager);
-        limitedJsonEntity.L = this.rawQuery.limit;
-        limitedJsonEntity.O = this.rawQuery.offset;
+        limitedJsonEntity.L = this.rawQuery.LIMIT;
+        limitedJsonEntity.O = this.rawQuery.OFFSET;
         return limitedJsonEntity;
     }
 }

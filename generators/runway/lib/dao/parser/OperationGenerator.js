@@ -465,7 +465,7 @@ Query must be in the following format:
     alias2: QEntity1,
     ...
   ) => ({
-    select: {
+    SELECT: {
       propertyA: Y,
       ...
       relationA: {
@@ -473,21 +473,21 @@ Query must be in the following format:
       },
       ...
     },
-    from: [
+    FROM: [
       alias1 = Q.Entity1,
       alias2 = alias1.relationA.innerJoin()
       ...
     ],
-    where?: and(
+    WHERE?: AND(
       alias1.propertyA.equals(paramA),
       alias1.propertyB.notEquals(paramB),
       alias1.propertyC.greaterThan(paramC),
-      alias1.propertyD.like(paramD),
+      alias1.propertyD.LIKE(paramD),
       ...
       ),
-    orderBy?: [alias.propertyA, ...],
-    limit?: 123,
-    offset?: 456
+    ORDER_BY?: [alias.propertyA, ...],
+    LIMIT?: 123,
+    OFFSET?: 456
       
   }))
   ${memberName}
