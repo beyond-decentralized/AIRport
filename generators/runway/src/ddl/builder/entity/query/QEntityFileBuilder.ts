@@ -96,26 +96,16 @@ export class QEntityFileBuilder
 
     let imports = this.buildImports();
 
-    let addEntityCommand = '';
-
     let fileSource = `${imports}
-
-declare function require(moduleName: string): any;
-
 ${interfaceSource}
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
 
 ${classSource}
-
 ${idClassSource}
 
-${relationClassSource}
-
-${addEntityCommand}`;
+${relationClassSource}`;
 
     return fileSource;
   }

@@ -8,7 +8,6 @@ import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
 
-
 export interface IVCoreEntityBuilder
     extends IBuilder {
 

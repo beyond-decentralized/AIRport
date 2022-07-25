@@ -28,7 +28,7 @@ export const exists = function <T, E extends IValidationEntity<T>>(
 }
 
 export const isNull = function <T, E extends IValidationEntity<T>>(
-    validationSpec?: T
+    validationSpec?: boolean
 ): E {
     return null
 }

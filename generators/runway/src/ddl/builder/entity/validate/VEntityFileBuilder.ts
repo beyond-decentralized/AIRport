@@ -48,20 +48,12 @@ export class VEntityFileBuilder
     this.vEntityInterfaceBuilder = new IVEntityInterfaceBuilder(entity, this.vEntityBuilder);
 
     this.addImport([
-      'IVEntityInternal',
-      'IEntityIdProperties',
-      'IEntityCascadeGraph',
-      'IEntityUpdateColumns',
-      'IEntityUpdateProperties',
       'IEntitySelectProperties',
       'IVBooleanField',
       'IVDateField',
       'IVNumberField',
-      'IVOneToManyRelation', 'IVStringField',
-      'IVUntypedField',
-      'IVEntity', 'IVRelation',
-      'IVAirEntityOneToManyRelation', 'IVAirEntityRelation',
-      'RawDelete', 'RawUpdate'],
+      'IVStringField',
+      'IVUntypedField'],
       '@airport/airbridge-validate');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
     if (entity.parentEntity) {
@@ -74,48 +66,21 @@ export class VEntityFileBuilder
       }
       let parentEntityType = entity.parentEntity.type;
       this.addImport([
-        // `I${parentEntityType}`,
-        `${parentEntityType}Graph`,
-        `${parentEntityType}EId`,
-        `${parentEntityType}EUpdateColumns`,
-        `${parentEntityType}EUpdateProperties`,
-        `${parentEntityType}ESelect`,
-        `V${parentEntityType}VId`,
-        `V${parentEntityType}VRelation`,
-        `V${parentEntityType}`],
-        parentVEntityRelativePath);
+        `${parentEntityType}VDescriptor`
+      ], parentVEntityRelativePath);
     }
 
   }
 
   build(): string {
     let interfaceSource = this.vEntityInterfaceBuilder.build();
-    let idClassSource = this.vEntityIdBuilder.build();
-    let relationClassSource = this.vEntityRelationBuilder.build();
-    let classSource = this.vEntityBuilder.build();
 
     let imports = this.buildImports();
 
-    let addEntityCommand = '';
-
     let fileSource = `${imports}
 
-declare function require(moduleName: string): any;
-
 ${interfaceSource}
-
-
-///////////////////////////////////////////////
-//  VALIDATION IMPLEMENTATION SPECIFIC INTERFACES //
-///////////////////////////////////////////////
-
-${classSource}
-
-${idClassSource}
-
-${relationClassSource}
-
-${addEntityCommand}`;
+`;
 
     return fileSource;
   }
@@ -142,17 +107,7 @@ ${addEntityCommand}`;
         vEntityRelativePath = this.pathBuilder.prefixQToFileName(vEntityRelativePath);
       }
       type = type.replace('[]', '');
-      let vType = 'V' + type;
-      this.addImport([
-        // 'I' + type,
-        type + 'Graph',
-        type + 'EId',
-        type + 'EOptionalId',
-        type + 'EUpdateProperties',
-        type + 'ESelect',
-        vType,
-        vType + 'VQId',
-        vType + 'VRelation'],
+      this.addImport([type + 'VDescriptor'],
         vEntityRelativePath);
 
       if (property.fromProject) {
