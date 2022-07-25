@@ -8,6 +8,7 @@ import { Inject, Injected } from '@airport/direction-indicator';
 import { Y } from '@airport/tarmaq-query';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 import { doEnsureContext } from './query/Lookup';
+import { FieldsSelect } from './FieldsSelect';
 /**
  * Created by Papa on 8/26/2017.
  */
@@ -18,6 +19,7 @@ let Dao = class Dao {
             .applicationVersion.entities[dbEntityId];
         // TODO: figure out how to inject EntityDatabaseFacade and dependencies
         this.db = new EntityDatabaseFacade(dbEntity, Q, this);
+        this.SELECT = new FieldsSelect(dbEntity);
     }
     static BaseSave(config) {
         return function (target, propertyKey) {

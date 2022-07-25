@@ -9,8 +9,8 @@ import {IBuilder}                from '../Builder'
 import {SIndexedEntity}          from '../application/SEntity'
 import {FileBuilder}             from './FileBuilder'
 import {IEntityInterfaceBuilder} from './IEntityInterfaceBuilder'
-import {QEntityBuilder}          from './QEntityBuilder'
-import {QRelationBuilder}        from './QRelationBuilder'
+import {QEntityBuilder}          from './query/QEntityBuilder'
+import {QRelationBuilder}        from './query/QRelationBuilder'
 
 /**
  * Created by Papa on 4/26/2016.

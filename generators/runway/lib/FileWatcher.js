@@ -5,9 +5,9 @@ import { currentApiFileSignatureMap, currentApplicationApi } from './api/parser/
 import { entityOperationMap } from './dao/parser/OperationGenerator';
 import { ApplicationQueryGenerator } from './dao/parser/ApplicationQueryGenerator';
 import { DaoBuilder } from './ddl/builder/DaoBuilder';
-import { DuoBuilder } from './ddl/builder/DuoBuilder';
+import { DvoBuilder } from './ddl/builder/DvoBuilder';
 import { EntityInterfaceFileBuilder } from './ddl/builder/entity/EntityInterfaceFileBuilder';
-import { QEntityFileBuilder } from './ddl/builder/entity/QEntityFileBuilder';
+import { QEntityFileBuilder } from './ddl/builder/entity/query/QEntityFileBuilder';
 import { EntityMappingBuilder } from './ddl/builder/EntityMappingBuilder';
 import { GeneratedFileListingBuilder } from './ddl/builder/GeneratedFileListingBuilder';
 import { GeneratedSummaryBuilder } from './ddl/builder/GeneratedSummaryBuilder';
@@ -99,7 +99,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
         const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
         const qApplicationBuilder = new QApplicationBuilder(pathBuilder, configuration);
         const daoBuilder = new DaoBuilder(pathBuilder);
-        const duoBuilder = new DuoBuilder(pathBuilder);
+        const duoBuilder = new DvoBuilder(pathBuilder);
         const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
         const apiIndexBuilder = new ApiIndexBuilder(pathBuilder);
         let numApiFiles = 0;

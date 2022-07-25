@@ -1,7 +1,7 @@
 import { DbEntity, QueryResultType } from '@airport/ground-control';
 import { IEntityContext } from '@airport/tarmaq-entity';
 import { IEntityQueryContext, IEntitySelectProperties, RawEntityQuery } from '@airport/tarmaq-query';
-import { IDao } from '../../definition/Dao';
+import { IDao } from '../../definition/IDao';
 import { IEntityLookup } from '../../definition/query/EntityLookup';
 import { LookupProxy } from './Lookup';
 export interface IEntityLookupInternal<Child, IESP extends IEntitySelectProperties> extends IEntityLookup {

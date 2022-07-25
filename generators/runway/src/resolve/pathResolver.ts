@@ -1,5 +1,4 @@
 import {FileBuilder}        from '../ddl/builder/entity/FileBuilder'
-import {QEntityFileBuilder} from '../ddl/builder/entity/QEntityFileBuilder'
 import {EntityCandidate}    from '../ddl/parser/EntityCandidate'
 
 /**

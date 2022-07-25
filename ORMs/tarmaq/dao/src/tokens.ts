@@ -2,7 +2,7 @@ import {
     ENTITY_STATE_MANAGER,
     UPDATE_CACHE_MANAGER
 } from "@airport/ground-control"
-import { IDao } from "./definition/Dao"
+import { IDao } from "./definition/IDao"
 import { IDatabaseFacade, IQueryFacade } from "./definition/IDatabaseFacade"
 import { ILookup } from "./definition/query/Lookup"
 import { INonEntityFind } from "./definition/query/NonEntityFind"

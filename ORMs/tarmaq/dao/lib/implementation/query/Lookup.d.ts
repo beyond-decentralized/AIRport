@@ -3,7 +3,7 @@ import { QueryResultType } from '@airport/ground-control';
 import { ILookup } from '../../definition/query/Lookup';
 import { IAbstractQuery, IEntityQueryContext, IEntityUtils, IQueryContext, RawQuery } from '@airport/tarmaq-query';
 import { IQueryFacade } from '../../definition/IDatabaseFacade';
-import { IDao } from '../../definition/Dao';
+import { IDao } from '../../definition/IDao';
 export declare class LookupProxy implements ILookup {
     protected dao: IDao<any, any, any, any, any, any, any, any>;
     ensureContext<C extends IContext = IContext>(context?: C): C;

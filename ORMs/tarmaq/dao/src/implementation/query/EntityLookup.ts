@@ -10,7 +10,7 @@ import {
 	IEntitySelectProperties,
 	RawEntityQuery
 } from '@airport/tarmaq-query'
-import { IDao } from '../../definition/Dao'
+import { IDao } from '../../definition/IDao'
 import { IEntityLookup } from '../../definition/query/EntityLookup'
 import { LookupProxy } from './Lookup'
 

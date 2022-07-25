@@ -17,10 +17,9 @@ import {
   ISaveResult
 } from '@airport/ground-control';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
-import { IDuo } from '../definition/Duo';
 import { IEntityFind } from '../definition/query/EntityFind';
 import { IEntityFindOne } from '../definition/query/EntityFindOne';
-import { IDao } from '../definition/Dao';
+import { IDao } from '../definition/IDao';
 import { EntityFind } from './query/EntityFind';
 import { EntityFindOne } from './query/EntityFindOne';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
@@ -42,10 +41,6 @@ export class EntityDatabaseFacade<Entity,
   EntityCreate, EntityUpdateColumns,
   EntityUpdateProperties, ApplicationEntity_LocalId,
   EntityCascadeGraph, IQ> {
-
-  duo: IDuo<Entity, EntitySelect, EntityCreate,
-    EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
-    EntityCascadeGraph, IQ>;
 
   find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
 

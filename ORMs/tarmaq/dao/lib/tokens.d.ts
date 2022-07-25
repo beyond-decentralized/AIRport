@@ -1,4 +1,4 @@
-import { IDao } from "./definition/Dao";
+import { IDao } from "./definition/IDao";
 import { IDatabaseFacade, IQueryFacade } from "./definition/IDatabaseFacade";
 import { ILookup } from "./definition/query/Lookup";
 import { INonEntityFind } from "./definition/query/NonEntityFind";

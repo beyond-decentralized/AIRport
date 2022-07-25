@@ -2,10 +2,9 @@ import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEnt
 import { QApplication } from '@airport/aviation-communication';
 import { DbEntity, ISaveResult } from '@airport/ground-control';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
-import { IDuo } from '../definition/Duo';
 import { IEntityFind } from '../definition/query/EntityFind';
 import { IEntityFindOne } from '../definition/query/EntityFindOne';
-import { IDao } from '../definition/Dao';
+import { IDao } from '../definition/IDao';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityContext } from '@airport/tarmaq-entity';
 /**
@@ -15,7 +14,6 @@ export declare class EntityDatabaseFacade<Entity, EntitySelect extends IEntitySe
     dbEntity: DbEntity;
     private Q;
     protected dao: IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQ>;
-    duo: IDuo<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQ>;
     find: IEntityFind<Entity, Array<Entity>, EntitySelect>;
     findOne: IEntityFindOne<Entity, EntitySelect>;
     constructor(dbEntity: DbEntity, Q: QApplication, dao: IDao<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, IQ>);

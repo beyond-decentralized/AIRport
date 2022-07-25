@@ -29,12 +29,14 @@ import {
 	Y
 } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
-import { IDao } from '../definition/Dao';
+import { IDao } from '../definition/IDao';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
 import { ILookup } from '../definition/query/Lookup';
 import { EntityDatabaseFacade } from './EntityDatabaseFacade';
 import { doEnsureContext } from './query/Lookup';
+import { FieldsSelect } from './FieldsSelect';
+import { IFieldsSelect } from '../definition/IFieldsSelect';
 
 /**
  * Created by Papa on 8/26/2017.
@@ -77,7 +79,9 @@ export abstract class Dao<Entity,
 
 	db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate,
 		EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
-		EntityCascadeGraph, QE>;
+		EntityCascadeGraph, QE>
+
+	SELECT: IFieldsSelect<EntitySelect>
 
 	constructor(
 		dbEntityId: DbEntityId,
@@ -91,7 +95,8 @@ export abstract class Dao<Entity,
 			EntitySelect, EntityCreate,
 			EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
 			EntityCascadeGraph, QE>(
-				dbEntity, Q, this);
+				dbEntity, Q, this)
+		this.SELECT = new FieldsSelect(dbEntity)
 	}
 
 	mapById(
@@ -300,4 +305,5 @@ export abstract class Dao<Entity,
 	): IEntityContext {
 		return doEnsureContext(context) as IEntityContext;
 	}
+
 }

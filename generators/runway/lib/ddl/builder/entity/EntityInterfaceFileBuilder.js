@@ -1,7 +1,7 @@
 import { resolveRelativeEntityPath, resolveRelativePath } from '../../../resolve/pathResolver';
 import { FileBuilder } from './FileBuilder';
 import { IEntityInterfaceBuilder } from './IEntityInterfaceBuilder';
-import { QEntityBuilder } from './QEntityBuilder';
+import { QEntityBuilder } from './query/QEntityBuilder';
 /**
  * Created by Papa on 4/26/2016.
  */

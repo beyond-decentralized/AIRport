@@ -12,7 +12,7 @@ import {
 	RawQuery
 } from '@airport/tarmaq-query';
 import { IQueryFacade } from '../../definition/IDatabaseFacade';
-import { IDao } from '../../definition/Dao';
+import { IDao } from '../../definition/IDao';
 
 export class LookupProxy
 	implements ILookup {

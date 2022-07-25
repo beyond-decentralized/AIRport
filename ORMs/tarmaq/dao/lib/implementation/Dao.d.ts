@@ -3,10 +3,11 @@ import { IContext, PropertyDecorator } from '@airport/direction-indicator';
 import { ApplicationEntity_LocalId as DbEntityId, IEntityStateManager, IAirEntity, ISaveResult, IUpdateCacheManager } from '@airport/ground-control';
 import { IEntityCascadeGraph, IEntityCreateProperties, IEntityIdProperties, IEntitySelectProperties, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, RawEntityQuery } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
-import { IDao } from '../definition/Dao';
+import { IDao } from '../definition/IDao';
 import { IDatabaseFacade } from '../definition/IDatabaseFacade';
 import { IEntityDatabaseFacade } from '../definition/IEntityDatabaseFacade';
 import { ILookup } from '../definition/query/Lookup';
+import { IFieldsSelect } from '../definition/IFieldsSelect';
 /**
  * Created by Papa on 8/26/2017.
  */
@@ -18,6 +19,7 @@ export declare abstract class Dao<Entity, EntitySelect extends IEntitySelectProp
     lookup: ILookup;
     updateCacheManager: IUpdateCacheManager;
     db: IEntityDatabaseFacade<Entity, EntitySelect, EntityCreate, EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId, EntityCascadeGraph, QE>;
+    SELECT: IFieldsSelect<EntitySelect>;
     constructor(dbEntityId: DbEntityId, Q: QApplication, internal?: boolean);
     mapById(entities: (Entity & IAirEntity)[]): Map<string, Entity>;
     count(context?: IContext): Promise<number>;

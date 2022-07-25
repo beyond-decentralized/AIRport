@@ -51,9 +51,9 @@ export class QApplicationBuilder
       .map(
         entityName => `${entityName}: Q${entityName};`,
       ).join('\n\t');
-    // TODO: enable DUO and DAO injections into QApplication, if needed
-    // const duoDefinitions = this.entityNames.map(
-    // 	entityName => `${entityName}: IBase${entityName}Duo;`
+    // TODO: enable DVO and DAO injections into QApplication, if needed
+    // const dvoDefinitions = this.entityNames.map(
+    // 	entityName => `${entityName}: IBase${entityName}Dvo;`
     // ).join('\n\t\t');
     // const daoDefinitions = this.entityNames.map(
     // 	entityName => `${entityName}: IBase${entityName}Dao;`
@@ -75,9 +75,9 @@ export class QApplicationBuilder
       entityName =>
         `  ${entityName}`,
     ).join(',\n') + `\n} from '../ddl/ddl';`;
-    // const iDuoImports = this.entityNames.map(
+    // const iDvoImports = this.entityNames.map(
     // 	entityName =>
-    // 		`IBase${entityName}Duo`
+    // 		`IBase${entityName}Dvo`
     // ).join(',\n\t');
     // const iDaoImports = this.entityNames.map(
     // 	entityName =>
@@ -85,15 +85,15 @@ export class QApplicationBuilder
     // ).join(',\n\t');
 
     // import {
-    // 	${iDuoImports}
-    // } from './baseDuos';
+    // 	${iDvoImports}
+    // } from './baseDvos';
     //
     // import {
     // 	${iDaoImports}
     // } from './baseDaos';
 
-    // duo: {
-    // 	${duoDefinitions}
+    // dvo: {
+    // 	${dvoDefinitions}
     // }
     //
     // dao: {

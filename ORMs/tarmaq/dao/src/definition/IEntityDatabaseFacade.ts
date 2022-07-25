@@ -1,6 +1,5 @@
 import { IEntityFind } from './query/EntityFind'
 import { IEntityFindOne } from './query/EntityFindOne'
-import { IDuo } from './Duo'
 import {
     IEntityCascadeGraph,
     IEntityCreateProperties,
@@ -31,10 +30,6 @@ export interface IEntityDatabaseFacade<IEntity,
     ApplicationEntity_LocalId,
     EntityCascadeGraph,
     IQ> {
-
-    duo: IDuo<IEntity, EntitySelect, EntityCreateProperties,
-        EntityUpdateColumns, EntityUpdateProperties, ApplicationEntity_LocalId,
-        EntityCascadeGraph, IQ>;
 
     /**
      * The Promise based API for all Entity 'find' (find many) queries.

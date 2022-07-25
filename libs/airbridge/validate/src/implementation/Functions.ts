@@ -2,6 +2,12 @@ import { IValidationEntity } from "../definition/IValidationEntity";
 import { IValidationField } from "../definition/IValidationField";
 import { IValidationNumber } from "../definition/IValidationNumber";
 
+export const and = function <T, F extends IValidationField<T>>(
+    ...conditions: (T | F)[]
+): F {
+    return null
+}
+
 export const between = function (
     from: number,
     to: number
@@ -32,4 +38,3 @@ export const or = function <T, F extends IValidationField<T>>(
 ): F {
     return null
 }
-

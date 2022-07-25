@@ -1,0 +1,1 @@
+{"version":3,"file":"IFieldsSelect.d.ts","sourceRoot":"","sources":["../../src/definition/IFieldsSelect.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,uBAAuB,EAAE,MAAM,uBAAuB,CAAA;AAE/D;;GAEG;AACH,MAAM,WAAW,aAAa,CAAC,YAAY,SAAS,uBAAuB;IAEvE,GAAG,EAAE,YAAY,CAAA;IAEjB,MAAM,EAAE,YAAY,CAAA;IAEpB,UAAU,EAAE,YAAY,CAAA;IAExB,UAAU,EAAE,YAAY,CAAA;CAE3B"}
