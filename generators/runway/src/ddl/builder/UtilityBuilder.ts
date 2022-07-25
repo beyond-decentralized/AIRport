@@ -68,7 +68,7 @@ ${baseClassDefinitions}`;
 					`${entityName}EId`,
 					`${entityName}Graph`,
 					`Q${entityName}`
-				], `${this.pathBuilder.prefixQToFileName(this.generatedPathMapByEntityName[entityName])}`);
+				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], 'q')}`);
 			});
 
 		this.addImport([

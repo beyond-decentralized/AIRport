@@ -6,8 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { RecordHistory } from '../../ddl/ddl';
-import { BaseRecordHistoryDuo, } from '../../generated/generated';
-let RecordHistoryDuo = class RecordHistoryDuo extends BaseRecordHistoryDuo {
+let RecordHistoryDuo = class RecordHistoryDuo {
     getNewRecord(actorId, _actorRecordId) {
         const recordHistory = new RecordHistory();
         recordHistory._actorRecordId = _actorRecordId;

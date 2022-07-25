@@ -8,7 +8,7 @@ export abstract class ImplementationFileBuilder
 	extends FileBuilder
 	implements IBuilder {
 
-	public daoListingFilePath;
+	public listingFilePath;
 
 	protected entityIdMapByName: { [entityName: string]: ApplicationEntity_LocalId }          = {};
 	protected entityNames: string[]
@@ -21,7 +21,7 @@ export abstract class ImplementationFileBuilder
 		pathBuilder: PathBuilder,
 	) {
 		super(null, null, pathBuilder, null);
-		this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
+		this.listingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
 	}
 
 	addFileNameAndPaths(
@@ -33,10 +33,10 @@ export abstract class ImplementationFileBuilder
 		if (entityId === undefined) {
 			return;
 		}
-		const ddlRelativePath                   = resolveRelativePath(this.daoListingFilePath, fullDdlPath)
+		const ddlRelativePath                   = resolveRelativePath(this.listingFilePath, fullDdlPath)
 			.replace('.ts', '');
 		this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-		const generatedRelativePath             = resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
+		const generatedRelativePath             = resolveRelativePath(this.listingFilePath, fullGenerationPath)
 			.replace('.ts', '');
 		this.generatedPathMapByEntityName[entityName]
 		                                        = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);

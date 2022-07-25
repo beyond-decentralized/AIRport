@@ -12,7 +12,6 @@ import {
 	SystemWideOperationId
 } from '../../ddl/ddl'
 import {
-	BaseRepositoryTransactionHistoryDuo,
 	IActor,
 	IOperationHistory,
 	IRepository,
@@ -50,7 +49,6 @@ export interface IRepositoryTransactionHistoryDuo {
 
 @Injected()
 export class RepositoryTransactionHistoryDuo
-	extends BaseRepositoryTransactionHistoryDuo
 	implements IRepositoryTransactionHistoryDuo {
 
 	@Inject()

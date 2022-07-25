@@ -8,7 +8,6 @@ import { IApplicationReferenceDao } from './dao/ApplicationReferenceDao';
 import { IApplicationRelationColumnDao } from './dao/ApplicationRelationColumnDao';
 import { IApplicationRelationDao } from './dao/ApplicationRelationDao';
 import { IApplicationVersionDao } from './dao/ApplicationVersionDao';
-import { IApplicationVersionDuo } from './duo/ApplicationVersionDuo';
 export declare const DOMAIN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IDomainDao>;
 export declare const APPLICATION_COLUMN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationColumnDao>;
 export declare const APPLICATION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationDao>;
@@ -19,5 +18,4 @@ export declare const APPLICATION_REFERENCE_DAO: import("@airport/direction-indic
 export declare const APPLICATION_RELATION_COLUMN_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationRelationColumnDao>;
 export declare const APPLICATION_RELATION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationRelationDao>;
 export declare const APPLICATION_VERSION_DAO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationVersionDao>;
-export declare const APPLICATION_VERSION_DUO: import("@airport/direction-indicator").IDependencyInjectionToken<IApplicationVersionDuo>;
 //# sourceMappingURL=tokens.d.ts.map

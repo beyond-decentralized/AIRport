@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { v4 as guidv4 } from "uuid";
 import { Repository, RepositoryTransactionHistory } from '../../ddl/ddl';
-import { BaseRepositoryTransactionHistoryDuo, } from '../../generated/generated';
-let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo extends BaseRepositoryTransactionHistoryDuo {
+let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
     getNewRecord(repositoryId, isRepositoryCreation) {
         let repositoryTransactionHistory = new RepositoryTransactionHistory();
         let saveTimestamp = new Date().getTime();

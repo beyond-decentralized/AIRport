@@ -2,8 +2,8 @@
  * Created by Papa on 4/28/2016.
  */
 
-import * as fs           from 'fs';
-import path              from 'path';
+import * as fs from 'fs';
+import path from 'path';
 import { normalizePath } from '../../resolve/pathResolver';
 import { Configuration } from '../options/Options';
 
@@ -17,11 +17,11 @@ export class PathBuilder {
 	usePathCache: boolean;
 
 	constructor(private configuration: Configuration) {
-		this.workingDirPath       = normalizePath(process.cwd());
-		this.ddlDirPath           = this.workingDirPath + '/' + normalizePath(configuration.airport.ddlDir);
-		this.generatedDirPath     = normalizePath(configuration.airport.generatedDir);
+		this.workingDirPath = normalizePath(process.cwd());
+		this.ddlDirPath = this.workingDirPath + '/' + normalizePath(configuration.airport.ddlDir);
+		this.generatedDirPath = normalizePath(configuration.airport.generatedDir);
 		this.fullGeneratedDirPath = this.workingDirPath + '/' + this.generatedDirPath;
-		this.usePathCache         = configuration.airport.cacheGeneratedPaths ? true : false;
+		this.usePathCache = configuration.airport.cacheGeneratedPaths ? true : false;
 	}
 
 	// getOutDirPrefix(fullGenerationPath: string): string {
@@ -38,7 +38,10 @@ export class PathBuilder {
 	// 	return outDirPrefix
 	// }
 
-	prefixQToFileName(sourceRelativePath: string): string {
+	prefixToFileName(
+		sourceRelativePath: string,
+		prefix
+	): string {
 		let pathFragments;
 		if (sourceRelativePath.indexOf(path.sep) > -1) {
 			pathFragments = sourceRelativePath.split(path.sep);
@@ -48,28 +51,28 @@ export class PathBuilder {
 			pathFragments = [sourceRelativePath];
 		}
 		let fileName = pathFragments[pathFragments.length - 1];
-		fileName     = 'q' + fileName;
+		fileName = prefix + fileName;
 
 		pathFragments[pathFragments.length - 1] = fileName;
-		sourceRelativePath                      = pathFragments.join(path.posix.sep);
+		sourceRelativePath = pathFragments.join(path.posix.sep);
 
 		return sourceRelativePath;
 	}
 
 	getFullPathToGeneratedSource( //
 		sourcePath: string,
-		prefixQ = true
+		prefix = 'q'
 	): string {
-		let generatedPath = this.getGenerationPathForFile(sourcePath, prefixQ);
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
 
 		return this.workingDirPath + '/' + generatedPath;
 	}
 
 	setupFileForGeneration(
 		sourcePath: string,
-		prefixQ = true,
+		prefix = 'q',
 	): string {
-		let generatedPath    = this.getGenerationPathForFile(sourcePath, prefixQ);
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
 		let genPathFragments = generatedPath.split('/');
 
 		let currentPath = this.workingDirPath;
@@ -91,7 +94,7 @@ export class PathBuilder {
 			this.dirExistanceMap[currentPath] = true;
 		}
 
-		const pathFragments                     = generatedPath.split('/');
+		const pathFragments = generatedPath.split('/');
 		pathFragments[pathFragments.length - 1] = pathFragments[pathFragments.length - 1].toLowerCase();
 
 		return './' + this.convertFileNameToLowerCase(generatedPath);
@@ -100,7 +103,7 @@ export class PathBuilder {
 	convertFileNameToLowerCase( //
 		path: string //
 	): string {
-		const pathFragments                     = path.split('/');
+		const pathFragments = path.split('/');
 		pathFragments[pathFragments.length - 1] = pathFragments[pathFragments.length - 1].toLowerCase();
 
 		return pathFragments.join('/');
@@ -108,7 +111,7 @@ export class PathBuilder {
 
 	private getGenerationPathForFile(
 		sourcePath: string,
-		prefixQ = true
+		prefix
 	): string {
 		sourcePath = normalizePath(sourcePath);
 
@@ -118,8 +121,8 @@ export class PathBuilder {
 		}
 		let sourceRelativePath = sourcePath.substr(this.ddlDirPath.length + 1);
 
-		if (prefixQ) {
-			sourceRelativePath = this.prefixQToFileName(sourceRelativePath);
+		if (prefix) {
+			sourceRelativePath = this.prefixToFileName(sourceRelativePath, prefix);
 		}
 
 		return this.generatedDirPath + '/' + sourceRelativePath;

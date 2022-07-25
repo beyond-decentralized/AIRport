@@ -129,7 +129,7 @@ ${relationClassSource}`;
         type = property.entity.type;
         qEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
         qEntityRelativePath = qEntityRelativePath.replace('.ts', '');
-        qEntityRelativePath = this.pathBuilder.prefixQToFileName(qEntityRelativePath);
+        qEntityRelativePath = this.pathBuilder.prefixToFileName(qEntityRelativePath, 'q');
       }
       type = type.replace('[]', '');
       let qType = 'Q' + type;
@@ -149,7 +149,7 @@ ${relationClassSource}`;
         let relationEntityPath = property.fromProject;
         this.addImport(['I' + type], relationEntityPath, false);
       } else {
-        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, false);
+        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
         entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
         this.addImport(['I' + type], entityInterfaceRelativePath, false);

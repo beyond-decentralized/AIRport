@@ -10,8 +10,6 @@ import { SIndexedEntity } from '../../application/SEntity';
 import { FileBuilder } from '../FileBuilder';
 import { IVEntityInterfaceBuilder } from './IVEntityInterfaceBuilder';
 import { VEntityBuilder } from './VEntityBuilder';
-import { VEntityIdBuilder } from './VEntityIdBuilder';
-import { VEntityRelationBuilder } from './VEntityRelationBuilder';
 import { VRelationBuilder } from './VRelationBuilder';
 
 /**
@@ -23,8 +21,6 @@ export class VEntityFileBuilder
   implements IBuilder {
 
   vEntityBuilder: VEntityBuilder;
-  vEntityIdBuilder: VEntityIdBuilder;
-  vEntityRelationBuilder: VEntityRelationBuilder;
   vEntityInterfaceBuilder: IVEntityInterfaceBuilder;
 
   importMap: { [fileName: string]: { [asName: string]: string } } = {};
@@ -41,10 +37,6 @@ export class VEntityFileBuilder
     super(entity, fullGenerationPath, pathBuilder, configuration);
     this.vEntityBuilder = new VEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath,
       this, entityMapByName, sIndexedEntity);
-    this.vEntityIdBuilder = new VEntityIdBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath,
-      this, entityMapByName);
-    this.vEntityRelationBuilder = new VEntityRelationBuilder(entity, this.fullGenerationPath,
-      this.pathBuilder.workingDirPath, this, entityMapByName);
     this.vEntityInterfaceBuilder = new IVEntityInterfaceBuilder(entity, this.vEntityBuilder);
 
     this.addImport([
@@ -61,7 +53,7 @@ export class VEntityFileBuilder
       if (entity.parentEntity.project) {
         parentVEntityRelativePath = entity.parentEntity.project;
       } else {
-        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path);
+        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'v');
         parentVEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
       }
       let parentEntityType = entity.parentEntity.type;
@@ -104,7 +96,7 @@ ${interfaceSource}
         type = property.entity.type;
         vEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
         vEntityRelativePath = vEntityRelativePath.replace('.ts', '');
-        vEntityRelativePath = this.pathBuilder.prefixQToFileName(vEntityRelativePath);
+        vEntityRelativePath = this.pathBuilder.prefixToFileName(vEntityRelativePath, 'v');
       }
       type = type.replace('[]', '');
       this.addImport([type + 'VDescriptor'],
@@ -114,7 +106,7 @@ ${interfaceSource}
         let relationEntityPath = property.fromProject;
         this.addImport(['I' + type], relationEntityPath, false);
       } else {
-        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, false);
+        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
         entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
         this.addImport(['I' + type], entityInterfaceRelativePath, false);
@@ -129,7 +121,7 @@ ${interfaceSource}
     //   this.entityPath).replace('.ts', '');
     // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
 
-    const vFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
+    const vFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'v');
     let entityInterfaceRelativePath = resolveRelativePath(vFilePath, this.fullGenerationPath)
     entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
     this.addImport([

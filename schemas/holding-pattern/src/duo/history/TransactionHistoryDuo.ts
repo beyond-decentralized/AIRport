@@ -4,7 +4,6 @@ import {
 	TransactionHistory
 } from '../../ddl/ddl'
 import {
-	BaseTransactionHistoryDuo,
 	IRepositoryTransactionHistory,
 	ITransactionHistory,
 } from '../../generated/generated'
@@ -27,7 +26,6 @@ export interface ITransactionHistoryDuo {
 
 @Injected()
 export class TransactionHistoryDuo
-	extends BaseTransactionHistoryDuo
 	implements ITransactionHistoryDuo {
 
 	@Inject()

@@ -1,7 +1,6 @@
 import { EntityCandidate } from "../../../parser/EntityCandidate";
 import { SIndexedEntity } from "../../application/SEntity";
 import { FileBuilder } from '../FileBuilder';
-import { VColumnBuilder } from "./VColumnBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
@@ -11,9 +10,7 @@ import { VCoreEntityBuilder } from "./VCoreEntityBuilder";
  */
 export declare class VEntityBuilder extends VCoreEntityBuilder {
     sIndexedEntity: SIndexedEntity;
-    idColumnBuilders: VColumnBuilder[];
     idPropertyBuilders: VPropertyBuilder[];
-    nonIdColumnBuilders: VColumnBuilder[];
     nonIdPropertyBuilders: VPropertyBuilder[];
     nonIdRelationBuilders: VRelationBuilder[];
     idRelationBuilders: VRelationBuilder[];

@@ -3,7 +3,7 @@ import { IBuilder } from './Builder';
 import { FileBuilder } from './entity/FileBuilder';
 import { PathBuilder } from './PathBuilder';
 export declare abstract class ImplementationFileBuilder extends FileBuilder implements IBuilder {
-    daoListingFilePath: any;
+    listingFilePath: any;
     protected entityIdMapByName: {
         [entityName: string]: ApplicationEntity_LocalId;
     };

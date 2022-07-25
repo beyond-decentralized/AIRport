@@ -27,6 +27,7 @@ import { EntityCandidate } from './ddl/parser/EntityCandidate';
 import { generateDefinitions } from './FileProcessor';
 import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
+import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
 
 /**
  * Created by Papa on 3/30/2016.
@@ -146,14 +147,14 @@ export async function watchFiles(
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 		const qApplicationBuilder = new QApplicationBuilder(pathBuilder, configuration);
 		const daoBuilder = new DaoBuilder(pathBuilder);
-		const duoBuilder = new DvoBuilder(pathBuilder);
+		const dvoBuilder = new DvoBuilder(pathBuilder);
 		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
 
 		const apiIndexBuilder = new ApiIndexBuilder(pathBuilder)
 		let numApiFiles = 0
 		for (const apiFilePath in currentApiFileSignatureMap) {
 			let apiFileSignature = currentApiFileSignatureMap[apiFilePath]
-			if(!apiFileSignature.apiClasses.length) {
+			if (!apiFileSignature.apiClasses.length) {
 				continue
 			}
 			numApiFiles++
@@ -169,9 +170,11 @@ export async function watchFiles(
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName];
 
-			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, false);
+			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, null);
 			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
 			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
+			const vEntityFileBuilder = new VEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
 			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
@@ -191,18 +194,21 @@ export async function watchFiles(
 				tableIndex = sIndexedEntity.entity.tableIndex;
 			}
 			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
-			duoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
+			dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
 			entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
 			const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path);
-			const generationPath = pathBuilder.setupFileForGeneration(entity.path, false);
+			const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'v');
+			const generationPath = pathBuilder.setupFileForGeneration(entity.path, null);
 			const qEntitySourceString = qEntityFileBuilder.build();
+			const vEntitySourceString = vEntityFileBuilder.build();
 			fs.writeFileSync(qGenerationPath, qEntitySourceString);
+			fs.writeFileSync(vGenerationPath, vEntitySourceString);
 			const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
 			fs.writeFileSync(generationPath, entityInterfaceSourceString);
 		}
-		fs.writeFileSync(daoBuilder.daoListingFilePath, daoBuilder.build());
+		fs.writeFileSync(daoBuilder.listingFilePath, daoBuilder.build());
 		fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.application));
-		fs.writeFileSync(duoBuilder.daoListingFilePath, duoBuilder.build());
+		fs.writeFileSync(dvoBuilder.listingFilePath, dvoBuilder.build());
 		fs.writeFileSync(qApplicationBuilder.qApplicationFilePath, qApplicationBuilder.build(
 			configuration.airport.domain,
 			indexedApplication.application.name,

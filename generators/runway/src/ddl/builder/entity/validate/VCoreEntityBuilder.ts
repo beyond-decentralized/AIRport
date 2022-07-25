@@ -3,7 +3,6 @@ import { EntityCandidate } from "../../../parser/EntityCandidate";
 import { SColumn } from "../../application/SProperty";
 import { IBuilder, MemberData } from "../../Builder";
 import { FileBuilder } from "../FileBuilder";
-import { VColumnBuilder } from "./VColumnBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
@@ -44,14 +43,6 @@ export abstract class VCoreEntityBuilder
         toLowerCase?: boolean,
     ): void {
         this.fileBuilder.addImport(classNames, filePath, toLowerCase)
-    }
-
-    protected getVColumnBuilders(
-        columns: SColumn[]
-    ): VColumnBuilder[] {
-        return columns.map(
-            column => new VColumnBuilder(this, column)
-        )
     }
 
     protected getVPropertyBuilders(

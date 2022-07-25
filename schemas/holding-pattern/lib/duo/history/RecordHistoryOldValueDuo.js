@@ -6,11 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Injected } from '@airport/direction-indicator';
 import { RecordHistoryOldValue } from '../../ddl/ddl';
-import { BaseRecordHistoryOldValueDuo } from '../../generated/generated';
-let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo extends BaseRecordHistoryOldValueDuo {
-    constructor() {
-        super();
-    }
+let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
     getNewRecord(recordHistory, dbColumn, oldValue) {
         const recordHistoryOldValue = new RecordHistoryOldValue();
         recordHistoryOldValue.columnIndex = dbColumn.index;

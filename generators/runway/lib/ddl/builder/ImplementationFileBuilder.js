@@ -7,16 +7,16 @@ export class ImplementationFileBuilder extends FileBuilder {
         this.entityNames = [];
         this.ddlPathMapByEntityName = {};
         this.generatedPathMapByEntityName = {};
-        this.daoListingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
+        this.listingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
     }
     addFileNameAndPaths(entityId, entityName, fullDdlPath, fullGenerationPath) {
         if (entityId === undefined) {
             return;
         }
-        const ddlRelativePath = resolveRelativePath(this.daoListingFilePath, fullDdlPath)
+        const ddlRelativePath = resolveRelativePath(this.listingFilePath, fullDdlPath)
             .replace('.ts', '');
         this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-        const generatedRelativePath = resolveRelativePath(this.daoListingFilePath, fullGenerationPath)
+        const generatedRelativePath = resolveRelativePath(this.listingFilePath, fullGenerationPath)
             .replace('.ts', '');
         this.generatedPathMapByEntityName[entityName]
             = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);

@@ -23,9 +23,6 @@ import {
 } from './sequence';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -126,8 +123,6 @@ extends SequenceEId, SequenceEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -152,7 +147,6 @@ export interface QSequence extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QSequenceQId
 {
@@ -171,4 +165,3 @@ export interface QSequenceQId
 export interface QSequenceQRelation
 	extends IQRelation<QSequence>, QSequenceQId {
 }
-

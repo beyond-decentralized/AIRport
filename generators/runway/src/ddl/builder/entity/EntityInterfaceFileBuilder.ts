@@ -42,7 +42,7 @@ export class EntityInterfaceFileBuilder
 			if (entity.parentEntity.project) {
 				parentEntityRelativePath = entity.parentEntity.project
 			} else {
-				let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, false)
+				let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, null)
 				parentEntityRelativePath     = resolveRelativePath(fullGenerationPath, parentFullGenerationPath)
 			}
 			let parentEntityType = entity.parentEntity.type

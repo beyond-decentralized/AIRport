@@ -3,9 +3,7 @@ import {
 	MemberData
 } from "../../Builder";
 import { SIndexedEntity } from "../../application/SEntity";
-import { SColumn } from "../../application/SProperty";
 import { FileBuilder } from '../FileBuilder'
-import { VColumnBuilder } from "./VColumnBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
@@ -16,9 +14,7 @@ import { VCoreEntityBuilder } from "./VCoreEntityBuilder";
  */
 export class VEntityBuilder extends VCoreEntityBuilder {
 
-	idColumnBuilders: VColumnBuilder[];
 	idPropertyBuilders: VPropertyBuilder[];
-	nonIdColumnBuilders: VColumnBuilder[];
 	nonIdPropertyBuilders: VPropertyBuilder[];
 	nonIdRelationBuilders: VRelationBuilder[];
 	idRelationBuilders: VRelationBuilder[];
@@ -34,28 +30,9 @@ export class VEntityBuilder extends VCoreEntityBuilder {
 	) {
 		super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
 
-		let idColumns = [];
-		if (sIndexedEntity) {
-			idColumns = sIndexedEntity.idColumns;
-		}
-		this.idColumnBuilders = this.getVColumnBuilders(idColumns);
 		const idProperties = entity.getIdProperties();
 		this.idPropertyBuilders = this.getVPropertyBuilders(idProperties);
 		this.idRelationBuilders = this.getVRelationBuilders(idProperties, true);
-
-		let nonIdColumns = [];
-		if (sIndexedEntity) {
-			nonIdColumns = sIndexedEntity.columns.filter((
-				column: SColumn
-			) => {
-				if (idColumns.some(
-					idColumn => column.name === idColumn.name)) {
-					return false;
-				}
-				return true;
-			});
-		}
-		this.nonIdColumnBuilders = this.getVColumnBuilders(nonIdColumns);
 
 		const nonIdProperties = entity.getNonIdProperties();
 		this.nonIdPropertyBuilders = this.getVPropertyBuilders(nonIdProperties);

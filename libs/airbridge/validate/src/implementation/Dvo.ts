@@ -1,14 +1,5 @@
 import { QApplication } from '@airport/aviation-communication'
 import {
-  IEntityCascadeGraph,
-  IEntityCreateProperties,
-  IEntityIdProperties,
-  IEntitySelectProperties,
-  IEntityUpdateColumns,
-  IEntityUpdateProperties,
-  IQEntity,
-} from '@airport/tarmaq-query';
-import {
   DbEntity,
   ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
@@ -18,18 +9,10 @@ import { IDvo } from '../definition/IDvo';
  * Data Validation object.
  */
 export class Dvo<Entity,
-  EntitySelect extends IEntitySelectProperties,
-  EntityCreate extends IEntityCreateProperties,
-  EntityUpdateColumns extends IEntityUpdateColumns,
-  EntityUpdate extends IEntityUpdateProperties,
-  ApplicationEntity_LocalId extends IEntityIdProperties,
-  EntityCascadeGraph extends IEntityCascadeGraph,
-  IQE extends IQEntity>
-  implements IDvo<Entity, EntitySelect, EntityCreate,
-  EntityUpdateColumns, EntityUpdate, ApplicationEntity_LocalId,
-  EntityCascadeGraph, IQE> {
+  EntityVDescriptor>
+  implements IDvo<Entity, EntityVDescriptor> {
 
-  private dbEntity: DbEntity;
+  protected dbEntity: DbEntity;
 
   constructor(
     dbEntityId: DbEntityId | DbEntity,
@@ -45,7 +28,7 @@ export class Dvo<Entity,
 
   async validate(
     entity: Entity,
-    rules: any
+    rules: EntityVDescriptor
   ): Promise<boolean> {
     return null
   }

@@ -10,17 +10,14 @@ import {
 	AirEntity_ActorRecordId
 } from '../../ddl/ddl'
 import {
-	BaseOperationHistoryDuo,
 	IActor,
-	IBaseOperationHistoryDuo,
 	IOperationHistory,
 	IRecordHistory,
 	IRepositoryTransactionHistory
 } from '../../generated/generated'
 import { IRecordHistoryDuo } from './RecordHistoryDuo'
 
-export interface IOperationHistoryDuo
-	extends IBaseOperationHistoryDuo {
+export interface IOperationHistoryDuo {
 
 	getNewRecord(
 		entityChangeType: ChangeType,
@@ -46,7 +43,6 @@ export interface IOperationHistoryDuo
 
 @Injected()
 export class OperationHistoryDuo
-	extends BaseOperationHistoryDuo
 	implements IOperationHistoryDuo {
 
 	@Inject()

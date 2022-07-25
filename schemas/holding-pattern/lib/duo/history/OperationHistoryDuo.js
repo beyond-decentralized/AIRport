@@ -5,8 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { Inject, Injected } from '@airport/direction-indicator';
-import { BaseOperationHistoryDuo } from '../../generated/generated';
-let OperationHistoryDuo = class OperationHistoryDuo extends BaseOperationHistoryDuo {
+let OperationHistoryDuo = class OperationHistoryDuo {
     getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction) {
         let operationHistory = {
             actor,

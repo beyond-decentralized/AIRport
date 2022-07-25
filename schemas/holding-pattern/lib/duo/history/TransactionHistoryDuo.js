@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { TransactionType } from '@airport/ground-control';
 import { TransactionHistory } from '../../ddl/ddl';
-import { BaseTransactionHistoryDuo, } from '../../generated/generated';
-let TransactionHistoryDuo = class TransactionHistoryDuo extends BaseTransactionHistoryDuo {
+let TransactionHistoryDuo = class TransactionHistoryDuo {
     getNewRecord(transactionType = TransactionType.LOCAL) {
         let transaction = new TransactionHistory();
         transaction.transactionType = TransactionType.LOCAL;

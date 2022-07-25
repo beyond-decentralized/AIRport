@@ -6,8 +6,6 @@ import {
 	AirEntity_ActorRecordId
 } from '../../ddl/ddl'
 import {
-	BaseRecordHistoryDuo,
-	IBaseRecordHistoryDuo,
 	IRecordHistory,
 	IRecordHistoryNewValue,
 	IRecordHistoryOldValue,
@@ -16,8 +14,7 @@ import { IRecordHistoryNewValueDuo } from './RecordHistoryNewValueDuo'
 import { IRecordHistoryOldValueDuo } from './RecordHistoryOldValueDuo'
 
 
-export interface IRecordHistoryDuo
-	extends IBaseRecordHistoryDuo {
+export interface IRecordHistoryDuo {
 
 	getNewRecord(
 		actorId: Actor_LocalId,
@@ -40,12 +37,11 @@ export interface IRecordHistoryDuo
 
 @Injected()
 export class RecordHistoryDuo
-	extends BaseRecordHistoryDuo
 	implements IRecordHistoryDuo {
 
 	@Inject()
 	recordHistoryNewValueDuo: IRecordHistoryNewValueDuo
-	
+
 	@Inject()
 	recordHistoryOldValueDuo: IRecordHistoryOldValueDuo
 

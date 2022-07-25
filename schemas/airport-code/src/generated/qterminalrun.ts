@@ -23,9 +23,6 @@ import {
 } from './terminalrun';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -122,8 +119,6 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -146,7 +141,6 @@ export interface QTerminalRun extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QTerminalRunQId
 {
@@ -163,4 +157,3 @@ export interface QTerminalRunQId
 export interface QTerminalRunQRelation
 	extends IQRelation<QTerminalRun>, QTerminalRunQId {
 }
-

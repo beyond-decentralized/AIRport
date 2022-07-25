@@ -13,10 +13,10 @@ export declare class PathBuilder {
     workingDirPath: string;
     usePathCache: boolean;
     constructor(configuration: Configuration);
-    prefixQToFileName(sourceRelativePath: string): string;
+    prefixToFileName(sourceRelativePath: string, prefix: any): string;
     getFullPathToGeneratedSource(//
-    sourcePath: string, prefixQ?: boolean): string;
-    setupFileForGeneration(sourcePath: string, prefixQ?: boolean): string;
+    sourcePath: string, prefix?: string): string;
+    setupFileForGeneration(sourcePath: string, prefix?: string): string;
     convertFileNameToLowerCase(//
     path: string): string;
     private getGenerationPathForFile;

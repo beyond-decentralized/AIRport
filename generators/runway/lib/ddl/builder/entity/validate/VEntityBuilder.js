@@ -6,24 +6,9 @@ export class VEntityBuilder extends VCoreEntityBuilder {
     constructor(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName, sIndexedEntity) {
         super(entity, fullGenerationPath, workingDirPath, fileBuilder, entityMapByName);
         this.sIndexedEntity = sIndexedEntity;
-        let idColumns = [];
-        if (sIndexedEntity) {
-            idColumns = sIndexedEntity.idColumns;
-        }
-        this.idColumnBuilders = this.getVColumnBuilders(idColumns);
         const idProperties = entity.getIdProperties();
         this.idPropertyBuilders = this.getVPropertyBuilders(idProperties);
         this.idRelationBuilders = this.getVRelationBuilders(idProperties, true);
-        let nonIdColumns = [];
-        if (sIndexedEntity) {
-            nonIdColumns = sIndexedEntity.columns.filter((column) => {
-                if (idColumns.some(idColumn => column.name === idColumn.name)) {
-                    return false;
-                }
-                return true;
-            });
-        }
-        this.nonIdColumnBuilders = this.getVColumnBuilders(nonIdColumns);
         const nonIdProperties = entity.getNonIdProperties();
         this.nonIdPropertyBuilders = this.getVPropertyBuilders(nonIdProperties);
         this.nonIdRelationBuilders = this.getVRelationBuilders(nonIdProperties, true);

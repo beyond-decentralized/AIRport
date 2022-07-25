@@ -7,7 +7,7 @@ export class GeneratedSummaryBuilder {
         return `export * from './mappedSuperclass'
 export * from './qApplication';
 export * from './baseDaos';
-export * from './baseDuos';
+export * from './baseDvos';
 export * from './qInterfaces';
 export * from './interfaces';
 `;

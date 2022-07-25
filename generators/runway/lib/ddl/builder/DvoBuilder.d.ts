@@ -1,6 +1,12 @@
+import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 import { PathBuilder } from './PathBuilder';
-import { UtilityBuilder } from './UtilityBuilder';
-export declare class DvoBuilder extends UtilityBuilder {
+export declare class DvoBuilder extends ImplementationFileBuilder {
+    private classSuffix;
+    private diSet;
     constructor(pathBuilder: PathBuilder);
+    build(): string;
+    protected addImports(): void;
+    protected buildBaseClassDefinitions(): string;
+    protected buildStaticProperties(entityName: string): string;
 }
 //# sourceMappingURL=DvoBuilder.d.ts.map

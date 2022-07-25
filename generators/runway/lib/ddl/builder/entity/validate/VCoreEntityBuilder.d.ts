@@ -3,7 +3,6 @@ import { EntityCandidate } from "../../../parser/EntityCandidate";
 import { SColumn } from "../../application/SProperty";
 import { IBuilder, MemberData } from "../../Builder";
 import { FileBuilder } from "../FileBuilder";
-import { VColumnBuilder } from "./VColumnBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
@@ -37,7 +36,6 @@ export declare abstract class VCoreEntityBuilder implements IVCoreEntityBuilder 
         asName: string;
         sourceName: string;
     })[], filePath: string, toLowerCase?: boolean): void;
-    protected getVColumnBuilders(columns: SColumn[]): VColumnBuilder[];
     protected getVPropertyBuilders(properties: PropertyDocEntry[]): VPropertyBuilder[];
     protected getVTransientPropertyBuilders(properties: PropertyDocEntry[]): VTransientBuilder[];
     protected getVRelationBuilders(properties: PropertyDocEntry[], buildRelationInstance: boolean): VRelationBuilder[];

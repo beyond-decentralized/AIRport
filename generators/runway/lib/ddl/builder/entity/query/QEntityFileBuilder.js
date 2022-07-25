@@ -63,25 +63,16 @@ export class QEntityFileBuilder extends FileBuilder {
         let relationClassSource = this.qEntityRelationBuilder.build();
         let classSource = this.qEntityBuilder.build();
         let imports = this.buildImports();
-        let addEntityCommand = '';
         let fileSource = `${imports}
-
-declare function require(moduleName: string): any;
-
 ${interfaceSource}
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
 
 ${classSource}
-
 ${idClassSource}
 
-${relationClassSource}
-
-${addEntityCommand}`;
+${relationClassSource}`;
         return fileSource;
     }
     addRelationImports(relationBuilders) {
@@ -100,7 +91,7 @@ ${addEntityCommand}`;
                 type = property.entity.type;
                 qEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
                 qEntityRelativePath = qEntityRelativePath.replace('.ts', '');
-                qEntityRelativePath = this.pathBuilder.prefixQToFileName(qEntityRelativePath);
+                qEntityRelativePath = this.pathBuilder.prefixToFileName(qEntityRelativePath, 'q');
             }
             type = type.replace('[]', '');
             let qType = 'Q' + type;
@@ -120,7 +111,7 @@ ${addEntityCommand}`;
                 this.addImport(['I' + type], relationEntityPath, false);
             }
             else {
-                const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, false);
+                const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
                 let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath);
                 entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase();
                 this.addImport(['I' + type], entityInterfaceRelativePath, false);

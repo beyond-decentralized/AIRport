@@ -23,9 +23,6 @@ import {
 } from './systemwideoperationid';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -114,8 +111,6 @@ extends SystemWideOperationIdEId, SystemWideOperationIdEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -136,7 +131,6 @@ export interface QSystemWideOperationId extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QSystemWideOperationIdQId
 {
@@ -153,4 +147,3 @@ export interface QSystemWideOperationIdQId
 export interface QSystemWideOperationIdQRelation
 	extends IQRelation<QSystemWideOperationId>, QSystemWideOperationIdQId {
 }
-

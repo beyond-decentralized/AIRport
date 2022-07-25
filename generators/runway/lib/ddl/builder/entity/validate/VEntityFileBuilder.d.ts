@@ -6,8 +6,6 @@ import { SIndexedEntity } from '../../application/SEntity';
 import { FileBuilder } from '../FileBuilder';
 import { IVEntityInterfaceBuilder } from './IVEntityInterfaceBuilder';
 import { VEntityBuilder } from './VEntityBuilder';
-import { VEntityIdBuilder } from './VEntityIdBuilder';
-import { VEntityRelationBuilder } from './VEntityRelationBuilder';
 import { VRelationBuilder } from './VRelationBuilder';
 /**
  * Created by Papa on 4/26/2016.
@@ -16,8 +14,6 @@ export declare class VEntityFileBuilder extends FileBuilder implements IBuilder 
     private entityMapByName;
     private entityPath;
     vEntityBuilder: VEntityBuilder;
-    vEntityIdBuilder: VEntityIdBuilder;
-    vEntityRelationBuilder: VEntityRelationBuilder;
     vEntityInterfaceBuilder: IVEntityInterfaceBuilder;
     importMap: {
         [fileName: string]: {

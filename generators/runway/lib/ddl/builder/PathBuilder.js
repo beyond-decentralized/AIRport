@@ -27,7 +27,7 @@ export class PathBuilder {
     //
     // 	return outDirPrefix
     // }
-    prefixQToFileName(sourceRelativePath) {
+    prefixToFileName(sourceRelativePath, prefix) {
         let pathFragments;
         if (sourceRelativePath.indexOf(path.sep) > -1) {
             pathFragments = sourceRelativePath.split(path.sep);
@@ -39,18 +39,18 @@ export class PathBuilder {
             pathFragments = [sourceRelativePath];
         }
         let fileName = pathFragments[pathFragments.length - 1];
-        fileName = 'q' + fileName;
+        fileName = prefix + fileName;
         pathFragments[pathFragments.length - 1] = fileName;
         sourceRelativePath = pathFragments.join(path.posix.sep);
         return sourceRelativePath;
     }
     getFullPathToGeneratedSource(//
-    sourcePath, prefixQ = true) {
-        let generatedPath = this.getGenerationPathForFile(sourcePath, prefixQ);
+    sourcePath, prefix = 'q') {
+        let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
         return this.workingDirPath + '/' + generatedPath;
     }
-    setupFileForGeneration(sourcePath, prefixQ = true) {
-        let generatedPath = this.getGenerationPathForFile(sourcePath, prefixQ);
+    setupFileForGeneration(sourcePath, prefix = 'q') {
+        let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
         let genPathFragments = generatedPath.split('/');
         let currentPath = this.workingDirPath;
         for (let i = 0; i < genPathFragments.length - 1; i++) {
@@ -82,15 +82,15 @@ export class PathBuilder {
         pathFragments[pathFragments.length - 1] = pathFragments[pathFragments.length - 1].toLowerCase();
         return pathFragments.join('/');
     }
-    getGenerationPathForFile(sourcePath, prefixQ = true) {
+    getGenerationPathForFile(sourcePath, prefix) {
         sourcePath = normalizePath(sourcePath);
         let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase());
         if (indexOfSourceDirInPath !== 0) {
             throw new Error(`Cannot generate file from source outside of root source dir`);
         }
         let sourceRelativePath = sourcePath.substr(this.ddlDirPath.length + 1);
-        if (prefixQ) {
-            sourceRelativePath = this.prefixQToFileName(sourceRelativePath);
+        if (prefix) {
+            sourceRelativePath = this.prefixToFileName(sourceRelativePath, prefix);
         }
         return this.generatedDirPath + '/' + sourceRelativePath;
     }

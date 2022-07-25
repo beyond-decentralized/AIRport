@@ -1,4 +1,3 @@
-import { VColumnBuilder } from "./VColumnBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
 import { VTransientBuilder } from "./VTransientBuilder";
@@ -13,9 +12,6 @@ export class VCoreEntityBuilder {
     }
     addImport(classNames, filePath, toLowerCase) {
         this.fileBuilder.addImport(classNames, filePath, toLowerCase);
-    }
-    getVColumnBuilders(columns) {
-        return columns.map(column => new VColumnBuilder(this, column));
     }
     getVPropertyBuilders(properties) {
         return properties.map(property => this.addVPropertyBuilder(property)).filter(builder => builder != null);
