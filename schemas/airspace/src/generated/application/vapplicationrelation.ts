@@ -18,20 +18,20 @@ import {
 	ApplicationPropertyVDescriptor,
 } from './vapplicationproperty';
 import {
-	IApplicationProperty,
-} from './applicationproperty';
+	ApplicationProperty,
+} from '../../ddl/application/applicationproperty';
 import {
 	ApplicationEntityVDescriptor,
 } from './vapplicationentity';
 import {
-	IApplicationEntity,
-} from './applicationentity';
+	ApplicationEntity,
+} from '../../ddl/application/applicationentity';
 import {
 	ApplicationRelationColumnVDescriptor,
 } from './vapplicationrelationcolumn';
 import {
-	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+	ApplicationRelationColumn,
+} from '../../ddl/application/applicationrelationcolumn';
 import {
 	IApplicationRelation,
 } from './applicationrelation';
@@ -42,10 +42,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationRelationVDescriptor
-    extends VersionedApplicationObjectVDescriptor {
+export interface ApplicationRelationVDescriptor<T>
+    extends VersionedApplicationObjectVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	index?: number | IVNumberField;
@@ -58,11 +58,11 @@ export interface ApplicationRelationVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	property?: ApplicationPropertyVDescriptor;
-	entity?: ApplicationEntityVDescriptor;
-	relationEntity?: ApplicationEntityVDescriptor;
-	manyRelationColumns?: ApplicationRelationColumnVDescriptor;
-	oneRelationColumns?: ApplicationRelationColumnVDescriptor;
+	property?: ApplicationPropertyVDescriptor<ApplicationProperty>
+	entity?: ApplicationEntityVDescriptor<ApplicationEntity>
+	relationEntity?: ApplicationEntityVDescriptor<ApplicationEntity>
+	manyRelationColumns?: ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>
+	oneRelationColumns?: ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>
 
 }
 

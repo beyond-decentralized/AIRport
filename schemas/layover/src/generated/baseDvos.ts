@@ -43,11 +43,11 @@ export class SQDIDvo<Entity, EntityVDescriptor>
 
 
 export interface IBaseRecordUpdateStageDvo
-  extends IDvo<RecordUpdateStage, RecordUpdateStageVDescriptor> {
+  extends IDvo<RecordUpdateStage, RecordUpdateStageVDescriptor<RecordUpdateStage>> {
 }
 
 export class BaseRecordUpdateStageDvo
-  extends SQDIDvo<RecordUpdateStage, RecordUpdateStageVDescriptor>
+  extends SQDIDvo<RecordUpdateStage, RecordUpdateStageVDescriptor<RecordUpdateStage>>
 	implements IBaseRecordUpdateStageDvo {
 
 	static diSet(): boolean {
@@ -61,11 +61,11 @@ export class BaseRecordUpdateStageDvo
 
 
 export interface IBaseSynchronizationConflictDvo
-  extends IDvo<SynchronizationConflict, SynchronizationConflictVDescriptor> {
+  extends IDvo<SynchronizationConflict, SynchronizationConflictVDescriptor<SynchronizationConflict>> {
 }
 
 export class BaseSynchronizationConflictDvo
-  extends SQDIDvo<SynchronizationConflict, SynchronizationConflictVDescriptor>
+  extends SQDIDvo<SynchronizationConflict, SynchronizationConflictVDescriptor<SynchronizationConflict>>
 	implements IBaseSynchronizationConflictDvo {
 
 	static diSet(): boolean {
@@ -79,11 +79,11 @@ export class BaseSynchronizationConflictDvo
 
 
 export interface IBaseSynchronizationConflictValuesDvo
-  extends IDvo<SynchronizationConflictValues, SynchronizationConflictValuesVDescriptor> {
+  extends IDvo<SynchronizationConflictValues, SynchronizationConflictValuesVDescriptor<SynchronizationConflictValues>> {
 }
 
 export class BaseSynchronizationConflictValuesDvo
-  extends SQDIDvo<SynchronizationConflictValues, SynchronizationConflictValuesVDescriptor>
+  extends SQDIDvo<SynchronizationConflictValues, SynchronizationConflictValuesVDescriptor<SynchronizationConflictValues>>
 	implements IBaseSynchronizationConflictValuesDvo {
 
 	static diSet(): boolean {

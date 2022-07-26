@@ -1,6 +1,8 @@
 import { PropertyDocEntry } from "../../../parser/DocEntry";
 import { addImportForType } from "../../../../resolve/pathResolver";
 import { IVCoreEntityBuilder } from "./VCoreEntityBuilder";
+import { VRelationBuilder } from "./VRelationBuilder";
+import { VPropertyBuilder } from "./VPropertyBuilder";
 
 export class VTransientBuilder {
 
@@ -19,9 +21,17 @@ export class VTransientBuilder {
 				type = prop.mapValueType;
 			}
 			type = type.replace('[]', '');
-			if(!prop.mapValueIsPrimitive) {
+			if (!prop.mapValueIsPrimitive) {
 				addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
 			}
+		}
+
+		let builder: VPropertyBuilder | VRelationBuilder
+
+		if (prop.entity || prop.fromProject) {
+			builder = new VRelationBuilder(this.parentBuilder, prop)
+		} else {
+			builder = new VPropertyBuilder(this.parentBuilder, prop)
 		}
 
 		// let type = prop.type;
@@ -32,7 +42,8 @@ export class VTransientBuilder {
 		// }
 		//
 		// return `${prop.name}?: ${type};`;
-		return `${prop.name}?: ${prop.type};`;
+
+		return builder.buildInterfaceDefinition()
 	}
 
 }

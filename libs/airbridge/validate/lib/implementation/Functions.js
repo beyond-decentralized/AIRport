@@ -4,6 +4,9 @@ export const and = function (...conditions) {
 export const between = function (from, to) {
     return null;
 };
+export const value = function (value) {
+    return null;
+};
 export const equals = function (value) {
     return null;
 };

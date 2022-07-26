@@ -1,5 +1,5 @@
-import { addImportForType, getFullPathFromRelativePath, resolveRelativePath } from '../../../../resolve/pathResolver';
-import { getVPropertyFieldClass, getVPropertyFieldInterface } from './VCoreEntityBuilder';
+import { getFullPathFromRelativePath, resolveRelativePath } from '../../../../resolve/pathResolver';
+import { getVPropertyFieldInterface } from './VCoreEntityBuilder';
 /**
  * Created by Papa on 4/25/2016.
  */
@@ -8,16 +8,10 @@ export class VPropertyBuilder {
         this.parentBuilder = parentBuilder;
         this.propertyDocEntry = propertyDocEntry;
     }
-    buildDefinition() {
-        let prop = this.propertyDocEntry;
-        let name = prop.name;
-        let fieldClass = getVPropertyFieldClass(prop);
-        return `${name}: I${fieldClass};`;
-    }
     build() {
         throw new Error(`Not Implemented.`);
     }
-    buildInterfaceDefinition(optional = true, forInternalInterfaces = true) {
+    buildInterfaceDefinition() {
         let prop = this.propertyDocEntry;
         let name = prop.name;
         let propertyType = prop.primitive;
@@ -36,17 +30,8 @@ export class VPropertyBuilder {
             }
             this.parentBuilder.addImport([moduleImport.objectMapByAsName[propertyType]], relativePathToImport);
         }
-        let operableFieldSuffix = '';
-        if (forInternalInterfaces) {
-            operableFieldSuffix = ' | ' + getVPropertyFieldInterface(prop);
-        }
-        else {
-            if (!prop.primitive) {
-                addImportForType(prop.ownerEntity, prop.type, this.parentBuilder.fileBuilder);
-                propertyType = prop.type;
-            }
-        }
-        return `${name}${optional || prop.optional ? '?' : ''}: ${propertyType}${operableFieldSuffix};`;
+        let operableFieldSuffix = ' | ' + getVPropertyFieldInterface(prop);
+        return `${name}?: ${propertyType}${operableFieldSuffix};`;
     }
 }
 //# sourceMappingURL=VPropertyBuilder.js.map

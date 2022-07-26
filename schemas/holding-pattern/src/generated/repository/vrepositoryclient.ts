@@ -10,11 +10,11 @@ import {
 	RepositoryVDescriptor,
 } from './vrepository';
 import {
-	IRepository,
-} from './repository';
+	Repository,
+} from '../../ddl/repository/Repository';
 import {
 	ClientVDescriptor,
-	IClient,
+	Client,
 } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import {
 	IRepositoryClient,
@@ -26,15 +26,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RepositoryClientVDescriptor
-    extends IEntityVDescriptor {
+export interface RepositoryClientVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	repository?: RepositoryVDescriptor;
-	client?: ClientVDescriptor;
+	repository?: RepositoryVDescriptor<Repository>
+	client?: ClientVDescriptor<Client>
 
   // Non-Id relations (including OneToMany's)
 

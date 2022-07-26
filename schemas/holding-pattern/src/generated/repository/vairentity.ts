@@ -10,14 +10,14 @@ import {
 	RepositoryVDescriptor,
 } from './vrepository';
 import {
-	IRepository,
-} from './repository';
+	Repository,
+} from '../../ddl/repository/Repository';
 import {
 	ActorVDescriptor,
 } from '../infrastructure/vactor';
 import {
-	IActor,
-} from '../infrastructure/actor';
+	Actor,
+} from '../../ddl/infrastructure/Actor';
 import {
 	IAirEntity,
 } from './airentity';
@@ -28,8 +28,8 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface AirEntityVDescriptor
-    extends IEntityVDescriptor {
+export interface AirEntityVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	_actorRecordId?: number | IVNumberField;
 	
@@ -40,12 +40,12 @@ export interface AirEntityVDescriptor
 	originalActorRecordId?: number | IVNumberField;
 
 	// Id Relations - full property interfaces
-	repository?: RepositoryVDescriptor;
-	actor?: ActorVDescriptor;
+	repository?: RepositoryVDescriptor<Repository>
+	actor?: ActorVDescriptor<Actor>
 
   // Non-Id relations (including OneToMany's)
-	originalRepository?: RepositoryVDescriptor;
-	originalActor?: ActorVDescriptor;
+	originalRepository?: RepositoryVDescriptor<Repository>
+	originalActor?: ActorVDescriptor<Actor>
 
 }
 

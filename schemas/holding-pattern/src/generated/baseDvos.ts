@@ -103,11 +103,11 @@ export class SQDIDvo<Entity, EntityVDescriptor>
 
 
 export interface IBaseActorDvo
-  extends IDvo<Actor, ActorVDescriptor> {
+  extends IDvo<Actor, ActorVDescriptor<Actor>> {
 }
 
 export class BaseActorDvo
-  extends SQDIDvo<Actor, ActorVDescriptor>
+  extends SQDIDvo<Actor, ActorVDescriptor<Actor>>
 	implements IBaseActorDvo {
 
 	static diSet(): boolean {
@@ -121,11 +121,11 @@ export class BaseActorDvo
 
 
 export interface IBaseOperationHistoryDvo
-  extends IDvo<OperationHistory, OperationHistoryVDescriptor> {
+  extends IDvo<OperationHistory, OperationHistoryVDescriptor<OperationHistory>> {
 }
 
 export class BaseOperationHistoryDvo
-  extends SQDIDvo<OperationHistory, OperationHistoryVDescriptor>
+  extends SQDIDvo<OperationHistory, OperationHistoryVDescriptor<OperationHistory>>
 	implements IBaseOperationHistoryDvo {
 
 	static diSet(): boolean {
@@ -139,11 +139,11 @@ export class BaseOperationHistoryDvo
 
 
 export interface IBaseRecordHistoryDvo
-  extends IDvo<RecordHistory, RecordHistoryVDescriptor> {
+  extends IDvo<RecordHistory, RecordHistoryVDescriptor<RecordHistory>> {
 }
 
 export class BaseRecordHistoryDvo
-  extends SQDIDvo<RecordHistory, RecordHistoryVDescriptor>
+  extends SQDIDvo<RecordHistory, RecordHistoryVDescriptor<RecordHistory>>
 	implements IBaseRecordHistoryDvo {
 
 	static diSet(): boolean {
@@ -157,11 +157,11 @@ export class BaseRecordHistoryDvo
 
 
 export interface IBaseRecordHistoryNewValueDvo
-  extends IDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor> {
+  extends IDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor<RecordHistoryNewValue>> {
 }
 
 export class BaseRecordHistoryNewValueDvo
-  extends SQDIDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor>
+  extends SQDIDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor<RecordHistoryNewValue>>
 	implements IBaseRecordHistoryNewValueDvo {
 
 	static diSet(): boolean {
@@ -175,11 +175,11 @@ export class BaseRecordHistoryNewValueDvo
 
 
 export interface IBaseRecordHistoryOldValueDvo
-  extends IDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor> {
+  extends IDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor<RecordHistoryOldValue>> {
 }
 
 export class BaseRecordHistoryOldValueDvo
-  extends SQDIDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor>
+  extends SQDIDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor<RecordHistoryOldValue>>
 	implements IBaseRecordHistoryOldValueDvo {
 
 	static diSet(): boolean {
@@ -193,11 +193,11 @@ export class BaseRecordHistoryOldValueDvo
 
 
 export interface IBaseRepositoryDvo
-  extends IDvo<Repository, RepositoryVDescriptor> {
+  extends IDvo<Repository, RepositoryVDescriptor<Repository>> {
 }
 
 export class BaseRepositoryDvo
-  extends SQDIDvo<Repository, RepositoryVDescriptor>
+  extends SQDIDvo<Repository, RepositoryVDescriptor<Repository>>
 	implements IBaseRepositoryDvo {
 
 	static diSet(): boolean {
@@ -211,11 +211,11 @@ export class BaseRepositoryDvo
 
 
 export interface IBaseRepositoryApplicationDvo
-  extends IDvo<RepositoryApplication, RepositoryApplicationVDescriptor> {
+  extends IDvo<RepositoryApplication, RepositoryApplicationVDescriptor<RepositoryApplication>> {
 }
 
 export class BaseRepositoryApplicationDvo
-  extends SQDIDvo<RepositoryApplication, RepositoryApplicationVDescriptor>
+  extends SQDIDvo<RepositoryApplication, RepositoryApplicationVDescriptor<RepositoryApplication>>
 	implements IBaseRepositoryApplicationDvo {
 
 	static diSet(): boolean {
@@ -229,11 +229,11 @@ export class BaseRepositoryApplicationDvo
 
 
 export interface IBaseRepositoryClientDvo
-  extends IDvo<RepositoryClient, RepositoryClientVDescriptor> {
+  extends IDvo<RepositoryClient, RepositoryClientVDescriptor<RepositoryClient>> {
 }
 
 export class BaseRepositoryClientDvo
-  extends SQDIDvo<RepositoryClient, RepositoryClientVDescriptor>
+  extends SQDIDvo<RepositoryClient, RepositoryClientVDescriptor<RepositoryClient>>
 	implements IBaseRepositoryClientDvo {
 
 	static diSet(): boolean {
@@ -247,11 +247,11 @@ export class BaseRepositoryClientDvo
 
 
 export interface IBaseRepositoryDatabaseDvo
-  extends IDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor> {
+  extends IDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor<RepositoryDatabase>> {
 }
 
 export class BaseRepositoryDatabaseDvo
-  extends SQDIDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor>
+  extends SQDIDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor<RepositoryDatabase>>
 	implements IBaseRepositoryDatabaseDvo {
 
 	static diSet(): boolean {
@@ -265,11 +265,11 @@ export class BaseRepositoryDatabaseDvo
 
 
 export interface IBaseRepositoryTerminalDvo
-  extends IDvo<RepositoryTerminal, RepositoryTerminalVDescriptor> {
+  extends IDvo<RepositoryTerminal, RepositoryTerminalVDescriptor<RepositoryTerminal>> {
 }
 
 export class BaseRepositoryTerminalDvo
-  extends SQDIDvo<RepositoryTerminal, RepositoryTerminalVDescriptor>
+  extends SQDIDvo<RepositoryTerminal, RepositoryTerminalVDescriptor<RepositoryTerminal>>
 	implements IBaseRepositoryTerminalDvo {
 
 	static diSet(): boolean {
@@ -283,11 +283,11 @@ export class BaseRepositoryTerminalDvo
 
 
 export interface IBaseRepositoryTransactionHistoryDvo
-  extends IDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor> {
+  extends IDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>> {
 }
 
 export class BaseRepositoryTransactionHistoryDvo
-  extends SQDIDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor>
+  extends SQDIDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>>
 	implements IBaseRepositoryTransactionHistoryDvo {
 
 	static diSet(): boolean {
@@ -301,11 +301,11 @@ export class BaseRepositoryTransactionHistoryDvo
 
 
 export interface IBaseRepositoryTypeDvo
-  extends IDvo<RepositoryType, RepositoryTypeVDescriptor> {
+  extends IDvo<RepositoryType, RepositoryTypeVDescriptor<RepositoryType>> {
 }
 
 export class BaseRepositoryTypeDvo
-  extends SQDIDvo<RepositoryType, RepositoryTypeVDescriptor>
+  extends SQDIDvo<RepositoryType, RepositoryTypeVDescriptor<RepositoryType>>
 	implements IBaseRepositoryTypeDvo {
 
 	static diSet(): boolean {
@@ -319,11 +319,11 @@ export class BaseRepositoryTypeDvo
 
 
 export interface IBaseTransactionHistoryDvo
-  extends IDvo<TransactionHistory, TransactionHistoryVDescriptor> {
+  extends IDvo<TransactionHistory, TransactionHistoryVDescriptor<TransactionHistory>> {
 }
 
 export class BaseTransactionHistoryDvo
-  extends SQDIDvo<TransactionHistory, TransactionHistoryVDescriptor>
+  extends SQDIDvo<TransactionHistory, TransactionHistoryVDescriptor<TransactionHistory>>
 	implements IBaseTransactionHistoryDvo {
 
 	static diSet(): boolean {

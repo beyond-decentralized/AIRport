@@ -33,93 +33,93 @@ import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);
 }
-export interface IBaseClassificationDvo extends IDvo<Classification, ClassificationVDescriptor> {
+export interface IBaseClassificationDvo extends IDvo<Classification, ClassificationVDescriptor<Classification>> {
 }
-export declare class BaseClassificationDvo extends SQDIDvo<Classification, ClassificationVDescriptor> implements IBaseClassificationDvo {
+export declare class BaseClassificationDvo extends SQDIDvo<Classification, ClassificationVDescriptor<Classification>> implements IBaseClassificationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseClientDvo extends IDvo<Client, ClientVDescriptor> {
+export interface IBaseClientDvo extends IDvo<Client, ClientVDescriptor<Client>> {
 }
-export declare class BaseClientDvo extends SQDIDvo<Client, ClientVDescriptor> implements IBaseClientDvo {
+export declare class BaseClientDvo extends SQDIDvo<Client, ClientVDescriptor<Client>> implements IBaseClientDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseClientTypeDvo extends IDvo<ClientType, ClientTypeVDescriptor> {
+export interface IBaseClientTypeDvo extends IDvo<ClientType, ClientTypeVDescriptor<ClientType>> {
 }
-export declare class BaseClientTypeDvo extends SQDIDvo<ClientType, ClientTypeVDescriptor> implements IBaseClientTypeDvo {
+export declare class BaseClientTypeDvo extends SQDIDvo<ClientType, ClientTypeVDescriptor<ClientType>> implements IBaseClientTypeDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseContinentDvo extends IDvo<Continent, ContinentVDescriptor> {
+export interface IBaseContinentDvo extends IDvo<Continent, ContinentVDescriptor<Continent>> {
 }
-export declare class BaseContinentDvo extends SQDIDvo<Continent, ContinentVDescriptor> implements IBaseContinentDvo {
+export declare class BaseContinentDvo extends SQDIDvo<Continent, ContinentVDescriptor<Continent>> implements IBaseContinentDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseCountryDvo extends IDvo<Country, CountryVDescriptor> {
+export interface IBaseCountryDvo extends IDvo<Country, CountryVDescriptor<Country>> {
 }
-export declare class BaseCountryDvo extends SQDIDvo<Country, CountryVDescriptor> implements IBaseCountryDvo {
+export declare class BaseCountryDvo extends SQDIDvo<Country, CountryVDescriptor<Country>> implements IBaseCountryDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseDatabaseDvo extends IDvo<Database, DatabaseVDescriptor> {
+export interface IBaseDatabaseDvo extends IDvo<Database, DatabaseVDescriptor<Database>> {
 }
-export declare class BaseDatabaseDvo extends SQDIDvo<Database, DatabaseVDescriptor> implements IBaseDatabaseDvo {
+export declare class BaseDatabaseDvo extends SQDIDvo<Database, DatabaseVDescriptor<Database>> implements IBaseDatabaseDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseDatabaseTypeDvo extends IDvo<DatabaseType, DatabaseTypeVDescriptor> {
+export interface IBaseDatabaseTypeDvo extends IDvo<DatabaseType, DatabaseTypeVDescriptor<DatabaseType>> {
 }
-export declare class BaseDatabaseTypeDvo extends SQDIDvo<DatabaseType, DatabaseTypeVDescriptor> implements IBaseDatabaseTypeDvo {
+export declare class BaseDatabaseTypeDvo extends SQDIDvo<DatabaseType, DatabaseTypeVDescriptor<DatabaseType>> implements IBaseDatabaseTypeDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseMetroAreaDvo extends IDvo<MetroArea, MetroAreaVDescriptor> {
+export interface IBaseMetroAreaDvo extends IDvo<MetroArea, MetroAreaVDescriptor<MetroArea>> {
 }
-export declare class BaseMetroAreaDvo extends SQDIDvo<MetroArea, MetroAreaVDescriptor> implements IBaseMetroAreaDvo {
+export declare class BaseMetroAreaDvo extends SQDIDvo<MetroArea, MetroAreaVDescriptor<MetroArea>> implements IBaseMetroAreaDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseMetroAreaStateDvo extends IDvo<MetroAreaState, MetroAreaStateVDescriptor> {
+export interface IBaseMetroAreaStateDvo extends IDvo<MetroAreaState, MetroAreaStateVDescriptor<MetroAreaState>> {
 }
-export declare class BaseMetroAreaStateDvo extends SQDIDvo<MetroAreaState, MetroAreaStateVDescriptor> implements IBaseMetroAreaStateDvo {
+export declare class BaseMetroAreaStateDvo extends SQDIDvo<MetroAreaState, MetroAreaStateVDescriptor<MetroAreaState>> implements IBaseMetroAreaStateDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseStateDvo extends IDvo<State, StateVDescriptor> {
+export interface IBaseStateDvo extends IDvo<State, StateVDescriptor<State>> {
 }
-export declare class BaseStateDvo extends SQDIDvo<State, StateVDescriptor> implements IBaseStateDvo {
+export declare class BaseStateDvo extends SQDIDvo<State, StateVDescriptor<State>> implements IBaseStateDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTerminalDvo extends IDvo<Terminal, TerminalVDescriptor> {
+export interface IBaseTerminalDvo extends IDvo<Terminal, TerminalVDescriptor<Terminal>> {
 }
-export declare class BaseTerminalDvo extends SQDIDvo<Terminal, TerminalVDescriptor> implements IBaseTerminalDvo {
+export declare class BaseTerminalDvo extends SQDIDvo<Terminal, TerminalVDescriptor<Terminal>> implements IBaseTerminalDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTerminalTypeDvo extends IDvo<TerminalType, TerminalTypeVDescriptor> {
+export interface IBaseTerminalTypeDvo extends IDvo<TerminalType, TerminalTypeVDescriptor<TerminalType>> {
 }
-export declare class BaseTerminalTypeDvo extends SQDIDvo<TerminalType, TerminalTypeVDescriptor> implements IBaseTerminalTypeDvo {
+export declare class BaseTerminalTypeDvo extends SQDIDvo<TerminalType, TerminalTypeVDescriptor<TerminalType>> implements IBaseTerminalTypeDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTypeDvo extends IDvo<Type, TypeVDescriptor> {
+export interface IBaseTypeDvo extends IDvo<Type, TypeVDescriptor<Type>> {
 }
-export declare class BaseTypeDvo extends SQDIDvo<Type, TypeVDescriptor> implements IBaseTypeDvo {
+export declare class BaseTypeDvo extends SQDIDvo<Type, TypeVDescriptor<Type>> implements IBaseTypeDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTypeClassificationDvo extends IDvo<TypeClassification, TypeClassificationVDescriptor> {
+export interface IBaseTypeClassificationDvo extends IDvo<TypeClassification, TypeClassificationVDescriptor<TypeClassification>> {
 }
-export declare class BaseTypeClassificationDvo extends SQDIDvo<TypeClassification, TypeClassificationVDescriptor> implements IBaseTypeClassificationDvo {
+export declare class BaseTypeClassificationDvo extends SQDIDvo<TypeClassification, TypeClassificationVDescriptor<TypeClassification>> implements IBaseTypeClassificationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseUserAccountDvo extends IDvo<UserAccount, UserAccountVDescriptor> {
+export interface IBaseUserAccountDvo extends IDvo<UserAccount, UserAccountVDescriptor<UserAccount>> {
 }
-export declare class BaseUserAccountDvo extends SQDIDvo<UserAccount, UserAccountVDescriptor> implements IBaseUserAccountDvo {
+export declare class BaseUserAccountDvo extends SQDIDvo<UserAccount, UserAccountVDescriptor<UserAccount>> implements IBaseUserAccountDvo {
     static diSet(): boolean;
     constructor();
 }

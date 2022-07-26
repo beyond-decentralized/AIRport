@@ -10,8 +10,8 @@ import {
 	RecordHistoryVDescriptor,
 } from './vrecordhistory';
 import {
-	IRecordHistory,
-} from './recordhistory';
+	RecordHistory,
+} from '../../ddl/history/RecordHistory';
 import {
 	IRecordHistoryNewValue,
 } from './recordhistorynewvalue';
@@ -22,16 +22,16 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RecordHistoryNewValueVDescriptor
-    extends IEntityVDescriptor {
+export interface RecordHistoryNewValueVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	columnIndex: number | IVNumberField;
+	columnIndex?: number | IVNumberField;
 	
 	// Non-Id Properties
 	newValue?: any | IVUntypedField;
 
 	// Id Relations - full property interfaces
-	recordHistory?: RecordHistoryVDescriptor;
+	recordHistory?: RecordHistoryVDescriptor<RecordHistory>
 
   // Non-Id relations (including OneToMany's)
 

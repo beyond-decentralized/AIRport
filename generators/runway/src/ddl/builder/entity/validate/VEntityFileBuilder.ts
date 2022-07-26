@@ -48,10 +48,11 @@ export class VEntityFileBuilder
       'IVUntypedField'],
       '@airport/airbridge-validate');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
+    console.log('Entity: ' + entity.path)
     if (entity.parentEntity) {
       let parentVEntityRelativePath;
       if (entity.parentEntity.project) {
-        parentVEntityRelativePath = entity.parentEntity.project;
+        parentVEntityRelativePath = entity.parentEntity.project + '/lib/to_be_generated/runtime-index';
       } else {
         let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'v');
         parentVEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
@@ -84,32 +85,34 @@ ${interfaceSource}
       builder: VRelationBuilder,
     ) => {
       let property = builder.entityProperty;
-      if (this.entity === property.entity) {
-        return;
-      }
       let type = property.type;
-      let vEntityRelativePath;
+      let vEntityRelativePath = property.fromProject + '/lib/to_be_generated/runtime-index';
       if (property.fromProject) {
-        vEntityRelativePath = property.fromProject;
         type = property.otherApplicationDbEntity.name;
       } else {
         type = property.entity.type;
-        vEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
-        vEntityRelativePath = vEntityRelativePath.replace('.ts', '');
-        vEntityRelativePath = this.pathBuilder.prefixToFileName(vEntityRelativePath, 'v');
+        if (this.entity !== property.entity) {
+          vEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
+          vEntityRelativePath = vEntityRelativePath.replace('.ts', '');
+          vEntityRelativePath = this.pathBuilder.prefixToFileName(vEntityRelativePath, 'v');
+        }
       }
       type = type.replace('[]', '');
-      this.addImport([type + 'VDescriptor'],
-        vEntityRelativePath);
+
+      if (this.entity !== property.entity) {
+        console.log(vEntityRelativePath)
+        this.addImport([type + 'VDescriptor'],
+          vEntityRelativePath);
+      }
 
       if (property.fromProject) {
         let relationEntityPath = property.fromProject;
-        this.addImport(['I' + type], relationEntityPath, false);
+        this.addImport([type], relationEntityPath + '/lib/to_be_generated/runtime-index', false);
       } else {
-        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
-        let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
-        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
-        this.addImport(['I' + type], entityInterfaceRelativePath, false);
+        const entityFilePath = this.pathBuilder.getFullPathToDdlSource(this.entityMapByName[type].path);
+        let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, entityFilePath)
+        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
+        this.addImport([type], entityInterfaceRelativePath, false);
       }
     });
   }

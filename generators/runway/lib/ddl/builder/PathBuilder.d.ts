@@ -16,9 +16,12 @@ export declare class PathBuilder {
     prefixToFileName(sourceRelativePath: string, prefix: any): string;
     getFullPathToGeneratedSource(//
     sourcePath: string, prefix?: string): string;
+    getFullPathToDdlSource(//
+    sourcePath: string): string;
     setupFileForGeneration(sourcePath: string, prefix?: string): string;
     convertFileNameToLowerCase(//
     path: string): string;
     private getGenerationPathForFile;
+    private getDdlPathForFile;
 }
 //# sourceMappingURL=PathBuilder.d.ts.map

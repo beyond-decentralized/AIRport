@@ -27,75 +27,75 @@ import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);
 }
-export interface IBaseApplicationDvo extends IDvo<Application, ApplicationVDescriptor> {
+export interface IBaseApplicationDvo extends IDvo<Application, ApplicationVDescriptor<Application>> {
 }
-export declare class BaseApplicationDvo extends SQDIDvo<Application, ApplicationVDescriptor> implements IBaseApplicationDvo {
+export declare class BaseApplicationDvo extends SQDIDvo<Application, ApplicationVDescriptor<Application>> implements IBaseApplicationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationColumnDvo extends IDvo<ApplicationColumn, ApplicationColumnVDescriptor> {
+export interface IBaseApplicationColumnDvo extends IDvo<ApplicationColumn, ApplicationColumnVDescriptor<ApplicationColumn>> {
 }
-export declare class BaseApplicationColumnDvo extends SQDIDvo<ApplicationColumn, ApplicationColumnVDescriptor> implements IBaseApplicationColumnDvo {
+export declare class BaseApplicationColumnDvo extends SQDIDvo<ApplicationColumn, ApplicationColumnVDescriptor<ApplicationColumn>> implements IBaseApplicationColumnDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationCurrentVersionDvo extends IDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor> {
+export interface IBaseApplicationCurrentVersionDvo extends IDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor<ApplicationCurrentVersion>> {
 }
-export declare class BaseApplicationCurrentVersionDvo extends SQDIDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor> implements IBaseApplicationCurrentVersionDvo {
+export declare class BaseApplicationCurrentVersionDvo extends SQDIDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor<ApplicationCurrentVersion>> implements IBaseApplicationCurrentVersionDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationEntityDvo extends IDvo<ApplicationEntity, ApplicationEntityVDescriptor> {
+export interface IBaseApplicationEntityDvo extends IDvo<ApplicationEntity, ApplicationEntityVDescriptor<ApplicationEntity>> {
 }
-export declare class BaseApplicationEntityDvo extends SQDIDvo<ApplicationEntity, ApplicationEntityVDescriptor> implements IBaseApplicationEntityDvo {
+export declare class BaseApplicationEntityDvo extends SQDIDvo<ApplicationEntity, ApplicationEntityVDescriptor<ApplicationEntity>> implements IBaseApplicationEntityDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationOperationDvo extends IDvo<ApplicationOperation, ApplicationOperationVDescriptor> {
+export interface IBaseApplicationOperationDvo extends IDvo<ApplicationOperation, ApplicationOperationVDescriptor<ApplicationOperation>> {
 }
-export declare class BaseApplicationOperationDvo extends SQDIDvo<ApplicationOperation, ApplicationOperationVDescriptor> implements IBaseApplicationOperationDvo {
+export declare class BaseApplicationOperationDvo extends SQDIDvo<ApplicationOperation, ApplicationOperationVDescriptor<ApplicationOperation>> implements IBaseApplicationOperationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationPropertyDvo extends IDvo<ApplicationProperty, ApplicationPropertyVDescriptor> {
+export interface IBaseApplicationPropertyDvo extends IDvo<ApplicationProperty, ApplicationPropertyVDescriptor<ApplicationProperty>> {
 }
-export declare class BaseApplicationPropertyDvo extends SQDIDvo<ApplicationProperty, ApplicationPropertyVDescriptor> implements IBaseApplicationPropertyDvo {
+export declare class BaseApplicationPropertyDvo extends SQDIDvo<ApplicationProperty, ApplicationPropertyVDescriptor<ApplicationProperty>> implements IBaseApplicationPropertyDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationPropertyColumnDvo extends IDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor> {
+export interface IBaseApplicationPropertyColumnDvo extends IDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor<ApplicationPropertyColumn>> {
 }
-export declare class BaseApplicationPropertyColumnDvo extends SQDIDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor> implements IBaseApplicationPropertyColumnDvo {
+export declare class BaseApplicationPropertyColumnDvo extends SQDIDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor<ApplicationPropertyColumn>> implements IBaseApplicationPropertyColumnDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationReferenceDvo extends IDvo<ApplicationReference, ApplicationReferenceVDescriptor> {
+export interface IBaseApplicationReferenceDvo extends IDvo<ApplicationReference, ApplicationReferenceVDescriptor<ApplicationReference>> {
 }
-export declare class BaseApplicationReferenceDvo extends SQDIDvo<ApplicationReference, ApplicationReferenceVDescriptor> implements IBaseApplicationReferenceDvo {
+export declare class BaseApplicationReferenceDvo extends SQDIDvo<ApplicationReference, ApplicationReferenceVDescriptor<ApplicationReference>> implements IBaseApplicationReferenceDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationRelationDvo extends IDvo<ApplicationRelation, ApplicationRelationVDescriptor> {
+export interface IBaseApplicationRelationDvo extends IDvo<ApplicationRelation, ApplicationRelationVDescriptor<ApplicationRelation>> {
 }
-export declare class BaseApplicationRelationDvo extends SQDIDvo<ApplicationRelation, ApplicationRelationVDescriptor> implements IBaseApplicationRelationDvo {
+export declare class BaseApplicationRelationDvo extends SQDIDvo<ApplicationRelation, ApplicationRelationVDescriptor<ApplicationRelation>> implements IBaseApplicationRelationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationRelationColumnDvo extends IDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor> {
+export interface IBaseApplicationRelationColumnDvo extends IDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>> {
 }
-export declare class BaseApplicationRelationColumnDvo extends SQDIDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor> implements IBaseApplicationRelationColumnDvo {
+export declare class BaseApplicationRelationColumnDvo extends SQDIDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>> implements IBaseApplicationRelationColumnDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseApplicationVersionDvo extends IDvo<ApplicationVersion, ApplicationVersionVDescriptor> {
+export interface IBaseApplicationVersionDvo extends IDvo<ApplicationVersion, ApplicationVersionVDescriptor<ApplicationVersion>> {
 }
-export declare class BaseApplicationVersionDvo extends SQDIDvo<ApplicationVersion, ApplicationVersionVDescriptor> implements IBaseApplicationVersionDvo {
+export declare class BaseApplicationVersionDvo extends SQDIDvo<ApplicationVersion, ApplicationVersionVDescriptor<ApplicationVersion>> implements IBaseApplicationVersionDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseDomainDvo extends IDvo<Domain, DomainVDescriptor> {
+export interface IBaseDomainDvo extends IDvo<Domain, DomainVDescriptor<Domain>> {
 }
-export declare class BaseDomainDvo extends SQDIDvo<Domain, DomainVDescriptor> implements IBaseDomainDvo {
+export declare class BaseDomainDvo extends SQDIDvo<Domain, DomainVDescriptor<Domain>> implements IBaseDomainDvo {
     static diSet(): boolean;
     constructor();
 }

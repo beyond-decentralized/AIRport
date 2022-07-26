@@ -10,8 +10,8 @@ import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
-	IApplicationVersion,
-} from './applicationversion';
+	ApplicationVersion,
+} from '../../ddl/application/applicationversion';
 import {
 	IVersionedApplicationObject,
 } from './versionedapplicationobject';
@@ -22,8 +22,8 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface VersionedApplicationObjectVDescriptor
-    extends IEntityVDescriptor {
+export interface VersionedApplicationObjectVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
@@ -31,9 +31,9 @@ export interface VersionedApplicationObjectVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	deprecatedSinceVersion?: ApplicationVersionVDescriptor;
-	removedInVersion?: ApplicationVersionVDescriptor;
-	sinceVersion?: ApplicationVersionVDescriptor;
+	deprecatedSinceVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
+	removedInVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
+	sinceVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
 
 }
 

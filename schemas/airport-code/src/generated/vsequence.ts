@@ -16,12 +16,12 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface SequenceVDescriptor
-    extends IEntityVDescriptor {
+export interface SequenceVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	applicationIndex: number | IVNumberField;
-	tableIndex: number | IVNumberField;
-	columnIndex: number | IVNumberField;
+	applicationIndex?: number | IVNumberField;
+	tableIndex?: number | IVNumberField;
+	columnIndex?: number | IVNumberField;
 	
 	// Non-Id Properties
 	incrementBy?: number | IVNumberField;

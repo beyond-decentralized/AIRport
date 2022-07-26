@@ -16,10 +16,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ClassificationVDescriptor
-    extends IEntityVDescriptor {
+export interface ClassificationVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	id: number | IVNumberField;
+	id?: number | IVNumberField;
 	
 	// Non-Id Properties
 	name?: string | IVStringField;

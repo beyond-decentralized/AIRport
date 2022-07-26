@@ -10,8 +10,8 @@ import {
 	SynchronizationConflictVDescriptor,
 } from './vsynchronizationconflict';
 import {
-	ISynchronizationConflict,
-} from './synchronizationconflict';
+	SynchronizationConflict,
+} from '../../ddl/conflict/SynchronizationConflict';
 import {
 	ISynchronizationConflictValues,
 } from './synchronizationconflictvalues';
@@ -22,15 +22,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface SynchronizationConflictValuesVDescriptor
-    extends IEntityVDescriptor {
+export interface SynchronizationConflictValuesVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	columnIndex: number | IVNumberField;
+	columnIndex?: number | IVNumberField;
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	synchronizationConflict?: SynchronizationConflictVDescriptor;
+	synchronizationConflict?: SynchronizationConflictVDescriptor<SynchronizationConflict>
 
   // Non-Id relations (including OneToMany's)
 

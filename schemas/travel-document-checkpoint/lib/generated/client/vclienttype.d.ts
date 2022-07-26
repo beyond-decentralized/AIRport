@@ -1,8 +1,10 @@
 import { IEntityVDescriptor } from '@airport/airbridge-validate';
 import { ClientVDescriptor } from './vclient';
+import { Client } from '../../ddl/client/Client';
 import { TypeVDescriptor } from '../type/vtype';
-export interface ClientTypeVDescriptor extends IEntityVDescriptor {
-    client?: ClientVDescriptor;
-    type?: TypeVDescriptor;
+import { Type } from '../../ddl/type/Type';
+export interface ClientTypeVDescriptor<T> extends IEntityVDescriptor<T> {
+    client?: ClientVDescriptor<Client>;
+    type?: TypeVDescriptor<Type>;
 }
 //# sourceMappingURL=vclienttype.d.ts.map

@@ -69,11 +69,11 @@ ${baseClassDefinitions}`;
 		return this.entityNames.map(
 			entityName => `
 export interface IBase${entityName}${this.classSuffix}
-  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor> {
+  extends I${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>> {
 }
 
 export class Base${entityName}${this.classSuffix}
-  extends SQDI${this.classSuffix}<${entityName}, ${entityName}VDescriptor>
+  extends SQDI${this.classSuffix}<${entityName}, ${entityName}VDescriptor<${entityName}>>
 	implements IBase${entityName}${this.classSuffix} {${this.buildStaticProperties(entityName)}
 
 	static diSet(): boolean {

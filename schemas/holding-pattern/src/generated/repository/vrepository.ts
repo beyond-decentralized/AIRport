@@ -8,52 +8,52 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	UserAccountVDescriptor,
-	IUserAccount,
+	UserAccount,
 	ContinentVDescriptor,
-	IContinent,
+	Continent,
 	CountryVDescriptor,
-	ICountry,
+	Country,
 	StateVDescriptor,
-	IState,
+	State,
 	MetroAreaVDescriptor,
-	IMetroArea,
+	MetroArea,
 } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import {
 	RepositoryTransactionHistoryVDescriptor,
 } from '../history/vrepositorytransactionhistory';
 import {
-	IRepositoryTransactionHistory,
-} from '../history/repositorytransactionhistory';
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	RepositoryApplicationVDescriptor,
 } from './vrepositoryapplication';
 import {
-	IRepositoryApplication,
-} from './repositoryapplication';
+	RepositoryApplication,
+} from '../../ddl/repository/RepositoryApplication';
 import {
 	RepositoryClientVDescriptor,
 } from './vrepositoryclient';
 import {
-	IRepositoryClient,
-} from './repositoryclient';
+	RepositoryClient,
+} from '../../ddl/repository/RepositoryClient';
 import {
 	RepositoryDatabaseVDescriptor,
 } from './vrepositorydatabase';
 import {
-	IRepositoryDatabase,
-} from './repositorydatabase';
+	RepositoryDatabase,
+} from '../../ddl/repository/RepositoryDatabase';
 import {
 	RepositoryTerminalVDescriptor,
 } from './vrepositoryterminal';
 import {
-	IRepositoryTerminal,
-} from './repositoryterminal';
+	RepositoryTerminal,
+} from '../../ddl/repository/RepositoryTerminal';
 import {
 	RepositoryTypeVDescriptor,
 } from './vrepositorytype';
 import {
-	IRepositoryType,
-} from './repositorytype';
+	RepositoryType,
+} from '../../ddl/repository/RepositoryType';
 import {
 	IRepository,
 } from './repository';
@@ -64,10 +64,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RepositoryVDescriptor
-    extends IEntityVDescriptor {
+export interface RepositoryVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	GUID?: string | IVStringField;
@@ -79,17 +79,17 @@ export interface RepositoryVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	owner?: UserAccountVDescriptor;
-	repositoryTransactionHistory?: RepositoryTransactionHistoryVDescriptor;
-	continent?: ContinentVDescriptor;
-	country?: CountryVDescriptor;
-	state?: StateVDescriptor;
-	metroArea?: MetroAreaVDescriptor;
-	repositoryApplications?: RepositoryApplicationVDescriptor;
-	repositoryClients?: RepositoryClientVDescriptor;
-	repositoryDatabases?: RepositoryDatabaseVDescriptor;
-	repositoryTerminals?: RepositoryTerminalVDescriptor;
-	repositoryTypes?: RepositoryTypeVDescriptor;
+	owner?: UserAccountVDescriptor<UserAccount>
+	repositoryTransactionHistory?: RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>
+	continent?: ContinentVDescriptor<Continent>
+	country?: CountryVDescriptor<Country>
+	state?: StateVDescriptor<State>
+	metroArea?: MetroAreaVDescriptor<MetroArea>
+	repositoryApplications?: RepositoryApplicationVDescriptor<RepositoryApplication>
+	repositoryClients?: RepositoryClientVDescriptor<RepositoryClient>
+	repositoryDatabases?: RepositoryDatabaseVDescriptor<RepositoryDatabase>
+	repositoryTerminals?: RepositoryTerminalVDescriptor<RepositoryTerminal>
+	repositoryTypes?: RepositoryTypeVDescriptor<RepositoryType>
 
 }
 

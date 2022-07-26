@@ -10,14 +10,14 @@ import {
 	ClientVDescriptor,
 } from './vclient';
 import {
-	IClient,
-} from './client';
+	Client,
+} from '../../ddl/client/Client';
 import {
 	TypeVDescriptor,
 } from '../type/vtype';
 import {
-	IType,
-} from '../type/type';
+	Type,
+} from '../../ddl/type/Type';
 import {
 	IClientType,
 } from './clienttype';
@@ -28,15 +28,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ClientTypeVDescriptor
-    extends IEntityVDescriptor {
+export interface ClientTypeVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	client?: ClientVDescriptor;
-	type?: TypeVDescriptor;
+	client?: ClientVDescriptor<Client>
+	type?: TypeVDescriptor<Type>
 
   // Non-Id relations (including OneToMany's)
 

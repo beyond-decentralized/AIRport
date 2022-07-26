@@ -1,9 +1,9 @@
-import { IValidationEntity } from "../definition/IValidationEntity";
+import { IEntityVDescriptor } from "../definition/IEntityVDescriptor";
 import { IValidationField } from "../definition/IValidationField";
 import { IVNumberField } from "../definition/IVNumberField";
 
 export const and = function <T, F extends IValidationField<T>>(
-    ...conditions: (T | F)[]
+    ...conditions: F[]
 ): F {
     return null
 }
@@ -15,26 +15,32 @@ export const between = function (
     return null
 }
 
-export const equals = function <T, F extends IValidationField<T>>(
-    value: T | F
+export const value = function <T, F extends IValidationField<T>>(
+    value: T
 ): F {
     return null
 }
 
-export const exists = function <T, E extends IValidationEntity<T>>(
-    validationSpec?: T
+export const equals = function <T, F extends IEntityVDescriptor<T>>(
+    value: F
+): F {
+    return null
+}
+
+export const exists = function <T, E extends IEntityVDescriptor<T>>(
+    validationSpec?: E
 ): E {
     return null
 }
 
-export const isNull = function <T, E extends IValidationEntity<T>>(
+export const isNull = function <T, E extends IEntityVDescriptor<T>>(
     validationSpec?: boolean
 ): E {
     return null
 }
 
 export const or = function <T, F extends IValidationField<T>>(
-    ...conditions: (T | F)[]
+    ...conditions: F[]
 ): F {
     return null
 }

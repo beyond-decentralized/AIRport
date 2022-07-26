@@ -16,32 +16,32 @@ import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
-	IApplicationVersion,
-} from './applicationversion';
+	ApplicationVersion,
+} from '../../ddl/application/applicationversion';
 import {
 	ApplicationColumnVDescriptor,
 } from './vapplicationcolumn';
 import {
-	IApplicationColumn,
-} from './applicationcolumn';
+	ApplicationColumn,
+} from '../../ddl/application/applicationcolumn';
 import {
 	ApplicationOperationVDescriptor,
 } from './vapplicationoperation';
 import {
-	IApplicationOperation,
-} from './applicationoperation';
+	ApplicationOperation,
+} from '../../ddl/application/applicationoperation';
 import {
 	ApplicationPropertyVDescriptor,
 } from './vapplicationproperty';
 import {
-	IApplicationProperty,
-} from './applicationproperty';
+	ApplicationProperty,
+} from '../../ddl/application/applicationproperty';
 import {
 	ApplicationRelationVDescriptor,
 } from './vapplicationrelation';
 import {
-	IApplicationRelation,
-} from './applicationrelation';
+	ApplicationRelation,
+} from '../../ddl/application/applicationrelation';
 import {
 	IApplicationEntity,
 } from './applicationentity';
@@ -52,10 +52,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationEntityVDescriptor
-    extends VersionedApplicationObjectVDescriptor {
+export interface ApplicationEntityVDescriptor<T>
+    extends VersionedApplicationObjectVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	index?: number | IVNumberField;
@@ -67,12 +67,12 @@ export interface ApplicationEntityVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	applicationVersion?: ApplicationVersionVDescriptor;
-	columns?: ApplicationColumnVDescriptor;
-	operations?: ApplicationOperationVDescriptor;
-	properties?: ApplicationPropertyVDescriptor;
-	relations?: ApplicationRelationVDescriptor;
-	relationReferences?: ApplicationRelationVDescriptor;
+	applicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
+	columns?: ApplicationColumnVDescriptor<ApplicationColumn>
+	operations?: ApplicationOperationVDescriptor<ApplicationOperation>
+	properties?: ApplicationPropertyVDescriptor<ApplicationProperty>
+	relations?: ApplicationRelationVDescriptor<ApplicationRelation>
+	relationReferences?: ApplicationRelationVDescriptor<ApplicationRelation>
 
 }
 

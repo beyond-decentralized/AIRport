@@ -8,16 +8,16 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	RepositoryVDescriptor,
-	IRepository,
+	Repository,
 	RecordHistoryVDescriptor,
-	IRecordHistory,
-} from '@airport/holding-pattern';
+	RecordHistory,
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import {
 	SynchronizationConflictValuesVDescriptor,
 } from './vsynchronizationconflictvalues';
 import {
-	ISynchronizationConflictValues,
-} from './synchronizationconflictvalues';
+	SynchronizationConflictValues,
+} from '../../ddl/conflict/SynchronizationConflictValues';
 import {
 	ISynchronizationConflict,
 } from './synchronizationconflict';
@@ -28,10 +28,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface SynchronizationConflictVDescriptor
-    extends IEntityVDescriptor {
+export interface SynchronizationConflictVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	type?: string | IVStringField;
@@ -40,10 +40,10 @@ export interface SynchronizationConflictVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	repository?: RepositoryVDescriptor;
-	overwrittenRecordHistory?: RecordHistoryVDescriptor;
-	overwritingRecordHistory?: RecordHistoryVDescriptor;
-	values?: SynchronizationConflictValuesVDescriptor;
+	repository?: RepositoryVDescriptor<Repository>
+	overwrittenRecordHistory?: RecordHistoryVDescriptor<RecordHistory>
+	overwritingRecordHistory?: RecordHistoryVDescriptor<RecordHistory>
+	values?: SynchronizationConflictValuesVDescriptor<SynchronizationConflictValues>
 
 }
 

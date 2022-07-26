@@ -13,20 +13,20 @@ import {
 	ApplicationVDescriptor,
 } from './vapplication';
 import {
-	IApplication,
-} from './application';
+	Application,
+} from '../../ddl/application/application';
 import {
 	ApplicationEntityVDescriptor,
 } from './vapplicationentity';
 import {
-	IApplicationEntity,
-} from './applicationentity';
+	ApplicationEntity,
+} from '../../ddl/application/applicationentity';
 import {
 	ApplicationReferenceVDescriptor,
 } from './vapplicationreference';
 import {
-	IApplicationReference,
-} from './applicationreference';
+	ApplicationReference,
+} from '../../ddl/application/applicationreference';
 import {
 	IApplicationVersion,
 } from './applicationversion';
@@ -37,10 +37,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationVersionVDescriptor
-    extends IEntityVDescriptor {
+export interface ApplicationVersionVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	integerVersion?: number | IVNumberField;
@@ -53,10 +53,10 @@ export interface ApplicationVersionVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	application?: ApplicationVDescriptor;
-	entities?: ApplicationEntityVDescriptor;
-	references?: ApplicationReferenceVDescriptor;
-	referencedBy?: ApplicationReferenceVDescriptor;
+	application?: ApplicationVDescriptor<Application>
+	entities?: ApplicationEntityVDescriptor<ApplicationEntity>
+	references?: ApplicationReferenceVDescriptor<ApplicationReference>
+	referencedBy?: ApplicationReferenceVDescriptor<ApplicationReference>
 
 }
 

@@ -97,11 +97,11 @@ export class SQDIDvo<Entity, EntityVDescriptor>
 
 
 export interface IBaseApplicationDvo
-  extends IDvo<Application, ApplicationVDescriptor> {
+  extends IDvo<Application, ApplicationVDescriptor<Application>> {
 }
 
 export class BaseApplicationDvo
-  extends SQDIDvo<Application, ApplicationVDescriptor>
+  extends SQDIDvo<Application, ApplicationVDescriptor<Application>>
 	implements IBaseApplicationDvo {
 
 	static diSet(): boolean {
@@ -115,11 +115,11 @@ export class BaseApplicationDvo
 
 
 export interface IBaseApplicationColumnDvo
-  extends IDvo<ApplicationColumn, ApplicationColumnVDescriptor> {
+  extends IDvo<ApplicationColumn, ApplicationColumnVDescriptor<ApplicationColumn>> {
 }
 
 export class BaseApplicationColumnDvo
-  extends SQDIDvo<ApplicationColumn, ApplicationColumnVDescriptor>
+  extends SQDIDvo<ApplicationColumn, ApplicationColumnVDescriptor<ApplicationColumn>>
 	implements IBaseApplicationColumnDvo {
 
 	static diSet(): boolean {
@@ -133,11 +133,11 @@ export class BaseApplicationColumnDvo
 
 
 export interface IBaseApplicationCurrentVersionDvo
-  extends IDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor> {
+  extends IDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor<ApplicationCurrentVersion>> {
 }
 
 export class BaseApplicationCurrentVersionDvo
-  extends SQDIDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor>
+  extends SQDIDvo<ApplicationCurrentVersion, ApplicationCurrentVersionVDescriptor<ApplicationCurrentVersion>>
 	implements IBaseApplicationCurrentVersionDvo {
 
 	static diSet(): boolean {
@@ -151,11 +151,11 @@ export class BaseApplicationCurrentVersionDvo
 
 
 export interface IBaseApplicationEntityDvo
-  extends IDvo<ApplicationEntity, ApplicationEntityVDescriptor> {
+  extends IDvo<ApplicationEntity, ApplicationEntityVDescriptor<ApplicationEntity>> {
 }
 
 export class BaseApplicationEntityDvo
-  extends SQDIDvo<ApplicationEntity, ApplicationEntityVDescriptor>
+  extends SQDIDvo<ApplicationEntity, ApplicationEntityVDescriptor<ApplicationEntity>>
 	implements IBaseApplicationEntityDvo {
 
 	static diSet(): boolean {
@@ -169,11 +169,11 @@ export class BaseApplicationEntityDvo
 
 
 export interface IBaseApplicationOperationDvo
-  extends IDvo<ApplicationOperation, ApplicationOperationVDescriptor> {
+  extends IDvo<ApplicationOperation, ApplicationOperationVDescriptor<ApplicationOperation>> {
 }
 
 export class BaseApplicationOperationDvo
-  extends SQDIDvo<ApplicationOperation, ApplicationOperationVDescriptor>
+  extends SQDIDvo<ApplicationOperation, ApplicationOperationVDescriptor<ApplicationOperation>>
 	implements IBaseApplicationOperationDvo {
 
 	static diSet(): boolean {
@@ -187,11 +187,11 @@ export class BaseApplicationOperationDvo
 
 
 export interface IBaseApplicationPropertyDvo
-  extends IDvo<ApplicationProperty, ApplicationPropertyVDescriptor> {
+  extends IDvo<ApplicationProperty, ApplicationPropertyVDescriptor<ApplicationProperty>> {
 }
 
 export class BaseApplicationPropertyDvo
-  extends SQDIDvo<ApplicationProperty, ApplicationPropertyVDescriptor>
+  extends SQDIDvo<ApplicationProperty, ApplicationPropertyVDescriptor<ApplicationProperty>>
 	implements IBaseApplicationPropertyDvo {
 
 	static diSet(): boolean {
@@ -205,11 +205,11 @@ export class BaseApplicationPropertyDvo
 
 
 export interface IBaseApplicationPropertyColumnDvo
-  extends IDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor> {
+  extends IDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor<ApplicationPropertyColumn>> {
 }
 
 export class BaseApplicationPropertyColumnDvo
-  extends SQDIDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor>
+  extends SQDIDvo<ApplicationPropertyColumn, ApplicationPropertyColumnVDescriptor<ApplicationPropertyColumn>>
 	implements IBaseApplicationPropertyColumnDvo {
 
 	static diSet(): boolean {
@@ -223,11 +223,11 @@ export class BaseApplicationPropertyColumnDvo
 
 
 export interface IBaseApplicationReferenceDvo
-  extends IDvo<ApplicationReference, ApplicationReferenceVDescriptor> {
+  extends IDvo<ApplicationReference, ApplicationReferenceVDescriptor<ApplicationReference>> {
 }
 
 export class BaseApplicationReferenceDvo
-  extends SQDIDvo<ApplicationReference, ApplicationReferenceVDescriptor>
+  extends SQDIDvo<ApplicationReference, ApplicationReferenceVDescriptor<ApplicationReference>>
 	implements IBaseApplicationReferenceDvo {
 
 	static diSet(): boolean {
@@ -241,11 +241,11 @@ export class BaseApplicationReferenceDvo
 
 
 export interface IBaseApplicationRelationDvo
-  extends IDvo<ApplicationRelation, ApplicationRelationVDescriptor> {
+  extends IDvo<ApplicationRelation, ApplicationRelationVDescriptor<ApplicationRelation>> {
 }
 
 export class BaseApplicationRelationDvo
-  extends SQDIDvo<ApplicationRelation, ApplicationRelationVDescriptor>
+  extends SQDIDvo<ApplicationRelation, ApplicationRelationVDescriptor<ApplicationRelation>>
 	implements IBaseApplicationRelationDvo {
 
 	static diSet(): boolean {
@@ -259,11 +259,11 @@ export class BaseApplicationRelationDvo
 
 
 export interface IBaseApplicationRelationColumnDvo
-  extends IDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor> {
+  extends IDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>> {
 }
 
 export class BaseApplicationRelationColumnDvo
-  extends SQDIDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor>
+  extends SQDIDvo<ApplicationRelationColumn, ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>>
 	implements IBaseApplicationRelationColumnDvo {
 
 	static diSet(): boolean {
@@ -277,11 +277,11 @@ export class BaseApplicationRelationColumnDvo
 
 
 export interface IBaseApplicationVersionDvo
-  extends IDvo<ApplicationVersion, ApplicationVersionVDescriptor> {
+  extends IDvo<ApplicationVersion, ApplicationVersionVDescriptor<ApplicationVersion>> {
 }
 
 export class BaseApplicationVersionDvo
-  extends SQDIDvo<ApplicationVersion, ApplicationVersionVDescriptor>
+  extends SQDIDvo<ApplicationVersion, ApplicationVersionVDescriptor<ApplicationVersion>>
 	implements IBaseApplicationVersionDvo {
 
 	static diSet(): boolean {
@@ -295,11 +295,11 @@ export class BaseApplicationVersionDvo
 
 
 export interface IBaseDomainDvo
-  extends IDvo<Domain, DomainVDescriptor> {
+  extends IDvo<Domain, DomainVDescriptor<Domain>> {
 }
 
 export class BaseDomainDvo
-  extends SQDIDvo<Domain, DomainVDescriptor>
+  extends SQDIDvo<Domain, DomainVDescriptor<Domain>>
 	implements IBaseDomainDvo {
 
 	static diSet(): boolean {

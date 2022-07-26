@@ -13,14 +13,14 @@ import {
 	ApplicationColumnVDescriptor,
 } from './vapplicationcolumn';
 import {
-	IApplicationColumn,
-} from './applicationcolumn';
+	ApplicationColumn,
+} from '../../ddl/application/applicationcolumn';
 import {
 	ApplicationPropertyVDescriptor,
 } from './vapplicationproperty';
 import {
-	IApplicationProperty,
-} from './applicationproperty';
+	ApplicationProperty,
+} from '../../ddl/application/applicationproperty';
 import {
 	IApplicationPropertyColumn,
 } from './applicationpropertycolumn';
@@ -31,15 +31,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationPropertyColumnVDescriptor
-    extends VersionedApplicationObjectVDescriptor {
+export interface ApplicationPropertyColumnVDescriptor<T>
+    extends VersionedApplicationObjectVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	column?: ApplicationColumnVDescriptor;
-	property?: ApplicationPropertyVDescriptor;
+	column?: ApplicationColumnVDescriptor<ApplicationColumn>
+	property?: ApplicationPropertyVDescriptor<ApplicationProperty>
 
   // Non-Id relations (including OneToMany's)
 

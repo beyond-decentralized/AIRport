@@ -10,20 +10,20 @@ import {
 	DomainVDescriptor,
 } from './vdomain';
 import {
-	IDomain,
-} from './domain';
+	Domain,
+} from '../../ddl/application/domain';
 import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
-	IApplicationVersion,
-} from './applicationversion';
+	ApplicationVersion,
+} from '../../ddl/application/applicationversion';
 import {
 	ApplicationCurrentVersionVDescriptor,
 } from './vapplicationcurrentversion';
 import {
-	IApplicationCurrentVersion,
-} from './applicationcurrentversion';
+	ApplicationCurrentVersion,
+} from '../../ddl/application/applicationcurrentversion';
 import {
 	IApplication,
 } from './application';
@@ -34,10 +34,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationVDescriptor
-    extends IEntityVDescriptor {
+export interface ApplicationVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	index: number | IVNumberField;
+	index?: number | IVNumberField;
 	
 	// Non-Id Properties
 	GUID?: string | IVStringField;
@@ -50,9 +50,9 @@ export interface ApplicationVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	domain?: DomainVDescriptor;
-	versions?: ApplicationVersionVDescriptor;
-	currentVersion?: ApplicationCurrentVersionVDescriptor;
+	domain?: DomainVDescriptor<Domain>
+	versions?: ApplicationVersionVDescriptor<ApplicationVersion>
+	currentVersion?: ApplicationCurrentVersionVDescriptor<ApplicationCurrentVersion>
 
 }
 

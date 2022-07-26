@@ -10,26 +10,26 @@ import {
 	ActorVDescriptor,
 } from '../infrastructure/vactor';
 import {
-	IActor,
-} from '../infrastructure/actor';
+	Actor,
+} from '../../ddl/infrastructure/Actor';
 import {
 	OperationHistoryVDescriptor,
 } from './voperationhistory';
 import {
-	IOperationHistory,
-} from './operationhistory';
+	OperationHistory,
+} from '../../ddl/history/OperationHistory';
 import {
 	RecordHistoryNewValueVDescriptor,
 } from './vrecordhistorynewvalue';
 import {
-	IRecordHistoryNewValue,
-} from './recordhistorynewvalue';
+	RecordHistoryNewValue,
+} from '../../ddl/history/RecordHistoryNewValue';
 import {
 	RecordHistoryOldValueVDescriptor,
 } from './vrecordhistoryoldvalue';
 import {
-	IRecordHistoryOldValue,
-} from './recordhistoryoldvalue';
+	RecordHistoryOldValue,
+} from '../../ddl/history/RecordHistoryOldValue';
 import {
 	IRecordHistory,
 } from './recordhistory';
@@ -40,10 +40,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RecordHistoryVDescriptor
-    extends IEntityVDescriptor {
+export interface RecordHistoryVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	_actorRecordId?: number | IVNumberField;
@@ -51,10 +51,10 @@ export interface RecordHistoryVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	actor?: ActorVDescriptor;
-	operationHistory?: OperationHistoryVDescriptor;
-	newValues?: RecordHistoryNewValueVDescriptor;
-	oldValues?: RecordHistoryOldValueVDescriptor;
+	actor?: ActorVDescriptor<Actor>
+	operationHistory?: OperationHistoryVDescriptor<OperationHistory>
+	newValues?: RecordHistoryNewValueVDescriptor<RecordHistoryNewValue>
+	oldValues?: RecordHistoryOldValueVDescriptor<RecordHistoryOldValue>
 
 }
 

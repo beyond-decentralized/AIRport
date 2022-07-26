@@ -10,8 +10,8 @@ import {
 	TypeClassificationVDescriptor,
 } from './vtypeclassification';
 import {
-	ITypeClassification,
-} from './typeclassification';
+	TypeClassification,
+} from '../../ddl/type/TypeClassification';
 import {
 	IType,
 } from './type';
@@ -22,10 +22,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface TypeVDescriptor
-    extends IEntityVDescriptor {
+export interface TypeVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	id: number | IVNumberField;
+	id?: number | IVNumberField;
 	
 	// Non-Id Properties
 	name?: string | IVStringField;
@@ -33,7 +33,7 @@ export interface TypeVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	typeClassifications?: TypeClassificationVDescriptor;
+	typeClassifications?: TypeClassificationVDescriptor<TypeClassification>
 
 }
 

@@ -10,8 +10,8 @@ import {
 	RepositoryTransactionHistoryVDescriptor,
 } from './vrepositorytransactionhistory';
 import {
-	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	ITransactionHistory,
 } from './transactionhistory';
@@ -22,10 +22,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface TransactionHistoryVDescriptor
-    extends IEntityVDescriptor {
+export interface TransactionHistoryVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	transactionType?: string | IVStringField;
@@ -33,7 +33,7 @@ export interface TransactionHistoryVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	repositoryTransactionHistories?: RepositoryTransactionHistoryVDescriptor;
+	repositoryTransactionHistories?: RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>
 
 }
 

@@ -9,21 +9,21 @@ import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);
 }
-export interface IBaseSequenceDvo extends IDvo<Sequence, SequenceVDescriptor> {
+export interface IBaseSequenceDvo extends IDvo<Sequence, SequenceVDescriptor<Sequence>> {
 }
-export declare class BaseSequenceDvo extends SQDIDvo<Sequence, SequenceVDescriptor> implements IBaseSequenceDvo {
+export declare class BaseSequenceDvo extends SQDIDvo<Sequence, SequenceVDescriptor<Sequence>> implements IBaseSequenceDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseSystemWideOperationIdDvo extends IDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor> {
+export interface IBaseSystemWideOperationIdDvo extends IDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor<SystemWideOperationId>> {
 }
-export declare class BaseSystemWideOperationIdDvo extends SQDIDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor> implements IBaseSystemWideOperationIdDvo {
+export declare class BaseSystemWideOperationIdDvo extends SQDIDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor<SystemWideOperationId>> implements IBaseSystemWideOperationIdDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTerminalRunDvo extends IDvo<TerminalRun, TerminalRunVDescriptor> {
+export interface IBaseTerminalRunDvo extends IDvo<TerminalRun, TerminalRunVDescriptor<TerminalRun>> {
 }
-export declare class BaseTerminalRunDvo extends SQDIDvo<TerminalRun, TerminalRunVDescriptor> implements IBaseTerminalRunDvo {
+export declare class BaseTerminalRunDvo extends SQDIDvo<TerminalRun, TerminalRunVDescriptor<TerminalRun>> implements IBaseTerminalRunDvo {
     static diSet(): boolean;
     constructor();
 }

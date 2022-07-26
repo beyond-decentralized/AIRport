@@ -1,6 +1,5 @@
 export * from './definition/IDvo';
 export * from './definition/IEntityVDescriptor';
-export * from './definition/IValidationEntity';
 export * from './definition/IValidationField';
 export * from './definition/IVBooleanField';
 export * from './definition/IVDateField';

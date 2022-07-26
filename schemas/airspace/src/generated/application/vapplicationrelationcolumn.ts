@@ -13,14 +13,14 @@ import {
 	ApplicationColumnVDescriptor,
 } from './vapplicationcolumn';
 import {
-	IApplicationColumn,
-} from './applicationcolumn';
+	ApplicationColumn,
+} from '../../ddl/application/applicationcolumn';
 import {
 	ApplicationRelationVDescriptor,
 } from './vapplicationrelation';
 import {
-	IApplicationRelation,
-} from './applicationrelation';
+	ApplicationRelation,
+} from '../../ddl/application/applicationrelation';
 import {
 	IApplicationRelationColumn,
 } from './applicationrelationcolumn';
@@ -31,21 +31,21 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationRelationColumnVDescriptor
-    extends VersionedApplicationObjectVDescriptor {
+export interface ApplicationRelationColumnVDescriptor<T>
+    extends VersionedApplicationObjectVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	manyColumn?: ApplicationColumnVDescriptor;
-	oneColumn?: ApplicationColumnVDescriptor;
-	manyRelation?: ApplicationRelationVDescriptor;
-	oneRelation?: ApplicationRelationVDescriptor;
-	parentRelation?: ApplicationRelationVDescriptor;
+	manyColumn?: ApplicationColumnVDescriptor<ApplicationColumn>
+	oneColumn?: ApplicationColumnVDescriptor<ApplicationColumn>
+	manyRelation?: ApplicationRelationVDescriptor<ApplicationRelation>
+	oneRelation?: ApplicationRelationVDescriptor<ApplicationRelation>
+	parentRelation?: ApplicationRelationVDescriptor<ApplicationRelation>
 
 }
 

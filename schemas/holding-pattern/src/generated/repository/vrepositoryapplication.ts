@@ -8,14 +8,14 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	ApplicationVDescriptor,
-	IApplication,
+	Application,
 } from '@airport/airspace';
 import {
 	RepositoryVDescriptor,
 } from './vrepository';
 import {
-	IRepository,
-} from './repository';
+	Repository,
+} from '../../ddl/repository/Repository';
 import {
 	IRepositoryApplication,
 } from './repositoryapplication';
@@ -26,17 +26,17 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RepositoryApplicationVDescriptor
-    extends IEntityVDescriptor {
+export interface RepositoryApplicationVDescriptor<T>
+	extends IEntityVDescriptor<T> {
 	// Id Properties
-	
+
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	application?: ApplicationVDescriptor;
-	repository?: RepositoryVDescriptor;
+	application?: ApplicationVDescriptor<Application>
+	repository?: RepositoryVDescriptor<Repository>
 
-  // Non-Id relations (including OneToMany's)
+	// Non-Id relations (including OneToMany's)
 
 }
 

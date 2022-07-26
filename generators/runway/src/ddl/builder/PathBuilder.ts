@@ -68,6 +68,12 @@ export class PathBuilder {
 		return this.workingDirPath + '/' + generatedPath;
 	}
 
+	getFullPathToDdlSource( //
+		sourcePath: string
+	): string {
+		return this.getDdlPathForFile(sourcePath);
+	}
+
 	setupFileForGeneration(
 		sourcePath: string,
 		prefix = 'q',
@@ -126,6 +132,19 @@ export class PathBuilder {
 		}
 
 		return this.generatedDirPath + '/' + sourceRelativePath;
+	}
+
+	private getDdlPathForFile(
+		sourcePath: string
+	): string {
+		sourcePath = normalizePath(sourcePath)
+
+		let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase())
+		if (indexOfSourceDirInPath !== 0) {
+			throw new Error(`Cannot generate file from source outside of root source dir`)
+		}
+
+		return sourcePath
 	}
 
 }

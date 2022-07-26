@@ -1,8 +1,9 @@
 import { IEntityVDescriptor } from '@airport/airbridge-validate';
-import { ApplicationVDescriptor } from '@airport/airspace';
+import { ApplicationVDescriptor, Application } from '@airport/airspace';
 import { RepositoryVDescriptor } from './vrepository';
-export interface RepositoryApplicationVDescriptor extends IEntityVDescriptor {
-    application?: ApplicationVDescriptor;
-    repository?: RepositoryVDescriptor;
+import { Repository } from '../../ddl/repository/Repository';
+export interface RepositoryApplicationVDescriptor<T> extends IEntityVDescriptor<T> {
+    application?: ApplicationVDescriptor<Application>;
+    repository?: RepositoryVDescriptor<Repository>;
 }
 //# sourceMappingURL=vrepositoryapplication.d.ts.map

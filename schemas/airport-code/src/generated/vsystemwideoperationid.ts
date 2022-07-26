@@ -16,10 +16,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface SystemWideOperationIdVDescriptor
-    extends IEntityVDescriptor {
+export interface SystemWideOperationIdVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 

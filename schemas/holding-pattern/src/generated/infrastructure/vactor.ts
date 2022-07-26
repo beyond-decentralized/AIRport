@@ -8,15 +8,15 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	UserAccountVDescriptor,
-	IUserAccount,
+	UserAccount,
 	TerminalVDescriptor,
-	ITerminal,
+	Terminal,
 	ClientVDescriptor,
-	IClient,
+	Client,
 } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import {
 	ApplicationVDescriptor,
-	IApplication,
+	Application,
 } from '@airport/airspace';
 import {
 	IActor,
@@ -28,21 +28,21 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ActorVDescriptor
-    extends IEntityVDescriptor {
+export interface ActorVDescriptor<T>
+	extends IEntityVDescriptor<T> {
 	// Id Properties
 	_localId?: number | IVNumberField;
-	
+
 	// Non-Id Properties
 	GUID?: string | IVStringField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
-	userAccount?: UserAccountVDescriptor;
-	terminal?: TerminalVDescriptor;
-	application?: ApplicationVDescriptor;
-	client?: ClientVDescriptor;
+	// Non-Id relations (including OneToMany's)
+	userAccount?: UserAccountVDescriptor<UserAccount>
+	terminal?: TerminalVDescriptor<Terminal>
+	application?: ApplicationVDescriptor<Application>
+	client?: ClientVDescriptor<Client>
 
 }
 

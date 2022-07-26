@@ -3,6 +3,7 @@ import { IBuilder } from '../../Builder'
 import { VEntityBuilder } from './VEntityBuilder'
 import { VPropertyBuilder } from './VPropertyBuilder'
 import { VRelationBuilder } from './VRelationBuilder'
+import { VTransientBuilder } from './VTransientBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
@@ -14,6 +15,7 @@ export class IVEntityInterfaceBuilder
 	idRelationBuilders: VRelationBuilder[]
 	nonIdPropertyBuilders: VPropertyBuilder[]
 	nonIdRelationBuilders: VRelationBuilder[]
+	transientPropertyBuilders: VTransientBuilder[]
 
 	constructor(
 		public entity: EntityCandidate,
@@ -23,6 +25,7 @@ export class IVEntityInterfaceBuilder
 		this.idRelationBuilders = vEntityBuilder.idRelationBuilders
 		this.nonIdPropertyBuilders = vEntityBuilder.nonIdPropertyBuilders
 		this.nonIdRelationBuilders = vEntityBuilder.nonIdRelationBuilders
+		this.transientPropertyBuilders = vEntityBuilder.transientPropertyBuilders
 	}
 
 	build(): string {
@@ -32,14 +35,14 @@ export class IVEntityInterfaceBuilder
 		this.idPropertyBuilders.forEach((
 			builder: VPropertyBuilder
 		) => {
-			idEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+			idEProperties += `\t${builder.buildInterfaceDefinition()}\n`
 		})
 
 		let idRelationsForEntityEProperties = ``
 		this.idRelationBuilders.forEach((
 			builder: VRelationBuilder
 		) => {
-			idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+			idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition()}\n`
 		})
 
 		let nonIdEProperties = ``
@@ -53,8 +56,15 @@ export class IVEntityInterfaceBuilder
 		this.nonIdRelationBuilders.forEach((
 			builder: VRelationBuilder
 		) => {
-			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`
+			nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition()}\n`
 		})
+
+		// let transientProperties = ``
+		// this.transientPropertyBuilders.forEach((
+		// 	builder: VTransientBuilder
+		// ) => {
+		// 	transientProperties += `\t${builder.buildInterfaceDefinition()}\n`
+		// })
 
 		let extendedVInterface = `IEntityVDescriptor`
 		if (this.entity.parentEntity) {
@@ -67,8 +77,8 @@ export class IVEntityInterfaceBuilder
 //  API INTERFACE //
 ////////////////////
 
-export interface ${entityName}VDescriptor
-    extends ${extendedVInterface} {
+export interface ${entityName}VDescriptor<T>
+    extends ${extendedVInterface}<T> {
 	// Id Properties
 ${idEProperties}	
 	// Non-Id Properties

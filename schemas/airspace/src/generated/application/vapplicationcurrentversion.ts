@@ -10,14 +10,14 @@ import {
 	ApplicationVDescriptor,
 } from './vapplication';
 import {
-	IApplication,
-} from './application';
+	Application,
+} from '../../ddl/application/application';
 import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
-	IApplicationVersion,
-} from './applicationversion';
+	ApplicationVersion,
+} from '../../ddl/application/applicationversion';
 import {
 	IApplicationCurrentVersion,
 } from './applicationcurrentversion';
@@ -28,15 +28,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationCurrentVersionVDescriptor
-    extends IEntityVDescriptor {
+export interface ApplicationCurrentVersionVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	application?: ApplicationVDescriptor;
-	applicationVersion?: ApplicationVersionVDescriptor;
+	application?: ApplicationVDescriptor<Application>
+	applicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
 
   // Non-Id relations (including OneToMany's)
 

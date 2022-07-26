@@ -16,10 +16,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface TerminalRunVDescriptor
-    extends IEntityVDescriptor {
+export interface TerminalRunVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	createTimestamp?: number | IVNumberField;

@@ -10,32 +10,32 @@ import {
 	ContinentVDescriptor,
 } from '../locality/vcontinent';
 import {
-	IContinent,
-} from '../locality/continent';
+	Continent,
+} from '../../ddl/locality/Continent';
 import {
 	CountryVDescriptor,
 } from '../locality/vcountry';
 import {
-	ICountry,
-} from '../locality/country';
+	Country,
+} from '../../ddl/locality/Country';
 import {
 	StateVDescriptor,
 } from '../locality/vstate';
 import {
-	IState,
-} from '../locality/state';
+	State,
+} from '../../ddl/locality/State';
 import {
 	MetroAreaVDescriptor,
 } from '../locality/vmetroarea';
 import {
-	IMetroArea,
-} from '../locality/metroarea';
+	MetroArea,
+} from '../../ddl/locality/MetroArea';
 import {
 	DatabaseTypeVDescriptor,
 } from './vdatabasetype';
 import {
-	IDatabaseType,
-} from './databasetype';
+	DatabaseType,
+} from '../../ddl/database/DatabaseType';
 import {
 	IDatabase,
 } from './database';
@@ -46,10 +46,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface DatabaseVDescriptor
-    extends IEntityVDescriptor {
+export interface DatabaseVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
+	_localId?: number | IVNumberField;
 	
 	// Non-Id Properties
 	domain?: string | IVStringField;
@@ -58,11 +58,11 @@ export interface DatabaseVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	continent?: ContinentVDescriptor;
-	country?: CountryVDescriptor;
-	state?: StateVDescriptor;
-	metroArea?: MetroAreaVDescriptor;
-	databaseTypes?: DatabaseTypeVDescriptor;
+	continent?: ContinentVDescriptor<Continent>
+	country?: CountryVDescriptor<Country>
+	state?: StateVDescriptor<State>
+	metroArea?: MetroAreaVDescriptor<MetroArea>
+	databaseTypes?: DatabaseTypeVDescriptor<DatabaseType>
 
 }
 

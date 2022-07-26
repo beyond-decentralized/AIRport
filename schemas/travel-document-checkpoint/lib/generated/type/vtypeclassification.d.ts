@@ -1,8 +1,10 @@
 import { IEntityVDescriptor } from '@airport/airbridge-validate';
 import { ClassificationVDescriptor } from './vclassification';
+import { Classification } from '../../ddl/type/Classification';
 import { TypeVDescriptor } from './vtype';
-export interface TypeClassificationVDescriptor extends IEntityVDescriptor {
-    classification?: ClassificationVDescriptor;
-    type?: TypeVDescriptor;
+import { Type } from '../../ddl/type/Type';
+export interface TypeClassificationVDescriptor<T> extends IEntityVDescriptor<T> {
+    classification?: ClassificationVDescriptor<Classification>;
+    type?: TypeVDescriptor<Type>;
 }
 //# sourceMappingURL=vtypeclassification.d.ts.map

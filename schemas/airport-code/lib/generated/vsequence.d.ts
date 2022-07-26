@@ -1,8 +1,8 @@
 import { IEntityVDescriptor, IVNumberField } from '@airport/airbridge-validate';
-export interface SequenceVDescriptor extends IEntityVDescriptor {
-    applicationIndex: number | IVNumberField;
-    tableIndex: number | IVNumberField;
-    columnIndex: number | IVNumberField;
+export interface SequenceVDescriptor<T> extends IEntityVDescriptor<T> {
+    applicationIndex?: number | IVNumberField;
+    tableIndex?: number | IVNumberField;
+    columnIndex?: number | IVNumberField;
     incrementBy?: number | IVNumberField;
     currentValue?: number | IVNumberField;
 }

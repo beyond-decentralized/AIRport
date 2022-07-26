@@ -8,18 +8,18 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	ApplicationVersionVDescriptor,
-	IApplicationVersion,
+	ApplicationVersion,
 	ApplicationEntityVDescriptor,
-	IApplicationEntity,
+	ApplicationEntity,
 	ApplicationColumnVDescriptor,
-	IApplicationColumn,
+	ApplicationColumn,
 } from '@airport/airspace';
 import {
 	RepositoryVDescriptor,
-	IRepository,
+	Repository,
 	ActorVDescriptor,
-	IActor,
-} from '@airport/holding-pattern';
+	Actor,
+} from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import {
 	IRecordUpdateStage,
 } from './recordupdatestage';
@@ -30,23 +30,23 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface RecordUpdateStageVDescriptor
-    extends IEntityVDescriptor {
+export interface RecordUpdateStageVDescriptor<T>
+	extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
-	
+	_localId?: number | IVNumberField;
+
 	// Non-Id Properties
 	_actorRecordId?: number | IVNumberField;
 	updatedValue?: any | IVUntypedField;
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
-	applicationVersion?: ApplicationVersionVDescriptor;
-	entity?: ApplicationEntityVDescriptor;
-	repository?: RepositoryVDescriptor;
-	actor?: ActorVDescriptor;
-	column?: ApplicationColumnVDescriptor;
+	// Non-Id relations (including OneToMany's)
+	applicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
+	entity?: ApplicationEntityVDescriptor<ApplicationEntity>
+	repository?: RepositoryVDescriptor<Repository>
+	actor?: ActorVDescriptor<Actor>
+	column?: ApplicationColumnVDescriptor<ApplicationColumn>
 
 }
 

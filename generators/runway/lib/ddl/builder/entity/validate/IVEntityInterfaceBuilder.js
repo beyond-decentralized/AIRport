@@ -8,16 +8,17 @@ export class IVEntityInterfaceBuilder {
         this.idRelationBuilders = vEntityBuilder.idRelationBuilders;
         this.nonIdPropertyBuilders = vEntityBuilder.nonIdPropertyBuilders;
         this.nonIdRelationBuilders = vEntityBuilder.nonIdRelationBuilders;
+        this.transientPropertyBuilders = vEntityBuilder.transientPropertyBuilders;
     }
     build() {
         let entityName = `${this.entity.docEntry.name}`;
         let idEProperties = ``;
         this.idPropertyBuilders.forEach((builder) => {
-            idEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
+            idEProperties += `\t${builder.buildInterfaceDefinition()}\n`;
         });
         let idRelationsForEntityEProperties = ``;
         this.idRelationBuilders.forEach((builder) => {
-            idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
+            idRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition()}\n`;
         });
         let nonIdEProperties = ``;
         this.nonIdPropertyBuilders.forEach((builder) => {
@@ -25,8 +26,14 @@ export class IVEntityInterfaceBuilder {
         });
         let nonIdRelationsForEntityEProperties = ``;
         this.nonIdRelationBuilders.forEach((builder) => {
-            nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
+            nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition()}\n`;
         });
+        // let transientProperties = ``
+        // this.transientPropertyBuilders.forEach((
+        // 	builder: VTransientBuilder
+        // ) => {
+        // 	transientProperties += `\t${builder.buildInterfaceDefinition()}\n`
+        // })
         let extendedVInterface = `IEntityVDescriptor`;
         if (this.entity.parentEntity) {
             const parentType = this.entity.parentEntity.type;
@@ -37,8 +44,8 @@ export class IVEntityInterfaceBuilder {
 //  API INTERFACE //
 ////////////////////
 
-export interface ${entityName}VDescriptor
-    extends ${extendedVInterface} {
+export interface ${entityName}VDescriptor<T>
+    extends ${extendedVInterface}<T> {
 	// Id Properties
 ${idEProperties}	
 	// Non-Id Properties

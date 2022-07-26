@@ -1,7 +1,7 @@
 import { PropertyDocEntry } from "../../../parser/DocEntry";
 import { EntityCandidate } from "../../../parser/EntityCandidate";
 import { SColumn } from "../../application/SProperty";
-import { IBuilder, MemberData } from "../../Builder";
+import { IBuilder } from "../../Builder";
 import { FileBuilder } from "../FileBuilder";
 import { VPropertyBuilder } from "./VPropertyBuilder";
 import { VRelationBuilder } from "./VRelationBuilder";
@@ -38,9 +38,7 @@ export declare abstract class VCoreEntityBuilder implements IVCoreEntityBuilder 
     })[], filePath: string, toLowerCase?: boolean): void;
     protected getVPropertyBuilders(properties: PropertyDocEntry[]): VPropertyBuilder[];
     protected getVTransientPropertyBuilders(properties: PropertyDocEntry[]): VTransientBuilder[];
-    protected getVRelationBuilders(properties: PropertyDocEntry[], buildRelationInstance: boolean): VRelationBuilder[];
-    protected buildPropertyData(propertyBuilders: VPropertyBuilder[]): MemberData;
-    protected buildRelationData(relationBuilders: VRelationBuilder[]): MemberData;
+    protected getVRelationBuilders(properties: PropertyDocEntry[]): VRelationBuilder[];
     private addVPropertyBuilder;
     private addVRelationBuilder;
 }

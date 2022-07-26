@@ -115,11 +115,11 @@ export class SQDIDvo<Entity, EntityVDescriptor>
 
 
 export interface IBaseClassificationDvo
-  extends IDvo<Classification, ClassificationVDescriptor> {
+  extends IDvo<Classification, ClassificationVDescriptor<Classification>> {
 }
 
 export class BaseClassificationDvo
-  extends SQDIDvo<Classification, ClassificationVDescriptor>
+  extends SQDIDvo<Classification, ClassificationVDescriptor<Classification>>
 	implements IBaseClassificationDvo {
 
 	static diSet(): boolean {
@@ -133,11 +133,11 @@ export class BaseClassificationDvo
 
 
 export interface IBaseClientDvo
-  extends IDvo<Client, ClientVDescriptor> {
+  extends IDvo<Client, ClientVDescriptor<Client>> {
 }
 
 export class BaseClientDvo
-  extends SQDIDvo<Client, ClientVDescriptor>
+  extends SQDIDvo<Client, ClientVDescriptor<Client>>
 	implements IBaseClientDvo {
 
 	static diSet(): boolean {
@@ -151,11 +151,11 @@ export class BaseClientDvo
 
 
 export interface IBaseClientTypeDvo
-  extends IDvo<ClientType, ClientTypeVDescriptor> {
+  extends IDvo<ClientType, ClientTypeVDescriptor<ClientType>> {
 }
 
 export class BaseClientTypeDvo
-  extends SQDIDvo<ClientType, ClientTypeVDescriptor>
+  extends SQDIDvo<ClientType, ClientTypeVDescriptor<ClientType>>
 	implements IBaseClientTypeDvo {
 
 	static diSet(): boolean {
@@ -169,11 +169,11 @@ export class BaseClientTypeDvo
 
 
 export interface IBaseContinentDvo
-  extends IDvo<Continent, ContinentVDescriptor> {
+  extends IDvo<Continent, ContinentVDescriptor<Continent>> {
 }
 
 export class BaseContinentDvo
-  extends SQDIDvo<Continent, ContinentVDescriptor>
+  extends SQDIDvo<Continent, ContinentVDescriptor<Continent>>
 	implements IBaseContinentDvo {
 
 	static diSet(): boolean {
@@ -187,11 +187,11 @@ export class BaseContinentDvo
 
 
 export interface IBaseCountryDvo
-  extends IDvo<Country, CountryVDescriptor> {
+  extends IDvo<Country, CountryVDescriptor<Country>> {
 }
 
 export class BaseCountryDvo
-  extends SQDIDvo<Country, CountryVDescriptor>
+  extends SQDIDvo<Country, CountryVDescriptor<Country>>
 	implements IBaseCountryDvo {
 
 	static diSet(): boolean {
@@ -205,11 +205,11 @@ export class BaseCountryDvo
 
 
 export interface IBaseDatabaseDvo
-  extends IDvo<Database, DatabaseVDescriptor> {
+  extends IDvo<Database, DatabaseVDescriptor<Database>> {
 }
 
 export class BaseDatabaseDvo
-  extends SQDIDvo<Database, DatabaseVDescriptor>
+  extends SQDIDvo<Database, DatabaseVDescriptor<Database>>
 	implements IBaseDatabaseDvo {
 
 	static diSet(): boolean {
@@ -223,11 +223,11 @@ export class BaseDatabaseDvo
 
 
 export interface IBaseDatabaseTypeDvo
-  extends IDvo<DatabaseType, DatabaseTypeVDescriptor> {
+  extends IDvo<DatabaseType, DatabaseTypeVDescriptor<DatabaseType>> {
 }
 
 export class BaseDatabaseTypeDvo
-  extends SQDIDvo<DatabaseType, DatabaseTypeVDescriptor>
+  extends SQDIDvo<DatabaseType, DatabaseTypeVDescriptor<DatabaseType>>
 	implements IBaseDatabaseTypeDvo {
 
 	static diSet(): boolean {
@@ -241,11 +241,11 @@ export class BaseDatabaseTypeDvo
 
 
 export interface IBaseMetroAreaDvo
-  extends IDvo<MetroArea, MetroAreaVDescriptor> {
+  extends IDvo<MetroArea, MetroAreaVDescriptor<MetroArea>> {
 }
 
 export class BaseMetroAreaDvo
-  extends SQDIDvo<MetroArea, MetroAreaVDescriptor>
+  extends SQDIDvo<MetroArea, MetroAreaVDescriptor<MetroArea>>
 	implements IBaseMetroAreaDvo {
 
 	static diSet(): boolean {
@@ -259,11 +259,11 @@ export class BaseMetroAreaDvo
 
 
 export interface IBaseMetroAreaStateDvo
-  extends IDvo<MetroAreaState, MetroAreaStateVDescriptor> {
+  extends IDvo<MetroAreaState, MetroAreaStateVDescriptor<MetroAreaState>> {
 }
 
 export class BaseMetroAreaStateDvo
-  extends SQDIDvo<MetroAreaState, MetroAreaStateVDescriptor>
+  extends SQDIDvo<MetroAreaState, MetroAreaStateVDescriptor<MetroAreaState>>
 	implements IBaseMetroAreaStateDvo {
 
 	static diSet(): boolean {
@@ -277,11 +277,11 @@ export class BaseMetroAreaStateDvo
 
 
 export interface IBaseStateDvo
-  extends IDvo<State, StateVDescriptor> {
+  extends IDvo<State, StateVDescriptor<State>> {
 }
 
 export class BaseStateDvo
-  extends SQDIDvo<State, StateVDescriptor>
+  extends SQDIDvo<State, StateVDescriptor<State>>
 	implements IBaseStateDvo {
 
 	static diSet(): boolean {
@@ -295,11 +295,11 @@ export class BaseStateDvo
 
 
 export interface IBaseTerminalDvo
-  extends IDvo<Terminal, TerminalVDescriptor> {
+  extends IDvo<Terminal, TerminalVDescriptor<Terminal>> {
 }
 
 export class BaseTerminalDvo
-  extends SQDIDvo<Terminal, TerminalVDescriptor>
+  extends SQDIDvo<Terminal, TerminalVDescriptor<Terminal>>
 	implements IBaseTerminalDvo {
 
 	static diSet(): boolean {
@@ -313,11 +313,11 @@ export class BaseTerminalDvo
 
 
 export interface IBaseTerminalTypeDvo
-  extends IDvo<TerminalType, TerminalTypeVDescriptor> {
+  extends IDvo<TerminalType, TerminalTypeVDescriptor<TerminalType>> {
 }
 
 export class BaseTerminalTypeDvo
-  extends SQDIDvo<TerminalType, TerminalTypeVDescriptor>
+  extends SQDIDvo<TerminalType, TerminalTypeVDescriptor<TerminalType>>
 	implements IBaseTerminalTypeDvo {
 
 	static diSet(): boolean {
@@ -331,11 +331,11 @@ export class BaseTerminalTypeDvo
 
 
 export interface IBaseTypeDvo
-  extends IDvo<Type, TypeVDescriptor> {
+  extends IDvo<Type, TypeVDescriptor<Type>> {
 }
 
 export class BaseTypeDvo
-  extends SQDIDvo<Type, TypeVDescriptor>
+  extends SQDIDvo<Type, TypeVDescriptor<Type>>
 	implements IBaseTypeDvo {
 
 	static diSet(): boolean {
@@ -349,11 +349,11 @@ export class BaseTypeDvo
 
 
 export interface IBaseTypeClassificationDvo
-  extends IDvo<TypeClassification, TypeClassificationVDescriptor> {
+  extends IDvo<TypeClassification, TypeClassificationVDescriptor<TypeClassification>> {
 }
 
 export class BaseTypeClassificationDvo
-  extends SQDIDvo<TypeClassification, TypeClassificationVDescriptor>
+  extends SQDIDvo<TypeClassification, TypeClassificationVDescriptor<TypeClassification>>
 	implements IBaseTypeClassificationDvo {
 
 	static diSet(): boolean {
@@ -367,11 +367,11 @@ export class BaseTypeClassificationDvo
 
 
 export interface IBaseUserAccountDvo
-  extends IDvo<UserAccount, UserAccountVDescriptor> {
+  extends IDvo<UserAccount, UserAccountVDescriptor<UserAccount>> {
 }
 
 export class BaseUserAccountDvo
-  extends SQDIDvo<UserAccount, UserAccountVDescriptor>
+  extends SQDIDvo<UserAccount, UserAccountVDescriptor<UserAccount>>
 	implements IBaseUserAccountDvo {
 
 	static diSet(): boolean {

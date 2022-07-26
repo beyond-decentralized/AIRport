@@ -13,8 +13,8 @@ import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
-	IApplicationVersion,
-} from './applicationversion';
+	ApplicationVersion,
+} from '../../ddl/application/applicationversion';
 import {
 	IApplicationReference,
 } from './applicationreference';
@@ -25,16 +25,16 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface ApplicationReferenceVDescriptor
-    extends VersionedApplicationObjectVDescriptor {
+export interface ApplicationReferenceVDescriptor<T>
+    extends VersionedApplicationObjectVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 	index?: number | IVNumberField;
 
 	// Id Relations - full property interfaces
-	ownApplicationVersion?: ApplicationVersionVDescriptor;
-	referencedApplicationVersion?: ApplicationVersionVDescriptor;
+	ownApplicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
+	referencedApplicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
 
   // Non-Id relations (including OneToMany's)
 

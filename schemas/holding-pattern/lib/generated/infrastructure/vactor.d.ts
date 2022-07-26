@@ -1,12 +1,12 @@
 import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
-import { UserAccountVDescriptor, TerminalVDescriptor, ClientVDescriptor } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
-import { ApplicationVDescriptor } from '@airport/airspace';
-export interface ActorVDescriptor extends IEntityVDescriptor {
+import { UserAccountVDescriptor, UserAccount, TerminalVDescriptor, Terminal, ClientVDescriptor, Client } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
+import { ApplicationVDescriptor, Application } from '@airport/airspace';
+export interface ActorVDescriptor<T> extends IEntityVDescriptor<T> {
     _localId?: number | IVNumberField;
     GUID?: string | IVStringField;
-    userAccount?: UserAccountVDescriptor;
-    terminal?: TerminalVDescriptor;
-    application?: ApplicationVDescriptor;
-    client?: ClientVDescriptor;
+    userAccount?: UserAccountVDescriptor<UserAccount>;
+    terminal?: TerminalVDescriptor<Terminal>;
+    application?: ApplicationVDescriptor<Application>;
+    client?: ClientVDescriptor<Client>;
 }
 //# sourceMappingURL=vactor.d.ts.map

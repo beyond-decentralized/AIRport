@@ -1,8 +1,10 @@
 import { IEntityVDescriptor } from '@airport/airbridge-validate';
 import { ApplicationVDescriptor } from './vapplication';
+import { Application } from '../../ddl/application/application';
 import { ApplicationVersionVDescriptor } from './vapplicationversion';
-export interface ApplicationCurrentVersionVDescriptor extends IEntityVDescriptor {
-    application?: ApplicationVDescriptor;
-    applicationVersion?: ApplicationVersionVDescriptor;
+import { ApplicationVersion } from '../../ddl/application/applicationversion';
+export interface ApplicationCurrentVersionVDescriptor<T> extends IEntityVDescriptor<T> {
+    application?: ApplicationVDescriptor<Application>;
+    applicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>;
 }
 //# sourceMappingURL=vapplicationcurrentversion.d.ts.map

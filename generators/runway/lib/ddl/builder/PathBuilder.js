@@ -49,6 +49,10 @@ export class PathBuilder {
         let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
         return this.workingDirPath + '/' + generatedPath;
     }
+    getFullPathToDdlSource(//
+    sourcePath) {
+        return this.getDdlPathForFile(sourcePath);
+    }
     setupFileForGeneration(sourcePath, prefix = 'q') {
         let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
         let genPathFragments = generatedPath.split('/');
@@ -93,6 +97,14 @@ export class PathBuilder {
             sourceRelativePath = this.prefixToFileName(sourceRelativePath, prefix);
         }
         return this.generatedDirPath + '/' + sourceRelativePath;
+    }
+    getDdlPathForFile(sourcePath) {
+        sourcePath = normalizePath(sourcePath);
+        let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase());
+        if (indexOfSourceDirInPath !== 0) {
+            throw new Error(`Cannot generate file from source outside of root source dir`);
+        }
+        return sourcePath;
     }
 }
 //# sourceMappingURL=PathBuilder.js.map

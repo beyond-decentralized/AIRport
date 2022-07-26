@@ -43,11 +43,11 @@ export class SQDIDvo<Entity, EntityVDescriptor>
 
 
 export interface IBaseSequenceDvo
-  extends IDvo<Sequence, SequenceVDescriptor> {
+  extends IDvo<Sequence, SequenceVDescriptor<Sequence>> {
 }
 
 export class BaseSequenceDvo
-  extends SQDIDvo<Sequence, SequenceVDescriptor>
+  extends SQDIDvo<Sequence, SequenceVDescriptor<Sequence>>
 	implements IBaseSequenceDvo {
 
 	static diSet(): boolean {
@@ -61,11 +61,11 @@ export class BaseSequenceDvo
 
 
 export interface IBaseSystemWideOperationIdDvo
-  extends IDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor> {
+  extends IDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor<SystemWideOperationId>> {
 }
 
 export class BaseSystemWideOperationIdDvo
-  extends SQDIDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor>
+  extends SQDIDvo<SystemWideOperationId, SystemWideOperationIdVDescriptor<SystemWideOperationId>>
 	implements IBaseSystemWideOperationIdDvo {
 
 	static diSet(): boolean {
@@ -79,11 +79,11 @@ export class BaseSystemWideOperationIdDvo
 
 
 export interface IBaseTerminalRunDvo
-  extends IDvo<TerminalRun, TerminalRunVDescriptor> {
+  extends IDvo<TerminalRun, TerminalRunVDescriptor<TerminalRun>> {
 }
 
 export class BaseTerminalRunDvo
-  extends SQDIDvo<TerminalRun, TerminalRunVDescriptor>
+  extends SQDIDvo<TerminalRun, TerminalRunVDescriptor<TerminalRun>>
 	implements IBaseTerminalRunDvo {
 
 	static diSet(): boolean {

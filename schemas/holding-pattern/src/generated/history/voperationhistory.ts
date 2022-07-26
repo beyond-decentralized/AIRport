@@ -8,26 +8,26 @@ import {
 } from '@airport/airbridge-validate';
 import {
 	ApplicationEntityVDescriptor,
-	IApplicationEntity,
+	ApplicationEntity,
 } from '@airport/airspace';
 import {
 	ActorVDescriptor,
 } from '../infrastructure/vactor';
 import {
-	IActor,
-} from '../infrastructure/actor';
+	Actor,
+} from '../../ddl/infrastructure/Actor';
 import {
 	RepositoryTransactionHistoryVDescriptor,
 } from './vrepositorytransactionhistory';
 import {
-	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+	RepositoryTransactionHistory,
+} from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	RecordHistoryVDescriptor,
 } from './vrecordhistory';
 import {
-	IRecordHistory,
-} from './recordhistory';
+	RecordHistory,
+} from '../../ddl/history/RecordHistory';
 import {
 	IOperationHistory,
 } from './operationhistory';
@@ -38,11 +38,11 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface OperationHistoryVDescriptor
-    extends IEntityVDescriptor {
+export interface OperationHistoryVDescriptor<T>
+	extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId: number | IVNumberField;
-	
+	_localId?: number | IVNumberField;
+
 	// Non-Id Properties
 	orderNumber?: number | IVNumberField;
 	changeType?: string | IVStringField;
@@ -50,11 +50,11 @@ export interface OperationHistoryVDescriptor
 
 	// Id Relations - full property interfaces
 
-  // Non-Id relations (including OneToMany's)
-	entity?: ApplicationEntityVDescriptor;
-	actor?: ActorVDescriptor;
-	repositoryTransactionHistory?: RepositoryTransactionHistoryVDescriptor;
-	recordHistory?: RecordHistoryVDescriptor;
+	// Non-Id relations (including OneToMany's)
+	entity?: ApplicationEntityVDescriptor<ApplicationEntity>
+	actor?: ActorVDescriptor<Actor>
+	repositoryTransactionHistory?: RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>
+	recordHistory?: RecordHistoryVDescriptor<RecordHistory>
 
 }
 

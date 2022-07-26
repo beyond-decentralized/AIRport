@@ -63,45 +63,12 @@ export abstract class VCoreEntityBuilder
     }
 
     protected getVRelationBuilders(
-        properties: PropertyDocEntry[],
-        buildRelationInstance: boolean
+        properties: PropertyDocEntry[]
     ): VRelationBuilder[] {
         return properties.map(
-            property => this.addVRelationBuilder(property, buildRelationInstance)
+            property => this.addVRelationBuilder(property)
         ).filter(
             builder => builder != null)
-    }
-
-    protected buildPropertyData(
-        propertyBuilders: VPropertyBuilder[]
-    ): MemberData {
-        const propertyData: MemberData = {
-            definitions: ``,
-        }
-
-        propertyBuilders.forEach((
-            builder: VPropertyBuilder
-        ) => {
-            propertyData.definitions += `	${builder.buildDefinition()}\n`
-        })
-
-        return propertyData
-    }
-
-    protected buildRelationData(
-        relationBuilders: VRelationBuilder[]
-    ): MemberData {
-        const relationData: MemberData = {
-            definitions: ``,
-        }
-
-        relationBuilders.forEach((
-            builder: VRelationBuilder
-        ) => {
-            relationData.definitions += `	${builder.buildDefinition()}\n`
-        })
-
-        return relationData
     }
 
     private addVPropertyBuilder(
@@ -116,12 +83,11 @@ export abstract class VCoreEntityBuilder
     }
 
     private addVRelationBuilder(
-        property: PropertyDocEntry,
-        buildRelationInstance: boolean
+        property: PropertyDocEntry
     ): VRelationBuilder {
         let relationBuilder = null
         if (property.entity || property.fromProject) {
-            relationBuilder = new VRelationBuilder(this, property, this.entityMapByName, buildRelationInstance)
+            relationBuilder = new VRelationBuilder(this, property)
         }
         return relationBuilder
     }

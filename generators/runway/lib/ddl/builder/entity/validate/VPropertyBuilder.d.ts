@@ -8,8 +8,7 @@ export declare class VPropertyBuilder implements IBuilder {
     private parentBuilder;
     propertyDocEntry: PropertyDocEntry;
     constructor(parentBuilder: IVCoreEntityBuilder, propertyDocEntry: PropertyDocEntry);
-    buildDefinition(): string;
     build(): string;
-    buildInterfaceDefinition(optional?: boolean, forInternalInterfaces?: boolean): string;
+    buildInterfaceDefinition(): string;
 }
 //# sourceMappingURL=VPropertyBuilder.d.ts.map

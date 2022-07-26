@@ -10,14 +10,14 @@ import {
 	StateVDescriptor,
 } from './vstate';
 import {
-	IState,
-} from './state';
+	State,
+} from '../../ddl/locality/State';
 import {
 	MetroAreaVDescriptor,
 } from './vmetroarea';
 import {
-	IMetroArea,
-} from './metroarea';
+	MetroArea,
+} from '../../ddl/locality/MetroArea';
 import {
 	IMetroAreaState,
 } from './metroareastate';
@@ -28,15 +28,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface MetroAreaStateVDescriptor
-    extends IEntityVDescriptor {
+export interface MetroAreaStateVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	state?: StateVDescriptor;
-	metroArea?: MetroAreaVDescriptor;
+	state?: StateVDescriptor<State>
+	metroArea?: MetroAreaVDescriptor<MetroArea>
 
   // Non-Id relations (including OneToMany's)
 

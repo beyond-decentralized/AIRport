@@ -29,81 +29,81 @@ import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);
 }
-export interface IBaseActorDvo extends IDvo<Actor, ActorVDescriptor> {
+export interface IBaseActorDvo extends IDvo<Actor, ActorVDescriptor<Actor>> {
 }
-export declare class BaseActorDvo extends SQDIDvo<Actor, ActorVDescriptor> implements IBaseActorDvo {
+export declare class BaseActorDvo extends SQDIDvo<Actor, ActorVDescriptor<Actor>> implements IBaseActorDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseOperationHistoryDvo extends IDvo<OperationHistory, OperationHistoryVDescriptor> {
+export interface IBaseOperationHistoryDvo extends IDvo<OperationHistory, OperationHistoryVDescriptor<OperationHistory>> {
 }
-export declare class BaseOperationHistoryDvo extends SQDIDvo<OperationHistory, OperationHistoryVDescriptor> implements IBaseOperationHistoryDvo {
+export declare class BaseOperationHistoryDvo extends SQDIDvo<OperationHistory, OperationHistoryVDescriptor<OperationHistory>> implements IBaseOperationHistoryDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRecordHistoryDvo extends IDvo<RecordHistory, RecordHistoryVDescriptor> {
+export interface IBaseRecordHistoryDvo extends IDvo<RecordHistory, RecordHistoryVDescriptor<RecordHistory>> {
 }
-export declare class BaseRecordHistoryDvo extends SQDIDvo<RecordHistory, RecordHistoryVDescriptor> implements IBaseRecordHistoryDvo {
+export declare class BaseRecordHistoryDvo extends SQDIDvo<RecordHistory, RecordHistoryVDescriptor<RecordHistory>> implements IBaseRecordHistoryDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRecordHistoryNewValueDvo extends IDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor> {
+export interface IBaseRecordHistoryNewValueDvo extends IDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor<RecordHistoryNewValue>> {
 }
-export declare class BaseRecordHistoryNewValueDvo extends SQDIDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor> implements IBaseRecordHistoryNewValueDvo {
+export declare class BaseRecordHistoryNewValueDvo extends SQDIDvo<RecordHistoryNewValue, RecordHistoryNewValueVDescriptor<RecordHistoryNewValue>> implements IBaseRecordHistoryNewValueDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRecordHistoryOldValueDvo extends IDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor> {
+export interface IBaseRecordHistoryOldValueDvo extends IDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor<RecordHistoryOldValue>> {
 }
-export declare class BaseRecordHistoryOldValueDvo extends SQDIDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor> implements IBaseRecordHistoryOldValueDvo {
+export declare class BaseRecordHistoryOldValueDvo extends SQDIDvo<RecordHistoryOldValue, RecordHistoryOldValueVDescriptor<RecordHistoryOldValue>> implements IBaseRecordHistoryOldValueDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryDvo extends IDvo<Repository, RepositoryVDescriptor> {
+export interface IBaseRepositoryDvo extends IDvo<Repository, RepositoryVDescriptor<Repository>> {
 }
-export declare class BaseRepositoryDvo extends SQDIDvo<Repository, RepositoryVDescriptor> implements IBaseRepositoryDvo {
+export declare class BaseRepositoryDvo extends SQDIDvo<Repository, RepositoryVDescriptor<Repository>> implements IBaseRepositoryDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryApplicationDvo extends IDvo<RepositoryApplication, RepositoryApplicationVDescriptor> {
+export interface IBaseRepositoryApplicationDvo extends IDvo<RepositoryApplication, RepositoryApplicationVDescriptor<RepositoryApplication>> {
 }
-export declare class BaseRepositoryApplicationDvo extends SQDIDvo<RepositoryApplication, RepositoryApplicationVDescriptor> implements IBaseRepositoryApplicationDvo {
+export declare class BaseRepositoryApplicationDvo extends SQDIDvo<RepositoryApplication, RepositoryApplicationVDescriptor<RepositoryApplication>> implements IBaseRepositoryApplicationDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryClientDvo extends IDvo<RepositoryClient, RepositoryClientVDescriptor> {
+export interface IBaseRepositoryClientDvo extends IDvo<RepositoryClient, RepositoryClientVDescriptor<RepositoryClient>> {
 }
-export declare class BaseRepositoryClientDvo extends SQDIDvo<RepositoryClient, RepositoryClientVDescriptor> implements IBaseRepositoryClientDvo {
+export declare class BaseRepositoryClientDvo extends SQDIDvo<RepositoryClient, RepositoryClientVDescriptor<RepositoryClient>> implements IBaseRepositoryClientDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryDatabaseDvo extends IDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor> {
+export interface IBaseRepositoryDatabaseDvo extends IDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor<RepositoryDatabase>> {
 }
-export declare class BaseRepositoryDatabaseDvo extends SQDIDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor> implements IBaseRepositoryDatabaseDvo {
+export declare class BaseRepositoryDatabaseDvo extends SQDIDvo<RepositoryDatabase, RepositoryDatabaseVDescriptor<RepositoryDatabase>> implements IBaseRepositoryDatabaseDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryTerminalDvo extends IDvo<RepositoryTerminal, RepositoryTerminalVDescriptor> {
+export interface IBaseRepositoryTerminalDvo extends IDvo<RepositoryTerminal, RepositoryTerminalVDescriptor<RepositoryTerminal>> {
 }
-export declare class BaseRepositoryTerminalDvo extends SQDIDvo<RepositoryTerminal, RepositoryTerminalVDescriptor> implements IBaseRepositoryTerminalDvo {
+export declare class BaseRepositoryTerminalDvo extends SQDIDvo<RepositoryTerminal, RepositoryTerminalVDescriptor<RepositoryTerminal>> implements IBaseRepositoryTerminalDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryTransactionHistoryDvo extends IDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor> {
+export interface IBaseRepositoryTransactionHistoryDvo extends IDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>> {
 }
-export declare class BaseRepositoryTransactionHistoryDvo extends SQDIDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor> implements IBaseRepositoryTransactionHistoryDvo {
+export declare class BaseRepositoryTransactionHistoryDvo extends SQDIDvo<RepositoryTransactionHistory, RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>> implements IBaseRepositoryTransactionHistoryDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseRepositoryTypeDvo extends IDvo<RepositoryType, RepositoryTypeVDescriptor> {
+export interface IBaseRepositoryTypeDvo extends IDvo<RepositoryType, RepositoryTypeVDescriptor<RepositoryType>> {
 }
-export declare class BaseRepositoryTypeDvo extends SQDIDvo<RepositoryType, RepositoryTypeVDescriptor> implements IBaseRepositoryTypeDvo {
+export declare class BaseRepositoryTypeDvo extends SQDIDvo<RepositoryType, RepositoryTypeVDescriptor<RepositoryType>> implements IBaseRepositoryTypeDvo {
     static diSet(): boolean;
     constructor();
 }
-export interface IBaseTransactionHistoryDvo extends IDvo<TransactionHistory, TransactionHistoryVDescriptor> {
+export interface IBaseTransactionHistoryDvo extends IDvo<TransactionHistory, TransactionHistoryVDescriptor<TransactionHistory>> {
 }
-export declare class BaseTransactionHistoryDvo extends SQDIDvo<TransactionHistory, TransactionHistoryVDescriptor> implements IBaseTransactionHistoryDvo {
+export declare class BaseTransactionHistoryDvo extends SQDIDvo<TransactionHistory, TransactionHistoryVDescriptor<TransactionHistory>> implements IBaseTransactionHistoryDvo {
     static diSet(): boolean;
     constructor();
 }

@@ -1,8 +1,9 @@
 import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
 import { TypeClassificationVDescriptor } from './vtypeclassification';
-export interface TypeVDescriptor extends IEntityVDescriptor {
-    id: number | IVNumberField;
+import { TypeClassification } from '../../ddl/type/TypeClassification';
+export interface TypeVDescriptor<T> extends IEntityVDescriptor<T> {
+    id?: number | IVNumberField;
     name?: string | IVStringField;
-    typeClassifications?: TypeClassificationVDescriptor;
+    typeClassifications?: TypeClassificationVDescriptor<TypeClassification>;
 }
 //# sourceMappingURL=vtype.d.ts.map

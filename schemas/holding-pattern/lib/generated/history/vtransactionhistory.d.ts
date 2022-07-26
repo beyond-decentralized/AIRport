@@ -1,8 +1,9 @@
 import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
 import { RepositoryTransactionHistoryVDescriptor } from './vrepositorytransactionhistory';
-export interface TransactionHistoryVDescriptor extends IEntityVDescriptor {
-    _localId: number | IVNumberField;
+import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
+export interface TransactionHistoryVDescriptor<T> extends IEntityVDescriptor<T> {
+    _localId?: number | IVNumberField;
     transactionType?: string | IVStringField;
-    repositoryTransactionHistories?: RepositoryTransactionHistoryVDescriptor;
+    repositoryTransactionHistories?: RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>;
 }
 //# sourceMappingURL=vtransactionhistory.d.ts.map

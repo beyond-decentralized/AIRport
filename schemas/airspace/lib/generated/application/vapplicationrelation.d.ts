@@ -2,20 +2,23 @@ import { IVBooleanField, IVNumberField, IVStringField } from '@airport/airbridge
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/tarmaq-entity';
 import { ApplicationPropertyVDescriptor } from './vapplicationproperty';
+import { ApplicationProperty } from '../../ddl/application/applicationproperty';
 import { ApplicationEntityVDescriptor } from './vapplicationentity';
+import { ApplicationEntity } from '../../ddl/application/applicationentity';
 import { ApplicationRelationColumnVDescriptor } from './vapplicationrelationcolumn';
-export interface ApplicationRelationVDescriptor extends VersionedApplicationObjectVDescriptor {
-    _localId: number | IVNumberField;
+import { ApplicationRelationColumn } from '../../ddl/application/applicationrelationcolumn';
+export interface ApplicationRelationVDescriptor<T> extends VersionedApplicationObjectVDescriptor<T> {
+    _localId?: number | IVNumberField;
     index?: number | IVNumberField;
     foreignKey?: ForeignKey | IVStringField;
     manyToOneElems?: ManyToOneElements | IVStringField;
     oneToManyElems?: OneToManyElements | IVStringField;
     relationType?: string | IVStringField;
     isId?: boolean | IVBooleanField;
-    property?: ApplicationPropertyVDescriptor;
-    entity?: ApplicationEntityVDescriptor;
-    relationEntity?: ApplicationEntityVDescriptor;
-    manyRelationColumns?: ApplicationRelationColumnVDescriptor;
-    oneRelationColumns?: ApplicationRelationColumnVDescriptor;
+    property?: ApplicationPropertyVDescriptor<ApplicationProperty>;
+    entity?: ApplicationEntityVDescriptor<ApplicationEntity>;
+    relationEntity?: ApplicationEntityVDescriptor<ApplicationEntity>;
+    manyRelationColumns?: ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>;
+    oneRelationColumns?: ApplicationRelationColumnVDescriptor<ApplicationRelationColumn>;
 }
 //# sourceMappingURL=vapplicationrelation.d.ts.map

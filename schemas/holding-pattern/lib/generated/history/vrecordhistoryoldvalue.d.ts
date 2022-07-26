@@ -1,8 +1,9 @@
 import { IEntityVDescriptor, IVNumberField, IVUntypedField } from '@airport/airbridge-validate';
 import { RecordHistoryVDescriptor } from './vrecordhistory';
-export interface RecordHistoryOldValueVDescriptor extends IEntityVDescriptor {
-    columnIndex: number | IVNumberField;
+import { RecordHistory } from '../../ddl/history/RecordHistory';
+export interface RecordHistoryOldValueVDescriptor<T> extends IEntityVDescriptor<T> {
+    columnIndex?: number | IVNumberField;
     oldValue?: any | IVUntypedField;
-    recordHistory?: RecordHistoryVDescriptor;
+    recordHistory?: RecordHistoryVDescriptor<RecordHistory>;
 }
 //# sourceMappingURL=vrecordhistoryoldvalue.d.ts.map

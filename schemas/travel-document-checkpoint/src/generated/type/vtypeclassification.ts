@@ -10,14 +10,14 @@ import {
 	ClassificationVDescriptor,
 } from './vclassification';
 import {
-	IClassification,
-} from './classification';
+	Classification,
+} from '../../ddl/type/Classification';
 import {
 	TypeVDescriptor,
 } from './vtype';
 import {
-	IType,
-} from './type';
+	Type,
+} from '../../ddl/type/Type';
 import {
 	ITypeClassification,
 } from './typeclassification';
@@ -28,15 +28,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface TypeClassificationVDescriptor
-    extends IEntityVDescriptor {
+export interface TypeClassificationVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	classification?: ClassificationVDescriptor;
-	type?: TypeVDescriptor;
+	classification?: ClassificationVDescriptor<Classification>
+	type?: TypeVDescriptor<Type>
 
   // Non-Id relations (including OneToMany's)
 

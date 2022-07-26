@@ -10,14 +10,14 @@ import {
 	TerminalVDescriptor,
 } from './vterminal';
 import {
-	ITerminal,
-} from './terminal';
+	Terminal,
+} from '../../ddl/terminal/Terminal';
 import {
 	TypeVDescriptor,
 } from '../type/vtype';
 import {
-	IType,
-} from '../type/type';
+	Type,
+} from '../../ddl/type/Type';
 import {
 	ITerminalType,
 } from './terminaltype';
@@ -28,15 +28,15 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface TerminalTypeVDescriptor
-    extends IEntityVDescriptor {
+export interface TerminalTypeVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	
 	// Non-Id Properties
 
 	// Id Relations - full property interfaces
-	terminal?: TerminalVDescriptor;
-	type?: TypeVDescriptor;
+	terminal?: TerminalVDescriptor<Terminal>
+	type?: TypeVDescriptor<Type>
 
   // Non-Id relations (including OneToMany's)
 

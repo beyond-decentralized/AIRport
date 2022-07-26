@@ -8,45 +8,14 @@ export class VEntityBuilder extends VCoreEntityBuilder {
         this.sIndexedEntity = sIndexedEntity;
         const idProperties = entity.getIdProperties();
         this.idPropertyBuilders = this.getVPropertyBuilders(idProperties);
-        this.idRelationBuilders = this.getVRelationBuilders(idProperties, true);
+        this.idRelationBuilders = this.getVRelationBuilders(idProperties);
         const nonIdProperties = entity.getNonIdProperties();
         this.nonIdPropertyBuilders = this.getVPropertyBuilders(nonIdProperties);
-        this.nonIdRelationBuilders = this.getVRelationBuilders(nonIdProperties, true);
+        this.nonIdRelationBuilders = this.getVRelationBuilders(nonIdProperties);
         this.transientPropertyBuilders = this.getVTransientPropertyBuilders(entity.getTransientProperties());
     }
     build() {
-        const idPropertyData = this.buildPropertyData(this.idPropertyBuilders);
-        const nonIdPropertyData = this.buildPropertyData(this.nonIdPropertyBuilders);
-        const nonIdRelationData = this.buildRelationData(this.nonIdRelationBuilders);
-        const idRelationData = this.buildRelationData(this.idRelationBuilders);
-        let parentEntityVType = 'IVEntity';
-        if (this.entity.parentEntity) {
-            parentEntityVType = 'V' + this.entity.parentEntity.type;
-        }
-        let vName = `V${this.entity.docEntry.name}`;
-        let interfaceGenericAndExtends;
-        if (this.entity.docEntry.isMappedSuperclass) {
-            interfaceGenericAndExtends = ` extends ${parentEntityVType}`;
-        }
-        else {
-            interfaceGenericAndExtends = ` extends ${parentEntityVType}`;
-        }
-        let classSource = `/**
- * Validation Entity Definition (used for V.ApplicationEntity_Name).
- */
-export interface ${vName}${interfaceGenericAndExtends}
-{
-	// Id Fields
-${idPropertyData.definitions}
-	// Id Relations
-${idRelationData.definitions}
-	// Non-Id Fields
-${nonIdPropertyData.definitions}
-	// Non-Id Relations
-${nonIdRelationData.definitions}
-}
-`;
-        return classSource;
+        throw new Error(`Not Used`);
     }
 }
 //# sourceMappingURL=VEntityBuilder.js.map

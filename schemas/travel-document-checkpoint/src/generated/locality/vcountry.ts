@@ -10,14 +10,14 @@ import {
 	ContinentVDescriptor,
 } from './vcontinent';
 import {
-	IContinent,
-} from './continent';
+	Continent,
+} from '../../ddl/locality/Continent';
 import {
 	UserAccountVDescriptor,
 } from '../vuseraccount';
 import {
-	IUserAccount,
-} from '../useraccount';
+	UserAccount,
+} from '../../ddl/UserAccount';
 import {
 	ICountry,
 } from './country';
@@ -28,10 +28,10 @@ import {
 //  API INTERFACE //
 ////////////////////
 
-export interface CountryVDescriptor
-    extends IEntityVDescriptor {
+export interface CountryVDescriptor<T>
+    extends IEntityVDescriptor<T> {
 	// Id Properties
-	id: number | IVNumberField;
+	id?: number | IVNumberField;
 	
 	// Non-Id Properties
 	abbreviation?: string | IVStringField;
@@ -40,8 +40,8 @@ export interface CountryVDescriptor
 	// Id Relations - full property interfaces
 
   // Non-Id relations (including OneToMany's)
-	continent?: ContinentVDescriptor;
-	userAccounts?: UserAccountVDescriptor;
+	continent?: ContinentVDescriptor<Continent>
+	userAccounts?: UserAccountVDescriptor<UserAccount>
 
 }
 

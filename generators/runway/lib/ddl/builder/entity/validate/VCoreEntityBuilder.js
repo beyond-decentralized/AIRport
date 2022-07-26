@@ -19,26 +19,8 @@ export class VCoreEntityBuilder {
     getVTransientPropertyBuilders(properties) {
         return properties.map(property => new VTransientBuilder(this, property));
     }
-    getVRelationBuilders(properties, buildRelationInstance) {
-        return properties.map(property => this.addVRelationBuilder(property, buildRelationInstance)).filter(builder => builder != null);
-    }
-    buildPropertyData(propertyBuilders) {
-        const propertyData = {
-            definitions: ``,
-        };
-        propertyBuilders.forEach((builder) => {
-            propertyData.definitions += `	${builder.buildDefinition()}\n`;
-        });
-        return propertyData;
-    }
-    buildRelationData(relationBuilders) {
-        const relationData = {
-            definitions: ``,
-        };
-        relationBuilders.forEach((builder) => {
-            relationData.definitions += `	${builder.buildDefinition()}\n`;
-        });
-        return relationData;
+    getVRelationBuilders(properties) {
+        return properties.map(property => this.addVRelationBuilder(property)).filter(builder => builder != null);
     }
     addVPropertyBuilder(property) {
         let propertyBuilder = null;
@@ -47,10 +29,10 @@ export class VCoreEntityBuilder {
         }
         return propertyBuilder;
     }
-    addVRelationBuilder(property, buildRelationInstance) {
+    addVRelationBuilder(property) {
         let relationBuilder = null;
         if (property.entity || property.fromProject) {
-            relationBuilder = new VRelationBuilder(this, property, this.entityMapByName, buildRelationInstance);
+            relationBuilder = new VRelationBuilder(this, property);
         }
         return relationBuilder;
     }
