@@ -23,9 +23,6 @@ import {
 } from './classification';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -118,8 +115,6 @@ extends ClassificationEId, ClassificationEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -141,7 +136,6 @@ export interface QClassification extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QClassificationQId
 {
@@ -158,4 +152,3 @@ export interface QClassificationQId
 export interface QClassificationQRelation
 	extends IQRelation<QClassification>, QClassificationQId {
 }
-

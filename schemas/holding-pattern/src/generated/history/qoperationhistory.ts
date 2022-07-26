@@ -73,9 +73,6 @@ import {
 } from './operationhistory';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -190,8 +187,6 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -219,7 +214,6 @@ export interface QOperationHistory extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QOperationHistoryQId
 {
@@ -236,4 +230,3 @@ export interface QOperationHistoryQId
 export interface QOperationHistoryQRelation
 	extends IQRelation<QOperationHistory>, QOperationHistoryQId {
 }
-

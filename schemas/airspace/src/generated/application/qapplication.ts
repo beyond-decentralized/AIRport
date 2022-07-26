@@ -62,9 +62,6 @@ import {
 } from './application';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -185,8 +182,6 @@ extends ApplicationEId, ApplicationEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -216,7 +211,6 @@ export interface QApplication extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QApplicationQId
 {
@@ -233,4 +227,3 @@ export interface QApplicationQId
 export interface QApplicationQRelation
 	extends IQRelation<QApplication>, QApplicationQId {
 }
-

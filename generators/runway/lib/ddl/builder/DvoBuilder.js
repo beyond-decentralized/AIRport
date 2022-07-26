@@ -3,7 +3,7 @@ export class DvoBuilder extends ImplementationFileBuilder {
     constructor(pathBuilder) {
         super('baseDvos', pathBuilder);
         this.classSuffix = 'Dvo';
-        this.diSet = 'diSet';
+        this.diSet = 'duoDiSet';
     }
     build() {
         this.entityNames.sort();

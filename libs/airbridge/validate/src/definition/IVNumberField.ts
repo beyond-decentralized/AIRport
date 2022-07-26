@@ -1,6 +1,6 @@
 import { IValidationField } from "./IValidationField";
 
-export interface IValidationNumber
+export interface IVNumberField
     extends IValidationField<number> {
 
 }

@@ -36,9 +36,6 @@ import {
 } from './synchronizationconflictvalues';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -131,8 +128,6 @@ extends SynchronizationConflictValuesEId, SynchronizationConflictValuesEUpdateCo
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -154,7 +149,6 @@ export interface QSynchronizationConflictValues extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QSynchronizationConflictValuesQId
 {
@@ -172,4 +166,3 @@ export interface QSynchronizationConflictValuesQId
 export interface QSynchronizationConflictValuesQRelation
 	extends IQRelation<QSynchronizationConflictValues>, QSynchronizationConflictValuesQId {
 }
-

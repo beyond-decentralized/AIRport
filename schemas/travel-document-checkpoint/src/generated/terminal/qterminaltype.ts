@@ -49,9 +49,6 @@ import {
 } from './terminaltype';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -146,8 +143,6 @@ extends TerminalTypeEId, TerminalTypeEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -169,7 +164,6 @@ export interface QTerminalType extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QTerminalTypeQId
 {
@@ -187,4 +181,3 @@ export interface QTerminalTypeQId
 export interface QTerminalTypeQRelation
 	extends IQRelation<QTerminalType>, QTerminalTypeQId {
 }
-

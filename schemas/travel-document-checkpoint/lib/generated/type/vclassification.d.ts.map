@@ -1,0 +1,1 @@
+{"version":3,"file":"vclassification.d.ts","sourceRoot":"","sources":["../../../src/generated/type/vclassification.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,kBAAkB,EAGlB,aAAa,EACb,aAAa,EAEb,MAAM,6BAA6B,CAAC;AAWrC,MAAM,WAAW,yBACb,SAAQ,kBAAkB;IAE7B,EAAE,EAAE,MAAM,GAAG,aAAa,CAAC;IAG3B,IAAI,CAAC,EAAE,MAAM,GAAG,aAAa,CAAC;CAM9B"}

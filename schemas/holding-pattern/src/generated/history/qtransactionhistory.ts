@@ -36,9 +36,6 @@ import {
 } from './transactionhistory';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -133,8 +130,6 @@ extends TransactionHistoryEId, TransactionHistoryEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -157,7 +152,6 @@ export interface QTransactionHistory extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QTransactionHistoryQId
 {
@@ -174,4 +168,3 @@ export interface QTransactionHistoryQId
 export interface QTransactionHistoryQRelation
 	extends IQRelation<QTransactionHistory>, QTransactionHistoryQId {
 }
-

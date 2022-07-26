@@ -65,9 +65,6 @@ import {
 } from './applicationversion';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -190,8 +187,6 @@ extends ApplicationVersionEId, ApplicationVersionEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -222,7 +217,6 @@ export interface QApplicationVersion extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QApplicationVersionQId
 {
@@ -239,4 +233,3 @@ export interface QApplicationVersionQId
 export interface QApplicationVersionQRelation
 	extends IQRelation<QApplicationVersion>, QApplicationVersionQId {
 }
-

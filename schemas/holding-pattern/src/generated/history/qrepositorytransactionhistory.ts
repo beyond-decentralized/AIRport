@@ -62,9 +62,6 @@ import {
 } from './repositorytransactionhistory';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -183,8 +180,6 @@ extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColu
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -213,7 +208,6 @@ export interface QRepositoryTransactionHistory extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QRepositoryTransactionHistoryQId
 {
@@ -230,4 +224,3 @@ export interface QRepositoryTransactionHistoryQId
 export interface QRepositoryTransactionHistoryQRelation
 	extends IQRelation<QRepositoryTransactionHistory>, QRepositoryTransactionHistoryQId {
 }
-

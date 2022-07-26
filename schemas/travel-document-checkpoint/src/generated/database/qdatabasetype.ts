@@ -49,9 +49,6 @@ import {
 } from './databasetype';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -146,8 +143,6 @@ extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -169,7 +164,6 @@ export interface QDatabaseType extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QDatabaseTypeQId
 {
@@ -187,4 +181,3 @@ export interface QDatabaseTypeQId
 export interface QDatabaseTypeQRelation
 	extends IQRelation<QDatabaseType>, QDatabaseTypeQId {
 }
-

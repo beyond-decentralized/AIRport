@@ -49,9 +49,6 @@ import {
 } from './continent';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -148,8 +145,6 @@ extends ContinentEId, ContinentEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -173,7 +168,6 @@ export interface QContinent extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QContinentQId
 {
@@ -190,4 +184,3 @@ export interface QContinentQId
 export interface QContinentQRelation
 	extends IQRelation<QContinent>, QContinentQId {
 }
-

@@ -63,9 +63,6 @@ import {
 } from './actor';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -174,8 +171,6 @@ extends ActorEId, ActorEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -201,7 +196,6 @@ export interface QActor extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QActorQId
 {
@@ -218,4 +212,3 @@ export interface QActorQId
 export interface QActorQRelation
 	extends IQRelation<QActor>, QActorQId {
 }
-

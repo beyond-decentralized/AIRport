@@ -36,9 +36,6 @@ import {
 } from './type';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -133,8 +130,6 @@ extends TypeEId, TypeEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -157,7 +152,6 @@ export interface QType extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QTypeQId
 {
@@ -174,4 +168,3 @@ export interface QTypeQId
 export interface QTypeQRelation
 	extends IQRelation<QType>, QTypeQId {
 }
-

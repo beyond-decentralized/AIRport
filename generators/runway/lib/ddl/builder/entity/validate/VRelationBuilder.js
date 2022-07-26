@@ -38,8 +38,9 @@ export class VRelationBuilder {
         }
         let typeSuffix = '';
         if (forInternalInterfaces) {
-            typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') :
-                (forCascadeGraph ? 'Graph' : 'ESelect');
+            // typeSuffix = idOnly ? (optional ? 'EOptionalId' : 'EId') :
+            // 	(forCascadeGraph ? 'Graph' : 'ESelect')
+            typeSuffix = 'VDescriptor';
         }
         let type = this.entityProperty.type;
         if (this.entityProperty.entity) {

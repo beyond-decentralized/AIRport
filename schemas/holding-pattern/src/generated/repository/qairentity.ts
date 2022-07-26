@@ -49,9 +49,6 @@ import {
 } from './airentity';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -166,8 +163,6 @@ extends AirEntityEId, AirEntityEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -196,7 +191,6 @@ export interface QAirEntity extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QAirEntityQId
 {
@@ -215,4 +209,3 @@ export interface QAirEntityQId
 export interface QAirEntityQRelation<SubType, SubQType extends IQEntity>
 	extends IQAirEntityRelation<SubType, SubQType>, QAirEntityQId {
 }
-

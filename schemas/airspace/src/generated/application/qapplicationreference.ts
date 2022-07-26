@@ -46,9 +46,6 @@ import {
 } from './applicationreference';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -150,8 +147,6 @@ extends ApplicationReferenceEId, ApplicationReferenceEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -174,7 +169,6 @@ export interface QApplicationReference extends QVersionedApplicationObject
 
 }
 
-
 // Entity Id Interface
 export interface QApplicationReferenceQId extends QVersionedApplicationObjectQId
 {
@@ -192,4 +186,3 @@ export interface QApplicationReferenceQId extends QVersionedApplicationObjectQId
 export interface QApplicationReferenceQRelation
 	extends QVersionedApplicationObjectQRelation<QApplicationReference>, QApplicationReferenceQId {
 }
-

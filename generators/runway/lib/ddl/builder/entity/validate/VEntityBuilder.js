@@ -19,17 +19,17 @@ export class VEntityBuilder extends VCoreEntityBuilder {
         const nonIdPropertyData = this.buildPropertyData(this.nonIdPropertyBuilders);
         const nonIdRelationData = this.buildRelationData(this.nonIdRelationBuilders);
         const idRelationData = this.buildRelationData(this.idRelationBuilders);
-        let parentEntityQType = 'IVEntity';
+        let parentEntityVType = 'IVEntity';
         if (this.entity.parentEntity) {
-            parentEntityQType = 'V' + this.entity.parentEntity.type;
+            parentEntityVType = 'V' + this.entity.parentEntity.type;
         }
         let vName = `V${this.entity.docEntry.name}`;
         let interfaceGenericAndExtends;
         if (this.entity.docEntry.isMappedSuperclass) {
-            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
+            interfaceGenericAndExtends = ` extends ${parentEntityVType}`;
         }
         else {
-            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
+            interfaceGenericAndExtends = ` extends ${parentEntityVType}`;
         }
         let classSource = `/**
  * Validation Entity Definition (used for V.ApplicationEntity_Name).

@@ -88,9 +88,6 @@ import {
 } from './client';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -205,8 +202,6 @@ extends ClientEId, ClientEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -234,7 +229,6 @@ export interface QClient extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QClientQId
 {
@@ -251,4 +245,3 @@ export interface QClientQId
 export interface QClientQRelation
 	extends IQRelation<QClient>, QClientQId {
 }
-

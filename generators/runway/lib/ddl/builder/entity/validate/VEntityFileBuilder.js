@@ -14,7 +14,7 @@ export class VEntityFileBuilder extends FileBuilder {
         this.vEntityBuilder = new VEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath, this, entityMapByName, sIndexedEntity);
         this.vEntityInterfaceBuilder = new IVEntityInterfaceBuilder(entity, this.vEntityBuilder);
         this.addImport([
-            'IEntitySelectProperties',
+            'IEntityVDescriptor',
             'IVBooleanField',
             'IVDateField',
             'IVNumberField',

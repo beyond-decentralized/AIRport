@@ -50,18 +50,18 @@ export class VEntityBuilder extends VCoreEntityBuilder {
 		const idRelationData: MemberData
 			= this.buildRelationData(this.idRelationBuilders);
 
-		let parentEntityQType = 'IVEntity';
+		let parentEntityVType = 'IVEntity';
 		if (this.entity.parentEntity) {
-			parentEntityQType = 'V' + this.entity.parentEntity.type;
+			parentEntityVType = 'V' + this.entity.parentEntity.type;
 		}
 
 		let vName = `V${this.entity.docEntry.name}`;
 
 		let interfaceGenericAndExtends;
 		if (this.entity.docEntry.isMappedSuperclass) {
-			interfaceGenericAndExtends = ` extends ${parentEntityQType}`
+			interfaceGenericAndExtends = ` extends ${parentEntityVType}`
 		} else {
-			interfaceGenericAndExtends = ` extends ${parentEntityQType}`
+			interfaceGenericAndExtends = ` extends ${parentEntityVType}`
 		}
 
 		let classSource = `/**

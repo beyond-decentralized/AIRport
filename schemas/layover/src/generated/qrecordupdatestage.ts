@@ -72,9 +72,6 @@ import {
 } from './recordupdatestage';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -191,8 +188,6 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -220,7 +215,6 @@ export interface QRecordUpdateStage extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QRecordUpdateStageQId
 {
@@ -237,4 +231,3 @@ export interface QRecordUpdateStageQId
 export interface QRecordUpdateStageQRelation
 	extends IQRelation<QRecordUpdateStage>, QRecordUpdateStageQId {
 }
-

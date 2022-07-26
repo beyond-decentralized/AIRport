@@ -145,6 +145,7 @@ export async function watchFiles(
 		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
 		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
+		const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
 		const qApplicationBuilder = new QApplicationBuilder(pathBuilder, configuration);
 		const daoBuilder = new DaoBuilder(pathBuilder);
 		const dvoBuilder = new DvoBuilder(pathBuilder);
@@ -172,6 +173,7 @@ export async function watchFiles(
 
 			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, null);
 			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
+			const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'v');
 			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
 			const vEntityFileBuilder = new VEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
@@ -184,6 +186,7 @@ export async function watchFiles(
 			}
 			entityInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
 			entityQInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
+			entityVInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullVGenerationPath);
 			qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
 				entity.docEntry.isMappedSuperclass);
 
@@ -215,6 +218,7 @@ export async function watchFiles(
 		));
 		fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
 		fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
+		fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
 		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
 
 		const mappedSuperclassBuilder = new MappedSuperclassBuilder(

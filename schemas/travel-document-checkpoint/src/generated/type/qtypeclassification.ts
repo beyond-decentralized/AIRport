@@ -49,9 +49,6 @@ import {
 } from './typeclassification';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -146,8 +143,6 @@ extends TypeClassificationEId, TypeClassificationEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -169,7 +164,6 @@ export interface QTypeClassification extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QTypeClassificationQId
 {
@@ -187,4 +181,3 @@ export interface QTypeClassificationQId
 export interface QTypeClassificationQRelation
 	extends IQRelation<QTypeClassification>, QTypeClassificationQId {
 }
-

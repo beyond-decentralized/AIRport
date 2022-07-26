@@ -13,7 +13,7 @@ export class DvoBuilder
 	) {
 		super('baseDvos', pathBuilder);
 
-		this.diSet = 'diSet';
+		this.diSet = 'duoDiSet';
 	}
 
 	build(): string {

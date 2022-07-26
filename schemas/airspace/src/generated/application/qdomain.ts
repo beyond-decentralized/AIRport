@@ -36,9 +36,6 @@ import {
 } from './domain';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -133,8 +130,6 @@ extends DomainEId, DomainEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -157,7 +152,6 @@ export interface QDomain extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QDomainQId
 {
@@ -174,4 +168,3 @@ export interface QDomainQId
 export interface QDomainQRelation
 	extends IQRelation<QDomain>, QDomainQId {
 }
-

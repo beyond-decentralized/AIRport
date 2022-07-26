@@ -49,9 +49,6 @@ import {
 } from './applicationcurrentversion';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -146,8 +143,6 @@ extends ApplicationCurrentVersionEId, ApplicationCurrentVersionEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -169,7 +164,6 @@ export interface QApplicationCurrentVersion extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QApplicationCurrentVersionQId
 {
@@ -187,4 +181,3 @@ export interface QApplicationCurrentVersionQId
 export interface QApplicationCurrentVersionQRelation
 	extends IQRelation<QApplicationCurrentVersion>, QApplicationCurrentVersionQId {
 }
-

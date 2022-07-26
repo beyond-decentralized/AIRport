@@ -1,6 +1,6 @@
 import { IValidationEntity } from "../definition/IValidationEntity";
 import { IValidationField } from "../definition/IValidationField";
-import { IValidationNumber } from "../definition/IValidationNumber";
+import { IVNumberField } from "../definition/IVNumberField";
 
 export const and = function <T, F extends IValidationField<T>>(
     ...conditions: (T | F)[]
@@ -11,7 +11,7 @@ export const and = function <T, F extends IValidationField<T>>(
 export const between = function (
     from: number,
     to: number
-): IValidationNumber {
+): IVNumberField {
     return null
 }
 

@@ -86,9 +86,6 @@ import {
 } from './useraccount';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -217,8 +214,6 @@ extends UserAccountEId, UserAccountEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -249,7 +244,6 @@ export interface QUserAccount extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QUserAccountQId
 {
@@ -266,4 +260,3 @@ export interface QUserAccountQId
 export interface QUserAccountQRelation
 	extends IQRelation<QUserAccount>, QUserAccountQId {
 }
-

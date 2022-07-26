@@ -49,9 +49,6 @@ import {
 } from './country';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -154,8 +151,6 @@ extends CountryEId, CountryEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -180,7 +175,6 @@ export interface QCountry extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QCountryQId
 {
@@ -197,4 +191,3 @@ export interface QCountryQId
 export interface QCountryQRelation
 	extends IQRelation<QCountry>, QCountryQId {
 }
-

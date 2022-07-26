@@ -1,6 +1,6 @@
-import {resolveRelativePath} from '../../resolve/pathResolver'
-import {PathBuilder}         from './PathBuilder'
-import {IBuilder}            from './Builder'
+import { resolveRelativePath } from '../../resolve/pathResolver'
+import { PathBuilder } from './PathBuilder'
+import { IBuilder } from './Builder'
 
 export class GeneratedSummaryBuilder
 	implements IBuilder {
@@ -19,6 +19,7 @@ export * from './qApplication';
 export * from './baseDaos';
 export * from './baseDvos';
 export * from './qInterfaces';
+export * from './vInterfaces';
 export * from './interfaces';
 `
 	}

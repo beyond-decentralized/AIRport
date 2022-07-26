@@ -47,9 +47,6 @@ import {
 } from './repositoryterminal';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -144,8 +141,6 @@ extends RepositoryTerminalEId, RepositoryTerminalEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -167,7 +162,6 @@ export interface QRepositoryTerminal extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QRepositoryTerminalQId
 {
@@ -185,4 +179,3 @@ export interface QRepositoryTerminalQId
 export interface QRepositoryTerminalQRelation
 	extends IQRelation<QRepositoryTerminal>, QRepositoryTerminalQId {
 }
-

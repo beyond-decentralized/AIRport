@@ -40,7 +40,7 @@ export class VEntityFileBuilder
     this.vEntityInterfaceBuilder = new IVEntityInterfaceBuilder(entity, this.vEntityBuilder);
 
     this.addImport([
-      'IEntitySelectProperties',
+      'IEntityVDescriptor',
       'IVBooleanField',
       'IVDateField',
       'IVNumberField',

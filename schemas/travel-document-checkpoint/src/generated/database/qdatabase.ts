@@ -88,9 +88,6 @@ import {
 } from './database';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -205,8 +202,6 @@ extends DatabaseEId, DatabaseEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -234,7 +229,6 @@ export interface QDatabase extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QDatabaseQId
 {
@@ -251,4 +245,3 @@ export interface QDatabaseQId
 export interface QDatabaseQRelation
 	extends IQRelation<QDatabase>, QDatabaseQId {
 }
-

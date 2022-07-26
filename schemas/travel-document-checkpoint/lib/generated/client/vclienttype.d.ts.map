@@ -1,0 +1,1 @@
+{"version":3,"file":"vclienttype.d.ts","sourceRoot":"","sources":["../../../src/generated/client/vclienttype.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,kBAAkB,EAMlB,MAAM,6BAA6B,CAAC;AACrC,OAAO,EACN,iBAAiB,EACjB,MAAM,WAAW,CAAC;AAInB,OAAO,EACN,eAAe,EACf,MAAM,eAAe,CAAC;AAcvB,MAAM,WAAW,qBACb,SAAQ,kBAAkB;IAM7B,MAAM,CAAC,EAAE,iBAAiB,CAAC;IAC3B,IAAI,CAAC,EAAE,eAAe,CAAC;CAIvB"}

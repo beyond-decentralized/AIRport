@@ -47,9 +47,6 @@ import {
 } from './repositorytype';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -144,8 +141,6 @@ extends RepositoryTypeEId, RepositoryTypeEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -167,7 +162,6 @@ export interface QRepositoryType extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QRepositoryTypeQId
 {
@@ -185,4 +179,3 @@ export interface QRepositoryTypeQId
 export interface QRepositoryTypeQRelation
 	extends IQRelation<QRepositoryType>, QRepositoryTypeQId {
 }
-

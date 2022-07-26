@@ -1,5 +1,5 @@
 import {
-	IEntitySelectProperties,
+	IEntityVDescriptor,
 	IVBooleanField,
 	IVDateField,
 	IVNumberField,
@@ -17,8 +17,8 @@ import {
 ////////////////////
 
 export interface TerminalRunVDescriptor
-    extends IEntitySelectProperties, TerminalRunEOptionalId {
-	// Id Propertie
+    extends IEntityVDescriptor {
+	// Id Properties
 	_localId: number | IVNumberField;
 	
 	// Non-Id Properties

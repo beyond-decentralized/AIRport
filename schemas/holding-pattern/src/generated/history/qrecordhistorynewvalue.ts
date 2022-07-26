@@ -36,9 +36,6 @@ import {
 } from './recordhistorynewvalue';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -135,8 +132,6 @@ extends RecordHistoryNewValueEId, RecordHistoryNewValueEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -159,7 +154,6 @@ export interface QRecordHistoryNewValue extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QRecordHistoryNewValueQId
 {
@@ -177,4 +171,3 @@ export interface QRecordHistoryNewValueQId
 export interface QRecordHistoryNewValueQRelation
 	extends IQRelation<QRecordHistoryNewValue>, QRecordHistoryNewValueQId {
 }
-

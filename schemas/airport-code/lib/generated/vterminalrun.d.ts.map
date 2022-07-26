@@ -1,0 +1,1 @@
+{"version":3,"file":"vterminalrun.d.ts","sourceRoot":"","sources":["../../src/generated/vterminalrun.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,kBAAkB,EAGlB,aAAa,EAGb,MAAM,6BAA6B,CAAC;AAWrC,MAAM,WAAW,sBACb,SAAQ,kBAAkB;IAE7B,QAAQ,EAAE,MAAM,GAAG,aAAa,CAAC;IAGjC,eAAe,CAAC,EAAE,MAAM,GAAG,aAAa,CAAC;IACzC,YAAY,CAAC,EAAE,MAAM,GAAG,aAAa,CAAC;CAMtC"}

@@ -62,9 +62,6 @@ import {
 } from './metroarea';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -165,8 +162,6 @@ extends MetroAreaEId, MetroAreaEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -191,7 +186,6 @@ export interface QMetroArea extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QMetroAreaQId
 {
@@ -208,4 +202,3 @@ export interface QMetroAreaQId
 export interface QMetroAreaQRelation
 	extends IQRelation<QMetroArea>, QMetroAreaQId {
 }
-

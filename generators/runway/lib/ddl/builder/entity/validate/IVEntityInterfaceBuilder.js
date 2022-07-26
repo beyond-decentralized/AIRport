@@ -27,10 +27,10 @@ export class IVEntityInterfaceBuilder {
         this.nonIdRelationBuilders.forEach((builder) => {
             nonIdRelationsForEntityEProperties += `\t${builder.buildInterfaceDefinition(false)}\n`;
         });
-        let extendedVInterface = `IEntitySelectProperties`;
+        let extendedVInterface = `IEntityVDescriptor`;
         if (this.entity.parentEntity) {
             const parentType = this.entity.parentEntity.type;
-            extendedVInterface = `${parentType}ESelect`;
+            extendedVInterface = `${parentType}VDescriptor`;
         }
         let interfaceSource = `
 ////////////////////
@@ -38,8 +38,8 @@ export class IVEntityInterfaceBuilder {
 ////////////////////
 
 export interface ${entityName}VDescriptor
-    extends ${extendedVInterface}, ${entityName}EOptionalId {
-	// Id Propertie
+    extends ${extendedVInterface} {
+	// Id Properties
 ${idEProperties}	
 	// Non-Id Properties
 ${nonIdEProperties}

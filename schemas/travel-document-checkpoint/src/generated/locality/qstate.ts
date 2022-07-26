@@ -49,9 +49,6 @@ import {
 } from './state';
 
 
-declare function require(moduleName: string): any;
-
-
 //////////////////////////////
 //  API SPECIFIC INTERFACES //
 //////////////////////////////
@@ -156,8 +153,6 @@ extends StateEId, StateEUpdateColumns {
 }
 
 
-
-
 ///////////////////////////////////////////////
 //  QUERY IMPLEMENTATION SPECIFIC INTERFACES //
 ///////////////////////////////////////////////
@@ -183,7 +178,6 @@ export interface QState extends IQEntity
 
 }
 
-
 // Entity Id Interface
 export interface QStateQId
 {
@@ -200,4 +194,3 @@ export interface QStateQId
 export interface QStateQRelation
 	extends IQRelation<QState>, QStateQId {
 }
-

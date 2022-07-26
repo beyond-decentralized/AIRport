@@ -1,5 +1,5 @@
 import {
-	IEntitySelectProperties,
+	IEntityVDescriptor,
 	IVBooleanField,
 	IVDateField,
 	IVNumberField,
@@ -17,8 +17,8 @@ import {
 ////////////////////
 
 export interface SequenceVDescriptor
-    extends IEntitySelectProperties, SequenceEOptionalId {
-	// Id Propertie
+    extends IEntityVDescriptor {
+	// Id Properties
 	applicationIndex: number | IVNumberField;
 	tableIndex: number | IVNumberField;
 	columnIndex: number | IVNumberField;
