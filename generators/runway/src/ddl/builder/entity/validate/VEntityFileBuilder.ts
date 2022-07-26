@@ -48,7 +48,7 @@ export class VEntityFileBuilder
       'IVUntypedField'],
       '@airport/airbridge-validate');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
-    console.log('Entity: ' + entity.path)
+    // console.log('Entity: ' + entity.path)
     if (entity.parentEntity) {
       let parentVEntityRelativePath;
       if (entity.parentEntity.project) {
@@ -100,7 +100,7 @@ ${interfaceSource}
       type = type.replace('[]', '');
 
       if (this.entity !== property.entity) {
-        console.log(vEntityRelativePath)
+        // console.log(vEntityRelativePath)
         this.addImport([type + 'VDescriptor'],
           vEntityRelativePath);
       }
