@@ -7,10 +7,13 @@ export const between = function (from, to) {
 export const value = function (value) {
     return null;
 };
-export const equals = function (value) {
+export const equals = function (valueOrTyped, valueIfTyped) {
     return null;
 };
-export const exists = function (validationSpec) {
+export const exists = function (valueOrTyped, valueIfTyped) {
+    return null;
+};
+export const typed = function (options) {
     return null;
 };
 export const isNull = function (validationSpec) {

@@ -21,14 +21,22 @@ export const value = function <T, F extends IValidationField<T>>(
     return null
 }
 
-export const equals = function <T, F extends IEntityVDescriptor<T>>(
-    value: F
-): F {
+export const equals = function <T, E extends IEntityVDescriptor<T>>(
+    valueOrTyped: E,
+    valueIfTyped?: E
+): E {
     return null
 }
 
 export const exists = function <T, E extends IEntityVDescriptor<T>>(
-    validationSpec?: E
+    valueOrTyped?: E,
+    valueIfTyped?: E
+): E {
+    return null
+}
+
+export const typed = function <T, E extends IEntityVDescriptor<T>>(
+    options?: {}
 ): E {
     return null
 }
