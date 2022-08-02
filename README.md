@@ -6,7 +6,7 @@
 AIRport allows Decentralized Applications to interoperate by providing a relational
 database and an API framework, backed by transaction log storage.
 
-More documentation can be found "[here](https://beyond-decentralized.world/)".
+More documentation can be found at [Beyond Decentralized](https://beyond-decentralized.world/)".
 
 ## How it works
 
