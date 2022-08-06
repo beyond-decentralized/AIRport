@@ -28,7 +28,7 @@ import { TypeClassification } from '../ddl/type/typeclassification';
 import { TypeClassificationVDescriptor } from './type/vtypeclassification';
 import { UserAccount } from '../ddl/useraccount';
 import { UserAccountVDescriptor } from './vuseraccount';
-import { IDvo, Dvo } from '@airport/airbridge-validate';
+import { IDvo, Dvo } from '@airbridge/validate';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);

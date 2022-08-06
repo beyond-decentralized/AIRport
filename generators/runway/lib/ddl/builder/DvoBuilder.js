@@ -37,7 +37,7 @@ ${baseClassDefinitions}`;
         this.addImport([
             `I${this.classSuffix}`,
             `${this.classSuffix}`
-        ], '@airport/airbridge-validate');
+        ], '@airbridge/validate');
         this.addImport([
             {
                 asName: 'DbEntityId',

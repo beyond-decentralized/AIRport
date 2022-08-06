@@ -1,1 +1,0 @@
-{"version":3,"file":"VespaFieldset.d.ts","sourceRoot":"","sources":["../../../src/lingo/model/VespaFieldset.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,cAAc;IAE9B,QAAQ,EAAE;QACT,CAAC,SAAS,EAAE,MAAM,GAAG,OAAO,CAAA;KAC5B,CAAA;IACD,SAAS,EAAE,OAAO,CAAC;IACnB,IAAI,EAAE,MAAM,CAAC;CAEb"}

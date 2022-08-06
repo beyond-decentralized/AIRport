@@ -7,8 +7,8 @@
     "path": "applications/airspace"
   },
   "dependencies": {
+    "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
-    "@airport/airbridge-validate": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",

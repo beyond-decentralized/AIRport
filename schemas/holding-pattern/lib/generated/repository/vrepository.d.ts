@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVBooleanField, IVDateField, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVBooleanField, IVDateField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { UserAccountVDescriptor, UserAccount, ContinentVDescriptor, Continent, CountryVDescriptor, Country, StateVDescriptor, State, MetroAreaVDescriptor, MetroArea } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import { RepositoryTransactionHistoryVDescriptor } from '../history/vrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';

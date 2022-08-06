@@ -1,4 +1,4 @@
-import { IVBooleanField, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ApplicationEntityVDescriptor } from './vapplicationentity';
 import { ApplicationEntity } from '../../ddl/application/applicationentity';

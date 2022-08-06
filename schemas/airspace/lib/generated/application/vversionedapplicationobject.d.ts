@@ -1,4 +1,4 @@
-import { IEntityVDescriptor } from '@airport/airbridge-validate';
+import { IEntityVDescriptor } from '@airbridge/validate';
 import { ApplicationVersionVDescriptor } from './vapplicationversion';
 import { ApplicationVersion } from '../../ddl/application/applicationversion';
 export interface VersionedApplicationObjectVDescriptor<T> extends IEntityVDescriptor<T> {

@@ -74,7 +74,7 @@ import {
 import {
 	IDvo,
 	Dvo,
-} from '@airport/airbridge-validate';
+} from '@airbridge/validate';
 import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';

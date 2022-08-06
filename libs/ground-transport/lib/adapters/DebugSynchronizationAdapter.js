@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
     async getTransactionsForRepository(repositorySource, repositoryGUID, sinceSyncTimestamp) {
-        const response = await this.nonhubClient.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
+        const response = await this.client.getRepositoryTransactions(repositorySource, repositoryGUID, sinceSyncTimestamp);
         const messages = [];
         // NOTE: syncTimestamp is populated here because file sharing mechanisms
         // (IPFS) won't be able to modify the messages themselves
@@ -43,7 +43,7 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
         if (!messages || !messages.length) {
             return false;
         }
-        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
+        const syncTimestamp = await this.client.sendRepositoryTransactions(repositorySource, repositoryGUID, messages);
         if (!syncTimestamp) {
             return false;
         }
@@ -55,7 +55,7 @@ let DebugSynchronizationAdapter = class DebugSynchronizationAdapter {
 };
 __decorate([
     Inject()
-], DebugSynchronizationAdapter.prototype, "nonhubClient", void 0);
+], DebugSynchronizationAdapter.prototype, "client", void 0);
 DebugSynchronizationAdapter = __decorate([
     Injected()
 ], DebugSynchronizationAdapter);

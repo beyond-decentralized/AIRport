@@ -1,7 +1,7 @@
 var app = (function (exports) {
     'use strict';
 
-    class InjectionDomain {
+    class InjectionRegistry {
         constructor(name) {
             this.name = name;
             this.applicationMap = {};
@@ -27,11 +27,11 @@ var app = (function (exports) {
         if (DOMAIN_MAP[domainName]) {
             return DOMAIN_MAP[domainName];
         }
-        const domain = new InjectionDomain(domainName);
+        const domain = new InjectionRegistry(domainName);
         DOMAIN_MAP[domainName] = domain;
         return domain;
     }
-    const AIRPORT_DOMAIN = domain('turbase.app');
+    const AIRPORT_INJECTION_REGISTRY = domain('turbase.app');
 
     class DependencyInjectionToken {
         constructor(application, descriptor) {
@@ -113,7 +113,7 @@ var app = (function (exports) {
         }
     }
     function lib$1(libraryName) {
-        return AIRPORT_DOMAIN.app(libraryName);
+        return AIRPORT_INJECTION_REGISTRY.app(libraryName);
     }
 
     var ContextType;

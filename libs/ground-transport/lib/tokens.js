@@ -22,9 +22,9 @@ import { APPLICATION_DAO, APPLICATION_VERSION_DAO, DOMAIN_DAO } from '@airport/a
 import { ACTOR_DAO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { RECORD_UPDATE_STAGE_DAO, SYNCHRONIZATION_CONFLICT_DAO, SYNCHRONIZATION_CONFLICT_VALUES_DAO } from '@airport/layover';
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter';
-import { NONHUB_CLIENT } from '@airport/nonhub-client';
 import { SEQUENCE_GENERATOR } from '@airport/ground-control';
 import { DATABASE_FACADE } from '@airport/tarmaq-dao';
+import { CLIENT } from '@airway/client';
 const groundTransport = lib('ground-transport');
 export const STAGE1_SYNCED_IN_DATA_PROCESSOR = groundTransport.token({
     class: Stage1SyncedInDataProcessor,
@@ -112,7 +112,7 @@ export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token({
     token: 'SYNCHRONIZATION_ADAPTER_LOADER'
 });
 DEBUG_SYNCHRONIZATION_ADAPTER.setDependencies({
-    nonhubClient: NONHUB_CLIENT
+    cient: CLIENT
 });
 STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({
     actorDao: ACTOR_DAO,

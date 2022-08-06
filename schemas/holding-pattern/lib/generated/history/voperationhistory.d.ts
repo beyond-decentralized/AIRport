@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { ApplicationEntityVDescriptor, ApplicationEntity } from '@airport/airspace';
 import { ActorVDescriptor } from '../infrastructure/vactor';
 import { Actor } from '../../ddl/infrastructure/Actor';

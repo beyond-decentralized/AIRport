@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { RepositoryTransactionHistoryVDescriptor } from './vrepositorytransactionhistory';
 import { RepositoryTransactionHistory } from '../../ddl/history/RepositoryTransactionHistory';
 export interface TransactionHistoryVDescriptor<T> extends IEntityVDescriptor<T> {

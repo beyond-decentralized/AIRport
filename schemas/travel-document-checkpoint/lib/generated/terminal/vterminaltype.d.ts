@@ -1,4 +1,4 @@
-import { IEntityVDescriptor } from '@airport/airbridge-validate';
+import { IEntityVDescriptor } from '@airbridge/validate';
 import { TerminalVDescriptor } from './vterminal';
 import { Terminal } from '../../ddl/terminal/Terminal';
 import { TypeVDescriptor } from '../type/vtype';

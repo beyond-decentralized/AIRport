@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { DomainVDescriptor } from '@airport/airspace';
 import { Domain } from '@airport/airspace';
 import { ContinentVDescriptor } from './locality/vcontinent';

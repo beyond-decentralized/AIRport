@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { TypeClassificationVDescriptor } from './vtypeclassification';
 import { TypeClassification } from '../../ddl/type/TypeClassification';
 export interface TypeVDescriptor<T> extends IEntityVDescriptor<T> {

@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { ApplicationVDescriptor } from './vapplication';
 import { Application } from '../../ddl/application/application';
 export interface DomainVDescriptor<T> extends IEntityVDescriptor<T> {

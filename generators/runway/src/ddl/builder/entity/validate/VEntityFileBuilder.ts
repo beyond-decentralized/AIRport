@@ -46,7 +46,7 @@ export class VEntityFileBuilder
       'IVNumberField',
       'IVStringField',
       'IVUntypedField'],
-      '@airport/airbridge-validate');
+      '@airbridge/validate');
     // let entityRelativePath = resolveRelativePath(fullGenerationPath, entity.path);
     // console.log('Entity: ' + entity.path)
     if (entity.parentEntity) {

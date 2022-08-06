@@ -45,9 +45,9 @@ import {
     SYNCHRONIZATION_CONFLICT_VALUES_DAO
 } from '@airport/layover'
 import { DebugSynchronizationAdapter } from './adapters/DebugSynchronizationAdapter'
-import { NONHUB_CLIENT } from '@airport/nonhub-client'
 import { SEQUENCE_GENERATOR } from '@airport/ground-control'
 import { DATABASE_FACADE } from '@airport/tarmaq-dao'
+import { CLIENT } from '@airway/client'
 
 const groundTransport = lib('ground-transport')
 
@@ -138,7 +138,7 @@ export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchroniza
 })
 
 DEBUG_SYNCHRONIZATION_ADAPTER.setDependencies({
-    nonhubClient: NONHUB_CLIENT
+    cient: CLIENT
 })
 
 STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({

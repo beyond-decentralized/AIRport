@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVUntypedField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVUntypedField } from '@airbridge/validate';
 import { ApplicationVersionVDescriptor, ApplicationVersion, ApplicationEntityVDescriptor, ApplicationEntity, ApplicationColumnVDescriptor, ApplicationColumn } from '@airport/airspace';
 import { RepositoryVDescriptor, Repository, ActorVDescriptor, Actor } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 export interface RecordUpdateStageVDescriptor<T> extends IEntityVDescriptor<T> {

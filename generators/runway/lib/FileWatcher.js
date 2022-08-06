@@ -42,7 +42,7 @@ export async function watchFiles(configuration, options, rootFileNames) {
             return tsc.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
         },
         getCurrentDirectory: () => process.cwd(),
-        getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options),
+        getDefaultLibFileName: (options) => tsc.getDefaultLibFilePath(options)
     };
     // Create the language service files
     const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());

@@ -4,7 +4,7 @@ import { SystemWideOperationId } from '../ddl/systemwideoperationid';
 import { SystemWideOperationIdVDescriptor } from './vsystemwideoperationid';
 import { TerminalRun } from '../ddl/terminalrun';
 import { TerminalRunVDescriptor } from './vterminalrun';
-import { IDvo, Dvo } from '@airport/airbridge-validate';
+import { IDvo, Dvo } from '@airbridge/validate';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);

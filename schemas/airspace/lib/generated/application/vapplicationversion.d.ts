@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { ApplicationVDescriptor } from './vapplication';
 import { Application } from '../../ddl/application/application';

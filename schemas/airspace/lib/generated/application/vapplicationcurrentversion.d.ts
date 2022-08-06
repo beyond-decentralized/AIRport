@@ -1,4 +1,4 @@
-import { IEntityVDescriptor } from '@airport/airbridge-validate';
+import { IEntityVDescriptor } from '@airbridge/validate';
 import { ApplicationVDescriptor } from './vapplication';
 import { Application } from '../../ddl/application/application';
 import { ApplicationVersionVDescriptor } from './vapplicationversion';

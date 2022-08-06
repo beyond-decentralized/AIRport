@@ -1,4 +1,4 @@
-import { IVBooleanField, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ApplicationEntity_TableConfiguration } from '@airport/tarmaq-entity';
 import { ApplicationVersionVDescriptor } from './vapplicationversion';

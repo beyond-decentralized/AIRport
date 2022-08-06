@@ -22,7 +22,7 @@ import { ApplicationVersion } from '../ddl/application/applicationversion';
 import { ApplicationVersionVDescriptor } from './application/vapplicationversion';
 import { Domain } from '../ddl/application/domain';
 import { DomainVDescriptor } from './application/vdomain';
-import { IDvo, Dvo } from '@airport/airbridge-validate';
+import { IDvo, Dvo } from '@airbridge/validate';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);

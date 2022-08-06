@@ -5,7 +5,7 @@ import {
 	IVNumberField,
 	IVStringField,
 	IVUntypedField,
-} from '@airport/airbridge-validate';
+} from '@airbridge/validate';
 import {
 	DomainVDescriptor,
 } from '@airport/airspace';

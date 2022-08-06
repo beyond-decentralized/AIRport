@@ -7,7 +7,7 @@ import {
     Repository_Source,
     Repository_GUID
 } from "@airport/holding-pattern";
-import { INonhubClient } from "@airport/nonhub-client";
+import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 
 @Injected()
@@ -15,7 +15,7 @@ export class DebugSynchronizationAdapter
     implements ISynchronizationAdapter {
 
     @Inject()
-    nonhubClient: INonhubClient
+    client: IClient
 
     async getTransactionsForRepository(
         repositorySource: Repository_Source,
@@ -23,7 +23,7 @@ export class DebugSynchronizationAdapter
         sinceSyncTimestamp?: number
     ): Promise<RepositorySynchronizationMessage[]> {
         const response: RepositorySynchronizationReadResponseFragment[]
-            = await this.nonhubClient.getRepositoryTransactions(
+            = await this.client.getRepositoryTransactions(
                 repositorySource, repositoryGUID, sinceSyncTimestamp)
 
         const messages: RepositorySynchronizationMessage[] = []
@@ -74,7 +74,7 @@ export class DebugSynchronizationAdapter
             return false
         }
 
-        const syncTimestamp = await this.nonhubClient.sendRepositoryTransactions(
+        const syncTimestamp = await this.client.sendRepositoryTransactions(
             repositorySource, repositoryGUID, messages)
 
         if (!syncTimestamp) {

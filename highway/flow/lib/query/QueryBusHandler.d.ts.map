@@ -1,1 +1,0 @@
-{"version":3,"file":"QueryBusHandler.d.ts","sourceRoot":"","sources":["../../src/query/QueryBusHandler.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,QAAQ,EAAE,MAAY,YAAY,CAAC;AAE5C,qBACa,eAAe;IAErB,MAAM,CAAC,OAAO,EAAE,QAAQ,GAAG,OAAO,CAAC,IAAI,CAAC;CAI9C"}

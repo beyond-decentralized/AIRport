@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVBooleanField, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { RepositoryVDescriptor } from '../repository/vrepository';
 import { Repository } from '../../ddl/repository/Repository';
 import { TransactionHistoryVDescriptor } from './vtransactionhistory';

@@ -1,4 +1,4 @@
-import { IVNumberField } from '@airport/airbridge-validate';
+import { IVNumberField } from '@airbridge/validate';
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ApplicationVersionVDescriptor } from './vapplicationversion';
 import { ApplicationVersion } from '../../ddl/application/applicationversion';

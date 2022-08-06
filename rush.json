@@ -95,33 +95,7 @@
       "projectFolder": "generators/takeoff",
       "shouldPublish": true
     },
-    // "highway" folder (alphabetical order)
-    {
-      "packageName": "@airport/hw-control",
-      "projectFolder": "highway/control",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/hw-flow",
-      "projectFolder": "highway/flow",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/hw-scylladb",
-      "projectFolder": "highway/scylladb",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/hw-vespa",
-      "projectFolder": "highway/vespa",
-      "shouldPublish": true
-    },
     // "libs" folder (alphabetical order)
-    {
-      "packageName": "@airport/airbridge-validate",
-      "projectFolder": "libs/airbridge/validate",
-      "shouldPublish": true
-    },
     {
       "packageName": "@airport/autopilot",
       "projectFolder": "libs/autopilot",
@@ -160,32 +134,6 @@
     {
       "packageName": "@airport/vhf-radio",
       "projectFolder": "libs/vhf-radio",
-      "shouldPublish": true
-    },
-    // "nonhub" folder (alphabetical order)
-    {
-      "packageName": "@airport/nonhub-client",
-      "projectFolder": "nonhub/client",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/nonhub-in-memory-server",
-      "projectFolder": "nonhub/in-memory-server",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/nonhub-server",
-      "projectFolder": "nonhub/server",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/nonhub-types",
-      "projectFolder": "nonhub/nonhub-types",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/processor-common",
-      "projectFolder": "nonhub/processor-common",
       "shouldPublish": true
     },
     // "ORMs" folder (alphabetical order)
@@ -244,6 +192,38 @@
     {
       "packageName": "@airport/travel-document-checkpoint",
       "projectFolder": "schemas/travel-document-checkpoint",
+      "shouldPublish": true
+    },
+    // "AIRbridge" folder (external)
+    {
+      "packageName": "@airbridge/validate",
+      "projectFolder": "../AIRbridge/validate",
+      "shouldPublish": true
+    },
+    // "AIRway" folder (external)
+    {
+      "packageName": "@airway/client",
+      "projectFolder": "../AIRway/client",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airway/in-memory-server",
+      "projectFolder": "../AIRway/in-memory-server",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airway/server",
+      "projectFolder": "../AIRway/server",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airway/types",
+      "projectFolder": "../AIRway/types",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airway/processor-common",
+      "projectFolder": "../AIRway/processor-common",
       "shouldPublish": true
     }
   ]

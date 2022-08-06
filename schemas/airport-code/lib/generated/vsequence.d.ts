@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField } from '@airbridge/validate';
 export interface SequenceVDescriptor<T> extends IEntityVDescriptor<T> {
     applicationIndex?: number | IVNumberField;
     tableIndex?: number | IVNumberField;

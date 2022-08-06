@@ -1,4 +1,4 @@
-import { Dvo, } from '@airport/airbridge-validate';
+import { Dvo, } from '@airbridge/validate';
 import { Q, duoDiSet, } from './qApplication';
 // Application Q object Dependency Injection readiness detection Dvo
 export class SQDIDvo extends Dvo {

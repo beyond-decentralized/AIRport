@@ -24,7 +24,7 @@ import { RepositoryType } from '../ddl/repository/repositorytype';
 import { RepositoryTypeVDescriptor } from './repository/vrepositorytype';
 import { TransactionHistory } from '../ddl/history/transactionhistory';
 import { TransactionHistoryVDescriptor } from './history/vtransactionhistory';
-import { IDvo, Dvo } from '@airport/airbridge-validate';
+import { IDvo, Dvo } from '@airbridge/validate';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);

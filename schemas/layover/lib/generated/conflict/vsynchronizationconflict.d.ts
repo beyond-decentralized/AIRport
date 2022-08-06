@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVBooleanField, IVNumberField, IVStringField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { RepositoryVDescriptor, Repository, RecordHistoryVDescriptor, RecordHistory } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { SynchronizationConflictValuesVDescriptor } from './vsynchronizationconflictvalues';
 import { SynchronizationConflictValues } from '../../ddl/conflict/SynchronizationConflictValues';

@@ -1,4 +1,4 @@
-import { IEntityVDescriptor } from '@airport/airbridge-validate';
+import { IEntityVDescriptor } from '@airbridge/validate';
 import { RepositoryVDescriptor } from './vrepository';
 import { Repository } from '../../ddl/repository/Repository';
 import { ClientVDescriptor, Client } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';

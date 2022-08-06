@@ -1,31 +1,29 @@
 {
   "version": "0.0.1",
-  "name": "airport",
-  "description": "Autonomous Interdependent Repository Port",
-  "license": "MIT",
+  "name": "AIRport",
+  "description": "Autonomous Interdependent Repository port",
+  "license": "MIT & Apache 2.0",
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
   },
   "scripts": {
-    "lint": "tslint \"src/**/*.ts\"",
-    "ts-node": "ts-node src/index.ts",
-    "test": "ts-node ./node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
-    "test:coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=jasmine.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/autonomousinterdependentrepo/airport.git"
+    "url": "git+https://github.com/beyond-decentralized/AIRport.git"
   },
-  "main": "lib/index.js",
-  "typings": "lib/index",
   "keywords": [
-    "distrubuted relational sql database",
-    "distributed web application",
-    "cross application data store"
+    "Autonomous Interdependent Repositories",
+    "decentralized relational sql database framework",
+    "decentralized relational database",
+    "decentralized sql database",
+    "decentralized database",
+    "decentralized framework",
+    "decentralized"
   ],
-  "author": "russoturisto <russoturisto@gmail.com> (https://russoturistoo.wordpress.com/blog/)",
+  "author": "Artem <Artem.V.Shamsutdinov@beyond-decentralized.world> (https://beyond-decentralized.world/)",
   "devDependencies": {
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
@@ -33,7 +31,7 @@
     "pretty-quick": "^3.1.0"
   },
   "bugs": {
-    "url": "https://bitbucket.org/autonomousinterdependentrepo/airport/issues"
+    "url": "https://github.com/beyond-decentralized/AIRport/issues"
   },
-  "homepage": "https://bitbucket.org/autonomousinterdependentrepo/airport#readme"
+  "homepage": "https://github.com/beyond-decentralized/AIRport#readme"
 }

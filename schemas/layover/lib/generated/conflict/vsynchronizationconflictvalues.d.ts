@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField } from '@airbridge/validate';
 import { SynchronizationConflictVDescriptor } from './vsynchronizationconflict';
 import { SynchronizationConflict } from '../../ddl/conflict/SynchronizationConflict';
 export interface SynchronizationConflictValuesVDescriptor<T> extends IEntityVDescriptor<T> {

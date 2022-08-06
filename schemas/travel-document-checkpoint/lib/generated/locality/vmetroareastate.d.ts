@@ -1,4 +1,4 @@
-import { IEntityVDescriptor } from '@airport/airbridge-validate';
+import { IEntityVDescriptor } from '@airbridge/validate';
 import { StateVDescriptor } from './vstate';
 import { State } from '../../ddl/locality/State';
 import { MetroAreaVDescriptor } from './vmetroarea';

@@ -1,1 +1,0 @@
-{"version":3,"file":"DocumentDecorators.d.ts","sourceRoot":"","sources":["../../src/impl/DocumentDecorators.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,8BAA8B,CAAA;AAChE,OAAO,EAAE,qBAAqB,EAAE,MAAM,6BAA6B,CAAA;AAEnE,wBAAgB,QAAQ,CAAC,CAAC,EACzB,qBAAqB,CAAC,EAAE,qBAAqB,CAAC,CAAC,CAAC,GAC9C,iBAAiB,CAInB"}

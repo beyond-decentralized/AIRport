@@ -4,7 +4,7 @@ import { SynchronizationConflict } from '../ddl/conflict/synchronizationconflict
 import { SynchronizationConflictVDescriptor } from './conflict/vsynchronizationconflict';
 import { SynchronizationConflictValues } from '../ddl/conflict/synchronizationconflictvalues';
 import { SynchronizationConflictValuesVDescriptor } from './conflict/vsynchronizationconflictvalues';
-import { IDvo, Dvo } from '@airport/airbridge-validate';
+import { IDvo, Dvo } from '@airbridge/validate';
 import { ApplicationEntity_LocalId as DbEntityId } from '@airport/ground-control';
 export declare class SQDIDvo<Entity, EntityVDescriptor> extends Dvo<Entity, EntityVDescriptor> {
     constructor(dbEntityId: DbEntityId);

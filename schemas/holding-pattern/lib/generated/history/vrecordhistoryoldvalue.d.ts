@@ -1,4 +1,4 @@
-import { IEntityVDescriptor, IVNumberField, IVUntypedField } from '@airport/airbridge-validate';
+import { IEntityVDescriptor, IVNumberField, IVUntypedField } from '@airbridge/validate';
 import { RecordHistoryVDescriptor } from './vrecordhistory';
 import { RecordHistory } from '../../ddl/history/RecordHistory';
 export interface RecordHistoryOldValueVDescriptor<T> extends IEntityVDescriptor<T> {
