@@ -1,6 +1,4 @@
-# AIRport - Decentralized Relational Platform.
-
-![AIRport - Decentralized Relational Platform](/AIRport_logo_2x1.png)
+# ![AIRport - Decentralized Relational Platform](/AIRport_logo_2x1.png)
 
 ## Description <a name="description"></a>
 AIRport allows Decentralized Applications to interoperate by providing an API
