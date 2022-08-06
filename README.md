@@ -1,10 +1,11 @@
-# AIRport - beyond decentralized data.
+# AIRport - Decentralized Relational Platform.
 
-![AIRport - winged DApps](/presentations/images/logo/AIRPort_logo_with_slogan_1.0.png)
+![AIRport - Decentralized Relational Platform](/AIRport_logo_2x1.png)
 
 ## Description <a name="description"></a>
-AIRport allows Decentralized Applications to interoperate by providing a relational
-database and an API framework, backed by transaction log storage.
+AIRport allows Decentralized Applications to interoperate by providing an API
+framework on top of a relational database. Data is stored in virual
+Repositories with one Transaction Log per repository.
 
 More documentation can be found at [Beyond Decentralized](https://beyond-decentralized.world/).
 
@@ -121,6 +122,9 @@ export class ParentApi {
 
 ## Directory Structure
 
+[ORMs](/ORMs)
+Object Relational Mapping frameworks.
+
 [apis](/apis)
 Internal and external APIs.
 
@@ -135,9 +139,6 @@ Code generators.
 
 [libs](/libs)
 Libraries.
-
-[ORMs](/ORMs)
-Object Relational Mapping frameworks.
 
 [platforms](/platforms)
 Platform adaptors for Web and Native.
