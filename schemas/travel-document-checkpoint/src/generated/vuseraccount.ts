@@ -8,8 +8,6 @@ import {
 } from '@airbridge/validate';
 import {
 	DomainVDescriptor,
-} from '@airport/airspace';
-import {
 	Domain,
 } from '@airport/airspace';
 import {
@@ -47,10 +45,10 @@ import {
 ////////////////////
 
 export interface UserAccountVDescriptor<T>
-	extends IEntityVDescriptor<T> {
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	_localId?: number | IVNumberField;
-
+	
 	// Non-Id Properties
 	email?: string | IVStringField;
 	passwordHash?: string | IVStringField;
@@ -60,7 +58,7 @@ export interface UserAccountVDescriptor<T>
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	domain?: DomainVDescriptor<Domain>
 	continent?: ContinentVDescriptor<Continent>
 	country?: CountryVDescriptor<Country>

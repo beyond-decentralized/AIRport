@@ -177,11 +177,11 @@ export class BaseContinentDvo
 	implements IBaseContinentDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return duoDiSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -195,11 +195,11 @@ export class BaseCountryDvo
 	implements IBaseCountryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return duoDiSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }
 
@@ -249,11 +249,11 @@ export class BaseMetroAreaDvo
 	implements IBaseMetroAreaDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return duoDiSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -267,11 +267,11 @@ export class BaseMetroAreaStateDvo
 	implements IBaseMetroAreaStateDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return duoDiSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -285,11 +285,11 @@ export class BaseStateDvo
 	implements IBaseStateDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return duoDiSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -375,10 +375,10 @@ export class BaseUserAccountDvo
 	implements IBaseUserAccountDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return duoDiSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
