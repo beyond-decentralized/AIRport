@@ -95,15 +95,15 @@ export interface EntityWithLifecycle {
  * An concrete Generated Query Entity used in the FROM clause (can be
  * joined to).
  */
-export interface IFrom {
+export interface IFrom<IQE extends IQEntity = any> {
 
 	/**
 	 * GQE FULL OUTER JOIN OTHER
 	 */
-	fullJoin<IF extends IFrom>(
+	FULL_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
-	): IJoinFields<IF>;
+	): IJoinFields<IF, IQE>;
 
 	/**
 	 * GQE INNER JOIN OTHER
@@ -111,7 +111,7 @@ export interface IFrom {
 	INNER_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
-	): IJoinFields<IF>;
+	): IJoinFields<IF, IQE>;
 
 	/**
 	 * GQE LEFT JOIN OTHER
@@ -119,7 +119,7 @@ export interface IFrom {
 	LEFT_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
-	): IJoinFields<IF>;
+	): IJoinFields<IF, IQE>;
 
 	/**
 	 * GQE RIGHT JOIN OTHER
@@ -127,7 +127,7 @@ export interface IFrom {
 	RIGHT_JOIN<IF extends IFrom>(
 		// Right entity of the join
 		right: IF
-	): IJoinFields<IF>;
+	): IJoinFields<IF, IQE>;
 
 }
 
@@ -141,7 +141,7 @@ export interface IEntityRelationFrom {
 /**
  * A concrete Generated Query Entity.
  */
-export interface IQEntity {
+export interface IQEntity<IQE extends IQEntity<any> = any> {
 
 	equals<Entity, IQ extends IQEntityInternal>(
 		entity: Entity | IQEntity
@@ -153,18 +153,18 @@ export interface IQEntity {
 		entity: Entity | AirEntityId | string
 	): JSONLogicalOperation;
 
-	fullJoin<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	FULL_JOIN<IF extends IFrom<any>>(right: IF): IJoinFields<IF, IQE>;
 
-	INNER_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	INNER_JOIN<IF extends IFrom<any>>(right: IF): IJoinFields<IF, IQE>;
 
-	LEFT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	LEFT_JOIN<IF extends IFrom<any>>(right: IF): IJoinFields<IF, IQE>;
 
-	RIGHT_JOIN<IF extends IFrom>(right: IF): IJoinFields<IF>;
+	RIGHT_JOIN<IF extends IFrom<any>>(right: IF): IJoinFields<IF, IQE>;
 
 }
 
-export interface IQAirEntity
-	extends IQEntity {
+export interface IQAirEntity<IQE extends IQEntity<any> = any>
+	extends IQEntity<IQE> {
 
 	_actorRecordId: IQNumberEntityField
 	actor: IQAirEntityRelation<any, any>
@@ -173,18 +173,18 @@ export interface IQAirEntity
 }
 
 export interface IQTree
-	extends IQEntity {
+	extends IQEntity<any> {
 
 }
 
-export interface IQEntityInternal
-	extends IQEntity {
+export interface IQEntityInternal<QE extends IQEntity<any> = any>
+	extends IQEntity<QE> {
 
-	__driver__: IQEntityDriver;
+	__driver__: IQEntityDriver<QE>;
 
 }
 
-export interface IQEntityDriver {
+export interface IQEntityDriver<QE extends IQEntity<any> = any> {
 
 	allColumns: IQOperableFieldInternal<any, JSONBaseOperation, any, any>[];
 	childQEntities: IQEntityInternal[]
@@ -210,7 +210,7 @@ export interface IQEntityDriver {
 	): void;
 	*/
 
-	getInstance(): IQEntityInternal;
+	getInstance(): IQEntityInternal<QE>;
 
 	getRelationJson(
 		columnAliases: IFieldColumnAliases<any>,
@@ -228,7 +228,7 @@ export interface IQEntityDriver {
 	join<IF extends IFrom>(
 		right: IF,
 		joinType: JoinType,
-	): IJoinFields<IF>;
+	): IJoinFields<IF, QE>;
 
 	//getEntityRelationMap(): { [propertyName: string]: IQInternalRelation<any> };
 

@@ -5,7 +5,7 @@ import { ENTITY_UTILS, QUERY_UTILS } from '../../../tokens';
 export function QEntity(dbEntity, applicationUtils, relationManager, fromClausePosition = [], dbRelation = null, joinType = null, QDriver = QEntityDriver) {
     this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager, fromClausePosition, dbRelation, joinType, this);
 }
-QEntity.prototype.fullJoin = function (right) {
+QEntity.prototype.FULL_JOIN = function (right) {
     return this.__driver__.join(right, JoinType.FULL_JOIN);
 };
 QEntity.prototype.INNER_JOIN = function (right) {
@@ -141,7 +141,7 @@ export class QEntityDriver {
         joinChild.__driver__.joinType = joinType;
         joinChild.__driver__.parentJoinEntity = this.qEntity;
         this.qEntity.__driver__.childQEntities.push(joinChild);
-        return new JoinFields(joinChild);
+        return new JoinFields(this.qEntity, joinChild);
     }
     isRootEntity() {
         return !this.parentJoinEntity;

@@ -12,6 +12,7 @@ import { QEntityConstructor } from '../../implementation/core/entity/Entity';
 import {
   IEntityIdProperties,
   IQEntity,
+  IQEntityInternal,
 } from '../core/entity/Entity';
 import { IQFieldInternal } from '../core/field/Field';
 
@@ -58,9 +59,9 @@ export interface IApplicationUtils {
     tableIndex: ApplicationEntity_TableIndex
   ): DbEntity;
 
-  getQEntityConstructor(
+  getQEntityConstructor<IQE extends IQEntity>(
     dbEntity: DbEntity
-  ): QEntityConstructor;
+  ): QEntityConstructor<IQE>;
 
   getEntityConstructor(
     dbEntity: DbEntity

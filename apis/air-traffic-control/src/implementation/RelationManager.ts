@@ -41,7 +41,7 @@ export class RelationManager
 	): IQ {
 		const dbEntity = this.applicationUtils.getDbEntity(
 			joinRelation.si, joinRelation.ti)
-		let QEntityConstructor = this.applicationUtils.getQEntityConstructor(
+		let QEntityConstructor = this.applicationUtils.getQEntityConstructor<IQ>(
 			dbEntity)
 		return new QEntityConstructor(
 			dbEntity,

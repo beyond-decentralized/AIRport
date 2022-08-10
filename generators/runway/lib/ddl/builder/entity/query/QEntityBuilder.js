@@ -40,16 +40,15 @@ export class QEntityBuilder extends QCoreEntityBuilder {
         }
         let qName = `Q${this.entity.docEntry.name}`;
         let interfaceGenericAndExtends;
-        if (this.entity.docEntry.isMappedSuperclass) {
-            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
-        }
-        else {
-            interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
-        }
+        // if (this.entity.docEntry.isMappedSuperclass) {
+        interfaceGenericAndExtends = ` extends ${parentEntityQType}`;
+        // } else {
+        // 	interfaceGenericAndExtends = ` extends ${parentEntityQType}`
+        // }
         let classSource = `/**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface ${qName}${interfaceGenericAndExtends}
+export interface ${qName}<IQE extends ${qName} = any>${interfaceGenericAndExtends}<IQE | ${qName}>
 {
 	// Id Fields
 ${idPropertyData.definitions}

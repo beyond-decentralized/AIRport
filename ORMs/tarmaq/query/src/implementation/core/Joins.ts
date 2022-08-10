@@ -1,6 +1,7 @@
 import { IOC } from '@airport/direction-indicator';
 import {
 	IFrom,
+	IQEntity,
 	IQEntityInternal,
 	IQTree
 } from '../../definition/core/entity/Entity'
@@ -88,20 +89,21 @@ export function field<IQF extends IQOrderableField<IQF>>(
 
 }
 
-export class JoinFields<IF extends IFrom> implements IJoinFields<IF> {
+export class JoinFields<IF1 extends IFrom, IQE extends IQEntity<any>> implements IJoinFields<IF1, IQE> {
 
 	constructor(
-		private joinTo: IF
+		private joinFrom: IQE,
+		private joinTo: IF1,
 	) {
 		if (!(IOC.getSync(ENTITY_UTILS).isQEntity(this.joinTo))) {
 			throw new Error(`Right value in join must be a View or an Entity`)
 		}
 	}
 
-	ON(joinOperation: JoinOperation<IF>): IF {
-		let joinChild: IQEntityInternal = <IQEntityInternal><any>this.joinTo;
-		joinChild.__driver__.joinWhereClause = joinOperation(this.joinTo);
+	ON(joinOperation: JoinOperation<IF1, IQE>): IQE {
+		let joinChild: IQEntityInternal = <IQEntityInternal><any>this.joinFrom;
+		joinChild.__driver__.joinWhereClause = joinOperation(this.joinFrom, this.joinTo);
 
-		return this.joinTo;
+		return this.joinFrom;
 	}
 }

@@ -57,16 +57,17 @@ export function field(query) {
     return customField;
 }
 export class JoinFields {
-    constructor(joinTo) {
+    constructor(joinFrom, joinTo) {
+        this.joinFrom = joinFrom;
         this.joinTo = joinTo;
         if (!(IOC.getSync(ENTITY_UTILS).isQEntity(this.joinTo))) {
             throw new Error(`Right value in join must be a View or an Entity`);
         }
     }
     ON(joinOperation) {
-        let joinChild = this.joinTo;
-        joinChild.__driver__.joinWhereClause = joinOperation(this.joinTo);
-        return this.joinTo;
+        let joinChild = this.joinFrom;
+        joinChild.__driver__.joinWhereClause = joinOperation(this.joinFrom, this.joinTo);
+        return this.joinFrom;
     }
 }
 //# sourceMappingURL=Joins.js.map

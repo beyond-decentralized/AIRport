@@ -37,7 +37,7 @@ export interface RepositorySheetSelectInfo {
 }
 export interface IApplicationUtils {
     getDbEntity(applicationIndex: Application_Index, tableIndex: ApplicationEntity_TableIndex): DbEntity;
-    getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
+    getQEntityConstructor<IQE extends IQEntity>(dbEntity: DbEntity): QEntityConstructor<IQE>;
     getEntityConstructor(dbEntity: DbEntity): any;
     getNewEntity(dbEntity: DbEntity): any;
     isIdEmpty(idValue: any): boolean;

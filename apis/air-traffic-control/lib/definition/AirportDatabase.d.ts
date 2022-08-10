@@ -96,7 +96,7 @@ export interface QApplicationInternal extends QApplication {
         [name: string]: EntityConstructor;
     };
     __qConstructors__?: {
-        [name: string]: QEntityConstructor;
+        [name: string]: QEntityConstructor<any>;
     };
     __qIdRelationConstructors__?: typeof QRelation[];
     __dbApplication__?: DbApplication;
