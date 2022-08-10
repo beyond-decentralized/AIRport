@@ -32,18 +32,18 @@ export class BaseClientTypeDvo extends SQDIDvo {
 }
 export class BaseContinentDvo extends SQDIDvo {
     static diSet() {
-        return duoDiSet(0);
+        return duoDiSet(5);
     }
     constructor() {
-        super(0);
+        super(5);
     }
 }
 export class BaseCountryDvo extends SQDIDvo {
     static diSet() {
-        return duoDiSet(1);
+        return duoDiSet(0);
     }
     constructor() {
-        super(1);
+        super(0);
     }
 }
 export class BaseDatabaseDvo extends SQDIDvo {
@@ -64,26 +64,26 @@ export class BaseDatabaseTypeDvo extends SQDIDvo {
 }
 export class BaseMetroAreaDvo extends SQDIDvo {
     static diSet() {
-        return duoDiSet(4);
-    }
-    constructor() {
-        super(4);
-    }
-}
-export class BaseMetroAreaStateDvo extends SQDIDvo {
-    static diSet() {
         return duoDiSet(3);
     }
     constructor() {
         super(3);
     }
 }
-export class BaseStateDvo extends SQDIDvo {
+export class BaseMetroAreaStateDvo extends SQDIDvo {
     static diSet() {
         return duoDiSet(2);
     }
     constructor() {
         super(2);
+    }
+}
+export class BaseStateDvo extends SQDIDvo {
+    static diSet() {
+        return duoDiSet(1);
+    }
+    constructor() {
+        super(1);
     }
 }
 export class BaseTerminalDvo extends SQDIDvo {
@@ -120,10 +120,10 @@ export class BaseTypeClassificationDvo extends SQDIDvo {
 }
 export class BaseUserAccountDvo extends SQDIDvo {
     static diSet() {
-        return duoDiSet(5);
+        return duoDiSet(4);
     }
     constructor() {
-        super(5);
+        super(4);
     }
 }
 //# sourceMappingURL=baseDvos.js.map
