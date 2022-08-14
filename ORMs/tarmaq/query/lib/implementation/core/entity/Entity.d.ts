@@ -23,15 +23,15 @@ export interface IQEntityInternalConstructor {
 export declare namespace QEntity {
     function db<IEntity>(databaseName?: string): IEntityQueryDatabaseFacade<IEntity, IEntitySelectProperties, IEntityCreateProperties, IEntityUpdateProperties, IEntityUpdateColumns, IEntityIdProperties, IEntityCascadeGraph, IQEntity>;
 }
-export interface QEntityConstructor {
-    new <IQE extends IQEntityInternal>(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
-        new (...args: any[]): IQEntityDriver;
+export interface QEntityConstructor<IQE extends IQEntity> {
+    new (dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: DbRelation, joinType?: JoinType, QDriver?: {
+        new (...args: any[]): IQEntityDriver<IQE>;
     }): IQE;
 }
-export declare function QEntity<IEntity>(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
-    new (...args: any[]): IQEntityDriver;
+export declare function QEntity<IEntity, IQE extends IQEntity>(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition?: number[], dbRelation?: any, joinType?: JoinType, QDriver?: {
+    new (...args: any[]): IQEntityDriver<IQE>;
 }): void;
-export declare class QEntityDriver implements IQEntityDriver {
+export declare class QEntityDriver<IQE extends IQEntity = any> implements IQEntityDriver<IQE> {
     dbEntity: DbEntity;
     private applicationUtils;
     private relationManager;
@@ -55,14 +55,14 @@ export declare class QEntityDriver implements IQEntityDriver {
     parentJoinEntity: IQEntityInternal;
     private entityRelationMap;
     private oneToManyConfigMap;
-    constructor(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal);
-    getInstance(): IQEntityInternal;
+    constructor(dbEntity: DbEntity, applicationUtils: IApplicationUtils, relationManager: IRelationManager, fromClausePosition: number[], dbRelation: DbRelation, joinType: JoinType, qEntity: IQEntityInternal<IQE>);
+    getInstance(): IQEntityInternal<IQE>;
     getRelationJson(columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONRelation;
     getJoinRelationJson(jsonRelation: JSONJoinRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONJoinRelation;
     getEntityRelationJson(jsonRelation: JSONEntityRelation): JSONEntityRelation;
     getRootRelationJson(jsonRelation: JSONRelation, columnAliases: IFieldColumnAliases<any>, queryUtils: IQueryUtils, fieldUtils: IFieldUtils, relationManager: IRelationManager): JSONJoinRelation;
     getQ(): IQEntityInternal;
-    join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF>;
+    join<IF extends IFrom>(right: IF, joinType: JoinType): IJoinFields<IF, IQE>;
     isRootEntity(): boolean;
     getRootJoinEntity(): IQEntityInternal;
 }

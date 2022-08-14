@@ -20,6 +20,7 @@ import {
 	IdKeysByIdColumnIndex,
 	IEntityIdProperties,
 	IQEntity,
+	IQEntityInternal,
 	IQFieldInternal,
 	isY,
 	QEntityConstructor,
@@ -99,9 +100,9 @@ export class ApplicationUtils
 		}
 	}
 
-	getQEntityConstructor(
+	getQEntityConstructor<IQE extends IQEntity>(
 		dbEntity: DbEntity
-	): QEntityConstructor {
+	): QEntityConstructor<IQE> {
 		return (<QApplicationInternal>this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index])
 			.__qConstructors__[dbEntity.index]
 	}

@@ -63,47 +63,47 @@ export declare namespace QEntity {
 
 }
 
-export interface QEntityConstructor {
+export interface QEntityConstructor<IQE extends IQEntity> {
 
-	new <IQE extends IQEntityInternal>(
+	new (
 		dbEntity: DbEntity,
 		applicationUtils: IApplicationUtils,
 		relationManager: IRelationManager,
 		fromClausePosition?: number[],
 		dbRelation?: DbRelation,
 		joinType?: JoinType,
-		QDriver?: { new(...args: any[]): IQEntityDriver },
+		QDriver?: { new(...args: any[]): IQEntityDriver<IQE> },
 	): IQE;
 
 }
 
 
-export function QEntity<IEntity>(
+export function QEntity<IEntity, IQE extends IQEntity>(
 	dbEntity: DbEntity,
 	applicationUtils: IApplicationUtils,
 	relationManager: IRelationManager,
 	fromClausePosition: number[] = [],
 	dbRelation = null,
 	joinType: JoinType = null,
-	QDriver: { new(...args: any[]): IQEntityDriver } = QEntityDriver
+	QDriver: { new(...args: any[]): IQEntityDriver<IQE> } = QEntityDriver
 ) {
 	this.__driver__ = new QDriver(dbEntity, applicationUtils, relationManager,
 		fromClausePosition, dbRelation, joinType, this)
 }
 
-QEntity.prototype.fullJoin = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.FULL_JOIN = function <IF extends IFrom, IQE extends IQEntity>(right: IF): IJoinFields<IF, IQE> {
 	return this.__driver__.join(right, JoinType.FULL_JOIN)
 }
 
-QEntity.prototype.INNER_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.INNER_JOIN = function <IF extends IFrom, IQE extends IQEntity>(right: IF): IJoinFields<IF, IQE> {
 	return this.__driver__.join(right, JoinType.INNER_JOIN)
 }
 
-QEntity.prototype.LEFT_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.LEFT_JOIN = function <IF extends IFrom, IQE extends IQEntity>(right: IF): IJoinFields<IF, IQE> {
 	return this.__driver__.join(right, JoinType.LEFT_JOIN)
 }
 
-QEntity.prototype.RIGHT_JOIN = function <IF extends IFrom>(right: IF): IJoinFields<IF> {
+QEntity.prototype.RIGHT_JOIN = function <IF extends IFrom, IQE extends IQEntity>(right: IF): IJoinFields<IF, IQE> {
 	return this.__driver__.join(right, JoinType.RIGHT_JOIN)
 }
 
@@ -122,8 +122,8 @@ QEntity.prototype.in = function <Entity extends IAirEntity, IQ extends IQEntityI
 	return IOC.getSync(QUERY_UTILS).in(entities, this)
 }
 
-export class QEntityDriver
-	implements IQEntityDriver {
+export class QEntityDriver<IQE extends IQEntity = any>
+	implements IQEntityDriver<IQE> {
 
 	childQEntities: IQEntityInternal[] = []
 	entityFieldMap: { [propertyName: string]: IQOperableFieldInternal<any, JSONBaseOperation, any, any> } = {}
@@ -146,15 +146,17 @@ export class QEntityDriver
 		public fromClausePosition: number[] = [],
 		public dbRelation: DbRelation = null,
 		public joinType: JoinType = null,
-		private qEntity: IQEntityInternal
+		private qEntity: IQEntityInternal<IQE>
 	) {
 	}
 
-	getInstance(): IQEntityInternal {
+	getInstance(): IQEntityInternal<IQE> {
 		const qEntityConstructor = this.applicationUtils
-			.getQEntityConstructor(this.dbEntity)
+			.getQEntityConstructor<IQE>(this.dbEntity)
 
-		let instance = new qEntityConstructor(this.dbEntity, this.applicationUtils, this.relationManager, this.fromClausePosition, this.dbRelation, this.joinType)
+		let instance: IQE & IQEntityInternal = new qEntityConstructor(this.dbEntity,
+			this.applicationUtils, this.relationManager,
+			this.fromClausePosition, this.dbRelation, this.joinType) as any
 
 		instance.__driver__.currentChildIndex = this.currentChildIndex
 		instance.__driver__.joinWhereClause = this.joinWhereClause
@@ -283,7 +285,7 @@ export class QEntityDriver
 	join<IF extends IFrom>(
 		right: IF,
 		joinType: JoinType,
-	): IJoinFields<IF> {
+	): IJoinFields<IF, IQE> {
 		let joinChild: IQEntityInternal = (<IQEntityInternal><any>right)
 			.__driver__.getInstance()
 		joinChild.__driver__.currentChildIndex = 0
@@ -293,7 +295,7 @@ export class QEntityDriver
 		joinChild.__driver__.parentJoinEntity = this.qEntity
 		this.qEntity.__driver__.childQEntities.push(joinChild)
 
-		return new JoinFields<IF>(<any>joinChild)
+		return new JoinFields<IF, IQE>(this.qEntity as any, joinChild as any)
 	}
 
 	isRootEntity(): boolean {

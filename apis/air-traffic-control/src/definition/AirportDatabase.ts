@@ -186,7 +186,7 @@ export interface IAirportDatabase
 export interface QApplicationInternal
   extends QApplication {
   __constructors__?: { [name: string]: EntityConstructor }
-  __qConstructors__?: { [name: string]: QEntityConstructor };
+  __qConstructors__?: { [name: string]: QEntityConstructor<any> };
   __qIdRelationConstructors__?: typeof QRelation[];
   __dbApplication__?: DbApplication;
 }

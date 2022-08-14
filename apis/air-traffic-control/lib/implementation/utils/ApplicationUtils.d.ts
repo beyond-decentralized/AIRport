@@ -12,7 +12,7 @@ export declare class ApplicationUtils implements IApplicationUtils {
     isActorRecordId(columnName: string): boolean;
     isRepositoryId(columnName: string): boolean;
     doCascade(dbRelation: DbRelation, crudOperation: CRUDOperation): boolean;
-    getQEntityConstructor(dbEntity: DbEntity): QEntityConstructor;
+    getQEntityConstructor<IQE extends IQEntity>(dbEntity: DbEntity): QEntityConstructor<IQE>;
     getEntityConstructor(dbEntity: DbEntity): any;
     getNewEntity(dbEntity: DbEntity): any;
     isIdEmpty(idValue: any): boolean;
