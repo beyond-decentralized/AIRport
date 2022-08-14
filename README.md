@@ -58,15 +58,15 @@ export class ParentDao
       let p: QParent,
           c: QChild
       return await this._find({
-        select: {
+        SELECT: {
           '*': Y,
       	  children: {}
         },
-        from: [
+        FROM: [
           p = Q.Parent,
-          c  = p.children.leftJoin()
+          c  = p.children.LEFT_JOIN()
         ],
-        where: p.equals(parentUuId)
+        WHERE: p.equals(parentUuId)
       })
     }
 
@@ -75,11 +75,11 @@ export class ParentDao
     ): Promise<void> {
         const p: QParent
         await this._updateWhere({
-            update: p = Q.Parent,
-            set: {
-                total: plus(p.total, 1)
+            UPDATE: p = Q.Parent,
+            SET: {
+                total: PLUS(p.total, 1)
             },
-            where: p.equals(parent)
+            WHERE: p.equals(parent)
         })
     }
 
