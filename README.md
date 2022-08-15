@@ -59,7 +59,7 @@ export class ParentDao
     ): Promise<Parent> {
       let p: QParent,
           c: QChild
-      return await this._find({
+      return await this._findOne({
         SELECT: {
           '*': Y,
       	  children: {}
