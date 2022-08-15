@@ -56,7 +56,7 @@ export class ParentDao
 
     async findById(
       parentUuId: string
-    ) {
+    ): Promise<Parent[]> {
       let p: QParent,
           c: QChild
       return await this._find({
