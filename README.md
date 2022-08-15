@@ -56,7 +56,7 @@ export class ParentDao
 
     async findById(
       parentUuId: string
-    ): Promise<Parent[]> {
+    ): Promise<Parent> {
       let p: QParent,
           c: QChild
       return await this._find({
@@ -106,14 +106,14 @@ export class ParentApi {
     @Api()
     async save(
       parent: Parent
-    ) {
+    ): Promise<void> {
       await this.parentDao.save(parent)
     }
 
     @Api()
     async findById(
       parentUuId: string
-    ) {
+    ): Promise<Parent> {
       return await this.parentDao.findById(parentUuId)
     }
 
