@@ -25,6 +25,8 @@ export class Parent extends AirEntity {
 
     value: string;
 
+    total: number;
+
     @OneToMany({mappedBy: 'parent'})
     children: Child[];
 }
