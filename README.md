@@ -25,6 +25,8 @@ export class Parent extends AirEntity {
 
     value: string;
 
+    total: number;
+
     @OneToMany({mappedBy: 'parent'})
     children: Child[];
 }
@@ -54,19 +56,19 @@ export class ParentDao
 
     async findById(
       parentUuId: string
-    ) {
+    ): Promise<Parent> {
       let p: QParent,
           c: QChild
-      return await this._find({
-        select: {
+      return await this._findOne({
+        SELECT: {
           '*': Y,
       	  children: {}
         },
-        from: [
+        FROM: [
           p = Q.Parent,
-          c  = p.children.leftJoin()
+          c  = p.children.LEFT_JOIN()
         ],
-        where: p.equals(parentUuId)
+        WHERE: p.equals(parentUuId)
       })
     }
 
@@ -75,11 +77,11 @@ export class ParentDao
     ): Promise<void> {
         const p: QParent
         await this._updateWhere({
-            update: p = Q.Parent,
-            set: {
-                total: plus(p.total, 1)
+            UPDATE: p = Q.Parent,
+            SET: {
+                total: PLUS(p.total, 1)
             },
-            where: p.equals(parent)
+            WHERE: p.equals(parent)
         })
     }
 
@@ -104,14 +106,14 @@ export class ParentApi {
     @Api()
     async save(
       parent: Parent
-    ) {
+    ): Promise<void> {
       await this.parentDao.save(parent)
     }
 
     @Api()
     async findById(
       parentUuId: string
-    ) {
+    ): Promise<Parent> {
       return await this.parentDao.findById(parentUuId)
     }
 
