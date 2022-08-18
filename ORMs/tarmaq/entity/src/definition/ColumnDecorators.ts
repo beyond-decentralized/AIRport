@@ -17,6 +17,8 @@ export interface IdDecorator {
  */
 export interface ColumnConfiguration {
 	// columnDefinition?: string;
+	// The column Length
+	length?: number;
 	// Name of column
 	name: string;
 	// (Optional) Whether the terminal column is nullable.

@@ -10,6 +10,7 @@ export interface IdDecorator {
  * SQL Column configuration.
  */
 export interface ColumnConfiguration {
+    length?: number;
     name: string;
     nullable?: boolean;
     precision?: number;

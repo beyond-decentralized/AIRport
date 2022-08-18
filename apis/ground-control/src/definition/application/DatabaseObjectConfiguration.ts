@@ -1,8 +1,6 @@
 import { DatabaseIndexConfiguration } from "./DatabaseIndexConfiguration";
 
 export interface DatabaseObjectConfiguration<DIC extends DatabaseIndexConfiguration> {
-	// SQL Schema name
-	schema: string;
 	// SQL table name
 	name: string;
 	indexes?: PropertyIndexConfiguration | DIC[];
