@@ -9,7 +9,6 @@ import { IOC } from '@airport/direction-indicator';
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication';
 let AirEntity = class AirEntity {
     constructor(entityGUID) {
-        this.id = entityGUID;
         // Currently TypeScript does not support optional getters/setters
         // this is a workaround
         delete this.id;
@@ -33,6 +32,7 @@ let AirEntity = class AirEntity {
                 return this.actor.userAccount;
             }
         });
+        this.id = entityGUID;
     }
 };
 __decorate([

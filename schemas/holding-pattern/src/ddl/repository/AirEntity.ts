@@ -28,7 +28,6 @@ export abstract class AirEntity {
 	constructor(
 		entityGUID?: string
 	) {
-		this.id = entityGUID
 		// Currently TypeScript does not support optional getters/setters
 		// this is a workaround
 		delete this.id
@@ -54,6 +53,8 @@ export abstract class AirEntity {
 				return this.actor.userAccount
 			}
 		});
+		
+		this.id = entityGUID
 	}
 
 	@Id()
