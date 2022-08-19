@@ -71,7 +71,7 @@ export interface ApplicationPropertyECreateColumns extends ApplicationPropertyEI
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationProperty extends QVersionedApplicationObject {
+export interface QApplicationProperty<IQE extends QApplicationProperty = any> extends QVersionedApplicationObject<IQE | QApplicationProperty> {
     _localId: IQNumberField;
     index: IQNumberField;
     name: IQStringField;

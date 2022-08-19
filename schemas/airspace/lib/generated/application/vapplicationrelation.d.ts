@@ -2,11 +2,11 @@ import { IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validat
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ForeignKey, ManyToOneElements, OneToManyElements } from '@airport/tarmaq-entity';
 import { ApplicationPropertyVDescriptor } from './vapplicationproperty';
-import { ApplicationProperty } from '../../ddl/application/applicationproperty';
+import { ApplicationProperty } from '../../ddl/application/ApplicationProperty';
 import { ApplicationEntityVDescriptor } from './vapplicationentity';
-import { ApplicationEntity } from '../../ddl/application/applicationentity';
+import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
 import { ApplicationRelationColumnVDescriptor } from './vapplicationrelationcolumn';
-import { ApplicationRelationColumn } from '../../ddl/application/applicationrelationcolumn';
+import { ApplicationRelationColumn } from '../../ddl/application/ApplicationRelationColumn';
 export interface ApplicationRelationVDescriptor<T> extends VersionedApplicationObjectVDescriptor<T> {
     _localId?: number | IVNumberField;
     index?: number | IVNumberField;

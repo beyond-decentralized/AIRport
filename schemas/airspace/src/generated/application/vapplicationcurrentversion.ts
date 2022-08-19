@@ -11,13 +11,13 @@ import {
 } from './vapplication';
 import {
 	Application,
-} from '../../ddl/application/application';
+} from '../../ddl/application/Application';
 import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
 	ApplicationVersion,
-} from '../../ddl/application/applicationversion';
+} from '../../ddl/application/ApplicationVersion';
 import {
 	IApplicationCurrentVersion,
 } from './applicationcurrentversion';

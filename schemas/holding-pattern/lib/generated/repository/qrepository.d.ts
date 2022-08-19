@@ -103,7 +103,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepository extends IQEntity {
+export interface QRepository<IQE extends QRepository = any> extends IQEntity<IQE | QRepository> {
     _localId: IQNumberField;
     GUID: IQStringField;
     ageSuitability: IQNumberField;

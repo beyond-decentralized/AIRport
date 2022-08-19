@@ -139,7 +139,7 @@ extends RecordHistoryNewValueEId, RecordHistoryNewValueEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRecordHistoryNewValue extends IQEntity
+export interface QRecordHistoryNewValue<IQE extends QRecordHistoryNewValue = any> extends IQEntity<IQE | QRecordHistoryNewValue>
 {
 	// Id Fields
 	columnIndex: IQNumberField;

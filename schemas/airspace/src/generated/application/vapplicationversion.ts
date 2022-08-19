@@ -14,19 +14,19 @@ import {
 } from './vapplication';
 import {
 	Application,
-} from '../../ddl/application/application';
+} from '../../ddl/application/Application';
 import {
 	ApplicationEntityVDescriptor,
 } from './vapplicationentity';
 import {
 	ApplicationEntity,
-} from '../../ddl/application/applicationentity';
+} from '../../ddl/application/ApplicationEntity';
 import {
 	ApplicationReferenceVDescriptor,
 } from './vapplicationreference';
 import {
 	ApplicationReference,
-} from '../../ddl/application/applicationreference';
+} from '../../ddl/application/ApplicationReference';
 import {
 	IApplicationVersion,
 } from './applicationversion';

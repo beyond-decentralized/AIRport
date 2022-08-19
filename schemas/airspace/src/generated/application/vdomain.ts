@@ -11,7 +11,7 @@ import {
 } from './vapplication';
 import {
 	Application,
-} from '../../ddl/application/application';
+} from '../../ddl/application/Application';
 import {
 	IDomain,
 } from './domain';

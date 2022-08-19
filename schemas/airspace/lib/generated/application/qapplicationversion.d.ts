@@ -82,7 +82,7 @@ export interface ApplicationVersionECreateColumns extends ApplicationVersionEId,
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationVersion extends IQEntity {
+export interface QApplicationVersion<IQE extends QApplicationVersion = any> extends IQEntity<IQE | QApplicationVersion> {
     _localId: IQNumberField;
     integerVersion: IQNumberField;
     versionString: IQStringField;

@@ -148,7 +148,7 @@ extends RepositoryApplicationEId, RepositoryApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryApplication extends IQEntity
+export interface QRepositoryApplication<IQE extends QRepositoryApplication = any> extends IQEntity<IQE | QRepositoryApplication>
 {
 	// Id Fields
 

@@ -51,7 +51,7 @@ export interface TransactionHistoryECreateColumns extends TransactionHistoryEId,
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTransactionHistory extends IQEntity {
+export interface QTransactionHistory<IQE extends QTransactionHistory = any> extends IQEntity<IQE | QTransactionHistory> {
     _localId: IQNumberField;
     transactionType: IQStringField;
     repositoryTransactionHistories: IQOneToManyRelation<QRepositoryTransactionHistory>;

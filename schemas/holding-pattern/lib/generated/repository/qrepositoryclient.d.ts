@@ -52,7 +52,7 @@ export interface RepositoryClientECreateColumns extends RepositoryClientEId, Rep
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryClient extends IQEntity {
+export interface QRepositoryClient<IQE extends QRepositoryClient = any> extends IQEntity<IQE | QRepositoryClient> {
     repository: QRepositoryQRelation;
     client: QClientQRelation;
 }

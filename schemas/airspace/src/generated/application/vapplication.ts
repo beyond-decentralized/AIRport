@@ -11,19 +11,19 @@ import {
 } from './vdomain';
 import {
 	Domain,
-} from '../../ddl/application/domain';
+} from '../../ddl/application/Domain';
 import {
 	ApplicationVersionVDescriptor,
 } from './vapplicationversion';
 import {
 	ApplicationVersion,
-} from '../../ddl/application/applicationversion';
+} from '../../ddl/application/ApplicationVersion';
 import {
 	ApplicationCurrentVersionVDescriptor,
 } from './vapplicationcurrentversion';
 import {
 	ApplicationCurrentVersion,
-} from '../../ddl/application/applicationcurrentversion';
+} from '../../ddl/application/ApplicationCurrentVersion';
 import {
 	IApplication,
 } from './application';

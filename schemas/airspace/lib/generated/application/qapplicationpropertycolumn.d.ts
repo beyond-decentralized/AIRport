@@ -56,7 +56,7 @@ export interface ApplicationPropertyColumnECreateColumns extends ApplicationProp
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationPropertyColumn extends QVersionedApplicationObject {
+export interface QApplicationPropertyColumn<IQE extends QApplicationPropertyColumn = any> extends QVersionedApplicationObject<IQE | QApplicationPropertyColumn> {
     column: QApplicationColumnQRelation;
     property: QApplicationPropertyQRelation;
 }

@@ -97,7 +97,7 @@ export interface ApplicationColumnECreateColumns extends ApplicationColumnEId, A
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationColumn extends QVersionedApplicationObject {
+export interface QApplicationColumn<IQE extends QApplicationColumn = any> extends QVersionedApplicationObject<IQE | QApplicationColumn> {
     _localId: IQNumberField;
     index: IQNumberField;
     idIndex: IQNumberField;

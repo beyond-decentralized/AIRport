@@ -1,11 +1,11 @@
 import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { ApplicationVDescriptor } from './vapplication';
-import { Application } from '../../ddl/application/application';
+import { Application } from '../../ddl/application/Application';
 import { ApplicationEntityVDescriptor } from './vapplicationentity';
-import { ApplicationEntity } from '../../ddl/application/applicationentity';
+import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
 import { ApplicationReferenceVDescriptor } from './vapplicationreference';
-import { ApplicationReference } from '../../ddl/application/applicationreference';
+import { ApplicationReference } from '../../ddl/application/ApplicationReference';
 export interface ApplicationVersionVDescriptor<T> extends IEntityVDescriptor<T> {
     _localId?: number | IVNumberField;
     integerVersion?: number | IVNumberField;

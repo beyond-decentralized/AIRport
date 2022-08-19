@@ -2,7 +2,7 @@
 export const MAPPED_SUPERCLASS = [
     {
         "type": "AirEntity",
-        "path": "/Users/mama/Documents/code/BD/AIRport/schemas/holding-pattern/src/ddl/repository/AirEntity.ts",
+        "path": "D:\\code\\BD\\AIRport\\schemas\\holding-pattern\\src\\ddl\\repository\\AirEntity.ts",
         "parentClassName": null,
         "isSuperclass": true,
         "ids": [

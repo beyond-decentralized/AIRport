@@ -52,7 +52,7 @@ export interface RepositoryTypeECreateColumns extends RepositoryTypeEId, Reposit
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryType extends IQEntity {
+export interface QRepositoryType<IQE extends QRepositoryType = any> extends IQEntity<IQE | QRepositoryType> {
     repository: QRepositoryQRelation;
     type: QTypeQRelation;
 }

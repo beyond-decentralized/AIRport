@@ -51,7 +51,7 @@ export interface DomainECreateColumns extends DomainEId, DomainEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDomain extends IQEntity {
+export interface QDomain<IQE extends QDomain = any> extends IQEntity<IQE | QDomain> {
     _localId: IQNumberField;
     name: IQStringField;
     applications: IQOneToManyRelation<QApplication>;

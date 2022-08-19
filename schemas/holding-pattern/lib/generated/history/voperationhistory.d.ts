@@ -1,5 +1,5 @@
 import { IEntityVDescriptor, IVNumberField, IVStringField } from '@airbridge/validate';
-import { ApplicationEntityVDescriptor, ApplicationEntity } from '@airport/airspace';
+import { ApplicationEntityVDescriptor, ApplicationEntity } from '@airport/airspace/lib/to_be_generated/runtime-index';
 import { ActorVDescriptor } from '../infrastructure/vactor';
 import { Actor } from '../../ddl/infrastructure/Actor';
 import { RepositoryTransactionHistoryVDescriptor } from './vrepositorytransactionhistory';

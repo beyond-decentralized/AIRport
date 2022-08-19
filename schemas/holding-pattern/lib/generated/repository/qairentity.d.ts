@@ -72,7 +72,7 @@ export interface AirEntityECreateColumns extends AirEntityEId, AirEntityEUpdateC
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QAirEntity extends IQEntity {
+export interface QAirEntity<IQE extends QAirEntity = any> extends IQEntity<IQE | QAirEntity> {
     _actorRecordId: IQNumberField;
     repository: QRepositoryQRelation;
     actor: QActorQRelation;

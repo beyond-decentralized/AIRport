@@ -138,7 +138,7 @@ extends VersionedApplicationObjectEId, VersionedApplicationObjectEUpdateColumns 
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QVersionedApplicationObject extends IQEntity
+export interface QVersionedApplicationObject<IQE extends QVersionedApplicationObject = any> extends IQEntity<IQE | QVersionedApplicationObject>
 {
 	// Id Fields
 

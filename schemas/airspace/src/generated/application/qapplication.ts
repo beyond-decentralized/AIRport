@@ -189,7 +189,7 @@ extends ApplicationEId, ApplicationEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplication extends IQEntity
+export interface QApplication<IQE extends QApplication = any> extends IQEntity<IQE | QApplication>
 {
 	// Id Fields
 	index: IQNumberField;

@@ -177,7 +177,7 @@ extends ApplicationRelationColumnEId, ApplicationRelationColumnEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationRelationColumn extends QVersionedApplicationObject
+export interface QApplicationRelationColumn<IQE extends QApplicationRelationColumn = any> extends QVersionedApplicationObject<IQE | QApplicationRelationColumn>
 {
 	// Id Fields
 	_localId: IQNumberField;

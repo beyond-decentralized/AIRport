@@ -11,7 +11,7 @@ import {
 } from './vapplicationversion';
 import {
 	ApplicationVersion,
-} from '../../ddl/application/applicationversion';
+} from '../../ddl/application/ApplicationVersion';
 import {
 	IVersionedApplicationObject,
 } from './versionedapplicationobject';

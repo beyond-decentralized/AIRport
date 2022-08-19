@@ -53,7 +53,7 @@ export interface RecordHistoryNewValueECreateColumns extends RecordHistoryNewVal
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRecordHistoryNewValue extends IQEntity {
+export interface QRecordHistoryNewValue<IQE extends QRecordHistoryNewValue = any> extends IQEntity<IQE | QRecordHistoryNewValue> {
     columnIndex: IQNumberField;
     recordHistory: QRecordHistoryQRelation;
     newValue: IQUntypedField;

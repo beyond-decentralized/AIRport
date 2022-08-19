@@ -52,7 +52,7 @@ export interface ApplicationCurrentVersionECreateColumns extends ApplicationCurr
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationCurrentVersion extends IQEntity {
+export interface QApplicationCurrentVersion<IQE extends QApplicationCurrentVersion = any> extends IQEntity<IQE | QApplicationCurrentVersion> {
     application: QApplicationQRelation;
     applicationVersion: QApplicationVersionQRelation;
 }

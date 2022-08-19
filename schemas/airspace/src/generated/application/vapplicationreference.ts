@@ -14,7 +14,7 @@ import {
 } from './vapplicationversion';
 import {
 	ApplicationVersion,
-} from '../../ddl/application/applicationversion';
+} from '../../ddl/application/ApplicationVersion';
 import {
 	IApplicationReference,
 } from './applicationreference';

@@ -194,7 +194,7 @@ extends OperationHistoryEId, OperationHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QOperationHistory extends IQEntity
+export interface QOperationHistory<IQE extends QOperationHistory = any> extends IQEntity<IQE | QOperationHistory>
 {
 	// Id Fields
 	_localId: IQNumberField;

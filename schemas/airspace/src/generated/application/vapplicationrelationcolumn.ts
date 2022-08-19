@@ -14,13 +14,13 @@ import {
 } from './vapplicationcolumn';
 import {
 	ApplicationColumn,
-} from '../../ddl/application/applicationcolumn';
+} from '../../ddl/application/ApplicationColumn';
 import {
 	ApplicationRelationVDescriptor,
 } from './vapplicationrelation';
 import {
 	ApplicationRelation,
-} from '../../ddl/application/applicationrelation';
+} from '../../ddl/application/ApplicationRelation';
 import {
 	IApplicationRelationColumn,
 } from './applicationrelationcolumn';

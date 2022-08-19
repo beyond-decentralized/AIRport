@@ -1,11 +1,11 @@
 import { IVBooleanField, IVNumberField, IVStringField } from '@airbridge/validate';
 import { VersionedApplicationObjectVDescriptor } from './vversionedapplicationobject';
 import { ApplicationEntityVDescriptor } from './vapplicationentity';
-import { ApplicationEntity } from '../../ddl/application/applicationentity';
+import { ApplicationEntity } from '../../ddl/application/ApplicationEntity';
 import { ApplicationPropertyColumnVDescriptor } from './vapplicationpropertycolumn';
-import { ApplicationPropertyColumn } from '../../ddl/application/applicationpropertycolumn';
+import { ApplicationPropertyColumn } from '../../ddl/application/ApplicationPropertyColumn';
 import { ApplicationRelationColumnVDescriptor } from './vapplicationrelationcolumn';
-import { ApplicationRelationColumn } from '../../ddl/application/applicationrelationcolumn';
+import { ApplicationRelationColumn } from '../../ddl/application/ApplicationRelationColumn';
 export interface ApplicationColumnVDescriptor<T> extends VersionedApplicationObjectVDescriptor<T> {
     _localId?: number | IVNumberField;
     index?: number | IVNumberField;

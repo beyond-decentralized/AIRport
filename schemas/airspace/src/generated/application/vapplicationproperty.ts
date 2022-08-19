@@ -14,19 +14,19 @@ import {
 } from './vapplicationentity';
 import {
 	ApplicationEntity,
-} from '../../ddl/application/applicationentity';
+} from '../../ddl/application/ApplicationEntity';
 import {
 	ApplicationPropertyColumnVDescriptor,
 } from './vapplicationpropertycolumn';
 import {
 	ApplicationPropertyColumn,
-} from '../../ddl/application/applicationpropertycolumn';
+} from '../../ddl/application/ApplicationPropertyColumn';
 import {
 	ApplicationRelationVDescriptor,
 } from './vapplicationrelation';
 import {
 	ApplicationRelation,
-} from '../../ddl/application/applicationrelation';
+} from '../../ddl/application/ApplicationRelation';
 import {
 	IApplicationProperty,
 } from './applicationproperty';

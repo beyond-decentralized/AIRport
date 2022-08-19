@@ -59,7 +59,7 @@ export interface ApplicationReferenceECreateColumns extends ApplicationReference
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationReference extends QVersionedApplicationObject {
+export interface QApplicationReference<IQE extends QApplicationReference = any> extends QVersionedApplicationObject<IQE | QApplicationReference> {
     ownApplicationVersion: QApplicationVersionQRelation;
     referencedApplicationVersion: QApplicationVersionQRelation;
     index: IQNumberField;

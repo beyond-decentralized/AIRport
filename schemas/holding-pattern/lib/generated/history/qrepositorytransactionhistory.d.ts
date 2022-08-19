@@ -77,7 +77,7 @@ export interface RepositoryTransactionHistoryECreateColumns extends RepositoryTr
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryTransactionHistory extends IQEntity {
+export interface QRepositoryTransactionHistory<IQE extends QRepositoryTransactionHistory = any> extends IQEntity<IQE | QRepositoryTransactionHistory> {
     _localId: IQNumberField;
     repositoryTransactionType: IQStringField;
     saveTimestamp: IQNumberField;

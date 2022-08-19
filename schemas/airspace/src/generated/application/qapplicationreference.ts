@@ -154,7 +154,7 @@ extends ApplicationReferenceEId, ApplicationReferenceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationReference extends QVersionedApplicationObject
+export interface QApplicationReference<IQE extends QApplicationReference = any> extends QVersionedApplicationObject<IQE | QApplicationReference>
 {
 	// Id Fields
 

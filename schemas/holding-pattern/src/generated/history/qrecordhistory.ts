@@ -186,7 +186,7 @@ extends RecordHistoryEId, RecordHistoryEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRecordHistory extends IQEntity
+export interface QRecordHistory<IQE extends QRecordHistory = any> extends IQEntity<IQE | QRecordHistory>
 {
 	// Id Fields
 	_localId: IQNumberField;

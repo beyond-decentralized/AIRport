@@ -17,7 +17,7 @@ import {
 import {
 	ApplicationVDescriptor,
 	Application,
-} from '@airport/airspace';
+} from '@airport/airspace/lib/to_be_generated/runtime-index';
 import {
 	IActor,
 } from './actor';
@@ -29,16 +29,16 @@ import {
 ////////////////////
 
 export interface ActorVDescriptor<T>
-	extends IEntityVDescriptor<T> {
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	_localId?: number | IVNumberField;
-
+	
 	// Non-Id Properties
 	GUID?: string | IVStringField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	userAccount?: UserAccountVDescriptor<UserAccount>
 	terminal?: TerminalVDescriptor<Terminal>
 	application?: ApplicationVDescriptor<Application>

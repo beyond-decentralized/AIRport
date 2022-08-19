@@ -9,7 +9,7 @@ import {
 import {
 	ApplicationEntityVDescriptor,
 	ApplicationEntity,
-} from '@airport/airspace';
+} from '@airport/airspace/lib/to_be_generated/runtime-index';
 import {
 	ActorVDescriptor,
 } from '../infrastructure/vactor';
@@ -39,10 +39,10 @@ import {
 ////////////////////
 
 export interface OperationHistoryVDescriptor<T>
-	extends IEntityVDescriptor<T> {
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	_localId?: number | IVNumberField;
-
+	
 	// Non-Id Properties
 	orderNumber?: number | IVNumberField;
 	changeType?: string | IVStringField;
@@ -50,7 +50,7 @@ export interface OperationHistoryVDescriptor<T>
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	entity?: ApplicationEntityVDescriptor<ApplicationEntity>
 	actor?: ActorVDescriptor<Actor>
 	repositoryTransactionHistory?: RepositoryTransactionHistoryVDescriptor<RepositoryTransactionHistory>

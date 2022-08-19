@@ -178,7 +178,7 @@ extends ActorEId, ActorEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QActor extends IQEntity
+export interface QActor<IQE extends QActor = any> extends IQEntity<IQE | QActor>
 {
 	// Id Fields
 	_localId: IQNumberField;

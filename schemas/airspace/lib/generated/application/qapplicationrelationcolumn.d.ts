@@ -70,7 +70,7 @@ export interface ApplicationRelationColumnECreateColumns extends ApplicationRela
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationRelationColumn extends QVersionedApplicationObject {
+export interface QApplicationRelationColumn<IQE extends QApplicationRelationColumn = any> extends QVersionedApplicationObject<IQE | QApplicationRelationColumn> {
     _localId: IQNumberField;
     manyColumn: QApplicationColumnQRelation;
     oneColumn: QApplicationColumnQRelation;

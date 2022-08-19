@@ -17,7 +17,7 @@ import {
 } from './vapplicationentity';
 import {
 	ApplicationEntity,
-} from '../../ddl/application/applicationentity';
+} from '../../ddl/application/ApplicationEntity';
 import {
 	IApplicationOperation,
 } from './applicationoperation';

@@ -52,7 +52,7 @@ export interface RepositoryTerminalECreateColumns extends RepositoryTerminalEId,
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryTerminal extends IQEntity {
+export interface QRepositoryTerminal<IQE extends QRepositoryTerminal = any> extends IQEntity<IQE | QRepositoryTerminal> {
     repository: QRepositoryQRelation;
     terminal: QTerminalQRelation;
 }

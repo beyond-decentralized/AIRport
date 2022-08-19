@@ -190,7 +190,7 @@ extends ApplicationPropertyEId, ApplicationPropertyEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QApplicationProperty extends QVersionedApplicationObject
+export interface QApplicationProperty<IQE extends QApplicationProperty = any> extends QVersionedApplicationObject<IQE | QApplicationProperty>
 {
 	// Id Fields
 	_localId: IQNumberField;

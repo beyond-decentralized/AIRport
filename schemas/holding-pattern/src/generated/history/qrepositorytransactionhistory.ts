@@ -187,7 +187,7 @@ extends RepositoryTransactionHistoryEId, RepositoryTransactionHistoryEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRepositoryTransactionHistory extends IQEntity
+export interface QRepositoryTransactionHistory<IQE extends QRepositoryTransactionHistory = any> extends IQEntity<IQE | QRepositoryTransactionHistory>
 {
 	// Id Fields
 	_localId: IQNumberField;

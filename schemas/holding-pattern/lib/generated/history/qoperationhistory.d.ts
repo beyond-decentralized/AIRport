@@ -74,7 +74,7 @@ export interface OperationHistoryECreateColumns extends OperationHistoryEId, Ope
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QOperationHistory extends IQEntity {
+export interface QOperationHistory<IQE extends QOperationHistory = any> extends IQEntity<IQE | QOperationHistory> {
     _localId: IQNumberField;
     orderNumber: IQNumberField;
     changeType: IQStringField;
