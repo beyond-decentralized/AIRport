@@ -1,6 +1,7 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER, UTILS } from '@airport/air-traffic-control';
 import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace';
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures';
+import { TERMINAL_SESSION_MANAGER } from '@airport/terminal-map';
 import { lib } from '@airport/direction-indicator';
 import { ACTIVE_QUERIES, OBSERVABLE_QUERY_ADAPTER } from '@airport/flight-number';
 import { ID_GENERATOR } from '@airport/fuel-hydrant-system';
@@ -119,11 +120,6 @@ export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token({
     interface: 'IStructuralEntityValidator',
     token: 'STRUCTURAL_ENTITY_VALIDATOR'
 });
-export const TERMINAL_SESSION_MANAGER = terminal.token({
-    class: TerminalSessionManager,
-    interface: 'ITerminalSessionManager',
-    token: 'TERMINAL_SESSION_MANAGER'
-});
 export const UPDATE_MANAGER = terminal.token({
     class: UpdateManager,
     interface: 'IUpdateManager',
@@ -226,6 +222,7 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
 });
+TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager);
 TERMINAL_SESSION_MANAGER.setDependencies({
     terminalStore: TERMINAL_STORE,
     userStore: USER_STORE

@@ -1,6 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator';
-import { ITerminalSessionManager, IUserSession, TerminalStore, UserState, UserStore } from '@airport/terminal-map'
+import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserState, UserStore } from '@airport/terminal-map'
 import { UserAccount } from '@airport/travel-document-checkpoint';
+import { UserAccountDao } from '@airport/travel-document-checkpoint/lib/dao/UserAccountDao';
 
 @Injected()
 export class TerminalSessionManager
@@ -10,11 +11,22 @@ export class TerminalSessionManager
     terminalStore: TerminalStore
 
     @Inject()
+    userAccountDao: UserAccountDao
+
+    @Inject()
     userStore: UserStore
 
     async signUp(
-        userAccount: UserAccount
+        userAccountInfo: IUserAccountInfo
     ): Promise<void> {
+        const passwordHash = await this.sha512(userAccountInfo.password)
+        let userAccount: UserAccount = {
+            email: userAccountInfo.email,
+            passwordHash,
+            username: userAccountInfo.username
+        }
+        await this.userAccountDao.save(userAccount)
+
         const allSessions = this.userStore.getAllSessions()
         let session: IUserSession = {
             currentActor: null,
@@ -32,7 +44,7 @@ export class TerminalSessionManager
     }
 
     async login(
-        userAccount: UserAccount
+        userAccount: IUserAccountInfo
     ): Promise<void> {
         throw new Error(`Implement`);
     }
@@ -53,6 +65,12 @@ export class TerminalSessionManager
         }
 
         return session
+    }
+
+    private sha512(str): Promise<string> {
+        return crypto.subtle.digest("SHA-512", new TextEncoder(/*"utf-8"*/).encode(str)).then(buf => {
+            return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
+        });
     }
 
 }

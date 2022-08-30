@@ -6,7 +6,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 let TerminalSessionManager = class TerminalSessionManager {
-    async signUp(userAccount) {
+    async signUp(userAccountInfo) {
+        const passwordHash = await this.sha512(userAccountInfo.password);
+        let userAccount = {
+            email: userAccountInfo.email,
+            passwordHash,
+            username: userAccountInfo.username
+        };
+        await this.userAccountDao.save(userAccount);
         const allSessions = this.userStore.getAllSessions();
         let session = {
             currentActor: null,
@@ -39,10 +46,18 @@ let TerminalSessionManager = class TerminalSessionManager {
         }
         return session;
     }
+    sha512(str) {
+        return crypto.subtle.digest("SHA-512", new TextEncoder( /*"utf-8"*/).encode(str)).then(buf => {
+            return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
+        });
+    }
 };
 __decorate([
     Inject()
 ], TerminalSessionManager.prototype, "terminalStore", void 0);
+__decorate([
+    Inject()
+], TerminalSessionManager.prototype, "userAccountDao", void 0);
 __decorate([
     Inject()
 ], TerminalSessionManager.prototype, "userStore", void 0);

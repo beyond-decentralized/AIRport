@@ -16,6 +16,7 @@ import { SELECTOR_MANAGER } from '@airport/apron'
 import { IApplicationInitializer } from './core/ApplicationInitializer'
 import { IUserStateContainer, UserState } from './store/user/UserState'
 import { IUserStore, UserStore } from './store/user/UserStore'
+import { ITerminalSessionManager } from './core/ITerminalSessionManager'
 
 const terminalMap = lib('terminal-map')
 
@@ -34,6 +35,11 @@ export const STORE_DRIVER = terminalMap.token<IStoreDriver>({
     interface: 'IStoreDriver',
     token: 'STORE_DRIVER'
 });
+export const TERMINAL_SESSION_MANAGER = terminalMap.token<ITerminalSessionManager>({
+    class: null,
+    interface: 'ITerminalSessionManager',
+    token: 'TERMINAL_SESSION_MANAGER'
+})
 export const TERMINAL_STATE = terminalMap.token<ITerminalStateContainer>({
     class: TerminalState,
     interface: 'ITerminalStateContainer',

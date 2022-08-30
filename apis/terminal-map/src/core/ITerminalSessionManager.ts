@@ -1,14 +1,19 @@
-import { UserAccount } from "@airport/travel-document-checkpoint";
 import { IUserSession } from "../store/user/UserState";
+
+export interface IUserAccountInfo {
+    email?: string
+    password?: string
+    username?: string
+}
 
 export interface ITerminalSessionManager {
 
     signUp(
-        userAccount: UserAccount
+        userAccount: IUserAccountInfo
     ): Promise<void>
 
     login(
-        userAccount: UserAccount
+        userAccount: IUserAccountInfo
     ): Promise<void>
 
     getUserSession(

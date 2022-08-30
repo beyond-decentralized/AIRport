@@ -22,6 +22,11 @@ export const STORE_DRIVER = terminalMap.token({
     interface: 'IStoreDriver',
     token: 'STORE_DRIVER'
 });
+export const TERMINAL_SESSION_MANAGER = terminalMap.token({
+    class: null,
+    interface: 'ITerminalSessionManager',
+    token: 'TERMINAL_SESSION_MANAGER'
+});
 export const TERMINAL_STATE = terminalMap.token({
     class: TerminalState,
     interface: 'ITerminalStateContainer',

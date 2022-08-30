@@ -12,6 +12,7 @@ export function AirLoginModal({
     const modal = useRef<HTMLIonModalElement>(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isOpen, setIsOpen] = useState(true)
 
     let canSignUp = false
 
@@ -38,7 +39,12 @@ export function AirLoginModal({
     }
 
     function signUp() {
-
+        setIsOpen(false)
+        modal.current?.dismiss({
+            email: username + '@random-email-provider.com',
+            password,
+            username
+        }, 'signup')
     }
 
     const signUpView = <>
@@ -65,7 +71,12 @@ export function AirLoginModal({
 
 
     return (
-        <IonModal ref={modal} trigger={triggerId} onWillDismiss={e => onWillDismiss(e)}>
+        <IonModal
+            isOpen={isOpen}
+            onWillDismiss={e => onWillDismiss(e)}
+            ref={modal}
+            trigger={triggerId}
+        >
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>Sign Up</IonTitle>
