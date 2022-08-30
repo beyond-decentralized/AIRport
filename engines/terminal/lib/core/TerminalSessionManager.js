@@ -7,6 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 let TerminalSessionManager = class TerminalSessionManager {
     async signUp(userAccountInfo) {
+        if (this.terminalStore.getIsServer()) {
+            throw new Error('Implement');
+        }
         const passwordHash = await this.sha512(userAccountInfo.password);
         let userAccount = {
             email: userAccountInfo.email,

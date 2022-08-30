@@ -1,5 +1,5 @@
 import { Inject, Injected } from '@airport/direction-indicator';
-import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserState, UserStore } from '@airport/terminal-map'
+import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserStore } from '@airport/terminal-map'
 import { UserAccount } from '@airport/travel-document-checkpoint';
 import { UserAccountDao } from '@airport/travel-document-checkpoint/lib/dao/UserAccountDao';
 
@@ -19,6 +19,9 @@ export class TerminalSessionManager
     async signUp(
         userAccountInfo: IUserAccountInfo
     ): Promise<void> {
+        if (this.terminalStore.getIsServer()) {
+            throw new Error('Implement');
+        }
         const passwordHash = await this.sha512(userAccountInfo.password)
         let userAccount: UserAccount = {
             email: userAccountInfo.email,
