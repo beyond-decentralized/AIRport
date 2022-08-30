@@ -32,6 +32,7 @@ export interface ITerminalStore {
     getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>;
+    getIsServer: IMemoizedSelector<boolean, ITerminalState>;
     getLastIds: IMemoizedSelector<LastIds, ITerminalState>;
     getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>;
     getLatestApplicationVersionMapByFullApplication_Name: IMemoizedSelector<Map<FullApplication_Name, IApplicationVersion>, ITerminalState>;
@@ -59,6 +60,7 @@ export declare class TerminalStore implements ITerminalStore {
     getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>;
     getFrameworkActor: IMemoizedSelector<IActor, ITerminalState>;
     getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>;
+    getIsServer: IMemoizedSelector<boolean, ITerminalState>;
     getLastIds: IMemoizedSelector<LastIds, ITerminalState>;
     getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>;
     getLatestApplicationVersionMapByFullApplication_Name: IMemoizedSelector<Map<FullApplication_Name, IApplicationVersion>, ITerminalState>;

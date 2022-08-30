@@ -23,6 +23,7 @@ export const internalTerminalState = new BehaviorSubject({
         },
         serverUrl: ''
     },
+    isServer: false,
     lastIds: {
         columns: 0,
         domains: 0,

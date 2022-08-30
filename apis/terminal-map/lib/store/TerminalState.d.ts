@@ -48,6 +48,7 @@ export interface ITerminalState {
     domains: IDomain[];
     frameworkActor: IActor;
     internalConnector: InternalConnectorState;
+    isServer: boolean;
     lastIds: LastIds;
     receiver: IReceiverState;
     sequenceGenerator: ISequenceGeneratorState;

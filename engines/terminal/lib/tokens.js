@@ -9,9 +9,10 @@ import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZA
 import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { QUERY_FACADE } from '@airport/tarmaq-dao';
 import { QUERY_UTILS } from '@airport/tarmaq-query';
-import { APPLICATION_INITIALIZER, STORE_DRIVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER, TRANSACTION_MANAGER } from '@airport/terminal-map';
+import { APPLICATION_INITIALIZER, STORE_DRIVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER, TRANSACTION_MANAGER, USER_STORE } from '@airport/terminal-map';
 import { RepositoryLoader } from './core/repository/RepositoryLoader';
 import { RepositoryManager } from './core/repository/RepositoryManager';
+import { TerminalSessionManager } from './core/TerminalSessionManager';
 import { InternalRecordManager } from './data/InternalRecordManager';
 import { InternalTransactionalConnector } from './net/InternalTransactionalConnector';
 import { OnlineManager } from './net/OnlineManager';
@@ -118,6 +119,11 @@ export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token({
     interface: 'IStructuralEntityValidator',
     token: 'STRUCTURAL_ENTITY_VALIDATOR'
 });
+export const TERMINAL_SESSION_MANAGER = terminal.token({
+    class: TerminalSessionManager,
+    interface: 'ITerminalSessionManager',
+    token: 'TERMINAL_SESSION_MANAGER'
+});
 export const UPDATE_MANAGER = terminal.token({
     class: UpdateManager,
     interface: 'IUpdateManager',
@@ -219,6 +225,10 @@ REPOSITORY_MANAGER.setDependencies({
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     applicationUtils: APPLICATION_UTILS,
     entityStateManager: ENTITY_STATE_MANAGER,
+});
+TERMINAL_SESSION_MANAGER.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    userStore: USER_STORE
 });
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ACTIVE_QUERIES,

@@ -4,6 +4,8 @@ import { DB_APPLICATION_UTILS, SEQUENCE_GENERATOR, TRANSACTIONAL_CONNECTOR } fro
 import { TerminalStore } from './store/TerminalStore';
 import { TerminalState } from './store/TerminalState';
 import { SELECTOR_MANAGER } from '@airport/apron';
+import { UserState } from './store/user/UserState';
+import { UserStore } from './store/user/UserStore';
 const terminalMap = lib('terminal-map');
 export const APPLICATION_INITIALIZER = terminalMap.token({
     class: null,
@@ -45,6 +47,16 @@ export const TRANSACTIONAL_SERVER = terminalMap.token({
     interface: 'ITransactionalServer',
     token: 'TRANSACTIONAL_SERVER'
 });
+export const USER_STATE = terminalMap.token({
+    class: UserState,
+    interface: 'IUserStateContainer',
+    token: 'USER_STATE'
+});
+export const USER_STORE = terminalMap.token({
+    class: UserStore,
+    interface: 'IUserStore',
+    token: 'USER_STORE'
+});
 APPLICATION_INITIALIZER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
     sequenceGenerator: SEQUENCE_GENERATOR,
@@ -68,5 +80,9 @@ TRANSACTIONAL_RECEIVER.setDependencies({
 TRANSACTIONAL_SERVER.setDependencies({
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER
+});
+USER_STORE.setDependencies({
+    selectorManager: SELECTOR_MANAGER,
+    userState: USER_STATE
 });
 //# sourceMappingURL=tokens.js.map

@@ -50,15 +50,18 @@ import {
     IQueryManager,
     IRepositoryManager,
     IStructuralEntityValidator,
+    ITerminalSessionManager,
     IUpdateManager,
     STORE_DRIVER,
     TERMINAL_STORE,
     TRANSACTIONAL_RECEIVER,
     TRANSACTIONAL_SERVER,
-    TRANSACTION_MANAGER
+    TRANSACTION_MANAGER,
+    USER_STORE
 } from '@airport/terminal-map'
 import { RepositoryLoader } from './core/repository/RepositoryLoader'
 import { RepositoryManager } from './core/repository/RepositoryManager'
+import { TerminalSessionManager } from './core/TerminalSessionManager'
 import { IInternalRecordManager, InternalRecordManager } from './data/InternalRecordManager'
 import { InternalTransactionalConnector } from './net/InternalTransactionalConnector'
 import { IOnlineManager, OnlineManager } from './net/OnlineManager'
@@ -168,6 +171,11 @@ export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token<IStructuralEntityValid
     class: StructuralEntityValidator,
     interface: 'IStructuralEntityValidator',
     token: 'STRUCTURAL_ENTITY_VALIDATOR'
+})
+export const TERMINAL_SESSION_MANAGER = terminal.token<ITerminalSessionManager>({
+    class: TerminalSessionManager,
+    interface: 'ITerminalSessionManager',
+    token: 'TERMINAL_SESSION_MANAGER'
 })
 export const UPDATE_MANAGER = terminal.token<IUpdateManager>({
     class: UpdateManager,
@@ -287,6 +295,11 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     entityStateManager: ENTITY_STATE_MANAGER,
 })
 
+TERMINAL_SESSION_MANAGER.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    userStore: USER_STORE
+})
+
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     idGenerator: ID_GENERATOR,
@@ -311,6 +324,7 @@ TRANSACTIONAL_SERVER.setDependencies({
     repositoryManager: REPOSITORY_MANAGER,
     updateManager: UPDATE_MANAGER
 })
+
 
 UPDATE_MANAGER.setDependencies({
     airportDatabase: AIRPORT_DATABASE,

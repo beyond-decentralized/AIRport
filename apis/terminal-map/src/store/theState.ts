@@ -29,6 +29,7 @@ export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubjec
         },
         serverUrl: ''
     },
+    isServer: false,
     lastIds: {
         columns: 0,
         domains: 0,

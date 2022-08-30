@@ -1,0 +1,1 @@
+{"version":3,"file":"UserState.js","sourceRoot":"","sources":["../../../src/store/user/UserState.ts"],"names":[],"mappings":";;;;;;AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAA;AAIvD,OAAO,EAAE,iBAAiB,EAAE,MAAM,gBAAgB,CAAA;AAiBlD,IAAa,SAAS,GAAtB,MAAa,SAAS;IAAtB;QAEQ,cAAS,GAAG,iBAAiB,CAAA;IACrC,CAAC;CAAA,CAAA;AAHY,SAAS;IADrB,QAAQ,EAAE;GACE,SAAS,CAGrB;SAHY,SAAS"}

@@ -78,6 +78,8 @@ export interface ITerminalStore {
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
+	getIsServer: IMemoizedSelector<boolean, ITerminalState>
+
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
 	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>
@@ -138,6 +140,8 @@ export class TerminalStore
 
 	getInternalConnector: IMemoizedSelector<InternalConnectorState, ITerminalState>
 
+	getIsServer: IMemoizedSelector<boolean, ITerminalState>
+
 	getLastIds: IMemoizedSelector<LastIds, ITerminalState>
 
 	getLatestApplicationVersionMapByNames: IMemoizedSelector<Map<Domain_Name, Map<JsonApplication_Name, IApplicationVersion>>, ITerminalState>;
@@ -193,6 +197,8 @@ export class TerminalStore
 			terminal => terminal.frameworkActor)
 		this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.internalConnector)
+		this.getIsServer = this.selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.isServer)
 		this.getLastIds = this.selectorManager.createSelector(this.getTerminalState,
 			terminalState => terminalState.lastIds)
 		this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains,

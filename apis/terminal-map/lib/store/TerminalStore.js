@@ -38,6 +38,7 @@ let TerminalStore = class TerminalStore {
         });
         this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
         this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
+        this.getIsServer = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.isServer);
         this.getLastIds = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.lastIds);
         this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
             const latestApplicationVersionMapByNames = new Map();
