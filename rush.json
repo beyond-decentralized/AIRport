@@ -194,6 +194,17 @@
       "projectFolder": "schemas/travel-document-checkpoint",
       "shouldPublish": true
     },
+    // "UIs" folder (alphabetical order)
+    {
+      "packageName": "@airport/ui-react-components",
+      "projectFolder": "UI/react/components",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/ui-react-main",
+      "projectFolder": "UI/react/main",
+      "shouldPublish": true
+    },
     // "AIRbridge" folder (external)
     {
       "packageName": "@airbridge/validate",

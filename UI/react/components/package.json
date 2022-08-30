@@ -1,0 +1,56 @@
+{
+  "name": "@airport/ui-react-components",
+  "version": "0.0.1",
+  "dependencies": {},
+  "peerDependencies": {
+    "@capacitor/app": "4.0.1",
+    "@capacitor/core": "4.0.1",
+    "@capacitor/haptics": "4.0.1",
+    "@capacitor/keyboard": "4.0.1",
+    "@capacitor/status-bar": "4.0.1",
+    "@ionic/core": "^6.0.0",
+    "@ionic/react": "^6.0.0",
+    "@ionic/react-router": "^6.0.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^12.19.15",
+    "@types/react": "^16.14.3",
+    "@types/react-dom": "^16.9.10",
+    "@types/react-router": "^5.1.11",
+    "@types/react-router-dom": "^5.1.7",
+    "ionicons": "^5.4.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "4.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/react": "^17.0.34",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "description": "AIRport UI React components",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "rollup": "rollup -c",
+    "test": "jest"
+  },
+  "types": "dist/index.d.ts"
+}

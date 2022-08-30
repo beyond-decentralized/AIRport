@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "AIRport-web-ui",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
