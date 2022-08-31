@@ -22,9 +22,9 @@ export declare abstract class SqlDriver implements IStoreDriver {
     qMetadataUtils: IQMetadataUtils;
     qValidator: IValidator;
     relationManager: IRelationManager;
-    transactionManager: ITransactionManager;
     sqlQueryAdapter: ISQLQueryAdaptor;
     subStatementQueryGenerator: ISubStatementSqlGenerator;
+    transactionManager: ITransactionManager;
     utils: IUtils;
     type: StoreType;
     protected maxValues: number;
@@ -66,7 +66,6 @@ export declare abstract class SqlDriver implements IStoreDriver {
     abstract doesTableExist(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
     abstract dropTable(applicationName: string, tableName: string, context: IFuelHydrantContext): Promise<boolean>;
     abstract query(queryType: QueryType, query: string, params: any, context: IFuelHydrantContext, saveTransaction?: boolean): Promise<any>;
-    abstract isServer(context: IFuelHydrantContext): boolean;
     protected abstract executeNative(sql: string, parameters: any[], context: IFuelHydrantContext): Promise<number>;
     protected abstract getDialect(context: IFuelHydrantContext): SQLDialect;
     protected splitValues(values: any[][], context: IFuelHydrantContext): any[][][];

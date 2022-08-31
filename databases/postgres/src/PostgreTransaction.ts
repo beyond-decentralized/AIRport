@@ -233,10 +233,6 @@ export class PostgreTransaction
 		}
 	}
 
-	isServer(): boolean {
-		return true
-	}
-
 	protected getDialect(): SQLDialect {
 		return SQLDialect.POSTGRESQL;
 	}

@@ -23,7 +23,7 @@ let TransactionManager = class TransactionManager extends AbstractMutationManage
             .transactionInProgressMap.get(transactionId);
     }
     isServer(context) {
-        return this.storeDriver.isServer(context);
+        return this.terminalStore.getIsServer();
     }
     async transactInternal(transactionalCallback, context) {
         await this.transact({

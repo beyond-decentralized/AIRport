@@ -92,6 +92,7 @@ let IframeTransactionalConnector = class IframeTransactionalConnector {
     async callApi(apiInput) {
         return await this.sendMessage({
             ...this.getCoreFields(),
+            actor: null,
             application: apiInput.application,
             args: apiInput.args,
             domain: apiInput.domain,

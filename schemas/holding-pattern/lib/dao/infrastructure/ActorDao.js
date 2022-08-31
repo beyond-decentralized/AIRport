@@ -50,6 +50,37 @@ let ActorDao = class ActorDao extends BaseActorDao {
             WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName))
         });
     }
+    async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(domainName, applicationName, userAccountGUID, terminalGUID) {
+        let act;
+        let application;
+        let domain;
+        let terminal;
+        let userAccount;
+        return await this.db.findOne.tree({
+            SELECT: {
+                _localId: Y,
+                application: {
+                    domain: {
+                        name: Y
+                    },
+                    fullName: Y,
+                    index: Y,
+                    name: Y
+                },
+                terminal: {},
+                userAccount: {},
+                GUID: Y
+            },
+            FROM: [
+                act = Q.Actor,
+                application = act.application.INNER_JOIN(),
+                domain = application.domain.INNER_JOIN(),
+                terminal = act.terminal.LEFT_JOIN(),
+                userAccount = act.userAccount.LEFT_JOIN()
+            ],
+            WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName), terminal.GUID.equals(terminalGUID), userAccount.GUID.equals(userAccountGUID))
+        });
+    }
     async findByGUIDs(actorGUIDs) {
         let a;
         return await this.db.find.tree({

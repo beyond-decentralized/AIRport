@@ -131,9 +131,6 @@ let PostgreSqlDriver = class PostgreSqlDriver extends SqlDriver {
             await currentQuery;
         }
     }
-    isServer() {
-        return true;
-    }
     getDialect() {
         return SQLDialect.POSTGRESQL;
     }

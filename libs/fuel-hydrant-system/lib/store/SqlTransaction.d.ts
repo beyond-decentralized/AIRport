@@ -1,10 +1,11 @@
 import { IContext } from '@airport/direction-indicator';
 import { Application_Name, DbEntity, Domain_Name, FullApplication_Name, InternalFragments, JsonQuery, PortableQuery, QueryType, SQLDataType, StoreType } from '@airport/ground-control';
-import { ITransactionHistory } from '@airport/holding-pattern';
+import { Actor, ITransactionHistory } from '@airport/holding-pattern';
 import { IOperationContext, IStoreDriver, ITransaction, ITransactionContext, ITransactionCredentials } from '@airport/terminal-map';
 export declare abstract class SqlTransaction implements ITransaction {
     protected driver: IStoreDriver;
     parentTransaction: ITransaction;
+    actor: Actor;
     childTransaction: ITransaction;
     credentials: ITransactionCredentials;
     id: string;
@@ -41,7 +42,6 @@ export declare abstract class SqlTransaction implements ITransaction {
     tearDownTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    abstract isServer(context?: IContext): boolean;
     deleteWhere(portableQuery: PortableQuery, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, internalFragments: InternalFragments, context: IContext, cachedSqlQueryId?: number): Promise<E>;

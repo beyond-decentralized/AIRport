@@ -31,17 +31,29 @@ import {
     IApiCallContext,
     IDatabaseManager,
     IQueryOperationContext,
+    ITerminalSessionManager,
     ITerminalStore,
     ITransactionalServer,
     ITransactionContext,
     ITransactionCredentials,
-    ITransactionManager
+    ITransactionManager,
+    IUserSession
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { IEntityContext } from '@airport/tarmaq-entity';
+import { Actor } from '@airport/holding-pattern';
+import { ActorDao } from '@airport/holding-pattern/lib/dao/dao';
+import { v4 as guidv4 } from "uuid";
+import { ApplicationDao } from '@airport/airspace';
+
 @Injected()
 export abstract class TransactionalReceiver {
 
+    @Inject()
+    actorDao: ActorDao
+
+    @Inject()
+    applicationDao: ApplicationDao
 
     @Inject()
     databaseManager: IDatabaseManager
@@ -51,6 +63,9 @@ export abstract class TransactionalReceiver {
 
     @Inject()
     internalRecordManager: IInternalRecordManager
+
+    @Inject()
+    terminalSessionManager: ITerminalSessionManager
 
     @Inject()
     terminalStore: ITerminalStore
@@ -311,6 +326,13 @@ export abstract class TransactionalReceiver {
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
     ): Promise<boolean> {
+        let userSession: IUserSession
+        if (this.terminalStore.getIsServer()) {
+            throw new Error('Implement')
+        } else {
+            userSession = await this.terminalSessionManager.getUserSession()
+        }
+
         const transactionCredentials: ITransactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -322,6 +344,8 @@ export abstract class TransactionalReceiver {
         if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
             return false
         }
+        let actor: Actor = await this.getApiCallActor(message, userSession, context)
+        context.transaction.actor = actor
 
         const initiator = context.transaction.initiator
         initiator.application = message.application
@@ -330,6 +354,18 @@ export abstract class TransactionalReceiver {
         initiator.objectName = message.objectName
 
         message.transactionId = context.transaction.id
+
+        message.actor = {
+            application: actor.application,
+            GUID: actor.GUID,
+            terminal: {
+                GUID: actor.terminal.GUID
+            },
+            userAccount: {
+                GUID: actor.userAccount.username,
+                username: actor.userAccount.username
+            }
+        }
 
         try {
             await nativeHandleCallback()
@@ -340,6 +376,38 @@ export abstract class TransactionalReceiver {
         }
 
         return true
+    }
+
+    async getApiCallActor(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        userSession: IUserSession,
+        context: IApiCallContext & ITransactionContext,
+    ): Promise<Actor> {
+        if (context.transaction.parentTransaction) {
+            return context.transaction.parentTransaction.actor
+        }
+
+        const terminal = this.terminalStore.getTerminal()
+        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+            message.domain,
+            message.application,
+            userSession.userAccount.GUID,
+            terminal.GUID
+        );
+        if (actor) {
+            return actor
+        }
+
+        const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
+        actor = {
+            application,
+            GUID: guidv4(),
+            terminal: terminal as any,
+            userAccount: userSession.userAccount
+        }
+        await this.actorDao.save(actor)
+
+        return actor
     }
 
     protected async endApiCall(

@@ -144,9 +144,6 @@ export class PostgreTransaction extends SqlDriver {
             await currentQuery;
         }
     }
-    isServer() {
-        return true;
-    }
     getDialect() {
         return SQLDialect.POSTGRESQL;
     }

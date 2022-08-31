@@ -15,7 +15,7 @@ export interface ITransactionalCallback {
 }
 export interface ITransactionManager {
     initialize(dbName: string, context: IContext): Promise<void>;
-    isServer(contex?: IContext): boolean;
+    isServer(context?: IContext): boolean;
     transact(credentials: ICredentials, callback: ITransactionalCallback, context: IContext): Promise<void>;
     transactInternal(callback: ITransactionalCallback, context: IContext): Promise<void>;
     startTransaction(credentials: ICredentials, context: ITransactionContext): Promise<ITransaction>;

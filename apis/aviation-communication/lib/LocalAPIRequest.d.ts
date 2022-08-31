@@ -6,9 +6,10 @@ export interface ICoreLocalApiRequest {
     objectName: string;
 }
 export declare type LocalApiRequestCategoryType = 'FromClient' | 'FromClientRedirected' | 'IsConnectionReady';
-export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType> extends ICoreLocalApiRequest {
+export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType, A = any> extends ICoreLocalApiRequest {
     __received__?: boolean;
     __receivedTime__?: number;
+    actor: A;
     category: CategoryType;
     hostDomain: string;
     hostProtocol: string;

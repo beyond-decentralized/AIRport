@@ -88,8 +88,4 @@ export interface IStoreDriver
 		context: ITransactionContext,
 	): Promise<void>
 
-	isServer(
-		context?: IContext,
-	): boolean
-
 }

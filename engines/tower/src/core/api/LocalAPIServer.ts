@@ -4,12 +4,15 @@ import {
 } from '@airport/direction-indicator'
 import {
     ILocalAPIRequest,
-    ILocalAPIResponse
+    ILocalAPIResponse,
+    LocalApiRequestCategoryType
 } from "@airport/aviation-communication";
 import { IApiRegistry } from "@airport/check-in";
 import {
     ILocalAPIServer
 } from "@airport/apron";
+import { Actor } from '@airport/holding-pattern';
+import { RequestManager } from '@airport/arrivals-n-departures';
 
 @Injected()
 export class LocalAPIServer
@@ -18,8 +21,11 @@ export class LocalAPIServer
     @Inject()
     apiRegistry: IApiRegistry
 
+    @Inject()
+    requestManager: RequestManager
+
     async handleRequest(
-        request: ILocalAPIRequest
+        request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>
     ): Promise<ILocalAPIResponse> {
 
         let payload
@@ -30,6 +36,10 @@ export class LocalAPIServer
                 apiOperation
             } = await this.apiRegistry.findApiObjectAndOperation(
                 request.domain, request.application, request.objectName, request.methodName)
+
+            this.requestManager.actor = request.actor
+            this.requestManager.userAccount = request.actor.userAccount
+
             const result = apiObject[request.methodName].apply(apiObject, request.args)
             if (apiOperation.isAsync) {
                 payload = await result

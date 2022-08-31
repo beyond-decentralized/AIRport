@@ -11,6 +11,8 @@ let LocalAPIServer = class LocalAPIServer {
         let errorMessage;
         try {
             const { apiObject, apiOperation } = await this.apiRegistry.findApiObjectAndOperation(request.domain, request.application, request.objectName, request.methodName);
+            this.requestManager.actor = request.actor;
+            this.requestManager.userAccount = request.actor.userAccount;
             const result = apiObject[request.methodName].apply(apiObject, request.args);
             if (apiOperation.isAsync) {
                 payload = await result;
@@ -44,6 +46,9 @@ let LocalAPIServer = class LocalAPIServer {
 __decorate([
     Inject()
 ], LocalAPIServer.prototype, "apiRegistry", void 0);
+__decorate([
+    Inject()
+], LocalAPIServer.prototype, "requestManager", void 0);
 LocalAPIServer = __decorate([
     Injected()
 ], LocalAPIServer);

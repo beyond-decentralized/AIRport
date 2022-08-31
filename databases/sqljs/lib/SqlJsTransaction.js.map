@@ -1,1 +1,1 @@
-{"version":3,"file":"SqlJsTransaction.js","sourceRoot":"","sources":["../src/SqlJsTransaction.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,cAAc,EAAE,MAAM,8BAA8B,CAAA;AAE7D,MAAM,OAAO,gBACT,SAAQ,cAAc;IAEtB,QAAQ,CACJ,OAAkB;QAElB,OAAO,KAAK,CAAA;IAChB,CAAC;CAEJ"}
+{"version":3,"file":"SqlJsTransaction.js","sourceRoot":"","sources":["../src/SqlJsTransaction.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,cAAc,EAAE,MAAM,8BAA8B,CAAA;AAE7D,MAAM,OAAO,gBACT,SAAQ,cAAc;CAEzB"}

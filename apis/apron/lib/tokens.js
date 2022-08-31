@@ -1,4 +1,3 @@
-import { API_REGISTRY } from '@airport/check-in';
 import { lib } from '@airport/direction-indicator';
 import { ApplicationStore } from './state/ApplicationStore';
 import { SelectorManager } from './state/Selector';
@@ -22,8 +21,5 @@ export const SELECTOR_MANAGER = apron.token({
     class: SelectorManager,
     interface: 'ISelectorManager',
     token: 'SELECTOR_MANAGER'
-});
-LOCAL_API_SERVER.setDependencies({
-    apiRegistry: API_REGISTRY
 });
 //# sourceMappingURL=tokens.js.map

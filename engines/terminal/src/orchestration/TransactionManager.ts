@@ -79,7 +79,7 @@ export class TransactionManager
 	isServer(
 		context?: ITransactionContext
 	) {
-		return this.storeDriver.isServer(context);
+		return this.terminalStore.getIsServer();
 	}
 
 	async transactInternal(

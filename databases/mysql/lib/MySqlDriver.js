@@ -113,9 +113,6 @@ WHERE
             await currentQuery;
         }
     }
-    isServer() {
-        return true;
-    }
     getDialect() {
         return SQLDialect.MYSQL;
     }

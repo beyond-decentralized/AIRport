@@ -16,12 +16,15 @@ import {
 import {
 	QTerminal,
 	QUserAccount,
+	Terminal_GUID,
 	Terminal_LocalId,
+	UserAccount_GUID,
 	UserAccount_LocalId
 } from '@airport/travel-document-checkpoint'
 import {
 	Actor_LocalId,
 	Actor_GUID,
+	Actor,
 } from '../../ddl/ddl'
 import {
 	BaseActorDao,
@@ -61,6 +64,13 @@ export interface IActorDao
 		domainName: Domain_Name,
 		applicationName: Application_Name
 	): Promise<IActor[]>
+
+	findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+		domainName: Domain_Name,
+		applicationName: Application_Name,
+		userAccountGUID: UserAccount_GUID,
+		terminalGUID: Terminal_GUID
+	): Promise<IActor>
 
 	findByGUIDs(
 		actorGUIDs: Actor_GUID[],
@@ -150,6 +160,48 @@ export class ActorDao
 			WHERE: AND(
 				domain.name.equals(domainName),
 				application.name.equals(applicationName)
+			)
+		})
+	}
+
+	async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+		domainName: Domain_Name,
+		applicationName: Application_Name,
+		userAccountGUID: UserAccount_GUID,
+		terminalGUID: Terminal_GUID
+	): Promise<Actor> {
+		let act: QActor
+		let application: QApplication
+		let domain: QDomain
+		let terminal: QTerminal
+		let userAccount: QUserAccount
+		return await this.db.findOne.tree({
+			SELECT: {
+				_localId: Y,
+				application: {
+					domain: {
+						name: Y
+					},
+					fullName: Y,
+					index: Y,
+					name: Y
+				},
+				terminal: {},
+				userAccount: {},
+				GUID: Y
+			},
+			FROM: [
+				act = Q.Actor,
+				application = act.application.INNER_JOIN(),
+				domain = application.domain.INNER_JOIN(),
+				terminal = act.terminal.LEFT_JOIN(),
+				userAccount = act.userAccount.LEFT_JOIN()
+			],
+			WHERE: AND(
+				domain.name.equals(domainName),
+				application.name.equals(applicationName),
+				terminal.GUID.equals(terminalGUID),
+				userAccount.GUID.equals(userAccountGUID)
 			)
 		})
 	}

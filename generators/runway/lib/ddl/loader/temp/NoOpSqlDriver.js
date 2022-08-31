@@ -15,9 +15,6 @@ export class NoOpSqlDriver extends SqlDriver {
     initialize(dbName, context) {
         return Promise.resolve(undefined);
     }
-    isServer(context) {
-        return false;
-    }
     isValueValid(value, sqlDataType, context) {
         return false;
     }

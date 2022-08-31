@@ -51,10 +51,6 @@ export class NoOpSqlDriver
 		return Promise.resolve(undefined);
 	}
 
-	isServer(context: IOperationContext): boolean {
-		return false;
-	}
-
 	isValueValid(
 		value: any,
 		sqlDataType,

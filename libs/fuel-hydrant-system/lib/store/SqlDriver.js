@@ -213,13 +213,13 @@ __decorate([
 ], SqlDriver.prototype, "relationManager", void 0);
 __decorate([
     Inject()
-], SqlDriver.prototype, "transactionManager", void 0);
-__decorate([
-    Inject()
 ], SqlDriver.prototype, "sqlQueryAdapter", void 0);
 __decorate([
     Inject()
 ], SqlDriver.prototype, "subStatementQueryGenerator", void 0);
+__decorate([
+    Inject()
+], SqlDriver.prototype, "transactionManager", void 0);
 __decorate([
     Inject()
 ], SqlDriver.prototype, "utils", void 0);

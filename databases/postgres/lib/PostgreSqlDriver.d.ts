@@ -21,7 +21,6 @@ export declare class PostgreSqlDriver extends SqlDriver {
     initialize(connectionString: string): Promise<void>;
     initAllTables(context: IOperationContext): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
-    isServer(): boolean;
     protected getDialect(): SQLDialect;
     protected getClient(): Promise<pg.PoolClient | pg.Pool>;
 }

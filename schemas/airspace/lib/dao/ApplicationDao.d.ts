@@ -2,6 +2,7 @@ import { IContext } from '@airport/direction-indicator';
 import { Domain_Name, Application_Index, Application_Name, ApplicationStatus, ApplicationVersion_LocalId, FullApplication_Name } from '@airport/ground-control';
 import { BaseApplicationDao, IBaseApplicationDao, IApplication } from '../generated/generated';
 import { IAirportDatabase } from '@airport/air-traffic-control';
+import { Application } from '../ddl/ddl';
 export interface IApplicationLookupRecord {
     index: number;
     domain: {
@@ -21,6 +22,7 @@ export interface IApplicationDao extends IBaseApplicationDao {
     setStatusByIndexes(indexes: Application_Index[], status: ApplicationStatus): Promise<void>;
     findMapByFullNames(fullApplication_Names: FullApplication_Name[]): Promise<Map<FullApplication_Name, IApplication>>;
     findByDomain_NamesAndApplication_Names(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
+    findOneByDomain_NameAndApplication_Name(domainName: string, applicationName: string): Promise<Application>;
     findByIndex(index: Application_Index): Promise<IApplication>;
     insert(applications: IApplication[], context: IContext): Promise<void>;
 }
@@ -34,6 +36,7 @@ export declare class ApplicationDao extends BaseApplicationDao implements IAppli
     setStatusByIndexes(indexes: Application_Index[], status: ApplicationStatus): Promise<void>;
     findMapByFullNames(fullApplication_Names: FullApplication_Name[]): Promise<Map<FullApplication_Name, IApplication>>;
     findByDomain_NamesAndApplication_Names(domainNames: string[], applicationNames: string[]): Promise<IApplication[]>;
+    findOneByDomain_NameAndApplication_Name(domainName: string, applicationName: string): Promise<Application>;
     findByIndex(index: Application_Index): Promise<IApplication>;
     insert(applications: IApplication[], context: IContext): Promise<void>;
 }

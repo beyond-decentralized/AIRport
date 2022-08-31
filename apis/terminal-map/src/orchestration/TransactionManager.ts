@@ -29,7 +29,7 @@ export interface ITransactionManager {
 	): Promise<void>;
 
 	isServer(
-		contex?: IContext
+		context?: IContext
 	): boolean;
 
 	transact(

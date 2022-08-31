@@ -8,7 +8,6 @@ export declare class NoOpSqlDriver extends SqlDriver {
     dropTable(applicationName: string, tableName: string, context: IOperationContext): Promise<boolean>;
     findNative(sqlQuery: string, parameters: any[], context: IOperationContext): Promise<any[]>;
     initialize(dbName: string, context: IOperationContext): Promise<any>;
-    isServer(context: IOperationContext): boolean;
     isValueValid(value: any, sqlDataType: any, context: IOperationContext): boolean;
     query(queryType: any, query: string, params: any, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     startTransaction(transaction: ITransaction, context?: ITransactionContext): Promise<void>;

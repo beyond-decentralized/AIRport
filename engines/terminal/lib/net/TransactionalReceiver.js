@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Inject, Injected } from '@airport/direction-indicator';
 import { INTERNAL_DOMAIN } from '@airport/ground-control';
 import { IsolateMessageType } from '@airport/apron';
+import { v4 as guidv4 } from "uuid";
 let TransactionalReceiver = class TransactionalReceiver {
     async processMessage(message) {
         let result;
@@ -178,6 +179,13 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
+        let userSession;
+        if (this.terminalStore.getIsServer()) {
+            throw new Error('Implement');
+        }
+        else {
+            userSession = await this.terminalSessionManager.getUserSession();
+        }
         const transactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -188,12 +196,25 @@ let TransactionalReceiver = class TransactionalReceiver {
         if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
             return false;
         }
+        let actor = await this.getApiCallActor(message, userSession, context);
+        context.transaction.actor = actor;
         const initiator = context.transaction.initiator;
         initiator.application = message.application;
         initiator.domain = message.domain;
         initiator.methodName = message.methodName;
         initiator.objectName = message.objectName;
         message.transactionId = context.transaction.id;
+        message.actor = {
+            application: actor.application,
+            GUID: actor.GUID,
+            terminal: {
+                GUID: actor.terminal.GUID
+            },
+            userAccount: {
+                GUID: actor.userAccount.username,
+                username: actor.userAccount.username
+            }
+        };
         try {
             await nativeHandleCallback();
         }
@@ -203,6 +224,25 @@ let TransactionalReceiver = class TransactionalReceiver {
             return false;
         }
         return true;
+    }
+    async getApiCallActor(message, userSession, context) {
+        if (context.transaction.parentTransaction) {
+            return context.transaction.parentTransaction.actor;
+        }
+        const terminal = this.terminalStore.getTerminal();
+        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(message.domain, message.application, userSession.userAccount.GUID, terminal.GUID);
+        if (actor) {
+            return actor;
+        }
+        const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application);
+        actor = {
+            application,
+            GUID: guidv4(),
+            terminal: terminal,
+            userAccount: userSession.userAccount
+        };
+        await this.actorDao.save(actor);
+        return actor;
     }
     async endApiCall(credentials, errorMessage, context) {
         if (errorMessage) {
@@ -215,6 +255,12 @@ let TransactionalReceiver = class TransactionalReceiver {
 };
 __decorate([
     Inject()
+], TransactionalReceiver.prototype, "actorDao", void 0);
+__decorate([
+    Inject()
+], TransactionalReceiver.prototype, "applicationDao", void 0);
+__decorate([
+    Inject()
 ], TransactionalReceiver.prototype, "databaseManager", void 0);
 __decorate([
     Inject()
@@ -222,6 +268,9 @@ __decorate([
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);
+__decorate([
+    Inject()
+], TransactionalReceiver.prototype, "terminalSessionManager", void 0);
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "terminalStore", void 0);

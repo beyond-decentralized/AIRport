@@ -35,6 +35,7 @@ import {
 } from '@airport/ground-control';
 import {
 	IStoreDriver,
+	ITerminalStore,
 	ITransaction,
 	ITransactionContext,
 	ITransactionManager
@@ -93,13 +94,13 @@ export abstract class SqlDriver
 	relationManager: IRelationManager
 
 	@Inject()
-	transactionManager: ITransactionManager
-
-	@Inject()
 	sqlQueryAdapter: ISQLQueryAdaptor
 
 	@Inject()
 	subStatementQueryGenerator: ISubStatementSqlGenerator
+
+	@Inject()
+	transactionManager: ITransactionManager
 
 	@Inject()
 	utils: IUtils
@@ -480,10 +481,6 @@ export abstract class SqlDriver
 		context: IFuelHydrantContext,
 		saveTransaction?: boolean
 	): Promise<any>
-
-	abstract isServer(
-		context: IFuelHydrantContext,
-	): boolean
 
 	protected abstract executeNative(
 		sql: string,

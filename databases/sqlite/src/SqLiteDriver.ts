@@ -155,8 +155,4 @@ WHERE
 		return SQLDialect.SQLITE;
 	}
 
-	isServer(): boolean {
-		return false;
-	}
-
 }

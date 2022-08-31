@@ -244,10 +244,6 @@ WHERE
     }
   }
 
-  isServer(): boolean {
-    return true;
-  }
-
   protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect {
     return SQLDialect.MYSQL;
   }

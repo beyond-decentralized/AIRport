@@ -4,7 +4,7 @@ import { IOnlineManager } from './net/OnlineManager';
 import { TransactionalReceiver } from './net/TransactionalReceiver';
 import { AbstractMutationManager } from './orchestration/AbstractMutationManager';
 export declare const ABSTRACT_MUTATION_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<AbstractMutationManager>;
-export declare const ABSTRACT_TRANSACTIONAL_RECIEVER: import("@airport/direction-indicator").IDependencyInjectionToken<TransactionalReceiver>;
+export declare const ABSTRACT_TRANSACTIONAL_RECEIVER: import("@airport/direction-indicator").IDependencyInjectionToken<TransactionalReceiver>;
 export declare const CASCADE_GRAPH_VERIFIER: import("@airport/direction-indicator").IDependencyInjectionToken<ICascadeGraphVerifier>;
 export declare const DATABASE_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IDatabaseManager>;
 export declare const DELETE_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IDeleteManager>;

@@ -11,7 +11,7 @@ import { ISQLQueryAdaptor } from './adaptor/SQLQueryAdaptor'
 import { IdGenerator, IIdGenerator } from './store/IdGenerator'
 import { IValidator, QValidator } from './validation/Validator'
 import { SqlDriver } from './store/SqlDriver'
-import { IStoreDriver, STORE_DRIVER, TRANSACTION_MANAGER } from '@airport/terminal-map'
+import { IStoreDriver, STORE_DRIVER, TERMINAL_STORE, TRANSACTION_MANAGER } from '@airport/terminal-map'
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR } from '@airport/ground-control'
 import {
     AIRPORT_DATABASE,
@@ -75,9 +75,9 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     qMetadataUtils: Q_METADATA_UTILS,
     qValidator: Q_VALIDATOR,
     relationManager: RELATION_MANAGER,
-    transactionManager: TRANSACTION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
+    transactionManager: TRANSACTION_MANAGER,
     utils: UTILS
 })
 

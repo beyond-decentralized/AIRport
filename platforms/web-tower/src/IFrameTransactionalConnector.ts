@@ -176,6 +176,7 @@ export class IframeTransactionalConnector
 	): Promise<ILocalAPIResponse> {
 		return await this.sendMessage<ICallApiIMI, ILocalAPIResponse>({
 			...this.getCoreFields(),
+			actor: null,
 			application: apiInput.application,
 			args: apiInput.args,
 			domain: apiInput.domain,

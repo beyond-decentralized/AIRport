@@ -206,10 +206,6 @@ export class PostgreSqlDriver
 		}
 	}
 
-	isServer(): boolean {
-		return true
-	}
-
 	protected getDialect(): SQLDialect {
 		return SQLDialect.POSTGRESQL;
 	}

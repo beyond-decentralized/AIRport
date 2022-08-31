@@ -54,12 +54,13 @@ export class Actor {
 	})
 	application?: Application
 
-	@ManyToOne()
-	@JoinColumn({
-		name: 'CLIENT_LID',
-		referencedColumnName: 'CLIENT_LID',
-		nullable: true
-	})
-	client?: Client
+	// This should be tracked in RepositoryTransactionHistory - keeping actors focused on Apps
+	// @ManyToOne()
+	// @JoinColumn({
+	// 	name: 'CLIENT_LID',
+	// 	referencedColumnName: 'CLIENT_LID',
+	// 	nullable: true
+	// })
+	// client?: Client
 
 }

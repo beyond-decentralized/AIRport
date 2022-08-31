@@ -1,5 +1,5 @@
 import { IEntityIdProperties, IEntityCascadeGraph, IEntityUpdateColumns, IEntityUpdateProperties, IEntitySelectProperties, IQNumberField, IQStringField, IQEntity, IQRelation } from '@airport/tarmaq-query';
-import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation, ClientGraph, ClientEOptionalId, ClientESelect, QClientQRelation } from '@airport/travel-document-checkpoint';
+import { UserAccountGraph, UserAccountEOptionalId, UserAccountESelect, QUserAccountQRelation, TerminalGraph, TerminalEOptionalId, TerminalESelect, QTerminalQRelation } from '@airport/travel-document-checkpoint';
 import { ApplicationGraph, ApplicationEOptionalId, ApplicationESelect, QApplicationQRelation } from '@airport/airspace';
 /**
  * SELECT - All fields and relations (optional).
@@ -9,7 +9,6 @@ export interface ActorESelect extends IEntitySelectProperties, ActorEOptionalId 
     userAccount?: UserAccountESelect;
     terminal?: TerminalESelect;
     application?: ApplicationESelect;
-    client?: ClientESelect;
 }
 /**
  * DELETE - Ids fields and relations only (required).
@@ -31,7 +30,6 @@ export interface ActorEUpdateProperties extends IEntityUpdateProperties {
     userAccount?: UserAccountEOptionalId;
     terminal?: TerminalEOptionalId;
     application?: ApplicationEOptionalId;
-    client?: ClientEOptionalId;
 }
 /**
  * PERSIST CASCADE - non-id relations (optional).
@@ -41,7 +39,6 @@ export interface ActorGraph extends ActorEOptionalId, IEntityCascadeGraph {
     userAccount?: UserAccountGraph;
     terminal?: TerminalGraph;
     application?: ApplicationGraph;
-    client?: ClientGraph;
 }
 /**
  * UPDATE - non-id columns (optional).
@@ -51,7 +48,6 @@ export interface ActorEUpdateColumns extends IEntityUpdateColumns {
     USER_ACCOUNT_LID?: number | IQNumberField;
     TERMINAL_LID?: number | IQNumberField;
     APPLICATION_INDEX?: number | IQNumberField;
-    CLIENT_LID?: number | IQNumberField;
 }
 /**
  * CREATE - id fields and relations (required) and non-id fields and relations (optional).
@@ -72,7 +68,6 @@ export interface QActor<IQE extends QActor = any> extends IQEntity<IQE | QActor>
     userAccount: QUserAccountQRelation;
     terminal: QTerminalQRelation;
     application: QApplicationQRelation;
-    client: QClientQRelation;
 }
 export interface QActorQId {
     _localId: IQNumberField;

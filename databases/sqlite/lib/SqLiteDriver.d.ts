@@ -20,6 +20,5 @@ export declare abstract class SqLiteDriver extends SqlDriver {
     abstract query(queryType: QueryType, query: string, params: any, context: IOperationContext, saveTransaction?: boolean): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
     protected getDialect(): import('@airport/fuel-hydrant-system').SQLDialect;
-    isServer(): boolean;
 }
 //# sourceMappingURL=SqLiteDriver.d.ts.map

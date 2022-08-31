@@ -119,6 +119,7 @@ let TerminalStore = class TerminalStore {
         });
         this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
         this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
+        this.getTerminal = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.terminal);
         this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
         this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
     }

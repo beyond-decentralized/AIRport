@@ -57,9 +57,9 @@ ABSTRACT_SQL_DRIVER.setDependencies({
     qMetadataUtils: Q_METADATA_UTILS,
     qValidator: Q_VALIDATOR,
     relationManager: RELATION_MANAGER,
-    transactionManager: TRANSACTION_MANAGER,
     sqlQueryAdapter: SQL_QUERY_ADAPTOR,
     subStatementQueryGenerator: SUB_STATEMENT_SQL_GENERATOR,
+    transactionManager: TRANSACTION_MANAGER,
     utils: UTILS
 });
 SUB_STATEMENT_SQL_GENERATOR.setDependencies({

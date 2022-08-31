@@ -28,7 +28,3 @@ export const SELECTOR_MANAGER = apron.token<ISelectorManager>({
     interface: 'ISelectorManager',
     token: 'SELECTOR_MANAGER'
 })
-
-LOCAL_API_SERVER.setDependencies({
-    apiRegistry: API_REGISTRY
-})

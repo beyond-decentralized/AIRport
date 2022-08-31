@@ -123,7 +123,7 @@ export class InternalRecordManager
             _transaction
         ) => {
             const userAccount = new UserAccount();
-            userAccount.GUID = 'AIRportA-demo-demo-demo-functionalty';
+            userAccount.GUID = 'AIRport-internal-' + guidv4();
             userAccount.username = "internalUserAccount";
 
             const terminal = new Terminal();

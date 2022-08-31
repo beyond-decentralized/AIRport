@@ -7,6 +7,7 @@ import {
     DbEntity,
     Domain_Name,
     FullApplication_Name,
+    IActor,
     InternalFragments,
     JsonQuery,
     PortableQuery,
@@ -14,7 +15,7 @@ import {
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
-import {  ITransactionHistory } from '@airport/holding-pattern'
+import { Actor, ITransactionHistory } from '@airport/holding-pattern'
 import {
     IOperationContext,
     IStoreDriver,
@@ -27,6 +28,7 @@ import { v4 as guidv4 } from "uuid";
 export abstract class SqlTransaction
     implements ITransaction {
 
+    actor: Actor
     childTransaction: ITransaction
     credentials: ITransactionCredentials
     id: string
@@ -154,10 +156,6 @@ export abstract class SqlTransaction
     ): Promise<void> {
         await this.driver.rollback(this, context)
     }
-
-    abstract isServer(
-        context?: IContext,
-    ): boolean
 
     async deleteWhere(
         portableQuery: PortableQuery,

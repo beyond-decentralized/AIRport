@@ -37,6 +37,7 @@ import {
 } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { ISequenceGeneratorState } from '..';
+import { ITerminal } from '@airport/travel-document-checkpoint';
 
 export interface IMessageInRecord {
 	message: ILocalAPIRequest<'FromClientRedirected'>
@@ -92,6 +93,8 @@ export interface ITerminalStore {
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
 	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
+
+	getTerminal: IMemoizedSelector<ITerminal, ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
@@ -153,6 +156,8 @@ export class TerminalStore
 	getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>
 
 	getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>
+
+	getTerminal: IMemoizedSelector<ITerminal, ITerminalState>
 
 	getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>
 
@@ -314,6 +319,9 @@ export class TerminalStore
 
 		this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.sequenceGenerator)
+
+		this.getTerminal = this.selectorManager.createSelector(this.getTerminalState,
+			terminalState => terminalState.terminal)
 
 		this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.transactionManager)

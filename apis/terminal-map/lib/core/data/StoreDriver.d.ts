@@ -30,6 +30,5 @@ export interface IStoreDriver extends IStoreOperator {
     startTransaction(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     commit(transaction: ITransaction, context: ITransactionContext): Promise<void>;
     rollback(transaction: ITransaction, context: ITransactionContext): Promise<void>;
-    isServer(context?: IContext): boolean;
 }
 //# sourceMappingURL=StoreDriver.d.ts.map

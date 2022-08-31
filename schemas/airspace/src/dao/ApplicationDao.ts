@@ -26,6 +26,7 @@ import {
 	QApplicationVersion
 } from '../generated/generated'
 import { IAirportDatabase } from '@airport/air-traffic-control'
+import { Application } from '../ddl/ddl'
 
 export interface IApplicationLookupRecord {
 	index: number
@@ -68,6 +69,11 @@ export interface IApplicationDao
 		domainNames: string[],
 		applicationNames: string[]
 	): Promise<IApplication[]>
+
+	findOneByDomain_NameAndApplication_Name(
+		domainName: string,
+		applicationName: string
+	): Promise<Application>
 
 	findByIndex(
 		index: Application_Index
@@ -336,6 +342,33 @@ export class ApplicationDao
 			WHERE: AND(
 				d.name.IN(domainNames),
 				s.name.IN(applicationNames)
+			)
+		})
+	}
+
+	async findOneByDomain_NameAndApplication_Name(
+		domainName: string,
+		applicationName: string
+	): Promise<Application> {
+		let s: QApplication
+		let d: QDomain
+
+		return await this.db.findOne.tree({
+			SELECT: {
+				domain: {
+					name: Y
+				},
+				fullName: Y,
+				index: Y,
+				name: Y
+			},
+			FROM: [
+				s = Q.Application,
+				d = s.domain.INNER_JOIN()
+			],
+			WHERE: AND(
+				d.name.equals(domainName),
+				s.name.equals(applicationName)
 			)
 		})
 	}

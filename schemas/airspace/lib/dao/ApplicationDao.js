@@ -213,6 +213,25 @@ let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
             WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
         });
     }
+    async findOneByDomain_NameAndApplication_Name(domainName, applicationName) {
+        let s;
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {
+                domain: {
+                    name: Y
+                },
+                fullName: Y,
+                index: Y,
+                name: Y
+            },
+            FROM: [
+                s = Q.Application,
+                d = s.domain.INNER_JOIN()
+            ],
+            WHERE: AND(d.name.equals(domainName), s.name.equals(applicationName))
+        });
+    }
     async findByIndex(index) {
         let a;
         let d;

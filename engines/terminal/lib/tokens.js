@@ -50,10 +50,10 @@ export const ABSTRACT_MUTATION_MANAGER = terminal.token({
     interface: 'class AbstractMutationManager',
     token: 'ABSTRACT_MUTATION_MANAGER'
 });
-export const ABSTRACT_TRANSACTIONAL_RECIEVER = terminal.token({
+export const ABSTRACT_TRANSACTIONAL_RECEIVER = terminal.token({
     class: TransactionalReceiver,
     interface: 'class TransactionalReceiver',
-    token: 'ABSTRACT_TRANSACTIONAL_RECIEVER'
+    token: 'ABSTRACT_TRANSACTIONAL_RECEIVER'
 });
 export const CASCADE_GRAPH_VERIFIER = terminal.token({
     class: CascadeGraphVerifier,
@@ -131,7 +131,7 @@ ABSTRACT_MUTATION_MANAGER.setDependencies({
     queryUtils: QUERY_UTILS,
     relationManager: RELATION_MANAGER
 });
-ABSTRACT_TRANSACTIONAL_RECIEVER.setDependencies({
+ABSTRACT_TRANSACTIONAL_RECEIVER.setDependencies({
     terminalStore: TERMINAL_STORE,
     transactionalServer: TRANSACTIONAL_SERVER
 });
@@ -234,9 +234,12 @@ TRANSACTION_MANAGER.setDependencies({
     transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
+    actorDao: ACTOR_DAO,
+    applicationDao: APPLICATION_DAO,
     databaseManager: DATABASE_MANAGER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     internalRecordManager: INTERNAL_RECORD_MANAGER,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER,
     transactionalServer: TRANSACTIONAL_SERVER

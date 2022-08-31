@@ -9,10 +9,11 @@ export interface ICoreLocalApiRequest {
 export type LocalApiRequestCategoryType =
     'FromClient' | 'FromClientRedirected' | 'IsConnectionReady'
 
-export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType>
+export interface ILocalAPIRequest<CategoryType = LocalApiRequestCategoryType, A = any>
     extends ICoreLocalApiRequest {
     __received__?: boolean
     __receivedTime__?: number
+    actor: A
     category: CategoryType
     hostDomain: string // network DNS domain name (or alike) of the client application
     // (weather the client is a UI or an AIRport application)

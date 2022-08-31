@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { IApplicationInitializerState, InternalConnectorState, IReceiverState, ITerminalState, ITerminalStateContainer, ITransactionManagerState, IWebReceiverState } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { ISequenceGeneratorState } from '..';
+import { ITerminal } from '@airport/travel-document-checkpoint';
 export interface IMessageInRecord {
     message: ILocalAPIRequest<'FromClientRedirected'>;
     reject: any;
@@ -39,6 +40,7 @@ export interface ITerminalStore {
     getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>;
     getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>;
+    getTerminal: IMemoizedSelector<ITerminal, ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
     getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>;
     getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>;
@@ -67,6 +69,7 @@ export declare class TerminalStore implements ITerminalStore {
     getLatestApplicationVersionsByApplication_Indexes: IMemoizedSelector<IApplicationVersion[], ITerminalState>;
     getReceiver: IMemoizedSelector<IReceiverState, ITerminalState>;
     getSequenceGenerator: IMemoizedSelector<ISequenceGeneratorState, ITerminalState>;
+    getTerminal: IMemoizedSelector<ITerminal, ITerminalState>;
     getTerminalState: IMemoizedSelector<ITerminalState, ITerminalState>;
     getTransactionManager: IMemoizedSelector<ITransactionManagerState, ITerminalState>;
     getWebReceiver: IMemoizedSelector<IWebReceiverState, ITerminalState>;

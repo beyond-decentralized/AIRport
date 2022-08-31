@@ -11,8 +11,6 @@ import {
 	UserAccount,
 	TerminalVDescriptor,
 	Terminal,
-	ClientVDescriptor,
-	Client,
 } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
 import {
 	ApplicationVDescriptor,
@@ -42,7 +40,6 @@ export interface ActorVDescriptor<T>
 	userAccount?: UserAccountVDescriptor<UserAccount>
 	terminal?: TerminalVDescriptor<Terminal>
 	application?: ApplicationVDescriptor<Application>
-	client?: ClientVDescriptor<Client>
 
 }
 

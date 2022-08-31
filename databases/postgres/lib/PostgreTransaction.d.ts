@@ -28,7 +28,6 @@ export declare class PostgreTransaction extends SqlDriver implements ITransactio
     initialize(connectionString: string): Promise<void>;
     initAllTables(context: IOperationContext): Promise<any>;
     initTables(createQueries: Promise<any>[]): Promise<void>;
-    isServer(): boolean;
     protected getDialect(): SQLDialect;
 }
 //# sourceMappingURL=PostgreTransaction.d.ts.map

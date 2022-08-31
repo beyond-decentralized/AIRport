@@ -14,7 +14,7 @@ import { EntityStateManager } from './core/EntityStateManager';
 import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 import { DATABASE_FACADE, QUERY_FACADE } from '@airport/tarmaq-dao';
-import { OPERATION_DESERIALIZER } from '@airport/arrivals-n-departures';
+import { OPERATION_DESERIALIZER, REQUEST_MANAGER } from '@airport/arrivals-n-departures';
 
 const tower = lib('tower')
 
@@ -25,18 +25,31 @@ export const ENTITY_COPIER = tower.token<IEntityCopier>({
 })
 
 AIRPORT_DATABASE.setClass(AirportDatabase);
+
 ENTITY_STATE_MANAGER.setClass(EntityStateManager)
+
 API_REGISTRY.setClass(ApiRegistry)
 API_REGISTRY.setDependencies({
     applicationStore: APPLICATION_STORE
 })
+
 API_VALIDATOR.setClass(ApiValidator)
+
 LOCAL_API_SERVER.setClass(LocalAPIServer)
+
+LOCAL_API_SERVER.setDependencies({
+    apiRegistry: API_REGISTRY,
+    requestManager: REQUEST_MANAGER
+})
+
 OPERATION_DESERIALIZER.setClass(OperationDeserializer);
+
 UPDATE_CACHE_MANAGER.setClass(UpdateCacheManager)
+
 DATABASE_FACADE.setClass(DatabaseFacade)
 DATABASE_FACADE.setDependencies({
     entityCopier: ENTITY_COPIER,
     queryFacade: QUERY_FACADE
 })
+
 QUERY_FACADE.setClass(QueryFacade);

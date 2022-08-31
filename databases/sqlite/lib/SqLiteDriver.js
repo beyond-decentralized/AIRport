@@ -80,8 +80,5 @@ WHERE
     getDialect() {
         return SQLDialect.SQLITE;
     }
-    isServer() {
-        return false;
-    }
 }
 //# sourceMappingURL=SqLiteDriver.js.map

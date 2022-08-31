@@ -105,28 +105,6 @@ export const APPLICATION = {
 							],
 							"sinceVersion": 1,
 							"type": "NUMBER"
-						},
-						{
-							"index": 5,
-							"isGenerated": false,
-							"manyRelationColumnRefs": [
-								{
-									"manyRelationIndex": 3,
-									"oneApplication_Index": 0,
-									"oneTableIndex": 10,
-									"oneColumnIndex": 0,
-									"sinceVersion": 1
-								}
-							],
-							"name": "CLIENT_LID",
-							"notNull": false,
-							"propertyRefs": [
-								{
-									"index": 5
-								}
-							],
-							"sinceVersion": 1,
-							"type": "NUMBER"
 						}
 					],
 					"idColumnRefs": [
@@ -183,15 +161,6 @@ export const APPLICATION = {
 								"index": 2
 							},
 							"sinceVersion": 1
-						},
-						{
-							"index": 5,
-							"isId": false,
-							"name": "client",
-							"relationRef": {
-								"index": 3
-							},
-							"sinceVersion": 1
 						}
 					],
 					"relations": [
@@ -226,17 +195,6 @@ export const APPLICATION = {
 							},
 							"relationTableIndex": 10,
 							"relationTableApplication_Index": 1,
-							"sinceVersion": 1
-						},
-						{
-							"index": 3,
-							"isId": false,
-							"relationType": "MANY_TO_ONE",
-							"propertyRef": {
-								"index": 5
-							},
-							"relationTableIndex": 10,
-							"relationTableApplication_Index": 0,
 							"sinceVersion": 1
 						}
 					],

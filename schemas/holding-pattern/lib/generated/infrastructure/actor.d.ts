@@ -1,4 +1,4 @@
-import { IUserAccount, ITerminal, IClient } from '@airport/travel-document-checkpoint';
+import { IUserAccount, ITerminal } from '@airport/travel-document-checkpoint';
 import { IApplication } from '@airport/airspace';
 export interface IActor {
     _localId?: number;
@@ -6,6 +6,5 @@ export interface IActor {
     userAccount?: IUserAccount;
     terminal?: ITerminal;
     application?: IApplication;
-    client?: IClient;
 }
 //# sourceMappingURL=actor.d.ts.map
