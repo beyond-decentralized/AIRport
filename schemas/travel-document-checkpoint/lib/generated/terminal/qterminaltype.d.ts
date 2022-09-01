@@ -52,7 +52,7 @@ export interface TerminalTypeECreateColumns extends TerminalTypeEId, TerminalTyp
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminalType extends IQEntity {
+export interface QTerminalType<IQE extends QTerminalType = any> extends IQEntity<IQE | QTerminalType> {
     terminal: QTerminalQRelation;
     type: QTypeQRelation;
 }

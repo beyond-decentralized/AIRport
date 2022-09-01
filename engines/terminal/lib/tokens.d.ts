@@ -1,4 +1,4 @@
-import { ICascadeGraphVerifier, IDatabaseManager, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IHistoryManager, IInsertManager, IOperationManager, IQueryManager, IRepositoryManager, IStructuralEntityValidator, IUpdateManager } from '@airport/terminal-map';
+import { ICascadeGraphVerifier, IDatabaseManager, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IHistoryManager, IInsertManager, IOperationManager, IQueryManager, IStructuralEntityValidator, IUpdateManager } from '@airport/terminal-map';
 import { IInternalRecordManager } from './data/InternalRecordManager';
 import { IOnlineManager } from './net/OnlineManager';
 import { TransactionalReceiver } from './net/TransactionalReceiver';
@@ -16,7 +16,6 @@ export declare const INTERNAL_RECORD_MANAGER: import("@airport/direction-indicat
 export declare const ONLINE_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IOnlineManager>;
 export declare const OPERATION_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IOperationManager>;
 export declare const QUERY_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IQueryManager>;
-export declare const REPOSITORY_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IRepositoryManager>;
 export declare const STRUCTURAL_ENTITY_VALIDATOR: import("@airport/direction-indicator").IDependencyInjectionToken<IStructuralEntityValidator>;
 export declare const UPDATE_MANAGER: import("@airport/direction-indicator").IDependencyInjectionToken<IUpdateManager>;
 //# sourceMappingURL=tokens.d.ts.map

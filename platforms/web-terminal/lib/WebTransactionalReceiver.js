@@ -147,26 +147,52 @@ let WebTransactionalReceiver = class WebTransactionalReceiver extends Transactio
         delete messageCopy.__received__;
         delete messageCopy.__receivedTime__;
         messageCopy.category = 'FromClientRedirected';
-        if (!await this.nativeStartApiCall(messageCopy, context)) {
+        const startDescriptor = await this.nativeStartApiCall(messageCopy, context);
+        if (!startDescriptor.isStarted) {
             throw new Error(context.errorMessage);
         }
-        const replyMessage = await new Promise((resolve) => {
-            this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
-                message: {
-                    ...messageCopy,
-                    category: 'FromDb',
-                    type: IsolateMessageType.CALL_API
-                },
-                resolve
+        let args, errorMessage, payload, transactionId;
+        if (startDescriptor.isFramework) {
+            try {
+                const fullApplication_Name = this.dbApplicationUtils
+                    .getFullApplication_NameFromDomainAndName(message.domain, message.application);
+                const application = this.terminalStore
+                    .getApplicationMapByFullName().get(fullApplication_Name);
+                if (!application) {
+                    throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`);
+                }
+                payload = await this.localApiServer.coreHandleRequest(message, application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api);
+            }
+            catch (e) {
+                errorMessage = e.message ? e.message : e;
+                console.error(e);
+            }
+            args = message.args;
+            transactionId = message.transactionId;
+        }
+        else {
+            const replyMessage = await new Promise((resolve) => {
+                this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
+                    message: {
+                        ...messageCopy,
+                        category: 'FromDb',
+                        type: IsolateMessageType.CALL_API
+                    },
+                    resolve
+                });
             });
-        });
+            args = replyMessage.args;
+            errorMessage = replyMessage.errorMessage;
+            payload = replyMessage.payload;
+            transactionId = replyMessage.transactionId;
+        }
         const response = {
             ...messageCopy,
             category: 'FromDb',
-            args: replyMessage.args,
-            errorMessage: replyMessage.errorMessage,
-            payload: replyMessage.payload,
-            transactionId: replyMessage.transactionId
+            args,
+            errorMessage,
+            payload,
+            transactionId
         };
         return response;
     }
@@ -392,6 +418,9 @@ __decorate([
 __decorate([
     Inject()
 ], WebTransactionalReceiver.prototype, "dbApplicationUtils", void 0);
+__decorate([
+    Inject()
+], WebTransactionalReceiver.prototype, "localApiServer", void 0);
 __decorate([
     Inject()
 ], WebTransactionalReceiver.prototype, "terminalStore", void 0);

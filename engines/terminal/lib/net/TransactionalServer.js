@@ -34,21 +34,6 @@ let TransactionalServer = class TransactionalServer {
     async init(context = {}) {
         return await this.transactionManager.initialize('airport', context);
     }
-    async addRepository(credentials, context) {
-        if (context.transaction || credentials.transactionId) {
-            this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);
-        }
-        const actor = await this.getActor(credentials);
-        // FIXME: check actor
-        let repositoryId = 0;
-        await this.transactionManager.transactInternal(async () => {
-            const repository = await this.repositoryManager.createRepository(
-            // url, platform, platformConfig, distributionStrategy
-            actor, context);
-            repositoryId = repository._localId;
-        }, context);
-        return repositoryId;
-    }
     async find(portableQuery, credentials, context, cachedSqlQueryId) {
         if (context.transaction || credentials.transactionId) {
             this.transactionManager.getTransactionFromContextOrCredentials(credentials, context);

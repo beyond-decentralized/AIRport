@@ -10,10 +10,6 @@ export const APPLICATION = {
                 "apiObjectMap": {
                     "UserAccountApi": {
                         "operationMap": {
-                            "addUserAccount": {
-                                "isAsync": true,
-                                "parameters": []
-                            },
                             "findUserAccount": {
                                 "isAsync": true,
                                 "parameters": []

@@ -71,6 +71,7 @@ export interface RepositoryVDescriptor<T>
 	
 	// Non-Id Properties
 	GUID?: string | IVStringField;
+	name?: string | IVStringField;
 	ageSuitability?: number | IVNumberField;
 	createdAt?: Date | IVDateField;
 	immutable?: boolean | IVBooleanField;

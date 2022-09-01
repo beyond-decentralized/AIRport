@@ -5,21 +5,17 @@ import {
 	RawInsertValues,
 	RawUpdate,
 } from '@airport/tarmaq-query'
-import { IContext } from '@airport/direction-indicator'
-import {
-	IActor,
-	IRepository
-} from '@airport/holding-pattern'
-import { UpdateState } from '../core/UpdateState'
+import { UpdateState } from './UpdateState'
+import { IRepository } from '@airport/ground-control';
+import { Repository } from '../ddl/ddl';
 
 export interface IRepositoryManager {
 
 	initialize(): Promise<void>;
 
 	createRepository(
-		actor: IActor,
-		context: IContext
-	): Promise<IRepository>;
+		repositoryName: string
+	): Promise<Repository>;
 
 	goOffline(): void;
 

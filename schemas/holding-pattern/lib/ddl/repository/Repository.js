@@ -11,6 +11,11 @@ import { Column, DbDate, DbNumber, DbString, Entity, GeneratedValue, Id, JoinCol
 let Repository = class Repository {
     constructor() {
         this.repositoryTransactionHistory = [];
+        this.repositoryApplications = [];
+        this.repositoryClients = [];
+        this.repositoryDatabases = [];
+        this.repositoryTerminals = [];
+        this.repositoryTypes = [];
     }
 };
 __decorate([
@@ -23,6 +28,10 @@ __decorate([
     Column({ name: "GUID", nullable: false }),
     DbString()
 ], Repository.prototype, "GUID", void 0);
+__decorate([
+    Column({ name: "NAME", nullable: false }),
+    DbString()
+], Repository.prototype, "name", void 0);
 __decorate([
     Column({ name: 'AGE_SUITABILITY', nullable: false }),
     DbNumber()

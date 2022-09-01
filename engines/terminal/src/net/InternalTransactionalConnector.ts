@@ -37,26 +37,6 @@ Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`)
     }
 
-    async addRepository(
-        // url: string,
-        // platform: PlatformType,
-        // platformConfig: string,
-        // distributionStrategy: DistributionStrategy,
-        context: IContext
-    ): Promise<number> {
-        return await this.transactionalServer.addRepository(
-            // url,
-            // platform,
-            // platformConfig,
-            // distributionStrategy,
-            this.terminalStore.getInternalConnector().internalCredentials,
-            {
-                internal: true,
-                ...context
-            }
-        )
-    }
-
     async find<E, EntityArray extends Array<E>>(
         portableQuery: PortableQuery,
         context: IQueryContext,

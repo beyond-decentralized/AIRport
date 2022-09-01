@@ -63,9 +63,11 @@ export interface ITerminalStore {
 
 	getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>
 
-	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
-
 	getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>
+
+	getApplicationMapByFullName: IMemoizedSelector<Map<FullApplication_Name, IApplication>, ITerminalState>
+
+	getApplications: IMemoizedSelector<IApplication[], ITerminalState>
 
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
@@ -132,6 +134,8 @@ export class TerminalStore
 	getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>
 
 	getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>
+
+	getApplicationMapByFullName: IMemoizedSelector<Map<FullApplication_Name, IApplication>, ITerminalState>
 
 	getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
 
@@ -263,6 +267,9 @@ export class TerminalStore
 
 				return latestApplicationVersionsByApplication_Indexes;
 			});
+
+		this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState,
+			terminal => terminal.applicationMapByFullName);
 
 		this.getApplications = this.selectorManager.createSelector(this.getTerminalState,
 			terminal => terminal.applications);

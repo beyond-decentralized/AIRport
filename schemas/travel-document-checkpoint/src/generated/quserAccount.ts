@@ -221,7 +221,7 @@ extends UserAccountEId, UserAccountEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QUserAccount extends IQEntity
+export interface QUserAccount<IQE extends QUserAccount = any> extends IQEntity<IQE | QUserAccount>
 {
 	// Id Fields
 	_localId: IQNumberField;

@@ -8,10 +8,6 @@ export declare const APPLICATION: {
             apiObjectMap: {
                 UserAccountApi: {
                     operationMap: {
-                        addUserAccount: {
-                            isAsync: boolean;
-                            parameters: any[];
-                        };
                         findUserAccount: {
                             isAsync: boolean;
                             parameters: any[];

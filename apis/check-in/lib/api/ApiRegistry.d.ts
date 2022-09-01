@@ -5,6 +5,10 @@ export interface IApiRegistry {
         apiObject: any;
         apiOperation: IApiOperation;
     }>;
+    findObjectAndOperationForApi(api: IApplicationApi, domainName: string, applicationName: string, apiInterfaceName: string, methodName: string): Promise<{
+        apiObject: any;
+        apiOperation: IApiOperation;
+    }>;
 }
 export interface InstalledApi {
     domainApiMap: {

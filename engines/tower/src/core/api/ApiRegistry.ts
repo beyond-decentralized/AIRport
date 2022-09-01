@@ -14,10 +14,10 @@ export class ApiRegistry
     implements IApiRegistry {
 
     @Inject()
-    containerAccessor: IContainerAccessor
+    applicationStore: IApplicationStore
 
     @Inject()
-    applicationStore: IApplicationStore
+    containerAccessor: IContainerAccessor
 
     initialize(
         applicationApi: IApplicationApi
@@ -34,8 +34,26 @@ export class ApiRegistry
         apiObject: any,
         apiOperation: IApiOperation
     }> {
-        const apiObjectDefinition = this.applicationStore.state.api
-            .apiObjectMap[apiInterfaceName]
+        return await this.findObjectAndOperationForApi(
+            this.applicationStore.state.api,
+            domainName,
+            applicationName,
+            apiInterfaceName,
+            methodName
+        )
+    }
+
+    async findObjectAndOperationForApi(
+        api: IApplicationApi,
+        domainName: string,
+        applicationName: string,
+        apiInterfaceName: string,
+        methodName: string
+    ): Promise<{
+        apiObject: any,
+        apiOperation: IApiOperation
+    }> {
+        const apiObjectDefinition = api.apiObjectMap[apiInterfaceName]
         if (!apiObjectDefinition) {
             throw new Error(`Could not find API object for
         Domain:

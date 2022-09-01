@@ -11,7 +11,7 @@ let HistoryManager = class HistoryManager {
         return await this.transactionHistoryDuo.getNewRecord(transactionType);
     }
     async getNewRepositoryTransactionHistory(transactionHistory, repositoryId, context) {
-        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.newRepository);
+        return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.rootTransaction.newRepository);
     }
 };
 __decorate([

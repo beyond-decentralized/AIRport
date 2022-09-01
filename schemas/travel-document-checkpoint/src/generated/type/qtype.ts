@@ -137,7 +137,7 @@ extends TypeEId, TypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QType extends IQEntity
+export interface QType<IQE extends QType = any> extends IQEntity<IQE | QType>
 {
 	// Id Fields
 	id: IQNumberField;

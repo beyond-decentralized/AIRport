@@ -33,6 +33,7 @@ import {
 	Repository_GUID,
 	Repository_Immutable,
 	Repository_LocalId,
+	Repository_Name,
 	Repository_Source
 } from "../../types";
 
@@ -56,6 +57,10 @@ export class Repository
 	@Column({ name: "GUID", nullable: false })
 	@DbString()
 	GUID: Repository_GUID
+
+	@Column({ name: "NAME", nullable: false })
+	@DbString()
+	name: Repository_Name
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
@@ -111,18 +116,18 @@ export class Repository
 	metroArea?: MetroArea
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryApplications: RepositoryApplication[]
+	repositoryApplications?: RepositoryApplication[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryClients: RepositoryClient[]
+	repositoryClients?: RepositoryClient[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryDatabases: RepositoryDatabase[]
+	repositoryDatabases?: RepositoryDatabase[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryTerminals: RepositoryTerminal[]
+	repositoryTerminals?: RepositoryTerminal[] = []
 
 	@OneToMany({ mappedBy: 'repository' })
-	repositoryTypes: RepositoryType[]
+	repositoryTypes?: RepositoryType[] = []
 
 }

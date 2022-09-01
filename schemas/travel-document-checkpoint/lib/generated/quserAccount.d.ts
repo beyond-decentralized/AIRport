@@ -89,7 +89,7 @@ export interface UserAccountECreateColumns extends UserAccountEId, UserAccountEU
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QUserAccount extends IQEntity {
+export interface QUserAccount<IQE extends QUserAccount = any> extends IQEntity<IQE | QUserAccount> {
     _localId: IQNumberField;
     email: IQStringField;
     passwordHash: IQStringField;

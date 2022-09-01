@@ -12,8 +12,6 @@ export interface IOperationContext
     entityCascadeGraph: any
     internal: boolean
     isSaveOperation?: boolean
-    // Only one new repository can be created at at time
-    newRepository?: IRepository
 }
 
 export interface IQueryOperationContext

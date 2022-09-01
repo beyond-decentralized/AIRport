@@ -93,14 +93,6 @@ export interface IAirportDatabase
     application: string,
   ): IEntityAccumulator
 
-  addRepository(
-    // url: string,
-    // platform: PlatformType,
-    // platformConfig: string,
-    // distributionStrategy: DistributionStrategy,
-    context?: IEntityContext,
-  ): Promise<number>;
-
   insertColumnValues<IQE extends IQEntity>(
     rawInsertValues: RawInsertColumnValues<IQE> | {
       (...args: any[]): RawInsertColumnValues<IQE>;

@@ -2,8 +2,9 @@ import { IAirportDatabase, IQMetadataUtils, IUtils } from '@airport/air-traffic-
 import { IApplicationUtils } from '@airport/tarmaq-query';
 import { IEntityStateManager, IRootTransaction, ISaveResult } from '@airport/ground-control';
 import { IActor, IAirEntity } from '@airport/holding-pattern';
-import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IOperationContext, IOperationManager, IRepositoryManager, IStructuralEntityValidator, ITransaction, IUpdateManager } from '@airport/terminal-map';
+import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IOperationContext, IOperationManager, IStructuralEntityValidator, ITransaction, ITransactionContext, IUpdateManager } from '@airport/terminal-map';
 import { IQueryFacade } from '@airport/tarmaq-dao';
+import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager';
 /**
  * Created by Papa on 11/15/2016.
  */
@@ -28,7 +29,7 @@ export declare class OperationManager implements IOperationManager {
      * @param qEntity
      * @param entity
      */
-    performSave<E extends IAirEntity, T = E | E[]>(entities: T, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext): Promise<ISaveResult>;
+    performSave<E extends IAirEntity, T = E | E[]>(entities: T, actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, context: IOperationContext & ITransactionContext): Promise<ISaveResult>;
     protected internalCreate<E extends IAirEntity>(entities: E[], actor: IActor, transaction: ITransaction, rootTransaction: IRootTransaction, saveResult: ISaveResult, context: IOperationContext, ensureGeneratedValues?: boolean): Promise<void>;
     /**
      * On an UPDATE operation, can a nested create contain an update?

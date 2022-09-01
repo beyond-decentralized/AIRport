@@ -25,8 +25,9 @@ export interface ITerminalStore {
     getAllColumns: IMemoizedSelector<IApplicationColumn[], ITerminalState>;
     getAllEntities: IMemoizedSelector<IApplicationEntity[], ITerminalState>;
     getAllRelations: IMemoizedSelector<IApplicationRelation[], ITerminalState>;
-    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
+    getApplicationMapByFullName: IMemoizedSelector<Map<FullApplication_Name, IApplication>, ITerminalState>;
+    getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>;
     getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
@@ -57,6 +58,7 @@ export declare class TerminalStore implements ITerminalStore {
     getApplicationActors: IMemoizedSelector<IActor[], ITerminalState>;
     getApplicationInitializer: IMemoizedSelector<IApplicationInitializerState, ITerminalState>;
     getApplicationActorMapByDomainAndApplication_Names: IMemoizedSelector<Map<Domain_Name, Map<Application_Name, IActor[]>>, ITerminalState>;
+    getApplicationMapByFullName: IMemoizedSelector<Map<FullApplication_Name, IApplication>, ITerminalState>;
     getApplications: IMemoizedSelector<IApplication[], ITerminalState>;
     getDomains: IMemoizedSelector<IDomain[], ITerminalState>;
     getDomainMapByName: IMemoizedSelector<Map<Domain_Name, IDomain>, ITerminalState>;

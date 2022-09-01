@@ -10,17 +10,6 @@ import { Delete, InsertColumnValues, InsertValues, UpdateColumns, UpdateProperti
  * Created by Papa on 5/23/2016.
  */
 let DatabaseFacade = class DatabaseFacade {
-    async addRepository(
-    // url: string = null,
-    // platform: PlatformType = PlatformType.GOOGLE_DOCS,
-    // platformConfig: string = null,
-    // distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-    context) {
-        // TODO: figure out how addRepository will work
-        return await this.transactionalConnector.addRepository(
-        // url, platform, platformConfig, distributionStrategy, 
-        context);
-    }
     async insertColumnValues(rawInsertColumnValues, context) {
         if (!rawInsertColumnValues) {
             return 0;

@@ -209,7 +209,7 @@ extends ClientEId, ClientEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClient extends IQEntity
+export interface QClient<IQE extends QClient = any> extends IQEntity<IQE | QClient>
 {
 	// Id Fields
 	_localId: IQNumberField;

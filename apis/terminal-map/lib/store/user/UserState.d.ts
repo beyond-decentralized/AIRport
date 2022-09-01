@@ -1,9 +1,11 @@
+import { IRootTransaction } from "@airport/ground-control";
 import { Actor } from "@airport/holding-pattern";
 import { UserAccount } from "@airport/travel-document-checkpoint";
 import { Subject } from "rxjs";
 export interface IUserSession {
     currentActor: Actor;
     userAccount: UserAccount;
+    currentRootTransaction: IRootTransaction;
 }
 export interface IUserState {
     allSessions: IUserSession[];

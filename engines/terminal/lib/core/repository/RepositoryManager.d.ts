@@ -1,6 +1,6 @@
-import { IActor, IRepository, IRepositoryDao } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IRepository, IRepositoryDao, IRepositoryManager, Repository, UpdateState } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/tarmaq-query';
-import { IOperationContext, IRepositoryManager, UpdateState } from '@airport/terminal-map';
+import { ITerminalSessionManager } from '@airport/terminal-map';
 /**
  * Created by Papa on 2/12/2017.
  */
@@ -13,8 +13,9 @@ export interface EntityRepoQueryData {
 }
 export declare class RepositoryManager implements IRepositoryManager {
     repositoryDao: IRepositoryDao;
+    terminalSessionManager: ITerminalSessionManager;
     initialize(): Promise<void>;
-    createRepository(actor: IActor, context: IOperationContext): Promise<IRepository>;
+    createRepository(repositoryName: string): Promise<Repository>;
     goOffline(): void;
     getUpdateState(repository: IRepository): UpdateState;
     setUpdateStateForAll(updateState: UpdateState): void;

@@ -75,7 +75,7 @@ export interface ClientECreateColumns extends ClientEId, ClientEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClient extends IQEntity {
+export interface QClient<IQE extends QClient = any> extends IQEntity<IQE | QClient> {
     _localId: IQNumberField;
     domain: IQStringField;
     GUID: IQStringField;

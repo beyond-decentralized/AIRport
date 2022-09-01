@@ -150,7 +150,7 @@ extends DatabaseTypeEId, DatabaseTypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabaseType extends IQEntity
+export interface QDatabaseType<IQE extends QDatabaseType = any> extends IQEntity<IQE | QDatabaseType>
 {
 	// Id Fields
 

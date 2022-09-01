@@ -1,4 +1,5 @@
 export * from '../types'
+export * from '../core/core'
 export * from '../dao/dao'
 export * from '../duo/duo'
 export * from '../ddl/ddl'

@@ -60,7 +60,7 @@ export interface CountryECreateColumns extends CountryEId, CountryEUpdateColumns
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QCountry extends IQEntity {
+export interface QCountry<IQE extends QCountry = any> extends IQEntity<IQE | QCountry> {
     id: IQNumberField;
     abbreviation: IQStringField;
     name: IQStringField;

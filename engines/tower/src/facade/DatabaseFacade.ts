@@ -54,20 +54,6 @@ export class DatabaseFacade
 
 	name: string
 
-	async addRepository(
-		// url: string = null,
-		// platform: PlatformType = PlatformType.GOOGLE_DOCS,
-		// platformConfig: string = null,
-		// distributionStrategy: DistributionStrategy = DistributionStrategy.S3_DISTIBUTED_PUSH,
-		context?: IContext
-	): Promise<number> {
-		// TODO: figure out how addRepository will work
-		return await this.transactionalConnector.addRepository(
-			// url, platform, platformConfig, distributionStrategy, 
-			context
-		)
-	}
-
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertColumnValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;

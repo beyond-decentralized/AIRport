@@ -1,3 +1,4 @@
+import { IRepository } from "@airport/ground-control";
 import type { IOperationContext } from "./OperationContext";
 
 export interface IMissingRepositoryRecord {
@@ -11,6 +12,7 @@ export interface IStructuralEntityValidator {
 		entities: E[],
 		operatedOnEntityIndicator: boolean[],
 		missingRepositoryRecords: IMissingRepositoryRecord[],
+		topLevelObjectRepositories: IRepository[],
 		context: IOperationContext,
 	): void
 

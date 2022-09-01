@@ -152,7 +152,7 @@ extends ContinentEId, ContinentEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QContinent extends IQEntity
+export interface QContinent<IQE extends QContinent = any> extends IQEntity<IQE | QContinent>
 {
 	// Id Fields
 	id: IQNumberField;

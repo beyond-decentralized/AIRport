@@ -90,15 +90,6 @@ let TransactionalReceiver = class TransactionalReceiver {
                     .get(message.domain);
                 break;
             }
-            case IsolateMessageType.ADD_REPOSITORY:
-                // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-                theResult = await this.transactionalServer.addRepository(
-                // addRepositoryMessage.url,
-                // addRepositoryMessage.platform,
-                // addRepositoryMessage.platformConfig,
-                // addRepositoryMessage.distributionStrategy,
-                credentials, context);
-                break;
             case IsolateMessageType.DELETE_WHERE:
                 const deleteWhereMessage = message;
                 theResult = await this.transactionalServer.deleteWhere(deleteWhereMessage.portableQuery, credentials, context);
@@ -179,13 +170,7 @@ let TransactionalReceiver = class TransactionalReceiver {
         };
     }
     async startApiCall(message, context, nativeHandleCallback) {
-        let userSession;
-        if (this.terminalStore.getIsServer()) {
-            throw new Error('Implement');
-        }
-        else {
-            userSession = await this.terminalSessionManager.getUserSession();
-        }
+        const userSession = await this.terminalSessionManager.getUserSession();
         const transactionCredentials = {
             application: message.application,
             domain: message.domain,
@@ -194,7 +179,9 @@ let TransactionalReceiver = class TransactionalReceiver {
             transactionId: message.transactionId
         };
         if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
-            return false;
+            return {
+                isStarted: false
+            };
         }
         let actor = await this.getApiCallActor(message, userSession, context);
         context.transaction.actor = actor;
@@ -203,6 +190,26 @@ let TransactionalReceiver = class TransactionalReceiver {
         initiator.domain = message.domain;
         initiator.methodName = message.methodName;
         initiator.objectName = message.objectName;
+        let isFramework = true;
+        try {
+            if (message.domain !== INTERNAL_DOMAIN) {
+                isFramework = false;
+                await this.doNativeHandleCallback(message, actor, context, nativeHandleCallback);
+            }
+        }
+        catch (e) {
+            context.errorMessage = e.message;
+            this.transactionalServer.rollback(transactionCredentials, context);
+            return {
+                isStarted: false
+            };
+        }
+        return {
+            isFramework,
+            isStarted: true
+        };
+    }
+    async doNativeHandleCallback(message, actor, context, nativeHandleCallback) {
         message.transactionId = context.transaction.id;
         message.actor = {
             application: actor.application,
@@ -215,15 +222,7 @@ let TransactionalReceiver = class TransactionalReceiver {
                 username: actor.userAccount.username
             }
         };
-        try {
-            await nativeHandleCallback();
-        }
-        catch (e) {
-            context.errorMessage = e.message;
-            this.transactionalServer.rollback(transactionCredentials, context);
-            return false;
-        }
-        return true;
+        await nativeHandleCallback();
     }
     async getApiCallActor(message, userSession, context) {
         if (context.transaction.parentTransaction) {
@@ -232,6 +231,7 @@ let TransactionalReceiver = class TransactionalReceiver {
         const terminal = this.terminalStore.getTerminal();
         let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(message.domain, message.application, userSession.userAccount.GUID, terminal.GUID);
         if (actor) {
+            userSession.currentActor = actor;
             return actor;
         }
         const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application);
@@ -242,6 +242,7 @@ let TransactionalReceiver = class TransactionalReceiver {
             userAccount: userSession.userAccount
         };
         await this.actorDao.save(actor);
+        userSession.currentActor = actor;
         return actor;
     }
     async endApiCall(credentials, errorMessage, context) {
@@ -270,13 +271,13 @@ __decorate([
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);
 __decorate([
     Inject()
+], TransactionalReceiver.prototype, "localApiServer", void 0);
+__decorate([
+    Inject()
 ], TransactionalReceiver.prototype, "terminalSessionManager", void 0);
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "terminalStore", void 0);
-__decorate([
-    Inject()
-], TransactionalReceiver.prototype, "transactionManager", void 0);
 __decorate([
     Inject()
 ], TransactionalReceiver.prototype, "transactionalServer", void 0);

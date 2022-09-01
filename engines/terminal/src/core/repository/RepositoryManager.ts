@@ -5,12 +5,14 @@ import {
 	Inject,
 	Injected
 } from '@airport/direction-indicator'
-import { IContext } from '@airport/direction-indicator'
 import {
 	IActor,
 	IRepository,
 	IRepositoryDao,
-	QAirEntity
+	IRepositoryManager,
+	QAirEntity,
+	Repository,
+	UpdateState
 } from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default
 // import is reserved for Application use
 import {
@@ -23,9 +25,7 @@ import {
 	RawUpdate,
 } from '@airport/tarmaq-query'
 import {
-	IOperationContext,
-	IRepositoryManager,
-	UpdateState,
+	ITerminalSessionManager,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
 
@@ -49,21 +49,25 @@ export class RepositoryManager
 	@Inject()
 	repositoryDao: IRepositoryDao
 
+	@Inject()
+	terminalSessionManager: ITerminalSessionManager
+
 	async initialize(): Promise<void> {
 	}
 
 	async createRepository(
-		actor: IActor,
-		context: IOperationContext
-	): Promise<IRepository> {
-		if (context.newRepository) {
+		repositoryName: string
+	): Promise<Repository> {
+		const userSession = await this.terminalSessionManager.getUserSession()
+		if (userSession.currentRootTransaction.newRepository) {
 			throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
-		let repository = await this.createRepositoryRecord(actor, context)
 
-		context.newRepository = repository
+		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor)
+
+		userSession.currentRootTransaction.newRepository = repository
 
 		return repository
 	}
@@ -89,18 +93,21 @@ already contains a new repository.`)
 
 
 	private getRepositoryRecord(
+		name: string,
 		actor: IActor
-	): IRepository {
-		const repository: IRepository = {
+	): Repository {
+		const repository: Repository = {
 			ageSuitability: 0,
 			createdAt: new Date(),
 			_localId: null,
 			immutable: false,
-			owner: actor.userAccount,
+			name,
+			owner: actor.userAccount as any,
 			// platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
 			// platformConfig: null,
 			repositoryTransactionHistory: [],
-			source: 'localhost:9000',
+			// FIXME: propage the 
+			source: actor.application.fullName,
 			GUID: guidv4(),
 		}
 
@@ -108,12 +115,12 @@ already contains a new repository.`)
 	}
 
 	private async createRepositoryRecord(
+		name: string,
 		actor: IActor,
-		context?: IContext
-	): Promise<IRepository> {
-		const repository: IRepository = this.getRepositoryRecord(actor)
+	): Promise<Repository> {
+		const repository = this.getRepositoryRecord(name, actor)
 
-		await this.repositoryDao.save(repository, context)
+		await this.repositoryDao.save(repository)
 
 		return repository
 	}

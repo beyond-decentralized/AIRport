@@ -7,12 +7,11 @@ import { ACTIVE_QUERIES, OBSERVABLE_QUERY_ADAPTER } from '@airport/flight-number
 import { ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
-import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
 import { QUERY_FACADE } from '@airport/tarmaq-dao';
 import { QUERY_UTILS } from '@airport/tarmaq-query';
 import { APPLICATION_INITIALIZER, STORE_DRIVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER, TRANSACTION_MANAGER, USER_STORE } from '@airport/terminal-map';
 import { RepositoryLoader } from './core/repository/RepositoryLoader';
-import { RepositoryManager } from './core/repository/RepositoryManager';
 import { TerminalSessionManager } from './core/TerminalSessionManager';
 import { InternalRecordManager } from './data/InternalRecordManager';
 import { InternalTransactionalConnector } from './net/InternalTransactionalConnector';
@@ -34,6 +33,9 @@ import { OperationManager } from './processing/OperationManager';
 import { StructuralEntityValidator } from './processing/StructuralEntityValidator';
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer';
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer';
+import { RepositoryManager } from './core/repository/RepositoryManager';
+import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/lib/core/core-tokens';
+import { LOCAL_API_SERVER } from '@airport/apron';
 const terminal = lib('terminal');
 REPOSITORY_LOADER.setClass(RepositoryLoader);
 TRANSACTIONAL_CONNECTOR.setClass(InternalTransactionalConnector);
@@ -109,11 +111,6 @@ export const QUERY_MANAGER = terminal.token({
     class: QueryManager,
     interface: 'IQueryManager',
     token: 'QUERY_MANAGER'
-});
-export const REPOSITORY_MANAGER = terminal.token({
-    class: RepositoryManager,
-    interface: 'IRepositoryManager',
-    token: 'REPOSITORY_MANAGER'
 });
 export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token({
     class: StructuralEntityValidator,
@@ -215,8 +212,10 @@ REPOSITORY_LOADER.setDependencies({
     synchronizationAdapterLoader: SYNCHRONIZATION_ADAPTER_LOADER,
     synchronizationInManager: SYNCHRONIZATION_IN_MANAGER
 });
+REPOSITORY_MANAGER.setClass(RepositoryManager);
 REPOSITORY_MANAGER.setDependencies({
     repositoryDao: REPOSITORY_DAO,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
 });
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
     applicationUtils: APPLICATION_UTILS,
@@ -225,12 +224,16 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager);
 TERMINAL_SESSION_MANAGER.setDependencies({
     terminalStore: TERMINAL_STORE,
+    userAccountManager: USER_ACCOUNT_MANAGER,
     userStore: USER_STORE
 });
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     idGenerator: ID_GENERATOR,
+    storeDriver: STORE_DRIVER,
     synchronizationOutManager: SYNCHRONIZATION_OUT_MANAGER,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TERMINAL_STORE,
     transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
 });
 TRANSACTIONAL_RECEIVER.setDependencies({
@@ -239,6 +242,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     databaseManager: DATABASE_MANAGER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     internalRecordManager: INTERNAL_RECORD_MANAGER,
+    localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER,
@@ -250,6 +254,8 @@ TRANSACTIONAL_SERVER.setDependencies({
     operationManager: OPERATION_MANAGER,
     queryManager: QUERY_MANAGER,
     repositoryManager: REPOSITORY_MANAGER,
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER,
     updateManager: UPDATE_MANAGER
 });
 UPDATE_MANAGER.setDependencies({

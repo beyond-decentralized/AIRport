@@ -160,7 +160,7 @@ extends StateEId, StateEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QState extends IQEntity
+export interface QState<IQE extends QState = any> extends IQEntity<IQE | QState>
 {
 	// Id Fields
 	id: IQNumberField;

@@ -12,14 +12,15 @@ import { v4 as guidv4 } from "uuid";
 let RepositoryManager = class RepositoryManager {
     async initialize() {
     }
-    async createRepository(actor, context) {
-        if (context.newRepository) {
+    async createRepository(repositoryName) {
+        const userSession = await this.terminalSessionManager.getUserSession();
+        if (userSession.currentRootTransaction.newRepository) {
             throw new Error(`Cannot create more than one repository per transaction:
 Attempting to create a new repository and Operation Context
 already contains a new repository.`);
         }
-        let repository = await this.createRepositoryRecord(actor, context);
-        context.newRepository = repository;
+        let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor);
+        userSession.currentRootTransaction.newRepository = repository;
         return repository;
     }
     goOffline() {
@@ -34,24 +35,26 @@ already contains a new repository.`);
     setUpdateState(repository, updateState) {
         throw new Error(`not implemented`);
     }
-    getRepositoryRecord(actor) {
+    getRepositoryRecord(name, actor) {
         const repository = {
             ageSuitability: 0,
             createdAt: new Date(),
             _localId: null,
             immutable: false,
+            name,
             owner: actor.userAccount,
             // platformConfig: platformConfig ? JSON.stringify(platformConfig) : null,
             // platformConfig: null,
             repositoryTransactionHistory: [],
-            source: 'localhost:9000',
+            // FIXME: propage the 
+            source: actor.application.fullName,
             GUID: guidv4(),
         };
         return repository;
     }
-    async createRepositoryRecord(actor, context) {
-        const repository = this.getRepositoryRecord(actor);
-        await this.repositoryDao.save(repository, context);
+    async createRepositoryRecord(name, actor) {
+        const repository = this.getRepositoryRecord(name, actor);
+        await this.repositoryDao.save(repository);
         return repository;
     }
     ensureRepositoryScopeOnInsertValues(repository, rawInsertValues) {
@@ -100,6 +103,9 @@ already contains a new repository.`);
 __decorate([
     Inject()
 ], RepositoryManager.prototype, "repositoryDao", void 0);
+__decorate([
+    Inject()
+], RepositoryManager.prototype, "terminalSessionManager", void 0);
 RepositoryManager = __decorate([
     Injected()
 ], RepositoryManager);

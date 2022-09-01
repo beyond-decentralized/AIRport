@@ -1,5 +1,4 @@
 import { ISaveResult, PortableQuery, QueryResultType } from '@airport/ground-control';
-import { IContext } from '@airport/direction-indicator';
 import { EntityIdData, IAbstractQuery, IEntityUpdateColumns, IEntityUpdateProperties, IQEntity, IQueryContext, RawDelete, RawInsertColumnValues, RawInsertValues, RawUpdate, RawUpdateColumns } from '@airport/tarmaq-query';
 import { Observable } from 'rxjs';
 import { IEntityContext } from '@airport/tarmaq-entity';
@@ -19,7 +18,6 @@ export interface IDatabaseFacade {
      * Name of the terminal
      */
     name: string;
-    addRepository(ctx?: IContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, ctx: IEntityContext): Promise<number>;

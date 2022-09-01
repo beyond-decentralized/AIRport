@@ -108,7 +108,15 @@ Only one concurrent transaction is allowed per application.`)
         }
         const transaction = await this.internalStartTransaction(credentials, parentTransaction, context);
         if (!parentTransaction) {
-            transaction.numberOfOperations = 0;
+            const rootTransaction = transaction;
+            rootTransaction.numberOfOperations = 0;
+            // Internal calls don't maintain rootTransaction and can create more than
+            // one repository at a time.  APIs exposed externally will never be top
+            // level transactions
+            if (transaction.actor.application.domain.name !== INTERNAL_DOMAIN) {
+                const userSession = await this.terminalSessionManager.getUserSession();
+                userSession.currentRootTransaction = rootTransaction;
+            }
         }
         return transaction;
     }
@@ -125,7 +133,11 @@ Only one concurrent transaction is allowed per application.`)
         const transaction = this.getTransactionFromContextOrCredentials(credentials, context);
         let parentTransaction = transaction.parentTransaction;
         await transaction.rollback(null, context);
-        if (await this.clearTransaction(transaction, parentTransaction, credentials, context)) {
+        const transactionCleared = await this.clearTransaction(transaction, parentTransaction, credentials, context);
+        if (!parentTransaction) {
+            await this.clearUserSessionRootTransaction(transaction);
+        }
+        if (transactionCleared) {
             await this.resumeParentOrPendingTransaction(parentTransaction, context);
         }
     }
@@ -189,6 +201,9 @@ parent transactions.
                     await this.synchronizationOutManager.synchronizeOut(transactionHistory.repositoryTransactionHistories);
                 }
             }
+            if (!parentTransaction) {
+                await this.clearUserSessionRootTransaction(transaction);
+            }
         }
         finally {
             if (await this.clearTransaction(transaction, parentTransaction, credentials, context)) {
@@ -198,6 +213,16 @@ parent transactions.
                 await this.resumeParentOrPendingTransaction(parentTransaction, context);
             }
         }
+    }
+    async clearUserSessionRootTransaction(transaction) {
+        // Internal calls don't maintain rootTransaction and can create more than
+        // one repository at a time.  APIs exposed externally will never be top
+        // level transactions
+        if (transaction.actor.application.domain.name === INTERNAL_DOMAIN) {
+            return;
+        }
+        const userSession = await this.terminalSessionManager.getUserSession();
+        userSession.currentRootTransaction = null;
     }
     copyTransactionHistoryToParentTransaction(transaction, parentTransaction) {
         let childTransactionHistory = transaction.transactionHistory;
@@ -334,6 +359,9 @@ __decorate([
 __decorate([
     Inject()
 ], TransactionManager.prototype, "synchronizationOutManager", void 0);
+__decorate([
+    Inject()
+], TransactionManager.prototype, "terminalSessionManager", void 0);
 __decorate([
     Inject()
 ], TransactionManager.prototype, "terminalStore", void 0);

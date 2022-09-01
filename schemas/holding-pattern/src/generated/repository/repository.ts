@@ -39,6 +39,7 @@ export interface IRepository {
 
 	// Non-Id Properties
 	GUID?: string;
+	name?: string;
 	ageSuitability?: number;
 	createdAt?: Date;
 	immutable?: boolean;

@@ -1,3 +1,4 @@
+import { RepositoryApi } from '../api/api'
 import { IRecordHistoryNewValueDao, RecordHistoryNewValueDao } from '../dao/history/RecordHistoryNewValueDao'
 import { IRecordHistoryOldValueDao, RecordHistoryOldValueDao } from '../dao/history/RecordHistoryOldValueDao'
 import { IRepositoryTransactionHistoryDao, RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao'
@@ -9,7 +10,8 @@ import { IRecordHistoryNewValueDuo, RecordHistoryNewValueDuo } from '../duo/hist
 import { IRecordHistoryOldValueDuo, RecordHistoryOldValueDuo } from '../duo/history/RecordHistoryOldValueDuo'
 import { IRepositoryTransactionHistoryDuo, RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransactionHistoryDuo'
 import { ITransactionHistoryDuo, TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo'
-import { holdingPattern } from './common-tokens'
+import { holdingPattern, REPOSITORY_API } from './common-tokens'
+import { REPOSITORY_MANAGER } from './runtime-index'
 
 export const ACTOR_DAO = holdingPattern.token<IActorDao>({
     class: ActorDao,
@@ -69,6 +71,12 @@ export const TRANSACTION_HISTORY_DUO = holdingPattern.token<ITransactionHistoryD
 
 OPERATION_HISTORY_DUO.setDependencies({
     recordHistoryDuo: RECORD_HISTORY_DUO,
+})
+
+REPOSITORY_API.setClass(RepositoryApi)
+REPOSITORY_API.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+    repositoryManager: REPOSITORY_MANAGER,
 })
 
 RECORD_HISTORY_DUO.setDependencies({

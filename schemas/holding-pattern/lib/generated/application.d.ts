@@ -5,7 +5,20 @@ export declare const APPLICATION: {
     sinceVersion: number;
     versions: {
         api: {
-            apiObjectMap: {};
+            apiObjectMap: {
+                RepositoryApi: {
+                    operationMap: {
+                        findAll: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                        create: {
+                            isAsync: boolean;
+                            parameters: any[];
+                        };
+                    };
+                };
+            };
         };
         entities: ({
             columns: {

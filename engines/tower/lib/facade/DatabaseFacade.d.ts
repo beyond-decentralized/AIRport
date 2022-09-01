@@ -14,7 +14,6 @@ export declare class DatabaseFacade implements IDatabaseFacade {
     transactionalConnector: ITransactionalConnector;
     updateCacheManager: IUpdateCacheManager;
     name: string;
-    addRepository(context?: IContext): Promise<number>;
     insertColumnValues<IQE extends IQEntity>(rawInsertColumnValues: RawInsertColumnValues<IQE> | {
         (...args: any[]): RawInsertColumnValues<IQE>;
     }, context: IContext): Promise<number>;

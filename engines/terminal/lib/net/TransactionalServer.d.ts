@@ -1,7 +1,8 @@
 import { IContext } from '@airport/direction-indicator';
 import { ISaveResult, PortableQuery } from '@airport/ground-control';
-import { IActor, IAirEntity, Repository_LocalId } from '@airport/holding-pattern';
-import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials, ITerminalStore, ITransactionManager, IOperationManager, IInsertManager, IDeleteManager, IQueryManager, IRepositoryManager, IUpdateManager } from '@airport/terminal-map';
+import { IActor, IAirEntity } from '@airport/holding-pattern';
+import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager';
+import { IOperationContext, IQueryOperationContext, ITransactionalServer, ITransactionContext, IApiCallContext, ITransactionCredentials, ITerminalStore, ITransactionManager, IOperationManager, IInsertManager, IDeleteManager, IQueryManager, IUpdateManager } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export interface InternalPortableQuery extends PortableQuery {
     domainAndPort: string;
@@ -41,7 +42,6 @@ export declare class TransactionalServer implements ITransactionalServer {
     updateManager: IUpdateManager;
     tempActor: IActor;
     init(context?: IContext): Promise<void>;
-    addRepository(credentials: ITransactionCredentials, context: IOperationContext & ITransactionContext): Promise<Repository_LocalId>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ITransactionCredentials, context: IQueryOperationContext & ITransactionContext, cachedSqlQueryId?: number): Observable<EntityArray>;

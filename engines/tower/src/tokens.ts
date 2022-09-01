@@ -1,6 +1,6 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control';
 import { API_REGISTRY, API_VALIDATOR } from '@airport/check-in';
-import { lib } from '@airport/direction-indicator'
+import { CONTAINER_ACCESSOR, lib } from '@airport/direction-indicator'
 import { ENTITY_STATE_MANAGER, UPDATE_CACHE_MANAGER } from '@airport/ground-control';
 import { APPLICATION_STORE, LOCAL_API_SERVER } from '@airport/apron';
 import { AirportDatabase } from './AirportDatabase';
@@ -30,7 +30,8 @@ ENTITY_STATE_MANAGER.setClass(EntityStateManager)
 
 API_REGISTRY.setClass(ApiRegistry)
 API_REGISTRY.setDependencies({
-    applicationStore: APPLICATION_STORE
+    applicationStore: APPLICATION_STORE,
+    containerAccessor: CONTAINER_ACCESSOR
 })
 
 API_VALIDATOR.setClass(ApiValidator)
@@ -39,6 +40,7 @@ LOCAL_API_SERVER.setClass(LocalAPIServer)
 
 LOCAL_API_SERVER.setDependencies({
     apiRegistry: API_REGISTRY,
+    applicationStore: APPLICATION_STORE,
     requestManager: REQUEST_MANAGER
 })
 

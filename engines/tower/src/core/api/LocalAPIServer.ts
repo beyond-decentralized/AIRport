@@ -7,8 +7,9 @@ import {
     ILocalAPIResponse,
     LocalApiRequestCategoryType
 } from "@airport/aviation-communication";
-import { IApiRegistry } from "@airport/check-in";
+import { IApiRegistry, IApplicationApi } from "@airport/check-in";
 import {
+    IApplicationStore,
     ILocalAPIServer
 } from "@airport/apron";
 import { Actor } from '@airport/holding-pattern';
@@ -22,6 +23,9 @@ export class LocalAPIServer
     apiRegistry: IApiRegistry
 
     @Inject()
+    applicationStore: IApplicationStore
+
+    @Inject()
     requestManager: RequestManager
 
     async handleRequest(
@@ -31,21 +35,16 @@ export class LocalAPIServer
         let payload
         let errorMessage: string
         try {
-            const {
-                apiObject,
-                apiOperation
-            } = await this.apiRegistry.findApiObjectAndOperation(
-                request.domain, request.application, request.objectName, request.methodName)
-
+            // TODO: this should be inside coreHandleRequest after retrieval
+            // of apiOperation.  For that requestManager must be supported
+            // by the main @airport/terminal. It works in App VMs since
+            // a new requestManager object is created per request but
+            // currently does not work in @airport/terminal (since there is
+            // no per-request creating of injected objects).
             this.requestManager.actor = request.actor
             this.requestManager.userAccount = request.actor.userAccount
 
-            const result = apiObject[request.methodName].apply(apiObject, request.args)
-            if (apiOperation.isAsync) {
-                payload = await result
-            } else {
-                payload = result
-            }
+            payload = await this.coreHandleRequest(request, this.applicationStore.state.api)
         } catch (e) {
             errorMessage = e.message ? e.message : e
             console.error(e)
@@ -68,6 +67,24 @@ export class LocalAPIServer
         }
 
         return response
+    }
+
+    async coreHandleRequest<ReturnType = any>(
+        request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>,
+        api: IApplicationApi
+    ): Promise<ReturnType> {
+        const {
+            apiObject,
+            apiOperation
+        } = await this.apiRegistry.findObjectAndOperationForApi(api,
+            request.domain, request.application, request.objectName, request.methodName)
+
+        const result = apiObject[request.methodName].apply(apiObject, request.args)
+        if (apiOperation.isAsync) {
+            return await result
+        } else {
+            return result
+        }
     }
 
 

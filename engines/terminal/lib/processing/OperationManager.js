@@ -35,9 +35,19 @@ let OperationManager = class OperationManager {
                 .restoreEntityGraph(verifiedTree, context);
         }
         const missingRepositoryRecords = [];
-        this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, context);
+        const topLevelObjectRepositories = [];
+        this.structuralEntityValidator.validate(entityGraph, [], missingRepositoryRecords, topLevelObjectRepositories, context);
         if (missingRepositoryRecords.length) {
-            const repository = await this.repositoryManager.createRepository(context.actor, context);
+            if (!topLevelObjectRepositories.length) {
+                throw new Error(`There are entities without an assigned repository and no top level object
+passed to '...Dao.save(...)' has a repository assigned`);
+            }
+            if (topLevelObjectRepositories.length > 1) {
+                throw new Error(`When there are entities without an assigned repository
+(when passed to '...Dao.save(...)') there may only be one (and same) repository assigned
+in top level objects (that are passed into '...Dao.save(...)')`);
+            }
+            const repository = topLevelObjectRepositories[0];
             for (const missingRepositoryRecord of missingRepositoryRecords) {
                 missingRepositoryRecord.record[missingRepositoryRecord.repositoryPropertyName]
                     = repository;
@@ -54,13 +64,13 @@ let OperationManager = class OperationManager {
             } : null
         };
         let newRepository;
-        if (context.newRepository) {
+        if (context.rootTransaction.newRepository) {
             newRepository = {
-                _localId: context.newRepository._localId,
-                createdAt: context.newRepository.createdAt,
-                GUID: context.newRepository.GUID,
-                ageSuitability: context.newRepository.ageSuitability,
-                source: context.newRepository.source,
+                _localId: context.rootTransaction.newRepository._localId,
+                createdAt: context.rootTransaction.newRepository.createdAt,
+                GUID: context.rootTransaction.newRepository.GUID,
+                ageSuitability: context.rootTransaction.newRepository.ageSuitability,
+                source: context.rootTransaction.newRepository.source,
                 ownerActor: {
                     _localId: actor._localId,
                     GUID: actor.GUID,

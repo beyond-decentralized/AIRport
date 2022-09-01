@@ -8,6 +8,7 @@ export declare const INTERNAL_APP = "@airport/terminal";
 export declare const INTERNAL_DOMAIN = "internal://domain";
 export interface IRootTransaction {
     numberOfOperations: number;
+    newRepository?: IRepository;
 }
 export interface IUserAccount {
     _localId?: number;
@@ -44,7 +45,6 @@ export interface IAirEntity {
 }
 export interface ITransactionalConnector {
     callApi(apiInput: ICoreLocalApiRequest): Promise<ILocalAPIResponse>;
-    addRepository(context?: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context?: IAbstractQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;

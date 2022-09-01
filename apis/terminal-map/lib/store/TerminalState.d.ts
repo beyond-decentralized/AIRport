@@ -44,6 +44,7 @@ export interface IApplicationInitializerState {
 export interface ITerminalState {
     applicationActors: IActor[];
     applicationInitializer: IApplicationInitializerState;
+    applicationMapByFullName: Map<FullApplication_Name, IApplication>;
     applications: IApplication[];
     domains: IDomain[];
     frameworkActor: IActor;

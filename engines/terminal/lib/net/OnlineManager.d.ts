@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
-import { IRepository, IRepositoryTransactionHistoryDao, IRepositoryDao } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
-import { IRepositoryManager, ITransactionManager } from '@airport/terminal-map';
+import { IRepository, IRepositoryTransactionHistoryDao, IRepositoryDao, IRepositoryManager } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { ITransactionManager } from '@airport/terminal-map';
 export interface IOnlineManager {
     goOffline(context?: IContext): Promise<void>;
     goOnline(context?: IContext): Promise<void>;

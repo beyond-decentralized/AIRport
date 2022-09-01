@@ -1,8 +1,15 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { Application } from '@airport/airspace';
+import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { refresh } from 'ionicons/icons';
+import { useState } from 'react';
+import { getApplications } from '../api';
 import './AppsPage.css';
 
 const AppsPage: React.FC = () => {
+  const [applications, setApplications] = useState<Application[]>([])
+
+  getApplications(setApplications)
+
   return (
     <IonPage>
       <IonHeader>
@@ -16,7 +23,18 @@ const AppsPage: React.FC = () => {
             <IonTitle size="large">Apps</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 2 page" />
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={e => getApplications(setApplications)}>
+            <IonIcon icon={refresh} />
+          </IonFabButton>
+        </IonFab>
+        {applications.map(application =>
+          <IonItem>
+            Domain: {application.domain.name}
+            <br />
+            Name: {application.name}
+          </IonItem>
+        )}
       </IonContent>
     </IonPage>
   );

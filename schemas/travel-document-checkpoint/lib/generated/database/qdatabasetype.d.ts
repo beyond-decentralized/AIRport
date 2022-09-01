@@ -52,7 +52,7 @@ export interface DatabaseTypeECreateColumns extends DatabaseTypeEId, DatabaseTyp
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabaseType extends IQEntity {
+export interface QDatabaseType<IQE extends QDatabaseType = any> extends IQEntity<IQE | QDatabaseType> {
     database: QDatabaseQRelation;
     type: QTypeQRelation;
 }

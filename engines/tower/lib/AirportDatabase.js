@@ -69,16 +69,6 @@ let AirportDatabase = class AirportDatabase {
     getAccumulator(applicationDomain, applicationName) {
         return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
     }
-    async addRepository(
-    // url: string,
-    // platform: PlatformType,
-    // platformConfig: string,
-    // distributionStrategy: DistributionStrategy,
-    context) {
-        return await this.databaseFacade.addRepository(
-        // url, platform, platformConfig, distributionStrategy, 
-        context);
-    }
     async insertColumnValues(rawInsertValues, context) {
         return await this.databaseFacade.insertColumnValues(rawInsertValues, context);
     }

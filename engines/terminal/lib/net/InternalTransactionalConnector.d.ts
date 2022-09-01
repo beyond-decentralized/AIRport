@@ -10,7 +10,6 @@ export declare class InternalTransactionalConnector implements ITransactionalCon
     terminalStore: ITerminalStore;
     transactionalServer: ITransactionalServer;
     callApi<Response>(_: ILocalAPIRequest): Promise<Response>;
-    addRepository(context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, context: IQueryContext, cachedSqlQueryId?: number): Observable<EntityArray>;

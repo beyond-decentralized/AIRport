@@ -75,7 +75,7 @@ export interface DatabaseECreateColumns extends DatabaseEId, DatabaseEUpdateColu
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabase extends IQEntity {
+export interface QDatabase<IQE extends QDatabase = any> extends IQEntity<IQE | QDatabase> {
     _localId: IQNumberField;
     domain: IQStringField;
     GUID: IQStringField;

@@ -10,6 +10,8 @@ export const INTERNAL_DOMAIN = 'internal://domain'
 
 export interface IRootTransaction {
 	numberOfOperations: number
+    // Only one new repository can be created at at time
+    newRepository?: IRepository
 }
 
 export interface IUserAccount {
@@ -104,14 +106,6 @@ export interface ITransactionalConnector {
 	callApi(
 		apiInput: ICoreLocalApiRequest
 	): Promise<ILocalAPIResponse>
-
-	addRepository(
-		// url: string,
-		// platform: PlatformType,
-		// platformConfig: string,
-		// distributionStrategy: DistributionStrategy,
-		context?: IContext,
-	): Promise<number>
 
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,

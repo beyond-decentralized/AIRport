@@ -11,6 +11,7 @@ import {
 	PortableQuery
 } from '@airport/ground-control';
 import { Actor, IActor, IAirEntity, Repository_LocalId } from '@airport/holding-pattern';
+import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager';
 import {
 	ICredentials,
 	IOperationContext,
@@ -26,8 +27,8 @@ import {
 	IInsertManager,
 	IDeleteManager,
 	IQueryManager,
-	IRepositoryManager,
-	IUpdateManager
+	IUpdateManager,
+	ITerminalSessionManager
 } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 
@@ -96,32 +97,6 @@ export class TransactionalServer
 		return await this.transactionManager.initialize('airport', context);
 	}
 
-	async addRepository(
-		credentials: ITransactionCredentials,
-		context: IOperationContext & ITransactionContext
-	): Promise<Repository_LocalId> {
-		if (context.transaction || credentials.transactionId) {
-			this.transactionManager.getTransactionFromContextOrCredentials(
-				credentials, context)
-		}
-
-		const actor = await this.getActor(credentials);
-
-		// FIXME: check actor
-
-		let repositoryId = 0
-
-		await this.transactionManager.transactInternal(async () => {
-			const repository = await this.repositoryManager.createRepository(
-				// url, platform, platformConfig, distributionStrategy
-				actor,
-				context);
-			repositoryId = repository._localId
-		}, context)
-
-		return repositoryId
-	}
-
 	async find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ITransactionCredentials,
@@ -187,6 +162,7 @@ export class TransactionalServer
 	): Promise<boolean> {
 		try {
 			await this.transactionManager.startTransaction(credentials, context)
+
 			return true
 		} catch (e) {
 			context.errorMessage = e.message

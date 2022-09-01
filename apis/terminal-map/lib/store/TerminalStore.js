@@ -80,6 +80,7 @@ let TerminalStore = class TerminalStore {
             }
             return latestApplicationVersionsByApplication_Indexes;
         });
+        this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationMapByFullName);
         this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
         this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
             const allEntities = [];

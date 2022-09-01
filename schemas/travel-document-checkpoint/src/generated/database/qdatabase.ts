@@ -209,7 +209,7 @@ extends DatabaseEId, DatabaseEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QDatabase extends IQEntity
+export interface QDatabase<IQE extends QDatabase = any> extends IQEntity<IQE | QDatabase>
 {
 	// Id Fields
 	_localId: IQNumberField;

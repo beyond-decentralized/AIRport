@@ -9,6 +9,7 @@ import {
 	EntityRelationType,
 	EntityState,
 	IEntityStateManager,
+	IRepository,
 	SQLDataType
 } from '@airport/ground-control'
 import { IAirEntity } from '@airport/holding-pattern'
@@ -16,7 +17,8 @@ import { IApplicationUtils } from '@airport/tarmaq-query'
 import {
 	IMissingRepositoryRecord,
 	IOperationContext,
-	IStructuralEntityValidator
+	IStructuralEntityValidator,
+	ITransactionContext
 } from '@airport/terminal-map'
 
 @Injected()
@@ -33,7 +35,9 @@ export class StructuralEntityValidator
 		records: E[],
 		operatedOnEntityIndicator: boolean[],
 		missingRepositoryRecords: IMissingRepositoryRecord[],
-		context: IOperationContext,
+		topLevelObjectRepositories: IRepository[],
+		context: IOperationContext & ITransactionContext,
+		depth = 1,
 		fromOneToMany = false,
 		parentRelationProperty: DbProperty = null,
 		rootRelationRecord = null,
@@ -48,6 +52,8 @@ export class StructuralEntityValidator
 		}
 
 		let haveRootRelationRecord = !!rootRelationRecord
+
+		const levelObjectRepositoryMapByGUID: Map<string, IRepository> = new Map()
 
 		for (const record of records) {
 			if (!haveRootRelationRecord) {
@@ -107,17 +113,36 @@ export class StructuralEntityValidator
 										dbEntity, dbProperty, dbColumn,
 										isCreate, record, columnValue, context)) {
 										isMissingRepositoryProperty = true
+									} else if (this.applicationUtils.isRepositoryId(dbColumn.name)) {
+										const repository = record[dbProperty.name]
+										if (!repository._localId || !repository.GUID) {
+											throw new Error(`Repository must have a _localId and GUID assigned:
+hence, it must an existing repository that exists locally.`)
+										}
+										if (!levelObjectRepositoryMapByGUID.has(repository.GUID)) {
+											levelObjectRepositoryMapByGUID.set(repository.GUID, repository)
+											if (depth == 1) {
+												topLevelObjectRepositories.push(repository)
+											}
+										}
 									}
 								}, false)
 								if (isMissingRepositoryProperty) {
-									if (!context.newRepository) {
+									// TODO: document that creating a new repository will automatically
+									// populate it in all objects passed to save that don't have a
+									// repository record reference
+									// TODO: document that if no new repository record is created
+									// then a top level object must have a repository record reference.
+									// Then all nested records without a repository record reference
+									// will have that repository assigned
+									if (!context.rootTransaction.newRepository) {
 										newRepositoryNeeded = true
 										missingRepositoryRecords.push({
 											record,
 											repositoryPropertyName: dbProperty.name
 										})
 									} else {
-										record[dbProperty.name] = context.newRepository
+										record[dbProperty.name] = context.rootTransaction.newRepository
 									}
 								}
 							}
@@ -158,7 +183,8 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					if (relatedEntities && relatedEntities.length) {
 						const previousDbEntity = context.dbEntity
 						context.dbEntity = dbRelation.relationEntity
-						this.validate(relatedEntities, operatedOnEntityIndicator, missingRepositoryRecords, context,
+						this.validate(relatedEntities, operatedOnEntityIndicator,
+							missingRepositoryRecords, topLevelObjectRepositories, context, depth + 1,
 							relationIsOneToMany, dbProperty, rootRelationRecord, record)
 						context.dbEntity = previousDbEntity
 					}

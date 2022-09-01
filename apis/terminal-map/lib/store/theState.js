@@ -10,6 +10,7 @@ export const internalTerminalState = new BehaviorSubject({
         applicationWindowMap: new Map(),
         initializingApplicationMap: new Map()
     },
+    applicationMapByFullName: new Map(),
     applications: [],
     domains: [],
     frameworkActor: null,

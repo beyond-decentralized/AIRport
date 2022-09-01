@@ -159,6 +159,7 @@ export interface RepositoryESelect
     extends IEntitySelectProperties, RepositoryEOptionalId {
 	// Non-Id Properties
 	GUID?: string | IQStringField;
+	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
@@ -211,6 +212,7 @@ export interface RepositoryEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
 	GUID?: string | IQStringField;
+	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
@@ -234,6 +236,7 @@ export interface RepositoryGraph
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
 	GUID?: string | IQStringField;
+	name?: string | IQStringField;
 	ageSuitability?: number | IQNumberField;
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
@@ -261,6 +264,7 @@ export interface RepositoryEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	GUID?: string | IQStringField;
+	NAME?: string | IQStringField;
 	AGE_SUITABILITY?: number | IQNumberField;
 	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
@@ -304,6 +308,7 @@ export interface QRepository<IQE extends QRepository = any> extends IQEntity<IQE
 
 	// Non-Id Fields
 	GUID: IQStringField;
+	name: IQStringField;
 	ageSuitability: IQNumberField;
 	createdAt: IQDateField;
 	immutable: IQBooleanField;

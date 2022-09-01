@@ -3,13 +3,14 @@ import { IActiveQueries } from '@airport/flight-number';
 import { IIdGenerator, SQLQuery } from '@airport/fuel-hydrant-system';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
 import { ITransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
-import { IStoreDriver, ITerminalStore, ITransaction, ITransactionalCallback, ITransactionContext, ITransactionCredentials, ITransactionManager } from '@airport/terminal-map';
+import { IStoreDriver, ITerminalSessionManager, ITerminalStore, ITransaction, ITransactionalCallback, ITransactionContext, ITransactionCredentials, ITransactionManager } from '@airport/terminal-map';
 import { AbstractMutationManager } from './AbstractMutationManager';
 export declare class TransactionManager extends AbstractMutationManager implements ITransactionManager {
     activeQueries: IActiveQueries<SQLQuery<any>>;
     idGenerator: IIdGenerator;
     storeDriver: IStoreDriver;
     synchronizationOutManager: ISynchronizationOutManager;
+    terminalSessionManager: ITerminalSessionManager;
     terminalStore: ITerminalStore;
     transactionHistoryDuo: ITransactionHistoryDuo;
     /**
@@ -27,6 +28,7 @@ export declare class TransactionManager extends AbstractMutationManager implemen
     getTransactionFromContextOrCredentials(credentials: ITransactionCredentials, context: ITransactionContext): ITransaction;
     private resumeParentOrPendingTransaction;
     commit(credentials: ITransactionCredentials, context: ITransactionContext): Promise<void>;
+    private clearUserSessionRootTransaction;
     private copyTransactionHistoryToParentTransaction;
     private checkForCircularDependencies;
     private setupTransaction;

@@ -48,7 +48,7 @@ export interface ClassificationECreateColumns extends ClassificationEId, Classif
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClassification extends IQEntity {
+export interface QClassification<IQE extends QClassification = any> extends IQEntity<IQE | QClassification> {
     id: IQNumberField;
     name: IQStringField;
 }

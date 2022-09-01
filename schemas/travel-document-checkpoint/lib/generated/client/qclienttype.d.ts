@@ -52,7 +52,7 @@ export interface ClientTypeECreateColumns extends ClientTypeEId, ClientTypeEUpda
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QClientType extends IQEntity {
+export interface QClientType<IQE extends QClientType = any> extends IQEntity<IQE | QClientType> {
     client: QClientQRelation;
     type: QTypeQRelation;
 }

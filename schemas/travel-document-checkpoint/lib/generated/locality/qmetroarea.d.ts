@@ -59,7 +59,7 @@ export interface MetroAreaECreateColumns extends MetroAreaEId, MetroAreaEUpdateC
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QMetroArea extends IQEntity {
+export interface QMetroArea<IQE extends QMetroArea = any> extends IQEntity<IQE | QMetroArea> {
     id: IQNumberField;
     name: IQStringField;
     country: QCountryQRelation;

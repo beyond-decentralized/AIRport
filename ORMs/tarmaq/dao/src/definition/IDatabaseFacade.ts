@@ -42,14 +42,6 @@ export interface IDatabaseFacade {
 	 */
 	name: string;
 
-	addRepository(
-		// url: string,
-		// platform: PlatformType,
-		// platformConfig: string,
-		// distributionStrategy: DistributionStrategy,
-		ctx?: IContext
-	): Promise<number>;
-
 	insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>;

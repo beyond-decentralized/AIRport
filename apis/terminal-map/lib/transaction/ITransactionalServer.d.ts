@@ -7,7 +7,6 @@ import { IQueryOperationContext } from '..';
 import { ICredentials, ITransactionCredentials } from '../Credentials';
 export interface ITransactionalServer {
     init(context?: IContext): Promise<void>;
-    addRepository(credentials: ITransactionCredentials, context: IContext): Promise<number>;
     find<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<EntityArray>;
     findOne<E>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Promise<E>;
     search<E, EntityArray extends Array<E>>(portableQuery: PortableQuery, credentials: ICredentials, context: IQueryOperationContext, cachedSqlQueryId?: number): Observable<EntityArray>;

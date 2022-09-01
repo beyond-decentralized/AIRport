@@ -8,6 +8,7 @@ import { IRepositoryType } from './repositorytype';
 export interface IRepository {
     _localId: number;
     GUID?: string;
+    name?: string;
     ageSuitability?: number;
     createdAt?: Date;
     immutable?: boolean;

@@ -11,7 +11,8 @@ import {
 } from '@airport/direction-indicator';
 import {
     IDbApplicationUtils,
-    INTERNAL_DOMAIN
+    INTERNAL_DOMAIN,
+    IRootTransaction
 } from '@airport/ground-control';
 import {
     IApiIMI,
@@ -20,6 +21,7 @@ import {
     IInitConnectionIMI,
     IIsolateMessage,
     IIsolateMessageOut,
+    ILocalAPIServer,
     IPortableQueryIMI,
     IReadQueryIMI,
     ISaveIMI,
@@ -36,7 +38,6 @@ import {
     ITransactionalServer,
     ITransactionContext,
     ITransactionCredentials,
-    ITransactionManager,
     IUserSession
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
@@ -65,13 +66,13 @@ export abstract class TransactionalReceiver {
     internalRecordManager: IInternalRecordManager
 
     @Inject()
+    localApiServer: ILocalAPIServer
+
+    @Inject()
     terminalSessionManager: ITerminalSessionManager
 
     @Inject()
     terminalStore: ITerminalStore
-
-    @Inject()
-    transactionManager: ITransactionManager
 
     @Inject()
     transactionalServer: ITransactionalServer
@@ -179,17 +180,6 @@ export abstract class TransactionalReceiver {
                     .get(message.domain)
                 break
             }
-            case IsolateMessageType.ADD_REPOSITORY:
-                // const addRepositoryMessage: IAddRepositoryIMI = <IAddRepositoryIMI>message
-                theResult = await this.transactionalServer.addRepository(
-                    // addRepositoryMessage.url,
-                    // addRepositoryMessage.platform,
-                    // addRepositoryMessage.platformConfig,
-                    // addRepositoryMessage.distributionStrategy,
-                    credentials,
-                    context
-                );
-                break
             case IsolateMessageType.DELETE_WHERE:
                 const deleteWhereMessage: IPortableQueryIMI = <IPortableQueryIMI>message
                 theResult = await this.transactionalServer.deleteWhere(
@@ -314,7 +304,10 @@ export abstract class TransactionalReceiver {
     protected abstract nativeStartApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
         context: IApiCallContext
-    ): Promise<boolean>
+    ): Promise<{
+        isFramework?: boolean
+        isStarted: boolean,
+    }>
 
     protected abstract nativeHandleApiCall(
         message: ILocalAPIRequest<'FromClientRedirected'>,
@@ -325,13 +318,11 @@ export abstract class TransactionalReceiver {
         message: ILocalAPIRequest<'FromClientRedirected'>,
         context: IApiCallContext & ITransactionContext,
         nativeHandleCallback: () => void
-    ): Promise<boolean> {
-        let userSession: IUserSession
-        if (this.terminalStore.getIsServer()) {
-            throw new Error('Implement')
-        } else {
-            userSession = await this.terminalSessionManager.getUserSession()
-        }
+    ): Promise<{
+        isFramework?: boolean
+        isStarted: boolean,
+    }> {
+        const userSession = await this.terminalSessionManager.getUserSession()
 
         const transactionCredentials: ITransactionCredentials = {
             application: message.application,
@@ -342,7 +333,9 @@ export abstract class TransactionalReceiver {
         }
 
         if (!await this.transactionalServer.startTransaction(transactionCredentials, context)) {
-            return false
+            return {
+                isStarted: false
+            }
         }
         let actor: Actor = await this.getApiCallActor(message, userSession, context)
         context.transaction.actor = actor
@@ -353,6 +346,34 @@ export abstract class TransactionalReceiver {
         initiator.methodName = message.methodName
         initiator.objectName = message.objectName
 
+        let isFramework = true
+        try {
+            if (message.domain !== INTERNAL_DOMAIN) {
+                isFramework = false
+                await this.doNativeHandleCallback(
+                    message, actor, context, nativeHandleCallback)
+            }
+        } catch (e) {
+            context.errorMessage = e.message
+            this.transactionalServer.rollback(transactionCredentials, context)
+
+            return {
+                isStarted: false
+            }
+        }
+
+        return {
+            isFramework,
+            isStarted: true
+        }
+    }
+
+    private async doNativeHandleCallback(
+        message: ILocalAPIRequest<'FromClientRedirected'>,
+        actor: Actor,
+        context: IApiCallContext & ITransactionContext,
+        nativeHandleCallback: () => void
+    ): Promise<void> {
         message.transactionId = context.transaction.id
 
         message.actor = {
@@ -367,15 +388,7 @@ export abstract class TransactionalReceiver {
             }
         }
 
-        try {
-            await nativeHandleCallback()
-        } catch (e) {
-            context.errorMessage = e.message
-            this.transactionalServer.rollback(transactionCredentials, context)
-            return false
-        }
-
-        return true
+        await nativeHandleCallback()
     }
 
     async getApiCallActor(
@@ -395,6 +408,7 @@ export abstract class TransactionalReceiver {
             terminal.GUID
         );
         if (actor) {
+            userSession.currentActor = actor
             return actor
         }
 
@@ -406,6 +420,7 @@ export abstract class TransactionalReceiver {
             userAccount: userSession.userAccount
         }
         await this.actorDao.save(actor)
+        userSession.currentActor = actor
 
         return actor
     }

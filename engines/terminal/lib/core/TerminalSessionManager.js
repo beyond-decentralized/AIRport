@@ -10,16 +10,12 @@ let TerminalSessionManager = class TerminalSessionManager {
         if (this.terminalStore.getIsServer()) {
             throw new Error('Implement');
         }
-        const passwordHash = await this.sha512(userAccountInfo.password);
-        let userAccount = {
-            email: userAccountInfo.email,
-            passwordHash,
-            username: userAccountInfo.username
-        };
-        await this.userAccountDao.save(userAccount);
+        const { userAccount } = await this.userAccountManager
+            .addUserAccount(userAccountInfo.username, userAccountInfo.email, userAccountInfo.password);
         const allSessions = this.userStore.getAllSessions();
         let session = {
             currentActor: null,
+            currentRootTransaction: null,
             userAccount
         };
         allSessions.push(session);
@@ -49,18 +45,13 @@ let TerminalSessionManager = class TerminalSessionManager {
         }
         return session;
     }
-    sha512(str) {
-        return crypto.subtle.digest("SHA-512", new TextEncoder( /*"utf-8"*/).encode(str)).then(buf => {
-            return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
-        });
-    }
 };
 __decorate([
     Inject()
 ], TerminalSessionManager.prototype, "terminalStore", void 0);
 __decorate([
     Inject()
-], TerminalSessionManager.prototype, "userAccountDao", void 0);
+], TerminalSessionManager.prototype, "userAccountManager", void 0);
 __decorate([
     Inject()
 ], TerminalSessionManager.prototype, "userStore", void 0);

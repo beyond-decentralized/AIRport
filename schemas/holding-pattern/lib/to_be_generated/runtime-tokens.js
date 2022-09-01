@@ -1,3 +1,4 @@
+import { RepositoryApi } from '../api/api';
 import { RecordHistoryNewValueDao } from '../dao/history/RecordHistoryNewValueDao';
 import { RecordHistoryOldValueDao } from '../dao/history/RecordHistoryOldValueDao';
 import { RepositoryTransactionHistoryDao } from '../dao/history/RepositoryTransactionHistoryDao';
@@ -9,7 +10,8 @@ import { RecordHistoryNewValueDuo } from '../duo/history/RecordHistoryNewValueDu
 import { RecordHistoryOldValueDuo } from '../duo/history/RecordHistoryOldValueDuo';
 import { RepositoryTransactionHistoryDuo } from '../duo/history/RepositoryTransactionHistoryDuo';
 import { TransactionHistoryDuo } from '../duo/history/TransactionHistoryDuo';
-import { holdingPattern } from './common-tokens';
+import { holdingPattern, REPOSITORY_API } from './common-tokens';
+import { REPOSITORY_MANAGER } from './runtime-index';
 export const ACTOR_DAO = holdingPattern.token({
     class: ActorDao,
     interface: 'IActorDao',
@@ -67,6 +69,11 @@ export const TRANSACTION_HISTORY_DUO = holdingPattern.token({
 });
 OPERATION_HISTORY_DUO.setDependencies({
     recordHistoryDuo: RECORD_HISTORY_DUO,
+});
+REPOSITORY_API.setClass(RepositoryApi);
+REPOSITORY_API.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+    repositoryManager: REPOSITORY_MANAGER,
 });
 RECORD_HISTORY_DUO.setDependencies({
     recordHistoryNewValueDuo: RECORD_HISTORY_NEW_VALUE_DUO,

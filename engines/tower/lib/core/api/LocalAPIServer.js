@@ -10,16 +10,15 @@ let LocalAPIServer = class LocalAPIServer {
         let payload;
         let errorMessage;
         try {
-            const { apiObject, apiOperation } = await this.apiRegistry.findApiObjectAndOperation(request.domain, request.application, request.objectName, request.methodName);
+            // TODO: this should be inside coreHandleRequest after retrieval
+            // of apiOperation.  For that requestManager must be supported
+            // by the main @airport/terminal. It works in App VMs since
+            // a new requestManager object is created per request but
+            // currently does not work in @airport/terminal (since there is
+            // no per-request creating of injected objects).
             this.requestManager.actor = request.actor;
             this.requestManager.userAccount = request.actor.userAccount;
-            const result = apiObject[request.methodName].apply(apiObject, request.args);
-            if (apiOperation.isAsync) {
-                payload = await result;
-            }
-            else {
-                payload = result;
-            }
+            payload = await this.coreHandleRequest(request, this.applicationStore.state.api);
         }
         catch (e) {
             errorMessage = e.message ? e.message : e;
@@ -42,10 +41,23 @@ let LocalAPIServer = class LocalAPIServer {
         };
         return response;
     }
+    async coreHandleRequest(request, api) {
+        const { apiObject, apiOperation } = await this.apiRegistry.findObjectAndOperationForApi(api, request.domain, request.application, request.objectName, request.methodName);
+        const result = apiObject[request.methodName].apply(apiObject, request.args);
+        if (apiOperation.isAsync) {
+            return await result;
+        }
+        else {
+            return result;
+        }
+    }
 };
 __decorate([
     Inject()
 ], LocalAPIServer.prototype, "apiRegistry", void 0);
+__decorate([
+    Inject()
+], LocalAPIServer.prototype, "applicationStore", void 0);
 __decorate([
     Inject()
 ], LocalAPIServer.prototype, "requestManager", void 0);

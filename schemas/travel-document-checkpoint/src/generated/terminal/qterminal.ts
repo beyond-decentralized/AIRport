@@ -226,7 +226,7 @@ extends TerminalEId, TerminalEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminal extends IQEntity
+export interface QTerminal<IQE extends QTerminal = any> extends IQEntity<IQE | QTerminal>
 {
 	// Id Fields
 	_localId: IQNumberField;

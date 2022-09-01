@@ -32,6 +32,7 @@ import {
     OPERATION_HISTORY_DUO,
     RECORD_HISTORY_DUO,
     REPOSITORY_DAO,
+    REPOSITORY_MANAGER,
     REPOSITORY_TRANSACTION_HISTORY_DAO,
     REPOSITORY_TRANSACTION_HISTORY_DUO,
     TRANSACTION_HISTORY_DUO
@@ -49,9 +50,7 @@ import {
     IInsertManager,
     IOperationManager,
     IQueryManager,
-    IRepositoryManager,
     IStructuralEntityValidator,
-    ITerminalSessionManager,
     IUpdateManager,
     STORE_DRIVER,
     TERMINAL_STORE,
@@ -61,7 +60,6 @@ import {
     USER_STORE
 } from '@airport/terminal-map'
 import { RepositoryLoader } from './core/repository/RepositoryLoader'
-import { RepositoryManager } from './core/repository/RepositoryManager'
 import { TerminalSessionManager } from './core/TerminalSessionManager'
 import { IInternalRecordManager, InternalRecordManager } from './data/InternalRecordManager'
 import { InternalTransactionalConnector } from './net/InternalTransactionalConnector'
@@ -83,6 +81,9 @@ import { OperationManager } from './processing/OperationManager'
 import { StructuralEntityValidator } from './processing/StructuralEntityValidator'
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
+import { RepositoryManager } from './core/repository/RepositoryManager'
+import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/lib/core/core-tokens'
+import { LOCAL_API_SERVER } from '@airport/apron'
 
 const terminal = lib('terminal')
 
@@ -162,11 +163,6 @@ export const QUERY_MANAGER = terminal.token<IQueryManager>({
     class: QueryManager,
     interface: 'IQueryManager',
     token: 'QUERY_MANAGER'
-})
-export const REPOSITORY_MANAGER = terminal.token<IRepositoryManager>({
-    class: RepositoryManager,
-    interface: 'IRepositoryManager',
-    token: 'REPOSITORY_MANAGER'
 })
 export const STRUCTURAL_ENTITY_VALIDATOR = terminal.token<IStructuralEntityValidator>({
     class: StructuralEntityValidator,
@@ -282,8 +278,10 @@ REPOSITORY_LOADER.setDependencies({
     synchronizationInManager: SYNCHRONIZATION_IN_MANAGER
 })
 
+REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
     repositoryDao: REPOSITORY_DAO,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
 })
 
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
@@ -294,13 +292,17 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager)
 TERMINAL_SESSION_MANAGER.setDependencies({
     terminalStore: TERMINAL_STORE,
+    userAccountManager: USER_ACCOUNT_MANAGER,
     userStore: USER_STORE
 })
 
 TRANSACTION_MANAGER.setDependencies({
     activeQueries: ACTIVE_QUERIES,
     idGenerator: ID_GENERATOR,
+    storeDriver: STORE_DRIVER,
     synchronizationOutManager: SYNCHRONIZATION_OUT_MANAGER,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TERMINAL_STORE,
     transactionHistoryDuo: TRANSACTION_HISTORY_DUO,
 })
 
@@ -310,6 +312,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
     databaseManager: DATABASE_MANAGER,
     dbApplicationUtils: DB_APPLICATION_UTILS,
     internalRecordManager: INTERNAL_RECORD_MANAGER,
+    localApiServer: LOCAL_API_SERVER,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER,
@@ -322,6 +325,8 @@ TRANSACTIONAL_SERVER.setDependencies({
     operationManager: OPERATION_MANAGER,
     queryManager: QUERY_MANAGER,
     repositoryManager: REPOSITORY_MANAGER,
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER,
     updateManager: UPDATE_MANAGER
 })
 

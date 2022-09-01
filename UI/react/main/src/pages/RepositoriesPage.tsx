@@ -1,8 +1,15 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import { Repository } from '@airport/holding-pattern';
+import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { refresh } from 'ionicons/icons';
+import { useState } from 'react';
+import { getRepositories } from '../api';
 import './RepositoriesPage.css';
 
 const RepositoriesPage: React.FC = () => {
+  const [repositories, setRepositories] = useState<Repository[]>([])
+
+  getRepositories(setRepositories)
+
   return (
     <IonPage>
       <IonHeader>
@@ -16,7 +23,16 @@ const RepositoriesPage: React.FC = () => {
             <IonTitle size="large">Repositories</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={e => getRepositories(setRepositories)}>
+            <IonIcon icon={refresh} />
+          </IonFabButton>
+        </IonFab>
+        {repositories.map(repository =>
+          <IonItem>
+            Name: {repository.name}
+          </IonItem>
+        )}
       </IonContent>
     </IonPage>
   );

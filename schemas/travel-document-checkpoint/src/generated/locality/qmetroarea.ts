@@ -169,7 +169,7 @@ extends MetroAreaEId, MetroAreaEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QMetroArea extends IQEntity
+export interface QMetroArea<IQE extends QMetroArea = any> extends IQEntity<IQE | QMetroArea>
 {
 	// Id Fields
 	id: IQNumberField;

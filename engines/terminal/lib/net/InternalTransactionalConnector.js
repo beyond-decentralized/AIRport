@@ -11,22 +11,6 @@ let InternalTransactionalConnector = class InternalTransactionalConnector {
 Interal Application API requests should be made directly (since
 they are internal to the AIRport framework).`);
     }
-    async addRepository(
-    // url: string,
-    // platform: PlatformType,
-    // platformConfig: string,
-    // distributionStrategy: DistributionStrategy,
-    context) {
-        return await this.transactionalServer.addRepository(
-        // url,
-        // platform,
-        // platformConfig,
-        // distributionStrategy,
-        this.terminalStore.getInternalConnector().internalCredentials, {
-            internal: true,
-            ...context
-        });
-    }
     async find(portableQuery, context, cachedSqlQueryId) {
         return await this.transactionalServer.find(portableQuery, this.terminalStore.getInternalConnector().internalCredentials, {
             internal: true,

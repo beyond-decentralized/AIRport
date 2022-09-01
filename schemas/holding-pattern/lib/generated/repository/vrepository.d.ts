@@ -15,6 +15,7 @@ import { RepositoryType } from '../../ddl/repository/RepositoryType';
 export interface RepositoryVDescriptor<T> extends IEntityVDescriptor<T> {
     _localId?: number | IVNumberField;
     GUID?: string | IVStringField;
+    name?: string | IVStringField;
     ageSuitability?: number | IVNumberField;
     createdAt?: Date | IVDateField;
     immutable?: boolean | IVBooleanField;

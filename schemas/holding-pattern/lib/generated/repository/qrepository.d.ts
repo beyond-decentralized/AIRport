@@ -11,6 +11,7 @@ import { RepositoryTypeGraph, RepositoryTypeESelect, QRepositoryType } from './q
  */
 export interface RepositoryESelect extends IEntitySelectProperties, RepositoryEOptionalId {
     GUID?: string | IQStringField;
+    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
@@ -44,6 +45,7 @@ export interface RepositoryEOptionalId {
  */
 export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
     GUID?: string | IQStringField;
+    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
@@ -59,6 +61,7 @@ export interface RepositoryEUpdateProperties extends IEntityUpdateProperties {
  */
 export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGraph {
     GUID?: string | IQStringField;
+    name?: string | IQStringField;
     ageSuitability?: number | IQNumberField;
     createdAt?: Date | IQDateField;
     immutable?: boolean | IQBooleanField;
@@ -80,6 +83,7 @@ export interface RepositoryGraph extends RepositoryEOptionalId, IEntityCascadeGr
  */
 export interface RepositoryEUpdateColumns extends IEntityUpdateColumns {
     GUID?: string | IQStringField;
+    NAME?: string | IQStringField;
     AGE_SUITABILITY?: number | IQNumberField;
     CREATED_AT?: Date | IQDateField;
     IMMUTABLE?: boolean | IQBooleanField;
@@ -106,6 +110,7 @@ export interface RepositoryECreateColumns extends RepositoryEId, RepositoryEUpda
 export interface QRepository<IQE extends QRepository = any> extends IQEntity<IQE | QRepository> {
     _localId: IQNumberField;
     GUID: IQStringField;
+    name: IQStringField;
     ageSuitability: IQNumberField;
     createdAt: IQDateField;
     immutable: IQBooleanField;

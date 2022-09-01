@@ -56,6 +56,8 @@ export class QueryObjectInitializer
 		}
 		for (const application of allDdlObjects.added.applications) {
 			delete existingApplicationMap[application.fullName];
+			lastTerminalState.applicationMapByFullName
+				.set(application.fullName, application)
 		}
 		const unmodifiedApplications: IApplication[] = [];
 		for (const applicationName in existingApplicationMap) {
@@ -68,6 +70,7 @@ export class QueryObjectInitializer
 				...unmodifiedDomains,
 				...allDdlObjects.added.domains
 			],
+			applicationMapByFullName: lastTerminalState.applicationMapByFullName,
 			applications: [
 				...unmodifiedApplications,
 				...allDdlObjects.added.applications

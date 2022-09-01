@@ -1,7 +1,7 @@
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/tarmaq-query';
 import { IContext } from '@airport/direction-indicator';
 import { IActor, IRepository } from '@airport/holding-pattern';
-import { UpdateState } from '../core/UpdateState';
+import { UpdateState } from '../../../../apis/terminal-map/lib/core/UpdateState';
 export interface IRepositoryManager {
     initialize(): Promise<void>;
     createRepository(actor: IActor, context: IContext): Promise<IRepository>;

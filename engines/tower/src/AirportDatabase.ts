@@ -154,18 +154,6 @@ export class AirportDatabase
 		return new EntityAccumulator(applicationDomain, applicationName, this.entityMap);
 	}
 
-	async addRepository(
-		// url: string,
-		// platform: PlatformType,
-		// platformConfig: string,
-		// distributionStrategy: DistributionStrategy,
-		context?: IEntityContext,
-	): Promise<number> {
-		return await this.databaseFacade.addRepository(
-			// url, platform, platformConfig, distributionStrategy, 
-			context);
-	}
-
 	async insertColumnValues<IQE extends IQEntity>(
 		rawInsertValues: RawInsertColumnValues<IQE> | {
 			(...args: any[]): RawInsertColumnValues<IQE>

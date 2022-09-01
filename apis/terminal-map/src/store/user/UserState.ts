@@ -1,4 +1,5 @@
 import { Injected } from "@airport/direction-indicator"
+import { IRootTransaction } from "@airport/ground-control"
 import { Actor } from "@airport/holding-pattern"
 import { UserAccount } from "@airport/travel-document-checkpoint"
 import { Subject } from "rxjs"
@@ -7,6 +8,7 @@ import { internalUserState } from "./theUserState"
 export interface IUserSession {
     currentActor: Actor
     userAccount: UserAccount
+    currentRootTransaction: IRootTransaction
 }
 
 export interface IUserState {

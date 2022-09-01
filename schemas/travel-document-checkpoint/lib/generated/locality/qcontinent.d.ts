@@ -54,7 +54,7 @@ export interface ContinentECreateColumns extends ContinentEId, ContinentEUpdateC
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QContinent extends IQEntity {
+export interface QContinent<IQE extends QContinent = any> extends IQEntity<IQE | QContinent> {
     id: IQNumberField;
     name: IQStringField;
     countries: IQOneToManyRelation<QCountry>;

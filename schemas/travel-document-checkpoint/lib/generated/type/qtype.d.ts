@@ -51,7 +51,7 @@ export interface TypeECreateColumns extends TypeEId, TypeEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QType extends IQEntity {
+export interface QType<IQE extends QType = any> extends IQEntity<IQE | QType> {
     id: IQNumberField;
     name: IQStringField;
     typeClassifications: IQOneToManyRelation<QTypeClassification>;

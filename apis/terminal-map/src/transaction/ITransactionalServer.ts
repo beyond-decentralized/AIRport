@@ -18,15 +18,6 @@ export interface ITransactionalServer {
 		context?: IContext,
 	): Promise<void>
 
-	addRepository(
-		// url: string,
-		// platform: PlatformType,
-		// platformConfig: string,
-		// distributionStrategy: DistributionStrategy,
-		credentials: ITransactionCredentials,
-		context: IContext
-	): Promise<number>
-
 	find<E, EntityArray extends Array<E>>(
 		portableQuery: PortableQuery,
 		credentials: ICredentials,
