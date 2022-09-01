@@ -44,6 +44,7 @@ dependencies:
   '@rush-temp/types': 'file:projects/types.tgz'
   '@rush-temp/ui-react-components': 'file:projects/ui-react-components.tgz'
   '@rush-temp/ui-react-main': 'file:projects/ui-react-main.tgz'
+  '@rush-temp/ui-svelte-main': 'file:projects/ui-svelte-main.tgz'
   '@rush-temp/validate': 'file:projects/validate.tgz'
   '@rush-temp/vhf-radio': 'file:projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:projects/web-airport.tgz'
@@ -2554,7 +2555,7 @@ packages:
       glob: 7.1.6
       is-reference: 1.2.1
       magic-string: 0.25.7
-      resolve: 1.20.0
+      resolve: 1.22.1
       rollup: 2.78.1
     dev: false
     engines:
@@ -14298,6 +14299,7 @@ packages:
       '@types/react-dom': 16.9.16
       '@types/react-router': 5.1.18
       '@types/react-router-dom': 5.3.3
+      broadcast-channel: 4.14.0
       ionicons: 5.5.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -14321,8 +14323,34 @@ packages:
     dev: false
     name: '@rush-temp/ui-react-main'
     resolution:
-      integrity: sha512-KuXwR/SNLkEbXXRnM2kzcLjyxgRcbewyNPVuu3CA24rBac9pg1i8QxV07DIZGikZV5O5BjRZyjE7AvD2U1xLxQ==
+      integrity: sha512-bRN7vkW5qu26M/FHV1fkEz0gb4+MFphwsDWf7VEJl0KvCFfeX9DnF1JZ0xw8zF6DOiVHRav8q83zkrW14MyU3A==
       tarball: 'file:projects/ui-react-main.tgz'
+    version: 0.0.0
+  'file:projects/ui-svelte-main.tgz':
+    dependencies:
+      '@ionic/core': 6.2.4
+      '@rollup/plugin-commonjs': 22.0.2_rollup@2.78.1
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.78.1
+      '@rollup/plugin-typescript': 8.4.0_998a84e6b7f5e32b55c7b416508576a5
+      '@tsconfig/svelte': 3.0.0
+      broadcast-channel: 4.14.0
+      page: 1.11.6
+      rollup: 2.78.1
+      rollup-plugin-css-only: 3.1.0_rollup@2.78.1
+      rollup-plugin-livereload: 2.0.5
+      rollup-plugin-svelte: 7.1.0_rollup@2.78.1+svelte@3.49.0
+      rollup-plugin-terser: 7.0.2_rollup@2.78.1
+      sirv-cli: 2.0.2
+      svelte: 3.49.0
+      svelte-check: 2.8.1_svelte@3.49.0
+      svelte-preprocess: 4.10.7_svelte@3.49.0+typescript@4.8.2
+      tslib: 2.4.0
+      typescript: 4.8.2
+    dev: false
+    name: '@rush-temp/ui-svelte-main'
+    resolution:
+      integrity: sha512-Khv2KzGACieXTXtIFimN61ZsykthJz3XdAxldh35lxOzx9ipu7PqmjBhNfquguoKDvs2BqPegAbrsdPYOHfbww==
+      tarball: 'file:projects/ui-svelte-main.tgz'
     version: 0.0.0
   'file:projects/validate.tgz':
     dependencies:
@@ -14375,7 +14403,7 @@ packages:
     dev: false
     name: '@rush-temp/web-airport'
     resolution:
-      integrity: sha512-u7Gkf9W15h0gGiPkkGaiBver/OeUxhSjHjJplczTQOIonIkXf5YfD6YEeDyHq2xtViwwbgxPSdIwWvuk/83z5Q==
+      integrity: sha512-2u9/r5L8WSdHPD//y4ttkZGSHsO+sjJ0lojCWESd+j07WhW8C65HgkX8SeWQSUuIi30VHSi0HLN2XDGtESh74w==
       tarball: 'file:projects/web-airport.tgz'
     version: 0.0.0
   'file:projects/web-terminal.tgz':
@@ -14386,7 +14414,7 @@ packages:
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-811Ycz/78EdJpS7IDWvKhWFVQxURwJHsUPQq/k7FJa/PZUKEOfpv3Zlq4TE3H2Iij9pCzhMTt/+GoW83hB5kew==
+      integrity: sha512-mRN1kUUzQnGWwFe9ZOFQeoBGQT32/RodX2/rL4fcZQ8aY9/ptYLsiiKOoRVtyG5Q0m3HKUfFR+Vpg47J77D9VA==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -14447,6 +14475,7 @@ specifiers:
   '@rush-temp/types': 'file:./projects/types.tgz'
   '@rush-temp/ui-react-components': 'file:./projects/ui-react-components.tgz'
   '@rush-temp/ui-react-main': 'file:./projects/ui-react-main.tgz'
+  '@rush-temp/ui-svelte-main': 'file:./projects/ui-svelte-main.tgz'
   '@rush-temp/validate': 'file:./projects/validate.tgz'
   '@rush-temp/vhf-radio': 'file:./projects/vhf-radio.tgz'
   '@rush-temp/web-airport': 'file:./projects/web-airport.tgz'

@@ -205,6 +205,11 @@
       "projectFolder": "UI/react/main",
       "shouldPublish": true
     },
+    {
+      "packageName": "@airport/ui-svelte-main",
+      "projectFolder": "UI/svelte/main",
+      "shouldPublish": true
+    },
     // "AIRbridge" folder (external)
     {
       "packageName": "@airbridge/validate",

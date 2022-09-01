@@ -1,12 +1,13 @@
+import { initFramework } from '@airport/web-airport'
+
 import App from './App.svelte';
-import { initFramework } from './framework';
+
+initFramework().then();
 
 const app = new App({
 	target: document.body,
 	props: {
 	}
 });
-
-initFramework().then();
 
 export default app;

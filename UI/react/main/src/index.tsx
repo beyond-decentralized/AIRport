@@ -1,8 +1,11 @@
+import { initFramework } from '@airport/web-airport'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+
+initFramework().then()
 
 ReactDOM.render(
   <React.StrictMode>

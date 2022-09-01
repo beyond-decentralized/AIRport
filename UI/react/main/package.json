@@ -8,6 +8,7 @@
     "@airport/ui-react-components": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
     "@airport/terminal-map": "0.0.1",
+    "@airport/web-airport": "0.0.1",
     "@airport/web-terminal": "0.0.1",
     "@airport/sqljs": "0.0.1",
     "@capacitor/app": "4.0.1",
