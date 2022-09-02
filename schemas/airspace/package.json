@@ -22,7 +22,7 @@
   "devDependencies": {
     "@airport/runway": "0.0.1"
   },
-  "main": "lib/index.js",
+  "main": "lib/to_be_generated/api-index.js",
   "name": "@airport/airspace",
   "type": "module",
   "typings": "lib/index",

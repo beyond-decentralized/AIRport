@@ -5,7 +5,7 @@ import { IApiCallContext, IDatabaseManager, ITerminalSessionManager, ITerminalSt
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { Actor } from '@airport/holding-pattern';
 import { ActorDao } from '@airport/holding-pattern/lib/dao/dao';
-import { ApplicationDao } from '@airport/airspace';
+import { ApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
 export declare abstract class TransactionalReceiver {
     actorDao: ActorDao;
     applicationDao: ApplicationDao;

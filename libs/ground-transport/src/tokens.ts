@@ -32,7 +32,7 @@ import {
     APPLICATION_DAO,
     APPLICATION_VERSION_DAO,
     DOMAIN_DAO
-} from '@airport/airspace'
+} from '@airport/airspace/lib/to_be_generated/runtime-index'
 import {
     ACTOR_DAO,
     REPOSITORY_DAO,

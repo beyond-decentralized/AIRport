@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER, UTILS } from '@airport/air-traffic-control';
-import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace';
+import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace/lib/to_be_generated/runtime-index';
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures';
 import { TERMINAL_SESSION_MANAGER } from '@airport/terminal-map';
 import { lib } from '@airport/direction-indicator';

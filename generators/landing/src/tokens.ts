@@ -11,7 +11,7 @@ import {
     APPLICATION_RELATION_DAO,
     APPLICATION_VERSION_DAO,
     DOMAIN_DAO
-} from '@airport/airspace'
+} from '@airport/airspace/lib/to_be_generated/runtime-index'
 import { lib } from '@airport/direction-indicator'
 import {
     DB_APPLICATION_UTILS,

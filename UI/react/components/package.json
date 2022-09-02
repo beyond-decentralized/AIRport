@@ -1,5 +1,6 @@
 {
   "name": "@airport/ui-react-components",
+  "description": "AIRport UI React components",
   "version": "0.0.1",
   "dependencies": {},
   "peerDependencies": {
@@ -42,7 +43,6 @@
       "react-app/jest"
     ]
   },
-  "description": "AIRport UI React components",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [

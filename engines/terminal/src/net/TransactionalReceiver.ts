@@ -45,7 +45,7 @@ import { IEntityContext } from '@airport/tarmaq-entity';
 import { Actor } from '@airport/holding-pattern';
 import { ActorDao } from '@airport/holding-pattern/lib/dao/dao';
 import { v4 as guidv4 } from "uuid";
-import { ApplicationDao } from '@airport/airspace';
+import { ApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
 
 @Injected()
 export abstract class TransactionalReceiver {

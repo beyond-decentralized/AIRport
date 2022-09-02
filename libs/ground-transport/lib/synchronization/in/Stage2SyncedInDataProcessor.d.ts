@@ -2,7 +2,7 @@ import { IAirportDatabase, IUtils } from '@airport/air-traffic-control';
 import { ApplicationColumn_Index, ApplicationVersion_LocalId, ApplicationEntity_TableIndex, DbColumn, DbEntity } from '@airport/ground-control';
 import { Actor_LocalId, AirEntity_ActorRecordId, Repository_LocalId } from '@airport/holding-pattern';
 import { IRecordUpdateStageDao } from '@airport/layover';
-import { IApplication } from '@airport/airspace';
+import { IApplication } from '@airport/airspace/lib/to_be_generated/runtime-index';
 import { RecordUpdate, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 import { IOperationContext } from '@airport/terminal-map';
 import { IDatabaseFacade } from '@airport/tarmaq-dao';

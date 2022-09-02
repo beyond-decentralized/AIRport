@@ -3,7 +3,7 @@ import { IContext } from '@airport/direction-indicator';
 import { IDbApplicationUtils, ISequenceGenerator } from '@airport/ground-control';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { AllDdlObjects, IApplicationInitializer, IQueryObjectInitializer, ITerminalStore, ITransactionManager } from '@airport/terminal-map';
-import { IApplicationDao } from '@airport/airspace';
+import { IApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
 import { IApplicationComposer } from './recorder/ApplicationComposer';

@@ -12,7 +12,7 @@ import {
 import {
 	QApplication,
 	QDomain
-} from '@airport/airspace'
+} from '@airport/airspace/lib/to_be_generated/runtime-index'
 import {
 	QTerminal,
 	QUserAccount,

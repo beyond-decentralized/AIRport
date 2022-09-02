@@ -2538,7 +2538,7 @@ packages:
       glob: 7.1.6
       is-reference: 1.2.1
       magic-string: 0.25.7
-      resolve: 1.20.0
+      resolve: 1.22.1
       rollup: 2.78.1
     dev: false
     engines:
@@ -14323,7 +14323,7 @@ packages:
     dev: false
     name: '@rush-temp/ui-react-main'
     resolution:
-      integrity: sha512-bRN7vkW5qu26M/FHV1fkEz0gb4+MFphwsDWf7VEJl0KvCFfeX9DnF1JZ0xw8zF6DOiVHRav8q83zkrW14MyU3A==
+      integrity: sha512-dtQbrBOLKELR2F+deosqSqrzQmShJQQtP5P5mWKgoRzIX+rrEjhvFWIkJN0WkFsmZcsK5IF4HA1EdO0ytYW7sw==
       tarball: 'file:projects/ui-react-main.tgz'
     version: 0.0.0
   'file:projects/ui-svelte-main.tgz':
@@ -14382,16 +14382,18 @@ packages:
   'file:projects/web-airport.tgz':
     dependencies:
       '@ionic/core': 6.2.4
-      '@rollup/plugin-commonjs': 22.0.2_rollup@2.78.1
+      '@rollup/plugin-commonjs': 21.1.0_rollup@2.78.1
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.78.1
-      '@rollup/plugin-typescript': 8.4.0_998a84e6b7f5e32b55c7b416508576a5
+      '@rollup/plugin-typescript': 8.4.0_rollup@2.78.1+typescript@4.8.2
       '@roxi/routify': 3.0.0-next.111
       '@tsconfig/svelte': 3.0.0
       broadcast-channel: 4.14.0
       page: 1.11.6
       rollup: 2.78.1
       rollup-plugin-css-only: 3.1.0_rollup@2.78.1
+      rollup-plugin-dts: 4.2.2_rollup@2.78.1+typescript@4.8.2
       rollup-plugin-livereload: 2.0.5
+      rollup-plugin-peer-deps-external: 2.2.4_rollup@2.78.1
       rollup-plugin-svelte: 7.1.0_rollup@2.78.1+svelte@3.49.0
       rollup-plugin-terser: 7.0.2_rollup@2.78.1
       sirv-cli: 2.0.2
@@ -14403,7 +14405,7 @@ packages:
     dev: false
     name: '@rush-temp/web-airport'
     resolution:
-      integrity: sha512-2u9/r5L8WSdHPD//y4ttkZGSHsO+sjJ0lojCWESd+j07WhW8C65HgkX8SeWQSUuIi30VHSi0HLN2XDGtESh74w==
+      integrity: sha512-CtOqn98NOEl3YlrqYYNGS2R7KcQ4BILUiDMrth1ZQ0zAnGzm0Ln01K7/JUWOe5/mORkJ4PTizi4GfbDxKC18Lw==
       tarball: 'file:projects/web-airport.tgz'
     version: 0.0.0
   'file:projects/web-terminal.tgz':

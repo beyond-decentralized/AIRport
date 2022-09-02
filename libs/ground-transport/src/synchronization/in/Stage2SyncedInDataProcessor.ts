@@ -27,7 +27,7 @@ import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues
 } from '@airport/layover'
-import { IApplication } from '@airport/airspace'
+import { IApplication } from '@airport/airspace/lib/to_be_generated/runtime-index'
 import {
 	RecordUpdate,
 	Stage1SyncedInDataProcessingResult

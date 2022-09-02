@@ -9,7 +9,6 @@ import {
 	ManyToOne,
 } from '@airport/tarmaq-entity'
 import {
-	Client,
 	Terminal,
 	UserAccount
 } from '@airport/travel-document-checkpoint'

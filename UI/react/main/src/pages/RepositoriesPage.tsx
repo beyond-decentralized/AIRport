@@ -1,4 +1,4 @@
-import { Repository } from '@airport/holding-pattern';
+import { Repository } from '@airport/web-airport';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useState } from 'react';

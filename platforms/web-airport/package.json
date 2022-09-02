@@ -1,11 +1,35 @@
 {
-  "dependencies": {
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/terminal-map": "0.0.1"
-  },
-  "main": "lib/index.js",
   "name": "@airport/web-airport",
-  "type": "module",
-  "typings": "lib/index",
-  "version": "0.0.1"
+  "description": "AIRport framework for the web",
+  "version": "0.0.1",
+  "dependencies": {
+    "@airport/airspace": "0.0.1",
+    "@airport/direction-indicator": "0.0.1",
+    "@airport/ui-react-components": "0.0.1",
+    "@airport/holding-pattern": "0.0.1",
+    "@airport/sqljs": "0.0.1",
+    "@airport/terminal-map": "0.0.1",
+    "@airport/web-airport": "0.0.1",
+    "@airport/web-terminal": "0.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.4"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "rollup": "rollup -c",
+    "test": "jest"
+  },
+  "types": "dist/index.d.ts"
 }
