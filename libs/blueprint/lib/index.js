@@ -5,8 +5,8 @@ import { APPLICATION as TRAVEL_DOCUMENT_CHECKPOINT } from '@airport/travel-docum
 import { APPLICATION as LAYOVER } from '@airport/layover/lib/generated/application';
 export const BLUEPRINT = [
     AIRPORT_CODE,
-    TRAVEL_DOCUMENT_CHECKPOINT,
     AIRSPACE,
+    TRAVEL_DOCUMENT_CHECKPOINT,
     HOLDING_PATTERN,
     LAYOVER
 ];

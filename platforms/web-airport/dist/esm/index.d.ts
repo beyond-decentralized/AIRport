@@ -1,10 +1,10 @@
-import { AIRportApi } from './AIRportApi';
-import { Application } from '@airport/airspace';
-import { Repository } from '@airport/holding-pattern';
-import { IUserAccountInfo } from '@airport/terminal-map';
 export * from './framework';
+import { IUserAccountInfo as SourceIUserAccountInfo } from '@airport/terminal-map';
+import { Application } from '@airport/airspace';
+import { Repository as SourceRepository } from '@airport/holding-pattern';
+import { AIRportApi } from './AIRportApi';
 export declare type Application = Application;
-export declare type IUserAccountInfo = IUserAccountInfo;
-export declare type Repository = Repository;
+export declare type IUserAccountInfo = SourceIUserAccountInfo;
+export declare type Repository = SourceRepository;
 export declare const airportApi: AIRportApi;
 //# sourceMappingURL=index.d.ts.map

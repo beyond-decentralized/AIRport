@@ -1,3 +1,4 @@
+import { loadAirTrafficControl } from '@airport/air-traffic-control';
 import { injectTransactionalConnector, injectTransactionalServer } from '@airport/terminal';
 import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower';
 import { injectWebReceiver } from './WebMessageReceiver';
@@ -8,6 +9,7 @@ export * from './WebMessageReceiver';
 export * from './tokens';
 export function injectTransactionalReceiver() {
     console.log('Injecting TransactionalReceiver');
+    loadAirTrafficControl();
     // injectMovingWalkway()
     injectTransactionalConnector();
     injectAirportDatabase();

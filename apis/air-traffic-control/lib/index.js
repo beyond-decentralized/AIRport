@@ -24,4 +24,7 @@ airApi.setQApplication = function (qApplication) {
         airportDatabase.setQApplication(qApplication);
     });
 };
+export function loadAirTrafficControl() {
+    console.debug(`@airport@air-traffic-control loaded`);
+}
 //# sourceMappingURL=index.js.map

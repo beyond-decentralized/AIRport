@@ -2,14 +2,14 @@ import { Repository } from '@airport/web-airport';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useState } from 'react';
-import { getRepositories } from '../api';
+import { getRepositories, initialGet, LoadedComponentState } from '../api';
 import './RepositoriesPage.css';
 
 const RepositoriesPage: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([])
   const [present] = useIonToast()
 
-  getRepositories(setRepositories, present)
+  initialGet(LoadedComponentState.REPOSITORIES, setRepositories, present)
 
   return (
     <IonPage>

@@ -140,6 +140,9 @@ export class QueryManager
 		portableQuery: PortableQuery,
 		entities: Array<E>
 	): Promise<Array<E>> {
+		if (!entities.length) {
+			return
+		}
 		if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
 			&& portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
 			return

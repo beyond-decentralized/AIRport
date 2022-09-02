@@ -31,3 +31,7 @@ airApi.setQApplication = function (
         airportDatabase.setQApplication(qApplication)
     })
 }
+
+export function loadAirTrafficControl() {
+    console.debug(`@airport@air-traffic-control loaded`)
+}

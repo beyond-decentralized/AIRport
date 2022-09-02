@@ -474,823 +474,10 @@ if (typeof window !== 'undefined') {
 }
 const IOC = new InversionOfControl();
 
-const airApi = {
-    setQApplication: function (qApplication) { },
-    dS: function (__dbApplication__, dbEntityId) { return true; },
-    ddS: function (__dbApplication__, dbEntityId) { return true; }
-};
-
-var __decorate$2W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let AirEntityUtils = class AirEntityUtils {
-    getCreatedBy(airEntity) {
-        return airEntity.actor.userAccount;
-    }
-    encodeId(idObject) {
-        if (!idObject.repository
-            || !idObject.repository.GUID
-            || !idObject.actor
-            || !idObject.actor.GUID
-            || !idObject._actorRecordId) {
-            return null;
-        }
-        if (typeof idObject.repository.GUID !== 'string') {
-            throw Error(`Type of "repository.GUID" property is not a string.`);
-        }
-        if (typeof idObject.actor.GUID !== 'string') {
-            throw Error(`Type of "actor.GUID" property is not a string.`);
-        }
-        if (typeof idObject._actorRecordId !== 'number') {
-            throw Error(`Type of "_actorRecordId" property is not a number.`);
-        }
-        return idObject.repository.GUID + '-' + idObject.actor.GUID + '-' + idObject._actorRecordId;
-    }
-    parseEGUID(idString) {
-        const idStringFragments = idString.split('-');
-        if (idStringFragments.length !== 11) {
-            throw new Error('Invalid Entity Id, expecting ${repository.GUID}-${actor.GUID}-${_actorRecordId}');
-        }
-        const repositoryGUIDFragments = [];
-        for (let i = 0; i < 5; i++) {
-            repositoryGUIDFragments.push(idStringFragments[i]);
-        }
-        const actorGUIDFragments = [];
-        for (let i = 5; i < 10; i++) {
-            actorGUIDFragments.push(idStringFragments[i]);
-        }
-        return {
-            repository: {
-                GUID: repositoryGUIDFragments.join('-')
-            },
-            actor: {
-                GUID: actorGUIDFragments.join('-')
-            },
-            _actorRecordId: parseInt(idStringFragments[11])
-        };
-    }
-    setId(idString, airEntity) {
-        if (!idString) {
-            return;
-        }
-        let airEntityId = this.parseEGUID(idString);
-        if (!airEntity.repository) {
-            airEntity.repository = {
-                GUID: airEntityId.repository.GUID
-            };
-        }
-        else {
-            airEntity.repository.GUID = airEntityId.repository.GUID;
-        }
-        if (!airEntity.actor) {
-            airEntity.actor = {
-                GUID: airEntityId.repository.GUID
-            };
-        }
-        else {
-            airEntity.actor.GUID = airEntityId.actor.GUID;
-        }
-        airEntity._actorRecordId = airEntityId._actorRecordId;
-    }
-};
-AirEntityUtils = __decorate$2W([
-    Injected()
-], AirEntityUtils);
-
-const aviationCommunication = lib$1('aviation-communication');
-const AIR_ENTITY_UTILS = aviationCommunication.token({
-    class: AirEntityUtils,
-    interface: 'IAirEntityUtils',
-    token: 'AIR_ENTITY_UTILS'
-});
-
-var ConstraintMode;
-(function (ConstraintMode) {
-    ConstraintMode["CONSTRAINT"] = "CONSTRAINT";
-    ConstraintMode["NO_CONSTRAINT"] = "NO_CONSTRAINT";
-    ConstraintMode["PROVIDER_DEFAULT"] = "PROVIDER_DEFAULT";
-})(ConstraintMode || (ConstraintMode = {}));
-
-/**
- * Created by Papa on 8/20/2016.
- */
-const Id = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Column = function (columnConfiguration) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const JoinColumn = function (joinColumnConfiguration) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Json = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbAny = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbBoolean = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbDate = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbNumber = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const DbString = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const Transient = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const ManyToOne = function (elements) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const OneToMany = function (elements) {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const GeneratedValue = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-const SequenceGenerator$1 = function () {
-    return function (targetObject, propertyKey) {
-        // No runtime logic required.
-    };
-};
-
-/**
- * Created by Papa on 8/20/2016.
- */
-const Entity = function () {
-    return function (constructor) {
-        // No runtime logic required.
-    };
-};
-const Table = function (tableConfiguration) {
-    return function (constructor) {
-        // No runtime logic required.
-    };
-};
-const MappedSuperclass = function () {
-    return function (constructor) {
-    };
-};
-
-var __decorate$2V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let Domain = class Domain {
-};
-__decorate$2V([
-    Id(),
-    DbNumber(),
-    Column()
-], Domain.prototype, "_localId", void 0);
-__decorate$2V([
-    DbString()
-], Domain.prototype, "name", void 0);
-__decorate$2V([
-    OneToMany()
-], Domain.prototype, "applications", void 0);
-Domain = __decorate$2V([
-    Entity(),
-    Table()
-], Domain);
-
-var __decorate$2U = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let Application = class Application {
-    constructor() {
-        this.versions = [];
-        this.currentVersion = [];
-    }
-};
-__decorate$2U([
-    Id(),
-    DbNumber(),
-    Column()
-], Application.prototype, "index", void 0);
-__decorate$2U([
-    Column(),
-    DbString()
-], Application.prototype, "scope", void 0);
-__decorate$2U([
-    Column(),
-    DbString()
-], Application.prototype, "name", void 0);
-__decorate$2U([
-    Column(),
-    DbString()
-], Application.prototype, "fullName", void 0);
-__decorate$2U([
-    Column(),
-    DbString()
-], Application.prototype, "status", void 0);
-__decorate$2U([
-    Column(),
-    DbString()
-], Application.prototype, "signature", void 0);
-__decorate$2U([
-    ManyToOne(),
-    JoinColumn()
-], Application.prototype, "domain", void 0);
-__decorate$2U([
-    OneToMany()
-], Application.prototype, "versions", void 0);
-__decorate$2U([
-    OneToMany()
-], Application.prototype, "currentVersion", void 0);
-Application = __decorate$2U([
-    Entity(),
-    Table()
-], Application);
-
-var __decorate$2T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let VersionedApplicationObject = class VersionedApplicationObject {
-};
-__decorate$2T([
-    ManyToOne(),
-    JoinColumn()
-], VersionedApplicationObject.prototype, "deprecatedSinceVersion", void 0);
-__decorate$2T([
-    ManyToOne(),
-    JoinColumn()
-], VersionedApplicationObject.prototype, "removedInVersion", void 0);
-__decorate$2T([
-    ManyToOne(),
-    JoinColumn()
-], VersionedApplicationObject.prototype, "sinceVersion", void 0);
-VersionedApplicationObject = __decorate$2T([
-    MappedSuperclass()
-], VersionedApplicationObject);
-
-var __decorate$2S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationColumn = class ApplicationColumn extends VersionedApplicationObject {
-    constructor() {
-        super(...arguments);
-        this.propertyColumns = [];
-        this.manyRelationColumns = [];
-        this.oneRelationColumns = [];
-    }
-};
-__decorate$2S([
-    DbNumber(),
-    Id(),
-    Column()
-], ApplicationColumn.prototype, "_localId", void 0);
-__decorate$2S([
-    Column(),
-    DbNumber()
-], ApplicationColumn.prototype, "index", void 0);
-__decorate$2S([
-    Column(),
-    DbNumber()
-], ApplicationColumn.prototype, "idIndex", void 0);
-__decorate$2S([
-    Column(),
-    DbBoolean()
-], ApplicationColumn.prototype, "isGenerated", void 0);
-__decorate$2S([
-    Column(),
-    DbNumber()
-], ApplicationColumn.prototype, "allocationSize", void 0);
-__decorate$2S([
-    Column(),
-    DbString()
-], ApplicationColumn.prototype, "name", void 0);
-__decorate$2S([
-    Column(),
-    DbBoolean()
-], ApplicationColumn.prototype, "notNull", void 0);
-__decorate$2S([
-    Column(),
-    DbNumber()
-], ApplicationColumn.prototype, "precision", void 0);
-__decorate$2S([
-    Column(),
-    DbNumber()
-], ApplicationColumn.prototype, "scale", void 0);
-__decorate$2S([
-    Column(),
-    DbString()
-], ApplicationColumn.prototype, "type", void 0);
-__decorate$2S([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationColumn.prototype, "entity", void 0);
-__decorate$2S([
-    OneToMany()
-], ApplicationColumn.prototype, "propertyColumns", void 0);
-__decorate$2S([
-    OneToMany()
-], ApplicationColumn.prototype, "manyRelationColumns", void 0);
-__decorate$2S([
-    OneToMany()
-], ApplicationColumn.prototype, "oneRelationColumns", void 0);
-ApplicationColumn = __decorate$2S([
-    Entity(),
-    Table()
-], ApplicationColumn);
-
-var __decorate$2R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationCurrentVersion = class ApplicationCurrentVersion {
-};
-__decorate$2R([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationCurrentVersion.prototype, "application", void 0);
-__decorate$2R([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationCurrentVersion.prototype, "applicationVersion", void 0);
-ApplicationCurrentVersion = __decorate$2R([
-    Entity(),
-    Table()
-], ApplicationCurrentVersion);
-
-var __decorate$2Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObject {
-    constructor() {
-        super(...arguments);
-        //
-        // One-to-Many's
-        //
-        this.columns = [];
-        // TODO: implement if needed
-        // @OneToMany()
-        // @JoinColumns([
-        // 	{name: "APPLICATION_VERSION_LID"},
-        // 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
-        // ])
-        // @WhereJoinTable((
-        // 	otm: QApplicationEntity,
-        // 	mto: QApplicationColumn
-        // ) => mto.idIndex.IS_NOT_NULL())
-        // idColumns: IApplicationColumn[];
-        this.operations = [];
-        this.properties = [];
-        this.relations = [];
-        this.relationReferences = [];
-        this.columnMap = {};
-        this.idColumns = [];
-        this.idColumnMap = {};
-        this.propertyMap = {};
-    }
-};
-__decorate$2Q([
-    DbNumber(),
-    Id(),
-    Column()
-], ApplicationEntity.prototype, "_localId", void 0);
-__decorate$2Q([
-    Column(),
-    DbNumber()
-], ApplicationEntity.prototype, "index", void 0);
-__decorate$2Q([
-    Column(),
-    DbBoolean()
-], ApplicationEntity.prototype, "isLocal", void 0);
-__decorate$2Q([
-    Column(),
-    DbBoolean()
-], ApplicationEntity.prototype, "isAirEntity", void 0);
-__decorate$2Q([
-    Column(),
-    DbString()
-], ApplicationEntity.prototype, "name", void 0);
-__decorate$2Q([
-    Column(),
-    Json()
-], ApplicationEntity.prototype, "tableConfig", void 0);
-__decorate$2Q([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationEntity.prototype, "applicationVersion", void 0);
-__decorate$2Q([
-    OneToMany()
-], ApplicationEntity.prototype, "columns", void 0);
-__decorate$2Q([
-    OneToMany()
-], ApplicationEntity.prototype, "operations", void 0);
-__decorate$2Q([
-    OneToMany()
-], ApplicationEntity.prototype, "properties", void 0);
-__decorate$2Q([
-    OneToMany()
-], ApplicationEntity.prototype, "relations", void 0);
-__decorate$2Q([
-    OneToMany()
-], ApplicationEntity.prototype, "relationReferences", void 0);
-__decorate$2Q([
-    Transient()
-], ApplicationEntity.prototype, "columnMap", void 0);
-__decorate$2Q([
-    Transient()
-], ApplicationEntity.prototype, "idColumns", void 0);
-__decorate$2Q([
-    Transient()
-], ApplicationEntity.prototype, "idColumnMap", void 0);
-__decorate$2Q([
-    Transient()
-], ApplicationEntity.prototype, "propertyMap", void 0);
-ApplicationEntity = __decorate$2Q([
-    Entity(),
-    Table()
-], ApplicationEntity);
-
-var __decorate$2P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationOperation = class ApplicationOperation extends VersionedApplicationObject {
-};
-__decorate$2P([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], ApplicationOperation.prototype, "_localId", void 0);
-__decorate$2P([
-    Column(),
-    DbNumber()
-], ApplicationOperation.prototype, "type", void 0);
-__decorate$2P([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationOperation.prototype, "entity", void 0);
-__decorate$2P([
-    Column(),
-    DbString()
-], ApplicationOperation.prototype, "name", void 0);
-__decorate$2P([
-    Column(),
-    Json()
-], ApplicationOperation.prototype, "rule", void 0);
-ApplicationOperation = __decorate$2P([
-    Entity(),
-    Table()
-], ApplicationOperation);
-
-var __decorate$2O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationProperty = class ApplicationProperty extends VersionedApplicationObject {
-    constructor() {
-        super(...arguments);
-        this.propertyColumns = [];
-        this.relation = [];
-    }
-};
-__decorate$2O([
-    DbNumber(),
-    Id(),
-    Column()
-], ApplicationProperty.prototype, "_localId", void 0);
-__decorate$2O([
-    DbNumber(),
-    Column()
-], ApplicationProperty.prototype, "index", void 0);
-__decorate$2O([
-    DbString(),
-    Column()
-], ApplicationProperty.prototype, "name", void 0);
-__decorate$2O([
-    DbBoolean(),
-    Column()
-], ApplicationProperty.prototype, "isId", void 0);
-__decorate$2O([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationProperty.prototype, "entity", void 0);
-__decorate$2O([
-    OneToMany()
-], ApplicationProperty.prototype, "propertyColumns", void 0);
-__decorate$2O([
-    OneToMany()
-], ApplicationProperty.prototype, "relation", void 0);
-ApplicationProperty = __decorate$2O([
-    Entity(),
-    Table()
-], ApplicationProperty);
-
-var __decorate$2N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Many-to-Many between Columns and properties
- */
-let ApplicationPropertyColumn = class ApplicationPropertyColumn extends VersionedApplicationObject {
-};
-__decorate$2N([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationPropertyColumn.prototype, "column", void 0);
-__decorate$2N([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationPropertyColumn.prototype, "property", void 0);
-ApplicationPropertyColumn = __decorate$2N([
-    Entity()
-    // TODO: rename table name to APPLICATION_PROPERTY_COLUMNS
-    ,
-    Table()
-], ApplicationPropertyColumn);
-
-var __decorate$2M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationReference = class ApplicationReference extends VersionedApplicationObject {
-};
-__decorate$2M([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationReference.prototype, "ownApplicationVersion", void 0);
-__decorate$2M([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], ApplicationReference.prototype, "referencedApplicationVersion", void 0);
-__decorate$2M([
-    Column(),
-    DbNumber()
-], ApplicationReference.prototype, "index", void 0);
-ApplicationReference = __decorate$2M([
-    Entity(),
-    Table()
-], ApplicationReference);
-
-var __decorate$2L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationRelation = class ApplicationRelation extends VersionedApplicationObject {
-    constructor() {
-        super(...arguments);
-        this.manyRelationColumns = [];
-        this.oneRelationColumns = [];
-    }
-};
-__decorate$2L([
-    DbNumber(),
-    Id(),
-    Column()
-], ApplicationRelation.prototype, "_localId", void 0);
-__decorate$2L([
-    DbNumber(),
-    Column()
-], ApplicationRelation.prototype, "index", void 0);
-__decorate$2L([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelation.prototype, "property", void 0);
-__decorate$2L([
-    Json(),
-    Column()
-], ApplicationRelation.prototype, "foreignKey", void 0);
-__decorate$2L([
-    Json(),
-    Column()
-], ApplicationRelation.prototype, "manyToOneElems", void 0);
-__decorate$2L([
-    Json(),
-    Column()
-], ApplicationRelation.prototype, "oneToManyElems", void 0);
-__decorate$2L([
-    DbString(),
-    Column()
-], ApplicationRelation.prototype, "relationType", void 0);
-__decorate$2L([
-    Column()
-], ApplicationRelation.prototype, "isId", void 0);
-__decorate$2L([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelation.prototype, "entity", void 0);
-__decorate$2L([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelation.prototype, "relationEntity", void 0);
-__decorate$2L([
-    OneToMany()
-], ApplicationRelation.prototype, "manyRelationColumns", void 0);
-__decorate$2L([
-    OneToMany()
-], ApplicationRelation.prototype, "oneRelationColumns", void 0);
-ApplicationRelation = __decorate$2L([
-    Entity(),
-    Table()
-], ApplicationRelation);
-
-var __decorate$2K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationRelationColumn = class ApplicationRelationColumn extends VersionedApplicationObject {
-};
-__decorate$2K([
-    Id(),
-    Column()
-], ApplicationRelationColumn.prototype, "_localId", void 0);
-__decorate$2K([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelationColumn.prototype, "manyColumn", void 0);
-__decorate$2K([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelationColumn.prototype, "oneColumn", void 0);
-__decorate$2K([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelationColumn.prototype, "manyRelation", void 0);
-__decorate$2K([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelationColumn.prototype, "oneRelation", void 0);
-__decorate$2K([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationRelationColumn.prototype, "parentRelation", void 0);
-ApplicationRelationColumn = __decorate$2K([
-    Entity(),
-    Table()
-], ApplicationRelationColumn);
-
-var __decorate$2J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationVersion = class ApplicationVersion {
-    constructor() {
-        this.entities = [];
-        this.references = [];
-        this.referencedBy = [];
-        this.entityMapByName = {};
-        this.referencesMapByName = {};
-        this.referencedByMapByName = {};
-    }
-};
-__decorate$2J([
-    DbNumber(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], ApplicationVersion.prototype, "_localId", void 0);
-__decorate$2J([
-    Column(),
-    DbNumber()
-], ApplicationVersion.prototype, "integerVersion", void 0);
-__decorate$2J([
-    Column(),
-    DbString()
-], ApplicationVersion.prototype, "versionString", void 0);
-__decorate$2J([
-    Column(),
-    DbNumber()
-], ApplicationVersion.prototype, "majorVersion", void 0);
-__decorate$2J([
-    Column(),
-    DbNumber()
-], ApplicationVersion.prototype, "minorVersion", void 0);
-__decorate$2J([
-    Column(),
-    DbNumber()
-], ApplicationVersion.prototype, "patchVersion", void 0);
-__decorate$2J([
-    Column(),
-    Json()
-], ApplicationVersion.prototype, "jsonApplication", void 0);
-__decorate$2J([
-    ManyToOne(),
-    JoinColumn()
-], ApplicationVersion.prototype, "application", void 0);
-__decorate$2J([
-    OneToMany()
-], ApplicationVersion.prototype, "entities", void 0);
-__decorate$2J([
-    OneToMany()
-], ApplicationVersion.prototype, "references", void 0);
-__decorate$2J([
-    OneToMany()
-], ApplicationVersion.prototype, "referencedBy", void 0);
-__decorate$2J([
-    Transient()
-], ApplicationVersion.prototype, "entityMapByName", void 0);
-__decorate$2J([
-    Transient()
-], ApplicationVersion.prototype, "referencesMapByName", void 0);
-__decorate$2J([
-    Transient()
-], ApplicationVersion.prototype, "referencedByMapByName", void 0);
-ApplicationVersion = __decorate$2J([
-    Entity(),
-    Table()
-], ApplicationVersion);
-
-const __constructors__$4 = {
-    Application: Application,
-    ApplicationColumn: ApplicationColumn,
-    ApplicationCurrentVersion: ApplicationCurrentVersion,
-    ApplicationEntity: ApplicationEntity,
-    ApplicationOperation: ApplicationOperation,
-    ApplicationProperty: ApplicationProperty,
-    ApplicationPropertyColumn: ApplicationPropertyColumn,
-    ApplicationReference: ApplicationReference,
-    ApplicationRelation: ApplicationRelation,
-    ApplicationRelationColumn: ApplicationRelationColumn,
-    ApplicationVersion: ApplicationVersion,
-    Domain: Domain,
-    VersionedApplicationObject: VersionedApplicationObject
-};
-const Q_APPLICATION$4 = {
-    __constructors__: __constructors__$4,
-    domain: 'air',
-    name: '@airport/airspace'
-};
-const Q$4 = Q_APPLICATION$4;
-function duoDiSet$5(dbEntityId) {
-    return airApi.ddS(Q$4.__dbApplication__, dbEntityId);
-}
-airApi.setQApplication(Q_APPLICATION$4);
+const ACTOR_PROPERTY_NAME = 'actor';
+const ACTOR_RECORD_ID_PROPERTY_NAME = '_actorRecordId';
+const REPOSITORY_PROPERTY_NAME = 'repository';
+const USER_ACCOUNT_PROPERTY_NAME = 'userAccount';
 
 /**
  * Column keys.
@@ -1765,7 +952,7 @@ class ColumnMap {
     }
 }
 
-var __decorate$2I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -1827,7 +1014,7 @@ let DbApplicationUtils = class DbApplicationUtils {
         return `${prefixedTableName}_${columnName}__SEQUENCE`;
     }
 };
-DbApplicationUtils = __decorate$2I([
+DbApplicationUtils = __decorate$2W([
     Injected()
 ], DbApplicationUtils);
 
@@ -4405,7 +3592,1348 @@ ${ending}`;
     }
 }
 
-var __decorate$2H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var ApplicationUtils_1;
+let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
+    getDbEntity(applicationIndex, tableIndex) {
+        return this.airportDatabase.applications[applicationIndex].currentVersion[0]
+            .applicationVersion.entities[tableIndex];
+    }
+    isActorId(columnName) {
+        return columnName === airEntity.ACTOR_LID;
+    }
+    isActorRecordId(columnName) {
+        return columnName === airEntity.ACTOR_RECORD_ID;
+    }
+    isRepositoryId(columnName) {
+        return columnName === airEntity.REPOSITORY_LID;
+    }
+    doCascade(dbRelation, crudOperation) {
+        if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
+            return false;
+        }
+        if (!dbRelation.oneToManyElems) {
+            return false;
+        }
+        switch (crudOperation) {
+            case CRUDOperation.CREATE:
+            case CRUDOperation.UPDATE:
+            case CRUDOperation.DELETE:
+                return true;
+            default:
+                throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
+        }
+    }
+    getQEntityConstructor(dbEntity) {
+        return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
+            .__qConstructors__[dbEntity.index];
+    }
+    getEntityConstructor(dbEntity) {
+        const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
+            .__constructors__[dbEntity.name];
+        return entityConstructor;
+    }
+    getNewEntity(dbEntity) {
+        const entityConstructor = this.getEntityConstructor(dbEntity);
+        if (!entityConstructor) {
+            return {};
+        }
+        return new entityConstructor();
+    }
+    isIdEmpty(idValue) {
+        return !idValue && idValue !== 0;
+    }
+    isEmpty(value) {
+        return this.isIdEmpty(value) && value !== false && value !== '';
+    }
+    isRelationColumn(dbColumn) {
+        return this.isManyRelationColumn(dbColumn)
+            || this.isOneRelationColumn(dbColumn);
+    }
+    isManyRelationColumn(dbColumn) {
+        return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length);
+    }
+    isOneRelationColumn(dbColumn) {
+        return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length);
+    }
+    getIdKey(entityObject, dbEntity, failOnNoId = true, 
+    // noIdValueCallback: {
+    // 	(
+    // 		relationColumn: DbColumn,
+    // 		value: any,
+    // 		propertyNameChains: string[][],
+    // 	): boolean;
+    // } = null,
+    idValueCallback) {
+        const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback);
+        return keys.arrayByIdColumnIndex.join('|');
+    }
+    getIdKeyInfo(entityObject, dbEntity, failOnNoId = true, idValueCallback) {
+        if (!dbEntity.idColumns.length) {
+            if (failOnNoId) {
+                throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`);
+            }
+            return null;
+        }
+        const idKeys = {
+            arrayByIdColumnIndex: [],
+            mapByIdColumnName: {}
+        };
+        for (const dbColumn of dbEntity.idColumns) {
+            const [propertyNameChains, idValue] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true, failOnNoId);
+            idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
+            idKeys.arrayByIdColumnIndex.push(idValue);
+            idKeys.mapByIdColumnName[dbColumn.name] = idValue;
+        }
+        return idKeys;
+    }
+    getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, forIdKey = false, generateNegativeIdsForMissing = true) {
+        const columnValuesAndPaths = this.getColumnValuesAndPaths(dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing);
+        const firstColumnValueAndPath = columnValuesAndPaths[0];
+        const propertyNameChains = [firstColumnValueAndPath.path];
+        const value = firstColumnValueAndPath.value;
+        columnValuesAndPaths.reduce((last, current) => {
+            if (!this.utils.valuesEqual(last.value, current.value, true)) {
+                throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
+						'${last.path.join('.')}' = ${last.value}
+						'${current.path.join('.')}' = ${current.value}`);
+            }
+            propertyNameChains.push(current.path);
+            return current;
+        });
+        return [propertyNameChains, value];
+    }
+    addRelationToEntitySelectClause(dbRelation, selectClause, allowDefaults = false) {
+        this.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
+            let convertTo = true;
+            let propertySelectClause = selectClause;
+            const firstPropertyNameChain = propertyNameChains[0];
+            firstPropertyNameChain.forEach((propertyNameLink, index) => {
+                let propertyObject = propertySelectClause[propertyNameLink];
+                if (!propertyObject) {
+                    propertyObject = {};
+                    this.entityStateManager.markAsStub(propertyObject);
+                    propertySelectClause[propertyNameLink] = propertyObject;
+                }
+                else {
+                    if (index < firstPropertyNameChain.length - 1) {
+                        if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
+                            throw new Error(`Invalid entry:
+								...
+								{
+									...
+									${propertyNameLink}: ${propertyObject}
+								}
+								in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
+								Property must be an Object.`);
+                        }
+                    }
+                    else {
+                        if (!allowDefaults && !isY(propertyObject)) {
+                            const reason = dbRelation.property.isId
+                                ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
+                                : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`;
+                            throw new Error(`Defaults are not allowed in:
+								...
+								{
+									...
+									${propertyNameLink}: ${propertyObject}
+								}
+								${reason}.`);
+                        }
+                        convertTo = false;
+                    }
+                }
+                propertySelectClause = propertyObject;
+            });
+            if (convertTo) {
+                convertToY(propertySelectClause);
+            }
+        });
+    }
+    forEachColumnOfRelation(dbRelation, entity, callback, failOnNoValue = true) {
+        const dbEntity = dbRelation.property.entity;
+        for (const dbRelationColumn of dbRelation.manyRelationColumns) {
+            const dbColumn = dbRelationColumn.manyColumn;
+            const [propertyNameChains, value] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity);
+            if (callback(dbColumn, value, propertyNameChains)) {
+                return;
+            }
+        }
+    }
+    forEachColumnTypeOfRelation(dbRelation, callback) {
+        for (const dbRelationColumn of dbRelation.manyRelationColumns) {
+            const dbColumn = dbRelationColumn.manyColumn;
+            const propertyNameChains = this.getColumnPaths(dbColumn, []);
+            if (callback(dbColumn, propertyNameChains)) {
+                return;
+            }
+        }
+    }
+    getSheetSelectFromSetClause(dbEntity, qEntity, setClause, errorPrefix) {
+        const selectClause = [];
+        let actorIdColumnIndex;
+        let actorRecordIdColumnIndex;
+        let repositoryIdColumnIndex;
+        let systemWideOperationIdColumn;
+        for (const columnIndex in dbEntity.columns) {
+            const dbColumn = dbEntity.columns[columnIndex];
+            let dbProperty;
+            const isIdColumn = dbColumn.propertyColumns.some(propertyColumn => {
+                dbProperty = propertyColumn.property;
+                return dbProperty.isId;
+            });
+            let nonIdColumnSet = false;
+            if (isIdColumn) {
+                if (setClause[dbColumn.name]) {
+                    throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
+of property '${dbEntity.name}.${dbProperty.name}'.`);
+                }
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
+            }
+            else if (setClause[dbColumn.name]) {
+                nonIdColumnSet = true;
+                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
+                // } else {
+                // entitySelectClause[dbColumn.index] = null;
+            }
+            const inQueryColumnIndex = selectClause.length - 1;
+            switch (dbColumn.name) {
+                case airEntity.ACTOR_LID:
+                    actorIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case airEntity.ACTOR_RECORD_ID:
+                    actorRecordIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case airEntity.REPOSITORY_LID:
+                    repositoryIdColumnIndex = inQueryColumnIndex;
+                    break;
+                case airEntity.SYSTEM_WIDE_OPERATION_ID:
+                    if (nonIdColumnSet) {
+                        throw new Error(errorPrefix +
+                            `Cannot update 'systemWideOperationId' of Repository Entities.`);
+                    }
+                    systemWideOperationIdColumn = dbColumn;
+                    break;
+            }
+        }
+        return {
+            actorIdColumnIndex,
+            actorRecordIdColumnIndex,
+            repositoryIdColumnIndex,
+            selectClause,
+            systemWideOperationIdColumn
+        };
+    }
+    getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false, generateNegativeIdsForMissing = true
+    // noIdValueCallback: {
+    // 	(
+    // 		relationColumn: DbColumn,
+    // 		value: any,
+    // 		propertyNameChains: string[][],
+    // 	): void;
+    // }
+    ) {
+        if (this.isManyRelationColumn(dbColumn)) {
+            let columnValuesAndPaths = [];
+            // If a column is part of a relation, it would be on the Many Side
+            for (const dbRelationColumn of dbColumn.manyRelationColumns) {
+                const dbProperty = dbRelationColumn.manyRelation.property;
+                const relationBreadCrumb = [...breadCrumb];
+                const propertyName = dbProperty.name;
+                relationBreadCrumb.push(propertyName);
+                const value = relationObject[propertyName];
+                if (!value) {
+                    if (forIdKey
+                    // && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
+                    // noIdValueCallback)
+                    ) {
+                        throw new Error(`Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`);
+                        // return null;
+                    }
+                    columnValuesAndPaths.push({
+                        path: relationBreadCrumb,
+                        value
+                    });
+                }
+                else {
+                    const otherEntityColumn = dbRelationColumn.oneColumn;
+                    const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey);
+                    columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths);
+                }
+            }
+            return columnValuesAndPaths;
+        }
+        else {
+            // If a column is not a part of (a) relation(s) then it is associated
+            // to only one property
+            const dbProperty = dbColumn.propertyColumns[0].property;
+            const propertyBreadCrumb = [...breadCrumb];
+            const propertyName = dbProperty.name;
+            propertyBreadCrumb.push(propertyName);
+            let value = relationObject[propertyName];
+            if (forIdKey && this.isIdEmpty(value)) {
+                if (dbColumn.isGenerated) {
+                    if (generateNegativeIdsForMissing) {
+                        value = --ApplicationUtils_1.TEMP_ID;
+                    }
+                    else {
+                        value = null;
+                    }
+                    relationObject[propertyName] = value;
+                }
+                else {
+                    // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
+                    // noValueCallback)) { return null; }
+                    throw new Error(`Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`);
+                }
+            }
+            return [{
+                    path: propertyBreadCrumb,
+                    value
+                }];
+        }
+    }
+    getColumnPaths(dbColumn, breadCrumb) {
+        let columnValuesAndPaths = [];
+        if (this.isManyRelationColumn(dbColumn)) {
+            // If a column is part of a relation, it would be on the Many Side
+            for (const dbRelationColumn of dbColumn.manyRelationColumns) {
+                const dbProperty = dbRelationColumn.manyRelation.property;
+                const relationBreadCrumb = [...breadCrumb];
+                relationBreadCrumb.push(dbProperty.name);
+                const otherEntityColumn = dbRelationColumn.oneColumn;
+                const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb);
+                columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths);
+            }
+        }
+        else {
+            // If a column is not a part of (a) relation(s) then it is associated
+            // to only one property
+            const dbProperty = dbColumn.propertyColumns[0].property;
+            const propertyBreadCrumb = [...breadCrumb];
+            propertyBreadCrumb.push(dbProperty.name);
+            columnValuesAndPaths.push(propertyBreadCrumb);
+        }
+        return columnValuesAndPaths;
+    }
+    addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
+        if (this.isManyRelationColumn(dbColumn)) {
+            const columnPaths = this.getColumnPaths(dbColumn, []);
+            const firstColumnPath = columnPaths[0];
+            let relationColumn = qEntity[firstColumnPath[0]];
+            firstColumnPath.reduce((last, current) => {
+                relationColumn = relationColumn[current];
+                return current;
+            });
+            entitySelectClause.push(relationColumn);
+        }
+        else {
+            entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name]);
+        }
+    }
+    /*
+        private addColumnToEntitySelect(
+            dbColumn: DbColumn,
+            entitySelectClause: any,
+        ) {
+            const dbRelation = dbColumn.relation;
+            if (dbRelation) {
+                let selectClauseFragment = entitySelectClause;
+                let lastSelectClauseFragment;
+                let sourceColumn = dbColumn;
+                let lastPropertyName;
+                do {
+                    lastPropertyName = sourceColumn.property.name;
+                    lastSelectClauseFragment = selectClauseFragment;
+                    if (!lastSelectClauseFragment[lastPropertyName]) {
+                        selectClauseFragment = {};
+                        lastSelectClauseFragment[lastPropertyName] = selectClauseFragment;
+                    } else {
+                        selectClauseFragment = lastSelectClauseFragment[lastPropertyName];
+                    }
+                    const relationColumn = sourceColumn.relation.relationColumns.filter(
+                        relationColumn => relationColumn.ownColumn.index === sourceColumn.index)[0];
+                    sourceColumn = relationColumn.relationColumn;
+                } while (sourceColumn.relation);
+                lastSelectClauseFragment[lastPropertyName] = null;
+            } else {
+                entitySelectClause[dbColumn.property.name] = null;
+            }
+        }
+    */
+    handleNoId(dbColumn, dbProperty, propertyNameChains, value, noIdValueCallback) {
+        if (noIdValueCallback) {
+            if (!noIdValueCallback(dbColumn, value, propertyNameChains)) {
+                return true;
+            }
+        }
+        else {
+            throw new Error(`Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`);
+        }
+        return false;
+    }
+};
+ApplicationUtils.TEMP_ID = 0;
+__decorate$2V([
+    Inject$2()
+], ApplicationUtils.prototype, "airportDatabase", void 0);
+__decorate$2V([
+    Inject$2()
+], ApplicationUtils.prototype, "entityStateManager", void 0);
+__decorate$2V([
+    Inject$2()
+], ApplicationUtils.prototype, "utils", void 0);
+ApplicationUtils = ApplicationUtils_1 = __decorate$2V([
+    Injected()
+], ApplicationUtils);
+
+var __decorate$2U = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Created by Papa on 6/14/2016.
+ */
+let EntityUtils = class EntityUtils {
+    getObjectClassName(object) {
+        if (typeof object != 'object' || object === null) {
+            throw new Error(`Not an object instance`);
+        }
+        return this.getClassName(object.constructor);
+    }
+    getClassName(clazz) {
+        if (typeof clazz != 'function') {
+            throw new Error(`Not a constructor function`);
+        }
+        let className = clazz['name'];
+        // let className = /(\w+)\(/.exec(clazz.toString())[1];
+        return className;
+    }
+    exists(object) {
+        return this.utils.objectExists(object);
+    }
+    /*
+     static isBlank(
+     object: any
+     ) {
+     for (let propertyName in object) {
+     let property = object[propertyName];
+     if (this.exists(property)) {
+     if (property instanceof Array) {
+     if (property.length > 0) {
+     return false;
+     }
+     } else {
+     return false;
+     }
+     }
+     }
+     return true;
+     }
+     */
+    isAppliable(object) {
+        return object instanceof QOperableField;
+    }
+    getQuery(query) {
+        return this.getRawQuery(query);
+    }
+    ensureId(rawEntityQuery) {
+        let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
+        this.ensureIdAtLevel(theRawEntityQuery.SELECT, theRawEntityQuery.FROM[0]);
+        return theRawEntityQuery;
+    }
+    ensureIdAtLevel(selectClauseFragment, qEntity) {
+        for (const propertyName in selectClauseFragment) {
+            const subFragment = selectClauseFragment[propertyName];
+            if (subFragment instanceof Object
+                && typeof subFragment.airportSelectField !== 'boolean'
+                && !subFragment.__allFields__) {
+                let matchingQEntity;
+                for (const childQEntity of qEntity.__driver__.childQEntities) {
+                    if (childQEntity.__driver__.dbRelation.property.name === propertyName) {
+                        matchingQEntity = childQEntity;
+                        break;
+                    }
+                }
+                if (matchingQEntity) {
+                    this.ensureIdAtLevel(subFragment, matchingQEntity);
+                }
+            }
+        }
+        if (!selectClauseFragment.id) {
+            return;
+        }
+        let repository = selectClauseFragment.repository;
+        if (repository) {
+            if (!(repository instanceof Object)) {
+                throw new Error(`id queries must include a repository object in the SELECT clause.
+It must be an Object with the id property.`);
+            }
+            repository.GUID = Y;
+        }
+        let actor = selectClauseFragment.actor;
+        if (actor) {
+            if (!(actor instanceof Object)) {
+                throw new Error(`id queries must include an actor object in the SELECT clause.
+It must be an Object with the id property.`);
+            }
+            actor.GUID = Y;
+        }
+        selectClauseFragment._actorRecordId = Y;
+        this.ensureRepositoryAndActorJoin(qEntity);
+    }
+    ensureRepositoryAndActorJoin(qEntity) {
+        let qActor, qRepository;
+        let repositoryJoinFound = false;
+        let actorJoinFound = false;
+        for (const childQEntity of qEntity.__driver__.childQEntities) {
+            if (childQEntity.__driver__.dbRelation.property.name === ACTOR_PROPERTY_NAME) {
+                actorJoinFound = true;
+                qActor = childQEntity;
+            }
+            if (childQEntity.__driver__.dbRelation.property.name === REPOSITORY_PROPERTY_NAME) {
+                repositoryJoinFound = true;
+                qRepository = childQEntity;
+            }
+        }
+        if (!actorJoinFound) {
+            qActor = qEntity.actor.LEFT_JOIN();
+        }
+        if (!repositoryJoinFound) {
+            qRepository = qEntity.repository.LEFT_JOIN();
+        }
+        return {
+            qActor,
+            qRepository
+        };
+    }
+    findActorQEntity() {
+    }
+    // Removes circular dependency at code initialization time
+    getRawQuery(rawQuery) {
+        if (rawQuery instanceof Function) {
+            return rawQuery();
+        }
+        else {
+            return rawQuery;
+        }
+    }
+    // Removes circular dependency at code initialization time
+    getEntityQuery(rawGraphQuery) {
+        return new EntityQuery(this.getRawQuery(rawGraphQuery));
+    }
+    // Removes circular dependency at code initialization time
+    getTreeQuery(rawQuery, entityAliases) {
+        return new TreeQuery(rawQuery, entityAliases);
+    }
+    // Removes circular dependency at code initialization time
+    isQEntity(qEntity) {
+        return qEntity instanceof QEntity;
+    }
+    // Removes circular dependency at code initialization time
+    isQTree(qEntity) {
+        return qEntity instanceof QTreeDriver;
+    }
+    // Removes circular dependency at code initialization time
+    getQTree(fromClausePosition, subQuery) {
+        return new QTree(fromClausePosition, subQuery);
+    }
+    // Removes circular dependency at code initialization time
+    isQField(qEntity) {
+        return qEntity instanceof QField;
+    }
+};
+__decorate$2U([
+    Inject$2()
+], EntityUtils.prototype, "utils", void 0);
+EntityUtils = __decorate$2U([
+    Injected()
+], EntityUtils);
+ENTITY_UTILS.setClass(EntityUtils);
+
+var __decorate$2T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let FieldUtils = class FieldUtils {
+    getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
+        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases);
+        return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
+    }
+};
+__decorate$2T([
+    Inject$2()
+], FieldUtils.prototype, "relationManager", void 0);
+FieldUtils = __decorate$2T([
+    Injected()
+], FieldUtils);
+
+var __decorate$2S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let QMetadataUtils = class QMetadataUtils {
+    getAllColumns(qEntity) {
+        return qEntity.__driver__.allColumns;
+    }
+    getAllNonGeneratedColumns(qEntity) {
+        return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated);
+    }
+    getAllInsertableColumns(qEntity) {
+        return this.getAllColumns(qEntity).filter(qField => {
+            if (qField.dbColumn.isGenerated) {
+                return false;
+            }
+            if (qEntity.__driver__.dbEntity.isAirEntity) {
+                switch (qField.dbColumn.name) {
+                    case airEntity.SYSTEM_WIDE_OPERATION_ID:
+                        return false;
+                }
+            }
+            return true;
+        });
+    }
+    getDbEntity(qEntity) {
+        return qEntity.__driver__.dbEntity;
+    }
+    getNewEntity(qEntity, airDb) {
+        const dbEntity = qEntity.__driver__.dbEntity;
+        const entityConstructor = airDb.qApplications[dbEntity.applicationVersion.application.index].__constructors__[dbEntity.name];
+        if (!entityConstructor) {
+            return {};
+        }
+        return new entityConstructor();
+    }
+};
+QMetadataUtils = __decorate$2S([
+    Injected()
+], QMetadataUtils);
+
+function getColumnQField(entity, property, q, column) {
+    switch (column.type) {
+        case SQLDataType.ANY:
+            return new QUntypedField(column, property, q);
+        case SQLDataType.BOOLEAN:
+            return new QBooleanField(column, property, q);
+        case SQLDataType.DATE:
+            return new QDateField(column, property, q);
+        case SQLDataType.NUMBER:
+            return new QNumberField(column, property, q);
+        case SQLDataType.JSON:
+        case SQLDataType.STRING:
+            return new QStringField(column, property, q);
+        default:
+            throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
+    }
+}
+function getQRelation(entity, property, q, allQApplications, applicationUtils, relationManager) {
+    const relation = property.relation[0];
+    switch (relation.relationType) {
+        case EntityRelationType.MANY_TO_ONE:
+            const relationEntity = relation.relationEntity;
+            const relationApplication = relationEntity.applicationVersion.application;
+            const qIdRelationConstructor = allQApplications[relationApplication.index]
+                .__qIdRelationConstructors__[relationEntity.index];
+            return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
+        case EntityRelationType.ONE_TO_MANY:
+            if (entity.isAirEntity) {
+                return new QAirEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
+            }
+            else {
+                return new QOneToManyRelation(relation, q, applicationUtils, relationManager);
+            }
+        default:
+            throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
+    }
+}
+function getQEntityConstructor(allQApplications) {
+    // ChildQEntity refers to the constructor
+    var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
+        ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
+        entity.properties.forEach((property) => {
+            let qFieldOrRelation;
+            if (property.relation && property.relation.length) {
+                qFieldOrRelation = getQRelation(entity, property, this, allQApplications, applicationUtils, relationManager);
+                for (const propertyColumn of property.propertyColumns) {
+                    addColumnQField(entity, property, this, propertyColumn.column);
+                }
+            }
+            else {
+                qFieldOrRelation = addColumnQField(entity, property, this, property.propertyColumns[0].column);
+            }
+            this[property.name] = qFieldOrRelation;
+        });
+        // entity.__qConstructor__ = ChildQEntity
+    };
+    const childQEntityMethods = {
+    /*
+    yourMethodName: function() {},
+    */
+    };
+    extend(QEntity, ChildQEntity, childQEntityMethods);
+    return ChildQEntity;
+}
+function addColumnQField(entity, property, q, column) {
+    const qFieldOrRelation = getColumnQField(entity, property, q, column);
+    q.__driver__.allColumns[column.index]
+        = qFieldOrRelation;
+    if (column.idIndex || column.idIndex === 0) {
+        q.__driver__.idColumns[column.idIndex]
+            = qFieldOrRelation;
+    }
+    return qFieldOrRelation;
+}
+function getQEntityIdRelationConstructor(dbEntity) {
+    function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
+        QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
+        getQEntityIdFields(this, entity, qEntity, relation.property);
+        // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
+    }
+    const qEntityIdRelationMethods = {
+    /*
+    yourMethodName: function() {},
+    */
+    };
+    if (dbEntity.isAirEntity) {
+        extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
+    }
+    else {
+        extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods);
+    }
+    return QEntityIdRelation;
+}
+/**
+ * Set all fields behind an id relation.  For example
+ *
+ * QA.id
+ *
+ * or
+ *
+ * QA.rel1.id
+ *
+ * or
+ *
+ * QA.rel2.otherRel.id
+ * QA.rel2.id
+ *
+ * @param addToObject  Object to add to (Ex: QA | QA.rel1 | QA.rel2.otherRel
+ * @param relationEntity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
+ * @param utils
+ * @param parentProperty  The parent property from which the current property was
+ *    navigated to
+ * @param relationColumnMap  DbColumn map for the current path of properties
+ *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
+ */
+function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
+    if (!relationColumnMap) {
+        const parentRelation = parentProperty.relation[0];
+        const relationColumns = parentRelation.manyRelationColumns;
+        relationColumnMap = new Map();
+        for (const relationColumn of relationColumns) {
+            relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
+        }
+    }
+    relationEntity.properties.forEach((property) => {
+        if (!property.isId) {
+            return;
+        }
+        let qFieldOrRelation;
+        // If it's a relation property (and therefore has backing columns)
+        if (property.relation && property.relation.length) {
+            const relation = property.relation[0];
+            const relationColumns = relation.manyRelationColumns;
+            for (const relationColumn of relationColumns) {
+                const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
+                // Remove the mapping of the parent relation
+                relationColumnMap.delete(relationColumn.manyColumn);
+                // And replace it with the nested relation
+                relationColumnMap.set(relationColumn.oneColumn, originalColumn);
+            }
+            qFieldOrRelation = getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
+        }
+        else {
+            const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
+            qFieldOrRelation = getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
+        }
+        addToObject[property.name] = qFieldOrRelation;
+    });
+    return addToObject;
+}
+function setQApplicationEntities(application, qApplication, allQApplications, appliationUtils, relationManager) {
+    // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
+    // application)
+    qApplication.__qIdRelationConstructors__ = [];
+    qApplication.__qConstructors__ = {};
+    // let haveMissingDependencies
+    // do {
+    // 	haveMissingDependencies = false
+    // NOTE: only need to compute the keys of entities for Many-to-One(s)
+    // Many-to-Ones must reference the table by primary key in order to
+    // guarantee a single record.  Any other type of join may return multiple
+    // records and is in fact a Many-to-Many
+    application.currentVersion[0].applicationVersion.entities.forEach((
+    // entities.forEach((
+    entity) => {
+        // NOTE: an @Id column is guaranteed to be present in only one property
+        for (const idColumn of entity.idColumns) {
+            if (idColumn.manyRelationColumns
+                && idColumn.manyRelationColumns.length) {
+                const oneColumn = idColumn.manyRelationColumns[0].oneColumn;
+                const relatedEntity = oneColumn.entity;
+                const relatedQApplication = allQApplications[relatedEntity.applicationVersion.application.index];
+                if (!relatedQApplication) {
+                    throw new Error(`QApplication not yet initialized for ID relation:
+					${entity.name}.${oneColumn.name}
+					`);
+                }
+                // const manyColumn = idColumn.manyRelationColumns[0].manyColumn
+                // if (relatedEntity.id === manyColumn.entity.id
+                // 	&& relatedEntity.applicationVersion.application.index
+                // 	=== manyColumn.entity.applicationVersion.application.index) {
+                // 	continue
+                // }
+                // const relatedQEntityConstructor =
+                // qApplication.__qConstructors__[relatedEntity.index] if (!relatedQEntityConstructor)
+                // { throw new Error(`QEntity not yet initialized for ID relation:
+                // ${entity.name}.${manyColumn.name} `) haveMissingDependencies = true }
+            }
+        }
+        const qIdRelationConstructor = getQEntityIdRelationConstructor(entity);
+        qApplication.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor;
+        // TODO: compute many-to-many relations
+        const qConstructor = getQEntityConstructor(allQApplications);
+        qApplication.__qConstructors__[entity.index] = qConstructor;
+        if (!Object.getOwnPropertyNames(qApplication)
+            .filter(propertyName => propertyName === entity.name).length) {
+            Object.defineProperty(qApplication, entity.name, {
+                get: function () {
+                    return new this.__qConstructors__[entity.index](entity, appliationUtils, relationManager);
+                }
+            });
+        }
+    });
+    // } while (haveMissingDependencies)
+}
+function orderApplicationsInOrderOfPrecedence(applications) {
+    const applicationWithDepsMap = new Map();
+    const applicationsWithDeps = applications.map(application => {
+        const dependencies = new Set();
+        for (const applicationReference of application.currentVersion[0]
+            .applicationVersion.references) {
+            dependencies.add(applicationReference.referencedApplicationVersion.application.index);
+        }
+        const applicationWithDependencies = {
+            application,
+            dependencies
+        };
+        applicationWithDepsMap.set(application.index, applicationWithDependencies);
+        return applicationWithDependencies;
+    });
+    applicationsWithDeps.sort((orderedApplication1, orderedApplication2) => {
+        if (applicationDependsOn(orderedApplication1, orderedApplication2.application.index)) {
+            return 1;
+        }
+        else if (applicationDependsOn(orderedApplication2, orderedApplication1.application.index)) {
+            return -1;
+        }
+        return 0;
+    });
+    return applicationsWithDeps.map(applicationWithDeps => applicationWithDeps.application);
+}
+function applicationDependsOn(dependantApplication, dependsOnApplication_Index, applicationWithDepsMap) {
+    if (dependantApplication.dependencies.has(dependsOnApplication_Index)) {
+        return true;
+    }
+    // for(const dependencyApplication_Index of dependantApplication.dependencies) {
+    //
+    // }
+    return false;
+}
+
+var __decorate$2R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let QueryUtils = class QueryUtils {
+    equals(entityOrId, toObject // | IQRelation<IQ>
+    ) {
+        if (!entityOrId) {
+            throw new Error(`null entity/Id is passed into 'equals' method`);
+        }
+        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
+        if (entityOrId instanceof QEntity) {
+            const relationIdEntities = this.entityUtils
+                .ensureRepositoryAndActorJoin(entityOrId);
+            return AND(qRepository.GUID.equals(relationIdEntities.qRepository.repository.GUID), qActor.GUID.equals(relationIdEntities.qActor.actor.GUID), toObject._actorRecordId.equals(entityOrId._actorRecordId));
+        }
+        else {
+            let entityId = this.validateEntityId(entityOrId);
+            return AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
+        }
+    }
+    in(entitiesOrIds, toObject // | IQRelation<IQ>
+    ) {
+        if (!entitiesOrIds || !entitiesOrIds.length) {
+            throw new Error(`null entity/Id array is passed into 'in' method`);
+        }
+        let entityIds = entitiesOrIds.map(entityOrId => this.validateEntityId(entityOrId));
+        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
+        const equalOperations = [];
+        for (const entityId of entityIds) {
+            equalOperations.push(AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId)));
+        }
+        return OR(...equalOperations);
+    }
+    validateEntityId(entityId) {
+        if (typeof entityId === 'string') {
+            return this.airEntityUtils.parseEGUID(entityId);
+        }
+        else {
+            if (!entityId.repository
+                || !entityId.repository.GUID
+                || typeof entityId.repository.GUID !== 'string'
+                || !entityId.actor
+                || !entityId.actor.GUID
+                || typeof entityId.actor.GUID !== 'number'
+                || !entityId._actorRecordId
+                || typeof entityId._actorRecordId !== 'number') {
+                throw new Error(`Passed in AirEntity does not have
+				the necessary fields to query by id.  Expecting:
+					interface AnInterface extends AirEntity {
+						repository: {
+							GUID: string
+						},
+						actor: {
+							GUID: string
+						},
+						_actorRecordId: number
+					}
+					`);
+            }
+            return entityId;
+        }
+    }
+    whereClauseToJSON(whereClause, columnAliases) {
+        if (!whereClause) {
+            return null;
+        }
+        let operation = whereClause;
+        let jsonOperation = {
+            c: operation.c,
+            o: operation.o
+        };
+        switch (operation.c) {
+            case OperationCategory.LOGICAL:
+                let logicalOperation = operation;
+                let jsonLogicalOperation = jsonOperation;
+                switch (operation.o) {
+                    case SqlOperator.NOT:
+                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases);
+                        break;
+                    case SqlOperator.AND:
+                    case SqlOperator.OR:
+                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases));
+                        break;
+                    default:
+                        throw new Error(`Unsupported logical operation '${operation.o}'`);
+                }
+                break;
+            case OperationCategory.FUNCTION:
+                // TODO: verify that cast of Q object is valid
+                let functionOperation = operation;
+                let query = functionOperation.getQuery();
+                let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(query, columnAliases.entityAliases).toJSON(this, this.fieldUtils, this.relationManager);
+                jsonOperation = functionOperation.toJSON(jsonQuery);
+                break;
+            case OperationCategory.BOOLEAN:
+            case OperationCategory.DATE:
+            case OperationCategory.NUMBER:
+            case OperationCategory.STRING:
+            case OperationCategory.UNTYPED:
+                let valueOperation = operation;
+                // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
+                // etc.)
+                let jsonValueOperation = jsonOperation;
+                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);
+                let rValue = valueOperation.r;
+                if (rValue instanceof Array) {
+                    jsonValueOperation.r = rValue.map((anRValue) => {
+                        return this.convertLRValue(anRValue, columnAliases);
+                    });
+                }
+                else {
+                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases);
+                }
+                break;
+        }
+        return jsonOperation;
+    }
+    convertLRValue(value, columnAliases) {
+        value = wrapPrimitive(value);
+        switch (typeof value) {
+            case 'undefined':
+                throw new Error(`'undefined' is not a valid L or R value`);
+            default:
+                if (value instanceof QOperableField) {
+                    return value.toJSON(columnAliases, false, this, this.fieldUtils, this.relationManager);
+                } // Must be a Field Query
+                else {
+                    let rawFieldQuery = value;
+                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, this);
+                }
+        }
+    }
+};
+__decorate$2R([
+    Inject$2()
+], QueryUtils.prototype, "entityUtils", void 0);
+__decorate$2R([
+    Inject$2()
+], QueryUtils.prototype, "fieldUtils", void 0);
+__decorate$2R([
+    Inject$2()
+], QueryUtils.prototype, "relationManager", void 0);
+__decorate$2R([
+    Inject$2()
+], QueryUtils.prototype, "airEntityUtils", void 0);
+QueryUtils = __decorate$2R([
+    Injected()
+], QueryUtils);
+
+const databaseState = {
+    applications: [],
+    entityMap: new Map(),
+    functions: {
+        ABS,
+        ADD,
+        AVG,
+        CONCAT,
+        COUNT,
+        DISTINCT,
+        DIVIDE,
+        EXISTS,
+        FORMAT,
+        INTERSECT,
+        LCASE,
+        LEN,
+        ROUND,
+        MAX,
+        MID,
+        MIN,
+        MINUS,
+        MODULUS,
+        MULTIPLY,
+        NOW,
+        REPLACE,
+        SUBTRACT,
+        SUM,
+        TRIM,
+        UCASE,
+        UNION,
+        UNION_ALL,
+        // logical operators
+        AND,
+        NOT,
+        OR,
+        // primitive wrappers
+        bool,
+        date,
+        num,
+        str,
+        wrapPrimitive,
+    },
+    qApplications: [],
+    QM: {},
+};
+
+var __decorate$2Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let DatabaseStore = class DatabaseStore {
+    constructor() {
+        this.databaseState = databaseState;
+    }
+    get applications() {
+        return this.databaseState.applications;
+    }
+    get entityMap() {
+        return this.databaseState.entityMap;
+    }
+    get functions() {
+        return this.databaseState.functions;
+    }
+    get qApplications() {
+        return this.databaseState.qApplications;
+    }
+    get QM() {
+        return this.databaseState.QM;
+    }
+};
+DatabaseStore = __decorate$2Q([
+    Injected()
+], DatabaseStore);
+
+var __decorate$2P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RelationManager = class RelationManager {
+    getPositionAlias(rootEntityPrefix, fromClausePosition) {
+        return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
+    }
+    getAlias(jsonRelation) {
+        return this.getPositionAlias(jsonRelation.rep, jsonRelation.fromClausePosition);
+    }
+    getParentAlias(jsonRelation) {
+        let fromClausePosition = jsonRelation.fromClausePosition;
+        if (fromClausePosition.length === 0) {
+            throw new Error(`Cannot find alias of a parent entity for the root entity`);
+        }
+        return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
+    }
+    createRelatedQEntity(joinRelation, context) {
+        const dbEntity = this.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti);
+        let QEntityConstructor = this.applicationUtils.getQEntityConstructor(dbEntity);
+        return new QEntityConstructor(dbEntity, this.applicationUtils, this, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
+    }
+    getNextChildJoinPosition(joinParentDriver) {
+        let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice();
+        nextChildJoinPosition.push(++joinParentDriver.currentChildIndex);
+        return nextChildJoinPosition;
+    }
+};
+__decorate$2P([
+    Inject$2()
+], RelationManager.prototype, "applicationUtils", void 0);
+RelationManager = __decorate$2P([
+    Injected()
+], RelationManager);
+
+async function getSysWideOpId(airDb, sequenceGenerator) {
+    const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator);
+    return sequences[0];
+}
+async function getSysWideOpIds(numSequencesNeeded, airportDatabase, sequenceGenerator) {
+    if (!numSequencesNeeded) {
+        return [];
+    }
+    const sysWideOpIdGeneratedColumn = airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION]
+        .__dbApplication__.currentVersion[0].applicationVersion
+        .entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY]
+        .columnMap['SYSTEM_WIDE_OPERATION_LID'];
+    const generatedNumWrapper = await sequenceGenerator
+        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
+    return generatedNumWrapper[0];
+}
+
+var __decorate$2O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let Utils = class Utils {
+    strsToNums(strings) {
+        return strings.map(str => parseInt(str));
+    }
+    objectExists(object) {
+        return object !== null && object !== undefined;
+    }
+    valuesEqual(value1, value2, checkChildObjects = false) {
+        if (typeof value1 === 'object') {
+            if (value1 instanceof Date) {
+                if (value2 instanceof Date) {
+                    return value1.getTime() === value2.getTime();
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                if (typeof value2 !== 'object') {
+                    return false;
+                }
+                if (!checkChildObjects) {
+                    // Skip child objects
+                    return true;
+                }
+                let checkedKeys = {};
+                for (let key in value1) {
+                    checkedKeys[key] = true;
+                    if (!this.valuesEqual(value1[key], value2[key], checkChildObjects)) {
+                        return false;
+                    }
+                }
+                for (let key in value2) {
+                    if (!checkedKeys[key]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        if (!value1) {
+            if (value1 === '') {
+                return value2 === '';
+            }
+            else if (value1 === false) {
+                return value2 === false;
+            }
+            else if (value1 === 0) {
+                return value2 === 0;
+            }
+            if (value2 === '' || value2 === false || value2 === 0) {
+                return false;
+            }
+            // treat undefined and null as same value
+            return (!value2);
+        }
+        if (!value2) {
+            return false;
+        }
+        return value1 === value2;
+    }
+    compareNumbers(number1, number2) {
+        if (number1 < number2) {
+            return -1;
+        }
+        if (number1 > number2) {
+            return 1;
+        }
+        return 0;
+    }
+};
+Utils = __decorate$2O([
+    Injected()
+], Utils);
+
+const airTrafficControl = lib$1('air-traffic-control');
+
+// Separating core-tokens from tokens removes circular dependencies
+// at code initialization time
+const UTILS = airTrafficControl.token({
+    class: Utils,
+    interface: 'IUtils',
+    token: 'UTILS'
+});
+ENTITY_UTILS.setDependencies({
+    utils: UTILS
+});
+QUERY_UTILS.setClass(QueryUtils);
+
+const airApi = {
+    setQApplication: function (qApplication) { },
+    dS: function (__dbApplication__, dbEntityId) { return true; },
+    ddS: function (__dbApplication__, dbEntityId) { return true; }
+};
+
+var __decorate$2N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let AirEntityUtils = class AirEntityUtils {
+    getCreatedBy(airEntity) {
+        return airEntity.actor.userAccount;
+    }
+    encodeId(idObject) {
+        if (!idObject.repository
+            || !idObject.repository.GUID
+            || !idObject.actor
+            || !idObject.actor.GUID
+            || !idObject._actorRecordId) {
+            return null;
+        }
+        if (typeof idObject.repository.GUID !== 'string') {
+            throw Error(`Type of "repository.GUID" property is not a string.`);
+        }
+        if (typeof idObject.actor.GUID !== 'string') {
+            throw Error(`Type of "actor.GUID" property is not a string.`);
+        }
+        if (typeof idObject._actorRecordId !== 'number') {
+            throw Error(`Type of "_actorRecordId" property is not a number.`);
+        }
+        return idObject.repository.GUID + '-' + idObject.actor.GUID + '-' + idObject._actorRecordId;
+    }
+    parseEGUID(idString) {
+        const idStringFragments = idString.split('-');
+        if (idStringFragments.length !== 11) {
+            throw new Error('Invalid Entity Id, expecting ${repository.GUID}-${actor.GUID}-${_actorRecordId}');
+        }
+        const repositoryGUIDFragments = [];
+        for (let i = 0; i < 5; i++) {
+            repositoryGUIDFragments.push(idStringFragments[i]);
+        }
+        const actorGUIDFragments = [];
+        for (let i = 5; i < 10; i++) {
+            actorGUIDFragments.push(idStringFragments[i]);
+        }
+        return {
+            repository: {
+                GUID: repositoryGUIDFragments.join('-')
+            },
+            actor: {
+                GUID: actorGUIDFragments.join('-')
+            },
+            _actorRecordId: parseInt(idStringFragments[11])
+        };
+    }
+    setId(idString, airEntity) {
+        if (!idString) {
+            return;
+        }
+        let airEntityId = this.parseEGUID(idString);
+        if (!airEntity.repository) {
+            airEntity.repository = {
+                GUID: airEntityId.repository.GUID
+            };
+        }
+        else {
+            airEntity.repository.GUID = airEntityId.repository.GUID;
+        }
+        if (!airEntity.actor) {
+            airEntity.actor = {
+                GUID: airEntityId.repository.GUID
+            };
+        }
+        else {
+            airEntity.actor.GUID = airEntityId.actor.GUID;
+        }
+        airEntity._actorRecordId = airEntityId._actorRecordId;
+    }
+};
+AirEntityUtils = __decorate$2N([
+    Injected()
+], AirEntityUtils);
+
+const aviationCommunication = lib$1('aviation-communication');
+const AIR_ENTITY_UTILS = aviationCommunication.token({
+    class: AirEntityUtils,
+    interface: 'IAirEntityUtils',
+    token: 'AIR_ENTITY_UTILS'
+});
+
+var __decorate$2M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -4459,13 +4987,13 @@ let Lookup = class Lookup {
         return result;
     }
 };
-__decorate$2H([
+__decorate$2M([
     Inject$2()
 ], Lookup.prototype, "entityUtils", void 0);
-__decorate$2H([
+__decorate$2M([
     Inject$2()
 ], Lookup.prototype, "queryFacade", void 0);
-Lookup = __decorate$2H([
+Lookup = __decorate$2M([
     Injected()
 ], Lookup);
 function doEnsureContext(context) {
@@ -5747,7 +6275,7 @@ function defaultCompare(a, b) {
     return a === b;
 }
 
-var __decorate$2G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5773,11 +6301,11 @@ let NonEntityFind = class NonEntityFind extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, false, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFind = __decorate$2G([
+NonEntityFind = __decorate$2L([
     Injected()
 ], NonEntityFind);
 
-var __decorate$2F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5800,11 +6328,11 @@ let NonEntityFindOne = class NonEntityFindOne extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, false, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntityFindOne = __decorate$2F([
+NonEntityFindOne = __decorate$2K([
     Injected()
 ], NonEntityFindOne);
 
-var __decorate$2E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5827,11 +6355,11 @@ let NonEntitySearch = class NonEntitySearch extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, true, false, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearch = __decorate$2E([
+NonEntitySearch = __decorate$2J([
     Injected()
 ], NonEntitySearch);
 
-var __decorate$2D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -5854,7 +6382,7 @@ let NonEntitySearchOne = class NonEntitySearchOne extends Lookup {
         return this.lookup(rawNonEntityQuery, queryResultType, true, true, QueryClass, this.ensureContext(context));
     }
 };
-NonEntitySearchOne = __decorate$2D([
+NonEntitySearchOne = __decorate$2I([
     Injected()
 ], NonEntitySearchOne);
 
@@ -5982,7 +6510,7 @@ class FieldsSelect {
     }
 }
 
-var __decorate$2C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -6142,19 +6670,19 @@ let Dao = class Dao {
         return doEnsureContext(context);
     }
 };
-__decorate$2C([
+__decorate$2H([
     Inject$2()
 ], Dao.prototype, "databaseFacade", void 0);
-__decorate$2C([
+__decorate$2H([
     Inject$2()
 ], Dao.prototype, "entityStateManager", void 0);
-__decorate$2C([
+__decorate$2H([
     Inject$2()
 ], Dao.prototype, "lookup", void 0);
-__decorate$2C([
+__decorate$2H([
     Inject$2()
 ], Dao.prototype, "updateCacheManager", void 0);
-Dao = __decorate$2C([
+Dao = __decorate$2H([
     Injected()
 ], Dao);
 
@@ -6230,2376 +6758,12 @@ function diSet(dbApplication, dbEntityId // ApplicationEntity_LocalId
         .applicationVersion.entities[dbEntityId];
     return SEQ_GEN.exists(dbEntity);
 }
-function duoDiSet$4(dbApplication, dbEntityId) {
+function duoDiSet$5(dbApplication, dbEntityId) {
     return dbApplication && dbApplication.currentVersion[0]
         .applicationVersion.entities[dbEntityId];
 }
 airApi.dS = diSet;
-airApi.ddS = duoDiSet$4;
-
-// Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$4 extends Dao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q$4);
-    }
-}
-class BaseApplicationDao extends SQDIDao$4 {
-    constructor() {
-        super(10);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(10);
-    }
-}
-BaseApplicationDao.Find = new DaoQueryDecorators();
-BaseApplicationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationDao.Search = new DaoQueryDecorators();
-BaseApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationColumnDao extends SQDIDao$4 {
-    constructor() {
-        super(4);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(4);
-    }
-}
-BaseApplicationColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationCurrentVersionDao extends SQDIDao$4 {
-    constructor() {
-        super(9);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(9);
-    }
-}
-BaseApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
-BaseApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationEntityDao extends SQDIDao$4 {
-    constructor() {
-        super(6);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(6);
-    }
-}
-BaseApplicationEntityDao.Find = new DaoQueryDecorators();
-BaseApplicationEntityDao.FindOne = new DaoQueryDecorators();
-BaseApplicationEntityDao.Search = new DaoQueryDecorators();
-BaseApplicationEntityDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationOperationDao extends SQDIDao$4 {
-    constructor() {
-        super(5);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(5);
-    }
-}
-BaseApplicationOperationDao.Find = new DaoQueryDecorators();
-BaseApplicationOperationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationOperationDao.Search = new DaoQueryDecorators();
-BaseApplicationOperationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationPropertyDao extends SQDIDao$4 {
-    constructor() {
-        super(2);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(2);
-    }
-}
-BaseApplicationPropertyDao.Find = new DaoQueryDecorators();
-BaseApplicationPropertyDao.FindOne = new DaoQueryDecorators();
-BaseApplicationPropertyDao.Search = new DaoQueryDecorators();
-BaseApplicationPropertyDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationPropertyColumnDao extends SQDIDao$4 {
-    constructor() {
-        super(3);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(3);
-    }
-}
-BaseApplicationPropertyColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationPropertyColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationReferenceDao extends SQDIDao$4 {
-    constructor() {
-        super(7);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(7);
-    }
-}
-BaseApplicationReferenceDao.Find = new DaoQueryDecorators();
-BaseApplicationReferenceDao.FindOne = new DaoQueryDecorators();
-BaseApplicationReferenceDao.Search = new DaoQueryDecorators();
-BaseApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationRelationDao extends SQDIDao$4 {
-    constructor() {
-        super(1);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(1);
-    }
-}
-BaseApplicationRelationDao.Find = new DaoQueryDecorators();
-BaseApplicationRelationDao.FindOne = new DaoQueryDecorators();
-BaseApplicationRelationDao.Search = new DaoQueryDecorators();
-BaseApplicationRelationDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationRelationColumnDao extends SQDIDao$4 {
-    constructor() {
-        super(0);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(0);
-    }
-}
-BaseApplicationRelationColumnDao.Find = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.FindOne = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.Search = new DaoQueryDecorators();
-BaseApplicationRelationColumnDao.SearchOne = new DaoQueryDecorators();
-class BaseApplicationVersionDao extends SQDIDao$4 {
-    constructor() {
-        super(8);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(8);
-    }
-}
-BaseApplicationVersionDao.Find = new DaoQueryDecorators();
-BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
-BaseApplicationVersionDao.Search = new DaoQueryDecorators();
-BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
-class BaseDomainDao extends SQDIDao$4 {
-    constructor() {
-        super(11);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$5(11);
-    }
-}
-BaseDomainDao.Find = new DaoQueryDecorators();
-BaseDomainDao.FindOne = new DaoQueryDecorators();
-BaseDomainDao.Search = new DaoQueryDecorators();
-BaseDomainDao.SearchOne = new DaoQueryDecorators();
-
-var __decorate$2B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let DomainDao = class DomainDao extends BaseDomainDao {
-    async findByIdIn(domainIds) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                d = Q$4.Domain
-            ],
-            WHERE: d._localId.IN(domainIds)
-        });
-    }
-    async findMapByNameWithNames(domainNames) {
-        let d;
-        const domains = await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q$4.Domain],
-            WHERE: d.name.IN(domainNames)
-        });
-        const domainMapByNameWithNames = new Map();
-        for (const domain of domains) {
-            domainMapByNameWithNames.set(domain.name, domain);
-        }
-        return domainMapByNameWithNames;
-    }
-    async findOneByName(name) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q$4.Domain],
-            WHERE: d.name.equals(name)
-        });
-    }
-    async findByNames(names) {
-        let d;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [d = Q$4.Domain],
-            WHERE: d.name.IN(names)
-        });
-    }
-    async findByName(name) {
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {},
-            FROM: [d = Q$4.Domain],
-            WHERE: d.name.equals(name)
-        });
-    }
-    async checkAndInsertIfNeeded(domains, context) {
-        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId));
-        const existingDomainMap = new Map();
-        for (const existingDomain of existingDomains) {
-            existingDomainMap.set(existingDomain._localId, existingDomain);
-        }
-        const newDomains = [];
-        for (const domain of domains) {
-            if (!existingDomainMap.has(domain._localId)) {
-                newDomains.push(domain);
-            }
-        }
-        if (!newDomains.length) {
-            return;
-        }
-        let d;
-        const VALUES = [];
-        for (const domain of newDomains) {
-            VALUES.push([
-                domain._localId, domain.name
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q$4.Domain,
-            columns: [
-                d._localId,
-                d.name,
-            ],
-            VALUES
-        }, context);
-    }
-    async insert(domains) {
-        let d;
-        const VALUES = [];
-        for (const domain of domains) {
-            VALUES.push([
-                domain.name
-            ]);
-        }
-        const ids = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: d = Q$4.Domain,
-            columns: [
-                d.name
-            ],
-            VALUES
-        });
-        for (let i = 0; i < domains.length; i++) {
-            let domain = domains[i];
-            domain._localId = ids[i][0];
-        }
-    }
-};
-DomainDao = __decorate$2B([
-    Injected()
-], DomainDao);
-
-var __decorate$2A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationColumnDao {
-    async findAllForEntities(entityIds) {
-        let c;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                c = Q$4.ApplicationColumn
-            ],
-            WHERE: c.entity._localId.IN(entityIds)
-        });
-    }
-    async insert(applicationColumns, context) {
-        let sc;
-        const VALUES = [];
-        for (const applicationColumn of applicationColumns) {
-            VALUES.push([
-                applicationColumn._localId, applicationColumn.index,
-                undefinedToNull(applicationColumn.idIndex),
-                applicationColumn.isGenerated,
-                undefinedToNull(applicationColumn.allocationSize),
-                applicationColumn.name,
-                applicationColumn.notNull,
-                undefinedToNull(applicationColumn.precision),
-                undefinedToNull(applicationColumn.scale),
-                applicationColumn.type,
-                applicationColumn.entity._localId,
-                applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
-                applicationColumn.removedInVersion ? applicationColumn.removedInVersion._localId : null,
-                applicationColumn.sinceVersion ? applicationColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sc = Q$4.ApplicationColumn,
-            columns: [
-                sc._localId,
-                sc.index,
-                sc.idIndex,
-                sc.isGenerated,
-                sc.allocationSize,
-                sc.name,
-                sc.notNull,
-                sc.precision,
-                sc.scale,
-                sc.type,
-                sc.entity._localId,
-                sc.deprecatedSinceVersion._localId,
-                sc.removedInVersion._localId,
-                sc.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationColumnDao = __decorate$2A([
-    Injected()
-], ApplicationColumnDao);
-
-var __decorate$2z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
-    async findAllActive() {
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                Q$4.Application
-            ]
-        });
-    }
-    async findAllWithJson() {
-        let a;
-        return this.db.find.tree({
-            SELECT: {
-                ...ALL_FIELDS,
-                // currentVersion: {
-                // 	applicationVersion: {
-                // 		_localId: Y,
-                // 		jsonApplication: Y
-                // 	}
-                // }
-                versions: {
-                    _localId: Y,
-                    jsonApplication: Y
-                }
-            },
-            FROM: [
-                a = Q$4.Application,
-                // cv = a.currentVersion.INNER_JOIN(),
-                // av = cv.applicationVersion.INNER_JOIN()
-                a.versions.INNER_JOIN()
-            ]
-        });
-    }
-    async findMapByVersionIds(applicationVersionIds) {
-        const applicationMapByIndex = new Map();
-        let s, sv;
-        const applications = await this.db.find.tree({
-            SELECT: {
-                index: Y,
-                domain: {
-                    _localId: Y,
-                    name: Y
-                },
-                name: Y,
-                fullName: Y,
-                versions: {
-                    _localId: Y,
-                    majorVersion: Y,
-                    minorVersion: Y,
-                    patchVersion: Y
-                }
-            },
-            FROM: [
-                s = Q$4.Application,
-                sv = s.versions.INNER_JOIN()
-            ],
-            WHERE: sv._localId.IN(applicationVersionIds)
-        });
-        for (const application of applications) {
-            for (const applicationVersion of application.versions) {
-                applicationMapByIndex.set(applicationVersion._localId, application);
-            }
-        }
-        return applicationMapByIndex;
-    }
-    async findMaxIndex() {
-        const s = Q$4.Application;
-        return await this.airportDatabase.findOne.field({
-            SELECT: MAX(s.index),
-            FROM: [
-                s
-            ]
-        });
-    }
-    async findMaxVersionedMapByApplicationAndDomain_Names(applicationDomain_Names, applicationNames) {
-        const maxVersionedMapByApplicationAndDomain_Names = new Map();
-        let sv;
-        let s;
-        let d;
-        let sMaV;
-        let sMiV;
-        const applicationLookupRecords = await this.airportDatabase.find.tree({
-            FROM: [
-                sMiV = tree({
-                    FROM: [
-                        sMaV = tree({
-                            FROM: [
-                                s = Q$4.Application,
-                                sv = s.versions.INNER_JOIN(),
-                                d = s.domain.INNER_JOIN()
-                            ],
-                            SELECT: {
-                                index: s.index,
-                                domainId: d._localId,
-                                domainName: d.name,
-                                name: s.name,
-                                majorVersion: MAX(sv.majorVersion),
-                                minorVersion: sv.minorVersion,
-                                patchVersion: sv.patchVersion,
-                            },
-                            WHERE: AND(d.name.IN(applicationDomain_Names), s.name.IN(applicationNames)),
-                            GROUP_BY: [
-                                s.index,
-                                d._localId,
-                                d.name,
-                                s.name,
-                                sv.minorVersion,
-                                sv.patchVersion,
-                            ]
-                        })
-                    ],
-                    SELECT: {
-                        index: sMaV.index,
-                        domainId: sMaV.domainId,
-                        domainName: sMaV.domainName,
-                        name: sMaV.name,
-                        majorVersion: sMaV.majorVersion,
-                        minorVersion: MAX(sMaV.minorVersion),
-                        patchVersion: sMaV.patchVersion,
-                    },
-                    GROUP_BY: [
-                        sMaV.index,
-                        sMaV.domainId,
-                        sMaV.domainName,
-                        sMaV.name,
-                        sMaV.majorVersion,
-                        sMaV.patchVersion
-                    ]
-                })
-            ],
-            SELECT: {
-                index: sMiV.index,
-                domain: {
-                    _localId: sMiV.domainId,
-                    name: sMiV.domainName
-                },
-                name: sMiV.name,
-                majorVersion: sMiV.majorVersion,
-                minorVersion: sMiV.minorVersion,
-                patchVersion: MAX(sMiV.patchVersion),
-            },
-            GROUP_BY: [
-                sMiV.index,
-                sMiV.domainId,
-                sMiV.domainName,
-                sMiV.name,
-                sMiV.majorVersion,
-                sMiV.minorVersion
-            ]
-        });
-        for (const applicationLookupRecord of applicationLookupRecords) {
-            ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
-                .set(applicationLookupRecord.name, applicationLookupRecord);
-        }
-        return maxVersionedMapByApplicationAndDomain_Names;
-    }
-    async setStatusByIndexes(indexes, status) {
-        let s;
-        await this.db.updateWhere({
-            UPDATE: s = Q$4.Application,
-            SET: {
-                status
-            },
-            WHERE: s.index.IN(indexes)
-        });
-    }
-    async findMapByFullNames(fullApplication_Names) {
-        const mapByFullName = new Map();
-        let s;
-        const records = await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                s = Q$4.Application
-            ],
-            WHERE: s.fullName.IN(fullApplication_Names)
-        });
-        for (const record of records) {
-            mapByFullName.set(record.fullName, record);
-        }
-        return mapByFullName;
-    }
-    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
-        let s;
-        let d;
-        return await this.db.find.tree({
-            SELECT: {
-                index: Y,
-                domain: {
-                    _localId: Y,
-                    name: Y
-                },
-                fullName: Y,
-                name: Y
-            },
-            FROM: [
-                s = Q$4.Application,
-                d = s.domain.INNER_JOIN()
-            ],
-            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
-        });
-    }
-    async findOneByDomain_NameAndApplication_Name(domainName, applicationName) {
-        let s;
-        let d;
-        return await this.db.findOne.tree({
-            SELECT: {
-                domain: {
-                    name: Y
-                },
-                fullName: Y,
-                index: Y,
-                name: Y
-            },
-            FROM: [
-                s = Q$4.Application,
-                d = s.domain.INNER_JOIN()
-            ],
-            WHERE: AND(d.name.equals(domainName), s.name.equals(applicationName))
-        });
-    }
-    async findByIndex(index) {
-        let a;
-        return await this.db.findOne.tree({
-            SELECT: {
-                ...ALL_FIELDS,
-                domain: {}
-            },
-            FROM: [
-                a = Q$4.Application,
-                a.domain.INNER_JOIN()
-            ],
-            WHERE: a.index.equals(index)
-        });
-    }
-    async insert(applications, context) {
-        let a;
-        const VALUES = [];
-        for (const application of applications) {
-            VALUES.push([
-                application.index, application.domain._localId, application.scope,
-                application.fullName, application.name,
-                // application.packageName,
-                application.status, application.signature
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q$4.Application,
-            columns: [
-                a.index,
-                a.domain._localId,
-                a.scope,
-                a.fullName,
-                a.name,
-                // a.packageName,
-                a.status,
-                a.signature
-            ],
-            VALUES
-        }, context);
-    }
-};
-__decorate$2z([
-    Inject$2()
-], ApplicationDao.prototype, "airportDatabase", void 0);
-ApplicationDao = __decorate$2z([
-    Injected()
-], ApplicationDao);
-
-var __decorate$2y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEntityDao {
-    async findAllForApplicationVersions(applicationVersionIds) {
-        let se;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                se = Q$4.ApplicationEntity
-            ],
-            WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
-        });
-    }
-    async insert(applicationEntities, context) {
-        let se;
-        const VALUES = [];
-        for (const applicationEntity of applicationEntities) {
-            VALUES.push([
-                applicationEntity._localId, applicationEntity.index,
-                applicationEntity.isLocal, applicationEntity.isAirEntity,
-                applicationEntity.name, applicationEntity.tableConfig,
-                applicationEntity.applicationVersion._localId,
-                applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion._localId : null,
-                applicationEntity.removedInVersion ? applicationEntity.removedInVersion._localId : null,
-                applicationEntity.sinceVersion ? applicationEntity.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: se = Q$4.ApplicationEntity,
-            columns: [
-                se._localId,
-                se.index,
-                se.isLocal,
-                se.isAirEntity,
-                se.name,
-                se.tableConfig,
-                se.applicationVersion._localId,
-                se.deprecatedSinceVersion._localId,
-                se.removedInVersion._localId,
-                se.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationEntityDao = __decorate$2y([
-    Injected()
-], ApplicationEntityDao);
-
-var __decorate$2x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
-    async findAllForColumns(columnIds) {
-        let rc;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rc = Q$4.ApplicationPropertyColumn
-            ],
-            WHERE: rc.column._localId.IN(columnIds)
-        });
-    }
-    async insert(applicationPropertyColumns, context) {
-        let spc;
-        const VALUES = [];
-        for (const applicationPropertyColumn of applicationPropertyColumns) {
-            VALUES.push([
-                applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
-                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
-                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
-                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: spc = Q$4.ApplicationPropertyColumn,
-            columns: [
-                spc.column._localId,
-                spc.property._localId,
-                spc.deprecatedSinceVersion._localId,
-                spc.removedInVersion._localId,
-                spc.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationPropertyColumnDao = __decorate$2x([
-    Injected()
-], ApplicationPropertyColumnDao);
-
-var __decorate$2w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicationPropertyDao {
-    async findAllForEntities(entityIds) {
-        let p;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                p = Q$4.ApplicationProperty
-            ],
-            WHERE: p.entity._localId.IN(entityIds)
-        });
-    }
-    async insert(applicationProperties, context) {
-        let sp;
-        const VALUES = [];
-        for (const applicationProperty of applicationProperties) {
-            VALUES.push([
-                applicationProperty._localId, applicationProperty.index,
-                applicationProperty.name, applicationProperty.isId,
-                applicationProperty.entity._localId,
-                applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion._localId : null,
-                applicationProperty.removedInVersion ? applicationProperty.removedInVersion._localId : null,
-                applicationProperty.sinceVersion ? applicationProperty.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sp = Q$4.ApplicationProperty,
-            columns: [
-                sp._localId,
-                sp.index,
-                sp.name,
-                sp.isId,
-                sp.entity._localId,
-                sp.deprecatedSinceVersion._localId,
-                sp.removedInVersion._localId,
-                sp.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationPropertyDao = __decorate$2w([
-    Injected()
-], ApplicationPropertyDao);
-
-var __decorate$2v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicationReferenceDao {
-    async findAllForApplicationVersions(applicationVersionIds) {
-        let sr;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                sr = Q$4.ApplicationReference
-            ],
-            WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
-        });
-    }
-    async insert(applicationReferences, context) {
-        let sr;
-        const VALUES = [];
-        for (const applicationReference of applicationReferences) {
-            VALUES.push([
-                applicationReference.ownApplicationVersion._localId,
-                applicationReference.referencedApplicationVersion._localId,
-                applicationReference.index,
-                applicationReference.deprecatedSinceVersion ? applicationReference.deprecatedSinceVersion._localId : null,
-                applicationReference.removedInVersion ? applicationReference.removedInVersion._localId : null,
-                applicationReference.sinceVersion ? applicationReference.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q$4.ApplicationReference,
-            columns: [
-                sr.ownApplicationVersion._localId,
-                sr.referencedApplicationVersion._localId,
-                sr.index,
-                sr.deprecatedSinceVersion._localId,
-                sr.removedInVersion._localId,
-                sr.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationReferenceDao = __decorate$2v([
-    Injected()
-], ApplicationReferenceDao);
-
-var __decorate$2u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
-    async findAllForColumns(columnIds) {
-        let rc;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rc = Q$4.ApplicationRelationColumn
-            ],
-            WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
-        });
-    }
-    async insert(applicationRelationColumns, context) {
-        let src;
-        const VALUES = [];
-        for (const applicationRelationColumn of applicationRelationColumns) {
-            VALUES.push([
-                applicationRelationColumn._localId,
-                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
-                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
-                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation._localId : null,
-                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation._localId : null,
-                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation._localId : null,
-                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion._localId : null,
-                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion._localId : null,
-                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: src = Q$4.ApplicationRelationColumn,
-            columns: [
-                src._localId,
-                src.manyColumn._localId,
-                src.oneColumn._localId,
-                src.manyRelation._localId,
-                src.oneRelation._localId,
-                src.parentRelation._localId,
-                src.deprecatedSinceVersion._localId,
-                src.removedInVersion._localId,
-                src.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationRelationColumnDao = __decorate$2u([
-    Injected()
-], ApplicationRelationColumnDao);
-
-var __decorate$2t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicationRelationDao {
-    async findAllForProperties(propertyIds) {
-        let r;
-        return this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                r = Q$4.ApplicationRelation
-            ],
-            WHERE: r.property._localId.IN(propertyIds)
-        });
-    }
-    async insert(applicationRelations, context) {
-        let sr;
-        const VALUES = [];
-        for (const applicationRelation of applicationRelations) {
-            VALUES.push([
-                applicationRelation._localId, applicationRelation.index,
-                applicationRelation.property._localId,
-                undefinedToNull(applicationRelation.foreignKey),
-                undefinedToNull(applicationRelation.manyToOneElems),
-                undefinedToNull(applicationRelation.oneToManyElems),
-                applicationRelation.relationType, applicationRelation.isId,
-                applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
-                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
-                applicationRelation.removedInVersion ? applicationRelation.removedInVersion._localId : null,
-                applicationRelation.sinceVersion ? applicationRelation.sinceVersion._localId : null,
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sr = Q$4.ApplicationRelation,
-            columns: [
-                sr._localId,
-                sr.index,
-                sr.property._localId,
-                sr.foreignKey,
-                sr.manyToOneElems,
-                sr.oneToManyElems,
-                sr.relationType,
-                sr.isId,
-                sr.entity._localId,
-                sr.relationEntity._localId,
-                sr.deprecatedSinceVersion._localId,
-                sr.removedInVersion._localId,
-                sr.sinceVersion._localId
-            ],
-            VALUES
-        }, context);
-    }
-};
-ApplicationRelationDao = __decorate$2t([
-    Injected()
-], ApplicationRelationDao);
-
-var __decorate$2s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationVersionDao {
-    /*
-    async findAllLatestForApplication_Indexes(
-        applicationIndexes: Application_Index[]
-    ): Promise<IApplicationVersion[]> {
-        let sv: QApplicationVersion
-
-        return await this.db.find.tree({
-            FROM: [
-                sv = Q.ApplicationVersion
-            ],
-            SELECT: {},
-            WHERE: AND(
-                sv._localId.IN(this._localIdsForMaxVersionSelect()),
-                sv.application.index.IN(applicationIndexes)
-            )
-        })
-    }
-    */
-    async findAllActiveOrderByApplication_IndexAndId() {
-        let sv;
-        // let s: QApplication
-        return await this.db.find.tree({
-            FROM: [
-                sv = Q$4.ApplicationVersion,
-                // s = sv.application.INNER_JOIN()
-            ],
-            SELECT: {},
-            ORDER_BY: [
-                sv.application.index.asc(),
-                sv._localId.desc()
-            ]
-        });
-    }
-    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
-        let sv;
-        let s;
-        let d;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                integerVersion: Y,
-                application: {
-                    domain: {
-                        name: Y
-                    },
-                    fullName: Y,
-                    name: Y
-                }
-            },
-            FROM: [
-                sv = Q$4.ApplicationVersion,
-                s = sv.application.INNER_JOIN(),
-                d = s.domain.INNER_JOIN()
-            ],
-            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
-        });
-    }
-    /*
-    async findMaxVersionedMapByApplicationAndDomain_Names(
-        applicationDomain_Names: Domain_Name[],
-        applicationNames: Application_Name[]
-    ): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
-        const maxVersionedMapByApplicationAndDomain_Names
-                  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
-                  = new Map()
-
-        let sv: QApplicationVersion
-        let s: QApplication
-        let d: QDomain
-
-        const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
-            SELECT: {
-                integerVersion: Y,
-                majorVersion: Y,
-                minorVersion: Y,
-                patchVersion: Y,
-                application: {
-                    index: Y,
-                    name: Y,
-                    domain: {
-                        _localId: Y,
-                        name: Y
-                    }
-                },
-                _localId: Y
-            },
-            FROM: [
-                sv = Q.ApplicationVersion,
-                s = sv.application.INNER_JOIN(),
-                d = s.domain.INNER_JOIN()
-            ],
-            WHERE: AND(
-                sv._localId.IN(this._localIdsForMaxVersionSelect()),
-                d.name.IN(applicationDomain_Names),
-                s.name.IN(applicationNames)
-            ),
-        })
-
-        for (const maxApplicationVersion of maxApplicationVersions) {
-            const application = maxApplicationVersion.application
-            this.utils.ensureChildJsMap(
-                maxVersionedMapByApplicationAndDomain_Names, application.domain.name)
-                .set(application.name, maxApplicationVersion)
-        }
-
-
-        return maxVersionedMapByApplicationAndDomain_Names
-    }
-
-    private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
-        let svMax
-        let sv2: QApplicationVersion
-
-        return field({
-            FROM: [
-                svMax = tree({
-                    FROM: [
-                        sv2 = Q.ApplicationVersion
-                    ],
-                    SELECT: DISTINCT({
-                        integerVersion: max(sv2.integerVersion),
-                        _localId: sv2._localId,
-                        applicationIndex: sv2.application.index
-                    })
-                })
-            ],
-            SELECT: svMax._localId
-        })
-    }
-*/
-    async insert(applicationVersions, context) {
-        let sv;
-        const VALUES = [];
-        for (const applicationVersion of applicationVersions) {
-            VALUES.push([
-                applicationVersion._localId, applicationVersion.integerVersion,
-                applicationVersion.versionString, applicationVersion.majorVersion,
-                applicationVersion.minorVersion, applicationVersion.patchVersion,
-                applicationVersion.application.index, applicationVersion.jsonApplication
-            ]);
-        }
-        await this.db.insertValuesGenerateIds({
-            INSERT_INTO: sv = Q$4.ApplicationVersion,
-            columns: [
-                sv._localId,
-                sv.integerVersion,
-                sv.versionString,
-                sv.majorVersion,
-                sv.minorVersion,
-                sv.patchVersion,
-                sv.application.index,
-                sv.jsonApplication
-            ],
-            VALUES: VALUES
-        }, context);
-    }
-};
-ApplicationVersionDao = __decorate$2s([
-    Injected()
-], ApplicationVersionDao);
-
-const ACTOR_PROPERTY_NAME = 'actor';
-const ACTOR_RECORD_ID_PROPERTY_NAME = '_actorRecordId';
-const REPOSITORY_PROPERTY_NAME = 'repository';
-const USER_ACCOUNT_PROPERTY_NAME = 'userAccount';
-
-var __decorate$2r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var ApplicationUtils_1;
-let ApplicationUtils = ApplicationUtils_1 = class ApplicationUtils {
-    getDbEntity(applicationIndex, tableIndex) {
-        return this.airportDatabase.applications[applicationIndex].currentVersion[0]
-            .applicationVersion.entities[tableIndex];
-    }
-    isActorId(columnName) {
-        return columnName === airEntity.ACTOR_LID;
-    }
-    isActorRecordId(columnName) {
-        return columnName === airEntity.ACTOR_RECORD_ID;
-    }
-    isRepositoryId(columnName) {
-        return columnName === airEntity.REPOSITORY_LID;
-    }
-    doCascade(dbRelation, crudOperation) {
-        if (dbRelation.relationType !== EntityRelationType.ONE_TO_MANY) {
-            return false;
-        }
-        if (!dbRelation.oneToManyElems) {
-            return false;
-        }
-        switch (crudOperation) {
-            case CRUDOperation.CREATE:
-            case CRUDOperation.UPDATE:
-            case CRUDOperation.DELETE:
-                return true;
-            default:
-                throw new Error(`Unsupported CRUDOperation '${crudOperation}' for cascade check.`);
-        }
-    }
-    getQEntityConstructor(dbEntity) {
-        return this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
-            .__qConstructors__[dbEntity.index];
-    }
-    getEntityConstructor(dbEntity) {
-        const entityConstructor = this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index]
-            .__constructors__[dbEntity.name];
-        return entityConstructor;
-    }
-    getNewEntity(dbEntity) {
-        const entityConstructor = this.getEntityConstructor(dbEntity);
-        if (!entityConstructor) {
-            return {};
-        }
-        return new entityConstructor();
-    }
-    isIdEmpty(idValue) {
-        return !idValue && idValue !== 0;
-    }
-    isEmpty(value) {
-        return this.isIdEmpty(value) && value !== false && value !== '';
-    }
-    isRelationColumn(dbColumn) {
-        return this.isManyRelationColumn(dbColumn)
-            || this.isOneRelationColumn(dbColumn);
-    }
-    isManyRelationColumn(dbColumn) {
-        return !!(dbColumn.manyRelationColumns && dbColumn.manyRelationColumns.length);
-    }
-    isOneRelationColumn(dbColumn) {
-        return !!(dbColumn.oneRelationColumns && dbColumn.oneRelationColumns.length);
-    }
-    getIdKey(entityObject, dbEntity, failOnNoId = true, 
-    // noIdValueCallback: {
-    // 	(
-    // 		relationColumn: DbColumn,
-    // 		value: any,
-    // 		propertyNameChains: string[][],
-    // 	): boolean;
-    // } = null,
-    idValueCallback) {
-        const keys = this.getIdKeyInfo(entityObject, dbEntity, failOnNoId, idValueCallback);
-        return keys.arrayByIdColumnIndex.join('|');
-    }
-    getIdKeyInfo(entityObject, dbEntity, failOnNoId = true, idValueCallback) {
-        if (!dbEntity.idColumns.length) {
-            if (failOnNoId) {
-                throw new Error(`@Id is not defined on entity '${dbEntity.name}'.`);
-            }
-            return null;
-        }
-        const idKeys = {
-            arrayByIdColumnIndex: [],
-            mapByIdColumnName: {}
-        };
-        for (const dbColumn of dbEntity.idColumns) {
-            const [propertyNameChains, idValue] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, true, failOnNoId);
-            idValueCallback && idValueCallback(dbColumn, idValue, propertyNameChains);
-            idKeys.arrayByIdColumnIndex.push(idValue);
-            idKeys.mapByIdColumnName[dbColumn.name] = idValue;
-        }
-        return idKeys;
-    }
-    getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entityObject, forIdKey = false, generateNegativeIdsForMissing = true) {
-        const columnValuesAndPaths = this.getColumnValuesAndPaths(dbColumn, entityObject, [], forIdKey, generateNegativeIdsForMissing);
-        const firstColumnValueAndPath = columnValuesAndPaths[0];
-        const propertyNameChains = [firstColumnValueAndPath.path];
-        const value = firstColumnValueAndPath.value;
-        columnValuesAndPaths.reduce((last, current) => {
-            if (!this.utils.valuesEqual(last.value, current.value, true)) {
-                throw new Error(`Values differ for ${dbEntity.name}.${dbColumn.name}:
-						'${last.path.join('.')}' = ${last.value}
-						'${current.path.join('.')}' = ${current.value}`);
-            }
-            propertyNameChains.push(current.path);
-            return current;
-        });
-        return [propertyNameChains, value];
-    }
-    addRelationToEntitySelectClause(dbRelation, selectClause, allowDefaults = false) {
-        this.forEachColumnTypeOfRelation(dbRelation, (dbColumn, propertyNameChains) => {
-            let convertTo = true;
-            let propertySelectClause = selectClause;
-            const firstPropertyNameChain = propertyNameChains[0];
-            firstPropertyNameChain.forEach((propertyNameLink, index) => {
-                let propertyObject = propertySelectClause[propertyNameLink];
-                if (!propertyObject) {
-                    propertyObject = {};
-                    this.entityStateManager.markAsStub(propertyObject);
-                    propertySelectClause[propertyNameLink] = propertyObject;
-                }
-                else {
-                    if (index < firstPropertyNameChain.length - 1) {
-                        if (!(propertyObject instanceof Object) || propertyObject instanceof Date) {
-                            throw new Error(`Invalid entry:
-								...
-								{
-									...
-									${propertyNameLink}: ${propertyObject}
-								}
-								in '${dbRelation.property.entity.name}.${dbRelation.property.name}',
-								Property must be an Object.`);
-                        }
-                    }
-                    else {
-                        if (!allowDefaults && !isY(propertyObject)) {
-                            const reason = dbRelation.property.isId
-                                ? `'${dbRelation.property.entity.name}.${dbRelation.property.name}' is an @Id property`
-                                : `'${dbRelation.property.entity.name}' has no @Id - all properties are treated as @Ids`;
-                            throw new Error(`Defaults are not allowed in:
-								...
-								{
-									...
-									${propertyNameLink}: ${propertyObject}
-								}
-								${reason}.`);
-                        }
-                        convertTo = false;
-                    }
-                }
-                propertySelectClause = propertyObject;
-            });
-            if (convertTo) {
-                convertToY(propertySelectClause);
-            }
-        });
-    }
-    forEachColumnOfRelation(dbRelation, entity, callback, failOnNoValue = true) {
-        const dbEntity = dbRelation.property.entity;
-        for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-            const dbColumn = dbRelationColumn.manyColumn;
-            const [propertyNameChains, value] = this.getColumnPropertyNameChainsAndValue(dbEntity, dbColumn, entity);
-            if (callback(dbColumn, value, propertyNameChains)) {
-                return;
-            }
-        }
-    }
-    forEachColumnTypeOfRelation(dbRelation, callback) {
-        for (const dbRelationColumn of dbRelation.manyRelationColumns) {
-            const dbColumn = dbRelationColumn.manyColumn;
-            const propertyNameChains = this.getColumnPaths(dbColumn, []);
-            if (callback(dbColumn, propertyNameChains)) {
-                return;
-            }
-        }
-    }
-    getSheetSelectFromSetClause(dbEntity, qEntity, setClause, errorPrefix) {
-        const selectClause = [];
-        let actorIdColumnIndex;
-        let actorRecordIdColumnIndex;
-        let repositoryIdColumnIndex;
-        let systemWideOperationIdColumn;
-        for (const columnIndex in dbEntity.columns) {
-            const dbColumn = dbEntity.columns[columnIndex];
-            let dbProperty;
-            const isIdColumn = dbColumn.propertyColumns.some(propertyColumn => {
-                dbProperty = propertyColumn.property;
-                return dbProperty.isId;
-            });
-            let nonIdColumnSet = false;
-            if (isIdColumn) {
-                if (setClause[dbColumn.name]) {
-                    throw new Error(errorPrefix + `Cannot update @Id column '${dbColumn.name}' 
-of property '${dbEntity.name}.${dbProperty.name}'.`);
-                }
-                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
-            }
-            else if (setClause[dbColumn.name]) {
-                nonIdColumnSet = true;
-                this.addColumnToSheetSelect(dbColumn, qEntity, selectClause);
-                // } else {
-                // entitySelectClause[dbColumn.index] = null;
-            }
-            const inQueryColumnIndex = selectClause.length - 1;
-            switch (dbColumn.name) {
-                case airEntity.ACTOR_LID:
-                    actorIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case airEntity.ACTOR_RECORD_ID:
-                    actorRecordIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case airEntity.REPOSITORY_LID:
-                    repositoryIdColumnIndex = inQueryColumnIndex;
-                    break;
-                case airEntity.SYSTEM_WIDE_OPERATION_ID:
-                    if (nonIdColumnSet) {
-                        throw new Error(errorPrefix +
-                            `Cannot update 'systemWideOperationId' of Repository Entities.`);
-                    }
-                    systemWideOperationIdColumn = dbColumn;
-                    break;
-            }
-        }
-        return {
-            actorIdColumnIndex,
-            actorRecordIdColumnIndex,
-            repositoryIdColumnIndex,
-            selectClause,
-            systemWideOperationIdColumn
-        };
-    }
-    getColumnValuesAndPaths(dbColumn, relationObject, breadCrumb, forIdKey = false, generateNegativeIdsForMissing = true
-    // noIdValueCallback: {
-    // 	(
-    // 		relationColumn: DbColumn,
-    // 		value: any,
-    // 		propertyNameChains: string[][],
-    // 	): void;
-    // }
-    ) {
-        if (this.isManyRelationColumn(dbColumn)) {
-            let columnValuesAndPaths = [];
-            // If a column is part of a relation, it would be on the Many Side
-            for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-                const dbProperty = dbRelationColumn.manyRelation.property;
-                const relationBreadCrumb = [...breadCrumb];
-                const propertyName = dbProperty.name;
-                relationBreadCrumb.push(propertyName);
-                const value = relationObject[propertyName];
-                if (!value) {
-                    if (forIdKey
-                    // && this.handleNoId(dbColumn, dbProperty, relationBreadCrumb, value,
-                    // noIdValueCallback)
-                    ) {
-                        throw new Error(`Cannot retrieve composite Id value, value chain '${relationBreadCrumb.join('.')}' is : ${value}.`);
-                        // return null;
-                    }
-                    columnValuesAndPaths.push({
-                        path: relationBreadCrumb,
-                        value
-                    });
-                }
-                else {
-                    const otherEntityColumn = dbRelationColumn.oneColumn;
-                    const relationValuesAndPaths = this.getColumnValuesAndPaths(otherEntityColumn, value, relationBreadCrumb, forIdKey);
-                    columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths);
-                }
-            }
-            return columnValuesAndPaths;
-        }
-        else {
-            // If a column is not a part of (a) relation(s) then it is associated
-            // to only one property
-            const dbProperty = dbColumn.propertyColumns[0].property;
-            const propertyBreadCrumb = [...breadCrumb];
-            const propertyName = dbProperty.name;
-            propertyBreadCrumb.push(propertyName);
-            let value = relationObject[propertyName];
-            if (forIdKey && this.isIdEmpty(value)) {
-                if (dbColumn.isGenerated) {
-                    if (generateNegativeIdsForMissing) {
-                        value = --ApplicationUtils_1.TEMP_ID;
-                    }
-                    else {
-                        value = null;
-                    }
-                    relationObject[propertyName] = value;
-                }
-                else {
-                    // if (this.handleNoId(dbColumn, dbProperty, propertyBreadCrumb, value,
-                    // noValueCallback)) { return null; }
-                    throw new Error(`Cannot retrieve composite Id value, value chain '${propertyBreadCrumb.join('.')}' is : ${value}.`);
-                }
-            }
-            return [{
-                    path: propertyBreadCrumb,
-                    value
-                }];
-        }
-    }
-    getColumnPaths(dbColumn, breadCrumb) {
-        let columnValuesAndPaths = [];
-        if (this.isManyRelationColumn(dbColumn)) {
-            // If a column is part of a relation, it would be on the Many Side
-            for (const dbRelationColumn of dbColumn.manyRelationColumns) {
-                const dbProperty = dbRelationColumn.manyRelation.property;
-                const relationBreadCrumb = [...breadCrumb];
-                relationBreadCrumb.push(dbProperty.name);
-                const otherEntityColumn = dbRelationColumn.oneColumn;
-                const relationValuesAndPaths = this.getColumnPaths(otherEntityColumn, relationBreadCrumb);
-                columnValuesAndPaths = columnValuesAndPaths.concat(relationValuesAndPaths);
-            }
-        }
-        else {
-            // If a column is not a part of (a) relation(s) then it is associated
-            // to only one property
-            const dbProperty = dbColumn.propertyColumns[0].property;
-            const propertyBreadCrumb = [...breadCrumb];
-            propertyBreadCrumb.push(dbProperty.name);
-            columnValuesAndPaths.push(propertyBreadCrumb);
-        }
-        return columnValuesAndPaths;
-    }
-    addColumnToSheetSelect(dbColumn, qEntity, entitySelectClause) {
-        if (this.isManyRelationColumn(dbColumn)) {
-            const columnPaths = this.getColumnPaths(dbColumn, []);
-            const firstColumnPath = columnPaths[0];
-            let relationColumn = qEntity[firstColumnPath[0]];
-            firstColumnPath.reduce((last, current) => {
-                relationColumn = relationColumn[current];
-                return current;
-            });
-            entitySelectClause.push(relationColumn);
-        }
-        else {
-            entitySelectClause.push(qEntity[dbColumn.propertyColumns[0].property.name]);
-        }
-    }
-    /*
-        private addColumnToEntitySelect(
-            dbColumn: DbColumn,
-            entitySelectClause: any,
-        ) {
-            const dbRelation = dbColumn.relation;
-            if (dbRelation) {
-                let selectClauseFragment = entitySelectClause;
-                let lastSelectClauseFragment;
-                let sourceColumn = dbColumn;
-                let lastPropertyName;
-                do {
-                    lastPropertyName = sourceColumn.property.name;
-                    lastSelectClauseFragment = selectClauseFragment;
-                    if (!lastSelectClauseFragment[lastPropertyName]) {
-                        selectClauseFragment = {};
-                        lastSelectClauseFragment[lastPropertyName] = selectClauseFragment;
-                    } else {
-                        selectClauseFragment = lastSelectClauseFragment[lastPropertyName];
-                    }
-                    const relationColumn = sourceColumn.relation.relationColumns.filter(
-                        relationColumn => relationColumn.ownColumn.index === sourceColumn.index)[0];
-                    sourceColumn = relationColumn.relationColumn;
-                } while (sourceColumn.relation);
-                lastSelectClauseFragment[lastPropertyName] = null;
-            } else {
-                entitySelectClause[dbColumn.property.name] = null;
-            }
-        }
-    */
-    handleNoId(dbColumn, dbProperty, propertyNameChains, value, noIdValueCallback) {
-        if (noIdValueCallback) {
-            if (!noIdValueCallback(dbColumn, value, propertyNameChains)) {
-                return true;
-            }
-        }
-        else {
-            throw new Error(`Cannot retrieve composite Id value, value chain '${propertyNameChains.join('.')}' is : ${value}.`);
-        }
-        return false;
-    }
-};
-ApplicationUtils.TEMP_ID = 0;
-__decorate$2r([
-    Inject$2()
-], ApplicationUtils.prototype, "airportDatabase", void 0);
-__decorate$2r([
-    Inject$2()
-], ApplicationUtils.prototype, "entityStateManager", void 0);
-__decorate$2r([
-    Inject$2()
-], ApplicationUtils.prototype, "utils", void 0);
-ApplicationUtils = ApplicationUtils_1 = __decorate$2r([
-    Injected()
-], ApplicationUtils);
-
-var __decorate$2q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Created by Papa on 6/14/2016.
- */
-let EntityUtils = class EntityUtils {
-    getObjectClassName(object) {
-        if (typeof object != 'object' || object === null) {
-            throw new Error(`Not an object instance`);
-        }
-        return this.getClassName(object.constructor);
-    }
-    getClassName(clazz) {
-        if (typeof clazz != 'function') {
-            throw new Error(`Not a constructor function`);
-        }
-        let className = clazz['name'];
-        // let className = /(\w+)\(/.exec(clazz.toString())[1];
-        return className;
-    }
-    exists(object) {
-        return this.utils.objectExists(object);
-    }
-    /*
-     static isBlank(
-     object: any
-     ) {
-     for (let propertyName in object) {
-     let property = object[propertyName];
-     if (this.exists(property)) {
-     if (property instanceof Array) {
-     if (property.length > 0) {
-     return false;
-     }
-     } else {
-     return false;
-     }
-     }
-     }
-     return true;
-     }
-     */
-    isAppliable(object) {
-        return object instanceof QOperableField;
-    }
-    getQuery(query) {
-        return this.getRawQuery(query);
-    }
-    ensureId(rawEntityQuery) {
-        let theRawEntityQuery = this.getRawQuery(rawEntityQuery);
-        this.ensureIdAtLevel(theRawEntityQuery.SELECT, theRawEntityQuery.FROM[0]);
-        return theRawEntityQuery;
-    }
-    ensureIdAtLevel(selectClauseFragment, qEntity) {
-        for (const propertyName in selectClauseFragment) {
-            const subFragment = selectClauseFragment[propertyName];
-            if (subFragment instanceof Object
-                && typeof subFragment.airportSelectField !== 'boolean'
-                && !subFragment.__allFields__) {
-                let matchingQEntity;
-                for (const childQEntity of qEntity.__driver__.childQEntities) {
-                    if (childQEntity.__driver__.dbRelation.property.name === propertyName) {
-                        matchingQEntity = childQEntity;
-                        break;
-                    }
-                }
-                if (matchingQEntity) {
-                    this.ensureIdAtLevel(subFragment, matchingQEntity);
-                }
-            }
-        }
-        if (!selectClauseFragment.id) {
-            return;
-        }
-        let repository = selectClauseFragment.repository;
-        if (repository) {
-            if (!(repository instanceof Object)) {
-                throw new Error(`id queries must include a repository object in the SELECT clause.
-It must be an Object with the id property.`);
-            }
-            repository.GUID = Y;
-        }
-        let actor = selectClauseFragment.actor;
-        if (actor) {
-            if (!(actor instanceof Object)) {
-                throw new Error(`id queries must include an actor object in the SELECT clause.
-It must be an Object with the id property.`);
-            }
-            actor.GUID = Y;
-        }
-        selectClauseFragment._actorRecordId = Y;
-        this.ensureRepositoryAndActorJoin(qEntity);
-    }
-    ensureRepositoryAndActorJoin(qEntity) {
-        let qActor, qRepository;
-        let repositoryJoinFound = false;
-        let actorJoinFound = false;
-        for (const childQEntity of qEntity.__driver__.childQEntities) {
-            if (childQEntity.__driver__.dbRelation.property.name === ACTOR_PROPERTY_NAME) {
-                actorJoinFound = true;
-                qActor = childQEntity;
-            }
-            if (childQEntity.__driver__.dbRelation.property.name === REPOSITORY_PROPERTY_NAME) {
-                repositoryJoinFound = true;
-                qRepository = childQEntity;
-            }
-        }
-        if (!actorJoinFound) {
-            qActor = qEntity.actor.LEFT_JOIN();
-        }
-        if (!repositoryJoinFound) {
-            qRepository = qEntity.repository.LEFT_JOIN();
-        }
-        return {
-            qActor,
-            qRepository
-        };
-    }
-    findActorQEntity() {
-    }
-    // Removes circular dependency at code initialization time
-    getRawQuery(rawQuery) {
-        if (rawQuery instanceof Function) {
-            return rawQuery();
-        }
-        else {
-            return rawQuery;
-        }
-    }
-    // Removes circular dependency at code initialization time
-    getEntityQuery(rawGraphQuery) {
-        return new EntityQuery(this.getRawQuery(rawGraphQuery));
-    }
-    // Removes circular dependency at code initialization time
-    getTreeQuery(rawQuery, entityAliases) {
-        return new TreeQuery(rawQuery, entityAliases);
-    }
-    // Removes circular dependency at code initialization time
-    isQEntity(qEntity) {
-        return qEntity instanceof QEntity;
-    }
-    // Removes circular dependency at code initialization time
-    isQTree(qEntity) {
-        return qEntity instanceof QTreeDriver;
-    }
-    // Removes circular dependency at code initialization time
-    getQTree(fromClausePosition, subQuery) {
-        return new QTree(fromClausePosition, subQuery);
-    }
-    // Removes circular dependency at code initialization time
-    isQField(qEntity) {
-        return qEntity instanceof QField;
-    }
-};
-__decorate$2q([
-    Inject$2()
-], EntityUtils.prototype, "utils", void 0);
-EntityUtils = __decorate$2q([
-    Injected()
-], EntityUtils);
-ENTITY_UTILS.setClass(EntityUtils);
-
-var __decorate$2p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let FieldUtils = class FieldUtils {
-    getFieldQueryJson(fieldSubQuery, entityAliases, queryUtils) {
-        let subSelectQuery = new FieldQuery(fieldSubQuery, entityAliases);
-        return subSelectQuery.toJSON(queryUtils, this, this.relationManager);
-    }
-};
-__decorate$2p([
-    Inject$2()
-], FieldUtils.prototype, "relationManager", void 0);
-FieldUtils = __decorate$2p([
-    Injected()
-], FieldUtils);
-
-var __decorate$2o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let QMetadataUtils = class QMetadataUtils {
-    getAllColumns(qEntity) {
-        return qEntity.__driver__.allColumns;
-    }
-    getAllNonGeneratedColumns(qEntity) {
-        return this.getAllColumns(qEntity).filter(qField => !qField.dbColumn.isGenerated);
-    }
-    getAllInsertableColumns(qEntity) {
-        return this.getAllColumns(qEntity).filter(qField => {
-            if (qField.dbColumn.isGenerated) {
-                return false;
-            }
-            if (qEntity.__driver__.dbEntity.isAirEntity) {
-                switch (qField.dbColumn.name) {
-                    case airEntity.SYSTEM_WIDE_OPERATION_ID:
-                        return false;
-                }
-            }
-            return true;
-        });
-    }
-    getDbEntity(qEntity) {
-        return qEntity.__driver__.dbEntity;
-    }
-    getNewEntity(qEntity, airDb) {
-        const dbEntity = qEntity.__driver__.dbEntity;
-        const entityConstructor = airDb.qApplications[dbEntity.applicationVersion.application.index].__constructors__[dbEntity.name];
-        if (!entityConstructor) {
-            return {};
-        }
-        return new entityConstructor();
-    }
-};
-QMetadataUtils = __decorate$2o([
-    Injected()
-], QMetadataUtils);
-
-function getColumnQField(entity, property, q, column) {
-    switch (column.type) {
-        case SQLDataType.ANY:
-            return new QUntypedField(column, property, q);
-        case SQLDataType.BOOLEAN:
-            return new QBooleanField(column, property, q);
-        case SQLDataType.DATE:
-            return new QDateField(column, property, q);
-        case SQLDataType.NUMBER:
-            return new QNumberField(column, property, q);
-        case SQLDataType.JSON:
-        case SQLDataType.STRING:
-            return new QStringField(column, property, q);
-        default:
-            throw new Error(`Unsupported data type for property ${entity.applicationVersion.application.name}.${entity.name}.${property.name}`);
-    }
-}
-function getQRelation(entity, property, q, allQApplications, applicationUtils, relationManager) {
-    const relation = property.relation[0];
-    switch (relation.relationType) {
-        case EntityRelationType.MANY_TO_ONE:
-            const relationEntity = relation.relationEntity;
-            const relationApplication = relationEntity.applicationVersion.application;
-            const qIdRelationConstructor = allQApplications[relationApplication.index]
-                .__qIdRelationConstructors__[relationEntity.index];
-            return new qIdRelationConstructor(relation.relationEntity, relation, q, applicationUtils, relationManager);
-        case EntityRelationType.ONE_TO_MANY:
-            if (entity.isAirEntity) {
-                return new QAirEntityOneToManyRelation(relation, q, applicationUtils, relationManager);
-            }
-            else {
-                return new QOneToManyRelation(relation, q, applicationUtils, relationManager);
-            }
-        default:
-            throw new Error(`Unknown EntityRelationType: ${relation.relationType}.`);
-    }
-}
-function getQEntityConstructor(allQApplications) {
-    // ChildQEntity refers to the constructor
-    var ChildQEntity = function (entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType) {
-        ChildQEntity.base.constructor.call(this, entity, applicationUtils, relationManager, nextChildJoinPosition, dbRelation, joinType);
-        entity.properties.forEach((property) => {
-            let qFieldOrRelation;
-            if (property.relation && property.relation.length) {
-                qFieldOrRelation = getQRelation(entity, property, this, allQApplications, applicationUtils, relationManager);
-                for (const propertyColumn of property.propertyColumns) {
-                    addColumnQField(entity, property, this, propertyColumn.column);
-                }
-            }
-            else {
-                qFieldOrRelation = addColumnQField(entity, property, this, property.propertyColumns[0].column);
-            }
-            this[property.name] = qFieldOrRelation;
-        });
-        // entity.__qConstructor__ = ChildQEntity
-    };
-    const childQEntityMethods = {
-    /*
-    yourMethodName: function() {},
-    */
-    };
-    extend(QEntity, ChildQEntity, childQEntityMethods);
-    return ChildQEntity;
-}
-function addColumnQField(entity, property, q, column) {
-    const qFieldOrRelation = getColumnQField(entity, property, q, column);
-    q.__driver__.allColumns[column.index]
-        = qFieldOrRelation;
-    if (column.idIndex || column.idIndex === 0) {
-        q.__driver__.idColumns[column.idIndex]
-            = qFieldOrRelation;
-    }
-    return qFieldOrRelation;
-}
-function getQEntityIdRelationConstructor(dbEntity) {
-    function QEntityIdRelation(entity, relation, qEntity, appliationUtils, relationManager) {
-        QEntityIdRelation.base.constructor.call(this, relation, qEntity, appliationUtils, relationManager);
-        getQEntityIdFields(this, entity, qEntity, relation.property);
-        // (<any>entity).__qConstructor__.__qIdRelationConstructor__ = QEntityIdRelation
-    }
-    const qEntityIdRelationMethods = {
-    /*
-    yourMethodName: function() {},
-    */
-    };
-    if (dbEntity.isAirEntity) {
-        extend(QAirEntityRelation, QEntityIdRelation, qEntityIdRelationMethods);
-    }
-    else {
-        extend(QRelation, QEntityIdRelation, qEntityIdRelationMethods);
-    }
-    return QEntityIdRelation;
-}
-/**
- * Set all fields behind an id relation.  For example
- *
- * QA.id
- *
- * or
- *
- * QA.rel1.id
- *
- * or
- *
- * QA.rel2.otherRel.id
- * QA.rel2.id
- *
- * @param addToObject  Object to add to (Ex: QA | QA.rel1 | QA.rel2.otherRel
- * @param relationEntity  Entity to which the fields belong (Ex: QA, QRel1, QRel2, QOtherRel)
- * @param utils
- * @param parentProperty  The parent property from which the current property was
- *    navigated to
- * @param relationColumnMap  DbColumn map for the current path of properties
- *  (QA.rel2.otherRel), keyed by the column from the One side of the relation
- */
-function getQEntityIdFields(addToObject, relationEntity, qEntity, parentProperty, relationColumnMap) {
-    if (!relationColumnMap) {
-        const parentRelation = parentProperty.relation[0];
-        const relationColumns = parentRelation.manyRelationColumns;
-        relationColumnMap = new Map();
-        for (const relationColumn of relationColumns) {
-            relationColumnMap.set(relationColumn.oneColumn, relationColumn.manyColumn);
-        }
-    }
-    relationEntity.properties.forEach((property) => {
-        if (!property.isId) {
-            return;
-        }
-        let qFieldOrRelation;
-        // If it's a relation property (and therefore has backing columns)
-        if (property.relation && property.relation.length) {
-            const relation = property.relation[0];
-            const relationColumns = relation.manyRelationColumns;
-            for (const relationColumn of relationColumns) {
-                const originalColumn = relationColumnMap.get(relationColumn.manyColumn);
-                // Remove the mapping of the parent relation
-                relationColumnMap.delete(relationColumn.manyColumn);
-                // And replace it with the nested relation
-                relationColumnMap.set(relationColumn.oneColumn, originalColumn);
-            }
-            qFieldOrRelation = getQEntityIdFields({}, relation.relationEntity, qEntity, parentProperty, relationColumnMap);
-        }
-        else {
-            const originalColumn = relationColumnMap.get(property.propertyColumns[0].column);
-            qFieldOrRelation = getColumnQField(relationEntity, parentProperty, qEntity, originalColumn);
-        }
-        addToObject[property.name] = qFieldOrRelation;
-    });
-    return addToObject;
-}
-function setQApplicationEntities(application, qApplication, allQApplications, appliationUtils, relationManager) {
-    // const entities = orderEntitiesByIdDependencies(application.currentVersion[0].applicationVersion.entities,
-    // application)
-    qApplication.__qIdRelationConstructors__ = [];
-    qApplication.__qConstructors__ = {};
-    // let haveMissingDependencies
-    // do {
-    // 	haveMissingDependencies = false
-    // NOTE: only need to compute the keys of entities for Many-to-One(s)
-    // Many-to-Ones must reference the table by primary key in order to
-    // guarantee a single record.  Any other type of join may return multiple
-    // records and is in fact a Many-to-Many
-    application.currentVersion[0].applicationVersion.entities.forEach((
-    // entities.forEach((
-    entity) => {
-        // NOTE: an @Id column is guaranteed to be present in only one property
-        for (const idColumn of entity.idColumns) {
-            if (idColumn.manyRelationColumns
-                && idColumn.manyRelationColumns.length) {
-                const oneColumn = idColumn.manyRelationColumns[0].oneColumn;
-                const relatedEntity = oneColumn.entity;
-                const relatedQApplication = allQApplications[relatedEntity.applicationVersion.application.index];
-                if (!relatedQApplication) {
-                    throw new Error(`QApplication not yet initialized for ID relation:
-					${entity.name}.${oneColumn.name}
-					`);
-                }
-                // const manyColumn = idColumn.manyRelationColumns[0].manyColumn
-                // if (relatedEntity.id === manyColumn.entity.id
-                // 	&& relatedEntity.applicationVersion.application.index
-                // 	=== manyColumn.entity.applicationVersion.application.index) {
-                // 	continue
-                // }
-                // const relatedQEntityConstructor =
-                // qApplication.__qConstructors__[relatedEntity.index] if (!relatedQEntityConstructor)
-                // { throw new Error(`QEntity not yet initialized for ID relation:
-                // ${entity.name}.${manyColumn.name} `) haveMissingDependencies = true }
-            }
-        }
-        const qIdRelationConstructor = getQEntityIdRelationConstructor(entity);
-        qApplication.__qIdRelationConstructors__[entity.index] = qIdRelationConstructor;
-        // TODO: compute many-to-many relations
-        const qConstructor = getQEntityConstructor(allQApplications);
-        qApplication.__qConstructors__[entity.index] = qConstructor;
-        if (!Object.getOwnPropertyNames(qApplication)
-            .filter(propertyName => propertyName === entity.name).length) {
-            Object.defineProperty(qApplication, entity.name, {
-                get: function () {
-                    return new this.__qConstructors__[entity.index](entity, appliationUtils, relationManager);
-                }
-            });
-        }
-    });
-    // } while (haveMissingDependencies)
-}
-function orderApplicationsInOrderOfPrecedence(applications) {
-    const applicationWithDepsMap = new Map();
-    const applicationsWithDeps = applications.map(application => {
-        const dependencies = new Set();
-        for (const applicationReference of application.currentVersion[0]
-            .applicationVersion.references) {
-            dependencies.add(applicationReference.referencedApplicationVersion.application.index);
-        }
-        const applicationWithDependencies = {
-            application,
-            dependencies
-        };
-        applicationWithDepsMap.set(application.index, applicationWithDependencies);
-        return applicationWithDependencies;
-    });
-    applicationsWithDeps.sort((orderedApplication1, orderedApplication2) => {
-        if (applicationDependsOn(orderedApplication1, orderedApplication2.application.index)) {
-            return 1;
-        }
-        else if (applicationDependsOn(orderedApplication2, orderedApplication1.application.index)) {
-            return -1;
-        }
-        return 0;
-    });
-    return applicationsWithDeps.map(applicationWithDeps => applicationWithDeps.application);
-}
-function applicationDependsOn(dependantApplication, dependsOnApplication_Index, applicationWithDepsMap) {
-    if (dependantApplication.dependencies.has(dependsOnApplication_Index)) {
-        return true;
-    }
-    // for(const dependencyApplication_Index of dependantApplication.dependencies) {
-    //
-    // }
-    return false;
-}
-
-var __decorate$2n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let QueryUtils = class QueryUtils {
-    equals(entityOrId, toObject // | IQRelation<IQ>
-    ) {
-        if (!entityOrId) {
-            throw new Error(`null entity/Id is passed into 'equals' method`);
-        }
-        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        if (entityOrId instanceof QEntity) {
-            const relationIdEntities = this.entityUtils
-                .ensureRepositoryAndActorJoin(entityOrId);
-            return AND(qRepository.GUID.equals(relationIdEntities.qRepository.repository.GUID), qActor.GUID.equals(relationIdEntities.qActor.actor.GUID), toObject._actorRecordId.equals(entityOrId._actorRecordId));
-        }
-        else {
-            let entityId = this.validateEntityId(entityOrId);
-            return AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId));
-        }
-    }
-    in(entitiesOrIds, toObject // | IQRelation<IQ>
-    ) {
-        if (!entitiesOrIds || !entitiesOrIds.length) {
-            throw new Error(`null entity/Id array is passed into 'in' method`);
-        }
-        let entityIds = entitiesOrIds.map(entityOrId => this.validateEntityId(entityOrId));
-        const { qActor, qRepository } = this.entityUtils.ensureRepositoryAndActorJoin(toObject);
-        const equalOperations = [];
-        for (const entityId of entityIds) {
-            equalOperations.push(AND(qRepository.GUID.equals(entityId.repository.GUID), qActor.GUID.equals(entityId.actor.GUID), toObject._actorRecordId.equals(entityId._actorRecordId)));
-        }
-        return OR(...equalOperations);
-    }
-    validateEntityId(entityId) {
-        if (typeof entityId === 'string') {
-            return this.airEntityUtils.parseEGUID(entityId);
-        }
-        else {
-            if (!entityId.repository
-                || !entityId.repository.GUID
-                || typeof entityId.repository.GUID !== 'string'
-                || !entityId.actor
-                || !entityId.actor.GUID
-                || typeof entityId.actor.GUID !== 'number'
-                || !entityId._actorRecordId
-                || typeof entityId._actorRecordId !== 'number') {
-                throw new Error(`Passed in AirEntity does not have
-				the necessary fields to query by id.  Expecting:
-					interface AnInterface extends AirEntity {
-						repository: {
-							GUID: string
-						},
-						actor: {
-							GUID: string
-						},
-						_actorRecordId: number
-					}
-					`);
-            }
-            return entityId;
-        }
-    }
-    whereClauseToJSON(whereClause, columnAliases) {
-        if (!whereClause) {
-            return null;
-        }
-        let operation = whereClause;
-        let jsonOperation = {
-            c: operation.c,
-            o: operation.o
-        };
-        switch (operation.c) {
-            case OperationCategory.LOGICAL:
-                let logicalOperation = operation;
-                let jsonLogicalOperation = jsonOperation;
-                switch (operation.o) {
-                    case SqlOperator.NOT:
-                        jsonLogicalOperation.v = this.whereClauseToJSON(logicalOperation.v, columnAliases);
-                        break;
-                    case SqlOperator.AND:
-                    case SqlOperator.OR:
-                        jsonLogicalOperation.v = logicalOperation.v.map((value) => this.whereClauseToJSON(value, columnAliases));
-                        break;
-                    default:
-                        throw new Error(`Unsupported logical operation '${operation.o}'`);
-                }
-                break;
-            case OperationCategory.FUNCTION:
-                // TODO: verify that cast of Q object is valid
-                let functionOperation = operation;
-                let query = functionOperation.getQuery();
-                let jsonQuery = IOC.getSync(ENTITY_UTILS).getTreeQuery(query, columnAliases.entityAliases).toJSON(this, this.fieldUtils, this.relationManager);
-                jsonOperation = functionOperation.toJSON(jsonQuery);
-                break;
-            case OperationCategory.BOOLEAN:
-            case OperationCategory.DATE:
-            case OperationCategory.NUMBER:
-            case OperationCategory.STRING:
-            case OperationCategory.UNTYPED:
-                let valueOperation = operation;
-                // All Non logical or exists operations are value operations (equals, IS_NULL, LIKE,
-                // etc.)
-                let jsonValueOperation = jsonOperation;
-                jsonValueOperation.l = this.convertLRValue(valueOperation.l, columnAliases);
-                let rValue = valueOperation.r;
-                if (rValue instanceof Array) {
-                    jsonValueOperation.r = rValue.map((anRValue) => {
-                        return this.convertLRValue(anRValue, columnAliases);
-                    });
-                }
-                else {
-                    jsonValueOperation.r = this.convertLRValue(rValue, columnAliases);
-                }
-                break;
-        }
-        return jsonOperation;
-    }
-    convertLRValue(value, columnAliases) {
-        value = wrapPrimitive(value);
-        switch (typeof value) {
-            case 'undefined':
-                throw new Error(`'undefined' is not a valid L or R value`);
-            default:
-                if (value instanceof QOperableField) {
-                    return value.toJSON(columnAliases, false, this, this.fieldUtils, this.relationManager);
-                } // Must be a Field Query
-                else {
-                    let rawFieldQuery = value;
-                    return this.fieldUtils.getFieldQueryJson(rawFieldQuery, columnAliases.entityAliases, this);
-                }
-        }
-    }
-};
-__decorate$2n([
-    Inject$2()
-], QueryUtils.prototype, "entityUtils", void 0);
-__decorate$2n([
-    Inject$2()
-], QueryUtils.prototype, "fieldUtils", void 0);
-__decorate$2n([
-    Inject$2()
-], QueryUtils.prototype, "relationManager", void 0);
-__decorate$2n([
-    Inject$2()
-], QueryUtils.prototype, "airEntityUtils", void 0);
-QueryUtils = __decorate$2n([
-    Injected()
-], QueryUtils);
-
-const databaseState = {
-    applications: [],
-    entityMap: new Map(),
-    functions: {
-        ABS,
-        ADD,
-        AVG,
-        CONCAT,
-        COUNT,
-        DISTINCT,
-        DIVIDE,
-        EXISTS,
-        FORMAT,
-        INTERSECT,
-        LCASE,
-        LEN,
-        ROUND,
-        MAX,
-        MID,
-        MIN,
-        MINUS,
-        MODULUS,
-        MULTIPLY,
-        NOW,
-        REPLACE,
-        SUBTRACT,
-        SUM,
-        TRIM,
-        UCASE,
-        UNION,
-        UNION_ALL,
-        // logical operators
-        AND,
-        NOT,
-        OR,
-        // primitive wrappers
-        bool,
-        date,
-        num,
-        str,
-        wrapPrimitive,
-    },
-    qApplications: [],
-    QM: {},
-};
-
-var __decorate$2m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let DatabaseStore = class DatabaseStore {
-    constructor() {
-        this.databaseState = databaseState;
-    }
-    get applications() {
-        return this.databaseState.applications;
-    }
-    get entityMap() {
-        return this.databaseState.entityMap;
-    }
-    get functions() {
-        return this.databaseState.functions;
-    }
-    get qApplications() {
-        return this.databaseState.qApplications;
-    }
-    get QM() {
-        return this.databaseState.QM;
-    }
-};
-DatabaseStore = __decorate$2m([
-    Injected()
-], DatabaseStore);
-
-var __decorate$2l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RelationManager = class RelationManager {
-    getPositionAlias(rootEntityPrefix, fromClausePosition) {
-        return `${rootEntityPrefix}_${fromClausePosition.join('_')}`;
-    }
-    getAlias(jsonRelation) {
-        return this.getPositionAlias(jsonRelation.rep, jsonRelation.fromClausePosition);
-    }
-    getParentAlias(jsonRelation) {
-        let fromClausePosition = jsonRelation.fromClausePosition;
-        if (fromClausePosition.length === 0) {
-            throw new Error(`Cannot find alias of a parent entity for the root entity`);
-        }
-        return this.getPositionAlias(jsonRelation.rep, fromClausePosition.slice(0, fromClausePosition.length - 1));
-    }
-    createRelatedQEntity(joinRelation, context) {
-        const dbEntity = this.applicationUtils.getDbEntity(joinRelation.si, joinRelation.ti);
-        let QEntityConstructor = this.applicationUtils.getQEntityConstructor(dbEntity);
-        return new QEntityConstructor(dbEntity, this.applicationUtils, this, joinRelation.fromClausePosition, dbEntity.relations[joinRelation.ri], joinRelation.jt);
-    }
-    getNextChildJoinPosition(joinParentDriver) {
-        let nextChildJoinPosition = joinParentDriver.fromClausePosition.slice();
-        nextChildJoinPosition.push(++joinParentDriver.currentChildIndex);
-        return nextChildJoinPosition;
-    }
-};
-__decorate$2l([
-    Inject$2()
-], RelationManager.prototype, "applicationUtils", void 0);
-RelationManager = __decorate$2l([
-    Injected()
-], RelationManager);
-
-async function getSysWideOpId(airDb, sequenceGenerator) {
-    const sequences = await getSysWideOpIds(1, airDb, sequenceGenerator);
-    return sequences[0];
-}
-async function getSysWideOpIds(numSequencesNeeded, airportDatabase, sequenceGenerator) {
-    if (!numSequencesNeeded) {
-        return [];
-    }
-    const sysWideOpIdGeneratedColumn = airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION]
-        .__dbApplication__.currentVersion[0].applicationVersion
-        .entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY]
-        .columnMap['SYSTEM_WIDE_OPERATION_LID'];
-    const generatedNumWrapper = await sequenceGenerator
-        .generateSequenceNumbers([sysWideOpIdGeneratedColumn], [numSequencesNeeded]);
-    return generatedNumWrapper[0];
-}
-
-var __decorate$2k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let Utils = class Utils {
-    strsToNums(strings) {
-        return strings.map(str => parseInt(str));
-    }
-    objectExists(object) {
-        return object !== null && object !== undefined;
-    }
-    valuesEqual(value1, value2, checkChildObjects = false) {
-        if (typeof value1 === 'object') {
-            if (value1 instanceof Date) {
-                if (value2 instanceof Date) {
-                    return value1.getTime() === value2.getTime();
-                }
-                else {
-                    return false;
-                }
-            }
-            else {
-                if (typeof value2 !== 'object') {
-                    return false;
-                }
-                if (!checkChildObjects) {
-                    // Skip child objects
-                    return true;
-                }
-                let checkedKeys = {};
-                for (let key in value1) {
-                    checkedKeys[key] = true;
-                    if (!this.valuesEqual(value1[key], value2[key], checkChildObjects)) {
-                        return false;
-                    }
-                }
-                for (let key in value2) {
-                    if (!checkedKeys[key]) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-        if (!value1) {
-            if (value1 === '') {
-                return value2 === '';
-            }
-            else if (value1 === false) {
-                return value2 === false;
-            }
-            else if (value1 === 0) {
-                return value2 === 0;
-            }
-            if (value2 === '' || value2 === false || value2 === 0) {
-                return false;
-            }
-            // treat undefined and null as same value
-            return (!value2);
-        }
-        if (!value2) {
-            return false;
-        }
-        return value1 === value2;
-    }
-    compareNumbers(number1, number2) {
-        if (number1 < number2) {
-            return -1;
-        }
-        if (number1 > number2) {
-            return 1;
-        }
-        return 0;
-    }
-};
-Utils = __decorate$2k([
-    Injected()
-], Utils);
-
-const airTrafficControl = lib$1('air-traffic-control');
-
-// Separating core-tokens from tokens removes circular dependencies
-// at code initialization time
-const UTILS = airTrafficControl.token({
-    class: Utils,
-    interface: 'IUtils',
-    token: 'UTILS'
-});
-ENTITY_UTILS.setDependencies({
-    utils: UTILS
-});
-QUERY_UTILS.setClass(QueryUtils);
+airApi.ddS = duoDiSet$5;
 
 const AIRPORT_DATABASE = airTrafficControl.token({
     class: null,
@@ -8690,1530 +6854,93 @@ airApi.setQApplication = function (qApplication) {
         airportDatabase.setQApplication(qApplication);
     });
 };
+function loadAirTrafficControl() {
+    console.debug(`@airport@air-traffic-control loaded`);
+}
 
-const trafficPattern = lib$1('traffic-pattern');
-
-const DOMAIN_DAO = trafficPattern.token({
-    class: DomainDao,
-    interface: 'IDomainDao',
-    token: 'DOMAIN_DAO'
-});
-const APPLICATION_COLUMN_DAO = trafficPattern.token({
-    class: ApplicationColumnDao,
-    interface: 'IApplicationColumnDao',
-    token: 'APPLICATION_COLUMN_DAO'
-});
-const APPLICATION_DAO = trafficPattern.token({
-    class: ApplicationDao,
-    interface: 'IApplicationDao',
-    token: 'APPLICATION_DAO'
-});
-const APPLICATION_ENTITY_DAO = trafficPattern.token({
-    class: ApplicationEntityDao,
-    interface: 'IApplicationEntityDao',
-    token: 'APPLICATION_ENTITY_DAO'
-});
-const APPLICATION_PROPERTY_COLUMN_DAO = trafficPattern.token({
-    class: ApplicationPropertyColumnDao,
-    interface: 'IApplicationPropertyColumnDao',
-    token: 'APPLICATION_PROPERTY_COLUMN_DAO'
-});
-const APPLICATION_PROPERTY_DAO = trafficPattern.token({
-    class: ApplicationPropertyDao,
-    interface: 'IApplicationPropertyDao',
-    token: 'APPLICATION_PROPERTY_DAO'
-});
-const APPLICATION_REFERENCE_DAO = trafficPattern.token({
-    class: ApplicationReferenceDao,
-    interface: 'IApplicationReferenceDao',
-    token: 'APPLICATION_REFERENCE_DAO'
-});
-const APPLICATION_RELATION_COLUMN_DAO = trafficPattern.token({
-    class: ApplicationRelationColumnDao,
-    interface: 'IApplicationRelationColumnDao',
-    token: 'APPLICATION_RELATION_COLUMN_DAO'
-});
-const APPLICATION_RELATION_DAO = trafficPattern.token({
-    class: ApplicationRelationDao,
-    interface: 'IApplicationRelationDao',
-    token: 'APPLICATION_RELATION_DAO'
-});
-const APPLICATION_VERSION_DAO = trafficPattern.token({
-    class: ApplicationVersionDao,
-    interface: 'IApplicationVersionDao',
-    token: 'APPLICATION_VERSION_DAO'
-});
-APPLICATION_DAO.setDependencies({
-    airportDatabase: AIRPORT_DATABASE
-});
-
-const holdingPattern = lib$1('holding-pattern');
-const REPOSITORY_API = holdingPattern.token({
-    class: null,
-    interface: 'RepositoryApi',
-    token: 'REPOSITORY_API'
-});
-
-const REPOSITORY_MANAGER = holdingPattern.token({
-    class: null,
-    interface: 'IRepositoryManager',
-    token: 'REPOSITORY_MANAGER'
-});
-
-var UpdateState;
-(function (UpdateState) {
-    UpdateState["GO_ONLINE"] = "GO_ONLINE";
-    UpdateState["REMOTE"] = "REMOTE";
-    UpdateState["LOCAL"] = "LOCAL";
-})(UpdateState || (UpdateState = {}));
-
-var __decorate$2j = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-/**
- * Marks a group of mutation history changes.
- */
-let OperationHistory = class OperationHistory {
-    constructor() {
-        this.recordHistory = [];
-    }
-};
-__decorate$2j([
-    GeneratedValue(),
-    SequenceGenerator$1(),
-    Id(),
-    Column()
-], OperationHistory.prototype, "_localId", void 0);
-__decorate$2j([
-    Column(),
-    DbNumber()
-], OperationHistory.prototype, "orderNumber", void 0);
-__decorate$2j([
-    Column(),
-    DbString()
-], OperationHistory.prototype, "changeType", void 0);
-__decorate$2j([
-    Column(),
-    DbNumber()
-], OperationHistory.prototype, "systemWideOperationId", void 0);
-__decorate$2j([
-    ManyToOne(),
-    JoinColumn()
-], OperationHistory.prototype, "entity", void 0);
-__decorate$2j([
-    ManyToOne(),
-    JoinColumn()
-], OperationHistory.prototype, "actor", void 0);
-__decorate$2j([
-    ManyToOne(),
-    JoinColumn()
-], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
-__decorate$2j([
-    OneToMany()
-], OperationHistory.prototype, "recordHistory", void 0);
-OperationHistory = __decorate$2j([
-    Entity(),
-    Table()
-], OperationHistory);
-
-var __decorate$2i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistory = class RecordHistory {
-    constructor() {
-        this.newValues = [];
-        this.oldValues = [];
-    }
-};
-__decorate$2i([
-    Id(),
-    GeneratedValue(),
-    SequenceGenerator$1(),
-    Column()
-], RecordHistory.prototype, "_localId", void 0);
-__decorate$2i([
-    Column(),
-    DbNumber()
-], RecordHistory.prototype, "_actorRecordId", void 0);
-__decorate$2i([
-    ManyToOne(),
-    JoinColumn()
-], RecordHistory.prototype, "actor", void 0);
-__decorate$2i([
-    ManyToOne(),
-    JoinColumn()
-], RecordHistory.prototype, "operationHistory", void 0);
-__decorate$2i([
-    OneToMany()
-], RecordHistory.prototype, "newValues", void 0);
-__decorate$2i([
-    OneToMany()
-], RecordHistory.prototype, "oldValues", void 0);
-__decorate$2i([
-    Transient()
-], RecordHistory.prototype, "tableColumnMap", void 0);
-RecordHistory = __decorate$2i([
-    Entity(),
-    Table()
-], RecordHistory);
-
-var __decorate$2h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
- */
-let RecordHistoryNewValue = class RecordHistoryNewValue {
-};
-__decorate$2h([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RecordHistoryNewValue.prototype, "recordHistory", void 0);
-__decorate$2h([
-    Id(),
-    Column(),
-    DbNumber()
-], RecordHistoryNewValue.prototype, "columnIndex", void 0);
-__decorate$2h([
-    Column(),
-    DbAny()
-], RecordHistoryNewValue.prototype, "newValue", void 0);
-RecordHistoryNewValue = __decorate$2h([
-    Entity(),
-    Table()
-], RecordHistoryNewValue);
-
-var __decorate$2g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Currently, syncing databases are always SqLite dbs.  This means
- * we don't need to store types for values.  If a need arises type
- * specific FieldChange classes can always be added.  Having
- * VARCHAR and NUMBER should suffice for other db implementations.
- * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
- * also be required.
- */
-let RecordHistoryOldValue = class RecordHistoryOldValue {
-};
-__decorate$2g([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RecordHistoryOldValue.prototype, "recordHistory", void 0);
-__decorate$2g([
-    Id(),
-    Column(),
-    DbNumber()
-], RecordHistoryOldValue.prototype, "columnIndex", void 0);
-__decorate$2g([
-    Column(),
-    DbAny()
-], RecordHistoryOldValue.prototype, "oldValue", void 0);
-RecordHistoryOldValue = __decorate$2g([
-    Entity(),
-    Table()
-], RecordHistoryOldValue);
-
-var RepositoryTransactionType;
-(function (RepositoryTransactionType) {
-    RepositoryTransactionType["LOCAL"] = "LOCAL";
-    RepositoryTransactionType["REMOTE"] = "REMOTE";
-    RepositoryTransactionType["REMOTE_REFERENCE"] = "REMOTE_REFERENCE";
-})(RepositoryTransactionType || (RepositoryTransactionType = {}));
-
-var __decorate$2f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryTransactionHistory = class RepositoryTransactionHistory {
-    constructor(data) {
-        this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
-        this.operationHistory = [];
-        if (!data) {
+let RepositoryLoader = class RepositoryLoader {
+    /*
+    Repository can be loaded because:
+    - Repository is not present at all
+    - Central: Last non-local Transaction Log timestamp is too old
+    - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
+    Immutable repositories are only loaded once
+    */
+    async loadRepository(repositorySource, repositoryGUID, context) {
+        if (context.repositoryExistenceChecked) {
             return;
         }
-        this._localId = data._localId;
-        this.transactionHistory = data.transactionHistory;
-        this.repository = data.repository;
-        this.saveTimestamp = data.saveTimestamp;
-        this.operationHistory = data.operationHistory;
-    }
-};
-__decorate$2f([
-    GeneratedValue(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], RepositoryTransactionHistory.prototype, "_localId", void 0);
-__decorate$2f([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
-__decorate$2f([
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
-__decorate$2f([
-    Column(),
-    DbNumber()
-], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
-__decorate$2f([
-    Column(),
-    DbString()
-], RepositoryTransactionHistory.prototype, "GUID", void 0);
-__decorate$2f([
-    Column(),
-    DbBoolean()
-], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
-__decorate$2f([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "repository", void 0);
-__decorate$2f([
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
-__decorate$2f([
-    OneToMany()
-], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
-RepositoryTransactionHistory = __decorate$2f([
-    Entity(),
-    Table()
-], RepositoryTransactionHistory);
-
-var __decorate$2e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let TransactionHistory = class TransactionHistory {
-    constructor() {
-        this.repositoryTransactionHistories = [];
-        this.repositoryTransactionHistoryMap = {};
-        this.applicationMap = new SyncApplicationMap();
-        this.allOperationHistory = [];
-        this.allRecordHistory = [];
-        this.allRecordHistoryNewValues = [];
-        this.allRecordHistoryOldValues = [];
-    }
-};
-__decorate$2e([
-    GeneratedValue(),
-    Id(),
-    SequenceGenerator$1(),
-    Column()
-], TransactionHistory.prototype, "_localId", void 0);
-__decorate$2e([
-    Column(),
-    DbString()
-], TransactionHistory.prototype, "transactionType", void 0);
-__decorate$2e([
-    OneToMany()
-], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "applicationMap", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "allOperationHistory", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistory", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
-__decorate$2e([
-    Transient()
-], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
-TransactionHistory = __decorate$2e([
-    Entity(),
-    Table()
-], TransactionHistory);
-
-var __decorate$2d = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let Actor = class Actor {
-};
-__decorate$2d([
-    Id(),
-    GeneratedValue(),
-    DbNumber(),
-    Column()
-], Actor.prototype, "_localId", void 0);
-__decorate$2d([
-    Column(),
-    DbString()
-], Actor.prototype, "GUID", void 0);
-__decorate$2d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "userAccount", void 0);
-__decorate$2d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "terminal", void 0);
-__decorate$2d([
-    ManyToOne(),
-    JoinColumn()
-], Actor.prototype, "application", void 0);
-Actor = __decorate$2d([
-    Entity()
-], Actor);
-
-var __decorate$2c = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let AirEntity = class AirEntity {
-    constructor(entityGUID) {
-        // Currently TypeScript does not support optional getters/setters
-        // this is a workaround
-        delete this.id;
-        Object.defineProperty(this, 'id', {
-            get() {
-                return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this);
-            },
-            set(idString) {
-                IOC.getSync(AIR_ENTITY_UTILS).setId(idString, this);
+        context.repositoryExistenceChecked = true;
+        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryGUID, context);
+        let loadRepository = false;
+        let lastSyncTimestamp = 0;
+        if (!repositoryLoadInfo) {
+            loadRepository = true;
+        }
+        else if (!repositoryLoadInfo.immutable) {
+            loadRepository = true;
+            for (const remoteRepositoryTransactionHistory of repositoryLoadInfo.repositoryTransactionHistory) {
+                if (lastSyncTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
+                    lastSyncTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
+                }
             }
-        });
-        delete this.isNew;
-        Object.defineProperty(this, 'isNew', {
-            get() {
-                return !!this._actorRecordId;
+        }
+        if (!loadRepository) {
+            return;
+        }
+        const now = new Date().getTime();
+        const synchronizationAdapter = await this.synchronizationAdapterLoader
+            .load(repositorySource);
+        let messages;
+        try {
+            if (lastSyncTimestamp) {
+                // If it's been less than 10 seconds, don't retrieve the repository
+                if (lastSyncTimestamp >= now - 10000) {
+                    return;
+                }
+                // Check 100 seconds back, in case there were update issues
+                lastSyncTimestamp -= 100000;
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID, lastSyncTimestamp);
             }
-        });
-        delete this.createdBy;
-        Object.defineProperty(this, 'createdBy', {
-            get() {
-                return this.actor.userAccount;
+            else {
+                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
             }
-        });
-        this.id = entityGUID;
-    }
-};
-__decorate$2c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "repository", void 0);
-__decorate$2c([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "actor", void 0);
-__decorate$2c([
-    Id(),
-    Column(),
-    GeneratedValue()
-], AirEntity.prototype, "_actorRecordId", void 0);
-__decorate$2c([
-    Column(),
-    DbNumber()
-], AirEntity.prototype, "ageSuitability", void 0);
-__decorate$2c([
-    Column(),
-    DbDate()
-], AirEntity.prototype, "createdAt", void 0);
-__decorate$2c([
-    Column()
-], AirEntity.prototype, "systemWideOperationId", void 0);
-__decorate$2c([
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "originalRepository", void 0);
-__decorate$2c([
-    ManyToOne(),
-    JoinColumn()
-], AirEntity.prototype, "originalActor", void 0);
-__decorate$2c([
-    Column()
-], AirEntity.prototype, "originalActorRecordId", void 0);
-__decorate$2c([
-    Transient()
-], AirEntity.prototype, "createdBy", void 0);
-__decorate$2c([
-    Transient()
-], AirEntity.prototype, "isNew", void 0);
-__decorate$2c([
-    Transient()
-], AirEntity.prototype, "id", void 0);
-AirEntity = __decorate$2c([
-    MappedSuperclass()
-], AirEntity);
-
-var __decorate$2b = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-/**
- * Created by Papa on 2/9/2017.
- */
-let Repository = class Repository {
-    constructor() {
-        this.repositoryTransactionHistory = [];
-        this.repositoryApplications = [];
-        this.repositoryClients = [];
-        this.repositoryDatabases = [];
-        this.repositoryTerminals = [];
-        this.repositoryTypes = [];
-    }
-};
-__decorate$2b([
-    Column(),
-    GeneratedValue(),
-    Id(),
-    DbNumber()
-], Repository.prototype, "_localId", void 0);
-__decorate$2b([
-    Column(),
-    DbString()
-], Repository.prototype, "GUID", void 0);
-__decorate$2b([
-    Column(),
-    DbString()
-], Repository.prototype, "name", void 0);
-__decorate$2b([
-    Column(),
-    DbNumber()
-], Repository.prototype, "ageSuitability", void 0);
-__decorate$2b([
-    Column(),
-    DbDate()
-], Repository.prototype, "createdAt", void 0);
-__decorate$2b([
-    Column()
-], Repository.prototype, "immutable", void 0);
-__decorate$2b([
-    Column(),
-    DbString()
-], Repository.prototype, "source", void 0);
-__decorate$2b([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "owner", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryTransactionHistory", void 0);
-__decorate$2b([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "continent", void 0);
-__decorate$2b([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "country", void 0);
-__decorate$2b([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "state", void 0);
-__decorate$2b([
-    ManyToOne(),
-    JoinColumn()
-], Repository.prototype, "metroArea", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryApplications", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryClients", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryDatabases", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryTerminals", void 0);
-__decorate$2b([
-    OneToMany()
-], Repository.prototype, "repositoryTypes", void 0);
-Repository = __decorate$2b([
-    Entity(),
-    Table()
-], Repository);
-
-var __decorate$2a = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryApplication = class RepositoryApplication {
-};
-__decorate$2a([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryApplication.prototype, "application", void 0);
-__decorate$2a([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryApplication.prototype, "repository", void 0);
-RepositoryApplication = __decorate$2a([
-    Entity(),
-    Table()
-], RepositoryApplication);
-
-var __decorate$29 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryClient = class RepositoryClient {
-};
-__decorate$29([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryClient.prototype, "repository", void 0);
-__decorate$29([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryClient.prototype, "client", void 0);
-RepositoryClient = __decorate$29([
-    Entity(),
-    Table()
-], RepositoryClient);
-
-var __decorate$28 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryDatabase = class RepositoryDatabase {
-};
-__decorate$28([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryDatabase.prototype, "repository", void 0);
-__decorate$28([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryDatabase.prototype, "database", void 0);
-RepositoryDatabase = __decorate$28([
-    Entity(),
-    Table()
-], RepositoryDatabase);
-
-var __decorate$27 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryTerminal = class RepositoryTerminal {
-};
-__decorate$27([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTerminal.prototype, "repository", void 0);
-__decorate$27([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryTerminal.prototype, "terminal", void 0);
-RepositoryTerminal = __decorate$27([
-    Entity(),
-    Table()
-], RepositoryTerminal);
-
-var __decorate$26 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryType = class RepositoryType {
-};
-__decorate$26([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryType.prototype, "repository", void 0);
-__decorate$26([
-    Id(),
-    ManyToOne(),
-    JoinColumn()
-], RepositoryType.prototype, "type", void 0);
-RepositoryType = __decorate$26([
-    Entity(),
-    Table()
-], RepositoryType);
-
-const __constructors__$3 = {
-    Actor: Actor,
-    AirEntity: AirEntity,
-    OperationHistory: OperationHistory,
-    RecordHistory: RecordHistory,
-    RecordHistoryNewValue: RecordHistoryNewValue,
-    RecordHistoryOldValue: RecordHistoryOldValue,
-    Repository: Repository,
-    RepositoryApplication: RepositoryApplication,
-    RepositoryClient: RepositoryClient,
-    RepositoryDatabase: RepositoryDatabase,
-    RepositoryTerminal: RepositoryTerminal,
-    RepositoryTransactionHistory: RepositoryTransactionHistory,
-    RepositoryType: RepositoryType,
-    TransactionHistory: TransactionHistory
-};
-const Q_APPLICATION$3 = {
-    __constructors__: __constructors__$3,
-    domain: 'air',
-    name: '@airport/holding-pattern'
-};
-const Q$3 = Q_APPLICATION$3;
-function duoDiSet$3(dbEntityId) {
-    return airApi.ddS(Q$3.__dbApplication__, dbEntityId);
-}
-airApi.setQApplication(Q_APPLICATION$3);
-
-// Application Q object Dependency Injection readiness detection Dao
-class SQDIDao$3 extends Dao {
-    constructor(dbEntityId) {
-        super(dbEntityId, Q$3);
-    }
-}
-class BaseActorDao extends SQDIDao$3 {
-    constructor() {
-        super(0);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(0);
-    }
-}
-BaseActorDao.Find = new DaoQueryDecorators();
-BaseActorDao.FindOne = new DaoQueryDecorators();
-BaseActorDao.Search = new DaoQueryDecorators();
-BaseActorDao.SearchOne = new DaoQueryDecorators();
-class BaseOperationHistoryDao extends SQDIDao$3 {
-    constructor() {
-        super(12);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(12);
-    }
-}
-BaseOperationHistoryDao.Find = new DaoQueryDecorators();
-BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
-BaseOperationHistoryDao.Search = new DaoQueryDecorators();
-BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryDao extends SQDIDao$3 {
-    constructor() {
-        super(3);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(3);
-    }
-}
-BaseRecordHistoryDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryNewValueDao extends SQDIDao$3 {
-    constructor() {
-        super(1);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(1);
-    }
-}
-BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRecordHistoryOldValueDao extends SQDIDao$3 {
-    constructor() {
-        super(2);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(2);
-    }
-}
-BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
-BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDao extends SQDIDao$3 {
-    constructor() {
-        super(9);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(9);
-    }
-}
-BaseRepositoryDao.Find = new DaoQueryDecorators();
-BaseRepositoryDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryDao.Search = new DaoQueryDecorators();
-BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryApplicationDao extends SQDIDao$3 {
-    constructor() {
-        super(8);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(8);
-    }
-}
-BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
-BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryClientDao extends SQDIDao$3 {
-    constructor() {
-        super(6);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(6);
-    }
-}
-BaseRepositoryClientDao.Find = new DaoQueryDecorators();
-BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryClientDao.Search = new DaoQueryDecorators();
-BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryDatabaseDao extends SQDIDao$3 {
-    constructor() {
-        super(5);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(5);
-    }
-}
-BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
-BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTerminalDao extends SQDIDao$3 {
-    constructor() {
-        super(7);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(7);
-    }
-}
-BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
-BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTransactionHistoryDao extends SQDIDao$3 {
-    constructor() {
-        super(11);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(11);
-    }
-}
-BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
-BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
-class BaseRepositoryTypeDao extends SQDIDao$3 {
-    constructor() {
-        super(4);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(4);
-    }
-}
-BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
-BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
-BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
-BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
-class BaseTransactionHistoryDao extends SQDIDao$3 {
-    constructor() {
-        super(10);
-    }
-    static Save(config) {
-        return Dao.BaseSave(config);
-    }
-    static diSet() {
-        return duoDiSet$3(10);
-    }
-}
-BaseTransactionHistoryDao.Find = new DaoQueryDecorators();
-BaseTransactionHistoryDao.FindOne = new DaoQueryDecorators();
-BaseTransactionHistoryDao.Search = new DaoQueryDecorators();
-BaseTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
-
-var __decorate$25 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
-    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
-        let rhnv;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rhnv = Q$3.RecordHistoryNewValue
-            ],
-            WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
-        });
-    }
-};
-RecordHistoryNewValueDao = __decorate$25([
-    Injected()
-], RecordHistoryNewValueDao);
-
-var __decorate$24 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
-    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
-        let rhov;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                rhov = Q$3.RecordHistoryOldValue
-            ],
-            WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
-        });
-    }
-};
-RecordHistoryOldValueDao = __decorate$24([
-    Injected()
-], RecordHistoryOldValueDao);
-
-var __decorate$23 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
-    /*
-    async clearContentsWhereIdsIn(
-        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
-    ): Promise<void> {
-        const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
-        await this.db.updateWhere({
-            UPDATE: rtb,
-            SET: {
-                contents: null
-            },
-            WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
-        })
-    }
-    */
-    async findWhereGUIDsIn(GUIDs) {
-        let rth;
-        return await this.db.find.tree({
-            SELECT: {
-                GUID: Y
-            },
-            FROM: [
-                rth = Q$3.RepositoryTransactionHistory
-            ],
-            WHERE: rth.GUID.IN(GUIDs)
-        });
-    }
-    async findAllLocalChangesForRecordIds(changedRecordIds) {
-        const repositoryTransactionHistoryMapByRepositoryId = new Map();
-        const rth = Q$3.RepositoryTransactionHistory;
-        const th = rth.transactionHistory.INNER_JOIN();
-        const oh = rth.operationHistory.LEFT_JOIN();
-        const ae = oh.entity.LEFT_JOIN();
-        const av = ae.applicationVersion.LEFT_JOIN();
-        const rh = oh.recordHistory.LEFT_JOIN();
-        const nv = rh.newValues.LEFT_JOIN();
-        let _localId = Y;
-        const repositoryEquals = [];
-        for (const [repositoryId, idsForRepository] of changedRecordIds) {
-            const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds;
-            const entityEquals = [];
-            for (const [entityId, recordMapForEntity] of recordMapForRepository) {
-                const actorEquals = [];
-                for (const [actorId, recordsForActor] of recordMapForEntity) {
-                    actorEquals.push(AND(oh.actor._localId.equals(actorId), rh._actorRecordId.IN(Array.from(recordsForActor))));
-                }
-                entityEquals.push(AND(oh.entity._localId.equals(entityId), OR(...actorEquals)));
+            // TODO: Add a special message for repository for adding users
+            // into the repository 
+            // each user will have a public key that they will distribute
+            // each message is signed with the private key and the initial
+            // message for repository is CREATE_REPOSITORY with the public 
+            // key of the owner user
+            const messageMapByGUID = new Map();
+            for (const message of messages) {
+                messageMapByGUID.set(message.history.GUID, message);
             }
-            repositoryEquals.push(AND(rth.repository._localId.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), OR(...entityEquals)));
+            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context);
         }
-        const repoTransHistories = await this.db.find.tree({
-            SELECT: {
-                ...ALL_FIELDS,
-                operationHistory: {
-                    orderNumber: Y,
-                    changeType: Y,
-                    entity: {
-                        _localId,
-                        // index: Y,
-                        applicationVersion: {
-                            _localId: Y,
-                            // integerVersion: Y,
-                            // application: {
-                            // 	index: Y
-                            // }
-                        }
-                    },
-                    recordHistory: {
-                        _localId,
-                        newValues: {
-                            columnIndex: Y,
-                            newValue: Y
-                        }
-                    }
-                }
-            },
-            FROM: [
-                rth,
-                th,
-                oh,
-                ae,
-                av,
-                rh,
-                nv
-            ],
-            WHERE: AND(th.transactionType.equals(TransactionType.LOCAL), OR(...repositoryEquals)),
-            // ORDER_BY: [
-            // 	rth.repository._localId.asc()
-            // ]
-        });
-        for (const repoTransHistory of repoTransHistories) {
-            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
-                .push(repoTransHistory);
-            repoTransHistory.operationHistory.sort((rth1, rth2) => {
-                if (rth1.orderNumber < rth2.orderNumber) {
-                    return -1;
-                }
-                if (rth1.orderNumber > rth2.orderNumber) {
-                    return 1;
-                }
-                return 0;
-            });
-        }
-        return repositoryTransactionHistoryMapByRepositoryId;
-    }
-    async updateSyncTimestamp(repositoryTransactionHistory) {
-        let rth;
-        await this.db.updateWhere({
-            UPDATE: rth = Q$3.RepositoryTransactionHistory,
-            SET: {
-                syncTimestamp: repositoryTransactionHistory.syncTimestamp
-            },
-            WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
-        });
-    }
-};
-RepositoryTransactionHistoryDao = __decorate$23([
-    Injected()
-], RepositoryTransactionHistoryDao);
-
-var __decorate$22 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ActorDao = class ActorDao extends BaseActorDao {
-    async findWithDetailsAndGlobalIdsByIds(actorIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds));
-    }
-    async findMapsWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds, actorMap, actorMapById) {
-        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds);
-        for (const actor of actors) {
-            ensureChildJsMap(actorMap, actor.userAccount._localId)
-                .set(actor.terminal._localId, actor);
-            actorMapById.set(actor._localId, actor);
-        }
-    }
-    async findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds) {
-        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => AND(a.GUID.IN(actorGUIDs), a.terminal._localId.IN(terminalIds), a.userAccount._localId.IN(userAccountIds)));
-    }
-    async findByDomainAndApplication_Names(domainName, applicationName) {
-        let act;
-        let application;
-        let domain;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId: Y,
-                application: {
-                    ...ALL_FIELDS,
-                    domain: {}
-                },
-                terminal: {},
-                userAccount: {},
-                GUID: Y
-            },
-            FROM: [
-                act = Q$3.Actor,
-                application = act.application.INNER_JOIN(),
-                domain = application.domain.INNER_JOIN(),
-                act.terminal.LEFT_JOIN(),
-                act.userAccount.LEFT_JOIN()
-            ],
-            WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName))
-        });
-    }
-    async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(domainName, applicationName, userAccountGUID, terminalGUID) {
-        let act;
-        let application;
-        let domain;
-        let terminal;
-        let userAccount;
-        return await this.db.findOne.tree({
-            SELECT: {
-                _localId: Y,
-                application: {
-                    domain: {
-                        name: Y
-                    },
-                    fullName: Y,
-                    index: Y,
-                    name: Y
-                },
-                terminal: {},
-                userAccount: {},
-                GUID: Y
-            },
-            FROM: [
-                act = Q$3.Actor,
-                application = act.application.INNER_JOIN(),
-                domain = application.domain.INNER_JOIN(),
-                terminal = act.terminal.LEFT_JOIN(),
-                userAccount = act.userAccount.LEFT_JOIN()
-            ],
-            WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName), terminal.GUID.equals(terminalGUID), userAccount.GUID.equals(userAccountGUID))
-        });
-    }
-    async findByGUIDs(actorGUIDs) {
-        let a;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                a = Q$3.Actor
-            ],
-            WHERE: a.GUID.IN(actorGUIDs)
-        });
-    }
-    async findWithUserAccountBy_LocalIdIn(actor_localIds) {
-        let a, u;
-        return await this.db.find.graph({
-            SELECT: {
-                '*': Y,
-                userAccount: {
-                    _localId: Y,
-                    GUID: Y,
-                    ranking: Y,
-                    username: Y
-                }
-            },
-            FROM: [
-                a = Q$3.Actor,
-                u = a.userAccount.LEFT_JOIN(),
-                u.continent.LEFT_JOIN(),
-                u.country.LEFT_JOIN(),
-                u.metroArea.LEFT_JOIN(),
-                u.state.LEFT_JOIN()
-            ],
-            WHERE: a._localId.IN(actor_localIds)
-        });
-    }
-    async insert(actors, context) {
-        let a;
-        const VALUES = [];
-        for (const actor of actors) {
-            VALUES.push([
-                actor.GUID, actor.application.index,
-                actor.userAccount._localId, actor.terminal._localId
-            ]);
-        }
-        const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: a = Q$3.Actor,
-            columns: [
-                a.GUID,
-                a.application.index,
-                a.userAccount._localId,
-                a.terminal._localId
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < actors.length; i++) {
-            let actor = actors[i];
-            actor._localId = _localIds[i][0];
-        }
-    }
-    async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
-        let a;
-        let ap;
-        let t;
-        const id = Y;
-        const username = Y;
-        const GUID = Y;
-        return await this.db.find.tree({
-            SELECT: {
-                ...ALL_FIELDS,
-                application: {
-                    index: Y,
-                    name: Y,
-                    domain: {
-                        name: Y
-                    }
-                },
-                terminal: {
-                    id,
-                    GUID,
-                    owner: {
-                        id,
-                        username,
-                        GUID,
-                    }
-                },
-                userAccount: {
-                    id,
-                    username,
-                    GUID,
-                }
-            },
-            FROM: [
-                a = Q$3.Actor,
-                ap = a.application.LEFT_JOIN(),
-                ap.domain.LEFT_JOIN(),
-                t = a.terminal.LEFT_JOIN(),
-                t.owner.LEFT_JOIN(),
-                a.userAccount.LEFT_JOIN()
-            ],
-            WHERE: getWhereClause(a)
-        });
-    }
-};
-ActorDao = __decorate$22([
-    Injected()
-], ActorDao);
-
-var __decorate$21 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
-    async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
-        let r;
-        let rth;
-        let th;
-        return await this.db.findOne.tree({
-            SELECT: {
-                immutable: Y,
-                repositoryTransactionHistory: {
-                    saveTimestamp: Y
-                }
-            },
-            FROM: [
-                r = Q$3.Repository,
-                rth = r.repositoryTransactionHistory.INNER_JOIN(),
-                th = rth.transactionHistory.INNER_JOIN()
-            ],
-            WHERE: AND(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
-        }, context);
-    }
-    async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
-        let r;
-        const _localId = Y;
-        return await this.db.find.tree({
-            SELECT: {
-                _localId,
-                owner: {
-                    _localId
-                },
-                createdAt: Y,
-                GUID: Y
-            },
-            FROM: [
-                r = Q$3.Repository
-            ],
-            WHERE: r._localId.IN(repositoryIds)
-        });
-    }
-    async findWithOwnerBy_LocalIds(repositoryIds) {
-        let r;
-        return await this.db.find.tree({
-            SELECT: {
-                '*': Y,
-                owner: {
-                    _localId: Y,
-                    GUID: Y,
-                    username: Y
-                }
-            },
-            FROM: [
-                r = Q$3.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r._localId.IN(repositoryIds)
-        });
-    }
-    async findWithOwnerBy_LocalIdIn(repository_localIds) {
-        let r;
-        return await this.db.find.graph({
-            SELECT: {
-                '*': Y,
-                owner: {
-                    _localId: Y,
-                    GUID: Y,
-                    ranking: Y,
-                    username: Y
-                }
-            },
-            FROM: [
-                r = Q$3.Repository,
-                r.owner.INNER_JOIN()
-            ],
-            WHERE: r._localId.IN(repository_localIds)
-        });
-    }
-    async findByGUIDs(repositoryGUIDs) {
-        let r;
-        return await this.db.find.tree({
-            SELECT: {},
-            FROM: [
-                r = Q$3.Repository
-            ],
-            WHERE: r.GUID.IN(repositoryGUIDs)
-        });
-    }
-    async insert(repositories, context) {
-        let r;
-        const VALUES = [];
-        for (const repository of repositories) {
-            VALUES.push([
-                repository.createdAt, repository.GUID, repository.ageSuitability,
-                repository.source, repository.immutable, repository.owner._localId,
-            ]);
-        }
-        const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: r = Q$3.Repository,
-            columns: [
-                r.createdAt,
-                r.GUID,
-                r.ageSuitability,
-                r.source,
-                r.immutable,
-                r.owner._localId
-            ],
-            VALUES
-        }, context);
-        for (let i = 0; i < repositories.length; i++) {
-            let repository = repositories[i];
-            repository._localId = _localIds[i][0];
+        catch (e) {
+            console.error(e);
+            return;
         }
     }
 };
-RepositoryDao = __decorate$21([
-    Injected()
-], RepositoryDao);
-
-var __decorate$20 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let OperationHistoryDuo = class OperationHistoryDuo {
-    getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction) {
-        let operationHistory = {
-            actor,
-            changeType: entityChangeType,
-            entity: dbEntity,
-            _localId: undefined,
-            orderNumber: ++rootTransaction.numberOfOperations,
-            recordHistory: [],
-            repositoryTransactionHistory: repositoryTransactionHistory,
-            systemWideOperationId
-        };
-        return operationHistory;
-    }
-    sort(ew1, ew2) {
-        let startId1 = ew1.orderNumber;
-        let startId2 = ew2.orderNumber;
-        if (startId1 > startId2) {
-            return 1;
-        }
-        if (startId2 > startId1) {
-            return -1;
-        }
-        return 0;
-    }
-    startRecordHistory(operationHistory, actorId, _actorRecordId) {
-        const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, _actorRecordId);
-        recordHistory.operationHistory = operationHistory;
-        operationHistory.recordHistory.push(recordHistory);
-        operationHistory.repositoryTransactionHistory
-            .transactionHistory.allRecordHistory.push(recordHistory);
-        return recordHistory;
-    }
-};
-__decorate$20([
+__decorate$2G([
     Inject$2()
-], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
-OperationHistoryDuo = __decorate$20([
-    Injected()
-], OperationHistoryDuo);
-
-var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistoryDuo = class RecordHistoryDuo {
-    getNewRecord(actorId, _actorRecordId) {
-        const recordHistory = new RecordHistory();
-        recordHistory._actorRecordId = _actorRecordId;
-        recordHistory.actor = {
-            _localId: actorId
-        };
-        return recordHistory;
-    }
-    addNewValue(recordHistory, dbColumn, newValue) {
-        if (newValue === null) {
-            // No need to record a null value
-            return null;
-        }
-        const recordHistoryNewValue = this.recordHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue);
-        recordHistory.newValues.push(recordHistoryNewValue);
-        recordHistory.operationHistory.repositoryTransactionHistory
-            .transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
-        return recordHistoryNewValue;
-    }
-    addOldValue(recordHistory, dbColumn, oldValue) {
-        if (oldValue === null) {
-            // No need to record a null value
-            return null;
-        }
-        const recordHistoryOldValue = this.recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
-        recordHistory.oldValues.push(recordHistoryOldValue);
-        recordHistory.operationHistory.repositoryTransactionHistory
-            .transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);
-        return recordHistoryOldValue;
-    }
-};
-__decorate$1$([
+], RepositoryLoader.prototype, "repositoryDao", void 0);
+__decorate$2G([
     Inject$2()
-], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
-__decorate$1$([
+], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
+__decorate$2G([
     Inject$2()
-], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
-RecordHistoryDuo = __decorate$1$([
+], RepositoryLoader.prototype, "synchronizationInManager", void 0);
+RepositoryLoader = __decorate$2G([
     Injected()
-], RecordHistoryDuo);
-
-var __decorate$1_ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
-    getNewRecord(recordHistory, dbColumn, newValue) {
-        const recordHistoryNewValue = new RecordHistoryNewValue();
-        recordHistoryNewValue.columnIndex = dbColumn.index;
-        recordHistoryNewValue.recordHistory = recordHistory;
-        recordHistoryNewValue.newValue = newValue;
-        return recordHistoryNewValue;
-    }
-};
-RecordHistoryNewValueDuo = __decorate$1_([
-    Injected()
-], RecordHistoryNewValueDuo);
-
-var __decorate$1Z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
-    getNewRecord(recordHistory, dbColumn, oldValue) {
-        const recordHistoryOldValue = new RecordHistoryOldValue();
-        recordHistoryOldValue.columnIndex = dbColumn.index;
-        recordHistoryOldValue.recordHistory = recordHistory;
-        recordHistoryOldValue.oldValue = oldValue;
-        return recordHistoryOldValue;
-    }
-};
-RecordHistoryOldValueDuo = __decorate$1Z([
-    Injected()
-], RecordHistoryOldValueDuo);
+], RepositoryLoader);
 
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
@@ -10289,832 +7016,7 @@ function v4(options, buf, offset) {
   return stringify(rnds);
 }
 
-var __decorate$1Y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
-    getNewRecord(repositoryId, isRepositoryCreation) {
-        let repositoryTransactionHistory = new RepositoryTransactionHistory();
-        let saveTimestamp = new Date().getTime();
-        repositoryTransactionHistory.saveTimestamp = saveTimestamp;
-        repositoryTransactionHistory.GUID = v4();
-        repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
-        repositoryTransactionHistory.repository = new Repository();
-        repositoryTransactionHistory.repository._localId = repositoryId;
-        return repositoryTransactionHistory;
-    }
-    newRecord(data) {
-        if (!data) {
-            return null;
-        }
-        return { ...data };
-    }
-    sortRepoTransHistories(repoTransHistories, actorMapById) {
-        repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
-            const syncTimeComparison = this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp);
-            if (syncTimeComparison) {
-                return syncTimeComparison;
-            }
-            const saveTimeComparison = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
-            if (saveTimeComparison) {
-                return saveTimeComparison;
-            }
-            return 0;
-        });
-    }
-    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, rootTransaction) {
-        let operationHistory = this.operationHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction);
-        repositoryTransactionHistory.operationHistory.push(operationHistory);
-        repositoryTransactionHistory
-            .transactionHistory.allOperationHistory.push(operationHistory);
-        return operationHistory;
-    }
-    compareDates(date1, date2) {
-        const time1 = date1 ? date1.getTime() : -1;
-        const time2 = date2 ? date2.getTime() : -1;
-        return this.compareNumbers(time1, time2);
-    }
-    compareNumbers(number1, number2) {
-        if (number1 < number2) {
-            return -1;
-        }
-        if (number2 > number1) {
-            return 1;
-        }
-        return 0;
-    }
-};
-__decorate$1Y([
-    Inject$2()
-], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
-RepositoryTransactionHistoryDuo = __decorate$1Y([
-    Injected()
-], RepositoryTransactionHistoryDuo);
-
-var __decorate$1X = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let TransactionHistoryDuo = class TransactionHistoryDuo {
-    getNewRecord(transactionType = TransactionType.LOCAL) {
-        let transaction = new TransactionHistory();
-        transaction.transactionType = TransactionType.LOCAL;
-        return transaction;
-    }
-    getRepositoryTransaction(transactionHistory, repositoryId, isRepositoryCreation) {
-        let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId];
-        if (!repositoryTransactionHistory) {
-            repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(repositoryId, isRepositoryCreation);
-            transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
-            transactionHistory.repositoryTransactionHistoryMap[repositoryId] = repositoryTransactionHistory;
-            repositoryTransactionHistory.transactionHistory = transactionHistory;
-        }
-        return repositoryTransactionHistory;
-    }
-};
-__decorate$1X([
-    Inject$2()
-], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
-TransactionHistoryDuo = __decorate$1X([
-    Injected()
-], TransactionHistoryDuo);
-
-const Api = function () {
-    return function (target, propertyKey, descriptor) {
-        // No runtime logic required.
-        return null;
-    };
-};
-
-var ApiObjectKind;
-(function (ApiObjectKind) {
-    ApiObjectKind["ARRAY"] = "ARRAY";
-    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
-    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
-    ApiObjectKind["DATE"] = "DATE";
-    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
-    ApiObjectKind["NUMBER"] = "NUMBER";
-    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
-    ApiObjectKind["OBJECT"] = "OBJECT";
-    ApiObjectKind["STRING"] = "STRING";
-    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
-    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
-})(ApiObjectKind || (ApiObjectKind = {}));
-
-const checkIn = lib$1('check-in');
-const API_REGISTRY = checkIn.token({
-    class: null,
-    interface: 'IApiRegistry',
-    token: 'API_REGISTRY'
-});
-const API_VALIDATOR = checkIn.token({
-    class: null,
-    interface: 'IApiValidator',
-    token: 'API_VALIDATOR'
-});
-API_REGISTRY.setDependencies({
-    containerAccessor: CONTAINER_ACCESSOR
-});
-
-var __decorate$1W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryApi$1 = class RepositoryApi {
-    async findAll() {
-        return await this.repositoryDao.findAll();
-    }
-    async create(repositoryName) {
-        return await this.repositoryManager.createRepository(repositoryName);
-    }
-};
-__decorate$1W([
-    Inject$2()
-], RepositoryApi$1.prototype, "repositoryDao", void 0);
-__decorate$1W([
-    Inject$2()
-], RepositoryApi$1.prototype, "repositoryManager", void 0);
-__decorate$1W([
-    Api()
-], RepositoryApi$1.prototype, "findAll", null);
-__decorate$1W([
-    Api()
-], RepositoryApi$1.prototype, "create", null);
-RepositoryApi$1 = __decorate$1W([
-    Injected()
-], RepositoryApi$1);
-
-const ACTOR_DAO = holdingPattern.token({
-    class: ActorDao,
-    interface: 'IActorDao',
-    token: 'ACTOR_DAO'
-});
-const OPERATION_HISTORY_DUO = holdingPattern.token({
-    class: OperationHistoryDuo,
-    interface: 'IOperationHistoryDuo',
-    token: 'OPERATION_HISTORY_DUO'
-});
-const RECORD_HISTORY_DUO = holdingPattern.token({
-    class: RecordHistoryDuo,
-    interface: 'IRecordHistoryDuo',
-    token: 'RECORD_HISTORY_DUO'
-});
-holdingPattern.token({
-    class: RecordHistoryNewValueDao,
-    interface: 'IRecordHistoryNewValueDao',
-    token: 'RECORD_HISTORY_NEW_VALUE_DAO'
-});
-const RECORD_HISTORY_NEW_VALUE_DUO = holdingPattern.token({
-    class: RecordHistoryNewValueDuo,
-    interface: 'IRecordHistoryNewValueDuo',
-    token: 'RECORD_HISTORY_NEW_VALUE_DUO'
-});
-holdingPattern.token({
-    class: RecordHistoryOldValueDao,
-    interface: 'IRecordHistoryOldValueDao',
-    token: 'RECORD_HISTORY_OLD_VALUE_DAO'
-});
-const RECORD_HISTORY_OLD_VALUE_DUO = holdingPattern.token({
-    class: RecordHistoryOldValueDuo,
-    interface: 'IRecordHistoryOldValueDuo',
-    token: 'RECORD_HISTORY_OLD_VALUE_DUO'
-});
-const REPOSITORY_DAO = holdingPattern.token({
-    class: RepositoryDao,
-    interface: 'IRepositoryDao',
-    token: 'REPOSITORY_DAO'
-});
-const REPOSITORY_TRANSACTION_HISTORY_DAO = holdingPattern.token({
-    class: RepositoryTransactionHistoryDao,
-    interface: 'IRepositoryTransactionHistoryDao',
-    token: 'REPOSITORY_TRANSACTION_HISTORY_DAO'
-});
-const REPOSITORY_TRANSACTION_HISTORY_DUO = holdingPattern.token({
-    class: RepositoryTransactionHistoryDuo,
-    interface: 'IRepositoryTransactionHistoryDuo',
-    token: 'REPOSITORY_TRANSACTION_HISTORY_DUO'
-});
-const TRANSACTION_HISTORY_DUO = holdingPattern.token({
-    class: TransactionHistoryDuo,
-    interface: 'ITransactionHistoryDuo',
-    token: 'TRANSACTION_HISTORY_DUO'
-});
-OPERATION_HISTORY_DUO.setDependencies({
-    recordHistoryDuo: RECORD_HISTORY_DUO,
-});
-REPOSITORY_API.setClass(RepositoryApi$1);
-REPOSITORY_API.setDependencies({
-    repositoryDao: REPOSITORY_DAO,
-    repositoryManager: REPOSITORY_MANAGER,
-});
-RECORD_HISTORY_DUO.setDependencies({
-    recordHistoryNewValueDuo: RECORD_HISTORY_NEW_VALUE_DUO,
-    recordHistoryOldValueDuo: RECORD_HISTORY_OLD_VALUE_DUO,
-});
-REPOSITORY_TRANSACTION_HISTORY_DUO.setDependencies({
-    operationHistoryDuo: OPERATION_HISTORY_DUO,
-});
-TRANSACTION_HISTORY_DUO.setDependencies({
-    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
-});
-
-/**
- * Created by Papa on 4/16/2017.
- */
-var AirEntityType;
-(function (AirEntityType) {
-    AirEntityType["NOT_AIR_ENTITY"] = "NOT_AIR_ENTITY";
-    AirEntityType["AIR_ENTITY"] = "AIR_ENTITY";
-})(AirEntityType || (AirEntityType = {}));
-
-/**
- * For logic classes to be hot-swappable for quick upgrades all state is contained
- * in one non-reloadable BehaviorSubject.
- */
-const internalTerminalState = new BehaviorSubject({
-    applicationActors: [],
-    applicationInitializer: {
-        applicationWindowMap: new Map(),
-        initializingApplicationMap: new Map()
-    },
-    applicationMapByFullName: new Map(),
-    applications: [],
-    domains: [],
-    frameworkActor: null,
-    internalConnector: {
-        dbName: '',
-        internalCredentials: {
-            application: null,
-            domain: INTERNAL_DOMAIN,
-            methodName: null,
-            objectName: null
-        },
-        serverUrl: ''
-    },
-    isServer: false,
-    lastIds: {
-        columns: 0,
-        domains: 0,
-        entities: 0,
-        properties: 0,
-        propertyColumns: 0,
-        relations: 0,
-        relationColumns: 0,
-        applications: 0,
-        applicationVersions: 0
-    },
-    receiver: {
-        initializedApps: new Set(),
-        initializingApps: new Set(),
-    },
-    sequenceGenerator: {
-        sequences: [],
-        sequenceBlocks: [],
-        generatingSequenceNumbers: false
-    },
-    terminal: null,
-    transactionManager: {
-        pendingTransactionQueue: [],
-        rootTransactionInProgressMap: new Map(),
-        transactionInProgressMap: new Map()
-    },
-    webReceiver: {
-        domainPrefix: '',
-        localDomain: '',
-        mainDomainFragments: [],
-        onClientMessageCallback: null,
-        pendingApplicationCounts: new Map(),
-        pendingHostCounts: new Map(),
-        pendingInterAppApiCallMessageMap: new Map(),
-        subsriptionMap: new Map()
-    }
-});
-
-var __decorate$1V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let TerminalState = class TerminalState {
-    constructor() {
-        this.terminalState = internalTerminalState;
-    }
-};
-TerminalState = __decorate$1V([
-    Injected()
-], TerminalState);
-
-var __decorate$1U = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let TerminalStore = class TerminalStore {
-    get state() {
-        return this.terminalState.terminalState;
-    }
-    async init() {
-        this.getTerminalState = this.selectorManager.createRootSelector(this.state);
-        this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
-        this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
-        this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
-            const applicationActorsByDomainAndApplication_Names = new Map();
-            for (const applicationActor of applicationActors) {
-                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
-                let actorsForApplication = applicationActorMapForDomain
-                    .get(applicationActor.application.name);
-                if (!actorsForApplication) {
-                    actorsForApplication = [];
-                    applicationActorMapForDomain.set(applicationActor.application.name, actorsForApplication);
-                }
-                actorsForApplication.push(applicationActor);
-            }
-            return applicationActorsByDomainAndApplication_Names;
-        });
-        this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
-        this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
-            const domainsByName = new Map();
-            for (const domain of domains) {
-                domainsByName.set(domain.name, domain);
-            }
-            return domainsByName;
-        });
-        this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
-        this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
-        this.getIsServer = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.isServer);
-        this.getLastIds = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.lastIds);
-        this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
-            const latestApplicationVersionMapByNames = new Map();
-            for (const domain of domains) {
-                const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
-                for (const application of domain.applications) {
-                    mapForDomain.set(application.name, application.currentVersion[0].applicationVersion);
-                }
-            }
-            return latestApplicationVersionMapByNames;
-        });
-        this.getLatestApplicationVersionMapByFullApplication_Name = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
-            const latestApplicationVersionMapByFullApplication_Name = new Map();
-            for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
-                for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
-                    latestApplicationVersionMapByFullApplication_Name.set(applicationVersion.application.fullName, applicationVersion);
-                }
-            }
-            return latestApplicationVersionMapByFullApplication_Name;
-        });
-        this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
-            const allApplicationVersionsByIds = [];
-            for (const domain of domains) {
-                for (const application of domain.applications) {
-                    for (const applicationVersion of application.versions) {
-                        allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
-                    }
-                }
-            }
-            return allApplicationVersionsByIds;
-        });
-        this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
-            const latestApplicationVersionsByApplication_Indexes = [];
-            for (const domain of domains) {
-                for (const application of domain.applications) {
-                    latestApplicationVersionsByApplication_Indexes[application.index]
-                        = application.currentVersion[0].applicationVersion;
-                }
-            }
-            return latestApplicationVersionsByApplication_Indexes;
-        });
-        this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationMapByFullName);
-        this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
-        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
-            const allEntities = [];
-            for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
-                if (!latestApplicationVersion) {
-                    continue;
-                }
-                for (const entity of latestApplicationVersion.entities) {
-                    allEntities[entity._localId] = entity;
-                }
-            }
-            return allEntities;
-        });
-        this.getAllColumns = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
-            const allColumns = [];
-            for (const entity of allEntities) {
-                if (!entity) {
-                    continue;
-                }
-                for (const column of entity.columns) {
-                    allColumns[column._localId] = column;
-                }
-            }
-            return allColumns;
-        });
-        this.getAllRelations = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
-            const allRelations = [];
-            for (const entity of allEntities) {
-                if (!entity) {
-                    continue;
-                }
-                for (const relation of entity.relations) {
-                    allRelations[relation._localId] = relation;
-                }
-            }
-            return allRelations;
-        });
-        this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
-        this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
-        this.getTerminal = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.terminal);
-        this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
-        this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
-    }
-    tearDown() {
-    }
-};
-__decorate$1U([
-    Inject$2()
-], TerminalStore.prototype, "selectorManager", void 0);
-__decorate$1U([
-    Inject$2()
-], TerminalStore.prototype, "terminalState", void 0);
-TerminalStore = __decorate$1U([
-    Injected()
-], TerminalStore);
-
-const internalUserState = new BehaviorSubject({
-    allSessions: [],
-    sessionMapByEmail: new Map()
-});
-
-var __decorate$1T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let UserState = class UserState {
-    constructor() {
-        this.userState = internalUserState;
-    }
-};
-UserState = __decorate$1T([
-    Injected()
-], UserState);
-
-var __decorate$1S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let UserStore = class UserStore {
-    get state() {
-        return this.userState.userState;
-    }
-    async init() {
-        this.getUserState = this.selectorManager.createRootSelector(this.state);
-        this.getAllSessions = this.selectorManager.createSelector(this.getUserState, userState => userState.allSessions);
-        this.getSessionMapByEmail = this.selectorManager.createSelector(this.getUserState, userState => userState.sessionMapByEmail);
-    }
-};
-__decorate$1S([
-    Inject$2()
-], UserStore.prototype, "selectorManager", void 0);
-__decorate$1S([
-    Inject$2()
-], UserStore.prototype, "userState", void 0);
-UserStore = __decorate$1S([
-    Injected()
-], UserStore);
-
-var IsolateMessageType;
-(function (IsolateMessageType) {
-    IsolateMessageType["ADD_REPOSITORY"] = "ADD_REPOSITORY";
-    IsolateMessageType["APP_INITIALIZING"] = "APP_INITIALIZING";
-    IsolateMessageType["APP_INITIALIZED"] = "APP_INITIALIZED";
-    IsolateMessageType["CALL_API"] = "CALL_API";
-    IsolateMessageType["DELETE_WHERE"] = "DELETE_WHERE";
-    IsolateMessageType["FIND"] = "FIND";
-    IsolateMessageType["FIND_ONE"] = "FIND_ONE";
-    IsolateMessageType["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
-    IsolateMessageType["INSERT_VALUES"] = "INSERT_VALUES";
-    IsolateMessageType["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
-    IsolateMessageType["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
-    IsolateMessageType["SEARCH"] = "SEARCH";
-    IsolateMessageType["SEARCH_ONE"] = "SEARCH_ONE";
-    IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "UNSUBSCRIBE";
-    IsolateMessageType["SAVE"] = "SAVE";
-    IsolateMessageType["SAVE_TO_DESTINATION"] = "SAVE_TO_DESTINATION";
-    IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
-})(IsolateMessageType || (IsolateMessageType = {}));
-
-var AppState;
-(function (AppState) {
-    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
-    AppState["START_INITIALIZING"] = "START_INITIALIZING";
-    AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
-    AppState["INITIALIZED"] = "INITIALIZED";
-})(AppState || (AppState = {}));
-
-const applicationState = {
-    api: null,
-    application: null,
-    appState: AppState.NOT_INITIALIED,
-    domain: null,
-    // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (http://localhost:7500)
-    hostServer: 'http://localhost:7500',
-    // FIXME: tie this in to the hostServer variable
-    mainDomain: null,
-    observableMessageMap: new Map(),
-    pendingMessageMap: new Map(),
-    messageCallback: null,
-};
-
-var __decorate$1R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let ApplicationStore = class ApplicationStore {
-    constructor() {
-        this.applicationState = applicationState;
-    }
-    get state() {
-        return this.applicationState;
-    }
-};
-ApplicationStore = __decorate$1R([
-    Injected()
-], ApplicationStore);
-
-var __decorate$1Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let SelectorManager = class SelectorManager {
-    createSelector(...args) {
-        if (args.length < 2 || args.length > 6) {
-            throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
-        }
-        const inputSelectors = args.slice(0, args.length - 1);
-        const callback = args[args.length - 1];
-        let sourceObservable;
-        if (inputSelectors.length > 1) {
-            // TODO: check if this will work
-            sourceObservable = from(inputSelectors.map(selector => selector.observable));
-        }
-        else {
-            sourceObservable = inputSelectors[0].observable;
-        }
-        let observable = sourceObservable.pipe(
-        // share() TODO: implement once RxJs support is added
-        distinctUntilChanged(), map(value => callback(value)));
-        return this.getSelector(observable);
-    }
-    createRootSelector(stateObservable) {
-        return this.getSelector(stateObservable);
-    }
-    getSelector(observable) {
-        let selector = (function (
-        // otherStateObservable?: Observable<SV>
-        ) {
-            let currentValue;
-            observable.subscribe(value => currentValue = value).unsubscribe();
-            return currentValue;
-        });
-        selector.observable = observable;
-        return selector;
-    }
-};
-SelectorManager = __decorate$1Q([
-    Injected()
-], SelectorManager);
-
-const apron = lib$1('apron');
-apron.token({
-    class: null,
-    interface: 'IApplicationLoader',
-    token: 'APPLICATION_LOADER'
-});
-const APPLICATION_STORE = apron.token({
-    class: ApplicationStore,
-    interface: 'IApplicationStore',
-    token: 'APPLICATION_STORE'
-});
-const LOCAL_API_SERVER = apron.token({
-    class: null,
-    interface: 'ILocalAPIServer',
-    token: 'LOCAL_API_SERVER'
-});
-const SELECTOR_MANAGER = apron.token({
-    class: SelectorManager,
-    interface: 'ISelectorManager',
-    token: 'SELECTOR_MANAGER'
-});
-
-const terminalMap = lib$1('terminal-map');
-const APPLICATION_INITIALIZER = terminalMap.token({
-    class: null,
-    interface: 'IApplicationInitializer',
-    token: 'APPLICATION_INITIALIZER'
-});
-const DOMAIN_RETRIEVER = terminalMap.token({
-    class: null,
-    interface: 'IDomainRetriever',
-    token: 'DOMAIN_RETRIEVER'
-});
-const STORE_DRIVER = terminalMap.token({
-    class: null,
-    interface: 'IStoreDriver',
-    token: 'STORE_DRIVER'
-});
-const TERMINAL_SESSION_MANAGER = terminalMap.token({
-    class: null,
-    interface: 'ITerminalSessionManager',
-    token: 'TERMINAL_SESSION_MANAGER'
-});
-const TERMINAL_STATE = terminalMap.token({
-    class: TerminalState,
-    interface: 'ITerminalStateContainer',
-    token: 'TERMINAL_STATE'
-});
-const TERMINAL_STORE = terminalMap.token({
-    class: TerminalStore,
-    interface: 'ITerminalStore',
-    token: 'TERMINAL_STORE'
-});
-const TRANSACTION_MANAGER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionManager',
-    token: 'TRANSACTION_MANAGER'
-});
-const TRANSACTIONAL_RECEIVER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionalReceiver',
-    token: 'TRANSACTIONAL_RECEIVER'
-});
-const TRANSACTIONAL_SERVER = terminalMap.token({
-    class: null,
-    interface: 'ITransactionalServer',
-    token: 'TRANSACTIONAL_SERVER'
-});
-const USER_STATE = terminalMap.token({
-    class: UserState,
-    interface: 'IUserStateContainer',
-    token: 'USER_STATE'
-});
-const USER_STORE = terminalMap.token({
-    class: UserStore,
-    interface: 'IUserStore',
-    token: 'USER_STORE'
-});
-APPLICATION_INITIALIZER.setDependencies({
-    airportDatabase: AIRPORT_DATABASE,
-    sequenceGenerator: SEQUENCE_GENERATOR,
-    terminalStore: TERMINAL_STORE
-});
-DOMAIN_RETRIEVER.setDependencies({
-    transactionalConnector: TRANSACTIONAL_CONNECTOR
-});
-TERMINAL_STORE.setDependencies({
-    selectorManager: SELECTOR_MANAGER,
-    terminalState: TERMINAL_STATE
-});
-TRANSACTION_MANAGER.setDependencies({
-    storeDriver: STORE_DRIVER,
-    terminalStore: TERMINAL_STORE
-});
-TRANSACTIONAL_RECEIVER.setDependencies({
-    applicationInitializer: APPLICATION_INITIALIZER,
-    dbApplicationUtils: DB_APPLICATION_UTILS,
-});
-TRANSACTIONAL_SERVER.setDependencies({
-    terminalStore: TERMINAL_STORE,
-    transactionManager: TRANSACTION_MANAGER
-});
-USER_STORE.setDependencies({
-    selectorManager: SELECTOR_MANAGER,
-    userState: USER_STATE
-});
-
-class AIRportApi {
-    async getAllApplications() {
-        const applicationDao = await IOC.get(APPLICATION_DAO);
-        return await applicationDao.findAll();
-    }
-    async getAllRepositories() {
-        const repositoryDao = await IOC.get(REPOSITORY_DAO);
-        return await repositoryDao.findAll();
-    }
-    async signUp(action, userAccountInfo) {
-        const terminalSessionManager = await IOC.get(TERMINAL_SESSION_MANAGER);
-        switch (action) {
-            case 'signUp':
-                await terminalSessionManager.signUp(userAccountInfo).then();
-                break;
-            default:
-                throw new Error(`Unsupported user action: ${action}`);
-        }
-    }
-}
-
-var __decorate$1P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-let RepositoryLoader = class RepositoryLoader {
-    /*
-    Repository can be loaded because:
-    - Repository is not present at all
-    - Central: Last non-local Transaction Log timestamp is too old
-    - Distributed:  Also stale timestamp but not as frequently (maybe once an hour)
-    Immutable repositories are only loaded once
-    */
-    async loadRepository(repositorySource, repositoryGUID, context) {
-        if (context.repositoryExistenceChecked) {
-            return;
-        }
-        context.repositoryExistenceChecked = true;
-        const repositoryLoadInfo = await this.repositoryDao.getRepositoryLoadInfo(repositorySource, repositoryGUID, context);
-        let loadRepository = false;
-        let lastSyncTimestamp = 0;
-        if (!repositoryLoadInfo) {
-            loadRepository = true;
-        }
-        else if (!repositoryLoadInfo.immutable) {
-            loadRepository = true;
-            for (const remoteRepositoryTransactionHistory of repositoryLoadInfo.repositoryTransactionHistory) {
-                if (lastSyncTimestamp < remoteRepositoryTransactionHistory.saveTimestamp) {
-                    lastSyncTimestamp = remoteRepositoryTransactionHistory.saveTimestamp;
-                }
-            }
-        }
-        if (!loadRepository) {
-            return;
-        }
-        const now = new Date().getTime();
-        const synchronizationAdapter = await this.synchronizationAdapterLoader
-            .load(repositorySource);
-        let messages;
-        try {
-            if (lastSyncTimestamp) {
-                // If it's been less than 10 seconds, don't retrieve the repository
-                if (lastSyncTimestamp >= now - 10000) {
-                    return;
-                }
-                // Check 100 seconds back, in case there were update issues
-                lastSyncTimestamp -= 100000;
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID, lastSyncTimestamp);
-            }
-            else {
-                messages = await synchronizationAdapter.getTransactionsForRepository(repositorySource, repositoryGUID);
-            }
-            // TODO: Add a special message for repository for adding users
-            // into the repository 
-            // each user will have a public key that they will distribute
-            // each message is signed with the private key and the initial
-            // message for repository is CREATE_REPOSITORY with the public 
-            // key of the owner user
-            const messageMapByGUID = new Map();
-            for (const message of messages) {
-                messageMapByGUID.set(message.history.GUID, message);
-            }
-            await this.synchronizationInManager.receiveMessages(messageMapByGUID, context);
-        }
-        catch (e) {
-            console.error(e);
-            return;
-        }
-    }
-};
-__decorate$1P([
-    Inject$2()
-], RepositoryLoader.prototype, "repositoryDao", void 0);
-__decorate$1P([
-    Inject$2()
-], RepositoryLoader.prototype, "synchronizationAdapterLoader", void 0);
-__decorate$1P([
-    Inject$2()
-], RepositoryLoader.prototype, "synchronizationInManager", void 0);
-RepositoryLoader = __decorate$1P([
-    Injected()
-], RepositoryLoader);
-
-var __decorate$1O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11211,15 +7113,1818 @@ already contains a new repository.`);
         };
     }
 };
-__decorate$1O([
+__decorate$2F([
     Inject$2()
 ], RepositoryManager.prototype, "repositoryDao", void 0);
-__decorate$1O([
+__decorate$2F([
     Inject$2()
 ], RepositoryManager.prototype, "terminalSessionManager", void 0);
-RepositoryManager = __decorate$1O([
+RepositoryManager = __decorate$2F([
     Injected()
 ], RepositoryManager);
+
+const holdingPattern = lib$1('holding-pattern');
+const REPOSITORY_API = holdingPattern.token({
+    class: null,
+    interface: 'RepositoryApi',
+    token: 'REPOSITORY_API'
+});
+
+const REPOSITORY_MANAGER = holdingPattern.token({
+    class: null,
+    interface: 'IRepositoryManager',
+    token: 'REPOSITORY_MANAGER'
+});
+
+var UpdateState;
+(function (UpdateState) {
+    UpdateState["GO_ONLINE"] = "GO_ONLINE";
+    UpdateState["REMOTE"] = "REMOTE";
+    UpdateState["LOCAL"] = "LOCAL";
+})(UpdateState || (UpdateState = {}));
+
+var ConstraintMode;
+(function (ConstraintMode) {
+    ConstraintMode["CONSTRAINT"] = "CONSTRAINT";
+    ConstraintMode["NO_CONSTRAINT"] = "NO_CONSTRAINT";
+    ConstraintMode["PROVIDER_DEFAULT"] = "PROVIDER_DEFAULT";
+})(ConstraintMode || (ConstraintMode = {}));
+
+/**
+ * Created by Papa on 8/20/2016.
+ */
+const Id = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const Column = function (columnConfiguration) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const JoinColumn = function (joinColumnConfiguration) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const Json = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbAny = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbBoolean = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbDate = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbNumber = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const DbString = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const Transient = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const ManyToOne = function (elements) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const OneToMany = function (elements) {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const GeneratedValue = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+const SequenceGenerator$1 = function () {
+    return function (targetObject, propertyKey) {
+        // No runtime logic required.
+    };
+};
+
+/**
+ * Created by Papa on 8/20/2016.
+ */
+const Entity = function () {
+    return function (constructor) {
+        // No runtime logic required.
+    };
+};
+const Table = function (tableConfiguration) {
+    return function (constructor) {
+        // No runtime logic required.
+    };
+};
+const MappedSuperclass = function () {
+    return function (constructor) {
+    };
+};
+
+var __decorate$2E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Marks a group of mutation history changes.
+ */
+let OperationHistory = class OperationHistory {
+    constructor() {
+        this.recordHistory = [];
+    }
+};
+__decorate$2E([
+    GeneratedValue(),
+    SequenceGenerator$1(),
+    Id(),
+    Column()
+], OperationHistory.prototype, "_localId", void 0);
+__decorate$2E([
+    Column(),
+    DbNumber()
+], OperationHistory.prototype, "orderNumber", void 0);
+__decorate$2E([
+    Column(),
+    DbString()
+], OperationHistory.prototype, "changeType", void 0);
+__decorate$2E([
+    Column(),
+    DbNumber()
+], OperationHistory.prototype, "systemWideOperationId", void 0);
+__decorate$2E([
+    ManyToOne(),
+    JoinColumn()
+], OperationHistory.prototype, "entity", void 0);
+__decorate$2E([
+    ManyToOne(),
+    JoinColumn()
+], OperationHistory.prototype, "actor", void 0);
+__decorate$2E([
+    ManyToOne(),
+    JoinColumn()
+], OperationHistory.prototype, "repositoryTransactionHistory", void 0);
+__decorate$2E([
+    OneToMany()
+], OperationHistory.prototype, "recordHistory", void 0);
+OperationHistory = __decorate$2E([
+    Entity(),
+    Table()
+], OperationHistory);
+
+var __decorate$2D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistory = class RecordHistory {
+    constructor() {
+        this.newValues = [];
+        this.oldValues = [];
+    }
+};
+__decorate$2D([
+    Id(),
+    GeneratedValue(),
+    SequenceGenerator$1(),
+    Column()
+], RecordHistory.prototype, "_localId", void 0);
+__decorate$2D([
+    Column(),
+    DbNumber()
+], RecordHistory.prototype, "_actorRecordId", void 0);
+__decorate$2D([
+    ManyToOne(),
+    JoinColumn()
+], RecordHistory.prototype, "actor", void 0);
+__decorate$2D([
+    ManyToOne(),
+    JoinColumn()
+], RecordHistory.prototype, "operationHistory", void 0);
+__decorate$2D([
+    OneToMany()
+], RecordHistory.prototype, "newValues", void 0);
+__decorate$2D([
+    OneToMany()
+], RecordHistory.prototype, "oldValues", void 0);
+__decorate$2D([
+    Transient()
+], RecordHistory.prototype, "tableColumnMap", void 0);
+RecordHistory = __decorate$2D([
+    Entity(),
+    Table()
+], RecordHistory);
+
+var __decorate$2C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Currently, syncing databases are always SqLite dbs.  This means
+ * we don't need to store types for values.  If a need arises type
+ * specific FieldChange classes can always be added.  Having
+ * VARCHAR and NUMBER should suffice for other db implementations.
+ * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
+ * also be required.
+ */
+let RecordHistoryNewValue = class RecordHistoryNewValue {
+};
+__decorate$2C([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RecordHistoryNewValue.prototype, "recordHistory", void 0);
+__decorate$2C([
+    Id(),
+    Column(),
+    DbNumber()
+], RecordHistoryNewValue.prototype, "columnIndex", void 0);
+__decorate$2C([
+    Column(),
+    DbAny()
+], RecordHistoryNewValue.prototype, "newValue", void 0);
+RecordHistoryNewValue = __decorate$2C([
+    Entity(),
+    Table()
+], RecordHistoryNewValue);
+
+var __decorate$2B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Currently, syncing databases are always SqLite dbs.  This means
+ * we don't need to store types for values.  If a need arises type
+ * specific FieldChange classes can always be added.  Having
+ * VARCHAR and NUMBER should suffice for other db implementations.
+ * NUMBER covers (dates, booleans and numbers).  Maybe REALs will
+ * also be required.
+ */
+let RecordHistoryOldValue = class RecordHistoryOldValue {
+};
+__decorate$2B([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RecordHistoryOldValue.prototype, "recordHistory", void 0);
+__decorate$2B([
+    Id(),
+    Column(),
+    DbNumber()
+], RecordHistoryOldValue.prototype, "columnIndex", void 0);
+__decorate$2B([
+    Column(),
+    DbAny()
+], RecordHistoryOldValue.prototype, "oldValue", void 0);
+RecordHistoryOldValue = __decorate$2B([
+    Entity(),
+    Table()
+], RecordHistoryOldValue);
+
+var RepositoryTransactionType;
+(function (RepositoryTransactionType) {
+    RepositoryTransactionType["LOCAL"] = "LOCAL";
+    RepositoryTransactionType["REMOTE"] = "REMOTE";
+    RepositoryTransactionType["REMOTE_REFERENCE"] = "REMOTE_REFERENCE";
+})(RepositoryTransactionType || (RepositoryTransactionType = {}));
+
+var __decorate$2A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryTransactionHistory = class RepositoryTransactionHistory {
+    constructor(data) {
+        this.repositoryTransactionType = RepositoryTransactionType.LOCAL;
+        this.operationHistory = [];
+        if (!data) {
+            return;
+        }
+        this._localId = data._localId;
+        this.transactionHistory = data.transactionHistory;
+        this.repository = data.repository;
+        this.saveTimestamp = data.saveTimestamp;
+        this.operationHistory = data.operationHistory;
+    }
+};
+__decorate$2A([
+    GeneratedValue(),
+    Id(),
+    SequenceGenerator$1(),
+    Column()
+], RepositoryTransactionHistory.prototype, "_localId", void 0);
+__decorate$2A([
+    Column(),
+    DbString()
+], RepositoryTransactionHistory.prototype, "repositoryTransactionType", void 0);
+__decorate$2A([
+    Column(),
+    DbNumber()
+], RepositoryTransactionHistory.prototype, "saveTimestamp", void 0);
+__decorate$2A([
+    Column(),
+    DbNumber()
+], RepositoryTransactionHistory.prototype, "syncTimestamp", void 0);
+__decorate$2A([
+    Column(),
+    DbString()
+], RepositoryTransactionHistory.prototype, "GUID", void 0);
+__decorate$2A([
+    Column(),
+    DbBoolean()
+], RepositoryTransactionHistory.prototype, "isRepositoryCreation", void 0);
+__decorate$2A([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTransactionHistory.prototype, "repository", void 0);
+__decorate$2A([
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTransactionHistory.prototype, "transactionHistory", void 0);
+__decorate$2A([
+    OneToMany()
+], RepositoryTransactionHistory.prototype, "operationHistory", void 0);
+RepositoryTransactionHistory = __decorate$2A([
+    Entity(),
+    Table()
+], RepositoryTransactionHistory);
+
+var __decorate$2z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let TransactionHistory = class TransactionHistory {
+    constructor() {
+        this.repositoryTransactionHistories = [];
+        this.repositoryTransactionHistoryMap = {};
+        this.applicationMap = new SyncApplicationMap();
+        this.allOperationHistory = [];
+        this.allRecordHistory = [];
+        this.allRecordHistoryNewValues = [];
+        this.allRecordHistoryOldValues = [];
+    }
+};
+__decorate$2z([
+    GeneratedValue(),
+    Id(),
+    SequenceGenerator$1(),
+    Column()
+], TransactionHistory.prototype, "_localId", void 0);
+__decorate$2z([
+    Column(),
+    DbString()
+], TransactionHistory.prototype, "transactionType", void 0);
+__decorate$2z([
+    OneToMany()
+], TransactionHistory.prototype, "repositoryTransactionHistories", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "repositoryTransactionHistoryMap", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "applicationMap", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "allOperationHistory", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "allRecordHistory", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "allRecordHistoryNewValues", void 0);
+__decorate$2z([
+    Transient()
+], TransactionHistory.prototype, "allRecordHistoryOldValues", void 0);
+TransactionHistory = __decorate$2z([
+    Entity(),
+    Table()
+], TransactionHistory);
+
+var __decorate$2y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let Actor = class Actor {
+};
+__decorate$2y([
+    Id(),
+    GeneratedValue(),
+    DbNumber(),
+    Column()
+], Actor.prototype, "_localId", void 0);
+__decorate$2y([
+    Column(),
+    DbString()
+], Actor.prototype, "GUID", void 0);
+__decorate$2y([
+    ManyToOne(),
+    JoinColumn()
+], Actor.prototype, "userAccount", void 0);
+__decorate$2y([
+    ManyToOne(),
+    JoinColumn()
+], Actor.prototype, "terminal", void 0);
+__decorate$2y([
+    ManyToOne(),
+    JoinColumn()
+], Actor.prototype, "application", void 0);
+Actor = __decorate$2y([
+    Entity()
+], Actor);
+
+var __decorate$2x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let AirEntity = class AirEntity {
+    constructor(entityGUID) {
+        // Currently TypeScript does not support optional getters/setters
+        // this is a workaround
+        delete this.id;
+        Object.defineProperty(this, 'id', {
+            get() {
+                return IOC.getSync(AIR_ENTITY_UTILS).encodeId(this);
+            },
+            set(idString) {
+                IOC.getSync(AIR_ENTITY_UTILS).setId(idString, this);
+            }
+        });
+        delete this.isNew;
+        Object.defineProperty(this, 'isNew', {
+            get() {
+                return !!this._actorRecordId;
+            }
+        });
+        delete this.createdBy;
+        Object.defineProperty(this, 'createdBy', {
+            get() {
+                return this.actor.userAccount;
+            }
+        });
+        this.id = entityGUID;
+    }
+};
+__decorate$2x([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntity.prototype, "repository", void 0);
+__decorate$2x([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], AirEntity.prototype, "actor", void 0);
+__decorate$2x([
+    Id(),
+    Column(),
+    GeneratedValue()
+], AirEntity.prototype, "_actorRecordId", void 0);
+__decorate$2x([
+    Column(),
+    DbNumber()
+], AirEntity.prototype, "ageSuitability", void 0);
+__decorate$2x([
+    Column(),
+    DbDate()
+], AirEntity.prototype, "createdAt", void 0);
+__decorate$2x([
+    Column()
+], AirEntity.prototype, "systemWideOperationId", void 0);
+__decorate$2x([
+    ManyToOne(),
+    JoinColumn()
+], AirEntity.prototype, "originalRepository", void 0);
+__decorate$2x([
+    ManyToOne(),
+    JoinColumn()
+], AirEntity.prototype, "originalActor", void 0);
+__decorate$2x([
+    Column()
+], AirEntity.prototype, "originalActorRecordId", void 0);
+__decorate$2x([
+    Transient()
+], AirEntity.prototype, "createdBy", void 0);
+__decorate$2x([
+    Transient()
+], AirEntity.prototype, "isNew", void 0);
+__decorate$2x([
+    Transient()
+], AirEntity.prototype, "id", void 0);
+AirEntity = __decorate$2x([
+    MappedSuperclass()
+], AirEntity);
+
+var __decorate$2w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Created by Papa on 2/9/2017.
+ */
+let Repository = class Repository {
+    constructor() {
+        this.repositoryTransactionHistory = [];
+        this.repositoryApplications = [];
+        this.repositoryClients = [];
+        this.repositoryDatabases = [];
+        this.repositoryTerminals = [];
+        this.repositoryTypes = [];
+    }
+};
+__decorate$2w([
+    Column(),
+    GeneratedValue(),
+    Id(),
+    DbNumber()
+], Repository.prototype, "_localId", void 0);
+__decorate$2w([
+    Column(),
+    DbString()
+], Repository.prototype, "GUID", void 0);
+__decorate$2w([
+    Column(),
+    DbString()
+], Repository.prototype, "name", void 0);
+__decorate$2w([
+    Column(),
+    DbNumber()
+], Repository.prototype, "ageSuitability", void 0);
+__decorate$2w([
+    Column(),
+    DbDate()
+], Repository.prototype, "createdAt", void 0);
+__decorate$2w([
+    Column()
+], Repository.prototype, "immutable", void 0);
+__decorate$2w([
+    Column(),
+    DbString()
+], Repository.prototype, "source", void 0);
+__decorate$2w([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "owner", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryTransactionHistory", void 0);
+__decorate$2w([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "continent", void 0);
+__decorate$2w([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "country", void 0);
+__decorate$2w([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "state", void 0);
+__decorate$2w([
+    ManyToOne(),
+    JoinColumn()
+], Repository.prototype, "metroArea", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryApplications", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryClients", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryDatabases", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryTerminals", void 0);
+__decorate$2w([
+    OneToMany()
+], Repository.prototype, "repositoryTypes", void 0);
+Repository = __decorate$2w([
+    Entity(),
+    Table()
+], Repository);
+
+var __decorate$2v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryApplication = class RepositoryApplication {
+};
+__decorate$2v([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryApplication.prototype, "application", void 0);
+__decorate$2v([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryApplication.prototype, "repository", void 0);
+RepositoryApplication = __decorate$2v([
+    Entity(),
+    Table()
+], RepositoryApplication);
+
+var __decorate$2u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryClient = class RepositoryClient {
+};
+__decorate$2u([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryClient.prototype, "repository", void 0);
+__decorate$2u([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryClient.prototype, "client", void 0);
+RepositoryClient = __decorate$2u([
+    Entity(),
+    Table()
+], RepositoryClient);
+
+var __decorate$2t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryDatabase = class RepositoryDatabase {
+};
+__decorate$2t([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryDatabase.prototype, "repository", void 0);
+__decorate$2t([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryDatabase.prototype, "database", void 0);
+RepositoryDatabase = __decorate$2t([
+    Entity(),
+    Table()
+], RepositoryDatabase);
+
+var __decorate$2s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryTerminal = class RepositoryTerminal {
+};
+__decorate$2s([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTerminal.prototype, "repository", void 0);
+__decorate$2s([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryTerminal.prototype, "terminal", void 0);
+RepositoryTerminal = __decorate$2s([
+    Entity(),
+    Table()
+], RepositoryTerminal);
+
+var __decorate$2r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryType = class RepositoryType {
+};
+__decorate$2r([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryType.prototype, "repository", void 0);
+__decorate$2r([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], RepositoryType.prototype, "type", void 0);
+RepositoryType = __decorate$2r([
+    Entity(),
+    Table()
+], RepositoryType);
+
+const __constructors__$4 = {
+    Actor: Actor,
+    AirEntity: AirEntity,
+    OperationHistory: OperationHistory,
+    RecordHistory: RecordHistory,
+    RecordHistoryNewValue: RecordHistoryNewValue,
+    RecordHistoryOldValue: RecordHistoryOldValue,
+    Repository: Repository,
+    RepositoryApplication: RepositoryApplication,
+    RepositoryClient: RepositoryClient,
+    RepositoryDatabase: RepositoryDatabase,
+    RepositoryTerminal: RepositoryTerminal,
+    RepositoryTransactionHistory: RepositoryTransactionHistory,
+    RepositoryType: RepositoryType,
+    TransactionHistory: TransactionHistory
+};
+const Q_APPLICATION$4 = {
+    __constructors__: __constructors__$4,
+    domain: 'air',
+    name: '@airport/holding-pattern'
+};
+const Q$4 = Q_APPLICATION$4;
+function duoDiSet$4(dbEntityId) {
+    return airApi.ddS(Q$4.__dbApplication__, dbEntityId);
+}
+airApi.setQApplication(Q_APPLICATION$4);
+
+// Application Q object Dependency Injection readiness detection Dao
+class SQDIDao$4 extends Dao {
+    constructor(dbEntityId) {
+        super(dbEntityId, Q$4);
+    }
+}
+class BaseActorDao extends SQDIDao$4 {
+    constructor() {
+        super(0);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(0);
+    }
+}
+BaseActorDao.Find = new DaoQueryDecorators();
+BaseActorDao.FindOne = new DaoQueryDecorators();
+BaseActorDao.Search = new DaoQueryDecorators();
+BaseActorDao.SearchOne = new DaoQueryDecorators();
+class BaseOperationHistoryDao extends SQDIDao$4 {
+    constructor() {
+        super(12);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(12);
+    }
+}
+BaseOperationHistoryDao.Find = new DaoQueryDecorators();
+BaseOperationHistoryDao.FindOne = new DaoQueryDecorators();
+BaseOperationHistoryDao.Search = new DaoQueryDecorators();
+BaseOperationHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryDao extends SQDIDao$4 {
+    constructor() {
+        super(3);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(3);
+    }
+}
+BaseRecordHistoryDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryNewValueDao extends SQDIDao$4 {
+    constructor() {
+        super(1);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(1);
+    }
+}
+BaseRecordHistoryNewValueDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryNewValueDao.SearchOne = new DaoQueryDecorators();
+class BaseRecordHistoryOldValueDao extends SQDIDao$4 {
+    constructor() {
+        super(2);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(2);
+    }
+}
+BaseRecordHistoryOldValueDao.Find = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.FindOne = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.Search = new DaoQueryDecorators();
+BaseRecordHistoryOldValueDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryDao extends SQDIDao$4 {
+    constructor() {
+        super(9);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(9);
+    }
+}
+BaseRepositoryDao.Find = new DaoQueryDecorators();
+BaseRepositoryDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryDao.Search = new DaoQueryDecorators();
+BaseRepositoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryApplicationDao extends SQDIDao$4 {
+    constructor() {
+        super(8);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(8);
+    }
+}
+BaseRepositoryApplicationDao.Find = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.Search = new DaoQueryDecorators();
+BaseRepositoryApplicationDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryClientDao extends SQDIDao$4 {
+    constructor() {
+        super(6);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(6);
+    }
+}
+BaseRepositoryClientDao.Find = new DaoQueryDecorators();
+BaseRepositoryClientDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryClientDao.Search = new DaoQueryDecorators();
+BaseRepositoryClientDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryDatabaseDao extends SQDIDao$4 {
+    constructor() {
+        super(5);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(5);
+    }
+}
+BaseRepositoryDatabaseDao.Find = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.Search = new DaoQueryDecorators();
+BaseRepositoryDatabaseDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTerminalDao extends SQDIDao$4 {
+    constructor() {
+        super(7);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(7);
+    }
+}
+BaseRepositoryTerminalDao.Find = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.Search = new DaoQueryDecorators();
+BaseRepositoryTerminalDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTransactionHistoryDao extends SQDIDao$4 {
+    constructor() {
+        super(11);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(11);
+    }
+}
+BaseRepositoryTransactionHistoryDao.Find = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.Search = new DaoQueryDecorators();
+BaseRepositoryTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
+class BaseRepositoryTypeDao extends SQDIDao$4 {
+    constructor() {
+        super(4);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(4);
+    }
+}
+BaseRepositoryTypeDao.Find = new DaoQueryDecorators();
+BaseRepositoryTypeDao.FindOne = new DaoQueryDecorators();
+BaseRepositoryTypeDao.Search = new DaoQueryDecorators();
+BaseRepositoryTypeDao.SearchOne = new DaoQueryDecorators();
+class BaseTransactionHistoryDao extends SQDIDao$4 {
+    constructor() {
+        super(10);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$4(10);
+    }
+}
+BaseTransactionHistoryDao.Find = new DaoQueryDecorators();
+BaseTransactionHistoryDao.FindOne = new DaoQueryDecorators();
+BaseTransactionHistoryDao.Search = new DaoQueryDecorators();
+BaseTransactionHistoryDao.SearchOne = new DaoQueryDecorators();
+
+var __decorate$2q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistoryNewValueDao = class RecordHistoryNewValueDao extends BaseRecordHistoryNewValueDao {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
+        let rhnv;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rhnv = Q$4.RecordHistoryNewValue
+            ],
+            WHERE: rhnv.recordHistory._localId.IN(RecordHistory_LocalIds)
+        });
+    }
+};
+RecordHistoryNewValueDao = __decorate$2q([
+    Injected()
+], RecordHistoryNewValueDao);
+
+var __decorate$2p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistoryOldValueDao = class RecordHistoryOldValueDao extends BaseRecordHistoryOldValueDao {
+    async findByRecordHistory_LocalIdIn(RecordHistory_LocalIds) {
+        let rhov;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rhov = Q$4.RecordHistoryOldValue
+            ],
+            WHERE: rhov.recordHistory._localId.IN(RecordHistory_LocalIds)
+        });
+    }
+};
+RecordHistoryOldValueDao = __decorate$2p([
+    Injected()
+], RecordHistoryOldValueDao);
+
+var __decorate$2o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryTransactionHistoryDao = class RepositoryTransactionHistoryDao extends BaseRepositoryTransactionHistoryDao {
+    /*
+    async clearContentsWhereIdsIn(
+        repositoryTransactionBlockIds: TmRepositoryTransactionBlockId[]
+    ): Promise<void> {
+        const rtb: QRepositoryTransactionBlock = Q.QRepositoryTransactionBlock
+        await this.db.updateWhere({
+            UPDATE: rtb,
+            SET: {
+                contents: null
+            },
+            WHERE: rtb._localId.IN(repositoryTransactionBlockIds)
+        })
+    }
+    */
+    async findWhereGUIDsIn(GUIDs) {
+        let rth;
+        return await this.db.find.tree({
+            SELECT: {
+                GUID: Y
+            },
+            FROM: [
+                rth = Q$4.RepositoryTransactionHistory
+            ],
+            WHERE: rth.GUID.IN(GUIDs)
+        });
+    }
+    async findAllLocalChangesForRecordIds(changedRecordIds) {
+        const repositoryTransactionHistoryMapByRepositoryId = new Map();
+        const rth = Q$4.RepositoryTransactionHistory;
+        const th = rth.transactionHistory.INNER_JOIN();
+        const oh = rth.operationHistory.LEFT_JOIN();
+        const ae = oh.entity.LEFT_JOIN();
+        const av = ae.applicationVersion.LEFT_JOIN();
+        const rh = oh.recordHistory.LEFT_JOIN();
+        const nv = rh.newValues.LEFT_JOIN();
+        let _localId = Y;
+        const repositoryEquals = [];
+        for (const [repositoryId, idsForRepository] of changedRecordIds) {
+            const recordMapForRepository = idsForRepository.actorRecordIdsByLocalIds;
+            const entityEquals = [];
+            for (const [entityId, recordMapForEntity] of recordMapForRepository) {
+                const actorEquals = [];
+                for (const [actorId, recordsForActor] of recordMapForEntity) {
+                    actorEquals.push(AND(oh.actor._localId.equals(actorId), rh._actorRecordId.IN(Array.from(recordsForActor))));
+                }
+                entityEquals.push(AND(oh.entity._localId.equals(entityId), OR(...actorEquals)));
+            }
+            repositoryEquals.push(AND(rth.repository._localId.equals(repositoryId), rth.saveTimestamp.greaterThanOrEquals(idsForRepository.firstChangeTime), OR(...entityEquals)));
+        }
+        const repoTransHistories = await this.db.find.tree({
+            SELECT: {
+                ...ALL_FIELDS,
+                operationHistory: {
+                    orderNumber: Y,
+                    changeType: Y,
+                    entity: {
+                        _localId,
+                        // index: Y,
+                        applicationVersion: {
+                            _localId: Y,
+                            // integerVersion: Y,
+                            // application: {
+                            // 	index: Y
+                            // }
+                        }
+                    },
+                    recordHistory: {
+                        _localId,
+                        newValues: {
+                            columnIndex: Y,
+                            newValue: Y
+                        }
+                    }
+                }
+            },
+            FROM: [
+                rth,
+                th,
+                oh,
+                ae,
+                av,
+                rh,
+                nv
+            ],
+            WHERE: AND(th.transactionType.equals(TransactionType.LOCAL), OR(...repositoryEquals)),
+            // ORDER_BY: [
+            // 	rth.repository._localId.asc()
+            // ]
+        });
+        for (const repoTransHistory of repoTransHistories) {
+            ensureChildArray(repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
+                .push(repoTransHistory);
+            repoTransHistory.operationHistory.sort((rth1, rth2) => {
+                if (rth1.orderNumber < rth2.orderNumber) {
+                    return -1;
+                }
+                if (rth1.orderNumber > rth2.orderNumber) {
+                    return 1;
+                }
+                return 0;
+            });
+        }
+        return repositoryTransactionHistoryMapByRepositoryId;
+    }
+    async updateSyncTimestamp(repositoryTransactionHistory) {
+        let rth;
+        await this.db.updateWhere({
+            UPDATE: rth = Q$4.RepositoryTransactionHistory,
+            SET: {
+                syncTimestamp: repositoryTransactionHistory.syncTimestamp
+            },
+            WHERE: rth._localId.equals(repositoryTransactionHistory._localId)
+        });
+    }
+};
+RepositoryTransactionHistoryDao = __decorate$2o([
+    Injected()
+], RepositoryTransactionHistoryDao);
+
+var __decorate$2n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ActorDao = class ActorDao extends BaseActorDao {
+    async findWithDetailsAndGlobalIdsByIds(actorIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => a._localId.IN(actorIds));
+    }
+    async findMapsWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds, actorMap, actorMapById) {
+        const actors = await this.findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds);
+        for (const actor of actors) {
+            ensureChildJsMap(actorMap, actor.userAccount._localId)
+                .set(actor.terminal._localId, actor);
+            actorMapById.set(actor._localId, actor);
+        }
+    }
+    async findWithDetailsByGlobalIds(actorGUIDs, userAccountIds, terminalIds) {
+        return await this.findWithDetailsAndGlobalIdsByWhereClause((a) => AND(a.GUID.IN(actorGUIDs), a.terminal._localId.IN(terminalIds), a.userAccount._localId.IN(userAccountIds)));
+    }
+    async findByDomainAndApplication_Names(domainName, applicationName) {
+        let act;
+        let application;
+        let domain;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                application: {
+                    ...ALL_FIELDS,
+                    domain: {}
+                },
+                terminal: {},
+                userAccount: {},
+                GUID: Y
+            },
+            FROM: [
+                act = Q$4.Actor,
+                application = act.application.INNER_JOIN(),
+                domain = application.domain.INNER_JOIN(),
+                act.terminal.LEFT_JOIN(),
+                act.userAccount.LEFT_JOIN()
+            ],
+            WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName))
+        });
+    }
+    async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(domainName, applicationName, userAccountGUID, terminalGUID) {
+        let act;
+        let application;
+        let domain;
+        let terminal;
+        let userAccount;
+        return await this.db.findOne.tree({
+            SELECT: {
+                _localId: Y,
+                application: {
+                    domain: {
+                        name: Y
+                    },
+                    fullName: Y,
+                    index: Y,
+                    name: Y
+                },
+                terminal: {},
+                userAccount: {},
+                GUID: Y
+            },
+            FROM: [
+                act = Q$4.Actor,
+                application = act.application.INNER_JOIN(),
+                domain = application.domain.INNER_JOIN(),
+                terminal = act.terminal.LEFT_JOIN(),
+                userAccount = act.userAccount.LEFT_JOIN()
+            ],
+            WHERE: AND(domain.name.equals(domainName), application.name.equals(applicationName), terminal.GUID.equals(terminalGUID), userAccount.GUID.equals(userAccountGUID))
+        });
+    }
+    async findByGUIDs(actorGUIDs) {
+        let a;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                a = Q$4.Actor
+            ],
+            WHERE: a.GUID.IN(actorGUIDs)
+        });
+    }
+    async findWithUserAccountBy_LocalIdIn(actor_localIds) {
+        let a, u;
+        return await this.db.find.graph({
+            SELECT: {
+                '*': Y,
+                userAccount: {
+                    _localId: Y,
+                    GUID: Y,
+                    ranking: Y,
+                    username: Y
+                }
+            },
+            FROM: [
+                a = Q$4.Actor,
+                u = a.userAccount.LEFT_JOIN(),
+                u.continent.LEFT_JOIN(),
+                u.country.LEFT_JOIN(),
+                u.metroArea.LEFT_JOIN(),
+                u.state.LEFT_JOIN()
+            ],
+            WHERE: a._localId.IN(actor_localIds)
+        });
+    }
+    async insert(actors, context) {
+        let a;
+        const VALUES = [];
+        for (const actor of actors) {
+            VALUES.push([
+                actor.GUID, actor.application.index,
+                actor.userAccount._localId, actor.terminal._localId
+            ]);
+        }
+        const _localIds = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: a = Q$4.Actor,
+            columns: [
+                a.GUID,
+                a.application.index,
+                a.userAccount._localId,
+                a.terminal._localId
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < actors.length; i++) {
+            let actor = actors[i];
+            actor._localId = _localIds[i][0];
+        }
+    }
+    async findWithDetailsAndGlobalIdsByWhereClause(getWhereClause) {
+        let a;
+        let ap;
+        let t;
+        const id = Y;
+        const username = Y;
+        const GUID = Y;
+        return await this.db.find.tree({
+            SELECT: {
+                ...ALL_FIELDS,
+                application: {
+                    index: Y,
+                    name: Y,
+                    domain: {
+                        name: Y
+                    }
+                },
+                terminal: {
+                    id,
+                    GUID,
+                    owner: {
+                        id,
+                        username,
+                        GUID,
+                    }
+                },
+                userAccount: {
+                    id,
+                    username,
+                    GUID,
+                }
+            },
+            FROM: [
+                a = Q$4.Actor,
+                ap = a.application.LEFT_JOIN(),
+                ap.domain.LEFT_JOIN(),
+                t = a.terminal.LEFT_JOIN(),
+                t.owner.LEFT_JOIN(),
+                a.userAccount.LEFT_JOIN()
+            ],
+            WHERE: getWhereClause(a)
+        });
+    }
+};
+ActorDao = __decorate$2n([
+    Injected()
+], ActorDao);
+
+var __decorate$2m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryDao = class RepositoryDao extends BaseRepositoryDao {
+    async getRepositoryLoadInfo(repositorySource, repositoryGUID, context) {
+        let r;
+        let rth;
+        let th;
+        return await this.db.findOne.tree({
+            SELECT: {
+                immutable: Y,
+                repositoryTransactionHistory: {
+                    saveTimestamp: Y
+                }
+            },
+            FROM: [
+                r = Q$4.Repository,
+                rth = r.repositoryTransactionHistory.INNER_JOIN(),
+                th = rth.transactionHistory.INNER_JOIN()
+            ],
+            WHERE: AND(r.source.equals(repositorySource), r.GUID.equals(repositoryGUID), th.transactionType.equals(TransactionType.REMOTE_SYNC))
+        }, context);
+    }
+    async findReposWithDetailsAndSyncNodeIds(repositoryIds) {
+        let r;
+        const _localId = Y;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId,
+                owner: {
+                    _localId
+                },
+                createdAt: Y,
+                GUID: Y
+            },
+            FROM: [
+                r = Q$4.Repository
+            ],
+            WHERE: r._localId.IN(repositoryIds)
+        });
+    }
+    async findWithOwnerBy_LocalIds(repositoryIds) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {
+                '*': Y,
+                owner: {
+                    _localId: Y,
+                    GUID: Y,
+                    username: Y
+                }
+            },
+            FROM: [
+                r = Q$4.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r._localId.IN(repositoryIds)
+        });
+    }
+    async findWithOwnerBy_LocalIdIn(repository_localIds) {
+        let r;
+        return await this.db.find.graph({
+            SELECT: {
+                '*': Y,
+                owner: {
+                    _localId: Y,
+                    GUID: Y,
+                    ranking: Y,
+                    username: Y
+                }
+            },
+            FROM: [
+                r = Q$4.Repository,
+                r.owner.INNER_JOIN()
+            ],
+            WHERE: r._localId.IN(repository_localIds)
+        });
+    }
+    async findByGUIDs(repositoryGUIDs) {
+        let r;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                r = Q$4.Repository
+            ],
+            WHERE: r.GUID.IN(repositoryGUIDs)
+        });
+    }
+    async insert(repositories, context) {
+        let r;
+        const VALUES = [];
+        for (const repository of repositories) {
+            VALUES.push([
+                repository.createdAt, repository.GUID, repository.ageSuitability,
+                repository.source, repository.immutable, repository.owner._localId,
+            ]);
+        }
+        const _localIds = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: r = Q$4.Repository,
+            columns: [
+                r.createdAt,
+                r.GUID,
+                r.ageSuitability,
+                r.source,
+                r.immutable,
+                r.owner._localId
+            ],
+            VALUES
+        }, context);
+        for (let i = 0; i < repositories.length; i++) {
+            let repository = repositories[i];
+            repository._localId = _localIds[i][0];
+        }
+    }
+};
+RepositoryDao = __decorate$2m([
+    Injected()
+], RepositoryDao);
+
+var __decorate$2l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let OperationHistoryDuo = class OperationHistoryDuo {
+    getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction) {
+        let operationHistory = {
+            actor,
+            changeType: entityChangeType,
+            entity: dbEntity,
+            _localId: undefined,
+            orderNumber: ++rootTransaction.numberOfOperations,
+            recordHistory: [],
+            repositoryTransactionHistory: repositoryTransactionHistory,
+            systemWideOperationId
+        };
+        return operationHistory;
+    }
+    sort(ew1, ew2) {
+        let startId1 = ew1.orderNumber;
+        let startId2 = ew2.orderNumber;
+        if (startId1 > startId2) {
+            return 1;
+        }
+        if (startId2 > startId1) {
+            return -1;
+        }
+        return 0;
+    }
+    startRecordHistory(operationHistory, actorId, _actorRecordId) {
+        const recordHistory = this.recordHistoryDuo.getNewRecord(actorId, _actorRecordId);
+        recordHistory.operationHistory = operationHistory;
+        operationHistory.recordHistory.push(recordHistory);
+        operationHistory.repositoryTransactionHistory
+            .transactionHistory.allRecordHistory.push(recordHistory);
+        return recordHistory;
+    }
+};
+__decorate$2l([
+    Inject$2()
+], OperationHistoryDuo.prototype, "recordHistoryDuo", void 0);
+OperationHistoryDuo = __decorate$2l([
+    Injected()
+], OperationHistoryDuo);
+
+var __decorate$2k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistoryDuo = class RecordHistoryDuo {
+    getNewRecord(actorId, _actorRecordId) {
+        const recordHistory = new RecordHistory();
+        recordHistory._actorRecordId = _actorRecordId;
+        recordHistory.actor = {
+            _localId: actorId
+        };
+        return recordHistory;
+    }
+    addNewValue(recordHistory, dbColumn, newValue) {
+        if (newValue === null) {
+            // No need to record a null value
+            return null;
+        }
+        const recordHistoryNewValue = this.recordHistoryNewValueDuo.getNewRecord(recordHistory, dbColumn, newValue);
+        recordHistory.newValues.push(recordHistoryNewValue);
+        recordHistory.operationHistory.repositoryTransactionHistory
+            .transactionHistory.allRecordHistoryNewValues.push(recordHistoryNewValue);
+        return recordHistoryNewValue;
+    }
+    addOldValue(recordHistory, dbColumn, oldValue) {
+        if (oldValue === null) {
+            // No need to record a null value
+            return null;
+        }
+        const recordHistoryOldValue = this.recordHistoryOldValueDuo.getNewRecord(recordHistory, dbColumn, oldValue);
+        recordHistory.oldValues.push(recordHistoryOldValue);
+        recordHistory.operationHistory.repositoryTransactionHistory
+            .transactionHistory.allRecordHistoryOldValues.push(recordHistoryOldValue);
+        return recordHistoryOldValue;
+    }
+};
+__decorate$2k([
+    Inject$2()
+], RecordHistoryDuo.prototype, "recordHistoryNewValueDuo", void 0);
+__decorate$2k([
+    Inject$2()
+], RecordHistoryDuo.prototype, "recordHistoryOldValueDuo", void 0);
+RecordHistoryDuo = __decorate$2k([
+    Injected()
+], RecordHistoryDuo);
+
+var __decorate$2j = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistoryNewValueDuo = class RecordHistoryNewValueDuo {
+    getNewRecord(recordHistory, dbColumn, newValue) {
+        const recordHistoryNewValue = new RecordHistoryNewValue();
+        recordHistoryNewValue.columnIndex = dbColumn.index;
+        recordHistoryNewValue.recordHistory = recordHistory;
+        recordHistoryNewValue.newValue = newValue;
+        return recordHistoryNewValue;
+    }
+};
+RecordHistoryNewValueDuo = __decorate$2j([
+    Injected()
+], RecordHistoryNewValueDuo);
+
+var __decorate$2i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RecordHistoryOldValueDuo = class RecordHistoryOldValueDuo {
+    getNewRecord(recordHistory, dbColumn, oldValue) {
+        const recordHistoryOldValue = new RecordHistoryOldValue();
+        recordHistoryOldValue.columnIndex = dbColumn.index;
+        recordHistoryOldValue.recordHistory = recordHistory;
+        recordHistoryOldValue.oldValue = oldValue;
+        return recordHistoryOldValue;
+    }
+};
+RecordHistoryOldValueDuo = __decorate$2i([
+    Injected()
+], RecordHistoryOldValueDuo);
+
+var __decorate$2h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryTransactionHistoryDuo = class RepositoryTransactionHistoryDuo {
+    getNewRecord(repositoryId, isRepositoryCreation) {
+        let repositoryTransactionHistory = new RepositoryTransactionHistory();
+        let saveTimestamp = new Date().getTime();
+        repositoryTransactionHistory.saveTimestamp = saveTimestamp;
+        repositoryTransactionHistory.GUID = v4();
+        repositoryTransactionHistory.isRepositoryCreation = isRepositoryCreation;
+        repositoryTransactionHistory.repository = new Repository();
+        repositoryTransactionHistory.repository._localId = repositoryId;
+        return repositoryTransactionHistory;
+    }
+    newRecord(data) {
+        if (!data) {
+            return null;
+        }
+        return { ...data };
+    }
+    sortRepoTransHistories(repoTransHistories, actorMapById) {
+        repoTransHistories.sort((repoTransHistory1, repoTransHistory2) => {
+            const syncTimeComparison = this.compareNumbers(repoTransHistory1.syncTimestamp, repoTransHistory2.syncTimestamp);
+            if (syncTimeComparison) {
+                return syncTimeComparison;
+            }
+            const saveTimeComparison = this.compareNumbers(repoTransHistory1.saveTimestamp, repoTransHistory2.saveTimestamp);
+            if (saveTimeComparison) {
+                return saveTimeComparison;
+            }
+            return 0;
+        });
+    }
+    startOperation(repositoryTransactionHistory, systemWideOperationId, entityChangeType, dbEntity, actor, rootTransaction) {
+        let operationHistory = this.operationHistoryDuo.getNewRecord(entityChangeType, dbEntity, actor, repositoryTransactionHistory, systemWideOperationId, rootTransaction);
+        repositoryTransactionHistory.operationHistory.push(operationHistory);
+        repositoryTransactionHistory
+            .transactionHistory.allOperationHistory.push(operationHistory);
+        return operationHistory;
+    }
+    compareDates(date1, date2) {
+        const time1 = date1 ? date1.getTime() : -1;
+        const time2 = date2 ? date2.getTime() : -1;
+        return this.compareNumbers(time1, time2);
+    }
+    compareNumbers(number1, number2) {
+        if (number1 < number2) {
+            return -1;
+        }
+        if (number2 > number1) {
+            return 1;
+        }
+        return 0;
+    }
+};
+__decorate$2h([
+    Inject$2()
+], RepositoryTransactionHistoryDuo.prototype, "operationHistoryDuo", void 0);
+RepositoryTransactionHistoryDuo = __decorate$2h([
+    Injected()
+], RepositoryTransactionHistoryDuo);
+
+var __decorate$2g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let TransactionHistoryDuo = class TransactionHistoryDuo {
+    getNewRecord(transactionType = TransactionType.LOCAL) {
+        let transaction = new TransactionHistory();
+        transaction.transactionType = TransactionType.LOCAL;
+        return transaction;
+    }
+    getRepositoryTransaction(transactionHistory, repositoryId, isRepositoryCreation) {
+        let repositoryTransactionHistory = transactionHistory.repositoryTransactionHistoryMap[repositoryId];
+        if (!repositoryTransactionHistory) {
+            repositoryTransactionHistory = this.repositoryTransactionHistoryDuo.getNewRecord(repositoryId, isRepositoryCreation);
+            transactionHistory.repositoryTransactionHistories.push(repositoryTransactionHistory);
+            transactionHistory.repositoryTransactionHistoryMap[repositoryId] = repositoryTransactionHistory;
+            repositoryTransactionHistory.transactionHistory = transactionHistory;
+        }
+        return repositoryTransactionHistory;
+    }
+};
+__decorate$2g([
+    Inject$2()
+], TransactionHistoryDuo.prototype, "repositoryTransactionHistoryDuo", void 0);
+TransactionHistoryDuo = __decorate$2g([
+    Injected()
+], TransactionHistoryDuo);
+
+const Api = function () {
+    return function (target, propertyKey, descriptor) {
+        // No runtime logic required.
+        return null;
+    };
+};
+
+var ApiObjectKind;
+(function (ApiObjectKind) {
+    ApiObjectKind["ARRAY"] = "ARRAY";
+    ApiObjectKind["BOOLEAN"] = "BOOLEAN";
+    ApiObjectKind["BOOLEAN_VALUE"] = "BOOLEAN_VALUE";
+    ApiObjectKind["DATE"] = "DATE";
+    ApiObjectKind["DB_ENTITY"] = "DB_ENTITY";
+    ApiObjectKind["NUMBER"] = "NUMBER";
+    ApiObjectKind["NUMBER_VALUE"] = "NUMBER_VALUE";
+    ApiObjectKind["OBJECT"] = "OBJECT";
+    ApiObjectKind["STRING"] = "STRING";
+    ApiObjectKind["STRING_VALUE"] = "STRING_VALUE";
+    ApiObjectKind["TYPE_UNION"] = "TYPE_UNION";
+})(ApiObjectKind || (ApiObjectKind = {}));
+
+const checkIn = lib$1('check-in');
+const API_REGISTRY = checkIn.token({
+    class: null,
+    interface: 'IApiRegistry',
+    token: 'API_REGISTRY'
+});
+const API_VALIDATOR = checkIn.token({
+    class: null,
+    interface: 'IApiValidator',
+    token: 'API_VALIDATOR'
+});
+API_REGISTRY.setDependencies({
+    containerAccessor: CONTAINER_ACCESSOR
+});
+
+var __decorate$2f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let RepositoryApi$1 = class RepositoryApi {
+    async findAll() {
+        return await this.repositoryDao.findAll();
+    }
+    async create(repositoryName) {
+        return await this.repositoryManager.createRepository(repositoryName);
+    }
+};
+__decorate$2f([
+    Inject$2()
+], RepositoryApi$1.prototype, "repositoryDao", void 0);
+__decorate$2f([
+    Inject$2()
+], RepositoryApi$1.prototype, "repositoryManager", void 0);
+__decorate$2f([
+    Api()
+], RepositoryApi$1.prototype, "findAll", null);
+__decorate$2f([
+    Api()
+], RepositoryApi$1.prototype, "create", null);
+RepositoryApi$1 = __decorate$2f([
+    Injected()
+], RepositoryApi$1);
+
+const ACTOR_DAO = holdingPattern.token({
+    class: ActorDao,
+    interface: 'IActorDao',
+    token: 'ACTOR_DAO'
+});
+const OPERATION_HISTORY_DUO = holdingPattern.token({
+    class: OperationHistoryDuo,
+    interface: 'IOperationHistoryDuo',
+    token: 'OPERATION_HISTORY_DUO'
+});
+const RECORD_HISTORY_DUO = holdingPattern.token({
+    class: RecordHistoryDuo,
+    interface: 'IRecordHistoryDuo',
+    token: 'RECORD_HISTORY_DUO'
+});
+holdingPattern.token({
+    class: RecordHistoryNewValueDao,
+    interface: 'IRecordHistoryNewValueDao',
+    token: 'RECORD_HISTORY_NEW_VALUE_DAO'
+});
+const RECORD_HISTORY_NEW_VALUE_DUO = holdingPattern.token({
+    class: RecordHistoryNewValueDuo,
+    interface: 'IRecordHistoryNewValueDuo',
+    token: 'RECORD_HISTORY_NEW_VALUE_DUO'
+});
+holdingPattern.token({
+    class: RecordHistoryOldValueDao,
+    interface: 'IRecordHistoryOldValueDao',
+    token: 'RECORD_HISTORY_OLD_VALUE_DAO'
+});
+const RECORD_HISTORY_OLD_VALUE_DUO = holdingPattern.token({
+    class: RecordHistoryOldValueDuo,
+    interface: 'IRecordHistoryOldValueDuo',
+    token: 'RECORD_HISTORY_OLD_VALUE_DUO'
+});
+const REPOSITORY_DAO = holdingPattern.token({
+    class: RepositoryDao,
+    interface: 'IRepositoryDao',
+    token: 'REPOSITORY_DAO'
+});
+const REPOSITORY_TRANSACTION_HISTORY_DAO = holdingPattern.token({
+    class: RepositoryTransactionHistoryDao,
+    interface: 'IRepositoryTransactionHistoryDao',
+    token: 'REPOSITORY_TRANSACTION_HISTORY_DAO'
+});
+const REPOSITORY_TRANSACTION_HISTORY_DUO = holdingPattern.token({
+    class: RepositoryTransactionHistoryDuo,
+    interface: 'IRepositoryTransactionHistoryDuo',
+    token: 'REPOSITORY_TRANSACTION_HISTORY_DUO'
+});
+const TRANSACTION_HISTORY_DUO = holdingPattern.token({
+    class: TransactionHistoryDuo,
+    interface: 'ITransactionHistoryDuo',
+    token: 'TRANSACTION_HISTORY_DUO'
+});
+OPERATION_HISTORY_DUO.setDependencies({
+    recordHistoryDuo: RECORD_HISTORY_DUO,
+});
+REPOSITORY_API.setClass(RepositoryApi$1);
+REPOSITORY_API.setDependencies({
+    repositoryDao: REPOSITORY_DAO,
+    repositoryManager: REPOSITORY_MANAGER,
+});
+RECORD_HISTORY_DUO.setDependencies({
+    recordHistoryNewValueDuo: RECORD_HISTORY_NEW_VALUE_DUO,
+    recordHistoryOldValueDuo: RECORD_HISTORY_OLD_VALUE_DUO,
+});
+REPOSITORY_TRANSACTION_HISTORY_DUO.setDependencies({
+    operationHistoryDuo: OPERATION_HISTORY_DUO,
+});
+TRANSACTION_HISTORY_DUO.setDependencies({
+    repositoryTransactionHistoryDuo: REPOSITORY_TRANSACTION_HISTORY_DUO,
+});
 
 const travelDocumentCheckpoint = lib$1('travel-document-checkpoint');
 const USER_ACCOUNT_API = travelDocumentCheckpoint.token({
@@ -11228,7 +8933,7 @@ const USER_ACCOUNT_API = travelDocumentCheckpoint.token({
     token: 'USER_ACCOUNT_API'
 });
 
-var __decorate$1N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11243,14 +8948,14 @@ let UserAccountApi$1 = class UserAccountApi {
         return await this.userAccountApi.findUserAccount(privateId);
     }
 };
-__decorate$1N([
+__decorate$2e([
     Inject$2()
 ], UserAccountApi$1.prototype, "userAccountApi", void 0);
-UserAccountApi$1 = __decorate$1N([
+UserAccountApi$1 = __decorate$2e([
     Injected()
 ], UserAccountApi$1);
 
-var __decorate$1M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2d = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11452,17 +9157,17 @@ let LocalAPIClient = class LocalAPIClient {
         }
     }
 };
-__decorate$1M([
+__decorate$2d([
     Inject$2()
 ], LocalAPIClient.prototype, "operationSerializer", void 0);
-__decorate$1M([
+__decorate$2d([
     Inject$2()
 ], LocalAPIClient.prototype, "queryResultsDeserializer", void 0);
-LocalAPIClient = __decorate$1M([
+LocalAPIClient = __decorate$2d([
     Injected()
 ], LocalAPIClient);
 
-var __decorate$1L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2c = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11491,17 +9196,17 @@ let AutopilotApiLoader = class AutopilotApiLoader {
         });
     }
 };
-__decorate$1L([
+__decorate$2c([
     Inject$2()
 ], AutopilotApiLoader.prototype, "interAppApiClient", void 0);
-__decorate$1L([
+__decorate$2c([
     Inject$2()
 ], AutopilotApiLoader.prototype, "localApiClient", void 0);
-AutopilotApiLoader = __decorate$1L([
+AutopilotApiLoader = __decorate$2c([
     Injected()
 ], AutopilotApiLoader);
 
-var __decorate$1K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2b = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11620,14 +9325,14 @@ let OperationSerializer = class OperationSerializer {
         return serializedEntity;
     }
 };
-__decorate$1K([
+__decorate$2b([
     Inject$2()
 ], OperationSerializer.prototype, "serializationStateManager", void 0);
-OperationSerializer = __decorate$1K([
+OperationSerializer = __decorate$2b([
     Injected()
 ], OperationSerializer);
 
-var __decorate$1J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$2a = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11684,11 +9389,11 @@ let SerializationStateManager = SerializationStateManager_1 = class Serializatio
 };
 SerializationStateManager.SERIALIZATION_UNIQUE_ID_FIELD = '__SUID__';
 SerializationStateManager.SERIALIZATION_STATE_FIELD = '__serializationState__';
-SerializationStateManager = SerializationStateManager_1 = __decorate$1J([
+SerializationStateManager = SerializationStateManager_1 = __decorate$2a([
     Injected()
 ], SerializationStateManager);
 
-var __decorate$1I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$29 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -11923,13 +9628,13 @@ let QueryResultsDeserializer = class QueryResultsDeserializer {
         }
     }
 };
-__decorate$1I([
+__decorate$29([
     Inject$2()
 ], QueryResultsDeserializer.prototype, "airEntityUtils", void 0);
-__decorate$1I([
+__decorate$29([
     Inject$2()
 ], QueryResultsDeserializer.prototype, "serializationStateManager", void 0);
-QueryResultsDeserializer = __decorate$1I([
+QueryResultsDeserializer = __decorate$29([
     Injected()
 ], QueryResultsDeserializer);
 
@@ -11957,7 +9662,7 @@ QUERY_RESULTS_DESERIALIZER.setDependencies({
     serializationStateManager: SERIALIZATION_STATE_MANAGER
 });
 
-var __decorate$1H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$28 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12003,7 +9708,7 @@ let UiStateManager = UiStateManager_1 = class UiStateManager {
     }
 };
 UiStateManager.STATE_FIELD = '__state__';
-UiStateManager = UiStateManager_1 = __decorate$1H([
+UiStateManager = UiStateManager_1 = __decorate$28([
     Injected()
 ], UiStateManager);
 
@@ -12034,7 +9739,7 @@ function loadAutopilot() {
 
 loadAutopilot();
 
-var __decorate$1G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$27 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12042,44 +9747,44 @@ var __decorate$1G = (undefined && undefined.__decorate) || function (decorators,
 };
 let Client$1 = class Client {
 };
-__decorate$1G([
+__decorate$27([
     Id(),
     DbNumber(),
     Column()
 ], Client$1.prototype, "_localId", void 0);
-__decorate$1G([
+__decorate$27([
     DbString(),
     Column()
 ], Client$1.prototype, "domain", void 0);
-__decorate$1G([
+__decorate$27([
     DbString(),
     Column()
 ], Client$1.prototype, "GUID", void 0);
-__decorate$1G([
+__decorate$27([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "continent", void 0);
-__decorate$1G([
+__decorate$27([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "country", void 0);
-__decorate$1G([
+__decorate$27([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "state", void 0);
-__decorate$1G([
+__decorate$27([
     ManyToOne(),
     JoinColumn()
 ], Client$1.prototype, "metroArea", void 0);
-__decorate$1G([
+__decorate$27([
     OneToMany()
 ], Client$1.prototype, "clientTypes", void 0);
-Client$1 = __decorate$1G([
+Client$1 = __decorate$27([
     Entity(),
     Table()
 ], Client$1);
 
-var __decorate$1F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$26 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12087,22 +9792,22 @@ var __decorate$1F = (undefined && undefined.__decorate) || function (decorators,
 };
 let ClientType = class ClientType {
 };
-__decorate$1F([
+__decorate$26([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "client", void 0);
-__decorate$1F([
+__decorate$26([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], ClientType.prototype, "type", void 0);
-ClientType = __decorate$1F([
+ClientType = __decorate$26([
     Entity(),
     Table()
 ], ClientType);
 
-var __decorate$1E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$25 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12110,44 +9815,44 @@ var __decorate$1E = (undefined && undefined.__decorate) || function (decorators,
 };
 let Database = class Database {
 };
-__decorate$1E([
+__decorate$25([
     Id(),
     DbNumber(),
     Column()
 ], Database.prototype, "_localId", void 0);
-__decorate$1E([
+__decorate$25([
     DbString(),
     Column()
 ], Database.prototype, "domain", void 0);
-__decorate$1E([
+__decorate$25([
     DbString(),
     Column()
 ], Database.prototype, "GUID", void 0);
-__decorate$1E([
+__decorate$25([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "continent", void 0);
-__decorate$1E([
+__decorate$25([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "country", void 0);
-__decorate$1E([
+__decorate$25([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "state", void 0);
-__decorate$1E([
+__decorate$25([
     ManyToOne(),
     JoinColumn()
 ], Database.prototype, "metroArea", void 0);
-__decorate$1E([
+__decorate$25([
     OneToMany()
 ], Database.prototype, "databaseTypes", void 0);
-Database = __decorate$1E([
+Database = __decorate$25([
     Entity(),
     Table()
 ], Database);
 
-var __decorate$1D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$24 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12155,22 +9860,22 @@ var __decorate$1D = (undefined && undefined.__decorate) || function (decorators,
 };
 let DatabaseType = class DatabaseType {
 };
-__decorate$1D([
+__decorate$24([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "database", void 0);
-__decorate$1D([
+__decorate$24([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], DatabaseType.prototype, "type", void 0);
-DatabaseType = __decorate$1D([
+DatabaseType = __decorate$24([
     Entity(),
     Table()
 ], DatabaseType);
 
-var __decorate$1C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$23 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12178,26 +9883,26 @@ var __decorate$1C = (undefined && undefined.__decorate) || function (decorators,
 };
 let Continent = class Continent {
 };
-__decorate$1C([
+__decorate$23([
     Id(),
     DbNumber(),
     Column()
 ], Continent.prototype, "id", void 0);
-__decorate$1C([
+__decorate$23([
     DbString()
 ], Continent.prototype, "name", void 0);
-__decorate$1C([
+__decorate$23([
     OneToMany()
 ], Continent.prototype, "countries", void 0);
-__decorate$1C([
+__decorate$23([
     OneToMany()
 ], Continent.prototype, "userAccounts", void 0);
-Continent = __decorate$1C([
+Continent = __decorate$23([
     Entity(),
     Table()
 ], Continent);
 
-var __decorate$1B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$22 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12205,31 +9910,31 @@ var __decorate$1B = (undefined && undefined.__decorate) || function (decorators,
 };
 let Country = class Country {
 };
-__decorate$1B([
+__decorate$22([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Country.prototype, "id", void 0);
-__decorate$1B([
+__decorate$22([
     DbString()
 ], Country.prototype, "abbreviation", void 0);
-__decorate$1B([
+__decorate$22([
     DbString()
 ], Country.prototype, "name", void 0);
-__decorate$1B([
+__decorate$22([
     ManyToOne(),
     JoinColumn()
 ], Country.prototype, "continent", void 0);
-__decorate$1B([
+__decorate$22([
     OneToMany()
 ], Country.prototype, "userAccounts", void 0);
-Country = __decorate$1B([
+Country = __decorate$22([
     Entity(),
     Table()
 ], Country);
 
-var __decorate$1A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$21 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12237,31 +9942,31 @@ var __decorate$1A = (undefined && undefined.__decorate) || function (decorators,
 };
 let MetroArea = class MetroArea {
 };
-__decorate$1A([
+__decorate$21([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], MetroArea.prototype, "id", void 0);
-__decorate$1A([
+__decorate$21([
     DbString()
 ], MetroArea.prototype, "name", void 0);
-__decorate$1A([
+__decorate$21([
     ManyToOne(),
     JoinColumn()
 ], MetroArea.prototype, "country", void 0);
-__decorate$1A([
+__decorate$21([
     OneToMany()
 ], MetroArea.prototype, "metroAreaStates", void 0);
-__decorate$1A([
+__decorate$21([
     OneToMany()
 ], MetroArea.prototype, "userAccounts", void 0);
-MetroArea = __decorate$1A([
+MetroArea = __decorate$21([
     Entity(),
     Table()
 ], MetroArea);
 
-var __decorate$1z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$20 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12269,22 +9974,22 @@ var __decorate$1z = (undefined && undefined.__decorate) || function (decorators,
 };
 let MetroAreaState = class MetroAreaState {
 };
-__decorate$1z([
+__decorate$20([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "state", void 0);
-__decorate$1z([
+__decorate$20([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], MetroAreaState.prototype, "metroArea", void 0);
-MetroAreaState = __decorate$1z([
+MetroAreaState = __decorate$20([
     Entity(),
     Table()
 ], MetroAreaState);
 
-var __decorate$1y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1$ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12292,34 +9997,34 @@ var __decorate$1y = (undefined && undefined.__decorate) || function (decorators,
 };
 let State = class State {
 };
-__decorate$1y([
+__decorate$1$([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], State.prototype, "id", void 0);
-__decorate$1y([
+__decorate$1$([
     DbString()
 ], State.prototype, "abbreviation", void 0);
-__decorate$1y([
+__decorate$1$([
     DbString()
 ], State.prototype, "name", void 0);
-__decorate$1y([
+__decorate$1$([
     ManyToOne(),
     JoinColumn()
 ], State.prototype, "country", void 0);
-__decorate$1y([
+__decorate$1$([
     OneToMany()
 ], State.prototype, "metroAreaStates", void 0);
-__decorate$1y([
+__decorate$1$([
     OneToMany()
 ], State.prototype, "userAccounts", void 0);
-State = __decorate$1y([
+State = __decorate$1$([
     Entity(),
     Table()
 ], State);
 
-var __decorate$1x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1_ = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12330,49 +10035,49 @@ let Terminal = class Terminal {
         this.isLocal = false;
     }
 };
-__decorate$1x([
+__decorate$1_([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], Terminal.prototype, "_localId", void 0);
-__decorate$1x([
+__decorate$1_([
     Column(),
     DbString()
 ], Terminal.prototype, "GUID", void 0);
-__decorate$1x([
+__decorate$1_([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "owner", void 0);
-__decorate$1x([
+__decorate$1_([
     Column(),
     DbBoolean()
 ], Terminal.prototype, "isLocal", void 0);
-__decorate$1x([
+__decorate$1_([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "continent", void 0);
-__decorate$1x([
+__decorate$1_([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "country", void 0);
-__decorate$1x([
+__decorate$1_([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "state", void 0);
-__decorate$1x([
+__decorate$1_([
     ManyToOne(),
     JoinColumn()
 ], Terminal.prototype, "metroArea", void 0);
-__decorate$1x([
+__decorate$1_([
     OneToMany()
 ], Terminal.prototype, "terminalTypes", void 0);
-Terminal = __decorate$1x([
+Terminal = __decorate$1_([
     Entity(),
     Table()
 ], Terminal);
 
-var __decorate$1w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1Z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12380,22 +10085,22 @@ var __decorate$1w = (undefined && undefined.__decorate) || function (decorators,
 };
 let TerminalType = class TerminalType {
 };
-__decorate$1w([
+__decorate$1Z([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "terminal", void 0);
-__decorate$1w([
+__decorate$1Z([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TerminalType.prototype, "type", void 0);
-TerminalType = __decorate$1w([
+TerminalType = __decorate$1Z([
     Entity(),
     Table()
 ], TerminalType);
 
-var __decorate$1v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1Y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12403,16 +10108,16 @@ var __decorate$1v = (undefined && undefined.__decorate) || function (decorators,
 };
 let Classification = class Classification {
 };
-__decorate$1v([
+__decorate$1Y([
     Id(),
     Column()
 ], Classification.prototype, "id", void 0);
-Classification = __decorate$1v([
+Classification = __decorate$1Y([
     Entity(),
     Table()
 ], Classification);
 
-var __decorate$1u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1X = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12420,19 +10125,19 @@ var __decorate$1u = (undefined && undefined.__decorate) || function (decorators,
 };
 let Type = class Type {
 };
-__decorate$1u([
+__decorate$1X([
     Id(),
     Column()
 ], Type.prototype, "id", void 0);
-__decorate$1u([
+__decorate$1X([
     OneToMany()
 ], Type.prototype, "typeClassifications", void 0);
-Type = __decorate$1u([
+Type = __decorate$1X([
     Entity(),
     Table()
 ], Type);
 
-var __decorate$1t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1W = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12440,22 +10145,22 @@ var __decorate$1t = (undefined && undefined.__decorate) || function (decorators,
 };
 let TypeClassification = class TypeClassification {
 };
-__decorate$1t([
+__decorate$1W([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "classification", void 0);
-__decorate$1t([
+__decorate$1W([
     Id(),
     ManyToOne(),
     JoinColumn()
 ], TypeClassification.prototype, "type", void 0);
-TypeClassification = __decorate$1t([
+TypeClassification = __decorate$1W([
     Entity(),
     Table()
 ], TypeClassification);
 
-var __decorate$1s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1V = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12463,57 +10168,57 @@ var __decorate$1s = (undefined && undefined.__decorate) || function (decorators,
 };
 let UserAccount = class UserAccount {
 };
-__decorate$1s([
+__decorate$1V([
     Id(),
     GeneratedValue(),
     DbNumber(),
     Column()
 ], UserAccount.prototype, "_localId", void 0);
-__decorate$1s([
+__decorate$1V([
     Column(),
     DbString()
 ], UserAccount.prototype, "email", void 0);
-__decorate$1s([
+__decorate$1V([
     Column(),
     DbString()
 ], UserAccount.prototype, "passwordHash", void 0);
-__decorate$1s([
+__decorate$1V([
     Column(),
     DbNumber()
 ], UserAccount.prototype, "ranking", void 0);
-__decorate$1s([
+__decorate$1V([
     Column(),
     DbString()
 ], UserAccount.prototype, "username", void 0);
-__decorate$1s([
+__decorate$1V([
     Column(),
     DbString()
 ], UserAccount.prototype, "GUID", void 0);
-__decorate$1s([
+__decorate$1V([
     ManyToOne(),
     JoinColumn()
 ], UserAccount.prototype, "domain", void 0);
-__decorate$1s([
+__decorate$1V([
     ManyToOne(),
     JoinColumn()
 ], UserAccount.prototype, "continent", void 0);
-__decorate$1s([
+__decorate$1V([
     ManyToOne(),
     JoinColumn()
 ], UserAccount.prototype, "country", void 0);
-__decorate$1s([
+__decorate$1V([
     ManyToOne(),
     JoinColumn()
 ], UserAccount.prototype, "state", void 0);
-__decorate$1s([
+__decorate$1V([
     ManyToOne(),
     JoinColumn()
 ], UserAccount.prototype, "metroArea", void 0);
-UserAccount = __decorate$1s([
+UserAccount = __decorate$1V([
     Entity()
 ], UserAccount);
 
-const __constructors__$2 = {
+const __constructors__$3 = {
     Classification: Classification,
     Client: Client$1,
     ClientType: ClientType,
@@ -12530,23 +10235,23 @@ const __constructors__$2 = {
     TypeClassification: TypeClassification,
     UserAccount: UserAccount
 };
-const Q_APPLICATION$2 = {
-    __constructors__: __constructors__$2,
+const Q_APPLICATION$3 = {
+    __constructors__: __constructors__$3,
     domain: 'air',
     name: '@airport/travel-document-checkpoint'
 };
-const Q$2 = Q_APPLICATION$2;
-function duoDiSet$2(dbEntityId) {
-    return airApi.ddS(Q$2.__dbApplication__, dbEntityId);
+const Q$3 = Q_APPLICATION$3;
+function duoDiSet$3(dbEntityId) {
+    return airApi.ddS(Q$3.__dbApplication__, dbEntityId);
 }
-airApi.setQApplication(Q_APPLICATION$2);
+airApi.setQApplication(Q_APPLICATION$3);
 
 USER_ACCOUNT_API.setClass(UserAccountApi$1);
 USER_ACCOUNT_API.setDependencies({
     interAppApiClient: INTER_APP_API_CLIENT
 });
 
-var __decorate$1r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1U = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12662,29 +10367,29 @@ let InternalRecordManager = class InternalRecordManager {
         return updatedDomain;
     }
 };
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "actorDao", void 0);
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "applicationDao", void 0);
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "domainDao", void 0);
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "entityStateManager", void 0);
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "terminalStore", void 0);
-__decorate$1r([
+__decorate$1U([
     Inject$2()
 ], InternalRecordManager.prototype, "transactionManager", void 0);
-InternalRecordManager = __decorate$1r([
+InternalRecordManager = __decorate$1U([
     Injected()
 ], InternalRecordManager);
 
-var __decorate$1q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1T = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12761,20 +10466,20 @@ they are internal to the AIRport framework).`);
         // Nothing to do, onMessage callback was added for demo purposes for Web implementations
     }
 };
-__decorate$1q([
+__decorate$1T([
     Inject$2()
 ], InternalTransactionalConnector.prototype, "terminalStore", void 0);
-__decorate$1q([
+__decorate$1T([
     Inject$2()
 ], InternalTransactionalConnector.prototype, "transactionalServer", void 0);
-InternalTransactionalConnector = __decorate$1q([
+InternalTransactionalConnector = __decorate$1T([
     Injected()
 ], InternalTransactionalConnector);
 function injectTransactionalConnector() {
     console.log('Injecting TransactionalConnector');
 }
 
-var __decorate$1p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1S = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -12929,23 +10634,152 @@ let OnlineManager = class OnlineManager {
         return this.online;
     }
 };
-__decorate$1p([
+__decorate$1S([
     Inject$2()
 ], OnlineManager.prototype, "repositoryDao", void 0);
-__decorate$1p([
+__decorate$1S([
     Inject$2()
 ], OnlineManager.prototype, "repositoryManager", void 0);
-__decorate$1p([
+__decorate$1S([
     Inject$2()
 ], OnlineManager.prototype, "repositoryTransactionHistoryDao", void 0);
-__decorate$1p([
+__decorate$1S([
     Inject$2()
 ], OnlineManager.prototype, "transactionManager", void 0);
-OnlineManager = __decorate$1p([
+OnlineManager = __decorate$1S([
     Injected()
 ], OnlineManager);
 
-var __decorate$1o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var IsolateMessageType;
+(function (IsolateMessageType) {
+    IsolateMessageType["ADD_REPOSITORY"] = "ADD_REPOSITORY";
+    IsolateMessageType["APP_INITIALIZING"] = "APP_INITIALIZING";
+    IsolateMessageType["APP_INITIALIZED"] = "APP_INITIALIZED";
+    IsolateMessageType["CALL_API"] = "CALL_API";
+    IsolateMessageType["DELETE_WHERE"] = "DELETE_WHERE";
+    IsolateMessageType["FIND"] = "FIND";
+    IsolateMessageType["FIND_ONE"] = "FIND_ONE";
+    IsolateMessageType["GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME"] = "GET_LATEST_APPLICATION_VERSION_BY_APPLICATION_NAME";
+    IsolateMessageType["INSERT_VALUES"] = "INSERT_VALUES";
+    IsolateMessageType["INSERT_VALUES_GET_IDS"] = "INSERT_VALUES_GET_IDS";
+    IsolateMessageType["RETRIEVE_DOMAIN"] = "RETRIEVE_DOMAIN";
+    IsolateMessageType["SEARCH"] = "SEARCH";
+    IsolateMessageType["SEARCH_ONE"] = "SEARCH_ONE";
+    IsolateMessageType["SEARCH_UNSUBSCRIBE"] = "UNSUBSCRIBE";
+    IsolateMessageType["SAVE"] = "SAVE";
+    IsolateMessageType["SAVE_TO_DESTINATION"] = "SAVE_TO_DESTINATION";
+    IsolateMessageType["UPDATE_VALUES"] = "UPDATE_VALUES";
+})(IsolateMessageType || (IsolateMessageType = {}));
+
+var AppState;
+(function (AppState) {
+    AppState["NOT_INITIALIED"] = "NOT_INITIALIED";
+    AppState["START_INITIALIZING"] = "START_INITIALIZING";
+    AppState["INITIALIZING_IN_PROGRESS"] = "INITIALIZING_IN_PROGRESS";
+    AppState["INITIALIZED"] = "INITIALIZED";
+})(AppState || (AppState = {}));
+
+const applicationState = {
+    api: null,
+    application: null,
+    appState: AppState.NOT_INITIALIED,
+    domain: null,
+    // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
+    // and debugging (http://localhost:7500)
+    hostServer: 'http://localhost:7500',
+    // FIXME: tie this in to the hostServer variable
+    mainDomain: null,
+    observableMessageMap: new Map(),
+    pendingMessageMap: new Map(),
+    messageCallback: null,
+};
+
+var __decorate$1R = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationStore = class ApplicationStore {
+    constructor() {
+        this.applicationState = applicationState;
+    }
+    get state() {
+        return this.applicationState;
+    }
+};
+ApplicationStore = __decorate$1R([
+    Injected()
+], ApplicationStore);
+
+var __decorate$1Q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let SelectorManager = class SelectorManager {
+    createSelector(...args) {
+        if (args.length < 2 || args.length > 6) {
+            throw new Error(`Invalid createSelector call, Expecting 1 to 5 selectors and a callback.`);
+        }
+        const inputSelectors = args.slice(0, args.length - 1);
+        const callback = args[args.length - 1];
+        let sourceObservable;
+        if (inputSelectors.length > 1) {
+            // TODO: check if this will work
+            sourceObservable = from(inputSelectors.map(selector => selector.observable));
+        }
+        else {
+            sourceObservable = inputSelectors[0].observable;
+        }
+        let observable = sourceObservable.pipe(
+        // share() TODO: implement once RxJs support is added
+        distinctUntilChanged(), map(value => callback(value)));
+        return this.getSelector(observable);
+    }
+    createRootSelector(stateObservable) {
+        return this.getSelector(stateObservable);
+    }
+    getSelector(observable) {
+        let selector = (function (
+        // otherStateObservable?: Observable<SV>
+        ) {
+            let currentValue;
+            observable.subscribe(value => currentValue = value).unsubscribe();
+            return currentValue;
+        });
+        selector.observable = observable;
+        return selector;
+    }
+};
+SelectorManager = __decorate$1Q([
+    Injected()
+], SelectorManager);
+
+const apron = lib$1('apron');
+apron.token({
+    class: null,
+    interface: 'IApplicationLoader',
+    token: 'APPLICATION_LOADER'
+});
+const APPLICATION_STORE = apron.token({
+    class: ApplicationStore,
+    interface: 'IApplicationStore',
+    token: 'APPLICATION_STORE'
+});
+const LOCAL_API_SERVER = apron.token({
+    class: null,
+    interface: 'ILocalAPIServer',
+    token: 'LOCAL_API_SERVER'
+});
+const SELECTOR_MANAGER = apron.token({
+    class: SelectorManager,
+    interface: 'ISelectorManager',
+    token: 'SELECTOR_MANAGER'
+});
+
+var __decorate$1P = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13197,38 +11031,38 @@ let TransactionalReceiver = class TransactionalReceiver {
         }
     }
 };
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "actorDao", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "applicationDao", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "databaseManager", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "dbApplicationUtils", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "internalRecordManager", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "localApiServer", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "terminalSessionManager", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "terminalStore", void 0);
-__decorate$1o([
+__decorate$1P([
     Inject$2()
 ], TransactionalReceiver.prototype, "transactionalServer", void 0);
-TransactionalReceiver = __decorate$1o([
+TransactionalReceiver = __decorate$1P([
     Injected()
 ], TransactionalReceiver);
 
-var __decorate$1n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1O = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13444,38 +11278,38 @@ let TransactionalServer = class TransactionalServer {
         return actor;
     }
 };
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "deleteManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "insertManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "operationManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "queryManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "repositoryManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "terminalStore", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "transactionManager", void 0);
-__decorate$1n([
+__decorate$1O([
     Inject$2()
 ], TransactionalServer.prototype, "updateManager", void 0);
-TransactionalServer = __decorate$1n([
+TransactionalServer = __decorate$1O([
     Injected()
 ], TransactionalServer);
 function injectTransactionalServer() {
     console.log('Injecting TransactionalServer');
 }
 
-var __decorate$1m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1N = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13552,23 +11386,23 @@ let AbstractMutationManager = class AbstractMutationManager {
         return await transaction.insertValues(portableQuery, context);
     }
 };
-__decorate$1m([
+__decorate$1N([
     Inject$2()
 ], AbstractMutationManager.prototype, "applicationUtils", void 0);
-__decorate$1m([
+__decorate$1N([
     Inject$2()
 ], AbstractMutationManager.prototype, "fieldUtils", void 0);
-__decorate$1m([
+__decorate$1N([
     Inject$2()
 ], AbstractMutationManager.prototype, "queryUtils", void 0);
-__decorate$1m([
+__decorate$1N([
     Inject$2()
 ], AbstractMutationManager.prototype, "relationManager", void 0);
-AbstractMutationManager = __decorate$1m([
+AbstractMutationManager = __decorate$1N([
     Injected()
 ], AbstractMutationManager);
 
-var __decorate$1l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1M = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -13586,10 +11420,10 @@ let RepositoryApi = class RepositoryApi {
         return await this.repositoryApi.create(repositoryName);
     }
 };
-__decorate$1l([
+__decorate$1M([
     Inject$2()
 ], RepositoryApi.prototype, "repositoryApi", void 0);
-RepositoryApi = __decorate$1l([
+RepositoryApi = __decorate$1M([
     Injected()
 ], RepositoryApi);
 
@@ -23196,8 +21030,8 @@ const APPLICATION = {
 
 const BLUEPRINT = [
     APPLICATION$4,
-    APPLICATION$1,
     APPLICATION$2,
+    APPLICATION$1,
     APPLICATION$3,
     APPLICATION
 ];
@@ -23207,7 +21041,7 @@ var index = /*#__PURE__*/Object.freeze({
     BLUEPRINT: BLUEPRINT
 });
 
-var __decorate$1k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1L = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -23278,35 +21112,35 @@ let DatabaseManager = class DatabaseManager {
         }
     }
 };
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "airportDatabase", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "applicationDao", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "applicationInitializer", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "dbApplicationUtils", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "internalRecordManager", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "storeDriver", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "transactionalServer", void 0);
-__decorate$1k([
+__decorate$1L([
     Inject$2()
 ], DatabaseManager.prototype, "transactionManager", void 0);
-DatabaseManager = __decorate$1k([
+DatabaseManager = __decorate$1L([
     Injected()
 ], DatabaseManager);
 
-var __decorate$1j = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1K = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -23494,35 +21328,35 @@ let DeleteManager = class DeleteManager {
         return selectClause;
     }
 };
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "airportDatabase", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "applicationUtils", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "historyManager", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "sequenceGenerator", void 0);
-__decorate$1j([
+__decorate$1K([
     Inject$2()
 ], DeleteManager.prototype, "utils", void 0);
-DeleteManager = __decorate$1j([
+DeleteManager = __decorate$1K([
     Injected()
 ], DeleteManager);
 
-var __decorate$1i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1J = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -23536,14 +21370,14 @@ let HistoryManager = class HistoryManager {
         return await this.transactionHistoryDuo.getRepositoryTransaction(transactionHistory, repositoryId, !!context.rootTransaction.newRepository);
     }
 };
-__decorate$1i([
+__decorate$1J([
     Inject$2()
 ], HistoryManager.prototype, "transactionHistoryDuo", void 0);
-HistoryManager = __decorate$1i([
+HistoryManager = __decorate$1J([
     Injected()
 ], HistoryManager);
 
-var __decorate$1h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1I = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -23936,29 +21770,29 @@ and cannot have NULL values.`);
         // }
     }
 };
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "airportDatabase", void 0);
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "historyManager", void 0);
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1h([
+__decorate$1I([
     Inject$2()
 ], InsertManager.prototype, "sequenceGenerator", void 0);
-InsertManager = __decorate$1h([
+InsertManager = __decorate$1I([
     Injected()
 ], InsertManager);
 
-var __decorate$1g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1H = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -23999,6 +21833,9 @@ let QueryManager = class QueryManager {
         }
     }
     async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities) {
+        if (!entities.length) {
+            return;
+        }
         if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
             && portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
             return;
@@ -24111,29 +21948,29 @@ let QueryManager = class QueryManager {
         }
     }
 };
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "actorDao", void 0);
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "airportDatabase", void 0);
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "observableQueryAdapter", void 0);
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "repositoryDao", void 0);
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "repositoryLoader", void 0);
-__decorate$1g([
+__decorate$1H([
     Inject$2()
 ], QueryManager.prototype, "storeDriver", void 0);
-QueryManager = __decorate$1g([
+QueryManager = __decorate$1H([
     Injected()
 ], QueryManager);
 
-var __decorate$1f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1G = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -24448,62 +22285,62 @@ ${callHerarchy}
         }
         let applicationMap = transactionHistory.applicationMap;
         const transactionHistoryIds = await this.idGenerator.generateTransactionHistory_LocalIds(transactionHistory.repositoryTransactionHistories.length, transactionHistory.allOperationHistory.length, transactionHistory.allRecordHistory.length);
-        applicationMap.ensureEntity(Q$3.TransactionHistory.__driver__.dbEntity, true);
+        applicationMap.ensureEntity(Q$4.TransactionHistory.__driver__.dbEntity, true);
         transactionHistory._localId = transactionHistoryIds.transactionHistory_LocalId;
-        await this.doInsertValues(transaction, Q$3.TransactionHistory, [transactionHistory], context);
-        applicationMap.ensureEntity(Q$3.RepositoryTransactionHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q$4.TransactionHistory, [transactionHistory], context);
+        applicationMap.ensureEntity(Q$4.RepositoryTransactionHistory.__driver__.dbEntity, true);
         transactionHistory.repositoryTransactionHistories.forEach((repositoryTransactionHistory, index) => {
             repositoryTransactionHistory._localId = transactionHistoryIds.repositoryHistory_LocalIds[index];
             repositoryTransactionHistory.transactionHistory = transactionHistory;
         });
-        await this.doInsertValues(transaction, Q$3.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
-        applicationMap.ensureEntity(Q$3.OperationHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q$4.RepositoryTransactionHistory, transactionHistory.repositoryTransactionHistories, context);
+        applicationMap.ensureEntity(Q$4.OperationHistory.__driver__.dbEntity, true);
         transactionHistory.allOperationHistory.forEach((operationHistory, index) => {
             operationHistory._localId = transactionHistoryIds.operationHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q$3.OperationHistory, transactionHistory.allOperationHistory, context);
-        applicationMap.ensureEntity(Q$3.RecordHistory.__driver__.dbEntity, true);
+        await this.doInsertValues(transaction, Q$4.OperationHistory, transactionHistory.allOperationHistory, context);
+        applicationMap.ensureEntity(Q$4.RecordHistory.__driver__.dbEntity, true);
         transactionHistory.allRecordHistory.forEach((recordHistory, index) => {
             recordHistory._localId = transactionHistoryIds.recordHistory_LocalIds[index];
         });
-        await this.doInsertValues(transaction, Q$3.RecordHistory, transactionHistory.allRecordHistory, context);
+        await this.doInsertValues(transaction, Q$4.RecordHistory, transactionHistory.allRecordHistory, context);
         if (transactionHistory.allRecordHistoryNewValues.length) {
-            applicationMap.ensureEntity(Q$3.RecordHistoryNewValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q$3.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
+            applicationMap.ensureEntity(Q$4.RecordHistoryNewValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q$4.RecordHistoryNewValue, transactionHistory.allRecordHistoryNewValues, context);
         }
         if (transactionHistory.allRecordHistoryOldValues.length) {
-            applicationMap.ensureEntity(Q$3.RecordHistoryOldValue.__driver__.dbEntity, true);
-            await this.doInsertValues(transaction, Q$3.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
+            applicationMap.ensureEntity(Q$4.RecordHistoryOldValue.__driver__.dbEntity, true);
+            await this.doInsertValues(transaction, Q$4.RecordHistoryOldValue, transactionHistory.allRecordHistoryOldValues, context);
         }
         return true;
     }
 };
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "activeQueries", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "idGenerator", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "storeDriver", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "synchronizationOutManager", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "terminalSessionManager", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "terminalStore", void 0);
-__decorate$1f([
+__decorate$1G([
     Inject$2()
 ], TransactionManager.prototype, "transactionHistoryDuo", void 0);
-TransactionManager = __decorate$1f([
+TransactionManager = __decorate$1G([
     Injected()
 ], TransactionManager);
 
-var __decorate$1e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1F = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -24668,44 +22505,44 @@ let UpdateManager = class UpdateManager {
         };
     }
 };
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "airportDatabase", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "applicationUtils", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "fieldUtils", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "historyManager", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "operationHistoryDuo", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "queryFacade", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "queryUtils", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "recordHistoryDuo", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "relationManager", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "repositoryTransactionHistoryDuo", void 0);
-__decorate$1e([
+__decorate$1F([
     Inject$2()
 ], UpdateManager.prototype, "sequenceGenerator", void 0);
-UpdateManager = __decorate$1e([
+UpdateManager = __decorate$1F([
     Injected()
 ], UpdateManager);
 
-var __decorate$1d = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1E = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -24724,11 +22561,11 @@ let CascadeGraphVerifier = class CascadeGraphVerifier {
         return root;
     }
 };
-CascadeGraphVerifier = __decorate$1d([
+CascadeGraphVerifier = __decorate$1E([
     Injected()
 ], CascadeGraphVerifier);
 
-var __decorate$1c = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1D = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -25042,14 +22879,14 @@ Entity "${this.entityStateManager.getUniqueIdFieldName()}":  ${operationUniqueId
         return operationNodes;
     }
 };
-__decorate$1c([
+__decorate$1D([
     Inject$2()
 ], DependencyGraphResolver.prototype, "entityStateManager", void 0);
-DependencyGraphResolver = __decorate$1c([
+DependencyGraphResolver = __decorate$1D([
     Injected()
 ], DependencyGraphResolver);
 
-var __decorate$1b = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1C = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -25233,14 +23070,14 @@ of entity ${dbProperty.entity.name}\``);
         }
     }
 };
-__decorate$1b([
+__decorate$1C([
     Inject$2()
 ], EntityGraphReconstructor.prototype, "entityStateManager", void 0);
-EntityGraphReconstructor = __decorate$1b([
+EntityGraphReconstructor = __decorate$1C([
     Injected()
 ], EntityGraphReconstructor);
 
-var __decorate$1a = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1B = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -25324,10 +23161,10 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             created: {},
             deleted: {},
             newRepository,
-            repositoryIdParts: {
+            repositoryIdParts: newRepository ? {
                 source: newRepository.source,
                 GUID: newRepository.GUID
-            },
+            } : null,
             updated: {},
         };
         for (const operation of operations) {
@@ -25612,53 +23449,53 @@ in top level objects (that are passed into '...Dao.save(...)')`);
         await this.deleteManager.deleteWhere(portableQuery, actor, transaction, rootTransaction, context);
     }
 };
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "airportDatabase", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "applicationUtils", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "cascadeGraphVerifier", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "deleteManager", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "dependencyGraphResolver", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "entityGraphReconstructor", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "entityStateManager", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "insertManager", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "qMetadataUtils", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "queryFacade", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "repositoryManager", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "structuralEntityValidator", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "updateManager", void 0);
-__decorate$1a([
+__decorate$1B([
     Inject$2()
 ], OperationManager.prototype, "utils", void 0);
-OperationManager = __decorate$1a([
+OperationManager = __decorate$1B([
     Injected()
 ], OperationManager);
 
-var __decorate$19 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1A = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -25978,17 +23815,17 @@ must always have a value for all entity operations.`);
 		(column: '${dbColumn.name}').`);
     }
 };
-__decorate$19([
+__decorate$1A([
     Inject$2()
 ], StructuralEntityValidator.prototype, "applicationUtils", void 0);
-__decorate$19([
+__decorate$1A([
     Inject$2()
 ], StructuralEntityValidator.prototype, "entityStateManager", void 0);
-StructuralEntityValidator = __decorate$19([
+StructuralEntityValidator = __decorate$1A([
     Injected()
 ], StructuralEntityValidator);
 
-var __decorate$18 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1z = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -26066,11 +23903,11 @@ got: ${typeOfParameter}
         }
     }
 };
-QueryParameterDeserializer = __decorate$18([
+QueryParameterDeserializer = __decorate$1z([
     Injected()
 ], QueryParameterDeserializer);
 
-var __decorate$17 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+var __decorate$1y = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -26171,7 +24008,7 @@ let QueryResultsSerializer = class QueryResultsSerializer {
         return entityCopy;
     }
 };
-QueryResultsSerializer = __decorate$17([
+QueryResultsSerializer = __decorate$1y([
     Injected()
 ], QueryResultsSerializer);
 
@@ -26179,6 +24016,1799 @@ QueryResultsSerializer = __decorate$17([
  * Created by Papa on 6/30/2016.
  */
 new Date().getTime();
+
+var __decorate$1x = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let Domain = class Domain {
+};
+__decorate$1x([
+    Id(),
+    DbNumber(),
+    Column()
+], Domain.prototype, "_localId", void 0);
+__decorate$1x([
+    DbString()
+], Domain.prototype, "name", void 0);
+__decorate$1x([
+    OneToMany()
+], Domain.prototype, "applications", void 0);
+Domain = __decorate$1x([
+    Entity(),
+    Table()
+], Domain);
+
+var __decorate$1w = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let Application = class Application {
+    constructor() {
+        this.versions = [];
+        this.currentVersion = [];
+    }
+};
+__decorate$1w([
+    Id(),
+    DbNumber(),
+    Column()
+], Application.prototype, "index", void 0);
+__decorate$1w([
+    Column(),
+    DbString()
+], Application.prototype, "scope", void 0);
+__decorate$1w([
+    Column(),
+    DbString()
+], Application.prototype, "name", void 0);
+__decorate$1w([
+    Column(),
+    DbString()
+], Application.prototype, "fullName", void 0);
+__decorate$1w([
+    Column(),
+    DbString()
+], Application.prototype, "status", void 0);
+__decorate$1w([
+    Column(),
+    DbString()
+], Application.prototype, "signature", void 0);
+__decorate$1w([
+    ManyToOne(),
+    JoinColumn()
+], Application.prototype, "domain", void 0);
+__decorate$1w([
+    OneToMany()
+], Application.prototype, "versions", void 0);
+__decorate$1w([
+    OneToMany()
+], Application.prototype, "currentVersion", void 0);
+Application = __decorate$1w([
+    Entity(),
+    Table()
+], Application);
+
+var __decorate$1v = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let VersionedApplicationObject = class VersionedApplicationObject {
+};
+__decorate$1v([
+    ManyToOne(),
+    JoinColumn()
+], VersionedApplicationObject.prototype, "deprecatedSinceVersion", void 0);
+__decorate$1v([
+    ManyToOne(),
+    JoinColumn()
+], VersionedApplicationObject.prototype, "removedInVersion", void 0);
+__decorate$1v([
+    ManyToOne(),
+    JoinColumn()
+], VersionedApplicationObject.prototype, "sinceVersion", void 0);
+VersionedApplicationObject = __decorate$1v([
+    MappedSuperclass()
+], VersionedApplicationObject);
+
+var __decorate$1u = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationColumn = class ApplicationColumn extends VersionedApplicationObject {
+    constructor() {
+        super(...arguments);
+        this.propertyColumns = [];
+        this.manyRelationColumns = [];
+        this.oneRelationColumns = [];
+    }
+};
+__decorate$1u([
+    DbNumber(),
+    Id(),
+    Column()
+], ApplicationColumn.prototype, "_localId", void 0);
+__decorate$1u([
+    Column(),
+    DbNumber()
+], ApplicationColumn.prototype, "index", void 0);
+__decorate$1u([
+    Column(),
+    DbNumber()
+], ApplicationColumn.prototype, "idIndex", void 0);
+__decorate$1u([
+    Column(),
+    DbBoolean()
+], ApplicationColumn.prototype, "isGenerated", void 0);
+__decorate$1u([
+    Column(),
+    DbNumber()
+], ApplicationColumn.prototype, "allocationSize", void 0);
+__decorate$1u([
+    Column(),
+    DbString()
+], ApplicationColumn.prototype, "name", void 0);
+__decorate$1u([
+    Column(),
+    DbBoolean()
+], ApplicationColumn.prototype, "notNull", void 0);
+__decorate$1u([
+    Column(),
+    DbNumber()
+], ApplicationColumn.prototype, "precision", void 0);
+__decorate$1u([
+    Column(),
+    DbNumber()
+], ApplicationColumn.prototype, "scale", void 0);
+__decorate$1u([
+    Column(),
+    DbString()
+], ApplicationColumn.prototype, "type", void 0);
+__decorate$1u([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationColumn.prototype, "entity", void 0);
+__decorate$1u([
+    OneToMany()
+], ApplicationColumn.prototype, "propertyColumns", void 0);
+__decorate$1u([
+    OneToMany()
+], ApplicationColumn.prototype, "manyRelationColumns", void 0);
+__decorate$1u([
+    OneToMany()
+], ApplicationColumn.prototype, "oneRelationColumns", void 0);
+ApplicationColumn = __decorate$1u([
+    Entity(),
+    Table()
+], ApplicationColumn);
+
+var __decorate$1t = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationCurrentVersion = class ApplicationCurrentVersion {
+};
+__decorate$1t([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationCurrentVersion.prototype, "application", void 0);
+__decorate$1t([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationCurrentVersion.prototype, "applicationVersion", void 0);
+ApplicationCurrentVersion = __decorate$1t([
+    Entity(),
+    Table()
+], ApplicationCurrentVersion);
+
+var __decorate$1s = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationEntity = class ApplicationEntity extends VersionedApplicationObject {
+    constructor() {
+        super(...arguments);
+        //
+        // One-to-Many's
+        //
+        this.columns = [];
+        // TODO: implement if needed
+        // @OneToMany()
+        // @JoinColumns([
+        // 	{name: "APPLICATION_VERSION_LID"},
+        // 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
+        // ])
+        // @WhereJoinTable((
+        // 	otm: QApplicationEntity,
+        // 	mto: QApplicationColumn
+        // ) => mto.idIndex.IS_NOT_NULL())
+        // idColumns: IApplicationColumn[];
+        this.operations = [];
+        this.properties = [];
+        this.relations = [];
+        this.relationReferences = [];
+        this.columnMap = {};
+        this.idColumns = [];
+        this.idColumnMap = {};
+        this.propertyMap = {};
+    }
+};
+__decorate$1s([
+    DbNumber(),
+    Id(),
+    Column()
+], ApplicationEntity.prototype, "_localId", void 0);
+__decorate$1s([
+    Column(),
+    DbNumber()
+], ApplicationEntity.prototype, "index", void 0);
+__decorate$1s([
+    Column(),
+    DbBoolean()
+], ApplicationEntity.prototype, "isLocal", void 0);
+__decorate$1s([
+    Column(),
+    DbBoolean()
+], ApplicationEntity.prototype, "isAirEntity", void 0);
+__decorate$1s([
+    Column(),
+    DbString()
+], ApplicationEntity.prototype, "name", void 0);
+__decorate$1s([
+    Column(),
+    Json()
+], ApplicationEntity.prototype, "tableConfig", void 0);
+__decorate$1s([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationEntity.prototype, "applicationVersion", void 0);
+__decorate$1s([
+    OneToMany()
+], ApplicationEntity.prototype, "columns", void 0);
+__decorate$1s([
+    OneToMany()
+], ApplicationEntity.prototype, "operations", void 0);
+__decorate$1s([
+    OneToMany()
+], ApplicationEntity.prototype, "properties", void 0);
+__decorate$1s([
+    OneToMany()
+], ApplicationEntity.prototype, "relations", void 0);
+__decorate$1s([
+    OneToMany()
+], ApplicationEntity.prototype, "relationReferences", void 0);
+__decorate$1s([
+    Transient()
+], ApplicationEntity.prototype, "columnMap", void 0);
+__decorate$1s([
+    Transient()
+], ApplicationEntity.prototype, "idColumns", void 0);
+__decorate$1s([
+    Transient()
+], ApplicationEntity.prototype, "idColumnMap", void 0);
+__decorate$1s([
+    Transient()
+], ApplicationEntity.prototype, "propertyMap", void 0);
+ApplicationEntity = __decorate$1s([
+    Entity(),
+    Table()
+], ApplicationEntity);
+
+var __decorate$1r = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationOperation = class ApplicationOperation extends VersionedApplicationObject {
+};
+__decorate$1r([
+    Id(),
+    GeneratedValue(),
+    DbNumber(),
+    Column()
+], ApplicationOperation.prototype, "_localId", void 0);
+__decorate$1r([
+    Column(),
+    DbNumber()
+], ApplicationOperation.prototype, "type", void 0);
+__decorate$1r([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationOperation.prototype, "entity", void 0);
+__decorate$1r([
+    Column(),
+    DbString()
+], ApplicationOperation.prototype, "name", void 0);
+__decorate$1r([
+    Column(),
+    Json()
+], ApplicationOperation.prototype, "rule", void 0);
+ApplicationOperation = __decorate$1r([
+    Entity(),
+    Table()
+], ApplicationOperation);
+
+var __decorate$1q = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationProperty = class ApplicationProperty extends VersionedApplicationObject {
+    constructor() {
+        super(...arguments);
+        this.propertyColumns = [];
+        this.relation = [];
+    }
+};
+__decorate$1q([
+    DbNumber(),
+    Id(),
+    Column()
+], ApplicationProperty.prototype, "_localId", void 0);
+__decorate$1q([
+    DbNumber(),
+    Column()
+], ApplicationProperty.prototype, "index", void 0);
+__decorate$1q([
+    DbString(),
+    Column()
+], ApplicationProperty.prototype, "name", void 0);
+__decorate$1q([
+    DbBoolean(),
+    Column()
+], ApplicationProperty.prototype, "isId", void 0);
+__decorate$1q([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationProperty.prototype, "entity", void 0);
+__decorate$1q([
+    OneToMany()
+], ApplicationProperty.prototype, "propertyColumns", void 0);
+__decorate$1q([
+    OneToMany()
+], ApplicationProperty.prototype, "relation", void 0);
+ApplicationProperty = __decorate$1q([
+    Entity(),
+    Table()
+], ApplicationProperty);
+
+var __decorate$1p = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * Many-to-Many between Columns and properties
+ */
+let ApplicationPropertyColumn = class ApplicationPropertyColumn extends VersionedApplicationObject {
+};
+__decorate$1p([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationPropertyColumn.prototype, "column", void 0);
+__decorate$1p([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationPropertyColumn.prototype, "property", void 0);
+ApplicationPropertyColumn = __decorate$1p([
+    Entity()
+    // TODO: rename table name to APPLICATION_PROPERTY_COLUMNS
+    ,
+    Table()
+], ApplicationPropertyColumn);
+
+var __decorate$1o = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationReference = class ApplicationReference extends VersionedApplicationObject {
+};
+__decorate$1o([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationReference.prototype, "ownApplicationVersion", void 0);
+__decorate$1o([
+    Id(),
+    ManyToOne(),
+    JoinColumn()
+], ApplicationReference.prototype, "referencedApplicationVersion", void 0);
+__decorate$1o([
+    Column(),
+    DbNumber()
+], ApplicationReference.prototype, "index", void 0);
+ApplicationReference = __decorate$1o([
+    Entity(),
+    Table()
+], ApplicationReference);
+
+var __decorate$1n = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationRelation = class ApplicationRelation extends VersionedApplicationObject {
+    constructor() {
+        super(...arguments);
+        this.manyRelationColumns = [];
+        this.oneRelationColumns = [];
+    }
+};
+__decorate$1n([
+    DbNumber(),
+    Id(),
+    Column()
+], ApplicationRelation.prototype, "_localId", void 0);
+__decorate$1n([
+    DbNumber(),
+    Column()
+], ApplicationRelation.prototype, "index", void 0);
+__decorate$1n([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelation.prototype, "property", void 0);
+__decorate$1n([
+    Json(),
+    Column()
+], ApplicationRelation.prototype, "foreignKey", void 0);
+__decorate$1n([
+    Json(),
+    Column()
+], ApplicationRelation.prototype, "manyToOneElems", void 0);
+__decorate$1n([
+    Json(),
+    Column()
+], ApplicationRelation.prototype, "oneToManyElems", void 0);
+__decorate$1n([
+    DbString(),
+    Column()
+], ApplicationRelation.prototype, "relationType", void 0);
+__decorate$1n([
+    Column()
+], ApplicationRelation.prototype, "isId", void 0);
+__decorate$1n([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelation.prototype, "entity", void 0);
+__decorate$1n([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelation.prototype, "relationEntity", void 0);
+__decorate$1n([
+    OneToMany()
+], ApplicationRelation.prototype, "manyRelationColumns", void 0);
+__decorate$1n([
+    OneToMany()
+], ApplicationRelation.prototype, "oneRelationColumns", void 0);
+ApplicationRelation = __decorate$1n([
+    Entity(),
+    Table()
+], ApplicationRelation);
+
+var __decorate$1m = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationRelationColumn = class ApplicationRelationColumn extends VersionedApplicationObject {
+};
+__decorate$1m([
+    Id(),
+    Column()
+], ApplicationRelationColumn.prototype, "_localId", void 0);
+__decorate$1m([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelationColumn.prototype, "manyColumn", void 0);
+__decorate$1m([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelationColumn.prototype, "oneColumn", void 0);
+__decorate$1m([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelationColumn.prototype, "manyRelation", void 0);
+__decorate$1m([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelationColumn.prototype, "oneRelation", void 0);
+__decorate$1m([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationRelationColumn.prototype, "parentRelation", void 0);
+ApplicationRelationColumn = __decorate$1m([
+    Entity(),
+    Table()
+], ApplicationRelationColumn);
+
+var __decorate$1l = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationVersion = class ApplicationVersion {
+    constructor() {
+        this.entities = [];
+        this.references = [];
+        this.referencedBy = [];
+        this.entityMapByName = {};
+        this.referencesMapByName = {};
+        this.referencedByMapByName = {};
+    }
+};
+__decorate$1l([
+    DbNumber(),
+    Id(),
+    SequenceGenerator$1(),
+    Column()
+], ApplicationVersion.prototype, "_localId", void 0);
+__decorate$1l([
+    Column(),
+    DbNumber()
+], ApplicationVersion.prototype, "integerVersion", void 0);
+__decorate$1l([
+    Column(),
+    DbString()
+], ApplicationVersion.prototype, "versionString", void 0);
+__decorate$1l([
+    Column(),
+    DbNumber()
+], ApplicationVersion.prototype, "majorVersion", void 0);
+__decorate$1l([
+    Column(),
+    DbNumber()
+], ApplicationVersion.prototype, "minorVersion", void 0);
+__decorate$1l([
+    Column(),
+    DbNumber()
+], ApplicationVersion.prototype, "patchVersion", void 0);
+__decorate$1l([
+    Column(),
+    Json()
+], ApplicationVersion.prototype, "jsonApplication", void 0);
+__decorate$1l([
+    ManyToOne(),
+    JoinColumn()
+], ApplicationVersion.prototype, "application", void 0);
+__decorate$1l([
+    OneToMany()
+], ApplicationVersion.prototype, "entities", void 0);
+__decorate$1l([
+    OneToMany()
+], ApplicationVersion.prototype, "references", void 0);
+__decorate$1l([
+    OneToMany()
+], ApplicationVersion.prototype, "referencedBy", void 0);
+__decorate$1l([
+    Transient()
+], ApplicationVersion.prototype, "entityMapByName", void 0);
+__decorate$1l([
+    Transient()
+], ApplicationVersion.prototype, "referencesMapByName", void 0);
+__decorate$1l([
+    Transient()
+], ApplicationVersion.prototype, "referencedByMapByName", void 0);
+ApplicationVersion = __decorate$1l([
+    Entity(),
+    Table()
+], ApplicationVersion);
+
+const __constructors__$2 = {
+    Application: Application,
+    ApplicationColumn: ApplicationColumn,
+    ApplicationCurrentVersion: ApplicationCurrentVersion,
+    ApplicationEntity: ApplicationEntity,
+    ApplicationOperation: ApplicationOperation,
+    ApplicationProperty: ApplicationProperty,
+    ApplicationPropertyColumn: ApplicationPropertyColumn,
+    ApplicationReference: ApplicationReference,
+    ApplicationRelation: ApplicationRelation,
+    ApplicationRelationColumn: ApplicationRelationColumn,
+    ApplicationVersion: ApplicationVersion,
+    Domain: Domain,
+    VersionedApplicationObject: VersionedApplicationObject
+};
+const Q_APPLICATION$2 = {
+    __constructors__: __constructors__$2,
+    domain: 'air',
+    name: '@airport/airspace'
+};
+const Q$2 = Q_APPLICATION$2;
+function duoDiSet$2(dbEntityId) {
+    return airApi.ddS(Q$2.__dbApplication__, dbEntityId);
+}
+airApi.setQApplication(Q_APPLICATION$2);
+
+// Application Q object Dependency Injection readiness detection Dao
+class SQDIDao$3 extends Dao {
+    constructor(dbEntityId) {
+        super(dbEntityId, Q$2);
+    }
+}
+class BaseApplicationDao extends SQDIDao$3 {
+    constructor() {
+        super(10);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(10);
+    }
+}
+BaseApplicationDao.Find = new DaoQueryDecorators();
+BaseApplicationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationDao.Search = new DaoQueryDecorators();
+BaseApplicationDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationColumnDao extends SQDIDao$3 {
+    constructor() {
+        super(4);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(4);
+    }
+}
+BaseApplicationColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationColumnDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationCurrentVersionDao extends SQDIDao$3 {
+    constructor() {
+        super(9);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(9);
+    }
+}
+BaseApplicationCurrentVersionDao.Find = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.FindOne = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.Search = new DaoQueryDecorators();
+BaseApplicationCurrentVersionDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationEntityDao extends SQDIDao$3 {
+    constructor() {
+        super(6);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(6);
+    }
+}
+BaseApplicationEntityDao.Find = new DaoQueryDecorators();
+BaseApplicationEntityDao.FindOne = new DaoQueryDecorators();
+BaseApplicationEntityDao.Search = new DaoQueryDecorators();
+BaseApplicationEntityDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationOperationDao extends SQDIDao$3 {
+    constructor() {
+        super(5);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(5);
+    }
+}
+BaseApplicationOperationDao.Find = new DaoQueryDecorators();
+BaseApplicationOperationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationOperationDao.Search = new DaoQueryDecorators();
+BaseApplicationOperationDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationPropertyDao extends SQDIDao$3 {
+    constructor() {
+        super(2);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(2);
+    }
+}
+BaseApplicationPropertyDao.Find = new DaoQueryDecorators();
+BaseApplicationPropertyDao.FindOne = new DaoQueryDecorators();
+BaseApplicationPropertyDao.Search = new DaoQueryDecorators();
+BaseApplicationPropertyDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationPropertyColumnDao extends SQDIDao$3 {
+    constructor() {
+        super(3);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(3);
+    }
+}
+BaseApplicationPropertyColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationPropertyColumnDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationReferenceDao extends SQDIDao$3 {
+    constructor() {
+        super(7);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(7);
+    }
+}
+BaseApplicationReferenceDao.Find = new DaoQueryDecorators();
+BaseApplicationReferenceDao.FindOne = new DaoQueryDecorators();
+BaseApplicationReferenceDao.Search = new DaoQueryDecorators();
+BaseApplicationReferenceDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationRelationDao extends SQDIDao$3 {
+    constructor() {
+        super(1);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(1);
+    }
+}
+BaseApplicationRelationDao.Find = new DaoQueryDecorators();
+BaseApplicationRelationDao.FindOne = new DaoQueryDecorators();
+BaseApplicationRelationDao.Search = new DaoQueryDecorators();
+BaseApplicationRelationDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationRelationColumnDao extends SQDIDao$3 {
+    constructor() {
+        super(0);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(0);
+    }
+}
+BaseApplicationRelationColumnDao.Find = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.FindOne = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.Search = new DaoQueryDecorators();
+BaseApplicationRelationColumnDao.SearchOne = new DaoQueryDecorators();
+class BaseApplicationVersionDao extends SQDIDao$3 {
+    constructor() {
+        super(8);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(8);
+    }
+}
+BaseApplicationVersionDao.Find = new DaoQueryDecorators();
+BaseApplicationVersionDao.FindOne = new DaoQueryDecorators();
+BaseApplicationVersionDao.Search = new DaoQueryDecorators();
+BaseApplicationVersionDao.SearchOne = new DaoQueryDecorators();
+class BaseDomainDao extends SQDIDao$3 {
+    constructor() {
+        super(11);
+    }
+    static Save(config) {
+        return Dao.BaseSave(config);
+    }
+    static diSet() {
+        return duoDiSet$2(11);
+    }
+}
+BaseDomainDao.Find = new DaoQueryDecorators();
+BaseDomainDao.FindOne = new DaoQueryDecorators();
+BaseDomainDao.Search = new DaoQueryDecorators();
+BaseDomainDao.SearchOne = new DaoQueryDecorators();
+
+var __decorate$1k = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let DomainDao = class DomainDao extends BaseDomainDao {
+    async findByIdIn(domainIds) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                d = Q$2.Domain
+            ],
+            WHERE: d._localId.IN(domainIds)
+        });
+    }
+    async findMapByNameWithNames(domainNames) {
+        let d;
+        const domains = await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q$2.Domain],
+            WHERE: d.name.IN(domainNames)
+        });
+        const domainMapByNameWithNames = new Map();
+        for (const domain of domains) {
+            domainMapByNameWithNames.set(domain.name, domain);
+        }
+        return domainMapByNameWithNames;
+    }
+    async findOneByName(name) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q$2.Domain],
+            WHERE: d.name.equals(name)
+        });
+    }
+    async findByNames(names) {
+        let d;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [d = Q$2.Domain],
+            WHERE: d.name.IN(names)
+        });
+    }
+    async findByName(name) {
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {},
+            FROM: [d = Q$2.Domain],
+            WHERE: d.name.equals(name)
+        });
+    }
+    async checkAndInsertIfNeeded(domains, context) {
+        const existingDomains = await this.findByIdIn(domains.map(domain => domain._localId));
+        const existingDomainMap = new Map();
+        for (const existingDomain of existingDomains) {
+            existingDomainMap.set(existingDomain._localId, existingDomain);
+        }
+        const newDomains = [];
+        for (const domain of domains) {
+            if (!existingDomainMap.has(domain._localId)) {
+                newDomains.push(domain);
+            }
+        }
+        if (!newDomains.length) {
+            return;
+        }
+        let d;
+        const VALUES = [];
+        for (const domain of newDomains) {
+            VALUES.push([
+                domain._localId, domain.name
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q$2.Domain,
+            columns: [
+                d._localId,
+                d.name,
+            ],
+            VALUES
+        }, context);
+    }
+    async insert(domains) {
+        let d;
+        const VALUES = [];
+        for (const domain of domains) {
+            VALUES.push([
+                domain.name
+            ]);
+        }
+        const ids = await this.db.insertValuesGenerateIds({
+            INSERT_INTO: d = Q$2.Domain,
+            columns: [
+                d.name
+            ],
+            VALUES
+        });
+        for (let i = 0; i < domains.length; i++) {
+            let domain = domains[i];
+            domain._localId = ids[i][0];
+        }
+    }
+};
+DomainDao = __decorate$1k([
+    Injected()
+], DomainDao);
+
+var __decorate$1j = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationColumnDao = class ApplicationColumnDao extends BaseApplicationColumnDao {
+    async findAllForEntities(entityIds) {
+        let c;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                c = Q$2.ApplicationColumn
+            ],
+            WHERE: c.entity._localId.IN(entityIds)
+        });
+    }
+    async insert(applicationColumns, context) {
+        let sc;
+        const VALUES = [];
+        for (const applicationColumn of applicationColumns) {
+            VALUES.push([
+                applicationColumn._localId, applicationColumn.index,
+                undefinedToNull(applicationColumn.idIndex),
+                applicationColumn.isGenerated,
+                undefinedToNull(applicationColumn.allocationSize),
+                applicationColumn.name,
+                applicationColumn.notNull,
+                undefinedToNull(applicationColumn.precision),
+                undefinedToNull(applicationColumn.scale),
+                applicationColumn.type,
+                applicationColumn.entity._localId,
+                applicationColumn.deprecatedSinceVersion ? applicationColumn.deprecatedSinceVersion._localId : null,
+                applicationColumn.removedInVersion ? applicationColumn.removedInVersion._localId : null,
+                applicationColumn.sinceVersion ? applicationColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sc = Q$2.ApplicationColumn,
+            columns: [
+                sc._localId,
+                sc.index,
+                sc.idIndex,
+                sc.isGenerated,
+                sc.allocationSize,
+                sc.name,
+                sc.notNull,
+                sc.precision,
+                sc.scale,
+                sc.type,
+                sc.entity._localId,
+                sc.deprecatedSinceVersion._localId,
+                sc.removedInVersion._localId,
+                sc.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationColumnDao = __decorate$1j([
+    Injected()
+], ApplicationColumnDao);
+
+var __decorate$1i = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationDao = class ApplicationDao extends BaseApplicationDao {
+    async findAllActive() {
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                Q$2.Application
+            ]
+        });
+    }
+    async findAllWithJson() {
+        let a;
+        return this.db.find.tree({
+            SELECT: {
+                ...ALL_FIELDS,
+                // currentVersion: {
+                // 	applicationVersion: {
+                // 		_localId: Y,
+                // 		jsonApplication: Y
+                // 	}
+                // }
+                versions: {
+                    _localId: Y,
+                    jsonApplication: Y
+                }
+            },
+            FROM: [
+                a = Q$2.Application,
+                // cv = a.currentVersion.INNER_JOIN(),
+                // av = cv.applicationVersion.INNER_JOIN()
+                a.versions.INNER_JOIN()
+            ]
+        });
+    }
+    async findMapByVersionIds(applicationVersionIds) {
+        const applicationMapByIndex = new Map();
+        let s, sv;
+        const applications = await this.db.find.tree({
+            SELECT: {
+                index: Y,
+                domain: {
+                    _localId: Y,
+                    name: Y
+                },
+                name: Y,
+                fullName: Y,
+                versions: {
+                    _localId: Y,
+                    majorVersion: Y,
+                    minorVersion: Y,
+                    patchVersion: Y
+                }
+            },
+            FROM: [
+                s = Q$2.Application,
+                sv = s.versions.INNER_JOIN()
+            ],
+            WHERE: sv._localId.IN(applicationVersionIds)
+        });
+        for (const application of applications) {
+            for (const applicationVersion of application.versions) {
+                applicationMapByIndex.set(applicationVersion._localId, application);
+            }
+        }
+        return applicationMapByIndex;
+    }
+    async findMaxIndex() {
+        const s = Q$2.Application;
+        return await this.airportDatabase.findOne.field({
+            SELECT: MAX(s.index),
+            FROM: [
+                s
+            ]
+        });
+    }
+    async findMaxVersionedMapByApplicationAndDomain_Names(applicationDomain_Names, applicationNames) {
+        const maxVersionedMapByApplicationAndDomain_Names = new Map();
+        let sv;
+        let s;
+        let d;
+        let sMaV;
+        let sMiV;
+        const applicationLookupRecords = await this.airportDatabase.find.tree({
+            FROM: [
+                sMiV = tree({
+                    FROM: [
+                        sMaV = tree({
+                            FROM: [
+                                s = Q$2.Application,
+                                sv = s.versions.INNER_JOIN(),
+                                d = s.domain.INNER_JOIN()
+                            ],
+                            SELECT: {
+                                index: s.index,
+                                domainId: d._localId,
+                                domainName: d.name,
+                                name: s.name,
+                                majorVersion: MAX(sv.majorVersion),
+                                minorVersion: sv.minorVersion,
+                                patchVersion: sv.patchVersion,
+                            },
+                            WHERE: AND(d.name.IN(applicationDomain_Names), s.name.IN(applicationNames)),
+                            GROUP_BY: [
+                                s.index,
+                                d._localId,
+                                d.name,
+                                s.name,
+                                sv.minorVersion,
+                                sv.patchVersion,
+                            ]
+                        })
+                    ],
+                    SELECT: {
+                        index: sMaV.index,
+                        domainId: sMaV.domainId,
+                        domainName: sMaV.domainName,
+                        name: sMaV.name,
+                        majorVersion: sMaV.majorVersion,
+                        minorVersion: MAX(sMaV.minorVersion),
+                        patchVersion: sMaV.patchVersion,
+                    },
+                    GROUP_BY: [
+                        sMaV.index,
+                        sMaV.domainId,
+                        sMaV.domainName,
+                        sMaV.name,
+                        sMaV.majorVersion,
+                        sMaV.patchVersion
+                    ]
+                })
+            ],
+            SELECT: {
+                index: sMiV.index,
+                domain: {
+                    _localId: sMiV.domainId,
+                    name: sMiV.domainName
+                },
+                name: sMiV.name,
+                majorVersion: sMiV.majorVersion,
+                minorVersion: sMiV.minorVersion,
+                patchVersion: MAX(sMiV.patchVersion),
+            },
+            GROUP_BY: [
+                sMiV.index,
+                sMiV.domainId,
+                sMiV.domainName,
+                sMiV.name,
+                sMiV.majorVersion,
+                sMiV.minorVersion
+            ]
+        });
+        for (const applicationLookupRecord of applicationLookupRecords) {
+            ensureChildJsMap(maxVersionedMapByApplicationAndDomain_Names, applicationLookupRecord.domain.name)
+                .set(applicationLookupRecord.name, applicationLookupRecord);
+        }
+        return maxVersionedMapByApplicationAndDomain_Names;
+    }
+    async setStatusByIndexes(indexes, status) {
+        let s;
+        await this.db.updateWhere({
+            UPDATE: s = Q$2.Application,
+            SET: {
+                status
+            },
+            WHERE: s.index.IN(indexes)
+        });
+    }
+    async findMapByFullNames(fullApplication_Names) {
+        const mapByFullName = new Map();
+        let s;
+        const records = await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                s = Q$2.Application
+            ],
+            WHERE: s.fullName.IN(fullApplication_Names)
+        });
+        for (const record of records) {
+            mapByFullName.set(record.fullName, record);
+        }
+        return mapByFullName;
+    }
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
+        let s;
+        let d;
+        return await this.db.find.tree({
+            SELECT: {
+                index: Y,
+                domain: {
+                    _localId: Y,
+                    name: Y
+                },
+                fullName: Y,
+                name: Y
+            },
+            FROM: [
+                s = Q$2.Application,
+                d = s.domain.INNER_JOIN()
+            ],
+            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
+        });
+    }
+    async findOneByDomain_NameAndApplication_Name(domainName, applicationName) {
+        let s;
+        let d;
+        return await this.db.findOne.tree({
+            SELECT: {
+                domain: {
+                    name: Y
+                },
+                fullName: Y,
+                index: Y,
+                name: Y
+            },
+            FROM: [
+                s = Q$2.Application,
+                d = s.domain.INNER_JOIN()
+            ],
+            WHERE: AND(d.name.equals(domainName), s.name.equals(applicationName))
+        });
+    }
+    async findByIndex(index) {
+        let a;
+        return await this.db.findOne.tree({
+            SELECT: {
+                ...ALL_FIELDS,
+                domain: {}
+            },
+            FROM: [
+                a = Q$2.Application,
+                a.domain.INNER_JOIN()
+            ],
+            WHERE: a.index.equals(index)
+        });
+    }
+    async insert(applications, context) {
+        let a;
+        const VALUES = [];
+        for (const application of applications) {
+            VALUES.push([
+                application.index, application.domain._localId, application.scope,
+                application.fullName, application.name,
+                // application.packageName,
+                application.status, application.signature
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: a = Q$2.Application,
+            columns: [
+                a.index,
+                a.domain._localId,
+                a.scope,
+                a.fullName,
+                a.name,
+                // a.packageName,
+                a.status,
+                a.signature
+            ],
+            VALUES
+        }, context);
+    }
+};
+__decorate$1i([
+    Inject$2()
+], ApplicationDao.prototype, "airportDatabase", void 0);
+ApplicationDao = __decorate$1i([
+    Injected()
+], ApplicationDao);
+
+var __decorate$1h = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationEntityDao = class ApplicationEntityDao extends BaseApplicationEntityDao {
+    async findAllForApplicationVersions(applicationVersionIds) {
+        let se;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                se = Q$2.ApplicationEntity
+            ],
+            WHERE: se.applicationVersion._localId.IN(applicationVersionIds)
+        });
+    }
+    async insert(applicationEntities, context) {
+        let se;
+        const VALUES = [];
+        for (const applicationEntity of applicationEntities) {
+            VALUES.push([
+                applicationEntity._localId, applicationEntity.index,
+                applicationEntity.isLocal, applicationEntity.isAirEntity,
+                applicationEntity.name, applicationEntity.tableConfig,
+                applicationEntity.applicationVersion._localId,
+                applicationEntity.deprecatedSinceVersion ? applicationEntity.deprecatedSinceVersion._localId : null,
+                applicationEntity.removedInVersion ? applicationEntity.removedInVersion._localId : null,
+                applicationEntity.sinceVersion ? applicationEntity.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: se = Q$2.ApplicationEntity,
+            columns: [
+                se._localId,
+                se.index,
+                se.isLocal,
+                se.isAirEntity,
+                se.name,
+                se.tableConfig,
+                se.applicationVersion._localId,
+                se.deprecatedSinceVersion._localId,
+                se.removedInVersion._localId,
+                se.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationEntityDao = __decorate$1h([
+    Injected()
+], ApplicationEntityDao);
+
+var __decorate$1g = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationPropertyColumnDao = class ApplicationPropertyColumnDao extends BaseApplicationPropertyColumnDao {
+    async findAllForColumns(columnIds) {
+        let rc;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rc = Q$2.ApplicationPropertyColumn
+            ],
+            WHERE: rc.column._localId.IN(columnIds)
+        });
+    }
+    async insert(applicationPropertyColumns, context) {
+        let spc;
+        const VALUES = [];
+        for (const applicationPropertyColumn of applicationPropertyColumns) {
+            VALUES.push([
+                applicationPropertyColumn.column._localId, applicationPropertyColumn.property._localId,
+                applicationPropertyColumn.deprecatedSinceVersion ? applicationPropertyColumn.deprecatedSinceVersion._localId : null,
+                applicationPropertyColumn.removedInVersion ? applicationPropertyColumn.removedInVersion._localId : null,
+                applicationPropertyColumn.sinceVersion ? applicationPropertyColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: spc = Q$2.ApplicationPropertyColumn,
+            columns: [
+                spc.column._localId,
+                spc.property._localId,
+                spc.deprecatedSinceVersion._localId,
+                spc.removedInVersion._localId,
+                spc.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationPropertyColumnDao = __decorate$1g([
+    Injected()
+], ApplicationPropertyColumnDao);
+
+var __decorate$1f = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationPropertyDao = class ApplicationPropertyDao extends BaseApplicationPropertyDao {
+    async findAllForEntities(entityIds) {
+        let p;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                p = Q$2.ApplicationProperty
+            ],
+            WHERE: p.entity._localId.IN(entityIds)
+        });
+    }
+    async insert(applicationProperties, context) {
+        let sp;
+        const VALUES = [];
+        for (const applicationProperty of applicationProperties) {
+            VALUES.push([
+                applicationProperty._localId, applicationProperty.index,
+                applicationProperty.name, applicationProperty.isId,
+                applicationProperty.entity._localId,
+                applicationProperty.deprecatedSinceVersion ? applicationProperty.deprecatedSinceVersion._localId : null,
+                applicationProperty.removedInVersion ? applicationProperty.removedInVersion._localId : null,
+                applicationProperty.sinceVersion ? applicationProperty.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sp = Q$2.ApplicationProperty,
+            columns: [
+                sp._localId,
+                sp.index,
+                sp.name,
+                sp.isId,
+                sp.entity._localId,
+                sp.deprecatedSinceVersion._localId,
+                sp.removedInVersion._localId,
+                sp.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationPropertyDao = __decorate$1f([
+    Injected()
+], ApplicationPropertyDao);
+
+var __decorate$1e = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationReferenceDao = class ApplicationReferenceDao extends BaseApplicationReferenceDao {
+    async findAllForApplicationVersions(applicationVersionIds) {
+        let sr;
+        return await this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                sr = Q$2.ApplicationReference
+            ],
+            WHERE: sr.ownApplicationVersion._localId.IN(applicationVersionIds)
+        });
+    }
+    async insert(applicationReferences, context) {
+        let sr;
+        const VALUES = [];
+        for (const applicationReference of applicationReferences) {
+            VALUES.push([
+                applicationReference.ownApplicationVersion._localId,
+                applicationReference.referencedApplicationVersion._localId,
+                applicationReference.index,
+                applicationReference.deprecatedSinceVersion ? applicationReference.deprecatedSinceVersion._localId : null,
+                applicationReference.removedInVersion ? applicationReference.removedInVersion._localId : null,
+                applicationReference.sinceVersion ? applicationReference.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sr = Q$2.ApplicationReference,
+            columns: [
+                sr.ownApplicationVersion._localId,
+                sr.referencedApplicationVersion._localId,
+                sr.index,
+                sr.deprecatedSinceVersion._localId,
+                sr.removedInVersion._localId,
+                sr.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationReferenceDao = __decorate$1e([
+    Injected()
+], ApplicationReferenceDao);
+
+var __decorate$1d = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationRelationColumnDao = class ApplicationRelationColumnDao extends BaseApplicationRelationColumnDao {
+    async findAllForColumns(columnIds) {
+        let rc;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                rc = Q$2.ApplicationRelationColumn
+            ],
+            WHERE: OR(rc.oneColumn._localId.IN(columnIds), rc.manyColumn._localId.IN(columnIds))
+        });
+    }
+    async insert(applicationRelationColumns, context) {
+        let src;
+        const VALUES = [];
+        for (const applicationRelationColumn of applicationRelationColumns) {
+            VALUES.push([
+                applicationRelationColumn._localId,
+                applicationRelationColumn.manyColumn ? applicationRelationColumn.manyColumn._localId : null,
+                applicationRelationColumn.oneColumn ? applicationRelationColumn.oneColumn._localId : null,
+                applicationRelationColumn.manyRelation ? applicationRelationColumn.manyRelation._localId : null,
+                applicationRelationColumn.oneRelation ? applicationRelationColumn.oneRelation._localId : null,
+                applicationRelationColumn.parentRelation ? applicationRelationColumn.parentRelation._localId : null,
+                applicationRelationColumn.deprecatedSinceVersion ? applicationRelationColumn.deprecatedSinceVersion._localId : null,
+                applicationRelationColumn.removedInVersion ? applicationRelationColumn.removedInVersion._localId : null,
+                applicationRelationColumn.sinceVersion ? applicationRelationColumn.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: src = Q$2.ApplicationRelationColumn,
+            columns: [
+                src._localId,
+                src.manyColumn._localId,
+                src.oneColumn._localId,
+                src.manyRelation._localId,
+                src.oneRelation._localId,
+                src.parentRelation._localId,
+                src.deprecatedSinceVersion._localId,
+                src.removedInVersion._localId,
+                src.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationRelationColumnDao = __decorate$1d([
+    Injected()
+], ApplicationRelationColumnDao);
+
+var __decorate$1c = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationRelationDao = class ApplicationRelationDao extends BaseApplicationRelationDao {
+    async findAllForProperties(propertyIds) {
+        let r;
+        return this.db.find.tree({
+            SELECT: {},
+            FROM: [
+                r = Q$2.ApplicationRelation
+            ],
+            WHERE: r.property._localId.IN(propertyIds)
+        });
+    }
+    async insert(applicationRelations, context) {
+        let sr;
+        const VALUES = [];
+        for (const applicationRelation of applicationRelations) {
+            VALUES.push([
+                applicationRelation._localId, applicationRelation.index,
+                applicationRelation.property._localId,
+                undefinedToNull(applicationRelation.foreignKey),
+                undefinedToNull(applicationRelation.manyToOneElems),
+                undefinedToNull(applicationRelation.oneToManyElems),
+                applicationRelation.relationType, applicationRelation.isId,
+                applicationRelation.entity._localId, applicationRelation.relationEntity._localId,
+                applicationRelation.deprecatedSinceVersion ? applicationRelation.deprecatedSinceVersion._localId : null,
+                applicationRelation.removedInVersion ? applicationRelation.removedInVersion._localId : null,
+                applicationRelation.sinceVersion ? applicationRelation.sinceVersion._localId : null,
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sr = Q$2.ApplicationRelation,
+            columns: [
+                sr._localId,
+                sr.index,
+                sr.property._localId,
+                sr.foreignKey,
+                sr.manyToOneElems,
+                sr.oneToManyElems,
+                sr.relationType,
+                sr.isId,
+                sr.entity._localId,
+                sr.relationEntity._localId,
+                sr.deprecatedSinceVersion._localId,
+                sr.removedInVersion._localId,
+                sr.sinceVersion._localId
+            ],
+            VALUES
+        }, context);
+    }
+};
+ApplicationRelationDao = __decorate$1c([
+    Injected()
+], ApplicationRelationDao);
+
+var __decorate$1b = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let ApplicationVersionDao = class ApplicationVersionDao extends BaseApplicationVersionDao {
+    /*
+    async findAllLatestForApplication_Indexes(
+        applicationIndexes: Application_Index[]
+    ): Promise<IApplicationVersion[]> {
+        let sv: QApplicationVersion
+
+        return await this.db.find.tree({
+            FROM: [
+                sv = Q.ApplicationVersion
+            ],
+            SELECT: {},
+            WHERE: AND(
+                sv._localId.IN(this._localIdsForMaxVersionSelect()),
+                sv.application.index.IN(applicationIndexes)
+            )
+        })
+    }
+    */
+    async findAllActiveOrderByApplication_IndexAndId() {
+        let sv;
+        // let s: QApplication
+        return await this.db.find.tree({
+            FROM: [
+                sv = Q$2.ApplicationVersion,
+                // s = sv.application.INNER_JOIN()
+            ],
+            SELECT: {},
+            ORDER_BY: [
+                sv.application.index.asc(),
+                sv._localId.desc()
+            ]
+        });
+    }
+    async findByDomain_NamesAndApplication_Names(domainNames, applicationNames) {
+        let sv;
+        let s;
+        let d;
+        return await this.db.find.tree({
+            SELECT: {
+                _localId: Y,
+                integerVersion: Y,
+                application: {
+                    domain: {
+                        name: Y
+                    },
+                    fullName: Y,
+                    name: Y
+                }
+            },
+            FROM: [
+                sv = Q$2.ApplicationVersion,
+                s = sv.application.INNER_JOIN(),
+                d = s.domain.INNER_JOIN()
+            ],
+            WHERE: AND(d.name.IN(domainNames), s.name.IN(applicationNames))
+        });
+    }
+    /*
+    async findMaxVersionedMapByApplicationAndDomain_Names(
+        applicationDomain_Names: Domain_Name[],
+        applicationNames: Application_Name[]
+    ): Promise<Map<Domain_Name, Map<Application_Name, IApplicationVersion>>> {
+        const maxVersionedMapByApplicationAndDomain_Names
+                  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
+                  = new Map()
+
+        let sv: QApplicationVersion
+        let s: QApplication
+        let d: QDomain
+
+        const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
+            SELECT: {
+                integerVersion: Y,
+                majorVersion: Y,
+                minorVersion: Y,
+                patchVersion: Y,
+                application: {
+                    index: Y,
+                    name: Y,
+                    domain: {
+                        _localId: Y,
+                        name: Y
+                    }
+                },
+                _localId: Y
+            },
+            FROM: [
+                sv = Q.ApplicationVersion,
+                s = sv.application.INNER_JOIN(),
+                d = s.domain.INNER_JOIN()
+            ],
+            WHERE: AND(
+                sv._localId.IN(this._localIdsForMaxVersionSelect()),
+                d.name.IN(applicationDomain_Names),
+                s.name.IN(applicationNames)
+            ),
+        })
+
+        for (const maxApplicationVersion of maxApplicationVersions) {
+            const application = maxApplicationVersion.application
+            this.utils.ensureChildJsMap(
+                maxVersionedMapByApplicationAndDomain_Names, application.domain.name)
+                .set(application.name, maxApplicationVersion)
+        }
+
+
+        return maxVersionedMapByApplicationAndDomain_Names
+    }
+
+    private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
+        let svMax
+        let sv2: QApplicationVersion
+
+        return field({
+            FROM: [
+                svMax = tree({
+                    FROM: [
+                        sv2 = Q.ApplicationVersion
+                    ],
+                    SELECT: DISTINCT({
+                        integerVersion: max(sv2.integerVersion),
+                        _localId: sv2._localId,
+                        applicationIndex: sv2.application.index
+                    })
+                })
+            ],
+            SELECT: svMax._localId
+        })
+    }
+*/
+    async insert(applicationVersions, context) {
+        let sv;
+        const VALUES = [];
+        for (const applicationVersion of applicationVersions) {
+            VALUES.push([
+                applicationVersion._localId, applicationVersion.integerVersion,
+                applicationVersion.versionString, applicationVersion.majorVersion,
+                applicationVersion.minorVersion, applicationVersion.patchVersion,
+                applicationVersion.application.index, applicationVersion.jsonApplication
+            ]);
+        }
+        await this.db.insertValuesGenerateIds({
+            INSERT_INTO: sv = Q$2.ApplicationVersion,
+            columns: [
+                sv._localId,
+                sv.integerVersion,
+                sv.versionString,
+                sv.majorVersion,
+                sv.minorVersion,
+                sv.patchVersion,
+                sv.application.index,
+                sv.jsonApplication
+            ],
+            VALUES: VALUES
+        }, context);
+    }
+};
+ApplicationVersionDao = __decorate$1b([
+    Injected()
+], ApplicationVersionDao);
+
+const airspace = lib$1('airspace');
+
+const DOMAIN_DAO = airspace.token({
+    class: DomainDao,
+    interface: 'IDomainDao',
+    token: 'DOMAIN_DAO'
+});
+const APPLICATION_COLUMN_DAO = airspace.token({
+    class: ApplicationColumnDao,
+    interface: 'IApplicationColumnDao',
+    token: 'APPLICATION_COLUMN_DAO'
+});
+const APPLICATION_DAO = airspace.token({
+    class: ApplicationDao,
+    interface: 'IApplicationDao',
+    token: 'APPLICATION_DAO'
+});
+const APPLICATION_ENTITY_DAO = airspace.token({
+    class: ApplicationEntityDao,
+    interface: 'IApplicationEntityDao',
+    token: 'APPLICATION_ENTITY_DAO'
+});
+const APPLICATION_PROPERTY_COLUMN_DAO = airspace.token({
+    class: ApplicationPropertyColumnDao,
+    interface: 'IApplicationPropertyColumnDao',
+    token: 'APPLICATION_PROPERTY_COLUMN_DAO'
+});
+const APPLICATION_PROPERTY_DAO = airspace.token({
+    class: ApplicationPropertyDao,
+    interface: 'IApplicationPropertyDao',
+    token: 'APPLICATION_PROPERTY_DAO'
+});
+const APPLICATION_REFERENCE_DAO = airspace.token({
+    class: ApplicationReferenceDao,
+    interface: 'IApplicationReferenceDao',
+    token: 'APPLICATION_REFERENCE_DAO'
+});
+const APPLICATION_RELATION_COLUMN_DAO = airspace.token({
+    class: ApplicationRelationColumnDao,
+    interface: 'IApplicationRelationColumnDao',
+    token: 'APPLICATION_RELATION_COLUMN_DAO'
+});
+const APPLICATION_RELATION_DAO = airspace.token({
+    class: ApplicationRelationDao,
+    interface: 'IApplicationRelationDao',
+    token: 'APPLICATION_RELATION_DAO'
+});
+const APPLICATION_VERSION_DAO = airspace.token({
+    class: ApplicationVersionDao,
+    interface: 'IApplicationVersionDao',
+    token: 'APPLICATION_VERSION_DAO'
+});
+APPLICATION_DAO.setDependencies({
+    airportDatabase: AIRPORT_DATABASE
+});
 
 const arrivalsNDepartures = lib$1('arrivals-n-departures');
 const REQUEST_MANAGER = arrivalsNDepartures.token({
@@ -26200,6 +25830,361 @@ const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token({
     class: null,
     interface: 'IQueryResultsSerializer',
     token: 'QUERY_RESULTS_SERIALIZER'
+});
+
+/**
+ * Created by Papa on 4/16/2017.
+ */
+var AirEntityType;
+(function (AirEntityType) {
+    AirEntityType["NOT_AIR_ENTITY"] = "NOT_AIR_ENTITY";
+    AirEntityType["AIR_ENTITY"] = "AIR_ENTITY";
+})(AirEntityType || (AirEntityType = {}));
+
+/**
+ * For logic classes to be hot-swappable for quick upgrades all state is contained
+ * in one non-reloadable BehaviorSubject.
+ */
+const internalTerminalState = new BehaviorSubject({
+    applicationActors: [],
+    applicationInitializer: {
+        applicationWindowMap: new Map(),
+        initializingApplicationMap: new Map()
+    },
+    applicationMapByFullName: new Map(),
+    applications: [],
+    domains: [],
+    frameworkActor: null,
+    internalConnector: {
+        dbName: '',
+        internalCredentials: {
+            application: null,
+            domain: INTERNAL_DOMAIN,
+            methodName: null,
+            objectName: null
+        },
+        serverUrl: ''
+    },
+    isServer: false,
+    lastIds: {
+        columns: 0,
+        domains: 0,
+        entities: 0,
+        properties: 0,
+        propertyColumns: 0,
+        relations: 0,
+        relationColumns: 0,
+        applications: 0,
+        applicationVersions: 0
+    },
+    receiver: {
+        initializedApps: new Set(),
+        initializingApps: new Set(),
+    },
+    sequenceGenerator: {
+        sequences: [],
+        sequenceBlocks: [],
+        generatingSequenceNumbers: false
+    },
+    terminal: null,
+    transactionManager: {
+        pendingTransactionQueue: [],
+        rootTransactionInProgressMap: new Map(),
+        transactionInProgressMap: new Map()
+    },
+    webReceiver: {
+        domainPrefix: '',
+        localDomain: '',
+        mainDomainFragments: [],
+        onClientMessageCallback: null,
+        pendingApplicationCounts: new Map(),
+        pendingHostCounts: new Map(),
+        pendingInterAppApiCallMessageMap: new Map(),
+        subsriptionMap: new Map()
+    }
+});
+
+var __decorate$1a = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let TerminalState = class TerminalState {
+    constructor() {
+        this.terminalState = internalTerminalState;
+    }
+};
+TerminalState = __decorate$1a([
+    Injected()
+], TerminalState);
+
+var __decorate$19 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let TerminalStore = class TerminalStore {
+    get state() {
+        return this.terminalState.terminalState;
+    }
+    async init() {
+        this.getTerminalState = this.selectorManager.createRootSelector(this.state);
+        this.getApplicationActors = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationActors);
+        this.getApplicationInitializer = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationInitializer);
+        this.getApplicationActorMapByDomainAndApplication_Names = this.selectorManager.createSelector(this.getApplicationActors, applicationActors => {
+            const applicationActorsByDomainAndApplication_Names = new Map();
+            for (const applicationActor of applicationActors) {
+                const applicationActorMapForDomain = ensureChildJsMap(applicationActorsByDomainAndApplication_Names, applicationActor.application.domain.name);
+                let actorsForApplication = applicationActorMapForDomain
+                    .get(applicationActor.application.name);
+                if (!actorsForApplication) {
+                    actorsForApplication = [];
+                    applicationActorMapForDomain.set(applicationActor.application.name, actorsForApplication);
+                }
+                actorsForApplication.push(applicationActor);
+            }
+            return applicationActorsByDomainAndApplication_Names;
+        });
+        this.getDomains = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.domains);
+        this.getDomainMapByName = this.selectorManager.createSelector(this.getDomains, domains => {
+            const domainsByName = new Map();
+            for (const domain of domains) {
+                domainsByName.set(domain.name, domain);
+            }
+            return domainsByName;
+        });
+        this.getFrameworkActor = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.frameworkActor);
+        this.getInternalConnector = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.internalConnector);
+        this.getIsServer = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.isServer);
+        this.getLastIds = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.lastIds);
+        this.getLatestApplicationVersionMapByNames = this.selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionMapByNames = new Map();
+            for (const domain of domains) {
+                const mapForDomain = ensureChildJsMap(latestApplicationVersionMapByNames, domain.name);
+                for (const application of domain.applications) {
+                    mapForDomain.set(application.name, application.currentVersion[0].applicationVersion);
+                }
+            }
+            return latestApplicationVersionMapByNames;
+        });
+        this.getLatestApplicationVersionMapByFullApplication_Name = this.selectorManager.createSelector(this.getLatestApplicationVersionMapByNames, (latestApplicationVersionMapByNames) => {
+            const latestApplicationVersionMapByFullApplication_Name = new Map();
+            for (const applicationVersionsForDomain_Name of latestApplicationVersionMapByNames.values()) {
+                for (const applicationVersion of applicationVersionsForDomain_Name.values()) {
+                    latestApplicationVersionMapByFullApplication_Name.set(applicationVersion.application.fullName, applicationVersion);
+                }
+            }
+            return latestApplicationVersionMapByFullApplication_Name;
+        });
+        this.getAllApplicationVersionsByIds = this.selectorManager.createSelector(this.getDomains, domains => {
+            const allApplicationVersionsByIds = [];
+            for (const domain of domains) {
+                for (const application of domain.applications) {
+                    for (const applicationVersion of application.versions) {
+                        allApplicationVersionsByIds[applicationVersion._localId] = applicationVersion;
+                    }
+                }
+            }
+            return allApplicationVersionsByIds;
+        });
+        this.getLatestApplicationVersionsByApplication_Indexes = this.selectorManager.createSelector(this.getDomains, domains => {
+            const latestApplicationVersionsByApplication_Indexes = [];
+            for (const domain of domains) {
+                for (const application of domain.applications) {
+                    latestApplicationVersionsByApplication_Indexes[application.index]
+                        = application.currentVersion[0].applicationVersion;
+                }
+            }
+            return latestApplicationVersionsByApplication_Indexes;
+        });
+        this.getApplicationMapByFullName = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applicationMapByFullName);
+        this.getApplications = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.applications);
+        this.getAllEntities = this.selectorManager.createSelector(this.getLatestApplicationVersionsByApplication_Indexes, latestApplicationVersionsByApplication_Indexes => {
+            const allEntities = [];
+            for (const latestApplicationVersion of latestApplicationVersionsByApplication_Indexes) {
+                if (!latestApplicationVersion) {
+                    continue;
+                }
+                for (const entity of latestApplicationVersion.entities) {
+                    allEntities[entity._localId] = entity;
+                }
+            }
+            return allEntities;
+        });
+        this.getAllColumns = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
+            const allColumns = [];
+            for (const entity of allEntities) {
+                if (!entity) {
+                    continue;
+                }
+                for (const column of entity.columns) {
+                    allColumns[column._localId] = column;
+                }
+            }
+            return allColumns;
+        });
+        this.getAllRelations = this.selectorManager.createSelector(this.getAllEntities, allEntities => {
+            const allRelations = [];
+            for (const entity of allEntities) {
+                if (!entity) {
+                    continue;
+                }
+                for (const relation of entity.relations) {
+                    allRelations[relation._localId] = relation;
+                }
+            }
+            return allRelations;
+        });
+        this.getReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.receiver);
+        this.getSequenceGenerator = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.sequenceGenerator);
+        this.getTerminal = this.selectorManager.createSelector(this.getTerminalState, terminalState => terminalState.terminal);
+        this.getTransactionManager = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.transactionManager);
+        this.getWebReceiver = this.selectorManager.createSelector(this.getTerminalState, terminal => terminal.webReceiver);
+    }
+    tearDown() {
+    }
+};
+__decorate$19([
+    Inject$2()
+], TerminalStore.prototype, "selectorManager", void 0);
+__decorate$19([
+    Inject$2()
+], TerminalStore.prototype, "terminalState", void 0);
+TerminalStore = __decorate$19([
+    Injected()
+], TerminalStore);
+
+const internalUserState = new BehaviorSubject({
+    allSessions: [],
+    sessionMapByEmail: new Map()
+});
+
+var __decorate$18 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let UserState = class UserState {
+    constructor() {
+        this.userState = internalUserState;
+    }
+};
+UserState = __decorate$18([
+    Injected()
+], UserState);
+
+var __decorate$17 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+let UserStore = class UserStore {
+    get state() {
+        return this.userState.userState;
+    }
+    async init() {
+        this.getUserState = this.selectorManager.createRootSelector(this.state);
+        this.getAllSessions = this.selectorManager.createSelector(this.getUserState, userState => userState.allSessions);
+        this.getSessionMapByEmail = this.selectorManager.createSelector(this.getUserState, userState => userState.sessionMapByEmail);
+    }
+};
+__decorate$17([
+    Inject$2()
+], UserStore.prototype, "selectorManager", void 0);
+__decorate$17([
+    Inject$2()
+], UserStore.prototype, "userState", void 0);
+UserStore = __decorate$17([
+    Injected()
+], UserStore);
+
+const terminalMap = lib$1('terminal-map');
+const APPLICATION_INITIALIZER = terminalMap.token({
+    class: null,
+    interface: 'IApplicationInitializer',
+    token: 'APPLICATION_INITIALIZER'
+});
+const DOMAIN_RETRIEVER = terminalMap.token({
+    class: null,
+    interface: 'IDomainRetriever',
+    token: 'DOMAIN_RETRIEVER'
+});
+const STORE_DRIVER = terminalMap.token({
+    class: null,
+    interface: 'IStoreDriver',
+    token: 'STORE_DRIVER'
+});
+const TERMINAL_SESSION_MANAGER = terminalMap.token({
+    class: null,
+    interface: 'ITerminalSessionManager',
+    token: 'TERMINAL_SESSION_MANAGER'
+});
+const TERMINAL_STATE = terminalMap.token({
+    class: TerminalState,
+    interface: 'ITerminalStateContainer',
+    token: 'TERMINAL_STATE'
+});
+const TERMINAL_STORE = terminalMap.token({
+    class: TerminalStore,
+    interface: 'ITerminalStore',
+    token: 'TERMINAL_STORE'
+});
+const TRANSACTION_MANAGER = terminalMap.token({
+    class: null,
+    interface: 'ITransactionManager',
+    token: 'TRANSACTION_MANAGER'
+});
+const TRANSACTIONAL_RECEIVER = terminalMap.token({
+    class: null,
+    interface: 'ITransactionalReceiver',
+    token: 'TRANSACTIONAL_RECEIVER'
+});
+const TRANSACTIONAL_SERVER = terminalMap.token({
+    class: null,
+    interface: 'ITransactionalServer',
+    token: 'TRANSACTIONAL_SERVER'
+});
+const USER_STATE = terminalMap.token({
+    class: UserState,
+    interface: 'IUserStateContainer',
+    token: 'USER_STATE'
+});
+const USER_STORE = terminalMap.token({
+    class: UserStore,
+    interface: 'IUserStore',
+    token: 'USER_STORE'
+});
+APPLICATION_INITIALIZER.setDependencies({
+    airportDatabase: AIRPORT_DATABASE,
+    sequenceGenerator: SEQUENCE_GENERATOR,
+    terminalStore: TERMINAL_STORE
+});
+DOMAIN_RETRIEVER.setDependencies({
+    transactionalConnector: TRANSACTIONAL_CONNECTOR
+});
+TERMINAL_STORE.setDependencies({
+    selectorManager: SELECTOR_MANAGER,
+    terminalState: TERMINAL_STATE
+});
+TRANSACTION_MANAGER.setDependencies({
+    storeDriver: STORE_DRIVER,
+    terminalStore: TERMINAL_STORE
+});
+TRANSACTIONAL_RECEIVER.setDependencies({
+    applicationInitializer: APPLICATION_INITIALIZER,
+    dbApplicationUtils: DB_APPLICATION_UTILS,
+});
+TRANSACTIONAL_SERVER.setDependencies({
+    terminalStore: TERMINAL_STORE,
+    transactionManager: TRANSACTION_MANAGER
+});
+USER_STORE.setDependencies({
+    selectorManager: SELECTOR_MANAGER,
+    userState: USER_STATE
 });
 
 var __decorate$16 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -29028,7 +29013,7 @@ let IdGenerator = class IdGenerator {
         });
     }
     doPopulateTransactionHistory_LocalIdColumns(resolve) {
-        if (Q$3.__dbApplication__ && Q$3.__dbApplication__.currentVersion) {
+        if (Q$4.__dbApplication__ && Q$4.__dbApplication__.currentVersion) {
             const transactionHistoryDbEntity = this.getHoldingPatternDbEntity('TransactionHistory');
             const repoTransHistoryDbEntity = this.getHoldingPatternDbEntity('RepositoryTransactionHistory');
             const operationHistoryDbEntity = this.getHoldingPatternDbEntity('OperationHistory');
@@ -29063,7 +29048,7 @@ let IdGenerator = class IdGenerator {
     async generateEntityIds() {
     }
     getHoldingPatternDbEntity(holdingPatternEntityName) {
-        return Q$3.__dbApplication__.currentVersion[0].applicationVersion
+        return Q$4.__dbApplication__.currentVersion[0].applicationVersion
             .entityMapByName[holdingPatternEntityName];
     }
 };
@@ -32969,7 +32954,7 @@ UserAccountApi = __decorate$D([
 // Application Q object Dependency Injection readiness detection Dao
 class SQDIDao$1 extends Dao {
     constructor(dbEntityId) {
-        super(dbEntityId, Q$2);
+        super(dbEntityId, Q$3);
     }
 }
 class BaseClassificationDao extends SQDIDao$1 {
@@ -32980,7 +32965,7 @@ class BaseClassificationDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(6);
+        return duoDiSet$3(6);
     }
 }
 BaseClassificationDao.Find = new DaoQueryDecorators();
@@ -32995,7 +32980,7 @@ class BaseClientDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(10);
+        return duoDiSet$3(10);
     }
 }
 BaseClientDao.Find = new DaoQueryDecorators();
@@ -33010,7 +32995,7 @@ class BaseClientTypeDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(9);
+        return duoDiSet$3(9);
     }
 }
 BaseClientTypeDao.Find = new DaoQueryDecorators();
@@ -33025,7 +33010,7 @@ class BaseContinentDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(5);
+        return duoDiSet$3(5);
     }
 }
 BaseContinentDao.Find = new DaoQueryDecorators();
@@ -33040,7 +33025,7 @@ class BaseCountryDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(0);
+        return duoDiSet$3(0);
     }
 }
 BaseCountryDao.Find = new DaoQueryDecorators();
@@ -33055,7 +33040,7 @@ class BaseDatabaseDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(12);
+        return duoDiSet$3(12);
     }
 }
 BaseDatabaseDao.Find = new DaoQueryDecorators();
@@ -33070,7 +33055,7 @@ class BaseDatabaseTypeDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(11);
+        return duoDiSet$3(11);
     }
 }
 BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
@@ -33085,7 +33070,7 @@ class BaseMetroAreaDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(3);
+        return duoDiSet$3(3);
     }
 }
 BaseMetroAreaDao.Find = new DaoQueryDecorators();
@@ -33100,7 +33085,7 @@ class BaseMetroAreaStateDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(2);
+        return duoDiSet$3(2);
     }
 }
 BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
@@ -33115,7 +33100,7 @@ class BaseStateDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(1);
+        return duoDiSet$3(1);
     }
 }
 BaseStateDao.Find = new DaoQueryDecorators();
@@ -33130,7 +33115,7 @@ class BaseTerminalDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(14);
+        return duoDiSet$3(14);
     }
 }
 BaseTerminalDao.Find = new DaoQueryDecorators();
@@ -33145,7 +33130,7 @@ class BaseTerminalTypeDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(13);
+        return duoDiSet$3(13);
     }
 }
 BaseTerminalTypeDao.Find = new DaoQueryDecorators();
@@ -33160,7 +33145,7 @@ class BaseTypeDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(8);
+        return duoDiSet$3(8);
     }
 }
 BaseTypeDao.Find = new DaoQueryDecorators();
@@ -33175,7 +33160,7 @@ class BaseTypeClassificationDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(7);
+        return duoDiSet$3(7);
     }
 }
 BaseTypeClassificationDao.Find = new DaoQueryDecorators();
@@ -33190,7 +33175,7 @@ class BaseUserAccountDao extends SQDIDao$1 {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet$2(4);
+        return duoDiSet$3(4);
     }
 }
 BaseUserAccountDao.Find = new DaoQueryDecorators();
@@ -33210,7 +33195,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                t = Q$2.Terminal
+                t = Q$3.Terminal
             ],
             WHERE: AND(t.owner._localId.IN(ownerIds), t.GUID.IN(GUIDs))
         });
@@ -33220,7 +33205,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                t = Q$2.Terminal
+                t = Q$3.Terminal
             ],
             WHERE: t.GUID.IN(GUIDs)
         });
@@ -33234,7 +33219,7 @@ let TerminalDao = class TerminalDao extends BaseTerminalDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: t = Q$2.Terminal,
+            INSERT_INTO: t = Q$3.Terminal,
             columns: [
                 t.GUID,
                 t.owner._localId,
@@ -33264,7 +33249,7 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                u = Q$2.UserAccount
+                u = Q$3.UserAccount
             ],
             WHERE: u.username.IN(usernames)
         });
@@ -33274,7 +33259,7 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
         return await this.db.find.tree({
             SELECT: {},
             FROM: [
-                u = Q$2.UserAccount
+                u = Q$3.UserAccount
             ],
             WHERE: u.GUID.IN(GUIDs)
         });
@@ -33288,7 +33273,7 @@ let UserAccountDao = class UserAccountDao extends BaseUserAccountDao {
             ]);
         }
         const _localIds = await this.db.insertValuesGenerateIds({
-            INSERT_INTO: u = Q$2.UserAccount,
+            INSERT_INTO: u = Q$3.UserAccount,
             columns: [
                 u.GUID,
                 u.username
@@ -39629,6 +39614,7 @@ TRANSACTIONAL_RECEIVER.setDependencies({
 
 function injectTransactionalReceiver() {
     console.log('Injecting TransactionalReceiver');
+    loadAirTrafficControl();
     // injectMovingWalkway()
     injectTransactionalConnector();
     injectAirportDatabase();
@@ -40318,6 +40304,27 @@ injectTransactionalReceiver();
 async function initFramework() {
     await startDb('AIRport-prerelease');
     await IOC.get(WEB_MESSAGE_RECEIVER);
+}
+
+class AIRportApi {
+    async getAllApplications() {
+        const applicationDao = await IOC.get(APPLICATION_DAO);
+        return await applicationDao.findAll();
+    }
+    async getAllRepositories() {
+        const repositoryDao = await IOC.get(REPOSITORY_DAO);
+        return await repositoryDao.findAll();
+    }
+    async signUp(action, userAccountInfo) {
+        const terminalSessionManager = await IOC.get(TERMINAL_SESSION_MANAGER);
+        switch (action) {
+            case 'signUp':
+                await terminalSessionManager.signUp(userAccountInfo).then();
+                break;
+            default:
+                throw new Error(`Unsupported user action: ${action}`);
+        }
+    }
 }
 
 const airportApi = new AIRportApi();

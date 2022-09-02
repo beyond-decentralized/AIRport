@@ -85,10 +85,10 @@ in top level objects (that are passed into '...Dao.save(...)')`);
             created: {},
             deleted: {},
             newRepository,
-            repositoryIdParts: {
+            repositoryIdParts: newRepository ? {
                 source: newRepository.source,
                 GUID: newRepository.GUID
-            },
+            } : null,
             updated: {},
         };
         for (const operation of operations) {

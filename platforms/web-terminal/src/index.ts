@@ -1,3 +1,4 @@
+import { loadAirTrafficControl } from '@airport/air-traffic-control'
 import {
     injectTransactionalConnector,
     injectTransactionalServer
@@ -16,6 +17,7 @@ export * from './tokens'
 
 export function injectTransactionalReceiver(): void {
     console.log('Injecting TransactionalReceiver')
+    loadAirTrafficControl()
     // injectMovingWalkway()
     injectTransactionalConnector()
     injectAirportDatabase()

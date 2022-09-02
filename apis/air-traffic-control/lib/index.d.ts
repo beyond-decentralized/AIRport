@@ -16,4 +16,5 @@ export * from './implementation/SystemWideOperationIds';
 export * from './implementation/Utils';
 export * from './core-tokens';
 export * from './tokens';
+export declare function loadAirTrafficControl(): void;
 //# sourceMappingURL=index.d.ts.map

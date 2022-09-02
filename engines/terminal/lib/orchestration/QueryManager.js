@@ -43,6 +43,9 @@ let QueryManager = class QueryManager {
         }
     }
     async populateEntityGuidEntitiesAndUserAccounts(portableQuery, entities) {
+        if (!entities.length) {
+            return;
+        }
         if (portableQuery.queryResultType !== QueryResultType.ENTITY_GRAPH
             && portableQuery.queryResultType !== QueryResultType.ENTITY_TREE) {
             return;
