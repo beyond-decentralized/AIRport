@@ -1,21 +1,18 @@
 import { airportApi, Application, IUserAccountInfo, Repository } from '@airport/web-airport'
 import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
-import { useIonToast } from '@ionic/react';
-
-const [present, dismiss] = useIonToast()
 
 export function signUp(
     ev: CustomEvent<OverlayEventDetail>,
     showMessage: (message: string, duration: number) => void
 ): void {
-    asyncSignUp(ev.detail.role, ev.detail.data).then()
+    asyncSignUp(ev.detail.role, ev.detail.data, showMessage).then()
 }
 
 export function getApplications(
     setApplications: (applications: Application[]) => void,
     showMessage: (message: string, duration: number) => void
 ) {
-    getApplicationsAsync(setApplications).then()
+    getApplicationsAsync(setApplications, showMessage).then()
 }
 
 async function getApplicationsAsync(
@@ -27,31 +24,34 @@ async function getApplicationsAsync(
         setApplications(applications)
     } catch (e) {
         console.error(e)
-        present('Error retrieving Applications', 10000)
+        showMessage('Error retrieving Applications', 10000)
     }
 }
 
 export function getRepositories(
-    setRepositories: (repositories: Repository[]) => void
+    setRepositories: (repositories: Repository[]) => void,
+    showMessage: (message: string, duration: number) => void
 ) {
-    getRepositoriesAsync(setRepositories).then()
+    getRepositoriesAsync(setRepositories, showMessage).then()
 }
 
 async function getRepositoriesAsync(
-    setRepositories: (repositories: Repository[]) => void
+    setRepositories: (repositories: Repository[]) => void,
+    showMessage: (message: string, duration: number) => void
 ) {
     try {
         const repositories = await airportApi.getAllRepositories()
         setRepositories(repositories)
     } catch (e) {
         console.error(e)
-        present('Error retrieving Repositories', 10000)
+        showMessage('Error retrieving Repositories', 10000)
     }
 }
 
 async function asyncSignUp(
     action: string | undefined,
-    userAccountInfo: IUserAccountInfo
+    userAccountInfo: IUserAccountInfo,
+    showMessage: (message: string, duration: number) => void
 ) {
     if (!action) {
         return
@@ -65,6 +65,6 @@ async function asyncSignUp(
             console.error(e)
         }
         console.error(message)
-        present(message as string, 10000)
+        showMessage(message as string, 10000)
     }
 }

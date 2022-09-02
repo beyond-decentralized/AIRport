@@ -52,7 +52,7 @@ RecordHistory = __decorate([
         indexes: [{
                 name: 'RCRD_HSTR_TO_OPRTN_HSTR_FX',
                 columnList: [
-                    'REPOSITORY_OPERATION_HISTORY_LID'
+                    'OPERATION_HISTORY_LID'
                 ],
                 unique: false
             }]

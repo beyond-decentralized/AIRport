@@ -43,6 +43,9 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
+  "devDependencies": {
+    "sql.js": "^1.7.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

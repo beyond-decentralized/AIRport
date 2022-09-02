@@ -31,6 +31,7 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
+import { useIonToast } from '@ionic/react';
 
 /* Theme variables */
 import './theme/variables.css';
@@ -38,45 +39,48 @@ import { signUp } from './api'
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <AirLoginModal
-      onWillDismiss={signUp}
-      triggerId="bogus"
-    />
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <RepositoriesPage />
-          </Route>
-          <Route exact path="/tab2">
-            <AppsPage />
-          </Route>
-          <Route path="/tab3">
-            <UIsPage />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const [present] = useIonToast()
+
+  return (
+    <IonApp>
+      <AirLoginModal
+        onWillDismiss={e => signUp(e, present)}
+        triggerId="bogus"
+      />
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/repositories">
+              <RepositoriesPage />
+            </Route>
+            <Route exact path="/applications">
+              <AppsPage />
+            </Route>
+            <Route path="/user-interfaces">
+              <UIsPage />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/repositories" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="repositories" href="/repositories">
+              <IonIcon icon={triangle} />
+              <IonLabel>Repositories</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="applications" href="/applications">
+              <IonIcon icon={ellipse} />
+              <IonLabel>Aps</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="user-interfaces" href="/user-interfaces">
+              <IonIcon icon={square} />
+              <IonLabel>UIs</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>)
+}
 
 export default App;

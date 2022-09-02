@@ -11,8 +11,7 @@ import {
 } from '@airport/direction-indicator';
 import {
     IDbApplicationUtils,
-    INTERNAL_DOMAIN,
-    IRootTransaction
+    INTERNAL_DOMAIN
 } from '@airport/ground-control';
 import {
     IApiIMI,

@@ -21,7 +21,7 @@ let SqlJsDriver = class SqlJsDriver extends SqLiteDriver {
         const SQL = await initSqlJs({
             // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
             // You can omit locateFile completely when running in node
-            locateFile: file => `./${file}`
+            locateFile: file => `./assets/${file}`
         });
         this._db = new SQL.Database();
     }

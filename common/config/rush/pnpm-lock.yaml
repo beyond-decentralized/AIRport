@@ -83,7 +83,6 @@ dependencies:
   rollup-plugin-svelte: 7.1.0_svelte@3.49.0
   rxjs: 7.4.0
   sirv-cli: 2.0.2
-  sql.js: 1.6.2
   string-cipher: 1.0.8
   svelte: 3.49.0
   svelte-check: 2.8.1_svelte@3.49.0
@@ -12127,6 +12126,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9iucI5fXQa+Gspeqf/BNB20PxJIn5LhXDt4mjXoFPqXdR+NqtFs15SdKpSIJ6s529aGL9zFR9p2eSCIEiMsNGA==
+  /sql.js/1.7.0:
+    dev: false
+    resolution:
+      integrity: sha512-qAfft3xkSgHqmmfNugWTp/59PsqIw8gbeao5TZmpmzQQsAJ49de3iDDKuxVixidYs6dkHNksY8m27v2dZNn2jw==
   /sqlstring/2.3.2:
     dev: false
     engines:
@@ -14306,6 +14309,7 @@ packages:
       react-router: 5.3.3_react@17.0.2
       react-router-dom: 5.3.3_react@17.0.2
       react-scripts: 5.0.1_react@17.0.2+typescript@4.8.2
+      sql.js: 1.7.0
       typescript: 4.8.2
       web-vitals: 0.2.4
       workbox-background-sync: 5.1.4
@@ -14323,7 +14327,7 @@ packages:
     dev: false
     name: '@rush-temp/ui-react-main'
     resolution:
-      integrity: sha512-dtQbrBOLKELR2F+deosqSqrzQmShJQQtP5P5mWKgoRzIX+rrEjhvFWIkJN0WkFsmZcsK5IF4HA1EdO0ytYW7sw==
+      integrity: sha512-gRaGRifeeWO3/E8bvFrWvFPOQ5d+UhnGSX91qlNnW87MQls29XZUzvrPR7VuooNtM+86gZx4o0p7aHrmGwewrw==
       tarball: 'file:projects/ui-react-main.tgz'
     version: 0.0.0
   'file:projects/ui-svelte-main.tgz':
@@ -14516,7 +14520,6 @@ specifiers:
   rollup-plugin-svelte: ^7.1.0
   rxjs: ~7.4.0
   sirv-cli: ^2.0.2
-  sql.js: ^1.6.2
   string-cipher: ^1.0.8
   svelte: ^3.49.0
   svelte-check: ^2.8.1

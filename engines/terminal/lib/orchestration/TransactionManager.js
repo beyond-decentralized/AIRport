@@ -113,7 +113,7 @@ Only one concurrent transaction is allowed per application.`)
             // Internal calls don't maintain rootTransaction and can create more than
             // one repository at a time.  APIs exposed externally will never be top
             // level transactions
-            if (transaction.actor.application.domain.name !== INTERNAL_DOMAIN) {
+            if (credentials.domain !== INTERNAL_DOMAIN) {
                 const userSession = await this.terminalSessionManager.getUserSession();
                 userSession.currentRootTransaction = rootTransaction;
             }
@@ -218,7 +218,7 @@ parent transactions.
         // Internal calls don't maintain rootTransaction and can create more than
         // one repository at a time.  APIs exposed externally will never be top
         // level transactions
-        if (transaction.actor.application.domain.name === INTERNAL_DOMAIN) {
+        if (transaction.credentials.domain === INTERNAL_DOMAIN) {
             return;
         }
         const userSession = await this.terminalSessionManager.getUserSession();

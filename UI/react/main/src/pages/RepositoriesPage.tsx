@@ -1,5 +1,5 @@
 import { Repository } from '@airport/web-airport';
-import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useState } from 'react';
 import { getRepositories } from '../api';
@@ -7,8 +7,9 @@ import './RepositoriesPage.css';
 
 const RepositoriesPage: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([])
+  const [present] = useIonToast()
 
-  getRepositories(setRepositories)
+  getRepositories(setRepositories, present)
 
   return (
     <IonPage>
@@ -24,7 +25,7 @@ const RepositoriesPage: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={e => getRepositories(setRepositories)}>
+          <IonFabButton onClick={e => getRepositories(setRepositories, present)}>
             <IonIcon icon={refresh} />
           </IonFabButton>
         </IonFab>

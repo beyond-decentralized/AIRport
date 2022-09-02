@@ -1,5 +1,5 @@
 import { Application } from '@airport/web-airport';
-import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useState } from 'react';
 import { getApplications } from '../api';
@@ -7,8 +7,9 @@ import './AppsPage.css';
 
 const AppsPage: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([])
+  const [present] = useIonToast()
 
-  getApplications(setApplications)
+  getApplications(setApplications, present)
 
   return (
     <IonPage>
@@ -24,7 +25,7 @@ const AppsPage: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={e => getApplications(setApplications)}>
+          <IonFabButton onClick={e => getApplications(setApplications, present)}>
             <IonIcon icon={refresh} />
           </IonFabButton>
         </IonFab>
