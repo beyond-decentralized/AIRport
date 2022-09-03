@@ -28,8 +28,8 @@
     "dist"
   ],
   "scripts": {
-    "rollup": "rollup -c",
-    "test": "jest"
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
   "types": "dist/index.d.ts"
 }

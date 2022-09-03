@@ -7,6 +7,8 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const packageJson = require("./package.json");
 
+const production = !process.env.ROLLUP_WATCH;
+
 export default [
     {
         input: "src/index.ts",
@@ -27,7 +29,7 @@ export default [
             resolve(),
             commonjs(),
             typescript({ tsconfig: "./tsconfig.json" }),
-            // terser(),
+            production && terser(),
         ],
     },
     {
