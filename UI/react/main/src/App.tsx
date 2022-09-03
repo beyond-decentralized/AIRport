@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { apps, briefcase, desktop, ellipse, square, triangle } from 'ionicons/icons';
 import { AirLoginModal } from '@airport/ui-react-components'
 import RepositoriesPage from './pages/RepositoriesPage';
 import AppsPage from './pages/AppsPage';
@@ -66,15 +66,15 @@ const App: React.FC = () => {
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="repositories" href="/repositories">
-              <IonIcon icon={triangle} />
+              <IonIcon icon={briefcase} />
               <IonLabel>Repositories</IonLabel>
             </IonTabButton>
             <IonTabButton tab="applications" href="/applications">
-              <IonIcon icon={ellipse} />
-              <IonLabel>Aps</IonLabel>
+              <IonIcon icon={apps} />
+              <IonLabel>Apps</IonLabel>
             </IonTabButton>
             <IonTabButton tab="user-interfaces" href="/user-interfaces">
-              <IonIcon icon={square} />
+              <IonIcon icon={desktop} />
               <IonLabel>UIs</IonLabel>
             </IonTabButton>
           </IonTabBar>

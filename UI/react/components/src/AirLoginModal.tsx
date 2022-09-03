@@ -44,7 +44,7 @@ export function AirLoginModal({
             email: username + '@random-email-provider.com',
             password,
             username
-        }, 'signup')
+        }, 'signUp')
     }
 
     const signUpView = <>

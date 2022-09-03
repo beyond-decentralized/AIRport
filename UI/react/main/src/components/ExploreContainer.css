@@ -12,7 +12,7 @@
   line-height: 26px;
 }
 
-.container p {
+.container .padding-wrapper {
   font-size: 16px;
   line-height: 22px;
   color: #8c8c8c;

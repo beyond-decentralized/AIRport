@@ -6,7 +6,7 @@ import { getApplications } from '../api';
 import './AppsPage.css';
 
 const AppsPage: React.FC = () => {
-  const [applications, setApplications] = useState<Application[]>([])
+  const [applications, setApplications] = useState<Application[]>(() => [])
   const [present] = useIonToast()
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const AppsPage: React.FC = () => {
           </IonFabButton>
         </IonFab>
         {applications.map(application =>
-          <IonItem>
+          <IonItem key={application.fullName}>
             Domain: {application.domain.name}
             <br />
             Name: {application.name}

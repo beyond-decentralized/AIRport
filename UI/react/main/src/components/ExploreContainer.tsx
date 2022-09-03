@@ -9,9 +9,9 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name, children }) => {
   return (
     <div className="container">
       <strong>{name}</strong>
-      <p>
+      <div className="padding-wrapper">
         {children}
-      </p>
+      </div>
     </div>
   );
 };
