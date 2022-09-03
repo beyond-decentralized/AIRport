@@ -2,7 +2,7 @@ import { LOCAL_API_SERVER } from "@airport/apron";
 import { lib } from "@airport/direction-indicator";
 import { DB_APPLICATION_UTILS } from "@airport/ground-control";
 import { ACTOR_DAO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
-import { APPLICATION_DAO } from '@airport/airspace/lib/to_be_generated/runtime-index'
+import { APPLICATION_DAO } from '@airport/airspace/dist/app/bundle'
 import { DATABASE_MANAGER, INTERNAL_RECORD_MANAGER } from "@airport/terminal";
 import { APPLICATION_INITIALIZER, DOMAIN_RETRIEVER, TERMINAL_SESSION_MANAGER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER } from "@airport/terminal-map";
 import { DomainRetriever } from "./DomainRetriever";

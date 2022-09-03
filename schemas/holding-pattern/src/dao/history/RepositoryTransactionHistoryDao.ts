@@ -25,7 +25,7 @@ import {
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
-import { QApplicationEntity, QApplicationVersion } from '@airport/airspace/lib/to_be_generated/runtime-index'
+import { QApplicationEntity, QApplicationVersion } from '@airport/airspace'
 import { Injected } from '@airport/direction-indicator'
 import { Repository_LocalId } from '../../types'
 

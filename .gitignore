@@ -1,4 +1,11 @@
 .idea/
+/apis/**/dist/*
+/databases/**/dist/*
+/engines/**/dist/*
+/generators/**/dist/*
+/libs/**/dist/*
+/ORMs/**/dist/*
+/schemas/**/dist/*
 
 npm-debug.log
 

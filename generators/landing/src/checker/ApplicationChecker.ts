@@ -10,7 +10,7 @@ import {
 import {
 	IApplication,
 	IApplicationDao
-} from '@airport/airspace/lib/to_be_generated/runtime-index'
+} from '@airport/airspace/dist/app/bundle'
 import {
 	Inject,
 	Injected

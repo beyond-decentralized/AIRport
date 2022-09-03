@@ -1,6 +1,7 @@
 import { resolveRelativePath } from '../../resolve/pathResolver';
 export class QApplicationBuilder {
-    constructor(pathBuilder, configuration) {
+    constructor(applicationFullName, pathBuilder, configuration) {
+        this.applicationFullName = applicationFullName;
         this.pathBuilder = pathBuilder;
         this.configuration = configuration;
         this.entityNames = [];
@@ -94,20 +95,19 @@ export const Q_APPLICATION: LocalQApplication = <any>{
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
-export function diSet(
+export function ${this.applicationFullName}_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
 	return airApi.dS(Q.__dbApplication__, dbEntityId)
 }
 
-export function duoDiSet(
-	dbEntityId: ApplicationEntity_LocalId
-): boolean {
-	return airApi.ddS(Q.__dbApplication__, dbEntityId)
-}
-
 airApi.setQApplication(Q_APPLICATION)
 `;
+        // export function duoDiSet(
+        // 	dbEntityId: ApplicationEntity_LocalId
+        // ): boolean {
+        // 	return airApi.ddS(Q.__dbApplication__, dbEntityId)
+        // }
     }
 }
 //# sourceMappingURL=QApplicationBuilder.js.map

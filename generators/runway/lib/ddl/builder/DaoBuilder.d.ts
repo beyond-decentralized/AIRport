@@ -1,7 +1,7 @@
 import { PathBuilder } from './PathBuilder';
 import { UtilityBuilder } from './UtilityBuilder';
 export declare class DaoBuilder extends UtilityBuilder {
-    constructor(pathBuilder: PathBuilder);
+    constructor(applicationFullName: string, pathBuilder: PathBuilder);
     protected addImports(): void;
     protected buildStaticProperties(entityName: string): string;
 }

@@ -130,7 +130,7 @@ extends SequenceEId, SequenceEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QSequence extends IQEntity
+export interface QSequence<IQE extends QSequence = any> extends IQEntity<IQE | QSequence>
 {
 	// Id Fields
 	applicationIndex: IQNumberField;

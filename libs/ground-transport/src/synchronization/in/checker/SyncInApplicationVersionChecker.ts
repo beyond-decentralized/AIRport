@@ -2,7 +2,7 @@ import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures
 import {
 	IApplicationVersion,
 	IApplicationVersionDao
-} from '@airport/airspace/lib/to_be_generated/runtime-index'
+} from '@airport/airspace/dist/app/bundle'
 import {
 	IContext,
 	Inject,

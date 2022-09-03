@@ -1,7 +1,7 @@
 import { IApplicationApi } from "@airport/check-in"
 import { Observer } from "rxjs"
 import { IIsolateMessage } from "../isolate/IsolateMessage"
-import { LastIds } from "../LastIds"
+
 export interface IMessageInRecord {
     message: IIsolateMessage
     reject?

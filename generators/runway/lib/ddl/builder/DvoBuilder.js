@@ -1,9 +1,9 @@
 import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 export class DvoBuilder extends ImplementationFileBuilder {
-    constructor(pathBuilder) {
+    constructor(applicationFullName, pathBuilder) {
         super('baseDvos', pathBuilder);
         this.classSuffix = 'Dvo';
-        this.diSet = 'duoDiSet';
+        this.diSet = applicationFullName + '_diSet';
     }
     build() {
         this.entityNames.sort();

@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
-import { SEQUENCE_DAO } from '@airport/airport-code'
+import { SEQUENCE_DAO } from '@airport/airport-code/dist/app/bundle'
 import {
     APPLICATION_COLUMN_DAO,
     APPLICATION_DAO,
@@ -11,7 +11,7 @@ import {
     APPLICATION_RELATION_DAO,
     APPLICATION_VERSION_DAO,
     DOMAIN_DAO
-} from '@airport/airspace/lib/to_be_generated/runtime-index'
+} from '@airport/airspace/dist/app/bundle'
 import { lib } from '@airport/direction-indicator'
 import {
     DB_APPLICATION_UTILS,

@@ -1,5 +1,5 @@
 import { Dao, DaoQueryDecorators, } from '@airport/tarmaq-dao';
-import { Q, duoDiSet, } from './qApplication';
+import { Q, air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet, } from './qApplication';
 // Application Q object Dependency Injection readiness detection Dao
 export class SQDIDao extends Dao {
     constructor(dbEntityId) {
@@ -14,7 +14,7 @@ export class BaseClassificationDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(6);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6);
     }
 }
 BaseClassificationDao.Find = new DaoQueryDecorators();
@@ -29,7 +29,7 @@ export class BaseClientDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(10);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10);
     }
 }
 BaseClientDao.Find = new DaoQueryDecorators();
@@ -44,7 +44,7 @@ export class BaseClientTypeDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(9);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9);
     }
 }
 BaseClientTypeDao.Find = new DaoQueryDecorators();
@@ -59,7 +59,7 @@ export class BaseContinentDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(5);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5);
     }
 }
 BaseContinentDao.Find = new DaoQueryDecorators();
@@ -74,7 +74,7 @@ export class BaseCountryDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(0);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0);
     }
 }
 BaseCountryDao.Find = new DaoQueryDecorators();
@@ -89,7 +89,7 @@ export class BaseDatabaseDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(12);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12);
     }
 }
 BaseDatabaseDao.Find = new DaoQueryDecorators();
@@ -104,7 +104,7 @@ export class BaseDatabaseTypeDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(11);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11);
     }
 }
 BaseDatabaseTypeDao.Find = new DaoQueryDecorators();
@@ -119,7 +119,7 @@ export class BaseMetroAreaDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(3);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3);
     }
 }
 BaseMetroAreaDao.Find = new DaoQueryDecorators();
@@ -134,7 +134,7 @@ export class BaseMetroAreaStateDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(2);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2);
     }
 }
 BaseMetroAreaStateDao.Find = new DaoQueryDecorators();
@@ -149,7 +149,7 @@ export class BaseStateDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(1);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1);
     }
 }
 BaseStateDao.Find = new DaoQueryDecorators();
@@ -164,7 +164,7 @@ export class BaseTerminalDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(14);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14);
     }
 }
 BaseTerminalDao.Find = new DaoQueryDecorators();
@@ -179,7 +179,7 @@ export class BaseTerminalTypeDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(13);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13);
     }
 }
 BaseTerminalTypeDao.Find = new DaoQueryDecorators();
@@ -194,7 +194,7 @@ export class BaseTypeDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(8);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8);
     }
 }
 BaseTypeDao.Find = new DaoQueryDecorators();
@@ -209,7 +209,7 @@ export class BaseTypeClassificationDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(7);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7);
     }
 }
 BaseTypeClassificationDao.Find = new DaoQueryDecorators();
@@ -224,7 +224,7 @@ export class BaseUserAccountDao extends SQDIDao {
         return Dao.BaseSave(config);
     }
     static diSet() {
-        return duoDiSet(4);
+        return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4);
     }
 }
 BaseUserAccountDao.Find = new DaoQueryDecorators();

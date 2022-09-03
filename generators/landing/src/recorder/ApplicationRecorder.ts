@@ -16,7 +16,7 @@ import {
 	IApplicationRelationDao,
 	IApplicationVersionDao,
 	IDomainDao,
-} from '@airport/airspace/lib/to_be_generated/runtime-index'
+} from '@airport/airspace/dist/app/bundle'
 import { DdlObjects, ITransactionManager } from '@airport/terminal-map'
 import { IDao } from '@airport/tarmaq-dao'
 

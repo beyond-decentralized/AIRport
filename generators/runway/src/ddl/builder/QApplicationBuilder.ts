@@ -2,6 +2,7 @@ import { resolveRelativePath } from '../../resolve/pathResolver';
 import { Configuration } from '../options/Options';
 import { PathBuilder } from './PathBuilder';
 import { IBuilder } from './Builder';
+import { DbApplication } from '@airport/ground-control';
 
 export class QApplicationBuilder
   implements IBuilder {
@@ -15,6 +16,7 @@ export class QApplicationBuilder
   private mappedSuperclassSet: { [entityName: string]: boolean } = {};
 
   constructor(
+    private applicationFullName: string,
     private pathBuilder: PathBuilder,
     private configuration: Configuration,
   ) {
@@ -130,20 +132,20 @@ export const Q_APPLICATION: LocalQApplication = <any>{
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
-export function diSet(
+export function ${this.applicationFullName}_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
 	return airApi.dS(Q.__dbApplication__, dbEntityId)
 }
 
-export function duoDiSet(
-	dbEntityId: ApplicationEntity_LocalId
-): boolean {
-	return airApi.ddS(Q.__dbApplication__, dbEntityId)
-}
-
 airApi.setQApplication(Q_APPLICATION)
 `;
+
+    // export function duoDiSet(
+    // 	dbEntityId: ApplicationEntity_LocalId
+    // ): boolean {
+    // 	return airApi.ddS(Q.__dbApplication__, dbEntityId)
+    // }
   }
 
 }

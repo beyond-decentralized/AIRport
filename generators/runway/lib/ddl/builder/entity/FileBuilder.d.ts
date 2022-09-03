@@ -6,6 +6,7 @@ export declare abstract class FileBuilder {
     fullGenerationPath: string;
     protected pathBuilder: PathBuilder;
     configuration: Configuration;
+    static distBundlePath: string;
     importMap: {
         [fileName: string]: {
             [asName: string]: string;

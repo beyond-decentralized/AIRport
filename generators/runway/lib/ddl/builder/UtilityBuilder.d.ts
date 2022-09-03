@@ -3,7 +3,7 @@ import { PathBuilder } from './PathBuilder';
 export declare abstract class UtilityBuilder extends ImplementationFileBuilder {
     private classSuffix;
     private diSet;
-    constructor(pathBuilder: PathBuilder, classSuffix: string, needsQEntity: boolean);
+    constructor(applicationFullName: string, pathBuilder: PathBuilder, classSuffix: string, needsQEntity: boolean);
     build(): string;
     protected addImports(): void;
     protected buildBaseClassDefinitions(): string;

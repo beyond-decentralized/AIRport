@@ -1,4 +1,6 @@
 {
+  "name": "@airport/airport-code",
+  "version": "0.0.1",
   "airport": {
     "domain": "air",
     "application": "airport-code",
@@ -6,7 +8,7 @@
     "project": "airport",
     "path": "applications/airport-code"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
     "@airbridge/validate": "0.0.1",
     "@airport/autopilot": "0.0.1",
@@ -19,11 +21,26 @@
     "@airport/tarmaq-query": "0.0.1"
   },
   "devDependencies": {
-    "@airport/runway": "0.0.1"
+    "@airport/runway": "0.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup-plugin-typescript2": "0.33.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.5.2",
+    "tslib": "^2.0.0"
   },
-  "main": "lib/index.js",
-  "name": "@airport/airport-code",
-  "type": "module",
-  "typings": "lib/index",
-  "version": "0.0.1"
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "rollup -c ./rollup.config.js -w",
+    "build": "rollup -c ./rollup.config.js"
+  },
+  "types": "dist/app/bundle.d.ts"
 }

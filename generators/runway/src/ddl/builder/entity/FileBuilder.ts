@@ -4,6 +4,8 @@ import {PathBuilder}     from '../PathBuilder'
 
 export abstract class FileBuilder {
 
+	static distBundlePath = '/dist/app/bundle'
+
 	importMap: { [fileName: string]: { [asName: string]: string } } = {}
 
 	constructor(

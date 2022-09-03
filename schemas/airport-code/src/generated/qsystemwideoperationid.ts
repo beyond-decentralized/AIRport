@@ -118,7 +118,7 @@ extends SystemWideOperationIdEId, SystemWideOperationIdEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QSystemWideOperationId extends IQEntity
+export interface QSystemWideOperationId<IQE extends QSystemWideOperationId = any> extends IQEntity<IQE | QSystemWideOperationId>
 {
 	// Id Fields
 	_localId: IQNumberField;

@@ -2,6 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -11,9 +12,10 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: '../../execs/web-airport/public/client/build/bundle.js'
+		file: '../../UI/react/main/public/client/build/bundle.js'
 	},
 	plugins: [
+		peerDepsExternal(),
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration -

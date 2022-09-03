@@ -1,9 +1,10 @@
 import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 export class UtilityBuilder extends ImplementationFileBuilder {
-    constructor(pathBuilder, classSuffix, needsQEntity) {
+    constructor(applicationFullName, pathBuilder, classSuffix, needsQEntity) {
         super('base' + classSuffix + 's', pathBuilder);
         this.classSuffix = classSuffix;
-        this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
+        // this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
+        this.diSet = applicationFullName + '_diSet';
     }
     build() {
         this.entityNames.sort();

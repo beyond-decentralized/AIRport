@@ -1,6 +1,5 @@
 import { IDomain, IApplication, IApplicationColumn, IApplicationEntity, IApplicationRelation, IApplicationVersion } from '@airport/airspace';
 import { IMemoizedSelector, ISelectorManager, LastIds } from '@airport/apron';
-import { ILocalAPIRequest } from '@airport/aviation-communication';
 import { Domain_Name, JsonApplication_Name, Application_Name, FullApplication_Name } from '@airport/ground-control';
 import { IActor } from '@airport/holding-pattern';
 import { Subject } from 'rxjs';
@@ -8,11 +7,6 @@ import { IApplicationInitializerState, InternalConnectorState, IReceiverState, I
 import { ITransactionCredentials } from '../Credentials';
 import { ISequenceGeneratorState } from '..';
 import { ITerminal } from '@airport/travel-document-checkpoint';
-export interface IMessageInRecord {
-    message: ILocalAPIRequest<'FromClientRedirected'>;
-    reject: any;
-    resolve: any;
-}
 export interface IPendingTransaction {
     context: any;
     credentials: ITransactionCredentials;

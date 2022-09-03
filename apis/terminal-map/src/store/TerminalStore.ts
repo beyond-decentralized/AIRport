@@ -39,11 +39,6 @@ import { ITransactionCredentials } from '../Credentials';
 import { ISequenceGeneratorState } from '..';
 import { ITerminal } from '@airport/travel-document-checkpoint';
 
-export interface IMessageInRecord {
-	message: ILocalAPIRequest<'FromClientRedirected'>
-	reject
-	resolve
-}
 export interface IPendingTransaction {
 	context,
 	credentials: ITransactionCredentials

@@ -1,3 +1,4 @@
+import { DbApplication } from '@airport/ground-control';
 import { ImplementationFileBuilder } from './ImplementationFileBuilder';
 import { PathBuilder } from './PathBuilder'
 
@@ -9,11 +10,12 @@ export class DvoBuilder
 	private diSet;
 
 	constructor(
-		pathBuilder: PathBuilder
+		applicationFullName: string,
+		pathBuilder: PathBuilder,
 	) {
 		super('baseDvos', pathBuilder);
 
-		this.diSet = 'duoDiSet';
+		this.diSet = applicationFullName + '_diSet';
 	}
 
 	build(): string {

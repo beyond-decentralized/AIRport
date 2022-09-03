@@ -5,9 +5,10 @@ export class DaoBuilder
 	extends UtilityBuilder {
 
 	constructor(
+		applicationFullName: string,
 		pathBuilder: PathBuilder
 	) {
-		super(pathBuilder, 'Dao', false);
+		super(applicationFullName, pathBuilder, 'Dao', false);
 	}
 
 	protected addImports() {

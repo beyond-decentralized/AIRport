@@ -1,7 +1,7 @@
 import { UtilityBuilder } from './UtilityBuilder';
 export class DaoBuilder extends UtilityBuilder {
-    constructor(pathBuilder) {
-        super(pathBuilder, 'Dao', false);
+    constructor(applicationFullName, pathBuilder) {
+        super(applicationFullName, pathBuilder, 'Dao', false);
     }
     addImports() {
         super.addImports();

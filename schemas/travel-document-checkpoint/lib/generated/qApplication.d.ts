@@ -35,6 +35,5 @@ export interface LocalQApplication extends QApplication {
 }
 export declare const Q_APPLICATION: LocalQApplication;
 export declare const Q: LocalQApplication;
-export declare function diSet(dbEntityId: ApplicationEntity_LocalId): boolean;
-export declare function duoDiSet(dbEntityId: ApplicationEntity_LocalId): boolean;
+export declare function air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(dbEntityId: ApplicationEntity_LocalId): boolean;
 //# sourceMappingURL=qApplication.d.ts.map

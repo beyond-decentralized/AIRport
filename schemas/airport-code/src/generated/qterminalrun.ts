@@ -126,7 +126,7 @@ extends TerminalRunEId, TerminalRunEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QTerminalRun extends IQEntity
+export interface QTerminalRun<IQE extends QTerminalRun = any> extends IQEntity<IQE | QTerminalRun>
 {
 	// Id Fields
 	_localId: IQNumberField;

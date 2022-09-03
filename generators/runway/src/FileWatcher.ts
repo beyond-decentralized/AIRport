@@ -1,6 +1,7 @@
 import {
 	DbApplication,
 	ApplicationEntity_LocalId,
+	DB_APPLICATION_UTILS,
 } from '@airport/ground-control';
 import {
 	JsonApplicationWithApi
@@ -28,6 +29,7 @@ import { generateDefinitions } from './FileProcessor';
 import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
+import { IOC } from '@airport/direction-indicator';
 
 /**
  * Created by Papa on 3/30/2016.
@@ -142,13 +144,16 @@ export async function watchFiles(
 
 		const entityFileReference: { [entityName: string]: string } = {};
 
+		const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
+				getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+
 		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
 		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 		const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
-		const qApplicationBuilder = new QApplicationBuilder(pathBuilder, configuration);
-		const daoBuilder = new DaoBuilder(pathBuilder);
-		const dvoBuilder = new DvoBuilder(pathBuilder);
+		const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
+		const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
+		const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);
 		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
 
 		const apiIndexBuilder = new ApiIndexBuilder(pathBuilder)

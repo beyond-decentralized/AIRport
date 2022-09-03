@@ -67,4 +67,5 @@ export class FileBuilder {
         return imports;
     }
 }
+FileBuilder.distBundlePath = '/dist/app/bundle';
 //# sourceMappingURL=FileBuilder.js.map

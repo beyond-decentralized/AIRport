@@ -9,7 +9,7 @@ import {
 import {
 	DomainVDescriptor,
 	Domain,
-} from '@airport/airspace/lib/to_be_generated/runtime-index';
+} from '@airport/airspace/dist/app/bundle';
 import {
 	ContinentVDescriptor,
 } from './locality/vcontinent';

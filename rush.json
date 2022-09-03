@@ -154,8 +154,18 @@
     },
     // "platforms" folder (alphabetical order)
     {
+      "packageName": "@airport/app",
+      "projectFolder": "platforms/app",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/web-airport",
       "projectFolder": "platforms/web-airport",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@airport/web-api",
+      "projectFolder": "platforms/web-api",
       "shouldPublish": true
     },
     {

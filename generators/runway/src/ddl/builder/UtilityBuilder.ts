@@ -7,13 +7,15 @@ export abstract class UtilityBuilder
 	private diSet;
 
 	constructor(
+		applicationFullName: string,
 		pathBuilder: PathBuilder,
 		private classSuffix: string,
 		needsQEntity: boolean
 	) {
 		super('base' + classSuffix + 's', pathBuilder);
 
-		this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
+		// this.diSet = needsQEntity ? 'diSet' : 'duoDiSet';
+		this.diSet = applicationFullName + '_diSet';
 	}
 
 	build(): string {

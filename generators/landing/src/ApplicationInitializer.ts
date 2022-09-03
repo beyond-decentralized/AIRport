@@ -26,7 +26,7 @@ import {
 import {
 	IApplication,
 	IApplicationDao
-} from '@airport/airspace/lib/to_be_generated/runtime-index';
+} from '@airport/airspace/lib/dist/app/bundle';
 import { ISchemaBuilder } from './builder/ISchemaBuilder';
 import { IApplicationChecker } from './checker/ApplicationChecker';
 import { IApplicationComposer } from './recorder/ApplicationComposer';

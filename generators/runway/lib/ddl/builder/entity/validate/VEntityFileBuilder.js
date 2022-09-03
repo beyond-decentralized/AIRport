@@ -26,7 +26,7 @@ export class VEntityFileBuilder extends FileBuilder {
         if (entity.parentEntity) {
             let parentVEntityRelativePath;
             if (entity.parentEntity.project) {
-                parentVEntityRelativePath = entity.parentEntity.project + '/lib/to_be_generated/runtime-index';
+                parentVEntityRelativePath = entity.parentEntity.project + FileBuilder.distBundlePath;
             }
             else {
                 let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'v');
@@ -51,7 +51,7 @@ ${interfaceSource}
         relationBuilders.forEach((builder) => {
             let property = builder.entityProperty;
             let type = property.type;
-            let vEntityRelativePath = property.fromProject + '/lib/to_be_generated/runtime-index';
+            let vEntityRelativePath = property.fromProject + FileBuilder.distBundlePath;
             if (property.fromProject) {
                 type = property.otherApplicationDbEntity.name;
             }
@@ -70,7 +70,7 @@ ${interfaceSource}
             }
             if (property.fromProject) {
                 let relationEntityPath = property.fromProject;
-                this.addImport([type], relationEntityPath + '/lib/to_be_generated/runtime-index', false);
+                this.addImport([type], relationEntityPath + FileBuilder.distBundlePath, false);
             }
             else {
                 const entityFilePath = this.pathBuilder.getFullPathToDdlSource(this.entityMapByName[type].path);

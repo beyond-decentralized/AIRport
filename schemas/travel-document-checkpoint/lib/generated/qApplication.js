@@ -23,11 +23,8 @@ export const Q_APPLICATION = {
     name: '@airport/travel-document-checkpoint'
 };
 export const Q = Q_APPLICATION;
-export function diSet(dbEntityId) {
+export function air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(dbEntityId) {
     return airApi.dS(Q.__dbApplication__, dbEntityId);
-}
-export function duoDiSet(dbEntityId) {
-    return airApi.ddS(Q.__dbApplication__, dbEntityId);
 }
 airApi.setQApplication(Q_APPLICATION);
 //# sourceMappingURL=qApplication.js.map

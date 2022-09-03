@@ -3,7 +3,7 @@ import { PathBuilder } from './PathBuilder';
 export declare class DvoBuilder extends ImplementationFileBuilder {
     private classSuffix;
     private diSet;
-    constructor(pathBuilder: PathBuilder);
+    constructor(applicationFullName: string, pathBuilder: PathBuilder);
     build(): string;
     protected addImports(): void;
     protected buildBaseClassDefinitions(): string;

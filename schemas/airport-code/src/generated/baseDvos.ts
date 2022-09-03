@@ -26,7 +26,7 @@ import {
 } from '@airport/ground-control';
 import {
 	Q,
-	duoDiSet,
+	air____at_airport_slash_airport_dash_code_diSet,
 } from './qApplication';
 
 
@@ -51,7 +51,7 @@ export class BaseSequenceDvo
 	implements IBaseSequenceDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return air____at_airport_slash_airport_dash_code_diSet(0)
 	}
 	
 	constructor() {
@@ -69,7 +69,7 @@ export class BaseSystemWideOperationIdDvo
 	implements IBaseSystemWideOperationIdDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return air____at_airport_slash_airport_dash_code_diSet(1)
 	}
 	
 	constructor() {
@@ -87,7 +87,7 @@ export class BaseTerminalRunDvo
 	implements IBaseTerminalRunDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return air____at_airport_slash_airport_dash_code_diSet(2)
 	}
 	
 	constructor() {
