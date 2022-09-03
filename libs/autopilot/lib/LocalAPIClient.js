@@ -8,7 +8,7 @@ import { Inject, Injected } from "@airport/direction-indicator";
 import { v4 as guidv4 } from "uuid";
 let _inDemoMode = true;
 // let _demoServer = 'https://turbase.app'
-let _demoServer = 'http://localhost:7500';
+let _demoServer = 'http://localhost:3000';
 let LocalAPIClient = class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();
@@ -87,6 +87,7 @@ let LocalAPIClient = class LocalAPIClient {
             serializedParams = this.operationSerializer.serializeAsArray(args);
         }
         const request = {
+            actor: null,
             application: token.application.name,
             args: serializedParams,
             category: 'FromClient',
@@ -147,6 +148,7 @@ let LocalAPIClient = class LocalAPIClient {
             return true;
         }
         let request = {
+            actor: null,
             application,
             args: [],
             category: 'IsConnectionReady',

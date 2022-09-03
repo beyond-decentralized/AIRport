@@ -25,7 +25,7 @@ export interface ILocalAPIClient {
 
 let _inDemoMode = true
 // let _demoServer = 'https://turbase.app'
-let _demoServer = 'http://localhost:7500'
+let _demoServer = 'http://localhost:3000'
 
 export interface IRequestRecord {
     request: ILocalAPIRequest
@@ -142,6 +142,7 @@ export class LocalAPIClient
         }
 
         const request: ILocalAPIRequest = {
+            actor: null,
             application: token.application.name,
             args: serializedParams,
             category: 'FromClient',
@@ -213,6 +214,7 @@ export class LocalAPIClient
             return true
         }
         let request: ILocalAPIRequest = {
+            actor: null,
             application,
             args: [],
             category: 'IsConnectionReady',

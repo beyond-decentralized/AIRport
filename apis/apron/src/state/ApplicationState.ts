@@ -25,7 +25,7 @@ export interface IApplicationState {
     appState: AppState
     domain: string
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (http://localhost:7500)
+    // and debugging (http://localhost:3000)
     hostServer: string
     // FIXME: tie this in to the hostServer variable
     mainDomain: string

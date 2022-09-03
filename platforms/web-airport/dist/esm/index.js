@@ -8962,7 +8962,7 @@ var __decorate$2d = (undefined && undefined.__decorate) || function (decorators,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 // let _demoServer = 'https://turbase.app'
-let _demoServer = 'http://localhost:7500';
+let _demoServer = 'http://localhost:3000';
 let LocalAPIClient = class LocalAPIClient {
     constructor() {
         this.pendingDemoMessageMap = new Map();
@@ -9036,6 +9036,7 @@ let LocalAPIClient = class LocalAPIClient {
             serializedParams = args;
         }
         const request = {
+            actor: null,
             application: token.application.name,
             args: serializedParams,
             category: 'FromClient',
@@ -9087,6 +9088,7 @@ let LocalAPIClient = class LocalAPIClient {
             return true;
         }
         let request = {
+            actor: null,
             application,
             args: [],
             category: 'IsConnectionReady',
@@ -10685,8 +10687,8 @@ const applicationState = {
     appState: AppState.NOT_INITIALIED,
     domain: null,
     // FIXME: make this dynamic for web version (https://turbase.app), local version (https://localhost:PORT)
-    // and debugging (http://localhost:7500)
-    hostServer: 'http://localhost:7500',
+    // and debugging (http://localhost:3000)
+    hostServer: 'http://localhost:3000',
     // FIXME: tie this in to the hostServer variable
     mainDomain: null,
     observableMessageMap: new Map(),
@@ -35376,29 +35378,35 @@ var indexedDb = {};
 var ObliviousSet = /** @class */ (function () {
     function ObliviousSet(ttl) {
         this.ttl = ttl;
-        this.set = new Set();
-        this.timeMap = new Map();
+        this.map = new Map();
+        /**
+         * Creating calls to setTimeout() is expensive,
+         * so we only do that if there is not timeout already open.
+         */
+        this._to = false;
     }
     ObliviousSet.prototype.has = function (value) {
-        return this.set.has(value);
+        return this.map.has(value);
     };
     ObliviousSet.prototype.add = function (value) {
         var _this = this;
-        this.timeMap.set(value, now());
-        this.set.add(value);
+        this.map.set(value, now());
         /**
          * When a new value is added,
          * start the cleanup at the next tick
          * to not block the cpu for more important stuff
          * that might happen.
          */
-        setTimeout(function () {
-            removeTooOldValues(_this);
-        }, 0);
+        if (!this._to) {
+            this._to = true;
+            setTimeout(function () {
+                _this._to = false;
+                removeTooOldValues(_this);
+            }, 0);
+        }
     };
     ObliviousSet.prototype.clear = function () {
-        this.set.clear();
-        this.timeMap.clear();
+        this.map.clear();
     };
     return ObliviousSet;
 }());
@@ -35408,20 +35416,20 @@ var ObliviousSet = /** @class */ (function () {
  */
 function removeTooOldValues(obliviousSet) {
     var olderThen = now() - obliviousSet.ttl;
-    var iterator = obliviousSet.set[Symbol.iterator]();
+    var iterator = obliviousSet.map[Symbol.iterator]();
     /**
      * Because we can assume the new values are added at the bottom,
      * we start from the top and stop as soon as we reach a non-too-old value.
      */
     while (true) {
-        var value = iterator.next().value;
-        if (!value) {
+        var next = iterator.next().value;
+        if (!next) {
             return; // no more elements
         }
-        var time = obliviousSet.timeMap.get(value);
+        var value = next[0];
+        var time = next[1];
         if (time < olderThen) {
-            obliviousSet.timeMap.delete(value);
-            obliviousSet.set.delete(value);
+            obliviousSet.map.delete(value);
         }
         else {
             // We reached a value that is not old enough
@@ -35485,10 +35493,12 @@ function fillOptionsWithDefaults$1() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.TRANSACTION_SETTINGS = void 0;
 exports.averageResponseTime = averageResponseTime;
 exports.canBeUsed = canBeUsed;
 exports.cleanOldMessages = cleanOldMessages;
 exports.close = close;
+exports.commitIndexedDBTransaction = commitIndexedDBTransaction;
 exports.create = create;
 exports.createDatabase = createDatabase;
 exports["default"] = void 0;
@@ -35499,7 +35509,7 @@ exports.getOldMessages = getOldMessages;
 exports.microSeconds = void 0;
 exports.onMessage = onMessage;
 exports.postMessage = postMessage;
-exports.removeMessageById = removeMessageById;
+exports.removeMessagesById = removeMessagesById;
 exports.type = void 0;
 exports.writeMessage = writeMessage;
 
@@ -35513,11 +35523,23 @@ var _options = options;
  * this method uses indexeddb to store the messages
  * There is currently no observerAPI for idb
  * @link https://github.com/w3c/IndexedDB/issues/51
+ * 
+ * When working on this, ensure to use these performance optimizations:
+ * @link https://rxdb.info/slow-indexeddb.html
  */
 var microSeconds = _util.microSeconds;
 exports.microSeconds = microSeconds;
 var DB_PREFIX = 'pubkey.broadcast-channel-0-';
 var OBJECT_STORE_ID = 'messages';
+/**
+ * Use relaxed durability for faster performance on all transactions.
+ * @link https://nolanlawson.com/2021/08/22/speeding-up-indexeddb-reads-and-writes/
+ */
+
+var TRANSACTION_SETTINGS = {
+  durability: 'relaxed'
+};
+exports.TRANSACTION_SETTINGS = TRANSACTION_SETTINGS;
 var type = 'idb';
 exports.type = type;
 
@@ -35532,12 +35554,30 @@ function getIdb() {
 
   return false;
 }
+/**
+ * If possible, we should explicitly commit IndexedDB transactions
+ * for better performance.
+ * @link https://nolanlawson.com/2021/08/22/speeding-up-indexeddb-reads-and-writes/
+ */
+
+
+function commitIndexedDBTransaction(tx) {
+  if (tx.commit) {
+    tx.commit();
+  }
+}
 
 function createDatabase(channelName) {
   var IndexedDB = getIdb(); // create table
 
   var dbName = DB_PREFIX + channelName;
-  var openRequest = IndexedDB.open(dbName, 1);
+  /**
+   * All IndexedDB databases are opened without version
+   * because it is a bit faster, especially on firefox
+   * @link http://nparashuram.com/IndexedDB/perf/#Open%20Database%20with%20version
+   */
+
+  var openRequest = IndexedDB.open(dbName);
 
   openRequest.onupgradeneeded = function (ev) {
     var db = ev.target.result;
@@ -35571,23 +35611,25 @@ function writeMessage(db, readerUuid, messageJson) {
     time: time,
     data: messageJson
   };
-  var transaction = db.transaction([OBJECT_STORE_ID], 'readwrite');
+  var tx = db.transaction([OBJECT_STORE_ID], 'readwrite', TRANSACTION_SETTINGS);
   return new Promise(function (res, rej) {
-    transaction.oncomplete = function () {
+    tx.oncomplete = function () {
       return res();
     };
 
-    transaction.onerror = function (ev) {
+    tx.onerror = function (ev) {
       return rej(ev);
     };
 
-    var objectStore = transaction.objectStore(OBJECT_STORE_ID);
+    var objectStore = tx.objectStore(OBJECT_STORE_ID);
     objectStore.add(writeObject);
+    commitIndexedDBTransaction(tx);
   });
 }
 
 function getAllMessages(db) {
-  var objectStore = db.transaction(OBJECT_STORE_ID).objectStore(OBJECT_STORE_ID);
+  var tx = db.transaction(OBJECT_STORE_ID, 'readonly', TRANSACTION_SETTINGS);
+  var objectStore = tx.objectStore(OBJECT_STORE_ID);
   var ret = [];
   return new Promise(function (res) {
     objectStore.openCursor().onsuccess = function (ev) {
@@ -35598,6 +35640,7 @@ function getAllMessages(db) {
 
         cursor["continue"]();
       } else {
+        commitIndexedDBTransaction(tx);
         res(ret);
       }
     };
@@ -35605,23 +35648,49 @@ function getAllMessages(db) {
 }
 
 function getMessagesHigherThan(db, lastCursorId) {
-  var objectStore = db.transaction(OBJECT_STORE_ID).objectStore(OBJECT_STORE_ID);
+  var tx = db.transaction(OBJECT_STORE_ID, 'readonly', TRANSACTION_SETTINGS);
+  var objectStore = tx.objectStore(OBJECT_STORE_ID);
   var ret = [];
+  var keyRangeValue = IDBKeyRange.bound(lastCursorId + 1, Infinity);
+  /**
+   * Optimization shortcut,
+   * if getAll() can be used, do not use a cursor.
+   * @link https://rxdb.info/slow-indexeddb.html
+   */
+
+  if (objectStore.getAll) {
+    var getAllRequest = objectStore.getAll(keyRangeValue);
+    return new Promise(function (res, rej) {
+      getAllRequest.onerror = function (err) {
+        return rej(err);
+      };
+
+      getAllRequest.onsuccess = function (e) {
+        res(e.target.result);
+      };
+    });
+  }
 
   function openCursor() {
     // Occasionally Safari will fail on IDBKeyRange.bound, this
     // catches that error, having it open the cursor to the first
     // item. When it gets data it will advance to the desired key.
     try {
-      var keyRangeValue = IDBKeyRange.bound(lastCursorId + 1, Infinity);
+      keyRangeValue = IDBKeyRange.bound(lastCursorId + 1, Infinity);
       return objectStore.openCursor(keyRangeValue);
     } catch (e) {
       return objectStore.openCursor();
     }
   }
 
-  return new Promise(function (res) {
-    openCursor().onsuccess = function (ev) {
+  return new Promise(function (res, rej) {
+    var openCursorRequest = openCursor();
+
+    openCursorRequest.onerror = function (err) {
+      return rej(err);
+    };
+
+    openCursorRequest.onsuccess = function (ev) {
       var cursor = ev.target.result;
 
       if (cursor) {
@@ -35632,24 +35701,30 @@ function getMessagesHigherThan(db, lastCursorId) {
           cursor["continue"]();
         }
       } else {
+        commitIndexedDBTransaction(tx);
         res(ret);
       }
     };
   });
 }
 
-function removeMessageById(db, id) {
-  var request = db.transaction([OBJECT_STORE_ID], 'readwrite').objectStore(OBJECT_STORE_ID)["delete"](id);
-  return new Promise(function (res) {
-    request.onsuccess = function () {
-      return res();
-    };
-  });
+function removeMessagesById(db, ids) {
+  var tx = db.transaction([OBJECT_STORE_ID], 'readwrite', TRANSACTION_SETTINGS);
+  var objectStore = tx.objectStore(OBJECT_STORE_ID);
+  return Promise.all(ids.map(function (id) {
+    var deleteRequest = objectStore["delete"](id);
+    return new Promise(function (res) {
+      deleteRequest.onsuccess = function () {
+        return res();
+      };
+    });
+  }));
 }
 
 function getOldMessages(db, ttl) {
   var olderThen = new Date().getTime() - ttl;
-  var objectStore = db.transaction(OBJECT_STORE_ID).objectStore(OBJECT_STORE_ID);
+  var tx = db.transaction(OBJECT_STORE_ID, 'readonly', TRANSACTION_SETTINGS);
+  var objectStore = tx.objectStore(OBJECT_STORE_ID);
   var ret = [];
   return new Promise(function (res) {
     objectStore.openCursor().onsuccess = function (ev) {
@@ -35664,6 +35739,7 @@ function getOldMessages(db, ttl) {
           cursor["continue"]();
         } else {
           // no more old messages,
+          commitIndexedDBTransaction(tx);
           res(ret);
           return;
         }
@@ -35676,8 +35752,8 @@ function getOldMessages(db, ttl) {
 
 function cleanOldMessages(db, ttl) {
   return getOldMessages(db, ttl).then(function (tooOld) {
-    return Promise.all(tooOld.map(function (msgObj) {
-      return removeMessageById(db, msgObj.id);
+    return removeMessagesById(db, tooOld.map(function (msg) {
+      return msg.id;
     }));
   });
 }
@@ -36292,7 +36368,13 @@ function enforceOptions(options) {
 BroadcastChannel$1.prototype = {
   postMessage: function postMessage(msg) {
     if (this.closed) {
-      throw new Error('BroadcastChannel.postMessage(): ' + 'Cannot post message after channel has closed');
+      throw new Error('BroadcastChannel.postMessage(): ' + 'Cannot post message after channel has closed ' +
+      /**
+       * In the past when this error appeared, it was realy hard to debug.
+       * So now we log the msg together with the error so it at least
+       * gives some clue about where in your application this happens.
+       */
+      JSON.stringify(msg));
     }
 
     return _post(this, 'message', msg);
