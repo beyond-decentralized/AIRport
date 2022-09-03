@@ -1,41 +1,11 @@
 import { airportApi, Application, IUserAccountInfo, Repository } from '@airport/web-airport'
 import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
 
-export enum LoadedComponentState {
-    NONE,
-    APPS,
-    REPOSITORIES,
-    UIS
-}
-
-let loadedComponentState = LoadedComponentState.NONE
-
 export function signUp(
     ev: CustomEvent<OverlayEventDetail>,
     showMessage: (message: string, duration: number) => void
 ): void {
     asyncSignUp(ev.detail.role, ev.detail.data, showMessage).then()
-}
-
-export function initialGet(
-    activeComponentState: LoadedComponentState,
-    setter: (results: any[]) => void,
-    showMessage: (message: string, duration: number) => void
-) {
-    if (loadedComponentState === activeComponentState) {
-        return
-    }
-    loadedComponentState = activeComponentState
-    switch (activeComponentState) {
-        case LoadedComponentState.APPS:
-            getApplications(setter, showMessage)
-            break
-        case LoadedComponentState.REPOSITORIES:
-            getRepositories(setter, showMessage)
-            break
-        case LoadedComponentState.UIS:
-            break
-    }
 }
 
 export function getApplications(

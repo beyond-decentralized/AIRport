@@ -1,15 +1,17 @@
 import { Application } from '@airport/web-airport';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
-import { useState } from 'react';
-import { getApplications, initialGet, LoadedComponentState } from '../api';
+import { useEffect, useState } from 'react';
+import { getApplications } from '../api';
 import './AppsPage.css';
 
 const AppsPage: React.FC = () => {
   const [applications, setApplications] = useState<Application[]>([])
   const [present] = useIonToast()
 
-  initialGet(LoadedComponentState.APPS, setApplications, present)
+  useEffect(() => {
+    getApplications(setApplications, present)
+  }, [])
 
   return (
     <IonPage>
