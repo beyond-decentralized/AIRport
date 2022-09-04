@@ -54,6 +54,17 @@ export async function watchFiles(
 
 	// Create the language service host to allow the LS to communicate with the host
 	const servicesHost: ts.LanguageServiceHost = {
+		readFile: (filename: string, encoding?: string) => {
+			try {
+				const content =  fs.readFileSync(filename, encoding || 'utf8' as any);
+				return content as any;
+			} catch (e) {
+				return '';
+			}
+		},
+		fileExists: (filename: string) => {
+			return servicesHost.readFile(filename) !== '';
+		},
 		getCompilationSettings: () => options,
 		getScriptFileNames: () => rootFileNames,
 		getScriptVersion: (fileName) => files[fileName] && files[fileName].version.toString(),

@@ -1,1 +1,0 @@
-{"version":3,"file":"globalScopeUtils.js","sourceRoot":"","sources":["../../src/core/globalScopeUtils.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,GAAG,EAAE,MAAM,8BAA8B,CAAC;AACnD,OAAO,EAAE,oBAAoB,EAAE,MAAM,yBAAyB,CAAC;AAE/D,MAAM,UAAU,eAAe,CAC9B,MAAS;IAET,GAAG,CAAC,OAAO,CAAC,oBAAoB,CAAC,CAAC,eAAe,CAAC,MAAM,CAAC,CAAC;AAC3D,CAAC"}

@@ -35,6 +35,8 @@ export interface IOnlineManager {
 
 }
 
+// TODO: implement
+
 @Injected()
 export class OnlineManager
   implements IOnlineManager {
@@ -98,124 +100,124 @@ export class OnlineManager
   async goOnline(
     context: IContext = {}
   ): Promise<void> {
-    await this.transactionManager.transactInternal(async () => {
-      try {
-        // 1)  Flip update state to GO_ONLINE
-        this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
-        // 2)  Find repositories
-        // const repoRecords = await this.repositoryDao.findWithTransaction()
-        const repoRecords = await this.repositoryDao.findReposWithDetailsByIds();
+    // await this.transactionManager.transactInternal(async () => {
+    //   try {
+    //     // 1)  Flip update state to GO_ONLINE
+    //     this.repositoryManager.setUpdateStateForAll(UpdateState.GO_ONLINE);
+    //     // 2)  Find repositories
+    //     // const repoRecords = await this.repositoryDao.findWithTransaction()
+    //     const repoRecords = await this.repositoryDao.findReposWithDetailsByIds();
 
-        // 3) make each repository go Online
-        let goOnlineCalls: Promise<void>[] = [];
-        repoRecords.forEach((repository) => {
-          goOnlineCalls.push(this.repositoryGoOnline(
-            repository,
-            this.repositoryManager
-          ));
-        });
-        await Promise.all(goOnlineCalls);
+    //     // 3) make each repository go Online
+    //     let goOnlineCalls: Promise<void>[] = [];
+    //     repoRecords.forEach((repository) => {
+    //       goOnlineCalls.push(this.repositoryGoOnline(
+    //         repository,
+    //         this.repositoryManager
+    //       ));
+    //     });
+    //     await Promise.all(goOnlineCalls);
 
-        // 9)  Flip the online state to true
-        this.online = true;
-      } catch (error) {
-        // TODO: notify of error
-        throw error;
-      } finally {
-        // Finally, always flip update state to LOCAL
-        this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
-      }
-    }, context);
+    //     // 9)  Flip the online state to true
+    //     this.online = true;
+    //   } catch (error) {
+    //     // TODO: notify of error
+    //     throw error;
+    //   } finally {
+    //     // Finally, always flip update state to LOCAL
+    //     this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
+    //   }
+    // }, context);
   }
 
-  async repositoryGoOnline(
-    repository: IRepository,
-    repositoryManager: IRepositoryManager,
-  ): Promise<void> {
-    let deltaStore = repositoryManager.deltaStore[repository._localId];
+  // async repositoryGoOnline(
+  //   repository: IRepository,
+  //   repositoryManager: IRepositoryManager,
+  // ): Promise<void> {
+  //   let deltaStore = repositoryManager.deltaStore[repository._localId];
 
-    let remoteChangesSinceInitialGoOnline = [];
+  //   let remoteChangesSinceInitialGoOnline = [];
 
-    // 3)  Go Online and start listening for new transactions coming in
-    await deltaStore.goOnline(async (transactions: IRepositoryTransactionHistory[]) => {
-      if (!transactions.length) {
-        return;
-      }
-      transactions = transactions.map((repoTransaction) => {
-        repoTransaction = new RepositoryTransactionHistory(repoTransaction);
-        // TODO: ?is the following needed?
-        // repoTransaction.deserialize(repository)
+  //   // 3)  Go Online and start listening for new transactions coming in
+  //   await deltaStore.goOnline(async (transactions: IRepositoryTransactionHistory[]) => {
+  //     if (!transactions.length) {
+  //       return;
+  //     }
+  //     transactions = transactions.map((repoTransaction) => {
+  //       repoTransaction = new RepositoryTransactionHistory(repoTransaction);
+  //       // TODO: ?is the following needed?
+  //       // repoTransaction.deserialize(repository)
 
-        return repoTransaction;
-      });
-      // a) While Go-Online is in progress continue gathering all remote transactions
-      // that come in and add them to remoteChangesSinceInitialGoOffline
-      if (repositoryManager.getUpdateState(repository) === UpdateState.GO_ONLINE) {
-        remoteChangesSinceInitialGoOnline.push(transactions);
-      }
-      // b) Once Go-Online finishes, when remote transactions come in
-      else {
-        try {
-          // i)  Flip update state to REMOTE_CHANGES
-          repositoryManager.setUpdateState(repository, UpdateState.REMOTE);
-          // ii)  Add remote transactions to local store
-          await this.offlineDeltaStore.addRemoteChanges(repository, transactions);
-        } catch (error) {
-          // TODO: notify of error
-          throw error;
-        } finally {
-          // iii) Flip state to LOCAL
-          repositoryManager.setUpdateState(repository, UpdateState.LOCAL);
-        }
+  //       return repoTransaction;
+  //     });
+  //     // a) While Go-Online is in progress continue gathering all remote transactions
+  //     // that come in and add them to remoteChangesSinceInitialGoOffline
+  //     if (repositoryManager.getUpdateState(repository) === UpdateState.GO_ONLINE) {
+  //       remoteChangesSinceInitialGoOnline.push(transactions);
+  //     }
+  //     // b) Once Go-Online finishes, when remote transactions come in
+  //     else {
+  //       try {
+  //         // i)  Flip update state to REMOTE_CHANGES
+  //         repositoryManager.setUpdateState(repository, UpdateState.REMOTE);
+  //         // ii)  Add remote transactions to local store
+  //         await this.offlineDeltaStore.addRemoteChanges(repository, transactions);
+  //       } catch (error) {
+  //         // TODO: notify of error
+  //         throw error;
+  //       } finally {
+  //         // iii) Flip state to LOCAL
+  //         repositoryManager.setUpdateState(repository, UpdateState.LOCAL);
+  //       }
 
-      }
-    });
+  //     }
+  //   });
 
-    // 4)  Load from deltaStore all remote transactions since lastSyncedTransaction
-    let remoteChangesIter = await deltaStore.loadTransactionsSinceLastKnown(repository.lastSyncedTransaction);
-    let remoteChanges = [];
-    while (remoteChangesIter.hasNext()) {
-      remoteChanges.push(remoteChangesIter.next());
-    }
-    // 5)  Add remote transactions to local store
-    if (remoteChanges.length) {
-      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
-    }
+  //   // 4)  Load from deltaStore all remote transactions since lastSyncedTransaction
+  //   let remoteChangesIter = await deltaStore.loadTransactionsSinceLastKnown(repository.lastSyncedTransaction);
+  //   let remoteChanges = [];
+  //   while (remoteChangesIter.hasNext()) {
+  //     remoteChanges.push(remoteChangesIter.next());
+  //   }
+  //   // 5)  Add remote transactions to local store
+  //   if (remoteChanges.length) {
+  //     await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+  //   }
 
-    // 6)  While there are more transactions coming in remotely:
-    while (remoteChangesSinceInitialGoOnline.length) {
-      remoteChanges = remoteChangesSinceInitialGoOnline;
-      remoteChangesSinceInitialGoOnline = [];
-      // Add them to local store
-      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
-    }
+  //   // 6)  While there are more transactions coming in remotely:
+  //   while (remoteChangesSinceInitialGoOnline.length) {
+  //     remoteChanges = remoteChangesSinceInitialGoOnline;
+  //     remoteChangesSinceInitialGoOnline = [];
+  //     // Add them to local store
+  //     await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+  //   }
 
-    // 7)  Find all local unsynced transactions
-    let unsyncedChanges = await this.repositoryTransactionHistoryDao
-      .findUnsyncedTransactions(repository);
-    if (unsyncedChanges.length) {
-      unsyncedChanges.forEach((transaction) => {
-        // a)  Mark them as synchronized
-        transaction.syncStatus = BlockSyncStatus.SYNCHRONIZED;
-      });
-      // b)  add them to deltaStore
-      await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
-      // c)  save them back in local store, now with the synched flag
-      // (and update db with new lastSyncedTransaction)
-      await this.offlineDeltaStore.markChangesAsSynced(repository, null);
-    }
+  //   // 7)  Find all local unsynced transactions
+  //   let unsyncedChanges = await this.repositoryTransactionHistoryDao
+  //     .findUnsyncedTransactions(repository);
+  //   if (unsyncedChanges.length) {
+  //     unsyncedChanges.forEach((transaction) => {
+  //       // a)  Mark them as synchronized
+  //       transaction.syncStatus = BlockSyncStatus.SYNCHRONIZED;
+  //     });
+  //     // b)  add them to deltaStore
+  //     await deltaStore.addChanges(deltaStore.config.changeListConfig, unsyncedChanges);
+  //     // c)  save them back in local store, now with the synched flag
+  //     // (and update db with new lastSyncedTransaction)
+  //     await this.offlineDeltaStore.markChangesAsSynced(repository, null);
+  //   }
 
-    // 	8)  While there are more transactions coming in remotely:
-    // Add them to local store
-    while (remoteChangesSinceInitialGoOnline.length) {
-      remoteChanges = remoteChangesSinceInitialGoOnline;
-      remoteChangesSinceInitialGoOnline = [];
-      await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
-    }
+  //   // 	8)  While there are more transactions coming in remotely:
+  //   // Add them to local store
+  //   while (remoteChangesSinceInitialGoOnline.length) {
+  //     remoteChanges = remoteChangesSinceInitialGoOnline;
+  //     remoteChangesSinceInitialGoOnline = [];
+  //     await this.offlineDeltaStore.addRemoteChanges(repository, remoteChanges);
+  //   }
 
-    // 9)  Flip the online state to true
-    this.online = true;
-  }
+  //   // 9)  Flip the online state to true
+  //   this.online = true;
+  // }
 
   isOnline(
     context: IContext = {}

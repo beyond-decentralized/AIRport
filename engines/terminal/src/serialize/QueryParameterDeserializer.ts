@@ -58,7 +58,7 @@ export class QueryParameterDeserializer
                 break;
             case SQLDataType.DATE:
                 if (!(parameter instanceof Object)
-                    || parameter[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
+                    // || parameter[entityStateManager.getStateFieldName()] !== EntityState.RESULT_DATE
                     || !parameter.value) {
                     throw new Error(`Invalid Serialized Date format for:
                     ${query.dbEntity.name}.${query.jsonQuery.queryName}

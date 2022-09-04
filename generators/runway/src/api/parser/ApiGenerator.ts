@@ -164,7 +164,7 @@ function serializeMethod(
             isAsync = true
         }
     }
-    member.valueDeclaration.decorators.forEach(decorator => {
+    (member.valueDeclaration as any).decorators.forEach(decorator => {
         // decorator.expression.kind = 196 CallExpression
         // decorator.expression.expression.kind = 75 Identifier
         let decoratorNameExpression = (decorator.expression as any).expression

@@ -1,1 +1,0 @@
-{"version":3,"file":"InterAppAPIClient.d.ts","sourceRoot":"","sources":["../../src/dependencyInjection/InterAppAPIClient.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,yBAAyB,EAAE,MAAM,SAAS,CAAC;AAEpD,MAAM,WAAW,kBAAkB;IAE/B,eAAe,CAAC,YAAY,EAAE,WAAW,EACrC,KAAK,EAAE,yBAAyB,CAAC,YAAY,CAAC,EAC9C,UAAU,EAAE,MAAM,EAClB,IAAI,EAAE,GAAG,EAAE,GACZ,OAAO,CAAC,WAAW,CAAC,CAAA;CAE1B"}

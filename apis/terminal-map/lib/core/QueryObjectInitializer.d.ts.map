@@ -1,1 +1,0 @@
-{"version":3,"file":"QueryObjectInitializer.d.ts","sourceRoot":"","sources":["../../src/core/QueryObjectInitializer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,cAAc,CAAC;AAE7C,MAAM,WAAW,uBAAuB;IAEvC,UAAU,IAAI,OAAO,CAAC,aAAa,CAAC,CAAA;IAEpC,gCAAgC,CAC/B,aAAa,EAAE,aAAa,GAC1B,IAAI,CAAA;CAEP"}

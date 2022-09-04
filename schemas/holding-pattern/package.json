@@ -5,7 +5,7 @@
     "domain": "air",
     "application": "holding-pattern"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
     "@airport/autopilot": "0.0.1",

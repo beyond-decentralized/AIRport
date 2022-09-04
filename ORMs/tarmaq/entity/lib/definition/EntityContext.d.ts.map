@@ -1,1 +1,0 @@
-{"version":3,"file":"EntityContext.d.ts","sourceRoot":"","sources":["../../src/definition/EntityContext.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,8BAA8B,CAAA;AACvD,OAAO,EAAE,QAAQ,EAAE,MAAM,yBAAyB,CAAA;AAElD,MAAM,WAAW,cAChB,SAAQ,QAAQ;IAChB,QAAQ,CAAC,EAAE,QAAQ,CAAA;CACnB"}

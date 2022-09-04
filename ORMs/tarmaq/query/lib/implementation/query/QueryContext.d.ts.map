@@ -1,1 +1,0 @@
-{"version":3,"file":"QueryContext.d.ts","sourceRoot":"","sources":["../../../src/implementation/query/QueryContext.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,aAAa,EACb,MAAM,qCAAqC,CAAC;AAG7C,MAAM,WAAW,mBAAmB;IAEnC,MAAM,CACL,OAAO,EAAE,aAAa,GACpB,OAAO,CAAC,IAAI,CAAC,CAAA;CAEhB;AAED,qBAAa,kBACZ,YAAW,mBAAmB;IAExB,MAAM,CACX,OAAO,EAAE,aAAa,GACpB,OAAO,CAAC,IAAI,CAAC;CAGhB"}

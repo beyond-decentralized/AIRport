@@ -5,7 +5,7 @@
     "domain": "air",
     "application": "travel-document-checkpoint"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
     "@airbridge/validate": "0.0.1",
     "@airport/airspace": "0.0.1",

@@ -1,9 +1,0 @@
-export declare const DATABASE_MANAGER: any;
-export declare const DELETE_MANAGER: any;
-export declare const HISTORY_MANAGER: any;
-export declare const INSERT_MANAGER: any;
-export declare const OFFLINE_DELTA_STORE: any;
-export declare const ONLINE_MANAGER: any;
-export declare const QUERY_MANAGER: any;
-export declare const REPOSITORY_MANAGER: any;
-export declare const UPDATE_MANAGER: any;

@@ -200,7 +200,7 @@ export abstract class Dao<Entity,
 		entity: EntityInfo,
 		context?: IContext,
 	): Promise<ISaveResult> {
-		return await this.db.save(<EntityCreate>entity,
+		return await this.db.save(entity as any as EntityCreate,
 			this.ensureContext(context));
 	}
 
@@ -251,7 +251,7 @@ export abstract class Dao<Entity,
 			| { (...args: any[]): RawEntityQuery<EntitySelect> },
 		ctx?: IContext
 	): Promise<E> {
-		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as E[]
+		const records: E[] = await this.db.find.graph(rawGraphQuery, ctx) as any as E[]
 
 		if (!records.length) {
 			return null

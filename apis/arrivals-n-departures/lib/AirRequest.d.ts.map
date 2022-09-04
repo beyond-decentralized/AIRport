@@ -1,1 +1,0 @@
-{"version":3,"file":"AirRequest.d.ts","sourceRoot":"","sources":["../src/AirRequest.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,0BAA0B,CAAC;AACjD,OAAO,EAAE,WAAW,EAAE,MAAM,qCAAqC,CAAC;AAElE,MAAM,WAAW,UAAU;IACvB,KAAK,EAAE,KAAK,CAAA;IACZ,WAAW,EAAE,WAAW,CAAA;CAC3B"}

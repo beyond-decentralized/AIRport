@@ -13,11 +13,13 @@ const packageJson = require("./package.json");
 export default [
     {
         input: 'src/index.ts',
-        output: {
-            file: packageJson.module,
-            format: 'esm',
-            sourcemap: true,
-        },
+        output: [
+            {
+                file: packageJson.module,
+                format: "esm",
+                sourcemap: true,
+            },
+        ],
         plugins: [
             peerDepsExternal(),
             resolve({
@@ -30,25 +32,6 @@ export default [
                 inlineSources: !production
             }),
             production && terser()
-        ],
-        watch: {
-            clearScreen: false
-        }
-    },
-    {
-        input: './src/generated/application.ts',
-        output: [{
-            file: "dist/definition/application.mjs",
-            sourcemap: true,
-        }],
-        plugins: [
-            typescript({
-                tsconfigDefaults: {
-                    "files": [
-                        "src/generated/application.ts"
-                    ],
-                }
-            })
         ],
         watch: {
             clearScreen: false
