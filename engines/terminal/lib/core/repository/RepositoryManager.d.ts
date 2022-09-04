@@ -1,4 +1,4 @@
-import { IRepository, IRepositoryDao, IRepositoryManager, Repository, UpdateState } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IRepository, IRepositoryDao, IRepositoryManager, Repository, UpdateState } from '@airport/holding-pattern/dist/app/bundle';
 import { IEntityUpdateProperties, IQEntityInternal, RawDelete, RawInsertValues, RawUpdate } from '@airport/tarmaq-query';
 import { ITerminalSessionManager } from '@airport/terminal-map';
 /**

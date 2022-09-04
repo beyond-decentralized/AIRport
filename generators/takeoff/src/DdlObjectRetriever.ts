@@ -15,7 +15,7 @@ import {
 	IApplicationRelationColumnDao,
 	IApplicationRelationDao,
 	IApplicationVersionDao
-} from '@airport/airspace'
+} from '@airport/airspace/dist/app/bundle'
 import {
 	Domain_LocalId,
 	Application_Index,

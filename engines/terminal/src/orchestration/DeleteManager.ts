@@ -28,7 +28,7 @@ import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo,
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default import is reserved
+} from '@airport/holding-pattern/dist/app/bundle' // default import is reserved
 // for Applications
 import {
 	IApplicationUtils,

@@ -13,13 +13,13 @@ import {
 	ApplicationEntity,
 	ApplicationColumnVDescriptor,
 	ApplicationColumn,
-} from '@airport/airspace';
+} from '@airport/airspace/dist/app/bundle';
 import {
 	RepositoryVDescriptor,
 	Repository,
 	ActorVDescriptor,
 	Actor,
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+} from '@airport/holding-pattern/dist/app/bundle';
 import {
 	IRecordUpdateStage,
 } from './recordupdatestage';
@@ -31,17 +31,17 @@ import {
 ////////////////////
 
 export interface RecordUpdateStageVDescriptor<T>
-	extends IEntityVDescriptor<T> {
+    extends IEntityVDescriptor<T> {
 	// Id Properties
 	_localId?: number | IVNumberField;
-
+	
 	// Non-Id Properties
 	_actorRecordId?: number | IVNumberField;
 	updatedValue?: any | IVUntypedField;
 
 	// Id Relations - full property interfaces
 
-	// Non-Id relations (including OneToMany's)
+  // Non-Id relations (including OneToMany's)
 	applicationVersion?: ApplicationVersionVDescriptor<ApplicationVersion>
 	entity?: ApplicationEntityVDescriptor<ApplicationEntity>
 	repository?: RepositoryVDescriptor<Repository>

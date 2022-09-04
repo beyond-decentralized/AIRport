@@ -15,7 +15,7 @@ import {
 import {
 	TerminalVDescriptor,
 	Terminal,
-} from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
+} from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	IRepositoryTerminal,
 } from './repositoryterminal';

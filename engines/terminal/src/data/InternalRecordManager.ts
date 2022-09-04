@@ -9,7 +9,7 @@ import {
     Actor,
     IActor,
     IActorDao,
-} from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
 import {
@@ -17,7 +17,7 @@ import {
     IApplication,
     IDomainDao,
     IApplicationDao
-} from "@airport/airspace";
+} from "@airport/airspace/dist/app/bundle";
 import {
     Terminal,
     UserAccount

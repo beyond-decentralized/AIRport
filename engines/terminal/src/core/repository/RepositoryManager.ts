@@ -13,7 +13,7 @@ import {
 	QAirEntity,
 	Repository,
 	UpdateState
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index' // default
+} from '@airport/holding-pattern/dist/app/bundle' // default
 // import is reserved for Application use
 import {
 	AND,

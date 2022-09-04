@@ -1,1 +1,0 @@
-{"version":3,"file":"continent.d.ts","sourceRoot":"","sources":["../../../src/generated/locality/continent.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,QAAQ,EACR,MAAM,WAAW,CAAC;AACnB,OAAO,EACN,YAAY,EACZ,MAAM,gBAAgB,CAAC;AAQxB,MAAM,WAAW,UAAU;IAG1B,EAAE,EAAE,MAAM,CAAC;IAKX,IAAI,CAAC,EAAE,MAAM,CAAC;IAGd,SAAS,CAAC,EAAE,QAAQ,EAAE,CAAC;IACvB,YAAY,CAAC,EAAE,YAAY,EAAE,CAAC;CAM9B"}

@@ -57,7 +57,7 @@ import {
 } from '@airport/ground-control';
 import {
 	Q,
-	duoDiSet,
+	air____at_airport_slash_layover_diSet,
 } from './qApplication';
 
 
@@ -106,7 +106,7 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return air____at_airport_slash_layover_diSet(0)
 	}
 	
 	constructor() {
@@ -134,7 +134,7 @@ export class BaseSynchronizationConflictDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return air____at_airport_slash_layover_diSet(2)
 	}
 	
 	constructor() {
@@ -162,7 +162,7 @@ export class BaseSynchronizationConflictValuesDao
   }
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return air____at_airport_slash_layover_diSet(1)
 	}
 	
 	constructor() {

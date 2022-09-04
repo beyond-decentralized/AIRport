@@ -1,4 +1,4 @@
-import { IDomainDao, IApplicationColumnDao, IApplicationDao, IApplicationEntityDao, IApplicationPropertyColumnDao, IApplicationPropertyDao, IApplicationReferenceDao, IApplicationRelationColumnDao, IApplicationRelationDao, IApplicationVersionDao } from '@airport/airspace';
+import { IDomainDao, IApplicationColumnDao, IApplicationDao, IApplicationEntityDao, IApplicationPropertyColumnDao, IApplicationPropertyDao, IApplicationReferenceDao, IApplicationRelationColumnDao, IApplicationRelationDao, IApplicationVersionDao } from '@airport/airspace/dist/app/bundle';
 import { DdlObjects, ITerminalStore } from '@airport/terminal-map';
 export interface IDdlObjectRetriever {
     retrieveDdlObjects(): Promise<DdlObjects>;

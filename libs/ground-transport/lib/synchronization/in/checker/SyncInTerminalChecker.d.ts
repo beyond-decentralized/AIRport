@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { ITerminalDao } from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
+import { ITerminalDao } from '@airport/travel-document-checkpoint/dist/app/bundle';
 export interface ISyncInTerminalChecker {
     ensureTerminals(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }

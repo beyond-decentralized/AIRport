@@ -1,6 +1,6 @@
 {
     "search.exclude": {
-        "**/lib": true
+        "**/dist": true
     },
     "files.exclude": {
         ".github": true,
@@ -8,10 +8,6 @@
         ".vscode": true,
         "**/.idea": true,
         "**/.rush": true,
-        "**/lib": true,
-        "**/node_modules": true,
-        "**/README.md": true,
-        "**/tsconfig.json": true,
         "common": true
     }
 }

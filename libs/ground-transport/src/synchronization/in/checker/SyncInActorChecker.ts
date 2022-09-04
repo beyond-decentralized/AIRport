@@ -11,7 +11,7 @@ import {
 } from '@airport/holding-pattern'
 import {
 	IActorDao
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/dist/app/bundle'
 
 export interface ISyncInActorChecker {
 

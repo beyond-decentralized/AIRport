@@ -1,10 +1,9 @@
 {
+  "name": "@airport/travel-document-checkpoint",
+  "version": "0.0.1",
   "airport": {
     "domain": "air",
-    "application": "travel-document-checkpoint",
-    "userAccount": "diapco",
-    "project": "airport",
-    "path": "applications/travel-document-checkpoint"
+    "application": "travel-document-checkpoint"
   },
   "dependencies": {
     "@airport/air-traffic-control": "0.0.1",
@@ -21,11 +20,25 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@airport/runway": "0.0.1"
+    "@airport/runway": "0.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "rollup-plugin-typescript2": "0.33.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.5.2",
+    "tslib": "^2.0.0"
   },
-  "main": "lib/to_be_generated/api-index.js",
-  "name": "@airport/travel-document-checkpoint",
-  "type": "module",
-  "typings": "lib/to_be_generated/api-index",
-  "version": "0.0.1"
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "rollup -c ./rollup.config.js -w",
+    "build": "rollup -c ./rollup.config.js"
+  },
+  "types": "dist/index.d.ts"
 }

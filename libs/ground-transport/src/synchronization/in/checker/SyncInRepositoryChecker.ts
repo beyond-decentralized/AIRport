@@ -7,7 +7,7 @@ import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures
 import {
 	IRepository,
 	IRepositoryDao
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/dist/app/bundle'
 
 export interface ISyncInRepositoryChecker {
 

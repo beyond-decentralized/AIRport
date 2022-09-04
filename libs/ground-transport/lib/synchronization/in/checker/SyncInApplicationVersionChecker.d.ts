@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IApplicationVersion, IApplicationVersionDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { IApplicationVersion, IApplicationVersionDao } from '@airport/airspace/dist/app/bundle';
 import { IContext } from '@airport/direction-indicator';
 export interface IApplicationVersionCheckRecord {
     found?: boolean;

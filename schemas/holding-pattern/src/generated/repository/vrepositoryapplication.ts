@@ -9,7 +9,7 @@ import {
 import {
 	ApplicationVDescriptor,
 	Application,
-} from '@airport/airspace/lib/to_be_generated/runtime-index';
+} from '@airport/airspace/dist/app/bundle';
 import {
 	RepositoryVDescriptor,
 } from './vrepository';

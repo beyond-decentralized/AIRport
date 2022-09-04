@@ -1,1 +1,0 @@
-{"version":3,"file":"repositoryterminal.d.ts","sourceRoot":"","sources":["../../../src/generated/repository/repositoryterminal.ts"],"names":[],"mappings":"AAAA,OAAO,EACN,WAAW,EACX,MAAM,cAAc,CAAC;AACtB,OAAO,EACN,SAAS,EACT,MAAM,qCAAqC,CAAC;AAQ7C,MAAM,WAAW,mBAAmB;IAKnC,UAAU,EAAE,WAAW,CAAC;IACxB,QAAQ,EAAE,SAAS,CAAC;CAUpB"}

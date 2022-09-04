@@ -173,7 +173,7 @@ extends SynchronizationConflictEId, SynchronizationConflictEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QSynchronizationConflict extends IQEntity
+export interface QSynchronizationConflict<IQE extends QSynchronizationConflict = any> extends IQEntity<IQE | QSynchronizationConflict>
 {
 	// Id Fields
 	_localId: IQNumberField;

@@ -36,7 +36,7 @@ import {
     REPOSITORY_TRANSACTION_HISTORY_DAO,
     REPOSITORY_TRANSACTION_HISTORY_DUO,
     TRANSACTION_HISTORY_DUO
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/dist/app/bundle'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
 import { QUERY_UTILS } from '@airport/tarmaq-query'
 import {
@@ -82,7 +82,7 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer'
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer'
 import { RepositoryManager } from './core/repository/RepositoryManager'
-import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/lib/core/core-tokens'
+import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { LOCAL_API_SERVER } from '@airport/apron'
 
 const terminal = lib('terminal')

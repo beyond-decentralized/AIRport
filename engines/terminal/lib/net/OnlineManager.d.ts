@@ -1,5 +1,5 @@
 import { IContext } from '@airport/direction-indicator';
-import { IRepository, IRepositoryTransactionHistoryDao, IRepositoryDao, IRepositoryManager } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IRepository, IRepositoryTransactionHistoryDao, IRepositoryDao, IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import { ITransactionManager } from '@airport/terminal-map';
 export interface IOnlineManager {
     goOffline(context?: IContext): Promise<void>;

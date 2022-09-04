@@ -1,6 +1,6 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { DbColumn, DbEntity, IRootTransaction, JsonInsertValues, PortableQuery, ISequenceGenerator } from '@airport/ground-control';
-import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IActor, IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/dist/app/bundle';
 import { IHistoryManager, IInsertManager, IOperationContext, ITransaction, Record_LocalId } from '@airport/terminal-map';
 export declare class InsertManager implements IInsertManager {
     airportDatabase: IAirportDatabase;

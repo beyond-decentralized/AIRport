@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IActorDao } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IActorDao } from '@airport/holding-pattern/dist/app/bundle';
 export interface ISyncInActorChecker {
     ensureActors(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }

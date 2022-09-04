@@ -1,6 +1,6 @@
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserStore } from '@airport/terminal-map'
-import { IUserAccountManager } from '@airport/travel-document-checkpoint/lib/core/UserAccountManager';
+import { IUserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle';
 
 @Injected()
 export class TerminalSessionManager

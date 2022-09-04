@@ -23,7 +23,7 @@ import {
 	IRepositoryTransactionHistory,
 	RepositoryTransactionType,
 	Repository_LocalId
-} from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { IUserAccount, Terminal_LocalId, UserAccount_LocalId } from "@airport/travel-document-checkpoint";
 
 export interface ISyncOutDataSerializer {

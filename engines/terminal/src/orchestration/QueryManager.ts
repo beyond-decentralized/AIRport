@@ -21,7 +21,7 @@ import {
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
 import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern'
-import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/lib/dao/dao'
+import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IQueryManager,
 	IQueryOperationContext,

@@ -27,7 +27,7 @@ import {
 import {
     TERMINAL_DAO,
     USER_ACCOUNT_DAO
-} from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index'
+} from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
     APPLICATION_DAO,
     APPLICATION_VERSION_DAO,
@@ -38,7 +38,7 @@ import {
     REPOSITORY_DAO,
     REPOSITORY_TRANSACTION_HISTORY_DAO,
     REPOSITORY_TRANSACTION_HISTORY_DUO
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
     RECORD_UPDATE_STAGE_DAO,
     SYNCHRONIZATION_CONFLICT_DAO,

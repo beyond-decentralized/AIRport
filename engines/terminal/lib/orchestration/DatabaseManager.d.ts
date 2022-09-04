@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { IDbApplicationUtils } from '@airport/ground-control';
-import { IApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { IApplicationDao } from '@airport/airspace/dist/app/bundle';
 import { IApplicationInitializer, IDatabaseManager, IStoreDriver, ITransactionalServer, ITransactionManager } from '@airport/terminal-map';
 import { JsonApplicationWithLastIds } from '@airport/apron';
 import { IInternalRecordManager } from '../data/InternalRecordManager';

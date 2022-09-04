@@ -11,7 +11,7 @@ import {
 	PortableQuery
 } from '@airport/ground-control';
 import { Actor, IActor, IAirEntity, Repository_LocalId } from '@airport/holding-pattern';
-import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager';
+import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import {
 	ICredentials,
 	IOperationContext,

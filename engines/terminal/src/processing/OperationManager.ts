@@ -46,7 +46,7 @@ import {
 	IUpdateManager
 } from '@airport/terminal-map'
 import { IQueryFacade } from '@airport/tarmaq-dao'
-import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager'
+import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle'
 
 /**
  * Created by Papa on 11/15/2016.

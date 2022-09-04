@@ -135,7 +135,7 @@ extends SynchronizationConflictValuesEId, SynchronizationConflictValuesEUpdateCo
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QSynchronizationConflictValues extends IQEntity
+export interface QSynchronizationConflictValues<IQE extends QSynchronizationConflictValues = any> extends IQEntity<IQE | QSynchronizationConflictValues>
 {
 	// Id Fields
 	columnIndex: IQNumberField;

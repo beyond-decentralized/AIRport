@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Inject, Injected } from '@airport/direction-indicator';
 import { BlockSyncStatus } from '@airport/ground-control';
-import { RepositoryTransactionHistory, UpdateState, } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { RepositoryTransactionHistory, UpdateState, } from '@airport/holding-pattern/dist/app/bundle';
 let OnlineManager = class OnlineManager {
     constructor() {
         this.online = false;

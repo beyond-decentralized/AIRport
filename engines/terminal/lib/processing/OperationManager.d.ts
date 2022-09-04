@@ -4,7 +4,7 @@ import { IEntityStateManager, IRootTransaction, ISaveResult } from '@airport/gro
 import { IActor, IAirEntity } from '@airport/holding-pattern';
 import { ICascadeGraphVerifier, IDeleteManager, IDependencyGraphResolver, IEntityGraphReconstructor, IInsertManager, IOperationContext, IOperationManager, IStructuralEntityValidator, ITransaction, ITransactionContext, IUpdateManager } from '@airport/terminal-map';
 import { IQueryFacade } from '@airport/tarmaq-dao';
-import { IRepositoryManager } from '@airport/holding-pattern/lib/core/RepositoryManager';
+import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 /**
  * Created by Papa on 11/15/2016.
  */

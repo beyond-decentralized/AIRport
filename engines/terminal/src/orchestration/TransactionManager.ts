@@ -18,7 +18,7 @@ import { ISynchronizationOutManager } from '@airport/ground-transport';
 import {
 	ITransactionHistoryDuo,
 	Q
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+} from '@airport/holding-pattern/dist/app/bundle';
 import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
 	IStoreDriver,

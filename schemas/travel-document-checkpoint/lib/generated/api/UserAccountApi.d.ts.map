@@ -1,1 +1,0 @@
-{"version":3,"file":"UserAccountApi.d.ts","sourceRoot":"","sources":["../../../src/generated/api/UserAccountApi.ts"],"names":[],"mappings":"AAWA,OAAO,EACN,YAAY,EACZ,MAAM,6BAA6B,CAAC;AAQrC,qBACa,cAAc;;IAOvB,cAAc,EAAE,cAAc,CAAA;IAEvB,eAAe,CAClB,SAAS,EAAE,MAAM,GAClB,OAAO,CAAC,YAAY,CAAC;CAI3B"}

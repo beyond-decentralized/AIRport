@@ -1,5 +1,5 @@
 import { IContext } from '@airport/direction-indicator';
-import { IApplicationColumnDao, IApplicationDao, IApplicationEntityDao, IApplicationPropertyColumnDao, IApplicationPropertyDao, IApplicationReferenceDao, IApplicationRelationColumnDao, IApplicationRelationDao, IApplicationVersionDao, IDomainDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { IApplicationColumnDao, IApplicationDao, IApplicationEntityDao, IApplicationPropertyColumnDao, IApplicationPropertyDao, IApplicationReferenceDao, IApplicationRelationColumnDao, IApplicationRelationDao, IApplicationVersionDao, IDomainDao } from '@airport/airspace/dist/app/bundle';
 import { DdlObjects, ITransactionManager } from '@airport/terminal-map';
 export interface IApplicationRecorder {
     record(ddlObjects: DdlObjects, context: IContext): Promise<void>;

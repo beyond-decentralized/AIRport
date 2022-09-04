@@ -15,7 +15,7 @@ import {
 import {
     IRepositoryDao,
     RepositoryTransactionHistory_GUID,
-} from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { ITransactionContext } from "@airport/terminal-map";
 

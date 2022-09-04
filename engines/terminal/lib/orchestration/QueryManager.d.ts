@@ -1,7 +1,7 @@
 import { IAirportDatabase, IRepositoryLoader } from '@airport/air-traffic-control';
 import { IObservableQueryAdapter } from '@airport/flight-number';
 import { PortableQuery } from '@airport/ground-control';
-import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/lib/dao/dao';
+import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 import { IQueryManager, IQueryOperationContext, IStoreDriver } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 export declare class QueryManager implements IQueryManager {

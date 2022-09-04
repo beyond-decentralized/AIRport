@@ -38,16 +38,10 @@ export const Q_APPLICATION: LocalQApplication = <any>{
 };
 export const Q: LocalQApplication = Q_APPLICATION
 
-export function diSet(
+export function air____at_airport_slash_layover_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
 	return airApi.dS(Q.__dbApplication__, dbEntityId)
-}
-
-export function duoDiSet(
-	dbEntityId: ApplicationEntity_LocalId
-): boolean {
-	return airApi.ddS(Q.__dbApplication__, dbEntityId)
 }
 
 airApi.setQApplication(Q_APPLICATION)

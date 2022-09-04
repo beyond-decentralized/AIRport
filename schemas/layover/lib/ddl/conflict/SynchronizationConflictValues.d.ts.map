@@ -1,1 +1,0 @@
-{"version":3,"file":"SynchronizationConflictValues.d.ts","sourceRoot":"","sources":["../../../src/ddl/conflict/SynchronizationConflictValues.ts"],"names":[],"mappings":"AAQA,OAAO,EAAE,uBAAuB,EAAE,MAAM,yBAAyB,CAAA;AACjE,OAAO,EAAE,uBAAuB,EAAE,MAAM,2BAA2B,CAAA;AAEnE,qBAEa,6BAA6B;IAQzC,uBAAuB,EAAE,uBAAuB,CAAA;IAIhD,WAAW,EAAE,uBAAuB,CAAA;CAEpC"}

@@ -1,6 +1,6 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
 import { Application_Name } from '@airport/ground-control';
-import { IDomain, IApplication, IDomainDao, IApplicationDao } from "@airport/airspace";
+import { IDomain, IApplication, IDomainDao, IApplicationDao } from "@airport/airspace/dist/app/bundle";
 import { IContext } from '@airport/direction-indicator';
 export interface IDomainCheckRecord {
     domain?: IDomain;

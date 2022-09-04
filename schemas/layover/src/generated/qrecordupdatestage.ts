@@ -195,7 +195,7 @@ extends RecordUpdateStageEId, RecordUpdateStageEUpdateColumns {
 /**
  * Query Entity Query Definition (used for Q.ApplicationEntity_Name).
  */
-export interface QRecordUpdateStage extends IQEntity
+export interface QRecordUpdateStage<IQE extends QRecordUpdateStage = any> extends IQEntity<IQE | QRecordUpdateStage>
 {
 	// Id Fields
 	_localId: IQNumberField;

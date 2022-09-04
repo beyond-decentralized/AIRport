@@ -1,1 +1,0 @@
-{"version":3,"file":"DatabaseType.d.ts","sourceRoot":"","sources":["../../../src/ddl/database/DatabaseType.ts"],"names":[],"mappings":"AAOA,OAAO,EAAE,IAAI,EAAE,MAAM,cAAc,CAAA;AACnC,OAAO,EAAE,QAAQ,EAAE,MAAM,YAAY,CAAA;AAErC,qBAIa,YAAY;IAQrB,QAAQ,EAAE,QAAQ,CAAA;IAQlB,IAAI,EAAE,IAAI,CAAA;CAEb"}

@@ -3,10 +3,7 @@
   "version": "0.0.1",
   "airport": {
     "domain": "air",
-    "application": "airport-code",
-    "userAccount": "diapco",
-    "project": "airport",
-    "path": "applications/airport-code"
+    "application": "airport-code"
   },
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",
@@ -24,7 +21,6 @@
     "@airport/runway": "0.0.1",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-typescript": "^8.3.0",
     "rollup-plugin-typescript2": "0.33.0",
     "rollup": "^2.60.0",
     "rollup-plugin-dts": "^4.0.1",
@@ -33,8 +29,8 @@
     "typescript": "^4.5.2",
     "tslib": "^2.0.0"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/esm/index.mjs",
+  "module": "dist/esm/index.mjs",
   "files": [
     "dist"
   ],
@@ -42,5 +38,5 @@
     "dev": "rollup -c ./rollup.config.js -w",
     "build": "rollup -c ./rollup.config.js"
   },
-  "types": "dist/app/bundle.d.ts"
+  "types": "dist/esm/index.d.ts"
 }

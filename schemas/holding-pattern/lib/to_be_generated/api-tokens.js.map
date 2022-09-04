@@ -1,1 +1,0 @@
-{"version":3,"file":"api-tokens.js","sourceRoot":"","sources":["../../src/to_be_generated/api-tokens.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,8BAA8B,CAAA;AAEnE,OAAO,EAAE,aAAa,EAAE,MAAM,sBAAsB,CAAA;AACpD,OAAO,EAAE,cAAc,EAAE,MAAM,iBAAiB,CAAC;AAEjD,cAAc,CAAC,QAAQ,CAAC,aAAa,CAAC,CAAA;AACtC,cAAc,CAAC,eAAe,CAAC;IAC3B,iBAAiB,EAAE,oBAAoB;CAC1C,CAAC,CAAA"}

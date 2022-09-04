@@ -15,7 +15,7 @@ import {
 	Repository_LocalId,
 	Repository_Source,
 	Repository_GUID
-} from '@airport/holding-pattern/lib/to_be_generated/runtime-index'
+} from '@airport/holding-pattern/dist/app/bundle'
 import { ISynchronizationAdapterLoader } from '../../adapters/SynchronizationAdapterLoader'
 import { ISyncOutDataSerializer } from './converter/SyncOutDataSerializer'
 

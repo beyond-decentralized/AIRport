@@ -145,7 +145,7 @@ export async function watchFiles(
 		const entityFileReference: { [entityName: string]: string } = {};
 
 		const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
-				getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+			getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
 		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
 		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');

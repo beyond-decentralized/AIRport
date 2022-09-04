@@ -1,6 +1,6 @@
 import { IOC } from "@airport/direction-indicator";
 import { Application, APPLICATION_DAO } from '@airport/airspace/dist/app/bundle';
-import { Repository, REPOSITORY_DAO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { Repository, REPOSITORY_DAO } from '@airport/holding-pattern/dist/app/bundle';
 import { IUserAccountInfo, TERMINAL_SESSION_MANAGER } from '@airport/terminal-map'
 
 export class AIRportApi {

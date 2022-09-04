@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { TransactionType } from '@airport/ground-control';
-import { RepositoryTransactionType } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { RepositoryTransactionType } from '@airport/holding-pattern/dist/app/bundle';
 import { Inject, Injected } from '@airport/direction-indicator';
 let TwoStageSyncedInDataProcessor = class TwoStageSyncedInDataProcessor {
     /**

@@ -4,7 +4,7 @@ import { IRootTransaction, PortableQuery, ISequenceGenerator } from '@airport/gr
 import { IActor } from '@airport/holding-pattern';
 import { IHistoryManager, IOperationContext, ITransaction, IUpdateManager } from '@airport/terminal-map';
 import { IQueryFacade } from '@airport/tarmaq-dao';
-import { IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/duo/duo';
+import { IOperationHistoryDuo, IRecordHistoryDuo, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/dist/app/bundle';
 export declare class UpdateManager implements IUpdateManager {
     airportDatabase: IAirportDatabase;
     applicationUtils: IApplicationUtils;

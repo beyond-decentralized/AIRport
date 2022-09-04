@@ -46,7 +46,7 @@ import {
 	IOperationHistoryDuo,
 	IRecordHistoryDuo,
 	IRepositoryTransactionHistoryDuo
-} from '@airport/holding-pattern/lib/duo/duo' // Default import is reserved for Application use
+} from '@airport/holding-pattern/dist/app/bundle' // Default import is reserved for Application use
 
 @Injected()
 export class UpdateManager

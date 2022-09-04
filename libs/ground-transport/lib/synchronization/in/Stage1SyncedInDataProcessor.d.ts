@@ -1,7 +1,7 @@
 import { IAirportDatabase } from '@airport/air-traffic-control';
 import { IContext } from '@airport/direction-indicator';
 import { ISequenceGenerator } from '@airport/ground-control';
-import { Actor_LocalId, IActor, IRecordHistory, RecordHistory_LocalId, AirEntity_ActorRecordId, Repository_LocalId, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { Actor_LocalId, IActor, IRecordHistory, RecordHistory_LocalId, AirEntity_ActorRecordId, Repository_LocalId, IActorDao, IRepositoryTransactionHistoryDao, IRepositoryTransactionHistoryDuo } from '@airport/holding-pattern/dist/app/bundle';
 import { ISyncInUtils, ISyncRepoTransHistory, Stage1SyncedInDataProcessingResult } from './SyncInUtils';
 /**
  * Stage 1 data processor is used to

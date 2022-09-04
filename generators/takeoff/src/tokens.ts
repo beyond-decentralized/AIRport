@@ -55,8 +55,8 @@ DDL_OBJECT_RETRIEVER.setDependencies({
 
 QUERY_ENTITY_CLASS_CREATOR.setDependencies({
     airportDatabase: AIRPORT_DATABASE,
-	applicationUtils: APPLICATION_UTILS,
-	relationManager: RELATION_MANAGER,
+    applicationUtils: APPLICATION_UTILS,
+    relationManager: RELATION_MANAGER,
 })
 
 QUERY_OBJECT_INITIALIZER.setDependencies({

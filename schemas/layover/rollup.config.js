@@ -13,13 +13,11 @@ const packageJson = require("./package.json");
 export default [
     {
         input: 'src/index.ts',
-        output: [
-            {
-                file: packageJson.module,
-                format: "esm",
-                sourcemap: true,
-            },
-        ],
+        output: {
+            sourcemap: true,
+            format: 'esm',
+            file: 'dist/app/bundle.js'
+        },
         plugins: [
             peerDepsExternal(),
             resolve({

@@ -1,5 +1,5 @@
 import { JsonApplication, Application_Name, IDbApplicationUtils } from '@airport/ground-control';
-import { IApplication, IApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { IApplication, IApplicationDao } from '@airport/airspace/dist/app/bundle';
 export interface CoreDomainAndApplication_Names {
     domain: string;
     application: string;

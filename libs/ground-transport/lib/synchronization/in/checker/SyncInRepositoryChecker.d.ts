@@ -1,6 +1,6 @@
 import { IContext } from '@airport/direction-indicator';
 import { RepositorySynchronizationMessage } from '@airport/arrivals-n-departures';
-import { IRepositoryDao } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle';
 export interface ISyncInRepositoryChecker {
     ensureRepositories(message: RepositorySynchronizationMessage, context: IContext): Promise<boolean>;
 }

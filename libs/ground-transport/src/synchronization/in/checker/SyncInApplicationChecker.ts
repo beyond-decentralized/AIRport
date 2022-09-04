@@ -5,7 +5,7 @@ import {
     IApplication,
     IDomainDao,
     IApplicationDao
-} from "@airport/airspace";
+} from "@airport/airspace/dist/app/bundle";
 import {
     IContext,
     Inject,

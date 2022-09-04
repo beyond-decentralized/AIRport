@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE } from '@airport/air-traffic-control'
-import { SEQUENCE_DAO } from '@airport/airport-code/dist/app/bundle'
+import { SEQUENCE_DAO } from '@airport/airport-code/dist/esm/index'
 import {
     APPLICATION_COLUMN_DAO,
     APPLICATION_DAO,

@@ -1,5 +1,5 @@
 import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserStore } from '@airport/terminal-map';
-import { IUserAccountManager } from '@airport/travel-document-checkpoint/lib/core/UserAccountManager';
+import { IUserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle';
 export declare class TerminalSessionManager implements ITerminalSessionManager {
     terminalStore: TerminalStore;
     userAccountManager: IUserAccountManager;

@@ -1,5 +1,5 @@
 import { AIRPORT_DATABASE, APPLICATION_UTILS, FIELD_UTILS, Q_METADATA_UTILS, RELATION_MANAGER, REPOSITORY_LOADER, UTILS } from '@airport/air-traffic-control';
-import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { APPLICATION_DAO, DOMAIN_DAO } from '@airport/airspace/dist/app/bundle';
 import { QUERY_PARAMETER_DESERIALIZER, QUERY_RESULTS_SERIALIZER } from '@airport/arrivals-n-departures';
 import { TERMINAL_SESSION_MANAGER } from '@airport/terminal-map';
 import { lib } from '@airport/direction-indicator';
@@ -7,7 +7,7 @@ import { ACTIVE_QUERIES, OBSERVABLE_QUERY_ADAPTER } from '@airport/flight-number
 import { ID_GENERATOR } from '@airport/fuel-hydrant-system';
 import { DB_APPLICATION_UTILS, ENTITY_STATE_MANAGER, SEQUENCE_GENERATOR, TRANSACTIONAL_CONNECTOR } from '@airport/ground-control';
 import { SYNCHRONIZATION_ADAPTER_LOADER, SYNCHRONIZATION_IN_MANAGER, SYNCHRONIZATION_OUT_MANAGER } from '@airport/ground-transport';
-import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/lib/to_be_generated/runtime-index';
+import { ACTOR_DAO, OPERATION_HISTORY_DUO, RECORD_HISTORY_DUO, REPOSITORY_DAO, REPOSITORY_MANAGER, REPOSITORY_TRANSACTION_HISTORY_DAO, REPOSITORY_TRANSACTION_HISTORY_DUO, TRANSACTION_HISTORY_DUO } from '@airport/holding-pattern/dist/app/bundle';
 import { QUERY_FACADE } from '@airport/tarmaq-dao';
 import { QUERY_UTILS } from '@airport/tarmaq-query';
 import { APPLICATION_INITIALIZER, STORE_DRIVER, TERMINAL_STORE, TRANSACTIONAL_RECEIVER, TRANSACTIONAL_SERVER, TRANSACTION_MANAGER, USER_STORE } from '@airport/terminal-map';
@@ -34,7 +34,7 @@ import { StructuralEntityValidator } from './processing/StructuralEntityValidato
 import { QueryParameterDeserializer } from './serialize/QueryParameterDeserializer';
 import { QueryResultsSerializer } from './serialize/QueryResultsSerializer';
 import { RepositoryManager } from './core/repository/RepositoryManager';
-import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/lib/core/core-tokens';
+import { USER_ACCOUNT_MANAGER } from '@airport/travel-document-checkpoint/dist/app/bundle';
 import { LOCAL_API_SERVER } from '@airport/apron';
 const terminal = lib('terminal');
 REPOSITORY_LOADER.setClass(RepositoryLoader);

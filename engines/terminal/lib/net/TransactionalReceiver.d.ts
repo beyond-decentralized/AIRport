@@ -4,8 +4,8 @@ import { IApiIMI, IIsolateMessage, IIsolateMessageOut, ILocalAPIServer } from '@
 import { IApiCallContext, IDatabaseManager, ITerminalSessionManager, ITerminalStore, ITransactionalServer, ITransactionContext, ITransactionCredentials, IUserSession } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { Actor } from '@airport/holding-pattern';
-import { ActorDao } from '@airport/holding-pattern/lib/dao/dao';
-import { ApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
+import { ApplicationDao } from '@airport/airspace/dist/app/bundle';
 export declare abstract class TransactionalReceiver {
     actorDao: ActorDao;
     applicationDao: ApplicationDao;

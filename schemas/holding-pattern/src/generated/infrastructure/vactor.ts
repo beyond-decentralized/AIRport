@@ -11,11 +11,11 @@ import {
 	UserAccount,
 	TerminalVDescriptor,
 	Terminal,
-} from '@airport/travel-document-checkpoint/lib/to_be_generated/runtime-index';
+} from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	ApplicationVDescriptor,
 	Application,
-} from '@airport/airspace/lib/to_be_generated/runtime-index';
+} from '@airport/airspace/dist/app/bundle';
 import {
 	IActor,
 } from './actor';

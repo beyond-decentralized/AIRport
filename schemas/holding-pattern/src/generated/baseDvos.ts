@@ -86,7 +86,7 @@ import {
 } from '@airport/ground-control';
 import {
 	Q,
-	duoDiSet,
+	air____at_airport_slash_holding_dash_pattern_diSet,
 } from './qApplication';
 
 
@@ -111,7 +111,7 @@ export class BaseActorDvo
 	implements IBaseActorDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(0)
+		return air____at_airport_slash_holding_dash_pattern_diSet(0)
 	}
 	
 	constructor() {
@@ -129,7 +129,7 @@ export class BaseOperationHistoryDvo
 	implements IBaseOperationHistoryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(12)
+		return air____at_airport_slash_holding_dash_pattern_diSet(12)
 	}
 	
 	constructor() {
@@ -147,7 +147,7 @@ export class BaseRecordHistoryDvo
 	implements IBaseRecordHistoryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(3)
+		return air____at_airport_slash_holding_dash_pattern_diSet(3)
 	}
 	
 	constructor() {
@@ -165,7 +165,7 @@ export class BaseRecordHistoryNewValueDvo
 	implements IBaseRecordHistoryNewValueDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(1)
+		return air____at_airport_slash_holding_dash_pattern_diSet(1)
 	}
 	
 	constructor() {
@@ -183,7 +183,7 @@ export class BaseRecordHistoryOldValueDvo
 	implements IBaseRecordHistoryOldValueDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(2)
+		return air____at_airport_slash_holding_dash_pattern_diSet(2)
 	}
 	
 	constructor() {
@@ -201,7 +201,7 @@ export class BaseRepositoryDvo
 	implements IBaseRepositoryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(9)
+		return air____at_airport_slash_holding_dash_pattern_diSet(9)
 	}
 	
 	constructor() {
@@ -219,7 +219,7 @@ export class BaseRepositoryApplicationDvo
 	implements IBaseRepositoryApplicationDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(8)
+		return air____at_airport_slash_holding_dash_pattern_diSet(8)
 	}
 	
 	constructor() {
@@ -237,7 +237,7 @@ export class BaseRepositoryClientDvo
 	implements IBaseRepositoryClientDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(6)
+		return air____at_airport_slash_holding_dash_pattern_diSet(6)
 	}
 	
 	constructor() {
@@ -255,7 +255,7 @@ export class BaseRepositoryDatabaseDvo
 	implements IBaseRepositoryDatabaseDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(5)
+		return air____at_airport_slash_holding_dash_pattern_diSet(5)
 	}
 	
 	constructor() {
@@ -273,7 +273,7 @@ export class BaseRepositoryTerminalDvo
 	implements IBaseRepositoryTerminalDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(7)
+		return air____at_airport_slash_holding_dash_pattern_diSet(7)
 	}
 	
 	constructor() {
@@ -291,7 +291,7 @@ export class BaseRepositoryTransactionHistoryDvo
 	implements IBaseRepositoryTransactionHistoryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(11)
+		return air____at_airport_slash_holding_dash_pattern_diSet(11)
 	}
 	
 	constructor() {
@@ -309,7 +309,7 @@ export class BaseRepositoryTypeDvo
 	implements IBaseRepositoryTypeDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(4)
+		return air____at_airport_slash_holding_dash_pattern_diSet(4)
 	}
 	
 	constructor() {
@@ -327,7 +327,7 @@ export class BaseTransactionHistoryDvo
 	implements IBaseTransactionHistoryDvo {
 
 	static diSet(): boolean {
-		return duoDiSet(10)
+		return air____at_airport_slash_holding_dash_pattern_diSet(10)
 	}
 	
 	constructor() {

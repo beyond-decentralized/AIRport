@@ -1,1 +1,0 @@
-{"version":3,"file":"core-tokens.js","sourceRoot":"","sources":["../../src/core/core-tokens.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,kCAAkC,CAAC;AAGlE,MAAM,CAAC,MAAM,kBAAkB,GAAG,cAAc,CAAC,KAAK,CAAqB;IACvE,KAAK,EAAE,IAAI;IACX,SAAS,EAAE,oBAAoB;IAC/B,KAAK,EAAE,oBAAoB;CAC9B,CAAC,CAAA"}

@@ -14,7 +14,7 @@ import {
 import {
 	Actor,
 } from '@airport/holding-pattern';
-import { IApplication, IApplicationDao } from '@airport/airspace/lib/to_be_generated/runtime-index';
+import { IApplication, IApplicationDao } from '@airport/airspace/dist/app/bundle';
 import {
 	IApplicationInitializer,
 	IDatabaseManager,

@@ -1,9 +1,9 @@
 import { IContext } from "@airport/direction-indicator";
 import { Domain_Name, IEntityStateManager } from "@airport/ground-control";
-import { IActorDao } from "@airport/holding-pattern/lib/to_be_generated/runtime-index";
+import { IActorDao } from "@airport/holding-pattern/dist/app/bundle";
 import { JsonApplicationWithLastIds } from "@airport/apron";
 import { ITransactionManager, TerminalStore } from "@airport/terminal-map";
-import { IDomainDao, IApplicationDao } from "@airport/airspace";
+import { IDomainDao, IApplicationDao } from "@airport/airspace/dist/app/bundle";
 export interface IInternalRecordManager {
     ensureApplicationRecords(application: JsonApplicationWithLastIds, context: IContext): Promise<void>;
     initTerminal(domainName: Domain_Name, context: IContext): Promise<void>;
