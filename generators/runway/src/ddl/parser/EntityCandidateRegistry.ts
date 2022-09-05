@@ -166,27 +166,28 @@ export class EntityCandidateRegistry {
 						property.primitive = 'any';
 						break;
 				}
-				if (property.decorators.some(
+				const decorators = property.decorators;
+				if (decorators.some(
 					decorator => decorator.name === 'Json')) {
 					property.primitive = 'Json';
 				}
-				if (property.decorators.some(
+				if (decorators.some(
 					decorator => decorator.name === 'DbAny')) {
 					property.primitive = 'any';
 				}
-				if (property.decorators.some(
+				if (decorators.some(
 					decorator => decorator.name === 'DbBoolean')) {
 					property.primitive = 'boolean';
 				}
-				if (property.decorators.some(
+				if (decorators.some(
 					decorator => decorator.name === 'DbDate')) {
 					property.primitive = 'Date';
 				}
-				if (property.decorators.some(
+				if (decorators.some(
 					decorator => decorator.name === 'DbNumber')) {
 					property.primitive = 'number';
 				}
-				if (property.decorators.some(
+				if (decorators.some(
 					decorator => decorator.name === 'DbString')) {
 					property.primitive = 'string';
 				}
@@ -285,14 +286,14 @@ export class EntityCandidateRegistry {
 
 	getReferencedApplication(
 		projectName: string,
-		property: EntityReference,
+		property: EntityReference & PropertyDocEntry,
 	): DbApplication {
 		const projectApplication = this.applicationMap[projectName];
 		if (projectApplication) {
 			property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, projectApplication, property);
 			return projectApplication;
 		}
-		const dbApplication = this.applicationLoader.getReferencedApplication(projectName);
+		const dbApplication = this.applicationLoader.getReferencedApplication(projectName, property);
 
 		this.applicationMap[projectName] = dbApplication;
 		property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);

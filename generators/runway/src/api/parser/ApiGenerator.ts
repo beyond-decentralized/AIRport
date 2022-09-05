@@ -154,7 +154,8 @@ function serializeMethod(
     returnType: string,
     parameters: string[]
 } {
-    if (!member.valueDeclaration.decorators) {
+    const decorators = tsc.getDecorators(member.valueDeclaration as any)
+    if (!decorators) {
         return
     }
     let isApiMethod = false
@@ -164,7 +165,7 @@ function serializeMethod(
             isAsync = true
         }
     }
-    (member.valueDeclaration as any).decorators.forEach(decorator => {
+    decorators.forEach(decorator => {
         // decorator.expression.kind = 196 CallExpression
         // decorator.expression.expression.kind = 75 Identifier
         let decoratorNameExpression = (decorator.expression as any).expression

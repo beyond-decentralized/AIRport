@@ -147,10 +147,11 @@ function serializeMethod(
 	member,
 	daoOperations: { [operationName: string]: JsonOperation }
 ) {
-	if (!member.valueDeclaration.decorators) {
+	const decorators = tsc.getDecorators(member.valueDeclaration as any)
+	if (!decorators) {
 		return;
 	}
-	member.valueDeclaration.decorators.forEach(decorator => {
+	decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
 	});
@@ -177,8 +178,8 @@ function serializeProperty(
 
 	let operationFound = null;
 
-
-	if (!member.valueDeclaration.decorators) {
+	const decorators = tsc.getDecorators(member.valueDeclaration)
+	if (!decorators) {
 		throw new Error(`${daoName}.${memberName} is not decorated.  Every DAO
 			member property must be decorated with a supported decorator.
 Following decorators are currently supported for ${daoName}:
@@ -195,10 +196,10 @@ Following decorators are currently supported for ${daoName}:
 			`);
 	}
 
-	member.valueDeclaration.decorators.forEach(decorator => {
+	decorators.forEach(decorator => {
 		// decorator.expression.kind = 196 CallExpression
 		// decorator.expression.expression.kind = 75 Identifier
-		let decoratorNameExpression = decorator.expression.expression;
+		let decoratorNameExpression = (decorator.expression as any).expression;
 		const decoratorNameParts = [];
 		while (decoratorNameExpression) {
 			if (decoratorNameExpression.escapedText) {

@@ -1,1 +1,0 @@
-{"version":3,"file":"DuoBuilder.d.ts","sourceRoot":"","sources":["../../../src/ddl/builder/DuoBuilder.ts"],"names":[],"mappings":"AAEA,OAAO,EAAC,WAAW,EAAC,MAAoB,eAAe,CAAA;AAEvD,OAAO,EAAC,cAAc,EAAC,MAAiB,kBAAkB,CAAA;AAE1D,qBAAa,UACZ,SAAQ,cAAc;gBAGrB,WAAW,EAAE,WAAW;CAKzB"}

@@ -38,6 +38,10 @@ export async function generateDefinitions(
 
 	// Visit every sourceFile in the program
 	for (const sourceFile of sourceFiles) {
+		if (sourceFile.fileName.indexOf('node_modules') > -1
+			|| sourceFile.fileName.indexOf('src/generated') > -1) {
+			continue
+		}
 		globalThis.currentSourceFile = sourceFile
 		// Walk the tree to searchOne for classes
 		tsc.forEachChild(sourceFile, visit)

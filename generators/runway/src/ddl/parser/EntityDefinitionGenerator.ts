@@ -88,7 +88,8 @@ ${path}
 		// This is a top level class, get its symbol
 		let symbol = globalThis.checker
 			.getSymbolAtLocation((<ts.ClassDeclaration>node).name)
-		let serializedClass = serializeClass(symbol, node.decorators, path, fileImports, node.parent)
+		const decorators = tsc.getDecorators(node as any)
+		let serializedClass = serializeClass(symbol, decorators, path, fileImports, node.parent)
 		// if (serializedClass) {
 		// 	 output.push(serializedClass)
 		// }
@@ -135,7 +136,7 @@ function serializeSymbol(
 	let optional
 	if (declarations && declarations.length === 1) {
 		declaration = symbol.declarations[0]
-		const tsDecorators = declaration.decorators
+		const tsDecorators = tsc.getDecorators(declaration)
 		if (tsDecorators) {
 			for (const tsDecorator of tsDecorators) {
 				const decorator: Decorator = serializeDecorator(tsDecorator)
@@ -591,7 +592,7 @@ function forEach(
 /** Serialize a class symbol information */
 function serializeClass(
 	symbol: ts.Symbol,
-	decorators: ts.NodeArray<ts.Decorator>,
+	decorators: readonly ts.Decorator[],
 	classPath: string,
 	fileImports: FileImports,
 	file

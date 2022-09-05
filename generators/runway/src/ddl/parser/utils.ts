@@ -11,7 +11,7 @@ export interface EntityDecorator {
 }
 
 export function isDecoratedAsEntity(
-	decorators: ts.NodeArray<ts.Decorator>
+	decorators: readonly ts.Decorator[]
 ): EntityDecorator {
 	if (!decorators || !decorators.length) {
 		return null;

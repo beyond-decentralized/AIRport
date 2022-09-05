@@ -1,7 +1,7 @@
 {
   "name": "@airport/runway",
   "version": "0.0.1",
-  "peerDependencies": {
+  "dependencies": {
     "@airport/air-traffic-control": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/apron": "0.0.1",
@@ -15,8 +15,10 @@
     "@airport/tarmaq-query": "0.0.1",
     "@airport/terminal": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "@airport/tower": "0.0.1",
-    "typescript": "^4.5.2"
+    "@airport/tower": "0.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^4.8.2"
   },
   "devDependencies": {
     "@types/node": "^14.11.10",
@@ -35,8 +37,9 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rollup -c ./rollup.config.js -w",
-    "build": "rollup -c ./rollup.config.js"
+    "prebuild": "node bundleUtils.js internal",
+    "build": "rollup -c ./rollup.config.js",
+    "postbuild": "node bundleUtils.js external"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts"

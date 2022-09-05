@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\airport-code\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\airport-code\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -25,7 +25,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/airport-code/node_modules/@airport/runway/dist/esm/index.js",
+            "program": "${workspaceFolder}/schemas/airport-code/node_modules/@airport/runway/dist/esm/index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -39,7 +39,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\airspace\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\airspace\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -53,7 +53,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/airspace/node_modules/@airport/runway/lib/index.js",
+            "program": "${workspaceFolder}/schemas/airspace/node_modules/@airport/runway/dist/esm/index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -67,7 +67,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -81,7 +81,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/holding-pattern/node_modules/@airport/runway/lib/index.js",
+            "program": "${workspaceFolder}/schemas/holding-pattern/node_modules/@airport/runway/dist/esm/index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -95,7 +95,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\layover\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\layover\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -109,7 +109,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/layover/node_modules/@airport/runway/lib/index.js",
+            "program": "${workspaceFolder}/schemas/layover/node_modules/@airport/runway/dist/esm/index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -123,7 +123,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\lib\\index.js",
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -137,7 +137,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/node_modules/@airport/runway/lib/index.js",
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/node_modules/@airport/runway/dist/esm/index.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],

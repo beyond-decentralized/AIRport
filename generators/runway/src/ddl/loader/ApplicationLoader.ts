@@ -4,6 +4,7 @@ import {
 	JsonApplication
 } from '@airport/ground-control';
 import fs from 'fs';
+import { EntityReference, PropertyDocEntry } from '../parser/DocEntry';
 import { DbApplicationBuilder } from './DbApplicationBuilder';
 
 export interface IApplicationLoader {
@@ -12,6 +13,7 @@ export interface IApplicationLoader {
 
 	getReferencedApplication(
 		projectName: string,
+		property: EntityReference & PropertyDocEntry,
 	): DbApplication
 
 }
@@ -53,8 +55,9 @@ export class ApplicationLoader
 
 	getReferencedApplication(
 		projectName: string,
+		property: EntityReference & PropertyDocEntry
 	): DbApplication {
-		const relatedApplication = this.getJsonApplication(projectName);
+		const relatedApplication = this.getJsonApplication(projectName, property);
 
 		if (!relatedApplication) {
 			return null;
@@ -66,6 +69,7 @@ export class ApplicationLoader
 
 	getJsonApplication(
 		projectName: string,
+		property?: EntityReference & PropertyDocEntry
 	): JsonApplication {
 		// const pathsToReferencedApplications =
 		// this.configuration.airport.node_modulesLinks.pathsToReferencedApplications let
@@ -84,7 +88,21 @@ export class ApplicationLoader
 				+ projectName + '/src/generated/application-spec.json');
 		} catch (e) {
 			console.error(`Unable to load Application Spec FROM:
-${process.cwd()}/node_modules/${projectName}/src/generated/application-spec.json`)
+${process.cwd()}/node_modules/${projectName}/src/generated/application-spec.json
+
+Entity: ${property?.ownerEntity.docEntry.name}
+Property: ${property?.name}
+
+If you are using an external type that represents a primite please add one of
+the following decorators to the property definition:
+
+@Json()
+@DbAny()
+@DbBoolean()
+@DbDate()
+@DbNumer()
+@DbString()
+`)
 			return null;
 		}
 		// if (!relatedApplicationProject) {
