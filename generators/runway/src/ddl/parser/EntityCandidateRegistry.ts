@@ -347,7 +347,7 @@ export class EntityCandidateRegistry {
 		// fs.lstatSync(pathToMappedSuperclasses).isDirectory()) {
 		// relatedMappedSuperclassesProject = require(pathToMappedSuperclasses) break } } }
 		// else {
-		relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/src/generated/mappedSuperclass.ts');
+		relatedMappedSuperclassesProject = await import('file://' + process.cwd() + '/node_modules/' + projectName + '/dist/definition/mappedSuperclass.mjs');
 		// }
 		if (!relatedMappedSuperclassesProject) {
 			throw new Error(`Could not find related application project '${projectName}'`);

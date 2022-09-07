@@ -56,7 +56,7 @@ export async function watchFiles(
 	const servicesHost: ts.LanguageServiceHost = {
 		readFile: (filename: string, encoding?: string) => {
 			try {
-				const content =  fs.readFileSync(filename, encoding || 'utf8' as any);
+				const content = fs.readFileSync(filename, encoding || 'utf8' as any);
 				return content as any;
 			} catch (e) {
 				return '';
@@ -175,7 +175,8 @@ export async function watchFiles(
 				continue
 			}
 			numApiFiles++
-			const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature)
+			const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature, apiFilePath)
+			pathBuilder.setupFileForGeneration(apiFilePath, '', pathBuilder.apiDirPath, 'api/');
 			fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
 			apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
 		}

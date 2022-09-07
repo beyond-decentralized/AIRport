@@ -14,8 +14,7 @@ export class GeneratedSummaryBuilder
 	}
 
 	build(): string {
-		return `export * from './mappedSuperclass'
-export * from './qApplication';
+		return `export * from './qApplication';
 export * from './baseDaos';
 export * from './baseDvos';
 export * from './qInterfaces';

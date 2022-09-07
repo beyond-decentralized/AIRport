@@ -9,13 +9,19 @@ export class ApiBuilder
     extends FileBuilder
     implements IBuilder {
 
+    directoryFile
+
     constructor(
         pathBuilder: PathBuilder,
-        private apiFile: IApiFileForGeneration
+        private apiFile: IApiFileForGeneration,
+        apiFilePath: string
     ) {
         super(null, null, pathBuilder, null);
+
+        const relativePathToApiFile = resolveRelativePath(
+            pathBuilder.apiDirPath, apiFilePath);
         this.fullGenerationPath = pathBuilder.fullGeneratedDirPath
-            + `/api/${this.apiFile.fileName}`;
+            + `/api/${relativePathToApiFile}`;
     }
 
     addImports() {
@@ -58,7 +64,11 @@ ${enumOrInterfaceCode}`
             apiClassDefinitionCode += this.buildClassDefinition(apiClass, tokenName)
         }
 
-        this.addImport(tokenNames, '../../to_be_generated/common-tokens')
+        const commonTokensFilePath = this.pathBuilder.workingDirPath
+            + '/src/to_be_generated/common-tokens'
+        const commonTokensFileRelativePath = resolveRelativePath(
+            this.fullGenerationPath, commonTokensFilePath)
+        this.addImport(tokenNames, commonTokensFileRelativePath)
         const imports = this.buildImports();
 
         return `${imports}

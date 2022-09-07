@@ -2,6 +2,7 @@
  * Created by Papa on 4/28/2016.
  */
 
+import { dir } from 'console';
 import * as fs from 'fs';
 import path from 'path';
 import { normalizePath } from '../../resolve/pathResolver';
@@ -9,15 +10,17 @@ import { Configuration } from '../options/Options';
 
 export class PathBuilder {
 
-	dirExistanceMap: { [path: string]: boolean } = {};
-	generatedDirPath: string;
-	fullGeneratedDirPath: string;
+	apiDirPath: string;
 	ddlDirPath: string;
+	dirExistanceMap: { [path: string]: boolean } = {};
+	fullGeneratedDirPath: string;
+	generatedDirPath: string;
 	workingDirPath: string;
 	usePathCache: boolean;
 
 	constructor(private configuration: Configuration) {
 		this.workingDirPath = normalizePath(process.cwd());
+		this.apiDirPath = this.workingDirPath + '/' + normalizePath(configuration.airport.apiDir);
 		this.ddlDirPath = this.workingDirPath + '/' + normalizePath(configuration.airport.ddlDir);
 		this.generatedDirPath = normalizePath(configuration.airport.generatedDir);
 		this.fullGeneratedDirPath = this.workingDirPath + '/' + this.generatedDirPath;
@@ -63,7 +66,7 @@ export class PathBuilder {
 		sourcePath: string,
 		prefix = 'q'
 	): string {
-		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix, this.ddlDirPath, '');
 
 		return this.workingDirPath + '/' + generatedPath;
 	}
@@ -77,8 +80,10 @@ export class PathBuilder {
 	setupFileForGeneration(
 		sourcePath: string,
 		prefix = 'q',
+		dirPath = this.ddlDirPath,
+		pathPrefix = ''
 	): string {
-		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix);
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix, dirPath, pathPrefix);
 		let genPathFragments = generatedPath.split('/');
 
 		let currentPath = this.workingDirPath;
@@ -117,21 +122,23 @@ export class PathBuilder {
 
 	private getGenerationPathForFile(
 		sourcePath: string,
-		prefix
+		prefix,
+		dirPath,
+		pathPrefix
 	): string {
 		sourcePath = normalizePath(sourcePath);
 
-		let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase());
+		let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(dirPath.toLowerCase());
 		if (indexOfSourceDirInPath !== 0) {
 			throw new Error(`Cannot generate file from source outside of root source dir`);
 		}
-		let sourceRelativePath = sourcePath.substr(this.ddlDirPath.length + 1);
+		let sourceRelativePath = sourcePath.substr(dirPath.length + 1);
 
 		if (prefix) {
 			sourceRelativePath = this.prefixToFileName(sourceRelativePath, prefix);
 		}
 
-		return this.generatedDirPath + '/' + sourceRelativePath;
+		return this.generatedDirPath + '/' + pathPrefix + sourceRelativePath;
 	}
 
 	private getDdlPathForFile(
