@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
 
 const firstStageProjectDirectoriesInBuildOrder = [
-    'apis/aviation-communication',
     'libs/direction-indicator',
+    'apis/aviation-communication',
     'apis/ground-control',
     'apis/check-in',
     'apis/apron',
@@ -60,11 +60,11 @@ const reactUiProjects = [
 ]
 
 try {
-    // await buildPeerFramework('AIRport', firstStageProjectDirectoriesInBuildOrder, true)
-    // await buildPeerFramework('AIRbridge', airbridgeDependencyProjectDirectories, true)
-    // await buildPeerFramework('AIRport', secondStageProjectDirectories, false)
-    // await buildPeerFramework('AIRway', airwayDependencyProjectDirectories, true)
-    // await buildPeerFramework('AIRport', thirdStageProjectDirectories, false)
+    await buildPeerFramework('AIRport', firstStageProjectDirectoriesInBuildOrder, true)
+    await buildPeerFramework('AIRbridge', airbridgeDependencyProjectDirectories, true)
+    await buildPeerFramework('AIRport', secondStageProjectDirectories, false)
+    await buildPeerFramework('AIRway', airwayDependencyProjectDirectories, true)
+    await buildPeerFramework('AIRport', thirdStageProjectDirectories, false)
     await buildUI('react', reactUiProjects)
 } catch (e) {
     console.log(e)
@@ -132,21 +132,31 @@ async function execute(
     parameters
 ) {
     return new Promise((resolve, _reject) => {
-        const rollup = spawn(command, parameters);
+        if (/^win/.test(process.platform)) {
+            parameters = [
+                '/s',
+                '/c',
+                command,
+                ...parameters
+            ]
+            command = 'cmd'
+        }
 
-        rollup.stdout.on("data", data => {
+        const runCommand = spawn(command, parameters);
+
+        runCommand.stdout.on("data", data => {
             console.log(`${data}`)
         });
 
-        rollup.stderr.on("data", data => {
+        runCommand.stderr.on("data", data => {
             console.log(`${data}`)
         });
 
-        rollup.on('error', (error) => {
+        runCommand.on('error', (error) => {
             console.log(`${error.message}`);
         });
 
-        rollup.on("close", code => {
+        runCommand.on("close", code => {
             console.log(`
         ${code ? 'ERROR' : 'DONE'}: ${operation}
 

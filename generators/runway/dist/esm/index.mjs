@@ -1790,6 +1790,7 @@ class ${className}
 }
 
 const entityOperationMap = {};
+const entityOperationPaths = {};
 // let currentFileImports
 const daoFileMap = {};
 const daoMap = {};
@@ -1848,6 +1849,7 @@ function visitDaoFile(node, path) {
     }
     daoMap[daoName] = true;
     entityOperationMap[entityName] = serializeClass$1(symbol);
+    entityOperationPaths[entityName] = path;
 }
 /** Serialize a class symbol information */
 function serializeClass$1(symbol, daoName, entityName) {
@@ -4713,13 +4715,32 @@ var timeoutProvider = {
 
 function reportUnhandledError(err) {
     timeoutProvider.setTimeout(function () {
-        {
+        var onUnhandledError = config.onUnhandledError;
+        if (onUnhandledError) {
+            onUnhandledError(err);
+        }
+        else {
             throw err;
         }
     });
 }
 
 function noop() { }
+
+var COMPLETE_NOTIFICATION = (function () { return createNotification('C', undefined, undefined); })();
+function errorNotification(error) {
+    return createNotification('E', undefined, error);
+}
+function nextNotification(value) {
+    return createNotification('N', value, undefined);
+}
+function createNotification(kind, value, error) {
+    return {
+        kind: kind,
+        value: value,
+        error: error,
+    };
+}
 
 var context = null;
 function errorContext(cb) {
@@ -4739,6 +4760,12 @@ function errorContext(cb) {
     }
     else {
         cb();
+    }
+}
+function captureError(err) {
+    if (config.useDeprecatedSynchronousErrorHandling && context) {
+        context.errorThrown = true;
+        context.error = err;
     }
 }
 
@@ -4762,20 +4789,26 @@ var Subscriber = (function (_super) {
         return new SafeSubscriber(next, error, complete);
     };
     Subscriber.prototype.next = function (value) {
-        if (this.isStopped) ;
+        if (this.isStopped) {
+            handleStoppedNotification(nextNotification(value), this);
+        }
         else {
             this._next(value);
         }
     };
     Subscriber.prototype.error = function (err) {
-        if (this.isStopped) ;
+        if (this.isStopped) {
+            handleStoppedNotification(errorNotification(err), this);
+        }
         else {
             this.isStopped = true;
             this._error(err);
         }
     };
     Subscriber.prototype.complete = function () {
-        if (this.isStopped) ;
+        if (this.isStopped) {
+            handleStoppedNotification(COMPLETE_NOTIFICATION, this);
+        }
         else {
             this.isStopped = true;
             this._complete();
@@ -4850,7 +4883,10 @@ function wrapForErrorHandling(handler, instance) {
             handler.apply(void 0, __spreadArray([], __read(args)));
         }
         catch (err) {
-            {
+            if (config.useDeprecatedSynchronousErrorHandling) {
+                captureError(err);
+            }
+            else {
                 reportUnhandledError(err);
             }
         }
@@ -4858,6 +4894,10 @@ function wrapForErrorHandling(handler, instance) {
 }
 function defaultErrorHandler(err) {
     throw err;
+}
+function handleStoppedNotification(notification, subscriber) {
+    var onStoppedNotification = config.onStoppedNotification;
+    onStoppedNotification && timeoutProvider.setTimeout(function () { return onStoppedNotification(notification, subscriber); });
 }
 var EMPTY_OBSERVER = {
     closed: true,
@@ -28737,11 +28777,9 @@ let SyncInDataChecker = class SyncInDataChecker {
                 switch (column.name) {
                     case airEntity.ORIGINAL_ACTOR_ID:
                         actorIdColumnMapByIndex.set(column.index, column);
-                        column.index;
                         break;
                     case airEntity.ORIGINAL_REPOSITORY_ID:
                         repositoryIdColumnMapByIndex.set(column.index, column);
-                        column.index;
                         break;
                 }
                 if (/.*_AID_[\d]+$/.test(column.name)
@@ -38916,7 +38954,6 @@ class ApplicationRelationResolver {
                     .referencedApplications[aRelation.referencedApplication_Index].dbApplication.currentVersion[0]
                     .applicationVersion.entityMapByName[aRelation.entityName];
                 relationEntityName = relationIndexedEntity.name;
-                relationIndexedEntity.isLocal;
             }
             else {
                 relationIndexedEntity =
@@ -38944,7 +38981,6 @@ class ApplicationRelationResolver {
                 this.getEntityRelationsOfType(relationIndexedEntity, EntityRelationType.MANY_TO_ONE, anEntity.name);
                 const relationEntity = relationIndexedEntity.entity;
                 relationEntityName = relationEntity.name;
-                relationEntity.isLocal;
             }
             relationEntityNameSet[aRelation.entityName] = true;
             switch (aRelation.relationType) {
@@ -39182,12 +39218,14 @@ class SApplicationBuilder {
             name: this.config.name,
             referencedApplications,
         };
+        const sEntityMapByName = {};
         for (const entityName in this.entityMapByName) {
             const entityCandidate = this.entityMapByName[entityName];
             const tableIndex = application.entities.length;
             const entity = this.buildEntity(entityCandidate, tableIndex, referencedApplicationsByProjectName);
             if (entity) {
                 application.entities.push(entity);
+                sEntityMapByName[entityName] = entity;
             }
         }
         for (const projectName in referencedApplicationsByProjectName) {
