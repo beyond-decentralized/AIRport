@@ -9,6 +9,7 @@
 /schemas/**/dist/*
 /UI/**/build/*
 /UI/**/dist/*
+/UI/**/client/build/*
 
 npm-debug.log
 
