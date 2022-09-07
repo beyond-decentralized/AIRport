@@ -30,7 +30,6 @@ const secondStageProjectDirectories = [
     'apis/terminal-map',
     'engines/tower',
     'libs/fuel-hydrant-system',
-    'libs/ground-transport',
     'libs/blueprint',
     'generators/takeoff',
     'generators/landing',
@@ -42,13 +41,13 @@ const airwayDependencyProjectDirectories = [
 ]
 
 const thirdStageProjectDirectories = [
+    'libs/ground-transport',
     'engines/terminal',
     'databases/sequence',
     'generators/runway',
     'databases/sqlite',
     'databases/sqljs',
     'platforms/api',
-    'platforms/app',
     'platforms/server',
     'platforms/web-tower',
     'platforms/web-terminal',
