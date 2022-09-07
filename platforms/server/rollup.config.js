@@ -19,6 +19,21 @@ export default [
                 format: "cjs",
                 sourcemap: true,
             },
+        ],
+        plugins: [
+            resolve(),
+            commonjs(),
+            typescript({
+                tsconfig: "./tsconfig.json",
+                sourceMap: !production,
+                inlineSources: !production
+            }),
+            production && terser(),
+        ],
+    },
+    {
+        input: "src/index.ts",
+        output: [
             {
                 file: packageJson.module,
                 format: "esm",
