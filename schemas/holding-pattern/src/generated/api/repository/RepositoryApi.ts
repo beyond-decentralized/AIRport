@@ -1,6 +1,6 @@
 import {
 	REPOSITORY_API,
-} from '../../to_be_generated/common-tokens';
+} from '../../../to_be_generated/common-tokens';
 import {
 	DEPENDENCY_INJECTION,
 	Inject,
@@ -11,13 +11,13 @@ import {
 } from '@airport/check-in';
 import {
 	IRepositoryManager,
-} from '../../core/RepositoryManager';
+} from '../../../core/RepositoryManager';
 import {
 	RepositoryDao,
-} from '../../dao/dao';
+} from '../../../dao/dao';
 import {
 	Repository,
-} from '../../ddl/ddl';
+} from '../../../ddl/ddl';
 
 
 

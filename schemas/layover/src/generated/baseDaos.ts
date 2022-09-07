@@ -106,11 +106,11 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(0)
+		return air____at_airport_slash_layover_diSet(2)
 	}
 	
 	constructor() {
-		super(0)
+		super(2)
 	}
 }
 
@@ -134,11 +134,11 @@ export class BaseSynchronizationConflictDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(2)
+		return air____at_airport_slash_layover_diSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -162,10 +162,10 @@ export class BaseSynchronizationConflictValuesDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(1)
+		return air____at_airport_slash_layover_diSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }

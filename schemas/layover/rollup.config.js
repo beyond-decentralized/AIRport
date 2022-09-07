@@ -53,5 +53,24 @@ export default [
         watch: {
             clearScreen: false
         }
+    },
+    {
+        input: './src/generated/mappedSuperclass.ts',
+        output: [{
+            file: "dist/definition/mappedSuperclass.mjs",
+            sourcemap: true,
+        }],
+        plugins: [
+            typescript({
+                tsconfigDefaults: {
+                    "files": [
+                        "src/generated/mappedSuperclass.ts"
+                    ],
+                }
+            })
+        ],
+        watch: {
+            clearScreen: false
+        }
     }
 ];

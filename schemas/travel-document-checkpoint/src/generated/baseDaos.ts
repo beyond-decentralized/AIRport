@@ -346,11 +346,11 @@ export class BaseContinentDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
 	}
 	
 	constructor() {
-		super(0)
+		super(5)
 	}
 }
 
@@ -374,11 +374,11 @@ export class BaseCountryDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
 	}
 	
 	constructor() {
-		super(1)
+		super(0)
 	}
 }
 
@@ -458,11 +458,11 @@ export class BaseMetroAreaDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
 	}
 	
 	constructor() {
-		super(4)
+		super(3)
 	}
 }
 
@@ -486,11 +486,11 @@ export class BaseMetroAreaStateDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
 	}
 	
 	constructor() {
-		super(3)
+		super(2)
 	}
 }
 
@@ -514,11 +514,11 @@ export class BaseStateDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
 	}
 	
 	constructor() {
-		super(2)
+		super(1)
 	}
 }
 
@@ -654,10 +654,10 @@ export class BaseUserAccountDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
 	}
 	
 	constructor() {
-		super(5)
+		super(4)
 	}
 }
