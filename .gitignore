@@ -5,7 +5,10 @@
 /generators/**/dist/*
 /libs/**/dist/*
 /ORMs/**/dist/*
+/platforms/**/dist/*
 /schemas/**/dist/*
+/UI/**/build/*
+/UI/**/dist/*
 
 npm-debug.log
 
