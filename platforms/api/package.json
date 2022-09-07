@@ -1,0 +1,32 @@
+{
+  "name": "@airport/api",
+  "description": "AIRport API harness",
+  "version": "0.0.1",
+  "dependencies": {
+    "@airport/aviation-communication": "0.0.1",
+    "@airport/check-in": "0.0.1",
+    "@airport/direction-indicator": "0.0.1",
+    "@airport/tarmaq-entity": "0.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup-plugin-typescript2": "0.33.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.4.4"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
+  },
+  "types": "dist/index.d.ts"
+}

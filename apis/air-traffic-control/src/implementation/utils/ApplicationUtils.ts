@@ -28,7 +28,7 @@ import {
 } from '@airport/tarmaq-query'
 import {
 	IAirportDatabase,
-	QApplicationInternal
+	QAppInternal
 } from '../../definition/AirportDatabase'
 import { IUtils } from '../../definition/utils/Utils'
 
@@ -103,7 +103,7 @@ export class ApplicationUtils
 	getQEntityConstructor<IQE extends IQEntity>(
 		dbEntity: DbEntity
 	): QEntityConstructor<IQE> {
-		return (<QApplicationInternal>this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index])
+		return (<QAppInternal>this.airportDatabase.qApplications[dbEntity.applicationVersion.application.index])
 			.__qConstructors__[dbEntity.index]
 	}
 

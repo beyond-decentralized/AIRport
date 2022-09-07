@@ -1,6 +1,6 @@
 import {
 	IAirportDatabase,
-	QApplicationInternal
+	QAppInternal
 } from '@airport/air-traffic-control'
 import {
 	Inject,
@@ -88,7 +88,7 @@ export class PostgreApplicationBuilder
 		let allSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication)] as QApplicationInternal
+				getFullApplication_Name(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				allSequences = allSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}
@@ -108,7 +108,7 @@ export class PostgreApplicationBuilder
 		let stagedSequences: ISequence[] = []
 		for (const jsonApplication of jsonApplications) {
 			const qApplication = this.airportDatabase.QM[this.dbApplicationUtils.
-				getFullApplication_Name(jsonApplication)] as QApplicationInternal
+				getFullApplication_Name(jsonApplication)] as QAppInternal
 			for (const jsonEntity of jsonApplication.versions[jsonApplication.versions.length - 1].entities) {
 				stagedSequences = stagedSequences.concat(this.buildSequences(qApplication.__dbApplication__, jsonEntity))
 			}

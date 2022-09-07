@@ -22,7 +22,7 @@ import {
 	Actor_LocalId,
 	AirEntity_ActorRecordId,
 	Repository_LocalId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IRecordUpdateStageDao,
 	RecordUpdateStageValues

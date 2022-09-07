@@ -1,4 +1,4 @@
-import { Application } from '@airport/web-airport';
+import { Application } from '@airport/server';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useEffect, useState } from 'react';

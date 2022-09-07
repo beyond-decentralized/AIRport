@@ -9,7 +9,7 @@ import type {
     IActor,
     AirEntity,
     Repository_LocalId
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { ITransaction } from "../transaction/ITransaction";
 
 export interface IDeleteManager {

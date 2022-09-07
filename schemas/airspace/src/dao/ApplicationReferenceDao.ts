@@ -4,9 +4,9 @@ import {
 	BaseApplicationReferenceDao,
 	IBaseApplicationReferenceDao,
 	IApplicationReference,
-	Q,
 	QApplicationReference,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationReferenceDao
 	extends IBaseApplicationReferenceDao {

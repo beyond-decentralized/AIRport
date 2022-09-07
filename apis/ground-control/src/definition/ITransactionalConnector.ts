@@ -1,4 +1,4 @@
-import { ICoreLocalApiRequest, ILocalAPIRequest, ILocalAPIResponse } from '@airport/aviation-communication'
+import { ICoreLocalApiRequest, InternalUserAccount, ILocalAPIResponse } from '@airport/aviation-communication'
 import { IContext } from '@airport/direction-indicator'
 import { Observable } from 'rxjs'
 import { IAbstractQueryContext } from './query/AbstractQueryContext'
@@ -14,27 +14,6 @@ export interface IRootTransaction {
     newRepository?: IRepository
 }
 
-export interface IUserAccount {
-	
-	// Id Properties
-	_localId?: number;
-
-	// Id Relations
-
-	// Non-Id Properties
-	email?: string;
-	passwordHash?: string;
-	username?: string;
-	GUID?: string;
-
-	// Non-Id Relations
-
-	// Transient Properties
-
-	// Public Methods
-	
-}
-
 export interface IActor {
 	
 	// Id Properties
@@ -46,7 +25,7 @@ export interface IActor {
 	GUID?: string;
 
 	// Non-Id Relations
-	userAccount?: IUserAccount;
+	userAccount?: InternalUserAccount;
 
 	// Transient Properties
 
@@ -69,7 +48,7 @@ export interface IRepository {
 	GUID?: string;
 
 	// Non-Id Relations
-	owner?: IUserAccount;
+	owner?: InternalUserAccount;
 
 	// Transient Properties
 

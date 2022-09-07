@@ -2,7 +2,7 @@ import {
 	ISequenceGenerator,
 	airEntity
 } from '@airport/ground-control';
-import { IAirportDatabase, QApplicationInternal } from '../definition/AirportDatabase';
+import { IAirportDatabase, QAppInternal } from '../definition/AirportDatabase';
 
 export async function getSysWideOpId(
 	airDb: IAirportDatabase,
@@ -21,7 +21,7 @@ export async function getSysWideOpIds(
 		return []
 	}
 	const sysWideOpIdGeneratedColumn
-		= (airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION] as QApplicationInternal)
+		= (airportDatabase.QM[airEntity.SYS_WIDE_OP_ID_APPLICATION] as QAppInternal)
 			.__dbApplication__.currentVersion[0].applicationVersion
 			.entityMapByName[airEntity.SYS_WIDE_OP_ID_ENTITY]
 			.columnMap['SYSTEM_WIDE_OPERATION_LID'];

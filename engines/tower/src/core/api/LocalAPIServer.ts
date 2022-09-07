@@ -12,7 +12,7 @@ import {
     IApplicationStore,
     ILocalAPIServer
 } from "@airport/apron";
-import { Actor } from '@airport/holding-pattern';
+import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { RequestManager } from '@airport/arrivals-n-departures';
 
 @Injected()

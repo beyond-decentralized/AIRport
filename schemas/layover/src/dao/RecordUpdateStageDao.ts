@@ -17,7 +17,7 @@ import {
 	RecordHistory_ActorRecordId,
 	AirEntity_ActorRecordId,
 	Repository_LocalId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	AND,
 	field,
@@ -27,9 +27,9 @@ import { Inject } from 'typedi';
 import {
 	BaseRecordUpdateStageDao,
 	IBaseRecordUpdateStageDao,
-	Q,
 	QRecordUpdateStage
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export type RecordUpdateStageValue = any;
 

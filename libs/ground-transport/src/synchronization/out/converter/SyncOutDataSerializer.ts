@@ -24,7 +24,7 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId
 } from "@airport/holding-pattern/dist/app/bundle";
-import { IUserAccount, Terminal_LocalId, UserAccount_LocalId } from "@airport/travel-document-checkpoint";
+import { IUserAccount, Terminal_LocalId, UserAccount_LocalId } from "@airport/travel-document-checkpoint/dist/app/bundle";
 
 export interface ISyncOutDataSerializer {
 

@@ -41,7 +41,7 @@ import {
 } from '@airport/terminal-map';
 import { IInternalRecordManager } from '../data/InternalRecordManager';
 import { IEntityContext } from '@airport/tarmaq-entity';
-import { Actor } from '@airport/holding-pattern';
+import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { ActorDao } from '@airport/holding-pattern/dist/app/bundle';
 import { v4 as guidv4 } from "uuid";
 import { ApplicationDao } from '@airport/airspace/dist/app/bundle';

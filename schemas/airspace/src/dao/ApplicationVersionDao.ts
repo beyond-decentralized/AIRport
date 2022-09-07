@@ -4,11 +4,11 @@ import {
 	BaseApplicationVersionDao,
 	IBaseApplicationVersionDao,
 	IApplicationVersion,
-	Q,
 	QDomain,
 	QApplication,
 	QApplicationVersion
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationVersionDao
 	extends IBaseApplicationVersionDao {
@@ -36,7 +36,7 @@ export class ApplicationVersionDao
 	async findAllLatestForApplication_Indexes(
 		applicationIndexes: Application_Index[]
 	): Promise<IApplicationVersion[]> {
-		let sv: QApplicationVersion
+		let sv: QAppVersion
 
 		return await this.db.find.tree({
 			FROM: [
@@ -53,7 +53,7 @@ export class ApplicationVersionDao
 
 	async findAllActiveOrderByApplication_IndexAndId(): Promise<IApplicationVersion[]> {
 		let sv: QApplicationVersion
-		// let s: QApplication
+		// let s: QApp
 
 		return await this.db.find.tree({
 			FROM: [
@@ -109,8 +109,8 @@ export class ApplicationVersionDao
 				  : Map<Domain_Name, Map<Application_Name, IApplicationVersion>>
 				  = new Map()
 
-		let sv: QApplicationVersion
-		let s: QApplication
+		let sv: QAppVersion
+		let s: QApp
 		let d: QDomain
 
 		const maxApplicationVersions: IApplicationVersion[] = <any>await this.db.find.tree({
@@ -154,7 +154,7 @@ export class ApplicationVersionDao
 
 	private idsForMaxVersionSelect(): RawFieldQuery<IQNumberField> {
 		let svMax
-		let sv2: QApplicationVersion
+		let sv2: QAppVersion
 
 		return field({
 			FROM: [

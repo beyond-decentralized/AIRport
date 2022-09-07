@@ -1,6 +1,6 @@
 import {
     airApi,
-    QApplication
+    QApp
 } from '@airport/aviation-communication'
 import {
     DbApplication,
@@ -15,7 +15,7 @@ import {
   SynchronizationConflictValues
 } from '../ddl/ddl';
 
-export interface LocalQApplication extends QApplication {
+export interface air____at_airport_slash_layover_LocalQApp extends QApp {
 
     db: DbApplication;
 
@@ -31,17 +31,17 @@ const __constructors__ = {
 	SynchronizationConflictValues: SynchronizationConflictValues
 };
 
-export const Q_APPLICATION: LocalQApplication = <any>{
+export const Q_air____at_airport_slash_layover: air____at_airport_slash_layover_LocalQApp = <any>{
 	__constructors__,
   domain: 'air',
   name: '@airport/layover'
 };
-export const Q: LocalQApplication = Q_APPLICATION
+export default Q_air____at_airport_slash_layover
 
 export function air____at_airport_slash_layover_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_air____at_airport_slash_layover.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApplication(Q_APPLICATION)
+airApi.setQApp(Q_air____at_airport_slash_layover)

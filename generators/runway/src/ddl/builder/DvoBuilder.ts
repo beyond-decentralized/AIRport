@@ -26,6 +26,7 @@ export class DvoBuilder
 
 		return `/* eslint-disable */
 ${imports}
+import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity, EntityVDescriptor>
@@ -62,7 +63,6 @@ ${baseClassDefinitions}`;
 			}
 		], '@airport/ground-control');
 		this.addImport([
-			'Q',
 			`${this.diSet}`
 		], './qApplication', false);
 	}

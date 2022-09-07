@@ -95,8 +95,8 @@ export class ApplicationEntity
 	// 	{name: "TABLE_INDEX", referencedColumnName: "INDEX"}
 	// ])
 	// @WhereJoinTable((
-	// 	otm: QApplicationEntity,
-	// 	mto: QApplicationColumn
+	// 	otm: QAppEntity,
+	// 	mto: QAppColumn
 	// ) => mto.idIndex.IS_NOT_NULL())
 	// idColumns: IApplicationColumn[];
 

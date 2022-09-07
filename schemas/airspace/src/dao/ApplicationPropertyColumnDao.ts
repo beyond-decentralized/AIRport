@@ -4,9 +4,9 @@ import {
 	BaseApplicationPropertyColumnDao,
 	IBaseApplicationPropertyColumnDao,
 	IApplicationPropertyColumn,
-	Q,
 	QApplicationPropertyColumn,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationPropertyColumnDao
 	extends IBaseApplicationPropertyColumnDao {

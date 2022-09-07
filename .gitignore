@@ -6,6 +6,8 @@
 /libs/**/dist/*
 /ORMs/**/dist/*
 /schemas/**/dist/*
+/platforms/**/dist/*
+/UI/**/dist/*
 
 npm-debug.log
 

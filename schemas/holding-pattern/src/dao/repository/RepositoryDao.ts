@@ -8,7 +8,7 @@ import {
 	QUserAccount,
 	Terminal_GUID,
 	UserAccount_GUID
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	Actor_GUID,
 } from '../../ddl/ddl'
@@ -16,11 +16,11 @@ import {
 	BaseRepositoryDao,
 	IBaseRepositoryDao,
 	IRepository,
-	Q,
 	QRepository,
 	QRepositoryTransactionHistory,
 	QTransactionHistory,
 } from '../../generated/generated'
+import Q from '../../generated/qApplication'
 import { Repository_GUID, Repository_LocalId, Repository_Source } from '../../types'
 
 export interface IRepositoryDao

@@ -3,9 +3,9 @@ import {
 	BaseSynchronizationConflictDao,
 	IBaseSynchronizationConflictDao,
 	ISynchronizationConflict,
-	Q,
 	QSynchronizationConflict
 } from '../../generated/generated'
+import Q from '../../generated/qApplication'
 
 export interface ISynchronizationConflictDao
 	extends IBaseSynchronizationConflictDao {

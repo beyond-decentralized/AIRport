@@ -1,9 +1,9 @@
 import {
 	AIRPORT_DATABASE,
 	IAirportDatabase,
-	QApplicationInternal,
+	QAppInternal,
 } from '@airport/air-traffic-control';
-import { QApplication } from '@airport/aviation-communication'
+import { QApp } from '@airport/aviation-communication'
 import { IOC } from '@airport/direction-indicator';
 import {
 	IApplicationQuery,
@@ -163,7 +163,7 @@ export class ApplicationQueryGenerator {
 		const [dbAppliationUtils, lookup, queryFacade] = await IOC.get(
 			DB_APPLICATION_UTILS, LOOKUP, QUERY_FACADE);
 		const context = lookup.ensureContext(null);
-		const qApplication: QApplicationInternal = airDb.QM[dbAppliationUtils.
+		const qApplication: QAppInternal = airDb.QM[dbAppliationUtils.
 			getFullApplication_Name(jsonApplication)];
 		const dbApplicationVersion = qApplication.__dbApplication__
 			.versions[qApplication.__dbApplication__.versions.length - 1];
@@ -208,7 +208,7 @@ export class ApplicationQueryGenerator {
 		let lastNumberParameter = 0;
 		let lastStringParameter = 0;
 		let lastDateParameter = new Date().getTime();
-		let Q: QApplication;
+		let Q: QApp;
 		for (const input of queryDefinition.inputs) {
 			switch (input.type) {
 				case QueryInputKind.PARAMETER:

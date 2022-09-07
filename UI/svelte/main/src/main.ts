@@ -1,4 +1,4 @@
-import { initFramework } from '@airport/web-airport'
+import { initFramework } from '@airport/server'
 
 import App from './App.svelte';
 

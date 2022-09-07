@@ -1,11 +1,11 @@
 import {
 	IAirportDatabase,
 	orderApplicationsInOrderOfPrecedence,
-	QApplicationInternal,
-	setQApplicationEntities
+	QAppInternal,
+	setQAppEntities
 } from '@airport/air-traffic-control'
 import {
-	QApplication
+	QApp
 } from '@airport/aviation-communication'
 import {
 	Inject,
@@ -39,8 +39,8 @@ export class QueryEntityClassCreator
 
 	create(
 		dbApplication: DbApplication
-	): QApplication {
-		let qApplication: QApplicationInternal = this.airportDatabase.QM[dbApplication.fullName] as QApplicationInternal
+	): QApp {
+		let qApplication: QAppInternal = this.airportDatabase.QM[dbApplication.fullName] as QAppInternal
 		// If the Application API source has already been loaded
 		if (qApplication) {
 			qApplication.__dbApplication__ = dbApplication
@@ -55,7 +55,7 @@ export class QueryEntityClassCreator
 			this.airportDatabase.QM[dbApplication.fullName] = qApplication
 		}
 		this.airportDatabase.Q[dbApplication.index] = qApplication
-		setQApplicationEntities(dbApplication, qApplication,
+		setQAppEntities(dbApplication, qApplication,
 			this.airportDatabase.qApplications,
 			this.applicationUtils, this.relationManager)
 

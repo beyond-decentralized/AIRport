@@ -14,7 +14,7 @@ import {
 import {
 	IRecordHistory,
 	IRepository
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern/dist/app/bundle';
 import { SynchronizationConflict_Type } from './SynchronizationConflictType';
 import { SynchronizationConflictValues } from './SynchronizationConflictValues';
 

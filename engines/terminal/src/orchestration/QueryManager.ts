@@ -20,7 +20,7 @@ import {
 	InternalFragments,
 	PortableQuery, QueryResultType
 } from '@airport/ground-control'
-import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern'
+import { Actor_LocalId, Repository_LocalId } from '@airport/holding-pattern/dist/app/bundle'
 import { IActorDao, IRepositoryDao } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IQueryManager,

@@ -7,7 +7,8 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const packageJson = require("./package.json");
 
-const production = !process.env.ROLLUP_WATCH;
+// const production = !process.env.ROLLUP_WATCH;
+const production = false;
 
 export default [
     {

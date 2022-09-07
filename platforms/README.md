@@ -2,8 +2,14 @@
 
 Implementation platform adapters.
 
-[web-airport](./web-airport)
-Deployable AIRport tab for the Web.
+[airport](./airport)
+Deployable AIRport server.
+
+[api](./api)
+AIRport API harness.
+
+[airport](./app)
+AIRport App harness.
 
 [web-terminal](./web-terminal)
 Core AIRport adapter for the Web.

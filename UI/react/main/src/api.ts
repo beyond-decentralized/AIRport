@@ -1,4 +1,4 @@
-import { airportApi, Application, IUserAccountInfo, Repository } from '@airport/web-airport'
+import { airportApi, Application, IUserAccountInfo, Repository } from '@airport/server'
 import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-component-lib/interfaces';
 
 export function signUp(

@@ -15,7 +15,7 @@ import {
     SQLDataType,
     StoreType
 } from '@airport/ground-control'
-import { Actor, ITransactionHistory } from '@airport/holding-pattern'
+import { Actor, ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
 import {
     IOperationContext,
     IStoreDriver,

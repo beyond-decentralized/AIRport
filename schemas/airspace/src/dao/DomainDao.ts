@@ -7,9 +7,9 @@ import {
 	BaseDomainDao,
 	IBaseDomainDao,
 	IDomain,
-	Q,
 	QDomain
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IDomainDao
 	extends IBaseDomainDao {

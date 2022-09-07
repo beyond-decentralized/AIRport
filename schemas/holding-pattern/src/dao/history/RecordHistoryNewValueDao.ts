@@ -4,9 +4,9 @@ import {
 	BaseRecordHistoryNewValueDao,
 	IBaseRecordHistoryNewValueDao,
 	IRecordHistoryNewValue,
-	Q,
 	QRecordHistoryNewValue
 }                               from '../../generated/generated'
+import Q from '../../generated/qApplication'
 
 export interface IRecordHistoryNewValueDao
 	extends IBaseRecordHistoryNewValueDao {

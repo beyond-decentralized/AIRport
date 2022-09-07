@@ -8,7 +8,7 @@ import {
 import {
 	Client,
 	Type
-} from "@airport/travel-document-checkpoint";
+} from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { Repository } from "./Repository";
 
 @Entity()

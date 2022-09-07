@@ -26,6 +26,7 @@ export abstract class UtilityBuilder
 
 		return `/* eslint-disable */
 ${imports}
+import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection ${this.classSuffix}
 export class SQDI${this.classSuffix}<Entity,
@@ -93,7 +94,6 @@ ${baseClassDefinitions}`;
 			}
 		], '@airport/ground-control');
 		this.addImport([
-			'Q',
 			`${this.diSet}`
 		], './qApplication', false);
 	}

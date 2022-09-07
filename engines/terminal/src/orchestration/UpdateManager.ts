@@ -33,7 +33,7 @@ import {
 	IActor,
 	AirEntity_SystemWideOperationId,
 	SystemWideOperationId
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IHistoryManager,
 	IOperationContext,

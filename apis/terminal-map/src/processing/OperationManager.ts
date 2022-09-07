@@ -1,5 +1,5 @@
 import type { IRootTransaction, ISaveResult } from "@airport/ground-control";
-import type { IActor, IAirEntity } from "@airport/holding-pattern";
+import type { IActor, IAirEntity } from "@airport/holding-pattern/dist/app/bundle";
 import type { ITransaction } from "../transaction/ITransaction";
 import type { IOperationContext } from "./OperationContext";
 

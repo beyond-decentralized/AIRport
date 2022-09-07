@@ -1,22 +1,22 @@
 import {
-    REPOSITORY_API,
+	REPOSITORY_API,
 } from '../../to_be_generated/common-tokens';
 import {
-    DEPENDENCY_INJECTION,
-    Inject,
-    Injected,
+	DEPENDENCY_INJECTION,
+	Inject,
+	Injected,
 } from '@airport/direction-indicator';
 import {
-    Api,
+	Api,
 } from '@airport/check-in';
 import {
-    IRepositoryManager,
+	IRepositoryManager,
 } from '../../core/RepositoryManager';
 import {
-    RepositoryDao,
+	RepositoryDao,
 } from '../../dao/dao';
 import {
-    Repository,
+	Repository,
 } from '../../ddl/ddl';
 
 
@@ -28,15 +28,15 @@ export class RepositoryApi {
     constructor() {
         DEPENDENCY_INJECTION.db().manualInject(this, REPOSITORY_API)
     }
-
+        
     @Inject()
     repositoryApi: RepositoryApi
-
-    async findAll(): Promise<Repository[]> {
+            
+    async  findAll(): Promise<Repository[]> {
         return await this.repositoryApi.findAll()
     }
 
-    async create(
+    async  create(
         repositoryName: string
     ): Promise<Repository> {
         return await this.repositoryApi.create(repositoryName)

@@ -1,12 +1,12 @@
 import {
     airApi,
-    QApplication
+    QApp
 } from '@airport/aviation-communication'
 import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QApplication as QApp } from './application/qapplication';
+import { QApplication } from './application/qapplication';
 import { QApplicationColumn } from './application/qapplicationcolumn';
 import { QApplicationCurrentVersion } from './application/qapplicationcurrentversion';
 import { QApplicationEntity } from './application/qapplicationentity';
@@ -35,11 +35,11 @@ import {
   VersionedApplicationObject
 } from '../ddl/ddl';
 
-export interface LocalQApplication extends QApplication {
+export interface air____at_airport_slash_airspace_LocalQApp extends QApp {
 
     db: DbApplication;
 
-  Application: QApp;
+  Application: QApplication;
 	ApplicationColumn: QApplicationColumn;
 	ApplicationCurrentVersion: QApplicationCurrentVersion;
 	ApplicationEntity: QApplicationEntity;
@@ -70,17 +70,17 @@ const __constructors__ = {
 	VersionedApplicationObject: VersionedApplicationObject
 };
 
-export const Q_APPLICATION: LocalQApplication = <any>{
+export const Q_air____at_airport_slash_airspace: air____at_airport_slash_airspace_LocalQApp = <any>{
 	__constructors__,
   domain: 'air',
   name: '@airport/airspace'
 };
-export const Q: LocalQApplication = Q_APPLICATION
+export default Q_air____at_airport_slash_airspace
 
 export function air____at_airport_slash_airspace_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_air____at_airport_slash_airspace.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApplication(Q_APPLICATION)
+airApi.setQApp(Q_air____at_airport_slash_airspace)

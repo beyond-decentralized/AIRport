@@ -53,7 +53,7 @@ export class QApplicationBuilder
       .map(
         entityName => `${entityName}: Q${entityName};`,
       ).join('\n\t');
-    // TODO: enable DVO and DAO injections into QApplication, if needed
+    // TODO: enable DVO and DAO injections into QApp, if needed
     // const dvoDefinitions = this.entityNames.map(
     // 	entityName => `${entityName}: IBase${entityName}Dvo;`
     // ).join('\n\t\t');
@@ -104,7 +104,7 @@ export class QApplicationBuilder
 
     return `import {
     airApi,
-    QApplication
+    QApp
 } from '@airport/aviation-communication'
 import {
     DbApplication,
@@ -113,7 +113,7 @@ import {
 ${qEntityImports}
 ${entityImports}
 
-export interface LocalQApplication extends QApplication {
+export interface ${this.applicationFullName}_LocalQApp extends QApp {
 
     db: DbApplication;
 
@@ -125,20 +125,20 @@ const __constructors__ = {
 	${constructorDefinitions}
 };
 
-export const Q_APPLICATION: LocalQApplication = <any>{
+export const Q_${this.applicationFullName}: ${this.applicationFullName}_LocalQApp = <any>{
 	__constructors__,
   domain: '${domainName}',
   name: '${applicationName}'
 };
-export const Q: LocalQApplication = Q_APPLICATION
+export default Q_${this.applicationFullName}
 
 export function ${this.applicationFullName}_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_${this.applicationFullName}.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApplication(Q_APPLICATION)
+airApi.setQApp(Q_${this.applicationFullName})
 `;
 
     // export function duoDiSet(

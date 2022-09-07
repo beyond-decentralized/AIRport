@@ -1,5 +1,5 @@
 import {
-	QApplication,
+	QApp,
 	AirEntityId
 } from '@airport/aviation-communication';
 import {
@@ -85,7 +85,7 @@ export abstract class Dao<Entity,
 
 	constructor(
 		dbEntityId: DbEntityId,
-		Q: QApplication,
+		Q: QApp,
 		private internal = false
 	) {
 		const dbEntity = Q.__dbApplication__.currentVersion[0]

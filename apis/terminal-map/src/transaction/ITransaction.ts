@@ -1,4 +1,4 @@
-import { Actor, ITransactionHistory } from '@airport/holding-pattern'
+import { Actor, ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
 import { IStoreDriver } from '../core/data/StoreDriver'
 import { ITransactionCredentials } from '../Credentials'
 

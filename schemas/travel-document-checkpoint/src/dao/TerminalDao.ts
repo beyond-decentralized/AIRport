@@ -8,9 +8,9 @@ import {
 	BaseTerminalDao,
 	IBaseTerminalDao,
 	ITerminal,
-	Q,
 	QTerminal
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {

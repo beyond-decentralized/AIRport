@@ -4,9 +4,9 @@ import {
 	BaseApplicationPropertyDao,
 	IBaseApplicationPropertyDao,
 	IApplicationProperty,
-	Q,
 	QApplicationProperty,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationPropertyDao
 	extends IBaseApplicationPropertyDao {

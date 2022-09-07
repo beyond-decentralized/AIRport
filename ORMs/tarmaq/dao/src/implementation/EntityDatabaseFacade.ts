@@ -11,7 +11,7 @@ import {
   RawInsertValues,
   RawUpdate,
 } from '@airport/tarmaq-query';
-import { QApplication } from '@airport/aviation-communication'
+import { QApp } from '@airport/aviation-communication'
 import {
   DbEntity,
   ISaveResult
@@ -52,7 +52,7 @@ export class EntityDatabaseFacade<Entity,
 
   constructor(
     public dbEntity: DbEntity,
-    private Q: QApplication,
+    private Q: QApp,
     protected dao: IDao<Entity, EntitySelect,
       EntityCreate, EntityUpdateColumns,
       EntityUpdateProperties, ApplicationEntity_LocalId,

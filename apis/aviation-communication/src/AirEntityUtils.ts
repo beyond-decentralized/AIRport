@@ -1,7 +1,7 @@
 import { Injected } from '@airport/direction-indicator'
 
 
-export interface IUserAccount {
+export interface InternalUserAccount {
 
     // Id Properties
     _localId?: number;
@@ -30,7 +30,7 @@ export interface AirEntityId {
     },
     actor?: {
         GUID?: string,
-        userAccount?: IUserAccount
+        userAccount?: InternalUserAccount
     },
     _actorRecordId?: number
 
@@ -40,7 +40,7 @@ export interface IAirEntityUtils {
 
     getCreatedBy(
         idObject: AirEntityId
-    ): IUserAccount
+    ): InternalUserAccount
 
     encodeId(
         idObject: AirEntityId
@@ -63,7 +63,7 @@ export class AirEntityUtils
 
     getCreatedBy(
         airEntity: AirEntityId
-    ): IUserAccount {
+    ): InternalUserAccount {
         return airEntity.actor.userAccount
     }
 

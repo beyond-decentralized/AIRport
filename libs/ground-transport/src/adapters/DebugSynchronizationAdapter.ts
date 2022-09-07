@@ -6,7 +6,7 @@ import { RepositorySynchronizationMessage, RepositorySynchronizationReadResponse
 import {
     Repository_Source,
     Repository_GUID
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { IClient } from "@airway/client";
 import { ISynchronizationAdapter } from "./ISynchronizationAdapter";
 

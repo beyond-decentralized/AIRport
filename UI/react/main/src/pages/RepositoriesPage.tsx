@@ -1,4 +1,4 @@
-import { Repository } from '@airport/web-airport';
+import { Repository } from '@airport/server';
 import { IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonItem, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { refresh } from 'ionicons/icons';
 import { useEffect, useState } from 'react';

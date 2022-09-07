@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@airport/ui-react-components": "0.0.1",
-    "@airport/web-airport": "0.0.1",
+    "@airport/server": "0.0.1",
+    "@airport/web-terminal": "0.0.1",
     "@capacitor/app": "4.0.1",
     "@capacitor/core": "4.1.0",
     "@capacitor/haptics": "4.0.1",

@@ -18,17 +18,17 @@ export * from './implementation/Utils';
 export * from './core-tokens';
 export * from './tokens';
 
-import { airApi, QApplication } from '@airport/aviation-communication'
+import { airApi, QApp } from '@airport/aviation-communication'
 import { DEPENDENCY_INJECTION } from '@airport/direction-indicator';
 import { AIRPORT_DATABASE } from './tokens';
 
-airApi.setQApplication = function (
-    qApplication: QApplication
+airApi.setQApp = function (
+    qApplication: QApp
 ) {
     DEPENDENCY_INJECTION.db().eventuallyGet(AIRPORT_DATABASE).then((
         airportDatabase,
     ) => {
-        airportDatabase.setQApplication(qApplication)
+        airportDatabase.setQApp(qApplication)
     })
 }
 

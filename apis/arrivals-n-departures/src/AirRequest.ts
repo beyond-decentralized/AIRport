@@ -1,5 +1,5 @@
-import { Actor } from "@airport/holding-pattern";
-import { UserAccount } from "@airport/travel-document-checkpoint";
+import { Actor } from "@airport/holding-pattern/dist/app/bundle";
+import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 
 export interface AirRequest {
     actor: Actor

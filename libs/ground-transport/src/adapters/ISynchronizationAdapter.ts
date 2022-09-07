@@ -1,5 +1,5 @@
 import { RepositorySynchronizationMessage } from "@airport/arrivals-n-departures";
-import { Repository_Source, Repository_GUID } from "@airport/holding-pattern";
+import { Repository_Source, Repository_GUID } from "@airport/holding-pattern/dist/app/bundle";
 
 export interface ISynchronizationAdapter {
 

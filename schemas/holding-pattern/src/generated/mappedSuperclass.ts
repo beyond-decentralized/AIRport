@@ -227,7 +227,7 @@ export const MAPPED_SUPERCLASS = [
 								"sourceName": "UserAccount"
 							}
 						},
-						"path": "@airport/travel-document-checkpoint"
+						"path": "@airport/travel-document-checkpoint/dist/app/bundle"
 					},
 					"IOC": {
 						"fileImports": null,
@@ -259,7 +259,7 @@ export const MAPPED_SUPERCLASS = [
 					"../infrastructure/Actor": null,
 					"../common": null,
 					"./Repository": null,
-					"@airport/travel-document-checkpoint": null,
+					"@airport/travel-document-checkpoint/dist/app/bundle": null,
 					"@airport/direction-indicator": null,
 					"@airport/aviation-communication": null
 				}

@@ -1,6 +1,6 @@
 import {
 	UserAccount,
-} from '@airport/travel-document-checkpoint';
+} from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	IRepository,
 } from './repository';

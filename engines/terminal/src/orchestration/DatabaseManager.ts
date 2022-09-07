@@ -13,7 +13,7 @@ import {
 } from '@airport/ground-control';
 import {
 	Actor,
-} from '@airport/holding-pattern';
+} from '@airport/holding-pattern/dist/app/bundle';
 import { IApplication, IApplicationDao } from '@airport/airspace/dist/app/bundle';
 import {
 	IApplicationInitializer,

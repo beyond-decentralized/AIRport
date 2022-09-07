@@ -1,4 +1,4 @@
-import { QApplication } from '@airport/aviation-communication'
+import { QApp } from '@airport/aviation-communication'
 import { extend } from '@airport/direction-indicator'
 import {
 	DbColumn,
@@ -13,7 +13,7 @@ import {
 	ApplicationEntity_TableIndex
 } from '@airport/ground-control'
 import { IApplicationUtils, IQBooleanField, IQDateField, IQEntity, IQEntityInternal, IQNumberField, IQOperableFieldInternal, IQRelation, IQStringField, IQUntypedField, IRelationManager, QAirEntityOneToManyRelation, QAirEntityRelation, QBooleanField, QDateField, QEntity, QNumberField, QOneToManyRelation, QRelation, QStringField, QUntypedField } from '@airport/tarmaq-query'
-import { QApplicationInternal } from '../../definition/AirportDatabase'
+import { QAppInternal } from '../../definition/AirportDatabase'
 
 export function getColumnQField(
 	entity: DbEntity,
@@ -42,7 +42,7 @@ export function getQRelation(
 	entity: DbEntity,
 	property: DbProperty,
 	q: IQEntityInternal,
-	allQApplications: QApplication[],
+	allQApps: QApp[],
 	applicationUtils: IApplicationUtils,
 	relationManager: IRelationManager
 ): IQRelation<typeof q> {
@@ -52,7 +52,7 @@ export function getQRelation(
 			const relationEntity = relation.relationEntity
 			const relationApplication = relationEntity.applicationVersion.application
 			const qIdRelationConstructor
-				= allQApplications[relationApplication.index]
+				= allQApps[relationApplication.index]
 					.__qIdRelationConstructors__[relationEntity.index]
 			return new qIdRelationConstructor(
 				relation.relationEntity, relation, q, applicationUtils, relationManager)
@@ -71,7 +71,7 @@ export function getQRelation(
 }
 
 export function getQEntityConstructor(
-	allQApplications: QApplication[]
+	allQApps: QApp[]
 ): typeof QEntity {
 
 	// ChildQEntity refers to the constructor
@@ -94,7 +94,7 @@ export function getQEntityConstructor(
 
 			if (property.relation && property.relation.length) {
 				qFieldOrRelation = getQRelation(entity, property,
-					this, allQApplications, applicationUtils, relationManager)
+					this, allQApps, applicationUtils, relationManager)
 				for (const propertyColumn of property.propertyColumns) {
 					addColumnQField(entity, property, this, propertyColumn.column)
 				}
@@ -242,10 +242,10 @@ export function getQEntityIdFields(
 	return addToObject
 }
 
-export function setQApplicationEntities(
+export function setQAppEntities(
 	application: DbApplication,
-	qApplication: QApplicationInternal,
-	allQApplications: QApplication[],
+	qApplication: QAppInternal,
+	allQApps: QApp[],
 	appliationUtils: IApplicationUtils,
 	relationManager: IRelationManager,
 ) {
@@ -272,9 +272,9 @@ export function setQApplicationEntities(
 				&& idColumn.manyRelationColumns.length) {
 				const oneColumn = idColumn.manyRelationColumns[0].oneColumn
 				const relatedEntity = oneColumn.entity
-				const relatedQApplication = allQApplications[relatedEntity.applicationVersion.application.index]
-				if (!relatedQApplication) {
-					throw new Error(`QApplication not yet initialized for ID relation:
+				const relatedQApp = allQApps[relatedEntity.applicationVersion.application.index]
+				if (!relatedQApp) {
+					throw new Error(`QApp not yet initialized for ID relation:
 					${entity.name}.${oneColumn.name}
 					`)
 				}
@@ -299,7 +299,7 @@ export function setQApplicationEntities(
 
 		// TODO: compute many-to-many relations
 
-		const qConstructor = <any>getQEntityConstructor(allQApplications)
+		const qConstructor = <any>getQEntityConstructor(allQApps)
 		qApplication.__qConstructors__[entity.index] = qConstructor
 
 		if (!Object.getOwnPropertyNames(qApplication)

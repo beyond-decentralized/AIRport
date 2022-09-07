@@ -20,7 +20,7 @@ import {
 	MetroArea,
 	State,
 	UserAccount
-} from "@airport/travel-document-checkpoint";
+} from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { RepositoryType } from "./RepositoryType";
 import { RepositoryDatabase } from "./RepositoryDatabase";
 import { RepositoryClient } from "./RepositoryClient";

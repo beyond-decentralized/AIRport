@@ -24,7 +24,7 @@ import {
 	Application_Name,
 	FullApplication_Name
 } from '@airport/ground-control';
-import { IActor } from '@airport/holding-pattern';
+import { IActor } from '@airport/holding-pattern/dist/app/bundle';
 import { Subject } from 'rxjs';
 import {
 	IApplicationInitializerState,
@@ -37,7 +37,7 @@ import {
 } from './TerminalState';
 import { ITransactionCredentials } from '../Credentials';
 import { ISequenceGeneratorState } from '..';
-import { ITerminal } from '@airport/travel-document-checkpoint';
+import { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bundle';
 
 export interface IPendingTransaction {
 	context,

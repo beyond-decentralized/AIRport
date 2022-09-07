@@ -9,14 +9,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@airport/airspace": "0.0.1",
-    "@airport/direction-indicator": "0.0.1",
-    "@airport/ui-react-components": "0.0.1",
-    "@airport/holding-pattern": "0.0.1",
-    "@airport/terminal-map": "0.0.1",
-    "@airport/web-airport": "0.0.1",
-    "@airport/web-terminal": "0.0.1",
-    "@airport/sqljs": "0.0.1",
+    "@airport/server": "0.0.1",
     "@ionic/core": "^6.2.4",
     "broadcast-channel": "^4.14.0",
     "page": "^1.11.6"

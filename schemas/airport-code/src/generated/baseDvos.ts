@@ -25,10 +25,10 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	Q,
 	air____at_airport_slash_airport_dash_code_diSet,
 } from './qApplication';
 
+import Q from './qApplication'
 
 // Application Q object Dependency Injection readiness detection Dvo
 export class SQDIDvo<Entity, EntityVDescriptor>

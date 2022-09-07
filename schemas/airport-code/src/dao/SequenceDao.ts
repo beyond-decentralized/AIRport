@@ -2,9 +2,10 @@ import { PLUS } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	BaseSequenceDao,
-	IBaseSequenceDao,
-	Q
+	IBaseSequenceDao
 } from '../generated/generated'
+import Q from '../generated/qApplication'
+
 
 export interface IAbstractSequenceDao {
 }

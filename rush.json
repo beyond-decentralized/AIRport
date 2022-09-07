@@ -6,6 +6,12 @@
   "projectFolderMinDepth": 1,
   "projectFolderMaxDepth": 9,
   "projects": [
+    // top level - needed to build all projects together
+    {
+      "packageName": "airport",
+      "projectFolder": ".",
+      "shouldPublish": true
+    },
     // "apis" folder (alphabetical order)
     {
       "packageName": "@airport/air-traffic-control",
@@ -154,18 +160,18 @@
     },
     // "platforms" folder (alphabetical order)
     {
+      "packageName": "@airport/api",
+      "projectFolder": "../AIRport/platforms/api",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@airport/app",
-      "projectFolder": "platforms/app",
+      "projectFolder": "../AIRport/platforms/app",
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/web-airport",
-      "projectFolder": "platforms/web-airport",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@airport/web-api",
-      "projectFolder": "platforms/web-api",
+      "packageName": "@airport/server",
+      "projectFolder": "../AIRport/platforms/server",
       "shouldPublish": true
     },
     {

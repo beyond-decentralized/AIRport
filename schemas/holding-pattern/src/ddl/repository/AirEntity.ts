@@ -12,7 +12,7 @@ import {
 import { Actor } from '../infrastructure/Actor'
 import { SystemWideOperationId } from '../common'
 import { Repository } from './Repository'
-import { UserAccount } from '@airport/travel-document-checkpoint'
+import { UserAccount } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { IOC } from '@airport/direction-indicator'
 import { AIR_ENTITY_UTILS } from '@airport/aviation-communication'
 

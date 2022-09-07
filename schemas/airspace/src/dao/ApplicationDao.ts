@@ -19,12 +19,13 @@ import {
 	BaseApplicationDao,
 	IBaseApplicationDao,
 	IApplication,
-	Q,
 	QDomain,
 	QApplication,
 	QApplicationCurrentVersion,
 	QApplicationVersion
 } from '../generated/generated'
+import Q from '../generated/qApplication'
+
 import { IAirportDatabase } from '@airport/air-traffic-control'
 import { Application } from '../ddl/ddl'
 

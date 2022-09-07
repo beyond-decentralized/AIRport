@@ -1,5 +1,5 @@
 import { IInjected } from '@airport/direction-indicator'
-import { ITransactionHistory } from '@airport/holding-pattern'
+import { ITransactionHistory } from '@airport/holding-pattern/dist/app/bundle'
 import {
 	ICredentials,
 	ITransaction

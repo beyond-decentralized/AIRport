@@ -4,9 +4,9 @@ import {
 	BaseApplicationEntityDao,
 	IBaseApplicationEntityDao,
 	IApplicationEntity,
-	Q,
 	QApplicationEntity,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationEntityDao
 	extends IBaseApplicationEntityDao {

@@ -7,9 +7,9 @@ import {
 	BaseApplicationRelationDao,
 	IBaseApplicationRelationDao,
 	IApplicationRelation,
-	Q,
 	QApplicationRelation,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationRelationDao
 	extends IBaseApplicationRelationDao {

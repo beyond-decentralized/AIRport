@@ -11,7 +11,7 @@ import {
 import {
 	Terminal,
 	UserAccount
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint/dist/app/bundle'
 import { Application } from '@airport/airspace';
 
 export type Actor_LocalId = number;

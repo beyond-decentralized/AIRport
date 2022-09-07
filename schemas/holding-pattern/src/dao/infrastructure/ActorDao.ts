@@ -20,7 +20,7 @@ import {
 	Terminal_LocalId,
 	UserAccount_GUID,
 	UserAccount_LocalId
-} from '@airport/travel-document-checkpoint'
+} from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	Actor_LocalId,
 	Actor_GUID,
@@ -30,9 +30,9 @@ import {
 	BaseActorDao,
 	IActor,
 	IBaseActorDao,
-	Q,
 	QActor
 } from '../../generated/generated'
+import Q from '../../generated/qApplication'
 import { IContext, Injected } from '@airport/direction-indicator'
 
 export interface IActorDao

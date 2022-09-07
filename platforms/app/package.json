@@ -10,11 +10,11 @@
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/holding-pattern": "0.0.1",
-    "@airport/sqljs": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",
     "@airport/terminal-map": "0.0.1",
-    "@airport/web-tower": "0.0.1"
+    "@airport/tower": "0.0.1",
+    "@airport/travel-document-checkpoint": "0.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -25,7 +25,8 @@
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "tslib": "^2.4.0"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

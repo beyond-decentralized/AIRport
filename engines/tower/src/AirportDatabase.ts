@@ -3,9 +3,9 @@ import {
 	IDatabaseState,
 	IEntityAccumulator,
 	IEntityRecord,
-	setQApplicationEntities
+	setQAppEntities
 } from '@airport/air-traffic-control';
-import { QApplication } from '@airport/aviation-communication'
+import { QApp } from '@airport/aviation-communication'
 import {
 	Inject,
 	Injected
@@ -116,14 +116,14 @@ export class AirportDatabase
 		return this.databaseStore.applications
 	}
 
-	get qApplications(): QApplication[] {
+	get qApplications(): QApp[] {
 		return this.databaseStore.qApplications
 	}
-	get Q(): QApplication[] {
+	get Q(): QApp[] {
 		return this.databaseStore.qApplications
 	}
 
-	get QM(): { [name: string]: QApplication } {
+	get QM(): { [name: string]: QApp } {
 		return this.databaseStore.QM
 	}
 
@@ -131,16 +131,16 @@ export class AirportDatabase
 		// Just calling this method, loads the AirpotDatabase object
 	}
 
-	setQApplication(
-		qApplication: QApplication
+	setQApp(
+		qApplication: QApp
 	): void {
 		const fullApplication_Name = this.dbApplicationUtils
 			.getFullApplication_Name(qApplication)
-		const existingQApplication = this.QM[fullApplication_Name]
-		if (existingQApplication) {
-			const dbApplication = existingQApplication.__dbApplication__
+		const existingQApp = this.QM[fullApplication_Name]
+		if (existingQApp) {
+			const dbApplication = existingQApp.__dbApplication__
 			qApplication.__dbApplication__ = dbApplication
-			setQApplicationEntities(dbApplication, qApplication, this.qApplications,
+			setQAppEntities(dbApplication, qApplication, this.qApplications,
 				this.appliationUtils, this.relationManager)
 			this.Q[dbApplication.index] = qApplication
 		}

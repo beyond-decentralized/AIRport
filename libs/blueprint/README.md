@@ -13,4 +13,4 @@ Combines:
 - @airport/airspace
 - @airport/holding-pattern
 - @airport/layover
-- @airport/travel-document-checkpoint"
+- @airport/travel-document-checkpoint/dist/app/bundle"

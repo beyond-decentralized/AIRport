@@ -1,6 +1,6 @@
 export const airApi = {
-    setQApplication: function (
-        qApplication: QApplication
+    setQApp: function (
+        qApplication: QApp
     ) { },
     dS: function (
         __dbApplication__,
@@ -12,7 +12,7 @@ export const airApi = {
     ): boolean { return true }
 }
 
-export interface QApplication {
+export interface QApp {
     __dbApplication__?
     domain: string;
     name: string;

@@ -507,7 +507,7 @@ function serializeQuery(
 		let name = input.escapedName;
 		if (!input.valueDeclaration.type) {
 			throwInvalidQuery(daoName, decoratorName, memberName,
-				`input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string|LocalQApplication|QObject
+				`input ${index + 1} is of an unknown kind and is not a boolean|Date|number|string||QObject
 							
 							${name}: ?
 							
@@ -606,7 +606,7 @@ Query must be in the following format:
     paramC: number,
     paramD: string,
     ...
-    Q: LocalQApplication,
+    Q: FULL_APPLICATION_NAME_,
     alias1: QEntity1,
     alias2: QEntity1,
     ...
@@ -742,7 +742,7 @@ function getTypeInfo(
 			throwInvalidQuery(daoName, decoratorName, memberName,
 				`input ${index + 1} is of an unknown kind and is not a
 
-  boolean | Date | Date[] | number | number[] | string | string[] | LocalQApplication | QObject
+  boolean | Date | Date[] | number | number[] | string | string[] | FULL_APPLICATION_NAME_LocalQApp | QObject
 							
 							${name}: ?
 							
@@ -771,13 +771,13 @@ function getTypeReferenceInfo(
 	if (typeInfo.clazz === 'Date') {
 		typeInfo.type = QueryInputKind.PARAMETER;
 		typeInfo.parameterType = QueryParameterType.DATE;
-	} else if (typeInfo.clazz === 'LocalQApplication') {
+	} else if (typeInfo.clazz === 'LocalQApp') {
 		typeInfo.type = QueryInputKind.Q;
 	} else {
 		typeInfo.type = QueryInputKind.QENTITY;
 		if (!typeInfo.clazz.startsWith('Q')) {
 			throwInvalidQuery(daoName, decoratorName, memberName,
-				`input ${index + 1} is a non Date|LocalQApplication class and does not start with a Q
+				`input ${index + 1} is a non Date|QEntity class and does not start with a Q
 							(it should be a Query Object from the (generated directory or other project)
 							
 							${name}: ${typeInfo.clazz}

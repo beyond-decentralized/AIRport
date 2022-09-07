@@ -6,7 +6,7 @@ import type {
 import type {
     IActor,
     RecordHistory_LocalId
-} from "@airport/holding-pattern";
+} from "@airport/holding-pattern/dist/app/bundle";
 import { IOperationContext } from "../processing/OperationContext";
 import { ITransaction } from "../transaction/ITransaction";
 

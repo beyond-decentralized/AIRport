@@ -7,9 +7,9 @@ import {
 	BaseUserAccountDao,
 	IBaseUserAccountDao,
 	IUserAccount,
-	Q,
 	QUserAccount,
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IUserAccountDao
 	extends IBaseUserAccountDao {

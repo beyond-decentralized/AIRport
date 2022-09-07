@@ -8,7 +8,7 @@ import {
 } from '@airport/arrivals-n-departures'
 import {
 	IActor
-} from '@airport/holding-pattern'
+} from '@airport/holding-pattern/dist/app/bundle'
 import {
 	IActorDao
 } from '@airport/holding-pattern/dist/app/bundle'

@@ -21,7 +21,7 @@ import {
 import {
     Terminal,
     UserAccount
-} from "@airport/travel-document-checkpoint";
+} from "@airport/travel-document-checkpoint/dist/app/bundle";
 import { v4 as guidv4 } from "uuid";
 import {
     Inject,

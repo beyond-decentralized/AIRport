@@ -1,5 +1,5 @@
 import {
-  QApplication
+  QApp
 } from '@airport/aviation-communication';
 import {
   DbApplication,
@@ -66,13 +66,13 @@ export interface ApplicationHub {
   applications: DbApplication[];
   A: DbApplication[];
 
-  qApplications: QApplication[];
-  Q: QApplication[];
+  qApplications: QApp[];
+  Q: QApp[];
 
-  QM: { [name: string]: QApplication };
+  QM: { [name: string]: QApp };
 
-  setQApplication(
-    qApplication: QApplication
+  setQApp(
+    qApplication: QApp
   ): void
 
 }
@@ -175,8 +175,8 @@ export interface IAirportDatabase
 
 }
 
-export interface QApplicationInternal
-  extends QApplication {
+export interface QAppInternal
+  extends QApp {
   __constructors__?: { [name: string]: EntityConstructor }
   __qConstructors__?: { [name: string]: QEntityConstructor<any> };
   __qIdRelationConstructors__?: typeof QRelation[];

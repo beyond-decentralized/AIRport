@@ -7,9 +7,9 @@ import {
 	BaseApplicationColumnDao,
 	IBaseApplicationColumnDao,
 	IApplicationColumn,
-	Q,
 	QApplicationColumn
 } from '../generated/generated'
+import Q from '../generated/qApplication'
 
 export interface IApplicationColumnDao
 	extends IBaseApplicationColumnDao {

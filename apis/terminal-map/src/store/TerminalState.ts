@@ -1,12 +1,12 @@
 import { ISequence } from '@airport/airport-code'
 import { IMessageInRecord, LastIds } from '@airport/apron'
 import { Injected } from '@airport/direction-indicator'
-import { IActor } from '@airport/holding-pattern'
+import { IActor } from '@airport/holding-pattern/dist/app/bundle'
 import type {
 	IDomain,
 	IApplication
 } from '@airport/airspace'
-import type { ITerminal } from '@airport/travel-document-checkpoint'
+import type { ITerminal } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	IPendingTransaction,
 } from './TerminalStore'

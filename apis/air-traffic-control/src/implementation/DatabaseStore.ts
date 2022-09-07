@@ -1,4 +1,4 @@
-import { QApplication } from "@airport/aviation-communication";
+import { QApp } from "@airport/aviation-communication";
 import { Injected } from "@airport/direction-indicator";
 import { DbApplication } from "@airport/ground-control";
 import { FunctionsAndOperators } from "@airport/tarmaq-query";
@@ -21,10 +21,10 @@ export class DatabaseStore
     get functions(): FunctionsAndOperators {
         return this.databaseState.functions
     }
-    get qApplications(): QApplication[] {
+    get qApplications(): QApp[] {
         return this.databaseState.qApplications
     }
-    get QM(): { [name: string]: QApplication } {
+    get QM(): { [name: string]: QApp } {
         return this.databaseState.QM
     }
 
