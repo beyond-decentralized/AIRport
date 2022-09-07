@@ -5,7 +5,6 @@ import { Application as SourceApplication } from '@airport/airspace';
 import { Repository as SourceRepository } from '@airport/holding-pattern/dist/app/bundle';
 import { AIRportApi } from './AIRportApi'
 
-
 export type Application = SourceApplication
 export type IUserAccountInfo = SourceIUserAccountInfo
 export type Repository = SourceRepository

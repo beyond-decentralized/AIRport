@@ -1,4 +1,4 @@
-import { initFramework } from '@airport/server'
+import { initFramework } from '@airport/web-terminal'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';

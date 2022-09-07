@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { apps, briefcase, desktop, ellipse, square, triangle } from 'ionicons/icons';
+import { apps, briefcase, desktop } from 'ionicons/icons';
 import { AirLoginModal } from '@airport/ui-react-components'
 import RepositoriesPage from './pages/RepositoriesPage';
 import AppsPage from './pages/AppsPage';

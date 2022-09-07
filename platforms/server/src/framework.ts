@@ -1,10 +1,15 @@
-import { IOC } from '@airport/direction-indicator'
-import { injectTransactionalReceiver, WEB_MESSAGE_RECEIVER } from '@airport/web-terminal'
+import { loadAirTrafficControl } from '@airport/air-traffic-control'
 import { startDb } from '@airport/sqljs'
+import { injectTransactionalConnector, injectTransactionalServer } from '@airport/terminal'
+import { injectAirportDatabase, injectEntityStateManager } from '@airport/tower'
 
-injectTransactionalReceiver()
+console.log('Injecting Server Source')
+loadAirTrafficControl()
+injectTransactionalConnector()
+injectAirportDatabase()
+injectTransactionalServer()
+injectEntityStateManager()
 
-export async function initFramework() {
+export async function initServer() {
     await startDb('AIRport-prerelease')
-    await IOC.get(WEB_MESSAGE_RECEIVER)
 }
