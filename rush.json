@@ -165,11 +165,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@airport/app",
-      "projectFolder": "../AIRport/platforms/app",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@airport/server",
       "projectFolder": "../AIRport/platforms/server",
       "shouldPublish": true

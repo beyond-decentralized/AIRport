@@ -1,6 +1,6 @@
 {
-  "short_name": "Ionic App",
-  "name": "My Ionic App",
+  "short_name": "AIRport",
+  "name": "AIRport server",
   "icons": [
     {
       "src": "assets/icon/favicon.png",

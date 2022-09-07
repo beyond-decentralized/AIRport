@@ -12,11 +12,13 @@ import { ITransactionalReceiver } from './transaction/ITransactionalReceiver'
 import { IDomainRetriever } from './store/DomainRetriever'
 import { IStoreDriver } from './core/data/StoreDriver'
 import { ITerminalStateContainer, TerminalState } from './store/TerminalState'
-import { SELECTOR_MANAGER } from '@airport/apron'
+import { APPLICATION_LOADER, SELECTOR_MANAGER } from '@airport/apron'
 import { IApplicationInitializer } from './core/ApplicationInitializer'
 import { IUserStateContainer, UserState } from './store/user/UserState'
 import { IUserStore, UserStore } from './store/user/UserStore'
 import { ITerminalSessionManager } from './core/ITerminalSessionManager'
+import { AbstractApplicationLoader } from './AbstractApplicationLoader'
+import { API_REGISTRY } from '@airport/check-in'
 
 const terminalMap = lib('terminal-map')
 
@@ -109,4 +111,11 @@ TRANSACTIONAL_SERVER.setDependencies({
 USER_STORE.setDependencies({
     selectorManager: SELECTOR_MANAGER,
     userState: USER_STATE
+})
+
+APPLICATION_LOADER.setClass(AbstractApplicationLoader)
+APPLICATION_LOADER.setDependencies({
+    applicationInitializer: APPLICATION_INITIALIZER,
+    terminalStore: TERMINAL_STORE,
+    apiRegistry: API_REGISTRY,
 })

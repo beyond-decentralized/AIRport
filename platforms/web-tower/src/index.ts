@@ -1,48 +1,21 @@
-import { IIsolateMessageOut } from '@airport/apron'
-import { ILocalAPIRequest } from '@airport/aviation-communication'
-import { DEPENDENCY_INJECTION } from '@airport/direction-indicator'
-import { TRANSACTIONAL_CONNECTOR } from '@airport/ground-control'
-import { loadTower } from '@airport/tower'
-import { IIframeTransactionalConnector } from './IFrameTransactionalConnector'
+
+export * from "@airbridge/validate"
+export * from "@airport/airspace"
+export * from "@airport/apron"
+export * from "@airport/aviation-communication"
+export * from "@airport/check-in"
+export * from "@airport/direction-indicator"
+export * from "@airport/holding-pattern"
+export * from "@airport/tarmaq-entity"
+export * from "@airport/tarmaq-dao"
+export * from "@airport/terminal-map"
+export * from "@airport/travel-document-checkpoint"
+export * from "@airport/tower"
 
 export * from './DomainRetriever'
 export * from './IFrameApplicationInitializer'
 export * from './IFrameApplicationLocator'
 export * from './IFrameInterAppApiClient'
 export * from './IFrameTransactionalConnector'
+export * from './setup'
 export * from './tokens'
-
-window.addEventListener("message", event => {
-    const message: IIsolateMessageOut<any> | ILocalAPIRequest = event.data
-    processMessage(message, event.origin).then()
-})
-
-async function processMessage(
-    message: IIsolateMessageOut<any> | ILocalAPIRequest,
-    origin: string
-): Promise<void> {
-    const container = DEPENDENCY_INJECTION.db(message.transactionId)
-    const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
-
-    await transactionalConnector.processMessage(message, origin)
-
-    if (message.category === 'FromClientRedirected') {
-        DEPENDENCY_INJECTION.remove(container)
-    }
-}
-
-async function loadTransactionalConnector() {
-    const container = DEPENDENCY_INJECTION.db()
-    const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
-
-    await transactionalConnector.initializeConnection()
-
-    console.log('Iframe loaded')
-}
-
-export function loadIframe(
-    applicationName: string
-) {
-    loadTower(applicationName)
-    loadTransactionalConnector().then()
-}

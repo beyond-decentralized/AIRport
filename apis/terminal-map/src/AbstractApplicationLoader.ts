@@ -7,7 +7,8 @@ import {
     LastIds
 } from '@airport/apron'
 import { Inject, Injected } from '@airport/direction-indicator'
-import { IApplicationInitializer, ITerminalStore } from '@airport/terminal-map'
+import { IApplicationInitializer } from './core/ApplicationInitializer'
+import { ITerminalStore } from './store/TerminalStore'
 
 @Injected()
 export class AbstractApplicationLoader

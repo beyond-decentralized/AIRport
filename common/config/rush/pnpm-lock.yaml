@@ -12,7 +12,6 @@ dependencies:
   '@rush-temp/airport-code': 'file:projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:projects/airspace.tgz'
   '@rush-temp/api': 'file:projects/api.tgz'
-  '@rush-temp/app': 'file:projects/app.tgz'
   '@rush-temp/apron': 'file:projects/apron.tgz'
   '@rush-temp/arrivals-n-departures': 'file:projects/arrivals-n-departures.tgz'
   '@rush-temp/autopilot': 'file:projects/autopilot.tgz'
@@ -13577,24 +13576,6 @@ packages:
       integrity: sha512-ogesH8nVNko3x5k8oREMyDLuw3/bMkOZBSQc2YgtA8UCEHgPdpFZabwt3seWLbfHF2CadRUxtiznAVabAwSLIQ==
       tarball: 'file:projects/api.tgz'
     version: 0.0.0
-  'file:projects/app.tgz':
-    dependencies:
-      '@rollup/plugin-commonjs': 21.1.0_rollup@2.78.1
-      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.78.1
-      '@rollup/plugin-typescript': 8.4.0_998a84e6b7f5e32b55c7b416508576a5
-      rollup: 2.78.1
-      rollup-plugin-dts: 4.2.2_rollup@2.78.1+typescript@4.8.2
-      rollup-plugin-peer-deps-external: 2.2.4_rollup@2.78.1
-      rollup-plugin-terser: 7.0.2_rollup@2.78.1
-      rollup-plugin-typescript2: 0.33.0_rollup@2.78.1+typescript@4.8.2
-      tslib: 2.4.0
-      typescript: 4.8.2
-    dev: false
-    name: '@rush-temp/app'
-    resolution:
-      integrity: sha512-R4AwKNorxKnDyuGeM4YcbK+q7BqNmk1V7t2z+J/hBXNBAPkwG7s045Err0iox8zKDSvY8y5hlKT1FImn4HWBcw==
-      tarball: 'file:projects/app.tgz'
-    version: 0.0.0
   'file:projects/apron.tgz':
     dependencies:
       '@rollup/plugin-commonjs': 21.1.0_rollup@2.78.1
@@ -14034,7 +14015,7 @@ packages:
     dev: false
     name: '@rush-temp/server'
     resolution:
-      integrity: sha512-wL01ahbqkwnozyfVmIE/rDXvoktul7YPyS2lQr/BWCpIdjDsWoabnjzkYFu8IPQmxe40s4VYmmuvW3nN19a9zw==
+      integrity: sha512-wcdMg6lfY+90l6meYWIzKn7Lx5Ie2mgK3g5UD48+tYDHWVAfg8HHD4DkQkPf52lMt0bCw8oH929wnBShKNAGug==
       tarball: 'file:projects/server.tgz'
     version: 0.0.0
   'file:projects/sqlite.tgz':
@@ -14460,7 +14441,7 @@ packages:
     dev: false
     name: '@rush-temp/web-terminal'
     resolution:
-      integrity: sha512-B1VEyTpXlo94tIJ9PepKzn7XCOmn58yv9ozVNOt8RlME4T+ICNae4ncVA8Aq4UFa9JRqJey1Z2oUQsZVTorAVQ==
+      integrity: sha512-ksK5s68M9qM2//s4n1+Yfn0L1KEY7CJP1NCnlDgfsXFKWH7hjfOFox+JLIahHwUlNFJktbXNZ4aI+XJFzEZZpg==
       tarball: 'file:projects/web-terminal.tgz'
     version: 0.0.0
   'file:projects/web-tower.tgz':
@@ -14480,7 +14461,7 @@ packages:
     dev: false
     name: '@rush-temp/web-tower'
     resolution:
-      integrity: sha512-S89pxNuG0CMSO18w50XYV9XcQXzwqMNn4v6DvmUXBhKCs0KLIwRSAdXQm8qRU/yEgon7WoQl1Oq/FPEAs7fMaA==
+      integrity: sha512-JP94VMXHBcpiWd9z++USEzN0D1xdxeRm4itZVjeTKme0CaYKDEUugeHicfaA0irn1uGvGOtjk59fjN5ZAoHkCA==
       tarball: 'file:projects/web-tower.tgz'
     version: 0.0.0
 registry: ''
@@ -14498,7 +14479,6 @@ specifiers:
   '@rush-temp/airport-code': 'file:./projects/airport-code.tgz'
   '@rush-temp/airspace': 'file:./projects/airspace.tgz'
   '@rush-temp/api': 'file:./projects/api.tgz'
-  '@rush-temp/app': 'file:./projects/app.tgz'
   '@rush-temp/apron': 'file:./projects/apron.tgz'
   '@rush-temp/arrivals-n-departures': 'file:./projects/arrivals-n-departures.tgz'
   '@rush-temp/autopilot': 'file:./projects/autopilot.tgz'
