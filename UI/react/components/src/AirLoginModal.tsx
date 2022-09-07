@@ -12,33 +12,36 @@ export function AirLoginModal({
     const modal = useRef<HTMLIonModalElement>(null)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [canSignUp, setCanSignUp] = useState(false)
     const [isOpen, setIsOpen] = useState(true)
-
-    let canSignUp = false
 
     function setUsernameValue(
         username: string
     ) {
-        setUsername(password)
-        setCanSignUp(username, password)
+        setUsername(username)
+        doSetCanSignUp(username, password)
     }
 
     function setPasswordValue(
         password: string
     ) {
         setPassword(password)
-        setCanSignUp(username, password)
+        doSetCanSignUp(username, password)
     }
 
-    function setCanSignUp(
+    function doSetCanSignUp(
         username: string,
         password: string
     ): void {
-        canSignUp = password.trim().length >= 3
-            && username.trim().length >= 3
+        setCanSignUp(password.trim().length >= 3
+            && username.trim().length >= 3)
     }
 
     function signUp() {
+        if (!canSignUp) {
+            alert("Username and password must be at least 3 characters long")
+            return
+        }
         setIsOpen(false)
         modal.current?.dismiss({
             email: username + '@random-email-provider.com',
@@ -62,7 +65,7 @@ export function AirLoginModal({
         </IonItem>
         <IonItem>
             <IonButton
-                disabled={canSignUp}
+                disabled={!canSignUp}
                 expand="block"
                 onClick={_ => signUp()}
             >Sign Up</IonButton>

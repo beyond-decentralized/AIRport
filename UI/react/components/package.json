@@ -49,8 +49,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "test": "jest"
+    "build": "rollup -c"
   },
   "types": "dist/index.d.ts"
 }
