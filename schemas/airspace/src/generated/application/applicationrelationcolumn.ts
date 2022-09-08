@@ -1,12 +1,12 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	IApplicationColumn,
-} from './applicationcolumn';
+} from './ApplicationColumn';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 
 
 

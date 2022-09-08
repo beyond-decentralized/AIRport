@@ -38,13 +38,13 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-} from './qrepository';
+} from './qRepository';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 import {
 	IRepositoryApplication,
-} from './repositoryapplication';
+} from './RepositoryApplication';
 
 
 //////////////////////////////

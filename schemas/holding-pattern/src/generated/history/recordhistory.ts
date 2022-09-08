@@ -3,16 +3,16 @@ import {
 } from '@airport/ground-control';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 import {
 	IRecordHistoryNewValue,
-} from './recordhistorynewvalue';
+} from './RecordHistoryNewValue';
 import {
 	IRecordHistoryOldValue,
-} from './recordhistoryoldvalue';
+} from './RecordHistoryOldValue';
 
 
 

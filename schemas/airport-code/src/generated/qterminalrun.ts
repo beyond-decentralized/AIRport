@@ -20,7 +20,7 @@ import {
 } from '@airport/tarmaq-query';
 import {
 	ITerminalRun,
-} from './terminalrun';
+} from './TerminalRun';
 
 
 //////////////////////////////

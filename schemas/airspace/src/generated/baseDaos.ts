@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Application,
-} from '../ddl/application/application';
+} from '../ddl/application/Application';
 import {
 	ApplicationESelect,
 	ApplicationECreateColumns,
@@ -11,10 +11,10 @@ import {
 	ApplicationEId,
 	ApplicationGraph,
 	QApplication,
-} from './application/qapplication';
+} from './application/qApplication';
 import {
 	ApplicationColumn,
-} from '../ddl/application/applicationcolumn';
+} from '../ddl/application/ApplicationColumn';
 import {
 	ApplicationColumnESelect,
 	ApplicationColumnECreateColumns,
@@ -24,10 +24,10 @@ import {
 	ApplicationColumnEId,
 	ApplicationColumnGraph,
 	QApplicationColumn,
-} from './application/qapplicationcolumn';
+} from './application/qApplicationColumn';
 import {
 	ApplicationCurrentVersion,
-} from '../ddl/application/applicationcurrentversion';
+} from '../ddl/application/ApplicationCurrentVersion';
 import {
 	ApplicationCurrentVersionESelect,
 	ApplicationCurrentVersionECreateColumns,
@@ -37,10 +37,10 @@ import {
 	ApplicationCurrentVersionEId,
 	ApplicationCurrentVersionGraph,
 	QApplicationCurrentVersion,
-} from './application/qapplicationcurrentversion';
+} from './application/qApplicationCurrentVersion';
 import {
 	ApplicationEntity,
-} from '../ddl/application/applicationentity';
+} from '../ddl/application/ApplicationEntity';
 import {
 	ApplicationEntityESelect,
 	ApplicationEntityECreateColumns,
@@ -50,10 +50,10 @@ import {
 	ApplicationEntityEId,
 	ApplicationEntityGraph,
 	QApplicationEntity,
-} from './application/qapplicationentity';
+} from './application/qApplicationEntity';
 import {
 	ApplicationOperation,
-} from '../ddl/application/applicationoperation';
+} from '../ddl/application/ApplicationOperation';
 import {
 	ApplicationOperationESelect,
 	ApplicationOperationECreateColumns,
@@ -63,10 +63,10 @@ import {
 	ApplicationOperationEId,
 	ApplicationOperationGraph,
 	QApplicationOperation,
-} from './application/qapplicationoperation';
+} from './application/qApplicationOperation';
 import {
 	ApplicationProperty,
-} from '../ddl/application/applicationproperty';
+} from '../ddl/application/ApplicationProperty';
 import {
 	ApplicationPropertyESelect,
 	ApplicationPropertyECreateColumns,
@@ -76,10 +76,10 @@ import {
 	ApplicationPropertyEId,
 	ApplicationPropertyGraph,
 	QApplicationProperty,
-} from './application/qapplicationproperty';
+} from './application/qApplicationProperty';
 import {
 	ApplicationPropertyColumn,
-} from '../ddl/application/applicationpropertycolumn';
+} from '../ddl/application/ApplicationPropertyColumn';
 import {
 	ApplicationPropertyColumnESelect,
 	ApplicationPropertyColumnECreateColumns,
@@ -89,10 +89,10 @@ import {
 	ApplicationPropertyColumnEId,
 	ApplicationPropertyColumnGraph,
 	QApplicationPropertyColumn,
-} from './application/qapplicationpropertycolumn';
+} from './application/qApplicationPropertyColumn';
 import {
 	ApplicationReference,
-} from '../ddl/application/applicationreference';
+} from '../ddl/application/ApplicationReference';
 import {
 	ApplicationReferenceESelect,
 	ApplicationReferenceECreateColumns,
@@ -102,10 +102,10 @@ import {
 	ApplicationReferenceEId,
 	ApplicationReferenceGraph,
 	QApplicationReference,
-} from './application/qapplicationreference';
+} from './application/qApplicationReference';
 import {
 	ApplicationRelation,
-} from '../ddl/application/applicationrelation';
+} from '../ddl/application/ApplicationRelation';
 import {
 	ApplicationRelationESelect,
 	ApplicationRelationECreateColumns,
@@ -115,10 +115,10 @@ import {
 	ApplicationRelationEId,
 	ApplicationRelationGraph,
 	QApplicationRelation,
-} from './application/qapplicationrelation';
+} from './application/qApplicationRelation';
 import {
 	ApplicationRelationColumn,
-} from '../ddl/application/applicationrelationcolumn';
+} from '../ddl/application/ApplicationRelationColumn';
 import {
 	ApplicationRelationColumnESelect,
 	ApplicationRelationColumnECreateColumns,
@@ -128,10 +128,10 @@ import {
 	ApplicationRelationColumnEId,
 	ApplicationRelationColumnGraph,
 	QApplicationRelationColumn,
-} from './application/qapplicationrelationcolumn';
+} from './application/qApplicationRelationColumn';
 import {
 	ApplicationVersion,
-} from '../ddl/application/applicationversion';
+} from '../ddl/application/ApplicationVersion';
 import {
 	ApplicationVersionESelect,
 	ApplicationVersionECreateColumns,
@@ -141,10 +141,10 @@ import {
 	ApplicationVersionEId,
 	ApplicationVersionGraph,
 	QApplicationVersion,
-} from './application/qapplicationversion';
+} from './application/qApplicationVersion';
 import {
 	Domain,
-} from '../ddl/application/domain';
+} from '../ddl/application/Domain';
 import {
 	DomainESelect,
 	DomainECreateColumns,
@@ -154,7 +154,7 @@ import {
 	DomainEId,
 	DomainGraph,
 	QDomain,
-} from './application/qdomain';
+} from './application/qDomain';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

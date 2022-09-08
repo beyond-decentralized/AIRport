@@ -11,25 +11,25 @@ import {
 } from '@airport/apron';
 import {
 	ApplicationVDescriptor,
-} from './vapplication';
+} from './vApplication';
 import {
 	Application,
 } from '../../ddl/application/Application';
 import {
 	ApplicationEntityVDescriptor,
-} from './vapplicationentity';
+} from './vApplicationEntity';
 import {
 	ApplicationEntity,
 } from '../../ddl/application/ApplicationEntity';
 import {
 	ApplicationReferenceVDescriptor,
-} from './vapplicationreference';
+} from './vApplicationReference';
 import {
 	ApplicationReference,
 } from '../../ddl/application/ApplicationReference';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 
 
 

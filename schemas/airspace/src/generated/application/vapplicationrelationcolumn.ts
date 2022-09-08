@@ -8,22 +8,22 @@ import {
 } from '@airbridge/validate';
 import {
 	VersionedApplicationObjectVDescriptor,
-} from './vversionedapplicationobject';
+} from './vVersionedApplicationObject';
 import {
 	ApplicationColumnVDescriptor,
-} from './vapplicationcolumn';
+} from './vApplicationColumn';
 import {
 	ApplicationColumn,
 } from '../../ddl/application/ApplicationColumn';
 import {
 	ApplicationRelationVDescriptor,
-} from './vapplicationrelation';
+} from './vApplicationRelation';
 import {
 	ApplicationRelation,
 } from '../../ddl/application/ApplicationRelation';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 
 
 

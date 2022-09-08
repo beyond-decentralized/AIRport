@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Sequence,
-} from '../ddl/sequence';
+} from '../ddl/Sequence';
 import {
 	SequenceESelect,
 	SequenceECreateColumns,
@@ -11,10 +11,10 @@ import {
 	SequenceEId,
 	SequenceGraph,
 	QSequence,
-} from './qsequence';
+} from './qSequence';
 import {
 	SystemWideOperationId,
-} from '../ddl/systemwideoperationid';
+} from '../ddl/SystemWideOperationId';
 import {
 	SystemWideOperationIdESelect,
 	SystemWideOperationIdECreateColumns,
@@ -24,10 +24,10 @@ import {
 	SystemWideOperationIdEId,
 	SystemWideOperationIdGraph,
 	QSystemWideOperationId,
-} from './qsystemwideoperationid';
+} from './qSystemWideOperationId';
 import {
 	TerminalRun,
-} from '../ddl/terminalrun';
+} from '../ddl/TerminalRun';
 import {
 	TerminalRunESelect,
 	TerminalRunECreateColumns,
@@ -37,7 +37,7 @@ import {
 	TerminalRunEId,
 	TerminalRunGraph,
 	QTerminalRun,
-} from './qterminalrun';
+} from './qTerminalRun';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

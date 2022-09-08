@@ -1,3 +1,3 @@
-export * from './qsequence';
-export * from './qsystemwideoperationid';
-export * from './qterminalrun';
+export * from './qSequence';
+export * from './qSystemWideOperationId';
+export * from './qTerminalRun';

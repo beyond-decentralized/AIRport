@@ -147,12 +147,12 @@ ${relationClassSource}`;
 
       if (property.fromProject) {
         let relationEntityPath = property.fromProject;
-        this.addImport(['I' + type], relationEntityPath, false);
+        this.addImport(['I' + type], relationEntityPath);
       } else {
         const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
-        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
-        this.addImport(['I' + type], entityInterfaceRelativePath, false);
+        entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
+        this.addImport(['I' + type], entityInterfaceRelativePath);
       }
     });
   }
@@ -166,7 +166,7 @@ ${relationClassSource}`;
 
     const qFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
     let entityInterfaceRelativePath = resolveRelativePath(qFilePath, this.fullGenerationPath)
-    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
+    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
     this.addImport([
       'I' + this.entity.docEntry.name],
       entityInterfaceRelativePath)

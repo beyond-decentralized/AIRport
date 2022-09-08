@@ -7,22 +7,22 @@ import {
 } from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryTransactionHistory,
-} from '../history/repositorytransactionhistory';
+} from '../history/RepositoryTransactionHistory';
 import {
 	IRepositoryApplication,
-} from './repositoryapplication';
+} from './RepositoryApplication';
 import {
 	IRepositoryClient,
-} from './repositoryclient';
+} from './RepositoryClient';
 import {
 	IRepositoryDatabase,
-} from './repositorydatabase';
+} from './RepositoryDatabase';
 import {
 	IRepositoryTerminal,
-} from './repositoryterminal';
+} from './RepositoryTerminal';
 import {
 	IRepositoryType,
-} from './repositorytype';
+} from './RepositoryType';
 
 
 

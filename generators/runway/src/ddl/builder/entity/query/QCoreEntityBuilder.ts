@@ -42,9 +42,8 @@ export abstract class QCoreEntityBuilder
     addImport(
         classNames: (string | { asName: string, sourceName: string })[],
         filePath: string,
-        toLowerCase?: boolean,
     ): void {
-        this.fileBuilder.addImport(classNames, filePath, toLowerCase)
+        this.fileBuilder.addImport(classNames, filePath)
     }
 
     protected getQColumnBuilders(

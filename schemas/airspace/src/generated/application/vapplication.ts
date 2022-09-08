@@ -8,25 +8,25 @@ import {
 } from '@airbridge/validate';
 import {
 	DomainVDescriptor,
-} from './vdomain';
+} from './vDomain';
 import {
 	Domain,
 } from '../../ddl/application/Domain';
 import {
 	ApplicationVersionVDescriptor,
-} from './vapplicationversion';
+} from './vApplicationVersion';
 import {
 	ApplicationVersion,
 } from '../../ddl/application/ApplicationVersion';
 import {
 	ApplicationCurrentVersionVDescriptor,
-} from './vapplicationcurrentversion';
+} from './vApplicationCurrentVersion';
 import {
 	ApplicationCurrentVersion,
 } from '../../ddl/application/ApplicationCurrentVersion';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 
 
 

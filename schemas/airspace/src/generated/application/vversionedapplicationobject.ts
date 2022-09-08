@@ -8,13 +8,13 @@ import {
 } from '@airbridge/validate';
 import {
 	ApplicationVersionVDescriptor,
-} from './vapplicationversion';
+} from './vApplicationVersion';
 import {
 	ApplicationVersion,
 } from '../../ddl/application/ApplicationVersion';
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 
 
 

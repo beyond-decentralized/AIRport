@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Actor,
-} from '../ddl/infrastructure/actor';
+} from '../ddl/infrastructure/Actor';
 import {
 	ActorESelect,
 	ActorECreateColumns,
@@ -11,10 +11,10 @@ import {
 	ActorEId,
 	ActorGraph,
 	QActor,
-} from './infrastructure/qactor';
+} from './infrastructure/qActor';
 import {
 	OperationHistory,
-} from '../ddl/history/operationhistory';
+} from '../ddl/history/OperationHistory';
 import {
 	OperationHistoryESelect,
 	OperationHistoryECreateColumns,
@@ -24,10 +24,10 @@ import {
 	OperationHistoryEId,
 	OperationHistoryGraph,
 	QOperationHistory,
-} from './history/qoperationhistory';
+} from './history/qOperationHistory';
 import {
 	RecordHistory,
-} from '../ddl/history/recordhistory';
+} from '../ddl/history/RecordHistory';
 import {
 	RecordHistoryESelect,
 	RecordHistoryECreateColumns,
@@ -37,10 +37,10 @@ import {
 	RecordHistoryEId,
 	RecordHistoryGraph,
 	QRecordHistory,
-} from './history/qrecordhistory';
+} from './history/qRecordHistory';
 import {
 	RecordHistoryNewValue,
-} from '../ddl/history/recordhistorynewvalue';
+} from '../ddl/history/RecordHistoryNewValue';
 import {
 	RecordHistoryNewValueESelect,
 	RecordHistoryNewValueECreateColumns,
@@ -50,10 +50,10 @@ import {
 	RecordHistoryNewValueEId,
 	RecordHistoryNewValueGraph,
 	QRecordHistoryNewValue,
-} from './history/qrecordhistorynewvalue';
+} from './history/qRecordHistoryNewValue';
 import {
 	RecordHistoryOldValue,
-} from '../ddl/history/recordhistoryoldvalue';
+} from '../ddl/history/RecordHistoryOldValue';
 import {
 	RecordHistoryOldValueESelect,
 	RecordHistoryOldValueECreateColumns,
@@ -63,10 +63,10 @@ import {
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueGraph,
 	QRecordHistoryOldValue,
-} from './history/qrecordhistoryoldvalue';
+} from './history/qRecordHistoryOldValue';
 import {
 	Repository,
-} from '../ddl/repository/repository';
+} from '../ddl/repository/Repository';
 import {
 	RepositoryESelect,
 	RepositoryECreateColumns,
@@ -76,10 +76,10 @@ import {
 	RepositoryEId,
 	RepositoryGraph,
 	QRepository,
-} from './repository/qrepository';
+} from './repository/qRepository';
 import {
 	RepositoryApplication,
-} from '../ddl/repository/repositoryapplication';
+} from '../ddl/repository/RepositoryApplication';
 import {
 	RepositoryApplicationESelect,
 	RepositoryApplicationECreateColumns,
@@ -89,10 +89,10 @@ import {
 	RepositoryApplicationEId,
 	RepositoryApplicationGraph,
 	QRepositoryApplication,
-} from './repository/qrepositoryapplication';
+} from './repository/qRepositoryApplication';
 import {
 	RepositoryClient,
-} from '../ddl/repository/repositoryclient';
+} from '../ddl/repository/RepositoryClient';
 import {
 	RepositoryClientESelect,
 	RepositoryClientECreateColumns,
@@ -102,10 +102,10 @@ import {
 	RepositoryClientEId,
 	RepositoryClientGraph,
 	QRepositoryClient,
-} from './repository/qrepositoryclient';
+} from './repository/qRepositoryClient';
 import {
 	RepositoryDatabase,
-} from '../ddl/repository/repositorydatabase';
+} from '../ddl/repository/RepositoryDatabase';
 import {
 	RepositoryDatabaseESelect,
 	RepositoryDatabaseECreateColumns,
@@ -115,10 +115,10 @@ import {
 	RepositoryDatabaseEId,
 	RepositoryDatabaseGraph,
 	QRepositoryDatabase,
-} from './repository/qrepositorydatabase';
+} from './repository/qRepositoryDatabase';
 import {
 	RepositoryTerminal,
-} from '../ddl/repository/repositoryterminal';
+} from '../ddl/repository/RepositoryTerminal';
 import {
 	RepositoryTerminalESelect,
 	RepositoryTerminalECreateColumns,
@@ -128,10 +128,10 @@ import {
 	RepositoryTerminalEId,
 	RepositoryTerminalGraph,
 	QRepositoryTerminal,
-} from './repository/qrepositoryterminal';
+} from './repository/qRepositoryTerminal';
 import {
 	RepositoryTransactionHistory,
-} from '../ddl/history/repositorytransactionhistory';
+} from '../ddl/history/RepositoryTransactionHistory';
 import {
 	RepositoryTransactionHistoryESelect,
 	RepositoryTransactionHistoryECreateColumns,
@@ -141,10 +141,10 @@ import {
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryGraph,
 	QRepositoryTransactionHistory,
-} from './history/qrepositorytransactionhistory';
+} from './history/qRepositoryTransactionHistory';
 import {
 	RepositoryType,
-} from '../ddl/repository/repositorytype';
+} from '../ddl/repository/RepositoryType';
 import {
 	RepositoryTypeESelect,
 	RepositoryTypeECreateColumns,
@@ -154,10 +154,10 @@ import {
 	RepositoryTypeEId,
 	RepositoryTypeGraph,
 	QRepositoryType,
-} from './repository/qrepositorytype';
+} from './repository/qRepositoryType';
 import {
 	TransactionHistory,
-} from '../ddl/history/transactionhistory';
+} from '../ddl/history/TransactionHistory';
 import {
 	TransactionHistoryESelect,
 	TransactionHistoryECreateColumns,
@@ -167,7 +167,7 @@ import {
 	TransactionHistoryEId,
 	TransactionHistoryGraph,
 	QTransactionHistory,
-} from './history/qtransactionhistory';
+} from './history/qTransactionHistory';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

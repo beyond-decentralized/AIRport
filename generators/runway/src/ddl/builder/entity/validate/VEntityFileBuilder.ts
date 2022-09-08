@@ -107,12 +107,12 @@ ${interfaceSource}
 
       if (property.fromProject) {
         let relationEntityPath = property.fromProject;
-        this.addImport([type], relationEntityPath + FileBuilder.distBundlePath, false);
+        this.addImport([type], relationEntityPath + FileBuilder.distBundlePath);
       } else {
         const entityFilePath = this.pathBuilder.getFullPathToDdlSource(this.entityMapByName[type].path);
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, entityFilePath)
         entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
-        this.addImport([type], entityInterfaceRelativePath, false);
+        this.addImport([type], entityInterfaceRelativePath);
       }
     });
   }
@@ -126,7 +126,7 @@ ${interfaceSource}
 
     const vFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'v');
     let entityInterfaceRelativePath = resolveRelativePath(vFilePath, this.fullGenerationPath)
-    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '').toLowerCase()
+    entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
     this.addImport([
       'I' + this.entity.docEntry.name],
       entityInterfaceRelativePath)

@@ -27,10 +27,10 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-} from '../repository/qrepository';
+} from '../repository/qRepository';
 import {
 	IRepository,
-} from '../repository/repository';
+} from '../repository/Repository';
 import {
 	TransactionHistoryGraph,
 	TransactionHistoryEId,
@@ -40,10 +40,10 @@ import {
 	QTransactionHistory,
 	QTransactionHistoryQId,
 	QTransactionHistoryQRelation,
-} from './qtransactionhistory';
+} from './qTransactionHistory';
 import {
 	ITransactionHistory,
-} from './transactionhistory';
+} from './TransactionHistory';
 import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
@@ -53,13 +53,13 @@ import {
 	QOperationHistory,
 	QOperationHistoryQId,
 	QOperationHistoryQRelation,
-} from './qoperationhistory';
+} from './qOperationHistory';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 
 
 //////////////////////////////

@@ -27,10 +27,10 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-} from './qrepository';
+} from './qRepository';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 import {
 	TypeGraph,
 	TypeEId,
@@ -44,7 +44,7 @@ import {
 } from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryType,
-} from './repositorytype';
+} from './RepositoryType';
 
 
 //////////////////////////////

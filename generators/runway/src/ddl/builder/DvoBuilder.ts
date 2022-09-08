@@ -64,7 +64,7 @@ ${baseClassDefinitions}`;
 		], '@airport/ground-control');
 		this.addImport([
 			`${this.diSet}`
-		], './qApplication', false);
+		], './qApplication');
 	}
 
 	protected buildBaseClassDefinitions(): string {

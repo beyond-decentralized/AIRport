@@ -30,10 +30,10 @@ import {
 	QApplication,
 	QApplicationQId,
 	QApplicationQRelation,
-} from './qapplication';
+} from './qApplication';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 import {
 	ApplicationEntityGraph,
 	ApplicationEntityEId,
@@ -43,10 +43,10 @@ import {
 	QApplicationEntity,
 	QApplicationEntityQId,
 	QApplicationEntityQRelation,
-} from './qapplicationentity';
+} from './qApplicationEntity';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	ApplicationReferenceGraph,
 	ApplicationReferenceEId,
@@ -56,13 +56,13 @@ import {
 	QApplicationReference,
 	QApplicationReferenceQId,
 	QApplicationReferenceQRelation,
-} from './qapplicationreference';
+} from './qApplicationReference';
 import {
 	IApplicationReference,
-} from './applicationreference';
+} from './ApplicationReference';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 
 
 //////////////////////////////

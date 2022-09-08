@@ -1,9 +1,9 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 
 
 

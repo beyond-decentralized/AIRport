@@ -8,7 +8,7 @@ import {
 } from '@airbridge/validate';
 import {
 	ITerminalRun,
-} from './terminalrun';
+} from './TerminalRun';
 
 
 

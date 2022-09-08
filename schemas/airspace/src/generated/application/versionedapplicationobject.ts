@@ -1,6 +1,6 @@
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 
 
 

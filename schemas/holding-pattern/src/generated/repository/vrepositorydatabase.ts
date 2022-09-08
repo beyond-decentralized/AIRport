@@ -8,7 +8,7 @@ import {
 } from '@airbridge/validate';
 import {
 	RepositoryVDescriptor,
-} from './vrepository';
+} from './vRepository';
 import {
 	Repository,
 } from '../../ddl/repository/Repository';
@@ -18,7 +18,7 @@ import {
 } from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	IRepositoryDatabase,
-} from './repositorydatabase';
+} from './RepositoryDatabase';
 
 
 

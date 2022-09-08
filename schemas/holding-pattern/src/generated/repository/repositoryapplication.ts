@@ -3,7 +3,7 @@ import {
 } from '@airport/airspace';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 
 
 

@@ -106,7 +106,6 @@ export class PathBuilder {
 		}
 
 		const pathFragments = generatedPath.split('/');
-		pathFragments[pathFragments.length - 1] = pathFragments[pathFragments.length - 1].toLowerCase();
 
 		return './' + this.convertFileNameToLowerCase(generatedPath);
 	}
@@ -115,7 +114,6 @@ export class PathBuilder {
 		path: string //
 	): string {
 		const pathFragments = path.split('/');
-		pathFragments[pathFragments.length - 1] = pathFragments[pathFragments.length - 1].toLowerCase();
 
 		return pathFragments.join('/');
 	}
@@ -128,7 +126,7 @@ export class PathBuilder {
 	): string {
 		sourcePath = normalizePath(sourcePath);
 
-		let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(dirPath.toLowerCase());
+		let indexOfSourceDirInPath = sourcePath.indexOf(dirPath);
 		if (indexOfSourceDirInPath !== 0) {
 			throw new Error(`Cannot generate file from source outside of root source dir`);
 		}
@@ -146,7 +144,7 @@ export class PathBuilder {
 	): string {
 		sourcePath = normalizePath(sourcePath)
 
-		let indexOfSourceDirInPath = sourcePath.toLowerCase().indexOf(this.ddlDirPath.toLowerCase())
+		let indexOfSourceDirInPath = sourcePath.indexOf(this.ddlDirPath)
 		if (indexOfSourceDirInPath !== 0) {
 			throw new Error(`Cannot generate file from source outside of root source dir`)
 		}

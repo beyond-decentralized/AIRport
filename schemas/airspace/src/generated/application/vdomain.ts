@@ -8,13 +8,13 @@ import {
 } from '@airbridge/validate';
 import {
 	ApplicationVDescriptor,
-} from './vapplication';
+} from './vApplication';
 import {
 	Application,
 } from '../../ddl/application/Application';
 import {
 	IDomain,
-} from './domain';
+} from './Domain';
 
 
 

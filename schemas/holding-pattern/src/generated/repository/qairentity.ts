@@ -27,10 +27,10 @@ import {
 	QRepository,
 	QRepositoryQId,
 	QRepositoryQRelation,
-} from './qrepository';
+} from './qRepository';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 import {
 	ActorGraph,
 	ActorEId,
@@ -40,13 +40,13 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
-} from '../infrastructure/qactor';
+} from '../infrastructure/qActor';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	IAirEntity,
-} from './airentity';
+} from './AirEntity';
 
 
 //////////////////////////////

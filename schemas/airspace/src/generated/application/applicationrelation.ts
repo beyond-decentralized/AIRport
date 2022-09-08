@@ -1,6 +1,6 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	ForeignKey,
 	ManyToOneElements,
@@ -8,13 +8,13 @@ import {
 } from '@airport/tarmaq-entity';
 import {
 	IApplicationProperty,
-} from './applicationproperty';
+} from './ApplicationProperty';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 
 
 

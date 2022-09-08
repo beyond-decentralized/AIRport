@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	ForeignKey,
 	ManyToOneElements,
@@ -42,10 +42,10 @@ import {
 	QApplicationProperty,
 	QApplicationPropertyQId,
 	QApplicationPropertyQRelation,
-} from './qapplicationproperty';
+} from './qApplicationProperty';
 import {
 	IApplicationProperty,
-} from './applicationproperty';
+} from './ApplicationProperty';
 import {
 	ApplicationEntityGraph,
 	ApplicationEntityEId,
@@ -55,10 +55,10 @@ import {
 	QApplicationEntity,
 	QApplicationEntityQId,
 	QApplicationEntityQRelation,
-} from './qapplicationentity';
+} from './qApplicationEntity';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	ApplicationRelationColumnGraph,
 	ApplicationRelationColumnEId,
@@ -68,13 +68,13 @@ import {
 	QApplicationRelationColumn,
 	QApplicationRelationColumnQId,
 	QApplicationRelationColumnQRelation,
-} from './qapplicationrelationcolumn';
+} from './qApplicationRelationColumn';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 
 
 //////////////////////////////

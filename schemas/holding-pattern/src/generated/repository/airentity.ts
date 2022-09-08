@@ -3,10 +3,10 @@ import {
 } from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 
 
 

@@ -1,12 +1,12 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	Operation_Rule,
 } from '@airport/ground-control';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 
 
 

@@ -8,13 +8,13 @@ import {
 } from '@airbridge/validate';
 import {
 	RepositoryTransactionHistoryVDescriptor,
-} from './vrepositorytransactionhistory';
+} from './vRepositoryTransactionHistory';
 import {
 	RepositoryTransactionHistory,
 } from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	ITransactionHistory,
-} from './transactionhistory';
+} from './TransactionHistory';
 
 
 

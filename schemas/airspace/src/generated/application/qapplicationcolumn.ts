@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	ApplicationEntityGraph,
 	ApplicationEntityEId,
@@ -37,10 +37,10 @@ import {
 	QApplicationEntity,
 	QApplicationEntityQId,
 	QApplicationEntityQRelation,
-} from './qapplicationentity';
+} from './qApplicationEntity';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	ApplicationPropertyColumnGraph,
 	ApplicationPropertyColumnEId,
@@ -50,10 +50,10 @@ import {
 	QApplicationPropertyColumn,
 	QApplicationPropertyColumnQId,
 	QApplicationPropertyColumnQRelation,
-} from './qapplicationpropertycolumn';
+} from './qApplicationPropertyColumn';
 import {
 	IApplicationPropertyColumn,
-} from './applicationpropertycolumn';
+} from './ApplicationPropertyColumn';
 import {
 	ApplicationRelationColumnGraph,
 	ApplicationRelationColumnEId,
@@ -63,13 +63,13 @@ import {
 	QApplicationRelationColumn,
 	QApplicationRelationColumnQId,
 	QApplicationRelationColumnQRelation,
-} from './qapplicationrelationcolumn';
+} from './qApplicationRelationColumn';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 import {
 	IApplicationColumn,
-} from './applicationcolumn';
+} from './ApplicationColumn';
 
 
 //////////////////////////////

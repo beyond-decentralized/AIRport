@@ -18,18 +18,8 @@ export abstract class FileBuilder {
 	addImport(
 		classNames: (string | { asName: string, sourceName: string }) [],
 		filePath: string,
-		toLowerCase = true,
 	): void {
 		filePath = filePath.replace('.ts', '')
-		if (toLowerCase) {
-			const filePathFragments = filePath.split('/')
-			if (filePathFragments.length) {
-				let lastFragment                                = filePathFragments[filePathFragments.length - 1]
-				lastFragment                                    = lastFragment.toLowerCase()
-				filePathFragments[filePathFragments.length - 1] = lastFragment
-			}
-			filePath = filePathFragments.join('/')
-		}
 		let fileImportMap = this.importMap[filePath]
 		if (!fileImportMap) {
 			fileImportMap            = {}

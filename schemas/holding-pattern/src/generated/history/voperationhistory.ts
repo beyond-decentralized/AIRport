@@ -12,25 +12,25 @@ import {
 } from '@airport/airspace/dist/app/bundle';
 import {
 	ActorVDescriptor,
-} from '../infrastructure/vactor';
+} from '../infrastructure/vActor';
 import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
 import {
 	RepositoryTransactionHistoryVDescriptor,
-} from './vrepositorytransactionhistory';
+} from './vRepositoryTransactionHistory';
 import {
 	RepositoryTransactionHistory,
 } from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	RecordHistoryVDescriptor,
-} from './vrecordhistory';
+} from './vRecordHistory';
 import {
 	RecordHistory,
 } from '../../ddl/history/RecordHistory';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 
 
 

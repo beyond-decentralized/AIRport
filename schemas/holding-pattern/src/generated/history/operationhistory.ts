@@ -3,13 +3,13 @@ import {
 } from '@airport/airspace';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 import {
 	IRecordHistory,
-} from './recordhistory';
+} from './RecordHistory';
 
 
 

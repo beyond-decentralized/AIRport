@@ -25,7 +25,7 @@ import {
 	Actor_LocalId,
 	Actor_GUID,
 	Actor,
-} from '../../ddl/ddl'
+} from '../../ddl/infrastructure/Actor'
 import {
 	BaseActorDao,
 	IActor,
@@ -63,7 +63,7 @@ export interface IActorDao
 	findByDomainAndApplication_Names(
 		domainName: Domain_Name,
 		applicationName: Application_Name
-	): Promise<IActor[]>
+	): Promise<Actor[]>
 
 	findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
 		domainName: Domain_Name,
@@ -133,7 +133,7 @@ export class ActorDao
 	async findByDomainAndApplication_Names(
 		domainName: Domain_Name,
 		applicationName: Application_Name
-	): Promise<IActor[]> {
+	): Promise<Actor[]> {
 		let act: QActor
 		let application: QApplication
 		let domain: QDomain
@@ -152,8 +152,8 @@ export class ActorDao
 			},
 			FROM: [
 				act = Q.Actor,
-				application = act.application.INNER_JOIN(),
-				domain = application.domain.INNER_JOIN(),
+				application = act.application.LEFT_JOIN(),
+				domain = application.domain.LEFT_JOIN(),
 				terminal = act.terminal.LEFT_JOIN(),
 				userAccount = act.userAccount.LEFT_JOIN()
 			],
@@ -192,8 +192,8 @@ export class ActorDao
 			},
 			FROM: [
 				act = Q.Actor,
-				application = act.application.INNER_JOIN(),
-				domain = application.domain.INNER_JOIN(),
+				application = act.application.LEFT_JOIN(),
+				domain = application.domain.LEFT_JOIN(),
 				terminal = act.terminal.LEFT_JOIN(),
 				userAccount = act.userAccount.LEFT_JOIN()
 			],

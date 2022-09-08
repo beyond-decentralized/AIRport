@@ -20,7 +20,7 @@ import {
 } from '@airport/tarmaq-query';
 import {
 	ISystemWideOperationId,
-} from './systemwideoperationid';
+} from './SystemWideOperationId';
 
 
 //////////////////////////////

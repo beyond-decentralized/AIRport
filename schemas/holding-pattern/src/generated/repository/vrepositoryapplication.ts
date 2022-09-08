@@ -12,13 +12,13 @@ import {
 } from '@airport/airspace/dist/app/bundle';
 import {
 	RepositoryVDescriptor,
-} from './vrepository';
+} from './vRepository';
 import {
 	Repository,
 } from '../../ddl/repository/Repository';
 import {
 	IRepositoryApplication,
-} from './repositoryapplication';
+} from './RepositoryApplication';
 
 
 

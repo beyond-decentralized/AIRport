@@ -1,6 +1,6 @@
 import {
 	IApplication,
-} from './application';
+} from './Application';
 
 
 

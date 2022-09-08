@@ -1,12 +1,12 @@
 import {
 	IDomain,
-} from './domain';
+} from './Domain';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	IApplicationCurrentVersion,
-} from './applicationcurrentversion';
+} from './ApplicationCurrentVersion';
 
 
 

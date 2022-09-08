@@ -6,9 +6,9 @@ import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QSequence } from './qsequence';
-import { QSystemWideOperationId } from './qsystemwideoperationid';
-import { QTerminalRun } from './qterminalrun';
+import { QSequence } from './qSequence';
+import { QSystemWideOperationId } from './qSystemWideOperationId';
+import { QTerminalRun } from './qTerminalRun';
 import {
   Sequence,
   SystemWideOperationId,

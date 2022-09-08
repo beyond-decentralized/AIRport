@@ -27,13 +27,13 @@ import {
 	QRepositoryTransactionHistory,
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
-} from './qrepositorytransactionhistory';
+} from './qRepositoryTransactionHistory';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 import {
 	ITransactionHistory,
-} from './transactionhistory';
+} from './TransactionHistory';
 
 
 //////////////////////////////

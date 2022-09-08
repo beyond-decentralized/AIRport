@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,
@@ -37,13 +37,13 @@ import {
 	QApplicationVersion,
 	QApplicationVersionQId,
 	QApplicationVersionQRelation,
-} from './qapplicationversion';
+} from './qApplicationVersion';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	IApplicationReference,
-} from './applicationreference';
+} from './ApplicationReference';
 
 
 //////////////////////////////

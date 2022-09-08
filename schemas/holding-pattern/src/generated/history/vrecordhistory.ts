@@ -8,31 +8,31 @@ import {
 } from '@airbridge/validate';
 import {
 	ActorVDescriptor,
-} from '../infrastructure/vactor';
+} from '../infrastructure/vActor';
 import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
 import {
 	OperationHistoryVDescriptor,
-} from './voperationhistory';
+} from './vOperationHistory';
 import {
 	OperationHistory,
 } from '../../ddl/history/OperationHistory';
 import {
 	RecordHistoryNewValueVDescriptor,
-} from './vrecordhistorynewvalue';
+} from './vRecordHistoryNewValue';
 import {
 	RecordHistoryNewValue,
 } from '../../ddl/history/RecordHistoryNewValue';
 import {
 	RecordHistoryOldValueVDescriptor,
-} from './vrecordhistoryoldvalue';
+} from './vRecordHistoryOldValue';
 import {
 	RecordHistoryOldValue,
 } from '../../ddl/history/RecordHistoryOldValue';
 import {
 	IRecordHistory,
-} from './recordhistory';
+} from './RecordHistory';
 
 
 

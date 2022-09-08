@@ -16,7 +16,7 @@ import { IApplicationEntity } from '@airport/airspace'
 import { SystemWideOperationId } from '../common'
 import { RecordHistory } from './RecordHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
-import { Actor } from '../ddl'
+import { Actor } from '../infrastructure/Actor'
 
 /**
  * Created by Papa on 4/17/2017.

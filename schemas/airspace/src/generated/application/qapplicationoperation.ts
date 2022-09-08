@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	Operation_Rule,
 } from '@airport/ground-control';
@@ -40,13 +40,13 @@ import {
 	QApplicationEntity,
 	QApplicationEntityQId,
 	QApplicationEntityQRelation,
-} from './qapplicationentity';
+} from './qApplicationEntity';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	IApplicationOperation,
-} from './applicationoperation';
+} from './ApplicationOperation';
 
 
 //////////////////////////////

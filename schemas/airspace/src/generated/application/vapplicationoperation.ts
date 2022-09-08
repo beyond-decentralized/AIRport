@@ -8,19 +8,19 @@ import {
 } from '@airbridge/validate';
 import {
 	VersionedApplicationObjectVDescriptor,
-} from './vversionedapplicationobject';
+} from './vVersionedApplicationObject';
 import {
 	Operation_Rule,
 } from '@airport/ground-control';
 import {
 	ApplicationEntityVDescriptor,
-} from './vapplicationentity';
+} from './vApplicationEntity';
 import {
 	ApplicationEntity,
 } from '../../ddl/application/ApplicationEntity';
 import {
 	IApplicationOperation,
-} from './applicationoperation';
+} from './ApplicationOperation';
 
 
 

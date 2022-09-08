@@ -8,25 +8,25 @@ import {
 } from '@airbridge/validate';
 import {
 	RepositoryVDescriptor,
-} from '../repository/vrepository';
+} from '../repository/vRepository';
 import {
 	Repository,
 } from '../../ddl/repository/Repository';
 import {
 	TransactionHistoryVDescriptor,
-} from './vtransactionhistory';
+} from './vTransactionHistory';
 import {
 	TransactionHistory,
 } from '../../ddl/history/TransactionHistory';
 import {
 	OperationHistoryVDescriptor,
-} from './voperationhistory';
+} from './vOperationHistory';
 import {
 	OperationHistory,
 } from '../../ddl/history/OperationHistory';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 
 
 

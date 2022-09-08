@@ -38,10 +38,10 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
-} from '../infrastructure/qactor';
+} from '../infrastructure/qActor';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	RepositoryTransactionHistoryGraph,
 	RepositoryTransactionHistoryEId,
@@ -51,10 +51,10 @@ import {
 	QRepositoryTransactionHistory,
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
-} from './qrepositorytransactionhistory';
+} from './qRepositoryTransactionHistory';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 import {
 	RecordHistoryGraph,
 	RecordHistoryEId,
@@ -64,13 +64,13 @@ import {
 	QRecordHistory,
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
-} from './qrecordhistory';
+} from './qRecordHistory';
 import {
 	IRecordHistory,
-} from './recordhistory';
+} from './RecordHistory';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 
 
 //////////////////////////////

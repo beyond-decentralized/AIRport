@@ -8,19 +8,19 @@ import {
 } from '@airbridge/validate';
 import {
 	RepositoryVDescriptor,
-} from './vrepository';
+} from './vRepository';
 import {
 	Repository,
 } from '../../ddl/repository/Repository';
 import {
 	ActorVDescriptor,
-} from '../infrastructure/vactor';
+} from '../infrastructure/vActor';
 import {
 	Actor,
 } from '../../ddl/infrastructure/Actor';
 import {
 	IAirEntity,
-} from './airentity';
+} from './AirEntity';
 
 
 

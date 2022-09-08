@@ -20,43 +20,43 @@ import {
 } from '@airport/travel-document-checkpoint/dist/app/bundle';
 import {
 	RepositoryTransactionHistoryVDescriptor,
-} from '../history/vrepositorytransactionhistory';
+} from '../history/vRepositoryTransactionHistory';
 import {
 	RepositoryTransactionHistory,
 } from '../../ddl/history/RepositoryTransactionHistory';
 import {
 	RepositoryApplicationVDescriptor,
-} from './vrepositoryapplication';
+} from './vRepositoryApplication';
 import {
 	RepositoryApplication,
 } from '../../ddl/repository/RepositoryApplication';
 import {
 	RepositoryClientVDescriptor,
-} from './vrepositoryclient';
+} from './vRepositoryClient';
 import {
 	RepositoryClient,
 } from '../../ddl/repository/RepositoryClient';
 import {
 	RepositoryDatabaseVDescriptor,
-} from './vrepositorydatabase';
+} from './vRepositoryDatabase';
 import {
 	RepositoryDatabase,
 } from '../../ddl/repository/RepositoryDatabase';
 import {
 	RepositoryTerminalVDescriptor,
-} from './vrepositoryterminal';
+} from './vRepositoryTerminal';
 import {
 	RepositoryTerminal,
 } from '../../ddl/repository/RepositoryTerminal';
 import {
 	RepositoryTypeVDescriptor,
-} from './vrepositorytype';
+} from './vRepositoryType';
 import {
 	RepositoryType,
 } from '../../ddl/repository/RepositoryType';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 
 
 

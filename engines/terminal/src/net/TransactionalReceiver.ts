@@ -400,11 +400,12 @@ export abstract class TransactionalReceiver {
         }
 
         const terminal = this.terminalStore.getTerminal()
-        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+        // let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+        let actor = await this.actorDao.findByDomainAndApplication_Names(
             message.domain,
             message.application,
-            userSession.userAccount.GUID,
-            terminal.GUID
+            // userSession.userAccount.GUID,
+            // terminal.GUID
         );
         if (actor) {
             userSession.currentActor = actor

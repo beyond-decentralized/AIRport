@@ -1,6 +1,6 @@
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 import {
 	ITerminal,
 } from '@airport/travel-document-checkpoint';

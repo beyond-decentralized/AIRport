@@ -27,13 +27,13 @@ import {
 	QApplication,
 	QApplicationQId,
 	QApplicationQRelation,
-} from './qapplication';
+} from './qApplication';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 import {
 	IDomain,
-} from './domain';
+} from './Domain';
 
 
 //////////////////////////////

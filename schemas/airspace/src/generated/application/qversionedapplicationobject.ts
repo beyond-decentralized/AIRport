@@ -27,13 +27,13 @@ import {
 	QApplicationVersion,
 	QApplicationVersionQId,
 	QApplicationVersionQRelation,
-} from './qapplicationversion';
+} from './qApplicationVersion';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 
 
 //////////////////////////////

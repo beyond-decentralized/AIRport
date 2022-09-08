@@ -66,11 +66,11 @@ export function resolveRelativePath(
 	for (let i = 0; i < fromFragments.length; i++) {
 		let fromFragment
 		if (fromFragments[i]) {
-			fromFragment = fromFragments[i].toLowerCase()
+			fromFragment = fromFragments[i]
 		}
 		let toFragment
 		if (toFragments[i]) {
-			toFragment = toFragments[i].toLowerCase()
+			toFragment = toFragments[i]
 		}
 
 		if (fromFragment !== toFragment) {
@@ -114,7 +114,7 @@ export function addImportForType(
 		const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, entity.path)
 		relativePathToImport   = resolveRelativePath(fileBuilder.fullGenerationPath, fullPathToImport)
 	}
-	fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport, false)
+	fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport)
 }
 
 /*
@@ -138,9 +138,6 @@ export function normalizePath(
 ): string {
 	let forwardSlashedPath = path.replace(/\\/g, '/')
 	return forwardSlashedPath
-	// let lowercasePath = forwardSlashedPath.toLowerCase();
-
-	// return lowercasePath;
 }
 
 export function canBeInterface(

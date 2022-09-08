@@ -8,13 +8,13 @@ import {
 } from '@airbridge/validate';
 import {
 	RecordHistoryVDescriptor,
-} from './vrecordhistory';
+} from './vRecordHistory';
 import {
 	RecordHistory,
 } from '../../ddl/history/RecordHistory';
 import {
 	IRecordHistoryNewValue,
-} from './recordhistorynewvalue';
+} from './RecordHistoryNewValue';
 
 
 

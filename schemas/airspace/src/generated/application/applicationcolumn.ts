@@ -1,15 +1,15 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	IApplicationPropertyColumn,
-} from './applicationpropertycolumn';
+} from './ApplicationPropertyColumn';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 
 
 

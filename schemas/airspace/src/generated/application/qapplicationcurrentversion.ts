@@ -27,10 +27,10 @@ import {
 	QApplication,
 	QApplicationQId,
 	QApplicationQRelation,
-} from './qapplication';
+} from './qApplication';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,
@@ -40,13 +40,13 @@ import {
 	QApplicationVersion,
 	QApplicationVersionQId,
 	QApplicationVersionQRelation,
-} from './qapplicationversion';
+} from './qApplicationVersion';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	IApplicationCurrentVersion,
-} from './applicationcurrentversion';
+} from './ApplicationCurrentVersion';
 
 
 //////////////////////////////

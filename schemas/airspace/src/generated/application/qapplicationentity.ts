@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	ApplicationEntity_TableConfiguration,
 } from '@airport/tarmaq-entity';
@@ -40,10 +40,10 @@ import {
 	QApplicationVersion,
 	QApplicationVersionQId,
 	QApplicationVersionQRelation,
-} from './qapplicationversion';
+} from './qApplicationVersion';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	ApplicationColumnGraph,
 	ApplicationColumnEId,
@@ -53,10 +53,10 @@ import {
 	QApplicationColumn,
 	QApplicationColumnQId,
 	QApplicationColumnQRelation,
-} from './qapplicationcolumn';
+} from './qApplicationColumn';
 import {
 	IApplicationColumn,
-} from './applicationcolumn';
+} from './ApplicationColumn';
 import {
 	ApplicationOperationGraph,
 	ApplicationOperationEId,
@@ -66,10 +66,10 @@ import {
 	QApplicationOperation,
 	QApplicationOperationQId,
 	QApplicationOperationQRelation,
-} from './qapplicationoperation';
+} from './qApplicationOperation';
 import {
 	IApplicationOperation,
-} from './applicationoperation';
+} from './ApplicationOperation';
 import {
 	ApplicationPropertyGraph,
 	ApplicationPropertyEId,
@@ -79,10 +79,10 @@ import {
 	QApplicationProperty,
 	QApplicationPropertyQId,
 	QApplicationPropertyQRelation,
-} from './qapplicationproperty';
+} from './qApplicationProperty';
 import {
 	IApplicationProperty,
-} from './applicationproperty';
+} from './ApplicationProperty';
 import {
 	ApplicationRelationGraph,
 	ApplicationRelationEId,
@@ -92,13 +92,13 @@ import {
 	QApplicationRelation,
 	QApplicationRelationQId,
 	QApplicationRelationQRelation,
-} from './qapplicationrelation';
+} from './qApplicationRelation';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 
 
 //////////////////////////////

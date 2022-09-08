@@ -8,7 +8,7 @@ import {
 } from '@airbridge/validate';
 import {
 	ISequence,
-} from './sequence';
+} from './Sequence';
 
 
 

@@ -27,7 +27,7 @@ import {
 	QVersionedApplicationObjectQId,
 	QVersionedApplicationObjectQRelation,
 	QVersionedApplicationObject,
-} from './qversionedapplicationobject';
+} from './qVersionedApplicationObject';
 import {
 	ApplicationColumnGraph,
 	ApplicationColumnEId,
@@ -37,10 +37,10 @@ import {
 	QApplicationColumn,
 	QApplicationColumnQId,
 	QApplicationColumnQRelation,
-} from './qapplicationcolumn';
+} from './qApplicationColumn';
 import {
 	IApplicationColumn,
-} from './applicationcolumn';
+} from './ApplicationColumn';
 import {
 	ApplicationRelationGraph,
 	ApplicationRelationEId,
@@ -50,13 +50,13 @@ import {
 	QApplicationRelation,
 	QApplicationRelationQId,
 	QApplicationRelationQRelation,
-} from './qapplicationrelation';
+} from './qApplicationRelation';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 import {
 	IApplicationRelationColumn,
-} from './applicationrelationcolumn';
+} from './ApplicationRelationColumn';
 
 
 //////////////////////////////

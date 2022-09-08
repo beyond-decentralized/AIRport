@@ -8,7 +8,7 @@ import {
 } from '@airbridge/validate';
 import {
 	VersionedApplicationObjectVDescriptor,
-} from './vversionedapplicationobject';
+} from './vVersionedApplicationObject';
 import {
 	ForeignKey,
 	ManyToOneElements,
@@ -16,25 +16,25 @@ import {
 } from '@airport/tarmaq-entity';
 import {
 	ApplicationPropertyVDescriptor,
-} from './vapplicationproperty';
+} from './vApplicationProperty';
 import {
 	ApplicationProperty,
 } from '../../ddl/application/ApplicationProperty';
 import {
 	ApplicationEntityVDescriptor,
-} from './vapplicationentity';
+} from './vApplicationEntity';
 import {
 	ApplicationEntity,
 } from '../../ddl/application/ApplicationEntity';
 import {
 	ApplicationRelationColumnVDescriptor,
-} from './vapplicationrelationcolumn';
+} from './vApplicationRelationColumn';
 import {
 	ApplicationRelationColumn,
 } from '../../ddl/application/ApplicationRelationColumn';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 
 
 

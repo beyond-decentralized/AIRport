@@ -1,9 +1,9 @@
 import {
 	IApplication,
-} from './application';
+} from './Application';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 
 
 

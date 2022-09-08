@@ -18,7 +18,7 @@ import {
 } from '@airport/airspace/dist/app/bundle';
 import {
 	IActor,
-} from './actor';
+} from './Actor';
 
 
 

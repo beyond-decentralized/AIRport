@@ -1,6 +1,6 @@
 import {
 	IVersionedApplicationObject,
-} from './versionedapplicationobject';
+} from './VersionedApplicationObject';
 import {
 	ApplicationEntity_TableConfiguration,
 } from '@airport/tarmaq-entity';
@@ -9,16 +9,19 @@ import {
 } from './applicationcolumn';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
+import {
+	IApplicationColumn,
+} from './ApplicationColumn';
 import {
 	IApplicationOperation,
-} from './applicationoperation';
+} from './ApplicationOperation';
 import {
 	IApplicationProperty,
-} from './applicationproperty';
+} from './ApplicationProperty';
 import {
 	IApplicationRelation,
-} from './applicationrelation';
+} from './ApplicationRelation';
 
 
 

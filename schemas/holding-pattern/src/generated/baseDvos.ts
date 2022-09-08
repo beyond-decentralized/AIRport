@@ -1,82 +1,82 @@
 /* eslint-disable */
 import {
 	Actor,
-} from '../ddl/infrastructure/actor';
+} from '../ddl/infrastructure/Actor';
 import {
 	ActorVDescriptor,
-} from './infrastructure/vactor';
+} from './infrastructure/vActor';
 import {
 	OperationHistory,
-} from '../ddl/history/operationhistory';
+} from '../ddl/history/OperationHistory';
 import {
 	OperationHistoryVDescriptor,
-} from './history/voperationhistory';
+} from './history/vOperationHistory';
 import {
 	RecordHistory,
-} from '../ddl/history/recordhistory';
+} from '../ddl/history/RecordHistory';
 import {
 	RecordHistoryVDescriptor,
-} from './history/vrecordhistory';
+} from './history/vRecordHistory';
 import {
 	RecordHistoryNewValue,
-} from '../ddl/history/recordhistorynewvalue';
+} from '../ddl/history/RecordHistoryNewValue';
 import {
 	RecordHistoryNewValueVDescriptor,
-} from './history/vrecordhistorynewvalue';
+} from './history/vRecordHistoryNewValue';
 import {
 	RecordHistoryOldValue,
-} from '../ddl/history/recordhistoryoldvalue';
+} from '../ddl/history/RecordHistoryOldValue';
 import {
 	RecordHistoryOldValueVDescriptor,
-} from './history/vrecordhistoryoldvalue';
+} from './history/vRecordHistoryOldValue';
 import {
 	Repository,
-} from '../ddl/repository/repository';
+} from '../ddl/repository/Repository';
 import {
 	RepositoryVDescriptor,
-} from './repository/vrepository';
+} from './repository/vRepository';
 import {
 	RepositoryApplication,
-} from '../ddl/repository/repositoryapplication';
+} from '../ddl/repository/RepositoryApplication';
 import {
 	RepositoryApplicationVDescriptor,
-} from './repository/vrepositoryapplication';
+} from './repository/vRepositoryApplication';
 import {
 	RepositoryClient,
-} from '../ddl/repository/repositoryclient';
+} from '../ddl/repository/RepositoryClient';
 import {
 	RepositoryClientVDescriptor,
-} from './repository/vrepositoryclient';
+} from './repository/vRepositoryClient';
 import {
 	RepositoryDatabase,
-} from '../ddl/repository/repositorydatabase';
+} from '../ddl/repository/RepositoryDatabase';
 import {
 	RepositoryDatabaseVDescriptor,
-} from './repository/vrepositorydatabase';
+} from './repository/vRepositoryDatabase';
 import {
 	RepositoryTerminal,
-} from '../ddl/repository/repositoryterminal';
+} from '../ddl/repository/RepositoryTerminal';
 import {
 	RepositoryTerminalVDescriptor,
-} from './repository/vrepositoryterminal';
+} from './repository/vRepositoryTerminal';
 import {
 	RepositoryTransactionHistory,
-} from '../ddl/history/repositorytransactionhistory';
+} from '../ddl/history/RepositoryTransactionHistory';
 import {
 	RepositoryTransactionHistoryVDescriptor,
-} from './history/vrepositorytransactionhistory';
+} from './history/vRepositoryTransactionHistory';
 import {
 	RepositoryType,
-} from '../ddl/repository/repositorytype';
+} from '../ddl/repository/RepositoryType';
 import {
 	RepositoryTypeVDescriptor,
-} from './repository/vrepositorytype';
+} from './repository/vRepositoryType';
 import {
 	TransactionHistory,
-} from '../ddl/history/transactionhistory';
+} from '../ddl/history/TransactionHistory';
 import {
 	TransactionHistoryVDescriptor,
-} from './history/vtransactionhistory';
+} from './history/vTransactionHistory';
 import {
 	IDvo,
 	Dvo,

@@ -27,13 +27,13 @@ import {
 	QRecordHistory,
 	QRecordHistoryQId,
 	QRecordHistoryQRelation,
-} from './qrecordhistory';
+} from './qRecordHistory';
 import {
 	IRecordHistory,
-} from './recordhistory';
+} from './RecordHistory';
 import {
 	IRecordHistoryOldValue,
-} from './recordhistoryoldvalue';
+} from './RecordHistoryOldValue';
 
 
 //////////////////////////////

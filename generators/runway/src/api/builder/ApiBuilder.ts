@@ -44,7 +44,7 @@ export class ApiBuilder
                     this.fullGenerationPath, fullPathToImport)
             }
             this.addImport([moduleImport.objectMapByAsName[objectAsName]],
-                relativePathToImport, false)
+                relativePathToImport)
         }
     }
 

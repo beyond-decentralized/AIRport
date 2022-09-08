@@ -15,7 +15,7 @@ import {
 } from './recordhistoryoldvalue';
 import {
 	IRepositoryTransactionHistory,
-} from './repositorytransactionhistory';
+} from './RepositoryTransactionHistory';
 
 
 

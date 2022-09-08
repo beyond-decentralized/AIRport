@@ -20,7 +20,7 @@ import {
 } from '@airport/tarmaq-query';
 import {
 	ISequence,
-} from './sequence';
+} from './Sequence';
 
 
 //////////////////////////////

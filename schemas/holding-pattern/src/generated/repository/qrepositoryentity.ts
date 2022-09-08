@@ -43,7 +43,7 @@ import {
 } from '../infrastructure/qactor';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	IAirEntity,
 } from './repositoryentity';

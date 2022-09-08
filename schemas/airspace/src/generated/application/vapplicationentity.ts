@@ -8,43 +8,43 @@ import {
 } from '@airbridge/validate';
 import {
 	VersionedApplicationObjectVDescriptor,
-} from './vversionedapplicationobject';
+} from './vVersionedApplicationObject';
 import {
 	ApplicationEntity_TableConfiguration,
 } from '@airport/tarmaq-entity';
 import {
 	ApplicationVersionVDescriptor,
-} from './vapplicationversion';
+} from './vApplicationVersion';
 import {
 	ApplicationVersion,
 } from '../../ddl/application/ApplicationVersion';
 import {
 	ApplicationColumnVDescriptor,
-} from './vapplicationcolumn';
+} from './vApplicationColumn';
 import {
 	ApplicationColumn,
 } from '../../ddl/application/ApplicationColumn';
 import {
 	ApplicationOperationVDescriptor,
-} from './vapplicationoperation';
+} from './vApplicationOperation';
 import {
 	ApplicationOperation,
 } from '../../ddl/application/ApplicationOperation';
 import {
 	ApplicationPropertyVDescriptor,
-} from './vapplicationproperty';
+} from './vApplicationProperty';
 import {
 	ApplicationProperty,
 } from '../../ddl/application/ApplicationProperty';
 import {
 	ApplicationRelationVDescriptor,
-} from './vapplicationrelation';
+} from './vApplicationRelation';
 import {
 	ApplicationRelation,
 } from '../../ddl/application/ApplicationRelation';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 
 
 

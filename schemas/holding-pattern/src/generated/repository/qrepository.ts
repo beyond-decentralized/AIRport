@@ -74,10 +74,10 @@ import {
 	QRepositoryTransactionHistory,
 	QRepositoryTransactionHistoryQId,
 	QRepositoryTransactionHistoryQRelation,
-} from '../history/qrepositorytransactionhistory';
+} from '../history/qRepositoryTransactionHistory';
 import {
 	IRepositoryTransactionHistory,
-} from '../history/repositorytransactionhistory';
+} from '../history/RepositoryTransactionHistory';
 import {
 	RepositoryApplicationGraph,
 	RepositoryApplicationEId,
@@ -87,10 +87,10 @@ import {
 	QRepositoryApplication,
 	QRepositoryApplicationQId,
 	QRepositoryApplicationQRelation,
-} from './qrepositoryapplication';
+} from './qRepositoryApplication';
 import {
 	IRepositoryApplication,
-} from './repositoryapplication';
+} from './RepositoryApplication';
 import {
 	RepositoryClientGraph,
 	RepositoryClientEId,
@@ -100,10 +100,10 @@ import {
 	QRepositoryClient,
 	QRepositoryClientQId,
 	QRepositoryClientQRelation,
-} from './qrepositoryclient';
+} from './qRepositoryClient';
 import {
 	IRepositoryClient,
-} from './repositoryclient';
+} from './RepositoryClient';
 import {
 	RepositoryDatabaseGraph,
 	RepositoryDatabaseEId,
@@ -113,10 +113,10 @@ import {
 	QRepositoryDatabase,
 	QRepositoryDatabaseQId,
 	QRepositoryDatabaseQRelation,
-} from './qrepositorydatabase';
+} from './qRepositoryDatabase';
 import {
 	IRepositoryDatabase,
-} from './repositorydatabase';
+} from './RepositoryDatabase';
 import {
 	RepositoryTerminalGraph,
 	RepositoryTerminalEId,
@@ -126,10 +126,10 @@ import {
 	QRepositoryTerminal,
 	QRepositoryTerminalQId,
 	QRepositoryTerminalQRelation,
-} from './qrepositoryterminal';
+} from './qRepositoryTerminal';
 import {
 	IRepositoryTerminal,
-} from './repositoryterminal';
+} from './RepositoryTerminal';
 import {
 	RepositoryTypeGraph,
 	RepositoryTypeEId,
@@ -139,13 +139,13 @@ import {
 	QRepositoryType,
 	QRepositoryTypeQId,
 	QRepositoryTypeQRelation,
-} from './qrepositorytype';
+} from './qRepositoryType';
 import {
 	IRepositoryType,
-} from './repositorytype';
+} from './RepositoryType';
 import {
 	IRepository,
-} from './repository';
+} from './Repository';
 
 
 //////////////////////////////

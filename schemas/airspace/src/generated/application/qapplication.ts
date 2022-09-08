@@ -27,10 +27,10 @@ import {
 	QDomain,
 	QDomainQId,
 	QDomainQRelation,
-} from './qdomain';
+} from './qDomain';
 import {
 	IDomain,
-} from './domain';
+} from './Domain';
 import {
 	ApplicationVersionGraph,
 	ApplicationVersionEId,
@@ -40,10 +40,10 @@ import {
 	QApplicationVersion,
 	QApplicationVersionQId,
 	QApplicationVersionQRelation,
-} from './qapplicationversion';
+} from './qApplicationVersion';
 import {
 	IApplicationVersion,
-} from './applicationversion';
+} from './ApplicationVersion';
 import {
 	ApplicationCurrentVersionGraph,
 	ApplicationCurrentVersionEId,
@@ -53,13 +53,13 @@ import {
 	QApplicationCurrentVersion,
 	QApplicationCurrentVersionQId,
 	QApplicationCurrentVersionQRelation,
-} from './qapplicationcurrentversion';
+} from './qApplicationCurrentVersion';
 import {
 	IApplicationCurrentVersion,
-} from './applicationcurrentversion';
+} from './ApplicationCurrentVersion';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 
 
 //////////////////////////////

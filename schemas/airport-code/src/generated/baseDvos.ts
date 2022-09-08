@@ -1,22 +1,22 @@
 /* eslint-disable */
 import {
 	Sequence,
-} from '../ddl/sequence';
+} from '../ddl/Sequence';
 import {
 	SequenceVDescriptor,
-} from './vsequence';
+} from './vSequence';
 import {
 	SystemWideOperationId,
-} from '../ddl/systemwideoperationid';
+} from '../ddl/SystemWideOperationId';
 import {
 	SystemWideOperationIdVDescriptor,
-} from './vsystemwideoperationid';
+} from './vSystemWideOperationId';
 import {
 	TerminalRun,
-} from '../ddl/terminalrun';
+} from '../ddl/TerminalRun';
 import {
 	TerminalRunVDescriptor,
-} from './vterminalrun';
+} from './vTerminalRun';
 import {
 	IDvo,
 	Dvo,

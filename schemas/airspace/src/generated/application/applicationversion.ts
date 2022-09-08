@@ -3,13 +3,13 @@ import {
 } from '@airport/apron';
 import {
 	IApplication,
-} from './application';
+} from './Application';
 import {
 	IApplicationEntity,
-} from './applicationentity';
+} from './ApplicationEntity';
 import {
 	IApplicationReference,
-} from './applicationreference';
+} from './ApplicationReference';
 
 
 

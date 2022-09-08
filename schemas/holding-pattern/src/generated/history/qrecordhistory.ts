@@ -27,10 +27,10 @@ import {
 	QActor,
 	QActorQId,
 	QActorQRelation,
-} from '../infrastructure/qactor';
+} from '../infrastructure/qActor';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 import {
 	OperationHistoryGraph,
 	OperationHistoryEId,
@@ -40,10 +40,10 @@ import {
 	QOperationHistory,
 	QOperationHistoryQId,
 	QOperationHistoryQRelation,
-} from './qoperationhistory';
+} from './qOperationHistory';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 import {
 	RecordHistoryNewValueGraph,
 	RecordHistoryNewValueEId,
@@ -53,10 +53,10 @@ import {
 	QRecordHistoryNewValue,
 	QRecordHistoryNewValueQId,
 	QRecordHistoryNewValueQRelation,
-} from './qrecordhistorynewvalue';
+} from './qRecordHistoryNewValue';
 import {
 	IRecordHistoryNewValue,
-} from './recordhistorynewvalue';
+} from './RecordHistoryNewValue';
 import {
 	RecordHistoryOldValueGraph,
 	RecordHistoryOldValueEId,
@@ -66,13 +66,13 @@ import {
 	QRecordHistoryOldValue,
 	QRecordHistoryOldValueQId,
 	QRecordHistoryOldValueQRelation,
-} from './qrecordhistoryoldvalue';
+} from './qRecordHistoryOldValue';
 import {
 	IRecordHistoryOldValue,
-} from './recordhistoryoldvalue';
+} from './RecordHistoryOldValue';
 import {
 	IRecordHistory,
-} from './recordhistory';
+} from './RecordHistory';
 
 
 //////////////////////////////

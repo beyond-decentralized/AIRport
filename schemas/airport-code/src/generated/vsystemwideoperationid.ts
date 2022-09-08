@@ -8,7 +8,7 @@ import {
 } from '@airbridge/validate';
 import {
 	ISystemWideOperationId,
-} from './systemwideoperationid';
+} from './SystemWideOperationId';
 
 
 

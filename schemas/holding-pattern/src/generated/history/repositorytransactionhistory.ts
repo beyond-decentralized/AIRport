@@ -1,12 +1,12 @@
 import {
 	IRepository,
-} from '../repository/repository';
+} from '../repository/Repository';
 import {
 	ITransactionHistory,
-} from './transactionhistory';
+} from './TransactionHistory';
 import {
 	IOperationHistory,
-} from './operationhistory';
+} from './OperationHistory';
 
 
 

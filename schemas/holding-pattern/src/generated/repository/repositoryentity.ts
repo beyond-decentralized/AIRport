@@ -6,7 +6,7 @@ import {
 } from './repository';
 import {
 	IActor,
-} from '../infrastructure/actor';
+} from '../infrastructure/Actor';
 
 
 

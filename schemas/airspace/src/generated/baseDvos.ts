@@ -1,76 +1,76 @@
 /* eslint-disable */
 import {
 	Application,
-} from '../ddl/application/application';
+} from '../ddl/application/Application';
 import {
 	ApplicationVDescriptor,
-} from './application/vapplication';
+} from './application/vApplication';
 import {
 	ApplicationColumn,
-} from '../ddl/application/applicationcolumn';
+} from '../ddl/application/ApplicationColumn';
 import {
 	ApplicationColumnVDescriptor,
-} from './application/vapplicationcolumn';
+} from './application/vApplicationColumn';
 import {
 	ApplicationCurrentVersion,
-} from '../ddl/application/applicationcurrentversion';
+} from '../ddl/application/ApplicationCurrentVersion';
 import {
 	ApplicationCurrentVersionVDescriptor,
-} from './application/vapplicationcurrentversion';
+} from './application/vApplicationCurrentVersion';
 import {
 	ApplicationEntity,
-} from '../ddl/application/applicationentity';
+} from '../ddl/application/ApplicationEntity';
 import {
 	ApplicationEntityVDescriptor,
-} from './application/vapplicationentity';
+} from './application/vApplicationEntity';
 import {
 	ApplicationOperation,
-} from '../ddl/application/applicationoperation';
+} from '../ddl/application/ApplicationOperation';
 import {
 	ApplicationOperationVDescriptor,
-} from './application/vapplicationoperation';
+} from './application/vApplicationOperation';
 import {
 	ApplicationProperty,
-} from '../ddl/application/applicationproperty';
+} from '../ddl/application/ApplicationProperty';
 import {
 	ApplicationPropertyVDescriptor,
-} from './application/vapplicationproperty';
+} from './application/vApplicationProperty';
 import {
 	ApplicationPropertyColumn,
-} from '../ddl/application/applicationpropertycolumn';
+} from '../ddl/application/ApplicationPropertyColumn';
 import {
 	ApplicationPropertyColumnVDescriptor,
-} from './application/vapplicationpropertycolumn';
+} from './application/vApplicationPropertyColumn';
 import {
 	ApplicationReference,
-} from '../ddl/application/applicationreference';
+} from '../ddl/application/ApplicationReference';
 import {
 	ApplicationReferenceVDescriptor,
-} from './application/vapplicationreference';
+} from './application/vApplicationReference';
 import {
 	ApplicationRelation,
-} from '../ddl/application/applicationrelation';
+} from '../ddl/application/ApplicationRelation';
 import {
 	ApplicationRelationVDescriptor,
-} from './application/vapplicationrelation';
+} from './application/vApplicationRelation';
 import {
 	ApplicationRelationColumn,
-} from '../ddl/application/applicationrelationcolumn';
+} from '../ddl/application/ApplicationRelationColumn';
 import {
 	ApplicationRelationColumnVDescriptor,
-} from './application/vapplicationrelationcolumn';
+} from './application/vApplicationRelationColumn';
 import {
 	ApplicationVersion,
-} from '../ddl/application/applicationversion';
+} from '../ddl/application/ApplicationVersion';
 import {
 	ApplicationVersionVDescriptor,
-} from './application/vapplicationversion';
+} from './application/vApplicationVersion';
 import {
 	Domain,
-} from '../ddl/application/domain';
+} from '../ddl/application/Domain';
 import {
 	DomainVDescriptor,
-} from './application/vdomain';
+} from './application/vDomain';
 import {
 	IDvo,
 	Dvo,

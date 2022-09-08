@@ -51,7 +51,7 @@ import {
 } from '@airport/airspace';
 import {
 	IActor,
-} from './actor';
+} from './Actor';
 
 
 //////////////////////////////
