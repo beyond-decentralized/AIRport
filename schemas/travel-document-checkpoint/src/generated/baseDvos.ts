@@ -177,11 +177,11 @@ export class BaseContinentDvo
 	implements IBaseContinentDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
 	}
 	
 	constructor() {
-		super(5)
+		super(0)
 	}
 }
 
@@ -195,11 +195,11 @@ export class BaseCountryDvo
 	implements IBaseCountryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }
 
@@ -249,11 +249,11 @@ export class BaseMetroAreaDvo
 	implements IBaseMetroAreaDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
 	}
 	
 	constructor() {
-		super(3)
+		super(4)
 	}
 }
 
@@ -267,11 +267,11 @@ export class BaseMetroAreaStateDvo
 	implements IBaseMetroAreaStateDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
 	}
 	
 	constructor() {
-		super(2)
+		super(3)
 	}
 }
 
@@ -285,11 +285,11 @@ export class BaseStateDvo
 	implements IBaseStateDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -375,10 +375,10 @@ export class BaseUserAccountDvo
 	implements IBaseUserAccountDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
+		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
 	}
 	
 	constructor() {
-		super(4)
+		super(5)
 	}
 }

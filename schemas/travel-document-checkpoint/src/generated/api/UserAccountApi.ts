@@ -21,13 +21,13 @@ import {
 // An API stub for other Applications and UIs to use
 @Injected()
 export class UserAccountApi {
-
-    constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, USER_ACCOUNT_API)
-    }
         
     @Inject()
     userAccountApi: UserAccountApi
+
+    constructor() {
+        DEPENDENCY_INJECTION.db().manualInject(this, 'userAccountApi', USER_ACCOUNT_API)
+    }
             
     async  findUserAccount(
         privateId: string

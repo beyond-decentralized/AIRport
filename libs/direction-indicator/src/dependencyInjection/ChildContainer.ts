@@ -178,10 +178,11 @@ export class ChildContainer
 
     manualInject<T>(
         object: T,
+        propertyName: string,
         token: IDependencyInjectionToken<T>
     ): void {
         (object as any).__container__ = this
-        this.setDependencyGetters(object, token)
+        this.setDependencyGetter(object, propertyName, token)
     }
 
     setDependencyGetters(
@@ -194,21 +195,27 @@ export class ChildContainer
 
         const dependencyConfiguration = token.dependencyConfiguration
         for (let propertyName in dependencyConfiguration) {
-            delete object[propertyName]
-
             const dependencyToken = dependencyConfiguration[propertyName]
-
-            Object.defineProperty(object, propertyName, {
-                get() {
-                    return this.__container__.getSync(dependencyToken)
-                }
-            });
-
-            object['get' + propertyName + 'Async'] = async function () {
-                return await this.__container__.get(dependencyToken)
-            }
+            this.setDependencyGetter(object, propertyName, dependencyToken)
         }
 
+    }
+
+    private setDependencyGetter(
+        object: any,
+        propertyName: string,
+        dependencyToken: IDependencyInjectionToken<any>
+    ) {
+        delete object[propertyName]
+        Object.defineProperty(object, propertyName, {
+            get() {
+                return this.__container__.getSync(dependencyToken)
+            }
+        });
+
+        object['get' + propertyName + 'Async'] = async function () {
+            return await this.__container__.get(dependencyToken)
+        }
     }
 
     async getByNames(

@@ -24,13 +24,13 @@ import {
 // An API stub for other Applications and UIs to use
 @Injected()
 export class RepositoryApi {
-
-    constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, REPOSITORY_API)
-    }
         
     @Inject()
     repositoryApi: RepositoryApi
+
+    constructor() {
+        DEPENDENCY_INJECTION.db().manualInject(this, 'repositoryApi', REPOSITORY_API)
+    }
             
     async  findAll(): Promise<Repository[]> {
         return await this.repositoryApi.findAll()

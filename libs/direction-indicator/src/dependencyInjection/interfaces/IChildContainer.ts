@@ -10,6 +10,7 @@ export interface IChildContainer
 
     manualInject<T>(
         object: T,
+        propertyName: string,
         token: IDependencyInjectionToken<T>
     ): void
 

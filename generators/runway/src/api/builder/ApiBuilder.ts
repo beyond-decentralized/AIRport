@@ -87,13 +87,13 @@ ${apiClassDefinitionCode}`
 // An API stub for other Applications and UIs to use
 @Injected()
 export class ${apiClass.className} {
-
-    constructor() {
-        DEPENDENCY_INJECTION.db().manualInject(this, ${tokenName})
-    }
         
     @Inject()
     ${proxyName}: ${apiClass.className}
+
+    constructor() {
+        DEPENDENCY_INJECTION.db().manualInject(this, '${proxyName}', ${tokenName})
+    }
             ${this.buildApiMethodStubFragment(apiClass, proxyName)}
 }
 `
