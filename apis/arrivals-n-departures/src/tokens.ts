@@ -3,11 +3,12 @@ import { RequestManager } from "./RequestManager";
 import { IOperationDeserializer } from "./serialize/OperationDeserializer";
 import { IQueryParameterDeserializer } from "./serialize/QueryParameterDeserializer";
 import { IQueryResultsSerializer } from "./serialize/QueryResultsSerializer";
+import { SessionManager } from "./SessionManager";
 
 export const arrivalsNDepartures = lib('arrivals-n-departures')
 
 export const REQUEST_MANAGER = arrivalsNDepartures.token<RequestManager>({
-    class: null,
+    class: RequestManager,
     interface: 'RequestManager',
     token: 'REQUEST_MANAGER'
 })
@@ -26,3 +27,8 @@ export const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token<IQueryResultsS
     interface: 'IQueryResultsSerializer',
     token: 'QUERY_RESULTS_SERIALIZER'
 });
+export const SESSION_MANAGER = arrivalsNDepartures.token<SessionManager>({
+    class: SessionManager,
+    interface: 'RequestManager',
+    token: 'REQUEST_MANAGER'
+})

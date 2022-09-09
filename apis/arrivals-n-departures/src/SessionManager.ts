@@ -1,6 +1,8 @@
+import { Injected } from "@airport/direction-indicator";
 import { UserAccount } from "@airport/travel-document-checkpoint/dist/app/bundle";
 
-export interface SessionManager {
+@Injected()
+export class SessionManager {
 
     userAccount: UserAccount
 
