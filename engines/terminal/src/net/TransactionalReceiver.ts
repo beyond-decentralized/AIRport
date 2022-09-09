@@ -408,21 +408,21 @@ export abstract class TransactionalReceiver {
             // terminal.GUID
         );
         if (actor) {
-            userSession.currentActor = actor
-            return actor
+            userSession.currentActor = actor[0]
+            return actor[0]
         }
 
         const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
-        actor = {
+        actor[0] = {
             application,
             GUID: guidv4(),
             terminal: terminal as any,
             userAccount: userSession.userAccount
         }
         await this.actorDao.save(actor)
-        userSession.currentActor = actor
+        userSession.currentActor = actor[0]
 
-        return actor
+        return actor[0]
     }
 
     protected async endApiCall(
