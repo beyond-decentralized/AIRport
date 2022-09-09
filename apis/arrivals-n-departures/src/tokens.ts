@@ -29,6 +29,6 @@ export const QUERY_RESULTS_SERIALIZER = arrivalsNDepartures.token<IQueryResultsS
 });
 export const SESSION_MANAGER = arrivalsNDepartures.token<SessionManager>({
     class: SessionManager,
-    interface: 'RequestManager',
-    token: 'REQUEST_MANAGER'
+    interface: 'SessionManager',
+    token: 'SESSION_MANAGER'
 })
