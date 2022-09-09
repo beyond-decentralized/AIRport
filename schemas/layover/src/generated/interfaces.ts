@@ -1,3 +1,3 @@
-export * from './conflict/synchronizationconflict';
-export * from './conflict/synchronizationconflictvalues';
-export * from './recordupdatestage';
+export * from './entity/IRecordUpdateStage';
+export * from './entity/conflict/ISynchronizationConflict';
+export * from './entity/conflict/ISynchronizationConflictValues';

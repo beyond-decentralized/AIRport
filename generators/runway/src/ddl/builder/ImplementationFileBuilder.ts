@@ -1,8 +1,8 @@
-import { ApplicationEntity_LocalId }            from '@airport/ground-control';
+import { ApplicationEntity_LocalId } from '@airport/ground-control';
 import { resolveRelativePath } from '../../resolve/pathResolver';
-import { IBuilder }            from './Builder';
-import { FileBuilder }         from './entity/FileBuilder';
-import { PathBuilder }         from './PathBuilder';
+import { IBuilder } from './Builder';
+import { FileBuilder } from './entity/FileBuilder';
+import { PathBuilder } from './PathBuilder';
 
 export abstract class ImplementationFileBuilder
 	extends FileBuilder
@@ -10,15 +10,15 @@ export abstract class ImplementationFileBuilder
 
 	public listingFilePath;
 
-	protected entityIdMapByName: { [entityName: string]: ApplicationEntity_LocalId }          = {};
+	protected entityIdMapByName: { [entityName: string]: ApplicationEntity_LocalId } = {};
 	protected entityNames: string[]
-	                                                                         = [];
-	protected ddlPathMapByEntityName: { [entityName: string]: string }       = {};
+		= [];
+	protected ddlPathMapByEntityName: { [entityName: string]: string } = {};
 	protected generatedPathMapByEntityName: { [entityName: string]: string } = {};
 
 	constructor(
 		fileName: string,
-		pathBuilder: PathBuilder,
+		pathBuilder: PathBuilder
 	) {
 		super(null, null, pathBuilder, null);
 		this.listingFilePath = pathBuilder.fullGeneratedDirPath + `/${fileName}.ts`;
@@ -33,13 +33,13 @@ export abstract class ImplementationFileBuilder
 		if (entityId === undefined) {
 			return;
 		}
-		const ddlRelativePath                   = resolveRelativePath(this.listingFilePath, fullDdlPath)
+		const ddlRelativePath = resolveRelativePath(this.listingFilePath, fullDdlPath)
 			.replace('.ts', '');
 		this.ddlPathMapByEntityName[entityName] = ddlRelativePath;
-		const generatedRelativePath             = resolveRelativePath(this.listingFilePath, fullGenerationPath)
+		const generatedRelativePath = resolveRelativePath(this.listingFilePath,
+			fullGenerationPath)
 			.replace('.ts', '');
-		this.generatedPathMapByEntityName[entityName]
-		                                        = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
+		this.generatedPathMapByEntityName[entityName] = generatedRelativePath;
 		this.entityNames.push(entityName);
 		this.entityIdMapByName[entityName] = entityId;
 	}

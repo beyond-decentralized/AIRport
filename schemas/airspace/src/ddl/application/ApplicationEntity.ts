@@ -26,8 +26,8 @@ import { ApplicationProperty } from './ApplicationProperty'
 import { ApplicationRelation } from './ApplicationRelation'
 import { ApplicationVersion } from './ApplicationVersion'
 import { VersionedApplicationObject } from './VersionedApplicationObject'
-import { IApplicationColumn } from '../../generated/application/applicationcolumn';
-import { IApplicationProperty } from '../../generated/application/applicationproperty';
+import { IApplicationColumn } from '../../generated/entity/application/IApplicationColumn';
+import { IApplicationProperty } from '../../generated/entity/application/IApplicationProperty';
 
 @Entity()
 @Table({

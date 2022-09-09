@@ -8,7 +8,7 @@ export class DaoBuilder
 		applicationFullName: string,
 		pathBuilder: PathBuilder
 	) {
-		super(applicationFullName, pathBuilder, 'Dao', false);
+		super(applicationFullName, pathBuilder, 'Dao');
 	}
 
 	protected addImports() {

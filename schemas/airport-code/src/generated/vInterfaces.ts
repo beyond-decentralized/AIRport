@@ -1,3 +1,3 @@
-export * from './vSequence';
-export * from './vSystemWideOperationId';
-export * from './vTerminalRun';
+export * from './validation/VSequence';
+export * from './validation/VSystemWideOperationId';
+export * from './validation/VTerminalRun';

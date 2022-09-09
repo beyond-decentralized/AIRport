@@ -1,6 +1,6 @@
-import {resolveRelativePath} from '../../resolve/pathResolver'
-import {PathBuilder}         from './PathBuilder'
-import {IBuilder}            from './Builder'
+import { resolveRelativePath } from '../../resolve/pathResolver'
+import { PathBuilder } from './PathBuilder'
+import { IBuilder } from './Builder'
 
 export class GeneratedFileListingBuilder
 	implements IBuilder {
@@ -10,19 +10,18 @@ export class GeneratedFileListingBuilder
 
 	constructor(
 		private pathBuilder: PathBuilder,
-		private fileName: string
+		private fileName: string,
+		// private directoryName: string
 	) {
 		this.generatedListingFilePath = pathBuilder.fullGeneratedDirPath + '/' + fileName
 	}
 
 	addFileNameAndPaths(
-		entityName: string,
-		fullDdlPath: string,
 		fullGenerationPath: string
 	): void {
-		const generatedRelativePath = resolveRelativePath(this.generatedListingFilePath, fullGenerationPath)
-			.replace('.ts', '')
-		this.generatedFilePaths.push(this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath))
+		const generatedRelativePath = resolveRelativePath(this.generatedListingFilePath,
+			fullGenerationPath).replace('.ts', '')
+		this.generatedFilePaths.push(generatedRelativePath)
 	}
 
 	build(): string {

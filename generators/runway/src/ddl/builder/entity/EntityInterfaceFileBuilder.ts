@@ -1,16 +1,16 @@
-import {Configuration}   from '../../options/Options'
-import {EntityCandidate} from '../../parser/EntityCandidate'
+import { Configuration } from '../../options/Options'
+import { EntityCandidate } from '../../parser/EntityCandidate'
 import {
 	resolveRelativeEntityPath,
 	resolveRelativePath
-}                        from '../../../resolve/pathResolver'
-import {PathBuilder}             from '../PathBuilder'
-import {IBuilder}                from '../Builder'
-import {SIndexedEntity}          from '../application/SEntity'
-import {FileBuilder}             from './FileBuilder'
-import {IEntityInterfaceBuilder} from './IEntityInterfaceBuilder'
-import {QEntityBuilder}          from './query/QEntityBuilder'
-import {QRelationBuilder}        from './query/QRelationBuilder'
+} from '../../../resolve/pathResolver'
+import { PathBuilder } from '../PathBuilder'
+import { IBuilder } from '../Builder'
+import { SIndexedEntity } from '../application/SEntity'
+import { FileBuilder } from './FileBuilder'
+import { IEntityInterfaceBuilder } from './IEntityInterfaceBuilder'
+import { QEntityBuilder } from './query/QEntityBuilder'
+import { QRelationBuilder } from './query/QRelationBuilder'
 
 /**
  * Created by Papa on 4/26/2016.
@@ -32,7 +32,7 @@ export class EntityInterfaceFileBuilder
 		sIndexedEntity: SIndexedEntity,
 	) {
 		super(entity, fullGenerationPath, pathBuilder, configuration);
-		this.qEntityBuilder         = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath,
+		this.qEntityBuilder = new QEntityBuilder(entity, fullGenerationPath, pathBuilder.workingDirPath,
 			this, entityMapByName, sIndexedEntity)
 		this.entityInterfaceBuilder = new IEntityInterfaceBuilder(entity, this.qEntityBuilder)
 
@@ -42,12 +42,13 @@ export class EntityInterfaceFileBuilder
 			if (entity.parentEntity.project) {
 				parentEntityRelativePath = entity.parentEntity.project
 			} else {
-				let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, null)
-				parentEntityRelativePath     = resolveRelativePath(fullGenerationPath, parentFullGenerationPath)
+				let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, null, 'entity')
+				parentEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath)
+				parentEntityRelativePath = this.pathBuilder.prefixToFileName(parentEntityRelativePath, 'I')
 			}
 			let parentEntityType = entity.parentEntity.type
 			this.addImport([
-					`I${parentEntityType}`],
+				`I${parentEntityType}`],
 				parentEntityRelativePath)
 		}
 
@@ -80,15 +81,16 @@ ${interfaceSource}
 			let entityInterfaceRelativePath
 			if (property.fromProject) {
 				entityInterfaceRelativePath = property.fromProject
-				type                        = property.otherApplicationDbEntity.name
+				type = property.otherApplicationDbEntity.name
 			} else {
-				type                        = property.entity.type
+				type = property.entity.type
 				entityInterfaceRelativePath = resolveRelativeEntityPath(this.entity, property.entity)
 				entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
+				entityInterfaceRelativePath = this.pathBuilder.prefixToFileName(entityInterfaceRelativePath, 'I')
 			}
 			type = type.replace('[]', '')
 			this.addImport([
-					'I' + type],
+				'I' + type],
 				entityInterfaceRelativePath)
 		})
 	}

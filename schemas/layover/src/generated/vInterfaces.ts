@@ -1,3 +1,3 @@
-export * from './conflict/vsynchronizationconflict';
-export * from './conflict/vsynchronizationconflictvalues';
-export * from './vrecordupdatestage';
+export * from './validation/VRecordUpdateStage';
+export * from './validation/conflict/VSynchronizationConflict';
+export * from './validation/conflict/VSynchronizationConflictValues';

@@ -4,19 +4,19 @@ import {
 } from '../ddl/Sequence';
 import {
 	SequenceVDescriptor,
-} from './vSequence';
+} from './validation/VSequence';
 import {
 	SystemWideOperationId,
 } from '../ddl/SystemWideOperationId';
 import {
 	SystemWideOperationIdVDescriptor,
-} from './vSystemWideOperationId';
+} from './validation/VSystemWideOperationId';
 import {
 	TerminalRun,
 } from '../ddl/TerminalRun';
 import {
 	TerminalRunVDescriptor,
-} from './vTerminalRun';
+} from './validation/VTerminalRun';
 import {
 	IDvo,
 	Dvo,

@@ -10,7 +10,6 @@ export abstract class UtilityBuilder
 		applicationFullName: string,
 		pathBuilder: PathBuilder,
 		private classSuffix: string,
-		needsQEntity: boolean
 	) {
 		super('base' + classSuffix + 's', pathBuilder);
 
@@ -71,7 +70,7 @@ ${baseClassDefinitions}`;
 					`${entityName}EId`,
 					`${entityName}Graph`,
 					`Q${entityName}`
-				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], 'q')}`);
+				], `${this.generatedPathMapByEntityName[entityName]}`);
 			});
 
 		this.addImport([

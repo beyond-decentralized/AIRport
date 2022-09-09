@@ -11,7 +11,7 @@ import {
 	ApplicationEId,
 	ApplicationGraph,
 	QApplication,
-} from './application/qApplication';
+} from './query/application/QApplication';
 import {
 	ApplicationColumn,
 } from '../ddl/application/ApplicationColumn';
@@ -24,7 +24,7 @@ import {
 	ApplicationColumnEId,
 	ApplicationColumnGraph,
 	QApplicationColumn,
-} from './application/qApplicationColumn';
+} from './query/application/QApplicationColumn';
 import {
 	ApplicationCurrentVersion,
 } from '../ddl/application/ApplicationCurrentVersion';
@@ -37,7 +37,7 @@ import {
 	ApplicationCurrentVersionEId,
 	ApplicationCurrentVersionGraph,
 	QApplicationCurrentVersion,
-} from './application/qApplicationCurrentVersion';
+} from './query/application/QApplicationCurrentVersion';
 import {
 	ApplicationEntity,
 } from '../ddl/application/ApplicationEntity';
@@ -50,7 +50,7 @@ import {
 	ApplicationEntityEId,
 	ApplicationEntityGraph,
 	QApplicationEntity,
-} from './application/qApplicationEntity';
+} from './query/application/QApplicationEntity';
 import {
 	ApplicationOperation,
 } from '../ddl/application/ApplicationOperation';
@@ -63,7 +63,7 @@ import {
 	ApplicationOperationEId,
 	ApplicationOperationGraph,
 	QApplicationOperation,
-} from './application/qApplicationOperation';
+} from './query/application/QApplicationOperation';
 import {
 	ApplicationProperty,
 } from '../ddl/application/ApplicationProperty';
@@ -76,7 +76,7 @@ import {
 	ApplicationPropertyEId,
 	ApplicationPropertyGraph,
 	QApplicationProperty,
-} from './application/qApplicationProperty';
+} from './query/application/QApplicationProperty';
 import {
 	ApplicationPropertyColumn,
 } from '../ddl/application/ApplicationPropertyColumn';
@@ -89,7 +89,7 @@ import {
 	ApplicationPropertyColumnEId,
 	ApplicationPropertyColumnGraph,
 	QApplicationPropertyColumn,
-} from './application/qApplicationPropertyColumn';
+} from './query/application/QApplicationPropertyColumn';
 import {
 	ApplicationReference,
 } from '../ddl/application/ApplicationReference';
@@ -102,7 +102,7 @@ import {
 	ApplicationReferenceEId,
 	ApplicationReferenceGraph,
 	QApplicationReference,
-} from './application/qApplicationReference';
+} from './query/application/QApplicationReference';
 import {
 	ApplicationRelation,
 } from '../ddl/application/ApplicationRelation';
@@ -115,7 +115,7 @@ import {
 	ApplicationRelationEId,
 	ApplicationRelationGraph,
 	QApplicationRelation,
-} from './application/qApplicationRelation';
+} from './query/application/QApplicationRelation';
 import {
 	ApplicationRelationColumn,
 } from '../ddl/application/ApplicationRelationColumn';
@@ -128,7 +128,7 @@ import {
 	ApplicationRelationColumnEId,
 	ApplicationRelationColumnGraph,
 	QApplicationRelationColumn,
-} from './application/qApplicationRelationColumn';
+} from './query/application/QApplicationRelationColumn';
 import {
 	ApplicationVersion,
 } from '../ddl/application/ApplicationVersion';
@@ -141,7 +141,7 @@ import {
 	ApplicationVersionEId,
 	ApplicationVersionGraph,
 	QApplicationVersion,
-} from './application/qApplicationVersion';
+} from './query/application/QApplicationVersion';
 import {
 	Domain,
 } from '../ddl/application/Domain';
@@ -154,7 +154,7 @@ import {
 	DomainEId,
 	DomainGraph,
 	QDomain,
-} from './application/qDomain';
+} from './query/application/QDomain';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

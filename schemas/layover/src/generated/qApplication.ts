@@ -6,9 +6,9 @@ import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QRecordUpdateStage } from './qrecordupdatestage';
-import { QSynchronizationConflict } from './conflict/qsynchronizationconflict';
-import { QSynchronizationConflictValues } from './conflict/qsynchronizationconflictvalues';
+import { QRecordUpdateStage } from './query/QRecordUpdateStage';
+import { QSynchronizationConflict } from './query/conflict/QSynchronizationConflict';
+import { QSynchronizationConflictValues } from './query/conflict/QSynchronizationConflictValues';
 import {
   RecordUpdateStage,
   SynchronizationConflict,

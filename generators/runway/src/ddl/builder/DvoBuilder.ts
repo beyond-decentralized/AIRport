@@ -50,7 +50,7 @@ ${baseClassDefinitions}`;
 				], `${this.ddlPathMapByEntityName[entityName]}`);
 				this.addImport([
 					`${entityName}VDescriptor`
-				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], 'v')}`);
+				], `${this.pathBuilder.prefixToFileName(this.generatedPathMapByEntityName[entityName], '')}`);
 			});
 		this.addImport([
 			`I${this.classSuffix}`,

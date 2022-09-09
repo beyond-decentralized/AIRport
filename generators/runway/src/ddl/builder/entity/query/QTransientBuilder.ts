@@ -19,7 +19,7 @@ export class QTransientBuilder {
 				type = prop.mapValueType;
 			}
 			type = type.replace('[]', '');
-			if(!prop.mapValueIsPrimitive) {
+			if (!prop.mapValueIsPrimitive) {
 				addImportForType(prop.ownerEntity, type, this.parentBuilder.fileBuilder);
 			}
 		}

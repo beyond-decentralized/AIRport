@@ -11,7 +11,7 @@ import {
 } from '@airport/check-in';
 import {
 	IUserAccount,
-} from '../../generated/userAccount';
+} from '../../generated/entity/IUserAccount';
 import {
 	UserAccountDao,
 } from '../../dao/UserAccountDao';

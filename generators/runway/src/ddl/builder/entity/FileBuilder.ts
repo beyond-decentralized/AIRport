@@ -27,7 +27,6 @@ export abstract class FileBuilder {
 		}
 		classNames.forEach(
 			className => {
-				let existingImport
 				let asName
 				let sourceName
 				if (typeof className === 'string') {

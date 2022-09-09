@@ -11,7 +11,7 @@ import {
 	ActorEId,
 	ActorGraph,
 	QActor,
-} from './infrastructure/qActor';
+} from './query/infrastructure/QActor';
 import {
 	OperationHistory,
 } from '../ddl/history/OperationHistory';
@@ -24,7 +24,7 @@ import {
 	OperationHistoryEId,
 	OperationHistoryGraph,
 	QOperationHistory,
-} from './history/qOperationHistory';
+} from './query/history/QOperationHistory';
 import {
 	RecordHistory,
 } from '../ddl/history/RecordHistory';
@@ -37,7 +37,7 @@ import {
 	RecordHistoryEId,
 	RecordHistoryGraph,
 	QRecordHistory,
-} from './history/qRecordHistory';
+} from './query/history/QRecordHistory';
 import {
 	RecordHistoryNewValue,
 } from '../ddl/history/RecordHistoryNewValue';
@@ -50,7 +50,7 @@ import {
 	RecordHistoryNewValueEId,
 	RecordHistoryNewValueGraph,
 	QRecordHistoryNewValue,
-} from './history/qRecordHistoryNewValue';
+} from './query/history/QRecordHistoryNewValue';
 import {
 	RecordHistoryOldValue,
 } from '../ddl/history/RecordHistoryOldValue';
@@ -63,7 +63,7 @@ import {
 	RecordHistoryOldValueEId,
 	RecordHistoryOldValueGraph,
 	QRecordHistoryOldValue,
-} from './history/qRecordHistoryOldValue';
+} from './query/history/QRecordHistoryOldValue';
 import {
 	Repository,
 } from '../ddl/repository/Repository';
@@ -76,7 +76,7 @@ import {
 	RepositoryEId,
 	RepositoryGraph,
 	QRepository,
-} from './repository/qRepository';
+} from './query/repository/QRepository';
 import {
 	RepositoryApplication,
 } from '../ddl/repository/RepositoryApplication';
@@ -89,7 +89,7 @@ import {
 	RepositoryApplicationEId,
 	RepositoryApplicationGraph,
 	QRepositoryApplication,
-} from './repository/qRepositoryApplication';
+} from './query/repository/QRepositoryApplication';
 import {
 	RepositoryClient,
 } from '../ddl/repository/RepositoryClient';
@@ -102,7 +102,7 @@ import {
 	RepositoryClientEId,
 	RepositoryClientGraph,
 	QRepositoryClient,
-} from './repository/qRepositoryClient';
+} from './query/repository/QRepositoryClient';
 import {
 	RepositoryDatabase,
 } from '../ddl/repository/RepositoryDatabase';
@@ -115,7 +115,7 @@ import {
 	RepositoryDatabaseEId,
 	RepositoryDatabaseGraph,
 	QRepositoryDatabase,
-} from './repository/qRepositoryDatabase';
+} from './query/repository/QRepositoryDatabase';
 import {
 	RepositoryTerminal,
 } from '../ddl/repository/RepositoryTerminal';
@@ -128,7 +128,7 @@ import {
 	RepositoryTerminalEId,
 	RepositoryTerminalGraph,
 	QRepositoryTerminal,
-} from './repository/qRepositoryTerminal';
+} from './query/repository/QRepositoryTerminal';
 import {
 	RepositoryTransactionHistory,
 } from '../ddl/history/RepositoryTransactionHistory';
@@ -141,7 +141,7 @@ import {
 	RepositoryTransactionHistoryEId,
 	RepositoryTransactionHistoryGraph,
 	QRepositoryTransactionHistory,
-} from './history/qRepositoryTransactionHistory';
+} from './query/history/QRepositoryTransactionHistory';
 import {
 	RepositoryType,
 } from '../ddl/repository/RepositoryType';
@@ -154,7 +154,7 @@ import {
 	RepositoryTypeEId,
 	RepositoryTypeGraph,
 	QRepositoryType,
-} from './repository/qRepositoryType';
+} from './query/repository/QRepositoryType';
 import {
 	TransactionHistory,
 } from '../ddl/history/TransactionHistory';
@@ -167,7 +167,7 @@ import {
 	TransactionHistoryEId,
 	TransactionHistoryGraph,
 	QTransactionHistory,
-} from './history/qTransactionHistory';
+} from './query/history/QTransactionHistory';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

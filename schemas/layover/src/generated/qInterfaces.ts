@@ -1,3 +1,3 @@
-export * from './conflict/qsynchronizationconflict';
-export * from './conflict/qsynchronizationconflictvalues';
-export * from './qrecordupdatestage';
+export * from './query/QRecordUpdateStage';
+export * from './query/conflict/QSynchronizationConflict';
+export * from './query/conflict/QSynchronizationConflictValues';

@@ -35,8 +35,7 @@ export class QApplicationBuilder
     const generatedRelativePath = resolveRelativePath(this.qApplicationFilePath, fullGenerationPath)
       .replace('.ts', '');
     this.generatedFilePaths.push(generatedRelativePath);
-    this.generatedPathMapByEntityName[entityName]
-      = this.pathBuilder.convertFileNameToLowerCase(generatedRelativePath);
+    this.generatedPathMapByEntityName[entityName] = generatedRelativePath;
     this.entityNames.push(entityName);
     this.mappedSuperclassSet[entityName] = isMappedSuperclass;
   }

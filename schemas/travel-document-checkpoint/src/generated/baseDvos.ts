@@ -1,94 +1,94 @@
 /* eslint-disable */
 import {
 	Classification,
-} from '../ddl/type/classification';
+} from '../ddl/type/Classification';
 import {
 	ClassificationVDescriptor,
-} from './type/vclassification';
+} from './validation/type/VClassification';
 import {
 	Client,
-} from '../ddl/client/client';
+} from '../ddl/client/Client';
 import {
 	ClientVDescriptor,
-} from './client/vclient';
+} from './validation/client/VClient';
 import {
 	ClientType,
-} from '../ddl/client/clienttype';
+} from '../ddl/client/ClientType';
 import {
 	ClientTypeVDescriptor,
-} from './client/vclienttype';
+} from './validation/client/VClientType';
 import {
 	Continent,
-} from '../ddl/locality/continent';
+} from '../ddl/locality/Continent';
 import {
 	ContinentVDescriptor,
-} from './locality/vcontinent';
+} from './validation/locality/VContinent';
 import {
 	Country,
-} from '../ddl/locality/country';
+} from '../ddl/locality/Country';
 import {
 	CountryVDescriptor,
-} from './locality/vcountry';
+} from './validation/locality/VCountry';
 import {
 	Database,
-} from '../ddl/database/database';
+} from '../ddl/database/Database';
 import {
 	DatabaseVDescriptor,
-} from './database/vdatabase';
+} from './validation/database/VDatabase';
 import {
 	DatabaseType,
-} from '../ddl/database/databasetype';
+} from '../ddl/database/DatabaseType';
 import {
 	DatabaseTypeVDescriptor,
-} from './database/vdatabasetype';
+} from './validation/database/VDatabaseType';
 import {
 	MetroArea,
-} from '../ddl/locality/metroarea';
+} from '../ddl/locality/MetroArea';
 import {
 	MetroAreaVDescriptor,
-} from './locality/vmetroarea';
+} from './validation/locality/VMetroArea';
 import {
 	MetroAreaState,
-} from '../ddl/locality/metroareastate';
+} from '../ddl/locality/MetroAreaState';
 import {
 	MetroAreaStateVDescriptor,
-} from './locality/vmetroareastate';
+} from './validation/locality/VMetroAreaState';
 import {
 	State,
-} from '../ddl/locality/state';
+} from '../ddl/locality/State';
 import {
 	StateVDescriptor,
-} from './locality/vstate';
+} from './validation/locality/VState';
 import {
 	Terminal,
-} from '../ddl/terminal/terminal';
+} from '../ddl/terminal/Terminal';
 import {
 	TerminalVDescriptor,
-} from './terminal/vterminal';
+} from './validation/terminal/VTerminal';
 import {
 	TerminalType,
-} from '../ddl/terminal/terminaltype';
+} from '../ddl/terminal/TerminalType';
 import {
 	TerminalTypeVDescriptor,
-} from './terminal/vterminaltype';
+} from './validation/terminal/VTerminalType';
 import {
 	Type,
-} from '../ddl/type/type';
+} from '../ddl/type/Type';
 import {
 	TypeVDescriptor,
-} from './type/vtype';
+} from './validation/type/VType';
 import {
 	TypeClassification,
-} from '../ddl/type/typeclassification';
+} from '../ddl/type/TypeClassification';
 import {
 	TypeClassificationVDescriptor,
-} from './type/vtypeclassification';
+} from './validation/type/VTypeClassification';
 import {
 	UserAccount,
-} from '../ddl/useraccount';
+} from '../ddl/UserAccount';
 import {
 	UserAccountVDescriptor,
-} from './vuseraccount';
+} from './validation/VUserAccount';
 import {
 	IDvo,
 	Dvo,

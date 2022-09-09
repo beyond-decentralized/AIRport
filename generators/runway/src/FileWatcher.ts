@@ -176,7 +176,7 @@ export async function watchFiles(
 			}
 			numApiFiles++
 			const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature, apiFilePath)
-			pathBuilder.setupFileForGeneration(apiFilePath, '', pathBuilder.apiDirPath, 'api/');
+			pathBuilder.setupFileForGeneration(apiFilePath, '', 'api/', pathBuilder.apiDirPath);
 			fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
 			apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
 		}
@@ -188,12 +188,12 @@ export async function watchFiles(
 		for (const entityName in entityMapByName) {
 			const entity: EntityCandidate = entityMapByName[entityName];
 
-			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, null);
-			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path);
-			const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'v');
-			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'I', 'entity');
+			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'Q', 'query');
+			const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'V', 'validation');
+			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
-			const vEntityFileBuilder = new VEntityFileBuilder(entity, fullGenerationPath, pathBuilder,
+			const vEntityFileBuilder = new VEntityFileBuilder(entity, fullVGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
 			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
 				entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
@@ -201,9 +201,9 @@ export async function watchFiles(
 			if (!entity.isSuperclass) {
 				entityFileReference[entity.docEntry.name] = fullGenerationPath;
 			}
-			entityInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullGenerationPath);
-			entityQInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath);
-			entityVInterfaceListingBuilder.addFileNameAndPaths(entityName, entity.path, fullVGenerationPath);
+			entityInterfaceListingBuilder.addFileNameAndPaths(fullGenerationPath);
+			entityQInterfaceListingBuilder.addFileNameAndPaths(fullQGenerationPath);
+			entityVInterfaceListingBuilder.addFileNameAndPaths(fullVGenerationPath);
 			qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
 				entity.docEntry.isMappedSuperclass);
 
@@ -213,12 +213,12 @@ export async function watchFiles(
 			if (sIndexedEntity) {
 				tableIndex = sIndexedEntity.entity.tableIndex;
 			}
-			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
-			dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullGenerationPath);
+			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullQGenerationPath);
+			dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullVGenerationPath);
 			entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
-			const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path);
-			const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'v');
-			const generationPath = pathBuilder.setupFileForGeneration(entity.path, null);
+			const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'Q', 'query');
+			const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'V', 'validation');
+			const generationPath = pathBuilder.setupFileForGeneration(entity.path, 'I', 'entity');
 			const qEntitySourceString = qEntityFileBuilder.build();
 			const vEntitySourceString = vEntityFileBuilder.build();
 			fs.writeFileSync(qGenerationPath, qEntitySourceString);

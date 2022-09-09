@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	Classification,
-} from '../ddl/type/classification';
+} from '../ddl/type/Classification';
 import {
 	ClassificationESelect,
 	ClassificationECreateColumns,
@@ -11,10 +11,10 @@ import {
 	ClassificationEId,
 	ClassificationGraph,
 	QClassification,
-} from './type/qclassification';
+} from './query/type/QClassification';
 import {
 	Client,
-} from '../ddl/client/client';
+} from '../ddl/client/Client';
 import {
 	ClientESelect,
 	ClientECreateColumns,
@@ -24,10 +24,10 @@ import {
 	ClientEId,
 	ClientGraph,
 	QClient,
-} from './client/qclient';
+} from './query/client/QClient';
 import {
 	ClientType,
-} from '../ddl/client/clienttype';
+} from '../ddl/client/ClientType';
 import {
 	ClientTypeESelect,
 	ClientTypeECreateColumns,
@@ -37,10 +37,10 @@ import {
 	ClientTypeEId,
 	ClientTypeGraph,
 	QClientType,
-} from './client/qclienttype';
+} from './query/client/QClientType';
 import {
 	Continent,
-} from '../ddl/locality/continent';
+} from '../ddl/locality/Continent';
 import {
 	ContinentESelect,
 	ContinentECreateColumns,
@@ -50,10 +50,10 @@ import {
 	ContinentEId,
 	ContinentGraph,
 	QContinent,
-} from './locality/qcontinent';
+} from './query/locality/QContinent';
 import {
 	Country,
-} from '../ddl/locality/country';
+} from '../ddl/locality/Country';
 import {
 	CountryESelect,
 	CountryECreateColumns,
@@ -63,10 +63,10 @@ import {
 	CountryEId,
 	CountryGraph,
 	QCountry,
-} from './locality/qcountry';
+} from './query/locality/QCountry';
 import {
 	Database,
-} from '../ddl/database/database';
+} from '../ddl/database/Database';
 import {
 	DatabaseESelect,
 	DatabaseECreateColumns,
@@ -76,10 +76,10 @@ import {
 	DatabaseEId,
 	DatabaseGraph,
 	QDatabase,
-} from './database/qdatabase';
+} from './query/database/QDatabase';
 import {
 	DatabaseType,
-} from '../ddl/database/databasetype';
+} from '../ddl/database/DatabaseType';
 import {
 	DatabaseTypeESelect,
 	DatabaseTypeECreateColumns,
@@ -89,10 +89,10 @@ import {
 	DatabaseTypeEId,
 	DatabaseTypeGraph,
 	QDatabaseType,
-} from './database/qdatabasetype';
+} from './query/database/QDatabaseType';
 import {
 	MetroArea,
-} from '../ddl/locality/metroarea';
+} from '../ddl/locality/MetroArea';
 import {
 	MetroAreaESelect,
 	MetroAreaECreateColumns,
@@ -102,10 +102,10 @@ import {
 	MetroAreaEId,
 	MetroAreaGraph,
 	QMetroArea,
-} from './locality/qmetroarea';
+} from './query/locality/QMetroArea';
 import {
 	MetroAreaState,
-} from '../ddl/locality/metroareastate';
+} from '../ddl/locality/MetroAreaState';
 import {
 	MetroAreaStateESelect,
 	MetroAreaStateECreateColumns,
@@ -115,10 +115,10 @@ import {
 	MetroAreaStateEId,
 	MetroAreaStateGraph,
 	QMetroAreaState,
-} from './locality/qmetroareastate';
+} from './query/locality/QMetroAreaState';
 import {
 	State,
-} from '../ddl/locality/state';
+} from '../ddl/locality/State';
 import {
 	StateESelect,
 	StateECreateColumns,
@@ -128,10 +128,10 @@ import {
 	StateEId,
 	StateGraph,
 	QState,
-} from './locality/qstate';
+} from './query/locality/QState';
 import {
 	Terminal,
-} from '../ddl/terminal/terminal';
+} from '../ddl/terminal/Terminal';
 import {
 	TerminalESelect,
 	TerminalECreateColumns,
@@ -141,10 +141,10 @@ import {
 	TerminalEId,
 	TerminalGraph,
 	QTerminal,
-} from './terminal/qterminal';
+} from './query/terminal/QTerminal';
 import {
 	TerminalType,
-} from '../ddl/terminal/terminaltype';
+} from '../ddl/terminal/TerminalType';
 import {
 	TerminalTypeESelect,
 	TerminalTypeECreateColumns,
@@ -154,10 +154,10 @@ import {
 	TerminalTypeEId,
 	TerminalTypeGraph,
 	QTerminalType,
-} from './terminal/qterminaltype';
+} from './query/terminal/QTerminalType';
 import {
 	Type,
-} from '../ddl/type/type';
+} from '../ddl/type/Type';
 import {
 	TypeESelect,
 	TypeECreateColumns,
@@ -167,10 +167,10 @@ import {
 	TypeEId,
 	TypeGraph,
 	QType,
-} from './type/qtype';
+} from './query/type/QType';
 import {
 	TypeClassification,
-} from '../ddl/type/typeclassification';
+} from '../ddl/type/TypeClassification';
 import {
 	TypeClassificationESelect,
 	TypeClassificationECreateColumns,
@@ -180,10 +180,10 @@ import {
 	TypeClassificationEId,
 	TypeClassificationGraph,
 	QTypeClassification,
-} from './type/qtypeclassification';
+} from './query/type/QTypeClassification';
 import {
 	UserAccount,
-} from '../ddl/useraccount';
+} from '../ddl/UserAccount';
 import {
 	UserAccountESelect,
 	UserAccountECreateColumns,
@@ -193,7 +193,7 @@ import {
 	UserAccountEId,
 	UserAccountGraph,
 	QUserAccount,
-} from './quseraccount';
+} from './query/QUserAccount';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,

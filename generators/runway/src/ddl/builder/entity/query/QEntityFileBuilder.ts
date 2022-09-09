@@ -69,7 +69,7 @@ export class QEntityFileBuilder
       if (entity.parentEntity.project) {
         parentQEntityRelativePath = entity.parentEntity.project;
       } else {
-        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path);
+        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'Q', 'query');
         parentQEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
       }
       let parentEntityType = entity.parentEntity.type;
@@ -129,7 +129,7 @@ ${relationClassSource}`;
         type = property.entity.type;
         qEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
         qEntityRelativePath = qEntityRelativePath.replace('.ts', '');
-        qEntityRelativePath = this.pathBuilder.prefixToFileName(qEntityRelativePath, 'q');
+        qEntityRelativePath = this.pathBuilder.prefixToFileName(qEntityRelativePath, 'Q');
       }
       type = type.replace('[]', '');
       let qType = 'Q' + type;
@@ -149,9 +149,10 @@ ${relationClassSource}`;
         let relationEntityPath = property.fromProject;
         this.addImport(['I' + type], relationEntityPath);
       } else {
-        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null);
+        const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entityMapByName[type].path, null, 'entity');
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
         entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
+				entityInterfaceRelativePath = this.pathBuilder.prefixToFileName(entityInterfaceRelativePath, 'I')
         this.addImport(['I' + type], entityInterfaceRelativePath);
       }
     });
@@ -164,8 +165,8 @@ ${relationClassSource}`;
     //   this.entityPath).replace('.ts', '');
     // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
 
-    const qFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path);
-    let entityInterfaceRelativePath = resolveRelativePath(qFilePath, this.fullGenerationPath)
+    const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'I', 'entity');
+    let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
     entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
     this.addImport([
       'I' + this.entity.docEntry.name],

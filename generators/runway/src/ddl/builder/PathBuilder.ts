@@ -64,9 +64,10 @@ export class PathBuilder {
 
 	getFullPathToGeneratedSource( //
 		sourcePath: string,
-		prefix = 'q'
+		prefix,
+		pathPrefix = ''
 	): string {
-		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix, this.ddlDirPath, '');
+		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix, this.ddlDirPath, pathPrefix);
 
 		return this.workingDirPath + '/' + generatedPath;
 	}
@@ -79,9 +80,9 @@ export class PathBuilder {
 
 	setupFileForGeneration(
 		sourcePath: string,
-		prefix = 'q',
-		dirPath = this.ddlDirPath,
-		pathPrefix = ''
+		prefix,
+		pathPrefix = '',
+		dirPath = this.ddlDirPath
 	): string {
 		let generatedPath = this.getGenerationPathForFile(sourcePath, prefix, dirPath, pathPrefix);
 		let genPathFragments = generatedPath.split('/');
@@ -107,15 +108,7 @@ export class PathBuilder {
 
 		const pathFragments = generatedPath.split('/');
 
-		return './' + this.convertFileNameToLowerCase(generatedPath);
-	}
-
-	convertFileNameToLowerCase( //
-		path: string //
-	): string {
-		const pathFragments = path.split('/');
-
-		return pathFragments.join('/');
+		return './' + generatedPath;
 	}
 
 	private getGenerationPathForFile(
@@ -136,7 +129,7 @@ export class PathBuilder {
 			sourceRelativePath = this.prefixToFileName(sourceRelativePath, prefix);
 		}
 
-		return this.generatedDirPath + '/' + pathPrefix + sourceRelativePath;
+		return this.generatedDirPath + '/' + pathPrefix + (pathPrefix ? '/' : '') + sourceRelativePath;
 	}
 
 	private getDdlPathForFile(

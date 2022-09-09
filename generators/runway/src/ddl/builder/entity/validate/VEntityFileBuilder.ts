@@ -54,7 +54,7 @@ export class VEntityFileBuilder
       if (entity.parentEntity.project) {
         parentVEntityRelativePath = entity.parentEntity.project + FileBuilder.distBundlePath;
       } else {
-        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'v');
+        let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'V', 'validation');
         parentVEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
       }
       let parentEntityType = entity.parentEntity.type;
@@ -94,7 +94,7 @@ ${interfaceSource}
         if (this.entity !== property.entity) {
           vEntityRelativePath = resolveRelativeEntityPath(this.entity, property.entity);
           vEntityRelativePath = vEntityRelativePath.replace('.ts', '');
-          vEntityRelativePath = this.pathBuilder.prefixToFileName(vEntityRelativePath, 'v');
+          vEntityRelativePath = this.pathBuilder.prefixToFileName(vEntityRelativePath, 'V');
         }
       }
       type = type.replace('[]', '');
@@ -124,8 +124,8 @@ ${interfaceSource}
     //   this.entityPath).replace('.ts', '');
     // this.addImport([this.entity.docEntry.name], entityImportRelativePath, false);
 
-    const vFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'v');
-    let entityInterfaceRelativePath = resolveRelativePath(vFilePath, this.fullGenerationPath)
+    const interfaceFilePath = this.pathBuilder.getFullPathToGeneratedSource(this.entity.path, 'I', 'entity');
+    let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, interfaceFilePath)
     entityInterfaceRelativePath = entityInterfaceRelativePath.replace('.ts', '')
     this.addImport([
       'I' + this.entity.docEntry.name],

@@ -53,7 +53,8 @@ export class QPropertyBuilder
 			let relativePathToImport = moduleImport.path
 			if (moduleImport.path.indexOf('.') === 0) {
 				const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, this.propertyDocEntry.ownerEntity.path)
-				relativePathToImport   = resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath, fullPathToImport)
+				relativePathToImport   = resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath,
+					fullPathToImport)
 			}
 			this.parentBuilder.addImport([moduleImport.objectMapByAsName[propertyType]], relativePathToImport)
 		}

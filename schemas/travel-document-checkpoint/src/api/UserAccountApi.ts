@@ -1,5 +1,5 @@
 import { Api } from "@airport/check-in";
-import { IUserAccount } from "../generated/userAccount";
+import { IUserAccount } from "../generated/entity/IUserAccount";
 import { UserAccountDao } from "../dao/UserAccountDao";
 import { Inject, Injected } from "@airport/direction-indicator";
 

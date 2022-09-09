@@ -1,11 +1,11 @@
-import {TypeOrParamDocEntry} from '../../parser/DocEntry'
-import {EntityCandidate}     from '../../parser/EntityCandidate'
-import {addImportForType}    from '../../../resolve/pathResolver'
-import {IBuilder}            from '../Builder'
-import {QEntityBuilder}      from './query/QEntityBuilder'
-import {QPropertyBuilder}    from './query/QPropertyBuilder'
-import {QRelationBuilder}    from './query/QRelationBuilder'
-import {QTransientBuilder}   from './query/QTransientBuilder'
+import { TypeOrParamDocEntry } from '../../parser/DocEntry'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { addImportForType } from '../../../resolve/pathResolver'
+import { IBuilder } from '../Builder'
+import { QEntityBuilder } from './query/QEntityBuilder'
+import { QPropertyBuilder } from './query/QPropertyBuilder'
+import { QRelationBuilder } from './query/QRelationBuilder'
+import { QTransientBuilder } from './query/QTransientBuilder'
 
 /**
  * Created by Papa on 5/20/2016.
@@ -23,10 +23,10 @@ export class IEntityInterfaceBuilder
 		public entity: EntityCandidate,
 		private qEntityBuilder: QEntityBuilder
 	) {
-		this.idPropertyBuilders        = qEntityBuilder.idPropertyBuilders
-		this.idRelationBuilders        = qEntityBuilder.idRelationBuilders
-		this.nonIdPropertyBuilders     = qEntityBuilder.nonIdPropertyBuilders
-		this.nonIdRelationBuilders     = qEntityBuilder.nonIdRelationBuilders
+		this.idPropertyBuilders = qEntityBuilder.idPropertyBuilders
+		this.idRelationBuilders = qEntityBuilder.idRelationBuilders
+		this.nonIdPropertyBuilders = qEntityBuilder.nonIdPropertyBuilders
+		this.nonIdRelationBuilders = qEntityBuilder.nonIdRelationBuilders
 		this.transientPropertyBuilders = qEntityBuilder.transientPropertyBuilders
 	}
 
@@ -77,10 +77,10 @@ export class IEntityInterfaceBuilder
 			transientProperties += `\t${builder.buildInterfaceDefinition()}\n`
 		})
 
-		let entityExtendsClause                = ''
+		let entityExtendsClause = ''
 		if (this.entity.parentEntity) {
-			const parentType                   = this.entity.parentEntity.type
-			entityExtendsClause                = ` extends I${parentType}`
+			const parentType = this.entity.parentEntity.type
+			entityExtendsClause = ` extends I${parentType}`
 		}
 
 		const publicMethodSignatures = this.entity.docEntry.methodSignatures
@@ -91,7 +91,7 @@ export class IEntityInterfaceBuilder
 							const optional = paramDocEntry.optional ? '?' : ''
 							return `\t\t${paramDocEntry.name}${optional}: ${this.getTypeString(paramDocEntry)}`
 						}).join(',\n')
-					methodParams     = methodParams ? `\n${methodParams}\n\t` : ''
+					methodParams = methodParams ? `\n${methodParams}\n\t` : ''
 
 					return `\t${method.name}?(${methodParams}): ${this.getTypeString(method.returnType)};`
 				}).join('\n')

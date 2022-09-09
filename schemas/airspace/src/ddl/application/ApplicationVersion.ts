@@ -23,8 +23,8 @@ import {
 import { Application } from './Application'
 import { ApplicationEntity } from './ApplicationEntity'
 import { ApplicationReference } from './ApplicationReference'
-import { IApplicationEntity } from '../../generated/application/applicationentity';
-import { IApplicationReference } from '../../generated/application/applicationreference';
+import { IApplicationEntity } from '../../generated/entity/application/IApplicationEntity';
+import { IApplicationReference } from '../../generated/entity/application/IApplicationReference';
 import { JsonApplicationWithLastIds } from '@airport/apron'
 
 

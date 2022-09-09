@@ -6,19 +6,19 @@ import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QApplication } from './application/qApplication';
-import { QApplicationColumn } from './application/qApplicationColumn';
-import { QApplicationCurrentVersion } from './application/qApplicationCurrentVersion';
-import { QApplicationEntity } from './application/qApplicationEntity';
-import { QApplicationOperation } from './application/qApplicationOperation';
-import { QApplicationProperty } from './application/qApplicationProperty';
-import { QApplicationPropertyColumn } from './application/qApplicationPropertyColumn';
-import { QApplicationReference } from './application/qApplicationReference';
-import { QApplicationRelation } from './application/qApplicationRelation';
-import { QApplicationRelationColumn } from './application/qApplicationRelationColumn';
-import { QApplicationVersion } from './application/qApplicationVersion';
-import { QDomain } from './application/qDomain';
-import { QVersionedApplicationObject } from './application/qVersionedApplicationObject';
+import { QApplication } from './query/application/QApplication';
+import { QApplicationColumn } from './query/application/QApplicationColumn';
+import { QApplicationCurrentVersion } from './query/application/QApplicationCurrentVersion';
+import { QApplicationEntity } from './query/application/QApplicationEntity';
+import { QApplicationOperation } from './query/application/QApplicationOperation';
+import { QApplicationProperty } from './query/application/QApplicationProperty';
+import { QApplicationPropertyColumn } from './query/application/QApplicationPropertyColumn';
+import { QApplicationReference } from './query/application/QApplicationReference';
+import { QApplicationRelation } from './query/application/QApplicationRelation';
+import { QApplicationRelationColumn } from './query/application/QApplicationRelationColumn';
+import { QApplicationVersion } from './query/application/QApplicationVersion';
+import { QDomain } from './query/application/QDomain';
+import { QVersionedApplicationObject } from './query/application/QVersionedApplicationObject';
 import {
   Application,
   ApplicationColumn,

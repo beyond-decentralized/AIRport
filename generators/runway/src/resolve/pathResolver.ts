@@ -1,5 +1,5 @@
-import {FileBuilder}        from '../ddl/builder/entity/FileBuilder'
-import {EntityCandidate}    from '../ddl/parser/EntityCandidate'
+import { FileBuilder } from '../ddl/builder/entity/FileBuilder'
+import { EntityCandidate } from '../ddl/parser/EntityCandidate'
 
 /**
  * Created by Papa on 4/27/2016.
@@ -7,7 +7,7 @@ import {EntityCandidate}    from '../ddl/parser/EntityCandidate'
 
 export function resolveRelativeEntityPath(
 	from: EntityCandidate, //
-	to: EntityCandidate //
+	to: EntityCandidate, //
 ): string {
 	return resolveRelativePath(from.path, to.path)
 }
@@ -27,10 +27,10 @@ export function getFullPathFromRelativePath(
 		return relativePath
 	}
 
-	relativePath   = normalizePath(relativePath)
+	relativePath = normalizePath(relativePath)
 	relativeToPath = normalizePath(relativeToPath)
 
-	const relativeFragments   = relativePath.split('/')
+	const relativeFragments = relativePath.split('/')
 	const relativeToFragments = relativeToPath.split('/')
 
 	const numDirectoriesBack = relativeFragments.filter(
@@ -55,13 +55,13 @@ export function getFullPathFromRelativePath(
 
 export function resolveRelativePath(
 	fromPath: string, //
-	toPath: string //
+	toPath: string, //
 ): string {
 	fromPath = normalizePath(fromPath)
-	toPath   = normalizePath(toPath)
+	toPath = normalizePath(toPath)
 
-	let fromFragments      = fromPath.split('/')
-	let toFragments        = toPath.split('/')
+	let fromFragments = fromPath.split('/')
+	let toFragments = toPath.split('/')
 	let numCommonFragments = 0
 	for (let i = 0; i < fromFragments.length; i++) {
 		let fromFragment
@@ -80,7 +80,7 @@ export function resolveRelativePath(
 	}
 
 	let numFromPathDiffDirectories = fromFragments.length - numCommonFragments - 1
-	let toPathDiffNodes            = toFragments.slice(numCommonFragments)
+	let toPathDiffNodes = toFragments.slice(numCommonFragments)
 
 	let relativePath = ''
 	if (numFromPathDiffDirectories == 0) {
@@ -103,7 +103,7 @@ export function resolveRelativePath(
 export function addImportForType(
 	entity: EntityCandidate,
 	type: string,
-	fileBuilder: FileBuilder
+	fileBuilder: FileBuilder,
 ) {
 	const moduleImport = entity.docEntry.fileImports.importMapByObjectAsName[type]
 	if (!moduleImport) {
@@ -112,7 +112,8 @@ export function addImportForType(
 	let relativePathToImport = moduleImport.path
 	if (moduleImport.path.indexOf('.') === 0) {
 		const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, entity.path)
-		relativePathToImport   = resolveRelativePath(fileBuilder.fullGenerationPath, fullPathToImport)
+		relativePathToImport = resolveRelativePath(fileBuilder.fullGenerationPath,
+			fullPathToImport)
 	}
 	fileBuilder.addImport([moduleImport.objectMapByAsName[type]], relativePathToImport)
 }
@@ -129,7 +130,7 @@ export function getRelativePath(
 	filePath: string
 ): string {
 	const normalizedFilePath = normalizePath(filePath)
-	
+
 	return normalizedFilePath.substring(workingDirPath.length)
 }
 

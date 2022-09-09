@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {
 	RecordUpdateStage,
-} from '../ddl/recordupdatestage';
+} from '../ddl/RecordUpdateStage';
 import {
 	RecordUpdateStageESelect,
 	RecordUpdateStageECreateColumns,
@@ -11,10 +11,10 @@ import {
 	RecordUpdateStageEId,
 	RecordUpdateStageGraph,
 	QRecordUpdateStage,
-} from './qrecordupdatestage';
+} from './query/QRecordUpdateStage';
 import {
 	SynchronizationConflict,
-} from '../ddl/conflict/synchronizationconflict';
+} from '../ddl/conflict/SynchronizationConflict';
 import {
 	SynchronizationConflictESelect,
 	SynchronizationConflictECreateColumns,
@@ -24,10 +24,10 @@ import {
 	SynchronizationConflictEId,
 	SynchronizationConflictGraph,
 	QSynchronizationConflict,
-} from './conflict/qsynchronizationconflict';
+} from './query/conflict/QSynchronizationConflict';
 import {
 	SynchronizationConflictValues,
-} from '../ddl/conflict/synchronizationconflictvalues';
+} from '../ddl/conflict/SynchronizationConflictValues';
 import {
 	SynchronizationConflictValuesESelect,
 	SynchronizationConflictValuesECreateColumns,
@@ -37,7 +37,7 @@ import {
 	SynchronizationConflictValuesEId,
 	SynchronizationConflictValuesGraph,
 	QSynchronizationConflictValues,
-} from './conflict/qsynchronizationconflictvalues';
+} from './query/conflict/QSynchronizationConflictValues';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
@@ -106,11 +106,11 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(2)
+		return air____at_airport_slash_layover_diSet(0)
 	}
 	
 	constructor() {
-		super(2)
+		super(0)
 	}
 }
 
@@ -134,11 +134,11 @@ export class BaseSynchronizationConflictDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(1)
+		return air____at_airport_slash_layover_diSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -162,10 +162,10 @@ export class BaseSynchronizationConflictValuesDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(0)
+		return air____at_airport_slash_layover_diSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }

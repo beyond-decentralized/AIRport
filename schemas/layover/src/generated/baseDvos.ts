@@ -1,22 +1,22 @@
 /* eslint-disable */
 import {
 	RecordUpdateStage,
-} from '../ddl/recordupdatestage';
+} from '../ddl/RecordUpdateStage';
 import {
 	RecordUpdateStageVDescriptor,
-} from './vrecordupdatestage';
+} from './validation/VRecordUpdateStage';
 import {
 	SynchronizationConflict,
-} from '../ddl/conflict/synchronizationconflict';
+} from '../ddl/conflict/SynchronizationConflict';
 import {
 	SynchronizationConflictVDescriptor,
-} from './conflict/vsynchronizationconflict';
+} from './validation/conflict/VSynchronizationConflict';
 import {
 	SynchronizationConflictValues,
-} from '../ddl/conflict/synchronizationconflictvalues';
+} from '../ddl/conflict/SynchronizationConflictValues';
 import {
 	SynchronizationConflictValuesVDescriptor,
-} from './conflict/vsynchronizationconflictvalues';
+} from './validation/conflict/VSynchronizationConflictValues';
 import {
 	IDvo,
 	Dvo,
@@ -51,11 +51,11 @@ export class BaseRecordUpdateStageDvo
 	implements IBaseRecordUpdateStageDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(2)
+		return air____at_airport_slash_layover_diSet(0)
 	}
 	
 	constructor() {
-		super(2)
+		super(0)
 	}
 }
 
@@ -69,11 +69,11 @@ export class BaseSynchronizationConflictDvo
 	implements IBaseSynchronizationConflictDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(1)
+		return air____at_airport_slash_layover_diSet(2)
 	}
 	
 	constructor() {
-		super(1)
+		super(2)
 	}
 }
 
@@ -87,10 +87,10 @@ export class BaseSynchronizationConflictValuesDvo
 	implements IBaseSynchronizationConflictValuesDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(0)
+		return air____at_airport_slash_layover_diSet(1)
 	}
 	
 	constructor() {
-		super(0)
+		super(1)
 	}
 }

@@ -14,11 +14,11 @@ import {
 	SyncApplicationMap,
 	TransactionType
 } from '@airport/ground-control'
-import { IRecordHistory } from '../../generated/history/recordhistory'
-import { IOperationHistory } from '../../generated/history/operationhistory'
-import { IRecordHistoryNewValue } from '../../generated/history/recordhistorynewvalue'
-import { IRecordHistoryOldValue } from '../../generated/history/recordhistoryoldvalue'
-import { IRepositoryTransactionHistory } from '../../generated/history/repositorytransactionhistory'
+import { IRecordHistory } from '../../generated/entity/history/IRecordHistory'
+import { IOperationHistory } from '../../generated/entity/history/IOperationHistory'
+import { IRecordHistoryNewValue } from '../../generated/entity/history/IRecordHistoryNewValue'
+import { IRecordHistoryOldValue } from '../../generated/entity/history/IRecordHistoryOldValue'
+import { IRepositoryTransactionHistory } from '../../generated/entity/history/IRepositoryTransactionHistory'
 import { RepositoryTransactionHistory } from './RepositoryTransactionHistory'
 
 export type TransactionHistoryNumberOfOperations = number;

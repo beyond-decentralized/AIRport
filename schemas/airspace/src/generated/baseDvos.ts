@@ -4,73 +4,73 @@ import {
 } from '../ddl/application/Application';
 import {
 	ApplicationVDescriptor,
-} from './application/vApplication';
+} from './validation/application/VApplication';
 import {
 	ApplicationColumn,
 } from '../ddl/application/ApplicationColumn';
 import {
 	ApplicationColumnVDescriptor,
-} from './application/vApplicationColumn';
+} from './validation/application/VApplicationColumn';
 import {
 	ApplicationCurrentVersion,
 } from '../ddl/application/ApplicationCurrentVersion';
 import {
 	ApplicationCurrentVersionVDescriptor,
-} from './application/vApplicationCurrentVersion';
+} from './validation/application/VApplicationCurrentVersion';
 import {
 	ApplicationEntity,
 } from '../ddl/application/ApplicationEntity';
 import {
 	ApplicationEntityVDescriptor,
-} from './application/vApplicationEntity';
+} from './validation/application/VApplicationEntity';
 import {
 	ApplicationOperation,
 } from '../ddl/application/ApplicationOperation';
 import {
 	ApplicationOperationVDescriptor,
-} from './application/vApplicationOperation';
+} from './validation/application/VApplicationOperation';
 import {
 	ApplicationProperty,
 } from '../ddl/application/ApplicationProperty';
 import {
 	ApplicationPropertyVDescriptor,
-} from './application/vApplicationProperty';
+} from './validation/application/VApplicationProperty';
 import {
 	ApplicationPropertyColumn,
 } from '../ddl/application/ApplicationPropertyColumn';
 import {
 	ApplicationPropertyColumnVDescriptor,
-} from './application/vApplicationPropertyColumn';
+} from './validation/application/VApplicationPropertyColumn';
 import {
 	ApplicationReference,
 } from '../ddl/application/ApplicationReference';
 import {
 	ApplicationReferenceVDescriptor,
-} from './application/vApplicationReference';
+} from './validation/application/VApplicationReference';
 import {
 	ApplicationRelation,
 } from '../ddl/application/ApplicationRelation';
 import {
 	ApplicationRelationVDescriptor,
-} from './application/vApplicationRelation';
+} from './validation/application/VApplicationRelation';
 import {
 	ApplicationRelationColumn,
 } from '../ddl/application/ApplicationRelationColumn';
 import {
 	ApplicationRelationColumnVDescriptor,
-} from './application/vApplicationRelationColumn';
+} from './validation/application/VApplicationRelationColumn';
 import {
 	ApplicationVersion,
 } from '../ddl/application/ApplicationVersion';
 import {
 	ApplicationVersionVDescriptor,
-} from './application/vApplicationVersion';
+} from './validation/application/VApplicationVersion';
 import {
 	Domain,
 } from '../ddl/application/Domain';
 import {
 	DomainVDescriptor,
-} from './application/vDomain';
+} from './validation/application/VDomain';
 import {
 	IDvo,
 	Dvo,

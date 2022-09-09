@@ -6,21 +6,21 @@ import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QClassification } from './type/qclassification';
-import { QClient } from './client/qclient';
-import { QClientType } from './client/qclienttype';
-import { QContinent } from './locality/qcontinent';
-import { QCountry } from './locality/qcountry';
-import { QDatabase } from './database/qdatabase';
-import { QDatabaseType } from './database/qdatabasetype';
-import { QMetroArea } from './locality/qmetroarea';
-import { QMetroAreaState } from './locality/qmetroareastate';
-import { QState } from './locality/qstate';
-import { QTerminal } from './terminal/qterminal';
-import { QTerminalType } from './terminal/qterminaltype';
-import { QType } from './type/qtype';
-import { QTypeClassification } from './type/qtypeclassification';
-import { QUserAccount } from './quseraccount';
+import { QClassification } from './query/type/QClassification';
+import { QClient } from './query/client/QClient';
+import { QClientType } from './query/client/QClientType';
+import { QContinent } from './query/locality/QContinent';
+import { QCountry } from './query/locality/QCountry';
+import { QDatabase } from './query/database/QDatabase';
+import { QDatabaseType } from './query/database/QDatabaseType';
+import { QMetroArea } from './query/locality/QMetroArea';
+import { QMetroAreaState } from './query/locality/QMetroAreaState';
+import { QState } from './query/locality/QState';
+import { QTerminal } from './query/terminal/QTerminal';
+import { QTerminalType } from './query/terminal/QTerminalType';
+import { QType } from './query/type/QType';
+import { QTypeClassification } from './query/type/QTypeClassification';
+import { QUserAccount } from './query/QUserAccount';
 import {
   Classification,
   Client,

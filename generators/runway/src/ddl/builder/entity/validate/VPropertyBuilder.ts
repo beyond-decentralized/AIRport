@@ -1,13 +1,12 @@
 import { PropertyDocEntry } from '../../../parser/DocEntry'
 import {
-	addImportForType,
 	getFullPathFromRelativePath,
 	resolveRelativePath
 } from '../../../../resolve/pathResolver'
 import {
 	IBuilder,
 } from '../../Builder'
-import { getVPropertyFieldClass, getVPropertyFieldInterface, IVCoreEntityBuilder } from './VCoreEntityBuilder'
+import { getVPropertyFieldInterface, IVCoreEntityBuilder } from './VCoreEntityBuilder'
 
 /**
  * Created by Papa on 4/25/2016.
@@ -42,7 +41,8 @@ export class VPropertyBuilder
 			let relativePathToImport = moduleImport.path
 			if (moduleImport.path.indexOf('.') === 0) {
 				const fullPathToImport = getFullPathFromRelativePath(moduleImport.path, this.propertyDocEntry.ownerEntity.path)
-				relativePathToImport = resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath, fullPathToImport)
+				relativePathToImport = resolveRelativePath(this.parentBuilder.fileBuilder.fullGenerationPath,
+					fullPathToImport)
 			}
 			this.parentBuilder.addImport([moduleImport.objectMapByAsName[propertyType]], relativePathToImport)
 		}

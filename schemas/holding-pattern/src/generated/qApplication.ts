@@ -6,20 +6,20 @@ import {
     DbApplication,
     ApplicationEntity_LocalId,
 }                      from '@airport/ground-control';
-import { QActor } from './infrastructure/qActor';
-import { QAirEntity } from './repository/qAirEntity';
-import { QOperationHistory } from './history/qOperationHistory';
-import { QRecordHistory } from './history/qRecordHistory';
-import { QRecordHistoryNewValue } from './history/qRecordHistoryNewValue';
-import { QRecordHistoryOldValue } from './history/qRecordHistoryOldValue';
-import { QRepository } from './repository/qRepository';
-import { QRepositoryApplication } from './repository/qRepositoryApplication';
-import { QRepositoryClient } from './repository/qRepositoryClient';
-import { QRepositoryDatabase } from './repository/qRepositoryDatabase';
-import { QRepositoryTerminal } from './repository/qRepositoryTerminal';
-import { QRepositoryTransactionHistory } from './history/qRepositoryTransactionHistory';
-import { QRepositoryType } from './repository/qRepositoryType';
-import { QTransactionHistory } from './history/qTransactionHistory';
+import { QActor } from './query/infrastructure/QActor';
+import { QAirEntity } from './query/repository/QAirEntity';
+import { QOperationHistory } from './query/history/QOperationHistory';
+import { QRecordHistory } from './query/history/QRecordHistory';
+import { QRecordHistoryNewValue } from './query/history/QRecordHistoryNewValue';
+import { QRecordHistoryOldValue } from './query/history/QRecordHistoryOldValue';
+import { QRepository } from './query/repository/QRepository';
+import { QRepositoryApplication } from './query/repository/QRepositoryApplication';
+import { QRepositoryClient } from './query/repository/QRepositoryClient';
+import { QRepositoryDatabase } from './query/repository/QRepositoryDatabase';
+import { QRepositoryTerminal } from './query/repository/QRepositoryTerminal';
+import { QRepositoryTransactionHistory } from './query/history/QRepositoryTransactionHistory';
+import { QRepositoryType } from './query/repository/QRepositoryType';
+import { QTransactionHistory } from './query/history/QTransactionHistory';
 import {
   Actor,
   AirEntity,

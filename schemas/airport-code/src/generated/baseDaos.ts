@@ -11,7 +11,7 @@ import {
 	SequenceEId,
 	SequenceGraph,
 	QSequence,
-} from './qSequence';
+} from './query/QSequence';
 import {
 	SystemWideOperationId,
 } from '../ddl/SystemWideOperationId';
@@ -24,7 +24,7 @@ import {
 	SystemWideOperationIdEId,
 	SystemWideOperationIdGraph,
 	QSystemWideOperationId,
-} from './qSystemWideOperationId';
+} from './query/QSystemWideOperationId';
 import {
 	TerminalRun,
 } from '../ddl/TerminalRun';
@@ -37,7 +37,7 @@ import {
 	TerminalRunEId,
 	TerminalRunGraph,
 	QTerminalRun,
-} from './qTerminalRun';
+} from './query/QTerminalRun';
 import {
 	IEntityCascadeGraph,
 	IEntityCreateProperties,
