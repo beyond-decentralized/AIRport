@@ -1,10 +1,8 @@
-import {Configuration}   from '../../options/Options'
-import {EntityCandidate} from '../../parser/EntityCandidate'
-import {PathBuilder}     from '../PathBuilder'
+import { Configuration } from '../../options/Options'
+import { EntityCandidate } from '../../parser/EntityCandidate'
+import { PathBuilder } from '../PathBuilder'
 
 export abstract class FileBuilder {
-
-	static distBundlePath = '/dist/app/bundle'
 
 	importMap: { [fileName: string]: { [asName: string]: string } } = {}
 
@@ -16,13 +14,13 @@ export abstract class FileBuilder {
 	) {
 	}
 	addImport(
-		classNames: (string | { asName: string, sourceName: string }) [],
+		classNames: (string | { asName: string, sourceName: string })[],
 		filePath: string,
 	): void {
 		filePath = filePath.replace('.ts', '')
 		let fileImportMap = this.importMap[filePath]
 		if (!fileImportMap) {
-			fileImportMap            = {}
+			fileImportMap = {}
 			this.importMap[filePath] = fileImportMap
 		}
 		classNames.forEach(
@@ -30,10 +28,10 @@ export abstract class FileBuilder {
 				let asName
 				let sourceName
 				if (typeof className === 'string') {
-					asName     = className
+					asName = className
 					sourceName = className
 				} else {
-					asName     = className.asName
+					asName = className.asName
 					sourceName = className.sourceName
 				}
 				let existingSourceName = fileImportMap[asName]

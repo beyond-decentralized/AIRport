@@ -9,7 +9,7 @@ import {
 import {
 	ApplicationVDescriptor,
 	Application,
-} from '@airport/airspace/dist/app/bundle';
+} from '@airport/airspace';
 import {
 	RepositoryVDescriptor,
 } from './VRepository';

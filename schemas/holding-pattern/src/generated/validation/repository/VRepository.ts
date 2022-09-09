@@ -17,7 +17,7 @@ import {
 	State,
 	MetroAreaVDescriptor,
 	MetroArea,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	RepositoryTransactionHistoryVDescriptor,
 } from '../history/VRepositoryTransactionHistory';

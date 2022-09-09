@@ -15,7 +15,7 @@ import {
 import {
 	DatabaseVDescriptor,
 	Database,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryDatabase,
 } from '../../entity/repository/IRepositoryDatabase';

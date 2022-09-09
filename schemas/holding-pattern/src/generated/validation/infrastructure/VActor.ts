@@ -11,11 +11,11 @@ import {
 	UserAccount,
 	TerminalVDescriptor,
 	Terminal,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	ApplicationVDescriptor,
 	Application,
-} from '@airport/airspace/dist/app/bundle';
+} from '@airport/airspace';
 import {
 	IActor,
 } from '../../entity/infrastructure/IActor';

@@ -117,7 +117,7 @@ export default [
     {
         input: "dist/esm/to_be_generated/api-index.d.ts",
         output: [{
-            file: "dist/index.d.ts",
+            file: "dist/esm/index.d.ts",
             format: "esm",
             sourcemap: true,
         }],

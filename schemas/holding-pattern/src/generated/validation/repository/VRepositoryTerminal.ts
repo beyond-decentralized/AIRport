@@ -15,7 +15,7 @@ import {
 import {
 	TerminalVDescriptor,
 	Terminal,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryTerminal,
 } from '../../entity/repository/IRepositoryTerminal';

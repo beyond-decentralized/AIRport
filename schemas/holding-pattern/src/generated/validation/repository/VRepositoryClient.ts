@@ -15,7 +15,7 @@ import {
 import {
 	ClientVDescriptor,
 	Client,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryClient,
 } from '../../entity/repository/IRepositoryClient';

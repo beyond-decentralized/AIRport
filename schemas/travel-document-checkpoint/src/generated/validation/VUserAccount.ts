@@ -9,7 +9,7 @@ import {
 import {
 	DomainVDescriptor,
 	Domain,
-} from '@airport/airspace/dist/app/bundle';
+} from '@airport/airspace';
 import {
 	ContinentVDescriptor,
 } from './locality/VContinent';

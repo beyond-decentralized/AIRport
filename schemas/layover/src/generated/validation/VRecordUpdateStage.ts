@@ -13,13 +13,13 @@ import {
 	ApplicationEntity,
 	ApplicationColumnVDescriptor,
 	ApplicationColumn,
-} from '@airport/airspace/dist/app/bundle';
+} from '@airport/airspace';
 import {
 	RepositoryVDescriptor,
 	Repository,
 	ActorVDescriptor,
 	Actor,
-} from '@airport/holding-pattern/dist/app/bundle';
+} from '@airport/holding-pattern';
 import {
 	IRecordUpdateStage,
 } from '../entity/IRecordUpdateStage';

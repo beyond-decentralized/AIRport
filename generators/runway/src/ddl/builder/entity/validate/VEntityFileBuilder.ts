@@ -52,7 +52,7 @@ export class VEntityFileBuilder
     if (entity.parentEntity) {
       let parentVEntityRelativePath;
       if (entity.parentEntity.project) {
-        parentVEntityRelativePath = entity.parentEntity.project + FileBuilder.distBundlePath;
+        parentVEntityRelativePath = entity.parentEntity.project;
       } else {
         let parentFullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.parentEntity.path, 'V', 'validation');
         parentVEntityRelativePath = resolveRelativePath(fullGenerationPath, parentFullGenerationPath);
@@ -86,7 +86,7 @@ ${interfaceSource}
     ) => {
       let property = builder.entityProperty;
       let type = property.type;
-      let vEntityRelativePath = property.fromProject + FileBuilder.distBundlePath;
+      let vEntityRelativePath = property.fromProject;
       if (property.fromProject) {
         type = property.otherApplicationDbEntity.name;
       } else {
@@ -107,7 +107,7 @@ ${interfaceSource}
 
       if (property.fromProject) {
         let relationEntityPath = property.fromProject;
-        this.addImport([type], relationEntityPath + FileBuilder.distBundlePath);
+        this.addImport([type], relationEntityPath);
       } else {
         const entityFilePath = this.pathBuilder.getFullPathToDdlSource(this.entityMapByName[type].path);
         let entityInterfaceRelativePath = resolveRelativePath(this.fullGenerationPath, entityFilePath)

@@ -15,7 +15,7 @@ import {
 import {
 	TypeVDescriptor,
 	Type,
-} from '@airport/travel-document-checkpoint/dist/app/bundle';
+} from '@airport/travel-document-checkpoint';
 import {
 	IRepositoryType,
 } from '../../entity/repository/IRepositoryType';

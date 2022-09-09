@@ -11,7 +11,7 @@ import {
 	Repository,
 	RecordHistoryVDescriptor,
 	RecordHistory,
-} from '@airport/holding-pattern/dist/app/bundle';
+} from '@airport/holding-pattern';
 import {
 	SynchronizationConflictValuesVDescriptor,
 } from './VSynchronizationConflictValues';
