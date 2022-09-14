@@ -183,9 +183,9 @@ Table name does not start with an uppercase letter:
 class ${entityCandidate.docEntry.name}
 
 `)
-					} else if (!/^[0-9A-Z_]+$/.test(tableName)) {
+					} else if (!/^[0-9A-Z_\$#]+$/.test(tableName)) {
 						throw new Error(`
-Table name contains characters other than uppercase letters, numbers and underscores:
+Table name contains characters other than uppercase letters, numbers, $, # and underscores:
 
 @Entity()
 @Table({ name: "${tableName}"})
