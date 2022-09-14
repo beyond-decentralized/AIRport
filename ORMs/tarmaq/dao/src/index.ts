@@ -31,17 +31,29 @@ export * from './tokens'
 import { airApi } from '@airport/aviation-communication'
 import { DbApplication, SEQ_GEN } from '@airport/ground-control';
 
+let inAppMode = false
+
+export function setAppMode(
+    appMode: boolean
+) {
+    inAppMode = appMode
+}
+
 export function diSet(
     dbApplication: DbApplication,
     dbEntityId: number // ApplicationEntity_LocalId
 ): boolean {
-    if (!SEQ_GEN
+    if ((!inAppMode && !SEQ_GEN)
         || !dbApplication) {
         return false;
     }
 
     const dbEntity = dbApplication.currentVersion[0]
         .applicationVersion.entities[dbEntityId];
+
+    if (inAppMode) {
+        return !!dbEntity
+    }
 
     return SEQ_GEN.exists(dbEntity);
 }
