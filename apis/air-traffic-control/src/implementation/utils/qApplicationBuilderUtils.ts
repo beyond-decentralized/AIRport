@@ -319,61 +319,78 @@ export function setQAppEntities(
 
 export interface DbApplicationWithDependencies {
 	application: DbApplication
-	dependencies: Set<Application_Index>
+	dependencies: Set<DbApplicationDependency>
+}
+
+export interface DbApplicationDependency {
+	appWithDependencies?: DbApplicationWithDependencies
+	index: Application_Index
 }
 
 export function orderApplicationsInOrderOfPrecedence(
 	applications: DbApplication[]
 ): DbApplication[] {
-	const applicationWithDepsMap: Map<Application_Index, DbApplicationWithDependencies> = new Map()
-	const applicationsWithDeps: DbApplicationWithDependencies[] = applications.map(
+	const appWithDependenciesMap: Map<Application_Index, DbApplicationWithDependencies> = new Map()
+	const appsWithDependencies: DbApplicationWithDependencies[] = applications.map(
 		application => {
-			const dependencies: Set<Application_Index> = new Set()
+			const dependencies: Set<DbApplicationDependency> = new Set()
 			for (const applicationReference of application.currentVersion[0]
 				.applicationVersion.references) {
-				dependencies.add(applicationReference.referencedApplicationVersion.application.index)
+				dependencies.add({
+					index: applicationReference.referencedApplicationVersion.application.index
+				})
 			}
 			const applicationWithDependencies: DbApplicationWithDependencies = {
 				application,
 				dependencies
 			}
-			applicationWithDepsMap.set(application.index, applicationWithDependencies)
+			appWithDependenciesMap.set(application.index, applicationWithDependencies)
 
 			return applicationWithDependencies
 		}
 	)
 
-	applicationsWithDeps.sort((
+	for (let application of applications) {
+		const appWithDependencies = appWithDependenciesMap.get(application.index)
+		for (const dependency of appWithDependencies.dependencies) {
+			dependency.appWithDependencies = appWithDependenciesMap.get(dependency.index)
+		}
+	}
+
+	// Regular sort does not work since dependency tries can be complex and there is no way to 
+	appsWithDependencies.sort((
 		orderedApplication1: DbApplicationWithDependencies,
 		orderedApplication2: DbApplicationWithDependencies
 	) => {
 		if (applicationDependsOn(
-			orderedApplication1, orderedApplication2.application.index, applicationWithDepsMap)) {
+			orderedApplication1, orderedApplication2.application.index)) {
 			return 1
 		} else if (applicationDependsOn(
-			orderedApplication2, orderedApplication1.application.index, applicationWithDepsMap)) {
+			orderedApplication2, orderedApplication1.application.index)) {
 			return -1
 		}
 
 		return 0
 	})
 
-	return applicationsWithDeps.map(
+	return appsWithDependencies.map(
 		applicationWithDeps => applicationWithDeps.application)
 }
 
 export function applicationDependsOn(
 	dependantApplication: DbApplicationWithDependencies,
-	dependsOnApplication_Index: Application_Index,
-	applicationWithDepsMap: Map<Application_Index, DbApplicationWithDependencies>
+	dependsOnApplication_Index: Application_Index
 ) {
-	if (dependantApplication.dependencies.has(dependsOnApplication_Index)) {
-		return true
+	for (const dependency of dependantApplication.dependencies) {
+		if (dependency.index == dependsOnApplication_Index) {
+			return true
+		}
+		if (dependency.appWithDependencies.dependencies.size) {
+			if (applicationDependsOn(dependency.appWithDependencies, dependsOnApplication_Index)) {
+				return true
+			}
+		}
 	}
-
-	// for(const dependencyApplication_Index of dependantApplication.dependencies) {
-	//
-	// }
 
 	return false
 }
