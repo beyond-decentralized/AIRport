@@ -27,6 +27,7 @@ import {
     Inject,
     Injected
 } from '@airport/direction-indicator'
+import { TerminalSessionManager } from "../core/TerminalSessionManager";
 
 export interface IInternalRecordManager {
 
@@ -59,6 +60,9 @@ export class InternalRecordManager
     entityStateManager: IEntityStateManager
 
     @Inject()
+    terminalSessionManager: TerminalSessionManager
+
+    @Inject()
     terminalStore: TerminalStore
 
     @Inject()
@@ -79,21 +83,26 @@ export class InternalRecordManager
             let actors: IActor[]
             if (actorMapForDomain) {
                 actors = actorMapForDomain.get(application.name)
-                if (actors && actors.length) {
+                if (!actors || !actors.length) {
                     return
                 }
             }
 
-            actors = await this.actorDao.findByDomainAndApplication_Names(application.domain, application.name)
+            const frameworkActor = this.terminalStore.getFrameworkActor()
+            // TODO: add request object
+            const userSession = await this.terminalSessionManager.getUserSession()
+
+            let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
+                application.domain, application.name, userSession.userAccount.GUID, frameworkActor.terminal.GUID)
+
             let anApplication: IApplication = await this.applicationDao.findByIndex(
                 application.lastIds.applications + 1);
-            if (!actors || !actors.length) {
-                const frameworkActor = this.terminalStore.getFrameworkActor()
-                const actor: IActor = {
+            if (!actor) {
+                actor = {
                     _localId: null,
                     application: anApplication,
                     terminal: frameworkActor.terminal,
-                    userAccount: frameworkActor.userAccount,
+                    userAccount: userSession.userAccount,
                     GUID: guidv4()
                 }
                 await this.actorDao.save(actor, context)

@@ -73,6 +73,10 @@ export class QueryManager
 
 		const entityArray = await this.storeDriver.find<E, EntityArray>(portableQuery, {}, context, cachedSqlQueryId)
 
+		if (!entityArray || !entityArray.length) {
+			return entityArray
+		}
+
 		await this.populateEntityGuidEntitiesAndUserAccounts(
 			portableQuery, entityArray);
 
@@ -87,6 +91,10 @@ export class QueryManager
 		await this.ensureRepositoryPresenceAndCurrentState(context)
 
 		const entity = await this.storeDriver.findOne<E>(portableQuery, {}, context, cachedSqlQueryId)
+
+		if (!entity) {
+			return entity
+		}
 
 		await this.populateEntityGuidEntitiesAndUserAccounts(
 			portableQuery, [entity]);
@@ -104,8 +112,11 @@ export class QueryManager
 			() => {
 				return this.storeDriver.find(portableQuery, {}, context)
 					.then((result: EntityArray) => {
+						if (!result || !result.length) {
+							return result
+						}
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
-							portableQuery, result);
+							portableQuery, result)
 					})
 			}
 		)
@@ -121,6 +132,9 @@ export class QueryManager
 			() => {
 				return this.storeDriver.findOne(portableQuery, {}, context)
 					.then((result: E) => {
+						if (!result) {
+							return result
+						}
 						return this.populateEntityGuidEntitiesAndUserAccounts<E>(
 							portableQuery, [result])[0];
 					})
@@ -269,6 +283,11 @@ export class QueryManager
 		for (const actorLocalId of actorsToRetrieveUserAccountForByLocalId.keys()) {
 			actorIdSet.add(actorLocalId)
 		}
+
+		if (!actorIdSet.size) {
+			return
+		}
+
 		const actorLocalIds: number[] = Array.from(actorIdSet)
 		const actors = await this.actorDao.findWithUserAccountBy_LocalIdIn(actorLocalIds)
 		for (const actor of actors) {
@@ -289,6 +308,11 @@ export class QueryManager
 		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>
 	): Promise<void> {
 		const repositoryLocalIds = Array.from(entityMapByRepositoryLocalId.keys())
+
+		if (!repositoryLocalIds.length) {
+			return
+		}
+
 		const repositories = await this.repositoryDao
 			.findWithOwnerBy_LocalIdIn(repositoryLocalIds)
 

@@ -400,29 +400,28 @@ export abstract class TransactionalReceiver {
         }
 
         const terminal = this.terminalStore.getTerminal()
-        // let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
-        let actor = await this.actorDao.findByDomainAndApplication_Names(
+        let actor = await this.actorDao.findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
             message.domain,
             message.application,
-            // userSession.userAccount.GUID,
-            // terminal.GUID
-        );
+            userSession.userAccount.GUID,
+            terminal.GUID
+        )
         if (actor) {
-            userSession.currentActor = actor[0]
-            return actor[0]
+            userSession.currentActor = actor
+            return actor
         }
 
         const application = await this.applicationDao.findOneByDomain_NameAndApplication_Name(message.domain, message.application)
-        actor[0] = {
+        actor = {
             application,
             GUID: guidv4(),
             terminal: terminal as any,
             userAccount: userSession.userAccount
         }
-        await this.actorDao.save(actor)
-        userSession.currentActor = actor[0]
+        await this.actorDao.save(actor, context)
+        userSession.currentActor = actor
 
-        return actor[0]
+        return actor
     }
 
     protected async endApiCall(

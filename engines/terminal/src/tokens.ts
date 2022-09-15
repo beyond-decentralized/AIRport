@@ -235,6 +235,7 @@ INTERNAL_RECORD_MANAGER.setDependencies({
     applicationDao: APPLICATION_DAO,
     domainDao: DOMAIN_DAO,
     entityStateManager: ENTITY_STATE_MANAGER,
+    terminalSessionManager: TERMINAL_SESSION_MANAGER,
     terminalStore: TERMINAL_STORE,
     transactionManager: TRANSACTION_MANAGER
 })

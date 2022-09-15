@@ -60,11 +60,6 @@ export interface IActorDao
 		actor_localIds: Actor_LocalId[],
 	): Promise<IActor[]>
 
-	findByDomainAndApplication_Names(
-		domainName: Domain_Name,
-		applicationName: Application_Name
-	): Promise<Actor[]>
-
 	findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
 		domainName: Domain_Name,
 		applicationName: Application_Name,
@@ -128,40 +123,6 @@ export class ActorDao
 			a.terminal._localId.IN(terminalIds),
 			a.userAccount._localId.IN(userAccountIds)
 		))
-	}
-
-	async findByDomainAndApplication_Names(
-		domainName: Domain_Name,
-		applicationName: Application_Name
-	): Promise<Actor[]> {
-		let act: QActor
-		let application: QApplication
-		let domain: QDomain
-		let terminal: QTerminal
-		let userAccount: QUserAccount
-		return await this.db.find.tree({
-			SELECT: {
-				_localId: Y,
-				application: {
-					...ALL_FIELDS,
-					domain: {}
-				},
-				terminal: {},
-				userAccount: {},
-				GUID: Y
-			},
-			FROM: [
-				act = Q.Actor,
-				application = act.application.LEFT_JOIN(),
-				domain = application.domain.LEFT_JOIN(),
-				terminal = act.terminal.LEFT_JOIN(),
-				userAccount = act.userAccount.LEFT_JOIN()
-			],
-			WHERE: AND(
-				domain.name.equals(domainName),
-				application.name.equals(applicationName)
-			)
-		})
 	}
 
 	async findOneByDomainAndApplication_Names_UserAccountGUID_TerminalGUID(
