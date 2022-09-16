@@ -122,7 +122,6 @@ for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
 					continue
 				}
 				if (dbProperty.relation && dbProperty.relation.length) {
-					let isParentRelation = false
 					const dbRelation = dbProperty.relation[0]
 					let relatedEntities = propertyValue
 					let isManyToOne = false
@@ -135,9 +134,6 @@ for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
 							break
 						case EntityRelationType.ONE_TO_MANY:
 							this.assertOneToManyIsArray(propertyValue, dbProperty)
-							if (isParentSchemaId) {
-								throw new Error(`Parent Ids may not contain any @OneToMany relations`)
-							}
 							break
 						default:
 							throw new Error(`Unexpected relation type ${dbRelation.relationType}
@@ -151,26 +147,20 @@ for ${dbEntity.name}.${dbProperty.name}`)
 						// If a child entity is in a different application it won't be processed
 						// the calling application should call the API of the other application
 						// explicitly so that the application logic may be run
-						isParentRelation = true
+						isParentSchemaId = true
 					}
 					context.dbEntity = dbRelation.relationEntity
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities,
-							entitiesByOperationIndex, processedEntitySet, isParentRelation, context)
+							entitiesByOperationIndex, processedEntitySet, isParentSchemaId, context)
+						if (isParentSchemaId) {
+							for (const propertyCopyValueEntry of propertyCopyValue) {
+								this.checkPropertyParentEntityStatus(propertyCopyValueEntry)
+							}
+						}
 						if (isManyToOne) {
 							propertyCopyValue = propertyCopyValue[0]
-							if (isParentSchemaId) {
-								if (!this.entityStateManager.isParentSchemaId(propertyCopyValue)
-									&& !this.entityStateManager.isPassThrough(propertyCopyValue)) {
-									throw new Error(`Parent Ids may only contain @ManyToOne relations
-that are themselves Parent Ids or Pass-Though objects.`)
-								}
-							}
-						} else {
-							if (isParentSchemaId) {
-								throw new Error(`Parent Ids may NOT contain @OneToMany colletions.`)
-							}
 						}// if (isManyToOne
 						// if !isManyToOne - nothing to do
 					} // if (propertyValue
@@ -194,6 +184,15 @@ that are themselves Parent Ids or Pass-Though objects.`)
 		} // for (const entity
 
 		return results
+	}
+
+	private checkPropertyParentEntityStatus(
+		propertyCopyValue
+	) {
+		if (!this.entityStateManager.isParentSchemaId(propertyCopyValue)
+			&& !this.entityStateManager.isPassThrough(propertyCopyValue)) {
+			throw new Error(`Parent Ids may only contain relations that are themselves Parent Ids or Pass-Though objects.`)
+		}
 	}
 
 	protected assertRelationValueIsAnObject(

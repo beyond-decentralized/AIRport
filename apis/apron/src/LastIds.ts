@@ -8,7 +8,6 @@ export interface LastIds {
     domains: number
     entities: number
     properties: number
-    propertyColumns: number
     relationColumns: number
     relations: number
     applications: number

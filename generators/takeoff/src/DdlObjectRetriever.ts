@@ -148,7 +148,6 @@ export class DdlObjectRetriever
 			domains: domains.length,
 			entities: entities.length,
 			properties: properties.length,
-			propertyColumns: propertyColumns.length,
 			relationColumns: relationColumns.length,
 			relations: relations.length,
 			applications: applications.length,

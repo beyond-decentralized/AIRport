@@ -36,7 +36,6 @@ export const internalTerminalState: Subject<ITerminalState> = new BehaviorSubjec
         domains: 0,
         entities: 0,
         properties: 0,
-        propertyColumns: 0,
         relations: 0,
         relationColumns: 0,
         applications: 0,
