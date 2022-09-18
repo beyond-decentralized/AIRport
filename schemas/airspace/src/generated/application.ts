@@ -1,6 +1,6 @@
 /* eslint-disable */
 export const APPLICATION = {
-	"domain": "air",
+	"domain": "airport",
 	"index": null,
 	"name": "@airport/airspace",
 	"sinceVersion": 1,

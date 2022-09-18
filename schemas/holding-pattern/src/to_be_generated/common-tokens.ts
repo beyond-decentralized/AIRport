@@ -1,6 +1,6 @@
 import { lib } from '@airport/direction-indicator'
 
-export const holdingPattern = lib('holding-pattern')
+export const holdingPattern = lib('@airport/holding-pattern')
 
 export const REPOSITORY_API = holdingPattern.token<any>({
     class: null,

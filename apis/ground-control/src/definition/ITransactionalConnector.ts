@@ -7,6 +7,7 @@ import { ISaveResult } from './query/SaveResult'
 
 export const INTERNAL_APP = '@airport/terminal'
 export const INTERNAL_DOMAIN = 'internal://domain'
+export const INTERNAL_APP_DOMAIN = 'airport'
 
 export interface IRootTransaction {
 	numberOfOperations: number

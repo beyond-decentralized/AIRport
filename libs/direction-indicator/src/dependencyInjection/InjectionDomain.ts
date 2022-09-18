@@ -73,4 +73,4 @@ export function domain(
 	return domain
 }
 
-export const AIRPORT_DOMAIN: IInjectionDomain = domain('turbase.app')
+export const AIRPORT_DOMAIN: IInjectionDomain = domain('airport')

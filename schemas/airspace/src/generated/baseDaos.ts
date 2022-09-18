@@ -173,7 +173,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_airspace_diSet,
+	airport____at_airport_slash_airspace_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -223,7 +223,7 @@ export class BaseApplicationDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(10)
+		return airport____at_airport_slash_airspace_diSet(10)
 	}
 	
 	constructor() {
@@ -251,7 +251,7 @@ export class BaseApplicationColumnDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(4)
+		return airport____at_airport_slash_airspace_diSet(4)
 	}
 	
 	constructor() {
@@ -279,7 +279,7 @@ export class BaseApplicationCurrentVersionDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(9)
+		return airport____at_airport_slash_airspace_diSet(9)
 	}
 	
 	constructor() {
@@ -307,7 +307,7 @@ export class BaseApplicationEntityDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(6)
+		return airport____at_airport_slash_airspace_diSet(6)
 	}
 	
 	constructor() {
@@ -335,7 +335,7 @@ export class BaseApplicationOperationDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(5)
+		return airport____at_airport_slash_airspace_diSet(5)
 	}
 	
 	constructor() {
@@ -363,7 +363,7 @@ export class BaseApplicationPropertyDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(2)
+		return airport____at_airport_slash_airspace_diSet(2)
 	}
 	
 	constructor() {
@@ -391,7 +391,7 @@ export class BaseApplicationPropertyColumnDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(3)
+		return airport____at_airport_slash_airspace_diSet(3)
 	}
 	
 	constructor() {
@@ -419,7 +419,7 @@ export class BaseApplicationReferenceDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(7)
+		return airport____at_airport_slash_airspace_diSet(7)
 	}
 	
 	constructor() {
@@ -447,7 +447,7 @@ export class BaseApplicationRelationDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(1)
+		return airport____at_airport_slash_airspace_diSet(1)
 	}
 	
 	constructor() {
@@ -475,7 +475,7 @@ export class BaseApplicationRelationColumnDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(0)
+		return airport____at_airport_slash_airspace_diSet(0)
 	}
 	
 	constructor() {
@@ -503,7 +503,7 @@ export class BaseApplicationVersionDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(8)
+		return airport____at_airport_slash_airspace_diSet(8)
 	}
 	
 	constructor() {
@@ -531,7 +531,7 @@ export class BaseDomainDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(11)
+		return airport____at_airport_slash_airspace_diSet(11)
 	}
 	
 	constructor() {

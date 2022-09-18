@@ -37,7 +37,7 @@ import {
   TransactionHistory
 } from '../ddl/ddl';
 
-export interface air____at_airport_slash_holding_dash_pattern_LocalQApp extends QApp {
+export interface airport____at_airport_slash_holding_dash_pattern_LocalQApp extends QApp {
 
     db: DbApplication;
 
@@ -74,17 +74,17 @@ const __constructors__ = {
 	TransactionHistory: TransactionHistory
 };
 
-export const Q_air____at_airport_slash_holding_dash_pattern: air____at_airport_slash_holding_dash_pattern_LocalQApp = <any>{
+export const Q_airport____at_airport_slash_holding_dash_pattern: airport____at_airport_slash_holding_dash_pattern_LocalQApp = <any>{
 	__constructors__,
-  domain: 'air',
+  domain: 'airport',
   name: '@airport/holding-pattern'
 };
-export default Q_air____at_airport_slash_holding_dash_pattern
+export default Q_airport____at_airport_slash_holding_dash_pattern
 
-export function air____at_airport_slash_holding_dash_pattern_diSet(
+export function airport____at_airport_slash_holding_dash_pattern_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q_air____at_airport_slash_holding_dash_pattern.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_airport____at_airport_slash_holding_dash_pattern.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApp(Q_air____at_airport_slash_holding_dash_pattern)
+airApi.setQApp(Q_airport____at_airport_slash_holding_dash_pattern)

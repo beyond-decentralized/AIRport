@@ -2,8 +2,8 @@
   "name": "@airport/holding-pattern",
   "version": "0.0.1",
   "airport": {
-    "domain": "air",
-    "application": "holding-pattern"
+    "domain": "airport",
+    "application": "@airport/holding-pattern"
   },
   "peerDependencies": {
     "@airbridge/validate": "0.0.1",

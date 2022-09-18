@@ -1,5 +1,5 @@
 {
-	"domain": "air",
+	"domain": "airport",
 	"index": null,
 	"name": "@airport/layover",
 	"sinceVersion": 1,
@@ -646,7 +646,7 @@
 			"integerVersion": 1,
 			"referencedApplications": [
 				{
-					"domain": "air",
+					"domain": "airport",
 					"index": 0,
 					"name": "@airport/airspace",
 					"sinceVersion": 1,
@@ -660,7 +660,7 @@
 					]
 				},
 				{
-					"domain": "air",
+					"domain": "airport",
 					"index": 1,
 					"name": "@airport/holding-pattern",
 					"sinceVersion": 1,

@@ -6,7 +6,7 @@ import { SynchronizationConflictValues } from '../ddl/conflict/SynchronizationCo
 import { SynchronizationConflict } from '../ddl/conflict/SynchronizationConflict';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('air', 'layover');
+  const accumulator = airDb.getAccumulator('airport', '@airport/layover');
   accumulator.add(RecordUpdateStage, 0);
   accumulator.add(SynchronizationConflictValues, 1);
   accumulator.add(SynchronizationConflict, 2);

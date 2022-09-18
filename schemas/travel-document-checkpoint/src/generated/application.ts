@@ -1,6 +1,6 @@
 /* eslint-disable */
 export const APPLICATION = {
-	"domain": "air",
+	"domain": "airport",
 	"index": null,
 	"name": "@airport/travel-document-checkpoint",
 	"sinceVersion": 1,
@@ -2564,7 +2564,7 @@ export const APPLICATION = {
 			"integerVersion": 1,
 			"referencedApplications": [
 				{
-					"domain": "air",
+					"domain": "airport",
 					"index": 0,
 					"name": "@airport/airspace",
 					"sinceVersion": 1,

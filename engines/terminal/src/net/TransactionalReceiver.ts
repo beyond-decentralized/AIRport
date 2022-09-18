@@ -11,7 +11,8 @@ import {
 } from '@airport/direction-indicator';
 import {
     IDbApplicationUtils,
-    INTERNAL_DOMAIN
+    INTERNAL_DOMAIN,
+    INTERNAL_APP_DOMAIN
 } from '@airport/ground-control';
 import {
     IApiIMI,
@@ -347,7 +348,7 @@ export abstract class TransactionalReceiver {
 
         let isFramework = true
         try {
-            if (message.domain !== INTERNAL_DOMAIN) {
+            if (message.domain !== INTERNAL_DOMAIN && message.domain !== INTERNAL_APP_DOMAIN) {
                 isFramework = false
                 await this.doNativeHandleCallback(
                     message, actor, context, nativeHandleCallback)

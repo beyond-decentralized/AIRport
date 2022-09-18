@@ -2,8 +2,8 @@
   "name": "@airport/airport-code",
   "version": "0.0.1",
   "airport": {
-    "domain": "air",
-    "application": "airport-code"
+    "domain": "airport",
+    "application": "@airport/airport-code"
   },
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",

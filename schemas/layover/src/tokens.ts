@@ -4,7 +4,7 @@ import { ISynchronizationConflictDao, SynchronizationConflictDao } from "./dao/c
 import { ISynchronizationConflictValuesDao, SynchronizationConflictValuesDao } from "./dao/conflict/SynchronizationConflictValuesDao";
 import { IRecordUpdateStageDao, RecordUpdateStageDao } from "./dao/RecordUpdateStageDao";
 
-const layover = lib('layover')
+const layover = lib('@airport/layover')
 
 export const RECORD_UPDATE_STAGE_DAO = layover.token<IRecordUpdateStageDao>({
 	class: RecordUpdateStageDao,

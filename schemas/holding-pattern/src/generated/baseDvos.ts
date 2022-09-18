@@ -85,7 +85,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_holding_dash_pattern_diSet,
+	airport____at_airport_slash_holding_dash_pattern_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -111,7 +111,7 @@ export class BaseActorDvo
 	implements IBaseActorDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(0)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(0)
 	}
 	
 	constructor() {
@@ -129,7 +129,7 @@ export class BaseOperationHistoryDvo
 	implements IBaseOperationHistoryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(12)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(12)
 	}
 	
 	constructor() {
@@ -147,7 +147,7 @@ export class BaseRecordHistoryDvo
 	implements IBaseRecordHistoryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(3)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(3)
 	}
 	
 	constructor() {
@@ -165,7 +165,7 @@ export class BaseRecordHistoryNewValueDvo
 	implements IBaseRecordHistoryNewValueDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(1)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(1)
 	}
 	
 	constructor() {
@@ -183,7 +183,7 @@ export class BaseRecordHistoryOldValueDvo
 	implements IBaseRecordHistoryOldValueDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(2)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(2)
 	}
 	
 	constructor() {
@@ -201,7 +201,7 @@ export class BaseRepositoryDvo
 	implements IBaseRepositoryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(9)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(9)
 	}
 	
 	constructor() {
@@ -219,7 +219,7 @@ export class BaseRepositoryApplicationDvo
 	implements IBaseRepositoryApplicationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(8)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(8)
 	}
 	
 	constructor() {
@@ -237,7 +237,7 @@ export class BaseRepositoryClientDvo
 	implements IBaseRepositoryClientDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(6)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(6)
 	}
 	
 	constructor() {
@@ -255,7 +255,7 @@ export class BaseRepositoryDatabaseDvo
 	implements IBaseRepositoryDatabaseDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(5)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(5)
 	}
 	
 	constructor() {
@@ -273,7 +273,7 @@ export class BaseRepositoryTerminalDvo
 	implements IBaseRepositoryTerminalDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(7)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(7)
 	}
 	
 	constructor() {
@@ -291,7 +291,7 @@ export class BaseRepositoryTransactionHistoryDvo
 	implements IBaseRepositoryTransactionHistoryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(11)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(11)
 	}
 	
 	constructor() {
@@ -309,7 +309,7 @@ export class BaseRepositoryTypeDvo
 	implements IBaseRepositoryTypeDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(4)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(4)
 	}
 	
 	constructor() {
@@ -327,7 +327,7 @@ export class BaseTransactionHistoryDvo
 	implements IBaseTransactionHistoryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_holding_dash_pattern_diSet(10)
+		return airport____at_airport_slash_holding_dash_pattern_diSet(10)
 	}
 	
 	constructor() {

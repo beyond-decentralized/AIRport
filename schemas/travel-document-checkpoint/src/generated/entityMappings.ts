@@ -18,7 +18,7 @@ import { TerminalType } from '../ddl/terminal/TerminalType';
 import { Terminal } from '../ddl/terminal/Terminal';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('air', 'travel-document-checkpoint');
+  const accumulator = airDb.getAccumulator('airport', '@airport/travel-document-checkpoint');
   accumulator.add(Continent, 0);
   accumulator.add(Country, 1);
   accumulator.add(State, 2);

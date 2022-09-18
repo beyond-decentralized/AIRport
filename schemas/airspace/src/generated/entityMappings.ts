@@ -16,7 +16,7 @@ import { Application } from '../ddl/application/Application';
 import { Domain } from '../ddl/application/Domain';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('air', 'airspace');
+  const accumulator = airDb.getAccumulator('airport', '@airport/airspace');
   accumulator.add(VersionedApplicationObject, undefined);
   accumulator.add(ApplicationRelationColumn, 0);
   accumulator.add(ApplicationRelation, 1);

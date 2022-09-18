@@ -14,7 +14,7 @@ import {
 	OperationHistory_LocalId,
 	RecordHistory_LocalId,
 	RepositoryTransactionHistory_LocalId,
-	Q_air____at_airport_slash_holding_dash_pattern as Q,
+	Q_airport____at_airport_slash_holding_dash_pattern as Q,
 	TransactionHistory_LocalId
 } from '@airport/holding-pattern/dist/app/bundle'
 

@@ -15,7 +15,7 @@ import {
   TerminalRun
 } from '../ddl/ddl';
 
-export interface air____at_airport_slash_airport_dash_code_LocalQApp extends QApp {
+export interface airport____at_airport_slash_airport_dash_code_LocalQApp extends QApp {
 
     db: DbApplication;
 
@@ -31,17 +31,17 @@ const __constructors__ = {
 	TerminalRun: TerminalRun
 };
 
-export const Q_air____at_airport_slash_airport_dash_code: air____at_airport_slash_airport_dash_code_LocalQApp = <any>{
+export const Q_airport____at_airport_slash_airport_dash_code: airport____at_airport_slash_airport_dash_code_LocalQApp = <any>{
 	__constructors__,
-  domain: 'air',
+  domain: 'airport',
   name: '@airport/airport-code'
 };
-export default Q_air____at_airport_slash_airport_dash_code
+export default Q_airport____at_airport_slash_airport_dash_code
 
-export function air____at_airport_slash_airport_dash_code_diSet(
+export function airport____at_airport_slash_airport_dash_code_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q_air____at_airport_slash_airport_dash_code.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_airport____at_airport_slash_airport_dash_code.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApp(Q_air____at_airport_slash_airport_dash_code)
+airApi.setQApp(Q_airport____at_airport_slash_airport_dash_code)

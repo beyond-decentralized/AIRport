@@ -2,7 +2,7 @@ import { lib } from '@airport/direction-indicator'
 import { ISequenceDao, SequenceDao } from './dao/SequenceDao'
 import { ITerminalRunDao, TerminalRunDao } from './dao/TerminalRunDao'
 
-const airportCode = lib('airport-code')
+const airportCode = lib('@airport/airport-code')
 
 export const SEQUENCE_DAO = airportCode.token<ISequenceDao>({
     class: SequenceDao,

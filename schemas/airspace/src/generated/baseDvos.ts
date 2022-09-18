@@ -79,7 +79,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_airspace_diSet,
+	airport____at_airport_slash_airspace_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -105,7 +105,7 @@ export class BaseApplicationDvo
 	implements IBaseApplicationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(10)
+		return airport____at_airport_slash_airspace_diSet(10)
 	}
 	
 	constructor() {
@@ -123,7 +123,7 @@ export class BaseApplicationColumnDvo
 	implements IBaseApplicationColumnDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(4)
+		return airport____at_airport_slash_airspace_diSet(4)
 	}
 	
 	constructor() {
@@ -141,7 +141,7 @@ export class BaseApplicationCurrentVersionDvo
 	implements IBaseApplicationCurrentVersionDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(9)
+		return airport____at_airport_slash_airspace_diSet(9)
 	}
 	
 	constructor() {
@@ -159,7 +159,7 @@ export class BaseApplicationEntityDvo
 	implements IBaseApplicationEntityDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(6)
+		return airport____at_airport_slash_airspace_diSet(6)
 	}
 	
 	constructor() {
@@ -177,7 +177,7 @@ export class BaseApplicationOperationDvo
 	implements IBaseApplicationOperationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(5)
+		return airport____at_airport_slash_airspace_diSet(5)
 	}
 	
 	constructor() {
@@ -195,7 +195,7 @@ export class BaseApplicationPropertyDvo
 	implements IBaseApplicationPropertyDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(2)
+		return airport____at_airport_slash_airspace_diSet(2)
 	}
 	
 	constructor() {
@@ -213,7 +213,7 @@ export class BaseApplicationPropertyColumnDvo
 	implements IBaseApplicationPropertyColumnDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(3)
+		return airport____at_airport_slash_airspace_diSet(3)
 	}
 	
 	constructor() {
@@ -231,7 +231,7 @@ export class BaseApplicationReferenceDvo
 	implements IBaseApplicationReferenceDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(7)
+		return airport____at_airport_slash_airspace_diSet(7)
 	}
 	
 	constructor() {
@@ -249,7 +249,7 @@ export class BaseApplicationRelationDvo
 	implements IBaseApplicationRelationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(1)
+		return airport____at_airport_slash_airspace_diSet(1)
 	}
 	
 	constructor() {
@@ -267,7 +267,7 @@ export class BaseApplicationRelationColumnDvo
 	implements IBaseApplicationRelationColumnDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(0)
+		return airport____at_airport_slash_airspace_diSet(0)
 	}
 	
 	constructor() {
@@ -285,7 +285,7 @@ export class BaseApplicationVersionDvo
 	implements IBaseApplicationVersionDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(8)
+		return airport____at_airport_slash_airspace_diSet(8)
 	}
 	
 	constructor() {
@@ -303,7 +303,7 @@ export class BaseDomainDvo
 	implements IBaseDomainDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airspace_diSet(11)
+		return airport____at_airport_slash_airspace_diSet(11)
 	}
 	
 	constructor() {

@@ -2,8 +2,8 @@
   "name": "@airport/layover",
   "version": "0.0.1",
   "airport": {
-    "domain": "air",
-    "application": "layover"
+    "domain": "airport",
+    "application": "@airport/layover"
   },
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",

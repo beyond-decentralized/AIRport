@@ -2,8 +2,8 @@
   "name": "@airport/airspace",
   "version": "0.0.1",
   "airport": {
-    "domain": "air",
-    "application": "airspace"
+    "domain": "airport",
+    "application": "@airport/airspace"
   },
   "peerDependencies": {
     "@airbridge/validate": "0.0.1",

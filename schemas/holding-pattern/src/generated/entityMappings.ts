@@ -17,7 +17,7 @@ import { OperationHistory } from '../ddl/history/OperationHistory';
 import { AirEntity } from '../ddl/repository/AirEntity';
 
 DEPENDENCY_INJECTION.db().get(AIRPORT_DATABASE).then(airDb => {
-  const accumulator = airDb.getAccumulator('air', 'holding-pattern');
+  const accumulator = airDb.getAccumulator('airport', '@airport/holding-pattern');
   accumulator.add(Actor, 0);
   accumulator.add(RecordHistoryNewValue, 1);
   accumulator.add(RecordHistoryOldValue, 2);

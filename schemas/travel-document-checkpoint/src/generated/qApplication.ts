@@ -39,7 +39,7 @@ import {
   UserAccount
 } from '../ddl/ddl';
 
-export interface air____at_airport_slash_travel_dash_document_dash_checkpoint_LocalQApp extends QApp {
+export interface airport____at_airport_slash_travel_dash_document_dash_checkpoint_LocalQApp extends QApp {
 
     db: DbApplication;
 
@@ -79,17 +79,17 @@ const __constructors__ = {
 	UserAccount: UserAccount
 };
 
-export const Q_air____at_airport_slash_travel_dash_document_dash_checkpoint: air____at_airport_slash_travel_dash_document_dash_checkpoint_LocalQApp = <any>{
+export const Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint: airport____at_airport_slash_travel_dash_document_dash_checkpoint_LocalQApp = <any>{
 	__constructors__,
-  domain: 'air',
+  domain: 'airport',
   name: '@airport/travel-document-checkpoint'
 };
-export default Q_air____at_airport_slash_travel_dash_document_dash_checkpoint
+export default Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint
 
-export function air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(
+export function airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(
 	dbEntityId: ApplicationEntity_LocalId
 ): boolean {
-	return airApi.dS(Q_air____at_airport_slash_travel_dash_document_dash_checkpoint.__dbApplication__, dbEntityId)
+	return airApi.dS(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint.__dbApplication__, dbEntityId)
 }
 
-airApi.setQApp(Q_air____at_airport_slash_travel_dash_document_dash_checkpoint)
+airApi.setQApp(Q_airport____at_airport_slash_travel_dash_document_dash_checkpoint)

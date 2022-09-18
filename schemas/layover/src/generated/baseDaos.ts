@@ -56,7 +56,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_layover_diSet,
+	airport____at_airport_slash_layover_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -106,7 +106,7 @@ export class BaseRecordUpdateStageDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(0)
+		return airport____at_airport_slash_layover_diSet(0)
 	}
 	
 	constructor() {
@@ -134,7 +134,7 @@ export class BaseSynchronizationConflictDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(2)
+		return airport____at_airport_slash_layover_diSet(2)
 	}
 	
 	constructor() {
@@ -162,7 +162,7 @@ export class BaseSynchronizationConflictValuesDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_layover_diSet(1)
+		return airport____at_airport_slash_layover_diSet(1)
 	}
 	
 	constructor() {

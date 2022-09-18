@@ -2,8 +2,8 @@
   "name": "@airport/travel-document-checkpoint",
   "version": "0.0.1",
   "airport": {
-    "domain": "air",
-    "application": "travel-document-checkpoint"
+    "domain": "airport",
+    "application": "@airport/travel-document-checkpoint"
   },
   "peerDependencies": {
     "@airport/air-traffic-control": "0.0.1",

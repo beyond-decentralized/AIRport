@@ -212,7 +212,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet,
+	airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -262,7 +262,7 @@ export class BaseClassificationDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6)
 	}
 	
 	constructor() {
@@ -290,7 +290,7 @@ export class BaseClientDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10)
 	}
 	
 	constructor() {
@@ -318,7 +318,7 @@ export class BaseClientTypeDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9)
 	}
 	
 	constructor() {
@@ -346,7 +346,7 @@ export class BaseContinentDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
 	}
 	
 	constructor() {
@@ -374,7 +374,7 @@ export class BaseCountryDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
 	}
 	
 	constructor() {
@@ -402,7 +402,7 @@ export class BaseDatabaseDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12)
 	}
 	
 	constructor() {
@@ -430,7 +430,7 @@ export class BaseDatabaseTypeDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11)
 	}
 	
 	constructor() {
@@ -458,7 +458,7 @@ export class BaseMetroAreaDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
 	}
 	
 	constructor() {
@@ -486,7 +486,7 @@ export class BaseMetroAreaStateDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
 	}
 	
 	constructor() {
@@ -514,7 +514,7 @@ export class BaseStateDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
 	}
 	
 	constructor() {
@@ -542,7 +542,7 @@ export class BaseTerminalDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14)
 	}
 	
 	constructor() {
@@ -570,7 +570,7 @@ export class BaseTerminalTypeDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13)
 	}
 	
 	constructor() {
@@ -598,7 +598,7 @@ export class BaseTypeDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8)
 	}
 	
 	constructor() {
@@ -626,7 +626,7 @@ export class BaseTypeClassificationDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7)
 	}
 	
 	constructor() {
@@ -654,7 +654,7 @@ export class BaseUserAccountDao
   }
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
 	}
 	
 	constructor() {

@@ -97,7 +97,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet,
+	airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -123,7 +123,7 @@ export class BaseClassificationDvo
 	implements IBaseClassificationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(6)
 	}
 	
 	constructor() {
@@ -141,7 +141,7 @@ export class BaseClientDvo
 	implements IBaseClientDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(10)
 	}
 	
 	constructor() {
@@ -159,7 +159,7 @@ export class BaseClientTypeDvo
 	implements IBaseClientTypeDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(9)
 	}
 	
 	constructor() {
@@ -177,7 +177,7 @@ export class BaseContinentDvo
 	implements IBaseContinentDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(0)
 	}
 	
 	constructor() {
@@ -195,7 +195,7 @@ export class BaseCountryDvo
 	implements IBaseCountryDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(1)
 	}
 	
 	constructor() {
@@ -213,7 +213,7 @@ export class BaseDatabaseDvo
 	implements IBaseDatabaseDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(12)
 	}
 	
 	constructor() {
@@ -231,7 +231,7 @@ export class BaseDatabaseTypeDvo
 	implements IBaseDatabaseTypeDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(11)
 	}
 	
 	constructor() {
@@ -249,7 +249,7 @@ export class BaseMetroAreaDvo
 	implements IBaseMetroAreaDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(4)
 	}
 	
 	constructor() {
@@ -267,7 +267,7 @@ export class BaseMetroAreaStateDvo
 	implements IBaseMetroAreaStateDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(3)
 	}
 	
 	constructor() {
@@ -285,7 +285,7 @@ export class BaseStateDvo
 	implements IBaseStateDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(2)
 	}
 	
 	constructor() {
@@ -303,7 +303,7 @@ export class BaseTerminalDvo
 	implements IBaseTerminalDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(14)
 	}
 	
 	constructor() {
@@ -321,7 +321,7 @@ export class BaseTerminalTypeDvo
 	implements IBaseTerminalTypeDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(13)
 	}
 	
 	constructor() {
@@ -339,7 +339,7 @@ export class BaseTypeDvo
 	implements IBaseTypeDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(8)
 	}
 	
 	constructor() {
@@ -357,7 +357,7 @@ export class BaseTypeClassificationDvo
 	implements IBaseTypeClassificationDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(7)
 	}
 	
 	constructor() {
@@ -375,7 +375,7 @@ export class BaseUserAccountDvo
 	implements IBaseUserAccountDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
+		return airport____at_airport_slash_travel_dash_document_dash_checkpoint_diSet(5)
 	}
 	
 	constructor() {

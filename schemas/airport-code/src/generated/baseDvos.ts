@@ -25,7 +25,7 @@ import {
 	ApplicationEntity_LocalId as DbEntityId,
 } from '@airport/ground-control';
 import {
-	air____at_airport_slash_airport_dash_code_diSet,
+	airport____at_airport_slash_airport_dash_code_diSet,
 } from './qApplication';
 
 import Q from './qApplication'
@@ -51,7 +51,7 @@ export class BaseSequenceDvo
 	implements IBaseSequenceDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airport_dash_code_diSet(0)
+		return airport____at_airport_slash_airport_dash_code_diSet(0)
 	}
 	
 	constructor() {
@@ -69,7 +69,7 @@ export class BaseSystemWideOperationIdDvo
 	implements IBaseSystemWideOperationIdDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airport_dash_code_diSet(1)
+		return airport____at_airport_slash_airport_dash_code_diSet(1)
 	}
 	
 	constructor() {
@@ -87,7 +87,7 @@ export class BaseTerminalRunDvo
 	implements IBaseTerminalRunDvo {
 
 	static diSet(): boolean {
-		return air____at_airport_slash_airport_dash_code_diSet(2)
+		return airport____at_airport_slash_airport_dash_code_diSet(2)
 	}
 	
 	constructor() {
