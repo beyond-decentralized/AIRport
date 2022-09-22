@@ -14,6 +14,7 @@ import {
 } from "@airport/apron";
 import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { RequestManager } from '@airport/arrivals-n-departures';
+import { IApiCallContext, ITransactionContext } from '@airport/terminal-map';
 
 @Injected()
 export class LocalAPIServer
@@ -71,7 +72,8 @@ export class LocalAPIServer
 
     async coreHandleRequest<ReturnType = any>(
         request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>,
-        api: IApplicationApi
+        api: IApplicationApi,
+        context?: IApiCallContext & ITransactionContext
     ): Promise<ReturnType> {
         const {
             apiObject,
@@ -79,7 +81,12 @@ export class LocalAPIServer
         } = await this.apiRegistry.findObjectAndOperationForApi(api,
             request.domain, request.application, request.objectName, request.methodName)
 
-        const result = apiObject[request.methodName].apply(apiObject, request.args)
+        let args = request.args as any
+        if (context) {
+            args = [...request.args, context]
+        }
+
+        const result = apiObject[request.methodName].apply(apiObject, [...request.args, context])
         if (apiOperation.isAsync) {
             return await result
         } else {

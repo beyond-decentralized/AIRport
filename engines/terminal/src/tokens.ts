@@ -283,6 +283,7 @@ REPOSITORY_MANAGER.setClass(RepositoryManager)
 REPOSITORY_MANAGER.setDependencies({
     repositoryDao: REPOSITORY_DAO,
     terminalSessionManager: TERMINAL_SESSION_MANAGER,
+    terminalStore: TERMINAL_STORE
 })
 
 STRUCTURAL_ENTITY_VALIDATOR.setDependencies({

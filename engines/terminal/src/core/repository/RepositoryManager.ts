@@ -25,7 +25,8 @@ import {
 	RawUpdate,
 } from '@airport/tarmaq-query'
 import {
-	ITerminalSessionManager,
+	IApiCallContext,
+	ITerminalSessionManager, ITerminalStore, ITransactionContext,
 } from '@airport/terminal-map'
 import { v4 as guidv4 } from "uuid";
 
@@ -52,11 +53,15 @@ export class RepositoryManager
 	@Inject()
 	terminalSessionManager: ITerminalSessionManager
 
+	@Inject()
+	terminalStore: ITerminalStore
+
 	async initialize(): Promise<void> {
 	}
 
 	async createRepository(
-		repositoryName: string
+		repositoryName: string,
+		context: IApiCallContext & ITransactionContext
 	): Promise<Repository> {
 		const userSession = await this.terminalSessionManager.getUserSession()
 		if (userSession.currentRootTransaction.newRepository) {
@@ -65,7 +70,7 @@ Attempting to create a new repository and Operation Context
 already contains a new repository.`)
 		}
 
-		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor)
+		let repository = await this.createRepositoryRecord(repositoryName, userSession.currentActor, context)
 
 		userSession.currentRootTransaction.newRepository = repository
 
@@ -117,10 +122,11 @@ already contains a new repository.`)
 	private async createRepositoryRecord(
 		name: string,
 		actor: IActor,
+		context: IApiCallContext & ITransactionContext,
 	): Promise<Repository> {
 		const repository = this.getRepositoryRecord(name, actor)
 
-		await this.repositoryDao.save(repository)
+		await this.repositoryDao.save(repository, context)
 
 		return repository
 	}

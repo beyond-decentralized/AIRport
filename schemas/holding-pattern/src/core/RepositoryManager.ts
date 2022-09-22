@@ -8,13 +8,15 @@ import {
 import { UpdateState } from './UpdateState'
 import { IRepository } from '@airport/ground-control';
 import { Repository } from '../ddl/ddl';
+import { IContext } from '@airport/direction-indicator';
 
 export interface IRepositoryManager {
 
 	initialize(): Promise<void>;
 
 	createRepository(
-		repositoryName: string
+		repositoryName: string,
+		context: IContext
 	): Promise<Repository>;
 
 	goOffline(): void;

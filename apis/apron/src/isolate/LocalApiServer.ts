@@ -4,6 +4,7 @@ import {
     ILocalAPIResponse
 } from "@airport/aviation-communication";
 import { IApplicationApi } from "@airport/check-in";
+import { IContext } from "@airport/direction-indicator";
 
 export interface ILocalAPIServer {
 
@@ -13,7 +14,8 @@ export interface ILocalAPIServer {
 
     coreHandleRequest<ReturnType = any>(
         request: ILocalAPIRequest,
-        api: IApplicationApi
+        api: IApplicationApi,
+        context?: IContext
     ): Promise<ReturnType>
 
 }

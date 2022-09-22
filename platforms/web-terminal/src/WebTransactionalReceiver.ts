@@ -239,7 +239,7 @@ export class WebTransactionalReceiver
 					throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
 				}
 				payload = await this.localApiServer.coreHandleRequest(message,
-					application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api)
+					application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api, context)
 			} catch (e) {
 				errorMessage = e.message ? e.message : e
 				console.error(e)

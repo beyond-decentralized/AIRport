@@ -230,4 +230,5 @@ of entity ${dbProperty.entity.name}`)
 of entity ${dbProperty.entity.name}\``)
 		}
 	}
+
 }

@@ -22,7 +22,7 @@ export class RepositoryApi {
     async create(
         repositoryName: string
     ): Promise<Repository> {
-        return await this.repositoryManager.createRepository(repositoryName)
+        return await this.repositoryManager.createRepository(repositoryName, arguments[1])
     }
 
 }
