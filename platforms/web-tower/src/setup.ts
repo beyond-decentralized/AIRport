@@ -21,6 +21,8 @@ async function processMessage(
 
     if (message.category === 'FromClientRedirected') {
         DEPENDENCY_INJECTION.remove(container)
+    } else {
+        console.error('Unexpected message.category: ' + message.category);
     }
 }
 
