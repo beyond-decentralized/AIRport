@@ -1,5 +1,5 @@
 export interface ISaveUserAccount {
-    _localId: number;
+    GUID: string;
 }
 
 export interface ISaveActor {

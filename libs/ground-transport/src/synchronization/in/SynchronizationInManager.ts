@@ -79,7 +79,7 @@ export class SynchronizationInManager
 					processMessage = false
 					return
 				}
-			}, context)
+			}, null, context)
 			if (processMessage) {
 				messagesToProcess.push(message)
 			}
@@ -89,7 +89,7 @@ export class SynchronizationInManager
 		await this.transactionManager.transactInternal(async (transaction, context) => {
 			transaction.isSync = true
 			await this.twoStageSyncedInDataProcessor.syncMessages(messagesToProcess, transaction, context)
-		}, context)
+		}, null, context)
 	}
 
 	private timeOrderMessages(

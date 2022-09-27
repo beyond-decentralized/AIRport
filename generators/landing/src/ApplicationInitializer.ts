@@ -167,7 +167,7 @@ export abstract class ApplicationInitializer
 			await this.sequenceGenerator.initialize(context, newSequences);
 
 			await this.applicationRecorder.record(allDdlObjects.added, context);
-		}, context)
+		}, null, context)
 
 	}
 

@@ -47,14 +47,13 @@ import {
 export interface UserAccountVDescriptor<T>
     extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId?: number | IVNumberField;
+	GUID?: string | IVStringField;
 	
 	// Non-Id Properties
 	email?: string | IVStringField;
 	passwordHash?: string | IVStringField;
 	ranking?: number | IVNumberField;
 	username?: string | IVStringField;
-	GUID?: string | IVStringField;
 
 	// Id Relations - full property interfaces
 

@@ -1,7 +1,7 @@
 import { IContext, Injected } from '@airport/direction-indicator'
 import {
 	UserAccount_GUID,
-	UserAccount_UserAccountname
+	UserAccount_Username
 } from '../ddl/ddl'
 import {
 	BaseUserAccountDao,
@@ -15,7 +15,7 @@ export interface IUserAccountDao
 	extends IBaseUserAccountDao {
 
 	findByUserAccountNames(
-		usernames: UserAccount_UserAccountname[]
+		usernames: UserAccount_Username[]
 	): Promise<IUserAccount[]>
 
 	findByGUIDs(
@@ -35,7 +35,7 @@ export class UserAccountDao
 	implements IUserAccountDao {
 
 	async findByUserAccountNames(
-		usernames: UserAccount_UserAccountname[]
+		usernames: UserAccount_Username[]
 	): Promise<IUserAccount[]> {
 		let u: QUserAccount
 		return await this.db.find.tree({
@@ -71,18 +71,14 @@ export class UserAccountDao
 				userAccount.GUID, userAccount.username
 			])
 		}
-		const _localIds = await this.db.insertValuesGenerateIds({
+		await this.db.insertValues({
 			INSERT_INTO: u = Q.UserAccount,
 			columns: [
 				u.GUID,
 				u.username
 			],
 			VALUES
-		}, context) as number[][]
-		for (let i = 0; i < userAccounts.length; i++) {
-			const userAccount = userAccounts[i]
-			userAccount._localId = _localIds[i][0]
-		}
+		}, context)
 	}
 
 }

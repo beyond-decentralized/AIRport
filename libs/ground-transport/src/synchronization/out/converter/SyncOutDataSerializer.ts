@@ -24,7 +24,11 @@ import {
 	RepositoryTransactionType,
 	Repository_LocalId
 } from "@airport/holding-pattern/dist/app/bundle";
-import { IUserAccount, Terminal_LocalId, UserAccount_LocalId } from "@airport/travel-document-checkpoint/dist/app/bundle";
+import { 
+	IUserAccount, 
+	Terminal_GUID, 
+	UserAccount_GUID
+} from "@airport/travel-document-checkpoint/dist/app/bundle";
 
 export interface ISyncOutDataSerializer {
 
@@ -67,7 +71,7 @@ export interface InMessageApplicationLookup {
 	lastInMessageIndex: number
 }
 export interface InMessageUserAccountLookup {
-	inMessageIndexesById: Map<UserAccount_LocalId, number>
+	inMessageIndexesByGUID: Map<UserAccount_GUID, number>
 	lastInMessageIndex: number
 }
 
@@ -119,7 +123,7 @@ export class SyncOutDataSerializer
 			repositoryInMessageIndexesById: new Map()
 		}
 		const inMessageUserAccountLookup: InMessageUserAccountLookup = {
-			inMessageIndexesById: new Map(),
+			inMessageIndexesByGUID: new Map(),
 			lastInMessageIndex: -1
 		}
 
@@ -174,8 +178,8 @@ export class SyncOutDataSerializer
 			message.actors[actorInMessageIndex] = {
 				...WITH_ID,
 				application: applicationInMessageIndex as any,
-				terminal: terminalInMessageIndexesById.get(actor.terminal._localId) as any,
-				userAccount: inMessageUserAccountLookup.inMessageIndexesById.get(actor.userAccount._localId) as any,
+				terminal: terminalInMessageIndexesById.get(actor.terminal.GUID) as any,
+				userAccount: inMessageUserAccountLookup.inMessageIndexesByGUID.get(actor.userAccount.GUID) as any,
 				GUID: actor.GUID
 			}
 		}
@@ -187,24 +191,24 @@ export class SyncOutDataSerializer
 		actors: IActor[],
 		message: RepositorySynchronizationMessage,
 		inMessageUserAccountLookup: InMessageUserAccountLookup
-	): Map<Terminal_LocalId, number> {
+	): Map<Terminal_GUID, number> {
 		let lastInMessageTerminalIndex = -1
-		const terminalInMessageIndexesById: Map<Terminal_LocalId, number> = new Map()
+		const terminalInMessageIndexesByGUID: Map<Terminal_GUID, number> = new Map()
 		for (const actor of actors) {
 			let terminal = actor.terminal
-			if (terminalInMessageIndexesById.has(terminal._localId)) {
+			if (terminalInMessageIndexesByGUID.has(terminal.GUID)) {
 				continue
 			}
 			const terminalInMessageIndex = ++lastInMessageTerminalIndex
-			terminalInMessageIndexesById.set(terminal._localId, terminalInMessageIndex)
+			terminalInMessageIndexesByGUID.set(terminal.GUID, terminalInMessageIndex)
 			message.terminals[terminalInMessageIndex] = {
 				...WITH_ID,
 				GUID: terminal.GUID,
-				owner: inMessageUserAccountLookup.inMessageIndexesById.get(terminal.owner._localId) as any
+				owner: inMessageUserAccountLookup.inMessageIndexesByGUID.get(terminal.owner.GUID) as any
 			}
 		}
 
-		return terminalInMessageIndexesById
+		return terminalInMessageIndexesByGUID
 	}
 
 	private serializeUserAccounts(
@@ -238,11 +242,11 @@ export class SyncOutDataSerializer
 		userAccount: IUserAccount,
 		inMessageUserAccountLookup: InMessageUserAccountLookup
 	): number {
-		if (inMessageUserAccountLookup.inMessageIndexesById.has(userAccount._localId)) {
-			return inMessageUserAccountLookup.inMessageIndexesById.get(userAccount._localId)
+		if (inMessageUserAccountLookup.inMessageIndexesByGUID.has(userAccount.GUID)) {
+			return inMessageUserAccountLookup.inMessageIndexesByGUID.get(userAccount.GUID)
 		}
 		let userAccountInMessageIndex = ++inMessageUserAccountLookup.lastInMessageIndex
-		inMessageUserAccountLookup.inMessageIndexesById.set(userAccount._localId, userAccountInMessageIndex)
+		inMessageUserAccountLookup.inMessageIndexesByGUID.set(userAccount.GUID, userAccountInMessageIndex)
 
 		return userAccountInMessageIndex
 	}

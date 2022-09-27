@@ -8,6 +8,7 @@ import {
 	IUserAccount,
 	IUserAccountDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { UserAccount_GUID } from '@airport/travel-document-checkpoint';
 
 export interface ISyncInUserAccountChecker {
 
@@ -42,17 +43,18 @@ export class SyncInUserAccountChecker
 				}
 				userAccountGUIDs.push(userAccount.GUID)
 				messageUserAccountIndexMap.set(userAccount.GUID, i)
-				// Make sure id field is not in the input
-				delete userAccount._localId
 			}
 
 			const userAccounts = await this.userAccountDao.findByGUIDs(userAccountGUIDs)
+			const foundUserAccountsByGUID: Map<UserAccount_GUID, IUserAccount> = new Map()
 			for (const userAccount of userAccounts) {
+				foundUserAccountsByGUID.set(userAccount.GUID, userAccount)
 				const messageUserAccountIndex = messageUserAccountIndexMap.get(userAccount.GUID)
 				message.userAccounts[messageUserAccountIndex] = userAccount
 			}
 
-			const missingUserAccounts = message.userAccounts.filter(messageUserAccount => !messageUserAccount._localId)
+			const missingUserAccounts = message.userAccounts
+				.filter(messageUserAccount => !foundUserAccountsByGUID.has(messageUserAccount.GUID))
 
 			if (missingUserAccounts.length) {
 				await this.addMissingUserAccounts(missingUserAccounts, context)

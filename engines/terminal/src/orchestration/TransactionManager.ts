@@ -12,6 +12,7 @@ import {
 import {
 	INTERNAL_APP,
 	INTERNAL_DOMAIN,
+	INTERNAL_DOMAINS,
 	IRootTransaction
 } from '@airport/ground-control';
 import { ISynchronizationOutManager } from '@airport/ground-transport';
@@ -21,6 +22,7 @@ import {
 } from '@airport/holding-pattern/dist/app/bundle';
 import { IQEntityInternal } from '@airport/tarmaq-query';
 import {
+	ICredentials,
 	IStoreDriver,
 	ITerminalSessionManager,
 	ITerminalStore,
@@ -88,14 +90,18 @@ export class TransactionManager
 
 	async transactInternal(
 		transactionalCallback: ITransactionalCallback,
-		context: ITransactionContext,
+		credentials: ITransactionCredentials,
+		context: ITransactionContext
 	): Promise<void> {
-		await this.transact({
-			application: INTERNAL_APP,
-			domain: INTERNAL_DOMAIN,
-			methodName: null,
-			objectName: null
-		}, transactionalCallback, context);
+		if(!credentials) {
+			credentials = {
+				application: INTERNAL_APP,
+				domain: INTERNAL_DOMAIN,
+				methodName: null,
+				objectName: null
+			}
+		}
+		await this.transact(credentials, transactionalCallback, context);
 	}
 
 	async transact(
@@ -188,7 +194,7 @@ Only one concurrent transaction is allowed per application.`)
 			// Internal calls don't maintain rootTransaction and can create more than
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
-			if (credentials.domain !== INTERNAL_DOMAIN) {
+			if (INTERNAL_DOMAIN !== credentials.domain) {
 				const userSession = await this.terminalSessionManager.getUserSession()
 				userSession.currentRootTransaction = rootTransaction
 			}
@@ -334,7 +340,7 @@ parent transactions.
 			// Internal calls don't maintain rootTransaction and can create more than
 			// one repository at a time.  APIs exposed externally will never be top
 			// level transactions
-		if (transaction.credentials.domain === INTERNAL_DOMAIN) {
+		if (INTERNAL_DOMAIN === transaction.credentials.domain) {
 			return
 		}
 
@@ -376,7 +382,7 @@ parent transactions.
 		transaction: ITransaction,
 		credentials: ITransactionCredentials
 	): void {
-		if (credentials.domain === INTERNAL_DOMAIN) {
+		if (INTERNAL_DOMAIN === credentials.domain) {
 			return
 		}
 		do {

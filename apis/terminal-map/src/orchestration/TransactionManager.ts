@@ -40,7 +40,8 @@ export interface ITransactionManager {
 
 	transactInternal(
 		callback: ITransactionalCallback,
-		context: IContext,
+		credentials: ITransactionCredentials,
+		context: IContext
 	): Promise<void>;
 
 	startTransaction(

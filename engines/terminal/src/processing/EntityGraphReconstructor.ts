@@ -28,10 +28,8 @@ export class EntityGraphReconstructor
 		context: IOperationContext
 	): T[] {
 		const entitiesByOperationIndex = []
-		const processedEntitySet = new Set()
 		const rootCopy =
-			this.linkEntityGraph(root, entitiesByOperationIndex, processedEntitySet,
-				false, context)
+			this.linkEntityGraph(root, entitiesByOperationIndex, false, context)
 
 		for (let i = 1; i < entitiesByOperationIndex.length; i++) {
 			const entity = entitiesByOperationIndex[i]
@@ -48,7 +46,6 @@ export class EntityGraphReconstructor
 	protected linkEntityGraph<T>(
 		currentEntities: T[],
 		entitiesByOperationIndex: any[],
-		processedEntitySet: Set<Object>,
 		isParentEntity: boolean,
 		context: IOperationContext
 	): T[] {
@@ -67,14 +64,10 @@ export class EntityGraphReconstructor
 			}
 
 			const previouslyFoundEntity = entitiesByOperationIndex[operationUniqueId]
-			if (processedEntitySet.has(entity)) {
-				if (!previouslyFoundEntity) {
-					throw new Error(`Entity has been processed but is not found by operationUniqueId`)
-				}
+			if (previouslyFoundEntity) {
 				results.push(previouslyFoundEntity)
 				continue;
 			}
-			processedEntitySet.add(entity)
 
 			/*
 			 * A passed in graph has either entities to be saved or
@@ -87,29 +80,14 @@ export class EntityGraphReconstructor
 			} = this.entityStateManager
 				.getEntityStateTypeAsFlags(entity, dbEntity)
 
-			let entityCopy
-			if (previouslyFoundEntity) {
-				if (!this.entityStateManager.isStub(previouslyFoundEntity)) {
-					if (!isStub) {
-						throw new Error(`More than 1 non-Stub object found in input
-for "${this.entityStateManager.getUniqueIdFieldName()}": ${operationUniqueId}`)
-					}
-				} else {
-					if (!isStub) {
-						this.entityStateManager.copyEntityState(entity, previouslyFoundEntity)
-					}
-				}
-				entityCopy = previouslyFoundEntity
-			} else {
-				entityCopy = {}
-				entityCopy[this.entityStateManager.getUniqueIdFieldName()]
+			let entityCopy: any = {}
+			entityCopy[this.entityStateManager.getUniqueIdFieldName()]
 					= operationUniqueId
-				entityCopy[this.entityStateManager.getStateFieldName()]
+			entityCopy[this.entityStateManager.getStateFieldName()]
 					= this.entityStateManager.getEntityState(entity)
-				this.entityStateManager.copyEntityState(entity, entityCopy)
-				entitiesByOperationIndex[operationUniqueId]
+			this.entityStateManager.copyEntityState(entity, entityCopy)
+			entitiesByOperationIndex[operationUniqueId]
 					= entityCopy
-			}
 
 			if (isParentEntity) {
 				this.entityStateManager.markAsOfParentSchema(entityCopy)
@@ -153,10 +131,14 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities,
-							entitiesByOperationIndex, processedEntitySet, isParentSchemaId, context)
+							entitiesByOperationIndex, isParentSchemaId, context)
 						if (isParentSchemaId) {
 							for (const propertyCopyValueEntry of propertyCopyValue) {
+								const operationUniqueId = this.entityStateManager
+									.getOperationUniqueId(propertyCopyValueEntry)
+								if (!entitiesByOperationIndex[operationUniqueId]) {
 								this.checkPropertyParentEntityStatus(propertyCopyValueEntry)
+								}
 							}
 						}
 						if (isManyToOne) {
@@ -171,10 +153,6 @@ for ${dbEntity.name}.${dbProperty.name}`)
 					if (!dbProperty.isId) {
 						if (isStub) {
 							throw new Error(`Deletes and Stubs may only contain @Id properties or relations.`)
-						} else if (isParentSchemaId || isParentEntity) {
-							// Do not add non-id entities to operation specific copies of objects
-							// if this entity is a PARENT_SCHEMA_ID (is from another schema)
-							continue
 						}
 					}
 				} // else (dbProperty.relation

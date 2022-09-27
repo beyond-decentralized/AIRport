@@ -1,7 +1,6 @@
 import { AND } from '@airport/tarmaq-query'
 import { IContext, Injected } from '@airport/direction-indicator';
 import {
-	UserAccount_LocalId,
 	Terminal_GUID
 } from '../ddl/ddl'
 import {
@@ -11,12 +10,13 @@ import {
 	QTerminal
 } from '../generated/generated'
 import Q from '../generated/qApplication'
+import { UserAccount_GUID } from '../ddl/ddl'
 
 export interface ITerminalDao
 	extends IBaseTerminalDao {
 
 	findByOwnerIdsAndGUIDs(
-		ownerIds: UserAccount_LocalId[],
+		ownerGuids: UserAccount_GUID[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]>;
 
@@ -37,7 +37,7 @@ export class TerminalDao
 	implements ITerminalDao {
 
 	async findByOwnerIdsAndGUIDs(
-		ownerIds: UserAccount_LocalId[],
+		ownerGuids: UserAccount_GUID[],
 		GUIDs: Terminal_GUID[]
 	): Promise<ITerminal[]> {
 		let t: QTerminal
@@ -47,7 +47,7 @@ export class TerminalDao
 				t = Q.Terminal
 			],
 			WHERE: AND(
-				t.owner._localId.IN(ownerIds),
+				t.owner.GUID.IN(ownerGuids),
 				t.GUID.IN(GUIDs)
 			)
 		})
@@ -74,22 +74,18 @@ export class TerminalDao
 		const VALUES = []
 		for (const terminal of terminals) {
 			VALUES.push([
-				terminal.GUID, terminal.owner._localId, false,
+				terminal.GUID, terminal.owner.GUID, false,
 			])
 		}
-		const _localIds = await this.db.insertValuesGenerateIds({
+		await this.db.insertValues({
 			INSERT_INTO: t = Q.Terminal,
 			columns: [
 				t.GUID,
-				t.owner._localId,
+				t.owner.GUID,
 				t.isLocal
 			],
 			VALUES
-		}, context) as number[][]
-		for (let i = 0; i < terminals.length; i++) {
-			const terminal = terminals[i]
-			terminal._localId = _localIds[i][0]
-		}
+		}, context)
 	}
 
 }

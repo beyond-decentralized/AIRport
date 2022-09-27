@@ -64,7 +64,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "USER_ACCOUNT_LID",
+							"name": "USER_ACCOUNT_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -72,7 +72,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -86,7 +86,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "TERMINAL_LID",
+							"name": "TERMINAL_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -94,7 +94,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 4,
@@ -1012,7 +1012,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "TERMINAL_LID",
+							"name": "TERMINAL_GUID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1020,7 +1020,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -1305,7 +1305,7 @@
 									"sinceVersion": 1
 								}
 							],
-							"name": "OWNER_USER_ACCOUNT_LID",
+							"name": "OWNER_USER_ACCOUNT_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1313,7 +1313,7 @@
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 8,

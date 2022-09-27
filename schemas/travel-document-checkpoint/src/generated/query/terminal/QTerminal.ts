@@ -111,7 +111,6 @@ import {
 export interface TerminalESelect
     extends IEntitySelectProperties, TerminalEOptionalId {
 	// Non-Id Properties
-	GUID?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Id Relations - full property interfaces
@@ -132,7 +131,7 @@ export interface TerminalESelect
 export interface TerminalEId
     extends IEntityIdProperties {
 	// Id Properties
-	_localId: number | IQNumberField;
+	GUID: string | IQStringField;
 
 	// Id Relations - Ids only
 
@@ -143,7 +142,7 @@ export interface TerminalEId
  */
 export interface TerminalEOptionalId {
 	// Id Properties
-	_localId?: number | IQNumberField;
+	GUID?: string | IQStringField;
 
 	// Id Relations - Ids only
 
@@ -155,7 +154,6 @@ export interface TerminalEOptionalId {
 export interface TerminalEUpdateProperties
 	extends IEntityUpdateProperties {
 	// Non-Id Properties
-	GUID?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
@@ -175,7 +173,6 @@ export interface TerminalGraph
 // NOT USED: Cascading Relations
 // NOT USED: ${relationsForCascadeGraph}
 	// Non-Id Properties
-	GUID?: string | IQStringField;
 	isLocal?: boolean | IQBooleanField;
 
 	// Relations
@@ -194,9 +191,8 @@ export interface TerminalGraph
 export interface TerminalEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
-	GUID?: string | IQStringField;
 	IS_LOCAL?: boolean | IQBooleanField;
-	OWNER_USER_ACCOUNT_LID?: number | IQNumberField;
+	OWNER_USER_ACCOUNT_GUID?: string | IQStringField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
 	STATE_ID?: number | IQNumberField;
@@ -229,12 +225,11 @@ extends TerminalEId, TerminalEUpdateColumns {
 export interface QTerminal<IQE extends QTerminal = any> extends IQEntity<IQE | QTerminal>
 {
 	// Id Fields
-	_localId: IQNumberField;
+	GUID: IQStringField;
 
 	// Id Relations
 
 	// Non-Id Fields
-	GUID: IQStringField;
 	isLocal: IQBooleanField;
 
 	// Non-Id Relations
@@ -252,7 +247,7 @@ export interface QTerminalQId
 {
 	
 	// Id Fields
-	_localId: IQNumberField;
+	GUID: IQStringField;
 
 	// Id Relations
 

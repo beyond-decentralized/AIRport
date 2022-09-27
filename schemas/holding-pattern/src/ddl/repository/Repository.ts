@@ -79,7 +79,8 @@ export class Repository
 
 	@ManyToOne()
 	@JoinColumn({
-		name: 'OWNER_USER_ACCOUNT_LID', referencedColumnName: 'USER_ACCOUNT_LID',
+		name: 'OWNER_USER_ACCOUNT_GUID',
+		referencedColumnName: 'GUID',
 		nullable: false
 	})
 	owner: UserAccount;

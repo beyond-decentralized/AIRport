@@ -65,7 +65,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "USER_ACCOUNT_LID",
+							"name": "USER_ACCOUNT_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -73,7 +73,7 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 3,
@@ -87,7 +87,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "TERMINAL_LID",
+							"name": "TERMINAL_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -95,7 +95,7 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 4,
@@ -1013,7 +1013,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "TERMINAL_LID",
+							"name": "TERMINAL_GUID",
 							"notNull": false,
 							"propertyRefs": [
 								{
@@ -1021,7 +1021,7 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						}
 					],
 					"idColumnRefs": [
@@ -1306,7 +1306,7 @@ export const APPLICATION = {
 									"sinceVersion": 1
 								}
 							],
-							"name": "OWNER_USER_ACCOUNT_LID",
+							"name": "OWNER_USER_ACCOUNT_GUID",
 							"notNull": true,
 							"propertyRefs": [
 								{
@@ -1314,7 +1314,7 @@ export const APPLICATION = {
 								}
 							],
 							"sinceVersion": 1,
-							"type": "NUMBER"
+							"type": "STRING"
 						},
 						{
 							"index": 8,

@@ -397,7 +397,8 @@ export const MAPPED_SUPERCLASS = [
 							"name": "Column",
 							"values": [
 								{
-									"name": "CREATED_AT"
+									"name": "CREATED_AT",
+									"nullable": false
 								}
 							]
 						},

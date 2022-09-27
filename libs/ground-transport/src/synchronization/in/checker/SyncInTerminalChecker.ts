@@ -10,6 +10,7 @@ import {
 	ITerminal,
 	ITerminalDao
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
+import { Terminal_GUID } from '@airport/travel-document-checkpoint'
 
 export interface ISyncInTerminalChecker {
 
@@ -56,18 +57,18 @@ export class SyncInTerminalChecker
 				terminal.owner = owner
 				terminalGUIDs.push(terminal.GUID)
 				messageTerminalIndexMap.set(terminal.GUID, i)
-				// Make sure id field is not in the input
-				delete terminal._localId
 			}
 
 			const terminals = await this.terminalDao.findByGUIDs(terminalGUIDs)
+			const foundTerminalsByGUID: Map<Terminal_GUID, ITerminal> = new Map()
 			for (const terminal of terminals) {
+				foundTerminalsByGUID.set(terminal.GUID, terminal)
 				const messageUserAccountIndex = messageTerminalIndexMap.get(terminal.GUID)
 				message.terminals[messageUserAccountIndex] = terminal
 			}
 
 			const missingTerminals = message.terminals
-				.filter(messageTerminal => !messageTerminal._localId)
+				.filter(messageTerminal => !foundTerminalsByGUID.has(messageTerminal.GUID))
 
 			if (missingTerminals.length) {
 				await this.addMissingTerminals(missingTerminals, context)

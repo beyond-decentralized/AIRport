@@ -193,6 +193,9 @@ export class QueryResultsDeserializer
 			// 	this.deepCopyProperties(from[i], to[i])
 			// }
 			for (let i = 0; i < from.length; i++) {
+				if(from[i] instanceof Object && !(from[i] instanceof Date) && !to[i]) {
+					to[i] = {}
+				}
 				this.deepCopyProperties(from[i], to[i])
 			}
 		}
@@ -208,8 +211,16 @@ export class QueryResultsDeserializer
 			}
 			let fromProperty = from[propertyName]
 			let toProperty = to[propertyName]
-			if (fromProperty instanceof Object && toProperty instanceof Object) {
-				this.deepCopyProperties(fromProperty, toProperty)
+			if (fromProperty instanceof Object) {
+				if(fromProperty instanceof Date) {
+					to[propertyName] = new Date(fromProperty.getTime()) as any
+				} else {
+					if (!toProperty) {
+						toProperty = {} as any
+						to[propertyName] = toProperty
+					}
+					this.deepCopyProperties(fromProperty, toProperty)
+				}
 			} else {
 				to[propertyName] = from[propertyName]
 			}

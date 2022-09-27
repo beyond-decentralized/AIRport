@@ -100,7 +100,6 @@ export interface UserAccountESelect
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -119,7 +118,7 @@ export interface UserAccountESelect
 export interface UserAccountEId
     extends IEntityIdProperties {
 	// Id Properties
-	_localId?: number | IQNumberField;
+	GUID?: string | IQStringField;
 
 	// Id Relations - Ids only
 
@@ -130,7 +129,7 @@ export interface UserAccountEId
  */
 export interface UserAccountEOptionalId {
 	// Id Properties
-	_localId?: number | IQNumberField;
+	GUID?: string | IQStringField;
 
 	// Id Relations - Ids only
 
@@ -146,7 +145,6 @@ export interface UserAccountEUpdateProperties
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
 	domain?: DomainEOptionalId;
@@ -169,7 +167,6 @@ export interface UserAccountGraph
 	passwordHash?: string | IQStringField;
 	ranking?: number | IQNumberField;
 	username?: string | IQStringField;
-	GUID?: string | IQStringField;
 
 	// Relations
 	domain?: DomainGraph;
@@ -189,8 +186,7 @@ export interface UserAccountEUpdateColumns
 	EMAIL?: string | IQStringField;
 	PASSWORD_HASH?: string | IQStringField;
 	RANKING?: number | IQNumberField;
-	USER_ACCOUNTNAME?: string | IQStringField;
-	USER_ACCOUNT_GUID?: string | IQStringField;
+	USERNAME?: string | IQStringField;
 	DOMAIN_LID?: number | IQNumberField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
@@ -224,7 +220,7 @@ extends UserAccountEId, UserAccountEUpdateColumns {
 export interface QUserAccount<IQE extends QUserAccount = any> extends IQEntity<IQE | QUserAccount>
 {
 	// Id Fields
-	_localId: IQNumberField;
+	GUID: IQStringField;
 
 	// Id Relations
 
@@ -233,7 +229,6 @@ export interface QUserAccount<IQE extends QUserAccount = any> extends IQEntity<I
 	passwordHash: IQStringField;
 	ranking: IQNumberField;
 	username: IQStringField;
-	GUID: IQStringField;
 
 	// Non-Id Relations
 	domain: QDomainQRelation;
@@ -249,7 +244,7 @@ export interface QUserAccountQId
 {
 	
 	// Id Fields
-	_localId: IQNumberField;
+	GUID: IQStringField;
 
 	// Id Relations
 

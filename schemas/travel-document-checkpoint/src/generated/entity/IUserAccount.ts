@@ -23,7 +23,7 @@ import {
 export interface IUserAccount {
 	
 	// Id Properties
-	_localId?: number;
+	GUID?: string;
 
 	// Id Relations
 
@@ -32,7 +32,6 @@ export interface IUserAccount {
 	passwordHash?: string;
 	ranking?: number;
 	username?: string;
-	GUID?: string;
 
 	// Non-Id Relations
 	domain?: IDomain;

@@ -15,14 +15,11 @@ async function processMessage(
     origin: string
 ): Promise<void> {
     const container = DEPENDENCY_INJECTION.db(message.transactionId)
-    const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
-
-    await transactionalConnector.processMessage(message, origin)
-
-    if (message.category === 'FromClientRedirected') {
+    try {
+        const transactionalConnector: IIframeTransactionalConnector = await container.get(TRANSACTIONAL_CONNECTOR) as any
+        await transactionalConnector.processMessage(message, origin)
+    } finally {
         DEPENDENCY_INJECTION.remove(container)
-    } else {
-        console.error('Unexpected message.category: ' + message.category);
     }
 }
 

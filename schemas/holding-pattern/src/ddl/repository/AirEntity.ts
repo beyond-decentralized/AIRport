@@ -82,11 +82,11 @@ export abstract class AirEntity {
 
 	@Column({ name: 'AGE_SUITABILITY', nullable: false })
 	@DbNumber()
-	ageSuitability?: number
+	ageSuitability?: number = 0
 
-	@Column({ name: 'CREATED_AT' })
+	@Column({ name: 'CREATED_AT', nullable: false })
 	@DbDate()
-	createdAt?: Date
+	createdAt?: Date = new Date()
 
 	// This field is local to the device only, when copied to new device this value is re-created
 	// It is needed for bulk updates of repository records, where there is now way to find out

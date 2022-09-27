@@ -26,12 +26,11 @@ import {
 export interface ITerminal {
 	
 	// Id Properties
-	_localId: number;
+	GUID: string;
 
 	// Id Relations
 
 	// Non-Id Properties
-	GUID?: string;
 	isLocal?: boolean;
 
 	// Non-Id Relations

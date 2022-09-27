@@ -9,6 +9,8 @@ export const INTERNAL_APP = '@airport/terminal'
 export const INTERNAL_DOMAIN = 'internal://domain'
 export const INTERNAL_APP_DOMAIN = 'airport'
 
+export const INTERNAL_DOMAINS = [INTERNAL_DOMAIN, INTERNAL_APP_DOMAIN]
+
 export interface IRootTransaction {
 	numberOfOperations: number
     // Only one new repository can be created at at time

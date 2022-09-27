@@ -49,7 +49,6 @@ export class UserAccountManager {
         }
         const passwordHash = await this.sha512(password)
         const userAccount: UserAccount = {
-            _localId: null,
             email,
             GUID: guidv4(),
             passwordHash,

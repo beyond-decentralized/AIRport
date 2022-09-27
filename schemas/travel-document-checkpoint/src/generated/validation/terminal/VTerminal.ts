@@ -55,10 +55,9 @@ import {
 export interface TerminalVDescriptor<T>
     extends IEntityVDescriptor<T> {
 	// Id Properties
-	_localId?: number | IVNumberField;
+	GUID?: string | IVStringField;
 	
 	// Non-Id Properties
-	GUID?: string | IVStringField;
 	isLocal?: boolean | IVBooleanField;
 
 	// Id Relations - full property interfaces

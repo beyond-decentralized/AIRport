@@ -17,9 +17,7 @@ import {
 	QTerminal,
 	QUserAccount,
 	Terminal_GUID,
-	Terminal_LocalId,
 	UserAccount_GUID,
-	UserAccount_LocalId
 } from '@airport/travel-document-checkpoint/dist/app/bundle'
 import {
 	Actor_LocalId,
@@ -44,15 +42,15 @@ export interface IActorDao
 
 	findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userAccountIds: UserAccount_LocalId[],
-		terminalIds: Terminal_LocalId[]
+		userAccountIds: UserAccount_GUID[],
+		terminalIds: Terminal_GUID[]
 	): Promise<IActor[]>
 
 	findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userAccountIds: UserAccount_LocalId[],
-		terminalIds: Terminal_LocalId[],
-		actorMap: Map<UserAccount_LocalId, Map<Terminal_LocalId, IActor>>,
+		userAccountIds: UserAccount_GUID[],
+		terminalIds: Terminal_GUID[],
+		actorMap: Map<UserAccount_GUID, Map<Terminal_GUID, IActor>>,
 		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void>
 
@@ -93,35 +91,35 @@ export class ActorDao
 
 	async findMapsWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userAccountIds: UserAccount_LocalId[],
-		terminalIds: Terminal_LocalId[],
-		actorMap: Map<UserAccount_LocalId, Map<Terminal_LocalId, IActor>>,
+		userAccountGUIDs: UserAccount_GUID[],
+		terminalGUIDs: Terminal_GUID[],
+		actorMap: Map<UserAccount_GUID, Map<Terminal_GUID, IActor>>,
 		actorMapById: Map<Actor_LocalId, IActor>
 	): Promise<void> {
 		const actors = await this.findWithDetailsByGlobalIds(
 			actorGUIDs,
-			userAccountIds,
-			terminalIds
+			userAccountGUIDs,
+			terminalGUIDs
 		)
 
 		for (const actor of actors) {
-			ensureChildJsMap(actorMap, actor.userAccount._localId)
-				.set(actor.terminal._localId, actor)
+			ensureChildJsMap(actorMap, actor.userAccount.GUID)
+				.set(actor.terminal.GUID, actor)
 			actorMapById.set(actor._localId, actor)
 		}
 	}
 
 	async findWithDetailsByGlobalIds(
 		actorGUIDs: Actor_GUID[],
-		userAccountIds: UserAccount_LocalId[],
-		terminalIds: Terminal_LocalId[]
+		userAccountGUIDs: UserAccount_GUID[],
+		terminalGUIDs: Terminal_GUID[]
 	): Promise<IActor[]> {
 		return await this.findWithDetailsAndGlobalIdsByWhereClause((
 			a: QActor
 		) => AND(
 			a.GUID.IN(actorGUIDs),
-			a.terminal._localId.IN(terminalIds),
-			a.userAccount._localId.IN(userAccountIds)
+			a.terminal.GUID.IN(terminalGUIDs),
+			a.userAccount.GUID.IN(userAccountGUIDs)
 		))
 	}
 
@@ -189,7 +187,6 @@ export class ActorDao
 			SELECT: {
 				'*': Y,
 				userAccount: {
-					_localId: Y,
 					GUID: Y,
 					ranking: Y,
 					username: Y
@@ -217,7 +214,7 @@ export class ActorDao
 		for (const actor of actors) {
 			VALUES.push([
 				actor.GUID, actor.application.index,
-				actor.userAccount._localId, actor.terminal._localId
+				actor.userAccount.GUID, actor.terminal.GUID
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
@@ -225,8 +222,8 @@ export class ActorDao
 			columns: [
 				a.GUID,
 				a.application.index,
-				a.userAccount._localId,
-				a.terminal._localId
+				a.userAccount.GUID,
+				a.terminal.GUID
 			],
 			VALUES
 		}, context)

@@ -10,7 +10,7 @@ import {
 	ISaveResult,
 	PortableQuery
 } from '@airport/ground-control';
-import { Actor, IActor, IAirEntity, Repository_LocalId } from '@airport/holding-pattern/dist/app/bundle';
+import { Actor, IActor, IAirEntity } from '@airport/holding-pattern/dist/app/bundle';
 import { IRepositoryManager } from '@airport/holding-pattern/dist/app/bundle';
 import {
 	ICredentials,
@@ -27,8 +27,7 @@ import {
 	IInsertManager,
 	IDeleteManager,
 	IQueryManager,
-	IUpdateManager,
-	ITerminalSessionManager
+	IUpdateManager
 } from '@airport/terminal-map';
 import { Observable } from 'rxjs';
 
@@ -222,7 +221,7 @@ export class TransactionalServer
 		) => {
 			saveResult = await this.operationManager.performSave(
 				entity, actor, transaction, context.rootTransaction, context)
-		}, context)
+		}, credentials, context)
 
 		return saveResult
 	}
@@ -252,7 +251,7 @@ export class TransactionalServer
 			// TODO: save to serialized repository to the specified destination
 			saveResult = await this.operationManager.performSave(
 				entity, actor, transaction, context.rootTransaction, context)
-		}, context)
+		}, credentials, context)
 
 		return saveResult
 	}
@@ -279,7 +278,7 @@ export class TransactionalServer
 			numInsertedRecords = await this.insertManager.insertValues(
 				portableQuery, actor, transaction, context.rootTransaction,
 				context, ensureGeneratedValues);
-		}, context)
+		}, credentials, context)
 
 		return numInsertedRecords
 	}
@@ -303,7 +302,7 @@ export class TransactionalServer
 		) => {
 			_localIds = await this.insertManager.insertValuesGetLocalIds(
 				portableQuery, actor, transaction, context.rootTransaction, context);
-		}, context)
+		}, credentials, context)
 
 		return _localIds
 	}
@@ -327,7 +326,7 @@ export class TransactionalServer
 		) => {
 			numUpdatedRecords = await this.updateManager.updateValues(
 				portableQuery, actor, transaction, context.rootTransaction, context);
-		}, context)
+		}, credentials, context)
 
 		return numUpdatedRecords
 	}
@@ -351,7 +350,7 @@ export class TransactionalServer
 		) => {
 			numDeletedRecords = await this.deleteManager.deleteWhere(
 				portableQuery, actor, transaction, context.rootTransaction, context);
-		}, context)
+		}, credentials, context)
 
 		return numDeletedRecords
 	}
@@ -362,51 +361,17 @@ export class TransactionalServer
 		if (this.tempActor) {
 			return this.tempActor;
 		}
-		if (credentials.domain === INTERNAL_DOMAIN) {
+		if (INTERNAL_DOMAIN === credentials.domain) {
 			return this.terminalStore.getFrameworkActor()
 		}
-		let actors: IActor[]
-		const actorMapForDomain = this.terminalStore
-			.getApplicationActorMapByDomainAndApplication_Names().get(credentials.domain)
-		if (actorMapForDomain) {
-			actors = actorMapForDomain.get(credentials.application)
-		} else {
-			throw new Error(
-				`No Actors found for
-	Domain:
-		${credentials.domain}
-			`)
+		const transaction = this.terminalStore.getTransactionManager()
+			.transactionInProgressMap.get(credentials.transactionId)
+		if(!transaction) {
+			throw new Error('Could not find transaction by Id: ' + credentials.transactionId)
 		}
-		if (!actors) {
-			throw new Error(
-				`No Actors found for
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
-			`)
-		}
-
-		const localTerminal = this.terminalStore.getFrameworkActor().terminal
-		if (!localTerminal.isLocal) {
-			throw new Error(
-				`Expecting terminal of the TerminalStore.frameworkActor to be .isLocal`)
-		}
-
-		let actor: IActor
-		for (const anActor of actors) {
-			if (anActor.terminal.GUID === localTerminal.GUID) {
-				actor = anActor
-				break
-			}
-		}
-		if (!actor) {
-			throw new Error(`Could not find actor for
-	Domain:
-		${credentials.domain}
-	Application:
-		${credentials.application}
-			`);
+		const actor = transaction.actor
+		if(!actor) {
+			throw new Error('No actor associated with transaction Id: ' + credentials.transactionId)
 		}
 
 		return actor

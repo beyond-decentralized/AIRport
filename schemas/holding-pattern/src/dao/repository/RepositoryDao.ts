@@ -96,14 +96,15 @@ export class RepositoryDao
 	): Promise<IRepository[]> {
 		let r: QRepository
 		const _localId = Y
+		const GUID = Y
 		return await this.db.find.tree({
 			SELECT: {
 				_localId,
 				owner: {
-					_localId
+					GUID
 				},
 				createdAt: Y,
-				GUID: Y
+				GUID
 			},
 			FROM: [
 				r = Q.Repository
@@ -120,7 +121,6 @@ export class RepositoryDao
 			SELECT: {
 				'*': Y,
 				owner: {
-					_localId: Y,
 					GUID: Y,
 					username: Y
 				}
@@ -143,7 +143,6 @@ export class RepositoryDao
 			SELECT: {
 				'*': Y,
 				owner: {
-					_localId: Y,
 					GUID: Y,
 					ranking: Y,
 					username: Y
@@ -180,7 +179,7 @@ export class RepositoryDao
 		for (const repository of repositories) {
 			VALUES.push([
 				repository.createdAt, repository.GUID, repository.ageSuitability,
-				repository.source, repository.immutable, repository.owner._localId,
+				repository.source, repository.immutable, repository.owner.GUID,
 			])
 		}
 		const _localIds = await this.db.insertValuesGenerateIds({
@@ -191,7 +190,7 @@ export class RepositoryDao
 				r.ageSuitability,
 				r.source,
 				r.immutable,
-				r.owner._localId
+				r.owner.GUID
 			],
 			VALUES
 		}, context)

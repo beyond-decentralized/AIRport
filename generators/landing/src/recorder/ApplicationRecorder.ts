@@ -87,7 +87,7 @@ export class ApplicationRecorder
 			await this.applicationColumnDao.insert(ddlObjects.columns, context)
 			await this.applicationPropertyColumnDao.insert(ddlObjects.propertyColumns, context)
 			await this.applicationRelationColumnDao.insert(ddlObjects.relationColumns, context)
-		}, context)
+		}, null, context)
 	}
 
 	private setDefaultVersioning(

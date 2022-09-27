@@ -127,7 +127,7 @@ export class OnlineManager
     //     // Finally, always flip update state to LOCAL
     //     this.repositoryManager.setUpdateStateForAll(UpdateState.LOCAL);
     //   }
-    // }, context);
+    // }, null, context);
   }
 
   // async repositoryGoOnline(

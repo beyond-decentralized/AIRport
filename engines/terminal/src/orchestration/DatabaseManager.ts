@@ -97,7 +97,7 @@ export class DatabaseManager
 
 			(this.transactionalServer as any).tempActor = null;
 			this.initialized = true;
-		}, {
+		}, null, {
 			doNotRecordHistory: true
 		})
 	}

@@ -28,8 +28,8 @@ export class RepositoryTerminal {
 	@Id()
 	@ManyToOne()
 	@JoinColumn({
-		name: 'TERMINAL_LID',
-		referencedColumnName: 'TERMINAL_LID'
+		name: 'TERMINAL_GUID',
+		referencedColumnName: 'GUID'
 	})
 	terminal: Terminal
 

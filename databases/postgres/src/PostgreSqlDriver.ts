@@ -194,7 +194,7 @@ export class PostgreSqlDriver
 			}
 
 			await this.initTables(createQueries)
-		})
+		}, null, context)
 	}
 
 	async initTables(

@@ -221,7 +221,7 @@ export class PostgreTransaction
 			}
 
 			await this.initTables(createQueries)
-		})
+		}, null, context)
 	}
 
 	async initTables(

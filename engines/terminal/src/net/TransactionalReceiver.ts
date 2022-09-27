@@ -12,7 +12,7 @@ import {
 import {
     IDbApplicationUtils,
     INTERNAL_DOMAIN,
-    INTERNAL_APP_DOMAIN
+    INTERNAL_DOMAINS
 } from '@airport/ground-control';
 import {
     IApiIMI,
@@ -83,7 +83,7 @@ export abstract class TransactionalReceiver {
         let result: any
         let errorMessage
         try {
-            if (message.domain === INTERNAL_DOMAIN) {
+            if (INTERNAL_DOMAIN === message.domain) {
                 throw new Error(`Internal domain cannot be used in external calls`)
             }
             let credentials: ITransactionCredentials = {
@@ -348,7 +348,7 @@ export abstract class TransactionalReceiver {
 
         let isFramework = true
         try {
-            if (message.domain !== INTERNAL_DOMAIN && message.domain !== INTERNAL_APP_DOMAIN) {
+            if (INTERNAL_DOMAINS.indexOf(message.domain) === -1) {
                 isFramework = false
                 await this.doNativeHandleCallback(
                     message, actor, context, nativeHandleCallback)

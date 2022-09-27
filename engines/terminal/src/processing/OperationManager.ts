@@ -153,7 +153,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 			_localId: actor._localId,
 			GUID: actor.GUID,
 			userAccount: actor.userAccount ? {
-				_localId: actor.userAccount._localId
+				GUID: actor.userAccount.GUID
 			} : null
 		}
 		let newRepository: ISaveRepository
@@ -168,7 +168,7 @@ in top level objects (that are passed into '...Dao.save(...)')`)
 					_localId: actor._localId,
 					GUID: actor.GUID,
 					userAccount: actor.userAccount ? {
-						_localId: actor.userAccount._localId
+						GUID: actor.userAccount.GUID
 					} : null
 				}
 			}

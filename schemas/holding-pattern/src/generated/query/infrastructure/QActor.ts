@@ -137,8 +137,8 @@ export interface ActorEUpdateColumns
 	extends IEntityUpdateColumns {
 	// Non-Id Columns
 	GUID?: string | IQStringField;
-	USER_ACCOUNT_LID?: number | IQNumberField;
-	TERMINAL_LID?: number | IQNumberField;
+	USER_ACCOUNT_GUID?: string | IQStringField;
+	TERMINAL_GUID?: string | IQStringField;
 	APPLICATION_INDEX?: number | IQNumberField;
 
 }

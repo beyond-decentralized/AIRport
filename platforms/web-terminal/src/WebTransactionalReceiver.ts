@@ -243,6 +243,19 @@ export class WebTransactionalReceiver
 			} catch (e) {
 				errorMessage = e.message ? e.message : e
 				console.error(e)
+			} finally {
+				try {
+				await this.endApiCall({
+					application: message.application,
+					domain: message.domain,
+					methodName: message.methodName,
+					objectName: message.objectName,
+					transactionId: message.transactionId
+				}, errorMessage, context);
+				} catch (e) {
+					errorMessage = e.message ? e.message : e
+					console.error(e)
+				}
 			}
 
 			args = message.args
