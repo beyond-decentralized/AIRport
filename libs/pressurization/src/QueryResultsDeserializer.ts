@@ -1,5 +1,5 @@
 import { AIR_ENTITY_UTILS, IAirEntityUtils } from '@airport/aviation-communication'
-import { Inject, Injected } from '@airport/direction-indicator'
+import { IInjected, Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
 	SerializationState
@@ -16,7 +16,8 @@ export interface IQueryResultsDeserializer {
 
 	deepCopyProperties<T>(
 		from: T,
-		to: T
+		to: T,
+		fromToMap: Map<T, T>
 	): void
 
 	setPropertyDescriptors(
@@ -163,42 +164,9 @@ export class QueryResultsDeserializer
 
 	deepCopyProperties<T>(
 		from: T,
-		to: T
+		to: T,
+		fromToMap: Map<T, T>
 	): void {
-		if (from instanceof Array) {
-			// let fromArrayEntityMapByGUID: Map<string, ArrayMemberEntityRecord<any>> = new Map()
-			// let toArrayEntityMapByGUID: Map<string, ArrayMemberEntityRecord<any>> = new Map()
-			// let haveFromWithoutId = false
-			// let haveFromObjects = false
-			// let haveFromEntities = false
-			// let haveFromPrimitives = false
-			// for (let i = 0; i < from.length; i++) {
-			// 	let fromEntity = from[i]
-
-			// 	if (fromEntity instanceof Object && !(fromEntity instanceof Date)) {
-			// 		haveFromObjects = true
-			// 		let entityGUID = this.airEntityUtils.encodeId(from[i])
-			// 		if (entityGUID) {
-			// 			haveFromEntities = true
-			// 			fromArrayEntityMapByGUID.set(entityGUID, from[i])
-			// 		} else {
-			// 			haveFromWithoutId = true
-			// 		}
-			// 	} else {
-			// 		haveFromPrimitives = true
-			// 	}
-			// }
-			// let haveToWithoutId = false
-			// for (let i = 0; i < from.length; i++) {
-			// 	this.deepCopyProperties(from[i], to[i])
-			// }
-			for (let i = 0; i < from.length; i++) {
-				if(from[i] instanceof Object && !(from[i] instanceof Date) && !to[i]) {
-					to[i] = {}
-				}
-				this.deepCopyProperties(from[i], to[i])
-			}
-		}
 		if (!(from instanceof Object)) {
 			return
 		}
@@ -209,21 +177,7 @@ export class QueryResultsDeserializer
 			if (!from.hasOwnProperty(propertyName)) {
 				continue
 			}
-			let fromProperty = from[propertyName]
-			let toProperty = to[propertyName]
-			if (fromProperty instanceof Object) {
-				if(fromProperty instanceof Date) {
-					to[propertyName] = new Date(fromProperty.getTime()) as any
-				} else {
-					if (!toProperty) {
-						toProperty = {} as any
-						to[propertyName] = toProperty
-					}
-					this.deepCopyProperties(fromProperty, toProperty)
-				}
-			} else {
-				to[propertyName] = from[propertyName]
-			}
+			this.copyObject(from, propertyName, to, fromToMap)
 		}
 		for (let propertyName in to) {
 			if (!to.hasOwnProperty(propertyName)) {
@@ -236,6 +190,44 @@ export class QueryResultsDeserializer
 		this.doSetPropertyDescriptors(to)
 	}
 
+	copyObject<T>(
+		fromParent: T,
+		key: string | number,
+		toParent: T,
+		fromToMap: Map<T, T>
+	) {
+		let from = fromParent[key]
+		let to = toParent[key]
+		let alreadyProcessedTo = fromToMap.get(from)
+		if(alreadyProcessedTo) {
+			toParent[key] = alreadyProcessedTo
+			return
+		}
+		if(from instanceof Object) {
+			if(from instanceof Array) {
+				if(!to || !(to instanceof Array)) {
+					to = []
+					toParent[key] = to
+				}
+				fromToMap.set(from as any, to)
+				for(let i = 0; i < from.length; i++) {
+					this.copyObject(from, i, to, fromToMap)
+				}
+			} if(from instanceof Date) {
+				toParent[key] = new Date(from.getTime()) as any
+			} else {
+				if(!to || !(to instanceof Object) || to instanceof Date || to instanceof Array) {
+					to = {}
+					toParent[key] = to
+				}
+				fromToMap.set(from, to)
+				this.deepCopyProperties(from, to, fromToMap)
+			}
+		} else {
+			toParent[key] = from
+		}
+	}
+
 	setPropertyDescriptors(
 		object: any
 	): void {
@@ -243,6 +235,7 @@ export class QueryResultsDeserializer
 			for (let i = 0; i < object.length; i++) {
 				this.setPropertyDescriptors(object[i])
 			}
+			return
 		}
 		if (!(object instanceof Object)) {
 			return
@@ -271,14 +264,15 @@ export class QueryResultsDeserializer
 			&& !Object.getOwnPropertyDescriptor(object, 'id')
 			&& (!objectPrototype
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+			let _this = this as IInjected
 			Object.defineProperty(object, 'id', {
 				get() {
-					return this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this)
+					return _this.__container__.getSync(AIR_ENTITY_UTILS).encodeId(this)
 				},
 				set(
 					idString: string
 				) {
-					this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
+					_this.__container__.getSync(AIR_ENTITY_UTILS).setId(idString, this)
 				}
 			});
 		}

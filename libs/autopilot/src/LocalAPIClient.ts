@@ -183,7 +183,7 @@ export class LocalAPIClient
 
         for (let i = 0; i < args.length; i++) {
             this.queryResultsDeserializer
-                .deepCopyProperties(response.args[i], args[i])
+                .deepCopyProperties(response.args[i], args[i], new Map())
         }
 
         return payload
