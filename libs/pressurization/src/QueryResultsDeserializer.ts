@@ -260,10 +260,10 @@ export class QueryResultsDeserializer
 		object: any
 	): void {
 		let objectPrototype = Object.getPrototypeOf(object)
-		if (!object.id
-			&& !Object.getOwnPropertyDescriptor(object, 'id')
+		if (!Object.getOwnPropertyDescriptor(object, 'id')
 			&& (!objectPrototype
-				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))) {
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))
+				&& !object.id) {
 			let _this = this as IInjected
 			Object.defineProperty(object, 'id', {
 				get() {
@@ -276,20 +276,20 @@ export class QueryResultsDeserializer
 				}
 			});
 		}
-		if (!object.isNew
-			&& !Object.getOwnPropertyDescriptor(object, 'isNew')
+		if (!Object.getOwnPropertyDescriptor(object, 'isNew')
 			&& (!objectPrototype
-				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))) {
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))
+				&& !object.isNew) {
 			Object.defineProperty(object, 'isNew', {
 				get() {
 					return !!this._actorRecordId
 				}
 			});
 		}
-		if (!object.createdBy
-			&& !Object.getOwnPropertyDescriptor(object, 'createdBy')
+		if (!Object.getOwnPropertyDescriptor(object, 'createdBy')
 			&& (!objectPrototype
-				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))) {
+				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))
+				&& !object.createdBy) {
 			Object.defineProperty(object, 'createdBy', {
 				get() {
 					return this.actor.userAccount
