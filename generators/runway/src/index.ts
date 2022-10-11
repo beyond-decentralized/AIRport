@@ -14,10 +14,10 @@ let sourceFilePaths = addRootDirPaths(
 )
 sourceFilePaths = addRootDirPaths(
 	configuration.airport.daoDir, 'src/dao', sourceFilePaths
-) 
+)
 sourceFilePaths = addRootDirPaths(
 	null, 'src/api', sourceFilePaths
-) 
+)
 
 function addRootDirPaths(
 	dirNameFromConfig: string,
@@ -70,15 +70,21 @@ function isTsFile(
 	return fileName.substr(fileName.length - 3, 3) === '.ts';
 }
 
-// Start the watcher
-watchFiles(
-	configuration,
-	{
-		module: 6 // tsc.ModuleKind.ES2020,
-	},
-	sourceFilePaths
-).then();
+export async function generate(): Promise<void> {
+	console.log('START AIRport generation')
 
-console.log('done')
+	try {
+		await watchFiles(
+			configuration,
+			{
+				module: 6 // tsc.ModuleKind.ES2020,
+			},
+			sourceFilePaths
+		)
+	} catch (e) {
+		console.log('ERROR in AIRport generation:')
+		console.log(e)
+	}
 
-
+	console.log('DONE AIRport generation')
+}

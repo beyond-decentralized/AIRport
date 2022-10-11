@@ -11,10 +11,31 @@ import {
 import { getClassPath } from './ddl/parser/utils'
 import tsc from 'typescript'
 import { visitApiFile } from './api/parser/ApiGenerator'
-import { visitInterfaceCandidateFile } from './interface/parser/InterfaceDetector'
+import { PathBuilder } from './ddl/builder/PathBuilder'
 
 const enumMap: Map<string, string> = new Map<string, string>()
 globalThis.enumMap = enumMap
+
+export interface IFileProcessor {
+
+	process(
+		node: ts.Node,
+		path: string
+	): void
+
+	build(
+		pathBuilder: PathBuilder
+	): void
+
+}
+
+export const additonalFileProcessors: IFileProcessor[] = []
+
+export function addFileProcessor(
+	fileProcessor: IFileProcessor
+): void {
+	additonalFileProcessors.push(fileProcessor)
+}
 
 /** Generate documention for all classes in a set of .ts files */
 export async function generateDefinitions(
@@ -84,6 +105,9 @@ function visit(
 	} else if (globalThis.configuration.airport.apiDir
 		&& path.indexOf(globalThis.configuration.airport.apiDir) > 0) {
 		visitApiFile(node, path)
+	}
+	for(const fileProcessor of additonalFileProcessors) {
+		fileProcessor.process(node, path)
 	}
 	// not needed as long as classes with APIS are referenced in
 	// client side tokens via their interfaces

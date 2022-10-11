@@ -25,7 +25,7 @@ import { JsonApplicationBuilder } from './ddl/builder/application/JsonApplicatio
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { Configuration } from './ddl/options/Options';
 import { EntityCandidate } from './ddl/parser/EntityCandidate';
-import { generateDefinitions } from './FileProcessor';
+import { additonalFileProcessors, generateDefinitions } from './FileProcessor';
 import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
@@ -44,7 +44,6 @@ export async function watchFiles(
 	rootFileNames: string[],
 ) {
 	const files: { [fileName: string]: { version: number } } = {};
-	const pathBuilder = new PathBuilder(configuration);
 
 	// initialize the list of files
 	rootFileNames.forEach(
@@ -80,7 +79,7 @@ export async function watchFiles(
 	};
 
 	// Create the language service files
-	const services = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
+	const languageService = tsc.createLanguageService(servicesHost, tsc.createDocumentRegistry());
 
 	// First time around, process all files
 	await processFiles(rootFileNames, options, configuration);
@@ -109,200 +108,207 @@ export async function watchFiles(
 	// 			});
 	// 	});
 
-	async function processFiles(
-		rootFileNames: string[],
-		options: ts.CompilerOptions,
-		configuration: Configuration,
-	): Promise<void> {
-		currentApplicationApi.apiObjectMap = {}
-		options.target = tsc.ScriptTarget.ES5;
-		const applicationMapByProjectName: { [projectName: string]: DbApplication } = {};
-		let entityMapByName =
-			await generateDefinitions(rootFileNames, options, configuration, applicationMapByProjectName);
-		emitFiles(entityMapByName, configuration, applicationMapByProjectName);
+}
+async function processFiles(
+	rootFileNames: string[],
+	options: ts.CompilerOptions,
+	configuration: Configuration,
+): Promise<void> {
+	currentApplicationApi.apiObjectMap = {}
+	options.target = tsc.ScriptTarget.ES5;
+	const applicationMapByProjectName: { [projectName: string]: DbApplication } = {};
+	let entityMapByName =
+		await generateDefinitions(rootFileNames, options, configuration, applicationMapByProjectName);
+	emitFiles(entityMapByName, configuration, applicationMapByProjectName);
+}
+
+function emitFiles(
+	entityMapByName: { [entityName: string]: EntityCandidate },
+	configuration: Configuration,
+	applicationMapByProjectName: { [projectName: string]: DbApplication },
+): void {
+	const pathBuilder = new PathBuilder(configuration);
+	const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
+	const applicationPath = generatedDirPath + '/application-spec.json';
+	const applicationSourcePath = generatedDirPath + '/application.ts';
+	const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
+
+	if (!fs.existsSync(generatedDirPath)) {
+		fs.mkdirSync(generatedDirPath);
 	}
 
-	function emitFiles(
-		entityMapByName: { [entityName: string]: EntityCandidate },
-		configuration: Configuration,
-		applicationMapByProjectName: { [projectName: string]: DbApplication },
-	): void {
-		const generatedDirPath = pathBuilder.workingDirPath + '/' + pathBuilder.generatedDirPath;
-		const applicationPath = generatedDirPath + '/application-spec.json';
-		const applicationSourcePath = generatedDirPath + '/application.ts';
-		const entityMappingsPath = generatedDirPath + '/entityMappings.ts';
+	const generatedApiDirPath = generatedDirPath + '/api'
+	if (!fs.existsSync(generatedApiDirPath)) {
+		fs.mkdirSync(generatedApiDirPath);
+	}
 
-		if (!fs.existsSync(generatedDirPath)) {
-			fs.mkdirSync(generatedDirPath);
+	let applicationString;
+	if (fs.existsSync(applicationPath)) {
+		applicationString = fs.readFileSync(applicationPath, 'utf8');
+	}
+
+	const applicationBuilder = new JsonApplicationBuilder(
+		configuration, entityMapByName, applicationString);
+	const [jsonApplication, indexedApplication] =
+		applicationBuilder.build(configuration.airport.domain,
+			applicationMapByProjectName,
+			entityOperationMap);
+
+	const entityFileReference: { [entityName: string]: string } = {};
+
+	const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
+		getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+
+	const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
+	const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
+	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
+	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
+	const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
+	const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
+	const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);
+	const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
+
+	const apiIndexBuilder = new ApiIndexBuilder(pathBuilder)
+	let numApiFiles = 0
+	for (const apiFilePath in currentApiFileSignatureMap) {
+		let apiFileSignature = currentApiFileSignatureMap[apiFilePath]
+		if (!apiFileSignature.apiClasses.length) {
+			continue
 		}
+		numApiFiles++
+		const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature, apiFilePath)
+		pathBuilder.setupFileForGeneration(apiFilePath, '', 'api/', pathBuilder.apiDirPath);
+		fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
+		apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
+	}
+	if (numApiFiles) {
+		fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
+	}
 
-		const generatedApiDirPath = generatedDirPath + '/api'
-		if (!fs.existsSync(generatedApiDirPath)) {
-			fs.mkdirSync(generatedApiDirPath);
+
+	for (const entityName in entityMapByName) {
+		const entity: EntityCandidate = entityMapByName[entityName];
+
+		const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'I', 'entity');
+		const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'Q', 'query');
+		const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'V', 'validation');
+		const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder,
+			entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
+		const vEntityFileBuilder = new VEntityFileBuilder(entity, fullVGenerationPath, pathBuilder,
+			entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
+		const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
+			entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
+
+		if (!entity.isSuperclass) {
+			entityFileReference[entity.docEntry.name] = fullGenerationPath;
 		}
+		entityInterfaceListingBuilder.addFileNameAndPaths(fullGenerationPath);
+		entityQInterfaceListingBuilder.addFileNameAndPaths(fullQGenerationPath);
+		entityVInterfaceListingBuilder.addFileNameAndPaths(fullVGenerationPath);
+		qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
+			entity.docEntry.isMappedSuperclass);
 
-		let applicationString;
-		if (fs.existsSync(applicationPath)) {
-			applicationString = fs.readFileSync(applicationPath, 'utf8');
+		const sIndexedEntity = indexedApplication.entityMapByName[entityName];
+
+		let tableIndex: ApplicationEntity_LocalId;
+		if (sIndexedEntity) {
+			tableIndex = sIndexedEntity.entity.tableIndex;
 		}
+		daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullQGenerationPath);
+		dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullVGenerationPath);
+		entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
+		const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'Q', 'query');
+		const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'V', 'validation');
+		const generationPath = pathBuilder.setupFileForGeneration(entity.path, 'I', 'entity');
+		const qEntitySourceString = qEntityFileBuilder.build();
+		const vEntitySourceString = vEntityFileBuilder.build();
+		fs.writeFileSync(qGenerationPath, qEntitySourceString);
+		fs.writeFileSync(vGenerationPath, vEntitySourceString);
+		const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
+		fs.writeFileSync(generationPath, entityInterfaceSourceString);
+	}
+	fs.writeFileSync(daoBuilder.listingFilePath, daoBuilder.build());
+	fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.application));
+	fs.writeFileSync(dvoBuilder.listingFilePath, dvoBuilder.build());
+	fs.writeFileSync(qApplicationBuilder.qApplicationFilePath, qApplicationBuilder.build(
+		configuration.airport.domain,
+		indexedApplication.application.name,
+	));
+	fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
+	fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
+	fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
+	fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
 
-		const applicationBuilder = new JsonApplicationBuilder(
-			configuration, entityMapByName, applicationString);
-		const [jsonApplication, indexedApplication] =
-			applicationBuilder.build(configuration.airport.domain,
-				applicationMapByProjectName,
-				entityOperationMap);
+	const mappedSuperclassBuilder = new MappedSuperclassBuilder(
+		configuration, entityMapByName);
 
-		const entityFileReference: { [entityName: string]: string } = {};
+	const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
+	fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
 
-		const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
-			getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
+	addOperations(jsonApplication as JsonApplicationWithApi, applicationPath,
+		applicationSourcePath, applicationBuilder).then();
 
-		const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
-		const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
-		const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
-		const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
-		const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
-		const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
-		const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);
-		const entityMappingBuilder = new EntityMappingBuilder(entityMappingsPath, pathBuilder);
+	for (const fileProcessor of additonalFileProcessors) {
+		fileProcessor.build(pathBuilder)
+	}
+}
 
-		const apiIndexBuilder = new ApiIndexBuilder(pathBuilder)
-		let numApiFiles = 0
-		for (const apiFilePath in currentApiFileSignatureMap) {
-			let apiFileSignature = currentApiFileSignatureMap[apiFilePath]
-			if (!apiFileSignature.apiClasses.length) {
-				continue
+async function addOperations(
+	jsonApplication: JsonApplicationWithApi,
+	applicationPath: string,
+	applicationSourcePath: string,
+	applicationBuilder: JsonApplicationBuilder
+) {
+	await applicationQueryGenerator.processQueries(entityOperationMap, jsonApplication);
+	applicationBuilder.addOperations(jsonApplication, entityOperationMap);
+
+	const applicationJsonString = JSON.stringify(jsonApplication, null, '\t');
+
+	const applicationSourceString = `export const APPLICATION = `
+		+ applicationJsonString + ';';
+
+	fs.writeFileSync(applicationPath, applicationJsonString);
+	fs.writeFileSync(applicationSourcePath, '/* eslint-disable */\n' + applicationSourceString);
+}
+
+function emitFile(
+	fileName: string,
+	languageService: ts.LanguageService
+) {
+	let output = languageService.getEmitOutput(fileName);
+
+	if (!output.emitSkipped) {
+		console.log(`Emitting ${fileName}`);
+	} else {
+		console.log(`Emitting ${fileName} failed`);
+		logErrors(fileName, languageService);
+	}
+
+	output.outputFiles.forEach(
+		o => {
+			fs.writeFileSync(o.name, o.text, 'utf8');
+		});
+}
+
+function logErrors(
+	fileName: string,
+	languageService: ts.LanguageService
+) {
+	let allDiagnostics = languageService.getCompilerOptionsDiagnostics()
+		.concat(languageService.getSyntacticDiagnostics(fileName))
+		.concat(languageService.getSemanticDiagnostics(fileName));
+
+	allDiagnostics.forEach(
+		diagnostic => {
+			let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
+			if (diagnostic.file) {
+				let {
+					line,
+					character
+				} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
+				console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
+			} else {
+				console.log(`  Error: ${message}`);
 			}
-			numApiFiles++
-			const apiBuilder = new ApiBuilder(pathBuilder, apiFileSignature, apiFilePath)
-			pathBuilder.setupFileForGeneration(apiFilePath, '', 'api/', pathBuilder.apiDirPath);
-			fs.writeFileSync(apiBuilder.fullGenerationPath, apiBuilder.build());
-			apiIndexBuilder.addApiFilePath(apiBuilder.fullGenerationPath)
-		}
-		if (numApiFiles) {
-			fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
-		}
-
-
-		for (const entityName in entityMapByName) {
-			const entity: EntityCandidate = entityMapByName[entityName];
-
-			const fullGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'I', 'entity');
-			const fullQGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'Q', 'query');
-			const fullVGenerationPath = pathBuilder.getFullPathToGeneratedSource(entity.path, 'V', 'validation');
-			const qEntityFileBuilder = new QEntityFileBuilder(entity, fullQGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
-			const vEntityFileBuilder = new VEntityFileBuilder(entity, fullVGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedApplication.entityMapByName[entityName], entity.path);
-			const entityInterfaceFileBuilder = new EntityInterfaceFileBuilder(entity, fullGenerationPath, pathBuilder,
-				entityMapByName, configuration, indexedApplication.entityMapByName[entityName]);
-
-			if (!entity.isSuperclass) {
-				entityFileReference[entity.docEntry.name] = fullGenerationPath;
-			}
-			entityInterfaceListingBuilder.addFileNameAndPaths(fullGenerationPath);
-			entityQInterfaceListingBuilder.addFileNameAndPaths(fullQGenerationPath);
-			entityVInterfaceListingBuilder.addFileNameAndPaths(fullVGenerationPath);
-			qApplicationBuilder.addFileNameAndPaths(entityName, entity.path, fullQGenerationPath,
-				entity.docEntry.isMappedSuperclass);
-
-			const sIndexedEntity = indexedApplication.entityMapByName[entityName];
-
-			let tableIndex: ApplicationEntity_LocalId;
-			if (sIndexedEntity) {
-				tableIndex = sIndexedEntity.entity.tableIndex;
-			}
-			daoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullQGenerationPath);
-			dvoBuilder.addFileNameAndPaths(tableIndex, entityName, entity.path, fullVGenerationPath);
-			entityMappingBuilder.addEntity(tableIndex, entityName, entity.path);
-			const qGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'Q', 'query');
-			const vGenerationPath = pathBuilder.setupFileForGeneration(entity.path, 'V', 'validation');
-			const generationPath = pathBuilder.setupFileForGeneration(entity.path, 'I', 'entity');
-			const qEntitySourceString = qEntityFileBuilder.build();
-			const vEntitySourceString = vEntityFileBuilder.build();
-			fs.writeFileSync(qGenerationPath, qEntitySourceString);
-			fs.writeFileSync(vGenerationPath, vEntitySourceString);
-			const entityInterfaceSourceString = entityInterfaceFileBuilder.build();
-			fs.writeFileSync(generationPath, entityInterfaceSourceString);
-		}
-		fs.writeFileSync(daoBuilder.listingFilePath, daoBuilder.build());
-		fs.writeFileSync(entityMappingBuilder.entityMappingsPath, entityMappingBuilder.build(configuration.airport.domain, configuration.airport.application));
-		fs.writeFileSync(dvoBuilder.listingFilePath, dvoBuilder.build());
-		fs.writeFileSync(qApplicationBuilder.qApplicationFilePath, qApplicationBuilder.build(
-			configuration.airport.domain,
-			indexedApplication.application.name,
-		));
-		fs.writeFileSync(entityInterfaceListingBuilder.generatedListingFilePath, entityInterfaceListingBuilder.build());
-		fs.writeFileSync(entityQInterfaceListingBuilder.generatedListingFilePath, entityQInterfaceListingBuilder.build());
-		fs.writeFileSync(entityVInterfaceListingBuilder.generatedListingFilePath, entityVInterfaceListingBuilder.build());
-		fs.writeFileSync(generatedSummaryBuilder.generatedListingFilePath, generatedSummaryBuilder.build());
-
-		const mappedSuperclassBuilder = new MappedSuperclassBuilder(
-			configuration, entityMapByName);
-
-		const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
-		fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
-
-		addOperations(jsonApplication as JsonApplicationWithApi, applicationPath,
-			applicationSourcePath, applicationBuilder).then();
-	}
-
-	async function addOperations(
-		jsonApplication: JsonApplicationWithApi,
-		applicationPath: string,
-		applicationSourcePath: string,
-		applicationBuilder: JsonApplicationBuilder
-	) {
-		await applicationQueryGenerator.processQueries(entityOperationMap, jsonApplication);
-		applicationBuilder.addOperations(jsonApplication, entityOperationMap);
-
-		const applicationJsonString = JSON.stringify(jsonApplication, null, '\t');
-
-		const applicationSourceString = `export const APPLICATION = `
-			+ applicationJsonString + ';';
-
-		fs.writeFileSync(applicationPath, applicationJsonString);
-		fs.writeFileSync(applicationSourcePath, '/* eslint-disable */\n' + applicationSourceString);
-	}
-
-	function emitFile(
-		fileName: string,
-	) {
-		let output = services.getEmitOutput(fileName);
-
-		if (!output.emitSkipped) {
-			console.log(`Emitting ${fileName}`);
-		} else {
-			console.log(`Emitting ${fileName} failed`);
-			logErrors(fileName);
-		}
-
-		output.outputFiles.forEach(
-			o => {
-				fs.writeFileSync(o.name, o.text, 'utf8');
-			});
-	}
-
-	function logErrors(
-		fileName: string,
-	) {
-		let allDiagnostics = services.getCompilerOptionsDiagnostics()
-			.concat(services.getSyntacticDiagnostics(fileName))
-			.concat(services.getSemanticDiagnostics(fileName));
-
-		allDiagnostics.forEach(
-			diagnostic => {
-				let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n');
-				if (diagnostic.file) {
-					let {
-						line,
-						character
-					} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start);
-					console.log(`  Error ${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
-				} else {
-					console.log(`  Error: ${message}`);
-				}
-			});
-	}
+		});
 }
