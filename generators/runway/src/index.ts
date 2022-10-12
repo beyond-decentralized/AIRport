@@ -4,20 +4,8 @@
 
 import * as fs from 'fs';
 import { readConfiguration } from './ddl/options/generator';
+import { additonalFileProcessors } from './FileProcessor';
 import { watchFiles } from './FileWatcher';
-
-const configuration = readConfiguration(process.cwd(), process.argv);
-globalThis.configuration = configuration;
-
-let sourceFilePaths = addRootDirPaths(
-	configuration.airport.ddlDir, 'src/ddl', []
-)
-sourceFilePaths = addRootDirPaths(
-	configuration.airport.daoDir, 'src/dao', sourceFilePaths
-)
-sourceFilePaths = addRootDirPaths(
-	null, 'src/api', sourceFilePaths
-)
 
 function addRootDirPaths(
 	dirNameFromConfig: string,
@@ -72,6 +60,23 @@ function isTsFile(
 
 export async function generate(): Promise<void> {
 	console.log('START AIRport generation')
+
+	const configuration = readConfiguration(process.cwd(), process.argv);
+	globalThis.configuration = configuration;
+	
+	let sourceFilePaths = addRootDirPaths(
+		configuration.airport.ddlDir, 'src/ddl', []
+	)
+	sourceFilePaths = addRootDirPaths(
+		configuration.airport.daoDir, 'src/dao', sourceFilePaths
+	)
+	sourceFilePaths = addRootDirPaths(
+		null, 'src/api', sourceFilePaths
+	)
+	
+	for(const fileProcessor of additonalFileProcessors) {
+		addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths)
+	}
 
 	try {
 		await watchFiles(

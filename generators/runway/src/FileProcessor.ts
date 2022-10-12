@@ -18,6 +18,8 @@ globalThis.enumMap = enumMap
 
 export interface IFileProcessor {
 
+	getDir(): string
+
 	process(
 		node: ts.Node,
 		path: string
