@@ -16,7 +16,7 @@ import {
 	EntityCandidate,
 	Interface
 } from './EntityCandidate';
-import { globalCandidateInheritanceMap } from './EntityDefinitionGenerator';
+import { GLOBAL_CANDIDATES } from './EntityDefinitionGenerator';
 import { FileImports } from './FileImports';
 import {
 	endsWith,
@@ -66,13 +66,13 @@ export class EntityCandidateRegistry {
 			if (targetCandidate.parentEntity) {
 				continue;
 			}
-			let parentType = globalCandidateInheritanceMap[targetCandidate.type];
+			let parentType = GLOBAL_CANDIDATES.inheritanceMap[targetCandidate.type];
 			while (parentType) {
 				targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(parentType);
 				if (targetCandidate.parentEntity) {
 					break;
 				}
-				parentType = globalCandidateInheritanceMap[parentType];
+				parentType = GLOBAL_CANDIDATES.inheritanceMap[parentType];
 			}
 			if (targetCandidate.parentEntity) {
 				continue;

@@ -5,7 +5,7 @@ import { Configuration } from './ddl/options/Options'
 import { EntityCandidate } from './ddl/parser/EntityCandidate'
 import { EntityCandidateRegistry } from './ddl/parser/EntityCandidateRegistry'
 import {
-	globalCandidateRegistry,
+	GLOBAL_CANDIDATES,
 	visitEntityFile
 } from './ddl/parser/EntityDefinitionGenerator'
 import { getClassPath } from './ddl/parser/utils'
@@ -51,8 +51,8 @@ export async function generateDefinitions(
 	globalThis.checker = program.getTypeChecker()
 
 	// Get the checker, we will use it to find more about classes
-	globalCandidateRegistry.configuration = configuration
-	globalCandidateRegistry.applicationMap = applicationMapByProjectName
+	GLOBAL_CANDIDATES.registry.configuration = configuration
+	GLOBAL_CANDIDATES.registry.applicationMap = applicationMapByProjectName
 	globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap)
 
 	// const daoFileMap: { [classPath: string]: DaoFile } = {}
@@ -73,7 +73,7 @@ export async function generateDefinitions(
 	// print out the doc
 	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 
-	return await globalCandidateRegistry
+	return await GLOBAL_CANDIDATES.registry
 		.matchVerifiedEntities(globalThis.processedCandidateRegistry)
 }
 

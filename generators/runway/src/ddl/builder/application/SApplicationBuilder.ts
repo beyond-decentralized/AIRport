@@ -18,7 +18,7 @@ import {
 	PropertyDocEntry
 } from '../../parser/DocEntry';
 import { EntityCandidate } from '../../parser/EntityCandidate';
-import { globalCandidateRegistry } from '../../parser/EntityDefinitionGenerator';
+import { GLOBAL_CANDIDATES } from '../../parser/EntityDefinitionGenerator';
 import { ApplicationRelationResolver } from './ApplicationRelationResolver';
 import { SEntity } from './SEntity';
 import {
@@ -598,7 +598,7 @@ class ${entityCandidate.docEntry.name}
 			let applicationReference = referencedApplicationsByProjectName[aProperty.fromProject];
 
 			if (!applicationReference) {
-				const dbApplication = globalCandidateRegistry.getReferencedApplication(aProperty.fromProject, aProperty);
+				const dbApplication = GLOBAL_CANDIDATES.registry.getReferencedApplication(aProperty.fromProject, aProperty);
 				if (!dbApplication) {
 					throw new Error(`Could not find related project '${aProperty.fromProject}' 
 					for ${entity.name}.${aProperty.name}`);

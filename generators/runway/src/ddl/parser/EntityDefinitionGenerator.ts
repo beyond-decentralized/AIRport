@@ -30,10 +30,22 @@ import {
  * Created by Papa on 3/26/2016.
  */
 
-export const globalCandidateRegistry
-	= new EntityCandidateRegistry(globalThis.enumMap)
-export const globalCandidateInheritanceMap: Map<string, string>
-	= new Map<string, string>()
+export class GlobalCandidates {
+
+	_registry: EntityCandidateRegistry
+	inheritanceMap: Map<string, string> = new Map<string, string>()
+
+	get registry(): EntityCandidateRegistry {
+		if(!this._registry) {
+			this._registry = new EntityCandidateRegistry(globalThis.enumMap)
+		}
+
+		return this._registry
+	}
+
+}
+
+export const GLOBAL_CANDIDATES = new GlobalCandidates()
 
 enum TsObjectType {
 	OBJECT_LITERAL = 'OBJECT_LITERAL',
@@ -686,7 +698,7 @@ function serializeClass(
 
 	let entityDecorator = isDecoratedAsEntity(decorators)
 
-	let classInheritanceEntry = globalCandidateInheritanceMap[details.name]
+	let classInheritanceEntry = GLOBAL_CANDIDATES.inheritanceMap[details.name]
 	if (classInheritanceEntry != undefined) {
 		throw new Error(`Found duplicate entity '${details.name}'. 
 			Non-unique class names are not supported`)
@@ -704,15 +716,15 @@ function serializeClass(
 				property.ownerEntity = entityCandidate
 			})
 
-		globalCandidateRegistry.addCandidate(entityCandidate)
+		GLOBAL_CANDIDATES.registry.addCandidate(entityCandidate)
 		globalThis.processedCandidateRegistry.addCandidate(entityCandidate)
 
-		globalCandidateInheritanceMap[details.name] = parentClassName
-		if (globalCandidateInheritanceMap[parentClassName] == undefined) {
-			globalCandidateInheritanceMap[parentClassName] = null
+		GLOBAL_CANDIDATES.inheritanceMap[details.name] = parentClassName
+		if (GLOBAL_CANDIDATES.inheritanceMap[parentClassName] == undefined) {
+			GLOBAL_CANDIDATES.inheritanceMap[parentClassName] = null
 		}
 	} else if (classInheritanceEntry == null) {
-		globalCandidateInheritanceMap[details.name] = parentClassName
+		GLOBAL_CANDIDATES.inheritanceMap[details.name] = parentClassName
 	}
 
 	return details
@@ -723,10 +735,10 @@ function registerInterface(
 	classPath: string
 ) {
 	let anInterface = new Interface(classPath, symbol.name)
-	let interfaces = globalCandidateRegistry.allInterfacesMap.get(symbol.name)
+	let interfaces = GLOBAL_CANDIDATES.registry.allInterfacesMap.get(symbol.name)
 	if (!interfaces) {
 		interfaces = []
-		globalCandidateRegistry.allInterfacesMap.set(symbol.name, interfaces)
+		GLOBAL_CANDIDATES.registry.allInterfacesMap.set(symbol.name, interfaces)
 	}
 	interfaces.push(anInterface)
 }
