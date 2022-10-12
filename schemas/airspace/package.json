@@ -39,5 +39,5 @@
     "dev": "rollup -c ./rollup.config.js -w",
     "build": "rollup -c ./rollup.config.js"
   },
-  "types": "dist/esm/index.d.ts"
+  "types": "dist/index.d.ts"
 }

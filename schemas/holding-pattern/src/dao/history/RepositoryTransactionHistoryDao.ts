@@ -12,6 +12,7 @@ import {
 } from '@airport/ground-control'
 import {
 	Actor_LocalId,
+	OperationHistory,
 	RecordHistory_ActorRecordId,
 } from '../../ddl/ddl'
 import {
@@ -173,8 +174,8 @@ export class RepositoryTransactionHistoryDao
 				repositoryTransactionHistoryMapByRepositoryId, repoTransHistory.repository._localId)
 				.push(repoTransHistory)
 			repoTransHistory.operationHistory.sort((
-				rth1: IOperationHistory,
-				rth2: IOperationHistory
+				rth1: OperationHistory,
+				rth2: OperationHistory
 			) => {
 				if (rth1.orderNumber < rth2.orderNumber) {
 					return -1
