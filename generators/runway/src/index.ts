@@ -75,7 +75,7 @@ export async function generate(): Promise<void> {
 	)
 	
 	for(const fileProcessor of additonalFileProcessors) {
-		addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths)
+		sourceFilePaths = addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths)
 	}
 
 	try {
