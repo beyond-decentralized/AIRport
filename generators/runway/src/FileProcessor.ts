@@ -12,6 +12,7 @@ import { getClassPath } from './ddl/parser/utils'
 import tsc from 'typescript'
 import { visitApiFile } from './api/parser/ApiGenerator'
 import { PathBuilder } from './ddl/builder/PathBuilder'
+import { normalizePath } from './resolve/pathResolver'
 
 const enumMap: Map<string, string> = new Map<string, string>()
 globalThis.enumMap = enumMap
@@ -109,7 +110,11 @@ function visit(
 		visitApiFile(node, path)
 	}
 	for(const fileProcessor of additonalFileProcessors) {
-		fileProcessor.process(node, path)
+		let normalizedPath = normalizePath(path)
+
+		if (normalizedPath.indexOf(fileProcessor.getDir()) > -1) {
+			fileProcessor.process(node, path)
+		}
 	}
 	// not needed as long as classes with APIS are referenced in
 	// client side tokens via their interfaces
