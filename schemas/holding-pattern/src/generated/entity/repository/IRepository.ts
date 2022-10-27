@@ -44,6 +44,7 @@ export interface IRepository {
 	createdAt?: Date;
 	immutable?: boolean;
 	source?: string;
+	fullApplicationName?: string;
 
 	// Non-Id Relations
 	owner?: IUserAccount;

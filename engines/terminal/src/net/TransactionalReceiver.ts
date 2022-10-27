@@ -383,7 +383,7 @@ export abstract class TransactionalReceiver {
                 GUID: actor.terminal.GUID
             },
             userAccount: {
-                GUID: actor.userAccount.username,
+                GUID: actor.userAccount.GUID,
                 username: actor.userAccount.username
             }
         }

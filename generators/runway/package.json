@@ -31,7 +31,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.0.0"
   },
-  "main": "dist/esm/index.js",
+  "main": "dist/esm/index.mjs",
   "module": "dist/esm/index.mjs",
   "files": [
     "dist"

@@ -1,3 +1,3 @@
-import { generate } from '@airport/runway/dist/esm/index.mjs'
+import { generate } from '@airport/runway'
 
 await generate()

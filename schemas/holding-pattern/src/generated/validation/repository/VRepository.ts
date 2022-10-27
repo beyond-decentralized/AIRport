@@ -76,6 +76,7 @@ export interface RepositoryVDescriptor<T>
 	createdAt?: Date | IVDateField;
 	immutable?: boolean | IVBooleanField;
 	source?: string | IVStringField;
+	fullApplicationName?: string | IVStringField;
 
 	// Id Relations - full property interfaces
 

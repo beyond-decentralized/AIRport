@@ -100,6 +100,7 @@ export class EntityGraphReconstructor
 					continue
 				}
 				if (dbProperty.relation && dbProperty.relation.length) {
+					let relationIsFromParentSchema = false
 					const dbRelation = dbProperty.relation[0]
 					let relatedEntities = propertyValue
 					let isManyToOne = false
@@ -125,14 +126,14 @@ for ${dbEntity.name}.${dbProperty.name}`)
 						// If a child entity is in a different application it won't be processed
 						// the calling application should call the API of the other application
 						// explicitly so that the application logic may be run
-						isParentSchemaId = true
+						relationIsFromParentSchema = true
 					}
 					context.dbEntity = dbRelation.relationEntity
 					let propertyCopyValue
 					if (propertyValue) {
 						propertyCopyValue = this.linkEntityGraph(relatedEntities,
-							entitiesByOperationIndex, isParentSchemaId, context)
-						if (isParentSchemaId) {
+							entitiesByOperationIndex, isParentSchemaId || relationIsFromParentSchema, context)
+						if (isParentSchemaId || relationIsFromParentSchema) {
 							for (const propertyCopyValueEntry of propertyCopyValue) {
 								const operationUniqueId = this.entityStateManager
 									.getOperationUniqueId(propertyCopyValueEntry)

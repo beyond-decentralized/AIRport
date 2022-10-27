@@ -93,12 +93,12 @@ export class EntityUtils
 						break
 					}
 				}
-				if (matchingQEntity) {
+				if (matchingQEntity && matchingQEntity.__driver__.dbEntity.isAirEntity) {
 					this.ensureIdAtLevel(subFragment, matchingQEntity)
 				}
 			}
 		}
-		if (!selectClauseFragment.id) {
+		if (!qEntity.__driver__.dbEntity.isAirEntity || !selectClauseFragment.id) {
 			return
 		}
 		let repository = selectClauseFragment.repository

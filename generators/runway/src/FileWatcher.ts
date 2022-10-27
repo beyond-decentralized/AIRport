@@ -109,6 +109,7 @@ export async function watchFiles(
 	// 	});
 
 }
+
 async function processFiles(
 	rootFileNames: string[],
 	options: ts.CompilerOptions,

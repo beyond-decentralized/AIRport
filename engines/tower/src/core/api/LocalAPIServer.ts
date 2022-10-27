@@ -15,6 +15,7 @@ import {
 import { Actor } from '@airport/holding-pattern/dist/app/bundle';
 import { RequestManager } from '@airport/arrivals-n-departures';
 import { IApiCallContext, ITransactionContext } from '@airport/terminal-map';
+import { IQueryResultsDeserializer } from '@airport/pressurization'
 
 @Injected()
 export class LocalAPIServer
@@ -28,6 +29,9 @@ export class LocalAPIServer
 
     @Inject()
     requestManager: RequestManager
+
+    @Inject()
+    queryResultsDeserializer: IQueryResultsDeserializer
 
     async handleRequest(
         request: ILocalAPIRequest<LocalApiRequestCategoryType, Actor>
@@ -84,6 +88,10 @@ export class LocalAPIServer
         let args = request.args as any
         if (context) {
             args = [...request.args, context]
+        }
+
+        for (let arg of request.args) {
+            this.queryResultsDeserializer.setPropertyDescriptors(arg)
         }
 
         const result = apiObject[request.methodName].apply(apiObject, [...request.args, context])

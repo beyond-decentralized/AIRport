@@ -7,6 +7,7 @@ import {
 	IEntityStateAsFlags,
 	IEntityStateManager
 } from '@airport/ground-control';
+import { SerializationStateManager } from '@airport/pressurization';
 
 export interface EntityWithState {
 	__state__: EntityState;
@@ -17,7 +18,7 @@ export interface EntityWithState {
 export class EntityStateManager
 	implements IEntityStateManager {
 	static DELETED_PROPERTY = '__deleted__'
-	static ORIGINAL_VALUES_PROPERTY = '__originalValues__'
+	static ORIGINAL_VALUES_PROPERTY = SerializationStateManager.ORIGINAL_VALUES_PROPERTY
 	static STATE_FIELD = '__state__'
 	static OPERATION_UNIQUE_ID_FIELD = '__OUID__'
 

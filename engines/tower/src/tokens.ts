@@ -15,6 +15,7 @@ import { DatabaseFacade } from './facade/DatabaseFacade';
 import { QueryFacade } from './facade/QueryFacade';
 import { DATABASE_FACADE, QUERY_FACADE } from '@airport/tarmaq-dao';
 import { OPERATION_DESERIALIZER, REQUEST_MANAGER } from '@airport/arrivals-n-departures';
+import { QUERY_RESULTS_DESERIALIZER } from '@airport/pressurization';
 
 const tower = lib('tower')
 
@@ -41,6 +42,7 @@ LOCAL_API_SERVER.setClass(LocalAPIServer)
 LOCAL_API_SERVER.setDependencies({
     apiRegistry: API_REGISTRY,
     applicationStore: APPLICATION_STORE,
+    queryResultsDeserializer: QUERY_RESULTS_DESERIALIZER,
     requestManager: REQUEST_MANAGER
 })
 

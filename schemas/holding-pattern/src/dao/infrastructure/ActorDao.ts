@@ -241,7 +241,6 @@ export class ActorDao
 		let a: QActor
 		let ap: QApplication
 		let t: QTerminal
-		const id = Y
 		const username = Y
 		const GUID = Y
 		return await this.db.find.tree({
@@ -255,16 +254,13 @@ export class ActorDao
 					}
 				},
 				terminal: {
-					id,
 					GUID,
 					owner: {
-						id,
 						username,
 						GUID,
 					}
 				},
 				userAccount: {
-					id,
 					username,
 					GUID,
 				}

@@ -164,6 +164,7 @@ export interface RepositoryESelect
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
+	fullApplicationName?: string | IQStringField;
 
 	// Id Relations - full property interfaces
 
@@ -217,6 +218,7 @@ export interface RepositoryEUpdateProperties
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
+	fullApplicationName?: string | IQStringField;
 
 	// Non-Id Relations - _localIds only & no OneToMany's
 	owner?: UserAccountEOptionalId;
@@ -241,6 +243,7 @@ export interface RepositoryGraph
 	createdAt?: Date | IQDateField;
 	immutable?: boolean | IQBooleanField;
 	source?: string | IQStringField;
+	fullApplicationName?: string | IQStringField;
 
 	// Relations
 	owner?: UserAccountGraph;
@@ -269,6 +272,7 @@ export interface RepositoryEUpdateColumns
 	CREATED_AT?: Date | IQDateField;
 	IMMUTABLE?: boolean | IQBooleanField;
 	SOURCE?: string | IQStringField;
+	FULL_APPLICATION_NAME?: string | IQStringField;
 	OWNER_USER_ACCOUNT_GUID?: string | IQStringField;
 	CONTINENT_ID?: number | IQNumberField;
 	COUNTRY_ID?: number | IQNumberField;
@@ -313,6 +317,7 @@ export interface QRepository<IQE extends QRepository = any> extends IQEntity<IQE
 	createdAt: IQDateField;
 	immutable: IQBooleanField;
 	source: IQStringField;
+	fullApplicationName: IQStringField;
 
 	// Non-Id Relations
 	owner: QUserAccountQRelation;

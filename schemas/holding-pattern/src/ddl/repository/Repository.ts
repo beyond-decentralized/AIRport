@@ -36,6 +36,7 @@ import {
 	Repository_Name,
 	Repository_Source
 } from "../../types";
+import { FullApplication_Name } from "@airport/ground-control";
 
 /**
  * Created by Papa on 2/9/2017.
@@ -76,6 +77,10 @@ export class Repository
 	@Column({ name: "SOURCE", nullable: false })
 	@DbString()
 	source: Repository_Source
+
+	@Column({ name: "FULL_APPLICATION_NAME", nullable: false })
+	@DbString()
+	fullApplicationName: FullApplication_Name
 
 	@ManyToOne()
 	@JoinColumn({

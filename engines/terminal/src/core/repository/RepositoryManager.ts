@@ -102,9 +102,10 @@ already contains a new repository.`)
 		actor: IActor
 	): Repository {
 		const repository: Repository = {
+			_localId: null,
 			ageSuitability: 0,
 			createdAt: new Date(),
-			_localId: null,
+			fullApplicationName: actor.application.fullName,
 			immutable: false,
 			name,
 			owner: actor.userAccount as any,
@@ -112,7 +113,7 @@ already contains a new repository.`)
 			// platformConfig: null,
 			repositoryTransactionHistory: [],
 			// FIXME: propage the 
-			source: actor.application.fullName,
+			source: 'localhost:9000',
 			GUID: guidv4(),
 		}
 

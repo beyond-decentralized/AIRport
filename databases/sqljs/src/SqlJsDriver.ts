@@ -59,7 +59,7 @@ export class SqlJsDriver
 			await this.wait(50)
 		}
 		const command = `SAVEPOINT '${transaction.id}'`
-		console.warn(command)
+		console.warn(new Date().toISOString() + '  ' + command)
 		this._db.exec(command)
 	}
 
@@ -71,7 +71,7 @@ export class SqlJsDriver
 			await this.wait(50)
 		}
 		const command = `RELEASE SAVEPOINT '${transaction.id}'`
-		console.warn(command)
+		console.warn(new Date().toISOString() + '  ' + command)
 		this._db.exec(command)
 	}
 
@@ -83,7 +83,7 @@ export class SqlJsDriver
 			await this.wait(50)
 		}
 		const command = `ROLLBACK TO SAVEPOINT '${transaction.id}'`
-		console.warn(command)
+		console.warn(new Date().toISOString() + '  ' + command)
 		this._db.exec(command)
 	}
 
