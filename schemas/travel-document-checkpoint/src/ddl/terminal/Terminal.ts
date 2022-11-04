@@ -43,7 +43,7 @@ export class Terminal {
 
 	@Column({ name: 'IS_LOCAL', nullable: false })
 	@DbBoolean()
-	isLocal: Terminal_IsLocal = false
+	isLocal?: Terminal_IsLocal = false
 
 	@ManyToOne()
 	@JoinColumn({

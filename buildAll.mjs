@@ -30,6 +30,7 @@ const secondStageProjectDirectories = [
     'apis/terminal-map',
     'engines/tower',
     'libs/fuel-hydrant-system',
+    'libs/session-state',
     'libs/blueprint',
     'generators/takeoff',
     'generators/landing',
@@ -78,7 +79,7 @@ async function buildPeerFramework(
     if (runRushUpdate) {
         await wireInDependencies(frameworkDirectoryName)
     }
-    await buildProjects(projectDirectoriesInBuildOrder, 'rollup', ['-c']);
+    await buildProjects(projectDirectoriesInBuildOrder, 'npm', ['run', 'build']);
 }
 
 async function buildUI(
@@ -96,10 +97,6 @@ async function buildProjects(
     parameters
 ) {
     for (const projectDirectory of projectsDirectoriesInBuildOrder) {
-        process.stdout.write(`
-        RUNNING 'rollup -c' in ${projectDirectory}
-
-        `)
         const directoryDepth = projectDirectory.split('/');
         let navigateBackPath = '..'
         for (let i = 1; i < directoryDepth.length; i++) {
@@ -140,6 +137,11 @@ async function execute(
             ]
             command = 'cmd'
         }
+
+        process.stdout.write(`
+        RUNNING '${command} ${parameters.join(' ')}' in ${process.cwd()}
+    
+        `)
 
         const runCommand = spawn(command, parameters);
 
