@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "lib/",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "client",
+    "lib",
+    "node_modules",
+    "runtime"
+  ],
+  "extends": "../../tsconfig.core.json"
+}

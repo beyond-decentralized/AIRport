@@ -37,6 +37,7 @@ import {
     REPOSITORY_TRANSACTION_HISTORY_DUO,
     TRANSACTION_HISTORY_DUO
 } from '@airport/holding-pattern/dist/app/bundle'
+import { SESSION_STATE_API } from '@airport/session-state/dist/app/bundle'
 import { QUERY_FACADE } from '@airport/tarmaq-dao'
 import { QUERY_UTILS } from '@airport/tarmaq-query'
 import {
@@ -293,6 +294,7 @@ STRUCTURAL_ENTITY_VALIDATOR.setDependencies({
 
 TERMINAL_SESSION_MANAGER.setClass(TerminalSessionManager)
 TERMINAL_SESSION_MANAGER.setDependencies({
+    sessionStateApi: SESSION_STATE_API,
     terminalStore: TERMINAL_STORE,
     userAccountManager: USER_ACCOUNT_MANAGER,
     userStore: USER_STORE

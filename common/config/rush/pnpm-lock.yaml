@@ -36,6 +36,7 @@ dependencies:
   '@rush-temp/sequence': 'file:projects/sequence.tgz'
   '@rush-temp/server': 'file:projects/server.tgz'
   '@rush-temp/server-1': 'file:projects/server-1.tgz'
+  '@rush-temp/session-state': 'file:projects/session-state.tgz'
   '@rush-temp/sqlite': 'file:projects/sqlite.tgz'
   '@rush-temp/sqljs': 'file:projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:projects/takeoff.tgz'
@@ -14018,6 +14019,24 @@ packages:
       integrity: sha512-wcdMg6lfY+90l6meYWIzKn7Lx5Ie2mgK3g5UD48+tYDHWVAfg8HHD4DkQkPf52lMt0bCw8oH929wnBShKNAGug==
       tarball: 'file:projects/server.tgz'
     version: 0.0.0
+  'file:projects/session-state.tgz':
+    dependencies:
+      '@rollup/plugin-commonjs': 21.1.0_rollup@2.78.1
+      '@rollup/plugin-node-resolve': 13.3.0_rollup@2.78.1
+      rollup: 2.78.1
+      rollup-plugin-dts: 4.2.2_rollup@2.78.1+typescript@4.8.2
+      rollup-plugin-peer-deps-external: 2.2.4_rollup@2.78.1
+      rollup-plugin-terser: 7.0.2_rollup@2.78.1
+      rollup-plugin-typescript2: 0.33.0_rollup@2.78.1+typescript@4.8.2
+      tslib: 2.4.0
+      typescript: 4.8.2
+      uuid: 8.3.2
+    dev: false
+    name: '@rush-temp/session-state'
+    resolution:
+      integrity: sha512-mnuetTkUDvTsCWpHKKZP6xuhlX9YoVBvrf0L+QPTUBW0XkVw5hpTdApcq1Y0CA2eHzUZR43v2uF1u153wLZpnw==
+      tarball: 'file:projects/session-state.tgz'
+    version: 0.0.0
   'file:projects/sqlite.tgz':
     dependencies:
       '@rollup/plugin-commonjs': 21.1.0_rollup@2.78.1
@@ -14180,7 +14199,7 @@ packages:
     dev: false
     name: '@rush-temp/tower'
     resolution:
-      integrity: sha512-+3AaMnHs+1j+JuMgRRr4fn0H80cVe1tGgdfXCHbF2ED0qzlBlwqrinuDXIuQBIwEwE+91wbsT+C5ueYTXV59Dw==
+      integrity: sha512-JBt5D1Op2U4f6Rdx+KIFdjwbHaRCmd9w7llDWozE4r9nUHiTP5MHVxYVxArU/JpYprceplZy7DsCUqZD4G2QLA==
       tarball: 'file:projects/tower.tgz'
     version: 0.0.0
   'file:projects/travel-document-checkpoint.tgz':
@@ -14503,6 +14522,7 @@ specifiers:
   '@rush-temp/sequence': 'file:./projects/sequence.tgz'
   '@rush-temp/server': 'file:./projects/server.tgz'
   '@rush-temp/server-1': 'file:./projects/server-1.tgz'
+  '@rush-temp/session-state': 'file:./projects/session-state.tgz'
   '@rush-temp/sqlite': 'file:./projects/sqlite.tgz'
   '@rush-temp/sqljs': 'file:./projects/sqljs.tgz'
   '@rush-temp/takeoff': 'file:./projects/takeoff.tgz'
