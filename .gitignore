@@ -2,7 +2,11 @@
 /apis/**/dist/*
 /databases/**/dist/*
 /engines/**/dist/*
-/generators/**/dist/*
+/generators/landing/dist/*
+/generators/takeoff/dist/*
+/generators/runway/dist/**/*.d.ts
+/generators/runway/dist/**/*.d.ts.map
+/generators/runway/dist/**/index.mjs.map
 /libs/**/dist/*
 /ORMs/**/dist/*
 /platforms/**/dist/*
@@ -10,6 +14,7 @@
 /UI/**/build/*
 /UI/**/dist/*
 /UI/**/client/build/*
+**/generated/*
 
 npm-debug.log
 

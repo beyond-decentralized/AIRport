@@ -1,22 +1,25 @@
 {
-  "name": "@airport/airspace",
+  "name": "@airport/session-state",
   "version": "0.0.1",
   "airport": {
     "domain": "airport",
-    "application": "@airport/airspace"
+    "application": "@airport/session-state"
   },
   "peerDependencies": {
     "@airbridge/validate": "0.0.1",
     "@airport/air-traffic-control": "0.0.1",
+    "@airport/airspace": "0.0.1",
     "@airport/autopilot": "0.0.1",
     "@airport/aviation-communication": "0.0.1",
     "@airport/check-in": "0.0.1",
     "@airport/direction-indicator": "0.0.1",
     "@airport/ground-control": "0.0.1",
-    "@airport/apron": "0.0.1",
     "@airport/tarmaq-dao": "0.0.1",
     "@airport/tarmaq-entity": "0.0.1",
-    "@airport/tarmaq-query": "0.0.1"
+    "@airport/tarmaq-query": "0.0.1",
+    "@airport/terminal-map": "0.0.1",
+    "@airport/travel-document-checkpoint": "0.0.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@airport/runway": "0.0.1",

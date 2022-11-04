@@ -110,7 +110,7 @@ export class ApplicationLoader
 			console.error(`Unable to load Application Spec FROM:
 ${process.cwd()}/node_modules/${projectName}/src/generated/application-spec.json
 
-Entity: ${property?.ownerEntity.docEntry.name}
+Entity: ${property?.ownerEntity?.docEntry.name}
 Property: ${property?.name}
 
 If you are using an external type that represents a primite please add one of

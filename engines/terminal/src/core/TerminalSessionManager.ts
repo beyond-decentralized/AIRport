@@ -1,6 +1,7 @@
 import { Inject, Injected } from '@airport/direction-indicator';
 import { ITerminalSessionManager, IUserAccountInfo, IUserSession, TerminalStore, UserStore } from '@airport/terminal-map'
 import { IUserAccountManager } from '@airport/travel-document-checkpoint/dist/app/bundle';
+import { SessionStateApi } from '@airport/session-state/dist/app/bundle'
 
 @Injected()
 export class TerminalSessionManager
@@ -14,6 +15,9 @@ export class TerminalSessionManager
 
     @Inject()
     userStore: UserStore
+
+    @Inject()
+    sessionStateApi: SessionStateApi
 
     async signUp(
         userAccountInfo: IUserAccountInfo

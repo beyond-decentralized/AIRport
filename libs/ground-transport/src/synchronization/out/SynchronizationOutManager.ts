@@ -32,7 +32,6 @@ export class SynchronizationOutManager
 	implements ISynchronizationOutManager {
 
 	@Inject()
-
 	repositoryDao: IRepositoryDao
 
 	@Inject()

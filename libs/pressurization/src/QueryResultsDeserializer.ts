@@ -2,7 +2,8 @@ import { AIR_ENTITY_UTILS, IAirEntityUtils } from '@airport/aviation-communicati
 import { IInjected, Inject, Injected } from '@airport/direction-indicator'
 import {
 	ISerializationStateManager,
-	SerializationState
+	SerializationState,
+	SerializationStateManager
 } from './SerializationStateManager'
 
 /**
@@ -11,17 +12,20 @@ import {
 export interface IQueryResultsDeserializer {
 
 	deserialize<E, T = E | E[]>(
-		entity: T
+		entity: T,
+		operation?: IDeserializableOperation
 	): T
 
 	deepCopyProperties<T>(
 		from: T,
 		to: T,
-		fromToMap: Map<T, T>
+		fromToMap: Map<T, T>,
+		processedEntities?: Set<any>
 	): void
 
 	setPropertyDescriptors(
-		object: any
+		object: any,
+		processecEntities?: Set<any>
 	): void
 
 }
@@ -76,10 +80,10 @@ export class QueryResultsDeserializer
 
 	deserialize<E, T = E | E[]>(
 		entity: T,
-	): T {
-		const operation: IDeserializableOperation = {
+		operation: IDeserializableOperation = {
 			lookupTable: [],
 		}
+	): T {
 		let deserializedEntity
 		if (entity instanceof Array) {
 			deserializedEntity = <any><E[]>entity.map(anEntity => this.doDeserialize(
@@ -135,12 +139,7 @@ export class QueryResultsDeserializer
 			const property = entity[propertyName]
 			let propertyCopy
 			if (property instanceof Object) {
-				if (property instanceof Array) {
-					propertyCopy = property.map(aProperty => this.doDeserialize(
-						aProperty, operation))
-				} else {
-					propertyCopy = this.doDeserialize(property, operation)
-				}
+				propertyCopy = this.deserialize(property, operation)
 			} else {
 				propertyCopy = property
 			}
@@ -165,7 +164,8 @@ export class QueryResultsDeserializer
 	deepCopyProperties<T>(
 		from: T,
 		to: T,
-		fromToMap: Map<T, T>
+		fromToMap: Map<T, T>,
+		processedEntities: Set<any> = new Set()
 	): void {
 		if (!(from instanceof Object)) {
 			return
@@ -187,7 +187,7 @@ export class QueryResultsDeserializer
 				delete to[propertyName]
 			}
 		}
-		this.doSetPropertyDescriptors(to)
+		this.doSetPropertyDescriptors(to, processedEntities)
 	}
 
 	copyObject<T>(
@@ -199,24 +199,24 @@ export class QueryResultsDeserializer
 		let from = fromParent[key]
 		let to = toParent[key]
 		let alreadyProcessedTo = fromToMap.get(from)
-		if(alreadyProcessedTo) {
+		if (alreadyProcessedTo) {
 			toParent[key] = alreadyProcessedTo
 			return
 		}
-		if(from instanceof Object) {
-			if(from instanceof Array) {
-				if(!to || !(to instanceof Array)) {
+		if (from instanceof Object) {
+			if (from instanceof Array) {
+				if (!to || !(to instanceof Array)) {
 					to = []
 					toParent[key] = to
 				}
 				fromToMap.set(from as any, to)
-				for(let i = 0; i < from.length; i++) {
+				for (let i = 0; i < from.length; i++) {
 					this.copyObject(from, i, to, fromToMap)
 				}
-			} if(from instanceof Date) {
+			} else if (from instanceof Date) {
 				toParent[key] = new Date(from.getTime()) as any
 			} else {
-				if(!to || !(to instanceof Object) || to instanceof Date || to instanceof Array) {
+				if (!to || !(to instanceof Object) || to instanceof Date || to instanceof Array) {
 					to = {}
 					toParent[key] = to
 				}
@@ -229,11 +229,12 @@ export class QueryResultsDeserializer
 	}
 
 	setPropertyDescriptors(
-		object: any
+		object: any,
+		processedEntities = new Set()
 	): void {
 		if (object instanceof Array) {
 			for (let i = 0; i < object.length; i++) {
-				this.setPropertyDescriptors(object[i])
+				this.setPropertyDescriptors(object[i], processedEntities)
 			}
 			return
 		}
@@ -243,27 +244,34 @@ export class QueryResultsDeserializer
 		if (object instanceof Date) {
 			return
 		}
+		if (processedEntities.has(object)) {
+			return
+		}
+		processedEntities.add(object)
 
 		for (let propertyName in object) {
 			if (!object.hasOwnProperty(propertyName)) {
 				continue
 			}
 			let property = object[propertyName]
-			if (property instanceof Object) {
-				this.setPropertyDescriptors(property)
+			if (propertyName !== SerializationStateManager.ORIGINAL_VALUES_PROPERTY
+				&& !(property instanceof Date) && property instanceof Object) {
+				this.setPropertyDescriptors(property, processedEntities)
 			}
 		}
-		this.doSetPropertyDescriptors(object)
+		this.doSetPropertyDescriptors(object, processedEntities)
 	}
 
 	private doSetPropertyDescriptors(
-		object: any
+		object: any,
+		processedEntities: Set<any>
 	): void {
+
 		let objectPrototype = Object.getPrototypeOf(object)
 		if (!Object.getOwnPropertyDescriptor(object, 'id')
 			&& (!objectPrototype
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'id'))
-				&& !object.id) {
+			&& !object.id) {
 			let _this = this as IInjected
 			Object.defineProperty(object, 'id', {
 				get() {
@@ -279,7 +287,7 @@ export class QueryResultsDeserializer
 		if (!Object.getOwnPropertyDescriptor(object, 'isNew')
 			&& (!objectPrototype
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'isNew'))
-				&& !object.isNew) {
+			&& !object.isNew) {
 			Object.defineProperty(object, 'isNew', {
 				get() {
 					return !!this._actorRecordId
@@ -289,7 +297,7 @@ export class QueryResultsDeserializer
 		if (!Object.getOwnPropertyDescriptor(object, 'createdBy')
 			&& (!objectPrototype
 				|| !Object.getOwnPropertyDescriptor(objectPrototype, 'createdBy'))
-				&& !object.createdBy) {
+			&& !object.createdBy) {
 			Object.defineProperty(object, 'createdBy', {
 				get() {
 					return this.actor.userAccount

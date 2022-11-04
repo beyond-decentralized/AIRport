@@ -159,10 +159,15 @@ function emitFiles(
 	const applicationFullName = IOC.getSync(DB_APPLICATION_UTILS).
 		getFullApplication_NameFromDomainAndName(jsonApplication.domain, jsonApplication.name)
 
-	const generatedSummaryBuilder = new GeneratedSummaryBuilder(pathBuilder);
 	const entityInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'interfaces.ts');
 	const entityQInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'qInterfaces.ts');
 	const entityVInterfaceListingBuilder = new GeneratedFileListingBuilder(pathBuilder, 'vInterfaces.ts');
+	const generatedSummaryBuilder = new GeneratedSummaryBuilder(
+		pathBuilder,
+		entityInterfaceListingBuilder,
+		entityQInterfaceListingBuilder,
+		entityVInterfaceListingBuilder
+	);
 	const qApplicationBuilder = new QApplicationBuilder(applicationFullName, pathBuilder, configuration);
 	const daoBuilder = new DaoBuilder(applicationFullName, pathBuilder);
 	const dvoBuilder = new DvoBuilder(applicationFullName, pathBuilder);

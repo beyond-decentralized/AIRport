@@ -20,16 +20,35 @@ const airbridgeDependencyProjectDirectories = [
     'validate'
 ]
 
-const secondStageProjectDirectories = [
-    'schemas/airport-code',
-    'schemas/airspace',
-    'schemas/travel-document-checkpoint',
-    'schemas/holding-pattern',
-    'schemas/layover',
+const secondStageProjectDescriptors = [
+    {
+        directory: 'schemas/airport-code',
+        isApp: true
+    },
+    {
+        directory: 'schemas/airspace',
+        isApp: true
+    },
+    {
+        directory: 'schemas/travel-document-checkpoint',
+        isApp: true
+    },
+    {
+        directory: 'schemas/holding-pattern',
+        isApp: true
+    },
+    {
+        directory: 'schemas/layover',
+        isApp: true
+    },
     'apis/arrivals-n-departures',
     'apis/terminal-map',
     'engines/tower',
     'libs/fuel-hydrant-system',
+    {
+        directory: 'libs/session-state',
+        isApp: true
+    },
     'libs/blueprint',
     'generators/takeoff',
     'generators/landing',
@@ -61,7 +80,7 @@ const reactUiProjects = [
 try {
     await buildPeerFramework('AIRport', firstStageProjectDirectoriesInBuildOrder, true)
     await buildPeerFramework('AIRbridge', airbridgeDependencyProjectDirectories, true)
-    await buildPeerFramework('AIRport', secondStageProjectDirectories, false)
+    await buildPeerFramework('AIRport', secondStageProjectDescriptors, false)
     await buildPeerFramework('AIRway', airwayDependencyProjectDirectories, true)
     await buildPeerFramework('AIRport', thirdStageProjectDirectories, false)
     await buildUI('react', reactUiProjects)
@@ -71,14 +90,14 @@ try {
 
 async function buildPeerFramework(
     frameworkDirectoryName,
-    projectDirectoriesInBuildOrder,
+    projectDescriptorsInBuildOrder,
     runRushUpdate
 ) {
     process.chdir('../' + frameworkDirectoryName);
     if (runRushUpdate) {
         await wireInDependencies(frameworkDirectoryName)
     }
-    await buildProjects(projectDirectoriesInBuildOrder, 'rollup', ['-c']);
+    await buildProjects(projectDescriptorsInBuildOrder, 'npm', ['run', 'build']);
 }
 
 async function buildUI(
@@ -91,15 +110,21 @@ async function buildUI(
 }
 
 async function buildProjects(
-    projectsDirectoriesInBuildOrder,
+    projectsDescriptorsInBuildOrder,
     command,
     parameters
 ) {
-    for (const projectDirectory of projectsDirectoriesInBuildOrder) {
-        process.stdout.write(`
-        RUNNING 'rollup -c' in ${projectDirectory}
-
-        `)
+    for (const projectDescriptor of projectsDescriptorsInBuildOrder) {
+        let isApp = false;
+        let projectDirectory
+        if (projectDescriptor instanceof Object) {
+            projectDirectory = projectDescriptor.directory
+            isApp = projectDescriptor.isApp
+        } else if (typeof projectDescriptor === 'string') {
+            projectDirectory = projectDescriptor
+        } else {
+            throw `Expecting either object or string as a Project Descriptor.`
+        }
         const directoryDepth = projectDirectory.split('/');
         let navigateBackPath = '..'
         for (let i = 1; i < directoryDepth.length; i++) {
@@ -107,28 +132,26 @@ async function buildProjects(
         }
         process.chdir('./' + projectDirectory);
 
-        const returnCode = await execute(projectDirectory, command, parameters);
+        if (isApp) {
+            await execute('node', ['generate.mjs'], projectDirectory);
+        }
+
+        await execute(command, parameters, projectDirectory);
 
         process.chdir(navigateBackPath);
-
-        if (returnCode != 0) {
-            throw new Error(`
-        Suspending after ${projectDirectory}
-        `)
-        }
     };
 }
 
 async function wireInDependencies(
     frameworkName
 ) {
-    await execute(frameworkName, 'rush', ['update'])
+    await execute('rush', ['update'], frameworkName)
 }
 
 async function execute(
-    operation,
     command,
-    parameters
+    parameters,
+    projectDirectory
 ) {
     return new Promise((resolve, _reject) => {
         if (/^win/.test(process.platform)) {
@@ -140,6 +163,11 @@ async function execute(
             ]
             command = 'cmd'
         }
+
+        process.stdout.write(`
+        RUNNING '${command} ${parameters.join(' ')}' in ${process.cwd()}
+    
+        `)
 
         const runCommand = spawn(command, parameters);
 
@@ -157,11 +185,19 @@ async function execute(
 
         runCommand.on("close", code => {
             console.log(`
-        ${code ? 'ERROR' : 'DONE'}: ${operation}
+        ${code ? 'ERROR' : 'DONE'}: '${command} ${parameters.join(' ')}' in ${process.cwd()}
 
     `);
             resolve(code)
         });
+    }).then((returnCode) => {
+        if (returnCode != 0) {
+            throw new Error(`
+        Suspending after ${projectDirectory}
+        `)
+        }
+
+        return returnCode
     })
 
 }

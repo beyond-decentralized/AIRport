@@ -138,7 +138,7 @@ export const SYNCHRONIZATION_ADAPTER_LOADER = groundTransport.token<ISynchroniza
 })
 
 DEBUG_SYNCHRONIZATION_ADAPTER.setDependencies({
-    cient: CLIENT
+    client: CLIENT
 })
 
 STAGE1_SYNCED_IN_DATA_PROCESSOR.setDependencies({

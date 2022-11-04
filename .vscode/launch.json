@@ -7,113 +7,29 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "airport-code-dos",
+            "name": "session-state dos",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\airport-code\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
+            "program": "${workspaceFolder}\\libs\\session-state\\generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}\\schemas\\airport-code",
+            "cwd": "${workspaceFolder}\\libs\\session-state",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "airport-code-sh",
+            "name": "session-state sh",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/airport-code/node_modules/@airport/runway/dist/esm/index.mjs",
+            "program": "${workspaceFolder}/libs/session-state/generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
-            "cwd": "${workspaceFolder}/schemas/airport-code",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "airspace-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\airspace\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\airspace",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "airspace-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/airspace/node_modules/@airport/runway/dist/esm/index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/airspace",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "holding-pattern-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\holding-pattern\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
-            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "holding-pattern-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/holding-pattern/node_modules/@airport/runway/dist/esm/index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/holding-pattern",
-            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "layover-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\layover\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\layover",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "layover-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/layover/node_modules/@airport/runway/dist/esm/index.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/layover",
+            "cwd": "${workspaceFolder}/libs/session-state",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
@@ -123,7 +39,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\node_modules\\@airport\\runway\\dist\\esm\\index.mjs",
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
@@ -137,11 +53,150 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/node_modules/@airport/runway/dist/esm/index.mjs",
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
             "outFiles": [
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airport-code-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\airport-code\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\airport-code",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airport-code-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/airport-code/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/airport-code",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airspace-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\airspace\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\airspace",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "airspace-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/airspace/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/airspace",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "holding-pattern-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\holding-pattern\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\holding-pattern",
+            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "holding-pattern-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/holding-pattern/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/holding-pattern",
+            "runtimeArgs": ["--experimental-specifier-resolution=node", "--preserve-symlinks"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "layover-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\layover\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\layover",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "layover-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/layover/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/layover",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {

@@ -49,6 +49,7 @@ export class SerializationStateManager
 
     static SERIALIZATION_UNIQUE_ID_FIELD = '__SUID__'
     static SERIALIZATION_STATE_FIELD = '__serializationState__'
+    static ORIGINAL_VALUES_PROPERTY = '__originalValues__'
 
     getSerializationUniqueId<T>(
         entity: T,

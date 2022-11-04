@@ -28,7 +28,7 @@ import {
 } from 'rxjs/operators'
 import { IWebApplicationInitializer } from './WebApplicationInitializer'
 import { IWebMessageReceiver } from './WebMessageReceiver'
-import { IDbApplicationUtils } from '@airport/ground-control'
+import { IDbApplicationUtils, INTERNAL_DOMAINS } from '@airport/ground-control'
 import { IApplication } from '@airport/airspace'
 
 @Injected()
@@ -155,33 +155,60 @@ export class WebTransactionalReceiver
 					if (interAppApiCallRequest) {
 						interAppApiCallRequest.resolve(message)
 					} else {
-						const toClientRedirectedMessage: ILocalAPIResponse = {
-							...message,
-							__received__: false,
-							__receivedTime__: null,
-							application: message.application,
-							args: message.args,
-							category: 'ToClientRedirected',
-							domain: message.domain,
-							errorMessage: message.errorMessage,
-							methodName: (message as ILocalAPIResponse).methodName,
-							objectName: (message as ILocalAPIResponse).objectName,
-							payload: message.payload,
-							protocol: message.protocol,
-							transactionId: (message as ILocalAPIResponse).transactionId
-						}
-						if (!success) {
-							toClientRedirectedMessage.errorMessage = context.errorMessage
-							toClientRedirectedMessage.payload = null
-						}
-						this.handleToClientRequest(toClientRedirectedMessage, messageOrigin)
-							.then()
+						this.replyToClient(
+							message,
+							message.args,
+							success ? message.errorMessage : context.errorMessage,
+							message.payload,
+							message.protocol,
+							success,
+							messageOrigin
+						).then()
 					}
 				})
 				break
 			default:
 				break
 		}
+	}
+
+	private async replyToClient(
+		message: (IIsolateMessage & IApiIMI) | ILocalAPIRequest | ILocalAPIResponse,
+		args,
+		errorMessage,
+		payload,
+		protocol,
+		success,
+		messageOrigin
+	): Promise<void> {
+		const toClientRedirectedMessage: ILocalAPIResponse = {
+			...message,
+			__received__: false,
+			__receivedTime__: null,
+			application: message.application,
+			args,
+			category: 'ToClientRedirected',
+			domain: message.domain,
+			errorMessage: errorMessage,
+			hostDomain: (message as ILocalAPIResponse).hostDomain,
+			hostProtocol: (message as ILocalAPIResponse).hostProtocol,
+			methodName: (message as ILocalAPIResponse).methodName,
+			objectName: (message as ILocalAPIResponse).objectName,
+			payload,
+			protocol,
+			transactionId: (message as ILocalAPIResponse).transactionId
+		}
+		if (!success) {
+			toClientRedirectedMessage.errorMessage = errorMessage
+			toClientRedirectedMessage.payload = null
+		}
+		if (messageOrigin) {
+			if (!await this.messageIsFromValidApp(
+				toClientRedirectedMessage, messageOrigin)) {
+				return
+			}
+		}
+		this.replyToClientRequest(toClientRedirectedMessage)
 	}
 
 	onMessage(callback: (
@@ -229,39 +256,12 @@ export class WebTransactionalReceiver
 
 		let args, errorMessage, payload, transactionId
 		if (startDescriptor.isFramework) {
-			try {
-				const fullApplication_Name = this.dbApplicationUtils
-					.getFullApplication_NameFromDomainAndName(
-						message.domain, message.application)
-				const application: IApplication = this.terminalStore
-					.getApplicationMapByFullName().get(fullApplication_Name)
-				if (!application) {
-					throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
-				}
-				payload = await this.localApiServer.coreHandleRequest(message,
-					application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api, context)
-			} catch (e) {
-				errorMessage = e.message ? e.message : e
-				console.error(e)
-			} finally {
-				try {
-				await this.endApiCall({
-					application: message.application,
-					domain: message.domain,
-					methodName: message.methodName,
-					objectName: message.objectName,
-					transactionId: message.transactionId
-				}, errorMessage, context);
-				} catch (e) {
-					errorMessage = e.message ? e.message : e
-					console.error(e)
-				}
-			}
-
+			const result = await this.callFrameworkApi(message, context)
+			errorMessage = result.errorMessage
+			payload = result.payload
 			args = message.args
 			transactionId = message.transactionId
 		} else {
-
 			const replyMessage: ILocalAPIResponse = await new Promise((resolve) => {
 				this.terminalStore.getWebReceiver().pendingInterAppApiCallMessageMap.set(messageCopy.id, {
 					message: {
@@ -291,9 +291,58 @@ export class WebTransactionalReceiver
 		return response;
 	}
 
+	private async callFrameworkApi(
+		message: ILocalAPIRequest<'FromClientRedirected'>,
+		context: IApiCallContext & ITransactionContext,
+	): Promise<{
+		errorMessage,
+		payload
+	}> {
+		let payload
+		let errorMessage
+		try {
+			const fullApplication_Name = this.dbApplicationUtils
+				.getFullApplication_NameFromDomainAndName(
+					message.domain, message.application)
+			const application: IApplication = this.terminalStore
+				.getApplicationMapByFullName().get(fullApplication_Name)
+			if (!application) {
+				throw new Error(`Could not find AIRport Framework Application: ${fullApplication_Name}`)
+			}
+			payload = await this.localApiServer.coreHandleRequest(message,
+				application.currentVersion[0].applicationVersion.jsonApplication.versions[0].api, context)
+		} catch (e) {
+			errorMessage = e.message ? e.message : e
+			console.error(e)
+		} finally {
+			try {
+				await this.endApiCall({
+					application: message.application,
+					domain: message.domain,
+					methodName: message.methodName,
+					objectName: message.objectName,
+					transactionId: message.transactionId
+				}, errorMessage, context);
+			} catch (e) {
+				errorMessage = e.message ? e.message : e
+				console.error(e)
+			}
+		}
+
+		return {
+			errorMessage,
+			payload
+		}
+	}
+
 	private async ensureConnectionIsReady(
 		message: ILocalAPIRequest
 	): Promise<void> {
+		if (INTERNAL_DOMAINS.indexOf(message.domain) > -1) {
+			this.sendConnectionReadyMessage(message)
+			return
+		}
+
 		const fullApplication_Name = this.dbApplicationUtils.
 			getFullApplication_NameFromDomainAndName(
 				message.domain, message.application)
@@ -313,7 +362,12 @@ export class WebTransactionalReceiver
 			await this.applicationInitializer.nativeInitializeApplication(message.domain,
 				message.application, fullApplication_Name)
 		}
+		this.sendConnectionReadyMessage(message)
+	}
 
+	private sendConnectionReadyMessage(
+		message: ILocalAPIRequest
+	) {
 		const connectionIsReadyMessage: ILocalAPIResponse = {
 			application: message.application,
 			args: message.args,
@@ -373,15 +427,28 @@ export class WebTransactionalReceiver
 		webReciever.pendingHostCounts.set(message.domain, numPendingMessagesFromHost + 1)
 		webReciever.pendingApplicationCounts.set(fullApplication_Name, numPendingMessagesForApplication + 1)
 
-		if (!await this.ensureApplicationIsInstalled(fullApplication_Name)) {
+		if (!await this.ensureApplicationIsInstalled(message.domain,
+			fullApplication_Name)) {
 			this.relyToClientWithError(message, `Application is not installed`)
 			return
 		}
 
 		const context: IApiCallContext = {}
-		if (!await this.nativeStartApiCall(message as ILocalAPIRequest<'FromClientRedirected'>,
-			context)) {
+		const localApiRequest = message as ILocalAPIRequest<'FromClientRedirected'>
+		const startDescriptor = await this.nativeStartApiCall(localApiRequest, context);
+		if (!startDescriptor.isStarted) {
 			this.relyToClientWithError(message, context.errorMessage)
+		} else if (startDescriptor.isFramework) {
+			const result = await this.callFrameworkApi(localApiRequest, context)
+			await this.replyToClient(
+				message,
+				message.args,
+				result.errorMessage,
+				result.payload,
+				message.protocol,
+				!result.errorMessage,
+				null
+			)
 		}
 	}
 
@@ -421,16 +488,6 @@ export class WebTransactionalReceiver
 		return iframe[0].contentWindow
 	}
 
-	private async handleToClientRequest(
-		message: ILocalAPIResponse,
-		messageOrigin: string
-	): Promise<void> {
-		if (!await this.messageIsFromValidApp(message, messageOrigin)) {
-			return
-		}
-		this.replyToClientRequest(message)
-	}
-
 	private replyToClientRequest(
 		message: ILocalAPIResponse
 	) {
@@ -456,10 +513,15 @@ export class WebTransactionalReceiver
 	}
 
 	private async ensureApplicationIsInstalled(
+		domain: string,
 		fullApplication_Name: string
 	): Promise<boolean> {
 		if (!fullApplication_Name) {
 			return false
+		}
+
+		if (INTERNAL_DOMAINS.indexOf(domain) > -1) {
+			return true
 		}
 
 		return !!this.terminalStore.getApplicationInitializer()

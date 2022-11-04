@@ -206,7 +206,7 @@ export class QueryManager
 					let relatedEntities = propertyValue
 					switch (dbRelation.relationType) {
 						case EntityRelationType.MANY_TO_ONE:
-							if (this.processRepositoryOrActor(dbProperty, propertyValue,
+							if (this.processRepositoryOrActor(entity, dbProperty, propertyValue,
 								entityMapByRepositoryLocalId, entityMapByActorRecordId,
 								actorsToRetrieveUserAccountForByLocalId)) {
 								continue
@@ -230,6 +230,7 @@ export class QueryManager
 	}
 
 	private processRepositoryOrActor(
+		entity: any,
 		dbProperty: DbProperty,
 		propertyValue: any,
 		entityMapByRepositoryLocalId: Map<Repository_LocalId, any[]>,
@@ -263,10 +264,10 @@ export class QueryManager
 
 		if (isActor) {
 			ensureChildArray(entityMapByActorLocalId, propertyValue._localId)
-				.push(propertyValue)
+				.push(entity)
 		} else {
 			ensureChildArray(entityMapByRepositoryLocalId, propertyValue._localId)
-				.push(propertyValue)
+				.push(entity)
 		}
 
 		return true
