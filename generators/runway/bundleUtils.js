@@ -22,7 +22,7 @@ export function processFile(filePath) {
         packageJson.types = "dist/app/bundle.d.ts"
     } else if (mode === 'external') {
         // Switch back to client bundles
-        packageJson.main = "dist/esm/index.js"
+        packageJson.main = "dist/esm/index.mjs"
         packageJson.module = "dist/esm/index.mjs"
         packageJson.types = "dist/esm/index.d.ts"
     } else {
