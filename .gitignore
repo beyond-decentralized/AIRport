@@ -10,6 +10,7 @@
 /UI/**/build/*
 /UI/**/dist/*
 /UI/**/client/build/*
+**/generated/*
 
 npm-debug.log
 
