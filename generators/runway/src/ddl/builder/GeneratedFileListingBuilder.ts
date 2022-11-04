@@ -6,7 +6,7 @@ export class GeneratedFileListingBuilder
 	implements IBuilder {
 
 	public generatedListingFilePath
-	private generatedFilePaths: string[] = []
+	public generatedFilePaths: string[] = []
 
 	constructor(
 		private pathBuilder: PathBuilder,

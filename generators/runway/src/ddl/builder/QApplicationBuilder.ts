@@ -72,10 +72,13 @@ export class QApplicationBuilder
     ).join('\n');
 
     // FIXME: this is a temporary hack to get Svelte to compile, revisit later
-    const entityImports = 'import {\n' + this.entityNames.map(
-      entityName =>
-        `  ${entityName}`,
-    ).join(',\n') + `\n} from '../ddl/ddl';`;
+    let entityImports = '';
+    if (this.entityNames.length) {
+      entityImports = 'import {\n' + this.entityNames.map(
+        entityName =>
+          `  ${entityName}`,
+      ).join(',\n') + `\n} from '../ddl/ddl';`;
+    }
     // const iDvoImports = this.entityNames.map(
     // 	entityName =>
     // 		`IBase${entityName}Dvo`

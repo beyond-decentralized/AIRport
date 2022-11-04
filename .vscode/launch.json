@@ -7,6 +7,61 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "session-state dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\libs\\session-state\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\libs\\session-state",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "session-state sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/libs/session-state/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/libs/session-state",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+            "type": "pwa-node",
+            "request": "launch",
             "name": "airport-code-dos",
             "skipFiles": [
                 "<node_internals>/**"
@@ -63,6 +118,34 @@
         {
             "type": "pwa-node",
             "request": "launch",
+            "name": "travel-document-checkpoint-dos",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "travel-document-checkpoint-sh",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
+            "outFiles": [
+                "${workspaceFolder}/*/*/lib/**/*.js"
+            ],
+            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
+            "runtimeArgs": ["--experimental-specifier-resolution=node"]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
             "name": "holding-pattern-dos",
             "skipFiles": [
                 "<node_internals>/**"
@@ -114,34 +197,6 @@
                 "${workspaceFolder}/*/*/lib/**/*.js"
             ],
             "cwd": "${workspaceFolder}/schemas/layover",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "travel-document-checkpoint-dos",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\schemas\\travel-document-checkpoint\\generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}\\schemas\\travel-document-checkpoint",
-            "runtimeArgs": ["--experimental-specifier-resolution=node"]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "travel-document-checkpoint-sh",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/schemas/travel-document-checkpoint/generate.mjs",
-            "outFiles": [
-                "${workspaceFolder}/*/*/lib/**/*.js"
-            ],
-            "cwd": "${workspaceFolder}/schemas/travel-document-checkpoint",
             "runtimeArgs": ["--experimental-specifier-resolution=node"]
         },
         {
