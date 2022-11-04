@@ -6,7 +6,7 @@ import {
 	canBeInterface,
 	getImplNameFromInterfaceName
 } from '../../resolve/pathResolver';
-import { ApplicationLoader, IApplicationLoader } from '../loader/ApplicationLoader';
+import { ApplicationLoader, DB_APPLICATION_LOADER, IApplicationLoader } from '../loader/ApplicationLoader';
 import { Configuration } from '../options/Options';
 import {
 	EntityReference,
@@ -32,16 +32,10 @@ export class EntityCandidateRegistry {
 	entityCandidateMap: Map<string, EntityCandidate> = new Map<string, EntityCandidate>();
 	allInterfacesMap: Map<string, Interface[]> = new Map<string, Interface[]>();
 	configuration: Configuration;
-	applicationMap: { [projectName: string]: DbApplication } = {};
 	mappedSuperClassMap: {
 		[projectName: string]: { [mappedSuperClassName: string]: EntityCandidate }
 	} = {};
-	applicationLoader: IApplicationLoader = new ApplicationLoader();
-
-	constructor(
-		private enumMap?: Map<string, string>
-	) {
-	}
+	enumMap: Map<string, string> = new Map()
 
 	addCandidate(candidate: EntityCandidate): void {
 		let matchesExisting = this.matchToExistingEntity(candidate);
@@ -52,23 +46,22 @@ export class EntityCandidateRegistry {
 		}
 	}
 
-	async matchVerifiedEntities( //
-		targetCandidateRegistry?: EntityCandidateRegistry //
+	async matchVerifiedEntities(
 	): Promise<{ [entityName: string]: EntityCandidate }> {
 		let entityMapByName: { [entityName: string]: EntityCandidate } = {};
 
-		for (let targetCandidate of targetCandidateRegistry.entityCandidateMap.values()) {
+		for (let targetCandidate of this.entityCandidateMap.values()) {
 			entityMapByName[targetCandidate.type] = targetCandidate;
 			if (!targetCandidate.parentClassName || targetCandidate.parentEntity) {
 				continue;
 			}
-			targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(targetCandidate.parentClassName);
+			targetCandidate.parentEntity = this.entityCandidateMap.get(targetCandidate.parentClassName);
 			if (targetCandidate.parentEntity) {
 				continue;
 			}
 			let parentType = GLOBAL_CANDIDATES.inheritanceMap[targetCandidate.type];
 			while (parentType) {
-				targetCandidate.parentEntity = targetCandidateRegistry.entityCandidateMap.get(parentType);
+				targetCandidate.parentEntity = this.entityCandidateMap.get(parentType);
 				if (targetCandidate.parentEntity) {
 					break;
 				}
@@ -288,14 +281,8 @@ export class EntityCandidateRegistry {
 		projectName: string,
 		property: EntityReference & PropertyDocEntry,
 	): DbApplication {
-		const projectApplication = this.applicationMap[projectName];
-		if (projectApplication) {
-			property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, projectApplication, property);
-			return projectApplication;
-		}
-		const dbApplication = this.applicationLoader.getReferencedApplication(projectName, property);
+		const dbApplication = DB_APPLICATION_LOADER.getReferencedApplication(projectName, property);
 
-		this.applicationMap[projectName] = dbApplication;
 		property.otherApplicationDbEntity = this.getOtherApplicationEntity(projectName, dbApplication, property);
 
 		return dbApplication;

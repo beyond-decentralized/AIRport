@@ -13,11 +13,10 @@ import tsc from 'typescript'
 import { visitApiFile } from './api/parser/ApiGenerator'
 import { PathBuilder } from './ddl/builder/PathBuilder'
 import { normalizePath } from './resolve/pathResolver'
+import { DB_APPLICATION_LOADER } from './ddl/loader/ApplicationLoader'
+import { JsonApplicationWithApi } from '@airport/check-in'
 
-const enumMap: Map<string, string> = new Map<string, string>()
-globalThis.enumMap = enumMap
-
-export interface IFileProcessor {
+export interface IFileProcessor<Candidate> {
 
 	getDir(): string
 
@@ -26,18 +25,22 @@ export interface IFileProcessor {
 		path: string
 	): void
 
+	finishProcessing(
+	): Promise<{ [dtoName: string]: Candidate }>
+
 	build(
-		pathBuilder: PathBuilder
+		pathBuilder: PathBuilder,
+		jsonApplication: JsonApplicationWithApi
 	): void
 
 }
 
-export const additonalFileProcessors: IFileProcessor[] = []
+export const additionalFileProcessors: IFileProcessor<any>[] = []
 
 export function addFileProcessor(
-	fileProcessor: IFileProcessor
+	fileProcessor: IFileProcessor<any>
 ): void {
-	additonalFileProcessors.push(fileProcessor)
+	additionalFileProcessors.push(fileProcessor)
 }
 
 /** Generate documention for all classes in a set of .ts files */
@@ -53,8 +56,7 @@ export async function generateDefinitions(
 
 	// Get the checker, we will use it to find more about classes
 	GLOBAL_CANDIDATES.registry.configuration = configuration
-	GLOBAL_CANDIDATES.registry.applicationMap = applicationMapByProjectName
-	globalThis.processedCandidateRegistry = new EntityCandidateRegistry(enumMap)
+	DB_APPLICATION_LOADER.setApplicationMap(applicationMapByProjectName)
 
 	// const daoFileMap: { [classPath: string]: DaoFile } = {}
 
@@ -74,8 +76,14 @@ export async function generateDefinitions(
 	// print out the doc
 	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 
-	return await GLOBAL_CANDIDATES.registry
-		.matchVerifiedEntities(globalThis.processedCandidateRegistry)
+	const entityCandidateMap = await GLOBAL_CANDIDATES.registry
+		.matchVerifiedEntities()
+
+	for (const additionalFileProcessor of additionalFileProcessors) {
+		await additionalFileProcessor.finishProcessing()
+	}
+
+	return entityCandidateMap
 }
 
 /** visit nodes finding exported classes */
@@ -109,7 +117,7 @@ function visit(
 		&& path.indexOf(globalThis.configuration.airport.apiDir) > 0) {
 		visitApiFile(node, path)
 	}
-	for(const fileProcessor of additonalFileProcessors) {
+	for (const fileProcessor of additionalFileProcessors) {
 		let normalizedPath = normalizePath(path)
 
 		if (normalizedPath.indexOf(fileProcessor.getDir()) > -1) {

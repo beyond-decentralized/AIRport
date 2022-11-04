@@ -12,7 +12,7 @@ import { normalizePath } from '../../resolve/pathResolver';
 
 export interface IApiSignature {
     isAsync: boolean
-    name: string,
+    name: string
     parameters: string[]
     returnType: string
 }
@@ -25,7 +25,7 @@ export interface IApiClass {
 export interface IApiFileForGeneration {
     apiClasses: IApiClass[]
     fileName: string
-    imports: FileImports,
+    imports: FileImports
     otherMemberDefinitions: string[]
 }
 
@@ -46,7 +46,6 @@ export function visitApiFile(
     node: ts.Node,
     path: string
 ): IApiObject {
-
     let fileObject = currentApiFileSignatureMap[path]
 
     if (!fileObject) {

@@ -36,8 +36,8 @@ export class GlobalCandidates {
 	inheritanceMap: Map<string, string> = new Map<string, string>()
 
 	get registry(): EntityCandidateRegistry {
-		if(!this._registry) {
-			this._registry = new EntityCandidateRegistry(globalThis.enumMap)
+		if (!this._registry) {
+			this._registry = new EntityCandidateRegistry()
 		}
 
 		return this._registry
@@ -127,7 +127,7 @@ ${path}
 		file.hasEnums = true
 		let symbol = globalThis.checker
 			.getSymbolAtLocation((<ts.EnumDeclaration>node).name)
-		globalThis.enumMap.set(symbol.name, path)
+		GLOBAL_CANDIDATES.registry.enumMap.set(symbol.name, path)
 	}
 }
 
@@ -561,7 +561,12 @@ function convertPropertyAccessExpressionToString(
 	propAccessExrp: ts.PropertyAccessExpression
 ): string {
 	let leftHandExrp = <ts.Identifier>propAccessExrp.expression
-	return `${leftHandExrp.text}.${propAccessExrp.name.text}`
+	let suffix = '.' + propAccessExrp.name.text
+	if (leftHandExrp.text) {
+		return `${leftHandExrp.text}${suffix}`
+	} else {
+		return convertPropertyAccessExpressionToString(leftHandExrp as any) + suffix
+	}
 }
 
 function convertRegExpStringToObject(
@@ -717,7 +722,6 @@ function serializeClass(
 			})
 
 		GLOBAL_CANDIDATES.registry.addCandidate(entityCandidate)
-		globalThis.processedCandidateRegistry.addCandidate(entityCandidate)
 
 		GLOBAL_CANDIDATES.inheritanceMap[details.name] = parentClassName
 		if (GLOBAL_CANDIDATES.inheritanceMap[parentClassName] == undefined) {

@@ -25,7 +25,7 @@ import { JsonApplicationBuilder } from './ddl/builder/application/JsonApplicatio
 import { MappedSuperclassBuilder } from './ddl/builder/superclass/MappedSuperclassBuilder';
 import { Configuration } from './ddl/options/Options';
 import { EntityCandidate } from './ddl/parser/EntityCandidate';
-import { additonalFileProcessors, generateDefinitions } from './FileProcessor';
+import { additionalFileProcessors, generateDefinitions } from './FileProcessor';
 import { ApiBuilder } from './api/builder/ApiBuilder';
 import { ApiIndexBuilder } from './api/builder/ApiIndexBuilder';
 import { VEntityFileBuilder } from './ddl/builder/entity/validate/VEntityFileBuilder';
@@ -107,8 +107,8 @@ export async function watchFiles(
 	// 					[fileName], options, configuration).then();
 	// 			});
 	// 	});
-
 }
+
 async function processFiles(
 	rootFileNames: string[],
 	options: ts.CompilerOptions,
@@ -185,7 +185,6 @@ function emitFiles(
 		fs.writeFileSync(apiIndexBuilder.fullGenerationPath, apiIndexBuilder.build());
 	}
 
-
 	for (const entityName in entityMapByName) {
 		const entity: EntityCandidate = entityMapByName[entityName];
 
@@ -245,12 +244,12 @@ function emitFiles(
 	const mappedSuperclassPath = generatedDirPath + '/mappedSuperclass.ts';
 	fs.writeFileSync(mappedSuperclassPath, mappedSuperclassBuilder.build());
 
+	for (const fileProcessor of additionalFileProcessors) {
+		fileProcessor.build(pathBuilder, jsonApplication as JsonApplicationWithApi)
+	}
+
 	addOperations(jsonApplication as JsonApplicationWithApi, applicationPath,
 		applicationSourcePath, applicationBuilder).then();
-
-	for (const fileProcessor of additonalFileProcessors) {
-		fileProcessor.build(pathBuilder)
-	}
 }
 
 async function addOperations(

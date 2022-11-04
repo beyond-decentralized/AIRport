@@ -4,7 +4,7 @@
 
 import * as fs from 'fs';
 import { readConfiguration } from './ddl/options/generator';
-import { additonalFileProcessors } from './FileProcessor';
+import { additionalFileProcessors } from './FileProcessor';
 import { watchFiles } from './FileWatcher';
 
 function addRootDirPaths(
@@ -74,7 +74,7 @@ export async function generate(): Promise<void> {
 		null, 'src/api', sourceFilePaths
 	)
 	
-	for(const fileProcessor of additonalFileProcessors) {
+	for(const fileProcessor of additionalFileProcessors) {
 		sourceFilePaths = addRootDirPaths(null, fileProcessor.getDir(), sourceFilePaths)
 	}
 

@@ -9,6 +9,10 @@ import { DbApplicationBuilder } from './DbApplicationBuilder';
 
 export interface IApplicationLoader {
 
+	setApplicationMap(
+		applicationMap: { [projectName: string]: DbApplication }
+	): void
+
 	findAllReferencedJsonApplications(): JsonApplication[];
 
 	getReferencedApplication(
@@ -21,12 +25,20 @@ export interface IApplicationLoader {
 export class ApplicationLoader
 	implements IApplicationLoader {
 
+	applicationMap: { [projectName: string]: DbApplication } = {};
+
 	allApplications: DbApplication[] = [];
 	dbApplicationBuilder: IDbApplicationBuilder = new DbApplicationBuilder();
 	dictionary = {
 		dbColumnRelationMapByManySide: {},
 		dbColumnRelationMapByOneSide: {}
 	};
+
+	setApplicationMap(
+		applicationMap: { [projectName: string]: DbApplication }
+	): void {
+		this.applicationMap = applicationMap
+	}
 
 	findAllReferencedJsonApplications(): JsonApplication[] {
 		const jsonApplications: JsonApplication[] = [];
@@ -57,14 +69,22 @@ export class ApplicationLoader
 		projectName: string,
 		property: EntityReference & PropertyDocEntry
 	): DbApplication {
+		const knownApplication = this.applicationMap[projectName]
+		if (knownApplication) {
+			return knownApplication
+		}
+
 		const relatedApplication = this.getJsonApplication(projectName, property);
 
 		if (!relatedApplication) {
 			return null;
 		}
 
-		return this.dbApplicationBuilder.buildDbApplicationWithoutReferences(
+		const dbApplication = this.dbApplicationBuilder.buildDbApplicationWithoutReferences(
 			relatedApplication, this.allApplications, this.dictionary);
+		this.applicationMap[projectName] = dbApplication
+
+		return dbApplication
 	}
 
 	getJsonApplication(
@@ -118,3 +138,5 @@ the following decorators to the property definition:
 	}
 
 }
+
+export const DB_APPLICATION_LOADER = new ApplicationLoader()
